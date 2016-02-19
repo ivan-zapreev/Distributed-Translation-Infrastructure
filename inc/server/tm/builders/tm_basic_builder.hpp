@@ -194,79 +194,6 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to count and set the number of source phrases
-                             */
-                            inline void count_source_phrases() {
-                                Logger::start_progress_bar(string("Counting phrase translations"));
-
-                                //Declare the text piece reader for storing the read line and source phrase
-                                TextPieceReader line, source;
-
-                                //Store the cached source string and its uid values
-                                string source_str = "";
-                                phrase_uid source_uid = UNDEFINED_PHRASE_ID;
-                                //Get the counter reference to the undefined, just for initialization
-                                size_t & count_ref = m_sizes[source_uid];
-
-                                //Declare an array of features for temporary use
-                                feature_array tmp_features;
-                                size_t tmp_features_size;
-
-                                //Compute the source entry sizes
-                                while (m_reader.get_first_line(line)) {
-                                    //Read the source phrase
-                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
-
-                                    //Get the current source phrase uids
-                                    string next_source_str = source.str();
-                                    trim(next_source_str);
-
-                                    //Check if we are starting a new entry
-                                    if (source_str != next_source_str) {
-                                        //Remove the previous entry if the count is zero
-                                        if (count_ref == 0) {
-                                            m_sizes.erase(source_uid);
-                                        }
-
-                                        //Store the new source string
-                                        source_str = next_source_str;
-                                        //Compute the new source string uid
-                                        source_uid = get_phrase_uid(source_str);
-                                        //Change the counter reference
-                                        count_ref = m_sizes[source_uid];
-                                    }
-
-                                    //Check that the filter conditions hold
-                                    if ((count_ref < m_params.m_trans_limit) &&
-                                            is_good_features(line, tmp_features_size, tmp_features)) {
-                                        //Increment the count for the given source uid
-                                        ++count_ref;
-                                    }
-
-                                    //Update the progress bar status
-                                    Logger::update_progress_bar();
-
-                                    LOG_DEBUG1 << "-> ___" << source_str << "___ translation(s) count: " << count_ref << END_LOG;
-                                }
-
-                                //Check if the last entry resulted in zero score, if yes then remove it
-                                if (count_ref == 0) {
-                                    m_sizes.erase(source_uid);
-                                }
-
-                                LOG_INFO << "The number of valid TM entries is: " << m_sizes.size() << END_LOG;
-
-                                //Set the number of entries into the model
-                                m_model.set_num_entries(m_sizes.size());
-
-                                //Re-set the reader to start all over again
-                                m_reader.reset();
-
-                                //Stop the progress bar in case of no exception
-                                Logger::stop_progress_bar();
-                            }
-
-                            /**
                              * The line format assumes source to target and then at least four weights as given by:
                              *     http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases
                              * Currently, four different phrase translation scores are computed:
@@ -369,7 +296,9 @@ namespace uva {
                                         //Change the counter reference
                                         count_ref = m_sizes[source_uid];
 
-                                        if (!count_or_build) {
+                                        if (count_or_build) {
+                                            //Nothing to be done here when counting entries
+                                        } else {
                                             //Check if the new entry is to be entirely skipped
                                             is_good_source = (count_ref != 0);
 
@@ -425,90 +354,35 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to count and set the number of source phrases
+                             */
+                            inline void count_source_phrases() {
+                                Logger::start_progress_bar(string("Counting phrase translations"));
+
+                                //Count the good entries
+                                parse_rm_file<true>();
+
+                                LOG_INFO << "The number of valid TM entries is: " << m_sizes.size() << END_LOG;
+
+                                //Set the number of entries into the model
+                                m_model.set_num_entries(m_sizes.size());
+
+                                //Re-set the reader to start all over again
+                                m_reader.reset();
+
+                                //Stop the progress bar in case of no exception
+                                Logger::stop_progress_bar();
+                            }
+
+                            /**
                              * Allows to process translations.
                              */
                             inline void process_source_entries() {
                                 Logger::start_progress_bar(string("Building translation model"));
 
-                                //Declare the text piece reader for storing the read line and source phrase
-                                TextPieceReader line, source;
-
-                                //Store the source entry
-                                tm_source_entry * source_entry = NULL;
-
-                                //Store the cached source string and its uid values
-                                string source_str = "";
-                                phrase_uid source_uid = UNDEFINED_PHRASE_ID;
-                                size_t & count_ref = m_sizes[source_uid];
-                                bool is_good_source = false;
-
-                                //Declare an array of weights for temporary use
-                                feature_array tmp_features;
-                                size_t tmp_features_size;
-
-                                //Start reading the translation model file line by line
-                                while (m_reader.get_first_line(line)) {
-                                    //Read the source phrase
-                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
-
-                                    //Get the current source phrase uid
-                                    string next_source_str = source.str();
-                                    trim(next_source_str);
-                                    if (source_str != next_source_str) {
-                                        //Finalize the previous entry if there was one
-                                        if (is_good_source && (source_uid != UNDEFINED_PHRASE_ID)) {
-                                            LOG_DEBUG1 << "Finishing a source entry for: ___" << source_str
-                                                    << "___ uid: " << source_uid << ", count: " << count_ref << END_LOG;
-
-                                            m_model.finalize_entry(source_uid);
-                                        }
-
-                                        //Store the new source string
-                                        source_str = next_source_str;
-                                        //Compute the new source string uid
-                                        const phrase_uid new_source_uid = get_phrase_uid(source_str);
-                                        //Change the counter reference
-                                        count_ref = m_sizes[new_source_uid];
-
-                                        //Check if the new entry is to be entirely skipped
-                                        is_good_source = (count_ref != 0);
-
-                                        if (is_good_source) {
-                                            //Set the source entry id
-                                            source_uid = new_source_uid;
-
-                                            //Open the new source entry
-                                            source_entry = m_model.begin_entry(source_uid, count_ref);
-
-                                            LOG_DEBUG1 << "Starting a new source entry for: ___" << source_str
-                                                    << "___ uid: " << source_uid << ", count: " << count_ref << END_LOG;
-                                        } else {
-                                            //This source is skipped and if it is the
-                                            //last one then we do not need to finalize it
-                                            source_uid = UNDEFINED_PHRASE_ID;
-                                        }
-                                    }
-
-                                    //If the source entry is not to be skipped, parse 
-                                    if (is_good_source && (count_ref > 0)) {
-                                        //Parse the rest of the target entry
-                                        process_target_entry(source_entry, line, count_ref, tmp_features_size, tmp_features);
-                                    } else {
-                                        LOG_DEBUG << "Skipping source-target entry: " << line << END_LOG;
-                                    }
-
-                                    //Update the progress bar status
-                                    Logger::update_progress_bar();
-                                }
-
-                                //Finalize the previous entry if there was one
-                                if (source_uid != UNDEFINED_PHRASE_ID) {
-                                    m_model.finalize_entry(source_uid);
-                                }
-
-                                //Finalize the model
-                                m_model.finalize();
-
+                                //Build the model
+                                parse_rm_file<false>();
+                                
                                 //Stop the progress bar in case of no exception
                                 Logger::stop_progress_bar();
                             }

@@ -97,7 +97,7 @@ namespace uva {
 
                                 //Count and set the number of source phrases if needed
                                 if (m_model.is_num_entries_needed()) {
-                                    set_number_source_phrases(query);
+                                    count_source_target_phrases(query);
                                 }
 
                                 //Process the translations
@@ -209,7 +209,7 @@ namespace uva {
                              * @param query the translation model query object to
                              * query the translation model for present entries
                              */
-                            inline void set_number_source_phrases(tm_query_proxy & query) {
+                            inline void count_source_target_phrases(tm_query_proxy & query) {
                                 Logger::start_progress_bar(string("Counting reordering entries"));
 
                                 //Count the number of valid entries
