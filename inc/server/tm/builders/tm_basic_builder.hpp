@@ -254,7 +254,7 @@ namespace uva {
                                     m_sizes.erase(source_uid);
                                 }
 
-                                LOG_USAGE << "Got " << m_sizes.size() << " non-empty source entries" << END_LOG;
+                                LOG_DEBUG << "Got " << m_sizes.size() << " non-empty source entries" << END_LOG;
 
                                 //Set the number of entries into the model
                                 m_model.set_num_entries(m_sizes.size());
