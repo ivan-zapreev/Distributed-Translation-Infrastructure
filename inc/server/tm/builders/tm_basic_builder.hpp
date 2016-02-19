@@ -80,9 +80,20 @@ namespace uva {
                              * @param reader the reader to read the data from
                              */
                             tm_basic_builder(const tm_parameters & params, model_type & model, reader_type & reader)
-                            : m_params(params), m_model(model), m_reader(reader) {
+                            : m_sizes(NULL), m_params(params), m_model(model), m_reader(reader) {
                             }
 
+                            /**
+                             * The basic destructor
+                             */
+                            ~tm_basic_builder(){
+                                //Delete the sizes map as it is not needed any more
+                                if (m_sizes != NULL) {
+                                    delete m_sizes;
+                                    m_sizes = NULL;
+                                }
+                            }
+                            
                             /**
                              * Allows to build the model by reading from the reader object.
                              * This is a two step process as first we need the number
@@ -91,7 +102,7 @@ namespace uva {
                             void build() {
                                 //Count and set the number of source phrases if needed
                                 if (m_model.is_num_entries_needed()) {
-                                    set_number_source_phrases();
+                                    count_source_phrases();
                                 }
 
                                 //Process the translations
@@ -103,11 +114,8 @@ namespace uva {
                             /**
                              * Allows to count and set the number of source phrases
                              */
-                            inline void set_number_source_phrases() {
+                            inline void count_source_phrases() {
                                 Logger::start_progress_bar(string("Counting phrase translations"));
-
-                                //Declare the sizes map
-                                sizes_map * sizes = new sizes_map();
 
                                 //Declare the text piece reader for storing the read line and source phrase
                                 TextPieceReader line, source;
@@ -134,9 +142,9 @@ namespace uva {
                                     }
 
                                     //Increment the count for the given source uid
-                                    ++sizes->operator[](source_uid);
+                                    ++m_sizes->operator[](source_uid);
 
-                                    if (sizes->operator[](source_uid) == 1) {
+                                    if (m_sizes->operator[](source_uid) == 1) {
                                         ++num_source;
                                         LOG_DEBUG << num_source << ") Source: " << source_str << " uid: " << source_uid << END_LOG;
                                     }
@@ -144,11 +152,11 @@ namespace uva {
                                     //Update the progress bar status
                                     Logger::update_progress_bar();
 
-                                    LOG_DEBUG1 << "-> translation count: " << sizes->at(source_uid) << END_LOG;
+                                    LOG_DEBUG1 << "-> translation count: " << m_sizes->at(source_uid) << END_LOG;
                                 }
 
                                 //Set the number of entries into the model
-                                m_model.set_num_entries(sizes);
+                                m_model.set_num_entries(m_sizes->size());
 
                                 //Re-set the reader to start all over again
                                 m_reader.reset();
@@ -252,7 +260,7 @@ namespace uva {
                                         source_uid = get_phrase_uid(source_str);
 
                                         //Open the new source entry
-                                        source_entry = m_model.begin_entry(source_uid);
+                                        source_entry = m_model.begin_entry(source_uid, m_sizes->at(source_uid));
                                     }
 
                                     LOG_DEBUG << num_source << ") Source: " << source_str << " uid: " << source_uid << END_LOG;
@@ -277,6 +285,8 @@ namespace uva {
                             }
 
                         private:
+                            //The map storing the model sizes
+                            sizes_map * m_sizes;
                             //Stores the reference to the model parameters
                             const tm_parameters & m_params;
                             //Stores the reference to the model

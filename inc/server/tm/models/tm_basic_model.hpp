@@ -67,7 +67,7 @@ namespace uva {
                             /**
                              * The basic class constructor
                              */
-                            tm_basic_model() : m_sizes(NULL), m_tm_data(NULL), m_unk_entry(NULL) {
+                            tm_basic_model() : m_tm_data(NULL), m_unk_entry(NULL) {
                                 //Initialize the UNK entry
                                 m_unk_entry = new tm_source_entry();
                                 //Set thew source id
@@ -92,9 +92,6 @@ namespace uva {
                              * The basic destructor
                              */
                             ~tm_basic_model() {
-                                //Finalize the model just in case it is not
-                                finalize();
-
                                 //Delete the model data if any
                                 if (m_tm_data != NULL) {
                                     delete m_tm_data;
@@ -122,16 +119,13 @@ namespace uva {
                              * This method is needed to set the number of source phrase entries
                              * This is to be done before adding the translation entries to the model
                              * The memory of the map will be allocated by this class.
-                             * @param sizes the map storing the model sizes
+                             * @param num_entries the number of source phrase entries
                              */
-                            inline void set_num_entries(sizes_map * sizes) {
-                                //Stores the sizes
-                                m_sizes = sizes;
-
-                                LOG_DEBUG << "The number of source phrases is: " << sizes->size() << END_LOG;
+                            inline void set_num_entries(const size_t num_entries) {
+                                LOG_DEBUG << "The number of source phrases is: " << num_entries << END_LOG;
 
                                 //Initialize the source entries map
-                                m_tm_data = new tm_source_entry_map(__tm_basic_model::SOURCES_BUCKETS_FACTOR, sizes->size());
+                                m_tm_data = new tm_source_entry_map(__tm_basic_model::SOURCES_BUCKETS_FACTOR, num_entries);
                             }
 
                             /**
@@ -139,7 +133,7 @@ namespace uva {
                              * @param entry_id the source phrase id for which the entry is to be started
                              * @return the entry associated with the given id
                              */
-                            inline tm_source_entry * begin_entry(const phrase_uid entry_id) {
+                            inline tm_source_entry * begin_entry(const phrase_uid entry_id, const size_t num_elems) {
                                 LOG_DEBUG1 << "Adding the new source entry for uid: " << entry_id << END_LOG;
 
                                 //Get the new entry from the data storage
@@ -153,7 +147,7 @@ namespace uva {
                                 LOG_DEBUG1 << "Initializing the entry: " << entry_id << " with the number of translations." << END_LOG;
 
                                 //Initialize the entry with the number of translations
-                                entry.begin(m_sizes->at(entry_id));
+                                entry.begin(num_elems);
 
                                 LOG_DEBUG1 << "Adding the new source entry for uid: " << entry_id << " - DONE!" << END_LOG;
 
@@ -178,11 +172,7 @@ namespace uva {
                              * This method is to be called when the translation model is fully read
                              */
                             inline void finalize() {
-                                //Delete the sizes map as it is not needed any more
-                                if (m_sizes != NULL) {
-                                    delete m_sizes;
-                                    m_sizes = NULL;
-                                }
+                                //Nothing to be done here
                             }
 
                             /**
@@ -210,8 +200,6 @@ namespace uva {
                             }
 
                         private:
-                            //The map storing the model sizes
-                            sizes_map * m_sizes;
                             //Stores the translation model data
                             tm_source_entry_map * m_tm_data;
                             //Stores the pointer to the UNK entry
