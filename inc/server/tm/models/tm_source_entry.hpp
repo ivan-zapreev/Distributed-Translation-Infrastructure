@@ -151,17 +151,19 @@ namespace uva {
 
                                 //Search for the uid in the array
                                 for (size_t idx = 0; idx < m_capacity; ++idx) {
+                                    LOG_DEBUG1 << "The source/target translation for "
+                                            << m_st_uid << " is found!" << END_LOG;
                                     if (m_targets[idx].get_st_uid() == m_st_uid) {
                                         LOG_DEBUG1 << "The source/target translation for "
                                                 << m_st_uid << " is found!" << END_LOG;
-                                        
+
                                         return true;
                                     }
                                 }
 
                                 LOG_DEBUG1 << "The source/target translation for "
                                         << m_st_uid << " is not found!" << END_LOG;
-                                
+
                                 return false;
                             }
 

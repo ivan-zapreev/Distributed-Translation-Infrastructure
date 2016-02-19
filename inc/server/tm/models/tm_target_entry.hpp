@@ -89,15 +89,19 @@ namespace uva {
                                     const string & target_phrase, const phrase_uid target_uid) {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;
+
                                 //Compute and store the source/target phrase uid
                                 m_st_uid = combine_phrase_uids(source_uid, target_uid);
+
+                                LOG_DEBUG1 << "Adding the source/target (" << source_uid << "/"
+                                        << target_uid << ") entry with id" << m_st_uid << END_LOG;
                             }
 
                             /**
                              * Allows to retrieve the source/target phrase pair uid
                              * @return the source/target phrase pair uid
                              */
-                            inline phrase_uid get_st_uid() {
+                            inline const phrase_uid & get_st_uid() {
                                 return m_st_uid;
                             }
 
@@ -105,7 +109,7 @@ namespace uva {
                              * Allows to get the total weight of the entry
                              * @return the total weight of the entry, the sum of feature weights
                              */
-                            inline float get_total_weight() {
+                            inline const float & get_total_weight() {
                                 return m_total_weight;
                             }
 
@@ -123,7 +127,7 @@ namespace uva {
                             inline void set_features(const size_t num_features, const float * features) {
                                 ASSERT_CONDITION_THROW((num_features > max_num_features), string("The number of features: ") +
                                         to_string(num_features) + string(" exceeds the maximum: ") + to_string(max_num_features));
-                                
+
                                 //Compute the total weight
                                 for (size_t idx = 0; idx < num_features; ++idx) {
                                     m_total_weight += features[idx];
