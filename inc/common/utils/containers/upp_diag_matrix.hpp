@@ -63,8 +63,14 @@ namespace uva {
                  * @param dimension the dimension of the matrix, it will be a square upper diagonal matrix.
                  */
                 upp_diag_matrix(const size_t dim) : m_dim(dim) {
+                    //Compute the number of elements to be used
+                    const size_t num_elements = (dim - 1) * dim / 2 + dim;
+
+                    LOG_DEBUG2 << "upp_diag_matrix create: " << m_dim << " dimensions,"
+                            " and " << num_elements << " elements." << END_LOG;
+
                     //First allocate the number of elements we need
-                    m_elems = new element_type[(dim - 1) * dim / 2 + dim]();
+                    m_elems = new element_type[num_elements]();
 
                     //Allocate the row pointers array
                     m_rows = new element_type_ptr[dim]();
@@ -72,8 +78,12 @@ namespace uva {
                     //Initialize the row pointers array
                     m_rows[0] = m_elems;
                     for (size_t idx = 1; idx < dim; ++idx) {
-                        m_rows[idx] = m_rows[idx - 1] + dim - idx;
+                        const size_t offset = dim - idx;
+                        LOG_DEBUG2 << "Internal row: " << idx << " offset: " << offset << END_LOG;
+                        m_rows[idx] = m_rows[idx - 1] + offset;
                     }
+
+                    LOG_DEBUG2 << "upp_diag_matrix create is finished" << END_LOG;
                 }
 
                 /**

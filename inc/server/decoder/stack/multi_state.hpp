@@ -78,8 +78,11 @@ namespace uva {
                             m_history(params.m_max_t_phrase_len - 1),
                             m_partial_score(ZERO_LOG_PROB_WEIGHT),
                             m_future_cost(ZERO_LOG_PROB_WEIGHT) {
+                                LOG_DEBUG2 << "multi_state create: " << params << END_LOG;
+
                                 //Mark the zero word as covered
                                 m_covered.set(ZERRO_WORD_IDX);
+                                
                                 //Add the sentence start to the target
                                 m_history.push_back(BEGIN_SENTENCE_TAG_STR);
                             }
@@ -94,8 +97,11 @@ namespace uva {
                             m_history(params.m_max_t_phrase_len - 1),
                             m_partial_score(ZERO_LOG_PROB_WEIGHT),
                             m_future_cost(ZERO_LOG_PROB_WEIGHT) {
+                                LOG_DEBUG2 << "multi_state create, with parent: " << params << END_LOG;
+                                
                                 //Compute the partial score;
                                 compute_partial_score();
+                                
                                 //Compute the future costs;
                                 compute_future_cost();
                             }

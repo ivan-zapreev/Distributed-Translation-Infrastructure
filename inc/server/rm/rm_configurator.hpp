@@ -90,6 +90,8 @@ namespace uva {
                          * @return an instance of the query executor.
                          */
                         static inline rm_query_proxy & allocate_query_proxy() {
+                            LOG_DEBUG2 << "Allocating a new RM query proxy" << END_LOG;
+                            
                             //Return the query executor as given by the proxy class
                             return m_model_proxy->allocate_query_proxy();
                         }

@@ -91,6 +91,8 @@ namespace uva {
                          * @return an instance of the query executor.
                          */
                         static inline lm_trie_query_proxy & allocate_query_proxy() {
+                            LOG_DEBUG2 << "Allocating a new LM query proxy" << END_LOG;
+                            
                             //Return the query executor as given by the proxy class
                             return m_model_proxy->allocate_trie_query_proxy();
                         }

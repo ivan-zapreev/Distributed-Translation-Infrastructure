@@ -146,6 +146,8 @@ namespace uva {
                                         string(") exceeds the maximum allowed number of words per sentence (") +
                                         to_string(MAX_WORDS_PER_SENTENCE));
 
+                                LOG_DEBUG1 << "The sentence: __" << sentence << "___ has " << num_tokens << " tokens" << END_LOG;
+
                                 return num_tokens;
                             }
 
