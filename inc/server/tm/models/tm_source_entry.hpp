@@ -141,14 +141,27 @@ namespace uva {
                              * @return true if the target is known, otherwise false
                              */
                             bool has_translation(const phrase_uid target_uid) const {
+                                LOG_DEBUG1 << "Checking for a source/target (" << m_source_uid
+                                        << "/" << target_uid << ") pair entry " << END_LOG;
+
                                 //Compute the source/target uid
                                 const phrase_uid m_st_uid = combine_phrase_uids(m_source_uid, target_uid);
+
+                                LOG_DEBUG1 << "The source/target id is " << m_st_uid << END_LOG;
+
                                 //Search for the uid in the array
-                                for (size_t idx =0; idx < m_capacity; ++ idx) {
-                                    if(m_targets[idx].get_st_uid() == m_st_uid ) {
+                                for (size_t idx = 0; idx < m_capacity; ++idx) {
+                                    if (m_targets[idx].get_st_uid() == m_st_uid) {
+                                        LOG_DEBUG1 << "The source/target translation for "
+                                                << m_st_uid << " is found!" << END_LOG;
+                                        
                                         return true;
                                     }
                                 }
+
+                                LOG_DEBUG1 << "The source/target translation for "
+                                        << m_st_uid << " is not found!" << END_LOG;
+                                
                                 return false;
                             }
 

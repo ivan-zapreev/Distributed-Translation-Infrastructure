@@ -160,9 +160,11 @@ namespace uva {
                                     //Read the source phrase
                                     line.get_first<RM_DELIMITER, RM_DELIMITER_CDTY>(source);
 
-                                    //Get the current source phrase uids
+                                    //Get the current source phrase
                                     string next_source_str = source.str();
                                     trim(next_source_str);
+                                    
+                                    //Check if this is a new source phrase
                                     if (source_str != next_source_str) {
                                         //Store the new source string
                                         source_str = next_source_str;
@@ -177,6 +179,8 @@ namespace uva {
                                             source_entry = query.get_source_entry(source_uid);
                                             //Check if we shall ignore this source
                                             is_good_source = (source_entry != NULL);
+                                            
+                                            LOG_USAGE << "Got a TM source entry for " << source_uid << END_LOG;
                                         }
                                     }
 
@@ -223,8 +227,6 @@ namespace uva {
                                 //Count the number of valid entries
                                 parse_rm_file<true>(query);
 
-                                LOG_INFO << "The number of RM entries matching TM is: " << m_num_entries << END_LOG;
-
                                 //Set the number of entries into the model
                                 m_model.set_num_entries(m_num_entries);
 
@@ -233,6 +235,8 @@ namespace uva {
 
                                 //Stop the progress bar in case of no exception
                                 Logger::stop_progress_bar();
+
+                                LOG_INFO << "The number of RM entries matching TM is: " << m_num_entries << END_LOG;
                             }
 
                             /**

@@ -362,8 +362,6 @@ namespace uva {
                                 //Count the good entries
                                 parse_rm_file<true>();
 
-                                LOG_INFO << "The number of valid TM entries is: " << m_sizes.size() << END_LOG;
-
                                 //Set the number of entries into the model
                                 m_model.set_num_entries(m_sizes.size());
 
@@ -372,6 +370,8 @@ namespace uva {
 
                                 //Stop the progress bar in case of no exception
                                 Logger::stop_progress_bar();
+
+                                LOG_INFO << "The number of valid TM entries is: " << m_sizes.size() << END_LOG;
                             }
 
                             /**
