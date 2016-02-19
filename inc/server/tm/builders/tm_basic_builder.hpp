@@ -26,6 +26,8 @@
 #ifndef TM_BUILDER_HPP
 #define TM_BUILDER_HPP
 
+#include <cmath>
+
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
@@ -55,9 +57,9 @@ namespace uva {
                     namespace builders {
 
                         //Stores the translation model delimiter character for parsing one line
-#define TM_DELIMITER '|'
+                        static const char TM_DELIMITER = '|';
                         //Stores the translation model delimiter character cardinality
-#define TM_DELIMITER_CDTY 3
+                        static const size_t TM_DELIMITER_CDTY = 3;
 
                         /**
                          * This class represents a basic reader of the translation model.
@@ -196,21 +198,16 @@ namespace uva {
                                 //Skip the first space
                                 ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not skip the first space!");
 
-                                //Read the second weight 
-                                ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not read the inverse phrase translation probability φ(f|e)!");
-                                fast_s_to_f(target_entry.get_sct_prob(), token.str().c_str());
-
-                                //Read the third weight 
-                                ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not read the inverse lexical weighting lex(f|e)!");
-                                fast_s_to_f(target_entry.get_sct_lex(), token.str().c_str());
-
-                                //Read the fourth weight 
-                                ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not read the direct phrase translation probability φ(e|f)!");
-                                fast_s_to_f(target_entry.get_tcs_prob(), token.str().c_str());
-
-                                //Read the fourth weight 
-                                ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not read the direct lexical weighting lex(e|f)!");
-                                fast_s_to_f(target_entry.get_tcs_lex(), token.str().c_str());
+                                //Read the subsequent weights, check that the number of weights is as expected
+                                size_t idx = 0;
+                                while (rest.get_first_space(token) && (idx < tm_target_entry::NUM_FEATURES)) {
+                                    //Parse the token into the entry weight
+                                    fast_s_to_f(target_entry[idx], token.str().c_str());
+                                    //Now convert to the log probability and multiply with the appropriate weight
+                                    target_entry[idx] = log10(target_entry[idx]) * m_params.tm_weights[idx];
+                                    //Increment the index 
+                                    ++idx;
+                                }
                             }
 
                             /**
@@ -247,7 +244,7 @@ namespace uva {
                                         if (source_uid != UNDEFINED_PHRASE_ID) {
                                             m_model.finalize_entry(source_uid);
                                         }
-                                        
+
                                         //Increment the number of source entries
                                         ++num_source;
 

@@ -168,7 +168,8 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_num_threads = get_integer<uint16_t>(ini, section, "num_threads");
         params.m_source_lang = get_string(ini, section, "source_lang");
         params.m_target_lang = get_string(ini, section, "target_lang");
-
+        params.verify();
+        
         LOG_USAGE << "Translation server from '" << params.m_source_lang << "' into '"
                 << params.m_target_lang << "' on port: '" << params.m_server_port
                 << "' translation threads: '" << params.m_num_threads << "'" << END_LOG;
@@ -179,6 +180,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 params.m_lm_params.lm_weights,
                 params.m_lm_params.num_lm_weights,
                 LM_FEATURE_WEIGHTS_DELIMITER_STR);
+        params.m_lm_params.verify();
         LOG_INFO << params.m_lm_params << END_LOG;
 
         section = "Translation Models";
@@ -189,6 +191,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
         params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, "translation_limit");
         params.m_tm_params.m_min_tran_prob = get_float(ini, section, "min_translation_probability");
+        params.m_tm_params.verify();
         LOG_INFO << params.m_tm_params << END_LOG;
 
         section = "Reordering Models";
@@ -197,6 +200,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 params.m_rm_params.rm_weights,
                 params.m_rm_params.num_rm_weights,
                 RM_FEATURE_WEIGHTS_DELIMITER_STR);
+        params.m_rm_params.verify();
         LOG_INFO << params.m_rm_params << END_LOG;
 
         section = "Decoding Options";
@@ -208,6 +212,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_de_params.m_word_penalty = get_float(ini, section, "word_penalty");
         params.m_de_params.m_phrase_penalty = get_float(ini, section, "phrase_penalty");
         params.m_de_params.m_expansion_strategy = get_string(ini, section, "expansion_strategy");
+        params.m_de_params.verify();
         LOG_INFO << params.m_de_params << END_LOG;
 
         LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;

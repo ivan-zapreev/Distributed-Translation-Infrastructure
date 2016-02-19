@@ -29,11 +29,13 @@
 #include <string>
 #include <ostream>
 
-#include "common/utils/string_utils.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 
 using namespace std;
 
-using namespace uva::utils::text;
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
 
 namespace uva {
     namespace smt {
@@ -61,6 +63,26 @@ namespace uva {
                         float m_word_penalty;
                         //Stores the phrase penalty - the cost of each target phrase
                         float m_phrase_penalty;
+
+                        /**
+                         * Allows to verify the parameters to be correct.
+                         */
+                        void verify() {
+                            ASSERT_CONDITION_THROW((m_distortion_limit == 0),
+                                    string("The distortion_limit must not be 0!"));
+                            ASSERT_CONDITION_THROW((m_max_s_phrase_len == 0),
+                                    string("The max_source_phrase_len must not be 0!"));
+                            ASSERT_CONDITION_THROW((m_max_t_phrase_len == 0),
+                                    string("The max_target_phrase_len must not be 0!"));
+                            ASSERT_CONDITION_THROW((m_pruning_threshold == 0.0),
+                                    string("The pruning_threshold must not be 0.0!"));
+                            ASSERT_CONDITION_THROW((m_word_penalty == 0.0),
+                                    string("The word_penalty must not be 0.0!"));
+                            ASSERT_CONDITION_THROW((m_phrase_penalty == 0.0),
+                                    string("The phrase_penalty must not be 0.0!"));
+                            ASSERT_CONDITION_THROW((m_stack_capacity == 0),
+                                    string("The stack_capacity must not be 0!"));
+                        }
                     } de_parameters;
 
                     /**

@@ -29,12 +29,16 @@
 #include <string>
 #include <ostream>
 
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 #include "common/utils/string_utils.hpp"
 
 #include "server/rm/rm_configs.hpp"
 
 using namespace std;
 
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
 using namespace uva::utils::text;
 
 namespace uva {
@@ -49,12 +53,27 @@ namespace uva {
                     typedef struct {
                         //The the connection string needed to connect to the model
                         string m_conn_string;
-                        
+
                         //Stores the number of reordering model weights
                         size_t num_rm_weights;
-                        
+
                         //Stores the reordering model weights
                         float rm_weights[MAX_NUM_RM_FEATURES];
+
+                        /**
+                         * Allows to verify the parameters to be correct.
+                         */
+                        void verify() {
+                            ASSERT_CONDITION_THROW((num_rm_weights > MAX_NUM_RM_FEATURES),
+                                    string("The number of RM features: ") + to_string(num_rm_weights) +
+                                    string(" must be <= ") + to_string(MAX_NUM_RM_FEATURES));
+                            ASSERT_CONDITION_THROW(
+                                    (num_rm_weights != SIX_RM_FEATURES) &&
+                                    (num_rm_weights != EIGHT_RM_FEATURES),
+                                    string("The number of RM features: ") + to_string(num_rm_weights) +
+                                    string(" must be ") + to_string(SIX_RM_FEATURES) +
+                                    string(" or ") + to_string(EIGHT_RM_FEATURES) );
+                        }
                     } rm_parameters;
 
                     /**

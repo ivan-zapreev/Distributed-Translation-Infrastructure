@@ -52,18 +52,19 @@ namespace uva {
                         /**
                          * This is the reordering entry class it stores the
                          * reordering penalties for one source to target phrase.
-                         * @param num_weights is the number of reordering weights
+                         * @param num_features is the number of reordering weights
                          */
-                        template<uint8_t num_weights>
+                        template<uint8_t num_features>
                         class rm_entry_temp {
                         public:
                             //Define the number of weights constant for the reordering entry
-                            static constexpr uint8_t NUM_WEIGHTS = num_weights;
+                            static constexpr uint8_t NUM_FEATURES = num_features;
 
                             /**
                              * The basic constructor
                              */
                             rm_entry_temp() : m_uid(UNDEFINED_PHRASE_ID) {
+                                memset(m_weights, 0, NUM_FEATURES * sizeof(float));
                             }
 
                             /**
@@ -73,14 +74,14 @@ namespace uva {
                             }
 
                             /**
-                             * This operator allows to work with the given reordering entry weights in an array faschion
-                             * @param idx
-                             * @return 
+                             * This operator allows to work with the given reordering entry weights in an array fashion
+                             * @param idx the index of the feature
+                             * @return the feature value
                              */
                             inline float & operator[](size_t idx) {
                                 //Chech that the index is within the bounds
-                                ASSERT_SANITY_THROW(idx >= num_weights, string("The index: ") + to_string(idx) +
-                                        string(" is outside the bounds [0, ") + to_string(num_weights - 1) + string("]"));
+                                ASSERT_SANITY_THROW(idx >= num_features, string("The index: ") + to_string(idx) +
+                                        string(" is outside the bounds [0, ") + to_string(num_features - 1) + string("]"));
                                 
                                 //Return the reference to the corresponding weight
                                 return m_weights[idx];
@@ -107,14 +108,14 @@ namespace uva {
                             //Stores the phrase id, i.e. the unique identifier for the source/target phrase pair
                             phrase_uid m_uid;
                             //This is an array of reordering weights
-                            float m_weights[num_weights];
+                            float m_weights[num_features];
                         };
                         
-                        template<uint8_t num_weights>
-                        constexpr uint8_t rm_entry_temp<num_weights>::NUM_WEIGHTS;
+                        template<uint8_t num_features>
+                        constexpr uint8_t rm_entry_temp<num_features>::NUM_FEATURES;
                         
                         //Instantiate template
-                        typedef rm_entry_temp<NUMBER_WEIGHT_ENTRIES> rm_entry;
+                        typedef rm_entry_temp<MAX_NUM_RM_FEATURES> rm_entry;
                     }
                 }
             }

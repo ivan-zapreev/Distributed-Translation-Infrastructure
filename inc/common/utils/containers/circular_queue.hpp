@@ -39,7 +39,7 @@ namespace uva {
 
             /**
              * This class represents a circular queue class that
-             * is needed to store a limited nd fixed amount of
+             * is needed to store a limited and fixed amount of
              * elements. To avoid unneeded copy actions this class
              * stores the pointers to the elements!
              * 

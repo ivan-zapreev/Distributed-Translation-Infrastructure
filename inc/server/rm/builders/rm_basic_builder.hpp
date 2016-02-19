@@ -26,6 +26,8 @@
 #ifndef RM_BASIC_BUILDER_HPP
 #define RM_BASIC_BUILDER_HPP
 
+#include <cmath>
+
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
@@ -54,9 +56,9 @@ namespace uva {
                     namespace builders {
 
                         //Stores the translation model delimiter character for parsing one line
-#define TM_DELIMITER '|'
+                        static const char RM_DELIMITER = '|';
                         //Stores the translation model delimiter character cardinality
-#define TM_DELIMITER_CDTY 3
+                        static const size_t RM_DELIMITER_CDTY = 3;
 
                         /**
                          * This class represents a basic reader of the reordering model.
@@ -144,16 +146,14 @@ namespace uva {
 
                                 //Read the subsequent weights, check that the number of weights is as expected
                                 size_t idx = 0;
-                                while (rest.get_first_space(token) && (idx < rm_entry::NUM_WEIGHTS)) {
+                                while (rest.get_first_space(token) && (idx < rm_entry::NUM_FEATURES)) {
                                     //Parse the token into the entry weight
                                     fast_s_to_f(entry[idx], token.str().c_str());
+                                    //Now convert to the log probability and multiply with the appropriate weight
+                                    entry[idx] = log10(entry[idx]) * m_params.rm_weights[idx];
                                     //Increment the index 
                                     ++idx;
                                 }
-
-                                //Check that the number of weights is as expected
-                                ASSERT_CONDITION_THROW(idx != rm_entry::NUM_WEIGHTS, string("The number of reordering weights is: ") +
-                                        to_string(idx) + string(" expected ") + to_string(rm_entry::NUM_WEIGHTS));
                             }
 
                             /**
@@ -173,7 +173,7 @@ namespace uva {
                                 //Start reading the translation model file line by line
                                 while (m_reader.get_first_line(line)) {
                                     //Read the source phrase
-                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
+                                    line.get_first<RM_DELIMITER, RM_DELIMITER_CDTY>(source);
 
                                     //Get the current source phrase uids
                                     string next_source_str = source.str();
@@ -186,7 +186,7 @@ namespace uva {
                                     }
 
                                     //Read the target phrase
-                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
+                                    line.get_first<RM_DELIMITER, RM_DELIMITER_CDTY>(target);
                                     string target_str = target.str();
                                     trim(target_str);
 

@@ -29,13 +29,18 @@
 #include <string>
 #include <ostream>
 
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
+
+#include "decoder/de_parameters.hpp"
 #include "lm/lm_parameters.hpp"
 #include "rm/rm_parameters.hpp"
 #include "tm/tm_parameters.hpp"
 
-#include "decoder/de_parameters.hpp"
-
 using namespace std;
+
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
 
 using namespace uva::smt::bpbd::server::decoder;
 using namespace uva::smt::bpbd::server::tm;
@@ -73,15 +78,25 @@ namespace uva {
 
                     //Stores the decoder parameters
                     de_parameters m_de_params;
+
+                    /**
+                     * Allows to verify the parameters to be correct.
+                     */
+                    void verify() {
+                        ASSERT_CONDITION_THROW((m_num_threads == 0),
+                                string("The number of decoding threads: ") +
+                                to_string(m_num_threads) +
+                                string(" must be larger than zero! "));
+                    }
                 } server_parameters;
 
-                /**
-                 * Allows to output the parameters object to the stream
-                 * @param stream the stream to output into
-                 * @param params the parameters object
-                 * @return the stream that we output into
-                 */
-                static inline std::ostream& operator<<(std::ostream& stream, const server_parameters & params) {
+                        /**
+                         * Allows to output the parameters object to the stream
+                         * @param stream the stream to output into
+                         * @param params the parameters object
+                         * @return the stream that we output into
+                         */
+                        static inline std::ostream& operator<<(std::ostream& stream, const server_parameters & params) {
                     return stream << "Server parameters: [ source_lang = " << params.m_source_lang
                             << ", target_lang = " << params.m_target_lang
                             << ", server_port = " << params.m_server_port

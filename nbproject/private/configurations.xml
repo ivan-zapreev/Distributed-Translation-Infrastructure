@@ -779,9 +779,6 @@
           <in>rm_configurator.cpp</in>
         </df>
         <df name="tm">
-          <df name="models">
-            <in>tm_target_entry.cpp</in>
-          </df>
           <in>tm_configurator.cpp</in>
         </df>
         <in>bpbd_server.cpp</in>

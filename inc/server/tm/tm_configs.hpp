@@ -44,8 +44,10 @@ namespace uva {
                     //Define the feature weights delimiter string for the config file
                     static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
 
+                    //The various numbers of TM features
+                    static const size_t FOUR_TM_FEATURES = 4;
                     //Stores the maximum number of the translation model features
-                    static const size_t MAX_NUM_TM_FEATURES = 5;
+                    static const size_t MAX_NUM_TM_FEATURES = FOUR_TM_FEATURES;
 
                     namespace models {
 

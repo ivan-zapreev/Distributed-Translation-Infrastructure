@@ -22,8 +22,11 @@ namespace uva {
                     //Define the feature weights delimiter string for the config file
                     static const string RM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
                     
+                    //Stores the various numbers of RM features
+                    static const size_t SIX_RM_FEATURES = 6;
+                    static const size_t EIGHT_RM_FEATURES = 8;
                     //Stores the maximum number of the reordering model features
-                    static const size_t MAX_NUM_RM_FEATURES = 8;
+                    static const size_t MAX_NUM_RM_FEATURES = EIGHT_RM_FEATURES;
 
                     namespace models {
 
@@ -33,10 +36,6 @@ namespace uva {
                             //Stores the unknown target phrase string, should be configurable
                             static const string RM_UNKNOWN_TARGET_STR = string("UNK");
                         }
-
-                        //Store the number of of weights in the reordering model entry
-                        //The number of weights is a multiple of 2 
-                        static constexpr uint8_t NUMBER_WEIGHT_ENTRIES = 6;
 
                         //Stores the configuration parameters for the basic reordering model implementation
                         namespace __rm_basic_model {

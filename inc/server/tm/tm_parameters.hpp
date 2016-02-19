@@ -29,12 +29,16 @@
 #include <string>
 #include <ostream>
 
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 #include "common/utils/string_utils.hpp"
 
 #include "server/tm/tm_configs.hpp"
 
 using namespace std;
 
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
 using namespace uva::utils::text;
 
 namespace uva {
@@ -65,6 +69,18 @@ namespace uva {
                         //model, this is not log probability, and also is used for
                         //without feature weights
                         float m_min_tran_prob;
+
+                        /**
+                         * Allows to verify the parameters to be correct.
+                         */
+                        void verify() {
+                            ASSERT_CONDITION_THROW((num_tm_weights > MAX_NUM_TM_FEATURES),
+                                    string("The number of TM features: ") + to_string(num_tm_weights) +
+                                    string(" must be <= ") + to_string(MAX_NUM_TM_FEATURES));
+                            ASSERT_CONDITION_THROW((num_tm_weights != FOUR_TM_FEATURES),
+                                    string("The number of TM features: ") + to_string(num_tm_weights) +
+                                    string(" is not supported, we support only: ") + to_string(FOUR_TM_FEATURES));
+                        }
                     } tm_parameters;
 
                     /**

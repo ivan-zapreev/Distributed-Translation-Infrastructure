@@ -58,21 +58,24 @@ namespace uva {
                          * phrase string. The latter can be a hash value but then
                          * there is a possibility for the hash collisions
                          */
-                        class tm_target_entry {
+                        template<uint8_t num_features>
+                        class tm_target_entry_temp {
                         public:
+                            //Define the number of weights constant for the reordering entry
+                            static constexpr uint8_t NUM_FEATURES = num_features;
 
                             /**
                              * The basic constructor
                              */
-                            tm_target_entry()
-                            : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase(""), m_sct_prob(0.0),
-                            m_sct_lex(0.0), m_tcs_prob(0.0), m_tcs_lex(0.0) {
+                            tm_target_entry_temp()
+                            : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase("") {
+                                memset(m_weights, 0, NUM_FEATURES * sizeof(float));
                             }
 
                             /**
                              * The basic destructor
                              */
-                            ~tm_target_entry() {
+                            ~tm_target_entry_temp() {
                                 //Nothing to clean everything is stack allocated.
                             }
 
@@ -100,11 +103,25 @@ namespace uva {
                             }
 
                             /**
+                             * This operator allows to work with the given translation entry weights in an array fashion
+                             * @param idx the index of the feature
+                             * @return the feature value
+                             */
+                            inline float & operator[](size_t idx) {
+                                //Chech that the index is within the bounds
+                                ASSERT_SANITY_THROW(idx >= num_features, string("The index: ") + to_string(idx) +
+                                        string(" is outside the bounds [0, ") + to_string(num_features - 1) + string("]"));
+                                
+                                //Return the reference to the corresponding weight
+                                return m_weights[idx];
+                            }
+
+                            /**
                              * Allows to get the reference to the inverse phrase translation probability φ(f|e)
                              * @return the reference to the inverse phrase translation probability φ(f|e)
                              */
                             inline float & get_sct_prob() {
-                                return m_sct_prob;
+                                return m_weights[0];
                             }
 
                             /**
@@ -112,7 +129,7 @@ namespace uva {
                              * @return the reference to the inverse lexical weighting lex(s|t)
                              */
                             inline float & get_sct_lex() {
-                                return m_sct_lex;
+                                return m_weights[1];
                             }
 
                             /**
@@ -120,7 +137,7 @@ namespace uva {
                              * @return the reference to the direct phrase translation probability φ(t|s)
                              */
                             inline float & get_tcs_prob() {
-                                return m_tcs_prob;
+                                return m_weights[2];
                             }
 
                             /**
@@ -128,7 +145,7 @@ namespace uva {
                              * @return the reference to the direct lexical weighting lex(t|s)
                              */
                             inline float & get_tcs_lex() {
-                                return m_tcs_lex;
+                                return m_weights[3];
                             }
 
                         private:
@@ -136,20 +153,20 @@ namespace uva {
                             phrase_uid m_st_uid;
                             //Stores the target phrase of the translation which a key value
                             string m_target_phrase;
-                            //The conditional probability value for source conditioned on target
-                            float m_sct_prob;
-                            //Inverse lexical weighting lex(f|e)
-                            //ToDo: Do we need it for decoding?
-                            float m_sct_lex;
-                            //The conditional probability value for target conditioned on source
-                            float m_tcs_prob;
-                            //Direct lexical weighting lex(e|f)
-                            //ToDo: Do we need it for decoding?
-                            float m_tcs_lex;
-                            //Phrase penalty (always exp(1) = 2.718) therefore is static
-                            //ToDo: Do we need it while decoding?
-                            static float m_phrase_penalty;
+                            //This is an array of translation weights, as we have here:
+                            //m_weights[0] = p(f|e);
+                            //m_weights[1] = lex(p(f|e));
+                            //m_weights[2] = p(e|f);
+                            //m_weights[3] = lex(p(e|f));
+                            //m_weights[4] = phrase penalty; // optional
+                            float m_weights[num_features];
                         };
+                        
+                        template<uint8_t num_features>
+                        constexpr uint8_t tm_target_entry_temp<num_features>::NUM_FEATURES;
+                        
+                        //Instantiate template
+                        typedef tm_target_entry_temp<MAX_NUM_TM_FEATURES> tm_target_entry;
                     }
                 }
             }

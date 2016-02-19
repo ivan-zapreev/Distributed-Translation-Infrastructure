@@ -29,12 +29,16 @@
 #include <string>
 #include <ostream>
 
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/exceptions.hpp"
 #include "common/utils/string_utils.hpp"
 
 #include "server/lm/lm_configs.hpp"
 
 using namespace std;
 
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
 using namespace uva::utils::text;
 
 namespace uva {
@@ -71,6 +75,15 @@ namespace uva {
                          */
                         inline const float & get_lm_weight() const {
                             return lm_weights[0];
+                        }
+
+                        /**
+                         * Allows to verify the parameters to be correct.
+                         */
+                        void verify() {
+                            ASSERT_CONDITION_THROW((num_lm_weights > MAX_NUM_LM_FEATURES),
+                                    string("The number of LM features: ") + to_string(num_lm_weights) +
+                                    string(" must be <= ") + to_string(MAX_NUM_LM_FEATURES));
                         }
                     } lm_parameters;
 
