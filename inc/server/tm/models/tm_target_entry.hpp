@@ -101,7 +101,7 @@ namespace uva {
                              * Allows to retrieve the source/target phrase pair uid
                              * @return the source/target phrase pair uid
                              */
-                            inline const phrase_uid & get_st_uid() {
+                            inline const phrase_uid get_st_uid() {
                                 return m_st_uid;
                             }
 
@@ -109,7 +109,7 @@ namespace uva {
                              * Allows to get the total weight of the entry
                              * @return the total weight of the entry, the sum of feature weights
                              */
-                            inline const float & get_total_weight() {
+                            inline const float get_total_weight() {
                                 return m_total_weight;
                             }
 

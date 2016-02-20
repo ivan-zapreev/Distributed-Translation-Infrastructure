@@ -81,6 +81,14 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to get the source phrase id
+                             * @return the source phrase id
+                             */
+                            inline phrase_uid get_source_uid() {
+                                return m_source_uid;
+                            }
+
+                            /**
                              * Allows to set the source phrase id
                              * @param s_uid the source phrase id
                              */

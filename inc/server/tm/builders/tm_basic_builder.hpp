@@ -146,7 +146,7 @@ namespace uva {
                                 //Store the read weight value
                                 float feature;
 
-                                LOG_DEBUG << "Reading the weights from: " << weights << END_LOG;
+                                LOG_DEBUG << "Reading the features from: " << weights << END_LOG;
 
                                 //Skip the first space
                                 weights.get_first_space(token);
@@ -159,6 +159,8 @@ namespace uva {
 
                                     //Check the probabilities at the indexes for the bound
                                     if (((idx == 0) || (idx == 2)) && (feature < m_params.m_min_tran_prob)) {
+                                        LOG_DEBUG1 << "The feature[" << idx << "] = " << feature
+                                                << " < " << m_params.m_min_tran_prob << END_LOG;
                                         return false;
                                     } else {
                                         if (is_get_weights) {
@@ -173,6 +175,8 @@ namespace uva {
 
                                 //Update the number of features
                                 num_features = idx;
+
+                                LOG_DEBUG1 << "Got " << num_features << " good features!" << END_LOG;
 
                                 return true;
                             }
@@ -236,6 +240,8 @@ namespace uva {
                                     //Reduce the counter
                                     count_ref--;
 
+                                    LOG_DEBUG1 << "The source/target (" << source_entry->get_source_uid()
+                                            << "/" << target_uid << ") counter is " << count_ref << END_LOG;
                                 }
                             }
 
@@ -259,7 +265,6 @@ namespace uva {
                                 //Store the cached source string and its uid values
                                 string source_str = "";
                                 phrase_uid source_uid = UNDEFINED_PHRASE_ID;
-                                size_t & count_ref = m_sizes[source_uid];
                                 bool is_good_source = false;
 
                                 //Declare an array of weights for temporary use
@@ -277,14 +282,15 @@ namespace uva {
                                     if (source_str != next_source_str) {
                                         if (count_or_build) {
                                             //Remove the previous entry if the count is zero
-                                            if (count_ref == 0) {
+                                            if (m_sizes[source_uid] == 0) {
                                                 m_sizes.erase(source_uid);
                                             }
                                         } else {
                                             //Finalize the previous entry if there was one
                                             if (is_good_source && (source_uid != UNDEFINED_PHRASE_ID)) {
                                                 LOG_DEBUG1 << "Finishing a source entry for: ___" << source_str
-                                                        << "___ uid: " << source_uid << ", count: " << count_ref << END_LOG;
+                                                        << "___ uid: " << source_uid << ", count: "
+                                                        << m_sizes[source_uid] << END_LOG;
 
                                                 m_model.finalize_entry(source_uid);
                                             }
@@ -293,21 +299,22 @@ namespace uva {
                                         source_str = next_source_str;
                                         //Compute the new source string uid
                                         source_uid = get_phrase_uid(source_str);
-                                        //Change the counter reference
-                                        count_ref = m_sizes[source_uid];
+
+                                        LOG_DEBUG1 << "The curr source " << source_uid << " count is " << m_sizes[source_uid] << END_LOG;
 
                                         if (count_or_build) {
                                             //Nothing to be done here when counting entries
+                                            LOG_DEBUG1 << "Counting the valid translations for " << source_uid << END_LOG;
                                         } else {
                                             //Check if the new entry is to be entirely skipped
-                                            is_good_source = (count_ref != 0);
+                                            is_good_source = (m_sizes[source_uid] != 0);
 
                                             if (is_good_source) {
                                                 //Open the new source entry
-                                                source_entry = m_model.begin_entry(source_uid, count_ref);
+                                                source_entry = m_model.begin_entry(source_uid, m_sizes[source_uid]);
 
                                                 LOG_DEBUG1 << "Starting a new source entry for: ___" << source_str
-                                                        << "___ uid: " << source_uid << ", count: " << count_ref << END_LOG;
+                                                        << "___ uid: " << source_uid << ", count: " << m_sizes[source_uid] << END_LOG;
                                             } else {
                                                 //This source is skipped and if it is the
                                                 //last one then we do not need to finalize it
@@ -318,16 +325,18 @@ namespace uva {
 
                                     if (count_or_build) {
                                         //Check that the filter conditions hold
-                                        if ((count_ref < m_params.m_trans_limit) &&
+                                        if ((m_sizes[source_uid] < m_params.m_trans_limit) &&
                                                 is_good_features(line, tmp_features_size, tmp_features)) {
                                             //Increment the count for the given source uid
-                                            ++count_ref;
+                                            ++m_sizes[source_uid];
+
+                                            LOG_DEBUG1 << "The new source " << source_uid << " count is " << m_sizes[source_uid] << END_LOG;
                                         }
                                     } else {
                                         //If the source entry is not to be skipped, parse 
-                                        if (is_good_source && (count_ref > 0)) {
+                                        if (is_good_source && (m_sizes[source_uid] > 0)) {
                                             //Parse the rest of the target entry
-                                            process_target_entry(source_entry, line, count_ref, tmp_features_size, tmp_features);
+                                            process_target_entry(source_entry, line, m_sizes[source_uid], tmp_features_size, tmp_features);
                                         } else {
                                             LOG_DEBUG << "Skipping source-target entry: " << line << END_LOG;
                                         }
@@ -339,7 +348,7 @@ namespace uva {
 
                                 if (count_or_build) {
                                     //Check if the last entry resulted in zero score, if yes then remove it
-                                    if (count_ref == 0) {
+                                    if (m_sizes[source_uid] == 0) {
                                         m_sizes.erase(source_uid);
                                     }
                                 } else {
@@ -382,7 +391,7 @@ namespace uva {
 
                                 //Build the model
                                 parse_rm_file<false>();
-                                
+
                                 //Stop the progress bar in case of no exception
                                 Logger::stop_progress_bar();
                             }
