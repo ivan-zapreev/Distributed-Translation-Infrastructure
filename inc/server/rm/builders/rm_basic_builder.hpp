@@ -237,7 +237,7 @@ namespace uva {
                                 //Stop the progress bar in case of no exception
                                 Logger::stop_progress_bar();
 
-                                LOG_INFO << "The number of RM entries matching TM is: " << m_num_entries << END_LOG;
+                                LOG_INFO << "The number of RM source/target entries matching TM is: " << m_num_entries << END_LOG;
                             }
 
                             /**

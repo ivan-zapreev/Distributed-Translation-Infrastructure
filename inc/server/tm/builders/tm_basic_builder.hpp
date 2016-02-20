@@ -380,7 +380,7 @@ namespace uva {
                                 //Stop the progress bar in case of no exception
                                 Logger::stop_progress_bar();
 
-                                LOG_INFO << "The number of valid TM entries is: " << m_sizes.size() << END_LOG;
+                                LOG_INFO << "The number of valid TM source entries is: " << m_sizes.size() << END_LOG;
                             }
 
                             /**
