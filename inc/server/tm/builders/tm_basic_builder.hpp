@@ -280,17 +280,17 @@ namespace uva {
                                     string next_source_str = source.str();
                                     trim(next_source_str);
                                     if (source_str != next_source_str) {
+                                        size_t size_val = m_sizes[source_uid];
                                         if (count_or_build) {
                                             //Remove the previous entry if the count is zero
-                                            if (m_sizes[source_uid] == 0) {
+                                            if (size_val == 0) {
                                                 m_sizes.erase(source_uid);
                                             }
                                         } else {
                                             //Finalize the previous entry if there was one
                                             if (is_good_source && (source_uid != UNDEFINED_PHRASE_ID)) {
                                                 LOG_DEBUG1 << "Finishing a source entry for: ___" << source_str
-                                                        << "___ uid: " << source_uid << ", count: "
-                                                        << m_sizes[source_uid] << END_LOG;
+                                                        << "___ uid: " << source_uid << ", count: " << size_val << END_LOG;
 
                                                 m_model.finalize_entry(source_uid);
                                             }
@@ -299,22 +299,24 @@ namespace uva {
                                         source_str = next_source_str;
                                         //Compute the new source string uid
                                         source_uid = get_phrase_uid(source_str);
+                                        //Get the current value for the new source id
+                                        size_val = m_sizes[source_uid];
 
-                                        LOG_DEBUG1 << "The curr source " << source_uid << " count is " << m_sizes[source_uid] << END_LOG;
+                                        LOG_DEBUG1 << "The curr source " << source_uid << " count is " << size_val << END_LOG;
 
                                         if (count_or_build) {
                                             //Nothing to be done here when counting entries
                                             LOG_DEBUG1 << "Counting the valid translations for " << source_uid << END_LOG;
                                         } else {
                                             //Check if the new entry is to be entirely skipped
-                                            is_good_source = (m_sizes[source_uid] != 0);
+                                            is_good_source = (size_val != 0);
 
                                             if (is_good_source) {
                                                 //Open the new source entry
-                                                source_entry = m_model.begin_entry(source_uid, m_sizes[source_uid]);
+                                                source_entry = m_model.begin_entry(source_uid, size_val);
 
                                                 LOG_DEBUG1 << "Starting a new source entry for: ___" << source_str
-                                                        << "___ uid: " << source_uid << ", count: " << m_sizes[source_uid] << END_LOG;
+                                                        << "___ uid: " << source_uid << ", count: " << size_val << END_LOG;
                                             } else {
                                                 //This source is skipped and if it is the
                                                 //last one then we do not need to finalize it
@@ -323,20 +325,22 @@ namespace uva {
                                         }
                                     }
 
+                                    //Get the reference to the current size
+                                    size_t & size_ref = m_sizes[source_uid];
                                     if (count_or_build) {
                                         //Check that the filter conditions hold
-                                        if ((m_sizes[source_uid] < m_params.m_trans_limit) &&
+                                        if ((size_ref < m_params.m_trans_limit) &&
                                                 is_good_features(line, tmp_features_size, tmp_features)) {
                                             //Increment the count for the given source uid
-                                            ++m_sizes[source_uid];
+                                            ++size_ref;
 
-                                            LOG_DEBUG1 << "The new source " << source_uid << " count is " << m_sizes[source_uid] << END_LOG;
+                                            LOG_DEBUG1 << "The new source " << source_uid << " count is " << size_ref << END_LOG;
                                         }
                                     } else {
                                         //If the source entry is not to be skipped, parse 
-                                        if (is_good_source && (m_sizes[source_uid] > 0)) {
+                                        if (is_good_source && (size_ref > 0)) {
                                             //Parse the rest of the target entry
-                                            process_target_entry(source_entry, line, m_sizes[source_uid], tmp_features_size, tmp_features);
+                                            process_target_entry(source_entry, line, size_ref, tmp_features_size, tmp_features);
                                         } else {
                                             LOG_DEBUG << "Skipping source-target entry: " << line << END_LOG;
                                         }
