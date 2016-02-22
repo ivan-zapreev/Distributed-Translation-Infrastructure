@@ -81,10 +81,13 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to add the source phrase to the query.
-                             * @param uid the source phrase uid
+                             * Allows to execute the translation query for the given source phrase.
+                             * This query also keeps the local cache of retrieved source phrase translations.
+                             * @param uid [in] the source phrase uid
+                             * @param entry_ptr [out] the reference to the source entry pointer
+                             * which will be initialized with the found source entry.
                              */
-                            inline void add_source(const phrase_uid uid, tm_const_source_entry_ptr & entry_ptr) {
+                            inline void execute(const phrase_uid uid, tm_const_source_entry_ptr & entry_ptr) {
                                 LOG_DEBUG1 << "Requesting the translation for the phrase uid: " << uid << END_LOG;
 
                                 //Check if there has been already retrieved data for this uid
@@ -94,7 +97,7 @@ namespace uva {
                                 if (iter == m_query_data.end()) {
                                     //Search the model and store the pointer to the found entry
                                     entry_ptr = m_model.get_source_entry(uid);
-                                    
+
                                     //Store the pointer into the local map
                                     m_query_data[uid] = entry_ptr;
 
@@ -120,14 +123,6 @@ namespace uva {
                                 LOG_DEBUG1 << "Getting translations for the phrase uid: " << uid << END_LOG;
 
                                 return m_model.template get_source_entry<false>(uid);
-                            }
-
-                            /**
-                             * Allows to execute the query
-                             */
-                            inline void execute() {
-                                //Nothing to be done, this implementation does
-                                //an immediate querying of the translation model
                             }
 
                             /**

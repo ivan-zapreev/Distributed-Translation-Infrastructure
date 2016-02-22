@@ -48,7 +48,7 @@ namespace uva {
                              * @param uid the source phrase uid
                              * @param entry_ptr the reference to the source entry pointer to be set with the data
                              */
-                            virtual void add_source(const phrase_uid uid, tm_const_source_entry_ptr & entry_ptr) = 0;
+                            virtual void execute(const phrase_uid uid, tm_const_source_entry_ptr & entry_ptr) = 0;
 
                             /**
                              * Allows retrieve the translations of the given source entry
@@ -64,11 +64,6 @@ namespace uva {
                              * @param st_uids the container for the source/target phrase identifiers
                              */
                             virtual void get_st_uids(vector<phrase_uid> & st_uids) const = 0;
-
-                            /**
-                             * Allows to execute the query 
-                             */
-                            virtual void execute() = 0;
 
                             /**
                              * The basic virtual destructor

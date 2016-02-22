@@ -99,7 +99,7 @@ namespace uva {
                              * The basic destructor
                              */
                             ~sentence_decoder() {
-                                //Dispose the query objects are they are no longer needed
+                                //Dispose the query objects as they are no longer needed
                                 lm_configurator::dispose_query_proxy(m_lm_query);
                                 tm_configurator::dispose_query_proxy(m_tm_query);
                                 rm_configurator::dispose_query_proxy(m_rm_query);
@@ -179,7 +179,7 @@ namespace uva {
                                     LOG_DEBUG1 << "The token @ [" << ch_b_idx << "," << ch_e_idx << ") uid is: " << diag_entry.m_phrase_uid << END_LOG;
 
                                     //Add the uni-gram phrase to the query
-                                    m_tm_query.add_source(diag_entry.m_phrase_uid, diag_entry.m_source_entry);
+                                    m_tm_query.execute(diag_entry.m_phrase_uid, diag_entry.m_source_entry);
 
                                     LOG_DEBUG1 << "End word: " << m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx) << ", uid: " << diag_entry.m_phrase_uid << END_LOG;
 
@@ -201,7 +201,7 @@ namespace uva {
                                         new_entry.m_phrase_uid = combine_phrase_uids(prev_entry.m_phrase_uid, diag_entry.m_phrase_uid);
 
                                         //Add the m-gram phrase to the query
-                                        m_tm_query.add_source(new_entry.m_phrase_uid, new_entry.m_source_entry);
+                                        m_tm_query.execute(new_entry.m_phrase_uid, new_entry.m_source_entry);
 
                                         //Do logging 
                                         {
@@ -221,11 +221,6 @@ namespace uva {
                                     //Search for the next delimiter
                                     ch_b_idx = ch_e_idx + 1;
                                     ch_e_idx = m_source_sent.find_first_of(UTF8_SPACE_STRING, ch_b_idx);
-                                }
-
-                                //Execute the query if we are not stopping
-                                if (!m_is_stop) {
-                                    m_tm_query.execute();
                                 }
                             }
 
