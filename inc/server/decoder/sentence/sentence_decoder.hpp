@@ -112,8 +112,14 @@ namespace uva {
                                 //If the reduced source sentence is not empty then do the translation
                                 if (m_source_sent.size() != 0) {
 
-                                    //Query the translation model and compute future costs
-                                    bootstrap_translate();
+                                    //Query the translation model
+                                    query_translation_model();
+
+                                    //Return in case we need to stop translating
+                                    if (m_is_stop) return;
+
+                                    //Compute the future costs
+                                    compute_futue_costs();
 
                                     //Return in case we need to stop translating
                                     if (m_is_stop) return;
@@ -130,6 +136,64 @@ namespace uva {
                             }
 
                         protected:
+
+                            /**
+                             * Dynamically initialize the future costs based on the estimates from the TM and LM models.
+                             */
+                            inline float & initialize_future_costs(phrase_data_entry & phrase_data) {
+                                //Check if the source entry is present, the entry should be there!
+                                if (phrase_data.m_source_entry != NULL) {
+                                    //Check if this is a phrase with translation
+                                    if (phrase_data.m_source_entry->has_translation()) {
+                                        //ToDo: Implement
+                                    } else {
+                                        //ToDo: Implement
+                                    }
+                                } else {
+                                    LOG_WARNING << "The source phrase [" << phrase_data.m_begin_ch_idx << "]["
+                                            << phrase_data.m_end_ch_idx << "] translation entry is NULL" << END_LOG;
+                                }
+
+                                //Return the reference to the future cost, it will be needed in the caller
+                                return phrase_data.future_cost;
+                            }
+
+                            /**
+                             * Allows to compute the future costs for the sentence.
+                             */
+                            inline void compute_futue_costs() {
+                                //Iterate through all the end indexes, the minimum length is two words
+                                for (size_t end_idx = 1; end_idx < m_sent_data.get_dim(); ++end_idx) {
+                                    //Iterate through all the start indexes smaller than the end one, as we
+                                    //need minimum two words in a phrase, otherwise it is not split-able
+                                    for (size_t start_idx = 0; start_idx < end_idx; ++start_idx) {
+                                        //Initialize the interval with the TM/LM based value first
+                                        //and get the reference to the complete cost then
+                                        float & phrase_cost = initialize_future_costs(m_sent_data[start_idx][end_idx]);
+
+                                        //Iterate through all the intermediate indexes between start and end
+                                        for (size_t mid_idx = start_idx; mid_idx < end_idx; ++mid_idx) {
+                                            //Get the costs of the phrase one and two
+                                            const float ph1_cost = m_sent_data[start_idx][mid_idx].future_cost;
+                                            const float ph2_cost = m_sent_data[mid_idx + 1][end_idx].future_cost;
+                                            //Compute the cost of two sub-phrases
+                                            const float sub_cost = ph1_cost + ph2_cost;
+
+                                            LOG_DEBUG2 << "Current cost[" << start_idx << "][" << mid_idx << "] = " << ph1_cost
+                                                    << ", cost[" << (mid_idx + 1) << "][" << end_idx << "] = " << ph2_cost
+                                                    << ", cost[" << start_idx << "][" << end_idx << "] = " << phrase_cost << END_LOG;
+
+                                            //If the sub cost that is a logarithmic value of probability (a negative value) is
+                                            //larger than than of the future cost for the entire phrase then use the sub cost.
+                                            if (sub_cost > phrase_cost) {
+                                                phrase_cost = sub_cost;
+                                            }
+
+                                            LOG_DEBUG << "The new cost[" << start_idx << "][" << end_idx << "] = " << phrase_cost << END_LOG;
+                                        }
+                                    }
+                                }
+                            }
 
                             /**
                              * Allows to count the number of tokens/words in the given sentence
@@ -156,7 +220,7 @@ namespace uva {
                             /**
                              * Allows to set the source sentence, this includes preparing things for decoding
                              */
-                            inline void bootstrap_translate() {
+                            inline void query_translation_model() {
                                 //Fill in the matrix with the phrases and their uids
                                 int32_t end_wd_idx = MIN_SENT_WORD_INDEX;
                                 //Declare the begin and end character index variables
@@ -164,7 +228,7 @@ namespace uva {
 
                                 while (ch_e_idx <= std::string::npos && !m_is_stop) {
                                     //Get the appropriate map entry reference
-                                    sent_data_entry & diag_entry = m_sent_data[end_wd_idx][end_wd_idx];
+                                    phrase_data_entry & diag_entry = m_sent_data[end_wd_idx][end_wd_idx];
 
                                     //Store the phrase begin and end character indexes
                                     diag_entry.m_begin_ch_idx = ch_b_idx;
@@ -189,9 +253,9 @@ namespace uva {
                                     int32_t begin_wd_idx = max(MIN_SENT_WORD_INDEX, end_wd_idx - m_params.m_max_s_phrase_len + 1);
                                     for (; (begin_wd_idx < end_wd_idx) && !m_is_stop; ++begin_wd_idx) {
                                         //Get the previous column entry
-                                        sent_data_entry & prev_entry = m_sent_data[begin_wd_idx][end_wd_idx - 1];
+                                        phrase_data_entry & prev_entry = m_sent_data[begin_wd_idx][end_wd_idx - 1];
                                         //Get the new column entry
-                                        sent_data_entry & new_entry = m_sent_data[begin_wd_idx][end_wd_idx];
+                                        phrase_data_entry & new_entry = m_sent_data[begin_wd_idx][end_wd_idx];
 
                                         //Store the phrase begin and end character indexes
                                         new_entry.m_begin_ch_idx = prev_entry.m_begin_ch_idx; // All the phrases in the row begin at the same place

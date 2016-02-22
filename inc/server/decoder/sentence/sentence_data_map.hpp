@@ -64,12 +64,12 @@ namespace uva {
                          * and the last word indexes, the phrase id and the available
                          * translation, i.e. source entry.
                          */
-                        struct sent_data_entry {
+                        struct phrase_data_entry {
 
                             /**
                              * The basic constructor, does default initialization of the structure fields
                              */
-                            sent_data_entry()
+                            phrase_data_entry()
                             : m_begin_ch_idx(0), m_end_ch_idx(0), m_phrase_uid(UNDEFINED_PHRASE_ID),
                             m_source_entry(NULL), future_cost(ZERO_LOG_PROB_WEIGHT) {
                             }
@@ -77,7 +77,7 @@ namespace uva {
                             /**
                              * The basic destructor
                              */
-                            ~sent_data_entry() {
+                            ~phrase_data_entry() {
                             }
 
                             //Stores the phrase first word begin character index
@@ -96,7 +96,7 @@ namespace uva {
                         };
 
                         //Define the sentence data map that stores some of the sentence related data
-                        typedef upp_diag_matrix<sent_data_entry> sentence_data_map;
+                        typedef upp_diag_matrix<phrase_data_entry> sentence_data_map;
                     }
                 }
             }

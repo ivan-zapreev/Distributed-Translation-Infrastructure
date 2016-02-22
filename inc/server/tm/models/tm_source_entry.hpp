@@ -81,6 +81,20 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to detect whether the given source entry is for the UNK phrase or not.
+                             * The UNK phrase is the phrase with an unknown translation
+                             * @return false if the source entry is for the UNK phrase, otherwise false
+                             */
+                            inline bool has_translation() const {
+                                //Do the sanity check
+                                ASSERT_SANITY_THROW((m_source_uid == UNDEFINED_PHRASE_ID),
+                                        "The source id is not set when checking for UNK!");
+
+                                //Return true if this is not an unknown phrase
+                                return (m_source_uid != UNKNOWN_PHRASE_ID);
+                            }
+
+                            /**
                              * Allows to get the source phrase id
                              * @return the source phrase id
                              */
@@ -130,7 +144,7 @@ namespace uva {
                                 //Perform a sanity check
                                 ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
                                         string("Exceeding the source entry capacity: ") + to_string(m_capacity));
-                                
+
                                 //Get the next free entry for the target phrase
                                 tm_target_entry & entry = m_targets[m_next_idx++];
 
