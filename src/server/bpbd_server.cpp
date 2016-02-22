@@ -277,6 +277,31 @@ void disconnect_from_models() {
 }
 
 /**
+ * Runs the server's command loop
+ */
+void perform_command_loop() {
+    while (true) {
+        char command[256];
+        cin.getline(command, 256);
+        switch (strlen(command)) {
+            case 0:
+                break;
+            case 1:
+                switch (command[0]) {
+                    case PROGRAM_EXIT_LETTER:
+                        return;
+                }
+            default:
+                LOG_ERROR << "The command '" << string(command) << "' is unknown!" << END_LOG;
+                //Print the server commands menu
+                print_server_commands();
+        }
+        //Print the prompt
+        print_the_prompt();
+    }
+}
+
+/**
  * The main program entry point
  */
 int main(int argc, char** argv) {
@@ -318,19 +343,7 @@ int main(int argc, char** argv) {
         //Logger::get_reporting_level() = DebugLevelsEnum::DEBUG2;
 
         //Wait until the server is stopped by pressing and exit button
-        while (true) {
-            char command[256];
-            cin.getline(command, 256);
-            if ((strlen(command) == 1) && tolower(command[0]) == PROGRAM_EXIT_LETTER) {
-                break;
-            } else {
-                LOG_ERROR << "The command '" << string(command) << "' is unknown!" << END_LOG;
-                //Print the server commands menu
-                print_server_commands();
-            }
-            //Print the prompt
-            print_the_prompt();
-        }
+        perform_command_loop();
 
         //Stop the translation server
         LOG_USAGE << "Stopping the server ..." << END_LOG;
