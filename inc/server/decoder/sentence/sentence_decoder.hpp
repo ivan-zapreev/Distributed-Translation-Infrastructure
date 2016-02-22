@@ -145,9 +145,8 @@ namespace uva {
                              */
                             inline float compute_future_cost(tm_const_target_entry & target) {
                                 //ToDo: Implement
-                                //return  target.get_t_c_s() + m_lm_query.template execute<true>(target.get_target_phrase());
-                                
                                 THROW_NOT_IMPLEMENTED();
+                                //return  target.get_t_c_s() + m_lm_query.template execute<true>(target.get_target_phrase());
                             }
                             
                             /**
@@ -181,7 +180,8 @@ namespace uva {
                                         }
                                     }
                                 } else {
-                                    LOG_WARNING << "The source phrase [" << phrase_data.m_begin_ch_idx << "]["
+                                    //The longer phrases do not have translations, this is normal!
+                                    LOG_DEBUG1 << "The source phrase [" << phrase_data.m_begin_ch_idx << "]["
                                             << phrase_data.m_end_ch_idx << "] translation entry is NULL" << END_LOG;
                                 }
 
