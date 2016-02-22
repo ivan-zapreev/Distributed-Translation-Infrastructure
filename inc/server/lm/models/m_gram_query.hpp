@@ -32,7 +32,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "server/lm/mgrams/QueryMGram.hpp"
+#include "server/lm/mgrams/query_m_gram.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
 #include "server/lm/models/generic_trie_base.hpp"
 
@@ -81,7 +81,7 @@ namespace uva {
                      * sum, not taking into account the zero log probabilities.
                      */
                     template<typename TrieType>
-                    class T_M_Gram_Query {
+                    class m_gram_query {
                     public:
                         typedef typename TrieType::WordIndexType WordIndexType;
 
@@ -92,7 +92,7 @@ namespace uva {
                          * The basic constructor for the structure
                          * @param trie the reference to the trie object
                          */
-                        T_M_Gram_Query(const TrieType & trie)
+                        m_gram_query(const TrieType & trie)
                         : m_trie(trie), m_query(trie.get_word_index()) {
                         }
 
@@ -225,13 +225,13 @@ namespace uva {
 
                     //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, WORD_INDEX_TYPE); \
-            template class T_M_Gram_Query<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class T_M_Gram_Query<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class T_M_Gram_Query<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class T_M_Gram_Query<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class T_M_Gram_Query<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class T_M_Gram_Query<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class T_M_Gram_Query<H2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>;
+            template class m_gram_query<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class m_gram_query<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class m_gram_query<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class m_gram_query<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class m_gram_query<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class m_gram_query<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
+            template class m_gram_query<H2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>;
 
 #define INSTANTIATE_M_GRAM_QUERY_LEVEL(M_GRAM_LEVEL); \
             INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, BasicWordIndex); \

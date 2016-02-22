@@ -79,8 +79,8 @@ namespace uva {
                         //of 1-Grams is since we want to account for the word indexes that start
                         //from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
                         m_one_gram_arr_size = BASE::get_word_index().get_number_of_words(counts[0]);
-                        m_1_gram_data = new T_M_Gram_Payload[m_one_gram_arr_size];
-                        memset(m_1_gram_data, 0, m_one_gram_arr_size * sizeof (T_M_Gram_Payload));
+                        m_1_gram_data = new m_gram_payload[m_one_gram_arr_size];
+                        memset(m_1_gram_data, 0, m_one_gram_arr_size * sizeof (m_gram_payload));
 
                         //04) Insert the unknown word data into the allocated array
                         m_unk_data = &m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];

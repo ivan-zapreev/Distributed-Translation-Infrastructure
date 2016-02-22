@@ -33,8 +33,8 @@
 
 #include "server/lm/dictionaries/AWordIndex.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"
-#include "server/lm/mgrams/ModelMGram.hpp"
-#include "server/lm/mgrams/ByteMGramId.hpp"
+#include "server/lm/mgrams/model_m_gram.hpp"
+#include "server/lm/mgrams/m_gram_id.hpp"
 
 #include "common/utils/file/text_piece_reader.hpp"
 
@@ -122,7 +122,7 @@ namespace uva {
                     public:
                         typedef GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
                         typedef typename WordIndexType::TWordIdType TWordIdType;
-                        typedef __G2DMapTrie::S_M_GramData<T_M_Gram_Payload, TWordIdType, MAX_LEVEL> T_M_Gram_PB_Entry;
+                        typedef __G2DMapTrie::S_M_GramData<m_gram_payload, TWordIdType, MAX_LEVEL> T_M_Gram_PB_Entry;
                         typedef __G2DMapTrie::S_M_GramData<TLogProbBackOff, TWordIdType, MAX_LEVEL> T_M_Gram_Prob_Entry;
 
                         /**
@@ -160,7 +160,7 @@ namespace uva {
                          * @see GenericTrieBase
                          */
                         template<TModelLevel CURR_LEVEL>
-                        inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
+                        inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                                 //Get the word id of this unigram, so there is just one word in it and its the end one
                                 const TShortId word_id = gram.get_end_word_id();
@@ -245,10 +245,10 @@ namespace uva {
 
                     private:
                         //Stores the pointer to the UNK word payload
-                        T_M_Gram_Payload * m_unk_data;
+                        m_gram_payload * m_unk_data;
 
                         //Stores the 1-gram data
-                        T_M_Gram_Payload * m_1_gram_data;
+                        m_gram_payload * m_1_gram_data;
 
                         //This is an array of hash maps for M-Gram levels with 1 < M < N
                         typedef fixed_size_hashmap<T_M_Gram_PB_Entry, T_Gram_Id_Key> TProbBackMap;

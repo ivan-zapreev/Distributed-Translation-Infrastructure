@@ -82,8 +82,8 @@ namespace uva {
 
                         //First allocate the memory for the One-grams, add an extra
                         //element for the unknown word and initialize it!
-                        m_mgram_data[0] = new T_M_Gram_Payload[m_word_arr_size];
-                        memset(m_mgram_data[0], 0, m_word_arr_size * sizeof (T_M_Gram_Payload));
+                        m_mgram_data[0] = new m_gram_payload[m_word_arr_size];
+                        memset(m_mgram_data[0], 0, m_word_arr_size * sizeof (m_gram_payload));
 
                         //Record the dummy probability and back-off values for the unknown word
                         m_unk_data = &m_mgram_data[0][WordIndexType::UNKNOWN_WORD_ID];
@@ -95,8 +95,8 @@ namespace uva {
                         //back-off weights and thus we will store the probabilities just
                         //Inside the C container class values.
                         for (int idx = 1; idx < (MAX_LEVEL - 1); idx++) {
-                            m_mgram_data[idx] = new T_M_Gram_Payload[counts[idx]];
-                            memset(m_mgram_data[idx], 0, counts[idx] * sizeof (T_M_Gram_Payload));
+                            m_mgram_data[idx] = new m_gram_payload[counts[idx]];
+                            memset(m_mgram_data[idx], 0, counts[idx] * sizeof (m_gram_payload));
                         }
 
                         //04) Allocate the word map arrays per level There is N-1 levels to have 

@@ -35,7 +35,7 @@
 #include "common/utils/hashing_utils.hpp"
 #include "common/utils/math_utils.hpp"
 
-#include "server/lm/mgrams/ByteMGramId.hpp"
+#include "server/lm/mgrams/m_gram_id.hpp"
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
@@ -52,14 +52,14 @@ namespace uva {
                         /**
                          * This data structure stores the probability and back off weight payload for an m-gram
                          */
-                        struct S_M_Gram_Payload {
+                        struct m_gram_payload_s {
                             TLogProbBackOff m_prob; // 4 byte for a float
                             TLogProbBackOff m_back; // 4 byte for a float
 
-                            S_M_Gram_Payload() {
+                            m_gram_payload_s() {
                             }
 
-                            S_M_Gram_Payload(TLogProbBackOff prob, TLogProbBackOff back) {
+                            m_gram_payload_s(TLogProbBackOff prob, TLogProbBackOff back) {
                                 m_prob = prob;
                                 m_back = back;
                             }
@@ -70,13 +70,13 @@ namespace uva {
                                 return strbf.str();
                             }
                         };
-                        typedef S_M_Gram_Payload T_M_Gram_Payload;
+                        typedef m_gram_payload_s m_gram_payload;
 
                         /**
                          * This class is the base class for all the M-gram classes used
                          */
                         template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY = M_GRAM_LEVEL_MAX>
-                        class T_Base_M_Gram {
+                        class m_gram_base {
                         public:
                             //The type of the word id
                             typedef typename WordIndexType::TWordIdType TWordIdType;
@@ -94,7 +94,7 @@ namespace uva {
                              * @param word_index the used word index
                              * @param actual_level the actual level of the m-gram that will be used should be <= MAX_LEVEL_CAPACITY
                              */
-                            T_Base_M_Gram(WordIndexType & word_index, TModelLevel actual_level)
+                            m_gram_base(WordIndexType & word_index, TModelLevel actual_level)
                             : m_word_index(word_index), m_actual_level(actual_level),
                             m_actual_end_word_idx(actual_level - 1) {
                                 //Perform sanity check if needed 
@@ -114,7 +114,7 @@ namespace uva {
                              * undefined. Filling in the M-gram tokens is done elsewhere.
                              * @param word_index the used word index
                              */
-                            T_Base_M_Gram(WordIndexType & word_index)
+                            m_gram_base(WordIndexType & word_index)
                             : m_word_index(word_index), m_actual_level(M_GRAM_LEVEL_UNDEF),
                             m_actual_end_word_idx(M_GRAM_LEVEL_UNDEF) {
                                 //Initialize the m-gram id pointer
@@ -282,7 +282,7 @@ namespace uva {
                         };
 
                         template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY>
-                        constexpr TModelLevel T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY>::m_actual_begin_word_idx;
+                        constexpr TModelLevel m_gram_base<WordIndexType, MAX_LEVEL_CAPACITY>::m_actual_begin_word_idx;
 
                     }
                 }

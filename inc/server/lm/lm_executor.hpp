@@ -46,7 +46,7 @@
 #include "server/lm/builders/lm_basic_builder.hpp"
 #include "server/lm/builders/lm_gram_builder.hpp"
 
-#include "server/lm/mgrams/QueryMGram.hpp"
+#include "server/lm/mgrams/query_m_gram.hpp"
 #include "server/lm/models/m_gram_query.hpp"
 
 using namespace std;

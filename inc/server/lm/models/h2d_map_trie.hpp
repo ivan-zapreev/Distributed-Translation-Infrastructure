@@ -32,8 +32,8 @@
 
 #include "server/lm/dictionaries/AWordIndex.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"
-#include "server/lm/mgrams/ModelMGram.hpp"
-#include "server/lm/mgrams/ByteMGramId.hpp"
+#include "server/lm/mgrams/model_m_gram.hpp"
+#include "server/lm/mgrams/m_gram_id.hpp"
 
 #include "common/utils/file/text_piece_reader.hpp"
 
@@ -114,7 +114,7 @@ namespace uva {
                     public:
                         typedef GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
                         typedef typename WordIndexType::TWordIdType TWordIdType;
-                        typedef __H2DMapTrie::S_M_GramData<T_M_Gram_Payload> T_M_Gram_PB_Entry;
+                        typedef __H2DMapTrie::S_M_GramData<m_gram_payload> T_M_Gram_PB_Entry;
                         typedef __H2DMapTrie::S_M_GramData<TLogProbBackOff> T_M_Gram_Prob_Entry;
 
                         /**
@@ -152,7 +152,7 @@ namespace uva {
                          * @see GenericTrieBase
                          */
                         template<TModelLevel CURR_LEVEL>
-                        inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
+                        inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             //If not a uni-gram then register in the cache
                             if (CURR_LEVEL != M_GRAM_LEVEL_1) {
                                 //Register the m-gram in the hash cache
@@ -242,7 +242,7 @@ namespace uva {
 
                     private:
                         //Stores the unknown word payload data
-                        T_M_Gram_Payload m_unk_data;
+                        m_gram_payload m_unk_data;
 
                         //The offset, relative to the M-gram level M for the m-gram mapping array index
                         const static TModelLevel LEVEL_IDX_OFFSET = 1;

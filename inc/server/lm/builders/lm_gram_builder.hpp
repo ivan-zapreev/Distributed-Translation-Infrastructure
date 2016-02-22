@@ -34,7 +34,7 @@
 #include "common/utils/file/memory_mapped_file_reader.hpp"
 
 #include "server/lm/lm_parameters.hpp"
-#include "server/lm/mgrams/ModelMGram.hpp"
+#include "server/lm/mgrams/model_m_gram.hpp"
 
 using namespace std;
 using namespace uva::utils::file;
@@ -48,7 +48,7 @@ namespace uva {
                     namespace arpa {
 
                         template<typename WordIndexType> struct TAddGramFunct {
-                            typedef std::function<void (const T_Model_M_Gram<WordIndexType>&) > func;
+                            typedef std::function<void (const model_m_gram<WordIndexType>&) > func;
                         };
 
                         /**
@@ -130,7 +130,7 @@ namespace uva {
                             TextPieceReader m_token;
 
                             //This is the N-Gram container to store the parsed N-gram data
-                            T_Model_M_Gram<WordIndexType> m_m_gram;
+                            model_m_gram<WordIndexType> m_m_gram;
 
                             //The minimum and maximum number of tokens in the N-Gram string
                             static const unsigned short int MIN_NUM_TOKENS_NGRAM_STR;

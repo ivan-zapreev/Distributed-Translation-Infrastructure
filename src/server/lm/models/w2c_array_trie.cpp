@@ -63,8 +63,8 @@ namespace uva {
 
                         //02) Pre-allocate the 1-Gram data
                         m_num_word_ids = BASE::get_word_index().get_number_of_words(counts[0]);
-                        m_1_gram_data = new T_M_Gram_Payload[m_num_word_ids];
-                        memset(m_1_gram_data, 0, m_num_word_ids * sizeof (T_M_Gram_Payload));
+                        m_1_gram_data = new m_gram_payload[m_num_word_ids];
+                        memset(m_1_gram_data, 0, m_num_word_ids * sizeof (m_gram_payload));
 
                         //03) Insert the unknown word data into the allocated array
                         m_unk_data = &m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];

@@ -57,7 +57,7 @@ namespace uva {
                          */
                         typedef struct {
                             TShortId id;
-                            T_M_Gram_Payload payload;
+                            m_gram_payload payload;
                         } TWordIdPBData;
 
                         /**
@@ -251,7 +251,7 @@ namespace uva {
                          * For more details @see LayeredTrieBase
                          */
                         template<TModelLevel CURR_LEVEL>
-                        inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
+                        inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             const TShortId word_id = gram.get_end_word_id();
                             if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                                 //Store the payload
@@ -454,10 +454,10 @@ namespace uva {
 
                     private:
                         //Stores the pointer to the UNK word payload
-                        T_M_Gram_Payload * m_unk_data;
+                        m_gram_payload * m_unk_data;
 
                         //Stores the 1-gram data
-                        T_M_Gram_Payload * m_1_gram_data;
+                        m_gram_payload * m_1_gram_data;
 
                         //Stores the M-gram context to data mappings for: 1 < M < N
                         //This is a two dimensional array

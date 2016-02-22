@@ -127,7 +127,7 @@ namespace uva {
                          * For more details @see LayeredTrieBase
                          */
                         template<TModelLevel CURR_LEVEL>
-                        inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
+                        inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             const TShortId word_id = gram.get_end_word_id();
                             if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                                 //Store the payload
@@ -274,7 +274,7 @@ namespace uva {
 
                     private:
                         //Stores the pointer to the UNK word payload
-                        T_M_Gram_Payload * m_unk_data;
+                        m_gram_payload * m_unk_data;
 
                         //Stores the number of words
                         size_t m_word_arr_size;
@@ -289,7 +289,7 @@ namespace uva {
                         // ...
                         // m_mgram_data[M][#M-Grams - 1] --//--
                         // m_mgram_data[M][#M-Grams] --//--
-                        T_M_Gram_Payload * m_mgram_data[MAX_LEVEL - 1];
+                        m_gram_payload * m_mgram_data[MAX_LEVEL - 1];
 
                         //M-Gram data for 1 < M <= N. This is a 2D array storing
                         //For each M-Gram level M an array of #words elements of

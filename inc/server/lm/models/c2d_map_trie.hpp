@@ -155,7 +155,7 @@ namespace uva {
                          * For more details @see LayeredTrieBase
                          */
                         template<TModelLevel CURR_LEVEL>
-                        inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
+                        inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             const TShortId word_id = gram.get_end_word_id();
                             if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                                 //Store the payload
@@ -291,7 +291,7 @@ namespace uva {
 
                     private:
                         //Stores the pointer to the UNK word payload
-                        T_M_Gram_Payload * m_unk_data;
+                        m_gram_payload * m_unk_data;
 
                         //The M-Gram memory factor needed for the greedy allocator for the unordered_map
                         const float m_mgram_mem_factor;
@@ -299,14 +299,14 @@ namespace uva {
                         const float m_ngram_mem_factor;
 
                         //Stores the 1-gram data
-                        T_M_Gram_Payload * m_1_gram_data;
+                        m_gram_payload * m_1_gram_data;
 
                         //The type of key,value pairs to be stored in the M Grams map
-                        typedef pair< const TLongId, T_M_Gram_Payload> TMGramEntry;
+                        typedef pair< const TLongId, m_gram_payload> TMGramEntry;
                         //The typedef for the M Grams map allocator
                         typedef GreedyMemoryAllocator< TMGramEntry > TMGramAllocator;
                         //The N Grams map type
-                        typedef unordered_map<TLongId, T_M_Gram_Payload, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
+                        typedef unordered_map<TLongId, m_gram_payload, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                         //The actual data storage for the M Grams for 1 < M < N
                         TMGramAllocator * m_m_gram_alloc_ptrs[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
                         //The array of maps map storing M-grams for 1 < M < N

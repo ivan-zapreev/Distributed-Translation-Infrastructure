@@ -701,11 +701,6 @@
             <in>OptimizingWordIndex.hpp</in>
           </df>
           <df name="mgrams">
-            <in>BaseMGram.hpp</in>
-            <in>ByteMGramId.hpp</in>
-            <in>ByteMGramIdTables.hpp</in>
-            <in>ModelMGram.hpp</in>
-            <in>QueryMGram.hpp</in>
           </df>
           <df name="models">
             <in>bitmap_hash_cache.hpp</in>
@@ -848,7 +843,7 @@
     <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>4</platform>
+        <platform>2</platform>
       </toolsSet>
       <compile>
         <compiledirpicklist>

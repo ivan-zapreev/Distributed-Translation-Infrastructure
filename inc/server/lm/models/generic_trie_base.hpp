@@ -32,8 +32,8 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "server/lm/mgrams/ModelMGram.hpp"
-#include "server/lm/mgrams/QueryMGram.hpp"
+#include "server/lm/mgrams/model_m_gram.hpp"
+#include "server/lm/mgrams/query_m_gram.hpp"
 
 #include "common/utils/file/text_piece_reader.hpp"
 
@@ -111,7 +111,7 @@ namespace uva {
                          * @param m_end_word_idx the currently considered end word index
                          */
                         struct S_Query_Exec_Data {
-                            T_Query_M_Gram<WordIndexType> m_gram;
+                            query_m_gram<WordIndexType> m_gram;
                             const void * m_payloads[MAX_LEVEL][MAX_LEVEL];
                             TLongId m_last_ctx_ids[MAX_LEVEL];
                             TLogProbBackOff m_probs[MAX_LEVEL];
@@ -188,7 +188,7 @@ namespace uva {
                          * @throws Exception if the level of this M-gram is not such that  1 < M < N
                          */
                         template<TModelLevel CURR_LEVEL>
-                        inline void add_m_gram(const T_Model_M_Gram<WordIndexType> & gram) {
+                        inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             THROW_MUST_OVERRIDE();
                         };
 
@@ -357,7 +357,7 @@ namespace uva {
                          * 
                          * @param gram the M-gram to cache
                          */
-                        inline void register_m_gram_cache(const T_Model_M_Gram<WordIndexType> &gram) {
+                        inline void register_m_gram_cache(const model_m_gram<WordIndexType> &gram) {
                             if (NEEDS_BITMAP_HASH_CACHE) {
                                 const TModelLevel curr_level = gram.get_m_gram_level();
                                 ASSERT_SANITY_THROW((curr_level == M_GRAM_LEVEL_1), "Trying to add a uni-gram to a bitmap hash cache!");
@@ -391,12 +391,12 @@ namespace uva {
                             //Retrieve the payload
                             static_cast<const TrieType*> (this)->get_unigram_payload(query);
                             LOG_DEBUG << "The 1-gram is found, payload: "
-                                    << (string) (* (const T_M_Gram_Payload *) payload) << END_LOG;
+                                    << (string) (* (const m_gram_payload *) payload) << END_LOG;
 
                             //No need to check on the status, it is always good for the uni-gram
-                            query.m_probs[word_idx] += ((const T_M_Gram_Payload *) payload)->m_prob;
+                            query.m_probs[word_idx] += ((const m_gram_payload *) payload)->m_prob;
                             LOG_DEBUG << "probs[" << SSTR(word_idx) << "] += "
-                                    << ((const T_M_Gram_Payload *) payload)->m_prob << END_LOG;
+                                    << ((const m_gram_payload *) payload)->m_prob << END_LOG;
 
                             //The payload of a uni-gram is always present, even if
                             //it is an unknown word, the data is still available.
@@ -449,10 +449,10 @@ namespace uva {
                                     //Append the probability if the retrieval was successful
                                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                         LOG_DEBUG << "The m-gram is found, payload: "
-                                                << (string) (* ((const T_M_Gram_Payload *) payload_elem)) << END_LOG;
-                                        query.m_probs[query.m_end_word_idx] += ((const T_M_Gram_Payload *) payload_elem)->m_prob;
+                                                << (string) (* ((const m_gram_payload *) payload_elem)) << END_LOG;
+                                        query.m_probs[query.m_end_word_idx] += ((const m_gram_payload *) payload_elem)->m_prob;
                                         LOG_DEBUG << "probs[" << SSTR(query.m_begin_word_idx) << "] += "
-                                                << ((const T_M_Gram_Payload *) payload_elem)->m_prob << END_LOG;
+                                                << ((const m_gram_payload *) payload_elem)->m_prob << END_LOG;
                                     }
                                 }
                             }
@@ -511,10 +511,10 @@ namespace uva {
                             //If the back-off payload is present, then take it into account, else try to retrieve it and take into account
                             if ((bo_payload_ref != NULL) || (get_uni_m_gram_payload(query) == MGramStatusEnum::GOOD_PRESENT_MGS)) {
                                 LOG_DEBUG << "The m-gram is found, payload: "
-                                        << (string) (* ((const T_M_Gram_Payload *) bo_payload_ref)) << END_LOG;
-                                query.m_probs[query.m_end_word_idx + 1] += ((const T_M_Gram_Payload *) bo_payload_ref)->m_back;
+                                        << (string) (* ((const m_gram_payload *) bo_payload_ref)) << END_LOG;
+                                query.m_probs[query.m_end_word_idx + 1] += ((const m_gram_payload *) bo_payload_ref)->m_back;
                                 LOG_DEBUG << "probs[" << SSTR(query.m_end_word_idx + 1) << "] += "
-                                        << ((const T_M_Gram_Payload *) bo_payload_ref)->m_back << END_LOG;
+                                        << ((const m_gram_payload *) bo_payload_ref)->m_back << END_LOG;
                             }
 
                             //Increase the end word index as we are going back to normal
@@ -531,7 +531,7 @@ namespace uva {
 
                     //Define the macro for instantiating the generic trie class children templates
 #define INSTANTIATE_TRIE_FUNCS_LEVEL(LEVEL, TRIE_TYPE_NAME, ...) \
-            template void TRIE_TYPE_NAME<__VA_ARGS__>::add_m_gram<LEVEL>(const T_Model_M_Gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram);
+            template void TRIE_TYPE_NAME<__VA_ARGS__>::add_m_gram<LEVEL>(const model_m_gram<TRIE_TYPE_NAME<__VA_ARGS__>::WordIndexType> & gram);
 
 #define INSTANTIATE_TRIE_TEMPLATE_TYPE(TRIE_TYPE_NAME, ...) \
             template class TRIE_TYPE_NAME<__VA_ARGS__>; \

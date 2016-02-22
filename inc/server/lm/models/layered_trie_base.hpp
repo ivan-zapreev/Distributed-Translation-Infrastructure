@@ -110,7 +110,7 @@ namespace uva {
                          * @return true if the context was found otherwise false
                          */
                         template<typename TrieType, TModelLevel CURR_LEVEL, DebugLevelsEnum LOG_LEVEL>
-                        inline void get_context_id(TrieType & trie, const T_Model_M_Gram<typename TrieType::WordIndexType> &gram, TLongId & ctx_id) {
+                        inline void get_context_id(TrieType & trie, const model_m_gram<typename TrieType::WordIndexType> &gram, TLongId & ctx_id) {
                             //Perform sanity check for the level values they should be the same!
                             ASSERT_SANITY_THROW(CURR_LEVEL != gram.get_m_gram_level(),
                                     string("The improper level values! Template level parameter = ") + std::to_string(CURR_LEVEL) +
@@ -199,7 +199,7 @@ namespace uva {
                          * @return true if there was nothing cached, otherwise false
                          */
                         template<TModelLevel CURR_LEVEL>
-                        inline bool get_cached_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & result) const {
+                        inline bool get_cached_context_id(const model_m_gram<WordIndexType> &gram, TLongId & result) const {
                             //Compute the context level
                             constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
                             //Check if this is the same m-gram
@@ -218,7 +218,7 @@ namespace uva {
                          * @param ctx_id the m-gram context id to cache.
                          */
                         template<TModelLevel CURR_LEVEL>
-                        inline void set_cache_context_id(const T_Model_M_Gram<WordIndexType> &gram, TLongId & ctx_id) {
+                        inline void set_cache_context_id(const model_m_gram<WordIndexType> &gram, TLongId & ctx_id) {
                             //Compute the context level
                             constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
                             //Copy the context word ids
@@ -297,7 +297,7 @@ namespace uva {
                     private:
 
                         //Stores the zero payload for begin used when no payload is found
-                        const T_M_Gram_Payload m_zero_payload;
+                        const m_gram_payload m_zero_payload;
 
                         /**
                          * This structure is to store the cached word ids and context ids

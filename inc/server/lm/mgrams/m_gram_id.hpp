@@ -158,7 +158,7 @@ namespace uva {
 #define DECLARE_STACK_GRAM_ID(type, name, level) uint8_t name[type::MAX_ID_LEN_BYTES[(level)]];
 
                                 //Stores the mapping from the m-gram id lengths into the id type value, is pre-computed
-#include "ByteMGramIdTables.hpp"
+#include "m_gram_id_tables.hpp"
 
                                 /**
                                  * This method allows to create new M-gram id for the given M-gram.

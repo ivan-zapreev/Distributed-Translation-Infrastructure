@@ -98,7 +98,7 @@ namespace uva {
                             };
 
                         private:
-                            T_M_Gram_Query<trie_type> m_query;
+                            m_gram_query<trie_type> m_query;
 
                         };
                     }

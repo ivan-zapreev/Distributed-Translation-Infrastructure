@@ -58,7 +58,7 @@ namespace uva {
                         //Memset the M grams reference and data arrays
                         memset(m_m_gram_alloc_ptrs, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TMGramAllocator *));
                         memset(m_m_gram_map_ptrs, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TMGramsMap *));
-                        memset(m_m_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (T_M_Gram_Payload *));
+                        memset(m_m_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (m_gram_payload *));
 
                         //Initialize the array of counters
                         memset(m_M_gram_num_ctx_ids, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TShortId));
@@ -75,8 +75,8 @@ namespace uva {
                         const size_t num_word_ids = BASE::get_word_index().get_number_of_words(counts[0]);
 
                         //Pre-allocate the 1-Gram data
-                        m_1_gram_data = new T_M_Gram_Payload[num_word_ids];
-                        memset(m_1_gram_data, 0, num_word_ids * sizeof (T_M_Gram_Payload));
+                        m_1_gram_data = new m_gram_payload[num_word_ids];
+                        memset(m_1_gram_data, 0, num_word_ids * sizeof (m_gram_payload));
 
 
                         //Record the dummy probability and back-off values for the unknown word
@@ -100,8 +100,8 @@ namespace uva {
                             //Get the number of M-gram indexes on this level
                             const uint num_ngram_idx = m_M_gram_num_ctx_ids[idx];
 
-                            m_m_gram_data[idx] = new T_M_Gram_Payload[num_ngram_idx];
-                            memset(m_m_gram_data[idx], 0, num_ngram_idx * sizeof (T_M_Gram_Payload));
+                            m_m_gram_data[idx] = new m_gram_payload[num_ngram_idx];
+                            memset(m_m_gram_data[idx], 0, num_ngram_idx * sizeof (m_gram_payload));
                         }
                     }
 

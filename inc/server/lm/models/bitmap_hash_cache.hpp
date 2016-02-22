@@ -32,7 +32,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "server/lm/mgrams/ModelMGram.hpp"
+#include "server/lm/mgrams/model_m_gram.hpp"
 #include "common/utils/hashing_utils.hpp"
 #include "common/utils/math_utils.hpp"
 
@@ -108,7 +108,7 @@ namespace uva {
                              * @param gram the M-gram to cache
                              */
                             template<typename WordIndexType>
-                            inline void cache_m_gram_hash(const T_Model_M_Gram<WordIndexType> gram) {
+                            inline void cache_m_gram_hash(const model_m_gram<WordIndexType> gram) {
                                 LOG_DEBUG2 << "Adding M-gram: " << (string) gram << END_LOG;
 
                                 //Get the bit position
@@ -181,7 +181,7 @@ namespace uva {
                              * @param bit_offset_idx [out] the M-gram relative bit index
                              */
                             template<typename WordIndexType>
-                            inline void get_bit_pos(const T_Model_M_Gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
+                            inline void get_bit_pos(const model_m_gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
                                 uint_fast64_t key = gram.get_hash();
 
                                 LOG_DEBUG2 << "The M-gram: " << (string) gram << " hash: " << key << END_LOG;

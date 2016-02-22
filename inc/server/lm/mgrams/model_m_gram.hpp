@@ -31,7 +31,7 @@
 #include "server/lm/lm_consts.hpp"
 #include "common/utils/exceptions.hpp"
 
-#include "server/lm/mgrams/BaseMGram.hpp"
+#include "server/lm/mgrams/m_gram_payload.hpp"
 
 #include "common/utils/file/text_piece_reader.hpp"
 #include "common/utils/hashing_utils.hpp"
@@ -39,7 +39,7 @@
 
 #include "server/common/models/phrase_uid.hpp"
 
-#include "server/lm/mgrams/ByteMGramId.hpp"
+#include "server/lm/mgrams/m_gram_id.hpp"
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/HashingWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
@@ -58,17 +58,17 @@ namespace uva {
                          * This class is used to represent the N-Gram that will be stored into the language model.
                          */
                         template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY = M_GRAM_LEVEL_MAX>
-                        class T_Model_M_Gram : public T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY> {
+                        class model_m_gram : public m_gram_base<WordIndexType, MAX_LEVEL_CAPACITY> {
                         public:
                             //The type of the word id
                             typedef typename WordIndexType::TWordIdType TWordIdType;
                             //Define the corresponding M-gram id type
                             typedef m_gram_id::Byte_M_Gram_Id<TWordIdType, MAX_LEVEL_CAPACITY> T_M_Gram_Id;
                             //Define the base class type
-                            typedef T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY> BASE;
+                            typedef m_gram_base<WordIndexType, MAX_LEVEL_CAPACITY> BASE;
 
                             //Stores the m-gram payload i.e. its probability and back-off weight
-                            T_M_Gram_Payload m_payload;
+                            m_gram_payload m_payload;
 
                             //Stores the m-gram probability, the log_10 probability of the N-Gram Must be a negative value
                             TLogProbBackOff m_prob;
@@ -83,8 +83,8 @@ namespace uva {
                              * @param word_index the used word index
                              * @param actual_level the actual level of the m-gram that will be used should be <= MAX_LEVEL_CAPACITY
                              */
-                            T_Model_M_Gram(WordIndexType & word_index, TModelLevel actual_level)
-                            : T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY>(word_index, actual_level) {
+                            model_m_gram(WordIndexType & word_index, TModelLevel actual_level)
+                            : m_gram_base<WordIndexType, MAX_LEVEL_CAPACITY>(word_index, actual_level) {
                             }
 
                             /**
@@ -184,7 +184,7 @@ namespace uva {
                             /**
                              * Make this constructor private as it is not to be used.
                              */
-                            T_Model_M_Gram(WordIndexType & word_index) : T_Base_M_Gram<WordIndexType, MAX_LEVEL_CAPACITY>(word_index) {
+                            model_m_gram(WordIndexType & word_index) : m_gram_base<WordIndexType, MAX_LEVEL_CAPACITY>(word_index) {
                             }
 
                         };

@@ -23,7 +23,7 @@
  * Created on September 14, 2015, 11:10 PM
  */
 
-#include "server/lm/mgrams/ByteMGramId.hpp"
+#include "server/lm/mgrams/m_gram_id.hpp"
 
 #include <inttypes.h>   // std::uint32_t
 

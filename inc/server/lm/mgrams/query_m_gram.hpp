@@ -37,8 +37,8 @@
 
 #include "server/common/models/phrase_uid.hpp"
 
-#include "server/lm/mgrams/BaseMGram.hpp"
-#include "server/lm/mgrams/ByteMGramId.hpp"
+#include "server/lm/mgrams/m_gram_payload.hpp"
+#include "server/lm/mgrams/m_gram_id.hpp"
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
@@ -56,14 +56,14 @@ namespace uva {
                          * This class is used to represent the N-Gram that will be queried against the language model.
                          */
                         template<typename WordIndexType, TModelLevel MAX_LEVEL = M_GRAM_LEVEL_MAX>
-                        class T_Query_M_Gram : public T_Base_M_Gram<WordIndexType, MAX_LEVEL> {
+                        class query_m_gram : public m_gram_base<WordIndexType, MAX_LEVEL> {
                         public:
                             //The type of the word id
                             typedef typename WordIndexType::TWordIdType TWordIdType;
                             //Define the corresponding M-gram id type
                             typedef m_gram_id::Byte_M_Gram_Id<TWordIdType, MAX_LEVEL> T_M_Gram_Id;
                             //Define the base class type
-                            typedef T_Base_M_Gram<WordIndexType, MAX_LEVEL> BASE;
+                            typedef m_gram_base<WordIndexType, MAX_LEVEL> BASE;
 
                             /**
                              * The basic constructor, is to be used when the M-gram will
@@ -72,8 +72,8 @@ namespace uva {
                              * undefined. Filling in the M-gram tokens is done elsewhere.
                              * @param word_index the used word index
                              */
-                            T_Query_M_Gram(WordIndexType & word_index)
-                            : T_Base_M_Gram<WordIndexType, MAX_LEVEL>(word_index) {
+                            query_m_gram(WordIndexType & word_index)
+                            : m_gram_base<WordIndexType, MAX_LEVEL>(word_index) {
                             }
 
                             /**
@@ -241,8 +241,8 @@ namespace uva {
                             /**
                              * This constructor is made private as it is not to be used
                              */
-                            T_Query_M_Gram(WordIndexType & word_index, TModelLevel actual_level)
-                            : T_Base_M_Gram<WordIndexType, MAX_LEVEL>(word_index, actual_level) {
+                            query_m_gram(WordIndexType & word_index, TModelLevel actual_level)
+                            : m_gram_base<WordIndexType, MAX_LEVEL>(word_index, actual_level) {
                             }
 
                         };
