@@ -167,7 +167,7 @@ namespace uva {
                                 if ( source_entry != NULL) {
                                     //Check if this is a phrase with translation
                                     if (source_entry->has_translation()) {
-                                        //ToDo: Implement
+                                        //Get the targets and compute the maximum cost over them
                                         tm_const_target_entry* targets = source_entry->get_targets();
                                         for(size_t idx = 0; (idx < source_entry->num_entries()) ;++idx ){
                                             //Get the maximum between the known cost and the newly computed
