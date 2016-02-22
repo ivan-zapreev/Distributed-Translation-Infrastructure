@@ -50,6 +50,8 @@ namespace uva {
                     static const size_t MAX_NUM_TM_FEATURES = FOUR_TM_FEATURES;
 
                     namespace models {
+                        //Stores the zero log probability for the partial score or future cost
+                        static const float ZERO_LOG_PROB_WEIGHT = -1000.0;
 
                         namespace __unk_phrase {
                             //Stores the unknown source phrase string, should be configurable

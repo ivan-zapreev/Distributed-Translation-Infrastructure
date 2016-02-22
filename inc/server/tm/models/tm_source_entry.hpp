@@ -210,6 +210,22 @@ namespace uva {
                                 return (m_source_uid == phrase_uid);
                             }
 
+                            /**
+                             * Allows to get the number of target entries
+                             * @return the number of target entries, or 0 if none
+                             */
+                            size_t num_entries() const {
+                                return m_capacity;
+                            }
+                            
+                            /**
+                             * Allows to get an array of of target entries, if any
+                             * @return the pointer to the first target entry, or NULL if none
+                             */
+                            tm_const_target_entry* get_targets() const {
+                                return m_targets;
+                            }
+
                         private:
                             //Stores the unique identifier of the given source
                             phrase_uid m_source_uid;

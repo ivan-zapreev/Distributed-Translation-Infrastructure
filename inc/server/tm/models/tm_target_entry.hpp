@@ -68,7 +68,8 @@ namespace uva {
                              * The basic constructor
                              */
                             tm_target_entry_temp()
-                            : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase(""), m_total_weight(0.0) {
+                            : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase(""),
+                            m_t_cond_s(ZERO_LOG_PROB_WEIGHT), m_total(ZERO_LOG_PROB_WEIGHT) {
                             }
 
                             /**
@@ -101,28 +102,37 @@ namespace uva {
                              * Allows to retrieve the source/target phrase pair uid
                              * @return the source/target phrase pair uid
                              */
-                            inline const phrase_uid get_st_uid() {
+                            inline const phrase_uid get_st_uid() const {
                                 return m_st_uid;
                             }
 
                             /**
-                             * Allows to get the total weight of the entry
+                             * Allows to get the total weight of the entry, the sum
+                             * of features that are turned into log10 scale.
                              * @return the total weight of the entry, the sum of feature weights
                              */
-                            inline const float get_total_weight() {
-                                return m_total_weight;
+                            inline const float get_total() const {
+                                return m_total;
+                            }
+                            
+                            /**
+                             * Allows to get the value of the third feature which is the log10(p(e|f))
+                             * @return  the value of the third feature which is the log10(p(e|f))
+                             */
+                            inline const float get_t_c_s() const {
+                                return m_t_cond_s;
                             }
 
                             /**
                              * Allows to set the weights into the target entry
-                             * @param num_features the number of weights to be set
+                             * @param num_features the number of features to be set, already in the log10 scale
                              * @param features the weights to be set into the entry
                              * This is an array of translation weights, as we have here:
-                             * m_weights[0] = p(f|e);
-                             * m_weights[1] = lex(p(f|e));
-                             * m_weights[2] = p(e|f);
-                             * m_weights[3] = lex(p(e|f));
-                             * m_weights[4] = phrase penalty; // optional
+                             * features[0] = p(f|e);
+                             * features[1] = lex(p(f|e));
+                             * features[2] = p(e|f);
+                             * features[3] = lex(p(e|f));
+                             * features[4] = phrase penalty; // optional
                              */
                             inline void set_features(const size_t num_features, const float * features) {
                                 ASSERT_CONDITION_THROW((num_features > max_num_features), string("The number of features: ") +
@@ -130,8 +140,15 @@ namespace uva {
 
                                 //Compute the total weight
                                 for (size_t idx = 0; idx < num_features; ++idx) {
-                                    m_total_weight += features[idx];
+                                    m_total += features[idx];
                                 }
+
+                                //ToDo: Get rid of magic constants here!
+                                //Check that we have enough features
+                                ASSERT_SANITY_THROW((num_features < 3),
+                                        "The must be at least 3 features, p(e|f) is not known!");
+                                //Store the target conditioned on source probability
+                                m_t_cond_s = features[2];
                             }
 
                         private:
@@ -139,8 +156,10 @@ namespace uva {
                             phrase_uid m_st_uid;
                             //Stores the target phrase of the translation which a key value
                             string m_target_phrase;
+                            //Stores the features[2] = p(e|f);
+                            float m_t_cond_s;
                             //Stores the total weight of the entity
-                            float m_total_weight;
+                            float m_total;
                         };
 
                         template<uint8_t num_features>
@@ -148,6 +167,9 @@ namespace uva {
 
                         //Instantiate template
                         typedef tm_target_entry_temp<MAX_NUM_TM_FEATURES> tm_target_entry;
+
+                        //Define the constant entry
+                        typedef const tm_target_entry tm_const_target_entry;
 
                         //Typedef an array of weights
                         typedef float feature_array[tm_target_entry::NUM_FEATURES];

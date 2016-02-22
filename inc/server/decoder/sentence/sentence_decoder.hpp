@@ -138,23 +138,46 @@ namespace uva {
                         protected:
 
                             /**
+                             * Allows to compute the future cost for this entry.
+                             * The entry contains one translation of the source phrase
+                             * @param target the target translation entry
+                             * @return the cost of the given target entry
+                             */
+                            inline float compute_future_cost(tm_const_target_entry & target) {
+                                //ToDo: Implement
+                                //return  target.get_t_c_s() + m_lm_query.template execute<true>(target.get_target_phrase());
+                                
+                                THROW_NOT_IMPLEMENTED();
+                            }
+                            
+                            /**
                              * Dynamically initialize the future costs based on the estimates from the TM and LM models.
                              */
                             inline float & initialize_future_costs(const size_t & start_idx, const size_t & end_idx) {
                                 //Get the phrase data entry
                                 phrase_data_entry & phrase_data = m_sent_data[start_idx][end_idx];
 
+                                //Get the entry pointer
+                                const tm_source_entry * source_entry = phrase_data.m_source_entry;
+                                
+                                //Get the reference to the future cost
+                                float & cost = phrase_data.future_cost;
+                                
                                 //Check if the source entry is present, the entry should be there!
-                                if (phrase_data.m_source_entry != NULL) {
+                                if ( source_entry != NULL) {
                                     //Check if this is a phrase with translation
-                                    if (phrase_data.m_source_entry->has_translation()) {
+                                    if (source_entry->has_translation()) {
                                         //ToDo: Implement
-                                        
+                                        tm_const_target_entry* targets = source_entry->get_targets();
+                                        for(size_t idx = 0; (idx < source_entry->num_entries()) ;++idx ){
+                                            //Get the maximum between the known cost and the newly computed
+                                            cost = max(cost, compute_future_cost(targets[idx]));
+                                        }
                                     } else {
                                         //Check if this just a single unknown word
                                         if (start_idx == end_idx) {
                                             //If it is an unknown word then get the lm probability plus the the unknown source word probability
-                                            phrase_data.future_cost = m_tm_query.get_unk_word_prob() + m_lm_query.get_unk_word_prob();
+                                            cost = m_tm_query.get_unk_word_prob() + m_lm_query.get_unk_word_prob();
                                         }
                                     }
                                 } else {
@@ -163,7 +186,7 @@ namespace uva {
                                 }
 
                                 //Return the reference to the future cost, it will be needed in the caller
-                                return phrase_data.future_cost;
+                                return cost;
                             }
 
                             /**
