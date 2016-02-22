@@ -55,6 +55,12 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to retrieve the unknown target word log probability penalty 
+                             * @return the target source word log probability penalty
+                             */
+                            virtual float get_unk_word_prob() = 0;
+
+                            /**
                              * Allows to execute a query
                              * @param text the m-gram query to be executed
                              */

@@ -124,6 +124,14 @@ namespace uva {
                         explicit H2DMapTrie(WordIndexType & word_index);
 
                         /**
+                         * Allows to retrieve the unknown target word log probability penalty 
+                         * @return the target source word log probability penalty
+                         */
+                        inline float get_unk_word_prob() const {
+                            return m_unk_data.m_prob;
+                        }
+
+                        /**
                          * Allows to log the information about the instantiated trie type
                          */
                         inline void log_model_type_info() const {
@@ -169,7 +177,7 @@ namespace uva {
                                 //Check if this is an <unk> unigram, in this case we store the payload elsewhere
                                 if ((CURR_LEVEL == M_GRAM_LEVEL_1) && gram.is_unk_unigram()) {
                                     //Store the uni-gram payload - overwrite the default values.
-                                    m_unk_word_payload = gram.m_payload;
+                                    m_unk_data = gram.m_payload;
                                 } else {
                                     //Create a new M-Gram data entry
                                     T_M_Gram_PB_Entry & data = m_m_gram_data[LEVEL_IDX]->add_new_element(hash_value);
@@ -190,7 +198,7 @@ namespace uva {
                             LOG_DEBUG << "Searching in uni-grams, array index: 0" << END_LOG;
 
                             //By default set the unknown word value
-                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_unk_word_payload;
+                            query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_unk_data;
 
                             //Call the templated part via function pointer
                             (void) get_payload<TProbBackMap>(m_m_gram_data[0], query);
@@ -233,15 +241,14 @@ namespace uva {
                         virtual ~H2DMapTrie();
 
                     private:
+                        //Stores the unknown word payload data
+                        T_M_Gram_Payload m_unk_data;
 
                         //The offset, relative to the M-gram level M for the m-gram mapping array index
                         const static TModelLevel LEVEL_IDX_OFFSET = 1;
 
                         //Will store the the number of M levels such that 1 <= M < N.
                         const static TModelLevel NUM_M_GRAM_LEVELS = MAX_LEVEL - LEVEL_IDX_OFFSET;
-
-                        //Stores the unknown word payload data
-                        T_M_Gram_Payload m_unk_word_payload;
 
                         //typedef the bucket capacity type, for convenience.
                         typedef uint16_t TBucketCapacityType;

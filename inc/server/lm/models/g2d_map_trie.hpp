@@ -132,6 +132,14 @@ namespace uva {
                         explicit G2DMapTrie(WordIndexType & word_index);
 
                         /**
+                         * Allows to retrieve the unknown target word log probability penalty 
+                         * @return the target source word log probability penalty
+                         */
+                        inline float get_unk_word_prob() const {
+                            return m_unk_data->m_prob;
+                        }
+
+                        /**
                          * Allows to log the information about the instantiated trie type
                          */
                         inline void log_model_type_info() const {
@@ -236,6 +244,8 @@ namespace uva {
                         virtual ~G2DMapTrie();
 
                     private:
+                        //Stores the pointer to the UNK word payload
+                        T_M_Gram_Payload * m_unk_data;
 
                         //Stores the 1-gram data
                         T_M_Gram_Payload * m_1_gram_data;

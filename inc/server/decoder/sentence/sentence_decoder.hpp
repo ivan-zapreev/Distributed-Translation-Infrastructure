@@ -140,14 +140,22 @@ namespace uva {
                             /**
                              * Dynamically initialize the future costs based on the estimates from the TM and LM models.
                              */
-                            inline float & initialize_future_costs(phrase_data_entry & phrase_data) {
+                            inline float & initialize_future_costs(const size_t & start_idx, const size_t & end_idx) {
+                                //Get the phrase data entry
+                                phrase_data_entry & phrase_data = m_sent_data[start_idx][end_idx];
+
                                 //Check if the source entry is present, the entry should be there!
                                 if (phrase_data.m_source_entry != NULL) {
                                     //Check if this is a phrase with translation
                                     if (phrase_data.m_source_entry->has_translation()) {
                                         //ToDo: Implement
+                                        
                                     } else {
-                                        //ToDo: Implement
+                                        //Check if this just a single unknown word
+                                        if (start_idx == end_idx) {
+                                            //If it is an unknown word then get the lm probability plus the the unknown source word probability
+                                            phrase_data.future_cost = m_tm_query.get_unk_word_prob() + m_lm_query.get_unk_word_prob();
+                                        }
                                     }
                                 } else {
                                     LOG_WARNING << "The source phrase [" << phrase_data.m_begin_ch_idx << "]["
@@ -163,16 +171,16 @@ namespace uva {
                              */
                             inline void compute_futue_costs() {
                                 //Iterate through all the end indexes, the minimum length is two words
-                                for (size_t end_idx = 1; end_idx < m_sent_data.get_dim(); ++end_idx) {
+                                for (size_t end_idx = 1; (end_idx < m_sent_data.get_dim()); ++end_idx) {
                                     //Iterate through all the start indexes smaller than the end one, as we
                                     //need minimum two words in a phrase, otherwise it is not split-able
-                                    for (size_t start_idx = 0; start_idx < end_idx; ++start_idx) {
+                                    for (size_t start_idx = 0; (start_idx < end_idx); ++start_idx) {
                                         //Initialize the interval with the TM/LM based value first
                                         //and get the reference to the complete cost then
-                                        float & phrase_cost = initialize_future_costs(m_sent_data[start_idx][end_idx]);
+                                        float & phrase_cost = initialize_future_costs(start_idx, end_idx);
 
                                         //Iterate through all the intermediate indexes between start and end
-                                        for (size_t mid_idx = start_idx; mid_idx < end_idx; ++mid_idx) {
+                                        for (size_t mid_idx = start_idx; (mid_idx < end_idx); ++mid_idx) {
                                             //Get the costs of the phrase one and two
                                             const float ph1_cost = m_sent_data[start_idx][mid_idx].future_cost;
                                             const float ph2_cost = m_sent_data[mid_idx + 1][end_idx].future_cost;
@@ -190,6 +198,9 @@ namespace uva {
                                             }
 
                                             LOG_DEBUG << "The new cost[" << start_idx << "][" << end_idx << "] = " << phrase_cost << END_LOG;
+
+                                            //Check if we need to stop, if yes, then return
+                                            if (m_is_stop) return;
                                         }
                                     }
                                 }
@@ -226,7 +237,7 @@ namespace uva {
                                 //Declare the begin and end character index variables
                                 size_t ch_b_idx = 0, ch_e_idx = m_source_sent.find_first_of(UTF8_SPACE_STRING);
 
-                                while (ch_e_idx <= std::string::npos && !m_is_stop) {
+                                while (ch_e_idx <= std::string::npos) {
                                     //Get the appropriate map entry reference
                                     phrase_data_entry & diag_entry = m_sent_data[end_wd_idx][end_wd_idx];
 
@@ -251,7 +262,7 @@ namespace uva {
                                     //Note that, the longest phrase length to consider is defined by the
                                     //decoding parameters. It is the end word plus several previous.
                                     int32_t begin_wd_idx = max(MIN_SENT_WORD_INDEX, end_wd_idx - m_params.m_max_s_phrase_len + 1);
-                                    for (; (begin_wd_idx < end_wd_idx) && !m_is_stop; ++begin_wd_idx) {
+                                    for (; (begin_wd_idx < end_wd_idx); ++begin_wd_idx) {
                                         //Get the previous column entry
                                         phrase_data_entry & prev_entry = m_sent_data[begin_wd_idx][end_wd_idx - 1];
                                         //Get the new column entry
@@ -272,6 +283,9 @@ namespace uva {
                                             string phrase = m_source_sent.substr(new_entry.m_begin_ch_idx, new_entry.m_end_ch_idx - new_entry.m_begin_ch_idx);
                                             LOG_DEBUG1 << "Phrase: " << phrase << ", uid: " << new_entry.m_phrase_uid << END_LOG;
                                         }
+
+                                        //Check if we need to stop, if yes, then return
+                                        if (m_is_stop) return;
                                     }
 
                                     //Check on the stop condition 

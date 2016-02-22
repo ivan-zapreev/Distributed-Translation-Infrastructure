@@ -152,6 +152,14 @@ namespace uva {
                         explicit C2WArrayTrie(WordIndexType & p_word_index);
 
                         /**
+                         * Allows to retrieve the unknown target word log probability penalty 
+                         * @return the target source word log probability penalty
+                         */
+                        inline float get_unk_word_prob() const {
+                            return m_unk_data->m_prob;
+                        }
+
+                        /**
                          * Computes the M-Gram context using the previous context and the current word id
                          * @see LayeredTrieBese
                          */
@@ -445,6 +453,8 @@ namespace uva {
                         };
 
                     private:
+                        //Stores the pointer to the UNK word payload
+                        T_M_Gram_Payload * m_unk_data;
 
                         //Stores the 1-gram data
                         T_M_Gram_Payload * m_1_gram_data;

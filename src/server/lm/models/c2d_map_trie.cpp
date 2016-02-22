@@ -50,9 +50,7 @@ namespace uva {
                             const float mgram_mem_factor,
                             const float ngram_mem_factor)
                     : LayeredTrieBase<C2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
-                    m_mgram_mem_factor(mgram_mem_factor),
-                    m_ngram_mem_factor(ngram_mem_factor),
-                    m_1_gram_data(NULL) {
+                    m_unk_data(NULL), m_mgram_mem_factor(mgram_mem_factor), m_ngram_mem_factor(ngram_mem_factor), m_1_gram_data(NULL) {
                         //Perform sanity checks
                         if (DO_SANITY_CHECKS) {
                             //Initialize the hash statistics map
@@ -78,9 +76,9 @@ namespace uva {
 
 
                         //Record the dummy probability and back-off values for the unknown word
-                        T_M_Gram_Payload & pbData = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
-                        pbData.m_prob = UNK_WORD_LOG_PROB_WEIGHT;
-                        pbData.m_back = ZERO_BACK_OFF_WEIGHT;
+                        m_unk_data = &m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                        m_unk_data->m_prob = UNK_WORD_LOG_PROB_WEIGHT;
+                        m_unk_data->m_back = ZERO_BACK_OFF_WEIGHT;
                     }
 
                     template<TModelLevel MAX_LEVEL, typename WordIndexType>

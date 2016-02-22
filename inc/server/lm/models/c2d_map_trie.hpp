@@ -116,6 +116,14 @@ namespace uva {
                                 const float ngram_mem_factor = __C2DMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
                         /**
+                         * Allows to retrieve the unknown target word log probability penalty 
+                         * @return the target source word log probability penalty
+                         */
+                        inline float get_unk_word_prob() const {
+                            return m_unk_data->m_prob;
+                        }
+
+                        /**
                          * Computes the M-Gram context using the previous context and the current word id
                          * @see LayeredTrieBese
                          */
@@ -282,6 +290,8 @@ namespace uva {
                         virtual ~C2DMapTrie();
 
                     private:
+                        //Stores the pointer to the UNK word payload
+                        T_M_Gram_Payload * m_unk_data;
 
                         //The M-Gram memory factor needed for the greedy allocator for the unordered_map
                         const float m_mgram_mem_factor;

@@ -47,7 +47,7 @@ namespace uva {
                     template<TModelLevel MAX_LEVEL, typename WordIndexType>
                     G2DMapTrie<MAX_LEVEL, WordIndexType>::G2DMapTrie(WordIndexType & word_index)
                     : GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
-                    m_1_gram_data(NULL), m_n_gram_data(NULL) {
+                    m_unk_data(NULL), m_1_gram_data(NULL), m_n_gram_data(NULL) {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
@@ -72,9 +72,9 @@ namespace uva {
                         memset(m_1_gram_data, 0, num_words * sizeof (T_M_Gram_Payload));
 
                         //Insert the unknown word data into the allocated array
-                        T_M_Gram_Payload & pb_data = m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
-                        pb_data.m_prob = UNK_WORD_LOG_PROB_WEIGHT;
-                        pb_data.m_back = ZERO_BACK_OFF_WEIGHT;
+                        m_unk_data = &m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                        m_unk_data->m_prob = UNK_WORD_LOG_PROB_WEIGHT;
+                        m_unk_data->m_back = ZERO_BACK_OFF_WEIGHT;
 
                         //Initialize the m-gram maps
                         for (TModelLevel idx = 1; idx <= BASE::NUM_M_GRAM_LEVELS; ++idx) {

@@ -52,6 +52,13 @@ namespace uva {
                              */
                             lm_trie_query_proxy_local(const trie_type & trie) : m_query(trie) {
                             }
+                            
+                            /**
+                             * @see lm_query_proxy
+                             */
+                            virtual float get_unk_word_prob() {
+                                return m_query.get_unk_word_prob();
+                            }
 
                             /**
                              * @see lm_query_proxy

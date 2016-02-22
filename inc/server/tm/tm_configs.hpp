@@ -56,6 +56,8 @@ namespace uva {
                             static const string TM_UNKNOWN_SOURCE_STR = string("UNK");
                             //Stores the unknown target phrase string, should be configurable
                             static const string TM_UNKNOWN_TARGET_STR = string("<unk>");
+                            //Stores the unknown source word log probability penalty
+                            static const float UNK_SOURCE_WORD_LOG_PROB = -10.0;
                         }
 
                         namespace __tm_basic_model {

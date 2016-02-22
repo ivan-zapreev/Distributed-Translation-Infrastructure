@@ -26,8 +26,10 @@
 #ifndef TM_QUERY_PROXY_HPP
 #define TM_QUERY_PROXY_HPP
 
+#include "server/tm/tm_configs.hpp"
 #include "server/tm/models/tm_source_entry.hpp"
 
+using namespace uva::smt::bpbd::server::tm;
 using namespace uva::smt::bpbd::server::tm::models;
 
 namespace uva {
@@ -56,7 +58,7 @@ namespace uva {
                              * @return the pointer to the source entry or NULL if the entry is not present
                              */
                             virtual tm_const_source_entry_ptr get_source_entry(const phrase_uid uid) = 0;
-                            
+
                             /**
                              * Allows to get all the source/target phrase identifiers
                              * for the source target translation in this query.
@@ -64,6 +66,14 @@ namespace uva {
                              * @param st_uids the container for the source/target phrase identifiers
                              */
                             virtual void get_st_uids(vector<phrase_uid> & st_uids) const = 0;
+
+                            /**
+                             * Allows to retrieve the unknown source word log probability penalty 
+                             * @return the unknown source word log probability penalty
+                             */
+                            inline float get_unk_word_prob() {
+                                return uva::smt::bpbd::server::tm::models::__unk_phrase::UNK_SOURCE_WORD_LOG_PROB;
+                            }
 
                             /**
                              * The basic virtual destructor

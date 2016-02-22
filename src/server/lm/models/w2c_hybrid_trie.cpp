@@ -46,7 +46,7 @@ namespace uva {
                     template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
                     W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>::W2CHybridTrie(WordIndexType & word_index)
                     : LayeredTrieBase<W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>, MAX_LEVEL, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
-                    m_storage_factory(NULL) {
+                    m_unk_data(NULL), m_storage_factory(NULL) {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((MAX_LEVEL < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
@@ -86,9 +86,9 @@ namespace uva {
                         memset(m_mgram_data[0], 0, m_word_arr_size * sizeof (T_M_Gram_Payload));
 
                         //Record the dummy probability and back-off values for the unknown word
-                        T_M_Gram_Payload & pbData = m_mgram_data[0][WordIndexType::UNKNOWN_WORD_ID];
-                        pbData.m_prob = UNK_WORD_LOG_PROB_WEIGHT;
-                        pbData.m_back = ZERO_BACK_OFF_WEIGHT;
+                        m_unk_data = &m_mgram_data[0][WordIndexType::UNKNOWN_WORD_ID];
+                        m_unk_data->m_prob = UNK_WORD_LOG_PROB_WEIGHT;
+                        m_unk_data->m_back = ZERO_BACK_OFF_WEIGHT;
 
                         //Allocate more memory for probabilities and back off weight for
                         //the remaining M-gram levels until M < N. For M==N there is no

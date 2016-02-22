@@ -97,6 +97,14 @@ namespace uva {
                         }
 
                         /**
+                         * Allows to retrieve the unknown target word log probability penalty 
+                         * @return the target source word log probability penalty
+                         */
+                        inline float get_unk_word_prob() {
+                            return m_trie.get_unk_word_prob();
+                        }
+
+                        /**
                          * Allows to execute m-gram the query
                          * @param text the piece containing the m-gram query
                          */

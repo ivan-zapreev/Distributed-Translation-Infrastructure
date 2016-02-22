@@ -152,6 +152,14 @@ namespace uva {
                         }
 
                         /**
+                         * Allows to retrieve the unknown target word log probability penalty 
+                         * @return the target source word log probability penalty
+                         */
+                        inline float get_unk_word_prob() const {
+                            THROW_MUST_OVERRIDE();
+                        }
+
+                        /**
                          * Allows to indicate whether the context id of an m-gram is to be computed while retrieving payloads
                          * @return returns false, by default all generic tries need NO context ids when searching for data
                          */
