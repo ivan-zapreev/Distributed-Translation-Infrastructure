@@ -148,7 +148,7 @@ namespace uva {
                                 THROW_NOT_IMPLEMENTED();
                                 //return  target.get_t_c_s() + m_lm_query.template execute<true>(target.get_target_phrase());
                             }
-                            
+
                             /**
                              * Dynamically initialize the future costs based on the estimates from the TM and LM models.
                              */
@@ -158,25 +158,32 @@ namespace uva {
 
                                 //Get the entry pointer
                                 const tm_source_entry * source_entry = phrase_data.m_source_entry;
-                                
+
                                 //Get the reference to the future cost
                                 float & cost = phrase_data.future_cost;
-                                
+
+                                LOG_DEBUG1 << "Initializing future cost phrase [" << start_idx << ", " << end_idx << "]" << END_LOG;
+
                                 //Check if the source entry is present, the entry should be there!
-                                if ( source_entry != NULL) {
+                                if (source_entry != NULL) {
+                                    LOG_DEBUG1 << "The source entry of phrase [" << start_idx << ", " << end_idx << "] is present." << END_LOG;
                                     //Check if this is a phrase with translation
                                     if (source_entry->has_translation()) {
                                         //Get the targets and compute the maximum cost over them
                                         tm_const_target_entry* targets = source_entry->get_targets();
-                                        for(size_t idx = 0; (idx < source_entry->num_entries()) ;++idx ){
+                                        for (size_t idx = 0; (idx < source_entry->num_entries()); ++idx) {
                                             //Get the maximum between the known cost and the newly computed
                                             cost = max(cost, compute_future_cost(targets[idx]));
                                         }
                                     } else {
+                                        LOG_DEBUG1 << "The source entry of phrase [" << start_idx << ", " << end_idx << "] is UNK translation." << END_LOG;
                                         //Check if this just a single unknown word
                                         if (start_idx == end_idx) {
                                             //If it is an unknown word then get the lm probability plus the the unknown source word probability
                                             cost = m_tm_query.get_unk_word_prob() + m_lm_query.get_unk_word_prob();
+                                            LOG_DEBUG1 << "The UNK phrase [" << start_idx << ", " << end_idx << "] is a word, costs: " << cost << END_LOG;
+                                        } else {
+                                            LOG_DEBUG1 << "The UNK phrase [" << start_idx << ", " << end_idx << "] is NOT a word, costs: " << cost << END_LOG;
                                         }
                                     }
                                 } else {
@@ -195,15 +202,21 @@ namespace uva {
                             inline void compute_futue_costs() {
                                 //Iterate through all the end indexes, the minimum length is two words
                                 for (size_t end_idx = 1; (end_idx < m_sent_data.get_dim()); ++end_idx) {
+                                    LOG_DEBUG1 << "CFC end word idx: " << end_idx << END_LOG;
+
                                     //Iterate through all the start indexes smaller than the end one, as we
                                     //need minimum two words in a phrase, otherwise it is not split-able
                                     for (size_t start_idx = 0; (start_idx < end_idx); ++start_idx) {
+                                        LOG_DEBUG1 << "CFC start word idx: " << start_idx << END_LOG;
+
                                         //Initialize the interval with the TM/LM based value first
                                         //and get the reference to the complete cost then
                                         float & phrase_cost = initialize_future_costs(start_idx, end_idx);
 
                                         //Iterate through all the intermediate indexes between start and end
                                         for (size_t mid_idx = start_idx; (mid_idx < end_idx); ++mid_idx) {
+                                            LOG_DEBUG1 << "CFC middle word idx: " << start_idx << END_LOG;
+
                                             //Get the costs of the phrase one and two
                                             const float ph1_cost = m_sent_data[start_idx][mid_idx].future_cost;
                                             const float ph2_cost = m_sent_data[mid_idx + 1][end_idx].future_cost;
@@ -217,6 +230,9 @@ namespace uva {
                                             //If the sub cost that is a logarithmic value of probability (a negative value) is
                                             //larger than than of the future cost for the entire phrase then use the sub cost.
                                             if (sub_cost > phrase_cost) {
+                                                LOG_DEBUG << "The sub phrases [" << start_idx << "][" << mid_idx
+                                                        << "] and [" << (mid_idx + 1) << "][" << end_idx
+                                                        << "] are cheaper!" << END_LOG;
                                                 phrase_cost = sub_cost;
                                             }
 

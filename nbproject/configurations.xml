@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
-      <df name="server">
-        <df name="decoder">
-          <df name="stack">
-            <in>multi_level.hpp</in>
-          </df>
-        </df>
-      </df>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -36,6 +29,10 @@
           <in>de_configurator.cpp</in>
         </df>
         <df name="lm">
+          <df name="builders">
+            <in>lm_basic_builder.cpp</in>
+            <in>lm_gram_builder.cpp</in>
+          </df>
           <df name="dictionaries">
             <in>aword_index.cpp</in>
           </df>
@@ -116,10 +113,6 @@
             </incDir>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
       <folder path="2/common">
         <ccTool>
@@ -128,11 +121,6 @@
           </preprocessorList>
         </ccTool>
       </folder>
-      <item path="inc/server/decoder/stack/multi_level.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
@@ -171,6 +159,20 @@
         </ccTool>
       </item>
       <item path="src/server/decoder/de_configurator.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/builders/lm_basic_builder.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/builders/lm_gram_builder.cpp"
             ex="false"
             tool="1"
             flavor2="8">
