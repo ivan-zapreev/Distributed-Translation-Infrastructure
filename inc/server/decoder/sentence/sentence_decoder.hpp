@@ -39,6 +39,7 @@
 #include "server/decoder/sentence/sentence_data_map.hpp"
 #include "server/decoder/stack/multi_stack.hpp"
 
+#include "server/lm/lm_configurator.hpp"
 #include "server/tm/tm_configurator.hpp"
 #include "server/rm/rm_configurator.hpp"
 
@@ -87,6 +88,7 @@ namespace uva {
                                     const string & source_sent, string & target_sent)
                             : m_params(params), m_is_stop(is_stop), m_source_sent(source_sent),
                             m_target_sent(target_sent), m_sent_data(count_words(m_source_sent)),
+                            m_lm_query(lm_configurator::allocate_query_proxy()),
                             m_tm_query(tm_configurator::allocate_query_proxy()),
                             m_rm_query(rm_configurator::allocate_query_proxy()),
                             m_stack(m_params, m_is_stop, m_sent_data, m_rm_query) {
@@ -98,6 +100,7 @@ namespace uva {
                              */
                             ~sentence_decoder() {
                                 //Dispose the query objects are they are no longer needed
+                                lm_configurator::dispose_query_proxy(m_lm_query);
                                 tm_configurator::dispose_query_proxy(m_tm_query);
                                 rm_configurator::dispose_query_proxy(m_rm_query);
                             }
@@ -109,8 +112,8 @@ namespace uva {
                                 //If the reduced source sentence is not empty then do the translation
                                 if (m_source_sent.size() != 0) {
 
-                                    //Query the translation model
-                                    query_translation_model();
+                                    //Query the translation model and compute future costs
+                                    bootstrap_translate();
 
                                     //Return in case we need to stop translating
                                     if (m_is_stop) return;
@@ -153,7 +156,7 @@ namespace uva {
                             /**
                              * Allows to set the source sentence, this includes preparing things for decoding
                              */
-                            inline void query_translation_model() {
+                            inline void bootstrap_translate() {
                                 //Fill in the matrix with the phrases and their uids
                                 int32_t end_wd_idx = MIN_SENT_WORD_INDEX;
                                 //Declare the begin and end character index variables
@@ -278,6 +281,8 @@ namespace uva {
                             //Stores the pointer to the sentence data map
                             sentence_data_map m_sent_data;
 
+                            //The reference to the translation model query proxy
+                            lm_query_proxy & m_lm_query;
                             //The reference to the translation model query proxy
                             tm_query_proxy & m_tm_query;
                             //The reference to the reordering model query proxy

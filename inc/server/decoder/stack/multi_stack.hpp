@@ -161,7 +161,7 @@ namespace uva {
                             const rm_query_proxy & m_rm_query;
 
                             //Sores the language mode query proxy
-                            lm_trie_query_proxy & m_lm_query;
+                            lm_query_proxy & m_lm_query;
 
                             //Stores the last stack index
                             int32_t m_las_stack_idx;

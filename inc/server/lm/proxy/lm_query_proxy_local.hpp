@@ -26,7 +26,7 @@
 #ifndef LM_TRIE_QUERY_PROXY_LOCAL_HPP
 #define LM_TRIE_QUERY_PROXY_LOCAL_HPP
 
-#include "server/lm/proxy/lm_trie_query_proxy.hpp"
+#include "server/lm/proxy/lm_query_proxy.hpp"
 #include "server/lm/models/m_gram_query.hpp"
 
 using namespace uva::smt::bpbd::server::lm;
@@ -43,7 +43,7 @@ namespace uva {
                          * This implementation works with the local trie
                          */
                         template<typename trie_type>
-                        class lm_trie_query_proxy_local : public lm_trie_query_proxy {
+                        class lm_trie_query_proxy_local : public lm_query_proxy {
                         public:
 
                             /**

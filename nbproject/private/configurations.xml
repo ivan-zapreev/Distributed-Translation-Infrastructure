@@ -669,8 +669,8 @@
           <df name="proxy">
             <in>lm_proxy.hpp</in>
             <in>lm_proxy_local.hpp</in>
-            <in>lm_trie_query_proxy.hpp</in>
-            <in>lm_trie_query_proxy_local.hpp</in>
+            <in>lm_query_proxy.hpp</in>
+            <in>lm_query_proxy_local.hpp</in>
           </df>
           <in>lm_configs.hpp</in>
           <in>lm_configurator.hpp</in>

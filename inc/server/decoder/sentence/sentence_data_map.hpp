@@ -35,6 +35,7 @@
 
 #include "server/common/models/phrase_uid.hpp"
 
+#include "server/decoder/de_configs.hpp"
 #include "server/tm/models/tm_source_entry.hpp"
 
 using namespace std;
@@ -43,6 +44,7 @@ using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::containers;
 
+using namespace uva::smt::bpbd::server::decoder;
 using namespace uva::smt::bpbd::server::common::models;
 using namespace uva::smt::bpbd::server::tm::models;
 
@@ -67,7 +69,9 @@ namespace uva {
                             /**
                              * The basic constructor, does default initialization of the structure fields
                              */
-                            sent_data_entry() : m_begin_ch_idx(0), m_end_ch_idx(0), m_phrase_uid(UNDEFINED_PHRASE_ID), m_source_entry(NULL) {
+                            sent_data_entry()
+                            : m_begin_ch_idx(0), m_end_ch_idx(0), m_phrase_uid(UNDEFINED_PHRASE_ID),
+                            m_source_entry(NULL), future_cost(ZERO_LOG_PROB_WEIGHT) {
                             }
 
                             /**
@@ -86,6 +90,9 @@ namespace uva {
 
                             //Stores the pointer to the translation model source entry
                             const tm_source_entry * m_source_entry;
+                            
+                            //Stores the future cost, log scale, for the given phrase.
+                            float future_cost;
                         };
 
                         //Define the sentence data map that stores some of the sentence related data

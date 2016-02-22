@@ -45,13 +45,13 @@ namespace uva {
                          * It allows to interact with templated trie queries in a uniform way.
                          * ToDo: Add methods/return values to extract the needed probability data.
                          */
-                        class lm_trie_query_proxy {
+                        class lm_query_proxy {
                         public:
 
                             /**
                              * The basic virtual destructor
                              */
-                            virtual ~lm_trie_query_proxy() {
+                            virtual ~lm_query_proxy() {
                             }
 
                             /**
