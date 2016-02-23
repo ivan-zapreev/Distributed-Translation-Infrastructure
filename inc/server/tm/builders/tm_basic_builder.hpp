@@ -35,6 +35,10 @@
 #include "common/utils/string_utils.hpp"
 
 #include "server/common/models/phrase_uid.hpp"
+
+#include "server/lm/proxy/lm_query_proxy.hpp"
+#include "server/lm/lm_configurator.hpp"
+
 #include "server/tm/tm_parameters.hpp"
 #include "server/tm/models/tm_target_entry.hpp"
 #include "server/tm/models/tm_source_entry.hpp"
@@ -47,6 +51,7 @@ using namespace uva::utils::file;
 using namespace uva::utils::text;
 
 using namespace uva::smt::bpbd::server::common::models;
+using namespace uva::smt::bpbd::server::lm::proxy;
 using namespace uva::smt::bpbd::server::tm;
 using namespace uva::smt::bpbd::server::tm::models;
 
@@ -84,14 +89,16 @@ namespace uva {
                              * @param reader the reader to read the data from
                              */
                             tm_basic_builder(const tm_parameters & params, model_type & model, reader_type & reader)
-                            : m_params(params), m_model(model), m_reader(reader) {
+                            : m_params(params), m_model(model), m_reader(reader), m_lm_query(lm_configurator::allocate_query_proxy()) {
+
                             }
 
                             /**
                              * The basic destructor
                              */
                             ~tm_basic_builder() {
-                                //Nothing to be done
+                                //Dispose the query proxy
+                                lm_configurator::dispose_query_proxy(m_lm_query);
                             }
 
                             /**
@@ -235,7 +242,7 @@ namespace uva {
                                     const phrase_uid target_uid = get_phrase_uid<true>(target_str);
 
                                     //Initiate a new target entry
-                                    source_entry->add_translation(target_str, target_uid, tmp_features_size, tmp_features);
+                                    source_entry->add_translation(m_lm_query, target_str, target_uid, tmp_features_size, tmp_features);
 
                                     //Reduce the counter
                                     count_ref--;
@@ -414,7 +421,7 @@ namespace uva {
                                 }
 
                                 //Set the unk features to the model
-                                m_model.set_unk_entry(m_params.m_num_unk_features, unk_features);
+                                m_model.set_unk_entry(m_lm_query, m_params.m_num_unk_features, unk_features);
                             }
 
                         private:
@@ -426,6 +433,8 @@ namespace uva {
                             model_type & m_model;
                             //Stores the reference to the builder;
                             reader_type & m_reader;
+                            //Stores the reference to the LM query proxy
+                            lm_query_proxy & m_lm_query;
                         };
                     }
                 }

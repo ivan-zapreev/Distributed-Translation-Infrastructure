@@ -35,6 +35,9 @@
 #include "common/utils/containers/fixed_size_hashmap.hpp"
 
 #include "server/common/models/phrase_uid.hpp"
+
+#include "server/lm/proxy/lm_query_proxy.hpp"
+
 #include "server/tm/models/tm_target_entry.hpp"
 
 using namespace std;
@@ -44,6 +47,7 @@ using namespace uva::utils::logging;
 using namespace uva::utils::containers;
 
 using namespace uva::smt::bpbd::server::common::models;
+using namespace uva::smt::bpbd::server::lm::proxy;
 
 namespace uva {
     namespace smt {
@@ -134,12 +138,14 @@ namespace uva {
 
                             /**
                              * Allows to add a new translation to the source entry for the given target phrase
+                             * @param lm_query the reference to the LM query
                              * @param target the target phrase string 
                              * @param target_uid the uid of the target phrase
                              * @param num_features the number of features in the next array
                              * @param weights the features to put into the entry
                              */
-                            inline void add_translation(const string & target, const phrase_uid target_uid,
+                            inline void add_translation(lm_query_proxy & lm_query, const string & target,
+                                    const phrase_uid target_uid,
                                     const size_t num_features, const feature_array features) {
                                 //Perform a sanity check
                                 ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
@@ -152,7 +158,7 @@ namespace uva {
                                 entry.set_features(num_features, features);
 
                                 //Set the entry's target phrase and its id
-                                entry.set_source_target(m_source_uid, target, target_uid);
+                                entry.set_source_target(lm_query, m_source_uid, target, target_uid);
                             }
 
                             /**
@@ -217,7 +223,7 @@ namespace uva {
                             size_t num_entries() const {
                                 return m_capacity;
                             }
-                            
+
                             /**
                              * Allows to get an array of of target entries, if any
                              * @return the pointer to the first target entry, or NULL if none

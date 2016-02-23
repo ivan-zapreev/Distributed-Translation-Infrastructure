@@ -29,6 +29,8 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+#include "server/lm/proxy/lm_query_proxy.hpp"
+
 #include "server/tm/tm_configs.hpp"
 #include "server/tm/models/tm_source_entry.hpp"
 #include "server/tm/models/tm_query.hpp"
@@ -42,6 +44,7 @@ using namespace uva::utils::logging;
 using namespace uva::utils::containers;
 
 using namespace uva::smt::bpbd::server::common::models;
+using namespace uva::smt::bpbd::server::lm::proxy;
 
 namespace uva {
     namespace smt {
@@ -89,10 +92,11 @@ namespace uva {
 
                             /**
                              * Should be called to add the unk entry to the model
+                             * @param lm_query the reference to the lm query
                              * @param num_unk_features the number of initialized unk features
                              * @param unk_features the unk entry features
                              */
-                            void set_unk_entry(const size_t num_unk_features, feature_array unk_features) {
+                            void set_unk_entry(lm_query_proxy & lm_query, const size_t num_unk_features, feature_array unk_features) {
                                 //Initialize the UNK entry
                                 m_unk_entry = new tm_source_entry();
                                 //Set thew source id
@@ -100,7 +104,7 @@ namespace uva {
                                 //Start adding the translations to the entry, there will be just one
                                 m_unk_entry->begin(1);
                                 //Add the translation entry
-                                m_unk_entry->add_translation(
+                                m_unk_entry->add_translation(lm_query,
                                         __unk_phrase::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID,
                                         num_unk_features, unk_features);
                                 //Finalize the source entry

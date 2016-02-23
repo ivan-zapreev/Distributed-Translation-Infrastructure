@@ -32,6 +32,8 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/hashing_utils.hpp"
 
+#include "server/lm/proxy/lm_query_proxy.hpp"
+
 #include "server/common/models/phrase_uid.hpp"
 
 using namespace std;
@@ -41,6 +43,7 @@ using namespace uva::utils::logging;
 using namespace uva::utils::hashing;
 
 using namespace uva::smt::bpbd::server::common::models;
+using namespace uva::smt::bpbd::server::lm::proxy;
 
 namespace uva {
     namespace smt {
@@ -81,18 +84,22 @@ namespace uva {
 
                             /**
                              * Allows to set the target phrase and its id
+                             * @param lm_query the reference to the LM query
                              * @param source_uid store the source uid for being combined with the
                              *                   target phrase into the source/target pair uid
                              * @param target_phrase the target phrase
                              * @param target_uid the uid of the target phrase
                              */
-                            inline void set_source_target(const phrase_uid source_uid,
+                            inline void set_source_target(lm_query_proxy & lm_query,
+                                    const phrase_uid source_uid,
                                     const string & target_phrase, const phrase_uid target_uid) {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;
 
                                 //Compute and store the source/target phrase uid
                                 m_st_uid = combine_phrase_uids(source_uid, target_uid);
+                                
+                                //ToDo: obtain the word ids from the LM query
 
                                 LOG_DEBUG1 << "Adding the source/target (" << source_uid << "/"
                                         << target_uid << ") entry with id" << m_st_uid << END_LOG;
