@@ -83,7 +83,7 @@ namespace uva {
                          * all the X level grams are read. This method is virtual.
                          * @param level the level of the X-grams that were finished to be read
                          */
-                        template<TModelLevel level>
+                        template<phrase_length level>
                         inline bool is_post_grams() const {
                             return false;
                         }
@@ -92,7 +92,7 @@ namespace uva {
                          * This method should be called after all the X level grams are read.
                          * @param level the level of the X-grams that were finished to be read
                          */
-                        template<TModelLevel level>
+                        template<phrase_length level>
                         inline void post_grams() {
                             THROW_MUST_OVERRIDE();
                         };

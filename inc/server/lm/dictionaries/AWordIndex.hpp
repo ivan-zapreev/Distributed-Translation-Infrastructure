@@ -58,24 +58,8 @@ namespace uva {
                          * 
                          * NOTE: All of the methods are non-virtual for the sake of avoiding virtual method call overheads!
                          */
-                        template<typename TIdType>
                         class AWordIndex {
                         public:
-                            //The issued id type
-                            typedef TIdType TWordIdType;
-
-                            //Stores the word hash for an unknown word, is 0
-                            //WARNING! MUST BE 0 as this is the value of a default initialized integer!
-                            const static TIdType UNDEFINED_WORD_ID;
-
-                            //Stores the word id for an unknown word, it must have value 1
-                            const static TIdType UNKNOWN_WORD_ID;
-
-                            //Stores the minimum known word id, it must have value 2
-                            const static TIdType MIN_KNOWN_WORD_ID;
-
-                            //The word indexes that start from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
-                            const static TIdType EXTRA_NUMBER_OF_WORD_IDs;
 
                             /**
                              * This method should be used to pre-allocate the word index
@@ -101,7 +85,7 @@ namespace uva {
                              * @param token the word to hash
                              * @return the word id or UNKNOWN_WORD_ID if the word is not found
                              */
-                            inline TIdType get_word_id(const TextPieceReader & token) const {
+                            inline word_uid get_word_id(const TextPieceReader & token) const {
                                 THROW_MUST_OVERRIDE();
                             };
 
@@ -121,7 +105,7 @@ namespace uva {
                              * @param token the word to hash
                              * @return the resulting hash
                              */
-                            inline TIdType register_word(const TextPieceReader & token) {
+                            inline word_uid register_word(const TextPieceReader & token) {
                                 THROW_MUST_OVERRIDE();
                             };
 
@@ -142,7 +126,7 @@ namespace uva {
                              * @param token the word to count
                              * @param prob the word log probability
                              */
-                            inline void count_word(const TextPieceReader & word, TLogProbBackOff prob) {
+                            inline void count_word(const TextPieceReader & word, prob_weight prob) {
                                 THROW_MUST_OVERRIDE();
                             };
 
@@ -193,7 +177,7 @@ namespace uva {
                              * The basic destructor
                              */
                             virtual ~AWordIndex() {
-                            };
+                            }
                         };
                     }
                 }

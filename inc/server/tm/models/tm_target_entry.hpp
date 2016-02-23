@@ -72,7 +72,7 @@ namespace uva {
                              */
                             tm_target_entry_temp()
                             : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase(""),
-                            m_t_cond_s(ZERO_LOG_PROB_WEIGHT), m_total(ZERO_LOG_PROB_WEIGHT) {
+                            m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total(UNKNOWN_LOG_PROB_WEIGHT) {
                             }
 
                             /**

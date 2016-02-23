@@ -82,7 +82,7 @@ namespace uva {
                              * @param trie the trie to be filled in with the N-grams
                              * @param pBuilder the pointer to a dynamically allocated N-Gram builder
                              */
-                            template<TModelLevel CURR_LEVEL, bool is_mult_weight>
+                            template<phrase_length CURR_LEVEL, bool is_mult_weight>
                             static inline void get_builder(const lm_parameters & params, TrieType & trie, lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight> **ppBuilder) {
                                 //First reset the pointer to NULL
                                 *ppBuilder = NULL;

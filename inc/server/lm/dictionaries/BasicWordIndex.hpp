@@ -56,7 +56,7 @@ namespace uva {
                         /**
                          * This is a hash-map based implementation of the word index.
                          */
-                        class BasicWordIndex : public AWordIndex<TShortId> {
+                        class BasicWordIndex : public AWordIndex {
                         public:
 
                             /**
@@ -73,7 +73,7 @@ namespace uva {
                              * @see AWordIndex
                              */
                             inline size_t get_number_of_words(const size_t num_words) const {
-                                return num_words + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
+                                return num_words + EXTRA_NUMBER_OF_WORD_IDs;
                             };
 
                             /**
@@ -90,7 +90,7 @@ namespace uva {
                                         numWords, "WordIndex", m_word_index_mem_factor);
 
                                 //Register the unknown word with the first available hash value
-                                TWordIdType& word_id = m_word_index_map_ptr->operator[](UNKNOWN_WORD_STR);
+                                word_uid& word_id = m_word_index_map_ptr->operator[](UNKNOWN_WORD_STR);
                                 word_id = UNKNOWN_WORD_ID;
                             };
 
@@ -99,7 +99,7 @@ namespace uva {
                              * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
                              * @see AWordIndex
                              */
-                            inline TWordIdType get_word_id(const TextPieceReader & token) const {
+                            inline word_uid get_word_id(const TextPieceReader & token) const {
                                 TWordIndexMapConstIter result = m_word_index_map_ptr->find(token.str());
                                 if (result == m_word_index_map_ptr->end()) {
                                     LOG_DEBUG << "Word: '" << token << "' is not known! Mapping it to: '"
@@ -124,9 +124,9 @@ namespace uva {
                              * This function creates/gets a hash for the given word.
                              * @see AWordIndex
                              */
-                            inline TWordIdType register_word(const TextPieceReader & token) {
+                            inline word_uid register_word(const TextPieceReader & token) {
                                 //First get/create an existing/new word entry from from/in the word index
-                                TWordIdType& hash = m_word_index_map_ptr->operator[](token.str());
+                                word_uid& hash = m_word_index_map_ptr->operator[](token.str());
 
                                 if (hash == UNDEFINED_WORD_ID) {
                                     //If the word hash is not defined yet, then issue it a new hash id
@@ -151,7 +151,7 @@ namespace uva {
                              * This method is to be used when the word counting is needed.
                              * @see AWordIndex
                              */
-                            inline void count_word(const TextPieceReader & word, TLogProbBackOff prob) {
+                            inline void count_word(const TextPieceReader & word, prob_weight prob) {
                                 //There is nothing to be done
                                 THROW_MUST_NOT_CALL();
                             };
@@ -206,7 +206,7 @@ namespace uva {
                             /**
                              * The type of key,value pairs to be stored in the word index
                              */
-                            typedef pair< const string, TWordIdType> TWordIndexEntry;
+                            typedef pair< const string, word_uid> TWordIndexEntry;
 
                             /**
                              * The typedef for the word index allocator
@@ -216,7 +216,7 @@ namespace uva {
                             /**
                              * The word index map type
                              */
-                            typedef unordered_map<string, TWordIdType, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
+                            typedef unordered_map<string, word_uid, std::hash<string>, std::equal_to<string>, TWordIndexAllocator > TWordIndexMap;
 
                             /**
                              * Defines the constant iterator type
@@ -257,7 +257,7 @@ namespace uva {
                             TWordIndexMap * m_word_index_map_ptr;
 
                             //Stores the last allocated word hash
-                            TWordIdType m_next_new_word_id;
+                            word_uid m_next_new_word_id;
 
                             //Stores the assigned memory factor for storage allocation
                             //in the unordered_map used for the word index

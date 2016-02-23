@@ -43,19 +43,20 @@ namespace uva {
             namespace server {
                 namespace lm {
 
-                    template<typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+                    template<typename WordIndexType, template<phrase_length > class StorageFactory, class StorageContainer>
                     W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>::W2CHybridTrie(WordIndexType & word_index)
                     : LayeredTrieBase<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
                     m_unk_data(NULL), m_storage_factory(NULL) {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
+                        ASSERT_CONDITION_THROW((sizeof(uint32_t) != sizeof(word_uid)), string("Only works with a 32 bit word_uid!"));
 
                         //Check for the storage memory sized. This one is needed to be able to store
                         //N-gram probabilities in the C type container as its value! See description
                         //of the m_mgram_mapping data member. We missuse the mapping container for
                         //the last trie level by storing there probabilities instead of ids! 
-                        const size_t float_size = sizeof (TLogProbBackOff);
+                        const size_t float_size = sizeof (prob_weight);
                         const size_t idx_size = sizeof (TShortId);
 
                         //Assert on sizes
@@ -67,7 +68,7 @@ namespace uva {
                         memset(next_ctx_id, 0, NUM_IDX_COUNTERS * sizeof (TShortId));
                     }
 
-                    template<typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+                    template<typename WordIndexType, template<phrase_length > class StorageFactory, class StorageContainer>
                     void W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //01) Pre-allocate the word index super class call
                         BASE::pre_allocate(counts);
@@ -86,9 +87,9 @@ namespace uva {
                         memset(m_mgram_data[0], 0, m_word_arr_size * sizeof (m_gram_payload));
 
                         //Record the dummy probability and back-off values for the unknown word
-                        m_unk_data = &m_mgram_data[0][WordIndexType::UNKNOWN_WORD_ID];
+                        m_unk_data = &m_mgram_data[0][UNKNOWN_WORD_ID];
                         m_unk_data->m_prob = UNK_WORD_LOG_PROB_WEIGHT;
-                        m_unk_data->m_back = ZERO_BACK_OFF_WEIGHT;
+                        m_unk_data->m_back = 0.0;
 
                         //Allocate more memory for probabilities and back off weight for
                         //the remaining M-gram levels until M < N. For M==N there is no
@@ -107,17 +108,17 @@ namespace uva {
                         }
                     }
 
-                    template<typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
+                    template<typename WordIndexType, template<phrase_length > class StorageFactory, class StorageContainer>
                     W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>::~W2CHybridTrie() {
                         //Delete the probability and back-off data
-                        for (TModelLevel idx = 0; idx < (LM_M_GRAM_LEVEL_MAX - 1); idx++) {
+                        for (phrase_length idx = 0; idx < (LM_M_GRAM_LEVEL_MAX - 1); idx++) {
                             //Delete the prob/back-off arrays per level
                             if (m_mgram_data[idx] != NULL) {
                                 delete[] m_mgram_data[idx];
                             }
                         }
                         //Delete the mapping data
-                        for (TModelLevel idx = 0; idx < (LM_M_GRAM_LEVEL_MAX - 1); idx++) {
+                        for (phrase_length idx = 0; idx < (LM_M_GRAM_LEVEL_MAX - 1); idx++) {
                             //Delete the word arrays per level
                             if (m_mgram_mapping[idx] != NULL) {
                                 for (TShortId widx = 0; widx < m_word_arr_size; widx++) {

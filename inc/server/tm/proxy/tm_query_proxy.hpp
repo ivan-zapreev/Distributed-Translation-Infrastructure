@@ -72,7 +72,7 @@ namespace uva {
                              * @return the unknown source word log probability penalty
                              */
                             inline float get_unk_word_prob() {
-                                return uva::smt::bpbd::server::tm::models::__unk_phrase::UNK_SOURCE_WORD_LOG_PROB;
+                                return tm::UNK_SOURCE_WORD_LOG_PROB;
                             }
 
                             /**

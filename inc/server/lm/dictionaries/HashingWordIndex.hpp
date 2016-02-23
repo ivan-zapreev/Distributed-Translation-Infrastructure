@@ -55,14 +55,16 @@ namespace uva {
                          * the word id has no associated payload then an unknown word payload is to be used.
                          * Still the unknown and undefined word ids are reserved nd should not be issued.
                          */
-                        class HashingWordIndex : public AWordIndex<uint64_t> {
+                        class HashingWordIndex : public AWordIndex {
                         public:
 
                             /**
                              * The basic constructor
                              * @param memory_factor is not used, is here only for interface compliancy
                              */
-                            HashingWordIndex(const float memory_factor) : AWordIndex<uint64_t>() {
+                            HashingWordIndex(const float memory_factor) : AWordIndex() {
+                                ASSERT_CONDITION_THROW((sizeof (uint64_t) != sizeof (word_uid)),
+                                        string("Currently only works with 64 bit word_uid!"));
                             }
 
                             /**
@@ -76,7 +78,7 @@ namespace uva {
                              * @see AWordIndex
                              */
                             inline size_t get_number_of_words(const size_t num_words) const {
-                                return num_words + AWordIndex::EXTRA_NUMBER_OF_WORD_IDs;
+                                return num_words + EXTRA_NUMBER_OF_WORD_IDs;
                             };
 
                             /**
@@ -84,12 +86,12 @@ namespace uva {
                              * The returned word id is >= MIN_KNOWN_WORD_ID
                              * @see AWordIndex
                              */
-                            inline TWordIdType get_word_id(const TextPieceReader & token) const {
+                            inline word_uid get_word_id(const TextPieceReader & token) const {
                                 //Return the word index making sure that it is at least
                                 //equal to two. So that the undefined and unknown word
                                 //indexes are not used and no overflow or other checks.
                                 const uint64_t hash_value = compute_hash(token.get_begin_c_str(), token.length());
-                                const TWordIdType word_id = hash_value | (1 << 1);
+                                const word_uid word_id = hash_value | (1 << 1);
                                 LOG_DEBUG2 << "Hashing '" << token << "' into: " << hash_value << ", resulting id is: " << word_id << END_LOG;
                                 return word_id;
                             };
@@ -106,7 +108,7 @@ namespace uva {
                              * The word registration is not needed, for this word index.
                              * @see AWordIndex
                              */
-                            inline TWordIdType register_word(const TextPieceReader & token) {
+                            inline word_uid register_word(const TextPieceReader & token) {
                                 THROW_MUST_NOT_CALL();
                             };
 

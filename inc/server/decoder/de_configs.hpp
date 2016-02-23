@@ -30,9 +30,7 @@
 #include <cstdint>
 #include <string>
 
-#include "server/tm/tm_configs.hpp"
-#include "server/rm/rm_configs.hpp"
-#include "server/lm/lm_configs.hpp"
+#include "server/server_configs.hpp"
 
 using namespace std;
 
@@ -41,17 +39,8 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace decoder {
-                    //Stores the zero log probability for the partial score or future cost
-                    static const float ZERO_LOG_PROB_WEIGHT = -1000.0;
-
                     //Stores the maximum considered number of words per sentence
                     static const size_t MAX_WORDS_PER_SENTENCE = 100;
-
-                    //Stores the start of the sentence symbol
-                    static const string BEGIN_SENTENCE_TAG_STR = "<s>";
-
-                    //Stores the end of the sentence symbol
-                    static const string END_SENTENCE_TAG_STR = "</s>";
                 }
             }
         }

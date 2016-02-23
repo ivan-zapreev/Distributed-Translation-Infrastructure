@@ -63,10 +63,10 @@ namespace uva {
                         
                         TLongId m_last_ctx_ids[LM_M_GRAM_LEVEL_MAX];
                         
-                        TLogProbBackOff m_probs[LM_M_GRAM_LEVEL_MAX];
+                        prob_weight m_probs[LM_M_GRAM_LEVEL_MAX];
                         
-                        TModelLevel m_begin_word_idx;
-                        TModelLevel m_end_word_idx;
+                        phrase_length m_begin_word_idx;
+                        phrase_length m_end_word_idx;
 
                         /**
                          * The basic constructor that gets a reference to the word index

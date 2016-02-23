@@ -73,8 +73,8 @@ namespace uva {
                              * The basic class constructor
                              */
                             rm_basic_model()
-                            : SOURCE_UNK_UID(get_phrase_uid<true>(__unk_phrase::RM_UNKNOWN_SOURCE_STR)),
-                            TARGET_UNK_UID(get_phrase_uid<true>(__unk_phrase::RM_UNKNOWN_TARGET_STR)),
+                            : SOURCE_UNK_UID(get_phrase_uid<true>(rm::RM_UNK_SOURCE_PHRASE)),
+                            TARGET_UNK_UID(get_phrase_uid<true>(rm::RM_UNK_TARGET_PHRASE)),
                             m_rm_data(NULL), m_unk_entry(NULL) {
                             }
 
@@ -139,7 +139,7 @@ namespace uva {
 
                                 //Assert on that the UNK/UNK entry is found!
                                 ASSERT_CONDITION_THROW((m_unk_entry == NULL), string("Could not find the ") +
-                                        __unk_phrase::RM_UNKNOWN_SOURCE_STR + string("/") + __unk_phrase::RM_UNKNOWN_SOURCE_STR +
+                                        RM_UNK_SOURCE_PHRASE + string("/") + RM_UNK_SOURCE_PHRASE +
                                         string(" entry in the reordering model!"));
                             }
 

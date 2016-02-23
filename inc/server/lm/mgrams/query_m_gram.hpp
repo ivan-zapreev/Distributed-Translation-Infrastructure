@@ -58,10 +58,8 @@ namespace uva {
                         template<typename WordIndexType>
                         class query_m_gram : public m_gram_base<WordIndexType> {
                         public:
-                            //The type of the word id
-                            typedef typename WordIndexType::TWordIdType TWordIdType;
                             //Define the corresponding M-gram id type
-                            typedef m_gram_id::Byte_M_Gram_Id<TWordIdType> T_M_Gram_Id;
+                            typedef m_gram_id::Byte_M_Gram_Id<word_uid> T_M_Gram_Id;
                             //Define the base class type
                             typedef m_gram_base<WordIndexType> BASE;
 
@@ -83,9 +81,9 @@ namespace uva {
                              * @param end_word_idx the end word index of the sub-m-gram
                              * @return the hash value for the given sub-m-gram
                              */
-                            inline uint64_t get_hash(TModelLevel begin_word_idx, const TModelLevel end_word_idx) const {
+                            inline uint64_t get_hash(phrase_length begin_word_idx, const phrase_length end_word_idx) const {
                                 //Define the reference to the previous level
-                                TModelLevel & prev_level_ref = const_cast<TModelLevel &> (m_hash_level_row[begin_word_idx]);
+                                phrase_length & prev_level_ref = const_cast<phrase_length &> (m_hash_level_row[begin_word_idx]);
 
                                 LOG_DEBUG1 << "Getting hash values for begin/end index: " << SSTR(begin_word_idx)
                                         << "/" << SSTR(end_word_idx) << ", the previous computed begin level "
@@ -95,7 +93,7 @@ namespace uva {
                                 uint64_t(& hash_row_ref)[LM_M_GRAM_LEVEL_MAX] = const_cast<uint64_t(&)[LM_M_GRAM_LEVEL_MAX]> (m_hash_matrix[begin_word_idx]);
 
                                 //Compute the current level
-                                const TModelLevel curr_level = CURR_LEVEL_MAP[begin_word_idx][end_word_idx];
+                                const phrase_length curr_level = CURR_LEVEL_MAP[begin_word_idx][end_word_idx];
                                 //Check if the given hash is already available.
                                 if (curr_level > prev_level_ref) {
                                     //Check if there has its been computed before for this row
@@ -147,7 +145,7 @@ namespace uva {
                              * @param level the level M of the sub-m-gram prefix to work with
                              * @return the resulting string
                              */
-                            inline string get_mgram_prob_str(const TModelLevel level) const {
+                            inline string get_mgram_prob_str(const phrase_length level) const {
                                 if (level == M_GRAM_LEVEL_UNDEF) {
                                     return "<none>";
                                 } else {
@@ -155,9 +153,9 @@ namespace uva {
                                         const TextPieceReader & token = BASE::m_tokens[BASE::m_actual_begin_word_idx];
                                         return token.str().empty() ? "<empty>" : token.str();
                                     } else {
-                                        const TModelLevel end_word_idx = (level - 1);
+                                        const phrase_length end_word_idx = (level - 1);
                                         string result = BASE::m_tokens[end_word_idx].str() + " |";
-                                        for (TModelLevel idx = BASE::m_actual_begin_word_idx; idx != end_word_idx; idx++) {
+                                        for (phrase_length idx = BASE::m_actual_begin_word_idx; idx != end_word_idx; idx++) {
                                             result += string(" ") + BASE::m_tokens[idx].str();
                                         }
                                         return result;
@@ -181,7 +179,7 @@ namespace uva {
                                         return token.str().empty() ? "<empty>" : token.str();
                                     } else {
                                         string result;
-                                        for (TModelLevel idx = BASE::m_actual_begin_word_idx; idx <= BASE::m_actual_end_word_idx; idx++) {
+                                        for (phrase_length idx = BASE::m_actual_begin_word_idx; idx <= BASE::m_actual_end_word_idx; idx++) {
                                             result += BASE::m_tokens[idx].str() + string(" ");
                                         }
                                         return result.substr(0, result.length() - 1);
@@ -196,7 +194,7 @@ namespace uva {
                              */
                             inline void set_m_gram_from_text(TextPieceReader &text) {
                                 //Set all the "computed hash level" flags to "undefined"
-                                memset(m_hash_level_row, M_GRAM_LEVEL_UNDEF, LM_M_GRAM_LEVEL_MAX * sizeof (TModelLevel));
+                                memset(m_hash_level_row, M_GRAM_LEVEL_UNDEF, LM_M_GRAM_LEVEL_MAX * sizeof (phrase_length));
 
                                 //Initialize the actual level with undefined (zero)
                                 BASE::m_actual_level = M_GRAM_LEVEL_UNDEF;
@@ -234,14 +232,14 @@ namespace uva {
 
                         private:
                             //Stores the hash computed flags
-                            TModelLevel m_hash_level_row[LM_M_GRAM_LEVEL_MAX];
+                            phrase_length m_hash_level_row[LM_M_GRAM_LEVEL_MAX];
                             //Stores the computed hash values
                             uint64_t m_hash_matrix[LM_M_GRAM_LEVEL_MAX][LM_M_GRAM_LEVEL_MAX];
 
                             /**
                              * This constructor is made private as it is not to be used
                              */
-                            query_m_gram(WordIndexType & word_index, TModelLevel actual_level)
+                            query_m_gram(WordIndexType & word_index, phrase_length actual_level)
                             : m_gram_base<WordIndexType>(word_index, actual_level) {
                             }
 

@@ -105,7 +105,7 @@ namespace uva {
                                 m_unk_entry->begin(1);
                                 //Add the translation entry
                                 m_unk_entry->add_translation(lm_query,
-                                        __unk_phrase::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID,
+                                        tm::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID,
                                         num_unk_features, unk_features);
                                 //Finalize the source entry
                                 m_unk_entry->finalize();

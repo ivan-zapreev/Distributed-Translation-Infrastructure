@@ -95,7 +95,7 @@ namespace uva {
                     /**
                      * This is a factory class that should be used to produce containers of CtxToPBMapStorage.
                      */
-                    template<TModelLevel N>
+                    template<phrase_length N>
                     class W2CH_UM_StorageFactory {
                     public:
 
@@ -130,8 +130,8 @@ namespace uva {
                          * @param level the N-gram level must be > 1 and <= N
                          * @return the pointer to the allocated container
                          */
-                        W2CH_UM_Storage * create(const TModelLevel level) {
-                            const TModelLevel idx = level - 2;
+                        W2CH_UM_Storage * create(const phrase_length level) {
+                            const phrase_length idx = level - 2;
                             LOG_DEBUG3 << "Allocating a new CtxToPBMapStorage for level "
                                     << level << ", the allocator m_p_alloc[" << idx
                                     << "] = " << SSTR(m_p_alloc[idx]) << END_LOG;

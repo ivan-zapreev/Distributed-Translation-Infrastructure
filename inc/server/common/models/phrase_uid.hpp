@@ -35,6 +35,8 @@
 #include "common/utils/hashing_utils.hpp"
 #include "common/utils/string_utils.hpp"
 
+#include "server/server_configs.hpp"
+
 using namespace std;
 
 using namespace uva::utils::exceptions;
@@ -48,17 +50,6 @@ namespace uva {
             namespace server {
                 namespace common {
                     namespace models {
-                        //Declare the phrase unique identifier type
-                        typedef uint64_t phrase_uid;
-
-                        //Define the undefined phrase id value
-                        static constexpr uint64_t UNDEFINED_PHRASE_ID = 0;
-                        //Define the unknown phrase id value
-                        static constexpr uint64_t UNKNOWN_PHRASE_ID = UNDEFINED_PHRASE_ID + 1;
-                        //Contains the minimum valid phrase id value
-                        static constexpr uint64_t MIN_VALID_PHRASE_ID = UNKNOWN_PHRASE_ID + 1;
-                        //Contains the maximum valid phrase id value
-                        static constexpr uint64_t MAX_VALID_PHRASE_ID = UINT64_MAX;
 
                         /**
                          * Allows to get the phrase uid for the given phrase pair.
@@ -82,10 +73,8 @@ namespace uva {
                             // for smaller hash values in some combine_hash algorithms
                             phrase_uid uid = combine_hash(p2_uid, p1_uid);
 
-                            //If the value is below the minimum then shift it up
-                            if (uid < MIN_VALID_PHRASE_ID) {
-                                uid += MIN_VALID_PHRASE_ID;
-                            }
+                            //Shift the value up to get the minimum valid id
+                            uid |= (1 << 1);
                             
                             LOG_DEBUG2 << "Combined " << p1_uid << " and " << p2_uid << " into " << uid << END_LOG;
                             return uid;
@@ -135,10 +124,8 @@ namespace uva {
                                 }
                             }
 
-                            //If the value is below the minimum then shift it up
-                            if (uid < MIN_VALID_PHRASE_ID) {
-                                uid += MIN_VALID_PHRASE_ID;
-                            }
+                            //Shift the value up to get the minimum valid id
+                            uid |= (1 << 1);
                             
                             LOG_DEBUG2 << "Phrase ___" << phrase << "___ got id " << uid << END_LOG;
                             

@@ -719,6 +719,8 @@
           <in>tm_configurator.hpp</in>
           <in>tm_parameters.hpp</in>
         </df>
+        <in>server_configs.hpp</in>
+        <in>server_constants.hpp</in>
         <in>server_parameters.hpp</in>
         <in>trans_job.hpp</in>
         <in>trans_job_pool.hpp</in>
@@ -758,9 +760,6 @@
           <df name="builders">
             <in>lm_basic_builder.cpp</in>
             <in>lm_gram_builder.cpp</in>
-          </df>
-          <df name="dictionaries">
-            <in>aword_index.cpp</in>
           </df>
           <df name="models">
             <in>c2d_hybrid_trie.cpp</in>

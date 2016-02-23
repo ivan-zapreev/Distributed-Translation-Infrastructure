@@ -67,8 +67,8 @@ namespace uva {
                          * @param ctx_id the context id, if computed
                          * @return the level of the m-gram for which the last context id could be computed
                          */
-                        template<typename TrieType, TModelLevel CURR_LEVEL, bool GET_BACK_OFF_CTX_ID, DebugLevelsEnum LOG_LEVEL = DebugLevelsEnum::DEBUG1>
-                        inline TModelLevel search_m_gram_ctx_id(const TrieType & trie, const typename TrieType::WordIndexType::TWordIdType * const word_ids, TLongId & prev_ctx_id, TLongId & ctx_id) {
+                        template<typename TrieType, phrase_length CURR_LEVEL, bool GET_BACK_OFF_CTX_ID, DebugLevelsEnum LOG_LEVEL = DebugLevelsEnum::DEBUG1>
+                        inline phrase_length search_m_gram_ctx_id(const TrieType & trie, const word_uid * const word_ids, TLongId & prev_ctx_id, TLongId & ctx_id) {
                             //Assert that this method is called for proper m-gram levels
                             ASSERT_SANITY_THROW(((CURR_LEVEL < M_GRAM_LEVEL_2) || (CURR_LEVEL > M_GRAM_LEVEL_5)), string("The level: ") + std::to_string(CURR_LEVEL) + string(" is not supported yet!"));
 
@@ -109,7 +109,7 @@ namespace uva {
                          * @param the resulting hash of the context(w1 w2 w3)
                          * @return true if the context was found otherwise false
                          */
-                        template<typename TrieType, TModelLevel CURR_LEVEL, DebugLevelsEnum LOG_LEVEL>
+                        template<typename TrieType, phrase_length CURR_LEVEL, DebugLevelsEnum LOG_LEVEL>
                         inline void get_context_id(TrieType & trie, const model_m_gram<typename TrieType::WordIndexType> &gram, TLongId & ctx_id) {
                             //Perform sanity check for the level values they should be the same!
                             ASSERT_SANITY_THROW(CURR_LEVEL != gram.get_m_gram_level(),
@@ -119,7 +119,7 @@ namespace uva {
                             //Try to retrieve the context from the cache, if not present then compute it
                             if (trie.template get_cached_context_id<CURR_LEVEL>(gram, ctx_id)) {
                                 //Compute the context id, check on the level
-                                const TModelLevel ctx_level = search_m_gram_ctx_id<TrieType, CURR_LEVEL, false, LOG_LEVEL>(trie, gram.word_ids(), ctx_id, ctx_id);
+                                const phrase_length ctx_level = search_m_gram_ctx_id<TrieType, CURR_LEVEL, false, LOG_LEVEL>(trie, gram.word_ids(), ctx_id, ctx_id);
 
                                 LOG_DEBUG4 << "The context level is: " << SSTR(ctx_level) << ", the current level is " << SSTR(CURR_LEVEL) << END_LOG;
 
@@ -140,7 +140,7 @@ namespace uva {
                     }
 
 #define LAYERED_BASE_ENSURE_CONTEXT(query, status) \
-            if (query.m_last_ctx_ids[query.m_begin_word_idx] == WordIndexType::UNDEFINED_WORD_ID) { \
+            if (query.m_last_ctx_ids[query.m_begin_word_idx] == UNDEFINED_WORD_ID) { \
                 BASE::ensure_context(query, status); \
             } else { \
                 status = MGramStatusEnum::GOOD_PRESENT_MGS; \
@@ -161,7 +161,7 @@ namespace uva {
                          */
                         explicit LayeredTrieBase(WordIndexType & word_index)
                         : GenericTrieBase<TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> (word_index),
-                        m_zero_payload(ZERO_PROB_WEIGHT, ZERO_BACK_OFF_WEIGHT) {
+                        m_nothing_payload(0.0, 0.0) {
                             //Clean the cache memory
                             memset(m_cached_ctx, 0, LM_M_GRAM_LEVEL_MAX * sizeof (TContextCacheEntry));
                         }
@@ -188,7 +188,7 @@ namespace uva {
                          * @param ctx_id the previous level context id
                          * @return true if computation of the next context is succeeded
                          */
-                        inline bool get_ctx_id(const TModelLevel level_idx, const TShortId word_id, TLongId & ctx_id) const {
+                        inline bool get_ctx_id(const phrase_length level_idx, const TShortId word_id, TLongId & ctx_id) const {
                             THROW_MUST_OVERRIDE();
                         }
 
@@ -198,10 +198,10 @@ namespace uva {
                          * @param result the output parameter, will store the cached id, if any
                          * @return true if there was nothing cached, otherwise false
                          */
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         inline bool get_cached_context_id(const model_m_gram<WordIndexType> &gram, TLongId & result) const {
                             //Compute the context level
-                            constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
+                            constexpr phrase_length CONTEXT_LEVEL = CURR_LEVEL - 1;
                             //Check if this is the same m-gram
                             if (memcmp(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.word_ids(), CONTEXT_LEVEL * sizeof (TShortId)) == 0) {
                                 result = m_cached_ctx[CONTEXT_LEVEL].m_ctx_id;
@@ -217,10 +217,10 @@ namespace uva {
                          * @param gram the m-gram to cache
                          * @param ctx_id the m-gram context id to cache.
                          */
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         inline void set_cache_context_id(const model_m_gram<WordIndexType> &gram, TLongId & ctx_id) {
                             //Compute the context level
-                            constexpr TModelLevel CONTEXT_LEVEL = CURR_LEVEL - 1;
+                            constexpr phrase_length CONTEXT_LEVEL = CURR_LEVEL - 1;
                             //Copy the context word ids
                             memcpy(m_cached_ctx[CONTEXT_LEVEL].m_word_ids, gram.word_ids(), CONTEXT_LEVEL * sizeof (TShortId));
                             //Store the cache value
@@ -263,9 +263,9 @@ namespace uva {
                                 static_cast<const TrieType*> (this)->get_unigram_payload(query);
                             } else {
                                 //If the back-off sub-m-gram is not a uni-gram then do the context
-                                for (TModelLevel word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
+                                for (phrase_length word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
                                     LOG_DEBUG2 << "Getting the context id for sub-m-gram: [" << SSTR(query.m_begin_word_idx) << ", " << SSTR(word_idx) << "]" << END_LOG;
-                                    const TModelLevel & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][word_idx];
+                                    const phrase_length & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][word_idx];
                                     if (!static_cast<const TrieType*> (this)->get_ctx_id(level_idx, query.m_gram[word_idx], ctx_id)) {
                                         //If the next context could not be computed, we stop with a bad status
                                         status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
@@ -283,7 +283,7 @@ namespace uva {
                                 if (status != MGramStatusEnum::GOOD_PRESENT_MGS) {
                                     //Set the back-off payload to zero payload!
 
-                                    query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_zero_payload;
+                                    query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_nothing_payload;
                                 }
                             }
                             //Increment the end word index to get back to the original sub-m-gram
@@ -297,7 +297,7 @@ namespace uva {
                     private:
 
                         //Stores the zero payload for begin used when no payload is found
-                        const m_gram_payload m_zero_payload;
+                        const m_gram_payload m_nothing_payload;
 
                         /**
                          * This structure is to store the cached word ids and context ids

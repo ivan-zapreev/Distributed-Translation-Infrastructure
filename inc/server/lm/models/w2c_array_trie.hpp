@@ -75,7 +75,7 @@ namespace uva {
                                 __W2CArrayTrie::MIN_MEM_INC_NUM, __W2CArrayTrie::MEM_INC_FACTOR);
 
                         typedef S_M_GramData<m_gram_payload> T_M_GramData;
-                        typedef S_M_GramData<TLogProbBackOff> T_N_GramData;
+                        typedef S_M_GramData<prob_weight> T_N_GramData;
 
                         /**
                          * This is the less operator implementation
@@ -126,9 +126,9 @@ namespace uva {
                          * Computes the M-Gram context using the previous context and the current word id
                          * @see LayeredTrieBese
                          */
-                        inline bool get_ctx_id(const TModelLevel level_idx, const TShortId word_id, TLongId & ctx_id) const {
+                        inline bool get_ctx_id(const phrase_length level_idx, const TShortId word_id, TLongId & ctx_id) const {
                             //Compute back the current level pure for debug purposes.
-                            const TModelLevel curr_level = level_idx + BASE::MGRAM_IDX_OFFSET;
+                            const phrase_length curr_level = level_idx + BASE::MGRAM_IDX_OFFSET;
 
                             ASSERT_SANITY_THROW((curr_level == LM_M_GRAM_LEVEL_MAX) || (level_idx < 0),
                                     string("Unsupported level id: ") + std::to_string(curr_level));
@@ -149,11 +149,11 @@ namespace uva {
                             //Check that if this is the 2-Gram case and the previous context
                             //id is 0 then it is the unknown word id, at least this is how it
                             //is now in ATrie implementation, so we need to do a warning!
-                            if (DO_SANITY_CHECKS && (curr_level == M_GRAM_LEVEL_2) && (ctx_id < WordIndexType::MIN_KNOWN_WORD_ID)) {
+                            if (DO_SANITY_CHECKS && (curr_level == M_GRAM_LEVEL_2) && (ctx_id < MIN_KNOWN_WORD_ID)) {
                                 LOG_WARNING << "Perhaps we are being paranoid but there "
                                         << "seems to be a problem! The " << SSTR(curr_level) << "-gram ctx_id: "
-                                        << SSTR(ctx_id) << " is equal to an undefined(" << SSTR(WordIndexType::UNDEFINED_WORD_ID)
-                                        << ") or unknown(" << SSTR(WordIndexType::UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
+                                        << SSTR(ctx_id) << " is equal to an undefined(" << SSTR(UNDEFINED_WORD_ID)
+                                        << ") or unknown(" << SSTR(UNKNOWN_WORD_ID) << ") word ids!" << END_LOG;
                             }
 
                             //Get the local entry index and then use it to compute the next context id
@@ -195,7 +195,7 @@ namespace uva {
                          * all the X level grams are read. This method is virtual.
                          * For more details @see WordIndexTrieBase
                          */
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         bool is_post_grams() const {
                             //Check the base class and we need to do post actions
                             //for all the M-grams with 1 < M <= N. The M-grams level
@@ -209,7 +209,7 @@ namespace uva {
                          * This method should be called after all the X level grams are read.
                          * For more details @see WordIndexTrieBase
                          */
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         inline void post_grams() {
                             //Call the base class method first
                             if (BASE::template is_post_grams<CURR_LEVEL>()) {
@@ -232,7 +232,7 @@ namespace uva {
                          * If the storage structure does not exist, return a new one.
                          * For more details @see LayeredTrieBase
                          */
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             const TShortId word_id = gram.get_end_word_id();
                             if (CURR_LEVEL == M_GRAM_LEVEL_1) {
@@ -243,7 +243,7 @@ namespace uva {
                                 this->register_m_gram_cache(gram);
 
                                 //Define the context id variable
-                                TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
+                                TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
                                 __LayeredTrieBase::get_context_id<W2CArrayTrie<WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
 
@@ -273,7 +273,7 @@ namespace uva {
                          */
                         inline void get_unigram_payload(typename BASE::query_exec_data & query) const {
                             //Get the word index for convenience
-                            const TModelLevel & word_idx = query.m_begin_word_idx;
+                            const phrase_length & word_idx = query.m_begin_word_idx;
 
                             LOG_DEBUG << "Getting the payload for sub-uni-gram : [" << SSTR(word_idx)
                                     << "," << SSTR(word_idx) << "]" << END_LOG;
@@ -304,7 +304,7 @@ namespace uva {
 
                                 //Get the entry
                                 const typename T_M_GramWordEntry::TElemType * entry_ptr;
-                                const TModelLevel level_idx = (query.m_end_word_idx - query.m_begin_word_idx) + 1 - BASE::MGRAM_IDX_OFFSET;
+                                const phrase_length level_idx = (query.m_end_word_idx - query.m_begin_word_idx) + 1 - BASE::MGRAM_IDX_OFFSET;
                                 const T_M_GramWordEntry * ptr = m_m_gram_word_2_data[level_idx];
                                 if (get_m_n_gram_entry<T_M_GramWordEntry>(ptr, word_id, ctx_id, &entry_ptr)) {
                                     //Return the data
@@ -396,7 +396,7 @@ namespace uva {
                             TShortId cio = BASE::FIRST_VALID_CTX_ID;
 
                             //Iterate through all the word_id sub-array mappings in the level and sort sub arrays
-                            for (TShortId word_id = WordIndexType::UNDEFINED_WORD_ID; word_id < m_num_word_ids; word_id++) {
+                            for (TShortId word_id = UNDEFINED_WORD_ID; word_id < m_num_word_ids; word_id++) {
                                 //First get the sub-array reference. 
                                 WORD_ENTRY_TYPE & ref = wordsArray[word_id];
 
@@ -413,7 +413,7 @@ namespace uva {
                             }
                         }
 
-                        template<TModelLevel level>
+                        template<phrase_length level>
                         inline void post_m_grams() {
                             //Sort the level's data
                             post_M_N_Grams<T_M_GramWordEntry>(m_m_gram_word_2_data[level - BASE::MGRAM_IDX_OFFSET]);
@@ -556,7 +556,7 @@ namespace uva {
                                         __W2CArrayTrie::MIN_MEM_INC_NUM);
 
                                 //Pre-allocate capacity
-                                for (TShortId word_id = WordIndexType::MIN_KNOWN_WORD_ID; word_id < m_num_word_ids; word_id++) {
+                                for (TShortId word_id = MIN_KNOWN_WORD_ID; word_id < m_num_word_ids; word_id++) {
                                     wordsArray[word_id].pre_allocate(capacity);
                                 }
                             }

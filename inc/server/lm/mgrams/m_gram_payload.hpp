@@ -53,13 +53,13 @@ namespace uva {
                          * This data structure stores the probability and back off weight payload for an m-gram
                          */
                         struct m_gram_payload_s {
-                            TLogProbBackOff m_prob; // 4 byte for a float
-                            TLogProbBackOff m_back; // 4 byte for a float
+                            prob_weight m_prob; // 4 byte for a float
+                            prob_weight m_back; // 4 byte for a float
 
                             m_gram_payload_s() {
                             }
 
-                            m_gram_payload_s(TLogProbBackOff prob, TLogProbBackOff back) {
+                            m_gram_payload_s(prob_weight prob, prob_weight back) {
                                 m_prob = prob;
                                 m_back = back;
                             }
@@ -78,14 +78,11 @@ namespace uva {
                         template<typename WordIndexType>
                         class m_gram_base {
                         public:
-                            //The type of the word id
-                            typedef typename WordIndexType::TWordIdType TWordIdType;
-
                             //Declare the shorthand for the m-gram id type
-                            typedef Byte_M_Gram_Id<TWordIdType> TM_Gram_Id;
+                            typedef Byte_M_Gram_Id<word_uid> TM_Gram_Id;
 
                             //Define the corresponding M-gram id type
-                            typedef m_gram_id::Byte_M_Gram_Id<TWordIdType> T_M_Gram_Id;
+                            typedef m_gram_id::Byte_M_Gram_Id<word_uid> T_M_Gram_Id;
 
                             /**
                              * The basic constructor, is to be used when the M-gram level
@@ -94,7 +91,7 @@ namespace uva {
                              * @param word_index the used word index
                              * @param actual_level the actual level of the m-gram that will be used should be <= M_GRAM_LEVEL_MAX
                              */
-                            m_gram_base(WordIndexType & word_index, TModelLevel actual_level)
+                            m_gram_base(WordIndexType & word_index, phrase_length actual_level)
                             : m_word_index(word_index), m_actual_level(actual_level),
                             m_actual_end_word_idx(actual_level - 1) {
                                 //Perform sanity check if needed 
@@ -134,7 +131,7 @@ namespace uva {
                              * Allows to obtain the actual m-gram level
                              * @return the actual m-gram level
                              */
-                            inline TModelLevel get_m_gram_level() const {
+                            inline phrase_length get_m_gram_level() const {
 
                                 return m_actual_level;
                             }
@@ -143,7 +140,7 @@ namespace uva {
                              * Allows to retrieve the actual end word id of the m-gram
                              * @return the id of the last word
                              */
-                            inline TWordIdType get_end_word_id() const {
+                            inline word_uid get_end_word_id() const {
 
                                 return m_word_ids[m_actual_end_word_idx];
                             }
@@ -152,7 +149,7 @@ namespace uva {
                              * Allows to retrieve the actual begin word index
                              * @return the index of the begin word
                              */
-                            inline TModelLevel get_begin_word_idx() const {
+                            inline phrase_length get_begin_word_idx() const {
 
                                 return m_actual_begin_word_idx;
                             }
@@ -161,7 +158,7 @@ namespace uva {
                              * Allows to retrieve the actual end word index
                              * @return the index of the end word
                              */
-                            inline TModelLevel get_end_word_idx() const {
+                            inline phrase_length get_end_word_idx() const {
 
                                 return m_actual_end_word_idx;
                             }
@@ -172,8 +169,8 @@ namespace uva {
                              * @param WORD_IDX the word index, the word number as in the m-gram w1w2w3w4w5
                              * @return the pointer to the cell storing the word id with the given index
                              */
-                            template<TModelLevel WORD_IDX>
-                            inline const TWordIdType * get_word_id_ptr() const {
+                            template<phrase_length WORD_IDX>
+                            inline const word_uid * get_word_id_ptr() const {
 
                                 return &m_word_ids[WORD_IDX];
                             }
@@ -183,7 +180,7 @@ namespace uva {
                              * This function retrieves the pointer to the last word id of the m-gram.
                              * @return the pointer to the first word id element, 
                              */
-                            inline const TWordIdType * word_ids() const {
+                            inline const word_uid * word_ids() const {
 
                                 return m_word_ids;
                             }
@@ -201,7 +198,7 @@ namespace uva {
                              * @param word_idx the word index
                              * @return the resulting word id
                              */
-                            inline TWordIdType operator[](const TModelLevel word_idx) const {
+                            inline word_uid operator[](const phrase_length word_idx) const {
 
                                 return m_word_ids[word_idx];
                             };
@@ -218,7 +215,7 @@ namespace uva {
                              *                 ids for the sub-m-gram defined by the template parameters are known and initialized. 
                              * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
                              */
-                            inline uint8_t create_m_gram_id(const TModelLevel begin_word_idx, const TModelLevel number_of_words, TM_Gram_Id_Value_Ptr & p_m_gram_id) const {
+                            inline uint8_t create_m_gram_id(const phrase_length begin_word_idx, const phrase_length number_of_words, TM_Gram_Id_Value_Ptr & p_m_gram_id) const {
                                 LOG_DEBUG << "Computing sub " << SSTR(number_of_words) << "-gram id for the gram "
                                         << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
@@ -244,7 +241,7 @@ namespace uva {
                              *                 ids for the sub-m-gram defined by the template parameters are known and initialized. 
                              * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
                              */
-                            inline const TM_Gram_Id_Value_Ptr get_m_gram_id_ref(const TModelLevel begin_word_idx, const TModelLevel number_of_words, uint8_t & len_bytes) {
+                            inline const TM_Gram_Id_Value_Ptr get_m_gram_id_ref(const phrase_length begin_word_idx, const phrase_length number_of_words, uint8_t & len_bytes) {
                                 LOG_DEBUG << "Computing sub " << SSTR(number_of_words) << "-gram id for the gram "
                                         << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
@@ -262,7 +259,7 @@ namespace uva {
                             TextPieceReader m_tokens[LM_M_GRAM_LEVEL_MAX];
 
                             //The data structure to store the N-gram word ids
-                            TWordIdType m_word_ids[LM_M_GRAM_LEVEL_MAX] = {};
+                            word_uid m_word_ids[LM_M_GRAM_LEVEL_MAX] = {};
 
                             //Stores the reference to the used word index
                             WordIndexType & m_word_index;
@@ -277,12 +274,12 @@ namespace uva {
 
                             //These variables store the actual begin and end word index
                             //for all the words of this M-gram stored in the internal arrays
-                            constexpr static TModelLevel m_actual_begin_word_idx = 0;
-                            TModelLevel m_actual_end_word_idx;
+                            constexpr static phrase_length m_actual_begin_word_idx = 0;
+                            phrase_length m_actual_end_word_idx;
                         };
 
                         template<typename WordIndexType>
-                        constexpr TModelLevel m_gram_base<WordIndexType>::m_actual_begin_word_idx;
+                        constexpr phrase_length m_gram_base<WordIndexType>::m_actual_begin_word_idx;
 
                     }
                 }

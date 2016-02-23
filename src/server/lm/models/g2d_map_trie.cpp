@@ -51,6 +51,7 @@ namespace uva {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
+                        ASSERT_CONDITION_THROW((sizeof(uint32_t) != sizeof(word_uid)), string("Only works with a 32 bit word_uid!"));
 
                         //Clear the M-Gram bucket arrays
                         memset(m_m_gram_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TProbBackMap*));
@@ -72,12 +73,12 @@ namespace uva {
                         memset(m_1_gram_data, 0, num_words * sizeof (m_gram_payload));
 
                         //Insert the unknown word data into the allocated array
-                        m_unk_data = &m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                        m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
                         m_unk_data->m_prob = UNK_WORD_LOG_PROB_WEIGHT;
-                        m_unk_data->m_back = ZERO_BACK_OFF_WEIGHT;
+                        m_unk_data->m_back = 0.0;
 
                         //Initialize the m-gram maps
-                        for (TModelLevel idx = 1; idx <= BASE::NUM_M_GRAM_LEVELS; ++idx) {
+                        for (phrase_length idx = 1; idx <= BASE::NUM_M_GRAM_LEVELS; ++idx) {
                             m_m_gram_data[idx - 1] = new TProbBackMap(__G2DMapTrie::BUCKETS_FACTOR, counts[idx]);
                         }
 
@@ -92,7 +93,7 @@ namespace uva {
                             //De-allocate one grams
                             delete[] m_1_gram_data;
                             //De-allocate m-gram maps
-                            for (TModelLevel idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
+                            for (phrase_length idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
                                 delete m_m_gram_data[idx];
                             }
                             //De-allocate n-grams map

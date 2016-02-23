@@ -37,7 +37,7 @@
  * @param len_bytes the bytes needed per word id
  * @param id_type [out] the resulting id type the initial value is expected to be 0
 
-    static inline void gram_id_byte_len_2_type(const TModelLevel gram_level, uint8_t * len_bytes, uint32_t & id_type) {
+    static inline void gram_id_byte_len_2_type(const phrase_length gram_level, uint8_t * len_bytes, uint32_t & id_type) {
        //Do the sanity check for against overflows
        ASSERT_SANITY_THROW((gram_level > M_GRAM_LEVEL_5), string("Unsupported m-gram level: ") +
                std::to_string(gram_level) + string(", must be within [") + std::to_string(M_GRAM_LEVEL_2) +
@@ -2336,7 +2336,7 @@ static constexpr uint32_t LEVEL_6_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_
  *                           of this type, this input value will
  *                           be incremented with the byte lengths.
 
-    template<TModelLevel CURR_LEVEL>
+    template<phrase_length CURR_LEVEL>
     static inline void gram_id_type_2_byte_len(uint32_t id_type, uint8_t & id_len_bytes) {
         //Compute the M-gram id length from the M-gram id type.
         //Here we use the pre-computed multipliers we add the

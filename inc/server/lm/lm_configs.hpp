@@ -29,6 +29,8 @@
 #include <inttypes.h>
 #include <string>
 
+#include "server/server_configs.hpp"
+
 #include "common/utils/containers/dynamic_memory_arrays.hpp"
 
 using namespace std;
@@ -40,29 +42,11 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace lm {
-
-                    //Define the feature weights delimiter string for the config file
-                    static const string LM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
-
-                    //Stores the maximum number of the language model features
-                    static const size_t MAX_NUM_LM_FEATURES = 1;
-
-                    //The considered maximum length of the N-gram 
-                    constexpr static uint8_t LM_M_GRAM_LEVEL_MAX = 5u;
-
-                    //The considered maximum length of the target phrase
-                    constexpr static uint8_t LM_TARGET_PHRASE_LENGTH_MAX = 7u;
-                    
-                    //The considered maximum length of the N-gram query
-                    constexpr static uint8_t LM_QUERY_LENGTH_MAX = LM_TARGET_PHRASE_LENGTH_MAX + LM_M_GRAM_LEVEL_MAX - 1;
-
                     namespace dictionary {
 
-                        //Stores the unknown word string, should be configurable
-                        static const string UNKNOWN_WORD_STR = string("<unk>");
-
-                        //Stores the possible Word index configurations
-
+                        /**
+                         * Stores the possible Word index configurations
+                         */
                         enum word_index_types {
                             UNDEFINED_WORD_INDEX = 0,
                             BASIC_WORD_INDEX = UNDEFINED_WORD_INDEX + 1,
@@ -84,10 +68,10 @@ namespace uva {
                             static constexpr double BUCKETS_FACTOR = 2.0;
                         }
                     }
-                    using namespace dictionary;
 
-                    //Stores the possible Trie types
-
+                    /**
+                     * Stores the possible Trie types
+                     */
                     enum trie_types {
                         UNDEFINED_TRIE = 0,
                         C2DH_TRIE = UNDEFINED_TRIE + 1,
@@ -99,6 +83,8 @@ namespace uva {
                         H2DM_TRIE = W2CH_TRIE + 1,
                         size_trie = H2DM_TRIE + 1
                     };
+
+                    using namespace dictionary;
 
                     namespace __C2DHybridTrie {
                         //The unordered map memory factor for the M-Grams in C2DMapArrayTrie

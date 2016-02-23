@@ -51,6 +51,8 @@ namespace uva {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
                         ASSERT_CONDITION_THROW((word_index.is_word_index_continuous()), "This trie can not be used with a continuous word index!");
+                        ASSERT_CONDITION_THROW((sizeof (uint32_t) != sizeof (word_uid)) && (sizeof (uint64_t) != sizeof (word_uid)),
+                                string("Only works with a 32 or 64 bit word_uid!"));
 
                         //Clear the M-Gram bucket arrays
                         memset(m_m_gram_data, 0, NUM_M_GRAM_LEVELS * sizeof (TProbBackMap*));
@@ -68,10 +70,10 @@ namespace uva {
 
                         //Default initialize the unknown word payload data
                         m_unk_data.m_prob = UNK_WORD_LOG_PROB_WEIGHT;
-                        m_unk_data.m_back = ZERO_BACK_OFF_WEIGHT;
+                        m_unk_data.m_back = 0.0;
 
                         //Initialize the m-gram maps
-                        for (TModelLevel idx = 0; idx < NUM_M_GRAM_LEVELS; idx++) {
+                        for (phrase_length idx = 0; idx < NUM_M_GRAM_LEVELS; idx++) {
                             m_m_gram_data[idx] = new TProbBackMap(__H2DMapTrie::BUCKETS_FACTOR, counts[idx]);
                         }
 
@@ -82,7 +84,7 @@ namespace uva {
                     template<typename WordIndexType>
                     H2DMapTrie<WordIndexType>::~H2DMapTrie() {
                         //De-allocate M-Grams
-                        for (TModelLevel idx = 0; idx < NUM_M_GRAM_LEVELS; idx++) {
+                        for (phrase_length idx = 0; idx < NUM_M_GRAM_LEVELS; idx++) {
                             delete m_m_gram_data[idx];
                         }
                         //De-allocate N-Grams

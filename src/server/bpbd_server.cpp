@@ -176,7 +176,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
         section = "Language Models";
         params.m_lm_params.m_conn_string = get_string(ini, section, "connection_string");
-        tokenize_s_t_f<MAX_NUM_LM_FEATURES>(get_string(ini, section, "lm_feature_weights"),
+        tokenize_s_t_f<LM_MAX_NUM_FEATURES>(get_string(ini, section, "lm_feature_weights"),
                 params.m_lm_params.m_lambdas,
                 params.m_lm_params.m_num_lambdas,
                 LM_FEATURE_WEIGHTS_DELIMITER_STR);

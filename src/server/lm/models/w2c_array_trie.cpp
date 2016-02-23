@@ -51,6 +51,7 @@ namespace uva {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
+                        ASSERT_CONDITION_THROW((sizeof(uint32_t) != sizeof(word_uid)), string("Only works with a 32 bit word_uid!"));
 
                         //Memset the M/N grams reference and data arrays
                         memset(m_m_gram_word_2_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (T_M_GramWordEntry *));
@@ -67,13 +68,13 @@ namespace uva {
                         memset(m_1_gram_data, 0, m_num_word_ids * sizeof (m_gram_payload));
 
                         //03) Insert the unknown word data into the allocated array
-                        m_unk_data = &m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                        m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
                         m_unk_data->m_prob = UNK_WORD_LOG_PROB_WEIGHT;
-                        m_unk_data->m_back = ZERO_BACK_OFF_WEIGHT;
+                        m_unk_data->m_back = 0.0;
 
                         //04) Allocate data for the M-grams
 
-                        for (TModelLevel i = 0; i < BASE::NUM_M_GRAM_LEVELS; i++) {
+                        for (phrase_length i = 0; i < BASE::NUM_M_GRAM_LEVELS; i++) {
                             preAllocateWordsData<T_M_GramWordEntry>(m_m_gram_word_2_data[i], counts[i + 1], counts[0]);
                         }
 
@@ -86,7 +87,7 @@ namespace uva {
                         //Check that the one grams were allocated, if yes then the rest must have been either
                         if (m_1_gram_data != NULL) {
                             delete[] m_1_gram_data;
-                            for (TModelLevel i = 0; i < BASE::NUM_M_GRAM_LEVELS; i++) {
+                            for (phrase_length i = 0; i < BASE::NUM_M_GRAM_LEVELS; i++) {
                                 delete[] m_m_gram_word_2_data[i];
                             }
                             delete[] m_n_gram_word_2_data;

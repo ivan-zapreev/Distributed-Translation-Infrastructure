@@ -121,10 +121,10 @@ namespace uva {
                              * probabilities and back-off weights with the language model
                              * weight from the model properties
                              */
-                            template<TModelLevel CURR_LEVEL, bool is_mult_weight>
+                            template<phrase_length CURR_LEVEL, bool is_mult_weight>
                             void read_m_gram_level();
 
-                            template<TModelLevel CURR_LEVEL, typename DUMMY = void>
+                            template<phrase_length CURR_LEVEL, typename DUMMY = void>
                             struct Func {
 
                                 /**
@@ -173,7 +173,7 @@ namespace uva {
                              * if no read more otherwise we are done.
                              * @param level the currently read M-gram level M
                              */
-                            template<TModelLevel CURR_LEVEL>
+                            template<phrase_length CURR_LEVEL>
                             inline void check_and_go_m_grams() {
                                 Func<CURR_LEVEL>::check_and_go_m_grams(*this);
                             }
@@ -182,7 +182,7 @@ namespace uva {
                              * Allows to perform the post-gram actions if needed
                              * @param level the currently read M-gram level M
                              */
-                            template<TModelLevel CURR_LEVEL>
+                            template<phrase_length CURR_LEVEL>
                             void do_post_m_gram_actions();
 
                             /**
@@ -220,7 +220,7 @@ namespace uva {
                              * @param line the in/out parameter storing the last read line
                              * @param level the level we are to read
                              */
-                            template<TModelLevel CURR_LEVEL>
+                            template<phrase_length CURR_LEVEL>
                             void read_grams();
                         };
                     }

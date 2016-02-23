@@ -60,10 +60,8 @@ namespace uva {
                         template<typename WordIndexType>
                         class model_m_gram : public m_gram_base<WordIndexType> {
                         public:
-                            //The type of the word id
-                            typedef typename WordIndexType::TWordIdType TWordIdType;
                             //Define the corresponding M-gram id type
-                            typedef m_gram_id::Byte_M_Gram_Id<TWordIdType> T_M_Gram_Id;
+                            typedef m_gram_id::Byte_M_Gram_Id<word_uid> T_M_Gram_Id;
                             //Define the base class type
                             typedef m_gram_base<WordIndexType> BASE;
 
@@ -71,10 +69,10 @@ namespace uva {
                             m_gram_payload m_payload;
 
                             //Stores the m-gram probability, the log_10 probability of the N-Gram Must be a negative value
-                            TLogProbBackOff m_prob;
+                            prob_weight m_prob;
 
                             //Stores the m-gram log_10 back-off weight (probability) of the N-gram can be 0 is the probability is not available
-                            TLogProbBackOff m_back_off;
+                            prob_weight m_back_off;
 
                             /**
                              * The basic constructor, is to be used when the M-gram level
@@ -83,7 +81,7 @@ namespace uva {
                              * @param word_index the used word index
                              * @param actual_level the actual level of the m-gram that will be used should be <= M_GRAM_LEVEL_MAX
                              */
-                            model_m_gram(WordIndexType & word_index, TModelLevel actual_level)
+                            model_m_gram(WordIndexType & word_index, phrase_length actual_level)
                             : m_gram_base<WordIndexType>(word_index, actual_level) {
                             }
 
@@ -126,7 +124,7 @@ namespace uva {
 
                                 //If we have a unigram then add it to the index otherwise get the word ids
                                 if (BASE::m_actual_level == M_GRAM_LEVEL_1) {
-                                    const TModelLevel & begin_word_idx = BASE::m_actual_begin_word_idx;
+                                    const phrase_length & begin_word_idx = BASE::m_actual_begin_word_idx;
                                     if (BASE::m_word_index.is_word_registering_needed()) {
                                         //Register the word if it is needed
                                         BASE::m_word_ids[begin_word_idx] = BASE::m_word_index.register_word(BASE::m_tokens[begin_word_idx]);
@@ -142,7 +140,7 @@ namespace uva {
                                             << ", hash[" << SSTR(begin_word_idx) << "] = "
                                             << m_hash_values[begin_word_idx] << END_LOG;
                                 } else {
-                                    TModelLevel curr_idx = BASE::m_actual_begin_word_idx;
+                                    phrase_length curr_idx = BASE::m_actual_begin_word_idx;
                                     //Start with the first word
                                     BASE::m_word_ids[curr_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_idx]);
                                     //The Unigram's hash value is equal to the word id
@@ -179,7 +177,7 @@ namespace uva {
                             uint64_t m_hash_values[LM_M_GRAM_LEVEL_MAX] = {};
 
                             //Stores the m-gram idx for when adding m-gram tokens
-                            TModelLevel m_curr_index;
+                            phrase_length m_curr_index;
 
                             /**
                              * Make this constructor private as it is not to be used.

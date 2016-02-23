@@ -54,7 +54,7 @@ namespace uva {
                         /**
                          * This class is responsible for splitting a piece of text in a number of ngrams and place it into the trie
                          */
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
                         class lm_gram_builder {
                         public:
 
@@ -86,7 +86,7 @@ namespace uva {
                              * @param prob [out] the variable to set the probability value into
                              * @return true if the uni-gram was successfully parsed
                              */
-                            static inline bool unigram_to_prob(TextPieceReader &text, TextPieceReader & word, TLogProbBackOff & prob) {
+                            static inline bool unigram_to_prob(TextPieceReader &text, TextPieceReader & word, prob_weight & prob) {
                                 //There should be some text left it it is an M-gram
                                 if (text.has_more()) {
                                     //First read text until the first tab, it should be present if it is a uni-gram line

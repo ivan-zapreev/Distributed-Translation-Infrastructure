@@ -11,6 +11,8 @@
             <in>sliding_m_gram_query.hpp</in>
           </df>
         </df>
+        <in>server_configs.hpp</in>
+        <in>server_constants.hpp</in>
       </df>
     </df>
     <df root="src" name="2">
@@ -40,9 +42,6 @@
           <df name="builders">
             <in>lm_basic_builder.cpp</in>
             <in>lm_gram_builder.cpp</in>
-          </df>
-          <df name="dictionaries">
-            <in>aword_index.cpp</in>
           </df>
           <df name="models">
             <in>c2d_hybrid_trie.cpp</in>
@@ -142,6 +141,10 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/server/server_configs.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/server_constants.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
@@ -194,13 +197,6 @@
         </ccTool>
       </item>
       <item path="src/server/lm/builders/lm_gram_builder.cpp"
-            ex="false"
-            tool="1"
-            flavor2="8">
-        <ccTool flags="1">
-        </ccTool>
-      </item>
-      <item path="src/server/lm/dictionaries/aword_index.cpp"
             ex="false"
             tool="1"
             flavor2="8">

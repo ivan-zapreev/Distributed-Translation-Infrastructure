@@ -52,7 +52,7 @@ namespace uva {
                      * @param StorageFactory the factory to create storage containers
                      * @param StorageContainer the storage container type that is created by the factory
                      */
-                    template<typename WordIndexType, template<TModelLevel > class StorageFactory = W2CH_UM_StorageFactory, class StorageContainer = W2CH_UM_Storage>
+                    template<typename WordIndexType, template<phrase_length > class StorageFactory = W2CH_UM_StorageFactory, class StorageContainer = W2CH_UM_Storage>
                     class W2CHybridTrie : public LayeredTrieBase<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
                         typedef LayeredTrieBase<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
@@ -75,9 +75,9 @@ namespace uva {
                          * Computes the M-Gram context using the previous context and the current word id
                          * @see LayeredTrieBese
                          */
-                        inline bool get_ctx_id(const TModelLevel level_idx, const TShortId word_id, TLongId & ctx_id) const {
+                        inline bool get_ctx_id(const phrase_length level_idx, const TShortId word_id, TLongId & ctx_id) const {
                             //Compute back the current level pure for debug purposes.
-                            const TModelLevel curr_level = level_idx + BASE::MGRAM_IDX_OFFSET;
+                            const phrase_length curr_level = level_idx + BASE::MGRAM_IDX_OFFSET;
                             LOG_DEBUG3 << "Retrieving context level: " << curr_level << ", word_id: "
                                     << word_id << ", ctx_id: " << ctx_id << END_LOG;
 
@@ -126,7 +126,7 @@ namespace uva {
                          * If the storage structure does not exist, return a new one.
                          * For more details @see LayeredTrieBase
                          */
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             const TShortId word_id = gram.get_end_word_id();
                             if (CURR_LEVEL == M_GRAM_LEVEL_1) {
@@ -137,7 +137,7 @@ namespace uva {
                                 this->register_m_gram_cache(gram);
 
                                 //Define the context id variable
-                                TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
+                                TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
                                 __LayeredTrieBase::get_context_id<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
 
@@ -152,9 +152,9 @@ namespace uva {
                                     LOG_DEBUG3 << "Returning reference to prob., level: " << SSTR(LM_M_GRAM_LEVEL_MAX) << ", word_id "
                                             << SSTR(word_id) << ", ctx_id " << SSTR(ctx_id) << END_LOG;
                                     //WARNING: We cast to (TLogProbBackOff &) as we misuse the mapping by storing the probability value there!
-                                    reinterpret_cast<TLogProbBackOff&> (ctx_mapping->operator[](ctx_id)) = gram.m_payload.m_prob;
+                                    reinterpret_cast<prob_weight&> (ctx_mapping->operator[](ctx_id)) = gram.m_payload.m_prob;
                                 } else {
-                                    const TModelLevel idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
+                                    const phrase_length idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
 
                                     //Get the word mapping first
                                     StorageContainer*& ctx_mapping = m_mgram_mapping[idx][word_id];
@@ -182,7 +182,7 @@ namespace uva {
                          */
                         inline void get_unigram_payload(typename BASE::query_exec_data & query) const {
                             //Get the word index for convenience
-                            const TModelLevel & word_idx = query.m_begin_word_idx;
+                            const phrase_length & word_idx = query.m_begin_word_idx;
 
                             LOG_DEBUG << "Getting the payload for sub-uni-gram : [" << SSTR(word_idx)
                                     << "," << SSTR(word_idx) << "]" << END_LOG;
@@ -209,15 +209,15 @@ namespace uva {
                                 const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
                                 //Compute the distance between words
-                                const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                const phrase_length & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
                                 LOG_DEBUG << "curr_level: " << SSTR(curr_level) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
                                         << SSTR(query.m_end_word_idx) << ", end word id: " << word_id << END_LOG;
 
                                 //Get the next context id
-                                const TModelLevel & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                const phrase_length & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
                                 if (get_ctx_id(level_idx, word_id, ctx_id)) {
                                     LOG_DEBUG << "ctx_id: " << ctx_id << END_LOG;
-                                    const TModelLevel & idx = CURR_LEVEL_MIN_1_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                    const phrase_length & idx = CURR_LEVEL_MIN_1_MAP[query.m_begin_word_idx][query.m_end_word_idx];
                                     //There is data found under this context
                                     query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_mgram_data[idx][ctx_id];
                                     LOG_DEBUG << "The payload is retrieved: " << (string) m_mgram_data[idx][ctx_id] << END_LOG;
@@ -312,7 +312,7 @@ namespace uva {
 
                         //Will store the next context index counters per M-gram level
                         //for 1 < M < N.
-                        const static TModelLevel NUM_IDX_COUNTERS = LM_M_GRAM_LEVEL_MAX - 2;
+                        const static phrase_length NUM_IDX_COUNTERS = LM_M_GRAM_LEVEL_MAX - 2;
                         TShortId next_ctx_id[NUM_IDX_COUNTERS];
                     };
 

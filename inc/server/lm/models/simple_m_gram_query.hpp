@@ -110,7 +110,7 @@ namespace uva {
                          * @param text the piece containing the m-gram query
                          */
                         template<bool is_cumulative, bool is_log_results = false >
-                        inline TLogProbBackOff execute(TextPieceReader &text) {
+                        inline prob_weight execute(TextPieceReader &text) {
                             LOG_DEBUG << "Starting to execute: ___" << text << "___" << END_LOG;
 
                             //Set the text piece into the m-gram
@@ -120,9 +120,9 @@ namespace uva {
 
                             //Clean the relevant probability entry
                             if (is_cumulative) {
-                                memset(m_query.m_probs, 0, sizeof (TLogProbBackOff) * LM_M_GRAM_LEVEL_MAX);
+                                memset(m_query.m_probs, 0, sizeof (prob_weight) * LM_M_GRAM_LEVEL_MAX);
                             } else {
-                                m_query.m_probs[ m_query.m_gram.get_end_word_idx() ] = ZERO_PROB_WEIGHT;
+                                m_query.m_probs[ m_query.m_gram.get_end_word_idx() ] = 0.0;
                             }
                             //Clean the payload pointer entries
                             memset(m_query.m_payloads, 0, sizeof (void*) * LM_M_GRAM_LEVEL_MAX * LM_M_GRAM_LEVEL_MAX);
@@ -130,7 +130,7 @@ namespace uva {
                             //If this trie needs getting context ids then clean the data as well
                             if (m_trie.is_need_getting_ctx_ids()) {
                                 //Clean the payload pointer entries
-                                memset(m_query.m_last_ctx_ids, WordIndexType::UNDEFINED_WORD_ID, sizeof (TLongId) * LM_M_GRAM_LEVEL_MAX);
+                                memset(m_query.m_last_ctx_ids, UNDEFINED_WORD_ID, sizeof (TLongId) * LM_M_GRAM_LEVEL_MAX);
                             }
 
                             //Execute the query
@@ -161,11 +161,11 @@ namespace uva {
                          * and the class template parameters.
                          */
                         template<bool is_log_results>
-                        inline TLogProbBackOff get_single_result() const {
+                        inline prob_weight get_single_result() const {
                             //Print the query results
                             const string gram_str = m_query.m_gram.get_mgram_prob_str(m_query.m_gram.get_m_gram_level());
 
-                            TLogProbBackOff single_prob = m_query.m_probs[m_query.m_gram.get_end_word_idx()];
+                            prob_weight single_prob = m_query.m_probs[m_query.m_gram.get_end_word_idx()];
 
                             if (is_log_results) {
                                 LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
@@ -186,10 +186,10 @@ namespace uva {
                          * and the class template parameters.
                          */
                         template<bool is_log_results>
-                        inline TLogProbBackOff get_cumulative_result() const {
+                        inline prob_weight get_cumulative_result() const {
                             //Initialize the current index, with the proper start value
-                            TModelLevel curr_idx = m_query.m_gram.get_begin_word_idx();
-                            TLogProbBackOff cumulative_prob = ZERO_PROB_WEIGHT;
+                            phrase_length curr_idx = m_query.m_gram.get_begin_word_idx();
+                            prob_weight cumulative_prob = 0.0;
 
                             //Print the intermediate results
                             for (; curr_idx <= m_query.m_gram.get_end_word_idx(); ++curr_idx) {

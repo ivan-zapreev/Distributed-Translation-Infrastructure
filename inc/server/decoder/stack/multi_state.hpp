@@ -76,8 +76,8 @@ namespace uva {
                             : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
                             m_covered(), m_last_covered(ZERRO_WORD_IDX),
                             m_history(params.m_max_t_phrase_len - 1),
-                            m_partial_score(ZERO_LOG_PROB_WEIGHT),
-                            m_future_cost(ZERO_LOG_PROB_WEIGHT) {
+                            m_partial_score(UNKNOWN_LOG_PROB_WEIGHT),
+                            m_future_cost(UNKNOWN_LOG_PROB_WEIGHT) {
                                 LOG_DEBUG2 << "multi_state create: " << params << END_LOG;
 
                                 //Mark the zero word as covered
@@ -95,8 +95,8 @@ namespace uva {
                             : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
                             m_covered(), m_last_covered(UNDEFINED_WORD_IDX),
                             m_history(params.m_max_t_phrase_len - 1),
-                            m_partial_score(ZERO_LOG_PROB_WEIGHT),
-                            m_future_cost(ZERO_LOG_PROB_WEIGHT) {
+                            m_partial_score(UNKNOWN_LOG_PROB_WEIGHT),
+                            m_future_cost(UNKNOWN_LOG_PROB_WEIGHT) {
                                 LOG_DEBUG2 << "multi_state create, with parent: " << params << END_LOG;
                                 
                                 //Compute the partial score;

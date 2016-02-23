@@ -121,9 +121,8 @@ namespace uva {
                     class G2DMapTrie : public GenericTrieBase<G2DMapTrie<WordIndexType>, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
                         typedef GenericTrieBase<G2DMapTrie<WordIndexType>, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
-                        typedef typename WordIndexType::TWordIdType TWordIdType;
-                        typedef __G2DMapTrie::S_M_GramData<m_gram_payload, TWordIdType> T_M_Gram_PB_Entry;
-                        typedef __G2DMapTrie::S_M_GramData<TLogProbBackOff, TWordIdType> T_M_Gram_Prob_Entry;
+                        typedef __G2DMapTrie::S_M_GramData<m_gram_payload, word_uid> T_M_Gram_PB_Entry;
+                        typedef __G2DMapTrie::S_M_GramData<prob_weight, word_uid> T_M_Gram_Prob_Entry;
 
                         /**
                          * The basic constructor
@@ -159,7 +158,7 @@ namespace uva {
                          * This method adds a M-Gram (word) to the trie where 1 < M < N
                          * @see GenericTrieBase
                          */
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                                 //Get the word id of this unigram, so there is just one word in it and its the end one
@@ -179,7 +178,7 @@ namespace uva {
                                     data.m_payload = gram.m_payload.m_prob;
                                 } else {
                                     //Compute the M-gram level index
-                                    constexpr TModelLevel LEVEL_IDX = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
+                                    constexpr phrase_length LEVEL_IDX = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
                                     //Create a new M-Gram data entry
                                     T_M_Gram_PB_Entry & data = m_m_gram_data[LEVEL_IDX]->add_new_element(gram.get_hash());
                                     //Create the M-gram id from the word ids.
@@ -197,7 +196,7 @@ namespace uva {
                          */
                         inline void get_unigram_payload(typename BASE::query_exec_data & query) const {
                             //Get the uni-gram word index
-                            const TModelLevel & word_idx = query.m_begin_word_idx;
+                            const phrase_length & word_idx = query.m_begin_word_idx;
                             //This is at least a uni-gram we have, therefore first process the it in a special way
                             const TShortId word_id = query.m_gram[word_idx];
 
@@ -214,10 +213,10 @@ namespace uva {
                          */
                         inline void get_m_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
                             //Get the current level for logging
-                            const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                            const phrase_length & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
 
                             //Get the current level of the sub-m-gram
-                            const TModelLevel & layer_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                            const phrase_length & layer_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
 
                             LOG_DEBUG << "Searching in " << SSTR(curr_level) << "-grams, array index: " << layer_idx << END_LOG;
 
@@ -268,7 +267,7 @@ namespace uva {
                         static inline MGramStatusEnum get_payload(const STORAGE_MAP * map,
                                 typename BASE::query_exec_data & query) {
                             //Get the current level for logging
-                            const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                            const phrase_length & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
 
                             LOG_DEBUG << "Getting the bucket id for the sub-" << SSTR(curr_level) << "-gram ["
                                     << query.m_begin_word_idx << "," << query.m_end_word_idx << "] of: " << (string) query.m_gram << END_LOG;

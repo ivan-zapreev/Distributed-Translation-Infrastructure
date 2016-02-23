@@ -74,56 +74,56 @@ namespace uva {
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual TLogProbBackOff execute_cum_yes_log_yes(const uint64_t * word_ids) {
+                            virtual prob_weight execute_cum_yes_log_yes(const uint64_t * word_ids) {
                                 return m_sliding_query.template execute<true, true>(word_ids);
                             };
                             
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual TLogProbBackOff execute_cum_yes_log_no(const uint64_t * word_ids) {
+                            virtual prob_weight execute_cum_yes_log_no(const uint64_t * word_ids) {
                                 return m_sliding_query.template execute<true, false>(word_ids);
                             };
                             
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual TLogProbBackOff execute_cum_no_log_yes(const uint64_t * word_ids) {
+                            virtual prob_weight execute_cum_no_log_yes(const uint64_t * word_ids) {
                                 return m_sliding_query.template execute<false, true>(word_ids);
                             };
                             
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual TLogProbBackOff execute_cum_no_log_no(const uint64_t * word_ids) {
+                            virtual prob_weight execute_cum_no_log_no(const uint64_t * word_ids) {
                                 return m_sliding_query.template execute<false, false>(word_ids);
                             };
                             
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual TLogProbBackOff execute_cum_yes_log_yes(TextPieceReader &text) {
+                            virtual prob_weight execute_cum_yes_log_yes(TextPieceReader &text) {
                                 return m_simple_query.template execute<true, true>(text);
                             };
 
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual TLogProbBackOff execute_cum_yes_log_no(TextPieceReader &text) {
+                            virtual prob_weight execute_cum_yes_log_no(TextPieceReader &text) {
                                 return m_simple_query.template execute<true, false>(text);
                             };
 
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual TLogProbBackOff execute_cum_no_log_yes(TextPieceReader &text) {
+                            virtual prob_weight execute_cum_no_log_yes(TextPieceReader &text) {
                                 return m_simple_query.template execute<false, true>(text);
                             };
 
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual TLogProbBackOff execute_cum_no_log_no(TextPieceReader &text) {
+                            virtual prob_weight execute_cum_no_log_no(TextPieceReader &text) {
                                 return m_simple_query.template execute<false, false>(text);
                             };
 

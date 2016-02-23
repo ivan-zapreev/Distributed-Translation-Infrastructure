@@ -112,8 +112,8 @@ namespace uva {
                          * Computes the M-Gram context using the previous context and the current word id
                          * @see LayeredTrieBese
                          */
-                        inline bool get_ctx_id(const TModelLevel level_idx, const TShortId word_id, TLongId & ctx_id) const {
-                            const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
+                        inline bool get_ctx_id(const phrase_length level_idx, const TShortId word_id, TLongId & ctx_id) const {
+                            const TLongId key = put_32_32_in_64(ctx_id, word_id);
 
                             //Search for the map for that context id
                             TMGramsMap::const_iterator result = m_m_gram_map_ptrs[level_idx]->find(key);
@@ -148,7 +148,7 @@ namespace uva {
                          * If the storage structure does not exist, return a new one.
                          * For more details @see LayeredTrieBase
                          */
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             const TShortId word_id = gram.get_end_word_id();
                             if (CURR_LEVEL == M_GRAM_LEVEL_1) {
@@ -159,19 +159,19 @@ namespace uva {
                                 this->register_m_gram_cache(gram);
 
                                 //Define the context id variable
-                                TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
+                                TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
                                 __LayeredTrieBase::get_context_id<C2DHybridTrie<WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Obtain the context key and then create a new mapping
-                                const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
+                                const TLongId key = put_32_32_in_64(ctx_id, word_id);
 
                                 //Store the payload
                                 if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
                                     m_n_gram_map_ptr->operator[](key) = gram.m_payload.m_prob;
                                 } else {
                                     //Get the next context id
-                                    const TModelLevel idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
+                                    const phrase_length idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
                                     TShortId next_ctx_id = m_M_gram_next_ctx_id[idx]++;
 
                                     //Store the context mapping inside the map
@@ -190,7 +190,7 @@ namespace uva {
                          */
                         inline void get_unigram_payload(typename BASE::query_exec_data & query) const {
                             //Get the word index for convenience
-                            const TModelLevel & word_idx = query.m_begin_word_idx;
+                            const phrase_length & word_idx = query.m_begin_word_idx;
 
                             LOG_DEBUG << "Getting the payload for sub-uni-gram : [" << SSTR(word_idx)
                                     << "," << SSTR(word_idx) << "]" << END_LOG;
@@ -217,12 +217,12 @@ namespace uva {
                                 const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
                                 //Compute the distance between words
-                                const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                const phrase_length & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
                                 LOG_DEBUG << "curr_level: " << SSTR(curr_level) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
                                         << SSTR(query.m_end_word_idx) << ", end word id: " << word_id << END_LOG;
 
                                 //Get the next context id
-                                const TModelLevel & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                const phrase_length & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
                                 if (get_ctx_id(level_idx, word_id, ctx_id)) {
                                     LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                                     //There is data found under this context
@@ -252,7 +252,7 @@ namespace uva {
                                 TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
                                 const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
-                                const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
+                                const TLongId key = put_32_32_in_64(ctx_id, word_id);
 
                                 //Search for the map for that context id
                                 TNGramsMap::const_iterator result = m_n_gram_map_ptr->find(key);
@@ -306,11 +306,11 @@ namespace uva {
                         m_gram_payload * m_m_gram_data[BASE::NUM_M_GRAM_LEVELS];
 
                         //The type of key,value pairs to be stored in the N Grams map
-                        typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
+                        typedef pair< const TLongId, prob_weight> TNGramEntry;
                         //The typedef for the N Grams map allocator
                         typedef GreedyMemoryAllocator< TNGramEntry > TNGramAllocator;
                         //The N Grams map type
-                        typedef unordered_map<TLongId, TLogProbBackOff, std::hash<TLongId>, std::equal_to<TLongId>, TNGramAllocator > TNGramsMap;
+                        typedef unordered_map<TLongId, prob_weight, std::hash<TLongId>, std::equal_to<TLongId>, TNGramAllocator > TNGramsMap;
                         //The actual data storage for the N Grams
                         TNGramAllocator * m_n_gram_alloc_ptr;
                         //The map storing the N-Grams, they do not have back-off values

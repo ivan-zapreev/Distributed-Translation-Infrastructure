@@ -96,7 +96,7 @@ namespace uva {
                          * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
                          */
                         template<bool is_cumulative, bool is_log_results = false >
-                        inline TLogProbBackOff execute(const uint64_t * word_ids) {
+                        inline prob_weight execute(const uint64_t * word_ids) {
                             
                             //ToDo: Implement the query with the sliding window
                             

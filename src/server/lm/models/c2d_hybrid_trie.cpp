@@ -54,6 +54,7 @@ namespace uva {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
+                        ASSERT_CONDITION_THROW((sizeof(uint32_t) != sizeof(word_uid)), string("Only works with a 32 bit word_uid!"));
 
                         //Memset the M grams reference and data arrays
                         memset(m_m_gram_alloc_ptrs, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TMGramAllocator *));
@@ -80,9 +81,9 @@ namespace uva {
 
 
                         //Record the dummy probability and back-off values for the unknown word
-                        m_unk_data = &m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                        m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
                         m_unk_data->m_prob = UNK_WORD_LOG_PROB_WEIGHT;
-                        m_unk_data->m_back = ZERO_BACK_OFF_WEIGHT;
+                        m_unk_data->m_back = 0.0;
                     }
 
                     template<typename WordIndexType>
@@ -122,7 +123,7 @@ namespace uva {
 
                         //Compute and store the M-gram level sizes in terms of the number of M-gram indexes per level
                         //Also initialize the M-gram index counters, for issuing context indexes
-                        for (TModelLevel i = 0; i < BASE::NUM_M_GRAM_LEVELS; i++) {
+                        for (phrase_length i = 0; i < BASE::NUM_M_GRAM_LEVELS; i++) {
                             //The index counts must start with one as zero is reserved for the UNDEFINED_ARR_IDX
                             m_M_gram_next_ctx_id[i] = BASE::FIRST_VALID_CTX_ID;
                             //Due to the reserved first index, make the array sizes one element larger, to avoid extra computations

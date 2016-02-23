@@ -123,7 +123,7 @@ namespace uva {
                              * @return the total number of bytes needed to store the given word ids
                              */
                             template<typename TWordIdType>
-                            static inline uint8_t compute_byte_lengths(const TWordIdType * word_ids, const TModelLevel num_word_ids, uint8_t * len_bytes) {
+                            static inline uint8_t compute_byte_lengths(const TWordIdType * word_ids, const phrase_length num_word_ids, uint8_t * len_bytes) {
                                 uint8_t id_len_bytes = 0;
 
                                 //Obtain the word ids and their lengths in bytes and

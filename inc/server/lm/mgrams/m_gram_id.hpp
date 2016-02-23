@@ -189,7 +189,7 @@ namespace uva {
                                  * @param level the level of the M-grams this object will store id for.
                                  * @param m_p_gram_id the pointer to initialize
                                  */
-                                static inline void allocate_byte_m_gram_id(const TModelLevel level, TM_Gram_Id_Value_Ptr & m_p_gram_id) {
+                                static inline void allocate_byte_m_gram_id(const phrase_length level, TM_Gram_Id_Value_Ptr & m_p_gram_id) {
                                     //Do the sanity check for against overflows
                                     ASSERT_SANITY_THROW((level > M_GRAM_LEVEL_6),
                                             string("Byte_M_Gram_Id: Unsupported m-gram level: ")
@@ -255,7 +255,7 @@ namespace uva {
                                  * @param id_type the type id
                                  * @return the total byte length to store the id of this type.
                                  */
-                                template<TModelLevel CURR_LEVEL>
+                                template<phrase_length CURR_LEVEL>
                                 static inline const uint8_t & gram_id_type_2_byte_len(uint32_t id_type) {
                                     LOG_DEBUG3 << "Computing the " << SSTR(CURR_LEVEL) << "-gram id len in bytes" << END_LOG;
 
@@ -285,7 +285,7 @@ namespace uva {
                                  * @param len_bytes the bytes needed per word id
                                  * @param return the resulting id type the initial value is expected to be 0
                                  */
-                                static inline const uint32_t & gram_id_byte_len_2_type(const TModelLevel gram_level, uint8_t * len_bytes) {
+                                static inline const uint32_t & gram_id_byte_len_2_type(const phrase_length gram_level, uint8_t * len_bytes) {
                                     LOG_DEBUG3 << "Computing the " << SSTR(gram_level) << "-gram id type" << END_LOG;
 
                                     //Depending on the level return the pre-computed value
@@ -314,7 +314,7 @@ namespace uva {
                                  * @param two the second M-gram to compare
                                  * @return true if the first M-gram is "smaller" than the second, otherwise false
                                  */
-                                template<TModelLevel CURR_LEVEL>
+                                template<phrase_length CURR_LEVEL>
                                 static inline bool is_less_m_grams_id(const uint8_t id_type_len_bytes,
                                         const TM_Gram_Id_Value_Ptr & one, const TM_Gram_Id_Value_Ptr & two) {
                                     //First compare the types of the id

@@ -44,27 +44,27 @@ namespace uva {
                 namespace lm {
                     namespace arpa {
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
                         const unsigned short int lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::MIN_NUM_TOKENS_NGRAM_STR = 2;
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
                         const unsigned short int lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::MAX_NUM_TOKENS_NGRAM_STR = 3;
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
                         lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::lm_gram_builder(const lm_parameters & params, WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func add_garm_func)
                         : m_params(params), m_add_garm_func(add_garm_func), m_token(), m_m_gram(word_index, CURR_LEVEL) {
                             LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << CURR_LEVEL << ", trie)" << END_LOG;
                         }
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
                         lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::lm_gram_builder(const lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>& orig)
                         : m_params(orig.m_params), m_add_garm_func(orig.m_add_garm_func), m_token(), m_m_gram(orig.m_m_gram.get_word_index(), CURR_LEVEL) {
                         }
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
                         lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::~lm_gram_builder() {
                         }
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
                         bool lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::parse_to_gram(TextPieceReader &line) {
                             //Read the first element until the tab, we read until the tab because it should be the probability
                             if (line.get_first_tab(m_token)) {
@@ -119,7 +119,7 @@ namespace uva {
                                         }
                                     } else {
                                         //There is no back-off so set it to zero
-                                        m_m_gram.m_payload.m_back = ZERO_BACK_OFF_WEIGHT;
+                                        m_m_gram.m_payload.m_back = 0.0;
                                         LOG_DEBUG2 << "The parsed N-gram '" << line.str()
                                                 << "' does not have back-off using: " << m_m_gram.m_payload.m_back << END_LOG;
                                     }
@@ -145,7 +145,7 @@ namespace uva {
                             }
                         }
 
-                        template<typename WordIndexType, TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
                         bool lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::parse_line(TextPieceReader & line) {
                             LOG_DEBUG << "Processing the " << CURR_LEVEL << "-Gram (?) line: '" << line << "'" << END_LOG;
                             //We expect a good input, so the result is set to false by default.

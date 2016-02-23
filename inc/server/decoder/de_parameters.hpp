@@ -32,14 +32,12 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 
-#include "server/lm/lm_configs.hpp"
+#include "server/decoder/de_configs.hpp"
 
 using namespace std;
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
-
-using namespace uva::smt::bpbd::server::lm;
 
 namespace uva {
     namespace smt {
@@ -78,9 +76,9 @@ namespace uva {
                                     string("The max_source_phrase_len must not be 0!"));
                             ASSERT_CONDITION_THROW((m_max_t_phrase_len == 0),
                                     string("The max_target_phrase_len must not be 0!"));
-                            ASSERT_CONDITION_THROW((m_max_t_phrase_len > LM_TARGET_PHRASE_LENGTH_MAX),
+                            ASSERT_CONDITION_THROW((m_max_t_phrase_len > lm::LM_MAX_TARGET_PHRASE_LEN),
                                     string("The max_target_phrase_len must not be <= ") +
-                                    to_string(LM_TARGET_PHRASE_LENGTH_MAX));
+                                    to_string(lm::LM_MAX_TARGET_PHRASE_LEN));
                             ASSERT_CONDITION_THROW((m_pruning_threshold == 0.0),
                                     string("The pruning_threshold must not be 0.0!"));
                             ASSERT_CONDITION_THROW((m_word_penalty == 0.0),

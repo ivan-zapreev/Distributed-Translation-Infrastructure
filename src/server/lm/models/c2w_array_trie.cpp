@@ -50,6 +50,7 @@ namespace uva {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
+                        ASSERT_CONDITION_THROW((sizeof(uint32_t) != sizeof(word_uid)), string("Only works with a 32 bit word_uid!"));
 
                         //Memset the M grams reference and data arrays
                         memset(m_m_gram_ctx_2_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TSubArrReference *));
@@ -67,7 +68,7 @@ namespace uva {
 
                         //02) Compute and store the M-gram level sizes in terms of the number of M-grams per level
                         //Also initialize the M-gram index counters, for issuing context indexes
-                        for (TModelLevel i = 0; i < BASE::NUM_M_N_GRAM_LEVELS; i++) {
+                        for (phrase_length i = 0; i < BASE::NUM_M_N_GRAM_LEVELS; i++) {
                             //The index counts must start with one as zero is reserved for the UNDEFINED_ARR_IDX
                             m_m_n_gram_next_ctx_id[i] = BASE::FIRST_VALID_CTX_ID;
                             //Due to the reserved first index, make the array sizes one element larger, to avoid extra computations
@@ -83,9 +84,9 @@ namespace uva {
                         memset(m_1_gram_data, 0, m_one_gram_arr_size * sizeof (m_gram_payload));
 
                         //04) Insert the unknown word data into the allocated array
-                        m_unk_data = &m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                        m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
                         m_unk_data->m_prob = UNK_WORD_LOG_PROB_WEIGHT;
-                        m_unk_data->m_back = ZERO_BACK_OFF_WEIGHT;
+                        m_unk_data->m_back = 0.0;
 
                         //05) Allocate data for the M-grams
 
@@ -101,7 +102,7 @@ namespace uva {
                         memset(m_m_gram_data[0], 0, m_m_n_gram_num_ctx_ids[0] * sizeof (TWordIdPBEntry));
 
                         //Now the remaining elements can be added in a loop
-                        for (TModelLevel i = 1; i < BASE::NUM_M_GRAM_LEVELS; i++) {
+                        for (phrase_length i = 1; i < BASE::NUM_M_GRAM_LEVELS; i++) {
                             //Here i is the index of the array, the corresponding M-gram
                             //level M = i + 2. The m_MN_gram_size[i-1] stores the number of elements
                             //on the previous level - the maximum number of possible contexts.
@@ -123,7 +124,7 @@ namespace uva {
                         //Check that the one grams were allocated, if yes then the rest must have been either
                         if (m_1_gram_data != NULL) {
                             delete[] m_1_gram_data;
-                            for (TModelLevel i = 0; i < BASE::NUM_M_GRAM_LEVELS; i++) {
+                            for (phrase_length i = 0; i < BASE::NUM_M_GRAM_LEVELS; i++) {
                                 delete[] m_m_gram_ctx_2_data[i];
                                 delete[] m_m_gram_data[i];
                             }

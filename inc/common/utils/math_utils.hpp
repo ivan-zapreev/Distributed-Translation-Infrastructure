@@ -24,7 +24,7 @@
  */
 
 #ifndef MATHUTILS_HPP
-#define	MATHUTILS_HPP
+#define MATHUTILS_HPP
 
 #include <cstdint>      //  std::uint8_t std::uint32_t 
 #include <cstring>      //  std::memcpy
@@ -40,6 +40,16 @@ using namespace uva::utils::exceptions;
 namespace uva {
     namespace utils {
         namespace math {
+
+            /**
+             * Combine two 32 bit values into one 64 bit
+             * @param first the first value to put in the top bits
+             * @param second the second value to put in the bottom bits
+             * @return the combined value
+             */
+            static inline uint64_t put_32_32_in_64(const uint32_t & first, const uint32_t & second) {
+                return ((((uint64_t) first) << 32) | second);
+            }
 
             namespace const_expr {
 
@@ -429,7 +439,7 @@ if(sizeof(value_type) == 2) { \
                  */
                 template<uint8_t BEGIN_BYTE_IDX, typename DATA_TYPE>
                 static inline DATA_TYPE & extract_bytes(const uint8_t * p_source) {
-                    return *reinterpret_cast<DATA_TYPE *> (const_cast<uint8_t * >(p_source + BEGIN_BYTE_IDX));
+                    return *reinterpret_cast<DATA_TYPE *> (const_cast<uint8_t *> (p_source + BEGIN_BYTE_IDX));
                 }
 
                 /**
@@ -456,5 +466,5 @@ if(sizeof(value_type) == 2) { \
 }
 
 
-#endif	/* MATHUTILS_HPP */
+#endif /* MATHUTILS_HPP */
 

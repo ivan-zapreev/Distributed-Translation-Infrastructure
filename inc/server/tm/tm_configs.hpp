@@ -40,28 +40,7 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace tm {
-
-                    //Define the feature weights delimiter string for the config file
-                    static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
-
-                    //The various numbers of TM features
-                    static const size_t FOUR_TM_FEATURES = 4;
-                    //Stores the maximum number of the translation model features
-                    static const size_t MAX_NUM_TM_FEATURES = FOUR_TM_FEATURES;
-
                     namespace models {
-                        //Stores the zero log probability for the partial score or future cost
-                        static const float ZERO_LOG_PROB_WEIGHT = -1000.0;
-
-                        namespace __unk_phrase {
-                            //Stores the unknown source phrase string, should be configurable
-                            static const string TM_UNKNOWN_SOURCE_STR = string("UNK");
-                            //Stores the unknown target phrase string, should be configurable
-                            static const string TM_UNKNOWN_TARGET_STR = string("<unk>");
-                            //Stores the unknown source word log probability penalty
-                            static const float UNK_SOURCE_WORD_LOG_PROB = -10.0;
-                        }
-
                         namespace __tm_basic_model {
                             //Influences the number of buckets that will be created for the basic model implementations
                             static constexpr double SOURCES_BUCKETS_FACTOR = 3.0;

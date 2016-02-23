@@ -130,7 +130,7 @@ namespace uva {
                             //ARPA headers and we stumbled upon something meaningful,
                             //that actually must be the begin of the data section
                             if (m_line != END_OF_ARPA_FILE) {
-                                TModelLevel level = M_GRAM_LEVEL_1;
+                                phrase_length level = M_GRAM_LEVEL_1;
                                 while (true) {
                                     if (m_file.get_first_line(m_line)) {
                                         LOG_DEBUG1 << "Read data (?) line: '" << m_line.str() << "'" << END_LOG;
@@ -191,7 +191,7 @@ namespace uva {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        template<TModelLevel CURR_LEVEL, bool is_mult_weight>
+                        template<phrase_length CURR_LEVEL, bool is_mult_weight>
                         void lm_basic_builder<TrieType, TFileReaderModel>::read_m_gram_level() {
                             //Declare the pointer to the N-Grma builder
                             lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight> *gram_builder_ptr = NULL;
@@ -246,7 +246,7 @@ namespace uva {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         void lm_basic_builder<TrieType, TFileReaderModel>::do_post_m_gram_actions() {
                             //Check if the post gram actions are needed! If yes - perform.
                             if (m_trie.template is_post_grams<CURR_LEVEL>()) {
@@ -309,7 +309,7 @@ namespace uva {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         void lm_basic_builder<TrieType, TFileReaderModel>::read_grams() {
                             stringstream msg;
                             //Do the progress bard indicator
@@ -376,7 +376,7 @@ namespace uva {
                             if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
                                 //Declare the variables needed to get the word counts
                                 TextPieceReader word;
-                                TLogProbBackOff prob;
+                                prob_weight prob;
 
                                 //Read the current level N-grams and add them to the trie
                                 while (m_file.get_first_line(m_line)) {

@@ -51,6 +51,12 @@ namespace uva {
                             const float ngram_mem_factor)
                     : LayeredTrieBase<C2DMapTrie<WordIndexType>, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
                     m_unk_data(NULL), m_mgram_mem_factor(mgram_mem_factor), m_ngram_mem_factor(ngram_mem_factor), m_1_gram_data(NULL) {
+
+                        //Perform an error check! This container has bounds on the supported trie level
+                        ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
+                        ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
+                        ASSERT_CONDITION_THROW((sizeof(uint32_t) != sizeof(word_uid)), string("Only works with a 32 bit word_uid!"));
+
                         //Perform sanity checks
                         if (DO_SANITY_CHECKS) {
                             //Initialize the hash statistics map
@@ -59,10 +65,6 @@ namespace uva {
                                 m_hash_sizes[i].second = 0;
                             }
                         }
-
-                        //Perform an error check! This container has bounds on the supported trie level
-                        ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
-                        ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
                     }
 
                     template<typename WordIndexType>
@@ -76,9 +78,9 @@ namespace uva {
 
 
                         //Record the dummy probability and back-off values for the unknown word
-                        m_unk_data = &m_1_gram_data[WordIndexType::UNKNOWN_WORD_ID];
+                        m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
                         m_unk_data->m_prob = UNK_WORD_LOG_PROB_WEIGHT;
-                        m_unk_data->m_back = ZERO_BACK_OFF_WEIGHT;
+                        m_unk_data->m_back = 0.0;
                     }
 
                     template<typename WordIndexType>

@@ -82,7 +82,7 @@ namespace uva {
                          * @param SubWordIndexType the sub WordIndex type to be used
                          */
                         template<typename SubWordIndexType>
-                        class OptimizingWordIndex : public AWordIndex<TShortId> {
+                        class OptimizingWordIndex : public AWordIndex {
                         public:
 
                             /**
@@ -143,7 +143,7 @@ namespace uva {
                              * This function gets an id for the given word word based no the stored 1-Grams.
                              * @see AWordIndex
                              */
-                            inline TWordIdType get_word_id(const TextPieceReader & token) const {
+                            inline word_uid get_word_id(const TextPieceReader & token) const {
                                 //Compute the bucket id
                                 uint_fast64_t bucket_idx = get_bucket_idx(token);
 
@@ -176,7 +176,7 @@ namespace uva {
                              * This function creates/gets an id for the given word.
                              * @see AWordIndex
                              */
-                            inline TWordIdType register_word(const TextPieceReader & token) {
+                            inline word_uid register_word(const TextPieceReader & token) {
                                 return m_disp_word_index_ptr->register_word(token);
                             };
 
@@ -193,7 +193,7 @@ namespace uva {
                              * This method is to be used when the word counting is needed.
                              * @see AWordIndex
                              */
-                            inline void count_word(const TextPieceReader & word, TLogProbBackOff prob) {
+                            inline void count_word(const TextPieceReader & word, prob_weight prob) {
                                 m_disp_word_index_ptr->count_word(word, prob);
                             };
 
@@ -283,7 +283,7 @@ namespace uva {
                             uint_fast64_t m_capacity;
 
                             //Typedef the bucket entry
-                            typedef __OptimizingWordIndex::WordIndexBucketEntry<TWordIdType> TBucketEntry;
+                            typedef __OptimizingWordIndex::WordIndexBucketEntry<word_uid> TBucketEntry;
 
                             //Stores the buckets data
                             TBucketEntry * m_word_buckets;

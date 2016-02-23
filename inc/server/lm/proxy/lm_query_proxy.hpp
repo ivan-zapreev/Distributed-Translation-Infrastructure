@@ -70,7 +70,7 @@ namespace uva {
                              * to compute the probability for, the length must be equal to LM_QUERY_LENGTH_MAX
                              */
                             template<bool is_cumulative = false, bool is_log_result = false >
-                            inline TLogProbBackOff execute(const uint64_t * word_ids) {
+                            inline prob_weight execute(const uint64_t * word_ids) {
                                 if (is_cumulative) {
                                     if (is_log_result) {
                                         return execute_cum_yes_log_yes(word_ids);
@@ -94,7 +94,7 @@ namespace uva {
                              * @param text the m-gram query to be executed
                              */
                             template<bool is_cumulative = false, bool is_log_result = false >
-                            inline TLogProbBackOff execute(TextPieceReader &text) {
+                            inline prob_weight execute(TextPieceReader &text) {
                                 if (is_cumulative) {
                                     if (is_log_result) {
                                         return execute_cum_yes_log_yes(text);
@@ -118,7 +118,7 @@ namespace uva {
                              * cumulative/single, with/without logging.
                              * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
                              */
-                            virtual TLogProbBackOff execute_cum_yes_log_yes(const uint64_t * word_ids) = 0;
+                            virtual prob_weight execute_cum_yes_log_yes(const uint64_t * word_ids) = 0;
 
                             /**
                              * This function is to be implemented by the child and
@@ -126,7 +126,7 @@ namespace uva {
                              * cumulative/single, with/without logging.
                              * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
                              */
-                            virtual TLogProbBackOff execute_cum_yes_log_no(const uint64_t * word_ids) = 0;
+                            virtual prob_weight execute_cum_yes_log_no(const uint64_t * word_ids) = 0;
 
                             /**
                              * This function is to be implemented by the child and
@@ -134,7 +134,7 @@ namespace uva {
                              * cumulative/single, with/without logging.
                              * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
                              */
-                            virtual TLogProbBackOff execute_cum_no_log_yes(const uint64_t * word_ids) = 0;
+                            virtual prob_weight execute_cum_no_log_yes(const uint64_t * word_ids) = 0;
 
                             /**
                              * This function is to be implemented by the child and
@@ -142,35 +142,35 @@ namespace uva {
                              * cumulative/single, with/without logging.
                              * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
                              */
-                            virtual TLogProbBackOff execute_cum_no_log_no(const uint64_t * word_ids) = 0;
+                            virtual prob_weight execute_cum_no_log_no(const uint64_t * word_ids) = 0;
                             
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual TLogProbBackOff execute_cum_yes_log_yes(TextPieceReader &text) = 0;
+                            virtual prob_weight execute_cum_yes_log_yes(TextPieceReader &text) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual TLogProbBackOff execute_cum_yes_log_no(TextPieceReader &text) = 0;
+                            virtual prob_weight execute_cum_yes_log_no(TextPieceReader &text) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual TLogProbBackOff execute_cum_no_log_yes(TextPieceReader &text) = 0;
+                            virtual prob_weight execute_cum_no_log_yes(TextPieceReader &text) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual TLogProbBackOff execute_cum_no_log_no(TextPieceReader &text) = 0;
+                            virtual prob_weight execute_cum_no_log_no(TextPieceReader &text) = 0;
                         };
                     }
                 }

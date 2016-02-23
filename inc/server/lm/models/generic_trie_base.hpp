@@ -107,16 +107,16 @@ namespace uva {
                         const static bool NEEDS_BITMAP_HASH_CACHE = (BITMAP_HASH_CACHE_BUCKETS_FACTOR > 1);
 
                         //The offset, relative to the M-gram level M for the m-gram mapping array index
-                        const static TModelLevel MGRAM_IDX_OFFSET = 2;
+                        const static phrase_length MGRAM_IDX_OFFSET = 2;
 
                         //Will store the the number of M levels such that 1 < M < N.
-                        const static TModelLevel NUM_M_GRAM_LEVELS = LM_M_GRAM_LEVEL_MAX - MGRAM_IDX_OFFSET;
+                        const static phrase_length NUM_M_GRAM_LEVELS = LM_M_GRAM_LEVEL_MAX - MGRAM_IDX_OFFSET;
 
                         //Will store the the number of M levels such that 1 < M <= N.
-                        const static TModelLevel NUM_M_N_GRAM_LEVELS = LM_M_GRAM_LEVEL_MAX - 1;
+                        const static phrase_length NUM_M_N_GRAM_LEVELS = LM_M_GRAM_LEVEL_MAX - 1;
 
                         //Compute the N-gram index in in the arrays for M and N grams
-                        static const TModelLevel N_GRAM_IDX_IN_M_N_ARR = LM_M_GRAM_LEVEL_MAX - MGRAM_IDX_OFFSET;
+                        static const phrase_length N_GRAM_IDX_IN_M_N_ARR = LM_M_GRAM_LEVEL_MAX - MGRAM_IDX_OFFSET;
 
                         // Stores the undefined index array value
                         static const TShortId UNDEFINED_ARR_IDX = 0;
@@ -170,7 +170,7 @@ namespace uva {
                          * @param gram the M-Gram data
                          * @throws Exception if the level of this M-gram is not such that  1 < M < N
                          */
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             THROW_MUST_OVERRIDE();
                         };
@@ -198,11 +198,11 @@ namespace uva {
                             //Check if the caching is enabled and needed
                             if (NEEDS_BITMAP_HASH_CACHE) {
                                 //Check if the end word is unknown, if not proceed to the cache check
-                                if (query.m_gram[query.m_end_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
+                                if (query.m_gram[query.m_end_word_idx] != UNKNOWN_WORD_ID) {
                                     //Check if the begin word is unknown, if not proceed to the cache check
-                                    if (query.m_gram[query.m_begin_word_idx] != WordIndexType::UNKNOWN_WORD_ID) {
+                                    if (query.m_gram[query.m_begin_word_idx] != UNKNOWN_WORD_ID) {
                                         //Compute the level array index
-                                        const TModelLevel level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                        const phrase_length level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
 
                                         //If the caching is enabled, the higher sub-m-gram levels always require checking
                                         const BitmapHashCache & ref = m_bitmap_hash_cach[level_idx];
@@ -342,7 +342,7 @@ namespace uva {
                          */
                         inline void register_m_gram_cache(const model_m_gram<WordIndexType> &gram) {
                             if (NEEDS_BITMAP_HASH_CACHE) {
-                                const TModelLevel curr_level = gram.get_m_gram_level();
+                                const phrase_length curr_level = gram.get_m_gram_level();
                                 ASSERT_SANITY_THROW((curr_level == M_GRAM_LEVEL_1), "Trying to add a uni-gram to a bitmap hash cache!");
                                 m_bitmap_hash_cach[curr_level - MGRAM_IDX_OFFSET].template cache_m_gram_hash<WordIndexType>(gram);
                             }
@@ -367,7 +367,7 @@ namespace uva {
                          */
                         inline void process_unigram(query_exec_data & query, MGramStatusEnum & status) const {
                             //Get the uni-gram word index
-                            const TModelLevel & word_idx = query.m_begin_word_idx;
+                            const phrase_length & word_idx = query.m_begin_word_idx;
                             //Get the reference to the payload for convenience
                             const void * & payload = query.m_payloads[word_idx][word_idx];
 
@@ -404,7 +404,7 @@ namespace uva {
                             //If the status says that the m-gram is potentially present then we try to retrieve it from the trie
                             if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                 //Compute the current sub-m-gram level
-                                const TModelLevel curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                const phrase_length curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
                                 LOG_DEBUG << "The current sub-m-gram level is: " << SSTR(curr_level) << END_LOG;
 
                                 //Just for convenience get the reference to the payload element
@@ -419,10 +419,10 @@ namespace uva {
                                     //Append the probability if the retrieval was successful
                                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                         LOG_DEBUG << "The n-gram is found, probability: "
-                                                << *((const TLogProbBackOff *) payload_elem) << END_LOG;
-                                        query.m_probs[query.m_end_word_idx] += *((const TLogProbBackOff *) payload_elem);
+                                                << *((const prob_weight *) payload_elem) << END_LOG;
+                                        query.m_probs[query.m_end_word_idx] += *((const prob_weight *) payload_elem);
                                         LOG_DEBUG << "probs[" << SSTR(query.m_begin_word_idx) << "] += "
-                                                << *((const TLogProbBackOff *) payload_elem) << END_LOG;
+                                                << *((const prob_weight *) payload_elem) << END_LOG;
                                     }
                                 } else {
                                     LOG_DEBUG << "Calling the get_" << SSTR(curr_level) << "_gram_payload function." << END_LOG;

@@ -81,7 +81,7 @@ namespace uva {
                         typedef struct {
                             TShortId word_id;
                             TShortId ctx_id;
-                            TLogProbBackOff prob;
+                            prob_weight prob;
                         } TCtxIdProbData;
 
                         /**
@@ -163,9 +163,9 @@ namespace uva {
                          * Computes the M-Gram context using the previous context and the current word id
                          * @see LayeredTrieBese
                          */
-                        inline bool get_ctx_id(const TModelLevel level_idx, const TShortId word_id, TLongId & ctx_id) const {
+                        inline bool get_ctx_id(const phrase_length level_idx, const TShortId word_id, TLongId & ctx_id) const {
                             //Compute back the current level pure for debug purposes.
-                            const TModelLevel curr_level = level_idx + BASE::MGRAM_IDX_OFFSET;
+                            const phrase_length curr_level = level_idx + BASE::MGRAM_IDX_OFFSET;
 
                             //Perform sanity checks if needed
                             ASSERT_SANITY_THROW(((curr_level == LM_M_GRAM_LEVEL_MAX) || (curr_level < M_GRAM_LEVEL_2)), string("Unsupported level id: ") + std::to_string(curr_level));
@@ -215,7 +215,7 @@ namespace uva {
                          * all the X level grams are read. This method is virtual.
                          * For more details @see WordIndexTrieBase
                          */
-                        template<TModelLevel level>
+                        template<phrase_length level>
                         bool is_post_grams() const {
                             //Check the base class and we need to do post actions
                             //for the N-grams. The N-grams level data has to be
@@ -227,7 +227,7 @@ namespace uva {
                          * This method should be called after all the X level grams are read.
                          * For more details @see WordIndexTrieBase
                          */
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         inline void post_grams() {
                             //Call the base class method first
                             if (BASE::template is_post_grams<CURR_LEVEL>()) {
@@ -250,7 +250,7 @@ namespace uva {
                          * If the storage structure does not exist, return a new one.
                          * For more details @see LayeredTrieBase
                          */
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
                             const TShortId word_id = gram.get_end_word_id();
                             if (CURR_LEVEL == M_GRAM_LEVEL_1) {
@@ -261,7 +261,7 @@ namespace uva {
                                 this->register_m_gram_cache(gram);
 
                                 //Define the context id variable
-                                TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
+                                TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
                                 __LayeredTrieBase::get_context_id<C2WArrayTrie<WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
 
@@ -277,7 +277,7 @@ namespace uva {
                                     m_n_gram_data[n_gram_idx].prob = gram.m_payload.m_prob;
                                 } else {
                                     //Compute the m-gram index
-                                    const TModelLevel m_gram_idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
+                                    const phrase_length m_gram_idx = CURR_LEVEL - BASE::MGRAM_IDX_OFFSET;
 
                                     //First get the sub-array reference. 
                                     TSubArrReference & ref = m_m_gram_ctx_2_data[m_gram_idx][ctx_id];
@@ -307,7 +307,7 @@ namespace uva {
                          */
                         inline void get_unigram_payload(typename BASE::query_exec_data & query) const {
                             //Get the word index for convenience
-                            const TModelLevel & word_idx = query.m_begin_word_idx;
+                            const phrase_length & word_idx = query.m_begin_word_idx;
 
                             LOG_DEBUG << "Getting the payload for sub-uni-gram : [" << SSTR(word_idx)
                                     << "," << SSTR(word_idx) << "]" << END_LOG;
@@ -334,12 +334,12 @@ namespace uva {
                                 const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
                                 //Compute the distance between words
-                                const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                const phrase_length & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
                                 LOG_DEBUG << "curr_level: " << SSTR(curr_level) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
                                         << SSTR(query.m_end_word_idx) << ", end word id: " << word_id << END_LOG;
 
                                 //Get the next context id
-                                const TModelLevel & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                const phrase_length & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
                                 if (get_ctx_id(level_idx, word_id, ctx_id)) {
                                     LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                                     //There is data found under this context
@@ -373,7 +373,7 @@ namespace uva {
                                         << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
 
                                 //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
-                                const TLongId key = TShortId_TShortId_2_TLongId(word_id, ctx_id);
+                                const TLongId key = put_32_32_in_64(word_id, ctx_id);
                                 LOG_DEBUG4 << "Searching N-Gram: TShortId_TShortId_2_TLongId(word_id = " << SSTR(word_id)
                                         << ", ctx_id = " << SSTR(ctx_id) << ") = " << SSTR(key) << END_LOG;
 
@@ -419,10 +419,10 @@ namespace uva {
                         typedef __C2WArrayTrie::TWordIdPBData TWordIdPBEntry;
                         typedef __C2WArrayTrie::TCtxIdProbData TCtxIdProbEntry;
 
-                        template<TModelLevel CURR_LEVEL>
+                        template<phrase_length CURR_LEVEL>
                         inline void post_m_grams() {
                             //Compute the m-gram index
-                            constexpr TModelLevel mgram_idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
+                            constexpr phrase_length mgram_idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
 
                             LOG_DEBUG2 << "Running post actions on " << CURR_LEVEL << "-grams, m-gram array index: " << mgram_idx << END_LOG;
 

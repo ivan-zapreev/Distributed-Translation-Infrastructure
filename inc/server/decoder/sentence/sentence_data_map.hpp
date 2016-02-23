@@ -71,7 +71,7 @@ namespace uva {
                              */
                             phrase_data_entry()
                             : m_begin_ch_idx(0), m_end_ch_idx(0), m_phrase_uid(UNDEFINED_PHRASE_ID),
-                            m_source_entry(NULL), future_cost(ZERO_LOG_PROB_WEIGHT) {
+                            m_source_entry(NULL), future_cost(UNKNOWN_LOG_PROB_WEIGHT) {
                             }
 
                             /**
