@@ -120,17 +120,17 @@ namespace uva {
 
                             //Clean the relevant probability entry
                             if (is_cumulative) {
-                                memset(m_query.m_probs, 0, sizeof (TLogProbBackOff) * QUERY_LENGTH_MAX);
+                                memset(m_query.m_probs, 0, sizeof (TLogProbBackOff) * M_GRAM_LEVEL_MAX);
                             } else {
                                 m_query.m_probs[ m_query.m_gram.get_end_word_idx() ] = ZERO_PROB_WEIGHT;
                             }
                             //Clean the payload pointer entries
-                            memset(m_query.m_payloads, 0, sizeof (void*) * QUERY_LENGTH_MAX * QUERY_LENGTH_MAX);
+                            memset(m_query.m_payloads, 0, sizeof (void*) * M_GRAM_LEVEL_MAX * M_GRAM_LEVEL_MAX);
 
                             //If this trie needs getting context ids then clean the data as well
                             if (m_trie.is_need_getting_ctx_ids()) {
                                 //Clean the payload pointer entries
-                                memset(m_query.m_last_ctx_ids, WordIndexType::UNDEFINED_WORD_ID, sizeof (TLongId) * QUERY_LENGTH_MAX);
+                                memset(m_query.m_last_ctx_ids, WordIndexType::UNDEFINED_WORD_ID, sizeof (TLongId) * M_GRAM_LEVEL_MAX);
                             }
 
                             //Execute the query
