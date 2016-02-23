@@ -153,7 +153,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * @see GenericTrieBase
                          */
-                        virtual void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        virtual void pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                         /**
                          * This method adds a M-Gram (word) to the trie where 1 < M < N
@@ -170,7 +170,7 @@ namespace uva {
                                 //Register the m-gram in the hash cache
                                 this->register_m_gram_cache(gram);
 
-                                if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
+                                if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
                                     //Create a new M-Gram data entry
                                     T_M_Gram_Prob_Entry & data = m_n_gram_data->add_new_element(gram.get_hash());
                                     //Create the N-gram id from the word ids
@@ -232,7 +232,7 @@ namespace uva {
                          * @param status the resulting status of the operation
                          */
                         inline void get_n_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
-                            LOG_DEBUG << "Searching in " << SSTR(M_GRAM_LEVEL_MAX) << "-grams" << END_LOG;
+                            LOG_DEBUG << "Searching in " << SSTR(LM_M_GRAM_LEVEL_MAX) << "-grams" << END_LOG;
 
                             //Call the templated part via function pointer
                             status = get_payload<TProbMap>(m_n_gram_data, query);

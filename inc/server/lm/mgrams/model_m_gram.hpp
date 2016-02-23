@@ -176,7 +176,7 @@ namespace uva {
 
                         private:
                             //The data structure to store the N-gram hashes
-                            uint64_t m_hash_values[M_GRAM_LEVEL_MAX] = {};
+                            uint64_t m_hash_values[LM_M_GRAM_LEVEL_MAX] = {};
 
                             //Stores the m-gram idx for when adding m-gram tokens
                             TModelLevel m_curr_index;

@@ -48,7 +48,7 @@ namespace uva {
                     : LayeredTrieBase<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
                     m_unk_data(NULL), m_storage_factory(NULL) {
                         //Perform an error check! This container has bounds on the supported trie level
-                        ASSERT_CONDITION_THROW((M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
+                        ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
 
                         //Check for the storage memory sized. This one is needed to be able to store
@@ -68,7 +68,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
-                    void W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>::pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
+                    void W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //01) Pre-allocate the word index super class call
                         BASE::pre_allocate(counts);
 
@@ -76,7 +76,7 @@ namespace uva {
                         m_word_arr_size = BASE::get_word_index().get_number_of_words(counts[0]);
 
                         //02) Allocate the factory
-                        m_storage_factory = new StorageFactory<M_GRAM_LEVEL_MAX>(counts);
+                        m_storage_factory = new StorageFactory<LM_M_GRAM_LEVEL_MAX>(counts);
 
                         //03) Allocate the main arrays of pointers where probs/back-offs will be stored
 
@@ -94,14 +94,14 @@ namespace uva {
                         //the remaining M-gram levels until M < N. For M==N there is no
                         //back-off weights and thus we will store the probabilities just
                         //Inside the C container class values.
-                        for (int idx = 1; idx < (M_GRAM_LEVEL_MAX - 1); idx++) {
+                        for (int idx = 1; idx < (LM_M_GRAM_LEVEL_MAX - 1); idx++) {
                             m_mgram_data[idx] = new m_gram_payload[counts[idx]];
                             memset(m_mgram_data[idx], 0, counts[idx] * sizeof (m_gram_payload));
                         }
 
                         //04) Allocate the word map arrays per level There is N-1 levels to have 
                         //as the for M == 0 - the One Grams, we do not need this mappings
-                        for (int idx = 0; idx < (M_GRAM_LEVEL_MAX - 1); idx++) {
+                        for (int idx = 0; idx < (LM_M_GRAM_LEVEL_MAX - 1); idx++) {
                             m_mgram_mapping[idx] = new StorageContainer*[m_word_arr_size];
                             memset(m_mgram_mapping[idx], 0, m_word_arr_size * sizeof (StorageContainer*));
                         }
@@ -110,14 +110,14 @@ namespace uva {
                     template<typename WordIndexType, template<TModelLevel > class StorageFactory, class StorageContainer>
                     W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>::~W2CHybridTrie() {
                         //Delete the probability and back-off data
-                        for (TModelLevel idx = 0; idx < (M_GRAM_LEVEL_MAX - 1); idx++) {
+                        for (TModelLevel idx = 0; idx < (LM_M_GRAM_LEVEL_MAX - 1); idx++) {
                             //Delete the prob/back-off arrays per level
                             if (m_mgram_data[idx] != NULL) {
                                 delete[] m_mgram_data[idx];
                             }
                         }
                         //Delete the mapping data
-                        for (TModelLevel idx = 0; idx < (M_GRAM_LEVEL_MAX - 1); idx++) {
+                        for (TModelLevel idx = 0; idx < (LM_M_GRAM_LEVEL_MAX - 1); idx++) {
                             //Delete the word arrays per level
                             if (m_mgram_mapping[idx] != NULL) {
                                 for (TShortId widx = 0; widx < m_word_arr_size; widx++) {

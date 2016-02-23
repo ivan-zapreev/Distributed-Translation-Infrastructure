@@ -59,11 +59,11 @@ namespace uva {
                     struct query_exec_data_templ{
                         query_m_gram<word_idx_type> m_gram;
                         
-                        const void * m_payloads[M_GRAM_LEVEL_MAX][M_GRAM_LEVEL_MAX];
+                        const void * m_payloads[LM_M_GRAM_LEVEL_MAX][LM_M_GRAM_LEVEL_MAX];
                         
-                        TLongId m_last_ctx_ids[M_GRAM_LEVEL_MAX];
+                        TLongId m_last_ctx_ids[LM_M_GRAM_LEVEL_MAX];
                         
-                        TLogProbBackOff m_probs[M_GRAM_LEVEL_MAX];
+                        TLogProbBackOff m_probs[LM_M_GRAM_LEVEL_MAX];
                         
                         TModelLevel m_begin_word_idx;
                         TModelLevel m_end_word_idx;

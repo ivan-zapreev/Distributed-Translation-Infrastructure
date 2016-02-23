@@ -130,7 +130,7 @@ namespace uva {
                             //Compute back the current level pure for debug purposes.
                             const TModelLevel curr_level = level_idx + BASE::MGRAM_IDX_OFFSET;
 
-                            ASSERT_SANITY_THROW((curr_level == M_GRAM_LEVEL_MAX) || (level_idx < 0),
+                            ASSERT_SANITY_THROW((curr_level == LM_M_GRAM_LEVEL_MAX) || (level_idx < 0),
                                     string("Unsupported level id: ") + std::to_string(curr_level));
 
                             LOG_DEBUG2 << "Searching next ctx_id for " << SSTR(curr_level)
@@ -188,7 +188,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * For more details @see LayeredTrieBase
                          */
-                        virtual void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        virtual void pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                         /**
                          * This method allows to check if post processing should be called after
@@ -217,7 +217,7 @@ namespace uva {
                             }
 
                             //Do the post actions here
-                            if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
+                            if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
                                 post_n_grams();
                             } else {
                                 if (CURR_LEVEL > M_GRAM_LEVEL_1) {
@@ -248,7 +248,7 @@ namespace uva {
                                 __LayeredTrieBase::get_context_id<W2CArrayTrie<WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Store the payload
-                                if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
+                                if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
                                     //Get the sub-array reference. 
                                     typename T_N_GramWordEntry::TElemType & ref = make_m_n_gram_entry<T_N_GramWordEntry>(m_n_gram_word_2_data, word_id);
                                     //Store the context and word ids
@@ -333,7 +333,7 @@ namespace uva {
                                 TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
                                 const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
-                                LOG_DEBUG2 << "Getting " << SSTR(M_GRAM_LEVEL_MAX) << "-gram with word_id: "
+                                LOG_DEBUG2 << "Getting " << SSTR(LM_M_GRAM_LEVEL_MAX) << "-gram with word_id: "
                                         << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
 
                                 //Get the entry
@@ -344,7 +344,7 @@ namespace uva {
                                     LOG_DEBUG << "The payload is retrieved: " << entry_ptr->payload << END_LOG;
                                 } else {
                                     //The payload could not be found
-                                    LOG_DEBUG1 << "Unable to find " << SSTR(M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: "
+                                    LOG_DEBUG1 << "Unable to find " << SSTR(LM_M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: "
                                             << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
                                     status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                 }

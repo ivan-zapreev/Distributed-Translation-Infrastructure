@@ -118,7 +118,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * For more details @see LayeredTrieBase
                          */
-                        virtual void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        virtual void pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                         /**
                          * Allows to retrieve the data storage structure for the M gram
@@ -142,14 +142,14 @@ namespace uva {
                                 __LayeredTrieBase::get_context_id<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Store the payload
-                                if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
+                                if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
                                     StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][word_id];
                                     if (ctx_mapping == NULL) {
-                                        ctx_mapping = m_storage_factory->create(M_GRAM_LEVEL_MAX);
-                                        LOG_DEBUG3 << "Allocating storage for level " << SSTR(M_GRAM_LEVEL_MAX) << ", word_id " << SSTR(word_id) << END_LOG;
+                                        ctx_mapping = m_storage_factory->create(LM_M_GRAM_LEVEL_MAX);
+                                        LOG_DEBUG3 << "Allocating storage for level " << SSTR(LM_M_GRAM_LEVEL_MAX) << ", word_id " << SSTR(word_id) << END_LOG;
                                     }
 
-                                    LOG_DEBUG3 << "Returning reference to prob., level: " << SSTR(M_GRAM_LEVEL_MAX) << ", word_id "
+                                    LOG_DEBUG3 << "Returning reference to prob., level: " << SSTR(LM_M_GRAM_LEVEL_MAX) << ", word_id "
                                             << SSTR(word_id) << ", ctx_id " << SSTR(ctx_id) << END_LOG;
                                     //WARNING: We cast to (TLogProbBackOff &) as we misuse the mapping by storing the probability value there!
                                     reinterpret_cast<TLogProbBackOff&> (ctx_mapping->operator[](ctx_id)) = gram.m_payload.m_prob;
@@ -260,7 +260,7 @@ namespace uva {
                                     }
                                 } else {
                                     //The payload could not be found
-                                    LOG_DEBUG1 << "Unable to find " << SSTR(M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: "
+                                    LOG_DEBUG1 << "Unable to find " << SSTR(LM_M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: "
                                             << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
                                     status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                 }
@@ -280,7 +280,7 @@ namespace uva {
                         size_t m_word_arr_size;
 
                         //The factory to produce the storage containers
-                        StorageFactory<M_GRAM_LEVEL_MAX> * m_storage_factory;
+                        StorageFactory<LM_M_GRAM_LEVEL_MAX> * m_storage_factory;
 
                         //M-Gram data for 1 <= M < N. This is a 2D array storing
                         //For each M-Gram level M an array of prob-back_off values
@@ -289,7 +289,7 @@ namespace uva {
                         // ...
                         // m_mgram_data[M][#M-Grams - 1] --//--
                         // m_mgram_data[M][#M-Grams] --//--
-                        m_gram_payload * m_mgram_data[M_GRAM_LEVEL_MAX - 1];
+                        m_gram_payload * m_mgram_data[LM_M_GRAM_LEVEL_MAX - 1];
 
                         //M-Gram data for 1 < M <= N. This is a 2D array storing
                         //For each M-Gram level M an array of #words elements of
@@ -308,11 +308,11 @@ namespace uva {
                         //stored as floats - 4 bytes and m_mgram_data[M] array is also a
                         //4 byte integer, so we minimize memory usage by storing float
                         //probability in place of the index.
-                        StorageContainer** m_mgram_mapping[M_GRAM_LEVEL_MAX - 1];
+                        StorageContainer** m_mgram_mapping[LM_M_GRAM_LEVEL_MAX - 1];
 
                         //Will store the next context index counters per M-gram level
                         //for 1 < M < N.
-                        const static TModelLevel NUM_IDX_COUNTERS = M_GRAM_LEVEL_MAX - 2;
+                        const static TModelLevel NUM_IDX_COUNTERS = LM_M_GRAM_LEVEL_MAX - 2;
                         TShortId next_ctx_id[NUM_IDX_COUNTERS];
                     };
 

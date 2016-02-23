@@ -47,7 +47,7 @@
 #include "server/lm/builders/lm_gram_builder.hpp"
 
 #include "server/lm/mgrams/query_m_gram.hpp"
-#include "server/lm/models/m_gram_query.hpp"
+#include "server/lm/models/simple_m_gram_query.hpp"
 
 using namespace std;
 using namespace uva::utils::file;

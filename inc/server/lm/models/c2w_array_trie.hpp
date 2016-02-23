@@ -168,7 +168,7 @@ namespace uva {
                             const TModelLevel curr_level = level_idx + BASE::MGRAM_IDX_OFFSET;
 
                             //Perform sanity checks if needed
-                            ASSERT_SANITY_THROW(((curr_level == M_GRAM_LEVEL_MAX) || (curr_level < M_GRAM_LEVEL_2)), string("Unsupported level id: ") + std::to_string(curr_level));
+                            ASSERT_SANITY_THROW(((curr_level == LM_M_GRAM_LEVEL_MAX) || (curr_level < M_GRAM_LEVEL_2)), string("Unsupported level id: ") + std::to_string(curr_level));
 
                             LOG_DEBUG2 << "Searching for the next ctx_id of " << SSTR(curr_level)
                                     << "-gram with word_id: " << SSTR(word_id) << ", ctx_id: "
@@ -208,7 +208,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * For more details @see LayeredTrieBase
                          */
-                        virtual void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        virtual void pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                         /**
                          * This method allows to check if post processing should be called after
@@ -235,7 +235,7 @@ namespace uva {
                             }
 
                             //Do the post actions here
-                            if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
+                            if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
                                 post_n_grams();
                             } else {
                                 if (CURR_LEVEL > M_GRAM_LEVEL_1) {
@@ -265,7 +265,7 @@ namespace uva {
                                 //Obtain the m-gram context id
                                 __LayeredTrieBase::get_context_id<C2WArrayTrie<WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
 
-                                if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
+                                if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
                                     //Get the new n-gram index
                                     const TShortId n_gram_idx = m_m_n_gram_next_ctx_id[BASE::N_GRAM_IDX_IN_M_N_ARR]++;
 
@@ -369,7 +369,7 @@ namespace uva {
                                 TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
                                 const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
-                                LOG_DEBUG2 << "Getting " << SSTR(M_GRAM_LEVEL_MAX) << "-gram with word_id: "
+                                LOG_DEBUG2 << "Getting " << SSTR(LM_M_GRAM_LEVEL_MAX) << "-gram with word_id: "
                                         << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
 
                                 //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
@@ -386,7 +386,7 @@ namespace uva {
                                     LOG_DEBUG << "The payload is retrieved: " << m_n_gram_data[idx].prob << END_LOG;
                                 } else {
                                     //The payload could not be found
-                                    LOG_DEBUG1 << "Unable to find " << SSTR(M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: " << SSTR(ctx_id)
+                                    LOG_DEBUG1 << "Unable to find " << SSTR(LM_M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: " << SSTR(ctx_id)
                                             << ", word_id: " << SSTR(word_id) << ", key " << SSTR(key) << END_LOG;
                                     status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                 }

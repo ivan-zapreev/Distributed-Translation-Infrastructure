@@ -52,7 +52,7 @@ namespace uva {
                     m_unk_data(NULL), m_mgram_mem_factor(mram_mem_factor), m_ngram_mem_factor(ngram_mem_factor), m_1_gram_data(NULL) {
 
                         //Perform an error check! This container has bounds on the supported trie level
-                        ASSERT_CONDITION_THROW((M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
+                        ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
 
                         //Memset the M grams reference and data arrays
@@ -70,7 +70,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    void C2DHybridTrie<WordIndexType>::preAllocateOGrams(const size_t counts[M_GRAM_LEVEL_MAX]) {
+                    void C2DHybridTrie<WordIndexType>::preAllocateOGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Compute the number of words to be stored
                         const size_t num_word_ids = BASE::get_word_index().get_number_of_words(counts[0]);
 
@@ -86,7 +86,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    void C2DHybridTrie<WordIndexType>::preAllocateMGrams(const size_t counts[M_GRAM_LEVEL_MAX]) {
+                    void C2DHybridTrie<WordIndexType>::preAllocateMGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Pre-allocate for the M-grams with 1 < M < N
                         for (int idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
                             //Get the number of elements to pre-allocate
@@ -106,17 +106,17 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    void C2DHybridTrie<WordIndexType>::preAllocateNGrams(const size_t counts[M_GRAM_LEVEL_MAX]) {
+                    void C2DHybridTrie<WordIndexType>::preAllocateNGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Get the number of elements to pre-allocate
 
-                        const size_t numEntries = counts[M_GRAM_LEVEL_MAX - 1];
+                        const size_t numEntries = counts[LM_M_GRAM_LEVEL_MAX - 1];
 
                         //Reserve the memory for the map
                         reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&m_n_gram_map_ptr, &m_n_gram_alloc_ptr, numEntries, "N-Grams", m_ngram_mem_factor);
                     }
 
                     template<typename WordIndexType>
-                    void C2DHybridTrie<WordIndexType>::pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
+                    void C2DHybridTrie<WordIndexType>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Call the super class pre-allocator!
                         BASE::pre_allocate(counts);
 

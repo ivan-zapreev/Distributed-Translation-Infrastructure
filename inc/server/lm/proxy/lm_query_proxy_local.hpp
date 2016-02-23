@@ -27,7 +27,8 @@
 #define LM_TRIE_QUERY_PROXY_LOCAL_HPP
 
 #include "server/lm/proxy/lm_query_proxy.hpp"
-#include "server/lm/models/m_gram_query.hpp"
+#include "server/lm/models/sliding_m_gram_query.hpp"
+#include "server/lm/models/simple_m_gram_query.hpp"
 
 using namespace uva::smt::bpbd::server::lm;
 
@@ -50,14 +51,15 @@ namespace uva {
                              * The basic constructor that accepts the trie reference to query to
                              * @param trie the trie to query
                              */
-                            lm_trie_query_proxy_local(const trie_type & trie) : m_query(trie) {
+                            lm_trie_query_proxy_local(const trie_type & trie)
+                            : m_sliding_query(trie), m_simple_query(trie) {
                             }
                             
                             /**
                              * @see lm_query_proxy
                              */
                             virtual float get_unk_word_prob() {
-                                return m_query.get_unk_word_prob();
+                                return m_simple_query.get_unk_word_prob();
                             }
 
                             /**
@@ -68,38 +70,68 @@ namespace uva {
                             }
 
                         protected:
-
+                            
+                            /**
+                             * @see lm_query_proxy
+                             */
+                            virtual TLogProbBackOff execute_cum_yes_log_yes(const uint64_t * word_ids) {
+                                return m_sliding_query.template execute<true, true>(word_ids);
+                            };
+                            
+                            /**
+                             * @see lm_query_proxy
+                             */
+                            virtual TLogProbBackOff execute_cum_yes_log_no(const uint64_t * word_ids) {
+                                return m_sliding_query.template execute<true, false>(word_ids);
+                            };
+                            
+                            /**
+                             * @see lm_query_proxy
+                             */
+                            virtual TLogProbBackOff execute_cum_no_log_yes(const uint64_t * word_ids) {
+                                return m_sliding_query.template execute<false, true>(word_ids);
+                            };
+                            
+                            /**
+                             * @see lm_query_proxy
+                             */
+                            virtual TLogProbBackOff execute_cum_no_log_no(const uint64_t * word_ids) {
+                                return m_sliding_query.template execute<false, false>(word_ids);
+                            };
+                            
                             /**
                              * @see lm_query_proxy
                              */
                             virtual TLogProbBackOff execute_cum_yes_log_yes(TextPieceReader &text) {
-                                return m_query.template execute<true, true>(text);
+                                return m_simple_query.template execute<true, true>(text);
                             };
 
                             /**
                              * @see lm_query_proxy
                              */
                             virtual TLogProbBackOff execute_cum_yes_log_no(TextPieceReader &text) {
-                                return m_query.template execute<true, false>(text);
+                                return m_simple_query.template execute<true, false>(text);
                             };
 
                             /**
                              * @see lm_query_proxy
                              */
                             virtual TLogProbBackOff execute_cum_no_log_yes(TextPieceReader &text) {
-                                return m_query.template execute<false, true>(text);
+                                return m_simple_query.template execute<false, true>(text);
                             };
 
                             /**
                              * @see lm_query_proxy
                              */
                             virtual TLogProbBackOff execute_cum_no_log_no(TextPieceReader &text) {
-                                return m_query.template execute<false, false>(text);
+                                return m_simple_query.template execute<false, false>(text);
                             };
 
                         private:
-                            m_gram_query<trie_type> m_query;
-
+                            //Stores the reference to the sliding query
+                            sliding_m_gram_query<trie_type> m_sliding_query;
+                            //Stores the reference to the simple query
+                            simple_m_gram_query<trie_type> m_simple_query;
                         };
                     }
                 }

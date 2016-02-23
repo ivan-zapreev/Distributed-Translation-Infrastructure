@@ -105,9 +105,9 @@ namespace uva {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::pre_allocate(size_t counts[M_GRAM_LEVEL_MAX]) {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::pre_allocate(size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                             LOG_INFO << "Expected number of M-grams per level: "
-                                    << array_to_string<size_t, M_GRAM_LEVEL_MAX>(counts) << END_LOG;
+                                    << array_to_string<size_t, LM_M_GRAM_LEVEL_MAX>(counts) << END_LOG;
 
                             //Do the progress bard indicator
                             Logger::start_progress_bar(string("Pre-allocating memory"));
@@ -123,7 +123,7 @@ namespace uva {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
-                        void lm_basic_builder<TrieType, TFileReaderModel>::read_data(size_t counts[M_GRAM_LEVEL_MAX]) {
+                        void lm_basic_builder<TrieType, TFileReaderModel>::read_data(size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                             LOG_DEBUG << "Start reading ARPA data." << END_LOG;
 
                             //If we are here then it means we just finished reading the
@@ -427,8 +427,8 @@ namespace uva {
                             read_headers();
 
                             //Read the DATA section of ARPA
-                            size_t counts[M_GRAM_LEVEL_MAX];
-                            memset(counts, 0, M_GRAM_LEVEL_MAX * sizeof (size_t));
+                            size_t counts[LM_M_GRAM_LEVEL_MAX];
+                            memset(counts, 0, LM_M_GRAM_LEVEL_MAX * sizeof (size_t));
                             read_data(counts);
                         }
 
@@ -446,8 +446,8 @@ namespace uva {
 
                             //Declare an array of N-Gram counts, that is to be filled from the
                             //headers. This data will be used to pre-allocate memory for the Trie 
-                            size_t counts[M_GRAM_LEVEL_MAX];
-                            memset(counts, 0, M_GRAM_LEVEL_MAX * sizeof (size_t));
+                            size_t counts[LM_M_GRAM_LEVEL_MAX];
+                            memset(counts, 0, LM_M_GRAM_LEVEL_MAX * sizeof (size_t));
 
                             try {
                                 //Read the first line from the file

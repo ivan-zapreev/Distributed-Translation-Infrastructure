@@ -49,7 +49,7 @@ namespace uva {
                     : GenericTrieBase<G2DMapTrie<WordIndexType>, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
                     m_unk_data(NULL), m_1_gram_data(NULL), m_n_gram_data(NULL) {
                         //Perform an error check! This container has bounds on the supported trie level
-                        ASSERT_CONDITION_THROW((M_GRAM_LEVEL_MAX > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
+                        ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
 
                         //Clear the M-Gram bucket arrays
@@ -62,7 +62,7 @@ namespace uva {
                     };
 
                     template<typename WordIndexType>
-                    void G2DMapTrie<WordIndexType>::pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
+                    void G2DMapTrie<WordIndexType>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Call the base-class
                         BASE::pre_allocate(counts);
 
@@ -82,7 +82,7 @@ namespace uva {
                         }
 
                         //Initialize the n-gram's map
-                        m_n_gram_data = new TProbMap(__G2DMapTrie::BUCKETS_FACTOR, counts[M_GRAM_LEVEL_MAX - 1]);
+                        m_n_gram_data = new TProbMap(__G2DMapTrie::BUCKETS_FACTOR, counts[LM_M_GRAM_LEVEL_MAX - 1]);
                     };
 
                     template<typename WordIndexType>

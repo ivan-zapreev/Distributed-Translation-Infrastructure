@@ -140,7 +140,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * For more details @see LayeredTrieBase
                          */
-                        virtual void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        virtual void pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                         /**
                          * Allows to retrieve the data storage structure for the M gram
@@ -167,7 +167,7 @@ namespace uva {
                                 const TLongId key = TShortId_TShortId_2_TLongId(ctx_id, word_id);
 
                                 //Store the payload
-                                if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
+                                if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
                                     m_n_gram_map_ptr->operator[](key) = gram.m_payload.m_prob;
                                 } else {
                                     //Get the next context id
@@ -258,7 +258,7 @@ namespace uva {
                                 TNGramsMap::const_iterator result = m_n_gram_map_ptr->find(key);
                                 if (result == m_n_gram_map_ptr->end()) {
                                     //The payload could not be found
-                                    LOG_DEBUG1 << "Unable to find " << SSTR(M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: "
+                                    LOG_DEBUG1 << "Unable to find " << SSTR(LM_M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: "
                                             << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
                                     status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                 } else {
@@ -321,21 +321,21 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * @param counts the counts for the number of elements of each gram level
                          */
-                        void preAllocateOGrams(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        void preAllocateOGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                         /**
                          * This method must used to provide the N-gram count information
                          * That should allow for pre-allocation of the memory
                          * @param counts the counts for the number of elements of each gram level
                          */
-                        void preAllocateMGrams(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        void preAllocateMGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                         /**
                          * This method must used to provide the N-gram count information
                          * That should allow for pre-allocation of the memory
                          * @param counts the counts for the number of elements of each gram level
                          */
-                        void preAllocateNGrams(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        void preAllocateNGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                     };
 

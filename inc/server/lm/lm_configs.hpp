@@ -48,13 +48,13 @@ namespace uva {
                     static const size_t MAX_NUM_LM_FEATURES = 1;
 
                     //The considered maximum length of the N-gram 
-                    constexpr static uint8_t M_GRAM_LEVEL_MAX = 5u;
+                    constexpr static uint8_t LM_M_GRAM_LEVEL_MAX = 5u;
 
                     //The considered maximum length of the target phrase
-                    constexpr static uint8_t TARGET_PHRASE_LENGTH_MAX = 7u;
+                    constexpr static uint8_t LM_TARGET_PHRASE_LENGTH_MAX = 7u;
                     
                     //The considered maximum length of the N-gram query
-                    constexpr static uint8_t QUERY_LENGTH_MAX = TARGET_PHRASE_LENGTH_MAX + M_GRAM_LEVEL_MAX - 1;
+                    constexpr static uint8_t LM_QUERY_LENGTH_MAX = LM_TARGET_PHRASE_LENGTH_MAX + LM_M_GRAM_LEVEL_MAX - 1;
 
                     namespace dictionary {
 

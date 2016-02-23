@@ -29,6 +29,7 @@
 #include "common/utils/file/text_piece_reader.hpp"
 
 #include "server/lm/lm_consts.hpp"
+#include "server/lm/lm_configs.hpp"
 
 using namespace uva::utils::file;
 using namespace uva::smt::bpbd::server::lm;
@@ -62,6 +63,34 @@ namespace uva {
 
                             /**
                              * Allows to execute a query
+                             * @param is_cumulative, if true then we compute the joint probability
+                             * i.e. the sum of the probabilities of the sub-m-gram prefixes until
+                             * the max m-gram level plus the sliding window.
+                             * @param word_ids the word identifiers of the words of the target phrase
+                             * to compute the probability for, the length must be equal to LM_QUERY_LENGTH_MAX
+                             */
+                            template<bool is_cumulative = false, bool is_log_result = false >
+                            inline TLogProbBackOff execute(const uint64_t * word_ids) {
+                                if (is_cumulative) {
+                                    if (is_log_result) {
+                                        return execute_cum_yes_log_yes(word_ids);
+                                    } else {
+                                        return execute_cum_yes_log_no(word_ids);
+                                    }
+                                } else {
+                                    if (is_log_result) {
+                                        return execute_cum_no_log_yes(word_ids);
+                                    } else {
+                                        return execute_cum_no_log_no(word_ids);
+                                    }
+                                }
+                            };
+
+                            /**
+                             * Allows to execute a query
+                             * @param is_cumulative, if true then we compute the joint probability
+                             * i.e. the sum of the probabilities of the sub-m-gram prefixes until
+                             * the max m-gram level plus the sliding window.
                              * @param text the m-gram query to be executed
                              */
                             template<bool is_cumulative = false, bool is_log_result = false >
@@ -82,7 +111,39 @@ namespace uva {
                             };
 
                         protected:
+                            
+                            /**
+                             * This function is to be implemented by the child and
+                             * should allow for a specific type of query execution
+                             * cumulative/single, with/without logging.
+                             * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
+                             */
+                            virtual TLogProbBackOff execute_cum_yes_log_yes(const uint64_t * word_ids) = 0;
 
+                            /**
+                             * This function is to be implemented by the child and
+                             * should allow for a specific type of query execution
+                             * cumulative/single, with/without logging.
+                             * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
+                             */
+                            virtual TLogProbBackOff execute_cum_yes_log_no(const uint64_t * word_ids) = 0;
+
+                            /**
+                             * This function is to be implemented by the child and
+                             * should allow for a specific type of query execution
+                             * cumulative/single, with/without logging.
+                             * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
+                             */
+                            virtual TLogProbBackOff execute_cum_no_log_yes(const uint64_t * word_ids) = 0;
+
+                            /**
+                             * This function is to be implemented by the child and
+                             * should allow for a specific type of query execution
+                             * cumulative/single, with/without logging.
+                             * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
+                             */
+                            virtual TLogProbBackOff execute_cum_no_log_no(const uint64_t * word_ids) = 0;
+                            
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution

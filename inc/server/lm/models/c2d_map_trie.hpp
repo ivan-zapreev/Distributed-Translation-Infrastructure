@@ -146,7 +146,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * For more details @see LayeredTrieBase
                          */
-                        virtual void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        virtual void pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                         /**
                          * Allows to retrieve the data storage structure for the M gram
@@ -173,7 +173,7 @@ namespace uva {
                                 (void) get_ctx_id(CURR_LEVEL - BASE::MGRAM_IDX_OFFSET, word_id, ctx_id);
 
                                 //Store the payload
-                                if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
+                                if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
                                     m_n_gram_map_ptr->operator[](ctx_id) = gram.m_payload.m_prob;
                                 } else {
                                     m_m_gram_map_ptrs[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET]->operator[](ctx_id) = gram.m_payload;
@@ -267,7 +267,7 @@ namespace uva {
                                     TNGramsMap::const_iterator result = m_n_gram_map_ptr->find(ctx_id);
                                     if (result == m_n_gram_map_ptr->end()) {
                                         //The payload could not be found
-                                        LOG_DEBUG1 << "Unable to find " << SSTR(M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: "
+                                        LOG_DEBUG1 << "Unable to find " << SSTR(LM_M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: "
                                                 << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
                                         status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                     } else {
@@ -308,9 +308,9 @@ namespace uva {
                         //The N Grams map type
                         typedef unordered_map<TLongId, m_gram_payload, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                         //The actual data storage for the M Grams for 1 < M < N
-                        TMGramAllocator * m_m_gram_alloc_ptrs[M_GRAM_LEVEL_MAX - BASE::MGRAM_IDX_OFFSET];
+                        TMGramAllocator * m_m_gram_alloc_ptrs[LM_M_GRAM_LEVEL_MAX - BASE::MGRAM_IDX_OFFSET];
                         //The array of maps map storing M-grams for 1 < M < N
-                        TMGramsMap * m_m_gram_map_ptrs[M_GRAM_LEVEL_MAX - BASE::MGRAM_IDX_OFFSET];
+                        TMGramsMap * m_m_gram_map_ptrs[LM_M_GRAM_LEVEL_MAX - BASE::MGRAM_IDX_OFFSET];
 
                         //The type of key,value pairs to be stored in the N Grams map
                         typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
@@ -324,28 +324,28 @@ namespace uva {
                         TNGramsMap * m_n_gram_map_ptr;
 
                         //The structure for storing the hash key values statistics
-                        pair<TLongId, TLongId> m_hash_sizes[M_GRAM_LEVEL_MAX];
+                        pair<TLongId, TLongId> m_hash_sizes[LM_M_GRAM_LEVEL_MAX];
 
                         /**
                          * This method must used to provide the N-gram count information
                          * That should allow for pre-allocation of the memory
                          * @param counts the counts for the number of elements of each gram level
                          */
-                        void pre_allocate_1_grams(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        void pre_allocate_1_grams(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                         /**
                          * This method must used to provide the N-gram count information
                          * That should allow for pre-allocation of the memory
                          * @param counts the counts for the number of elements of each gram level
                          */
-                        void pre_allocate_m_grams(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        void pre_allocate_m_grams(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                         /**
                          * This method must used to provide the N-gram count information
                          * That should allow for pre-allocation of the memory
                          * @param counts the counts for the number of elements of each gram level
                          */
-                        void pre_allocate_n_grams(const size_t counts[M_GRAM_LEVEL_MAX]);
+                        void pre_allocate_n_grams(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
                     };
 
                     typedef C2DMapTrie<BasicWordIndex > TC2DMapTrieBasic;

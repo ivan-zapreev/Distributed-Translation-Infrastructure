@@ -48,7 +48,7 @@ namespace uva {
                     m_unk_data(NULL), m_1_gram_data(NULL), m_n_gram_data(NULL), m_one_gram_arr_size(0) {
 
                         //Perform an error check! This container has bounds on the supported trie level
-                        ASSERT_CONDITION_THROW((M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
+                        ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
 
                         //Memset the M grams reference and data arrays
@@ -61,7 +61,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    void C2WArrayTrie<WordIndexType>::pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
+                    void C2WArrayTrie<WordIndexType>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //01) Pre-allocate the word index super class call
                         BASE::pre_allocate(counts);
 

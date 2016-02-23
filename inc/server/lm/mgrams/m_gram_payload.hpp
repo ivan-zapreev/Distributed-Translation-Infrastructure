@@ -98,10 +98,10 @@ namespace uva {
                             : m_word_index(word_index), m_actual_level(actual_level),
                             m_actual_end_word_idx(actual_level - 1) {
                                 //Perform sanity check if needed 
-                                ASSERT_SANITY_THROW((m_actual_level > M_GRAM_LEVEL_MAX),
+                                ASSERT_SANITY_THROW((m_actual_level > LM_M_GRAM_LEVEL_MAX),
                                         string("The provided actual level: ") + std::to_string(m_actual_level) +
                                         string(" exceeds the maximum level capacity: ") +
-                                        std::to_string(M_GRAM_LEVEL_MAX) + string(" of the T_Base_M_Gram class!"));
+                                        std::to_string(LM_M_GRAM_LEVEL_MAX) + string(" of the T_Base_M_Gram class!"));
 
                                 //Initialize the m-gram id pointer
                                 m_gram_id_ptr = &m_gram_id[0];
@@ -193,7 +193,7 @@ namespace uva {
                              */
                             inline operator string() const {
 
-                                return tokens_to_string<M_GRAM_LEVEL_MAX>(m_tokens, m_actual_begin_word_idx, m_actual_end_word_idx);
+                                return tokens_to_string<LM_M_GRAM_LEVEL_MAX>(m_tokens, m_actual_begin_word_idx, m_actual_end_word_idx);
                             };
 
                             /**
@@ -259,10 +259,10 @@ namespace uva {
 
                         protected:
                             //Stores the m-gram tokens
-                            TextPieceReader m_tokens[M_GRAM_LEVEL_MAX];
+                            TextPieceReader m_tokens[LM_M_GRAM_LEVEL_MAX];
 
                             //The data structure to store the N-gram word ids
-                            TWordIdType m_word_ids[M_GRAM_LEVEL_MAX] = {};
+                            TWordIdType m_word_ids[LM_M_GRAM_LEVEL_MAX] = {};
 
                             //Stores the reference to the used word index
                             WordIndexType & m_word_index;
@@ -271,7 +271,7 @@ namespace uva {
                             uint32_t m_actual_level;
 
                             //Declare the m-gram id container
-                            DECLARE_STACK_GRAM_ID(TM_Gram_Id, m_gram_id, M_GRAM_LEVEL_MAX);
+                            DECLARE_STACK_GRAM_ID(TM_Gram_Id, m_gram_id, LM_M_GRAM_LEVEL_MAX);
                             //Declare the m-gram id pointer
                             TM_Gram_Id_Value_Ptr m_gram_id_ptr;
 

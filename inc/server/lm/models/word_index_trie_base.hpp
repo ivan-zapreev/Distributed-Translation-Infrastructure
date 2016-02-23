@@ -73,7 +73,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * @param counts the array of N-Gram counts counts[0] is for 1-Gram
                          */
-                        inline void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
+                        inline void pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                             m_word_index.reserve(counts[0]);
                             Logger::update_progress_bar();
                         };

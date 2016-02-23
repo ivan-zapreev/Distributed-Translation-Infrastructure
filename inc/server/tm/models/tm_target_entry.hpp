@@ -122,6 +122,14 @@ namespace uva {
                             inline const float get_t_c_s() const {
                                 return m_t_cond_s;
                             }
+                            
+                            /**
+                             * This method allows to get the
+                             * @return an array of word ids of the target phrase, the length must be equal to LM_QUERY_LENGTH_MAX
+                             */
+                            inline const uint64_t* get_target_word_ids() const {
+                                return NULL;
+                            }
 
                             /**
                              * Allows to set the weights into the target entry

@@ -110,13 +110,13 @@ namespace uva {
                         const static TModelLevel MGRAM_IDX_OFFSET = 2;
 
                         //Will store the the number of M levels such that 1 < M < N.
-                        const static TModelLevel NUM_M_GRAM_LEVELS = M_GRAM_LEVEL_MAX - MGRAM_IDX_OFFSET;
+                        const static TModelLevel NUM_M_GRAM_LEVELS = LM_M_GRAM_LEVEL_MAX - MGRAM_IDX_OFFSET;
 
                         //Will store the the number of M levels such that 1 < M <= N.
-                        const static TModelLevel NUM_M_N_GRAM_LEVELS = M_GRAM_LEVEL_MAX - 1;
+                        const static TModelLevel NUM_M_N_GRAM_LEVELS = LM_M_GRAM_LEVEL_MAX - 1;
 
                         //Compute the N-gram index in in the arrays for M and N grams
-                        static const TModelLevel N_GRAM_IDX_IN_M_N_ARR = M_GRAM_LEVEL_MAX - MGRAM_IDX_OFFSET;
+                        static const TModelLevel N_GRAM_IDX_IN_M_N_ARR = LM_M_GRAM_LEVEL_MAX - MGRAM_IDX_OFFSET;
 
                         // Stores the undefined index array value
                         static const TShortId UNDEFINED_ARR_IDX = 0;
@@ -130,8 +130,8 @@ namespace uva {
                          */
                         explicit GenericTrieBase(WordIndexType & word_index)
                         : WordIndexTrieBase<WordIndexType> (word_index) {
-                            ASSERT_CONDITION_THROW((M_GRAM_LEVEL_MAX > MAX_SUPP_GRAM_LEVEL), string("Unsupported max level: ") +
-                                    std::to_string(M_GRAM_LEVEL_MAX) + string(", the maximum supported is: ") + std::to_string(MAX_SUPP_GRAM_LEVEL));
+                            ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX > MAX_SUPP_GRAM_LEVEL), string("Unsupported max level: ") +
+                                    std::to_string(LM_M_GRAM_LEVEL_MAX) + string(", the maximum supported is: ") + std::to_string(MAX_SUPP_GRAM_LEVEL));
                         }
 
                         /**
@@ -153,7 +153,7 @@ namespace uva {
                         /**
                          * @see WordIndexTrieBase
                          */
-                        inline void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
+                        inline void pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                             BASE::pre_allocate(counts);
 
                             //Pre-allocate the bitmap cache for hashes if needed
@@ -411,7 +411,7 @@ namespace uva {
                                 const void * & payload_elem = query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx];
 
                                 //Obtain the payload, depending on the sub-m-gram level
-                                if (curr_level == M_GRAM_LEVEL_MAX) {
+                                if (curr_level == LM_M_GRAM_LEVEL_MAX) {
                                     LOG_DEBUG << "Calling the get_" << SSTR(curr_level) << "_gram_payload function." << END_LOG;
                                     //We are at the last trie level, retrieve the payload
                                     static_cast<const TrieType*> (this)->get_n_gram_payload(query, status);

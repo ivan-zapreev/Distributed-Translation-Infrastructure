@@ -163,7 +163,7 @@ namespace uva {
                         : GenericTrieBase<TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> (word_index),
                         m_zero_payload(ZERO_PROB_WEIGHT, ZERO_BACK_OFF_WEIGHT) {
                             //Clean the cache memory
-                            memset(m_cached_ctx, 0, M_GRAM_LEVEL_MAX * sizeof (TContextCacheEntry));
+                            memset(m_cached_ctx, 0, LM_M_GRAM_LEVEL_MAX * sizeof (TContextCacheEntry));
                         }
 
                         /**
@@ -177,7 +177,7 @@ namespace uva {
                         /**
                          * @see GenericTrieBase
                          */
-                        inline void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
+                        inline void pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                             BASE::pre_allocate(counts);
                         }
 
@@ -305,12 +305,12 @@ namespace uva {
                          * @param m_ctx_id the cached context id for the m-gram
                          */
                         typedef struct {
-                            TShortId m_word_ids[M_GRAM_LEVEL_MAX];
+                            TShortId m_word_ids[LM_M_GRAM_LEVEL_MAX];
                             TLongId m_ctx_id;
                         } TContextCacheEntry;
 
                         //Stores the cached contexts data 
-                        TContextCacheEntry m_cached_ctx[M_GRAM_LEVEL_MAX];
+                        TContextCacheEntry m_cached_ctx[LM_M_GRAM_LEVEL_MAX];
                     };
 
                     //Define the template for instantiating the layered trie class children templates

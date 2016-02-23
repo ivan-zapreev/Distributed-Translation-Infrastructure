@@ -86,15 +86,15 @@ namespace uva {
                             static inline void get_builder(const lm_parameters & params, TrieType & trie, lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight> **ppBuilder) {
                                 //First reset the pointer to NULL
                                 *ppBuilder = NULL;
-                                LOG_DEBUG << "Requested a " << CURR_LEVEL << "-Gram builder, the maximum level is " << M_GRAM_LEVEL_MAX << END_LOG;
+                                LOG_DEBUG << "Requested a " << CURR_LEVEL << "-Gram builder, the maximum level is " << LM_M_GRAM_LEVEL_MAX << END_LOG;
 
 
                                 //Then check that the level values are correct!
-                                if (DO_SANITY_CHECKS && (CURR_LEVEL < M_GRAM_LEVEL_1 || CURR_LEVEL > M_GRAM_LEVEL_MAX)) {
+                                if (DO_SANITY_CHECKS && (CURR_LEVEL < M_GRAM_LEVEL_1 || CURR_LEVEL > LM_M_GRAM_LEVEL_MAX)) {
                                     stringstream msg;
                                     msg << "The requested N-gram level is '" << CURR_LEVEL
                                             << "', but it must be within [" << M_GRAM_LEVEL_1
-                                            << ", " << M_GRAM_LEVEL_MAX << "]!";
+                                            << ", " << LM_M_GRAM_LEVEL_MAX << "]!";
                                     throw Exception(msg.str());
                                 } else {
                                     //Here we are to get the builder instance

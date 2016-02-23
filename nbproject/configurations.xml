@@ -8,6 +8,7 @@
         <df name="lm">
           <df name="models">
             <in>query_exec_data.hpp</in>
+            <in>sliding_m_gram_query.hpp</in>
           </df>
         </df>
       </df>
@@ -132,6 +133,11 @@
         </preBuild>
       </makefileType>
       <item path="inc/server/lm/models/query_exec_data.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/lm/models/sliding_m_gram_query.hpp"
             ex="false"
             tool="3"
             flavor2="0">

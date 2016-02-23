@@ -92,7 +92,7 @@ namespace uva {
                                         << "is: " << SSTR(prev_level_ref) << END_LOG;
 
                                 //Define the reference to the hash row
-                                uint64_t(& hash_row_ref)[M_GRAM_LEVEL_MAX] = const_cast<uint64_t(&)[M_GRAM_LEVEL_MAX]> (m_hash_matrix[begin_word_idx]);
+                                uint64_t(& hash_row_ref)[LM_M_GRAM_LEVEL_MAX] = const_cast<uint64_t(&)[LM_M_GRAM_LEVEL_MAX]> (m_hash_matrix[begin_word_idx]);
 
                                 //Compute the current level
                                 const TModelLevel curr_level = CURR_LEVEL_MAP[begin_word_idx][end_word_idx];
@@ -196,7 +196,7 @@ namespace uva {
                              */
                             inline void set_m_gram_from_text(TextPieceReader &text) {
                                 //Set all the "computed hash level" flags to "undefined"
-                                memset(m_hash_level_row, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_MAX * sizeof (TModelLevel));
+                                memset(m_hash_level_row, M_GRAM_LEVEL_UNDEF, LM_M_GRAM_LEVEL_MAX * sizeof (TModelLevel));
 
                                 //Initialize the actual level with undefined (zero)
                                 BASE::m_actual_level = M_GRAM_LEVEL_UNDEF;
@@ -216,9 +216,9 @@ namespace uva {
                                     ++BASE::m_actual_level;
 
                                     LOG_DEBUG2 << "The current m-gram level is: " << BASE::m_actual_level
-                                            << ", the maximum is: " << M_GRAM_LEVEL_MAX << END_LOG;
+                                            << ", the maximum is: " << LM_M_GRAM_LEVEL_MAX << END_LOG;
 
-                                    ASSERT_SANITY_THROW((BASE::m_actual_level > M_GRAM_LEVEL_MAX),
+                                    ASSERT_SANITY_THROW((BASE::m_actual_level > LM_M_GRAM_LEVEL_MAX),
                                             string("A broken N-gram query: ") + ((string) * this) +
                                             string(", level: ") + to_string(BASE::m_actual_level));
                                 }
@@ -227,16 +227,16 @@ namespace uva {
                                 BASE::m_actual_end_word_idx = BASE::m_actual_level - 1;
 
                                 ASSERT_SANITY_THROW(((BASE::m_actual_level < M_GRAM_LEVEL_1) ||
-                                        (BASE::m_actual_level > M_GRAM_LEVEL_MAX)),
+                                        (BASE::m_actual_level > LM_M_GRAM_LEVEL_MAX)),
                                         string("A broken N-gram query: ") + ((string) * this) +
                                         string(", level: ") + to_string(BASE::m_actual_level));
                             }
 
                         private:
                             //Stores the hash computed flags
-                            TModelLevel m_hash_level_row[M_GRAM_LEVEL_MAX];
+                            TModelLevel m_hash_level_row[LM_M_GRAM_LEVEL_MAX];
                             //Stores the computed hash values
-                            uint64_t m_hash_matrix[M_GRAM_LEVEL_MAX][M_GRAM_LEVEL_MAX];
+                            uint64_t m_hash_matrix[LM_M_GRAM_LEVEL_MAX][LM_M_GRAM_LEVEL_MAX];
 
                             /**
                              * This constructor is made private as it is not to be used

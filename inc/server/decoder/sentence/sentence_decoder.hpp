@@ -144,9 +144,7 @@ namespace uva {
                              * @return the cost of the given target entry
                              */
                             inline float compute_future_cost(tm_const_target_entry & target) {
-                                //ToDo: Implement
-                                THROW_NOT_IMPLEMENTED();
-                                //return  target.get_t_c_s() + m_lm_query.template execute<true>(target.get_target_phrase());
+                                return target.get_t_c_s() + m_lm_query.template execute<true>(target.get_target_word_ids());
                             }
 
                             /**

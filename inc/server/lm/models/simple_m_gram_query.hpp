@@ -85,7 +85,7 @@ namespace uva {
                      * sum, not taking into account the zero log probabilities.
                      */
                     template<typename TrieType>
-                    class m_gram_query {
+                    class simple_m_gram_query {
                     public:
                         typedef typename TrieType::WordIndexType WordIndexType;
 
@@ -93,7 +93,7 @@ namespace uva {
                          * The basic constructor for the structure
                          * @param trie the reference to the trie object
                          */
-                        m_gram_query(const TrieType & trie)
+                        simple_m_gram_query(const TrieType & trie)
                         : m_trie(trie), m_query(trie.get_word_index()) {
                         }
 
@@ -120,17 +120,17 @@ namespace uva {
 
                             //Clean the relevant probability entry
                             if (is_cumulative) {
-                                memset(m_query.m_probs, 0, sizeof (TLogProbBackOff) * M_GRAM_LEVEL_MAX);
+                                memset(m_query.m_probs, 0, sizeof (TLogProbBackOff) * LM_M_GRAM_LEVEL_MAX);
                             } else {
                                 m_query.m_probs[ m_query.m_gram.get_end_word_idx() ] = ZERO_PROB_WEIGHT;
                             }
                             //Clean the payload pointer entries
-                            memset(m_query.m_payloads, 0, sizeof (void*) * M_GRAM_LEVEL_MAX * M_GRAM_LEVEL_MAX);
+                            memset(m_query.m_payloads, 0, sizeof (void*) * LM_M_GRAM_LEVEL_MAX * LM_M_GRAM_LEVEL_MAX);
 
                             //If this trie needs getting context ids then clean the data as well
                             if (m_trie.is_need_getting_ctx_ids()) {
                                 //Clean the payload pointer entries
-                                memset(m_query.m_last_ctx_ids, WordIndexType::UNDEFINED_WORD_ID, sizeof (TLongId) * M_GRAM_LEVEL_MAX);
+                                memset(m_query.m_last_ctx_ids, WordIndexType::UNDEFINED_WORD_ID, sizeof (TLongId) * LM_M_GRAM_LEVEL_MAX);
                             }
 
                             //Execute the query
@@ -226,13 +226,13 @@ namespace uva {
 
                     //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_M_GRAM_QUERY_WORD_IDX(WORD_INDEX_TYPE); \
-            template class m_gram_query<C2DHybridTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<C2DMapTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<C2WArrayTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<W2CArrayTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<W2CHybridTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<G2DMapTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<H2DMapTrie<WORD_INDEX_TYPE>>;
+            template class simple_m_gram_query<C2DHybridTrie<WORD_INDEX_TYPE>>; \
+            template class simple_m_gram_query<C2DMapTrie<WORD_INDEX_TYPE>>; \
+            template class simple_m_gram_query<C2WArrayTrie<WORD_INDEX_TYPE>>; \
+            template class simple_m_gram_query<W2CArrayTrie<WORD_INDEX_TYPE>>; \
+            template class simple_m_gram_query<W2CHybridTrie<WORD_INDEX_TYPE>>; \
+            template class simple_m_gram_query<G2DMapTrie<WORD_INDEX_TYPE>>; \
+            template class simple_m_gram_query<H2DMapTrie<WORD_INDEX_TYPE>>;
 
                     INSTANTIATE_M_GRAM_QUERY_WORD_IDX(BasicWordIndex);
                     INSTANTIATE_M_GRAM_QUERY_WORD_IDX(CountingWordIndex);
