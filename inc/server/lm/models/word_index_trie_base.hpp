@@ -54,12 +54,10 @@ namespace uva {
                     /**
                      * This is a common base class for all Trie implementations.
                      * The purpose of having this as a template class is performance optimization.
-                     * @param N - the maximum level of the considered N-gram, i.e. the N value
                      */
-                    template<TModelLevel N, typename WordIndex>
+                    template<typename WordIndex>
                     class WordIndexTrieBase {
                     public:
-                        static const TModelLevel MAX_LEVEL;
                         typedef WordIndex WordIndexType;
 
                         /**
@@ -75,7 +73,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * @param counts the array of N-Gram counts counts[0] is for 1-Gram
                          */
-                        inline void pre_allocate(const size_t counts[N]) {
+                        inline void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
                             m_word_index.reserve(counts[0]);
                             Logger::update_progress_bar();
                         };
@@ -112,14 +110,11 @@ namespace uva {
                         WordIndexType & m_word_index;
                     };
 
-                    template<TModelLevel N, typename WordIndex>
-                    const TModelLevel WordIndexTrieBase<N, WordIndex>::MAX_LEVEL = N;
-
                     //Make sure that there will be templates instantiated, at least for the given parameter values
-                    template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, BasicWordIndex >;
-                    template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, CountingWordIndex>;
-                    template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<BasicWordIndex> >;
-                    template class WordIndexTrieBase<M_GRAM_LEVEL_MAX, OptimizingWordIndex<CountingWordIndex> >;
+                    template class WordIndexTrieBase<BasicWordIndex >;
+                    template class WordIndexTrieBase<CountingWordIndex>;
+                    template class WordIndexTrieBase<OptimizingWordIndex<BasicWordIndex> >;
+                    template class WordIndexTrieBase<OptimizingWordIndex<CountingWordIndex> >;
                 }
             }
         }

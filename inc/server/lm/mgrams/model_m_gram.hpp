@@ -57,15 +57,15 @@ namespace uva {
                         /**
                          * This class is used to represent the N-Gram that will be stored into the language model.
                          */
-                        template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY = M_GRAM_LEVEL_MAX>
-                        class model_m_gram : public m_gram_base<WordIndexType, MAX_LEVEL_CAPACITY> {
+                        template<typename WordIndexType>
+                        class model_m_gram : public m_gram_base<WordIndexType> {
                         public:
                             //The type of the word id
                             typedef typename WordIndexType::TWordIdType TWordIdType;
                             //Define the corresponding M-gram id type
-                            typedef m_gram_id::Byte_M_Gram_Id<TWordIdType, MAX_LEVEL_CAPACITY> T_M_Gram_Id;
+                            typedef m_gram_id::Byte_M_Gram_Id<TWordIdType> T_M_Gram_Id;
                             //Define the base class type
-                            typedef m_gram_base<WordIndexType, MAX_LEVEL_CAPACITY> BASE;
+                            typedef m_gram_base<WordIndexType> BASE;
 
                             //Stores the m-gram payload i.e. its probability and back-off weight
                             m_gram_payload m_payload;
@@ -81,10 +81,10 @@ namespace uva {
                              * is known beforehand. Allows to set the actual M-gram level
                              * to a concrete value.
                              * @param word_index the used word index
-                             * @param actual_level the actual level of the m-gram that will be used should be <= MAX_LEVEL_CAPACITY
+                             * @param actual_level the actual level of the m-gram that will be used should be <= M_GRAM_LEVEL_MAX
                              */
                             model_m_gram(WordIndexType & word_index, TModelLevel actual_level)
-                            : m_gram_base<WordIndexType, MAX_LEVEL_CAPACITY>(word_index, actual_level) {
+                            : m_gram_base<WordIndexType>(word_index, actual_level) {
                             }
 
                             /**
@@ -176,7 +176,7 @@ namespace uva {
 
                         private:
                             //The data structure to store the N-gram hashes
-                            uint64_t m_hash_values[MAX_LEVEL_CAPACITY] = {};
+                            uint64_t m_hash_values[M_GRAM_LEVEL_MAX] = {};
 
                             //Stores the m-gram idx for when adding m-gram tokens
                             TModelLevel m_curr_index;
@@ -184,7 +184,7 @@ namespace uva {
                             /**
                              * Make this constructor private as it is not to be used.
                              */
-                            model_m_gram(WordIndexType & word_index) : m_gram_base<WordIndexType, MAX_LEVEL_CAPACITY>(word_index) {
+                            model_m_gram(WordIndexType & word_index) : m_gram_base<WordIndexType>(word_index) {
                             }
 
                         };

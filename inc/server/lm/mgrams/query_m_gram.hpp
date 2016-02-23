@@ -55,15 +55,15 @@ namespace uva {
                         /**
                          * This class is used to represent the N-Gram that will be queried against the language model.
                          */
-                        template<typename WordIndexType, TModelLevel MAX_LEVEL = M_GRAM_LEVEL_MAX>
-                        class query_m_gram : public m_gram_base<WordIndexType, MAX_LEVEL> {
+                        template<typename WordIndexType>
+                        class query_m_gram : public m_gram_base<WordIndexType> {
                         public:
                             //The type of the word id
                             typedef typename WordIndexType::TWordIdType TWordIdType;
                             //Define the corresponding M-gram id type
-                            typedef m_gram_id::Byte_M_Gram_Id<TWordIdType, MAX_LEVEL> T_M_Gram_Id;
+                            typedef m_gram_id::Byte_M_Gram_Id<TWordIdType> T_M_Gram_Id;
                             //Define the base class type
-                            typedef m_gram_base<WordIndexType, MAX_LEVEL> BASE;
+                            typedef m_gram_base<WordIndexType> BASE;
 
                             /**
                              * The basic constructor, is to be used when the M-gram will
@@ -73,7 +73,7 @@ namespace uva {
                              * @param word_index the used word index
                              */
                             query_m_gram(WordIndexType & word_index)
-                            : m_gram_base<WordIndexType, MAX_LEVEL>(word_index) {
+                            : m_gram_base<WordIndexType>(word_index) {
                             }
 
                             /**
@@ -92,7 +92,7 @@ namespace uva {
                                         << "is: " << SSTR(prev_level_ref) << END_LOG;
 
                                 //Define the reference to the hash row
-                                uint64_t(& hash_row_ref)[MAX_LEVEL] = const_cast<uint64_t(&)[MAX_LEVEL]> (m_hash_matrix[begin_word_idx]);
+                                uint64_t(& hash_row_ref)[M_GRAM_LEVEL_MAX] = const_cast<uint64_t(&)[M_GRAM_LEVEL_MAX]> (m_hash_matrix[begin_word_idx]);
 
                                 //Compute the current level
                                 const TModelLevel curr_level = CURR_LEVEL_MAP[begin_word_idx][end_word_idx];
@@ -196,7 +196,7 @@ namespace uva {
                              */
                             inline void set_m_gram_from_text(TextPieceReader &text) {
                                 //Set all the "computed hash level" flags to "undefined"
-                                memset(m_hash_level_row, M_GRAM_LEVEL_UNDEF, MAX_LEVEL * sizeof (TModelLevel));
+                                memset(m_hash_level_row, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_MAX * sizeof (TModelLevel));
 
                                 //Initialize the actual level with undefined (zero)
                                 BASE::m_actual_level = M_GRAM_LEVEL_UNDEF;
@@ -216,9 +216,9 @@ namespace uva {
                                     ++BASE::m_actual_level;
 
                                     LOG_DEBUG2 << "The current m-gram level is: " << BASE::m_actual_level
-                                            << ", the maximum is: " << MAX_LEVEL << END_LOG;
+                                            << ", the maximum is: " << M_GRAM_LEVEL_MAX << END_LOG;
 
-                                    ASSERT_SANITY_THROW((BASE::m_actual_level > MAX_LEVEL),
+                                    ASSERT_SANITY_THROW((BASE::m_actual_level > M_GRAM_LEVEL_MAX),
                                             string("A broken N-gram query: ") + ((string) * this) +
                                             string(", level: ") + to_string(BASE::m_actual_level));
                                 }
@@ -227,22 +227,22 @@ namespace uva {
                                 BASE::m_actual_end_word_idx = BASE::m_actual_level - 1;
 
                                 ASSERT_SANITY_THROW(((BASE::m_actual_level < M_GRAM_LEVEL_1) ||
-                                        (BASE::m_actual_level > MAX_LEVEL)),
+                                        (BASE::m_actual_level > M_GRAM_LEVEL_MAX)),
                                         string("A broken N-gram query: ") + ((string) * this) +
                                         string(", level: ") + to_string(BASE::m_actual_level));
                             }
 
                         private:
                             //Stores the hash computed flags
-                            TModelLevel m_hash_level_row[MAX_LEVEL];
+                            TModelLevel m_hash_level_row[M_GRAM_LEVEL_MAX];
                             //Stores the computed hash values
-                            uint64_t m_hash_matrix[MAX_LEVEL][MAX_LEVEL];
+                            uint64_t m_hash_matrix[M_GRAM_LEVEL_MAX][M_GRAM_LEVEL_MAX];
 
                             /**
                              * This constructor is made private as it is not to be used
                              */
                             query_m_gram(WordIndexType & word_index, TModelLevel actual_level)
-                            : m_gram_base<WordIndexType, MAX_LEVEL>(word_index, actual_level) {
+                            : m_gram_base<WordIndexType>(word_index, actual_level) {
                             }
 
                         };

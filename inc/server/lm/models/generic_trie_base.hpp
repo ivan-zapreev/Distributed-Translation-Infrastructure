@@ -41,6 +41,7 @@
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
 
+#include "server/lm/models/query_exec_data.hpp"
 #include "server/lm/models/word_index_trie_base.hpp"
 #include "server/lm/models/bitmap_hash_cache.hpp"
 
@@ -93,47 +94,29 @@ namespace uva {
                     /**
                      * This class defined the trie interface and functionality that is expected by the TrieDriver class
                      */
-                    template<typename TrieType, TModelLevel MAX_LEVEL, typename WordIndexType, uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR>
-                    class GenericTrieBase : public WordIndexTrieBase<MAX_LEVEL, WordIndexType> {
+                    template<typename TrieType, typename WordIndexType, uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR>
+                    class GenericTrieBase : public WordIndexTrieBase<WordIndexType> {
                     public:
                         //Typedef the base class
-                        typedef WordIndexTrieBase<MAX_LEVEL, WordIndexType> BASE;
+                        typedef WordIndexTrieBase<WordIndexType> BASE;
+                        
+                        //Define the query type
+                        typedef query_exec_data_templ<WordIndexType> query_exec_data;
+                        
                         //The flag indicating if the bitmap hash caching is needed
                         const static bool NEEDS_BITMAP_HASH_CACHE = (BITMAP_HASH_CACHE_BUCKETS_FACTOR > 1);
-
-                        /**
-                         * This structure stores the basic data required for a query execution.
-                         * @param m_query the m-gram query itself 
-                         * @param m_payloads the  two dimensional array of the payloads 
-                         * @param m_last_ctx_ids stores the last context id computed for the given row of the sub-m-gram matrix
-                         * @param m_probs the array f probabilities 
-                         * @param m_begin_word_idx the currently considered begin word index
-                         * @param m_end_word_idx the currently considered end word index
-                         */
-                        struct S_Query_Exec_Data {
-                            query_m_gram<WordIndexType> m_gram;
-                            const void * m_payloads[MAX_LEVEL][MAX_LEVEL];
-                            TLongId m_last_ctx_ids[MAX_LEVEL];
-                            TLogProbBackOff m_probs[MAX_LEVEL];
-                            TModelLevel m_begin_word_idx;
-                            TModelLevel m_end_word_idx;
-
-                            explicit S_Query_Exec_Data(WordIndexType & word_index) : m_gram(word_index) {
-                            }
-                        };
-                        typedef S_Query_Exec_Data T_Query_Exec_Data;
 
                         //The offset, relative to the M-gram level M for the m-gram mapping array index
                         const static TModelLevel MGRAM_IDX_OFFSET = 2;
 
                         //Will store the the number of M levels such that 1 < M < N.
-                        const static TModelLevel NUM_M_GRAM_LEVELS = MAX_LEVEL - MGRAM_IDX_OFFSET;
+                        const static TModelLevel NUM_M_GRAM_LEVELS = M_GRAM_LEVEL_MAX - MGRAM_IDX_OFFSET;
 
                         //Will store the the number of M levels such that 1 < M <= N.
-                        const static TModelLevel NUM_M_N_GRAM_LEVELS = MAX_LEVEL - 1;
+                        const static TModelLevel NUM_M_N_GRAM_LEVELS = M_GRAM_LEVEL_MAX - 1;
 
                         //Compute the N-gram index in in the arrays for M and N grams
-                        static const TModelLevel N_GRAM_IDX_IN_M_N_ARR = MAX_LEVEL - MGRAM_IDX_OFFSET;
+                        static const TModelLevel N_GRAM_IDX_IN_M_N_ARR = M_GRAM_LEVEL_MAX - MGRAM_IDX_OFFSET;
 
                         // Stores the undefined index array value
                         static const TShortId UNDEFINED_ARR_IDX = 0;
@@ -146,9 +129,9 @@ namespace uva {
                          * @param word_index the word index to be used
                          */
                         explicit GenericTrieBase(WordIndexType & word_index)
-                        : WordIndexTrieBase<MAX_LEVEL, WordIndexType> (word_index) {
-                            ASSERT_CONDITION_THROW((MAX_LEVEL > MAX_SUPP_GRAM_LEVEL), string("Unsupported max level: ") +
-                                    std::to_string(MAX_LEVEL) + string(", the maximum supported is: ") + std::to_string(MAX_SUPP_GRAM_LEVEL));
+                        : WordIndexTrieBase<WordIndexType> (word_index) {
+                            ASSERT_CONDITION_THROW((M_GRAM_LEVEL_MAX > MAX_SUPP_GRAM_LEVEL), string("Unsupported max level: ") +
+                                    std::to_string(M_GRAM_LEVEL_MAX) + string(", the maximum supported is: ") + std::to_string(MAX_SUPP_GRAM_LEVEL));
                         }
 
                         /**
@@ -170,7 +153,7 @@ namespace uva {
                         /**
                          * @see WordIndexTrieBase
                          */
-                        inline void pre_allocate(const size_t counts[MAX_LEVEL]) {
+                        inline void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
                             BASE::pre_allocate(counts);
 
                             //Pre-allocate the bitmap cache for hashes if needed
@@ -206,7 +189,7 @@ namespace uva {
                          * @param query the m-gram query data
                          * @param status [out] the resulting status of the operation
                          */
-                        inline void is_m_gram_potentially_present(const T_Query_Exec_Data& query,
+                        inline void is_m_gram_potentially_present(const query_exec_data& query,
                                 MGramStatusEnum &status) const {
                             //Do sanity check if needed
                             ASSERT_SANITY_THROW((query.m_begin_word_idx == query.m_end_word_idx),
@@ -256,7 +239,7 @@ namespace uva {
                          * @param query the query execution data for storing the query, and retrieved payloads, and resulting probabilities, and etc.
                          */
                         template<bool DO_JOINT_PROBS>
-                        inline void execute(T_Query_Exec_Data & query) const {
+                        inline void execute(query_exec_data & query) const {
                             //Declare the stream-compute result status variable
                             MGramStatusEnum status = MGramStatusEnum::GOOD_PRESENT_MGS;
 
@@ -326,7 +309,7 @@ namespace uva {
                          * @param query the query containing the actual query data
                          * @param status the resulting status of the operation
                          */
-                        inline void get_unigram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void get_unigram_payload(query_exec_data & query, MGramStatusEnum & status) const {
                             THROW_MUST_NOT_CALL();
                         }
 
@@ -335,7 +318,7 @@ namespace uva {
                          * @param query the query containing the actual query data
                          * @param status the resulting status of the operation
                          */
-                        inline void get_m_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void get_m_gram_payload(query_exec_data & query, MGramStatusEnum & status) const {
                             THROW_MUST_NOT_CALL();
                         }
 
@@ -344,7 +327,7 @@ namespace uva {
                          * @param query the query containing the actual query data
                          * @param status the resulting status of the operation
                          */
-                        inline void get_n_gram_payload(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void get_n_gram_payload(query_exec_data & query, MGramStatusEnum & status) const {
                             THROW_MUST_NOT_CALL();
                         }
 
@@ -382,7 +365,7 @@ namespace uva {
                          * @param query the m-gram query data
                          * @param status [out] the resulting status of the operation, will always be MGramStatusEnum::GOOD_PRESENT_MGS
                          */
-                        inline void process_unigram(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void process_unigram(query_exec_data & query, MGramStatusEnum & status) const {
                             //Get the uni-gram word index
                             const TModelLevel & word_idx = query.m_begin_word_idx;
                             //Get the reference to the payload for convenience
@@ -409,7 +392,7 @@ namespace uva {
                          * @param query the m-gram query data
                          * @param status the resulting status of computations
                          */
-                        inline void process_m_n_gram(T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void process_m_n_gram(query_exec_data & query, MGramStatusEnum & status) const {
                             //If this is at least a bi-gram, continue iterations, otherwise we are done!
                             LOG_DEBUG << "Considering the sub-m-gram: [" << SSTR(query.m_begin_word_idx) << "," << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
@@ -428,7 +411,7 @@ namespace uva {
                                 const void * & payload_elem = query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx];
 
                                 //Obtain the payload, depending on the sub-m-gram level
-                                if (curr_level == MAX_LEVEL) {
+                                if (curr_level == M_GRAM_LEVEL_MAX) {
                                     LOG_DEBUG << "Calling the get_" << SSTR(curr_level) << "_gram_payload function." << END_LOG;
                                     //We are at the last trie level, retrieve the payload
                                     static_cast<const TrieType*> (this)->get_n_gram_payload(query, status);
@@ -466,7 +449,7 @@ namespace uva {
                          * @param query the m-gram query data
                          * @return the resulting status of the operation
                          */
-                        inline MGramStatusEnum get_uni_m_gram_payload(T_Query_Exec_Data & query) const {
+                        inline MGramStatusEnum get_uni_m_gram_payload(query_exec_data & query) const {
                             LOG_DEBUG << "The payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx) << ","
                                     << SSTR(query.m_end_word_idx) << "] needs to be retrieved!" << END_LOG;
                             //Try to retrieve the back-off sub-m-gram
@@ -498,7 +481,7 @@ namespace uva {
                          * This method adds the back-off weight of the given m-gram, if it is to be found in the trie
                          * @param query the m-gram query data the begin word index will be changed
                          */
-                        inline void process_unknown(T_Query_Exec_Data & query) const {
+                        inline void process_unknown(query_exec_data & query) const {
                             LOG_DEBUG << "query.m_begin_word_idx = " << SSTR(query.m_begin_word_idx) << ","
                                     << " query.m_end_word_idx = " << SSTR(query.m_end_word_idx) << END_LOG;
 

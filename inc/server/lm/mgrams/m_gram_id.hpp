@@ -93,7 +93,7 @@ namespace uva {
                             /**
                              * The byte-compressed implementation of the M-gram id class
                              */
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
+                            template<typename TWordIdType>
                             class Byte_M_Gram_Id {
                             public:
 
@@ -350,47 +350,47 @@ namespace uva {
                                 };
                             };
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::NUM_BYTES_WORD_ID;
+                            template<typename TWordIdType>
+                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType>::NUM_BYTES_WORD_ID;
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::MAX_ID_LEN_BYTES[];
+                            template<typename TWordIdType>
+                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType>::MAX_ID_LEN_BYTES[];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::ID_TYPE_LEN_BYTES[];
+                            template<typename TWordIdType>
+                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType>::ID_TYPE_LEN_BYTES[];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::NUMBER_ID_TYPES_PER_LEVEL[];
+                            template<typename TWordIdType>
+                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType>::NUMBER_ID_TYPES_PER_LEVEL[];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_2_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
+                            template<typename TWordIdType>
+                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType>::LEVEL_2_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_3_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
+                            template<typename TWordIdType>
+                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType>::LEVEL_3_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_4_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
+                            template<typename TWordIdType>
+                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType>::LEVEL_4_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_5_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
+                            template<typename TWordIdType>
+                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType>::LEVEL_5_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_6_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
+                            template<typename TWordIdType>
+                            constexpr uint32_t Byte_M_Gram_Id<TWordIdType>::LEVEL_6_GRAM_TO_TYPE_LEN[NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID][NUM_BYTES_WORD_ID];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_2_GRAM_TO_BYTE_LEN[];
+                            template<typename TWordIdType>
+                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType>::LEVEL_2_GRAM_TO_BYTE_LEN[];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_3_GRAM_TO_BYTE_LEN[];
+                            template<typename TWordIdType>
+                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType>::LEVEL_3_GRAM_TO_BYTE_LEN[];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_4_GRAM_TO_BYTE_LEN[];
+                            template<typename TWordIdType>
+                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType>::LEVEL_4_GRAM_TO_BYTE_LEN[];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_5_GRAM_TO_BYTE_LEN[];
+                            template<typename TWordIdType>
+                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType>::LEVEL_5_GRAM_TO_BYTE_LEN[];
 
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::LEVEL_6_GRAM_TO_BYTE_LEN[];
+                            template<typename TWordIdType>
+                            constexpr uint8_t Byte_M_Gram_Id<TWordIdType>::LEVEL_6_GRAM_TO_BYTE_LEN[];
 
                         }
                     }

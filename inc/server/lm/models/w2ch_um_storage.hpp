@@ -140,7 +140,7 @@ namespace uva {
 
                     protected:
 
-                        //The array of length ACtxToPBStorage::m_max_level
+                        //The array of length ACtxToPBStorage::m_M_GRAM_LEVEL_MAX
                         TStorageMapAllocator * m_p_alloc[N - 1];
                     };
                 }

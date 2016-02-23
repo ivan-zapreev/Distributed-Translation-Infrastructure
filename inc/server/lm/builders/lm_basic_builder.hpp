@@ -58,7 +58,6 @@ namespace uva {
                         template<typename TrieType, typename TFileReaderModel>
                         class lm_basic_builder {
                         public:
-                            static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
                             typedef typename TrieType::WordIndexType WordIndexType;
 
                             /**
@@ -105,7 +104,7 @@ namespace uva {
                              * Allows to pre-allocate memory in the tries and dictionaries
                              * @param counts the learned M-gram counts
                              */
-                            void pre_allocate(size_t counts[MAX_LEVEL]);
+                            void pre_allocate(size_t counts[M_GRAM_LEVEL_MAX]);
 
                             /**
                              * This method is used to read and process the ARPA data section
@@ -113,7 +112,7 @@ namespace uva {
                              * @param counts the out parameters to store the retrieved
                              *               N-Gram counts from the data descriptions
                              */
-                            void read_data(size_t counts[MAX_LEVEL]);
+                            void read_data(size_t counts[M_GRAM_LEVEL_MAX]);
 
                             /**
                              * Allows to read the given Trie level M-grams from the file
@@ -129,11 +128,11 @@ namespace uva {
                             struct Func {
 
                                 /**
-                                 * This template is to be used for the level parameter values < MAX_LEVEL
+                                 * This template is to be used for the level parameter values < M_GRAM_LEVEL_MAX
                                  */
                                 static inline void check_and_go_m_grams(lm_basic_builder<TrieType, TFileReaderModel> & builder) {
                                     //If we expect more N-grams then make a recursive call to read the higher order N-gram
-                                    LOG_DEBUG2 << "The currently read N-grams level is " << CURR_LEVEL << ", the maximum level is " << MAX_LEVEL
+                                    LOG_DEBUG2 << "The currently read N-grams level is " << CURR_LEVEL << ", the maximum level is " << M_GRAM_LEVEL_MAX
                                             << ", the current line is '" << builder.m_line << "'" << END_LOG;
 
                                     //There are still N-Gram levels to read
@@ -143,27 +142,27 @@ namespace uva {
                                     } else {
                                         //We did encounter the \end\ tag, this is not really expected, but it is not fatal
                                         LOG_WARNING << "End of ARPA file, read " << CURR_LEVEL << "-grams and there is "
-                                                << "nothing more to read. The maximum allowed N-gram level is " << MAX_LEVEL << END_LOG;
+                                                << "nothing more to read. The maximum allowed N-gram level is " << M_GRAM_LEVEL_MAX << END_LOG;
                                     }
                                 }
                             };
 
                             template<typename DUMMY>
-                            struct Func<MAX_LEVEL, DUMMY> {
+                            struct Func<M_GRAM_LEVEL_MAX, DUMMY> {
 
                                 /**
-                                 * This template specialization is to be used for the level parameter values == MAX_LEVEL
+                                 * This template specialization is to be used for the level parameter values == M_GRAM_LEVEL_MAX
                                  */
                                 static inline void check_and_go_m_grams(lm_basic_builder<TrieType, TFileReaderModel> & builder) {
                                     //If we expect more N-grams then make a recursive call to read the higher order N-gram
-                                    LOG_DEBUG2 << "The currently read N-grams level is " << MAX_LEVEL << ", the maximum level is " << MAX_LEVEL
+                                    LOG_DEBUG2 << "The currently read N-grams level is " << M_GRAM_LEVEL_MAX << ", the maximum level is " << M_GRAM_LEVEL_MAX
                                             << ", the current line is '" << builder.m_line << "'" << END_LOG;
                                     //Here the level is >= N, so we must have read a valid \end\ tag, otherwise an error!
                                     if (builder.m_line != END_OF_ARPA_FILE) {
                                         stringstream msg;
                                         msg << "Incorrect ARPA format: Got '" << builder.m_line
                                                 << "' instead of '" << END_OF_ARPA_FILE
-                                                << "' when reading " << MAX_LEVEL << "-grams section!";
+                                                << "' when reading " << M_GRAM_LEVEL_MAX << "-grams section!";
                                         throw Exception(msg.str());
                                     }
                                 }
@@ -224,9 +223,6 @@ namespace uva {
                             template<TModelLevel CURR_LEVEL>
                             void read_grams();
                         };
-
-                        template<typename TrieType, typename TFileReaderModel>
-                        constexpr TModelLevel lm_basic_builder<TrieType, TFileReaderModel>::MAX_LEVEL;
                     }
                 }
             }

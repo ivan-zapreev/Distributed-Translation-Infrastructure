@@ -50,6 +50,12 @@ namespace uva {
                     //The considered maximum length of the N-gram 
                     constexpr static uint8_t M_GRAM_LEVEL_MAX = 5u;
 
+                    //The considered maximum length of the target phrase
+                    constexpr static uint8_t TARGET_PHRASE_LENGTH_MAX = 7u;
+                    
+                    //The considered maximum length of the N-gram query
+                    constexpr static uint8_t QUERY_LENGTH_MAX = TARGET_PHRASE_LENGTH_MAX + M_GRAM_LEVEL_MAX - 1;
+
                     namespace dictionary {
 
                         //Stores the unknown word string, should be configurable

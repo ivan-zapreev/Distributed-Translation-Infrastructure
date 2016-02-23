@@ -44,12 +44,12 @@ namespace uva {
             namespace server {
                 namespace lm {
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    G2DMapTrie<MAX_LEVEL, WordIndexType>::G2DMapTrie(WordIndexType & word_index)
-                    : GenericTrieBase<G2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
+                    template<typename WordIndexType>
+                    G2DMapTrie<WordIndexType>::G2DMapTrie(WordIndexType & word_index)
+                    : GenericTrieBase<G2DMapTrie<WordIndexType>, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
                     m_unk_data(NULL), m_1_gram_data(NULL), m_n_gram_data(NULL) {
                         //Perform an error check! This container has bounds on the supported trie level
-                        ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
+                        ASSERT_CONDITION_THROW((M_GRAM_LEVEL_MAX > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
 
                         //Clear the M-Gram bucket arrays
@@ -61,8 +61,8 @@ namespace uva {
                         LOG_DEBUG << "sizeof(TProbMap)= " << sizeof (TProbMap) << END_LOG;
                     };
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    void G2DMapTrie<MAX_LEVEL, WordIndexType>::pre_allocate(const size_t counts[MAX_LEVEL]) {
+                    template<typename WordIndexType>
+                    void G2DMapTrie<WordIndexType>::pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
                         //Call the base-class
                         BASE::pre_allocate(counts);
 
@@ -82,11 +82,11 @@ namespace uva {
                         }
 
                         //Initialize the n-gram's map
-                        m_n_gram_data = new TProbMap(__G2DMapTrie::BUCKETS_FACTOR, counts[MAX_LEVEL - 1]);
+                        m_n_gram_data = new TProbMap(__G2DMapTrie::BUCKETS_FACTOR, counts[M_GRAM_LEVEL_MAX - 1]);
                     };
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    G2DMapTrie<MAX_LEVEL, WordIndexType>::~G2DMapTrie() {
+                    template<typename WordIndexType>
+                    G2DMapTrie<WordIndexType>::~G2DMapTrie() {
                         //Check that the one grams were allocated, if yes then the rest must have been either
                         if (m_1_gram_data != NULL) {
                             //De-allocate one grams
@@ -100,11 +100,11 @@ namespace uva {
                         }
                     };
 
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, M_GRAM_LEVEL_MAX, BasicWordIndex);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, M_GRAM_LEVEL_MAX, CountingWordIndex);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, M_GRAM_LEVEL_MAX, HashingWordIndex);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, M_GRAM_LEVEL_MAX, TOptBasicWordIndex);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, M_GRAM_LEVEL_MAX, TOptCountWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, BasicWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, CountingWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, HashingWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, TOptBasicWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, TOptCountWordIndex);
                 }
             }
         }

@@ -81,10 +81,10 @@ namespace uva {
                      *       {daniel.robenek.st, jan.platos, vaclav.snasel}@vsb.cz
                      * 
                      */
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    class C2DMapTrie : public LayeredTrieBase<C2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
+                    template<typename WordIndexType>
+                    class C2DMapTrie : public LayeredTrieBase<C2DMapTrie<WordIndexType>, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
-                        typedef LayeredTrieBase<C2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
+                        typedef LayeredTrieBase<C2DMapTrie<WordIndexType>, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
 
                         /**
                          * The basic class constructor, accepts memory factors that are the
@@ -146,7 +146,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * For more details @see LayeredTrieBase
                          */
-                        virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
+                        virtual void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]);
 
                         /**
                          * Allows to retrieve the data storage structure for the M gram
@@ -167,13 +167,13 @@ namespace uva {
                                 //Define the context id variable
                                 TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
-                                __LayeredTrieBase::get_context_id<C2DMapTrie<MAX_LEVEL, WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
+                                __LayeredTrieBase::get_context_id<C2DMapTrie<WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Obtain this m-gram id
                                 (void) get_ctx_id(CURR_LEVEL - BASE::MGRAM_IDX_OFFSET, word_id, ctx_id);
 
                                 //Store the payload
-                                if (CURR_LEVEL == MAX_LEVEL) {
+                                if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
                                     m_n_gram_map_ptr->operator[](ctx_id) = gram.m_payload.m_prob;
                                 } else {
                                     m_m_gram_map_ptrs[CURR_LEVEL - BASE::MGRAM_IDX_OFFSET]->operator[](ctx_id) = gram.m_payload;
@@ -186,7 +186,7 @@ namespace uva {
                          * The retrieval of a uni-gram data is always a success
                          * @see GenericTrieBase
                          */
-                        inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query) const {
+                        inline void get_unigram_payload(typename BASE::query_exec_data & query) const {
                             //Get the word index for convenience
                             const TModelLevel & word_idx = query.m_begin_word_idx;
 
@@ -201,7 +201,7 @@ namespace uva {
                          * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                          * For more details @see LayeredTrieBase
                          */
-                        inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void get_m_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
                             LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
                                     << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
@@ -248,7 +248,7 @@ namespace uva {
                          * Allows to attempt the sub-m-gram payload retrieval for m==n
                          * @see GenericTrieBase
                          */
-                        inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void get_n_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
                             //First ensure the context of the given sub-m-gram
                             LAYERED_BASE_ENSURE_CONTEXT(query, status);
 
@@ -267,7 +267,7 @@ namespace uva {
                                     TNGramsMap::const_iterator result = m_n_gram_map_ptr->find(ctx_id);
                                     if (result == m_n_gram_map_ptr->end()) {
                                         //The payload could not be found
-                                        LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: "
+                                        LOG_DEBUG1 << "Unable to find " << SSTR(M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: "
                                                 << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
                                         status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                     } else {
@@ -308,9 +308,9 @@ namespace uva {
                         //The N Grams map type
                         typedef unordered_map<TLongId, m_gram_payload, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                         //The actual data storage for the M Grams for 1 < M < N
-                        TMGramAllocator * m_m_gram_alloc_ptrs[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                        TMGramAllocator * m_m_gram_alloc_ptrs[M_GRAM_LEVEL_MAX - BASE::MGRAM_IDX_OFFSET];
                         //The array of maps map storing M-grams for 1 < M < N
-                        TMGramsMap * m_m_gram_map_ptrs[MAX_LEVEL - BASE::MGRAM_IDX_OFFSET];
+                        TMGramsMap * m_m_gram_map_ptrs[M_GRAM_LEVEL_MAX - BASE::MGRAM_IDX_OFFSET];
 
                         //The type of key,value pairs to be stored in the N Grams map
                         typedef pair< const TLongId, TLogProbBackOff> TNGramEntry;
@@ -324,35 +324,35 @@ namespace uva {
                         TNGramsMap * m_n_gram_map_ptr;
 
                         //The structure for storing the hash key values statistics
-                        pair<TLongId, TLongId> m_hash_sizes[MAX_LEVEL];
+                        pair<TLongId, TLongId> m_hash_sizes[M_GRAM_LEVEL_MAX];
 
                         /**
                          * This method must used to provide the N-gram count information
                          * That should allow for pre-allocation of the memory
                          * @param counts the counts for the number of elements of each gram level
                          */
-                        void pre_allocate_1_grams(const size_t counts[MAX_LEVEL]);
+                        void pre_allocate_1_grams(const size_t counts[M_GRAM_LEVEL_MAX]);
 
                         /**
                          * This method must used to provide the N-gram count information
                          * That should allow for pre-allocation of the memory
                          * @param counts the counts for the number of elements of each gram level
                          */
-                        void pre_allocate_m_grams(const size_t counts[MAX_LEVEL]);
+                        void pre_allocate_m_grams(const size_t counts[M_GRAM_LEVEL_MAX]);
 
                         /**
                          * This method must used to provide the N-gram count information
                          * That should allow for pre-allocation of the memory
                          * @param counts the counts for the number of elements of each gram level
                          */
-                        void pre_allocate_n_grams(const size_t counts[MAX_LEVEL]);
+                        void pre_allocate_n_grams(const size_t counts[M_GRAM_LEVEL_MAX]);
                     };
 
-                    typedef C2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2DMapTrieBasic;
-                    typedef C2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TC2DMapTrieCount;
-                    typedef C2DMapTrie<M_GRAM_LEVEL_MAX, HashingWordIndex > TC2DMapTrieHashing;
-                    typedef C2DMapTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TC2DMapTrieOptBasic;
-                    typedef C2DMapTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TC2DMapTrieOptCount;
+                    typedef C2DMapTrie<BasicWordIndex > TC2DMapTrieBasic;
+                    typedef C2DMapTrie<CountingWordIndex > TC2DMapTrieCount;
+                    typedef C2DMapTrie<HashingWordIndex > TC2DMapTrieHashing;
+                    typedef C2DMapTrie<TOptBasicWordIndex > TC2DMapTrieOptBasic;
+                    typedef C2DMapTrie<TOptCountWordIndex > TC2DMapTrieOptCount;
                 }
             }
         }

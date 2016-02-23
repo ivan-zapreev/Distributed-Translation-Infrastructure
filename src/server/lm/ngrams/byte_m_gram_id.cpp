@@ -169,8 +169,8 @@ namespace uva {
                              * the end (reverse the word order) as this can potentially
                              * increase speed of the comparison operation.
                              */
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::create_m_gram_id(const TWordIdType * word_ids,
+                            template<typename TWordIdType>
+                            uint8_t Byte_M_Gram_Id<TWordIdType>::create_m_gram_id(const TWordIdType * word_ids,
                                     const uint8_t num_word_ids, TM_Gram_Id_Value_Ptr & m_p_gram_id) {
                                 //Do the sanity check if needed
                                 ASSERT_SANITY_THROW((num_word_ids < M_GRAM_LEVEL_2) || (num_word_ids > M_GRAM_LEVEL_6),
@@ -248,8 +248,8 @@ namespace uva {
                              * the end (reverse the word order) as this can potentially
                              * increase speed of the comparison operation.
                              */
-                            template<typename TWordIdType, TModelLevel MAX_LEVEL>
-                            uint8_t Byte_M_Gram_Id<TWordIdType, MAX_LEVEL>::compute_m_gram_id(const TWordIdType * word_ids,
+                            template<typename TWordIdType>
+                            uint8_t Byte_M_Gram_Id<TWordIdType>::compute_m_gram_id(const TWordIdType * word_ids,
                                     const uint8_t num_word_ids, TM_Gram_Id_Value_Ptr m_p_gram_id) {
                                 //Do the sanity check if needed
                                 ASSERT_SANITY_THROW((num_word_ids < M_GRAM_LEVEL_2) || (num_word_ids > M_GRAM_LEVEL_6),
@@ -299,8 +299,8 @@ namespace uva {
                             }
 
                             //Make sure at least the following templates are instantiated
-                            template class Byte_M_Gram_Id<uint32_t, M_GRAM_LEVEL_MAX>;
-                            template class Byte_M_Gram_Id<uint64_t, M_GRAM_LEVEL_MAX>;
+                            template class Byte_M_Gram_Id<uint32_t>;
+                            template class Byte_M_Gram_Id<uint64_t>;
                         }
                     }
                 }

@@ -53,7 +53,7 @@ namespace uva {
             };
 
             //Defines the maximum logging level
-            static constexpr DebugLevelsEnum LOGER_MAX_LEVEL = DEBUG4;
+            static constexpr DebugLevelsEnum LOGER_M_GRAM_LEVEL_MAX = DEBUG4;
 
             //Defines the log level from which the detailed timing info is available
             static constexpr DebugLevelsEnum PROGRESS_ACTIVE_LEVEL = INFO2;
@@ -83,7 +83,7 @@ namespace uva {
 #define LOGGER(level)                                \
 {                                                    \
   logging_synch::rec_scoped_lock lock(logging_synch::mv);\
-  if (level > LOGER_MAX_LEVEL) ;                     \
+  if (level > LOGER_M_GRAM_LEVEL_MAX) ;                     \
   else if (level > Logger::get_reporting_level()) ;  \
        else Logger::get(level)
 
@@ -92,7 +92,7 @@ namespace uva {
 #define LOGGER_DEBUG(level)                          \
 {                                                    \
   logging_synch::rec_scoped_lock lock(logging_synch::mv);\
-  if (level > LOGER_MAX_LEVEL) ;                     \
+  if (level > LOGER_M_GRAM_LEVEL_MAX) ;                     \
   else if (level > Logger::get_reporting_level()) ;  \
        else Logger::get(level, __FILENAME__, __FUNCTION__, LINE_STRING)
 

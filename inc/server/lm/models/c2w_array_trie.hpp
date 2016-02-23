@@ -140,10 +140,10 @@ namespace uva {
                      * 
                      * @param N the maximum number of levels in the trie.
                      */
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    class C2WArrayTrie : public LayeredTrieBase<C2WArrayTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2WArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
+                    template<typename WordIndexType>
+                    class C2WArrayTrie : public LayeredTrieBase<C2WArrayTrie<WordIndexType>, WordIndexType, __C2WArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
-                        typedef LayeredTrieBase<C2WArrayTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2WArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
+                        typedef LayeredTrieBase<C2WArrayTrie<WordIndexType>, WordIndexType, __C2WArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
 
                         /**
                          * The basic constructor
@@ -168,7 +168,7 @@ namespace uva {
                             const TModelLevel curr_level = level_idx + BASE::MGRAM_IDX_OFFSET;
 
                             //Perform sanity checks if needed
-                            ASSERT_SANITY_THROW(((curr_level == MAX_LEVEL) || (curr_level < M_GRAM_LEVEL_2)), string("Unsupported level id: ") + std::to_string(curr_level));
+                            ASSERT_SANITY_THROW(((curr_level == M_GRAM_LEVEL_MAX) || (curr_level < M_GRAM_LEVEL_2)), string("Unsupported level id: ") + std::to_string(curr_level));
 
                             LOG_DEBUG2 << "Searching for the next ctx_id of " << SSTR(curr_level)
                                     << "-gram with word_id: " << SSTR(word_id) << ", ctx_id: "
@@ -208,7 +208,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * For more details @see LayeredTrieBase
                          */
-                        virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
+                        virtual void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]);
 
                         /**
                          * This method allows to check if post processing should be called after
@@ -235,7 +235,7 @@ namespace uva {
                             }
 
                             //Do the post actions here
-                            if (CURR_LEVEL == MAX_LEVEL) {
+                            if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
                                 post_n_grams();
                             } else {
                                 if (CURR_LEVEL > M_GRAM_LEVEL_1) {
@@ -263,9 +263,9 @@ namespace uva {
                                 //Define the context id variable
                                 TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
-                                __LayeredTrieBase::get_context_id<C2WArrayTrie<MAX_LEVEL, WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
+                                __LayeredTrieBase::get_context_id<C2WArrayTrie<WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
 
-                                if (CURR_LEVEL == MAX_LEVEL) {
+                                if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
                                     //Get the new n-gram index
                                     const TShortId n_gram_idx = m_m_n_gram_next_ctx_id[BASE::N_GRAM_IDX_IN_M_N_ARR]++;
 
@@ -305,7 +305,7 @@ namespace uva {
                          * The retrieval of a uni-gram data is always a success
                          * @see GenericTrieBase
                          */
-                        inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query) const {
+                        inline void get_unigram_payload(typename BASE::query_exec_data & query) const {
                             //Get the word index for convenience
                             const TModelLevel & word_idx = query.m_begin_word_idx;
 
@@ -320,7 +320,7 @@ namespace uva {
                          * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                          * For more details @see LayeredTrieBase
                          */
-                        inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void get_m_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
                             LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
                                     << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
@@ -359,7 +359,7 @@ namespace uva {
                          * Allows to attempt the sub-m-gram payload retrieval for m==n
                          * @see GenericTrieBase
                          */
-                        inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void get_n_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
                             //First ensure the context of the given sub-m-gram
                             LAYERED_BASE_ENSURE_CONTEXT(query, status);
 
@@ -369,7 +369,7 @@ namespace uva {
                                 TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
                                 const TShortId & word_id = query.m_gram[query.m_end_word_idx];
 
-                                LOG_DEBUG2 << "Getting " << SSTR(MAX_LEVEL) << "-gram with word_id: "
+                                LOG_DEBUG2 << "Getting " << SSTR(M_GRAM_LEVEL_MAX) << "-gram with word_id: "
                                         << SSTR(word_id) << ", ctx_id: " << SSTR(ctx_id) << END_LOG;
 
                                 //Create the search key by combining ctx and word ids, see TCtxIdProbEntryPair
@@ -386,7 +386,7 @@ namespace uva {
                                     LOG_DEBUG << "The payload is retrieved: " << m_n_gram_data[idx].prob << END_LOG;
                                 } else {
                                     //The payload could not be found
-                                    LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: " << SSTR(ctx_id)
+                                    LOG_DEBUG1 << "Unable to find " << SSTR(M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: " << SSTR(ctx_id)
                                             << ", word_id: " << SSTR(word_id) << ", key " << SSTR(key) << END_LOG;
                                     status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                 }
@@ -477,11 +477,11 @@ namespace uva {
                         TShortId m_m_n_gram_next_ctx_id[BASE::NUM_M_N_GRAM_LEVELS];
                     };
 
-                    typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TC2WArrayTrieBasic;
-                    typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TC2WArrayTrieCount;
-                    typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TC2WArrayTrieOptBasic;
-                    typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TC2WArrayTrieOptCount;
-                    typedef C2WArrayTrie<M_GRAM_LEVEL_MAX, HashingWordIndex > TC2WArrayTrieHashing;
+                    typedef C2WArrayTrie<BasicWordIndex > TC2WArrayTrieBasic;
+                    typedef C2WArrayTrie<CountingWordIndex > TC2WArrayTrieCount;
+                    typedef C2WArrayTrie<TOptBasicWordIndex > TC2WArrayTrieOptBasic;
+                    typedef C2WArrayTrie<TOptCountWordIndex > TC2WArrayTrieOptCount;
+                    typedef C2WArrayTrie<HashingWordIndex > TC2WArrayTrieHashing;
                 }
             }
         }

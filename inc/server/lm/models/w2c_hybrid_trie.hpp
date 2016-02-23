@@ -48,14 +48,14 @@ namespace uva {
 
                     /**
                      * This is the hybrid memory trie implementation class. It has three template parameters.
-                     * @param MAX_LEVEL the maximum number of levelns in the trie.
+                     * @param M_GRAM_LEVEL_MAX the maximum number of levelns in the trie.
                      * @param StorageFactory the factory to create storage containers
                      * @param StorageContainer the storage container type that is created by the factory
                      */
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType, template<TModelLevel > class StorageFactory = W2CH_UM_StorageFactory, class StorageContainer = W2CH_UM_Storage>
-                    class W2CHybridTrie : public LayeredTrieBase<W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>, MAX_LEVEL, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
+                    template<typename WordIndexType, template<TModelLevel > class StorageFactory = W2CH_UM_StorageFactory, class StorageContainer = W2CH_UM_Storage>
+                    class W2CHybridTrie : public LayeredTrieBase<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
-                        typedef LayeredTrieBase<W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>, MAX_LEVEL, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
+                        typedef LayeredTrieBase<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
 
                         /**
                          * The basic constructor
@@ -118,7 +118,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * For more details @see LayeredTrieBase
                          */
-                        virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
+                        virtual void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]);
 
                         /**
                          * Allows to retrieve the data storage structure for the M gram
@@ -139,17 +139,17 @@ namespace uva {
                                 //Define the context id variable
                                 TLongId ctx_id = WordIndexType::UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
-                                __LayeredTrieBase::get_context_id<W2CHybridTrie<MAX_LEVEL, WordIndexType, StorageFactory, StorageContainer>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
+                                __LayeredTrieBase::get_context_id<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Store the payload
-                                if (CURR_LEVEL == MAX_LEVEL) {
+                                if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
                                     StorageContainer*& ctx_mapping = m_mgram_mapping[BASE::N_GRAM_IDX_IN_M_N_ARR][word_id];
                                     if (ctx_mapping == NULL) {
-                                        ctx_mapping = m_storage_factory->create(MAX_LEVEL);
-                                        LOG_DEBUG3 << "Allocating storage for level " << SSTR(MAX_LEVEL) << ", word_id " << SSTR(word_id) << END_LOG;
+                                        ctx_mapping = m_storage_factory->create(M_GRAM_LEVEL_MAX);
+                                        LOG_DEBUG3 << "Allocating storage for level " << SSTR(M_GRAM_LEVEL_MAX) << ", word_id " << SSTR(word_id) << END_LOG;
                                     }
 
-                                    LOG_DEBUG3 << "Returning reference to prob., level: " << SSTR(MAX_LEVEL) << ", word_id "
+                                    LOG_DEBUG3 << "Returning reference to prob., level: " << SSTR(M_GRAM_LEVEL_MAX) << ", word_id "
                                             << SSTR(word_id) << ", ctx_id " << SSTR(ctx_id) << END_LOG;
                                     //WARNING: We cast to (TLogProbBackOff &) as we misuse the mapping by storing the probability value there!
                                     reinterpret_cast<TLogProbBackOff&> (ctx_mapping->operator[](ctx_id)) = gram.m_payload.m_prob;
@@ -180,7 +180,7 @@ namespace uva {
                          * The retrieval of a uni-gram data is always a success
                          * @see GenericTrieBase
                          */
-                        inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query) const {
+                        inline void get_unigram_payload(typename BASE::query_exec_data & query) const {
                             //Get the word index for convenience
                             const TModelLevel & word_idx = query.m_begin_word_idx;
 
@@ -195,7 +195,7 @@ namespace uva {
                          * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                          * For more details @see LayeredTrieBase
                          */
-                        inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void get_m_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
                             LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
                                     << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
 
@@ -234,7 +234,7 @@ namespace uva {
                          * Allows to attempt the sub-m-gram payload retrieval for m==n
                          * @see GenericTrieBase
                          */
-                        inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void get_n_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
                             //First ensure the context of the given sub-m-gram
                             LAYERED_BASE_ENSURE_CONTEXT(query, status);
 
@@ -260,7 +260,7 @@ namespace uva {
                                     }
                                 } else {
                                     //The payload could not be found
-                                    LOG_DEBUG1 << "Unable to find " << SSTR(MAX_LEVEL) << "-gram data for ctx_id: "
+                                    LOG_DEBUG1 << "Unable to find " << SSTR(M_GRAM_LEVEL_MAX) << "-gram data for ctx_id: "
                                             << SSTR(ctx_id) << ", word_id: " << SSTR(word_id) << END_LOG;
                                     status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                 }
@@ -280,7 +280,7 @@ namespace uva {
                         size_t m_word_arr_size;
 
                         //The factory to produce the storage containers
-                        StorageFactory<MAX_LEVEL> * m_storage_factory;
+                        StorageFactory<M_GRAM_LEVEL_MAX> * m_storage_factory;
 
                         //M-Gram data for 1 <= M < N. This is a 2D array storing
                         //For each M-Gram level M an array of prob-back_off values
@@ -289,7 +289,7 @@ namespace uva {
                         // ...
                         // m_mgram_data[M][#M-Grams - 1] --//--
                         // m_mgram_data[M][#M-Grams] --//--
-                        m_gram_payload * m_mgram_data[MAX_LEVEL - 1];
+                        m_gram_payload * m_mgram_data[M_GRAM_LEVEL_MAX - 1];
 
                         //M-Gram data for 1 < M <= N. This is a 2D array storing
                         //For each M-Gram level M an array of #words elements of
@@ -308,19 +308,19 @@ namespace uva {
                         //stored as floats - 4 bytes and m_mgram_data[M] array is also a
                         //4 byte integer, so we minimize memory usage by storing float
                         //probability in place of the index.
-                        StorageContainer** m_mgram_mapping[MAX_LEVEL - 1];
+                        StorageContainer** m_mgram_mapping[M_GRAM_LEVEL_MAX - 1];
 
                         //Will store the next context index counters per M-gram level
                         //for 1 < M < N.
-                        const static TModelLevel NUM_IDX_COUNTERS = MAX_LEVEL - 2;
+                        const static TModelLevel NUM_IDX_COUNTERS = M_GRAM_LEVEL_MAX - 2;
                         TShortId next_ctx_id[NUM_IDX_COUNTERS];
                     };
 
-                    typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TW2CHybridTrieBasic;
-                    typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TW2CHybridTrieCount;
-                    typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TW2CHybridTrieOptBasic;
-                    typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TW2CHybridTrieOptCount;
-                    typedef W2CHybridTrie<M_GRAM_LEVEL_MAX, HashingWordIndex > TW2CHybridTrieHashing;
+                    typedef W2CHybridTrie<BasicWordIndex> TW2CHybridTrieBasic;
+                    typedef W2CHybridTrie<CountingWordIndex> TW2CHybridTrieCount;
+                    typedef W2CHybridTrie<TOptBasicWordIndex> TW2CHybridTrieOptBasic;
+                    typedef W2CHybridTrie<TOptCountWordIndex> TW2CHybridTrieOptCount;
+                    typedef W2CHybridTrie<HashingWordIndex> TW2CHybridTrieHashing;
                 }
             }
         }

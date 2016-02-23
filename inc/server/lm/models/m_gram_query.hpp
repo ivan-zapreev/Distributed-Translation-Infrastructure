@@ -28,35 +28,39 @@
 
 #include <string>       //std::string
 
-#include "server/lm/lm_consts.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "server/lm/mgrams/query_m_gram.hpp"
+#include "server/lm/lm_consts.hpp"
+#include "server/lm/lm_configs.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
+
+#include "server/lm/mgrams/query_m_gram.hpp"
 #include "server/lm/models/generic_trie_base.hpp"
 
-#include "server/lm/dictionaries/AWordIndex.hpp"
 #include "server/lm/dictionaries/BasicWordIndex.hpp"
 #include "server/lm/dictionaries/CountingWordIndex.hpp"
 #include "server/lm/dictionaries/OptimizingWordIndex.hpp"
+#include "server/lm/dictionaries/HashingWordIndex.hpp"
 
-#include "server/lm/models/c2d_map_trie.hpp"
-#include "server/lm/models/w2c_hybrid_trie.hpp"
-#include "server/lm/models/c2w_array_trie.hpp"
-#include "server/lm/models/w2c_array_trie.hpp"
 #include "server/lm/models/c2d_hybrid_trie.hpp"
+#include "server/lm/models/c2d_map_trie.hpp"
+#include "server/lm/models/c2w_array_trie.hpp"
 #include "server/lm/models/g2d_map_trie.hpp"
 #include "server/lm/models/h2d_map_trie.hpp"
+#include "server/lm/models/w2c_array_trie.hpp"
+#include "server/lm/models/w2c_hybrid_trie.hpp"
 
 using namespace std;
+
 using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
+using namespace uva::utils::math::bits;
 using namespace uva::utils::file;
+
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::lm::dictionary;
 using namespace uva::smt::bpbd::server::lm::m_grams;
-using namespace uva::utils::math::bits;
-using namespace uva::utils::exceptions;
 
 namespace uva {
     namespace smt {
@@ -84,9 +88,6 @@ namespace uva {
                     class m_gram_query {
                     public:
                         typedef typename TrieType::WordIndexType WordIndexType;
-
-                        //Define the maximum level constant
-                        static constexpr TModelLevel MAX_LEVEL = TrieType::MAX_LEVEL;
 
                         /**
                          * The basic constructor for the structure
@@ -119,17 +120,17 @@ namespace uva {
 
                             //Clean the relevant probability entry
                             if (is_cumulative) {
-                                memset(m_query.m_probs, 0, sizeof (TLogProbBackOff) * MAX_LEVEL);
+                                memset(m_query.m_probs, 0, sizeof (TLogProbBackOff) * QUERY_LENGTH_MAX);
                             } else {
                                 m_query.m_probs[ m_query.m_gram.get_end_word_idx() ] = ZERO_PROB_WEIGHT;
                             }
                             //Clean the payload pointer entries
-                            memset(m_query.m_payloads, 0, sizeof (void*) * MAX_LEVEL * MAX_LEVEL);
+                            memset(m_query.m_payloads, 0, sizeof (void*) * QUERY_LENGTH_MAX * QUERY_LENGTH_MAX);
 
                             //If this trie needs getting context ids then clean the data as well
                             if (m_trie.is_need_getting_ctx_ids()) {
                                 //Clean the payload pointer entries
-                                memset(m_query.m_last_ctx_ids, WordIndexType::UNDEFINED_WORD_ID, sizeof (TLongId) * MAX_LEVEL);
+                                memset(m_query.m_last_ctx_ids, WordIndexType::UNDEFINED_WORD_ID, sizeof (TLongId) * QUERY_LENGTH_MAX);
                             }
 
                             //Execute the query
@@ -152,7 +153,7 @@ namespace uva {
                         //Define the query data structure that: stores the query m-gram,
                         //stores pointers to the retrieved payloads, stores the computed
                         //conditional probabilities per sub-m-gram and others
-                        typename TrieType::T_Query_Exec_Data m_query;
+                        typename TrieType::query_exec_data m_query;
 
                         /**
                          * Allows to log the query results after its execution.
@@ -224,22 +225,19 @@ namespace uva {
                     };
 
                     //Make sure that there will be templates instantiated, at least for the given parameter values
-#define INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, WORD_INDEX_TYPE); \
-            template class m_gram_query<C2DHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class m_gram_query<C2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class m_gram_query<C2WArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class m_gram_query<W2CArrayTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class m_gram_query<W2CHybridTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class m_gram_query<G2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>; \
-            template class m_gram_query<H2DMapTrie<M_GRAM_LEVEL, WORD_INDEX_TYPE>>;
+#define INSTANTIATE_M_GRAM_QUERY_WORD_IDX(WORD_INDEX_TYPE); \
+            template class m_gram_query<C2DHybridTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<C2DMapTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<C2WArrayTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<W2CArrayTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<W2CHybridTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<G2DMapTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<H2DMapTrie<WORD_INDEX_TYPE>>;
 
-#define INSTANTIATE_M_GRAM_QUERY_LEVEL(M_GRAM_LEVEL); \
-            INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, BasicWordIndex); \
-            INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, CountingWordIndex); \
-            INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, TOptBasicWordIndex); \
-            INSTANTIATE_M_GRAM_QUERY_LEVEL_WORD_IDX(M_GRAM_LEVEL, TOptCountWordIndex);
-
-                    INSTANTIATE_M_GRAM_QUERY_LEVEL(M_GRAM_LEVEL_MAX);
+                    INSTANTIATE_M_GRAM_QUERY_WORD_IDX(BasicWordIndex);
+                    INSTANTIATE_M_GRAM_QUERY_WORD_IDX(CountingWordIndex);
+                    INSTANTIATE_M_GRAM_QUERY_WORD_IDX(TOptBasicWordIndex);
+                    INSTANTIATE_M_GRAM_QUERY_WORD_IDX(TOptCountWordIndex);
                 }
             }
         }

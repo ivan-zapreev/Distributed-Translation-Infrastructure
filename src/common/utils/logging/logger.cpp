@@ -84,7 +84,7 @@ namespace uva {
              * @param p_reporting_levels the pointer to the logging levels vector to be filled in
              */
             void Logger::get_reporting_levels(vector<string> * p_reporting_levels) {
-                for (size_t level_id = DebugLevelsEnum::ERROR; level_id <= LOGER_MAX_LEVEL; ++level_id) {
+                for (size_t level_id = DebugLevelsEnum::ERROR; level_id <= LOGER_M_GRAM_LEVEL_MAX; ++level_id) {
                     string level = m_debug_level_str[level_id];
                     transform(level.begin(), level.end(), level.begin(), ::tolower);
                     p_reporting_levels->push_back(level);
@@ -150,7 +150,7 @@ namespace uva {
                 if (isGoodLevel) {
                     LOG_USAGE << "The requested debug level is: \'" << level
                             << "\', the maximum build level is '"
-                            << m_debug_level_str[LOGER_MAX_LEVEL] << "'"
+                            << m_debug_level_str[LOGER_M_GRAM_LEVEL_MAX] << "'"
                             << " the set level is '" << m_debug_level_str[m_curr_level]
                             << "'" << END_LOG;
                 } else {
@@ -179,7 +179,7 @@ namespace uva {
             }
 
             //This macro is used to check if we need to do the progress indications
-#define IS_ENOUGH_LOGGING_LEVEL(level) (( PROGRESS_ACTIVE_LEVEL <= LOGER_MAX_LEVEL ) && ( PROGRESS_ACTIVE_LEVEL <= level ))
+#define IS_ENOUGH_LOGGING_LEVEL(level) (( PROGRESS_ACTIVE_LEVEL <= LOGER_M_GRAM_LEVEL_MAX ) && ( PROGRESS_ACTIVE_LEVEL <= level ))
 
             void Logger::start_progress_bar(const string & msg) {
                 if (IS_ENOUGH_LOGGING_LEVEL(m_curr_level)) {

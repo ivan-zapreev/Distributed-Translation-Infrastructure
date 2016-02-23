@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="95">
+<configurationDescriptor version="97">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="server">
+        <df name="lm">
+          <df name="models">
+            <in>query_exec_data.hpp</in>
+          </df>
+        </df>
+      </df>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -76,6 +83,9 @@
     <Elem>src</Elem>
     <Elem>inc</Elem>
     <Elem>ext</Elem>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>ext</Elem>
   </sourceRootList>
   <projectmakefile>build/Makefile</projectmakefile>
   <confs>
@@ -111,34 +121,17 @@
               <pElem>ext</pElem>
               <pElem>build</pElem>
             </incDir>
+            <preprocessorList>
+              <Elem>NDEBUG</Elem>
+            </preprocessorList>
           </ccTool>
         </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand></preBuildCommand>
+        </preBuild>
       </makefileType>
-      <folder path="2/common">
-        <ccTool>
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
-        </ccTool>
-      </folder>
-      <item path="inc/server/lm/mgrams/m_gram_id.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/lm/mgrams/m_gram_id_tables.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/lm/mgrams/m_gram_payload.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/lm/mgrams/model_m_gram.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/lm/mgrams/query_m_gram.hpp"
+      <item path="inc/server/lm/models/query_exec_data.hpp"
             ex="false"
             tool="3"
             flavor2="0">

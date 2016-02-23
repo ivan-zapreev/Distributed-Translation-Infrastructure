@@ -64,7 +64,7 @@ namespace uva {
                             typedef HashingWordIndex word_index_type;
 
                             //Here we have a default trie type
-                            typedef H2DMapTrie<M_GRAM_LEVEL_MAX, word_index_type> model_type;
+                            typedef H2DMapTrie<word_index_type> model_type;
 
                             //Define the builder type 
                             typedef lm_basic_builder<model_type, CStyleFileReader> builder_type;

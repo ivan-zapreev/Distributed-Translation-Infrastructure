@@ -75,33 +75,33 @@ namespace uva {
                         /**
                          * This class is the base class for all the M-gram classes used
                          */
-                        template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY = M_GRAM_LEVEL_MAX>
+                        template<typename WordIndexType>
                         class m_gram_base {
                         public:
                             //The type of the word id
                             typedef typename WordIndexType::TWordIdType TWordIdType;
 
                             //Declare the shorthand for the m-gram id type
-                            typedef Byte_M_Gram_Id<TWordIdType, MAX_LEVEL_CAPACITY> TM_Gram_Id;
+                            typedef Byte_M_Gram_Id<TWordIdType> TM_Gram_Id;
 
                             //Define the corresponding M-gram id type
-                            typedef m_gram_id::Byte_M_Gram_Id<TWordIdType, MAX_LEVEL_CAPACITY> T_M_Gram_Id;
+                            typedef m_gram_id::Byte_M_Gram_Id<TWordIdType> T_M_Gram_Id;
 
                             /**
                              * The basic constructor, is to be used when the M-gram level
                              * is known beforehand. Allows to set the actual M-gram level
                              * to a concrete value.
                              * @param word_index the used word index
-                             * @param actual_level the actual level of the m-gram that will be used should be <= MAX_LEVEL_CAPACITY
+                             * @param actual_level the actual level of the m-gram that will be used should be <= M_GRAM_LEVEL_MAX
                              */
                             m_gram_base(WordIndexType & word_index, TModelLevel actual_level)
                             : m_word_index(word_index), m_actual_level(actual_level),
                             m_actual_end_word_idx(actual_level - 1) {
                                 //Perform sanity check if needed 
-                                ASSERT_SANITY_THROW((m_actual_level > MAX_LEVEL_CAPACITY),
+                                ASSERT_SANITY_THROW((m_actual_level > M_GRAM_LEVEL_MAX),
                                         string("The provided actual level: ") + std::to_string(m_actual_level) +
                                         string(" exceeds the maximum level capacity: ") +
-                                        std::to_string(MAX_LEVEL_CAPACITY) + string(" of the T_Base_M_Gram class!"));
+                                        std::to_string(M_GRAM_LEVEL_MAX) + string(" of the T_Base_M_Gram class!"));
 
                                 //Initialize the m-gram id pointer
                                 m_gram_id_ptr = &m_gram_id[0];
@@ -259,10 +259,10 @@ namespace uva {
 
                         protected:
                             //Stores the m-gram tokens
-                            TextPieceReader m_tokens[MAX_LEVEL_CAPACITY];
+                            TextPieceReader m_tokens[M_GRAM_LEVEL_MAX];
 
                             //The data structure to store the N-gram word ids
-                            TWordIdType m_word_ids[MAX_LEVEL_CAPACITY] = {};
+                            TWordIdType m_word_ids[M_GRAM_LEVEL_MAX] = {};
 
                             //Stores the reference to the used word index
                             WordIndexType & m_word_index;
@@ -271,7 +271,7 @@ namespace uva {
                             uint32_t m_actual_level;
 
                             //Declare the m-gram id container
-                            DECLARE_STACK_GRAM_ID(TM_Gram_Id, m_gram_id, MAX_LEVEL_CAPACITY);
+                            DECLARE_STACK_GRAM_ID(TM_Gram_Id, m_gram_id, M_GRAM_LEVEL_MAX);
                             //Declare the m-gram id pointer
                             TM_Gram_Id_Value_Ptr m_gram_id_ptr;
 
@@ -281,8 +281,8 @@ namespace uva {
                             TModelLevel m_actual_end_word_idx;
                         };
 
-                        template<typename WordIndexType, TModelLevel MAX_LEVEL_CAPACITY>
-                        constexpr TModelLevel m_gram_base<WordIndexType, MAX_LEVEL_CAPACITY>::m_actual_begin_word_idx;
+                        template<typename WordIndexType>
+                        constexpr TModelLevel m_gram_base<WordIndexType>::m_actual_begin_word_idx;
 
                     }
                 }

@@ -44,29 +44,29 @@ namespace uva {
             namespace server {
                 namespace lm {
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    C2DMapTrie<MAX_LEVEL, WordIndexType>::C2DMapTrie(
+                    template<typename WordIndexType>
+                    C2DMapTrie<WordIndexType>::C2DMapTrie(
                             WordIndexType & word_index,
                             const float mgram_mem_factor,
                             const float ngram_mem_factor)
-                    : LayeredTrieBase<C2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
+                    : LayeredTrieBase<C2DMapTrie<WordIndexType>, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
                     m_unk_data(NULL), m_mgram_mem_factor(mgram_mem_factor), m_ngram_mem_factor(ngram_mem_factor), m_1_gram_data(NULL) {
                         //Perform sanity checks
                         if (DO_SANITY_CHECKS) {
                             //Initialize the hash statistics map
-                            for (int i = 0; i < MAX_LEVEL; i++) {
+                            for (int i = 0; i < M_GRAM_LEVEL_MAX; i++) {
                                 m_hash_sizes[i].first = UINT64_MAX;
                                 m_hash_sizes[i].second = 0;
                             }
                         }
 
                         //Perform an error check! This container has bounds on the supported trie level
-                        ASSERT_CONDITION_THROW((MAX_LEVEL < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
+                        ASSERT_CONDITION_THROW((M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
                     }
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    void C2DMapTrie<MAX_LEVEL, WordIndexType>::pre_allocate_1_grams(const size_t counts[MAX_LEVEL]) {
+                    template<typename WordIndexType>
+                    void C2DMapTrie<WordIndexType>::pre_allocate_1_grams(const size_t counts[M_GRAM_LEVEL_MAX]) {
                         //Compute the number of words to be stored
                         const size_t num_word_ids = BASE::get_word_index().get_number_of_words(counts[0]);
 
@@ -81,10 +81,10 @@ namespace uva {
                         m_unk_data->m_back = ZERO_BACK_OFF_WEIGHT;
                     }
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    void C2DMapTrie<MAX_LEVEL, WordIndexType>::pre_allocate_m_grams(const size_t counts[MAX_LEVEL]) {
+                    template<typename WordIndexType>
+                    void C2DMapTrie<WordIndexType>::pre_allocate_m_grams(const size_t counts[M_GRAM_LEVEL_MAX]) {
                         //Pre-allocate for the M-grams with 1 < M < N
-                        for (int idx = 1; idx < (MAX_LEVEL - 1); idx++) {
+                        for (int idx = 1; idx < (M_GRAM_LEVEL_MAX - 1); idx++) {
                             //Get the number of elements to pre-allocate
 
                             const uint numEntries = counts[idx];
@@ -94,18 +94,18 @@ namespace uva {
                         }
                     }
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    void C2DMapTrie<MAX_LEVEL, WordIndexType>::pre_allocate_n_grams(const size_t counts[MAX_LEVEL]) {
+                    template<typename WordIndexType>
+                    void C2DMapTrie<WordIndexType>::pre_allocate_n_grams(const size_t counts[M_GRAM_LEVEL_MAX]) {
                         //Get the number of elements to pre-allocate
 
-                        const size_t numEntries = counts[MAX_LEVEL - 1];
+                        const size_t numEntries = counts[M_GRAM_LEVEL_MAX - 1];
 
                         //Reserve the memory for the map
                         reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&m_n_gram_map_ptr, &m_n_gram_alloc_ptr, numEntries, "N-Grams", m_ngram_mem_factor);
                     }
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    void C2DMapTrie<MAX_LEVEL, WordIndexType>::pre_allocate(const size_t counts[MAX_LEVEL]) {
+                    template<typename WordIndexType>
+                    void C2DMapTrie<WordIndexType>::pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
                         //Call the super class pre-allocator!
 
                         BASE::pre_allocate(counts);
@@ -120,11 +120,11 @@ namespace uva {
                         pre_allocate_n_grams(counts);
                     }
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    C2DMapTrie<MAX_LEVEL, WordIndexType>::~C2DMapTrie() {
+                    template<typename WordIndexType>
+                    C2DMapTrie<WordIndexType>::~C2DMapTrie() {
                         if (DO_SANITY_CHECKS) {
                             //Print the hash sizes statistics
-                            for (int i = 0; i < MAX_LEVEL; i++) {
+                            for (int i = 0; i < M_GRAM_LEVEL_MAX; i++) {
                                 LOG_INFO3 << (i + 1) << "-Gram ctx hash [min,max]= [ " << m_hash_sizes[i].first << ", " << m_hash_sizes[i].second << " ]" << END_LOG;
                             }
                         }
@@ -135,7 +135,7 @@ namespace uva {
                         }
 
                         //Deallocate M-Grams there are N-2 M-gram levels in the array
-                        for (int idx = 0; idx < (MAX_LEVEL - 2); idx++) {
+                        for (int idx = 0; idx < (M_GRAM_LEVEL_MAX - 2); idx++) {
                             deallocate_container<TMGramsMap, TMGramAllocator>(&m_m_gram_map_ptrs[idx], &m_m_gram_alloc_ptrs[idx]);
                         }
 

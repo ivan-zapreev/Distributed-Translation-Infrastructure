@@ -107,12 +107,12 @@ namespace uva {
 
                     /**
                      * This is a Gram to Data trie that is implemented as a HashMap.
-                     * @param MAX_LEVEL - the maximum level of the considered N-gram, i.e. the N value
+                     * @param M_GRAM_LEVEL_MAX - the maximum level of the considered N-gram, i.e. the N value
                      */
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    class H2DMapTrie : public GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
+                    template<typename WordIndexType>
+                    class H2DMapTrie : public GenericTrieBase<H2DMapTrie<WordIndexType>, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
-                        typedef GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
+                        typedef GenericTrieBase<H2DMapTrie<WordIndexType>, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
                         typedef typename WordIndexType::TWordIdType TWordIdType;
                         typedef __H2DMapTrie::S_M_GramData<m_gram_payload> T_M_Gram_PB_Entry;
                         typedef __H2DMapTrie::S_M_GramData<TLogProbBackOff> T_M_Gram_Prob_Entry;
@@ -145,7 +145,7 @@ namespace uva {
                          * That should allow for pre-allocation of the memory
                          * @see GenericTrieBase
                          */
-                        virtual void pre_allocate(const size_t counts[MAX_LEVEL]);
+                        virtual void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]);
 
                         /**
                          * This method adds a M-Gram (word) to the trie where 1 < M < N
@@ -166,7 +166,7 @@ namespace uva {
                             const uint64_t hash_value = gram.get_hash();
                             LOG_DEBUG << "Getting the bucket id for the m-gram: " << (string) gram << " hash value: " << hash_value << END_LOG;
 
-                            if (CURR_LEVEL == MAX_LEVEL) {
+                            if (CURR_LEVEL == M_GRAM_LEVEL_MAX) {
                                 //Create a new M-Gram data entry
                                 T_M_Gram_Prob_Entry & data = m_n_gram_data->add_new_element(hash_value);
                                 //The n-gram id is equal to its hash value
@@ -194,7 +194,7 @@ namespace uva {
                          * The retrieval of a uni-gram data is always a success.
                          * @see GenericTrieBase
                          */
-                        inline void get_unigram_payload(typename BASE::T_Query_Exec_Data & query) const {
+                        inline void get_unigram_payload(typename BASE::query_exec_data & query) const {
                             LOG_DEBUG << "Searching in uni-grams, array index: 0" << END_LOG;
 
                             //By default set the unknown word value
@@ -210,7 +210,7 @@ namespace uva {
                          * @param query the query containing the actual query data
                          * @param status the resulting status of the operation
                          */
-                        inline void get_m_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void get_m_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
                             //Get the current level for logging
                             const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
                             //Get the current level of the sub-m-gram
@@ -228,8 +228,8 @@ namespace uva {
                          * @param query the query containing the actual query data
                          * @param status the resulting status of the operation
                          */
-                        inline void get_n_gram_payload(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
-                            LOG_DEBUG << "Searching in " << SSTR(MAX_LEVEL) << "-grams" << END_LOG;
+                        inline void get_n_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
+                            LOG_DEBUG << "Searching in " << SSTR(M_GRAM_LEVEL_MAX) << "-grams" << END_LOG;
 
                             //Call the templated part via function pointer
                             status = get_payload<TProbMap>(m_n_gram_data, query);
@@ -248,7 +248,7 @@ namespace uva {
                         const static TModelLevel LEVEL_IDX_OFFSET = 1;
 
                         //Will store the the number of M levels such that 1 <= M < N.
-                        const static TModelLevel NUM_M_GRAM_LEVELS = MAX_LEVEL - LEVEL_IDX_OFFSET;
+                        const static TModelLevel NUM_M_GRAM_LEVELS = M_GRAM_LEVEL_MAX - LEVEL_IDX_OFFSET;
 
                         //typedef the bucket capacity type, for convenience.
                         typedef uint16_t TBucketCapacityType;
@@ -262,7 +262,7 @@ namespace uva {
                         TProbMap * m_n_gram_data;
 
                         //Stores the number of m-gram ids/buckets per level
-                        TShortId m_num_buckets[MAX_LEVEL];
+                        TShortId m_num_buckets[M_GRAM_LEVEL_MAX];
 
                         /**
                          * Gets the probability for the given level M-gram, searches on specific level
@@ -272,7 +272,7 @@ namespace uva {
                          */
                         template<typename STORAGE_MAP>
                         static inline MGramStatusEnum get_payload(const STORAGE_MAP * map,
-                                typename BASE::T_Query_Exec_Data & query) {
+                                typename BASE::query_exec_data & query) {
                             //Get the current level for logging
                             const TModelLevel & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
 
@@ -299,11 +299,11 @@ namespace uva {
                         }
                     };
 
-                    typedef H2DMapTrie<M_GRAM_LEVEL_MAX, BasicWordIndex > TH2DMapTrieBasic;
-                    typedef H2DMapTrie<M_GRAM_LEVEL_MAX, CountingWordIndex > TH2DMapTrieCount;
-                    typedef H2DMapTrie<M_GRAM_LEVEL_MAX, TOptBasicWordIndex > TH2DMapTrieOptBasic;
-                    typedef H2DMapTrie<M_GRAM_LEVEL_MAX, TOptCountWordIndex > TH2DMapTrieOptCount;
-                    typedef H2DMapTrie<M_GRAM_LEVEL_MAX, HashingWordIndex > TH2DMapTrieHashing;
+                    typedef H2DMapTrie<BasicWordIndex > TH2DMapTrieBasic;
+                    typedef H2DMapTrie<CountingWordIndex > TH2DMapTrieCount;
+                    typedef H2DMapTrie<TOptBasicWordIndex > TH2DMapTrieOptBasic;
+                    typedef H2DMapTrie<TOptCountWordIndex > TH2DMapTrieOptCount;
+                    typedef H2DMapTrie<HashingWordIndex > TH2DMapTrieHashing;
                 }
             }
         }

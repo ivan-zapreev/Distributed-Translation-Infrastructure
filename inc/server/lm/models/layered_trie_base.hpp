@@ -149,21 +149,21 @@ namespace uva {
                     /**
                      * This class defined the trie interface and functionality that is expected by the TrieDriver class
                      */
-                    template<typename TrieType, TModelLevel MAX_LEVEL, typename WordIndexType, uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR>
-                    class LayeredTrieBase : public GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
+                    template<typename TrieType, typename WordIndexType, uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR>
+                    class LayeredTrieBase : public GenericTrieBase<TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
                         //Typedef the base class
-                        typedef GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
+                        typedef GenericTrieBase<TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
 
                         /**
                          * The basic constructor
                          * @param word_index the word index to be used
                          */
                         explicit LayeredTrieBase(WordIndexType & word_index)
-                        : GenericTrieBase<TrieType, MAX_LEVEL, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> (word_index),
+                        : GenericTrieBase<TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> (word_index),
                         m_zero_payload(ZERO_PROB_WEIGHT, ZERO_BACK_OFF_WEIGHT) {
                             //Clean the cache memory
-                            memset(m_cached_ctx, 0, MAX_LEVEL * sizeof (TContextCacheEntry));
+                            memset(m_cached_ctx, 0, M_GRAM_LEVEL_MAX * sizeof (TContextCacheEntry));
                         }
 
                         /**
@@ -177,7 +177,7 @@ namespace uva {
                         /**
                          * @see GenericTrieBase
                          */
-                        inline void pre_allocate(const size_t counts[MAX_LEVEL]) {
+                        inline void pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
                             BASE::pre_allocate(counts);
                         }
 
@@ -238,7 +238,7 @@ namespace uva {
                          * @param query the query to work with
                          * @return true if the context was successfully computed, otherwise false.
                          */
-                        inline void ensure_context(typename BASE::T_Query_Exec_Data & query, MGramStatusEnum & status) const {
+                        inline void ensure_context(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
                             //Get the context id reference for convenience
                             TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
 
@@ -305,17 +305,17 @@ namespace uva {
                          * @param m_ctx_id the cached context id for the m-gram
                          */
                         typedef struct {
-                            TShortId m_word_ids[MAX_LEVEL];
+                            TShortId m_word_ids[M_GRAM_LEVEL_MAX];
                             TLongId m_ctx_id;
                         } TContextCacheEntry;
 
                         //Stores the cached contexts data 
-                        TContextCacheEntry m_cached_ctx[MAX_LEVEL];
+                        TContextCacheEntry m_cached_ctx[M_GRAM_LEVEL_MAX];
                     };
 
                     //Define the template for instantiating the layered trie class children templates
 #define INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(CLASS_NAME, WORD_IDX_TYPE) \
-            template class CLASS_NAME<M_GRAM_LEVEL_MAX, WORD_IDX_TYPE >;
+            template class CLASS_NAME<WORD_IDX_TYPE >;
                 }
             }
         }

@@ -44,12 +44,12 @@ namespace uva {
             namespace server {
                 namespace lm {
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    H2DMapTrie<MAX_LEVEL, WordIndexType>::H2DMapTrie(WordIndexType & word_index)
-                    : GenericTrieBase<H2DMapTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
+                    template<typename WordIndexType>
+                    H2DMapTrie<WordIndexType>::H2DMapTrie(WordIndexType & word_index)
+                    : GenericTrieBase<H2DMapTrie<WordIndexType>, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
                     m_n_gram_data(NULL) {
                         //Perform an error check! This container has bounds on the supported trie level
-                        ASSERT_CONDITION_THROW((MAX_LEVEL > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
+                        ASSERT_CONDITION_THROW((M_GRAM_LEVEL_MAX > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
                         ASSERT_CONDITION_THROW((word_index.is_word_index_continuous()), "This trie can not be used with a continuous word index!");
 
                         //Clear the M-Gram bucket arrays
@@ -61,8 +61,8 @@ namespace uva {
                         LOG_DEBUG << "sizeof(TProbBackMap)= " << sizeof (TProbMap) << END_LOG;
                     };
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    void H2DMapTrie<MAX_LEVEL, WordIndexType>::pre_allocate(const size_t counts[MAX_LEVEL]) {
+                    template<typename WordIndexType>
+                    void H2DMapTrie<WordIndexType>::pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
                         //Call the base-class
                         BASE::pre_allocate(counts);
 
@@ -76,11 +76,11 @@ namespace uva {
                         }
 
                         //Initialize the n-gram's map
-                        m_n_gram_data = new TProbMap(__H2DMapTrie::BUCKETS_FACTOR, counts[MAX_LEVEL - 1]);
+                        m_n_gram_data = new TProbMap(__H2DMapTrie::BUCKETS_FACTOR, counts[M_GRAM_LEVEL_MAX - 1]);
                     };
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    H2DMapTrie<MAX_LEVEL, WordIndexType>::~H2DMapTrie() {
+                    template<typename WordIndexType>
+                    H2DMapTrie<WordIndexType>::~H2DMapTrie() {
                         //De-allocate M-Grams
                         for (TModelLevel idx = 0; idx < NUM_M_GRAM_LEVELS; idx++) {
                             delete m_m_gram_data[idx];
@@ -89,11 +89,11 @@ namespace uva {
                         delete m_n_gram_data;
                     };
 
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, M_GRAM_LEVEL_MAX, BasicWordIndex);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, M_GRAM_LEVEL_MAX, CountingWordIndex);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, M_GRAM_LEVEL_MAX, HashingWordIndex);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, M_GRAM_LEVEL_MAX, TOptBasicWordIndex);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, M_GRAM_LEVEL_MAX, TOptCountWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, BasicWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, CountingWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, HashingWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, TOptBasicWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, TOptCountWordIndex);
                 }
             }
         }

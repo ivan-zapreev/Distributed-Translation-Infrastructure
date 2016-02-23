@@ -42,13 +42,13 @@ namespace uva {
             namespace server {
                 namespace lm {
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    C2WArrayTrie<MAX_LEVEL, WordIndexType>::C2WArrayTrie(WordIndexType & word_index)
-                    : LayeredTrieBase<C2WArrayTrie<MAX_LEVEL, WordIndexType>, MAX_LEVEL, WordIndexType, __C2WArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
+                    template<typename WordIndexType>
+                    C2WArrayTrie<WordIndexType>::C2WArrayTrie(WordIndexType & word_index)
+                    : LayeredTrieBase<C2WArrayTrie<WordIndexType>, WordIndexType, __C2WArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
                     m_unk_data(NULL), m_1_gram_data(NULL), m_n_gram_data(NULL), m_one_gram_arr_size(0) {
 
                         //Perform an error check! This container has bounds on the supported trie level
-                        ASSERT_CONDITION_THROW((MAX_LEVEL < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
+                        ASSERT_CONDITION_THROW((M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
 
                         //Memset the M grams reference and data arrays
@@ -60,8 +60,8 @@ namespace uva {
                         memset(m_m_n_gram_next_ctx_id, 0, BASE::NUM_M_N_GRAM_LEVELS * sizeof (TShortId));
                     }
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    void C2WArrayTrie<MAX_LEVEL, WordIndexType>::pre_allocate(const size_t counts[MAX_LEVEL]) {
+                    template<typename WordIndexType>
+                    void C2WArrayTrie<WordIndexType>::pre_allocate(const size_t counts[M_GRAM_LEVEL_MAX]) {
                         //01) Pre-allocate the word index super class call
                         BASE::pre_allocate(counts);
 
@@ -118,8 +118,8 @@ namespace uva {
                         memset(m_n_gram_data, 0, m_m_n_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] * sizeof (TCtxIdProbEntry));
                     }
 
-                    template<TModelLevel MAX_LEVEL, typename WordIndexType>
-                    C2WArrayTrie<MAX_LEVEL, WordIndexType>::~C2WArrayTrie() {
+                    template<typename WordIndexType>
+                    C2WArrayTrie<WordIndexType>::~C2WArrayTrie() {
                         //Check that the one grams were allocated, if yes then the rest must have been either
                         if (m_1_gram_data != NULL) {
                             delete[] m_1_gram_data;
