@@ -30,6 +30,7 @@
 #include <string>
 
 #include "server/server_configs.hpp"
+#include "server/server_consts.hpp"
 
 #include "common/utils/containers/dynamic_memory_arrays.hpp"
 
@@ -173,16 +174,6 @@ namespace uva {
 
                     //This namespace stores m-gram levels and related constants
                     namespace m_grams {
-                        //Various M-gram levels
-                        const static phrase_length M_GRAM_LEVEL_UNDEF = 0u; //MUST BE ZERO
-                        const static phrase_length M_GRAM_LEVEL_1 = 1u;
-                        const static phrase_length M_GRAM_LEVEL_2 = 2u;
-                        const static phrase_length M_GRAM_LEVEL_3 = 3u;
-                        const static phrase_length M_GRAM_LEVEL_4 = 4u;
-                        const static phrase_length M_GRAM_LEVEL_5 = 5u;
-                        const static phrase_length M_GRAM_LEVEL_6 = 6u;
-                        const static phrase_length M_GRAM_LEVEL_7 = 7u;
-                        const static phrase_length M_GRAM_LEVEL_8 = 8u;
 
                         //Stores the maximum sopported level
                         static constexpr phrase_length MAX_SUPP_GRAM_LEVEL = M_GRAM_LEVEL_6;

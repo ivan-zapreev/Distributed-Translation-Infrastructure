@@ -50,6 +50,17 @@ namespace uva {
                 static constexpr word_uid MIN_KNOWN_WORD_ID = (UNKNOWN_WORD_ID + 1);
                 //The word indexes that start from 2, as 0 is given to UNDEFINED and 1 to UNKNOWN (<unk>)
                 static constexpr word_uid EXTRA_NUMBER_OF_WORD_IDs = 2;
+
+                //Various M-gram levels
+                const static phrase_length M_GRAM_LEVEL_UNDEF = 0u; //MUST BE ZERO
+                const static phrase_length M_GRAM_LEVEL_1 = 1u;
+                const static phrase_length M_GRAM_LEVEL_2 = 2u;
+                const static phrase_length M_GRAM_LEVEL_3 = 3u;
+                const static phrase_length M_GRAM_LEVEL_4 = 4u;
+                const static phrase_length M_GRAM_LEVEL_5 = 5u;
+                const static phrase_length M_GRAM_LEVEL_6 = 6u;
+                const static phrase_length M_GRAM_LEVEL_7 = 7u;
+                const static phrase_length M_GRAM_LEVEL_8 = 8u;
             }
         }
     }

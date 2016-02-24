@@ -106,7 +106,7 @@ namespace uva {
                                 LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
 
                                 //Query the Trie for the results and log them
-                                query.template execute<is_cumulative, true>(line);
+                                query.template execute<is_cumulative>(line);
                             }
 
                             //Stop the timer

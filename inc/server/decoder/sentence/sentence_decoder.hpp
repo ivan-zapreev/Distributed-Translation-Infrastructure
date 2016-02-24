@@ -145,7 +145,8 @@ namespace uva {
                              */
                             inline prob_weight compute_future_cost(tm_const_target_entry & target) {
                                 return target.get_t_c_s() +
-                                        m_lm_query.template execute<true>(
+                                        m_lm_query.template execute(
+                                        M_GRAM_LEVEL_1,
                                         target.get_num_target_words(),
                                         target.get_target_word_ids());
                             }

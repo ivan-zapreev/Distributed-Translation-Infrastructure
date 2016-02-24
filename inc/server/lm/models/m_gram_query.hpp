@@ -71,7 +71,7 @@ namespace uva {
                      * independency from the Tries and executor.
                      */
                     template<typename TrieType>
-                    class sliding_m_gram_query {
+                    class m_gram_query {
                     public:
                         typedef typename TrieType::WordIndexType WordIndexType;
 
@@ -79,7 +79,7 @@ namespace uva {
                          * The basic constructor for the structure
                          * @param trie the reference to the trie object
                          */
-                        sliding_m_gram_query(const TrieType & trie)
+                        m_gram_query(const TrieType & trie)
                         : m_trie(trie), m_query(trie.get_word_index()) {
                         }
 
@@ -87,19 +87,28 @@ namespace uva {
                          * Allows to retrieve the unknown target word log probability penalty 
                          * @return the target source word log probability penalty
                          */
-                        inline float get_unk_word_prob() {
+                        inline prob_weight get_unk_word_prob() {
                             return m_trie.get_unk_word_prob();
                         }
 
                         /**
-                         * Allows to execute m-gram the query
+                         * Allows to execute m-gram the query. The query starts with the m-gram size
+                         * given by min_level and then grows until the maximum of LM_M_GRAM_LEVEL_MAX.
+                         * After that m-grams of the LM_M_GRAM_LEVEL_MAX are computed via a sliding window:
+                         * Let:
+                         *      "min_level == 2", "LM_MAX_QUERY_LEN = 4",
+                         *      "num_word_ids == 6" and "word_ids == w1w2w3w4w5w6"
+                         * Then this method will compute the sum:
+                         *      P(w2|w1) + P(w3|w1w2) + P(w4|w1w2w3) + P(w5|w2w3w4) + P(w6|w3w4w5)
+                         * @param min_level the minimum value of the m-gram level
                          * @param num_word_ids stores the number of word ids, the maximum number
                          * of words must be LM_MAX_QUERY_LEN
                          * @param word_ids the word identifiers of the words of the target phrase
                          * to compute the probability for
                          */
-                        template<bool is_cumulative, bool is_log_results = false >
-                        inline prob_weight execute(const phrase_length num_word_ids, const word_uid * word_ids) {
+                        template<bool is_log_results = false >
+                        inline prob_weight execute(const phrase_length min_level,
+                                const phrase_length num_word_ids, const word_uid * word_ids) {
                             //Perform a sanity check to make sure we do not exceed 
                             //the limits on the number of words in the query
                             ASSERT_SANITY_THROW((num_word_ids > LM_MAX_QUERY_LEN),
@@ -123,13 +132,13 @@ namespace uva {
 
                     //Make sure that there will be templates instantiated, at least for the given parameter values
 #define INSTANTIATE_SLIDING_M_GRAM_QUERY_WORD_IDX(WORD_INDEX_TYPE); \
-            template class sliding_m_gram_query<C2DHybridTrie<WORD_INDEX_TYPE>>; \
-            template class sliding_m_gram_query<C2DMapTrie<WORD_INDEX_TYPE>>; \
-            template class sliding_m_gram_query<C2WArrayTrie<WORD_INDEX_TYPE>>; \
-            template class sliding_m_gram_query<W2CArrayTrie<WORD_INDEX_TYPE>>; \
-            template class sliding_m_gram_query<W2CHybridTrie<WORD_INDEX_TYPE>>; \
-            template class sliding_m_gram_query<G2DMapTrie<WORD_INDEX_TYPE>>; \
-            template class sliding_m_gram_query<H2DMapTrie<WORD_INDEX_TYPE>>;
+            template class m_gram_query<C2DHybridTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<C2DMapTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<C2WArrayTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<W2CArrayTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<W2CHybridTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<G2DMapTrie<WORD_INDEX_TYPE>>; \
+            template class m_gram_query<H2DMapTrie<WORD_INDEX_TYPE>>;
 
                     INSTANTIATE_SLIDING_M_GRAM_QUERY_WORD_IDX(basic_word_index);
                     INSTANTIATE_SLIDING_M_GRAM_QUERY_WORD_IDX(counting_word_index);

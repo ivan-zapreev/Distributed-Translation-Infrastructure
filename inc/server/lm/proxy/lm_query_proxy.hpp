@@ -59,7 +59,7 @@ namespace uva {
                              * Allows to retrieve the unknown target word log probability penalty 
                              * @return the target source word log probability penalty
                              */
-                            virtual float get_unk_word_prob() = 0;
+                            virtual prob_weight get_unk_word_prob() = 0;
 
                             /**
                              * Allows to retrieve the target language phrase word ids.
@@ -73,29 +73,27 @@ namespace uva {
                                     word_uid word_ids[tm::TM_MAX_TARGET_PHRASE_LEN]) = 0;
 
                             /**
-                             * Allows to execute a query
-                             * @param is_cumulative, if true then we compute the joint probability
-                             * i.e. the sum of the probabilities of the sub-m-gram prefixes until
-                             * the max m-gram level plus the sliding window.
+                             * Allows to execute m-gram the query. The query starts with the m-gram size
+                             * given by min_level and then grows until the maximum of LM_M_GRAM_LEVEL_MAX.
+                             * After that m-grams of the LM_M_GRAM_LEVEL_MAX are computed via a sliding window:
+                             * Let:
+                             *      "min_level == 2", "LM_MAX_QUERY_LEN = 4",
+                             *      "num_word_ids == 6" and "word_ids == w1w2w3w4w5w6"
+                             * Then this method will compute the sum:
+                             *      P(w2|w1) + P(w3|w1w2) + P(w4|w1w2w3) + P(w5|w2w3w4) + P(w6|w3w4w5)
+                             * @param min_level the minimum value of the m-gram level
                              * @param num_word_ids stores the number of word ids, the maximum number
                              * of words must be LM_MAX_QUERY_LEN
                              * @param word_ids the word identifiers of the words of the target phrase
                              * to compute the probability for
                              */
-                            template<bool is_cumulative = false, bool is_log_result = false >
-                            inline prob_weight execute(const phrase_length num_word_ids, const word_uid * word_ids) {
-                                if (is_cumulative) {
-                                    if (is_log_result) {
-                                        return execute_cum_yes_log_yes(num_word_ids, word_ids);
-                                    } else {
-                                        return execute_cum_yes_log_no(num_word_ids, word_ids);
-                                    }
+                            template<bool is_log_result = false >
+                            inline prob_weight execute(const phrase_length min_level,
+                                    const phrase_length num_word_ids, const word_uid * word_ids) {
+                                if (is_log_result) {
+                                    return execute_log_yes(min_level, num_word_ids, word_ids);
                                 } else {
-                                    if (is_log_result) {
-                                        return execute_cum_no_log_yes(num_word_ids, word_ids);
-                                    } else {
-                                        return execute_cum_no_log_no(num_word_ids, word_ids);
-                                    }
+                                    return execute_log_no(min_level, num_word_ids, word_ids);
                                 }
                             };
 
@@ -106,20 +104,12 @@ namespace uva {
                              * the max m-gram level plus the sliding window.
                              * @param text the m-gram query to be executed
                              */
-                            template<bool is_cumulative = false, bool is_log_result = false >
+                            template<bool is_cumulative = false >
                             inline prob_weight execute(TextPieceReader &text) {
                                 if (is_cumulative) {
-                                    if (is_log_result) {
-                                        return execute_cum_yes_log_yes(text);
-                                    } else {
-                                        return execute_cum_yes_log_no(text);
-                                    }
+                                    return execute_cum_yes(text);
                                 } else {
-                                    if (is_log_result) {
-                                        return execute_cum_no_log_yes(text);
-                                    } else {
-                                        return execute_cum_no_log_no(text);
-                                    }
+                                    return execute_cum_no(text);
                                 }
                             };
 
@@ -130,56 +120,30 @@ namespace uva {
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual prob_weight execute_cum_yes_log_yes(const phrase_length num_word_ids, const word_uid * word_ids) = 0;
+                            virtual prob_weight execute_log_yes(const phrase_length min_level,
+                                    const phrase_length num_word_ids, const word_uid * word_ids) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual prob_weight execute_cum_yes_log_no(const phrase_length num_word_ids, const word_uid * word_ids) = 0;
+                            virtual prob_weight execute_log_no(const phrase_length min_level,
+                                    const phrase_length num_word_ids, const word_uid * word_ids) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual prob_weight execute_cum_no_log_yes(const phrase_length num_word_ids, const word_uid * word_ids) = 0;
+                            virtual prob_weight execute_cum_yes(TextPieceReader &text) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
                              */
-                            virtual prob_weight execute_cum_no_log_no(const phrase_length num_word_ids, const word_uid * word_ids) = 0;
-
-                            /**
-                             * This function is to be implemented by the child and
-                             * should allow for a specific type of query execution
-                             * cumulative/single, with/without logging.
-                             */
-                            virtual prob_weight execute_cum_yes_log_yes(TextPieceReader &text) = 0;
-
-                            /**
-                             * This function is to be implemented by the child and
-                             * should allow for a specific type of query execution
-                             * cumulative/single, with/without logging.
-                             */
-                            virtual prob_weight execute_cum_yes_log_no(TextPieceReader &text) = 0;
-
-                            /**
-                             * This function is to be implemented by the child and
-                             * should allow for a specific type of query execution
-                             * cumulative/single, with/without logging.
-                             */
-                            virtual prob_weight execute_cum_no_log_yes(TextPieceReader &text) = 0;
-
-                            /**
-                             * This function is to be implemented by the child and
-                             * should allow for a specific type of query execution
-                             * cumulative/single, with/without logging.
-                             */
-                            virtual prob_weight execute_cum_no_log_no(TextPieceReader &text) = 0;
+                            virtual prob_weight execute_cum_no(TextPieceReader &text) = 0;
                         };
                     }
                 }
