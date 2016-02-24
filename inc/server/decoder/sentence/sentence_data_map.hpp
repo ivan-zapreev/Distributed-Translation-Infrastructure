@@ -92,7 +92,7 @@ namespace uva {
                             const tm_source_entry * m_source_entry;
                             
                             //Stores the future cost, log scale, for the given phrase.
-                            float future_cost;
+                            prob_weight future_cost;
                         };
 
                         //Define the sentence data map that stores some of the sentence related data

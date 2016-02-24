@@ -143,7 +143,7 @@ namespace uva {
                              * @param target the target translation entry
                              * @return the cost of the given target entry
                              */
-                            inline float compute_future_cost(tm_const_target_entry & target) {
+                            inline prob_weight compute_future_cost(tm_const_target_entry & target) {
                                 return target.get_t_c_s() +
                                         m_lm_query.template execute<true>(
                                         target.get_num_target_words(),
@@ -153,7 +153,7 @@ namespace uva {
                             /**
                              * Dynamically initialize the future costs based on the estimates from the TM and LM models.
                              */
-                            inline float & initialize_future_costs(const size_t & start_idx, const size_t & end_idx) {
+                            inline prob_weight & initialize_future_costs(const size_t & start_idx, const size_t & end_idx) {
                                 //Get the phrase data entry
                                 phrase_data_entry & phrase_data = m_sent_data[start_idx][end_idx];
 
@@ -161,7 +161,7 @@ namespace uva {
                                 const tm_source_entry * source_entry = phrase_data.m_source_entry;
 
                                 //Get the reference to the future cost
-                                float & cost = phrase_data.future_cost;
+                                prob_weight & cost = phrase_data.future_cost;
 
                                 LOG_DEBUG1 << "Initializing future cost phrase [" << start_idx << ", " << end_idx << "]" << END_LOG;
 
@@ -212,17 +212,17 @@ namespace uva {
 
                                         //Initialize the interval with the TM/LM based value first
                                         //and get the reference to the complete cost then
-                                        float & phrase_cost = initialize_future_costs(start_idx, end_idx);
+                                        prob_weight & phrase_cost = initialize_future_costs(start_idx, end_idx);
 
                                         //Iterate through all the intermediate indexes between start and end
                                         for (size_t mid_idx = start_idx; (mid_idx < end_idx); ++mid_idx) {
                                             LOG_DEBUG1 << "CFC middle word idx: " << start_idx << END_LOG;
 
                                             //Get the costs of the phrase one and two
-                                            const float ph1_cost = m_sent_data[start_idx][mid_idx].future_cost;
-                                            const float ph2_cost = m_sent_data[mid_idx + 1][end_idx].future_cost;
+                                            const prob_weight ph1_cost = m_sent_data[start_idx][mid_idx].future_cost;
+                                            const prob_weight ph2_cost = m_sent_data[mid_idx + 1][end_idx].future_cost;
                                             //Compute the cost of two sub-phrases
-                                            const float sub_cost = ph1_cost + ph2_cost;
+                                            const prob_weight sub_cost = ph1_cost + ph2_cost;
 
                                             LOG_DEBUG2 << "Current cost[" << start_idx << "][" << mid_idx << "] = " << ph1_cost
                                                     << ", cost[" << (mid_idx + 1) << "][" << end_idx << "] = " << ph2_cost
