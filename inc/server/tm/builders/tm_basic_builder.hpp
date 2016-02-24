@@ -233,6 +233,9 @@ namespace uva {
                                 //Declare the target entry storing reader
                                 TextPieceReader target;
 
+                                //Skip the first space symbol that follows the delimiter with the source
+                                rest.get_first_space(target);
+
                                 //Read the target phrase, it is surrounded by spaces
                                 rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
 
@@ -247,6 +250,9 @@ namespace uva {
 
                                     //Use the language model to get the target translation word ids
                                     m_lm_query.get_word_ids(target, m_tmp_num_words, m_tmp_word_ids);
+
+                                    LOG_DEBUG2 << "The phrase: ___" << target << "__ got "
+                                            << m_tmp_num_words << " word ids." << END_LOG;
 
                                     //Initiate a new target entry
                                     source_entry->add_translation(target_str, target_uid,

@@ -46,13 +46,16 @@ namespace uva {
                         template<typename trie_type>
                         class lm_trie_query_proxy_local : public lm_query_proxy {
                         public:
+                            //Make a local typedef for the word index type
+                            typedef typename trie_type::WordIndexType word_index_type;
 
                             /**
                              * The basic constructor that accepts the trie reference to query to
                              * @param trie the trie to query
                              */
                             lm_trie_query_proxy_local(const trie_type & trie)
-                            : m_sliding_query(trie), m_simple_query(trie) {
+                            : m_trie(trie), m_word_idx(m_trie.get_word_index()),
+                            m_sliding_query(trie), m_simple_query(trie) {
                             }
 
                             /**
@@ -65,9 +68,32 @@ namespace uva {
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual void get_word_ids(TextPieceReader phrase, phrase_length num_words,
+                            virtual void get_word_ids(TextPieceReader phrase, phrase_length & num_words,
                                     word_uid word_ids[tm::TM_MAX_TARGET_PHRASE_LEN]) {
-                                //ToDo: Implement
+                                //Initialize with zero words
+                                num_words = 0;
+
+                                //Declare the text piece reader for storing words
+                                TextPieceReader word;
+
+                                LOG_DEBUG1 << "Getting word uids for phrase: ___" << phrase << "___" << END_LOG;
+
+                                //Read the tokens one by one backwards and decrement the index
+                                while (phrase.get_first_space(word)) {
+                                    //Check that we do not get too many words!
+                                    ASSERT_SANITY_THROW((num_words >= tm::TM_MAX_TARGET_PHRASE_LEN),
+                                            string("The target phrase: ___") + phrase.str() +
+                                            string("___ has too many words, the allowed maximum is: ") +
+                                            to_string(tm::TM_MAX_TARGET_PHRASE_LEN));
+
+                                    //Obtain the word id from the word index
+                                    word_ids[num_words] = m_word_idx.get_word_id(word);
+
+                                    LOG_DEBUG1 << "Word: ___" << word << "___ has uid: " << word_ids[num_words] << END_LOG;
+
+                                    //Increase the number of read words
+                                    num_words++;
+                                }
                             };
 
                             /**
@@ -136,6 +162,10 @@ namespace uva {
                             };
 
                         private:
+                            //Stores the reference to the trie
+                            const trie_type & m_trie;
+                            //Stores the reference to the word index
+                            const word_index_type & m_word_idx;
                             //Stores the reference to the sliding query
                             sliding_m_gram_query<trie_type> m_sliding_query;
                             //Stores the reference to the simple query
