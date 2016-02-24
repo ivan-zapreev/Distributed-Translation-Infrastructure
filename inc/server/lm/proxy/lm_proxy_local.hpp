@@ -60,14 +60,6 @@ namespace uva {
                          */
                         class lm_proxy_local : public lm_proxy {
                         public:
-                            //Here we have a default word index, see the lm_confgs for the recommended word index information!
-                            typedef HashingWordIndex word_index_type;
-
-                            //Here we have a default trie type
-                            typedef H2DMapTrie<word_index_type> model_type;
-
-                            //Define the builder type 
-                            typedef lm_basic_builder<model_type, CStyleFileReader> builder_type;
 
                             /**
                              * The basic constructor of the trie proxy implementation class
@@ -90,7 +82,7 @@ namespace uva {
                             virtual void connect(const lm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the language model into the memory.
-                                load_model_data<builder_type, CStyleFileReader>("Language Model", params);
+                                load_model_data<lm_builder_type, CStyleFileReader>("Language Model", params);
                             }
 
                             /**
@@ -107,7 +99,7 @@ namespace uva {
                             virtual lm_query_proxy & allocate_trie_query_proxy() {
                                 //ToDo: In the future we should just use a number of stack
                                 //allocated objects in order to reduce the new/delete overhead
-                                return *(new lm_trie_query_proxy_local<model_type>(m_model));
+                                return *(new lm_trie_query_proxy_local<lm_model_type>(m_model));
                             }
 
                             /**
@@ -126,7 +118,7 @@ namespace uva {
                              * @param the name of the model being loaded
                              * @params params the model parameters
                              */
-                            template<typename builder_type, typename file_reader_type>
+                            template<typename lm_builder_type, typename file_reader_type>
                             void load_model_data(char const *model_name, const lm_parameters & params) {
                                 const string & model_file_name = params.m_conn_string;
                                 
@@ -161,7 +153,7 @@ namespace uva {
                                         + model_file_name + string("' does not exist!"));
 
                                 //Create the trie builder and give it the trie
-                                builder_type builder(params, m_model, model_file);
+                                lm_builder_type builder(params, m_model, model_file);
                                 //Load the model from the file
                                 builder.build();
 
@@ -184,10 +176,10 @@ namespace uva {
 
                         protected:
                             //Stores the word index
-                            word_index_type m_word_index;
+                            lm_word_index m_word_index;
 
                             //Stores the trie
-                            model_type m_model;
+                            lm_model_type m_model;
                         };
                     }
                 }

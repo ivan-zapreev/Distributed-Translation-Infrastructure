@@ -694,11 +694,11 @@
             <in>lm_gram_builder_factory.hpp</in>
           </df>
           <df name="dictionaries">
-            <in>AWordIndex.hpp</in>
-            <in>BasicWordIndex.hpp</in>
-            <in>CountingWordIndex.hpp</in>
-            <in>HashingWordIndex.hpp</in>
-            <in>OptimizingWordIndex.hpp</in>
+            <in>aword_index.hpp</in>
+            <in>basic_word_index.hpp</in>
+            <in>counting_word_index.hpp</in>
+            <in>hashing_word_index.hpp</in>
+            <in>optimizing_word_index.hpp</in>
           </df>
           <df name="mgrams">
             <in>m_gram_id.hpp</in>

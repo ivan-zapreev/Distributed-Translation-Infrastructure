@@ -34,7 +34,7 @@
 
 #include "layered_trie_base.hpp"
 
-#include "server/lm/dictionaries/HashingWordIndex.hpp"
+#include "server/lm/dictionaries/hashing_word_index.hpp"
 #include "common/utils/containers/greedy_memory_allocator.hpp"
 #include "common/utils/hashing_utils.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
@@ -339,11 +339,11 @@ namespace uva {
 
                     };
 
-                    typedef C2DHybridTrie< BasicWordIndex > TC2DHybridTrieBasic;
-                    typedef C2DHybridTrie< CountingWordIndex > TC2DHybridTrieCount;
+                    typedef C2DHybridTrie< basic_word_index > TC2DHybridTrieBasic;
+                    typedef C2DHybridTrie< counting_word_index > TC2DHybridTrieCount;
                     typedef C2DHybridTrie< TOptBasicWordIndex > TC2DHybridTrieOptBasic;
                     typedef C2DHybridTrie< TOptCountWordIndex > TC2DHybridTrieOptCount;
-                    typedef C2DHybridTrie< HashingWordIndex > TC2DHybridTrieHashing;
+                    typedef C2DHybridTrie< hashing_word_index > TC2DHybridTrieHashing;
                 }
             }
         }

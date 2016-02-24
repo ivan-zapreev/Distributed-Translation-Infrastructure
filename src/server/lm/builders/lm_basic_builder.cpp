@@ -64,8 +64,8 @@ namespace uva {
                         : m_params(orig.m_params), m_trie(orig.m_trie), m_file(orig.m_file), m_line(orig.m_line), m_ng_amount_reg_exp("ngram [[:d:]]+=[[:d:]]+") {
                         }
 
-                        template<typename TrieType, typename TFileReaderModel>
-                        lm_basic_builder<TrieType, TFileReaderModel>::~lm_basic_builder() {
+                        template<typename trie_type, typename reader_type>
+                        lm_basic_builder<trie_type, reader_type>::~lm_basic_builder() {
                         }
 
                         template<typename TrieType, typename TFileReaderModel>

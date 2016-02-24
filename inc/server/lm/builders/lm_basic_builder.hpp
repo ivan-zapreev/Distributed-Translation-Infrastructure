@@ -34,6 +34,7 @@
 
 using namespace std;
 using namespace uva::utils::file;
+
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::lm::identifiers;
 
@@ -55,10 +56,10 @@ namespace uva {
                          * This is an ARPA format based trie builder,  so it expects that
                          * the provided model file contains a basic text model in ARPA format.
                          */
-                        template<typename TrieType, typename TFileReaderModel>
+                        template<typename trie_type, typename reader_type>
                         class lm_basic_builder {
                         public:
-                            typedef typename TrieType::WordIndexType WordIndexType;
+                            typedef typename trie_type::WordIndexType WordIndexType;
 
                             /**
                              * The basic constructor that accepts a trie to be build up and the file stream to read from
@@ -66,7 +67,7 @@ namespace uva {
                              * @param trie the trie to fill in with data from the text corpus
                              * @param _fstr the file stream to read from
                              */
-                            lm_basic_builder(const lm_parameters & params, TrieType & trie, TFileReaderModel & file);
+                            lm_basic_builder(const lm_parameters & params, trie_type & trie, reader_type & file);
 
                             /**
                              * This function will read from the file and build the trie
@@ -78,9 +79,9 @@ namespace uva {
                             //Stores the reference to the model parameters
                             const lm_parameters & m_params;
                             //The reference to the trie to be build
-                            TrieType & m_trie;
+                            trie_type & m_trie;
                             //The reference to the input file with language model
-                            TFileReaderModel & m_file;
+                            reader_type & m_file;
                             //Stores the next line data
                             TextPieceReader m_line;
                             //The regular expression for matching the n-gram amount entry of the data section
@@ -92,7 +93,7 @@ namespace uva {
                              * The copy constructor
                              * @param orig the other builder to copy
                              */
-                            lm_basic_builder(const lm_basic_builder<TrieType, TFileReaderModel>& orig);
+                            lm_basic_builder(const lm_basic_builder<trie_type, reader_type>& orig);
 
                             /**
                              * This method is used to read and process the ARPA headers
@@ -130,7 +131,7 @@ namespace uva {
                                 /**
                                  * This template is to be used for the level parameter values < M_GRAM_LEVEL_MAX
                                  */
-                                static inline void check_and_go_m_grams(lm_basic_builder<TrieType, TFileReaderModel> & builder) {
+                                static inline void check_and_go_m_grams(lm_basic_builder<trie_type, reader_type> & builder) {
                                     //If we expect more N-grams then make a recursive call to read the higher order N-gram
                                     LOG_DEBUG2 << "The currently read N-grams level is " << CURR_LEVEL << ", the maximum level is " << LM_M_GRAM_LEVEL_MAX
                                             << ", the current line is '" << builder.m_line << "'" << END_LOG;
@@ -153,7 +154,7 @@ namespace uva {
                                 /**
                                  * This template specialization is to be used for the level parameter values == M_GRAM_LEVEL_MAX
                                  */
-                                static inline void check_and_go_m_grams(lm_basic_builder<TrieType, TFileReaderModel> & builder) {
+                                static inline void check_and_go_m_grams(lm_basic_builder<trie_type, reader_type> & builder) {
                                     //If we expect more N-grams then make a recursive call to read the higher order N-gram
                                     LOG_DEBUG2 << "The currently read N-grams level is " << LM_M_GRAM_LEVEL_MAX << ", the maximum level is " << LM_M_GRAM_LEVEL_MAX
                                             << ", the current line is '" << builder.m_line << "'" << END_LOG;

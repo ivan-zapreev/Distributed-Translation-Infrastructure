@@ -31,9 +31,9 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 
-#include "server/lm/dictionaries/BasicWordIndex.hpp"
-#include "server/lm/dictionaries/CountingWordIndex.hpp"
-#include "server/lm/dictionaries/OptimizingWordIndex.hpp"
+#include "server/lm/dictionaries/basic_word_index.hpp"
+#include "server/lm/dictionaries/counting_word_index.hpp"
+#include "server/lm/dictionaries/optimizing_word_index.hpp"
 
 using namespace uva::smt::bpbd::server::lm::dictionary;
 using namespace uva::smt::bpbd::server::lm::__H2DMapTrie;
@@ -91,9 +91,9 @@ namespace uva {
                         delete m_n_gram_data;
                     };
 
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, BasicWordIndex);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, CountingWordIndex);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, HashingWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, basic_word_index);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, counting_word_index);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, hashing_word_index);
                     INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, TOptBasicWordIndex);
                     INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, TOptCountWordIndex);
                 }

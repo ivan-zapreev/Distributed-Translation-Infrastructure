@@ -34,9 +34,9 @@
 
 #include "common/utils/file/text_piece_reader.hpp"
 
-#include "server/lm/dictionaries/BasicWordIndex.hpp"
-#include "server/lm/dictionaries/CountingWordIndex.hpp"
-#include "server/lm/dictionaries/OptimizingWordIndex.hpp"
+#include "server/lm/dictionaries/basic_word_index.hpp"
+#include "server/lm/dictionaries/counting_word_index.hpp"
+#include "server/lm/dictionaries/optimizing_word_index.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
@@ -111,10 +111,10 @@ namespace uva {
                     };
 
                     //Make sure that there will be templates instantiated, at least for the given parameter values
-                    template class WordIndexTrieBase<BasicWordIndex >;
-                    template class WordIndexTrieBase<CountingWordIndex>;
-                    template class WordIndexTrieBase<OptimizingWordIndex<BasicWordIndex> >;
-                    template class WordIndexTrieBase<OptimizingWordIndex<CountingWordIndex> >;
+                    template class WordIndexTrieBase<basic_word_index >;
+                    template class WordIndexTrieBase<counting_word_index>;
+                    template class WordIndexTrieBase<optimizing_word_index<basic_word_index> >;
+                    template class WordIndexTrieBase<optimizing_word_index<counting_word_index> >;
                 }
             }
         }

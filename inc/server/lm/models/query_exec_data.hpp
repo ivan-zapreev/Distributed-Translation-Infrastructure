@@ -31,7 +31,6 @@ using namespace std;
 using namespace uva::utils::logging;
 
 #include "server/lm/lm_consts.hpp"
-#include "server/lm/lm_configs.hpp"
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"

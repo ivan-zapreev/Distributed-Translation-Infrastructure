@@ -33,8 +33,8 @@
 
 #include "layered_trie_base.hpp"
 
-#include "server/lm/dictionaries/AWordIndex.hpp"
-#include "server/lm/dictionaries/HashingWordIndex.hpp"
+#include "server/lm/dictionaries/aword_index.hpp"
+#include "server/lm/dictionaries/hashing_word_index.hpp"
 #include "server/lm/models/w2ch_um_storage.hpp"
 
 using namespace std;
@@ -316,11 +316,11 @@ namespace uva {
                         TShortId next_ctx_id[NUM_IDX_COUNTERS];
                     };
 
-                    typedef W2CHybridTrie<BasicWordIndex> TW2CHybridTrieBasic;
-                    typedef W2CHybridTrie<CountingWordIndex> TW2CHybridTrieCount;
+                    typedef W2CHybridTrie<basic_word_index> TW2CHybridTrieBasic;
+                    typedef W2CHybridTrie<counting_word_index> TW2CHybridTrieCount;
                     typedef W2CHybridTrie<TOptBasicWordIndex> TW2CHybridTrieOptBasic;
                     typedef W2CHybridTrie<TOptCountWordIndex> TW2CHybridTrieOptCount;
-                    typedef W2CHybridTrie<HashingWordIndex> TW2CHybridTrieHashing;
+                    typedef W2CHybridTrie<hashing_word_index> TW2CHybridTrieHashing;
                 }
             }
         }

@@ -31,8 +31,8 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "server/lm/dictionaries/AWordIndex.hpp"
-#include "server/lm/dictionaries/HashingWordIndex.hpp"
+#include "server/lm/dictionaries/aword_index.hpp"
+#include "server/lm/dictionaries/hashing_word_index.hpp"
 #include "server/lm/mgrams/model_m_gram.hpp"
 #include "server/lm/mgrams/m_gram_id.hpp"
 
@@ -297,11 +297,11 @@ namespace uva {
                         }
                     };
 
-                    typedef G2DMapTrie<BasicWordIndex > TG2DMapTrieBasic;
-                    typedef G2DMapTrie<CountingWordIndex > TG2DMapTrieCount;
+                    typedef G2DMapTrie<basic_word_index > TG2DMapTrieBasic;
+                    typedef G2DMapTrie<counting_word_index > TG2DMapTrieCount;
                     typedef G2DMapTrie<TOptBasicWordIndex > TG2DMapTrieOptBasic;
                     typedef G2DMapTrie<TOptCountWordIndex > TG2DMapTrieOptCount;
-                    typedef G2DMapTrie<HashingWordIndex > TG2DMapTrieHashing;
+                    typedef G2DMapTrie<hashing_word_index > TG2DMapTrieHashing;
                 }
             }
         }

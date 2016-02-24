@@ -33,9 +33,17 @@
 #include "common/utils/string_utils.hpp"
 #include "common/utils/exceptions.hpp"
 
+#include "server/lm/dictionaries/basic_word_index.hpp"
+#include "server/lm/dictionaries/counting_word_index.hpp"
+#include "server/lm/dictionaries/optimizing_word_index.hpp"
+#include "server/lm/dictionaries/hashing_word_index.hpp"
+
 using std::invalid_argument;
+
 using namespace uva::utils::logging;
 using namespace uva::utils::text;
+
+using namespace uva::smt::bpbd::server::lm::dictionary;
 
 namespace uva {
     namespace smt {
@@ -176,9 +184,9 @@ namespace uva {
                         //Make sure that there will be templates instantiated, at least for the given parameter values
 
 #define INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL_WEIGHT(LEVEL, IS_MULT_WEIGHT) \
-                template class lm_gram_builder<BasicWordIndex, LEVEL, IS_MULT_WEIGHT>; \
-                template class lm_gram_builder<CountingWordIndex, LEVEL, IS_MULT_WEIGHT>; \
-                template class lm_gram_builder<HashingWordIndex, LEVEL, IS_MULT_WEIGHT>; \
+                template class lm_gram_builder<basic_word_index, LEVEL, IS_MULT_WEIGHT>; \
+                template class lm_gram_builder<counting_word_index, LEVEL, IS_MULT_WEIGHT>; \
+                template class lm_gram_builder<hashing_word_index, LEVEL, IS_MULT_WEIGHT>; \
                 template class lm_gram_builder<TOptBasicWordIndex, LEVEL, IS_MULT_WEIGHT>; \
                 template class lm_gram_builder<TOptCountWordIndex, LEVEL, IS_MULT_WEIGHT>;
 

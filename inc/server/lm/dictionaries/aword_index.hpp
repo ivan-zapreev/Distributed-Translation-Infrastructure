@@ -29,7 +29,6 @@
 #include <string>   // std::string
 
 #include "server/lm/lm_consts.hpp"
-#include "server/lm/lm_configs.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
 
@@ -58,7 +57,7 @@ namespace uva {
                          * 
                          * NOTE: All of the methods are non-virtual for the sake of avoiding virtual method call overheads!
                          */
-                        class AWordIndex {
+                        class aword_index {
                         public:
 
                             /**
@@ -176,7 +175,7 @@ namespace uva {
                             /**
                              * The basic destructor
                              */
-                            virtual ~AWordIndex() {
+                            virtual ~aword_index() {
                             }
                         };
                     }

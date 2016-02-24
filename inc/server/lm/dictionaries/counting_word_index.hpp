@@ -28,7 +28,7 @@
 
 #include <string>   // std::string
 
-#include "BasicWordIndex.hpp"
+#include "basic_word_index.hpp"
 
 #include "server/lm/lm_consts.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -49,7 +49,7 @@ namespace uva {
                 namespace lm {
                     namespace dictionary {
 
-                        namespace __CountingWordIndex {
+                        namespace __counting_word_index {
                             //This structure is used to store the word 
                             //information such as the word and its probability
 
@@ -80,16 +80,16 @@ namespace uva {
                          * ToDo: Change or create a new version of the word index that will
                          * just use probabilities of the unigrams instead of counting words.
                          */
-                        class CountingWordIndex : public BasicWordIndex {
+                        class counting_word_index : public basic_word_index {
                         public:
 
                             /**
                              * The basic constructor
-                             * @param  wordIndexMemFactor the assigned memory factor for
+                             * @param  mem_factor the assigned memory factor for
                              * storage allocation in the unordered_map used for the word index
                              */
-                            CountingWordIndex(const float wordIndexMemFactor) : BasicWordIndex(wordIndexMemFactor) {
-                                ASSERT_CONDITION_THROW(BasicWordIndex::is_word_counts_needed(),
+                            counting_word_index(const float mem_factor) : basic_word_index(mem_factor) {
+                                ASSERT_CONDITION_THROW(basic_word_index::is_word_counts_needed(),
                                         "The BasicWordIndex needs word counts! Update CountingWordIndex!");
                                 ASSERT_CONDITION_THROW(sizeof (word_uid) != sizeof (prob_weight),
                                         "The same size TWordIdType and TLogProbBackOff types are required!");
@@ -124,7 +124,7 @@ namespace uva {
                                 LOG_DEBUG1 << "Adding the word: '" << word.str() << "', with prob: " << prob << END_LOG;
                                 word_uid value;
                                 memcpy(&value, &prob, sizeof (word_uid));
-                                BasicWordIndex::m_word_index_map_ptr->operator[](word.str()) = value;
+                                basic_word_index::m_word_index_map_ptr->operator[](word.str()) = value;
                             };
 
                             /**
@@ -147,17 +147,17 @@ namespace uva {
 
                                 //00. Remove the <unk> word from the Map as it must get fixed index
                                 LOG_DEBUG2 << "Remove the <unk> word from the Map as it must get fixed index" << END_LOG;
-                                BasicWordIndex::m_word_index_map_ptr->erase(UNKNOWN_WORD_STR);
+                                basic_word_index::m_word_index_map_ptr->erase(UNKNOWN_WORD_STR);
 
                                 //01. Create an array of words info objects from BasicWordIndex::_pWordIndexMap
                                 LOG_DEBUG2 << "Create an array of words info objects from BasicWordIndex::_pWordIndexMap" << END_LOG;
-                                const size_t num_words = BasicWordIndex::m_word_index_map_ptr->size();
-                                __CountingWordIndex::TWordInfo * word_infos = new __CountingWordIndex::TWordInfo[num_words];
+                                const size_t num_words = basic_word_index::m_word_index_map_ptr->size();
+                                __counting_word_index::TWordInfo * word_infos = new __counting_word_index::TWordInfo[num_words];
 
                                 //02. Copy the word information from the map into that array.
                                 LOG_DEBUG2 << "Copy the word information from the map into that array." << END_LOG;
-                                BasicWordIndex::TWordIndexMap::const_iterator iter = BasicWordIndex::m_word_index_map_ptr->begin();
-                                for (size_t idx = 0; iter != BasicWordIndex::m_word_index_map_ptr->end(); ++iter, ++idx) {
+                                basic_word_index::TWordIndexMap::const_iterator iter = basic_word_index::m_word_index_map_ptr->begin();
+                                for (size_t idx = 0; iter != basic_word_index::m_word_index_map_ptr->end(); ++iter, ++idx) {
                                     word_infos[idx].word = iter->first;
                                     memcpy(&word_infos[idx].prob, &iter->second, sizeof (prob_weight));
                                 }
@@ -166,7 +166,7 @@ namespace uva {
                                 //    the most used words in the beginning of the array
                                 LOG_DEBUG2 << "Sort the array of word info object in order to get "
                                         << "the most used words in the beginning of the array" << END_LOG;
-                                my_sort<__CountingWordIndex::TWordInfo>(word_infos, num_words);
+                                my_sort<__counting_word_index::TWordInfo>(word_infos, num_words);
 
                                 //04. Iterate through the array and assign the new word ids
                                 //    into the _pWordIndexMap using the BasicWordIndex::_nextNewWordId
@@ -176,9 +176,9 @@ namespace uva {
                                     //Get the next word
                                     string & word = word_infos[idx].word;
                                     //Give it the next index
-                                    BasicWordIndex::m_word_index_map_ptr->operator[](word) = BasicWordIndex::m_next_new_word_id++;
+                                    basic_word_index::m_word_index_map_ptr->operator[](word) = basic_word_index::m_next_new_word_id++;
                                     LOG_DEBUG4 << "Word [" << word << "], count: " << word_infos[idx].prob << " gets id: "
-                                            << SSTR(BasicWordIndex::m_next_new_word_id - 1) << END_LOG;
+                                            << SSTR(basic_word_index::m_next_new_word_id - 1) << END_LOG;
                                 }
 
                                 //05. Delete the temporary sorted array
@@ -187,7 +187,7 @@ namespace uva {
 
                                 //06. Put back the <unk> word with its fixed index into the map
                                 LOG_DEBUG2 << "Put back the <unk> word with its fixed index into the map" << END_LOG;
-                                BasicWordIndex::m_word_index_map_ptr->operator[](UNKNOWN_WORD_STR) = UNKNOWN_WORD_ID;
+                                basic_word_index::m_word_index_map_ptr->operator[](UNKNOWN_WORD_STR) = UNKNOWN_WORD_ID;
 
                                 LOG_DEBUG1 << "Finished the post word counting actions!" << END_LOG;
                             };
@@ -199,7 +199,7 @@ namespace uva {
                              * @see AWordIndex
                              */
                             bool is_post_actions_needed() const {
-                                return BasicWordIndex::is_post_actions_needed() || false;
+                                return basic_word_index::is_post_actions_needed() || false;
                             };
 
                             /**
@@ -209,7 +209,7 @@ namespace uva {
                              * @return true - this word index is continuous.
                              */
                             static constexpr inline bool is_word_index_continuous() {
-                                return BasicWordIndex::is_word_index_continuous();
+                                return basic_word_index::is_word_index_continuous();
                             }
 
                             /**
@@ -219,8 +219,8 @@ namespace uva {
                              */
                             void do_post_actions() {
                                 //Perform the post actions if needed, before starting further actions.
-                                if (BasicWordIndex::is_post_actions_needed()) {
-                                    BasicWordIndex::do_post_actions();
+                                if (basic_word_index::is_post_actions_needed()) {
+                                    basic_word_index::do_post_actions();
                                 }
 
                                 //There is nothing to be done

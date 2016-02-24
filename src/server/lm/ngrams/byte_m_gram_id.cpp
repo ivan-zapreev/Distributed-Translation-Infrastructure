@@ -32,7 +32,7 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 
-#include "server/lm/dictionaries/AWordIndex.hpp"
+#include "server/lm/dictionaries/aword_index.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
 #include "common/utils/hashing_utils.hpp"
 #include "common/utils/math_utils.hpp"

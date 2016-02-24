@@ -33,8 +33,8 @@
 
 #include "layered_trie_base.hpp"
 
-#include "server/lm/dictionaries/AWordIndex.hpp"
-#include "server/lm/dictionaries/HashingWordIndex.hpp"
+#include "server/lm/dictionaries/aword_index.hpp"
+#include "server/lm/dictionaries/hashing_word_index.hpp"
 #include "common/utils/containers/array_utils.hpp"
 
 using namespace std;
@@ -477,11 +477,11 @@ namespace uva {
                         TShortId m_m_n_gram_next_ctx_id[BASE::NUM_M_N_GRAM_LEVELS];
                     };
 
-                    typedef C2WArrayTrie<BasicWordIndex > TC2WArrayTrieBasic;
-                    typedef C2WArrayTrie<CountingWordIndex > TC2WArrayTrieCount;
+                    typedef C2WArrayTrie<basic_word_index > TC2WArrayTrieBasic;
+                    typedef C2WArrayTrie<counting_word_index > TC2WArrayTrieCount;
                     typedef C2WArrayTrie<TOptBasicWordIndex > TC2WArrayTrieOptBasic;
                     typedef C2WArrayTrie<TOptCountWordIndex > TC2WArrayTrieOptCount;
-                    typedef C2WArrayTrie<HashingWordIndex > TC2WArrayTrieHashing;
+                    typedef C2WArrayTrie<hashing_word_index > TC2WArrayTrieHashing;
                 }
             }
         }

@@ -33,7 +33,7 @@
 
 #include "server/lm/lm_consts.hpp"
 #include "common/utils/logging/logger.hpp"
-#include "server/lm/dictionaries/AWordIndex.hpp"
+#include "server/lm/dictionaries/aword_index.hpp"
 #include "common/utils/containers/greedy_memory_allocator.hpp"
 
 using namespace std;

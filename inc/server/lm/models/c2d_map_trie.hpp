@@ -49,7 +49,7 @@
 #include "common/utils/containers/greedy_memory_allocator.hpp"
 #include "common/utils/hashing_utils.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
-#include "server/lm/dictionaries/HashingWordIndex.hpp"
+#include "server/lm/dictionaries/hashing_word_index.hpp"
 
 using namespace std;
 using namespace uva::utils::logging;
@@ -348,9 +348,9 @@ namespace uva {
                         void pre_allocate_n_grams(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
                     };
 
-                    typedef C2DMapTrie<BasicWordIndex > TC2DMapTrieBasic;
-                    typedef C2DMapTrie<CountingWordIndex > TC2DMapTrieCount;
-                    typedef C2DMapTrie<HashingWordIndex > TC2DMapTrieHashing;
+                    typedef C2DMapTrie<basic_word_index > TC2DMapTrieBasic;
+                    typedef C2DMapTrie<counting_word_index > TC2DMapTrieCount;
+                    typedef C2DMapTrie<hashing_word_index > TC2DMapTrieHashing;
                     typedef C2DMapTrie<TOptBasicWordIndex > TC2DMapTrieOptBasic;
                     typedef C2DMapTrie<TOptCountWordIndex > TC2DMapTrieOptCount;
                 }

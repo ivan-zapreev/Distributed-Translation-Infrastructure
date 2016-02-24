@@ -40,10 +40,10 @@
 #include "server/common/models/phrase_uid.hpp"
 
 #include "server/lm/mgrams/m_gram_id.hpp"
-#include "server/lm/dictionaries/BasicWordIndex.hpp"
-#include "server/lm/dictionaries/HashingWordIndex.hpp"
-#include "server/lm/dictionaries/CountingWordIndex.hpp"
-#include "server/lm/dictionaries/OptimizingWordIndex.hpp"
+#include "server/lm/dictionaries/basic_word_index.hpp"
+#include "server/lm/dictionaries/hashing_word_index.hpp"
+#include "server/lm/dictionaries/counting_word_index.hpp"
+#include "server/lm/dictionaries/optimizing_word_index.hpp"
 
 using namespace uva::smt::bpbd::server::common::models;
 

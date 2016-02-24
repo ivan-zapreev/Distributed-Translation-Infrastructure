@@ -36,8 +36,8 @@
 
 #include "layered_trie_base.hpp"
 
-#include "server/lm/dictionaries/AWordIndex.hpp"
-#include "server/lm/dictionaries/HashingWordIndex.hpp"
+#include "server/lm/dictionaries/aword_index.hpp"
+#include "server/lm/dictionaries/hashing_word_index.hpp"
 #include "common/utils/containers/array_utils.hpp"
 #include "common/utils/containers/dynamic_memory_arrays.hpp"
 
@@ -563,11 +563,11 @@ namespace uva {
                         }
                     };
 
-                    typedef W2CArrayTrie<BasicWordIndex > TW2CArrayTrieBasic;
-                    typedef W2CArrayTrie<CountingWordIndex > TW2CArrayTrieCount;
+                    typedef W2CArrayTrie<basic_word_index > TW2CArrayTrieBasic;
+                    typedef W2CArrayTrie<counting_word_index > TW2CArrayTrieCount;
                     typedef W2CArrayTrie<TOptBasicWordIndex > TW2CArrayTrieOptBasic;
                     typedef W2CArrayTrie<TOptCountWordIndex > TW2CArrayTrieOptCount;
-                    typedef W2CArrayTrie<HashingWordIndex > TW2CArrayTrieHashing;
+                    typedef W2CArrayTrie<hashing_word_index > TW2CArrayTrieHashing;
                 }
             }
         }

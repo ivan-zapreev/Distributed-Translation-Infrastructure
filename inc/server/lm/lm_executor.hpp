@@ -38,10 +38,10 @@
 
 #include "server/lm/proxy/lm_query_proxy.hpp"
 
-#include "server/lm/dictionaries/BasicWordIndex.hpp"
-#include "server/lm/dictionaries/CountingWordIndex.hpp"
-#include "server/lm/dictionaries/OptimizingWordIndex.hpp"
-#include "server/lm/dictionaries/HashingWordIndex.hpp"
+#include "server/lm/dictionaries/basic_word_index.hpp"
+#include "server/lm/dictionaries/counting_word_index.hpp"
+#include "server/lm/dictionaries/optimizing_word_index.hpp"
+#include "server/lm/dictionaries/hashing_word_index.hpp"
 
 #include "server/lm/builders/lm_basic_builder.hpp"
 #include "server/lm/builders/lm_gram_builder.hpp"

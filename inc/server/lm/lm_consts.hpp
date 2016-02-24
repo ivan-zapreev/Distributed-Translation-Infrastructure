@@ -31,7 +31,11 @@
 
 #include "server/server_configs.hpp"
 
+#include "common/utils/containers/dynamic_memory_arrays.hpp"
+
 using namespace std;
+
+using namespace uva::utils::containers;
 
 namespace uva {
     namespace smt {
@@ -45,12 +49,126 @@ namespace uva {
             namespace server {
                 namespace lm {
 
+                    namespace dictionary {
+
+                        namespace __AWordIndex {
+                            //The memory factor for any existing word index ....
+                            static constexpr float MEMORY_FACTOR = 2.6;
+                        }
+
+                        namespace __optimizing_word_index {
+                            //This is the number of buckets factor for the optimizing word index. The 
+                            //number of buckets will be proportional the number of words * this value
+                            static constexpr double BUCKETS_FACTOR = 2.0;
+                        }
+                    }
+
                     //This namespace stores types and constants for the m-gram and context identifiers.
+                    //ToDo: Go trough all the LM and change from TShordId and
+                    //      TLongId to phrase_uid, word_uid and basic types!
                     namespace identifiers {
                         //This is the small id type to be used for e.g. word ids
                         typedef uint32_t TShortId;
                         //This is the long id type to be used for e.g. long context ids 
                         typedef uint64_t TLongId;
+                    }
+
+                    namespace __C2DHybridTrie {
+                        //The unordered map memory factor for the M-Grams in C2DMapArrayTrie
+                        static constexpr float UM_M_GRAM_MEMORY_FACTOR = 2.1;
+                        //The unordered map memory factor for the N-Grams in C2DMapArrayTrie
+                        static constexpr float UM_N_GRAM_MEMORY_FACTOR = 2.0;
+                        //Stores the word index type to be used in this trie, the COUNTING
+                        //index does not seem to give any performance improvements. The optimizing
+                        //word index gives about 10% performance improvement!
+                        //static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
+                        //With the bitmap hashing we get some 5% performance improvement
+                        static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 10;
+                    }
+
+                    namespace __C2DMapTrie {
+                        //The unordered map memory factor for the M-Grams in CtxMultiHashMapTrie
+                        static constexpr float UM_M_GRAM_MEMORY_FACTOR = 2.0;
+                        //The unordered map memory factor for the N-Grams in CtxMultiHashMapTrie
+                        static constexpr float UM_N_GRAM_MEMORY_FACTOR = 2.5;
+                        //Stores the word index type to be used in this trie, the COUNTING
+                        //index does not seem to give any performance improvements. The optimizing
+                        //word index gives about 10% performance improvement!
+                        //static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_BASIC_WORD_INDEX;
+                        //With the bitmap hash caching on we are not faster with this trie
+                        static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 0;
+                    }
+
+                    namespace __G2DMapTrie {
+                        //This is the factor that is used to define an average number
+                        //of words per buckets in G2DHashMapTrie. The number of buckets
+                        //will be proportional to the number of words * this value
+                        static constexpr double BUCKETS_FACTOR = 3.0;
+                        //Stores the word index type to be used in this trie, COUNTING
+                        //index is a must to save memory for gram ids! The optimizing
+                        //word index gives about 10% performance improvement!
+                        //static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                        //With the bitmap hashing we get some 5% performance improvement
+                        static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 5;
+                    }
+
+                    namespace __H2DMapTrie {
+                        //This is the factor that is used to define an average number of words
+                        //per buckets in H2DHashMapTrie. The number of buckets
+                        //will be proportional to the number of words * this value
+                        static constexpr double BUCKETS_FACTOR = 2.0;
+                        //Stores the word index type to be used in this trie, COUNTING
+                        //index is a must to save memory for gram ids! The optimizing
+                        //word index gives about 10% performance improvement!
+                        //static constexpr word_index_types WORD_INDEX_TYPE = HASHING_WORD_INDEX;
+                        //With the bitmap hash caching on we are not faster with this trie
+                        static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 0;
+                    }
+
+                    namespace __W2CArrayTrie {
+                        //In case set to true will pre-allocate memory per word for storing contexts
+                        //This can speed up the filling in of the trie but at the same time it can
+                        //have a drastic effect on RSS - the maximum RSS can grow significantly
+                        static constexpr bool PRE_ALLOCATE_MEMORY = false;
+                        //Stores the percent of the memory that will be allocated per word data 
+                        //storage in one Trie level relative to the estimated number of needed data
+                        static constexpr float INIT_MEM_ALLOC_PRCT = 0.5;
+                        //Stores the memory increment factor, the number we will multiply by the computed increment
+                        static constexpr float MEM_INC_FACTOR = 1;
+                        //Stores the minimum capacity increase in number of elements, must be >= 1!!!
+                        static constexpr size_t MIN_MEM_INC_NUM = 1;
+                        //This constant stores true or false. If the value is true then the log2
+                        //based memory increase strategy is used, otherwise it is log10 base.
+                        //For log10 the percentage of memory increase drops slower than for log2
+                        //with the growth of the #number of already allocated elements
+                        static constexpr MemIncTypesEnum MEM_INC_TYPE = MemIncTypesEnum::LOG_2;
+                        //Stores the word index type to be used in this trie, the  COUNTING
+                        //index gives about 5% faster faster querying. The optimizing
+                        //word index gives about 10% performance improvement!
+                        //static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                        //With the bitmap hashing we get some 5% performance improvement
+                        static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 5;
+                    }
+
+                    namespace __C2WArrayTrie {
+                        //Stores the word index type to be used in this trie, the COUNTING
+                        //index gives about 5% faster faster querying. The optimizing
+                        //word index gives about 10% performance improvement!
+                        //static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                        //With the bitmap hashing we get some 5% performance improvement
+                        static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 5;
+                    }
+
+                    namespace __W2CHybridTrie {
+                        //The unordered map memory factor for the unordered maps in CtxToPBMapStorage
+                        static constexpr float UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR = 5.0;
+
+                        //Stores the word index type to be used in this trie, the COUNTING
+                        //index gives about 5% faster faster querying. The optimizing
+                        //word index gives about 10% performance improvement!
+                        //static constexpr word_index_types WORD_INDEX_TYPE = OPTIMIZING_COUNTING_WORD_INDEX;
+                        //With the bitmap hashing we get some 5% performance improvement
+                        static constexpr uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR = 10;
                     }
 
                     //This namespace stores m-gram levels and related constants

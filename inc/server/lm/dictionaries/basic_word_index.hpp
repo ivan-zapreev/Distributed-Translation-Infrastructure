@@ -29,16 +29,14 @@
 #include <string>         // std::string
 #include <unordered_map>  // std::unordered_map
 
-#include "AWordIndex.hpp"
-
-#include "server/lm/lm_consts.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
-
+#include "common/utils/hashing_utils.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
 #include "common/utils/containers/greedy_memory_allocator.hpp"
 
-#include "common/utils/hashing_utils.hpp"
+#include "server/lm/lm_consts.hpp"
+#include "server/lm/dictionaries/aword_index.hpp"
 
 using namespace std;
 using namespace uva::utils::file;
@@ -56,7 +54,7 @@ namespace uva {
                         /**
                          * This is a hash-map based implementation of the word index.
                          */
-                        class BasicWordIndex : public AWordIndex {
+                        class basic_word_index : public aword_index {
                         public:
 
                             /**
@@ -64,7 +62,7 @@ namespace uva {
                              * @param  wordIndexMemFactor the assigned memory factor for
                              * storage allocation in the unordered_map used for the word index
                              */
-                            BasicWordIndex(const float wordIndexMemFactor)
+                            basic_word_index(const float wordIndexMemFactor)
                             : m_word_index_alloc_ptr(NULL), m_word_index_map_ptr(NULL), m_next_new_word_id(MIN_KNOWN_WORD_ID), m_word_index_mem_factor(wordIndexMemFactor) {
                             };
 
@@ -199,7 +197,7 @@ namespace uva {
                             /**
                              * The basic destructor
                              */
-                            virtual ~BasicWordIndex() {
+                            virtual ~basic_word_index() {
                                 deallocate_container<TWordIndexMap, TWordIndexAllocator>(&m_word_index_map_ptr, &m_word_index_alloc_ptr);
                             };
 
@@ -245,7 +243,7 @@ namespace uva {
                              * The copy constructor, is made private as we do not intend to copy this class objects
                              * @param orig the object to copy from
                              */
-                            BasicWordIndex(const BasicWordIndex & other)
+                            basic_word_index(const basic_word_index & other)
                             : m_word_index_alloc_ptr(NULL), m_word_index_map_ptr(NULL),
                             m_next_new_word_id(MIN_KNOWN_WORD_ID), m_word_index_mem_factor(0.0) {
                                 throw Exception("HashMapWordIndex copy constructor is not to be used, unless implemented!");

@@ -32,7 +32,7 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 
-#include "AWordIndex.hpp"
+#include "aword_index.hpp"
 #include "common/utils/hashing_utils.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
 
@@ -55,14 +55,14 @@ namespace uva {
                          * the word id has no associated payload then an unknown word payload is to be used.
                          * Still the unknown and undefined word ids are reserved nd should not be issued.
                          */
-                        class HashingWordIndex : public AWordIndex {
+                        class hashing_word_index : public aword_index {
                         public:
 
                             /**
                              * The basic constructor
                              * @param memory_factor is not used, is here only for interface compliancy
                              */
-                            HashingWordIndex(const float memory_factor) : AWordIndex() {
+                            hashing_word_index(const float memory_factor) : aword_index() {
                                 ASSERT_CONDITION_THROW((sizeof (uint64_t) != sizeof (word_uid)),
                                         string("Currently only works with 64 bit word_uid!"));
                             }
@@ -137,7 +137,7 @@ namespace uva {
                             /**
                              * The basic destructor
                              */
-                            virtual ~HashingWordIndex() {
+                            virtual ~hashing_word_index() {
                             };
                         };
                     }

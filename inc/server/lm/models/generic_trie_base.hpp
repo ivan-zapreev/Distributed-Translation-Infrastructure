@@ -37,9 +37,9 @@
 
 #include "common/utils/file/text_piece_reader.hpp"
 
-#include "server/lm/dictionaries/BasicWordIndex.hpp"
-#include "server/lm/dictionaries/CountingWordIndex.hpp"
-#include "server/lm/dictionaries/OptimizingWordIndex.hpp"
+#include "server/lm/dictionaries/basic_word_index.hpp"
+#include "server/lm/dictionaries/counting_word_index.hpp"
+#include "server/lm/dictionaries/optimizing_word_index.hpp"
 
 #include "server/lm/models/query_exec_data.hpp"
 #include "server/lm/models/word_index_trie_base.hpp"

@@ -38,10 +38,10 @@
 #include "server/lm/mgrams/query_m_gram.hpp"
 #include "server/lm/models/generic_trie_base.hpp"
 
-#include "server/lm/dictionaries/BasicWordIndex.hpp"
-#include "server/lm/dictionaries/CountingWordIndex.hpp"
-#include "server/lm/dictionaries/OptimizingWordIndex.hpp"
-#include "server/lm/dictionaries/HashingWordIndex.hpp"
+#include "server/lm/dictionaries/basic_word_index.hpp"
+#include "server/lm/dictionaries/counting_word_index.hpp"
+#include "server/lm/dictionaries/optimizing_word_index.hpp"
+#include "server/lm/dictionaries/hashing_word_index.hpp"
 
 #include "server/lm/models/c2d_hybrid_trie.hpp"
 #include "server/lm/models/c2d_map_trie.hpp"
@@ -234,8 +234,8 @@ namespace uva {
             template class simple_m_gram_query<G2DMapTrie<WORD_INDEX_TYPE>>; \
             template class simple_m_gram_query<H2DMapTrie<WORD_INDEX_TYPE>>;
 
-                    INSTANTIATE_M_GRAM_QUERY_WORD_IDX(BasicWordIndex);
-                    INSTANTIATE_M_GRAM_QUERY_WORD_IDX(CountingWordIndex);
+                    INSTANTIATE_M_GRAM_QUERY_WORD_IDX(basic_word_index);
+                    INSTANTIATE_M_GRAM_QUERY_WORD_IDX(counting_word_index);
                     INSTANTIATE_M_GRAM_QUERY_WORD_IDX(TOptBasicWordIndex);
                     INSTANTIATE_M_GRAM_QUERY_WORD_IDX(TOptCountWordIndex);
                 }

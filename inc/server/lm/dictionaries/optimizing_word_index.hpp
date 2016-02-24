@@ -35,8 +35,8 @@
 
 #include "common/utils/math_utils.hpp"
 
-#include "server/lm/dictionaries/AWordIndex.hpp"
-#include "server/lm/dictionaries/BasicWordIndex.hpp"
+#include "server/lm/dictionaries/aword_index.hpp"
+#include "server/lm/dictionaries/basic_word_index.hpp"
 
 #include "common/utils/containers/array_utils.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
@@ -56,19 +56,19 @@ namespace uva {
                 namespace lm {
                     namespace dictionary {
 
-                        namespace __OptimizingWordIndex {
+                        namespace __optimizing_word_index {
 
                             /**
                              * This structure is to store the word index data, the word itself and its index
                              */
-                            template<typename TWordIdType>
-                            struct WordIndexBucketEntry {
+                            template<typename word_id_type>
+                            struct word_index_bucket_entry {
 
-                                WordIndexBucketEntry() : m_word(NULL), m_len(0), m_word_id(0) {
+                                word_index_bucket_entry() : m_word(NULL), m_len(0), m_word_id(0) {
                                 }
                                 char * m_word;
                                 uint8_t m_len;
-                                TWordIdType m_word_id;
+                                word_id_type m_word_id;
                             } __attribute__((packed));
                         }
 
@@ -79,10 +79,10 @@ namespace uva {
                          * the data from the original word index is taken and converted into optimized
                          * format. This data is then stored within this class. The original word index
                          * is then destroyed to save space.
-                         * @param SubWordIndexType the sub WordIndex type to be used
+                         * @param sub_word_index_type the sub WordIndex type to be used
                          */
-                        template<typename SubWordIndexType>
-                        class OptimizingWordIndex : public AWordIndex {
+                        template<typename sub_word_index_type>
+                        class optimizing_word_index : public aword_index {
                         public:
 
                             /**
@@ -91,9 +91,9 @@ namespace uva {
                              * have a reference or a pointer to the argument object
                              * @param memory_factor the memory factor for the SubWordIndexType constructor
                              */
-                            OptimizingWordIndex(const float memory_factor)
+                            optimizing_word_index(const float memory_factor)
                             : m_num_words(0), m_num_buckets(0), m_word_buckets(NULL) {
-                                m_disp_word_index_ptr = new SubWordIndexType(memory_factor);
+                                m_disp_word_index_ptr = new sub_word_index_type(memory_factor);
                                 ASSERT_SANITY_THROW(!m_disp_word_index_ptr->is_word_registering_needed(),
                                         "This word index requires a sub-word index with word registration!");
                             }
@@ -252,7 +252,7 @@ namespace uva {
                             /**
                              * The basic destructor
                              */
-                            virtual ~OptimizingWordIndex() {
+                            virtual ~optimizing_word_index() {
                                 //Delete bucket entries
                                 if (m_word_buckets != NULL) {
                                     //Delete words
@@ -271,7 +271,7 @@ namespace uva {
 
                         private:
                             //Stores the disposable word index pointer up until it is not needed any more
-                            SubWordIndexType * m_disp_word_index_ptr;
+                            sub_word_index_type * m_disp_word_index_ptr;
 
                             //Stores the number of words
                             size_t m_num_words;
@@ -283,7 +283,7 @@ namespace uva {
                             uint_fast64_t m_capacity;
 
                             //Typedef the bucket entry
-                            typedef __OptimizingWordIndex::WordIndexBucketEntry<word_uid> TBucketEntry;
+                            typedef __optimizing_word_index::word_index_bucket_entry<word_uid> TBucketEntry;
 
                             //Stores the buckets data
                             TBucketEntry * m_word_buckets;
@@ -316,7 +316,7 @@ namespace uva {
                              */
                             inline void allocate_data_storage() {
                                 //Set the number of buckets and the capacity
-                                set_number_of_elements(__OptimizingWordIndex::BUCKETS_FACTOR, m_num_words);
+                                set_number_of_elements(__optimizing_word_index::BUCKETS_FACTOR, m_num_words);
 
                                 LOG_DEBUG << "m_num_words: " << m_num_words << ", m_num_buckets: " << m_num_buckets << END_LOG;
 
@@ -360,13 +360,13 @@ namespace uva {
                             inline void fill_buckets_with_data() {
                                 LOG_DEBUG2 << "Start filling the buckets with data" << END_LOG;
 
-                                BasicWordIndex::TWordIndexMapConstIter curr = m_disp_word_index_ptr->begin();
-                                const BasicWordIndex::TWordIndexMapConstIter end = m_disp_word_index_ptr->end();
+                                basic_word_index::TWordIndexMapConstIter curr = m_disp_word_index_ptr->begin();
+                                const basic_word_index::TWordIndexMapConstIter end = m_disp_word_index_ptr->end();
                                 uint_fast64_t bucket_idx = 0;
 
                                 //Go through all the words and fill in the buckets
                                 while (curr != end) {
-                                    const BasicWordIndex::TWordIndexEntry & word_data = *curr;
+                                    const basic_word_index::TWordIndexEntry & word_data = *curr;
 
                                     LOG_DEBUG2 << "Converting word: '" << word_data.first
                                             << "' with word id: " << word_data.second << END_LOG;
@@ -411,8 +411,8 @@ namespace uva {
                             };
                         };
 
-                        typedef OptimizingWordIndex<BasicWordIndex> TOptBasicWordIndex;
-                        typedef OptimizingWordIndex<CountingWordIndex> TOptCountWordIndex;
+                        typedef optimizing_word_index<basic_word_index> TOptBasicWordIndex;
+                        typedef optimizing_word_index<counting_word_index> TOptCountWordIndex;
                     }
                 }
             }
