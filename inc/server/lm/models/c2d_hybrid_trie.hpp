@@ -171,14 +171,14 @@ namespace uva {
                                     m_n_gram_map_ptr->operator[](key) = gram.m_payload.m_prob;
                                 } else {
                                     //Get the next context id
-                                    const phrase_length idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
-                                    TShortId next_ctx_id = m_M_gram_next_ctx_id[idx]++;
+                                    const phrase_length level_idx = (CURR_LEVEL - BASE::MGRAM_IDX_OFFSET);
+                                    TShortId next_ctx_id = m_M_gram_next_ctx_id[level_idx]++;
 
                                     //Store the context mapping inside the map
-                                    m_m_gram_map_ptrs[idx]->operator[](key) = next_ctx_id;
+                                    m_m_gram_map_ptrs[level_idx]->operator[](key) = next_ctx_id;
 
                                     //Return the reference to the piece of memory
-                                    m_m_gram_data[idx][next_ctx_id] = gram.m_payload;
+                                    m_m_gram_data[level_idx][next_ctx_id] = gram.m_payload;
                                 }
                             }
                         }
