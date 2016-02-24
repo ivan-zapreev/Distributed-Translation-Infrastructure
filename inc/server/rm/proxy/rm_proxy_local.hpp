@@ -29,10 +29,8 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/monitore/statistics_monitore.hpp"
-#include "common/utils/file/cstyle_file_reader.hpp"
 
 #include "server/rm/rm_configs.hpp"
-#include "server/rm/models/rm_basic_model.hpp"
 #include "server/rm/proxy/rm_query_proxy.hpp"
 #include "server/rm/proxy/rm_query_proxy_local.hpp"
 

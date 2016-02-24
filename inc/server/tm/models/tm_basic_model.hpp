@@ -31,7 +31,7 @@
 
 #include "server/lm/proxy/lm_query_proxy.hpp"
 
-#include "server/tm/tm_configs.hpp"
+#include "server/tm/tm_consts.hpp"
 #include "server/tm/models/tm_source_entry.hpp"
 #include "server/tm/models/tm_query.hpp"
 

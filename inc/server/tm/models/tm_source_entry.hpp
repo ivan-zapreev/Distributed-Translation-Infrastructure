@@ -28,8 +28,6 @@
 
 #include <string>
 
-#include "server/tm/tm_configs.hpp"
-
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/containers/fixed_size_hashmap.hpp"

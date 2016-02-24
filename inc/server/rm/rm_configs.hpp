@@ -26,9 +26,6 @@
 #ifndef RM_CONFIGS_HPP
 #define RM_CONFIGS_HPP
 
-#include <inttypes.h>
-#include <string>
-
 #include "server/server_configs.hpp"
 
 #include "common/utils/file/cstyle_file_reader.hpp"

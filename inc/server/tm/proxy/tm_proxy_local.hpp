@@ -31,7 +31,7 @@
 #include "common/utils/monitore/statistics_monitore.hpp"
 #include "common/utils/file/cstyle_file_reader.hpp"
 
-#include "server/tm/models/tm_basic_model.hpp"
+#include "server/tm/tm_configs.hpp"
 #include "server/tm/proxy/tm_query_proxy.hpp"
 #include "server/tm/proxy/tm_query_proxy_local.hpp"
 
@@ -60,11 +60,6 @@ namespace uva {
                          */
                         class tm_proxy_local : public tm_proxy {
                         public:
-                            //Define the default model type to be used
-                            typedef tm_basic_model model_type;
-
-                            //Define the builder type 
-                            typedef tm_basic_builder<model_type, CStyleFileReader> builder_type;
 
                             /**
                              * The basic proxy constructor, currently does nothing except for default initialization
@@ -87,7 +82,7 @@ namespace uva {
                             virtual void connect(const tm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the translation model into the memory.
-                                load_model_data<builder_type, CStyleFileReader>("Translation Model", params);
+                                load_model_data<tm_builder_type, CStyleFileReader>("Translation Model", params);
                             }
 
                             /**
@@ -102,7 +97,7 @@ namespace uva {
                              */
                             virtual tm_query_proxy & allocate_query_proxy() {
                                 //Return an instance of the query_proxy_local class
-                                return *(new tm_query_proxy_local<model_type>(m_model));
+                                return *(new tm_query_proxy_local<tm_model_type>(m_model));
                             }
 
                             /**
@@ -121,7 +116,7 @@ namespace uva {
                              * @param the name of the model being loaded
                              * @params params the model parameters
                              */
-                            template<typename builder_type, typename file_reader_type>
+                            template<typename tm_builder_type, typename file_reader_type>
                             void load_model_data(char const *model_name, const tm_parameters & params) {
                                 const string & model_file_name = params.m_conn_string;
                                 
@@ -156,7 +151,7 @@ namespace uva {
                                         + model_file_name + string("' does not exist!"));
 
                                 //Create the trie builder and give it the trie
-                                builder_type builder(params, m_model, model_file);
+                                tm_builder_type builder(params, m_model, model_file);
                                 //Load the model from the file
                                 builder.build();
 
@@ -179,7 +174,7 @@ namespace uva {
 
                         private:
                             //Stores the translation model instance
-                            model_type m_model;
+                            tm_model_type m_model;
                         };
                     }
                 }

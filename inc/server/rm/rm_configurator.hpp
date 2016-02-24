@@ -29,7 +29,6 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 
-#include "server/rm/rm_configs.hpp"
 #include "server/rm/rm_parameters.hpp"
 #include "server/rm/proxy/rm_proxy.hpp"
 #include "server/rm/proxy/rm_proxy_local.hpp"

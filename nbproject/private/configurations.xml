@@ -774,6 +774,7 @@
           </df>
           <in>tm_configs.hpp</in>
           <in>tm_configurator.hpp</in>
+          <in>tm_consts.hpp</in>
           <in>tm_parameters.hpp</in>
         </df>
         <in>server_configs.hpp</in>

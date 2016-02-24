@@ -8,6 +8,9 @@
         <df name="rm">
           <in>rm_consts.hpp</in>
         </df>
+        <df name="tm">
+          <in>tm_consts.hpp</in>
+        </df>
       </df>
     </df>
     <df root="src" name="2">
@@ -120,6 +123,8 @@
         </makeTool>
       </makefileType>
       <item path="inc/server/rm/rm_consts.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/server/tm/tm_consts.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
