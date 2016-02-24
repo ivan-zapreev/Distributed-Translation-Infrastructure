@@ -54,7 +54,7 @@ namespace uva {
                             lm_trie_query_proxy_local(const trie_type & trie)
                             : m_sliding_query(trie), m_simple_query(trie) {
                             }
-                            
+
                             /**
                              * @see lm_query_proxy
                              */
@@ -65,40 +65,48 @@ namespace uva {
                             /**
                              * @see lm_query_proxy
                              */
+                            virtual void get_word_ids(TextPieceReader phrase, phrase_length num_words,
+                                    word_uid word_ids[tm::TM_MAX_TARGET_PHRASE_LEN]) {
+                                //ToDo: Implement
+                            };
+
+                            /**
+                             * @see lm_query_proxy
+                             */
                             ~lm_trie_query_proxy_local() {
                                 //Nothing to free, all the resources are allocated on the stack.
                             }
 
                         protected:
-                            
+
                             /**
                              * @see lm_query_proxy
                              */
                             virtual prob_weight execute_cum_yes_log_yes(const phrase_length num_word_ids, const word_uid * word_ids) {
                                 return m_sliding_query.template execute<true, true>(num_word_ids, word_ids);
                             };
-                            
+
                             /**
                              * @see lm_query_proxy
                              */
                             virtual prob_weight execute_cum_yes_log_no(const phrase_length num_word_ids, const word_uid * word_ids) {
                                 return m_sliding_query.template execute<true, false>(num_word_ids, word_ids);
                             };
-                            
+
                             /**
                              * @see lm_query_proxy
                              */
                             virtual prob_weight execute_cum_no_log_yes(const phrase_length num_word_ids, const word_uid * word_ids) {
                                 return m_sliding_query.template execute<false, true>(num_word_ids, word_ids);
                             };
-                            
+
                             /**
                              * @see lm_query_proxy
                              */
                             virtual prob_weight execute_cum_no_log_no(const phrase_length num_word_ids, const word_uid * word_ids) {
                                 return m_sliding_query.template execute<false, false>(num_word_ids, word_ids);
                             };
-                            
+
                             /**
                              * @see lm_query_proxy
                              */

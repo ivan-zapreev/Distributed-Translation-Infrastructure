@@ -28,6 +28,7 @@
 
 #include "common/utils/file/text_piece_reader.hpp"
 
+#include "server/server_configs.hpp"
 #include "server/lm/lm_consts.hpp"
 
 using namespace uva::utils::file;
@@ -59,6 +60,17 @@ namespace uva {
                              * @return the target source word log probability penalty
                              */
                             virtual float get_unk_word_prob() = 0;
+
+                            /**
+                             * Allows to retrieve the target language phrase word ids.
+                             * Note that the number of words in the target phrase should
+                             * not exceed:  TM_MAX_TARGET_PHRASE_LEN
+                             * @param phrase [in] the target language phrase
+                             * @param num_words [out] the number of words to be set
+                             * @param word_ids [out] the words ids to be set
+                             */
+                            virtual void get_word_ids(TextPieceReader phrase, phrase_length num_words,
+                                    word_uid word_ids[tm::TM_MAX_TARGET_PHRASE_LEN]) = 0;
 
                             /**
                              * Allows to execute a query
@@ -112,7 +124,7 @@ namespace uva {
                             };
 
                         protected:
-                            
+
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
@@ -140,7 +152,7 @@ namespace uva {
                              * cumulative/single, with/without logging.
                              */
                             virtual prob_weight execute_cum_no_log_no(const phrase_length num_word_ids, const word_uid * word_ids) = 0;
-                            
+
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
