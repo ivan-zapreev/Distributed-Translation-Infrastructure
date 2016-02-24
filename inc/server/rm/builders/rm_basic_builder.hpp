@@ -49,7 +49,6 @@ using namespace uva::utils::text;
 
 using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::rm::models;
-using namespace uva::smt::bpbd::server::rm::proxy;
 using namespace uva::smt::bpbd::server::common::models;
 
 namespace uva {

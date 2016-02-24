@@ -1,5 +1,5 @@
 /* 
- * File:   rm_configs.hpp
+ * File:   rm_consts.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,44 +20,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on February 10, 2016, 4:23 PM
+ * Created on February 24, 2016, 9:35 AM
  */
 
-#ifndef RM_CONFIGS_HPP
-#define RM_CONFIGS_HPP
-
-#include <inttypes.h>
-#include <string>
-
-#include "server/server_configs.hpp"
-
-#include "common/utils/file/cstyle_file_reader.hpp"
-
-#include "server/rm/models/rm_basic_model.hpp"
-#include "server/rm/builders/rm_basic_builder.hpp"
+#ifndef RM_CONSTS_HPP
+#define	RM_CONSTS_HPP
 
 using namespace std;
-
-using namespace uva::utils::file;
-
-using namespace uva::smt::bpbd::server::rm;
-using namespace uva::smt::bpbd::server::rm::builders;
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace server {
                 namespace rm {
-                    //Define the default model type to be used
-                    typedef rm_basic_model rm_model_type;
-
-                    //Define the builder type 
-                    typedef rm_basic_builder<rm_model_type, CStyleFileReader> rm_builder_type;
+                    namespace models {
+                        //Stores the configuration parameters for the basic reordering model implementation
+                        namespace __rm_basic_model {
+                            //Influences the number of buckets that will be created for the basic model implementations
+                            static constexpr double SOURCES_BUCKETS_FACTOR = 3.0;
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-#endif /* RM_CONFIGS_HPP */
+#endif	/* RM_CONSTS_HPP */
 

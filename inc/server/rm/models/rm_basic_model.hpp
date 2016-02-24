@@ -29,7 +29,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "server/rm/rm_configs.hpp"
+#include "server/rm/rm_consts.hpp"
 #include "server/rm/models/rm_entry.hpp"
 #include "server/rm/models/rm_query.hpp"
 

@@ -28,8 +28,6 @@
 
 #include <string>
 
-#include "server/rm/rm_configs.hpp"
-
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 

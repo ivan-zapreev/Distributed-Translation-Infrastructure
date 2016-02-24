@@ -33,7 +33,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/string_utils.hpp"
 
-#include "server/rm/rm_configs.hpp"
+#include "server/server_configs.hpp"
 
 using namespace std;
 

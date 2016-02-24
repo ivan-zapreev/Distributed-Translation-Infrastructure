@@ -36,8 +36,6 @@
 #include "server/rm/proxy/rm_query_proxy.hpp"
 #include "server/rm/proxy/rm_query_proxy_local.hpp"
 
-#include "server/rm/builders/rm_basic_builder.hpp"
-
 using namespace uva::utils::monitore;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
@@ -61,11 +59,6 @@ namespace uva {
                          */
                         class rm_proxy_local : public rm_proxy {
                         public:
-                            //Define the default model type to be used
-                            typedef rm_basic_model model_type;
-
-                            //Define the builder type 
-                            typedef rm_basic_builder<model_type, CStyleFileReader> builder_type;
 
                             /**
                              * The basic proxy constructor, currently does nothing except for default initialization
@@ -87,7 +80,7 @@ namespace uva {
                             virtual void connect(const rm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the reordering model into the memory.
-                                load_model_data<builder_type, CStyleFileReader>("Reordering Model", params);
+                                load_model_data<rm_builder_type, CStyleFileReader>("Reordering Model", params);
                             }
 
                             /**
@@ -103,7 +96,7 @@ namespace uva {
                             virtual rm_query_proxy & allocate_query_proxy() {
                                 //ToDo: In the future we should just use a number of stack
                                 //allocated objects in order to reduce the new/delete overhead
-                                return *(new rm_query_proxy_local<model_type>(m_model));
+                                return *(new rm_query_proxy_local<rm_model_type>(m_model));
                             }
 
                             /**
@@ -123,7 +116,7 @@ namespace uva {
                              * @param the name of the model being loaded
                              * @params params the model parameters
                              */
-                            template<typename builder_type, typename file_reader_type>
+                            template<typename rm_builder_type, typename file_reader_type>
                             void load_model_data(char const *model_name, const rm_parameters & params) {
                                 const string & model_file_name = params.m_conn_string;
                                 
@@ -158,7 +151,7 @@ namespace uva {
                                         + model_file_name + string("' does not exist!"));
 
                                 //Create the trie builder and give it the trie
-                                builder_type builder(params, m_model, model_file);
+                                rm_builder_type builder(params, m_model, model_file);
                                 //Load the model from the file
                                 builder.build();
 
@@ -181,7 +174,7 @@ namespace uva {
 
                         private:
                             //Stores the reordering model instance
-                            model_type m_model;
+                            rm_model_type m_model;
                         };
                     }
                 }

@@ -1,5 +1,5 @@
 /* 
- * File:   Configuration.hpp
+ * File:   lm_configs.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -63,7 +63,6 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace lm {
-
                     //Here we have a default word index, see the lm_confgs for the recommended word index information!
                     typedef hashing_word_index lm_word_index;
 

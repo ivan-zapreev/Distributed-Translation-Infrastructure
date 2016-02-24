@@ -753,6 +753,7 @@
           </df>
           <in>rm_configs.hpp</in>
           <in>rm_configurator.hpp</in>
+          <in>rm_consts.hpp</in>
           <in>rm_parameters.hpp</in>
         </df>
         <df name="tm">
