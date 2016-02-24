@@ -74,28 +74,28 @@ namespace uva {
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual prob_weight execute_cum_yes_log_yes(const uint64_t * word_ids) {
+                            virtual prob_weight execute_cum_yes_log_yes(const word_uid * word_ids) {
                                 return m_sliding_query.template execute<true, true>(word_ids);
                             };
                             
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual prob_weight execute_cum_yes_log_no(const uint64_t * word_ids) {
+                            virtual prob_weight execute_cum_yes_log_no(const word_uid * word_ids) {
                                 return m_sliding_query.template execute<true, false>(word_ids);
                             };
                             
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual prob_weight execute_cum_no_log_yes(const uint64_t * word_ids) {
+                            virtual prob_weight execute_cum_no_log_yes(const word_uid * word_ids) {
                                 return m_sliding_query.template execute<false, true>(word_ids);
                             };
                             
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual prob_weight execute_cum_no_log_no(const uint64_t * word_ids) {
+                            virtual prob_weight execute_cum_no_log_no(const word_uid * word_ids) {
                                 return m_sliding_query.template execute<false, false>(word_ids);
                             };
                             
