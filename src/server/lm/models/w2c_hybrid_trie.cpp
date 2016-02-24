@@ -88,7 +88,7 @@ namespace uva {
 
                         //Record the dummy probability and back-off values for the unknown word
                         m_unk_data = &m_mgram_data[0][UNKNOWN_WORD_ID];
-                        m_unk_data->m_prob = UNK_WORD_LOG_PROB_WEIGHT;
+                        m_unk_data->m_prob = DEFAULT_UNK_WORD_LOG_PROB_WEIGHT;
                         m_unk_data->m_back = 0.0;
 
                         //Allocate more memory for probabilities and back off weight for

@@ -74,7 +74,7 @@ namespace uva {
                             tm_target_entry_temp()
                             : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase(""),
                             m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total(UNKNOWN_LOG_PROB_WEIGHT),
-                            m_num_words(0), m_word_ids(NULL){
+                            m_num_words(0), m_word_ids(NULL) {
                             }
 
                             /**
@@ -82,7 +82,7 @@ namespace uva {
                              */
                             ~tm_target_entry_temp() {
                                 //Deallocate the word ids
-                                if( m_word_ids != NULL ) {
+                                if (m_word_ids != NULL) {
                                     delete[] m_word_ids;
                                     m_word_ids = NULL;
                                 }
@@ -112,10 +112,10 @@ namespace uva {
                                 //Set the features 
                                 set_features(num_features, features);
 
-                                //Store the number of words and the word ids
+                                //Store the number of words and the corresponding word ids
                                 m_num_words = num_words;
                                 m_word_ids = new word_uid[m_num_words];
-                                memcpy(m_word_ids, word_ids, m_num_words * sizeof(word_uid));
+                                memcpy(m_word_ids, word_ids, m_num_words * sizeof (word_uid));
 
                                 LOG_DEBUG1 << "Adding the source/target (" << source_uid << "/"
                                         << target_uid << ") entry with id" << m_st_uid << END_LOG;
@@ -147,11 +147,19 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to get the number of words in the target translation
+                             * @return the number of words
+                             */
+                            inline phrase_length get_num_target_words() const {
+                                return m_num_words;
+                            }
+
+                            /**
                              * This method allows to get the
                              * @return an array of word ids of the target phrase, the length must be equal to LM_QUERY_LENGTH_MAX
                              */
                             inline const word_uid* get_target_word_ids() const {
-                                return NULL;
+                                return m_word_ids;
                             }
 
                         protected:

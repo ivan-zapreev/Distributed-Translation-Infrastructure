@@ -245,7 +245,8 @@ namespace uva {
                                     //Compute the target phrase and its uid
                                     const phrase_uid target_uid = get_phrase_uid<true>(target_str);
 
-                                    //ToDo: Use the language model to initialize
+                                    //ToDo: Use the language model to get the target translation word ids
+                                    
 
                                     //Initiate a new target entry
                                     source_entry->add_translation(target_str, target_uid,

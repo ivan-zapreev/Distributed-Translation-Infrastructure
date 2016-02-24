@@ -69,7 +69,7 @@ namespace uva {
                         BASE::pre_allocate(counts);
 
                         //Default initialize the unknown word payload data
-                        m_unk_data.m_prob = UNK_WORD_LOG_PROB_WEIGHT;
+                        m_unk_data.m_prob = DEFAULT_UNK_WORD_LOG_PROB_WEIGHT;
                         m_unk_data.m_back = 0.0;
 
                         //Initialize the m-gram maps

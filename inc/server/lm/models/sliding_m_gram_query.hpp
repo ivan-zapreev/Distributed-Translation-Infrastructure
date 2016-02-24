@@ -93,14 +93,22 @@ namespace uva {
 
                         /**
                          * Allows to execute m-gram the query
-                         * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
+                         * @param num_word_ids stores the number of word ids, the maximum number
+                         * of words must be LM_MAX_QUERY_LEN
+                         * @param word_ids the word identifiers of the words of the target phrase
+                         * to compute the probability for
                          */
                         template<bool is_cumulative, bool is_log_results = false >
-                        inline prob_weight execute(const word_uid * word_ids) {
-                            
+                        inline prob_weight execute(const phrase_length num_word_ids, const word_uid * word_ids) {
+                            //Perform a sanity check to make sure we do not exceed 
+                            //the limits on the number of words in the query
+                            ASSERT_SANITY_THROW((num_word_ids > LM_MAX_QUERY_LEN),
+                                    string("The number of words in the query: ") + to_string(num_word_ids) +
+                                    string(" exceeds the allowed maximum: ") + to_string(LM_MAX_QUERY_LEN));
+
                             //ToDo: Implement the query with the sliding window
-                            
-                            return ZERO_LOG_PROB_WEIGHT;
+
+                            return UNKNOWN_LOG_PROB_WEIGHT;
                         }
 
                     protected:

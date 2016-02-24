@@ -85,7 +85,7 @@ namespace uva {
 
                         //04) Insert the unknown word data into the allocated array
                         m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
-                        m_unk_data->m_prob = UNK_WORD_LOG_PROB_WEIGHT;
+                        m_unk_data->m_prob = DEFAULT_UNK_WORD_LOG_PROB_WEIGHT;
                         m_unk_data->m_back = 0.0;
 
                         //05) Allocate data for the M-grams

@@ -65,22 +65,24 @@ namespace uva {
                              * @param is_cumulative, if true then we compute the joint probability
                              * i.e. the sum of the probabilities of the sub-m-gram prefixes until
                              * the max m-gram level plus the sliding window.
+                             * @param num_word_ids stores the number of word ids, the maximum number
+                             * of words must be LM_MAX_QUERY_LEN
                              * @param word_ids the word identifiers of the words of the target phrase
-                             * to compute the probability for, the length must be equal to LM_QUERY_LENGTH_MAX
+                             * to compute the probability for
                              */
                             template<bool is_cumulative = false, bool is_log_result = false >
-                            inline prob_weight execute(const word_uid * word_ids) {
+                            inline prob_weight execute(const phrase_length num_word_ids, const word_uid * word_ids) {
                                 if (is_cumulative) {
                                     if (is_log_result) {
-                                        return execute_cum_yes_log_yes(word_ids);
+                                        return execute_cum_yes_log_yes(num_word_ids, word_ids);
                                     } else {
-                                        return execute_cum_yes_log_no(word_ids);
+                                        return execute_cum_yes_log_no(num_word_ids, word_ids);
                                     }
                                 } else {
                                     if (is_log_result) {
-                                        return execute_cum_no_log_yes(word_ids);
+                                        return execute_cum_no_log_yes(num_word_ids, word_ids);
                                     } else {
-                                        return execute_cum_no_log_no(word_ids);
+                                        return execute_cum_no_log_no(num_word_ids, word_ids);
                                     }
                                 }
                             };
@@ -115,33 +117,29 @@ namespace uva {
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
-                             * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
                              */
-                            virtual prob_weight execute_cum_yes_log_yes(const word_uid * word_ids) = 0;
+                            virtual prob_weight execute_cum_yes_log_yes(const phrase_length num_word_ids, const word_uid * word_ids) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
-                             * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
                              */
-                            virtual prob_weight execute_cum_yes_log_no(const word_uid * word_ids) = 0;
+                            virtual prob_weight execute_cum_yes_log_no(const phrase_length num_word_ids, const word_uid * word_ids) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
-                             * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
                              */
-                            virtual prob_weight execute_cum_no_log_yes(const word_uid * word_ids) = 0;
+                            virtual prob_weight execute_cum_no_log_yes(const phrase_length num_word_ids, const word_uid * word_ids) = 0;
 
                             /**
                              * This function is to be implemented by the child and
                              * should allow for a specific type of query execution
                              * cumulative/single, with/without logging.
-                             * @param word_ids an array of word ids of the phrase, the length must be equal to LM_QUERY_LENGTH_MAX
                              */
-                            virtual prob_weight execute_cum_no_log_no(const word_uid * word_ids) = 0;
+                            virtual prob_weight execute_cum_no_log_no(const phrase_length num_word_ids, const word_uid * word_ids) = 0;
                             
                             /**
                              * This function is to be implemented by the child and

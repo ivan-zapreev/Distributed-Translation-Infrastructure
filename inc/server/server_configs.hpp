@@ -65,7 +65,7 @@ namespace uva {
                     //Define the feature weights delimiter string for the config file
                     static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
                     //The various numbers of TM features
-                    static constexpr size_t FOUR_TM_FEATURES = 4;
+                    static constexpr size_t FOUR_TM_FEATURES = 4u;
                     //Stores the maximum number of the translation model features
                     static constexpr size_t MAX_NUM_TM_FEATURES = FOUR_TM_FEATURES;
                     
@@ -78,14 +78,14 @@ namespace uva {
                     static const string TM_UNKNOWN_TARGET_STR = "<unk>";
 
                     //Stores the unknown source word log probability penalty
-                    static constexpr float UNK_SOURCE_WORD_LOG_PROB = -10.0;
+                    static constexpr float UNK_SOURCE_WORD_LOG_PROB = -10.0f;
                 }
 
                 namespace lm {
                     //Define the feature weights delimiter string for the config file
                     static const string LM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
                     //Stores the maximum number of the language model features
-                    static constexpr size_t LM_MAX_NUM_FEATURES = 1;
+                    static constexpr size_t LM_MAX_NUM_FEATURES = 1u;
 
                     //The considered maximum length of the N-gram 
                     static constexpr uint8_t LM_M_GRAM_LEVEL_MAX = 5u;
@@ -96,15 +96,15 @@ namespace uva {
                     static const string UNKNOWN_WORD_STR = "<unk>";
                     
                     //The default value of the unknown word probability weight
-                    const prob_weight UNK_WORD_LOG_PROB_WEIGHT = -10.0f;
+                    const prob_weight DEFAULT_UNK_WORD_LOG_PROB_WEIGHT = -10.0f;
                 }
 
                 namespace rm {
                     //Define the feature weights delimiter string for the config file
                     static const string RM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
                     //Stores the various supported numbers of RM features
-                    static constexpr size_t SIX_RM_FEATURES = 6;
-                    static constexpr size_t EIGHT_RM_FEATURES = 8;
+                    static constexpr size_t SIX_RM_FEATURES = 6u;
+                    static constexpr size_t EIGHT_RM_FEATURES = 8u;
                     //Stores the maximum number of the reordering model features
                     static constexpr size_t MAX_NUM_RM_FEATURES = EIGHT_RM_FEATURES;
 
