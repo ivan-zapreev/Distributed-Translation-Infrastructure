@@ -34,6 +34,8 @@
 #include "common/utils/file/text_piece_reader.hpp"
 #include "common/utils/string_utils.hpp"
 
+#include "server/server_consts.hpp"
+
 #include "server/common/models/phrase_uid.hpp"
 
 #include "server/lm/proxy/lm_query_proxy.hpp"
@@ -89,7 +91,9 @@ namespace uva {
                              * @param reader the reader to read the data from
                              */
                             tm_basic_builder(const tm_parameters & params, model_type & model, reader_type & reader)
-                            : m_params(params), m_model(model), m_reader(reader), m_lm_query(lm_configurator::allocate_query_proxy()) {
+                            : m_params(params), m_model(model), m_reader(reader),
+                            m_lm_query(lm_configurator::allocate_query_proxy()),
+                            m_tmp_num_words(0) {
 
                             }
 
@@ -241,8 +245,12 @@ namespace uva {
                                     //Compute the target phrase and its uid
                                     const phrase_uid target_uid = get_phrase_uid<true>(target_str);
 
+                                    //ToDo: Use the language model to initialize
+
                                     //Initiate a new target entry
-                                    source_entry->add_translation(m_lm_query, target_str, target_uid, tmp_features_size, tmp_features);
+                                    source_entry->add_translation(target_str, target_uid,
+                                            tmp_features_size, tmp_features,
+                                            m_tmp_num_words, m_tmp_word_ids);
 
                                     //Reduce the counter
                                     count_ref--;
@@ -421,7 +429,7 @@ namespace uva {
                                 }
 
                                 //Set the unk features to the model
-                                m_model.set_unk_entry(m_lm_query, m_params.m_num_unk_features, unk_features);
+                                m_model.set_unk_entry(UNKNOWN_WORD_ID, m_params.m_num_unk_features, unk_features);
                             }
 
                         private:
@@ -435,6 +443,10 @@ namespace uva {
                             reader_type & m_reader;
                             //Stores the reference to the LM query proxy
                             lm_query_proxy & m_lm_query;
+                            //The temporary variable to store the number of words in the target translation phrase
+                            phrase_length m_tmp_num_words;
+                            //The temporary variable to store word ids for the target translation phrase LM word ids
+                            word_uid m_tmp_word_ids[TM_MAX_TARGET_PHRASE_LEN];
                         };
                     }
                 }

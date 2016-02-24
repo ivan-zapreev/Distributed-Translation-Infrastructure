@@ -26,6 +26,7 @@
 #ifndef TM_TARGET_ENTRY_HPP
 #define TM_TARGET_ENTRY_HPP
 
+#include <cstring>
 #include <string>
 
 #include "common/utils/exceptions.hpp"
@@ -72,34 +73,49 @@ namespace uva {
                              */
                             tm_target_entry_temp()
                             : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase(""),
-                            m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total(UNKNOWN_LOG_PROB_WEIGHT) {
+                            m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total(UNKNOWN_LOG_PROB_WEIGHT),
+                            m_num_words(0), m_word_ids(NULL){
                             }
 
                             /**
                              * The basic destructor
                              */
                             ~tm_target_entry_temp() {
-                                //Nothing to clean everything is stack allocated.
+                                //Deallocate the word ids
+                                if( m_word_ids != NULL ) {
+                                    delete[] m_word_ids;
+                                    m_word_ids = NULL;
+                                }
                             }
 
                             /**
                              * Allows to set the target phrase and its id
-                             * @param lm_query the reference to the LM query
                              * @param source_uid store the source uid for being combined with the
                              *                   target phrase into the source/target pair uid
                              * @param target_phrase the target phrase
                              * @param target_uid the uid of the target phrase
+                             * @param num_features the number of features to be set, already in the log10 scale
+                             * @param features the weights to be set into the entry
+                             * @param num_words the number of words in the target translation
+                             * @param word_ids the LM word ids for the target phrase 
                              */
-                            inline void set_source_target(lm_query_proxy & lm_query,
-                                    const phrase_uid source_uid,
-                                    const string & target_phrase, const phrase_uid target_uid) {
+                            inline void set_data(const phrase_uid source_uid,
+                                    const string & target_phrase, const phrase_uid target_uid,
+                                    const size_t num_features, const float * features,
+                                    const phrase_length num_words, const word_uid * word_ids) {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;
 
                                 //Compute and store the source/target phrase uid
                                 m_st_uid = combine_phrase_uids(source_uid, target_uid);
-                                
-                                //ToDo: obtain the word ids from the LM query
+
+                                //Set the features 
+                                set_features(num_features, features);
+
+                                //Store the number of words and the word ids
+                                m_num_words = num_words;
+                                m_word_ids = new word_uid[m_num_words];
+                                memcpy(m_word_ids, word_ids, m_num_words * sizeof(word_uid));
 
                                 LOG_DEBUG1 << "Adding the source/target (" << source_uid << "/"
                                         << target_uid << ") entry with id" << m_st_uid << END_LOG;
@@ -121,7 +137,7 @@ namespace uva {
                             inline const float get_total() const {
                                 return m_total;
                             }
-                            
+
                             /**
                              * Allows to get the value of the third feature which is the log10(p(e|f))
                              * @return  the value of the third feature which is the log10(p(e|f))
@@ -129,7 +145,7 @@ namespace uva {
                             inline const float get_t_c_s() const {
                                 return m_t_cond_s;
                             }
-                            
+
                             /**
                              * This method allows to get the
                              * @return an array of word ids of the target phrase, the length must be equal to LM_QUERY_LENGTH_MAX
@@ -137,6 +153,8 @@ namespace uva {
                             inline const word_uid* get_target_word_ids() const {
                                 return NULL;
                             }
+
+                        protected:
 
                             /**
                              * Allows to set the weights into the target entry
@@ -175,6 +193,10 @@ namespace uva {
                             float m_t_cond_s;
                             //Stores the total weight of the entity
                             float m_total;
+                            //Stores the number of words in the translation, maximum should be TM_MAX_TARGET_PHRASE_LEN
+                            phrase_length m_num_words;
+                            //Stores the target phrase Language model word ids 
+                            word_uid * m_word_ids;
                         };
 
                         template<uint8_t num_features>

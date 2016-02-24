@@ -136,15 +136,16 @@ namespace uva {
 
                             /**
                              * Allows to add a new translation to the source entry for the given target phrase
-                             * @param lm_query the reference to the LM query
                              * @param target the target phrase string 
                              * @param target_uid the uid of the target phrase
                              * @param num_features the number of features in the next array
                              * @param weights the features to put into the entry
+                             * @param num_words the number of words in the target translation
+                             * @param word_ids the LM word ids for the target phrase 
                              */
-                            inline void add_translation(lm_query_proxy & lm_query, const string & target,
-                                    const phrase_uid target_uid,
-                                    const size_t num_features, const feature_array features) {
+                            inline void add_translation(const string & target, const phrase_uid target_uid,
+                                    const size_t num_features, const feature_array features,
+                                    const phrase_length num_words, const word_uid * word_ids) {
                                 //Perform a sanity check
                                 ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
                                         string("Exceeding the source entry capacity: ") + to_string(m_capacity));
@@ -152,11 +153,9 @@ namespace uva {
                                 //Get the next free entry for the target phrase
                                 tm_target_entry & entry = m_targets[m_next_idx++];
 
-                                //Copy the array memory
-                                entry.set_features(num_features, features);
-
                                 //Set the entry's target phrase and its id
-                                entry.set_source_target(lm_query, m_source_uid, target, target_uid);
+                                entry.set_data(m_source_uid, target, target_uid,
+                                        num_features, features, num_words, word_ids);
                             }
 
                             /**

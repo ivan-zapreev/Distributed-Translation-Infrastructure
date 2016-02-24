@@ -76,9 +76,9 @@ namespace uva {
                                     string("The max_source_phrase_len must not be 0!"));
                             ASSERT_CONDITION_THROW((m_max_t_phrase_len == 0),
                                     string("The max_target_phrase_len must not be 0!"));
-                            ASSERT_CONDITION_THROW((m_max_t_phrase_len > lm::LM_MAX_TARGET_PHRASE_LEN),
+                            ASSERT_CONDITION_THROW((m_max_t_phrase_len > tm::TM_MAX_TARGET_PHRASE_LEN),
                                     string("The max_target_phrase_len must not be <= ") +
-                                    to_string(lm::LM_MAX_TARGET_PHRASE_LEN));
+                                    to_string(tm::TM_MAX_TARGET_PHRASE_LEN));
                             ASSERT_CONDITION_THROW((m_pruning_threshold == 0.0),
                                     string("The pruning_threshold must not be 0.0!"));
                             ASSERT_CONDITION_THROW((m_word_penalty == 0.0),
