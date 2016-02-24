@@ -78,7 +78,7 @@ namespace uva {
                     static const string TM_UNKNOWN_TARGET_STR = "<unk>";
 
                     //Stores the unknown source word log probability penalty
-                    static constexpr float UNK_SOURCE_WORD_LOG_PROB = -10.0f;
+                    static constexpr prob_weight UNK_SOURCE_WORD_LOG_PROB = -10.0f;
                 }
 
                 namespace lm {
