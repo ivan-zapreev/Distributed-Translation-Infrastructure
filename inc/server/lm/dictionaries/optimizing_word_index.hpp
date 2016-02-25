@@ -411,8 +411,8 @@ namespace uva {
                             };
                         };
 
-                        typedef optimizing_word_index<basic_word_index> TOptBasicWordIndex;
-                        typedef optimizing_word_index<counting_word_index> TOptCountWordIndex;
+                        typedef optimizing_word_index<basic_word_index> basic_optimizing_word_index;
+                        typedef optimizing_word_index<counting_word_index> counting_optimizing_word_index;
                     }
                 }
             }

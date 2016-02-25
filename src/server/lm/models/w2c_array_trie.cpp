@@ -98,8 +98,8 @@ namespace uva {
                     INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CArrayTrie, basic_word_index);
                     INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CArrayTrie, counting_word_index);
                     INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CArrayTrie, hashing_word_index);
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CArrayTrie, TOptBasicWordIndex);
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CArrayTrie, TOptCountWordIndex);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CArrayTrie, basic_optimizing_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(W2CArrayTrie, counting_optimizing_word_index);
                 }
             }
         }

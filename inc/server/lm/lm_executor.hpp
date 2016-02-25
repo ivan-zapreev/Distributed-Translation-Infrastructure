@@ -101,8 +101,13 @@ namespace uva {
                             while (test_file.get_first_line(line)) {
                                 LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
 
-                                //Query the Trie for the results and log them
-                                query.execute(line);
+                                try {
+                                    //Query the Trie for the results and log them
+                                    query.execute(line);
+                                } catch (Exception & ex) {
+                                    //The query has failed! print an exception and proceed!
+                                    LOG_ERROR << ex.get_message() << END_LOG;
+                                }
                             }
 
                             //Stop the timer

@@ -63,7 +63,7 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace lm {
-                    //Here we have a default word index, see the lm_confgs for the recommended word index information!
+                    //Here we have a default word index, see the lm_consts for the recommended word index information!
                     typedef hashing_word_index lm_word_index;
 
                     //Here we have a default trie type

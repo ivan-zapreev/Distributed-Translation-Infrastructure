@@ -564,8 +564,8 @@ namespace uva {
 
                     typedef W2CArrayTrie<basic_word_index > TW2CArrayTrieBasic;
                     typedef W2CArrayTrie<counting_word_index > TW2CArrayTrieCount;
-                    typedef W2CArrayTrie<TOptBasicWordIndex > TW2CArrayTrieOptBasic;
-                    typedef W2CArrayTrie<TOptCountWordIndex > TW2CArrayTrieOptCount;
+                    typedef W2CArrayTrie<basic_optimizing_word_index > TW2CArrayTrieOptBasic;
+                    typedef W2CArrayTrie<counting_optimizing_word_index > TW2CArrayTrieOptCount;
                     typedef W2CArrayTrie<hashing_word_index > TW2CArrayTrieHashing;
                 }
             }

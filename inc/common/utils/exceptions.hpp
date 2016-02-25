@@ -43,14 +43,15 @@ namespace uva {
 
 #define THROW_EXCEPTION(text) { \
     stringstream msg; \
-    if (Logger::get_reporting_level() >= DebugLevelsEnum::INFO3) { \
+    if (Logger::get_reporting_level() >= DebugLevelsEnum::INFO) { \
         msg << __FILENAME__ << "::" << __FUNCTION__ \
             << "(...) " << __LINE__ << " : " << (text); \
     } else { \
-        msg << (text); \
+        msg << __FILENAME__ << ": " << (text); \
     } \
     throw Exception(msg.str()); \
-    }
+}
+            
 #define THROW_MUST_OVERRIDE() THROW_EXCEPTION("Must be overridden in the sub class!")
 #define THROW_MUST_NOT_CALL() THROW_EXCEPTION("Must not be called, is not needed!")
 #define THROW_NOT_IMPLEMENTED() THROW_EXCEPTION("This functionality is not yet implemented!")

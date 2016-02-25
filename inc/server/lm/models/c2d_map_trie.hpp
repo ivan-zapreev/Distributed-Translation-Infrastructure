@@ -350,8 +350,8 @@ namespace uva {
                     typedef C2DMapTrie<basic_word_index > TC2DMapTrieBasic;
                     typedef C2DMapTrie<counting_word_index > TC2DMapTrieCount;
                     typedef C2DMapTrie<hashing_word_index > TC2DMapTrieHashing;
-                    typedef C2DMapTrie<TOptBasicWordIndex > TC2DMapTrieOptBasic;
-                    typedef C2DMapTrie<TOptCountWordIndex > TC2DMapTrieOptCount;
+                    typedef C2DMapTrie<basic_optimizing_word_index > TC2DMapTrieOptBasic;
+                    typedef C2DMapTrie<counting_optimizing_word_index > TC2DMapTrieOptCount;
                 }
             }
         }

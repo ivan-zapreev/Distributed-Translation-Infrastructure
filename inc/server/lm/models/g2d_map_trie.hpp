@@ -294,8 +294,8 @@ namespace uva {
 
                     typedef G2DMapTrie<basic_word_index > TG2DMapTrieBasic;
                     typedef G2DMapTrie<counting_word_index > TG2DMapTrieCount;
-                    typedef G2DMapTrie<TOptBasicWordIndex > TG2DMapTrieOptBasic;
-                    typedef G2DMapTrie<TOptCountWordIndex > TG2DMapTrieOptCount;
+                    typedef G2DMapTrie<basic_optimizing_word_index > TG2DMapTrieOptBasic;
+                    typedef G2DMapTrie<counting_optimizing_word_index > TG2DMapTrieOptCount;
                     typedef G2DMapTrie<hashing_word_index > TG2DMapTrieHashing;
                 }
             }

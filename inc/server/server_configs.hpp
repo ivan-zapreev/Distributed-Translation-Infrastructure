@@ -44,7 +44,7 @@ namespace uva {
                 //Declare the phrase unique identifier type
                 typedef uint64_t phrase_uid;
 
-                //Declare the phrase unique identifier type
+                //Declare the word unique identifier type
                 typedef uint64_t word_uid;
 
                 //The base of the logarithm for stored probabilities/back-off weights

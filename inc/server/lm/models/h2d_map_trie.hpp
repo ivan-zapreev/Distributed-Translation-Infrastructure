@@ -294,8 +294,8 @@ namespace uva {
 
                     typedef H2DMapTrie<basic_word_index > TH2DMapTrieBasic;
                     typedef H2DMapTrie<counting_word_index > TH2DMapTrieCount;
-                    typedef H2DMapTrie<TOptBasicWordIndex > TH2DMapTrieOptBasic;
-                    typedef H2DMapTrie<TOptCountWordIndex > TH2DMapTrieOptCount;
+                    typedef H2DMapTrie<basic_optimizing_word_index > TH2DMapTrieOptBasic;
+                    typedef H2DMapTrie<counting_optimizing_word_index > TH2DMapTrieOptCount;
                     typedef H2DMapTrie<hashing_word_index > TH2DMapTrieHashing;
                 }
             }

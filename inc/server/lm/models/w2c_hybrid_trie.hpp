@@ -317,8 +317,8 @@ namespace uva {
 
                     typedef W2CHybridTrie<basic_word_index> TW2CHybridTrieBasic;
                     typedef W2CHybridTrie<counting_word_index> TW2CHybridTrieCount;
-                    typedef W2CHybridTrie<TOptBasicWordIndex> TW2CHybridTrieOptBasic;
-                    typedef W2CHybridTrie<TOptCountWordIndex> TW2CHybridTrieOptCount;
+                    typedef W2CHybridTrie<basic_optimizing_word_index> TW2CHybridTrieOptBasic;
+                    typedef W2CHybridTrie<counting_optimizing_word_index> TW2CHybridTrieOptCount;
                     typedef W2CHybridTrie<hashing_word_index> TW2CHybridTrieHashing;
                 }
             }

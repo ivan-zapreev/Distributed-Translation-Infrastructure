@@ -478,8 +478,8 @@ namespace uva {
 
                     typedef C2WArrayTrie<basic_word_index > TC2WArrayTrieBasic;
                     typedef C2WArrayTrie<counting_word_index > TC2WArrayTrieCount;
-                    typedef C2WArrayTrie<TOptBasicWordIndex > TC2WArrayTrieOptBasic;
-                    typedef C2WArrayTrie<TOptCountWordIndex > TC2WArrayTrieOptCount;
+                    typedef C2WArrayTrie<basic_optimizing_word_index > TC2WArrayTrieOptBasic;
+                    typedef C2WArrayTrie<counting_optimizing_word_index > TC2WArrayTrieOptCount;
                     typedef C2WArrayTrie<hashing_word_index > TC2WArrayTrieHashing;
                 }
             }

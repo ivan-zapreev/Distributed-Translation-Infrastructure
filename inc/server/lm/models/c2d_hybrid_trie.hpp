@@ -340,8 +340,8 @@ namespace uva {
 
                     typedef C2DHybridTrie< basic_word_index > TC2DHybridTrieBasic;
                     typedef C2DHybridTrie< counting_word_index > TC2DHybridTrieCount;
-                    typedef C2DHybridTrie< TOptBasicWordIndex > TC2DHybridTrieOptBasic;
-                    typedef C2DHybridTrie< TOptCountWordIndex > TC2DHybridTrieOptCount;
+                    typedef C2DHybridTrie< basic_optimizing_word_index > TC2DHybridTrieOptBasic;
+                    typedef C2DHybridTrie< counting_optimizing_word_index > TC2DHybridTrieOptCount;
                     typedef C2DHybridTrie< hashing_word_index > TC2DHybridTrieHashing;
                 }
             }

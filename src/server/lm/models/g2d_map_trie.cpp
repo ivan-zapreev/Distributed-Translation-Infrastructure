@@ -104,8 +104,8 @@ namespace uva {
                     INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, basic_word_index);
                     INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, counting_word_index);
                     INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, hashing_word_index);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, TOptBasicWordIndex);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, TOptCountWordIndex);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, basic_optimizing_word_index);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(G2DMapTrie, counting_optimizing_word_index);
                 }
             }
         }

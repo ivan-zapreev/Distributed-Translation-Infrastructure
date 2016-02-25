@@ -87,47 +87,54 @@ namespace uva {
                                 //Parse the query line into tokens and get the word ids thereof
                                 set_tokens_and_word_ids(line);
 
-                                //Set the words data into the query object
-                                m_query.set_data<m_is_ctx>(m_num_words, m_word_ids);
+                                //Check that there was something on the line!
+                                if (m_num_words > 0) {
+                                    //Set the words data into the query object
+                                    m_query.set_data<m_is_ctx>(m_num_words, m_word_ids);
 
-                                //Compute the maximum to consider m-gram level
-                                const phrase_length max_m_gram_level = std::min<phrase_length>(m_num_words, LM_M_GRAM_LEVEL_MAX);
+                                    //Compute the maximum to consider m-gram level
+                                    const phrase_length max_m_gram_level = std::min<phrase_length>(m_num_words, LM_M_GRAM_LEVEL_MAX);
 
-                                //Initialize the begin and end word indexes
-                                phrase_length begin_word_idx = m_query.get_query_begin_word_idx();
-                                phrase_length end_word_idx = begin_word_idx + max_m_gram_level - 1;
+                                    //Initialize the begin and end word indexes
+                                    phrase_length begin_word_idx = m_query.get_query_begin_word_idx();
+                                    phrase_length end_word_idx = begin_word_idx + max_m_gram_level - 1;
 
-                                //Set the m-gram values for the first query execution
-                                m_query.set_word_indxes(begin_word_idx, begin_word_idx, end_word_idx);
+                                    //Set the m-gram values for the first query execution
+                                    m_query.set_word_indxes(begin_word_idx, begin_word_idx, end_word_idx);
 
-                                //Execute the first part of the query
-                                m_trie.execute(m_query);
-
-                                //Report the partial results, and update the total
-                                get_report_interm_results(begin_word_idx, begin_word_idx, end_word_idx);
-
-                                //Now do the sliding window and compute more probabilities,
-                                //Note that if the end_word_idx is smaller than the query
-                                //last word idx then it means that:
-                                //      (max_m_gram_level == LM_M_GRAM_LEVEL_MAX)
-                                //and there is still m-grams to compute
-                                while (end_word_idx < m_query.get_query_end_word_idx()) {
-                                    //Slide the window one step forward
-                                    begin_word_idx++;
-                                    end_word_idx++;
-
-                                    //Set the window value inside, this time we need a single probability and not the joint
-                                    m_query.set_word_indxes(begin_word_idx, end_word_idx);
-
-                                    //Execute the query
+                                    //Execute the first part of the query
                                     m_trie.execute(m_query);
 
-                                    //Report the partial result, and update the total
-                                    get_report_interm_results(begin_word_idx, end_word_idx, end_word_idx);
+                                    //Report the partial results, and update the total
+                                    get_report_interm_results(begin_word_idx, begin_word_idx, end_word_idx);
+
+                                    //Now do the sliding window and compute more probabilities,
+                                    //Note that if the end_word_idx is smaller than the query
+                                    //last word idx then it means that:
+                                    //      (max_m_gram_level == LM_M_GRAM_LEVEL_MAX)
+                                    //and there is still m-grams to compute
+                                    while (end_word_idx < m_query.get_query_end_word_idx()) {
+                                        //Slide the window one step forward
+                                        begin_word_idx++;
+                                        end_word_idx++;
+
+                                        //Set the window value inside, this time we need a single probability and not the joint
+                                        m_query.set_word_indxes(begin_word_idx, end_word_idx);
+
+                                        //Execute the query
+                                        m_trie.execute(m_query);
+
+                                        //Report the partial result, and update the total
+                                        get_report_interm_results(begin_word_idx, end_word_idx, end_word_idx);
+                                    }
+
+                                    //Report the total result
+                                    report_final_result();
+                                } else {
+                                    LOG_WARNING << "Got an empty line query request: Ignoring!" << END_LOG;
                                 }
 
-                                //Report the total result
-                                report_final_result();
+                                LOG_RESULT << "-------------------------------------------" << END_LOG;
                             }
 
                         protected:
@@ -168,8 +175,6 @@ namespace uva {
                                         << " ) ) = " << SSTR(m_joint_prob) << END_LOG;
                                 LOG_INFO << "  Prob( " << gram_str << " ) = "
                                         << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_joint_prob)) << END_LOG;
-
-                                LOG_RESULT << "-------------------------------------------" << END_LOG;
                             }
 
                             /**
@@ -234,13 +239,7 @@ namespace uva {
                                 LOG_DEBUG1 << "Getting word uids for phrase: ___" << phrase << "___" << END_LOG;
 
                                 //Read the tokens one by one backwards and decrement the index
-                                while (phrase.get_first_space(m_tokens[m_num_words])) {
-                                    //Check that we do not get too many words!
-                                    ASSERT_SANITY_THROW((m_num_words >= LM_MAX_QUERY_LEN),
-                                            string("The m-gram query: ___") + phrase.str() +
-                                            string("___ is too long, the maximum length is: ") +
-                                            to_string(LM_MAX_QUERY_LEN));
-
+                                while ((m_num_words < LM_MAX_QUERY_LEN) && phrase.get_first_space(m_tokens[m_num_words])) {
                                     //Obtain the word id from the word index
                                     m_word_ids[m_num_words] = m_word_idx.get_word_id(m_tokens[m_num_words]);
 
@@ -250,6 +249,12 @@ namespace uva {
                                     //Increase the number of read words
                                     m_num_words++;
                                 }
+
+                                //Check that we do not get too many words!
+                                ASSERT_CONDITION_THROW(phrase.has_more(),
+                                        string("The m-gram query: ___") + phrase.str() +
+                                        string("___ is too long, the maximum length is: ") +
+                                        to_string(LM_MAX_QUERY_LEN));
                             };
 
                         private:

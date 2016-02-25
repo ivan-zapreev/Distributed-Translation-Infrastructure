@@ -209,63 +209,68 @@ namespace uva {
                  */
                 template<const char delim, const uint8_t delim_len = 1 >
                 inline bool get_first(TextPieceReader& out) {
-                    //The next piece begins where we stopped
-                    const char * out_m_begin_ptr = m_rest_ptr;
-
-                    LOG_DEBUG3 << SSTR(static_cast<const void *> (out_m_begin_ptr)) << END_LOG;
-
-                    //Find the sub-sequence
-                    const char * char_ptr = find_first_subseq<delim, delim_len>();
-
-                    LOG_DEBUG3 << "Forward searching for the character got: "
-                            << SSTR(static_cast<const void *> (char_ptr)) << END_LOG;
-
-                    //The found piece length is first zero
-                    size_t out_m_len = 0;
-
-                    //Check if we found something
-                    if (char_ptr != NULL) {
-                        //Compute the length
-                        size_t found_piece_length = char_ptr - m_rest_ptr;
-
-                        LOG_DEBUG3 << "The substring length is " << SSTR(found_piece_length) << END_LOG;
-
-                        //Store the pointer to the remaining text piece
-                        m_rest_ptr = char_ptr + 1;
-                        //Store the remaining length
-                        m_rest_len -= (found_piece_length + 1);
-
-                        LOG_DEBUG3 << "Resetting m_rest_ptr = "
-                                << SSTR(static_cast<const void *> (m_rest_ptr))
-                                << ", m_rest_len = " << m_rest_len << END_LOG;
-
-                        //Set the resulting length, note that the delimiter can be longer than one character
-                        out_m_len = found_piece_length - (delim_len - 1);
-
-                        //If we are looking for end of line, for Windows-format strings, remove the '\r' as well
-                        if ((delim == '\n') && found_piece_length && (out_m_begin_ptr[found_piece_length - 1]) == '\r') {
-                            out_m_len--;
-                            LOG_DEBUG3 << "A \\\\r detected, resetting out_m_len = " << out_m_len << END_LOG;
-                        }
+                    //If there is no remaining length or the pointer is NULL then return false
+                    if (!m_rest_len || (m_rest_ptr == NULL)) {
+                        return false;
                     } else {
-                        //If the pointer is not found then the length if the entire remaining length
-                        out_m_len = m_rest_len;
+                        //The next piece begins where we stopped
+                        const char * out_m_begin_ptr = m_rest_ptr;
 
-                        //If the remaining length is zero then return false as there is nothing to return
-                        if (!m_rest_len) {
-                            return false;
+                        LOG_DEBUG3 << SSTR(static_cast<const void *> (out_m_begin_ptr)) << END_LOG;
+
+                        //Find the sub-sequence
+                        const char * char_ptr = find_first_subseq<delim, delim_len>();
+
+                        LOG_DEBUG3 << "Forward searching for the character got: "
+                                << SSTR(static_cast<const void *> (char_ptr)) << END_LOG;
+
+                        //The found piece length is first zero
+                        size_t out_m_len = 0;
+
+                        //Check if we found something
+                        if (char_ptr != NULL) {
+                            //Compute the length
+                            size_t found_piece_length = char_ptr - m_rest_ptr;
+
+                            LOG_DEBUG3 << "The substring length is " << SSTR(found_piece_length) << END_LOG;
+
+                            //Store the pointer to the remaining text piece
+                            m_rest_ptr = char_ptr + 1;
+                            //Store the remaining length
+                            m_rest_len -= (found_piece_length + 1);
+
+                            LOG_DEBUG3 << "Resetting m_rest_ptr = "
+                                    << SSTR(static_cast<const void *> (m_rest_ptr))
+                                    << ", m_rest_len = " << m_rest_len << END_LOG;
+
+                            //Set the resulting length, note that the delimiter can be longer than one character
+                            out_m_len = found_piece_length - (delim_len - 1);
+
+                            //If we are looking for end of line, for Windows-format strings, remove the '\r' as well
+                            if ((delim == '\n') && found_piece_length && (out_m_begin_ptr[found_piece_length - 1]) == '\r') {
+                                out_m_len--;
+                                LOG_DEBUG3 << "A \\\\r detected, resetting out_m_len = " << out_m_len << END_LOG;
+                            }
                         } else {
-                            //If there was something left then now we read it all.
-                            //Set the remaining length to zero, as there is nothing left.
-                            m_rest_len = 0;
+                            //If the pointer is not found then the length if the entire remaining length
+                            out_m_len = m_rest_len;
+
+                            //If the remaining length is zero then return false as there is nothing to return
+                            if (!m_rest_len) {
+                                return false;
+                            } else {
+                                //If there was something left then now we read it all.
+                                //Set the remaining length to zero, as there is nothing left.
+                                m_rest_len = 0;
+                            }
                         }
+
+                        //Set the return data
+                        out.set(out_m_begin_ptr, out_m_len);
+
+                        //Return true as we successfully found a delimited substring
+                        return true;
                     }
-
-                    //Set the return data
-                    out.set(out_m_begin_ptr, out_m_len);
-
-                    //Return true as we successfully found a delimited substring
-                    return true;
                 }
 
                 /**
@@ -307,7 +312,7 @@ namespace uva {
 
                             LOG_DEBUG4 << "The delimiter '" << delim << "' was found, out_m_len = " << out_m_len
                                     << ", m_rest_ptr = " << SSTR(static_cast<const void *> (m_rest_ptr)) << END_LOG;
-                            
+
                             //The remaining length will be 
                             m_rest_len = m_rest_len - (out_m_len + 1);
                             //The remaining pointer is the found one plus one
@@ -315,7 +320,7 @@ namespace uva {
 
                             LOG_DEBUG4 << "Setting the original reader, m_rest_len = " << m_rest_len
                                     << ", m_rest_ptr = " << SSTR(static_cast<const void *> (m_rest_ptr)) << END_LOG;
-                            
+
                             //Return true as the delimiter was found
                             return true;
                         } else {

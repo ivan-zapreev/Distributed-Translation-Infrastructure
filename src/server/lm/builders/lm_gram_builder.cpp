@@ -187,8 +187,8 @@ namespace uva {
                 template class lm_gram_builder<basic_word_index, LEVEL, IS_MULT_WEIGHT>; \
                 template class lm_gram_builder<counting_word_index, LEVEL, IS_MULT_WEIGHT>; \
                 template class lm_gram_builder<hashing_word_index, LEVEL, IS_MULT_WEIGHT>; \
-                template class lm_gram_builder<TOptBasicWordIndex, LEVEL, IS_MULT_WEIGHT>; \
-                template class lm_gram_builder<TOptCountWordIndex, LEVEL, IS_MULT_WEIGHT>;
+                template class lm_gram_builder<basic_optimizing_word_index, LEVEL, IS_MULT_WEIGHT>; \
+                template class lm_gram_builder<counting_optimizing_word_index, LEVEL, IS_MULT_WEIGHT>;
 
 #define INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL(LEVEL) \
                 INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL_WEIGHT(LEVEL, true); \
