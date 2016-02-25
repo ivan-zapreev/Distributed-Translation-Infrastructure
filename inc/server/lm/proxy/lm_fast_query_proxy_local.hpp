@@ -141,7 +141,7 @@ namespace uva {
                              * @return the probability value
                              */
                             inline prob_weight execute(const phrase_length num_words, const word_uid * word_ids,
-                                    phrase_length min_level) {
+                                    phrase_length & min_level) {
                                 //Re-initialize the joint prob reault with zero
                                 m_joint_prob = 0.0;
 
@@ -190,6 +190,9 @@ namespace uva {
                                     get_interm_results(begin_word_idx, end_word_idx, end_word_idx);
                                 }
 
+                                //Set the min level to the current maximum
+                                min_level = max_m_gram_level;
+                                
                                 //Return the final result;
                                 return m_joint_prob;
                             }
