@@ -36,7 +36,7 @@
 #include "server/lm/lm_parameters.hpp"
 #include "server/lm/lm_configurator.hpp"
 
-#include "server/lm/proxy/lm_query_proxy.hpp"
+#include "server/lm/proxy/lm_fast_query_proxy.hpp"
 
 #include "server/lm/dictionaries/basic_word_index.hpp"
 #include "server/lm/dictionaries/counting_word_index.hpp"
@@ -46,14 +46,15 @@
 #include "server/lm/builders/lm_basic_builder.hpp"
 #include "server/lm/builders/lm_gram_builder.hpp"
 
-#include "server/lm/mgrams/query_m_gram.hpp"
-#include "server/lm/models/simple_m_gram_query.hpp"
+#include "server/lm/models/m_gram_query.hpp"
 
 using namespace std;
 using namespace uva::utils::file;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::monitore;
+
+using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::lm::dictionary;
 using namespace uva::smt::bpbd::server::lm::arpa;
 using namespace uva::smt::bpbd::server::lm::proxy;
@@ -72,11 +73,6 @@ namespace uva {
                             //Stores the language model specific parameters
                             lm_parameters m_lm_params;
 
-                            //Stores true if the cumulative probability is to be computed
-                            //for each M-gram, otherwise false, and then we only compute
-                            //one conditional probability for this M-gram
-                            bool m_is_cum_prob;
-
                             //The test file name
                             string m_query_file_name;
                         } lm_exec_params;
@@ -85,16 +81,16 @@ namespace uva {
                          * Allows to read and execute test queries from the given file on the given trie.
                          * @param test_file the file containing the N-Gram (5-Gram queries)
                          */
-                        template<bool is_cumulative, typename TFileReaderQuery>
+                        template<typename TFileReaderQuery>
                         static void execute_queries(TFileReaderQuery &test_file) {
                             //Declare time variables for CPU times in seconds
                             double start_time = 0.0, end_time = 0.0;
-                            
+
                             //Will store the read line (word1 word2 word3 word4 word5)
                             TextPieceReader line;
 
                             //Get the query executor proxy object
-                            lm_query_proxy & query = lm_configurator::allocate_query_proxy();
+                            lm_slow_query_proxy & query = lm_configurator::allocate_slow_query_proxy();
 
                             LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
 
@@ -106,14 +102,14 @@ namespace uva {
                                 LOG_DEBUG << "Got query line [ " << line.str() << " ]" << END_LOG;
 
                                 //Query the Trie for the results and log them
-                                query.template execute<is_cumulative>(line);
+                                query.execute(line);
                             }
 
                             //Stop the timer
                             end_time = StatisticsMonitor::getCPUTime();
 
                             //Dispose the query
-                            lm_configurator::dispose_query_proxy(query);
+                            lm_configurator::dispose_slow_query_proxy(query);
 
                             LOG_USAGE << "Total query execution time is " << (end_time - start_time) << " CPU seconds." << END_LOG;
                         }
@@ -136,18 +132,14 @@ namespace uva {
                             lm_configurator::connect(params.m_lm_params);
 
                             //Execute the queries
-                            if (params.m_is_cum_prob) {
-                                execute_queries<true>(test_file);
-                            } else {
-                                execute_queries<false>(test_file);
-                            }
+                            execute_queries(test_file);
 
                             //Deallocate the trie
                             LOG_USAGE << "Cleaning up memory ..." << END_LOG;
-                            
+
                             //Close the test file
                             test_file.close();
- 
+
                             //Disconnect from the trie
                             lm_configurator::disconnect();
                         }

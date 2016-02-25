@@ -33,7 +33,8 @@
 
 #include "server/lm/proxy/lm_proxy.hpp"
 #include "server/lm/proxy/lm_proxy_local.hpp"
-#include "server/lm/proxy/lm_query_proxy.hpp"
+#include "server/lm/proxy/lm_slow_query_proxy.hpp"
+#include "server/lm/proxy/lm_fast_query_proxy.hpp"
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
@@ -90,19 +91,39 @@ namespace uva {
                          * is to be returned by calling the dispose method.
                          * @return an instance of the query executor.
                          */
-                        static inline lm_query_proxy & allocate_query_proxy() {
-                            LOG_DEBUG2 << "Allocating a new LM query proxy" << END_LOG;
+                        static inline lm_slow_query_proxy & allocate_slow_query_proxy() {
+                            LOG_DEBUG2 << "Allocating a new slow LM query proxy" << END_LOG;
                             
                             //Return the query executor as given by the proxy class
-                            return m_model_proxy->allocate_trie_query_proxy();
+                            return m_model_proxy->allocate_slow_query_proxy();
                         }
 
                         /**
                          * Dispose the previously allocated query object
                          * @param query the query to dispose
                          */
-                        static inline void dispose_query_proxy(lm_query_proxy & query) {
-                            m_model_proxy->dispose_trie_query_proxy(query);
+                        static inline void dispose_slow_query_proxy(lm_slow_query_proxy & query) {
+                            m_model_proxy->dispose_slow_query_proxy(query);
+                        }
+
+                        /**
+                         * Allows to return an instance of the query executor,
+                         * is to be returned by calling the dispose method.
+                         * @return an instance of the query executor.
+                         */
+                        static inline lm_fast_query_proxy & allocate_fast_query_proxy() {
+                            LOG_DEBUG2 << "Allocating a new fast LM query proxy" << END_LOG;
+                            
+                            //Return the query executor as given by the proxy class
+                            return m_model_proxy->allocate_fast_query_proxy();
+                        }
+
+                        /**
+                         * Dispose the previously allocated query object
+                         * @param query the query to dispose
+                         */
+                        static inline void dispose_fast_query_proxy(lm_fast_query_proxy & query) {
+                            m_model_proxy->dispose_fast_query_proxy(query);
                         }
 
                     private:

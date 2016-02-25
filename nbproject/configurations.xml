@@ -4,14 +4,6 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
-      <df name="server">
-        <df name="rm">
-          <in>rm_consts.hpp</in>
-        </df>
-        <df name="tm">
-          <in>tm_consts.hpp</in>
-        </df>
-      </df>
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -41,17 +33,20 @@
             <in>lm_basic_builder.cpp</in>
             <in>lm_gram_builder.cpp</in>
           </df>
+          <df name="mgrams">
+            <in>byte_m_gram_id.cpp</in>
+            <in>model_m_gram.cpp</in>
+            <in>query_m_gram.cpp</in>
+          </df>
           <df name="models">
             <in>c2d_hybrid_trie.cpp</in>
             <in>c2d_map_trie.cpp</in>
             <in>c2w_array_trie.cpp</in>
             <in>g2d_map_trie.cpp</in>
             <in>h2d_map_trie.cpp</in>
+            <in>m_gram_query.cpp</in>
             <in>w2c_array_trie.cpp</in>
             <in>w2c_hybrid_trie.cpp</in>
-          </df>
-          <df name="ngrams">
-            <in>byte_m_gram_id.cpp</in>
           </df>
           <in>lm_configurator.cpp</in>
           <in>lm_query.cpp</in>
@@ -122,10 +117,6 @@
           </ccTool>
         </makeTool>
       </makefileType>
-      <item path="inc/server/rm/rm_consts.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/server/tm/tm_consts.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
@@ -192,6 +183,27 @@
         <ccTool flags="1">
         </ccTool>
       </item>
+      <item path="src/server/lm/mgrams/byte_m_gram_id.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/mgrams/model_m_gram.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="src/server/lm/mgrams/query_m_gram.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
       <item path="src/server/lm/models/c2d_hybrid_trie.cpp"
             ex="false"
             tool="1"
@@ -227,6 +239,13 @@
         <ccTool flags="1">
         </ccTool>
       </item>
+      <item path="src/server/lm/models/m_gram_query.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
       <item path="src/server/lm/models/w2c_array_trie.cpp"
             ex="false"
             tool="1"
@@ -235,13 +254,6 @@
         </ccTool>
       </item>
       <item path="src/server/lm/models/w2c_hybrid_trie.cpp"
-            ex="false"
-            tool="1"
-            flavor2="8">
-        <ccTool flags="1">
-        </ccTool>
-      </item>
-      <item path="src/server/lm/ngrams/byte_m_gram_id.cpp"
             ex="false"
             tool="1"
             flavor2="8">

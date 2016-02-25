@@ -80,7 +80,7 @@ namespace uva {
                                     const rm_query_proxy & rm_query)
                             : m_root_state(params), m_stacks(NULL), m_params(params),
                             m_is_stop(is_stop), m_sent_data(sent_data), m_rm_query(rm_query),
-                            m_lm_query(lm_configurator::allocate_query_proxy()),
+                            m_lm_query(lm_configurator::allocate_fast_query_proxy()),
                             m_las_stack_idx(m_sent_data.get_dim() - 1), m_last_exp_stack_idx(-1) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << m_params << END_LOG;
                                 //Instantiate the proper number of stacks, the same number as
@@ -93,7 +93,7 @@ namespace uva {
                              */
                             ~multi_stack() {
                                 //Dispose the language query object
-                                lm_configurator::dispose_query_proxy(m_lm_query);
+                                lm_configurator::dispose_fast_query_proxy(m_lm_query);
                                 //Dispose the stacks
                                 if (m_stacks != NULL) {
                                     delete[] m_stacks;
@@ -161,7 +161,7 @@ namespace uva {
                             const rm_query_proxy & m_rm_query;
 
                             //Sores the language mode query proxy
-                            lm_query_proxy & m_lm_query;
+                            lm_fast_query_proxy & m_lm_query;
 
                             //Stores the last stack index
                             int32_t m_las_stack_idx;

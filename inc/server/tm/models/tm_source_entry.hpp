@@ -34,7 +34,7 @@
 
 #include "server/common/models/phrase_uid.hpp"
 
-#include "server/lm/proxy/lm_query_proxy.hpp"
+#include "server/lm/proxy/lm_fast_query_proxy.hpp"
 
 #include "server/tm/models/tm_target_entry.hpp"
 

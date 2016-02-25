@@ -61,6 +61,10 @@ namespace uva {
                 const static phrase_length M_GRAM_LEVEL_6 = 6u;
                 const static phrase_length M_GRAM_LEVEL_7 = 7u;
                 const static phrase_length M_GRAM_LEVEL_8 = 8u;
+                const static phrase_length M_GRAM_LEVEL_9 = 9u;
+                const static phrase_length M_GRAM_LEVEL_10 = 10u;
+                const static phrase_length M_GRAM_LEVEL_11 = 11u;
+                const static phrase_length M_GRAM_LEVEL_12 = 12u;
             }
         }
     }

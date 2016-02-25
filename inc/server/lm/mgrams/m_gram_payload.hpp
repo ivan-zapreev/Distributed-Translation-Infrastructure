@@ -75,104 +75,77 @@ namespace uva {
                         /**
                          * This class is the base class for all the M-gram classes used
                          */
-                        template<typename WordIndexType>
-                        class m_gram_base {
+                        template<phrase_length MAX_PHRASE_LENGTH, phrase_length MAX_PHRASE_ID_LENGTH>
+                        class phrase_base {
                         public:
                             //Declare the shorthand for the m-gram id type
-                            typedef Byte_M_Gram_Id<word_uid> TM_Gram_Id;
-
-                            //Define the corresponding M-gram id type
-                            typedef m_gram_id::Byte_M_Gram_Id<word_uid> T_M_Gram_Id;
+                            typedef Byte_M_Gram_Id<word_uid> m_gram_id_type;
 
                             /**
                              * The basic constructor, is to be used when the M-gram level
                              * is known beforehand. Allows to set the actual M-gram level
                              * to a concrete value.
-                             * @param word_index the used word index
-                             * @param actual_level the actual level of the m-gram that will be used should be <= M_GRAM_LEVEL_MAX
+                             * @param word_ids the pointer to the word ids array to store
+                             * NOTE: this pointer must remain through out the lifetime of
+                             * the object, unless re-set by the appropriate method
+                             * @param actual_level the actual level of the m-gram that will be used should be <= M_GRAM_LENGTH
                              */
-                            m_gram_base(WordIndexType & word_index, phrase_length actual_level)
-                            : m_word_index(word_index), m_actual_level(actual_level),
-                            m_actual_end_word_idx(actual_level - 1) {
+                            phrase_base(word_uid * word_ids, phrase_length actual_level)
+                            : m_word_ids(word_ids), m_num_words(actual_level),
+                            m_last_word_idx(actual_level - 1) {
                                 //Perform sanity check if needed 
-                                ASSERT_SANITY_THROW((m_actual_level > LM_M_GRAM_LEVEL_MAX),
-                                        string("The provided actual level: ") + std::to_string(m_actual_level) +
-                                        string(" exceeds the maximum level capacity: ") +
-                                        std::to_string(LM_M_GRAM_LEVEL_MAX) + string(" of the T_Base_M_Gram class!"));
+                                ASSERT_SANITY_THROW((m_num_words > MAX_PHRASE_LENGTH),
+                                        string("The provided number of words: ") + std::to_string(m_num_words) +
+                                        string(" exceeds the maximum capacity: ") +
+                                        std::to_string(MAX_PHRASE_LENGTH) + string(" of the T_Base_M_Gram class!"));
 
                                 //Initialize the m-gram id pointer
-                                m_gram_id_ptr = &m_gram_id[0];
+                                m_phrase_id_ptr = &m_phrase_id[0];
                             }
 
                             /**
-                             * The basic constructor, is to be used when the M-gram will
+                             * The basic constructor, is to be used when the phrase will
                              * actual level is not known beforehand - used e.g. in the query
                              * m-gram sub-class. The actual m-gram level is set to be
-                             * undefined. Filling in the M-gram tokens is done elsewhere.
+                             * undefined. Filling in the phrase tokens is done elsewhere.
                              * @param word_index the used word index
                              */
-                            m_gram_base(WordIndexType & word_index)
-                            : m_word_index(word_index), m_actual_level(M_GRAM_LEVEL_UNDEF),
-                            m_actual_end_word_idx(M_GRAM_LEVEL_UNDEF) {
+                            phrase_base()
+                            : m_num_words(0), m_last_word_idx(0) {
                                 //Initialize the m-gram id pointer
-                                m_gram_id_ptr = &m_gram_id[0];
-                            }
-
-                            /**
-                             * Allows to get the word index used in this m-gram
-                             * @return the word index
-                             */
-                            inline WordIndexType & get_word_index() const {
-
-                                return m_word_index;
+                                m_phrase_id_ptr = &m_phrase_id[0];
                             }
 
                             /**
                              * Allows to obtain the actual m-gram level
                              * @return the actual m-gram level
                              */
-                            inline phrase_length get_m_gram_level() const {
-
-                                return m_actual_level;
+                            inline phrase_length get_num_words() const {
+                                return m_num_words;
                             }
 
                             /**
                              * Allows to retrieve the actual end word id of the m-gram
                              * @return the id of the last word
                              */
-                            inline word_uid get_end_word_id() const {
-
-                                return m_word_ids[m_actual_end_word_idx];
+                            inline word_uid get_last_word_id() const {
+                                return m_word_ids[m_last_word_idx];
                             }
 
                             /**
                              * Allows to retrieve the actual begin word index
                              * @return the index of the begin word
                              */
-                            inline phrase_length get_begin_word_idx() const {
-
-                                return m_actual_begin_word_idx;
+                            inline phrase_length get_first_word_idx() const {
+                                return m_first_word_idx;
                             }
 
                             /**
                              * Allows to retrieve the actual end word index
                              * @return the index of the end word
                              */
-                            inline phrase_length get_end_word_idx() const {
-
-                                return m_actual_end_word_idx;
-                            }
-
-                            /**
-                             * Allows to get the address of the given word id cell by word index (number)
-                             * Note the data array storing word ids is continuous.
-                             * @param WORD_IDX the word index, the word number as in the m-gram w1w2w3w4w5
-                             * @return the pointer to the cell storing the word id with the given index
-                             */
-                            template<phrase_length WORD_IDX>
-                            inline const word_uid * get_word_id_ptr() const {
-
-                                return &m_word_ids[WORD_IDX];
+                            inline phrase_length get_last_word_idx() const {
+                                return m_last_word_idx;
                             }
 
                             /**
@@ -181,30 +154,24 @@ namespace uva {
                              * @return the pointer to the first word id element, 
                              */
                             inline const word_uid * word_ids() const {
-
                                 return m_word_ids;
                             }
 
                             /**
-                             * The basic to string conversion operator for the m-gram
-                             */
-                            inline operator string() const {
-
-                                return tokens_to_string<LM_M_GRAM_LEVEL_MAX>(m_tokens, m_actual_begin_word_idx, m_actual_end_word_idx);
-                            };
-
-                            /**
-                             * Allows to retrieve the word id for the given word index
+                             * Allows get the word id for the given word index
                              * @param word_idx the word index
-                             * @return the resulting word id
+                             * @return the word id
                              */
                             inline word_uid operator[](const phrase_length word_idx) const {
+                                ASSERT_SANITY_THROW((word_idx >= MAX_PHRASE_LENGTH),
+                                        string("The provided word index: ") + std::to_string(word_idx) +
+                                        string(" exceeds the maximum: ") + std::to_string(MAX_PHRASE_LENGTH - 1));
 
                                 return m_word_ids[word_idx];
                             };
 
                             /**
-                             * Allows to create a new m-gram id for the sub-m-gram defined by the given of the method template parameters.
+                             * Allows to create a new m-gram id for the sub-hrase defined by the given of the method template parameters.
                              * For the argument reference to the id data pointer the following holds:
                              * a) If there was no memory allocated for the M-gram id then there will be allocated as much
                              * as needed to store the given id.
@@ -215,12 +182,19 @@ namespace uva {
                              *                 ids for the sub-m-gram defined by the template parameters are known and initialized. 
                              * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
                              */
-                            inline uint8_t create_m_gram_id(const phrase_length begin_word_idx, const phrase_length number_of_words, TM_Gram_Id_Value_Ptr & p_m_gram_id) const {
+                            inline uint8_t create_phrase_id(const phrase_length begin_word_idx, const phrase_length number_of_words, TM_Gram_Id_Value_Ptr & p_m_gram_id) const {
                                 LOG_DEBUG << "Computing sub " << SSTR(number_of_words) << "-gram id for the gram "
                                         << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
+                                //Get the end word index for sanity check
+                                phrase_length end_word_idx = begin_word_idx + number_of_words - 1;
+
+                                ASSERT_SANITY_THROW((end_word_idx >= MAX_PHRASE_LENGTH),
+                                        string("The requested m-gram end index: ") + std::to_string(end_word_idx) +
+                                        string(" exceeds the maximum: ") + std::to_string(MAX_PHRASE_LENGTH - 1));
+
                                 //Create the M-gram id from the word ids.
-                                uint8_t len_bytes = T_M_Gram_Id::create_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, p_m_gram_id);
+                                uint8_t len_bytes = m_gram_id_type::create_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, p_m_gram_id);
 
                                 //Log the result
                                 LOG_DEBUG << "Allocated " << number_of_words << "-gram id is: " << (void*) p_m_gram_id
@@ -230,7 +204,7 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to create a new m-gram id for the sub-m-gram defined by the given of the method template parameters.
+                             * Allows to create a new m-gram id for the sub-phrase defined by the given of the method template parameters.
                              * For the argument reference to the id data pointer the following holds:
                              * a) If there was no memory allocated for the M-gram id then there will be allocated as much
                              * as needed to store the given id.
@@ -241,46 +215,64 @@ namespace uva {
                              *                 ids for the sub-m-gram defined by the template parameters are known and initialized. 
                              * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
                              */
-                            inline const TM_Gram_Id_Value_Ptr get_m_gram_id_ref(const phrase_length begin_word_idx, const phrase_length number_of_words, uint8_t & len_bytes) {
+                            inline const TM_Gram_Id_Value_Ptr get_phrase_id_ref(const phrase_length begin_word_idx, const phrase_length number_of_words, uint8_t & len_bytes) {
                                 LOG_DEBUG << "Computing sub " << SSTR(number_of_words) << "-gram id for the gram "
                                         << "defined by the first word indexes: " << SSTR(begin_word_idx) << END_LOG;
 
+                                //Get the end word index for sanity check
+                                phrase_length end_word_idx = begin_word_idx + number_of_words - 1;
+
+                                ASSERT_SANITY_THROW((end_word_idx >= MAX_PHRASE_LENGTH),
+                                        string("The requested m-gram end index: ") + std::to_string(end_word_idx) +
+                                        string(" exceeds the maximum: ") + std::to_string(MAX_PHRASE_LENGTH - 1));
+
                                 //Create the M-gram id from the word ids.
-                                len_bytes = T_M_Gram_Id::compute_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, m_gram_id_ptr);
+                                len_bytes = m_gram_id_type::compute_m_gram_id(&m_word_ids[begin_word_idx], number_of_words, m_phrase_id_ptr);
 
                                 //Log the result
                                 LOG_DEBUG << "Initialized a new " << number_of_words << "-gram id of byte length: " << SSTR(len_bytes) << END_LOG;
 
-                                return m_gram_id_ptr;
+                                return m_phrase_id_ptr;
                             }
 
                         protected:
-                            //Stores the m-gram tokens
-                            TextPieceReader m_tokens[LM_M_GRAM_LEVEL_MAX];
 
-                            //The data structure to store the N-gram word ids
-                            word_uid m_word_ids[LM_M_GRAM_LEVEL_MAX] = {};
+                            /**
+                             * Allows to set the pointer to the word ids
+                             * @param word_ids the pointer to the void ids
+                             * @param num_words the number of words in the array
+                             */
+                            void set_word_ids(const phrase_length num_words, const word_uid * word_ids) {
+                                m_word_ids = word_ids;
+                                m_num_words = num_words;
+                                m_last_word_idx = m_num_words - 1;
 
-                            //Stores the reference to the used word index
-                            WordIndexType & m_word_index;
+                                ASSERT_SANITY_THROW(((m_num_words < M_GRAM_LEVEL_1) ||
+                                        (m_num_words > MAX_PHRASE_LENGTH)),
+                                        string("A broken N-gram query, level: ") +
+                                        to_string(m_num_words));
+                            }
+
+                        private:
+                            //Stores the pointer to the word ids array
+                            const word_uid * m_word_ids;
 
                             //Stores the actual m-gram level, the number of meaningful elements in the tokens, the value of m for the m-gram
-                            uint32_t m_actual_level;
+                            phrase_length m_num_words;
 
-                            //Declare the m-gram id container
-                            DECLARE_STACK_GRAM_ID(TM_Gram_Id, m_gram_id, LM_M_GRAM_LEVEL_MAX);
-                            //Declare the m-gram id pointer
-                            TM_Gram_Id_Value_Ptr m_gram_id_ptr;
+                            //Declare the m-gram id container, note that we do not make an id for more than LM_M_GRAM_LEVEL_MAX elements!
+                            DECLARE_STACK_GRAM_ID(m_gram_id_type, m_phrase_id, MAX_PHRASE_ID_LENGTH);
+                            //Declare the phrase's m-gram id pointer
+                            TM_Gram_Id_Value_Ptr m_phrase_id_ptr;
 
                             //These variables store the actual begin and end word index
-                            //for all the words of this M-gram stored in the internal arrays
-                            constexpr static phrase_length m_actual_begin_word_idx = 0;
-                            phrase_length m_actual_end_word_idx;
+                            //for all the words of this phrase stored in the internal arrays
+                            constexpr static phrase_length m_first_word_idx = 0;
+                            phrase_length m_last_word_idx;
                         };
 
-                        template<typename WordIndexType>
-                        constexpr phrase_length m_gram_base<WordIndexType>::m_actual_begin_word_idx;
-
+                        template<phrase_length MAX_M_GRAM_LENGTH, phrase_length MAX_M_GRAM_ID_LENGTH>
+                        constexpr phrase_length phrase_base<MAX_M_GRAM_LENGTH, MAX_M_GRAM_ID_LENGTH>::m_first_word_idx;
                     }
                 }
             }

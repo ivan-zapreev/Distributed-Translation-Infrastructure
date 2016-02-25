@@ -33,7 +33,7 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/hashing_utils.hpp"
 
-#include "server/lm/proxy/lm_query_proxy.hpp"
+#include "server/lm/proxy/lm_fast_query_proxy.hpp"
 
 #include "server/common/models/phrase_uid.hpp"
 

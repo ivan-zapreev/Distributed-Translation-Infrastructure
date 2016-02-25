@@ -59,13 +59,13 @@ namespace uva {
 
                         template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
                         lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::lm_gram_builder(const lm_parameters & params, WordIndexType & word_index, typename TAddGramFunct<WordIndexType>::func add_garm_func)
-                        : m_params(params), m_add_garm_func(add_garm_func), m_token(), m_m_gram(word_index, CURR_LEVEL) {
+                        : m_params(params), m_word_idx(word_index), m_add_garm_func(add_garm_func), m_token(), m_m_gram(CURR_LEVEL) {
                             LOG_DEBUG2 << "Constructing ARPANGramBuilder(" << CURR_LEVEL << ", trie)" << END_LOG;
                         }
 
                         template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
                         lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::lm_gram_builder(const lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>& orig)
-                        : m_params(orig.m_params), m_add_garm_func(orig.m_add_garm_func), m_token(), m_m_gram(orig.m_m_gram.get_word_index(), CURR_LEVEL) {
+                        : m_params(orig.m_params), m_word_idx(orig.m_word_idx), m_add_garm_func(orig.m_add_garm_func), m_token(), m_m_gram(CURR_LEVEL) {
                         }
 
                         template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
@@ -162,10 +162,10 @@ namespace uva {
                             //First tokenize as a pattern "prob \t gram \t back-off"
                             if (parse_to_gram(line)) {
                                 //Prepare the N-gram and for being added to the trie
-                                m_m_gram.prepare_for_adding();
+                                m_m_gram.template prepare_for_adding<WordIndexType>(m_word_idx);
 
                                 LOG_DEBUG << "Adding a " << SSTR(CURR_LEVEL) << "-Gram "
-                                        << (string) m_m_gram << " to the Trie" << END_LOG;
+                                        << m_m_gram << " to the Trie" << END_LOG;
 
                                 //Add the obtained N-gram data to the Trie
                                 m_add_garm_func(m_m_gram);

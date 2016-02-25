@@ -36,12 +36,7 @@
 #include "common/utils/exceptions.hpp"
 
 #include "server/common/models/phrase_uid.hpp"
-
-#include "server/lm/mgrams/m_gram_payload.hpp"
-#include "server/lm/mgrams/m_gram_id.hpp"
-#include "server/lm/dictionaries/basic_word_index.hpp"
-#include "server/lm/dictionaries/counting_word_index.hpp"
-#include "server/lm/dictionaries/optimizing_word_index.hpp"
+#include "m_gram_payload.hpp"
 
 using namespace uva::smt::bpbd::server::common::models;
 
@@ -51,17 +46,17 @@ namespace uva {
             namespace server {
                 namespace lm {
                     namespace m_grams {
+                        
+                        //Make local constant declarations for the sake of brevity
+                        static constexpr phrase_length QUERY_M_GRAM_MAX_LEN = LM_MAX_QUERY_LEN;
 
                         /**
                          * This class is used to represent the N-Gram that will be queried against the language model.
                          */
-                        template<typename WordIndexType>
-                        class query_m_gram : public m_gram_base<WordIndexType> {
+                        class query_m_gram : public phrase_base<QUERY_M_GRAM_MAX_LEN, LM_M_GRAM_LEVEL_MAX> {
                         public:
-                            //Define the corresponding M-gram id type
-                            typedef m_gram_id::Byte_M_Gram_Id<word_uid> T_M_Gram_Id;
                             //Define the base class type
-                            typedef m_gram_base<WordIndexType> BASE;
+                            typedef phrase_base<QUERY_M_GRAM_MAX_LEN, LM_M_GRAM_LEVEL_MAX> BASE;
 
                             /**
                              * The basic constructor, is to be used when the M-gram will
@@ -70,8 +65,7 @@ namespace uva {
                              * undefined. Filling in the M-gram tokens is done elsewhere.
                              * @param word_index the used word index
                              */
-                            query_m_gram(WordIndexType & word_index)
-                            : m_gram_base<WordIndexType>(word_index) {
+                            query_m_gram() : phrase_base<QUERY_M_GRAM_MAX_LEN, LM_M_GRAM_LEVEL_MAX>() {
                             }
 
                             /**
@@ -90,7 +84,7 @@ namespace uva {
                                         << "is: " << SSTR(prev_level_ref) << END_LOG;
 
                                 //Define the reference to the hash row
-                                uint64_t(& hash_row_ref)[LM_M_GRAM_LEVEL_MAX] = const_cast<uint64_t(&)[LM_M_GRAM_LEVEL_MAX]> (m_hash_matrix[begin_word_idx]);
+                                uint64_t(& hash_row_ref)[QUERY_M_GRAM_MAX_LEN] = const_cast<uint64_t(&)[QUERY_M_GRAM_MAX_LEN]> (m_hash_matrix[begin_word_idx]);
 
                                 //Compute the current level
                                 const phrase_length curr_level = CURR_LEVEL_MAP[begin_word_idx][end_word_idx];
@@ -100,10 +94,10 @@ namespace uva {
                                     if (prev_level_ref == M_GRAM_LEVEL_UNDEF) {
                                         //If there has not been anything computed yet,
                                         //then first initialize the starting word
-                                        hash_row_ref[begin_word_idx] = BASE::m_word_ids[begin_word_idx];
+                                        hash_row_ref[begin_word_idx] = BASE::operator [](begin_word_idx);
 
                                         LOG_DEBUG1 << "word[" << SSTR(begin_word_idx) << "] = "
-                                                << BASE::m_word_ids[begin_word_idx]
+                                                << BASE::operator [](begin_word_idx)
                                                 << ", hash[" << SSTR(begin_word_idx) << "] = "
                                                 << hash_row_ref[begin_word_idx] << END_LOG;
 
@@ -117,10 +111,10 @@ namespace uva {
                                     //Iterate on and compute the subsequent hashes, if any
                                     for (; begin_word_idx <= end_word_idx; ++begin_word_idx) {
                                         //Incrementally build up hash, using the previous hash value and the next word id
-                                        hash_row_ref[begin_word_idx] = combine_phrase_uids(hash_row_ref[begin_word_idx - 1], BASE::m_word_ids[begin_word_idx]);
+                                        hash_row_ref[begin_word_idx] = combine_phrase_uids(hash_row_ref[begin_word_idx - 1], BASE::operator [](begin_word_idx));
 
                                         LOG_DEBUG1 << "hash[" << SSTR(begin_word_idx) << "] = combine( word["
-                                                << SSTR(begin_word_idx) << "] = " << BASE::m_word_ids[begin_word_idx]
+                                                << SSTR(begin_word_idx) << "] = " << BASE::operator [](begin_word_idx)
                                                 << ", hash[" << SSTR(begin_word_idx - 1) << "] = "
                                                 << hash_row_ref[begin_word_idx - 1] << " ) = "
                                                 << hash_row_ref[begin_word_idx] << END_LOG;
@@ -136,113 +130,32 @@ namespace uva {
                             }
 
                             /**
-                             * For the given N-gram, for some level M <=N , this method
-                             * allows to give the string of the object for which the
-                             * probability is computed, e.g.:
-                             * N-gram = "word1" -> result = "word1"
-                             * N-gram = "word1 word2 word3" -> result = "word3 | word1  word2"
-                             * for the first M tokens of the N-gram
-                             * @param level the level M of the sub-m-gram prefix to work with
-                             * @return the resulting string
-                             */
-                            inline string get_mgram_prob_str(const phrase_length level) const {
-                                if (level == M_GRAM_LEVEL_UNDEF) {
-                                    return "<none>";
-                                } else {
-                                    if (level == M_GRAM_LEVEL_1) {
-                                        const TextPieceReader & token = BASE::m_tokens[BASE::m_actual_begin_word_idx];
-                                        return token.str().empty() ? "<empty>" : token.str();
-                                    } else {
-                                        const phrase_length end_word_idx = (level - 1);
-                                        string result = BASE::m_tokens[end_word_idx].str() + " |";
-                                        for (phrase_length idx = BASE::m_actual_begin_word_idx; idx != end_word_idx; idx++) {
-                                            result += string(" ") + BASE::m_tokens[idx].str();
-                                        }
-                                        return result;
-                                    }
-                                }
-                            }
-
-                            /**
-                             * For the given N-gram, this method allows to give the string 
-                             * of the object for which the probability is computed, e.g.:
-                             * N-gram = "word1" -> result = "word1"
-                             * N-gram = "word1 word2 word3" -> result = "word1 word2 word3"
-                             * @return the resulting string
-                             */
-                            inline string get_mgram_prob_str() const {
-                                if (BASE::m_actual_level == M_GRAM_LEVEL_UNDEF) {
-                                    return "<none>";
-                                } else {
-                                    if (BASE::m_actual_level == M_GRAM_LEVEL_1) {
-                                        const TextPieceReader & token = BASE::m_tokens[BASE::m_actual_begin_word_idx];
-                                        return token.str().empty() ? "<empty>" : token.str();
-                                    } else {
-                                        string result;
-                                        for (phrase_length idx = BASE::m_actual_begin_word_idx; idx <= BASE::m_actual_end_word_idx; idx++) {
-                                            result += BASE::m_tokens[idx].str() + string(" ");
-                                        }
-                                        return result.substr(0, result.length() - 1);
-                                    }
-                                }
-                            }
-
-                            /**
                              * Tokenise a given piece of text into a space separated list of text pieces.
                              * @param text the piece of text to tokenise
                              * @param gram the gram container to put data into
                              */
-                            inline void set_m_gram_from_text(TextPieceReader &text) {
+                            inline void set_m_gram(const phrase_length num_words, const word_uid * word_ids) {
                                 //Set all the "computed hash level" flags to "undefined"
-                                memset(m_hash_level_row, M_GRAM_LEVEL_UNDEF, LM_M_GRAM_LEVEL_MAX * sizeof (phrase_length));
+                                memset(m_hash_level_row, M_GRAM_LEVEL_UNDEF, QUERY_M_GRAM_MAX_LEN * sizeof (phrase_length));
 
-                                //Initialize the actual level with undefined (zero)
-                                BASE::m_actual_level = M_GRAM_LEVEL_UNDEF;
-
-                                //Read the tokens one by one backwards and decrement the index
-                                while (text.get_first_space(BASE::m_tokens[BASE::m_actual_level])) {
-                                    LOG_DEBUG1 << "Obtained the " << BASE::m_actual_level << "'th m-gram token: ___"
-                                            << BASE::m_tokens[BASE::m_actual_level] << "___" << END_LOG;
-
-                                    //Retrieve the word id
-                                    BASE::m_word_ids[BASE::m_actual_level] = BASE::m_word_index.get_word_id(BASE::m_tokens[BASE::m_actual_level]);
-
-                                    LOG_DEBUG2 << "The word: '" << BASE::m_tokens[BASE::m_actual_level] << "' is: "
-                                            << SSTR(BASE::m_word_ids[BASE::m_actual_level]) << "!" << END_LOG;
-
-                                    //Increment the counter
-                                    ++BASE::m_actual_level;
-
-                                    LOG_DEBUG2 << "The current m-gram level is: " << BASE::m_actual_level
-                                            << ", the maximum is: " << LM_M_GRAM_LEVEL_MAX << END_LOG;
-
-                                    ASSERT_SANITY_THROW((BASE::m_actual_level > LM_M_GRAM_LEVEL_MAX),
-                                            string("A broken N-gram query: ") + ((string) * this) +
-                                            string(", level: ") + to_string(BASE::m_actual_level));
-                                }
-
-                                //Set the actual end word index
-                                BASE::m_actual_end_word_idx = BASE::m_actual_level - 1;
-
-                                ASSERT_SANITY_THROW(((BASE::m_actual_level < M_GRAM_LEVEL_1) ||
-                                        (BASE::m_actual_level > LM_M_GRAM_LEVEL_MAX)),
-                                        string("A broken N-gram query: ") + ((string) * this) +
-                                        string(", level: ") + to_string(BASE::m_actual_level));
+                                //Set the word ids into the parent
+                                BASE::set_word_ids(num_words, word_ids);
                             }
 
                         private:
                             //Stores the hash computed flags
-                            phrase_length m_hash_level_row[LM_M_GRAM_LEVEL_MAX];
+                            phrase_length m_hash_level_row[QUERY_M_GRAM_MAX_LEN];
                             //Stores the computed hash values
-                            uint64_t m_hash_matrix[LM_M_GRAM_LEVEL_MAX][LM_M_GRAM_LEVEL_MAX];
+                            uint64_t m_hash_matrix[QUERY_M_GRAM_MAX_LEN][QUERY_M_GRAM_MAX_LEN];
 
                             /**
                              * This constructor is made private as it is not to be used
                              */
-                            query_m_gram(WordIndexType & word_index, phrase_length actual_level)
-                            : m_gram_base<WordIndexType>(word_index, actual_level) {
+                            query_m_gram(word_uid * word_ids, phrase_length actual_level)
+                            : phrase_base<QUERY_M_GRAM_MAX_LEN, LM_M_GRAM_LEVEL_MAX>(word_ids, actual_level) {
                             }
 
+                            friend ostream& operator<<(ostream& stream, const query_m_gram & gram);
                         };
                     }
                 }

@@ -155,8 +155,8 @@ namespace uva {
                          * For more details @see LayeredTrieBase
                          */
                         template<phrase_length CURR_LEVEL>
-                        inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
-                            const TShortId word_id = gram.get_end_word_id();
+                        inline void add_m_gram(const model_m_gram & gram) {
+                            const TShortId word_id = gram.get_last_word_id();
                             if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                                 //Store the payload
                                 m_1_gram_data[word_id] = gram.m_payload;
@@ -186,24 +186,23 @@ namespace uva {
                          * The retrieval of a uni-gram data is always a success
                          * @see GenericTrieBase
                          */
-                        inline void get_unigram_payload(typename BASE::query_exec_data & query) const {
-                            //Get the word index for convenience
-                            const phrase_length & word_idx = query.m_begin_word_idx;
-
-                            LOG_DEBUG << "Getting the payload for sub-uni-gram : [" << SSTR(word_idx)
-                                    << "," << SSTR(word_idx) << "]" << END_LOG;
+                        inline void get_unigram_payload(m_gram_query & query) const {
+                            //Get the uni-gram word id
+                            const word_uid word_id = query.get_curr_uni_gram_word_id();
 
                             //The data is always present.
-                            query.m_payloads[word_idx][word_idx] = &m_1_gram_data[query.m_gram[word_idx]];
+                            query.set_curr_payload(&m_1_gram_data[word_id]);
+                            
+                            LOG_DEBUG << "The uni-gram word id " << SSTR(word_id) << " payload : "
+                                    << (string) m_1_gram_data[word_id] << END_LOG;
                         };
 
                         /**
                          * Allows to retrieve the payload for the M-gram defined by the end word_id and ctx_id.
                          * For more details @see LayeredTrieBase
                          */
-                        inline void get_m_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
-                            LOG_DEBUG << "Getting the payload for sub-m-gram : [" << SSTR(query.m_begin_word_idx)
-                                    << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+                        inline void get_m_gram_payload(m_gram_query & query, MGramStatusEnum & status) const {
+                            LOG_DEBUG << "Getting the payload for sub-m-gram : "<< query << END_LOG;
 
                             //First ensure the context of the given sub-m-gram
                             LAYERED_BASE_ENSURE_CONTEXT(query, status);
@@ -211,16 +210,16 @@ namespace uva {
                             //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
                             if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                 //Store the shorthand for the context and end word id
-                                TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
-                                const TShortId & word_id = query.m_gram[query.m_end_word_idx];
+                                TLongId & ctx_id = query.get_curr_ctx_ref();
+                                const TShortId & word_id = query.get_curr_end_word_id();
 
                                 //Compute the distance between words
-                                const phrase_length & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                const phrase_length & curr_level =query.get_curr_level();
                                 LOG_DEBUG << "curr_level: " << SSTR(curr_level) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
-                                        << SSTR(query.m_end_word_idx) << ", end word id: " << word_id << END_LOG;
+                                        << SSTR(query.m_curr_end_word_idx) << ", end word id: " << word_id << END_LOG;
 
                                 //Get the next context id
-                                const phrase_length & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                const phrase_length & level_idx = query.get_curr_level_m2();
                                 if (get_ctx_id(level_idx, word_id, ctx_id)) {
                                     LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                                     TMGramsMap::const_iterator result = m_m_gram_map_ptrs[level_idx]->find(ctx_id);
@@ -231,7 +230,7 @@ namespace uva {
                                         status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                     } else {
                                         //There is data found under this context
-                                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
+                                        query.set_curr_payload(&result->second);
                                         LOG_DEBUG << "The payload is retrieved: " << (string) result->second << END_LOG;
                                     }
                                 } else {
@@ -248,20 +247,20 @@ namespace uva {
                          * Allows to attempt the sub-m-gram payload retrieval for m==n
                          * @see GenericTrieBase
                          */
-                        inline void get_n_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
+                        inline void get_n_gram_payload(m_gram_query & query, MGramStatusEnum & status) const {
                             //First ensure the context of the given sub-m-gram
                             LAYERED_BASE_ENSURE_CONTEXT(query, status);
 
                             //If the context is successfully ensured, then move on to the m-gram and try to obtain its payload
                             if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                 //Store the shorthand for the context and end word id
-                                TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
-                                const TShortId & word_id = query.m_gram[query.m_end_word_idx];
+                                TLongId & ctx_id = query.get_curr_ctx_ref();
+                                const TShortId & word_id = query.get_curr_end_word_id();
 
-                                LOG_DEBUG << "ctx_id: " << ctx_id << ", m_end_word_idx: " << SSTR(query.m_end_word_idx)
+                                LOG_DEBUG << "ctx_id: " << ctx_id << ", m_end_word_idx: " << SSTR(query.m_curr_end_word_idx)
                                         << ", end word id: " << word_id << END_LOG;
                                 //Get the next context id
-                                const phrase_length & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                const phrase_length & level_idx = query.get_curr_level_m2();
                                 if (get_ctx_id(level_idx, word_id, ctx_id)) {
                                     LOG_DEBUG << "ctx_id: " << ctx_id << END_LOG;
                                     TNGramsMap::const_iterator result = m_n_gram_map_ptr->find(ctx_id);
@@ -272,7 +271,7 @@ namespace uva {
                                         status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                     } else {
                                         //There is data found under this context
-                                        query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &result->second;
+                                        query.set_curr_payload(&result->second);
                                         LOG_DEBUG << "The payload is retrieved: " << result->second << END_LOG;
                                     }
                                 } else {

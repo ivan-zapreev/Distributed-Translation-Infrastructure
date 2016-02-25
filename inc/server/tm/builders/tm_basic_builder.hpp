@@ -38,7 +38,7 @@
 
 #include "server/common/models/phrase_uid.hpp"
 
-#include "server/lm/proxy/lm_query_proxy.hpp"
+#include "server/lm/proxy/lm_fast_query_proxy.hpp"
 #include "server/lm/lm_configurator.hpp"
 
 #include "server/tm/tm_parameters.hpp"
@@ -92,7 +92,7 @@ namespace uva {
                              */
                             tm_basic_builder(const tm_parameters & params, model_type & model, reader_type & reader)
                             : m_params(params), m_model(model), m_reader(reader),
-                            m_lm_query(lm_configurator::allocate_query_proxy()),
+                            m_lm_query(lm_configurator::allocate_fast_query_proxy()),
                             m_tmp_num_words(0) {
 
                             }
@@ -102,7 +102,7 @@ namespace uva {
                              */
                             ~tm_basic_builder() {
                                 //Dispose the query proxy
-                                lm_configurator::dispose_query_proxy(m_lm_query);
+                                lm_configurator::dispose_fast_query_proxy(m_lm_query);
                             }
 
                             /**
@@ -291,7 +291,7 @@ namespace uva {
 
                                 //Declare an array of weights for temporary use
                                 feature_array tmp_features;
-                                size_t tmp_features_size;
+                                size_t tmp_features_size = 0;
 
                                 //Start reading the translation model file line by line
                                 while (m_reader.get_first_line(line)) {
@@ -449,7 +449,7 @@ namespace uva {
                             //Stores the reference to the builder;
                             reader_type & m_reader;
                             //Stores the reference to the LM query proxy
-                            lm_query_proxy & m_lm_query;
+                            lm_fast_query_proxy & m_lm_query;
                             //The temporary variable to store the number of words in the target translation phrase
                             phrase_length m_tmp_num_words;
                             //The temporary variable to store word ids for the target translation phrase LM word ids

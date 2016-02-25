@@ -107,14 +107,13 @@ namespace uva {
                              * Allows to add the M-gram to the cache
                              * @param gram the M-gram to cache
                              */
-                            template<typename WordIndexType>
-                            inline void cache_m_gram_hash(const model_m_gram<WordIndexType> gram) {
-                                LOG_DEBUG2 << "Adding M-gram: " << (string) gram << END_LOG;
+                            inline void cache_m_gram_hash(const model_m_gram gram) {
+                                LOG_DEBUG2 << "Adding M-gram: " << gram << END_LOG;
 
                                 //Get the bit position
                                 uint32_t byte_idx = 0;
                                 uint32_t bit_offset_idx = 0;
-                                get_bit_pos<WordIndexType>(gram, byte_idx, bit_offset_idx);
+                                get_bit_pos(gram, byte_idx, bit_offset_idx);
 
                                 LOG_DEBUG2 << "Adding: " << bitset<NUM_BITS_IN_UINT_8>(ON_BIT_ARRAY[bit_offset_idx])
                                         << ", to: " << bitset<NUM_BITS_IN_UINT_8>(m_data_ptr[byte_idx]) << END_LOG;
@@ -180,11 +179,10 @@ namespace uva {
                              * @param byte_idx [out] the M-gram byte index
                              * @param bit_offset_idx [out] the M-gram relative bit index
                              */
-                            template<typename WordIndexType>
-                            inline void get_bit_pos(const model_m_gram<WordIndexType> &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
+                            inline void get_bit_pos(const model_m_gram &gram, uint32_t & byte_idx, uint32_t & bit_offset_idx) const {
                                 uint_fast64_t key = gram.get_hash();
 
-                                LOG_DEBUG2 << "The M-gram: " << (string) gram << " hash: " << key << END_LOG;
+                                LOG_DEBUG2 << "The M-gram: " << gram << " hash: " << key << END_LOG;
 
                                 return get_bit_pos(key, byte_idx, bit_offset_idx);
                             }

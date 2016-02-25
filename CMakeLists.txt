@@ -13,6 +13,7 @@ set(CMAKE_CXX_FLAGS "-pipe -std=c++0x -Wall -m64")
 set(LM_QUERY_SOURCES 
     src/server/lm/lm_query.cpp
     src/server/lm/lm_configurator.cpp
+    src/server/lm/models/m_gram_query.cpp
     src/server/lm/models/w2c_hybrid_trie.cpp
     src/server/lm/models/w2c_array_trie.cpp
     src/server/lm/models/h2d_map_trie.cpp
@@ -20,7 +21,9 @@ set(LM_QUERY_SOURCES
     src/server/lm/models/c2w_array_trie.cpp
     src/server/lm/models/c2d_map_trie.cpp
     src/server/lm/models/c2d_hybrid_trie.cpp
-    src/server/lm/ngrams/byte_m_gram_id.cpp
+    src/server/lm/mgrams/query_m_gram.cpp
+    src/server/lm/mgrams/model_m_gram.cpp
+    src/server/lm/mgrams/byte_m_gram_id.cpp
     src/server/lm/builders/lm_basic_builder.cpp
     src/server/lm/builders/lm_gram_builder.cpp
     src/common/utils/monitore/statistics_monitor.cpp 
@@ -39,6 +42,7 @@ set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
     src/server/lm/lm_configurator.cpp
     src/server/tm/tm_configurator.cpp
     src/server/rm/rm_configurator.cpp
+    src/server/lm/models/m_gram_query.cpp
     src/server/lm/models/w2c_hybrid_trie.cpp
     src/server/lm/models/w2c_array_trie.cpp
     src/server/lm/models/h2d_map_trie.cpp
@@ -46,7 +50,9 @@ set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
     src/server/lm/models/c2w_array_trie.cpp
     src/server/lm/models/c2d_map_trie.cpp
     src/server/lm/models/c2d_hybrid_trie.cpp
-    src/server/lm/ngrams/byte_m_gram_id.cpp
+    src/server/lm/mgrams/query_m_gram.cpp
+    src/server/lm/mgrams/model_m_gram.cpp
+    src/server/lm/mgrams/byte_m_gram_id.cpp
     src/server/lm/builders/lm_basic_builder.cpp
     src/server/lm/builders/lm_gram_builder.cpp
     src/common/utils/monitore/statistics_monitor.cpp 

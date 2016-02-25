@@ -29,7 +29,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "server/lm/proxy/lm_query_proxy.hpp"
+#include "server/lm/proxy/lm_fast_query_proxy.hpp"
 
 #include "server/tm/tm_consts.hpp"
 #include "server/tm/models/tm_source_entry.hpp"

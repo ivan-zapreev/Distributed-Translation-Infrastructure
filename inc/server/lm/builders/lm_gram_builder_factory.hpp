@@ -101,7 +101,7 @@ namespace uva {
                                     LOG_DEBUG1 << "Instantiating the " << CURR_LEVEL << "-Gram builder.." << END_LOG;
                                     //Create a builder with the proper lambda as an argument
                                     *ppBuilder = new lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>(params, trie.get_word_index(),
-                                            [&] (const model_m_gram<WordIndexType> & gram) {
+                                            [&] (const model_m_gram & gram) {
                                                 trie.template add_m_gram<CURR_LEVEL>(gram);
                                             });
                                     LOG_DEBUG2 << "DONE Instantiating the " << CURR_LEVEL << "-Gram builder!" << END_LOG;

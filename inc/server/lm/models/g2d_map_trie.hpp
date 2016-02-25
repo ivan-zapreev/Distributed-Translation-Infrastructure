@@ -90,7 +90,7 @@ namespace uva {
                              */
                             S_M_GramData() : m_id(NULL) {
                             }
-                            
+
                             /**
                              * The basic destructor
                              */
@@ -159,10 +159,10 @@ namespace uva {
                          * @see GenericTrieBase
                          */
                         template<phrase_length CURR_LEVEL>
-                        inline void add_m_gram(const model_m_gram<WordIndexType> & gram) {
+                        inline void add_m_gram(const model_m_gram & gram) {
                             if (CURR_LEVEL == M_GRAM_LEVEL_1) {
                                 //Get the word id of this unigram, so there is just one word in it and its the end one
-                                const TShortId word_id = gram.get_end_word_id();
+                                const TShortId word_id = gram.get_last_word_id();
                                 //Store the probability data in the one gram data storage, under its id
                                 m_1_gram_data[word_id] = gram.m_payload;
                             } else {
@@ -173,7 +173,7 @@ namespace uva {
                                     //Create a new M-Gram data entry
                                     T_M_Gram_Prob_Entry & data = m_n_gram_data->add_new_element(gram.get_hash());
                                     //Create the N-gram id from the word ids
-                                    gram.create_m_gram_id(gram.get_begin_word_idx(), CURR_LEVEL, data.m_id);
+                                    gram.create_phrase_id(gram.get_first_word_idx(), CURR_LEVEL, data.m_id);
                                     //Set the probability data
                                     data.m_payload = gram.m_payload.m_prob;
                                 } else {
@@ -182,7 +182,7 @@ namespace uva {
                                     //Create a new M-Gram data entry
                                     T_M_Gram_PB_Entry & data = m_m_gram_data[LEVEL_IDX]->add_new_element(gram.get_hash());
                                     //Create the M-gram id from the word ids.
-                                    gram.create_m_gram_id(gram.get_begin_word_idx(), CURR_LEVEL, data.m_id);
+                                    gram.create_phrase_id(gram.get_first_word_idx(), CURR_LEVEL, data.m_id);
                                     //Set the probability and back-off data
                                     data.m_payload = gram.m_payload;
                                 }
@@ -194,15 +194,15 @@ namespace uva {
                          * The retrieval of a uni-gram data is always a success.
                          * @see GenericTrieBase
                          */
-                        inline void get_unigram_payload(typename BASE::query_exec_data & query) const {
-                            //Get the uni-gram word index
-                            const phrase_length & word_idx = query.m_begin_word_idx;
-                            //This is at least a uni-gram we have, therefore first process the it in a special way
-                            const TShortId word_id = query.m_gram[word_idx];
+                        inline void get_unigram_payload(m_gram_query & query) const {
+                            //Get the uni-gram word id
+                            const word_uid word_id = query.get_curr_uni_gram_word_id();
 
                             //Store the uni-gram payload pointer and add the probability to the total conditional probability 
-                            query.m_payloads[word_idx][word_idx] = &m_1_gram_data[word_id];
-                            LOG_DEBUG << "Getting the uni-gram payload for word id " << SSTR(word_id) << ": " << (string) m_1_gram_data[word_id] << END_LOG;
+                            query.set_curr_payload(&m_1_gram_data[word_id]);
+
+                            LOG_DEBUG << "The uni-gram word id " << SSTR(word_id) << " payload : "
+                                    << (string) m_1_gram_data[word_id] << END_LOG;
                         }
 
                         /**
@@ -211,12 +211,12 @@ namespace uva {
                          * @param query the query containing the actual query data
                          * @param status the resulting status of the operation
                          */
-                        inline void get_m_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
+                        inline void get_m_gram_payload(m_gram_query & query, MGramStatusEnum & status) const {
                             //Get the current level for logging
-                            const phrase_length & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                            const phrase_length & curr_level = query.get_curr_level();
 
                             //Get the current level of the sub-m-gram
-                            const phrase_length & layer_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                            const phrase_length & layer_idx = query.get_curr_level_m2();
 
                             LOG_DEBUG << "Searching in " << SSTR(curr_level) << "-grams, array index: " << layer_idx << END_LOG;
 
@@ -230,7 +230,7 @@ namespace uva {
                          * @param query the query containing the actual query data
                          * @param status the resulting status of the operation
                          */
-                        inline void get_n_gram_payload(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
+                        inline void get_n_gram_payload(m_gram_query & query, MGramStatusEnum & status) const {
                             LOG_DEBUG << "Searching in " << SSTR(LM_M_GRAM_LEVEL_MAX) << "-grams" << END_LOG;
 
                             //Call the templated part via function pointer
@@ -265,33 +265,28 @@ namespace uva {
                          */
                         template<typename STORAGE_MAP>
                         static inline MGramStatusEnum get_payload(const STORAGE_MAP * map,
-                                typename BASE::query_exec_data & query) {
-                            //Get the current level for logging
-                            const phrase_length & curr_level = CURR_LEVEL_MAP[query.m_begin_word_idx][query.m_end_word_idx];
+                                m_gram_query & query) {
 
-                            LOG_DEBUG << "Getting the bucket id for the sub-" << SSTR(curr_level) << "-gram ["
-                                    << query.m_begin_word_idx << "," << query.m_end_word_idx << "] of: " << (string) query.m_gram << END_LOG;
+                            LOG_DEBUG << "Getting the bucket id for: " << query << END_LOG;
 
                             //Obtain the m-gram key
                             T_Gram_Id_Key key;
-                            key.m_id = query.m_gram.get_m_gram_id_ref(query.m_begin_word_idx, curr_level, key.m_len_bytes);
+                            key.m_id = query.get_curr_m_gram_id(key.m_len_bytes);
 
                             //Get the hash value
-                            const uint64_t hash_value = query.m_gram.get_hash(query.m_begin_word_idx, query.m_end_word_idx);
+                            const uint64_t hash_value = query.get_curr_m_gram_hash();
 
-                            LOG_DEBUG << "Retrieving payload for a sub-" << SSTR(curr_level) << "-gram ["
-                                    << SSTR(query.m_begin_word_idx) << ", " << SSTR(query.m_end_word_idx) << "]" << END_LOG;
+                            LOG_DEBUG << "Retrieving payload for " << query << END_LOG;
 
                             //Get the element from the map
                             const typename STORAGE_MAP::TElemType * elem = map->get_element(hash_value, key);
                             if (elem != NULL) {
                                 //We are now done, the payload is found, can return!
-                                query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &elem->m_payload;
+                                query.set_curr_payload(&elem->m_payload);
                                 return MGramStatusEnum::GOOD_PRESENT_MGS;
                             } else {
                                 //Could not retrieve the payload for the given sub-m-gram
-                                LOG_DEBUG << "Unable to find the sub-m-gram [" << SSTR(query.m_begin_word_idx)
-                                        << ", " << SSTR(query.m_end_word_idx) << "] payload!" << END_LOG;
+                                LOG_DEBUG << "Unable to find the payload for sub-m-gram : " << query << END_LOG;
                                 return MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                             }
                         }

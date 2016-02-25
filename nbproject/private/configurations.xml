@@ -717,18 +717,18 @@
             <in>h2d_map_trie.hpp</in>
             <in>layered_trie_base.hpp</in>
             <in>m_gram_query.hpp</in>
-            <in>query_exec_data.hpp</in>
-            <in>simple_m_gram_query.hpp</in>
             <in>w2c_array_trie.hpp</in>
             <in>w2c_hybrid_trie.hpp</in>
             <in>w2ch_um_storage.hpp</in>
             <in>word_index_trie_base.hpp</in>
           </df>
           <df name="proxy">
+            <in>lm_fast_query_proxy.hpp</in>
+            <in>lm_fast_query_proxy_local.hpp</in>
             <in>lm_proxy.hpp</in>
             <in>lm_proxy_local.hpp</in>
-            <in>lm_query_proxy.hpp</in>
-            <in>lm_query_proxy_local.hpp</in>
+            <in>lm_slow_query_proxy.hpp</in>
+            <in>lm_slow_query_proxy_local.hpp</in>
           </df>
           <in>lm_configs.hpp</in>
           <in>lm_configurator.hpp</in>
@@ -819,17 +819,20 @@
             <in>lm_basic_builder.cpp</in>
             <in>lm_gram_builder.cpp</in>
           </df>
+          <df name="mgrams">
+            <in>byte_m_gram_id.cpp</in>
+            <in>model_m_gram.cpp</in>
+            <in>query_m_gram.cpp</in>
+          </df>
           <df name="models">
             <in>c2d_hybrid_trie.cpp</in>
             <in>c2d_map_trie.cpp</in>
             <in>c2w_array_trie.cpp</in>
             <in>g2d_map_trie.cpp</in>
             <in>h2d_map_trie.cpp</in>
+            <in>m_gram_query.cpp</in>
             <in>w2c_array_trie.cpp</in>
             <in>w2c_hybrid_trie.cpp</in>
-          </df>
-          <df name="ngrams">
-            <in>byte_m_gram_id.cpp</in>
           </df>
           <in>lm_configurator.cpp</in>
           <in>lm_query.cpp</in>

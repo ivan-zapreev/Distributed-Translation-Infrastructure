@@ -88,7 +88,7 @@ namespace uva {
                                     const string & source_sent, string & target_sent)
                             : m_params(params), m_is_stop(is_stop), m_source_sent(source_sent),
                             m_target_sent(target_sent), m_sent_data(count_words(m_source_sent)),
-                            m_lm_query(lm_configurator::allocate_query_proxy()),
+                            m_lm_query(lm_configurator::allocate_fast_query_proxy()),
                             m_tm_query(tm_configurator::allocate_query_proxy()),
                             m_rm_query(rm_configurator::allocate_query_proxy()),
                             m_stack(m_params, m_is_stop, m_sent_data, m_rm_query) {
@@ -100,7 +100,7 @@ namespace uva {
                              */
                             ~sentence_decoder() {
                                 //Dispose the query objects as they are no longer needed
-                                lm_configurator::dispose_query_proxy(m_lm_query);
+                                lm_configurator::dispose_fast_query_proxy(m_lm_query);
                                 tm_configurator::dispose_query_proxy(m_tm_query);
                                 rm_configurator::dispose_query_proxy(m_rm_query);
                             }
@@ -144,11 +144,9 @@ namespace uva {
                              * @return the cost of the given target entry
                              */
                             inline prob_weight compute_future_cost(tm_const_target_entry & target) {
+                                //The resulting cost is the translation cost plus the LM cost of the translation
                                 return target.get_t_c_s() +
-                                        m_lm_query.template execute(
-                                        M_GRAM_LEVEL_1,
-                                        target.get_num_target_words(),
-                                        target.get_target_word_ids());
+                                        m_lm_query.execute(target.get_num_target_words(), target.get_target_word_ids());
                             }
 
                             /**
@@ -396,7 +394,7 @@ namespace uva {
                             sentence_data_map m_sent_data;
 
                             //The reference to the translation model query proxy
-                            lm_query_proxy & m_lm_query;
+                            lm_fast_query_proxy & m_lm_query;
                             //The reference to the translation model query proxy
                             tm_query_proxy & m_tm_query;
                             //The reference to the reordering model query proxy

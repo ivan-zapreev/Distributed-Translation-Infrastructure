@@ -31,10 +31,14 @@
 #include "common/utils/monitore/statistics_monitore.hpp"
 #include "common/utils/file/cstyle_file_reader.hpp"
 
+#include "server/lm/lm_configs.hpp"
 #include "server/lm/lm_consts.hpp"
 
-#include "server/lm/proxy/lm_query_proxy.hpp"
-#include "server/lm/proxy/lm_query_proxy_local.hpp"
+#include "server/lm/proxy/lm_fast_query_proxy.hpp"
+#include "server/lm/proxy/lm_fast_query_proxy_local.hpp"
+
+#include "server/lm/proxy/lm_slow_query_proxy.hpp"
+#include "server/lm/proxy/lm_slow_query_proxy_local.hpp"
 
 #include "server/lm/builders/lm_basic_builder.hpp"
 
@@ -96,16 +100,34 @@ namespace uva {
                             /**
                              * @see lm_proxy
                              */
-                            virtual lm_query_proxy & allocate_trie_query_proxy() {
+                            virtual lm_fast_query_proxy & allocate_fast_query_proxy() {
                                 //ToDo: In the future we should just use a number of stack
                                 //allocated objects in order to reduce the new/delete overhead
-                                return *(new lm_trie_query_proxy_local<lm_model_type>(m_model));
+                                return *(new lm_fast_query_proxy_local<lm_model_type>(m_model));
                             }
 
                             /**
                              * @see lm_proxy
                              */
-                            virtual void dispose_trie_query_proxy(lm_query_proxy & query) {
+                            virtual void dispose_fast_query_proxy(lm_fast_query_proxy & query) {
+                                //ToDo: In the future we should just use a number of stack
+                                //allocated objects in order to reduce the new/delete overhead
+                                delete &query;
+                            }
+
+                            /**
+                             * @see lm_proxy
+                             */
+                            virtual lm_slow_query_proxy & allocate_slow_query_proxy() {
+                                //ToDo: In the future we should just use a number of stack
+                                //allocated objects in order to reduce the new/delete overhead
+                                return *(new lm_slow_query_proxy_local<lm_model_type>(m_model));
+                            }
+
+                            /**
+                             * @see lm_proxy
+                             */
+                            virtual void dispose_slow_query_proxy(lm_slow_query_proxy & query) {
                                 //ToDo: In the future we should just use a number of stack
                                 //allocated objects in order to reduce the new/delete overhead
                                 delete &query;

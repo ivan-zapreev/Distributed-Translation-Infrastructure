@@ -72,7 +72,6 @@ static CmdLine * p_cmd_args = NULL;
 static ValueArg<string> * p_model_arg = NULL;
 static ValueArg<string> * p_query_arg = NULL;
 static vector<string> trie_types_vec;
-static SwitchArg * p_cumulative_prob_arg = NULL;
 static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
 static ValueArg<string> * p_debug_level_arg = NULL;
@@ -90,9 +89,6 @@ void create_arguments_parser() {
     //Add the -q the input test queries file parameter - compulsory 
     p_query_arg = new ValueArg<string>("q", "query", "A text file containing new line separated M-gram queries", true, "", "query file name", *p_cmd_args);
 
-    //Add the -c the "cumulative" probability switch - optional, default is cumulative
-    p_cumulative_prob_arg = new SwitchArg("c", "cumulative", "Compute the sum of cumulative log probabilities for each query m-gram", *p_cmd_args, false);
-
     //Add the -d the debug level parameter - optional, default is e.g. RESULT
     Logger::get_reporting_levels(&debug_levels);
     p_debug_levels_constr = new ValuesConstraint<string>(debug_levels);
@@ -105,8 +101,6 @@ void create_arguments_parser() {
 void destroy_arguments_parser() {
     SAFE_DESTROY(p_model_arg);
     SAFE_DESTROY(p_query_arg);
-
-    SAFE_DESTROY(p_cumulative_prob_arg);
 
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
@@ -132,7 +126,6 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     Logger::set_reporting_level(p_debug_level_arg->getValue());
 
     //Store the parsed parameter values
-    params.m_is_cum_prob = p_cumulative_prob_arg->getValue();
     params.m_query_file_name = p_query_arg->getValue();
     params.m_lm_params.m_conn_string = p_model_arg->getValue();
     params.m_lm_params.m_num_lambdas = 0;

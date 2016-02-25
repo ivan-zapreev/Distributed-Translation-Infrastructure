@@ -176,36 +176,54 @@ namespace uva {
                     namespace m_grams {
 
                         //Stores the maximum sopported level
-                        static constexpr phrase_length MAX_SUPP_GRAM_LEVEL = M_GRAM_LEVEL_6;
+                        static constexpr phrase_length MAX_SUPP_GRAM_LEVEL = M_GRAM_LEVEL_12;
 
                         //This structure stores the current level value mapping from the [begin,end] value pair
                         static constexpr phrase_length CURR_LEVEL_MAP[MAX_SUPP_GRAM_LEVEL][MAX_SUPP_GRAM_LEVEL] = {
-                            {M_GRAM_LEVEL_1, M_GRAM_LEVEL_2, M_GRAM_LEVEL_3, M_GRAM_LEVEL_4, M_GRAM_LEVEL_5, M_GRAM_LEVEL_6},
-                            {M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_1, M_GRAM_LEVEL_2, M_GRAM_LEVEL_3, M_GRAM_LEVEL_4, M_GRAM_LEVEL_5},
-                            {M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_1, M_GRAM_LEVEL_2, M_GRAM_LEVEL_3, M_GRAM_LEVEL_4},
-                            {M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_1, M_GRAM_LEVEL_2, M_GRAM_LEVEL_3},
-                            {M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_1, M_GRAM_LEVEL_2},
-                            {M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_UNDEF, M_GRAM_LEVEL_1},
+                            {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 },
+                            {0, 1, 2, 3, 4, 5, 6, 7, 8,  9, 10, 11 },
+                            {0, 0, 1, 2, 3, 4, 5, 6, 7,  8,  9, 10 },
+                            {0, 0, 0, 1, 2, 3, 4, 5, 6,  7,  8,  9 },
+                            {0, 0, 0, 0, 1, 2, 3, 4, 5,  6,  7,  8 },
+                            {0, 0, 0, 0, 0, 1, 2, 3, 4,  5,  6,  7 },
+                            {0, 0, 0, 0, 0, 0, 1, 2, 3,  4,  5,  6 },
+                            {0, 0, 0, 0, 0, 0, 0, 1, 2,  3,  4,  5 },
+                            {0, 0, 0, 0, 0, 0, 0, 0, 1,  2,  3,  4 },
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0,  1,  2,  3 },
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  1,  2 },
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  1 },
                         };
 
                         //This structure stores the current level minus 1 value mapping from the [begin,end] value pair
                         static constexpr phrase_length CURR_LEVEL_MIN_1_MAP[MAX_SUPP_GRAM_LEVEL][MAX_SUPP_GRAM_LEVEL] = {
-                            {0, 1, 2, 3, 4, 5},
-                            {0, 0, 1, 2, 3, 4},
-                            {0, 0, 0, 1, 2, 3},
-                            {0, 0, 0, 0, 1, 2},
-                            {0, 0, 0, 0, 0, 1},
-                            {0, 0, 0, 0, 0, 0},
+                            {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
+                            {0, 0, 1, 2, 3, 4, 5, 6, 7, 8,  9, 10},
+                            {0, 0, 0, 1, 2, 3, 4, 5, 6, 7,  8,  9},
+                            {0, 0, 0, 0, 1, 2, 3, 4, 5, 6,  7,  8},
+                            {0, 0, 0, 0, 0, 1, 2, 3, 4, 5,  6,  7},
+                            {0, 0, 0, 0, 0, 0, 1, 2, 3, 4,  5,  6},
+                            {0, 0, 0, 0, 0, 0, 0, 1, 2, 3,  4,  5},
+                            {0, 0, 0, 0, 0, 0, 0, 0, 1, 2,  3,  4},
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 1,  2,  3},
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  1,  2},
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  1},
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0},
                         };
 
                         //This structure stores the current level minus 2 value mapping from the [begin,end] value pair
                         static constexpr phrase_length CURR_LEVEL_MIN_2_MAP[MAX_SUPP_GRAM_LEVEL][MAX_SUPP_GRAM_LEVEL] = {
-                            {0, 0, 1, 2, 3, 4},
-                            {0, 0, 0, 1, 2, 3},
-                            {0, 0, 0, 0, 1, 2},
-                            {0, 0, 0, 0, 0, 1},
-                            {0, 0, 0, 0, 0, 0},
-                            {0, 0, 0, 0, 0, 0},
+                            {0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+                            {0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8,  9},
+                            {0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7,  8},
+                            {0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6,  7},
+                            {0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5,  6},
+                            {0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4,  5},
+                            {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3,  4},
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2,  3},
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,  2},
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  1},
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0},
+                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0},
                         };
                     }
                 }

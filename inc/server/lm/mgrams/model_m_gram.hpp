@@ -39,12 +39,6 @@
 
 #include "server/common/models/phrase_uid.hpp"
 
-#include "server/lm/mgrams/m_gram_id.hpp"
-#include "server/lm/dictionaries/basic_word_index.hpp"
-#include "server/lm/dictionaries/hashing_word_index.hpp"
-#include "server/lm/dictionaries/counting_word_index.hpp"
-#include "server/lm/dictionaries/optimizing_word_index.hpp"
-
 using namespace uva::smt::bpbd::server::common::models;
 
 namespace uva {
@@ -54,16 +48,16 @@ namespace uva {
                 namespace lm {
                     namespace m_grams {
 
+                        //Make a local constant to store the maximum number of words
+                        static constexpr phrase_length MODEL_M_GRAM_MAX_LEN = LM_M_GRAM_LEVEL_MAX;
+
                         /**
                          * This class is used to represent the N-Gram that will be stored into the language model.
                          */
-                        template<typename WordIndexType>
-                        class model_m_gram : public m_gram_base<WordIndexType> {
+                        class model_m_gram : public phrase_base<MODEL_M_GRAM_MAX_LEN, MODEL_M_GRAM_MAX_LEN> {
                         public:
-                            //Define the corresponding M-gram id type
-                            typedef m_gram_id::Byte_M_Gram_Id<word_uid> T_M_Gram_Id;
                             //Define the base class type
-                            typedef m_gram_base<WordIndexType> BASE;
+                            typedef phrase_base<MODEL_M_GRAM_MAX_LEN, MODEL_M_GRAM_MAX_LEN> BASE;
 
                             //Stores the m-gram payload i.e. its probability and back-off weight
                             m_gram_payload m_payload;
@@ -78,11 +72,10 @@ namespace uva {
                              * The basic constructor, is to be used when the M-gram level
                              * is known beforehand. Allows to set the actual M-gram level
                              * to a concrete value.
-                             * @param word_index the used word index
-                             * @param actual_level the actual level of the m-gram that will be used should be <= M_GRAM_LEVEL_MAX
+                             * @param actual_level the actual level of the m-gram that will be used should be <= MODEL_M_GRAM_MAX_LEN
                              */
-                            model_m_gram(WordIndexType & word_index, phrase_length actual_level)
-                            : m_gram_base<WordIndexType>(word_index, actual_level) {
+                            model_m_gram(phrase_length actual_level)
+                            : phrase_base<MODEL_M_GRAM_MAX_LEN, MODEL_M_GRAM_MAX_LEN>(m_word_ids, actual_level) {
                             }
 
                             /**
@@ -90,7 +83,7 @@ namespace uva {
                              * @param CURR_LEVEL the level of the M-gram we are starting
                              */
                             inline void start_new_m_gram() {
-                                m_curr_index = BASE::m_actual_begin_word_idx;
+                                m_curr_index = BASE::get_first_word_idx();
                             }
 
                             /**
@@ -98,12 +91,11 @@ namespace uva {
                              * @return the reference to the next new token of the m-gram
                              */
                             inline TextPieceReader & get_next_new_token() {
-                                if (DO_SANITY_CHECKS && (m_curr_index > BASE::m_actual_end_word_idx)) {
-                                    stringstream msg;
-                                    msg << "The next token does not exist, exceeded the maximum of " << SSTR(BASE::m_actual_level) << " elements!";
-                                    throw Exception(msg.str());
-                                }
-                                return BASE::m_tokens[m_curr_index++];
+                                ASSERT_SANITY_THROW((m_curr_index > BASE::get_last_word_idx()),
+                                        string("The next token does not exist, exceeded the maximum of ") +
+                                        to_string(BASE::get_num_words()) + string(" elements!"));
+
+                                return m_tokens[m_curr_index++];
                             }
 
                             /**
@@ -111,50 +103,52 @@ namespace uva {
                              * @return true if this is an <unk> unigram
                              */
                             inline bool is_unk_unigram() const {
-                                return ((BASE::m_actual_level == M_GRAM_LEVEL_1) &&
-                                        (BASE::m_tokens[BASE::m_actual_begin_word_idx] == UNKNOWN_WORD_STR));
+                                return ((BASE::get_num_words() == M_GRAM_LEVEL_1) &&
+                                        (m_tokens[BASE::get_first_word_idx()] == UNKNOWN_WORD_STR));
                             }
 
                             /**
                              * Allows to prepare the M-gram for being used for adding it to the trie
                              * This includes registering the one gram in the word index
+                             * @param word_index the word index to be used
                              */
-                            inline void prepare_for_adding() {
-                                LOG_DEBUG1 << "Preparing the " << SSTR(BASE::m_actual_level) << "-gram for adding to the trie." << END_LOG;
+                            template<typename WordIndexType>
+                            inline void prepare_for_adding(WordIndexType & word_index) {
+                                LOG_DEBUG1 << "Preparing the " << SSTR(BASE::get_num_words()) << "-gram for adding to the trie." << END_LOG;
 
                                 //If we have a unigram then add it to the index otherwise get the word ids
-                                if (BASE::m_actual_level == M_GRAM_LEVEL_1) {
-                                    const phrase_length & begin_word_idx = BASE::m_actual_begin_word_idx;
-                                    if (BASE::m_word_index.is_word_registering_needed()) {
+                                if (BASE::get_num_words() == M_GRAM_LEVEL_1) {
+                                    const phrase_length begin_word_idx = BASE::get_first_word_idx();
+                                    if (word_index.is_word_registering_needed()) {
                                         //Register the word if it is needed
-                                        BASE::m_word_ids[begin_word_idx] = BASE::m_word_index.register_word(BASE::m_tokens[begin_word_idx]);
+                                        m_word_ids[begin_word_idx] = word_index.register_word(m_tokens[begin_word_idx]);
                                     } else {
                                         //Otherwise jut get its id
-                                        BASE::m_word_ids[begin_word_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[begin_word_idx]);
+                                        m_word_ids[begin_word_idx] = word_index.get_word_id(m_tokens[begin_word_idx]);
                                     }
                                     //The Unigram's hash value is equal to the word id
-                                    m_hash_values[begin_word_idx] = BASE::m_word_ids[begin_word_idx];
+                                    m_hash_values[begin_word_idx] = m_word_ids[begin_word_idx];
 
                                     LOG_DEBUG1 << "word[" << SSTR(begin_word_idx) << "] = "
-                                            << BASE::m_word_ids[begin_word_idx]
+                                            << m_word_ids[begin_word_idx]
                                             << ", hash[" << SSTR(begin_word_idx) << "] = "
                                             << m_hash_values[begin_word_idx] << END_LOG;
                                 } else {
-                                    phrase_length curr_idx = BASE::m_actual_begin_word_idx;
+                                    phrase_length curr_idx = BASE::get_first_word_idx();
                                     //Start with the first word
-                                    BASE::m_word_ids[curr_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_idx]);
+                                    m_word_ids[curr_idx] = word_index.get_word_id(m_tokens[curr_idx]);
                                     //The Unigram's hash value is equal to the word id
-                                    m_hash_values[curr_idx] = BASE::m_word_ids[curr_idx];
+                                    m_hash_values[curr_idx] = m_word_ids[curr_idx];
 
                                     //Store the word ids without the unknown word flags and pre-compute the m-gram hash values
-                                    for (++curr_idx; curr_idx <= BASE::m_actual_end_word_idx; ++curr_idx) {
+                                    for (++curr_idx; curr_idx <= BASE::get_last_word_idx(); ++curr_idx) {
                                         //Get the next word id
-                                        BASE::m_word_ids[curr_idx] = BASE::m_word_index.get_word_id(BASE::m_tokens[curr_idx]);
+                                        m_word_ids[curr_idx] = word_index.get_word_id(m_tokens[curr_idx]);
                                         //Compute the next hash value 
-                                        m_hash_values[curr_idx] = combine_phrase_uids(m_hash_values[curr_idx - 1], BASE::m_word_ids[curr_idx]);
+                                        m_hash_values[curr_idx] = combine_phrase_uids(m_hash_values[curr_idx - 1], m_word_ids[curr_idx]);
 
                                         LOG_DEBUG1 << "hash[" << SSTR(curr_idx) << "] = combine( word["
-                                                << SSTR(curr_idx) << "] = " << BASE::m_word_ids[curr_idx]
+                                                << SSTR(curr_idx) << "] = " << m_word_ids[curr_idx]
                                                 << ", hash[" << SSTR(curr_idx - 1) << "] = "
                                                 << m_hash_values[curr_idx - 1] << " ) = "
                                                 << m_hash_values[curr_idx] << END_LOG;
@@ -169,22 +163,23 @@ namespace uva {
                             inline uint64_t get_hash() const {
                                 //The hash value is computed incrementally and backwards and therefore
                                 //the full hash is stored under the index of the first n-gram's word
-                                return m_hash_values[BASE::m_actual_end_word_idx];
+                                return m_hash_values[BASE::get_last_word_idx()];
                             }
 
                         private:
+                            //Stores the word ids
+                            word_uid m_word_ids[MODEL_M_GRAM_MAX_LEN] = {};
+
+                            //Stores the m-gram tokens
+                            TextPieceReader m_tokens[MODEL_M_GRAM_MAX_LEN] = {};
+
                             //The data structure to store the N-gram hashes
-                            uint64_t m_hash_values[LM_M_GRAM_LEVEL_MAX] = {};
+                            uint64_t m_hash_values[MODEL_M_GRAM_MAX_LEN] = {};
 
                             //Stores the m-gram idx for when adding m-gram tokens
                             phrase_length m_curr_index;
-
-                            /**
-                             * Make this constructor private as it is not to be used.
-                             */
-                            model_m_gram(WordIndexType & word_index) : m_gram_base<WordIndexType>(word_index) {
-                            }
-
+                            
+                            friend ostream& operator<<(ostream& stream, const model_m_gram & gram);
                         };
 
                     }

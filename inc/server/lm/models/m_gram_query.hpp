@@ -27,28 +27,16 @@
 #define SLIDING_M_GRAM_QUERY_HPP
 
 #include <string>       //std::string
+#include <ostream>
+#include <algorithm>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+#include "server/server_configs.hpp"
+
 #include "server/lm/lm_consts.hpp"
-#include "server/lm/lm_configs.hpp"
-
 #include "server/lm/mgrams/query_m_gram.hpp"
-#include "server/lm/models/generic_trie_base.hpp"
-
-#include "server/lm/dictionaries/basic_word_index.hpp"
-#include "server/lm/dictionaries/counting_word_index.hpp"
-#include "server/lm/dictionaries/optimizing_word_index.hpp"
-#include "server/lm/dictionaries/hashing_word_index.hpp"
-
-#include "server/lm/models/c2d_hybrid_trie.hpp"
-#include "server/lm/models/c2d_map_trie.hpp"
-#include "server/lm/models/c2w_array_trie.hpp"
-#include "server/lm/models/g2d_map_trie.hpp"
-#include "server/lm/models/h2d_map_trie.hpp"
-#include "server/lm/models/w2c_array_trie.hpp"
-#include "server/lm/models/w2c_hybrid_trie.hpp"
 
 using namespace std;
 
@@ -57,7 +45,6 @@ using namespace uva::utils::exceptions;
 using namespace uva::utils::math::bits;
 
 using namespace uva::smt::bpbd::server::lm;
-using namespace uva::smt::bpbd::server::lm::dictionary;
 using namespace uva::smt::bpbd::server::lm::m_grams;
 
 namespace uva {
@@ -67,83 +54,265 @@ namespace uva {
                 namespace lm {
 
                     /**
-                     * Stores the query and its internal for the sake of re-usability and
-                     * independency from the Tries and executor.
+                     * This structure stores the basic data required for a query execution.
+                     * @param m_query the m-gram query itself 
+                     * @param m_payloads the  two dimensional array of the payloads 
+                     * @param m_last_ctx_ids stores the last context id computed for the given row of the sub-m-gram matrix
+                     * @param m_probs the array f probabilities 
+                     * @param m_begin_word_idx the currently considered begin word index
+                     * @param m_end_word_idx the currently considered end word index
                      */
-                    template<typename TrieType>
                     class m_gram_query {
                     public:
-                        typedef typename TrieType::WordIndexType WordIndexType;
+                        //Declare the payload pointer
+                        typedef const void * payload_ptr;
+
+                        //Stores the m-gram probability for the m-gram ending in this word
+                        //The length of the m-gram is defined by the number of words in the
+                        //query but is limited by the maximum Language model level.
+                        prob_weight m_probs[QUERY_M_GRAM_MAX_LEN];
+
+                        //The currently considered m-gram's begin word index
+                        phrase_length m_curr_begin_word_idx;
+                        //The currently considered m-gram's end word index
+                        phrase_length m_curr_end_word_idx;
 
                         /**
-                         * The basic constructor for the structure
-                         * @param trie the reference to the trie object
+                         * The basic constructor that gets a reference to the word index
+                         * @param word_index the reference to the word index
                          */
-                        m_gram_query(const TrieType & trie)
-                        : m_trie(trie), m_query(trie.get_word_index()) {
+                        m_gram_query() {
                         }
 
                         /**
-                         * Allows to retrieve the unknown target word log probability penalty 
-                         * @return the target source word log probability penalty
-                         */
-                        inline prob_weight get_unk_word_prob() {
-                            return m_trie.get_unk_word_prob();
-                        }
-
-                        /**
-                         * Allows to execute m-gram the query. The query starts with the m-gram size
-                         * given by min_level and then grows until the maximum of LM_M_GRAM_LEVEL_MAX.
-                         * After that m-grams of the LM_M_GRAM_LEVEL_MAX are computed via a sliding window:
-                         * Let:
-                         *      "min_level == 2", "LM_MAX_QUERY_LEN = 4",
-                         *      "num_word_ids == 6" and "word_ids == w1w2w3w4w5w6"
-                         * Then this method will compute the sum:
-                         *      P(w2|w1) + P(w3|w1w2) + P(w4|w1w2w3) + P(w5|w2w3w4) + P(w6|w3w4w5)
-                         * @param min_level the minimum value of the m-gram level
+                         * Allows to set new data to the query
                          * @param num_word_ids stores the number of word ids, the maximum number
-                         * of words must be LM_MAX_QUERY_LEN
+                         * of words must be QUERY_LENGTH
                          * @param word_ids the word identifiers of the words of the target phrase
                          * to compute the probability for
                          */
-                        template<bool is_log_results = false >
-                        inline prob_weight execute(const phrase_length min_level,
-                                const phrase_length num_word_ids, const word_uid * word_ids) {
-                            //Perform a sanity check to make sure we do not exceed 
-                            //the limits on the number of words in the query
-                            ASSERT_SANITY_THROW((num_word_ids > LM_MAX_QUERY_LEN),
-                                    string("The number of words in the query: ") + to_string(num_word_ids) +
-                                    string(" exceeds the allowed maximum: ") + to_string(LM_MAX_QUERY_LEN));
+                        template<bool is_need_ctx_ids>
+                        inline void set_data(const phrase_length num_words, const word_uid * word_ids) {
+                            //Check that the number of words has a valid value
+                            ASSERT_SANITY_THROW((num_words > QUERY_M_GRAM_MAX_LEN),
+                                    string("The number of words in the query: ") + to_string(num_words) +
+                                    string(" exceeds the allowed maximum: ") + to_string(QUERY_M_GRAM_MAX_LEN));
 
-                            //ToDo: Implement the query with the sliding window
+                            //Clean the probability and payload data
+                            memset(m_probs, 0, sizeof (prob_weight) * QUERY_M_GRAM_MAX_LEN);
+                            memset(m_payloads, 0, sizeof (void*) * QUERY_M_GRAM_MAX_LEN * QUERY_M_GRAM_MAX_LEN);
 
-                            return UNKNOWN_LOG_PROB_WEIGHT;
+                            //Clean the contexts if needed
+                            if (is_need_ctx_ids) {
+                                memset(m_last_ctx_ids, UNDEFINED_WORD_ID, sizeof (TLongId) * QUERY_M_GRAM_MAX_LEN);
+                            }
+                            
+                            //Store the values
+                            m_gram.set_m_gram(num_words, word_ids);
+                        }
+                        
+                        /**
+                         * Allows to get the begin word index of the query
+                         * @return the begin word index of the query
+                         */
+                        inline phrase_length get_query_begin_word_idx() const {
+                            return m_gram.get_first_word_idx();
+                        }
+                        
+                        /**
+                         * Allows to get the end word index of the query
+                         * @return the end word index of the query
+                         */
+                        inline phrase_length get_query_end_word_idx() const {
+                            return m_gram.get_last_word_idx();
+                        }
+                        
+                        /**
+                         * Allows to set the begin and end m-gram word index.
+                         * These define the m-gram for which the probability is to be computed.
+                         * This method is handy for when we need streaming for a number of
+                         * sub-sub m-grams starting in the same word but of the incremented length
+                         * @param sub_query_begin_word_idx the sub-query begin word index
+                         * @param first_sub_sub_query_end_word_idx the sub-sub query first end word index
+                         * @param sub_query_end_word_idx the sub query end word index
+                         */
+                        inline void set_word_indxes(
+                        const phrase_length sub_query_begin_word_idx,
+                        const phrase_length sub_sub_query_first_end_word_idx,
+                        const phrase_length sub_query_end_word_idx) {
+                            m_curr_begin_word_idx = sub_query_begin_word_idx;
+                            m_curr_end_word_idx = sub_sub_query_first_end_word_idx;
+                            m_sub_query_end_word_idx = sub_query_end_word_idx;
+                        }
+                        
+                        /**
+                         * Allows to set the begin and end m-gram word index.
+                         * These define the m-gram for which the probability is to be computed.
+                         * This method is needed for when we only need one m-gram probability without streaming
+                         * @param sub_query_begin_word_idx the sub-query begin word index
+                         * @param sub_query_end_word_idx the sub query end word index
+                         */
+                        inline void set_word_indxes(
+                        const phrase_length sub_query_begin_word_idx,
+                        const phrase_length sub_query_end_word_idx) {
+                            m_curr_begin_word_idx = sub_query_begin_word_idx;
+                            m_curr_end_word_idx = sub_query_end_word_idx;
+                            m_sub_query_end_word_idx = sub_query_end_word_idx;
+                        }
+
+                        /**
+                         * Allows to retrieve the word id under the given index
+                         * @param idx the index of the word we need an id for
+                         * @return the word id
+                         */
+                        inline word_uid operator[](const phrase_length idx) const {
+                            //Return the value
+                            return m_gram[idx];
+                        }
+
+                        /**
+                         * Allows to check if the current sub-query execution is over or not
+                         * @return true if the sub-query execution is not finished yet
+                         */
+                        inline bool is_not_finished() const {
+                            //While we have not exceeded the number of words
+                            return (m_curr_end_word_idx <= m_sub_query_end_word_idx);
+                        }
+
+                        /**
+                         * Allows to compute the hash value of the m-gram defined
+                         * by the current begin and end word indexes
+                         * @return the hash of the current m-gram
+                         */
+                        inline uint64_t get_curr_m_gram_hash() {
+                            return m_gram.get_hash(m_curr_begin_word_idx, m_curr_end_word_idx);
+                        }
+
+                        /**
+                         * Allows to get the current begin word id
+                         * @return the current begin word id
+                         */
+                        inline word_uid get_curr_begin_word_id() const {
+                            return m_gram[m_curr_begin_word_idx];
+                        }
+
+                        /**
+                         * Allows to get the current end word id
+                         * @return the current end word id
+                         */
+                        inline word_uid get_curr_end_word_id() const {
+                            return m_gram[m_curr_end_word_idx];
+                        }
+
+                        /**
+                         * Allows to get the word if of the current uni-gram
+                         * This method shall only be called in case:
+                         *      m_curr_begin_word_idx == m_curr_end_word_idx
+                         * @return the word id of the current uni-gram
+                         */
+                        inline word_uid get_curr_uni_gram_word_id() const {
+                            //Assert sanity, check that it is indeed a unigram case!
+                            ASSERT_SANITY_THROW((m_curr_begin_word_idx != m_curr_end_word_idx),
+                                    string("Note a uni-gram, begin word idx: ") + to_string(m_curr_begin_word_idx) +
+                                    string(" end word idx: ") + to_string(m_curr_end_word_idx));
+
+                            //Return the required value
+                            return m_gram[m_curr_begin_word_idx];
+                        }
+
+                        /**
+                         * Allows to set the payload of the current m-gram defined
+                         * by the current begin and end word indexes
+                         * @param payload the payload to be set
+                         */
+                        inline void set_curr_payload(const void * payload) {
+                            m_payloads[m_curr_begin_word_idx][m_curr_end_word_idx] = payload;
+                        }
+
+                        /**
+                         * Allows to set the payload of the current m-gram defined
+                         * by the current begin and end word indexes
+                         * @param payload the payload to be set
+                         */
+                        inline const void * & get_curr_payload_ref() {
+                            return m_payloads[m_curr_begin_word_idx][m_curr_end_word_idx];
+                        }
+
+                        /**
+                         * Allows to check if the current m-gram is a uni-gram
+                         * @return true if the current m-gram is a uni-gram, otherwise false
+                         */
+                        inline bool is_curr_uni_gram() const {
+                            return (m_curr_begin_word_idx == m_curr_end_word_idx);
+                        }
+
+                        /**
+                         * Allows to get the level of the currently considered m-gram
+                         * @return the level of the currently considered m-gram
+                         */
+                        inline phrase_length get_curr_level() const {
+                            return CURR_LEVEL_MAP[m_curr_begin_word_idx][m_curr_end_word_idx];
+                        }
+
+                        /**
+                         * Allows to get the "level - 1" of the currently considered m-gram
+                         * @return the "level - 1" of the currently considered m-gram
+                         */
+                        inline phrase_length get_curr_level_m1() const {
+                            return CURR_LEVEL_MIN_1_MAP[m_curr_begin_word_idx][m_curr_end_word_idx];
+                        }
+
+                        /**
+                         * Allows to get the "level - 2" of the currently considered m-gram
+                         * @return the "level - 2" of the currently considered m-gram
+                         */
+                        inline phrase_length get_curr_level_m2() const {
+                            return CURR_LEVEL_MIN_2_MAP[m_curr_begin_word_idx][m_curr_end_word_idx];
+                        }
+
+                        /**
+                         * Allows to create a new m-gram id for the current m-gram defined by the current begin and end word index values.
+                         * For the argument reference to the id data pointer the following holds:
+                         * a) If there was no memory allocated for the M-gram id then there will be allocated as much
+                         * as needed to store the given id.
+                         * b) If there was memory allocated then no re-allocation will be done, then it is assumed that enough memory was allocated
+                         * @param p_m_gram_id the reference to the M-gram id data pointer to be initialized with the M-gram id data, must be pre-allocated
+                         */
+                        inline const TM_Gram_Id_Value_Ptr get_curr_m_gram_id(uint8_t & len_bytes) {
+                            return m_gram.get_phrase_id_ref(m_curr_begin_word_idx, get_curr_level(), len_bytes);
+                        }
+
+                        /**
+                         * Allows to get a reference to the current context
+                         * @return the reference to the variable storing the current context value
+                         */
+                        inline TLongId & get_curr_ctx_ref() {
+                            return m_last_ctx_ids[m_curr_begin_word_idx];
                         }
 
                     protected:
-                        //Stores the reference to the constant trie.
-                        const TrieType & m_trie;
+                    private:
+                        //Stores the query m-gram
+                        query_m_gram m_gram;
+                        
+                        //Stores the current execution last word index
+                        phrase_length m_sub_query_end_word_idx;
 
-                        //Define the query data structure that: stores the query m-gram,
-                        //stores pointers to the retrieved payloads, stores the computed
-                        //conditional probabilities per sub-m-gram and others
-                        typename TrieType::query_exec_data m_query;
+                        //Stores the retrieved payloads
+                        payload_ptr m_payloads[QUERY_M_GRAM_MAX_LEN][QUERY_M_GRAM_MAX_LEN];
+
+                        //Stores the currently computed context for the last pair
+                        //of begin and end word ids, only for layered tries.
+                        TLongId m_last_ctx_ids[QUERY_M_GRAM_MAX_LEN];
+
+                        //Stores the hash computed flags
+                        phrase_length m_hash_level_row[LM_M_GRAM_LEVEL_MAX];
+                        //Stores the computed hash values
+                        uint64_t m_hash_matrix[LM_M_GRAM_LEVEL_MAX][LM_M_GRAM_LEVEL_MAX];
+
+                        //Add the stream operator as a friend
+                        friend ostream& operator<<(ostream& stream, const m_gram_query & value);
                     };
-
-                    //Make sure that there will be templates instantiated, at least for the given parameter values
-#define INSTANTIATE_SLIDING_M_GRAM_QUERY_WORD_IDX(WORD_INDEX_TYPE); \
-            template class m_gram_query<C2DHybridTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<C2DMapTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<C2WArrayTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<W2CArrayTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<W2CHybridTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<G2DMapTrie<WORD_INDEX_TYPE>>; \
-            template class m_gram_query<H2DMapTrie<WORD_INDEX_TYPE>>;
-
-                    INSTANTIATE_SLIDING_M_GRAM_QUERY_WORD_IDX(basic_word_index);
-                    INSTANTIATE_SLIDING_M_GRAM_QUERY_WORD_IDX(counting_word_index);
-                    INSTANTIATE_SLIDING_M_GRAM_QUERY_WORD_IDX(TOptBasicWordIndex);
-                    INSTANTIATE_SLIDING_M_GRAM_QUERY_WORD_IDX(TOptCountWordIndex);
                 }
             }
         }

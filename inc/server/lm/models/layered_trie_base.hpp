@@ -110,11 +110,11 @@ namespace uva {
                          * @return true if the context was found otherwise false
                          */
                         template<typename TrieType, phrase_length CURR_LEVEL, DebugLevelsEnum LOG_LEVEL>
-                        inline void get_context_id(TrieType & trie, const model_m_gram<typename TrieType::WordIndexType> &gram, TLongId & ctx_id) {
+                        inline void get_context_id(TrieType & trie, const model_m_gram &gram, TLongId & ctx_id) {
                             //Perform sanity check for the level values they should be the same!
-                            ASSERT_SANITY_THROW(CURR_LEVEL != gram.get_m_gram_level(),
+                            ASSERT_SANITY_THROW(CURR_LEVEL != gram.get_num_words(),
                                     string("The improper level values! Template level parameter = ") + std::to_string(CURR_LEVEL) +
-                                    string(" but the m-gram level value is: ") + std::to_string(gram.get_m_gram_level()));
+                                    string(" but the m-gram level value is: ") + std::to_string(gram.get_num_words()));
 
                             //Try to retrieve the context from the cache, if not present then compute it
                             if (trie.template get_cached_context_id<CURR_LEVEL>(gram, ctx_id)) {
@@ -124,8 +124,8 @@ namespace uva {
                                 LOG_DEBUG4 << "The context level is: " << SSTR(ctx_level) << ", the current level is " << SSTR(CURR_LEVEL) << END_LOG;
 
                                 //Do sanity check if needed
-                                ASSERT_SANITY_THROW(CURR_LEVEL != ctx_level, string("The m-gram:") +
-                                        ((string) gram) + string(" context could not be computed!"));
+                                ASSERT_SANITY_THROW(CURR_LEVEL != ctx_level,
+                                        string("The m-gram context could not be computed!"));
 
                                 //Cache the newly computed context id for the given n-gram context
                                 trie.template set_cache_context_id<CURR_LEVEL>(gram, ctx_id);
@@ -140,7 +140,7 @@ namespace uva {
                     }
 
 #define LAYERED_BASE_ENSURE_CONTEXT(query, status) \
-            if (query.m_last_ctx_ids[query.m_begin_word_idx] == UNDEFINED_WORD_ID) { \
+            if (query.get_curr_ctx_ref() == UNDEFINED_WORD_ID) { \
                 BASE::ensure_context(query, status); \
             } else { \
                 status = MGramStatusEnum::GOOD_PRESENT_MGS; \
@@ -170,7 +170,7 @@ namespace uva {
                          * Allows to indicate whether the context id of an m-gram is to be computed while retrieving payloads
                          * @return returns true, by default all layered tries need context ids when searching for data
                          */
-                        static constexpr bool is_need_getting_ctx_ids() {
+                        static constexpr bool is_context_needed() {
                             return true;
                         }
 
@@ -199,7 +199,7 @@ namespace uva {
                          * @return true if there was nothing cached, otherwise false
                          */
                         template<phrase_length CURR_LEVEL>
-                        inline bool get_cached_context_id(const model_m_gram<WordIndexType> &gram, TLongId & result) const {
+                        inline bool get_cached_context_id(const model_m_gram &gram, TLongId & result) const {
                             //Compute the context level
                             constexpr phrase_length CONTEXT_LEVEL = CURR_LEVEL - 1;
                             //Check if this is the same m-gram
@@ -218,7 +218,7 @@ namespace uva {
                          * @param ctx_id the m-gram context id to cache.
                          */
                         template<phrase_length CURR_LEVEL>
-                        inline void set_cache_context_id(const model_m_gram<WordIndexType> &gram, TLongId & ctx_id) {
+                        inline void set_cache_context_id(const model_m_gram &gram, TLongId & ctx_id) {
                             //Compute the context level
                             constexpr phrase_length CONTEXT_LEVEL = CURR_LEVEL - 1;
                             //Copy the context word ids
@@ -238,35 +238,34 @@ namespace uva {
                          * @param query the query to work with
                          * @return true if the context was successfully computed, otherwise false.
                          */
-                        inline void ensure_context(typename BASE::query_exec_data & query, MGramStatusEnum & status) const {
+                        inline void ensure_context(m_gram_query & query, MGramStatusEnum & status) const {
                             //Get the context id reference for convenience
-                            TLongId & ctx_id = query.m_last_ctx_ids[query.m_begin_word_idx];
+                            TLongId & ctx_id = query.get_curr_ctx_ref();
 
-                            LOG_DEBUG << "Ensuring context or sub-m-gram : [" << SSTR(query.m_begin_word_idx)
-                                    << ", " << SSTR(query.m_end_word_idx) << "], the last computed context value is: "
-                                    << ctx_id << END_LOG;
+                            LOG_DEBUG << "Ensuring context for sub-m-gram : " << query
+                                    << ", the last computed context value is: " << ctx_id << END_LOG;
 
                             //The first context is the first word id
-                            ctx_id = query.m_gram[query.m_begin_word_idx];
+                            ctx_id = query.get_curr_begin_word_id();
 
                             LOG_DEBUG << "Setting the first context value to the first word id: " << ctx_id << END_LOG;
 
                             //Decrement the end word index to get down to the back-off level
-                            query.m_end_word_idx--;
+                            query.m_curr_end_word_idx--;
 
                             //Set the result status to true
                             status = MGramStatusEnum::GOOD_PRESENT_MGS;
 
                             //Check if the back-off m-gram is a unigram or not
-                            if (query.m_begin_word_idx == query.m_end_word_idx) {
+                            if (query.m_curr_begin_word_idx == query.m_curr_end_word_idx) {
                                 //The the back-off sub-m-gram is a uni-gram obtain its payload
                                 static_cast<const TrieType*> (this)->get_unigram_payload(query);
                             } else {
                                 //If the back-off sub-m-gram is not a uni-gram then do the context
-                                for (phrase_length word_idx = query.m_begin_word_idx + 1; word_idx < query.m_end_word_idx; ++word_idx) {
-                                    LOG_DEBUG2 << "Getting the context id for sub-m-gram: [" << SSTR(query.m_begin_word_idx) << ", " << SSTR(word_idx) << "]" << END_LOG;
-                                    const phrase_length & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_begin_word_idx][word_idx];
-                                    if (!static_cast<const TrieType*> (this)->get_ctx_id(level_idx, query.m_gram[word_idx], ctx_id)) {
+                                for (phrase_length word_idx = query.m_curr_begin_word_idx + 1; word_idx < query.m_curr_end_word_idx; ++word_idx) {
+                                    LOG_DEBUG2 << "Getting the context id for sub-m-gram: [" << SSTR(query.m_curr_begin_word_idx) << ", " << SSTR(word_idx) << "]" << END_LOG;
+                                    const phrase_length & level_idx = CURR_LEVEL_MIN_2_MAP[query.m_curr_begin_word_idx][word_idx];
+                                    if (!static_cast<const TrieType*> (this)->get_ctx_id(level_idx, query[word_idx], ctx_id)) {
                                         //If the next context could not be computed, we stop with a bad status
                                         status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                         break;
@@ -283,14 +282,13 @@ namespace uva {
                                 if (status != MGramStatusEnum::GOOD_PRESENT_MGS) {
                                     //Set the back-off payload to zero payload!
 
-                                    query.m_payloads[query.m_begin_word_idx][query.m_end_word_idx] = &m_nothing_payload;
+                                    query.set_curr_payload(&m_nothing_payload);
                                 }
                             }
                             //Increment the end word index to get back to the original sub-m-gram
-                            query.m_end_word_idx++;
+                            query.m_curr_end_word_idx++;
 
-                            LOG_DEBUG << "Ensuring context or sub-m-gram : [" << SSTR(query.m_begin_word_idx)
-                                    << ", " << SSTR(query.m_end_word_idx) << "] status is: "
+                            LOG_DEBUG << "Ensuring context or sub-m-gram: " << query << " status is: "
                                     << status_to_string(status) << END_LOG;
                         }
 

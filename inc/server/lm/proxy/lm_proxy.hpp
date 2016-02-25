@@ -26,7 +26,8 @@
 #ifndef TRIE_PROXY_HPP
 #define TRIE_PROXY_HPP
 
-#include "server/lm/proxy/lm_query_proxy.hpp"
+#include "server/lm/proxy/lm_slow_query_proxy.hpp"
+#include "server/lm/proxy/lm_fast_query_proxy.hpp"
 
 using namespace uva::smt::bpbd::server::lm::proxy;
 
@@ -64,13 +65,25 @@ namespace uva {
                              * This method allows to get a trie query executor for the given trie
                              * @return the trie query proxy object
                              */
-                            virtual lm_query_proxy & allocate_trie_query_proxy() = 0;
+                            virtual lm_slow_query_proxy & allocate_slow_query_proxy() = 0;
 
                             /**
                              * Dispose the previously allocated trie query object
                              * @param query the trie query to dispose
                              */
-                            virtual void dispose_trie_query_proxy(lm_query_proxy & query) = 0;
+                            virtual void dispose_slow_query_proxy(lm_slow_query_proxy & query) = 0;
+
+                            /**
+                             * This method allows to get a trie query executor for the given trie
+                             * @return the trie query proxy object
+                             */
+                            virtual lm_fast_query_proxy & allocate_fast_query_proxy() = 0;
+
+                            /**
+                             * Dispose the previously allocated trie query object
+                             * @param query the trie query to dispose
+                             */
+                            virtual void dispose_fast_query_proxy(lm_fast_query_proxy & query) = 0;
 
                         };
                     }
