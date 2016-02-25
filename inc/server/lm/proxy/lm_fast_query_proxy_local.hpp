@@ -58,7 +58,7 @@ namespace uva {
                              * @param trie the trie to query
                              */
                             lm_fast_query_proxy_local(const trie_type & trie)
-                            : m_trie(trie), m_word_idx(m_trie.get_word_index()), m_query() {
+                            : m_trie(trie), m_word_idx(m_trie.get_word_index()), m_query(), m_joint_prob(0.0) {
                             }
 
                             /**
@@ -110,9 +110,11 @@ namespace uva {
                              * @see lm_query_proxy
                              */
                             virtual prob_weight execute(const phrase_length num_words, const word_uid * word_ids) {
+                                //Declare a dummy variable for the min level
+                                phrase_length min_level = M_GRAM_LEVEL_1;
 
-                                //ToDo: Re-implement, all the computations are now as for a cumulative query!
-                                THROW_NOT_IMPLEMENTED();
+                                //return the probability value
+                                return execute(num_words, word_ids, min_level);
                             }
 
                             /**
@@ -122,53 +124,100 @@ namespace uva {
                                     const word_uid * word_ids, phrase_length min_level,
                                     prob_weight & prob) {
 
-                                //ToDo: Re-implement, all the computations are now as for a cumulative query!
-                                THROW_NOT_IMPLEMENTED();
+                                //Call the generic method, note that min_level is changed
+                                prob = execute(num_words, word_ids, min_level);
+
+                                //Return the last considered min level
+                                return min_level;
                             }
 
                         protected:
 
-                            /*
-                             {
-                                //Check that the given minimum level has a valid value
-                                ASSERT_SANITY_THROW((min_level > LM_M_GRAM_LEVEL_MAX),
-                                        string("An improper minimum level: ") + to_string(min_level) +
-                                        string(" the maximum allowed level is: ") + to_string(LM_M_GRAM_LEVEL_MAX));
+                            /**
+                             * Implements the query execution
+                             * @param num_words the number of words in the query
+                             * @param word_ids the word ids of the query
+                             * @param min_level [in/out] the m-gram level to begin with/the maximum considered m-gram level
+                             * @return the probability value
+                             */
+                            inline prob_weight execute(const phrase_length num_words, const word_uid * word_ids,
+                                    phrase_length min_level) {
+                                //Re-initialize the joint prob reault with zero
+                                m_joint_prob = 0.0;
 
-                                //Get the the flag value
-                                constexpr bool is_ctx = trie_type::is_context_needed();
+                                //Set the words data into the query object
+                                m_query.set_data<m_is_ctx>(num_words, word_ids);
 
-                                //Set the query data into the query object
-                                m_query.set_data<is_ctx>(num_words, word_ids);
-
-                                //Declare the result probability and initialize it with zero
-                                prob_weight result = 0.0;
+                                //Compute the maximum to consider m-gram level
+                                const phrase_length max_m_gram_level = std::min<phrase_length>(num_words, LM_M_GRAM_LEVEL_MAX);
 
                                 //Initialize the begin and end word indexes
-                                phrase_length begin_word_idx = m_query.get_begin_word_idx();
-                                phrase_length end_word_idx = begin_word_idx + min_level - 1;
+                                phrase_length begin_word_idx = 0;
+                                phrase_length sub_end_word_idx = min_level - 1;
+                                phrase_length end_word_idx = max_m_gram_level - 1;
 
-                                //Iterate, there will be at least one iteration
-                                do {
-                                    //Set the begin and end word index to consider
-                                    m_query.set_begin_end_word_idx(begin_word_idx, end_word_idx);
+                                //Check that the minimum level is actually possible!
+                                ASSERT_SANITY_THROW((sub_end_word_idx > end_word_idx),
+                                        string("Impossible min_level: ") + to_string(min_level) +
+                                        string(" the maximum possible level is: ") + to_string(max_m_gram_level));
+
+                                //Set the m-gram values for the first query execution
+                                m_query.set_word_indxes(begin_word_idx, sub_end_word_idx, end_word_idx);
+
+                                //Execute the first part of the query
+                                m_trie.execute(m_query);
+
+                                //Report the partial results, and update the total
+                                get_interm_results(begin_word_idx, sub_end_word_idx, end_word_idx);
+
+                                //Now do the sliding window and compute more probabilities,
+                                //Note that if the end_word_idx is smaller than the query
+                                //last word idx then it means that:
+                                //      (max_m_gram_level == LM_M_GRAM_LEVEL_MAX)
+                                //and there is still m-grams to compute
+                                while (end_word_idx < m_query.get_query_end_word_idx()) {
+                                    //Slide the window one step forward
+                                    begin_word_idx++;
+                                    end_word_idx++;
+
+                                    //Set the window value inside, this time we need a single probability and not the joint
+                                    m_query.set_word_indxes(begin_word_idx, end_word_idx);
 
                                     //Execute the query
                                     m_trie.execute(m_query);
 
-                                    prob += m_query.get_prob();
+                                    //Report the partial result, and update the total
+                                    get_interm_results(begin_word_idx, end_word_idx, end_word_idx);
+                                }
 
-                                    //Increment the level but keep the maximum
-                                    min_level = std::min<phrase_length>(min_level + 1, LM_M_GRAM_LEVEL_MAX);
+                                //Return the final result;
+                                return m_joint_prob;
+                            }
 
-                                } while (end_word_idx <= m_query.get_end_word_idx());
+                        protected:
 
-                                //Return the result
-                                return min_level;
-                             }
+                            /**
+                             * Allows add up the intermediate results of the loose sub-sub queries defined by the arguments
+                             * @param begin_word_idx the sub query begin word index
+                             * @param first_end_word_idx the first sub-sub query end word index
+                             * @param last_end_word_idx the last sub-sub query end word index
                              */
+                            void get_interm_results(
+                                    const phrase_length begin_word_idx,
+                                    const phrase_length first_end_word_idx,
+                                    const phrase_length last_end_word_idx) {
+                                //Print the intermediate results
+                                for (phrase_length end_word_idx = first_end_word_idx; end_word_idx <= last_end_word_idx; ++end_word_idx) {
+                                    //Add all the weights even if they are zero, this is what the model tells us!
+                                    m_joint_prob += m_query.m_probs[end_word_idx];
+                                }
+                            }
 
                         private:
+
+                            //Store the flag indicating whether the trie needs context ids
+                            static constexpr bool m_is_ctx = trie_type::is_context_needed();
+                            
                             //Stores the reference to the trie
                             const trie_type & m_trie;
 
@@ -177,7 +226,13 @@ namespace uva {
 
                             //Stores the reference to the sliding query
                             m_gram_query m_query;
+
+                            //Stores the joint probability result for the query
+                            prob_weight m_joint_prob;
                         };
+
+                        template<typename trie_type>
+                        constexpr bool lm_fast_query_proxy_local<trie_type>::m_is_ctx;
                     }
                 }
             }

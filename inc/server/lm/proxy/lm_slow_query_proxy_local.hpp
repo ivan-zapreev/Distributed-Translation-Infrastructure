@@ -96,7 +96,7 @@ namespace uva {
                                     const phrase_length max_m_gram_level = std::min<phrase_length>(m_num_words, LM_M_GRAM_LEVEL_MAX);
 
                                     //Initialize the begin and end word indexes
-                                    phrase_length begin_word_idx = m_query.get_query_begin_word_idx();
+                                    phrase_length begin_word_idx = 0;
                                     phrase_length end_word_idx = begin_word_idx + max_m_gram_level - 1;
 
                                     //Set the m-gram values for the first query execution
@@ -145,7 +145,7 @@ namespace uva {
                              * @param first_end_word_idx the first sub-sub query end word index
                              * @param last_end_word_idx the last sub-sub query end word index
                              */
-                            void get_report_interm_results(
+                            inline void get_report_interm_results(
                                     const phrase_length begin_word_idx,
                                     const phrase_length first_end_word_idx,
                                     const phrase_length last_end_word_idx) {
@@ -167,7 +167,7 @@ namespace uva {
                             /**
                              * Allows to report the total joint probability of the query
                              */
-                            void report_final_result() {
+                            inline void report_final_result() {
                                 LOG_RESULT << "---" << END_LOG;
                                 //Print the total cumulative probability if needed
                                 const string gram_str = get_query_str();
@@ -258,6 +258,10 @@ namespace uva {
                             };
 
                         private:
+                            
+                            //Store the flag indicating whether the trie needs context ids
+                            static constexpr bool m_is_ctx = trie_type::is_context_needed();
+
                             //Stores the reference to the trie
                             const trie_type & m_trie;
 
@@ -269,9 +273,6 @@ namespace uva {
 
                             //Stores the current m-gram query length
                             phrase_length m_num_words;
-
-                            //Store the flag indicating whether the trie needs context ids
-                            static constexpr bool m_is_ctx = trie_type::is_context_needed();
 
                             //Stores the m-gram word id array
                             word_uid m_word_ids[LM_MAX_QUERY_LEN] = {};
