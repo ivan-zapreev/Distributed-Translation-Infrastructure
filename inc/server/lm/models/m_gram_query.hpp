@@ -305,11 +305,6 @@ namespace uva {
                         //of begin and end word ids, only for layered tries.
                         TLongId m_last_ctx_ids[QUERY_M_GRAM_MAX_LEN];
 
-                        //Stores the hash computed flags
-                        phrase_length m_hash_level_row[LM_M_GRAM_LEVEL_MAX];
-                        //Stores the computed hash values
-                        uint64_t m_hash_matrix[LM_M_GRAM_LEVEL_MAX][LM_M_GRAM_LEVEL_MAX];
-
                         //Add the stream operator as a friend
                         friend ostream& operator<<(ostream& stream, const m_gram_query & value);
                     };
