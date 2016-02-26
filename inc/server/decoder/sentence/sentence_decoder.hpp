@@ -169,11 +169,14 @@ namespace uva {
                                     LOG_DEBUG1 << "The source entry of phrase [" << start_idx << ", " << end_idx << "] is present." << END_LOG;
                                     //Check if this is a phrase with translation
                                     if (source_entry->has_translation()) {
+                                        LOG_DEBUG1 << "The source entry for [" << start_idx << ", " << end_idx << "] has translations." << END_LOG;
                                         //Get the targets and compute the maximum cost over them
                                         tm_const_target_entry* targets = source_entry->get_targets();
                                         for (size_t idx = 0; (idx < source_entry->num_entries()); ++idx) {
+                                            LOG_DEBUG1 << "The current cost of [" << start_idx << ", " << end_idx << "] is " << cost << END_LOG;
                                             //Get the maximum between the known cost and the newly computed
                                             cost = max(cost, compute_future_cost(targets[idx]));
+                                            LOG_DEBUG1 << "The new cost of [" << start_idx << ", " << end_idx << "] is " << cost << END_LOG;
                                         }
                                     } else {
                                         LOG_DEBUG1 << "The source entry of phrase [" << start_idx << ", " << end_idx << "] is UNK translation." << END_LOG;
@@ -188,8 +191,7 @@ namespace uva {
                                     }
                                 } else {
                                     //The longer phrases do not have translations, this is normal!
-                                    LOG_DEBUG1 << "The source phrase [" << phrase_data.m_begin_ch_idx << "]["
-                                            << phrase_data.m_end_ch_idx << "] translation entry is NULL" << END_LOG;
+                                    LOG_DEBUG1 << "The source phrase [" << start_idx << ", " << end_idx << "] translation entry is NULL" << END_LOG;
                                 }
 
                                 //Return the reference to the future cost, it will be needed in the caller
@@ -200,9 +202,17 @@ namespace uva {
                              * Allows to compute the future costs for the sentence.
                              */
                             inline void compute_futue_costs() {
+                                //First initialize the future cost of the first word
+                                prob_weight & word_cost = initialize_future_costs(0, 0);
+                                LOG_DEBUG1 << "The word: 0 future cost is: " << word_cost << END_LOG;
+
                                 //Iterate through all the end indexes, the minimum length is two words
                                 for (size_t end_idx = 1; (end_idx < m_sent_data.get_dim()); ++end_idx) {
                                     LOG_DEBUG1 << "CFC end word idx: " << end_idx << END_LOG;
+
+                                    //Initialize the future cost of the next new word
+                                    word_cost = initialize_future_costs(end_idx, end_idx);
+                                    LOG_DEBUG1 << "The word: " << end_idx << " future cost is: " << word_cost << END_LOG;
 
                                     //Iterate through all the start indexes smaller than the end one, as we
                                     //need minimum two words in a phrase, otherwise it is not split-able
@@ -215,7 +225,7 @@ namespace uva {
 
                                         //Iterate through all the intermediate indexes between start and end
                                         for (size_t mid_idx = start_idx; (mid_idx < end_idx); ++mid_idx) {
-                                            LOG_DEBUG1 << "CFC middle word idx: " << start_idx << END_LOG;
+                                            LOG_DEBUG1 << "CFC middle word idx: " << mid_idx << END_LOG;
 
                                             //Get the costs of the phrase one and two
                                             const prob_weight ph1_cost = m_sent_data[start_idx][mid_idx].future_cost;
