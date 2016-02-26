@@ -75,7 +75,7 @@ namespace uva {
 
                             //Shift the value up to get the minimum valid id
                             uid |= (1 << 1);
-                            
+
                             LOG_DEBUG2 << "Combined " << p1_uid << " and " << p2_uid << " into " << uid << END_LOG;
                             return uid;
                         }
@@ -93,19 +93,24 @@ namespace uva {
                         template<bool is_token = false >
                         static inline phrase_uid get_phrase_uid(const string & phrase) {
                             //Declare and default initialize the uid
-                            phrase_uid uid = UNDEFINED_PHRASE_ID;
+                            phrase_uid p_uid = UNDEFINED_PHRASE_ID;
 
                             //Check if we shall threat the given phrase as a single token or not.
                             if (is_token) {
                                 //If it is just a single token then compute the string hash
-                                uid = compute_hash(phrase);
+                                p_uid = compute_hash(phrase);
+                                LOG_DEBUG1 << "The phrase ___" << phrase << "___ uid = " << p_uid << END_LOG;
                             } else {
                                 //This phrase is to be treated as a phrase
                                 const string& delim = UTF8_SPACE_STRING;
                                 //Declare and initialie the token's begin and end char index
                                 size_t start = 0, end = phrase.find_first_of(delim);
+                                //Get the first sub-phrase
+                                string token = phrase.substr(start, end - start);
                                 //Get the uid of the first token
-                                uid = compute_hash(phrase.substr(start, end - start));
+                                p_uid = get_phrase_uid<true>(token);
+
+                                LOG_DEBUG1 << "The first token ___" << token << "___ uid = " << p_uid << END_LOG;
 
                                 //If there is more in the string to process search for
                                 //the next delimiter(s) and compute cumulative ids
@@ -113,7 +118,17 @@ namespace uva {
                                     start = end + 1;
                                     end = phrase.find_first_of(delim, start);
                                     while (end <= std::string::npos) {
-                                        uid = combine_phrase_uids(uid, compute_hash(phrase.substr(start, end - start)));
+                                        //Get the next token
+                                        token = phrase.substr(start, end - start);
+
+                                        //Get the next token's uid
+                                        phrase_uid t_uid = get_phrase_uid<true>(token);
+                                        LOG_DEBUG1 << "The next token ___" << token << "___ uid = " << t_uid << END_LOG;
+
+                                        //Extend the current uid with the uid of the new token
+                                        p_uid = combine_phrase_uids(p_uid, t_uid);
+                                        LOG_DEBUG1 << "The phrase_uid = combine(<previous>, " << t_uid << ") = " << p_uid << END_LOG;
+
                                         if (end != std::string::npos) {
                                             start = end + 1;
                                             end = phrase.find_first_of(delim, start);
@@ -125,11 +140,11 @@ namespace uva {
                             }
 
                             //Shift the value up to get the minimum valid id
-                            uid |= (1 << 1);
-                            
-                            LOG_DEBUG2 << "Phrase ___" << phrase << "___ got id " << uid << END_LOG;
-                            
-                            return uid;
+                            p_uid |= (1 << 1);
+
+                            LOG_DEBUG2 << "Phrase ___" << phrase << "___ got id " << p_uid << END_LOG;
+
+                            return p_uid;
                         }
                     }
                 }

@@ -93,7 +93,7 @@ namespace uva {
                             m_rm_query(rm_configurator::allocate_query_proxy()),
                             m_stack(m_params, m_is_stop, m_sent_data, m_rm_query) {
                                 LOG_DEBUG << "Created a sentence decoder " << m_params << END_LOG;
-                                
+
                                 //Put some text into the translation, for now just put the source text
                                 m_target_sent = m_source_sent;
                             }
@@ -175,7 +175,7 @@ namespace uva {
                                         LOG_DEBUG1 << "The source entry for [" << start_idx << ", " << end_idx << "] has translations." << END_LOG;
                                         //Get the targets and compute the maximum cost over them
                                         tm_const_target_entry* targets = source_entry->get_targets();
-                                        for (size_t idx = 0; (idx < source_entry->num_entries()); ++idx) {
+                                        for (size_t idx = 0; (idx < source_entry->num_translations()); ++idx) {
                                             LOG_DEBUG1 << "The current cost of [" << start_idx << ", " << end_idx << "] is " << cost << END_LOG;
                                             //Get the maximum between the known cost and the newly computed
                                             cost = max(cost, compute_future_cost(targets[idx]));
@@ -291,30 +291,38 @@ namespace uva {
 
                                 while (ch_e_idx <= std::string::npos) {
                                     //Get the appropriate map entry reference
-                                    phrase_data_entry & diag_entry = m_sent_data[end_wd_idx][end_wd_idx];
+                                    phrase_data_entry & end_word_data = m_sent_data[end_wd_idx][end_wd_idx];
+
+                                    //Get the token from the source phrase
+                                    const string token = m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx);
+
+                                    LOG_DEBUG1 << "Found the new token @ [" << ch_b_idx << ","
+                                            << ch_e_idx << "): ___" << token << "___" << END_LOG;
 
                                     //Store the phrase begin and end character indexes
-                                    diag_entry.m_begin_ch_idx = ch_b_idx;
-                                    diag_entry.m_end_ch_idx = ch_e_idx;
+                                    end_word_data.m_begin_ch_idx = ch_b_idx;
+                                    end_word_data.m_end_ch_idx = ch_e_idx;
 
-                                    LOG_DEBUG1 << "Found the new token @ [" << ch_b_idx << "," << ch_e_idx << "): "
-                                            << m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx) << END_LOG;
+                                    //Compute the phrase id and store it as well
+                                    end_word_data.m_phrase_uid = get_phrase_uid<true>(token);
 
-                                    //Compute the phrase id
-                                    diag_entry.m_phrase_uid = get_phrase_uid<true>(m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx));
+                                    LOG_DEBUG1 << "The token ___" << token << "___ @ [" << ch_b_idx << ","
+                                            << ch_e_idx << ") uid is: " << end_word_data.m_phrase_uid << END_LOG;
 
-                                    LOG_DEBUG1 << "The token @ [" << ch_b_idx << "," << ch_e_idx << ") uid is: " << diag_entry.m_phrase_uid << END_LOG;
+                                    //Get the uni-gram phrase (word) translations
+                                    m_tm_query.execute(end_word_data.m_phrase_uid, end_word_data.m_source_entry);
 
-                                    //Add the uni-gram phrase to the query
-                                    m_tm_query.execute(diag_entry.m_phrase_uid, diag_entry.m_source_entry);
-
-                                    LOG_DEBUG1 << "End word: " << m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx) << ", uid: " << diag_entry.m_phrase_uid << END_LOG;
+                                    LOG_DEBUG1 << "The token ___" << token << "___ @ [" << ch_b_idx << ","
+                                            << ch_e_idx << ") has " << (end_word_data.m_source_entry->has_translation() ? "" : "NO")
+                                            << " translation(s), num entries: " << end_word_data.m_source_entry->num_translations() << END_LOG;
 
                                     //Compute the new phrases and phrase ids for the new column elements,
                                     //Note that, the longest phrase length to consider is defined by the
                                     //decoding parameters. It is the end word plus several previous.
                                     int32_t begin_wd_idx = max(MIN_SENT_WORD_INDEX, end_wd_idx - m_params.m_max_s_phrase_len + 1);
                                     for (; (begin_wd_idx < end_wd_idx); ++begin_wd_idx) {
+                                        LOG_DEBUG1 << "Considering the phrase [" << begin_wd_idx << ", " << end_wd_idx << "] translation." << END_LOG;
+
                                         //Get the previous column entry
                                         phrase_data_entry & prev_entry = m_sent_data[begin_wd_idx][end_wd_idx - 1];
                                         //Get the new column entry
@@ -322,19 +330,25 @@ namespace uva {
 
                                         //Store the phrase begin and end character indexes
                                         new_entry.m_begin_ch_idx = prev_entry.m_begin_ch_idx; // All the phrases in the row begin at the same place
-                                        new_entry.m_end_ch_idx = diag_entry.m_end_ch_idx; //All the phrases in the column end at the same place
+                                        new_entry.m_end_ch_idx = end_word_data.m_end_ch_idx; //All the phrases in the column end at the same place
+
+                                        //Get the phrase for logging
+                                        const string phrase = m_source_sent.substr(new_entry.m_begin_ch_idx, new_entry.m_end_ch_idx - new_entry.m_begin_ch_idx);
+
+                                        LOG_DEBUG1 << "The phrase [" << begin_wd_idx << ", " << end_wd_idx << "] is ___" << phrase << "___" << END_LOG;
 
                                         //Compute the phrase uid
-                                        new_entry.m_phrase_uid = combine_phrase_uids(prev_entry.m_phrase_uid, diag_entry.m_phrase_uid);
+                                        new_entry.m_phrase_uid = combine_phrase_uids(prev_entry.m_phrase_uid, end_word_data.m_phrase_uid);
+
+                                        LOG_DEBUG1 << "The phrase ___" << phrase << "___ uid = combine(" << prev_entry.m_phrase_uid
+                                                << "," << end_word_data.m_phrase_uid << ") = " << new_entry.m_phrase_uid << END_LOG;
 
                                         //Add the m-gram phrase to the query
                                         m_tm_query.execute(new_entry.m_phrase_uid, new_entry.m_source_entry);
 
-                                        //Do logging 
-                                        {
-                                            string phrase = m_source_sent.substr(new_entry.m_begin_ch_idx, new_entry.m_end_ch_idx - new_entry.m_begin_ch_idx);
-                                            LOG_DEBUG1 << "Phrase: ___" << phrase << "___ uid: " << new_entry.m_phrase_uid << END_LOG;
-                                        }
+                                            LOG_DEBUG1 << "Phrase: ___" << phrase << "___ uid: " << new_entry.m_phrase_uid << " has "
+                                                    << (new_entry.m_source_entry->has_translation() ? "" : "NO") << " translation(s), "
+                                                    << " num entries: " << new_entry.m_source_entry->num_translations() << END_LOG;
 
                                         //Check if we need to stop, if yes, then return
                                         if (m_is_stop) return;

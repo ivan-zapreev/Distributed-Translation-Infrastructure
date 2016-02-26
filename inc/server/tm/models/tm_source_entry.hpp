@@ -217,7 +217,7 @@ namespace uva {
                              * Allows to get the number of target entries
                              * @return the number of target entries, or 0 if none
                              */
-                            size_t num_entries() const {
+                            size_t num_translations() const {
                                 return m_capacity;
                             }
 

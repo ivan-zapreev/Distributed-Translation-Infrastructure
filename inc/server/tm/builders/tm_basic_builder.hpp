@@ -276,7 +276,7 @@ namespace uva {
                              * @param count_or_build if true then count if false then build
                              */
                             template<bool count_or_build>
-                            inline void parse_rm_file() {
+                            inline void parse_tm_file() {
 
                                 //Declare the text piece reader for storing the read line and source phrase
                                 TextPieceReader line, source;
@@ -301,6 +301,9 @@ namespace uva {
                                     //Get the current source phrase uid
                                     string next_source_str = source.str();
                                     trim(next_source_str);
+                                    
+                                    LOG_DEBUG << "Got the source phrase: ___" << next_source_str << "___" << END_LOG;
+                                    
                                     if (source_str != next_source_str) {
                                         size_t size_val = m_sizes[source_uid];
                                         if (count_or_build) {
@@ -317,14 +320,18 @@ namespace uva {
                                                 m_model.finalize_entry(source_uid);
                                             }
                                         }
+                                        
                                         //Store the new source string
                                         source_str = next_source_str;
+                                        
                                         //Compute the new source string uid
                                         source_uid = get_phrase_uid(source_str);
+                                        
                                         //Get the current value for the new source id
                                         size_val = m_sizes[source_uid];
 
-                                        LOG_DEBUG1 << "The curr source " << source_uid << " count is " << size_val << END_LOG;
+                                        LOG_DEBUG1 << "The new source ___" << source_str << "___ id is: "
+                                                << source_uid << ", count is: " << size_val << END_LOG;
 
                                         if (count_or_build) {
                                             //Nothing to be done here when counting entries
@@ -395,7 +402,7 @@ namespace uva {
                                 Logger::start_progress_bar(string("Counting phrase translations"));
 
                                 //Count the good entries
-                                parse_rm_file<true>();
+                                parse_tm_file<true>();
 
                                 //Set the number of entries into the model
                                 m_model.set_num_entries(m_sizes.size());
@@ -416,7 +423,7 @@ namespace uva {
                                 Logger::start_progress_bar(string("Building translation model"));
 
                                 //Build the model
-                                parse_rm_file<false>();
+                                parse_tm_file<false>();
 
                                 //Stop the progress bar in case of no exception
                                 Logger::stop_progress_bar();
