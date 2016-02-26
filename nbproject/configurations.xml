@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
     </df>
@@ -76,9 +76,6 @@
     <Elem>src</Elem>
     <Elem>inc</Elem>
     <Elem>ext</Elem>
-    <Elem>src</Elem>
-    <Elem>inc</Elem>
-    <Elem>ext</Elem>
   </sourceRootList>
   <projectmakefile>build/Makefile</projectmakefile>
   <confs>
@@ -116,10 +113,6 @@
             </incDir>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">

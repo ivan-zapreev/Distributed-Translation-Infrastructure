@@ -192,7 +192,9 @@ namespace uva {
 
                                 //Set the min level to the current maximum
                                 min_level = max_m_gram_level;
-                                
+
+                                LOG_DEBUG << "Computed P(" << m_query << ") = " << m_joint_prob << ", next min_level:  " << min_level << END_LOG;
+
                                 //Return the final result;
                                 return m_joint_prob;
                             }
@@ -209,18 +211,24 @@ namespace uva {
                                     const phrase_length begin_word_idx,
                                     const phrase_length first_end_word_idx,
                                     const phrase_length last_end_word_idx) {
+                                LOG_DEBUG << "Current m_joint_prob = " << m_joint_prob << END_LOG;
+
                                 //Print the intermediate results
                                 for (phrase_length end_word_idx = first_end_word_idx; end_word_idx <= last_end_word_idx; ++end_word_idx) {
                                     //Add all the weights even if they are zero, this is what the model tells us!
+                                    LOG_DEBUG << "Adding m_query.m_probs[" << end_word_idx << "] = " << m_query.m_probs[end_word_idx] << END_LOG;
+
                                     m_joint_prob += m_query.m_probs[end_word_idx];
                                 }
+
+                                LOG_DEBUG << "Resulting m_joint_prob = " << m_joint_prob << END_LOG;
                             }
 
                         private:
 
                             //Store the flag indicating whether the trie needs context ids
                             static constexpr bool m_is_ctx = trie_type::is_context_needed();
-                            
+
                             //Stores the reference to the trie
                             const trie_type & m_trie;
 

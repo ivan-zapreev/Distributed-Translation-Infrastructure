@@ -179,7 +179,7 @@ namespace uva {
                                             LOG_DEBUG1 << "The current cost of [" << start_idx << ", " << end_idx << "] is " << cost << END_LOG;
                                             //Get the maximum between the known cost and the newly computed
                                             cost = max(cost, compute_future_cost(targets[idx]));
-                                            LOG_DEBUG1 << "The new cost of [" << start_idx << ", " << end_idx << "] is " << cost << END_LOG;
+                                            LOG_DEBUG1 << "The new cost of [" << start_idx << ", " << end_idx << "] with target " << idx << " is " << cost << END_LOG;
                                         }
                                     } else {
                                         LOG_DEBUG1 << "The source entry of phrase [" << start_idx << ", " << end_idx << "] is UNK translation." << END_LOG;
@@ -236,20 +236,20 @@ namespace uva {
                                             //Compute the cost of two sub-phrases
                                             const prob_weight sub_cost = ph1_cost + ph2_cost;
 
-                                            LOG_DEBUG2 << "Current cost[" << start_idx << "][" << mid_idx << "] = " << ph1_cost
-                                                    << ", cost[" << (mid_idx + 1) << "][" << end_idx << "] = " << ph2_cost
-                                                    << ", cost[" << start_idx << "][" << end_idx << "] = " << phrase_cost << END_LOG;
+                                            LOG_DEBUG2 << "Current cost[" << start_idx << ", " << mid_idx << "] = " << ph1_cost
+                                                    << ", cost[" << (mid_idx + 1) << ", " << end_idx << "] = " << ph2_cost
+                                                    << ", cost[" << start_idx << ", " << end_idx << "] = " << phrase_cost << END_LOG;
 
                                             //If the sub cost that is a logarithmic value of probability (a negative value) is
                                             //larger than than of the future cost for the entire phrase then use the sub cost.
                                             if (sub_cost > phrase_cost) {
-                                                LOG_DEBUG << "The sub phrases [" << start_idx << "][" << mid_idx
-                                                        << "] and [" << (mid_idx + 1) << "][" << end_idx
+                                                LOG_DEBUG << "The sub phrases [" << start_idx << ", " << mid_idx
+                                                        << "] and [" << (mid_idx + 1) << ", " << end_idx
                                                         << "] are cheaper!" << END_LOG;
                                                 phrase_cost = sub_cost;
                                             }
 
-                                            LOG_DEBUG << "The new cost[" << start_idx << "][" << end_idx << "] = " << phrase_cost << END_LOG;
+                                            LOG_DEBUG << "The new cost[" << start_idx << ", " << end_idx << "] = " << phrase_cost << END_LOG;
 
                                             //Check if we need to stop, if yes, then return
                                             if (m_is_stop) return;
@@ -333,7 +333,7 @@ namespace uva {
                                         //Do logging 
                                         {
                                             string phrase = m_source_sent.substr(new_entry.m_begin_ch_idx, new_entry.m_end_ch_idx - new_entry.m_begin_ch_idx);
-                                            LOG_DEBUG1 << "Phrase: " << phrase << ", uid: " << new_entry.m_phrase_uid << END_LOG;
+                                            LOG_DEBUG1 << "Phrase: ___" << phrase << "___ uid: " << new_entry.m_phrase_uid << END_LOG;
                                         }
 
                                         //Check if we need to stop, if yes, then return
