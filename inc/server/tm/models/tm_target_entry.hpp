@@ -73,7 +73,7 @@ namespace uva {
                              */
                             tm_target_entry_temp()
                             : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase(""),
-                            m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total(UNKNOWN_LOG_PROB_WEIGHT),
+                            m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total_weight(UNKNOWN_LOG_PROB_WEIGHT),
                             m_num_words(0), m_word_ids(NULL) {
                             }
 
@@ -134,16 +134,16 @@ namespace uva {
                              * of features that are turned into log10 scale.
                              * @return the total weight of the entry, the sum of feature weights
                              */
-                            inline const float get_total() const {
-                                return m_total;
+                            inline const prob_weight get_total_weight() const {
+                                return m_total_weight;
                             }
 
                             /**
                              * Allows to get the value of the third feature which is the log10(p(e|f))
                              * @return  the value of the third feature which is the log10(p(e|f))
                              */
-                            inline const float get_t_c_s() const {
-                                LOG_DEBUG1 << "m_t_cond_s : " << m_t_cond_s << END_LOG;
+                            inline const prob_weight get_t_c_s() const {
+                                LOG_DEBUG << "m_t_cond_s : " << m_t_cond_s << END_LOG;
                                 return m_t_cond_s;
                             }
 
@@ -176,19 +176,20 @@ namespace uva {
                              * features[3] = lex(p(e|f));
                              * features[4] = phrase penalty; // optional
                              */
-                            inline void set_features(const size_t num_features, const float * features) {
+                            inline void set_features(const size_t num_features, const prob_weight * features) {
                                 ASSERT_CONDITION_THROW((num_features > max_num_features), string("The number of features: ") +
                                         to_string(num_features) + string(" exceeds the maximum: ") + to_string(max_num_features));
 
                                 //Compute the total weight
                                 for (size_t idx = 0; idx < num_features; ++idx) {
-                                    m_total += features[idx];
+                                    m_total_weight += features[idx];
                                 }
 
                                 //ToDo: Get rid of magic constants here!
                                 //Check that we have enough features
                                 ASSERT_SANITY_THROW((num_features < 3),
                                         "The must be at least 3 features, p(e|f) is not known!");
+                                
                                 //Store the target conditioned on source probability
                                 m_t_cond_s = features[2];
                             }
@@ -199,9 +200,9 @@ namespace uva {
                             //Stores the target phrase of the translation which a key value
                             string m_target_phrase;
                             //Stores the features[2] = p(e|f);
-                            float m_t_cond_s;
+                            prob_weight m_t_cond_s;
                             //Stores the total weight of the entity
-                            float m_total;
+                            prob_weight m_total_weight;
                             //Stores the number of words in the translation, maximum should be TM_MAX_TARGET_PHRASE_LEN
                             phrase_length m_num_words;
                             //Stores the target phrase Language model word ids 
@@ -218,7 +219,7 @@ namespace uva {
                         typedef const tm_target_entry tm_const_target_entry;
 
                         //Typedef an array of weights
-                        typedef float feature_array[tm_target_entry::NUM_FEATURES];
+                        typedef prob_weight feature_array[tm_target_entry::NUM_FEATURES];
                     }
                 }
             }

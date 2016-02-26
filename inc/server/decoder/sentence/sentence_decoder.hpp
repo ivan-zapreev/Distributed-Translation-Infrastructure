@@ -141,18 +141,6 @@ namespace uva {
                         protected:
 
                             /**
-                             * Allows to compute the future cost for this entry.
-                             * The entry contains one translation of the source phrase
-                             * @param target the target translation entry
-                             * @return the cost of the given target entry
-                             */
-                            inline prob_weight compute_future_cost(tm_const_target_entry & target) {
-                                //The resulting cost is the translation cost plus the LM cost of the translation
-                                return target.get_t_c_s() +
-                                        m_lm_query.execute(target.get_num_target_words(), target.get_target_word_ids());
-                            }
-
-                            /**
                              * Dynamically initialize the future costs based on the estimates from the TM and LM models.
                              */
                             inline prob_weight & initialize_future_costs(const size_t & start_idx, const size_t & end_idx) {
@@ -165,36 +153,33 @@ namespace uva {
                                 //Get the reference to the future cost
                                 prob_weight & cost = phrase_data.future_cost;
 
-                                LOG_DEBUG1 << "Initializing future cost phrase [" << start_idx << ", " << end_idx << "]" << END_LOG;
+                                LOG_DEBUG1 << "Initializinf future for [" << start_idx << ", " << end_idx << "]" << END_LOG;
 
                                 //Check if the source entry is present, the entry should be there!
                                 if (source_entry != NULL) {
                                     LOG_DEBUG1 << "The source entry of phrase [" << start_idx << ", " << end_idx << "] is present." << END_LOG;
                                     //Check if this is a phrase with translation
                                     if (source_entry->has_translation()) {
-                                        LOG_DEBUG1 << "The source entry for [" << start_idx << ", " << end_idx << "] has translations." << END_LOG;
-                                        //Get the targets and compute the maximum cost over them
-                                        tm_const_target_entry* targets = source_entry->get_targets();
-                                        for (size_t idx = 0; (idx < source_entry->num_translations()); ++idx) {
-                                            LOG_DEBUG1 << "The current cost of [" << start_idx << ", " << end_idx << "] is " << cost << END_LOG;
-                                            //Get the maximum between the known cost and the newly computed
-                                            cost = max(cost, compute_future_cost(targets[idx]));
-                                            LOG_DEBUG1 << "The new cost of [" << start_idx << ", " << end_idx << "] with target " << idx << " is " << cost << END_LOG;
-                                        }
+                                        LOG_DEBUG1 << "The source entry [" << start_idx << ", " << end_idx << "] has translations." << END_LOG;
+                                        //Set the value with the pre-computed minimum cost
+                                        cost = source_entry->get_min_cost();
+                                        LOG_DEBUG1 << "Initialize phrase cost [" << start_idx << ", " << end_idx << "] = " << cost << END_LOG;
                                     } else {
                                         LOG_DEBUG1 << "The source entry of phrase [" << start_idx << ", " << end_idx << "] is UNK translation." << END_LOG;
                                         //Check if this just a single unknown word
                                         if (start_idx == end_idx) {
                                             //If it is an unknown word then get the lm probability plus the the unknown source word probability
+                                            //ToDo: Perhaps we shall use source_entry->get_min_cost(); instead, as this one is also computed!
                                             cost = m_tm_query.get_unk_word_prob() + m_lm_query.get_unk_word_prob();
-                                            LOG_DEBUG1 << "The UNK phrase [" << start_idx << ", " << end_idx << "] is a word, costs: " << cost << END_LOG;
+                                            LOG_DEBUG1 << "Initialize UNK word cost [" << start_idx << ", " << end_idx << "] = " << cost << END_LOG;
                                         } else {
-                                            LOG_DEBUG1 << "The UNK phrase [" << start_idx << ", " << end_idx << "] is NOT a word, costs: " << cost << END_LOG;
+                                            //The undefined log probability value "-1000" is set in the phrase data entry in its constructor!
+                                            LOG_DEBUG1 << "Initialize UNK phrase cost [" << start_idx << ", " << end_idx << "] = " << cost << END_LOG;
                                         }
                                     }
                                 } else {
                                     //The longer phrases do not have translations, this is normal!
-                                    LOG_DEBUG1 << "The source phrase [" << start_idx << ", " << end_idx << "] translation entry is NULL" << END_LOG;
+                                    LOG_DEBUG1 << "Initialize TOO-LONG phrase cost [" << start_idx << ", " << end_idx << "] = " << cost << END_LOG;
                                 }
 
                                 //Return the reference to the future cost, it will be needed in the caller
@@ -205,29 +190,25 @@ namespace uva {
                              * Allows to compute the future costs for the sentence.
                              */
                             inline void compute_futue_costs() {
-                                //First initialize the future cost of the first word
-                                prob_weight & word_cost = initialize_future_costs(0, 0);
-                                LOG_DEBUG1 << "The word: 0 future cost is: " << word_cost << END_LOG;
+                                //Obtain the number of words/tokens in the phrase it is equal to the number of dimensions
+                                const phrase_length num_words = m_sent_data.get_dim();
 
-                                //Iterate through all the end indexes, the minimum length is two words
-                                for (size_t end_idx = 1; (end_idx < m_sent_data.get_dim()); ++end_idx) {
-                                    LOG_DEBUG1 << "CFC end word idx: " << end_idx << END_LOG;
+                                //Iterate through all the lengths, the minimum length is one word
+                                for (phrase_length length = 1; (length <= num_words); ++length) {
+                                    LOG_DEBUG1 << "Phrase length: " << length << END_LOG;
 
-                                    //Initialize the future cost of the next new word
-                                    word_cost = initialize_future_costs(end_idx, end_idx);
-                                    LOG_DEBUG1 << "The word: " << end_idx << " future cost is: " << word_cost << END_LOG;
-
-                                    //Iterate through all the start indexes smaller than the end one, as we
-                                    //need minimum two words in a phrase, otherwise it is not split-able
-                                    for (size_t start_idx = 0; (start_idx < end_idx); ++start_idx) {
-                                        LOG_DEBUG1 << "CFC start word idx: " << start_idx << END_LOG;
-
+                                    //Iterate from the first until the last possible index for the given length
+                                    for (phrase_length start_idx = 0; (start_idx <= (num_words - length)); ++start_idx) {
+                                        //Compute the end index
+                                        const phrase_length end_idx = start_idx + length - 1;
+                                        LOG_DEBUG1 << "CFC start/end word idx: " << start_idx << "/" << end_idx << END_LOG;
+                                        
                                         //Initialize the interval with the TM/LM based value first
                                         //and get the reference to the complete cost then
                                         prob_weight & phrase_cost = initialize_future_costs(start_idx, end_idx);
-
-                                        //Iterate through all the intermediate indexes between start and end
-                                        for (size_t mid_idx = start_idx; (mid_idx < end_idx); ++mid_idx) {
+                                        
+                                        //Iterate the middle point between start and end indexes
+                                        for (phrase_length mid_idx = start_idx; (mid_idx < end_idx); ++mid_idx) {
                                             LOG_DEBUG1 << "CFC middle word idx: " << mid_idx << END_LOG;
 
                                             //Get the costs of the phrase one and two
@@ -236,20 +217,23 @@ namespace uva {
                                             //Compute the cost of two sub-phrases
                                             const prob_weight sub_cost = ph1_cost + ph2_cost;
 
-                                            LOG_DEBUG2 << "Current cost[" << start_idx << ", " << mid_idx << "] = " << ph1_cost
-                                                    << ", cost[" << (mid_idx + 1) << ", " << end_idx << "] = " << ph2_cost
-                                                    << ", cost[" << start_idx << ", " << end_idx << "] = " << phrase_cost << END_LOG;
+                                            LOG_DEBUG1 << "\t cost [" << start_idx << ", " << mid_idx << "] = " << ph1_cost
+                                                    << " + cost [" << (mid_idx + 1) << ", " << end_idx << "] = " << ph2_cost
+                                                    << " <?> cost [" << start_idx << ", " << end_idx << "] = " << phrase_cost << END_LOG;
 
                                             //If the sub cost that is a logarithmic value of probability (a negative value) is
                                             //larger than than of the future cost for the entire phrase then use the sub cost.
                                             if (sub_cost > phrase_cost) {
-                                                LOG_DEBUG << "The sub phrases [" << start_idx << ", " << mid_idx
-                                                        << "] and [" << (mid_idx + 1) << ", " << end_idx
-                                                        << "] are cheaper!" << END_LOG;
+                                                //Set the sum ofthe sub-costs as a new cost
                                                 phrase_cost = sub_cost;
-                                            }
 
-                                            LOG_DEBUG << "The new cost[" << start_idx << ", " << end_idx << "] = " << phrase_cost << END_LOG;
+                                                LOG_DEBUG << "Changing the cost [" << start_idx << ", " << end_idx
+                                                        << "] = [" << start_idx << ", " << mid_idx << "] + ["
+                                                        << (mid_idx + 1) << ", " << end_idx << "] = " << phrase_cost << END_LOG;
+                                            } else {
+                                                LOG_DEBUG << "Keeping the cost [" << start_idx << ", " << end_idx
+                                                        << "] = " << phrase_cost << END_LOG;
+                                            }
 
                                             //Check if we need to stop, if yes, then return
                                             if (m_is_stop) return;
@@ -346,9 +330,9 @@ namespace uva {
                                         //Add the m-gram phrase to the query
                                         m_tm_query.execute(new_entry.m_phrase_uid, new_entry.m_source_entry);
 
-                                            LOG_DEBUG1 << "Phrase: ___" << phrase << "___ uid: " << new_entry.m_phrase_uid << " has "
-                                                    << (new_entry.m_source_entry->has_translation() ? "" : "NO") << " translation(s), "
-                                                    << " num entries: " << new_entry.m_source_entry->num_translations() << END_LOG;
+                                        LOG_DEBUG1 << "Phrase: ___" << phrase << "___ uid: " << new_entry.m_phrase_uid << " has "
+                                                << (new_entry.m_source_entry->has_translation() ? "" : "NO") << " translation(s), "
+                                                << " num entries: " << new_entry.m_source_entry->num_translations() << END_LOG;
 
                                         //Check if we need to stop, if yes, then return
                                         if (m_is_stop) return;

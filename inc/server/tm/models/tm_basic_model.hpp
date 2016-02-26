@@ -95,25 +95,28 @@ namespace uva {
                              * @param unk_word_id the unknown word id from the Language Model
                              * @param num_unk_features the number of initialized unk features
                              * @param unk_features the unk entry features
+                             * @param lm_weight the cost of the target (UNK) translation from the LM model
                              */
-                            void set_unk_entry(word_uid unk_word_id, const size_t num_unk_features, feature_array unk_features) {
+                            void set_unk_entry(word_uid unk_word_id, const size_t num_unk_features,
+                                    feature_array unk_features, const prob_weight lm_weight) {
                                 //Initialize the UNK entry
                                 m_unk_entry = new tm_source_entry();
                                 //Set thew source id
                                 m_unk_entry->set_source_uid(UNKNOWN_PHRASE_ID);
                                 //Start adding the translations to the entry, there will be just one
                                 m_unk_entry->begin(1);
-                                
+
                                 //Declare and initialize the word ids array
                                 const phrase_length num_words = 1;
                                 word_uid word_ids[num_words];
                                 word_ids[0] = unk_word_id;
-                                
+
                                 //Add the translation entry
                                 m_unk_entry->add_translation(
                                         tm::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID,
-                                        num_unk_features, unk_features, num_words, word_ids);
-                                
+                                        num_unk_features, unk_features,
+                                        num_words, word_ids, lm_weight);
+
                                 //Finalize the source entry
                                 m_unk_entry->finalize();
                             }

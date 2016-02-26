@@ -115,9 +115,9 @@ namespace uva {
 
                                 //Compute the probability value
                                 prob_weight prob = execute(num_words, word_ids, min_level);
-                                
+
                                 LOG_DEBUG1 << "The resulting LM query probability is: " << prob << END_LOG;
-                                
+
                                 //Return the probability result
                                 return prob;
                             }
@@ -131,7 +131,7 @@ namespace uva {
 
                                 //Call the generic method, note that min_level is changed
                                 prob = execute(num_words, word_ids, min_level);
-                                
+
                                 LOG_DEBUG1 << "The resulting LM query probability is: " << prob << END_LOG;
 
                                 //Return the last considered min level
@@ -175,7 +175,7 @@ namespace uva {
                                 m_trie.execute(m_query);
 
                                 //Report the partial results, and update the total
-                                get_interm_results(begin_word_idx, sub_end_word_idx, end_word_idx);
+                                get_report_interm_results(begin_word_idx, sub_end_word_idx, end_word_idx);
 
                                 //Now do the sliding window and compute more probabilities,
                                 //Note that if the end_word_idx is smaller than the query
@@ -194,13 +194,16 @@ namespace uva {
                                     m_trie.execute(m_query);
 
                                     //Report the partial result, and update the total
-                                    get_interm_results(begin_word_idx, end_word_idx, end_word_idx);
+                                    get_report_interm_results(begin_word_idx, end_word_idx, end_word_idx);
                                 }
+
+                                //Report the total result
+                                report_final_result();
 
                                 //Compute the next minimum level to consider, it is either one level higher or we are at the maximum
                                 min_level = std::min<phrase_length>(max_m_gram_level + 1, LM_M_GRAM_LEVEL_MAX);
 
-                                LOG_DEBUG << "Computed P(" << m_query << ") = " << m_joint_prob << ", next min_level:  " << min_level << END_LOG;
+                                LOG_DEBUG << "Computed log10(Prob(" << m_query << ")) = " << m_joint_prob << ", next min_level:  " << min_level << END_LOG;
 
                                 //Return the final result;
                                 return m_joint_prob;
@@ -209,26 +212,90 @@ namespace uva {
                         protected:
 
                             /**
+                             * For the given N-gram, for some level M <=N , this method
+                             * allows to give the string of the object for which the
+                             * probability is computed, e.g.:
+                             * N-gram = "word1" -> result = "word1"
+                             * N-gram = "word1 word2 word3" -> result = "word3 | word1  word2"
+                             * for the first M tokens of the N-gram
+                             * @param begin_word_idx the m-gram's begin word index
+                             * @param end_word_idx the m-gram's begin word index
+                             * @return the resulting string
+                             */
+                            inline string get_m_gram_str(const phrase_length begin_word_idx, const phrase_length end_word_idx) const {
+                                if (begin_word_idx > end_word_idx) {
+                                    return "<none>";
+                                } else {
+                                    if (begin_word_idx == end_word_idx) {
+                                        return to_string(m_query[begin_word_idx]);
+                                    } else {
+                                        string result = to_string(m_query[end_word_idx]) + " |";
+                                        for (phrase_length idx = begin_word_idx; idx != end_word_idx; ++idx) {
+                                            result += string(" ") + to_string(m_query[idx]);
+                                        }
+                                        return result;
+                                    }
+                                }
+                            }
+
+                            /**
+                             * For the given N-gram, this method allows to give the string 
+                             * of the object for which the probability is computed, e.g.:
+                             * N-gram = "word1" -> result = "word1"
+                             * N-gram = "word1 word2 word3" -> result = "word1 word2 word3"
+                             * @return the resulting string
+                             */
+                            inline string get_query_str() const {
+                                const phrase_length begin_idx = m_query.get_query_begin_word_idx();
+                                const phrase_length end_idx = m_query.get_query_end_word_idx();
+                                if ( begin_idx == end_idx ) {
+                                    return to_string(m_query[begin_idx]);
+                                } else {
+                                    string result;
+                                    for (phrase_length idx = begin_idx; idx <= end_idx; ++idx) {
+                                        result += to_string(m_query[idx]) + string(" ");
+                                    }
+                                    return result.substr(0, result.length() - 1);
+                                }
+                            }
+
+                            /**
                              * Allows add up the intermediate results of the loose sub-sub queries defined by the arguments
                              * @param begin_word_idx the sub query begin word index
                              * @param first_end_word_idx the first sub-sub query end word index
                              * @param last_end_word_idx the last sub-sub query end word index
                              */
-                            void get_interm_results(
+                            void get_report_interm_results(
                                     const phrase_length begin_word_idx,
                                     const phrase_length first_end_word_idx,
                                     const phrase_length last_end_word_idx) {
-                                LOG_DEBUG << "Current m_joint_prob = " << m_joint_prob << END_LOG;
-
                                 //Print the intermediate results
                                 for (phrase_length end_word_idx = first_end_word_idx; end_word_idx <= last_end_word_idx; ++end_word_idx) {
-                                    //Add all the weights even if they are zero, this is what the model tells us!
-                                    LOG_DEBUG << "Adding m_query.m_probs[" << end_word_idx << "] = " << m_query.m_probs[end_word_idx] << END_LOG;
+                                    const string gram_str = get_m_gram_str(begin_word_idx, end_word_idx);
 
-                                    m_joint_prob += m_query.m_probs[end_word_idx];
+                                    LOG_DEBUG << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                            << " ) ) = " << SSTR(m_query.m_probs[end_word_idx]) << END_LOG;
+                                    LOG_DEBUG1 << "  Prob( " << gram_str << " ) = "
+                                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_query.m_probs[end_word_idx])) << END_LOG;
+
+                                    if (m_query.m_probs[end_word_idx] > ZERO_LOG_PROB_WEIGHT) {
+                                        m_joint_prob += m_query.m_probs[end_word_idx];
+                                    }
                                 }
+                            }
 
-                                LOG_DEBUG << "Resulting m_joint_prob = " << m_joint_prob << END_LOG;
+                            /**
+                             * Allows to report the total joint probability of the query
+                             */
+                            inline void report_final_result() {
+                                LOG_DEBUG << "---" << END_LOG;
+                                //Print the total cumulative probability if needed
+                                const string gram_str = get_query_str();
+                                LOG_DEBUG << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                        << " ) ) = " << SSTR(m_joint_prob) << END_LOG;
+                                LOG_DEBUG1 << "  Prob( " << gram_str << " ) = "
+                                        << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_joint_prob)) << END_LOG;
+                                LOG_DEBUG << "-------------------------------------------" << END_LOG;
                             }
 
                         private:

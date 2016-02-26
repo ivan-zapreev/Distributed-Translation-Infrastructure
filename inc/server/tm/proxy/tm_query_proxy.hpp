@@ -71,7 +71,7 @@ namespace uva {
                              * Allows to retrieve the unknown source word log probability penalty 
                              * @return the unknown source word log probability penalty
                              */
-                            inline float get_unk_word_prob() {
+                            inline prob_weight get_unk_word_prob() const {
                                 return tm::UNK_SOURCE_WORD_LOG_PROB;
                             }
 

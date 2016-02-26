@@ -135,7 +135,7 @@ namespace uva {
                             inline float post_process_feature(const float feature, const float lambda) {
                                 //Now convert to the log probability and multiply with the appropriate weight
                                 float result = log10(feature) * lambda;
-                                LOG_DEBUG3 << "log10(" << feature << ") * " << lambda << " = " << result << END_LOG;
+                                LOG_DEBUG << "log10(" << feature << ") * " << lambda << " = " << result << END_LOG;
                                 return result;
                             }
 
@@ -151,7 +151,7 @@ namespace uva {
                              * @return true if the features satisfy the constraints, otherwise false
                              */
                             template<bool is_get_weights>
-                            inline bool process_features(TextPieceReader weights, size_t & num_features, feature_array storage) {
+                            inline bool process_features(TextPieceReader weights, size_t & num_features, prob_weight * storage) {
                                 //Declare the token
                                 TextPieceReader token;
                                 //Store the read probability weight
@@ -204,7 +204,7 @@ namespace uva {
                              * @param tmp_features the temporary weights storage
                              * @return true if the conditions are satisfied, otherwise false
                              */
-                            inline bool is_good_features(TextPieceReader rest, size_t & tmp_features_size, feature_array tmp_features) {
+                            inline bool is_good_features(TextPieceReader rest, size_t & tmp_features_size, prob_weight * tmp_features) {
                                 TextPieceReader target;
 
                                 //Skip the target phrase with its end delimiter
@@ -233,7 +233,7 @@ namespace uva {
                              * @param tmp_features the temporary feature storage
                              */
                             inline void process_target_entry(tm_source_entry * source_entry, TextPieceReader &rest,
-                                    size_t & count_ref, size_t & tmp_features_size, feature_array tmp_features) {
+                                    size_t & count_ref, size_t & tmp_features_size, prob_weight * tmp_features) {
                                 LOG_DEBUG2 << "Got translation line to parse: ___" << rest << "___" << END_LOG;
 
                                 //Declare the target entry storing reader
@@ -257,13 +257,19 @@ namespace uva {
                                     //Use the language model to get the target translation word ids
                                     m_lm_query.get_word_ids(target, m_tmp_num_words, m_tmp_word_ids);
 
-                                    LOG_DEBUG2 << "The phrase: ___" << target << "__ got "
-                                            << m_tmp_num_words << " word ids." << END_LOG;
+                                    LOG_DEBUG << "The phrase: ___" << target << "__ got "
+                                            << m_tmp_num_words << " word ids: " <<
+                                            array_to_string<word_uid>(m_tmp_num_words, m_tmp_word_ids) << END_LOG;
+
+                                    //Get the language model weights for the target translation
+                                    const prob_weight lm_weight = m_lm_query.execute(m_tmp_num_words, m_tmp_word_ids);
+
+                                    LOG_DEBUG << "The phrase: ___" << target << "__ lm-weight: " << lm_weight << END_LOG;
 
                                     //Initiate a new target entry
                                     source_entry->add_translation(target_str, target_uid,
                                             tmp_features_size, tmp_features,
-                                            m_tmp_num_words, m_tmp_word_ids);
+                                            m_tmp_num_words, m_tmp_word_ids, lm_weight);
 
                                     //Reduce the counter
                                     count_ref--;
@@ -439,8 +445,8 @@ namespace uva {
                              * Allows to add an unk entry to the model
                              */
                             inline void add_unk_translation() {
-                                //Declare an array of features
-                                feature_array unk_features;
+                                //Declare an array of features, zero-valued
+                                feature_array unk_features = {};
 
                                 //Copy the values of the unk features to the writable array
                                 for (size_t idx = 0; idx < m_params.m_num_unk_features; ++idx) {
@@ -449,7 +455,8 @@ namespace uva {
                                 }
 
                                 //Set the unk features to the model
-                                m_model.set_unk_entry(UNKNOWN_WORD_ID, m_params.m_num_unk_features, unk_features);
+                                m_model.set_unk_entry(UNKNOWN_WORD_ID, m_params.m_num_unk_features,
+                                        unk_features, m_lm_query.get_unk_word_prob());
                             }
 
                         private:

@@ -68,7 +68,8 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>CMakeLists.txt</itemPath>
       <itemPath>build/Makefile</itemPath>
-      <itemPath>default.cfg</itemPath>
+      <itemPath>data/default.big.cfg</itemPath>
+      <itemPath>data/default.small.cfg</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>

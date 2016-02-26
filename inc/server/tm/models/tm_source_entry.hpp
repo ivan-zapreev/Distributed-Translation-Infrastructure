@@ -69,7 +69,7 @@ namespace uva {
                              * The basic constructor
                              */
                             tm_source_entry()
-                            : m_source_uid(UNDEFINED_PHRASE_ID), m_capacity(0), m_targets(NULL), m_next_idx(0) {
+                            : m_source_uid(UNDEFINED_PHRASE_ID), m_capacity(0), m_targets(NULL), m_next_idx(0), m_min_cost(UNKNOWN_LOG_PROB_WEIGHT) {
                             }
 
                             /**
@@ -141,11 +141,13 @@ namespace uva {
                              * @param num_features the number of features in the next array
                              * @param weights the features to put into the entry
                              * @param num_words the number of words in the target translation
-                             * @param word_ids the LM word ids for the target phrase 
+                             * @param word_ids the LM word ids for the target phrase
+                             * @param lm_weight the cost of the target translation from the LM model
                              */
                             inline void add_translation(const string & target, const phrase_uid target_uid,
-                                    const size_t num_features, const feature_array features,
-                                    const phrase_length num_words, const word_uid * word_ids) {
+                                    const size_t num_features, const prob_weight * features,
+                                    const phrase_length num_words, const word_uid * word_ids,
+                                    const prob_weight lm_weight) {
                                 //Perform a sanity check
                                 ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
                                         string("Exceeding the source entry capacity: ") + to_string(m_capacity));
@@ -156,6 +158,19 @@ namespace uva {
                                 //Set the entry's target phrase and its id
                                 entry.set_data(m_source_uid, target, target_uid,
                                         num_features, features, num_words, word_ids);
+
+                                //Compute the minimum cost which in log space is a maximum value
+                                m_min_cost = max(m_min_cost, (entry.get_t_c_s() + lm_weight));
+                            }
+
+                            /**
+                             * Allows to get the minimum translation cost for the given
+                             * source phrase, i.e what we have is:
+                             *      "log_10(maximum_t(P_tm(t|s)*P_lm(t)))
+                             * @return the minimum translation cost for the given source phrase
+                             */
+                            inline prob_weight get_min_cost() const {
+                                return m_min_cost;
                             }
 
                             /**
@@ -166,7 +181,7 @@ namespace uva {
                              * @param target_uid the unique identifier of the taret
                              * @return true if the target is known, otherwise false
                              */
-                            bool has_translation(const phrase_uid target_uid) const {
+                            inline bool has_translation(const phrase_uid target_uid) const {
                                 LOG_DEBUG1 << "Checking for a source/target (" << m_source_uid
                                         << "/" << target_uid << ") pair entry " << END_LOG;
 
@@ -238,6 +253,8 @@ namespace uva {
                             tm_target_entry * m_targets;
                             //Stores the next index for the translation entry
                             size_t m_next_idx;
+                            //Stores the maximum cost of all translations
+                            prob_weight m_min_cost;
                         };
 
                         //Define the pointer to the const source entry
