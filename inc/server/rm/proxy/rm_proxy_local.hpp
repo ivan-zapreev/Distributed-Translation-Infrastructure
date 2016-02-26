@@ -125,6 +125,7 @@ namespace uva {
 
                                 LOG_USAGE << "--------------------------------------------------------" << END_LOG;
                                 LOG_USAGE << "Start creating and loading the " << model_name << " ..." << END_LOG;
+                                LOG_USAGE << model_name << " is located in: " << model_file_name << END_LOG;
 
                                 //ToDo: Add the possibility to choose between the file readers from the command line!
                                 LOG_DEBUG << "Getting the memory statistics before opening the " << model_name << " file ..." << END_LOG;
