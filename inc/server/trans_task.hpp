@@ -76,12 +76,10 @@ namespace uva {
                             const string & source_sentence, done_task_notifier notify_task_done_func)
                     : m_is_interrupted(false), m_session_id(session_id), m_job_id(job_id),
                     m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED), m_source_text(source_sentence),
-                    m_notify_task_done_func(notify_task_done_func) {
-                        LOG_DEBUG1 << "New task, id: " << m_task_id << ", text: " << m_source_text << END_LOG;
-                        //Assign the target text with the session info, this is needed for debugging purposes.
-                        m_target_text = string("/session id: ") + to_string(m_session_id) +
-                                string(", job id: ") + to_string(m_job_id) + string(", task id: ") +
-                                to_string(m_task_id) + string("/");
+                    m_notify_task_done_func(notify_task_done_func), m_target_text("") {
+                        LOG_DEBUG1 << "/session id=" << m_session_id << ", job id="
+                                << m_job_id << ", NEW task id=" <<  m_task_id
+                                << "/ text: " << m_source_text << END_LOG;
                     }
 
                     /**
@@ -131,7 +129,12 @@ namespace uva {
                         sentence_decoder & dec = de_configurator::allocate_decoder(m_is_interrupted, m_source_text, m_target_text);
 
                         //Perform the decoding task
-                        dec.translate();
+                        try {
+                            dec.translate();
+                        } catch (Exception & ex) {
+                            m_code = trans_job_code::RESULT_ERROR;
+                            LOG_ERROR << ex.get_message() << END_LOG;
+                        }
 
                         //Dispose the decoder instance 
                         de_configurator::dispose_decoder(dec);
@@ -197,12 +200,25 @@ namespace uva {
                      */
                     void process_task_result() {
                         //Set the task is not canceled then set the result, otherwise set the canceled code.
-                        if (!m_is_interrupted) {
-                            m_code = trans_job_code::RESULT_OK;
-                            m_target_text = string("<finished>: ") + m_target_text;
+                        if (m_code == trans_job_code::RESULT_ERROR) {
+                            //If there was an error during translation send back the source
+                            m_target_text = string("<error>: ") + m_source_text;
                         } else {
-                            m_code = trans_job_code::RESULT_CANCELED;
-                            m_target_text = string("<canceled>: ") + m_target_text + " " + m_source_text;
+                            //Unless it was an error while translating there should be an undefined status
+                            ASSERT_SANITY_THROW((m_code != trans_job_code::RESULT_UNDEFINED),
+                                    string("Unexpected translation code: ") + to_string(m_code) +
+                                    string(" must be UNDEFINED!"));
+
+                            //Check if we were interrupted or not
+                            if (m_is_interrupted) {
+                                //If the translation has been canceled just send back the source
+                                m_code = trans_job_code::RESULT_CANCELED;
+                                m_target_text = string("<canceled>: ") + m_source_text;
+                            } else {
+                                //If the translation has been finished send back the target
+                                m_code = trans_job_code::RESULT_OK;
+                                m_target_text = string("<finished>: ") + m_target_text;
+                            }
                         }
 
                         LOG_DEBUG1 << "The task " << m_task_id << " translation is done, notifying!" << END_LOG;
