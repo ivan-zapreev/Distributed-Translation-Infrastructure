@@ -42,9 +42,13 @@ namespace uva {
                          * @return the reference to the stream
                          */
                         ostream& operator<<(ostream& stream, const query_m_gram & gram) {
-                            THROW_NOT_IMPLEMENTED();
-                            
-                            return stream;
+                            //Get the current level for logging
+                            const phrase_length & curr_level = gram.get_num_words();
+
+                            //Do the output and return
+                            return stream << SSTR(curr_level) << "-gram [" << gram.get_first_word_idx() << ","
+                                    << gram.get_last_word_idx() << "] with word ids " <<
+                                    array_to_string<word_uid>(gram.get_num_words(), gram.word_ids());
                         };
                     }
                 }
