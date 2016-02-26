@@ -134,7 +134,9 @@ namespace uva {
                              */
                             inline float post_process_feature(const float feature, const float lambda) {
                                 //Now convert to the log probability and multiply with the appropriate weight
-                                return log10(feature) * lambda;
+                                float result = log10(feature) * lambda;
+                                LOG_DEBUG3 << "log10(" << feature << ") * " << lambda << " = " << result << END_LOG;
+                                return result;
                             }
 
                             /**
@@ -162,11 +164,15 @@ namespace uva {
                                 //Skip the first space
                                 weights.get_first_space(token);
 
+                                LOG_DEBUG3 << "TM features to parse: " << weights << END_LOG;
+
                                 //Read the subsequent weights, check that the number of weights is as expected
                                 while (weights.get_first_space(token) && (idx < tm_target_entry::NUM_FEATURES)) {
                                     //Parse the token into the entry weight
                                     ASSERT_CONDITION_THROW(!fast_s_to_f(feature, token.str().c_str()),
                                             string("Could not parse the token: ") + token.str());
+
+                                    LOG_DEBUG3 << "parsed: " << token << " -> " << feature << END_LOG;
 
                                     //Check the probabilities at the indexes for the bound
                                     if (((idx == 0) || (idx == 2)) && (feature < m_params.m_min_tran_prob)) {
@@ -301,9 +307,9 @@ namespace uva {
                                     //Get the current source phrase uid
                                     string next_source_str = source.str();
                                     trim(next_source_str);
-                                    
+
                                     LOG_DEBUG << "Got the source phrase: ___" << next_source_str << "___" << END_LOG;
-                                    
+
                                     if (source_str != next_source_str) {
                                         size_t size_val = m_sizes[source_uid];
                                         if (count_or_build) {
@@ -320,13 +326,13 @@ namespace uva {
                                                 m_model.finalize_entry(source_uid);
                                             }
                                         }
-                                        
+
                                         //Store the new source string
                                         source_str = next_source_str;
-                                        
+
                                         //Compute the new source string uid
                                         source_uid = get_phrase_uid(source_str);
-                                        
+
                                         //Get the current value for the new source id
                                         size_val = m_sizes[source_uid];
 

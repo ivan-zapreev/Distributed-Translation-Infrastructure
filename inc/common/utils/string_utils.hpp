@@ -172,8 +172,8 @@ namespace uva {
                     //Parse the next token into the float
                     string str = data.substr(start, end - start);
                     ASSERT_CONDITION_THROW(!fast_s_to_f(elems[num_elems++], str.c_str()),
-                                            string("Could not parse the token: ") + str);
-                    
+                            string("Could not parse the token: ") + str);
+
                     if (end != std::string::npos) {
                         start = end + 1;
                         end = data.find_first_of(delim, start);
@@ -336,8 +336,11 @@ namespace uva {
              * input, otherwise false.
              */
             static inline bool fast_s_to_f(float & res, const char *p) {
-                uint32_t int_part = 0.0;
-                int c = 0; // counter to check how many numbers we got!
+                //Store the original ptr
+                const char * original = p;
+
+                uint_fast32_t int_part = 0.0;
+                uint_fast32_t c = 0; // counter to check how many numbers we got!
 
                 // Get the sign!
                 bool neg = false;
@@ -359,8 +362,8 @@ namespace uva {
 
                 // Get the digits after decimal point
                 if (*p == '.') {
-                    uint32_t dec_part = 0;
-                    uint32_t scale = 1;
+                    uint_fast32_t dec_part = 0;
+                    uint_fast32_t scale = 1;
                     ++p;
                     while (valid_digit(*p)) {
                         dec_part = (dec_part * 10) + (*p - '0');
@@ -376,20 +379,24 @@ namespace uva {
                     return false;
                 } // we got no dezimal places! this cannot be any number!
 
-
                 // Get the digits after the "e"/"E" (exponenet)
                 if (*p == 'e' || *p == 'E') {
-                    unsigned int e = 0;
+                    uint_fast64_t e = 0;
+
+                    LOG_DEBUG4 << "Got exponent in: " << original << END_LOG;
 
                     bool negE = false;
                     ++p;
                     if (*p == '-') {
                         negE = true;
                         ++p;
+                        LOG_DEBUG4 << "Exponent is Negative" << END_LOG;
                     } else if (*p == '+') {
                         negE = false;
                         ++p;
+                        LOG_DEBUG4 << "Exponent is Positive" << END_LOG;
                     }
+
                     // Get exponent
                     c = 0;
                     while (valid_digit(*p)) {
@@ -397,28 +404,40 @@ namespace uva {
                         ++p;
                         ++c;
                     }
-                    if (!neg && e > (uint) std::numeric_limits<float>::max_exponent10) {
-                        e = (uint) std::numeric_limits<float>::max_exponent10;
-                    } else if (e < (uint) std::numeric_limits<float>::min_exponent10) {
-                        e = (uint) std::numeric_limits<float>::max_exponent10;
+                    LOG_DEBUG4 << "Exponent value is: " << e << END_LOG;
+                    
+                    static constexpr uint max_exponent10 = std::numeric_limits<float>::min_exponent10;
+                    static constexpr uint min_exponent10 = abs(std::numeric_limits<float>::min_exponent10);
+
+                    if (!neg && e > max_exponent10) {
+                        e = max_exponent10;
+                    } else if (e > min_exponent10 ) {
+                        e = min_exponent10;
                     }
+
+                    LOG_DEBUG4 << "Adjusted exponent value is: " << e << END_LOG;
+
                     // SECOND CHECK:
                     if (c == 0) {
                         return false;
                     } // we got no  exponent! this was not intended!!
 
-                    uint32_t scale_exp = 1.0;
+                    double scale_exp = 1.0;
                     // Calculate scaling factor.
                     while (e > 0) {
                         scale_exp *= 10;
                         e -= 1;
                     }
 
+                    LOG_DEBUG4 << "Exponent multiplier is: " << scale_exp << END_LOG;
+
                     if (negE) {
-                        res *= 1.0f / scale_exp;
+                        res *= 1.0d / scale_exp;
                     } else {
                         res *= scale_exp;
                     }
+                    
+                    LOG_DEBUG4 << "The result is: " << ((neg) ? -res : res) << END_LOG;
                 }
 
                 // Apply sign to number

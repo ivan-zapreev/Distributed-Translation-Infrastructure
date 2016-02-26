@@ -113,8 +113,13 @@ namespace uva {
                                 //Declare a dummy variable for the min level
                                 phrase_length min_level = M_GRAM_LEVEL_1;
 
-                                //return the probability value
-                                return execute(num_words, word_ids, min_level);
+                                //Compute the probability value
+                                prob_weight prob = execute(num_words, word_ids, min_level);
+                                
+                                LOG_DEBUG1 << "The resulting LM query probability is: " << prob << END_LOG;
+                                
+                                //Return the probability result
+                                return prob;
                             }
 
                             /**
@@ -126,6 +131,8 @@ namespace uva {
 
                                 //Call the generic method, note that min_level is changed
                                 prob = execute(num_words, word_ids, min_level);
+                                
+                                LOG_DEBUG1 << "The resulting LM query probability is: " << prob << END_LOG;
 
                                 //Return the last considered min level
                                 return min_level;
@@ -190,8 +197,8 @@ namespace uva {
                                     get_interm_results(begin_word_idx, end_word_idx, end_word_idx);
                                 }
 
-                                //Set the min level to the current maximum
-                                min_level = max_m_gram_level;
+                                //Compute the next minimum level to consider, it is either one level higher or we are at the maximum
+                                min_level = std::min<phrase_length>(max_m_gram_level + 1, LM_M_GRAM_LEVEL_MAX);
 
                                 LOG_DEBUG << "Computed P(" << m_query << ") = " << m_joint_prob << ", next min_level:  " << min_level << END_LOG;
 

@@ -105,7 +105,7 @@ namespace uva {
                              * to compute the probability for
                              * @param [in] min_level the first m-gram level to consider
                              * @param [out] the variable to add the probability weight to
-                             * @return the maximum considered m-gram level
+                             * @return the next minimum m-gram level to consider
                              */
                             virtual phrase_length execute(const phrase_length num_words,
                                     const word_uid * word_ids, phrase_length min_level,

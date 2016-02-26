@@ -143,6 +143,7 @@ namespace uva {
                              * @return  the value of the third feature which is the log10(p(e|f))
                              */
                             inline const float get_t_c_s() const {
+                                LOG_DEBUG1 << "m_t_cond_s : " << m_t_cond_s << END_LOG;
                                 return m_t_cond_s;
                             }
 

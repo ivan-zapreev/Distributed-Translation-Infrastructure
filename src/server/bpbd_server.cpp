@@ -248,7 +248,7 @@ void print_server_commands() {
 void connect_to_models(const server_parameters & params) {
     //Connect to the language model
     lm_configurator::connect(params.m_lm_params);
-
+    
     //Connect to the translation model
     tm_configurator::connect(params.m_tm_params);
 
