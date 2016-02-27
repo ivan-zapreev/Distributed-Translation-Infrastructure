@@ -406,8 +406,9 @@ namespace uva {
                     }
                     LOG_DEBUG4 << "Exponent value is: " << e << END_LOG;
                     
+                    //Get the min and max exponent values, both should be taken as positive values
                     static constexpr uint max_exponent10 = std::numeric_limits<float>::min_exponent10;
-                    static constexpr uint min_exponent10 = abs(std::numeric_limits<float>::min_exponent10);
+                    static constexpr uint min_exponent10 = -std::numeric_limits<float>::min_exponent10;
 
                     if (!neg && e > max_exponent10) {
                         e = max_exponent10;
@@ -432,7 +433,7 @@ namespace uva {
                     LOG_DEBUG4 << "Exponent multiplier is: " << scale_exp << END_LOG;
 
                     if (negE) {
-                        res *= 1.0d / scale_exp;
+                        res *= 1.0 / scale_exp;
                     } else {
                         res *= scale_exp;
                     }
