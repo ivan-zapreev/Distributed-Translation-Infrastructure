@@ -46,14 +46,14 @@ namespace uva {
              * WARNING: This class is not responsible for destroying
              * the elements it stores pointers to.
              */
-            template<typename elem_type>
+            template<typename elem_type, size_t capacity>
             class circular_queue {
             public:
 
                 /**
                  * The basic constructor
                  */
-                circular_queue(const size_t capacity) : m_capacity(capacity) {
+                circular_queue() {
                 }
 
                 /**
@@ -76,8 +76,6 @@ namespace uva {
                 
             protected:
             private:
-                //Stores the queue capacity
-                const size_t m_capacity;
             };
         }
     }

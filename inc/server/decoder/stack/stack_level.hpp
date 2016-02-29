@@ -90,7 +90,7 @@ namespace uva {
                                 //or until we find an empty position, then stop.
                                 while ((place_state != NULL) && (*new_state < *place_state)) {
                                     //Move further to the next state
-                                    place_state = place_state->get_next();
+                                    place_state = place_state->get_next_in_level();
                                 }
 
                                 //ToDo: How can we combine it with recombination?
@@ -124,7 +124,7 @@ namespace uva {
                                     //Allow the state to expand itself
                                     curr_state->expand();
                                     //Move to the next state
-                                    curr_state = curr_state->get_next();
+                                    curr_state = curr_state->get_next_in_level();
                                 }
                             }
 

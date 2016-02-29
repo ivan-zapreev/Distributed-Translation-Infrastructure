@@ -58,24 +58,26 @@ namespace uva {
                     namespace stack {
 
                         //Forward declaration of the class
-                        template<size_t NUM_WORDS_PER_SENTENCE>
+                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_LENGTH>
                         class stack_state_templ;
 
                         //Typedef the multi state and instantiate it with the maximum number of words per sentence
-                        typedef stack_state_templ<MAX_WORDS_PER_SENTENCE> stack_state;
+                        typedef stack_state_templ<MAX_WORDS_PER_SENTENCE, LM_M_GRAM_LEVEL_MAX> stack_state;
 
                         //Define the multi state pointer
                         typedef stack_state * stack_state_ptr;
-                        
+
                         //The typedef for a function that adds a new state to the multi-stack
-                        typedef function<void(stack_state_ptr)> add_new_state_function;
+                        typedef function<void(stack_state_ptr) > add_new_state_function;
 
                         /**
                          * This is the translation stack state class that is responsible for the sentence translation
                          */
-                        template<size_t NUM_WORDS_PER_SENTENCE>
+                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_LENGTH>
                         class stack_state_templ {
                         public:
+                            //Make the tyopedef for the stack state history
+                            typedef circular_queue<const string, MAX_M_GRAM_LENGTH - 1 > stack_state_history;
 
                             //Stores the undefined word index
                             static constexpr int32_t UNDEFINED_WORD_IDX = -1;
@@ -90,10 +92,9 @@ namespace uva {
                                     const rm_query_proxy & rm_query,
                                     lm_fast_query_proxy & lm_query,
                                     add_new_state_function add_state)
-                            : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
+                            : m_parent(NULL), m_next_in_level(NULL), m_recomb_from(), m_recomb_to(NULL),
                             m_covered(), m_last_covered(ZERRO_WORD_IDX),
-                            m_history(params.m_max_t_phrase_len - 1),
-                            m_partial_score(0.0), m_future_cost(0.0) {
+                            m_history(), m_partial_score(0.0), m_future_cost(0.0) {
                                 LOG_DEBUG2 << "multi_state create: " << params << END_LOG;
 
                                 //Mark the zero word as covered
@@ -108,7 +109,7 @@ namespace uva {
                              * @param parent the pointer to the parent element
                              */
                             stack_state_templ(const de_parameters & params, stack_state_ptr parent)
-                            : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
+                            : m_parent(NULL), m_next_in_level(NULL), m_recomb_from(), m_recomb_to(NULL),
                             m_covered(), m_last_covered(UNDEFINED_WORD_IDX),
                             m_history(params.m_max_t_phrase_len - 1),
                             m_partial_score(0.0), m_future_cost(0.0) {
@@ -127,17 +128,17 @@ namespace uva {
                              */
                             ~stack_state_templ() {
                                 //ToDo: Check that we do indeed delete all the allocated data
-                                
+
                                 //Delete the states that are recombined into this state
-                                for(vector<stack_state_ptr>::const_iterator iter = m_recomb_from.begin(); iter != m_recomb_from.end(); ++iter) {
+                                for (vector<stack_state_ptr>::const_iterator iter = m_recomb_from.begin(); iter != m_recomb_from.end(); ++iter) {
                                     delete *iter;
                                 }
-                                
+
                                 //Delete the next state if it exists, this
                                 //is for the stack level state deletion
-                                if(m_next != NULL) {
-                                    delete m_next;
-                                    m_next = NULL;
+                                if (m_next_in_level != NULL) {
+                                    delete m_next_in_level;
+                                    m_next_in_level = NULL;
                                 }
                             }
 
@@ -165,21 +166,21 @@ namespace uva {
                             inline void get_translation(string & target_sent) const {
                                 THROW_NOT_IMPLEMENTED();
                             }
-                            
+
                             /**
                              * Allows to get the next multi-state
                              * @return the poniter to the next multi-state in the list
                              */
-                            inline stack_state_ptr get_next() const {
-                                return m_next;
+                            inline stack_state_ptr get_next_in_level() const {
+                                return m_next_in_level;
                             }
 
                             /**
                              * Allows to set the next multi-state
                              * @param next the poniter to the next multi-state in the list
                              */
-                            inline void set_next(stack_state_ptr next) {
-                                return m_next = next;
+                            inline void set_next_in_level(stack_state_ptr next) {
+                                return m_next_in_level = next;
                             }
 
                             /**
@@ -220,8 +221,8 @@ namespace uva {
                             //This variable stores the pointer to the parent state or NULL if it is the root state
                             stack_state_ptr m_parent;
 
-                            //This variable stores the pointer to the next state in the stack or NULL if it is the last one
-                            stack_state_ptr m_next;
+                            //This variable stores the pointer to the next state in the stack level or NULL if it is the last one
+                            stack_state_ptr m_next_in_level;
 
                             //This vector stores the list of states recombined into this state
                             vector<stack_state_ptr> m_recomb_from;
@@ -236,7 +237,7 @@ namespace uva {
                             int32_t m_last_covered;
 
                             //Stores the N-1 previously translated words
-                            circular_queue<const string> m_history;
+                            stack_state_history m_history;
 
                             //Stores the logarithmic partial score of the current hypothesis
                             float m_partial_score;
@@ -245,11 +246,11 @@ namespace uva {
                             float m_future_cost;
                         };
 
-                        template<size_t NUM_WORDS_PER_SENTENCE>
-                        constexpr int32_t stack_state_templ<NUM_WORDS_PER_SENTENCE>::UNDEFINED_WORD_IDX;
+                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_LENGTH>
+                        constexpr int32_t stack_state_templ<NUM_WORDS_PER_SENTENCE, MAX_M_GRAM_LENGTH>::UNDEFINED_WORD_IDX;
 
-                        template<size_t NUM_WORDS_PER_SENTENCE>
-                        constexpr int32_t stack_state_templ<NUM_WORDS_PER_SENTENCE>::ZERRO_WORD_IDX;
+                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_LENGTH>
+                        constexpr int32_t stack_state_templ<NUM_WORDS_PER_SENTENCE, MAX_M_GRAM_LENGTH>::ZERRO_WORD_IDX;
                     }
                 }
             }
