@@ -55,10 +55,6 @@ namespace uva {
                 static constexpr prob_weight ZERO_LOG_PROB_WEIGHT = -100.0f;
 
                 namespace decoder {
-                    //Stores the start of the sentence symbol
-                    static const string BEGIN_SENTENCE_TAG_STR = "<s>";
-                    //Stores the end of the sentence symbol
-                    static const string END_SENTENCE_TAG_STR = "</s>";
                 }
 
                 namespace tm {
@@ -94,6 +90,11 @@ namespace uva {
 
                     //Stores the unknown word string, should be configurable
                     static const string UNKNOWN_WORD_STR = "<unk>";
+
+                    //Stores the start of the sentence symbol
+                    static const string BEGIN_SENTENCE_TAG_STR = "<s>";
+                    //Stores the end of the sentence symbol
+                    static const string END_SENTENCE_TAG_STR = "</s>";
                     
                     //The default value of the unknown word probability weight
                     const prob_weight DEFAULT_UNK_WORD_LOG_PROB_WEIGHT = -10.0f;

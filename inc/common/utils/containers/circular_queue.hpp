@@ -40,11 +40,7 @@ namespace uva {
             /**
              * This class represents a circular queue class that
              * is needed to store a limited and fixed amount of
-             * elements. To avoid unneeded copy actions this class
-             * stores the pointers to the elements!
-             * 
-             * WARNING: This class is not responsible for destroying
-             * the elements it stores pointers to.
+             * elements.
              */
             template<typename elem_type, size_t capacity>
             class circular_queue {
@@ -83,8 +79,7 @@ namespace uva {
                  * potentially pushing out the beginning of the queue element.
                  * The latter happens only if the maximum number of elements
                  * has been reached before this new element was pushed.
-                 * NOTE: The queue qill only store the pointer to the element but not the object!
-                 * @param elem the element pointer to which will be stored inside the queue
+                 * @param elem the element to be stored in the queue
                  */
                 void push_back(elem_type & elem) {
                     //ToDo: Implement

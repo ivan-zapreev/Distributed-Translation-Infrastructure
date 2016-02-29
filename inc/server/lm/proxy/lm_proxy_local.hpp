@@ -31,6 +31,8 @@
 #include "common/utils/monitore/statistics_monitore.hpp"
 #include "common/utils/file/cstyle_file_reader.hpp"
 
+#include "server/server_configs.hpp"
+
 #include "server/lm/lm_configs.hpp"
 #include "server/lm/lm_consts.hpp"
 
@@ -46,6 +48,7 @@ using namespace uva::utils::monitore;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::file;
+
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::lm::proxy;
 using namespace uva::smt::bpbd::server::lm::arpa;
@@ -87,6 +90,10 @@ namespace uva {
                                 //The whole purpose of this method connect here is
                                 //just to load the language model into the memory.
                                 load_model_data<lm_builder_type, CStyleFileReader>("Language Model", params);
+
+                                //Retrieve the begin and end tag uid values
+                                get_tag_uid(BEGIN_SENTENCE_TAG_STR, m_begin_tag_uid);
+                                get_tag_uid(END_SENTENCE_TAG_STR, m_end_tag_uid);
                             }
 
                             /**
@@ -103,7 +110,7 @@ namespace uva {
                             virtual lm_fast_query_proxy & allocate_fast_query_proxy() {
                                 //ToDo: In the future we should just use a number of stack
                                 //allocated objects in order to reduce the new/delete overhead
-                                return *(new lm_fast_query_proxy_local<lm_model_type>(m_model));
+                                return *(new lm_fast_query_proxy_local<lm_model_type>(m_model, m_begin_tag_uid, m_end_tag_uid));
                             }
 
                             /**
@@ -136,6 +143,22 @@ namespace uva {
                         private:
 
                             /**
+                             * Allows to retrieve the sentence tag uid from the model.
+                             */
+                            void get_tag_uid(const string & tag_str, word_uid & uid) {
+                                //Create the text piece reader
+                                TextPieceReader tag(tag_str.c_str(), tag_str.length());
+
+                                //Get the end sentence tag word id
+                                uid = m_model.get_word_index().get_word_id(tag);
+
+                                //Check that the tag word uid is found!
+                                ASSERT_CONDITION_THROW((uid == UNKNOWN_WORD_ID),
+                                        string("The sentence tag '") + tag_str +
+                                        string("' word uid is not found!"));
+                            }
+
+                            /**
                              * Allows to load the model into the instance of the selected container class
                              * @param the name of the model being loaded
                              * @params params the model parameters
@@ -143,7 +166,7 @@ namespace uva {
                             template<typename lm_builder_type, typename file_reader_type>
                             void load_model_data(char const *model_name, const lm_parameters & params) {
                                 const string & model_file_name = params.m_conn_string;
-                                
+
                                 //Declare time variables for CPU times in seconds
                                 double start_time, end_time;
                                 //Declare the statistics monitor and its data
@@ -203,6 +226,10 @@ namespace uva {
 
                             //Stores the trie
                             lm_model_type m_model;
+
+                            //Sore the begin and end sentence tag word uids as retrieved from the LM word index.
+                            word_uid m_begin_tag_uid;
+                            word_uid m_end_tag_uid;
                         };
                     }
                 }
