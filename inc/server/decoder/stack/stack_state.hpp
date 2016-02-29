@@ -23,8 +23,8 @@
  * Created on February 16, 2016, 4:20 PM
  */
 
-#ifndef TRANS_STACK_STATE_HPP
-#define TRANS_STACK_STATE_HPP
+#ifndef STACK_STATE_HPP
+#define STACK_STATE_HPP
 
 #include <vector>
 #include <bitset>
@@ -49,19 +49,19 @@ namespace uva {
 
                         //Forward declaration of the class
                         template<size_t NUM_WORDS_PER_SENTENCE>
-                        class multi_state_templ;
+                        class stack_state_templ;
 
                         //Typedef the multi state and instantiate it with the maximum number of words per sentence
-                        typedef multi_state_templ<MAX_WORDS_PER_SENTENCE> multi_state;
+                        typedef stack_state_templ<MAX_WORDS_PER_SENTENCE> stack_state;
 
                         //Define the multi state pointer
-                        typedef multi_state * multi_state_ptr;
+                        typedef stack_state * stack_state_ptr;
 
                         /**
                          * This is the translation stack state class that is responsible for the sentence translation
                          */
                         template<size_t NUM_WORDS_PER_SENTENCE>
-                        class multi_state_templ {
+                        class stack_state_templ {
                         public:
 
                             //Stores the undefined word index
@@ -72,7 +72,7 @@ namespace uva {
                              * The basic constructor for the root stack state
                              * @param max_target_phrase_len the maximum target phrase length
                              */
-                            multi_state_templ(const de_parameters & params)
+                            stack_state_templ(const de_parameters & params)
                             : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
                             m_covered(), m_last_covered(ZERRO_WORD_IDX),
                             m_history(params.m_max_t_phrase_len - 1),
@@ -91,7 +91,7 @@ namespace uva {
                              * The basic constructor for the non-root stack state
                              * @param parent the pointer to the parent element
                              */
-                            multi_state_templ(const de_parameters & params, multi_state_ptr parent)
+                            stack_state_templ(const de_parameters & params, stack_state_ptr parent)
                             : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
                             m_covered(), m_last_covered(UNDEFINED_WORD_IDX),
                             m_history(params.m_max_t_phrase_len - 1),
@@ -109,14 +109,14 @@ namespace uva {
                             /**
                              * The basic destructor
                              */
-                            ~multi_state_templ() {
+                            ~stack_state_templ() {
                             }
 
                             /**
                              * Allows to get the next multi-state
                              * @return the poniter to the next multi-state in the list
                              */
-                            inline multi_state_ptr get_next() {
+                            inline stack_state_ptr get_next() {
                                 return m_next;
                             }
 
@@ -124,7 +124,7 @@ namespace uva {
                              * Allows to set the next multi-state
                              * @param next the poniter to the next multi-state in the list
                              */
-                            inline void set_next(multi_state_ptr next) {
+                            inline void set_next(stack_state_ptr next) {
                                 return m_next = next;
                             }
 
@@ -133,7 +133,7 @@ namespace uva {
                              * @param other the other state to compare with
                              * @return true if this state is smaller than the other one
                              */
-                            inline bool operator<(const multi_state & other) const {
+                            inline bool operator<(const stack_state & other) const {
                                 //ToDo: Implement the state compare
                                 return true;
                             }
@@ -143,7 +143,7 @@ namespace uva {
                              * @param other the other state to compare with
                              * @return true if this state is equal to the other one
                              */
-                            inline bool operator==(const multi_state & other) const {
+                            inline bool operator==(const stack_state & other) const {
                                 //ToDo: Implement the state compare
                                 return false;
                             }
@@ -174,16 +174,16 @@ namespace uva {
 
                         protected:
                             //This variable stores the pointer to the parent state or NULL if it is the root state
-                            multi_state_ptr m_parent;
+                            stack_state_ptr m_parent;
 
                             //This variable stores the pointer to the next state in the stack or NULL if it is the last one
-                            multi_state_ptr m_next;
+                            stack_state_ptr m_next;
 
                             //This vector stores the list of states recombined into this state
-                            vector<multi_state_ptr> m_recomb_from;
+                            vector<stack_state_ptr> m_recomb_from;
 
                             //This variable stores to which state this state was recombined or NULL
-                            multi_state_ptr m_recomb_to;
+                            stack_state_ptr m_recomb_to;
 
                             //Stores the bitset of covered words indexes
                             bitset<NUM_WORDS_PER_SENTENCE> m_covered;
@@ -202,10 +202,10 @@ namespace uva {
                         };
 
                         template<size_t NUM_WORDS_PER_SENTENCE>
-                        constexpr int32_t multi_state_templ<NUM_WORDS_PER_SENTENCE>::UNDEFINED_WORD_IDX;
+                        constexpr int32_t stack_state_templ<NUM_WORDS_PER_SENTENCE>::UNDEFINED_WORD_IDX;
 
                         template<size_t NUM_WORDS_PER_SENTENCE>
-                        constexpr int32_t multi_state_templ<NUM_WORDS_PER_SENTENCE>::ZERRO_WORD_IDX;
+                        constexpr int32_t stack_state_templ<NUM_WORDS_PER_SENTENCE>::ZERRO_WORD_IDX;
                     }
                 }
             }

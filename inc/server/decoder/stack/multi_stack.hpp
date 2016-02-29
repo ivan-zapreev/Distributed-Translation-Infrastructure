@@ -23,8 +23,8 @@
  * Created on February 16, 2016, 4:20 PM
  */
 
-#ifndef TRANS_STACK_HPP
-#define TRANS_STACK_HPP
+#ifndef MULTI_STACK_HPP
+#define MULTI_STACK_HPP
 
 #include <string>
 
@@ -38,7 +38,7 @@
 #include "server/decoder/de_configs.hpp"
 #include "server/decoder/de_parameters.hpp"
 #include "server/decoder/sentence/sentence_data_map.hpp"
-#include "server/decoder/stack/multi_level.hpp"
+#include "server/decoder/stack/stack_level.hpp"
 
 using namespace std;
 
@@ -78,14 +78,14 @@ namespace uva {
                                     acr_bool_flag is_stop,
                                     const sentence_data_map & sent_data,
                                     const rm_query_proxy & rm_query)
-                            : m_root_state(params), m_stacks(NULL), m_params(params),
+                            : m_root_state(params), m_levels(NULL), m_params(params),
                             m_is_stop(is_stop), m_sent_data(sent_data), m_rm_query(rm_query),
                             m_lm_query(lm_configurator::allocate_fast_query_proxy()),
                             m_las_stack_idx(m_sent_data.get_dim() - 1), m_last_exp_stack_idx(-1) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << m_params << END_LOG;
                                 //Instantiate the proper number of stacks, the same number as
                                 //there is words plus one. The last stack is for </s> words.
-                                m_stacks = new multi_level[m_sent_data.get_dim() + 1]();
+                                m_levels = new stack_level[m_sent_data.get_dim() + 1]();
                             }
 
                             /**
@@ -95,22 +95,9 @@ namespace uva {
                                 //Dispose the language query object
                                 lm_configurator::dispose_fast_query_proxy(m_lm_query);
                                 //Dispose the stacks
-                                if (m_stacks != NULL) {
-                                    delete[] m_stacks;
-                                    m_stacks = NULL;
-                                }
-                            }
-
-                            /**
-                             * Allows to check if the translation process is finished
-                             * @return true if the translation is dinished
-                             */
-                            bool has_finished() {
-                                if (!m_is_stop) {
-                                    //ToDo: Implement
-                                    return (m_last_exp_stack_idx >= m_las_stack_idx);
-                                } else {
-                                    return true;
+                                if (m_levels != NULL) {
+                                    delete[] m_levels;
+                                    m_levels = NULL;
                                 }
                             }
 
@@ -146,9 +133,9 @@ namespace uva {
 
                         private:
                             //Stores the root multi-stack state element
-                            multi_state m_root_state;
+                            stack_state m_root_state;
                             //This is a pointer to the array of stacks, one stack per number of covered words.
-                            multi_level * m_stacks;
+                            stack_level * m_levels;
 
                             //Stores the reference to the decoder parameters
                             const de_parameters & m_params;

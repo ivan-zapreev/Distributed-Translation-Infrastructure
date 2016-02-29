@@ -202,11 +202,11 @@ namespace uva {
                                         //Compute the end index
                                         const phrase_length end_idx = start_idx + length - 1;
                                         LOG_DEBUG1 << "CFC start/end word idx: " << start_idx << "/" << end_idx << END_LOG;
-                                        
+
                                         //Initialize the interval with the TM/LM based value first
                                         //and get the reference to the complete cost then
                                         prob_weight & phrase_cost = initialize_future_costs(start_idx, end_idx);
-                                        
+
                                         //Iterate the middle point between start and end indexes
                                         for (phrase_length mid_idx = start_idx; (mid_idx < end_idx); ++mid_idx) {
                                             LOG_DEBUG1 << "CFC middle word idx: " << mid_idx << END_LOG;
@@ -374,19 +374,14 @@ namespace uva {
                              * Performs the sentence translation 
                              */
                             inline void perform_translation() {
-                                //Perform the decoding process on the level of the stack
-                                while (!m_stack.has_finished()) {
-                                    //Extend the stack
-                                    m_stack.expand();
-                                    //Prune the stack
-                                    m_stack.prune();
-                                }
+                                //Extend the stack, here we do everything in one go
+                                //Including expanding, pruning and recombination
+                                m_stack.expand();
 
-                                //If we are finished then retrieve the best translation
+                                //If we are finished then retrieve the best 
+                                //translation. If we have stopped then nothing.
                                 if (!m_is_stop) {
                                     m_stack.get_best_translation(m_target_sent);
-                                } else {
-                                    m_target_sent = m_source_sent;
                                 }
                             }
 
