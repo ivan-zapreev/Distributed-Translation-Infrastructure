@@ -17,7 +17,6 @@
 #include "server/decoder/de_configs.hpp"
 #include "server/decoder/de_parameters.hpp"
 
-#include "server/decoder/stack/level_iter.hpp"
 #include "server/decoder/stack/stack_state.hpp"
 
 using namespace std;
@@ -102,7 +101,8 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to expand the stack elements
+                             * Allows to expand the stack elements, to do that this method just
+                             * goes through all the stack elements one by one and expands them
                              */
                             void expand() {
                                 if (!m_is_stop) {
@@ -112,7 +112,9 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to get the best translation target string for this stack
+                             * Allows to get the best translation target string for this stack.
+                             * To do that, it takes the first element/state in the level's ordered 
+                             * by costs stack and asks it to unroll itself to give its translation.
                              * @param target_sent [out] the variable to store the translation
                              */
                             void get_best_trans(string & target_sent) {
@@ -123,22 +125,6 @@ namespace uva {
                             }
 
                         protected:
-
-                            /**
-                             * Allows to get the begin iterator
-                             * @return the begin iterator
-                             */
-                            level_iter begin() const {
-                                return level_iter(m_first_state);
-                            }
-
-                            /**
-                             * Allows to get the end iterator
-                             * @return the end iterator
-                             */
-                            level_iter end() const {
-                                return level_iter(NULL);
-                            }
 
                         private:
                             //Stores the reference to the decoder parameters

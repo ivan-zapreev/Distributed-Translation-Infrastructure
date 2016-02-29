@@ -679,7 +679,6 @@
             <in>sentence_decoder.hpp</in>
           </df>
           <df name="stack">
-            <in>level_iter.hpp</in>
             <in>multi_stack.hpp</in>
             <in>stack_level.hpp</in>
             <in>stack_state.hpp</in>
