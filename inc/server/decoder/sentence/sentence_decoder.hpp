@@ -153,7 +153,7 @@ namespace uva {
                                 //Get the reference to the future cost
                                 prob_weight & cost = phrase_data.future_cost;
 
-                                LOG_DEBUG1 << "Initializinf future for [" << start_idx << ", " << end_idx << "]" << END_LOG;
+                                LOG_DEBUG1 << "Initializing future cost for [" << start_idx << ", " << end_idx << "]" << END_LOG;
 
                                 //Check if the source entry is present, the entry should be there!
                                 if (source_entry != NULL) {
