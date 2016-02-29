@@ -78,13 +78,19 @@ namespace uva {
                             virtual prob_weight get_unk_word_prob() const {
                                 return m_trie.get_unk_word_prob();
                             }
-
+                            
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual void get_begin_end_tag_uid(word_uid & begin_tag_uid, word_uid & end_tag_uid) const {
-                                begin_tag_uid = m_begin_tag_uid;
-                                end_tag_uid = m_end_tag_uid;
+                            virtual const word_uid & get_begin_tag_uid() const {
+                                return m_begin_tag_uid;
+                            }
+                            
+                            /**
+                             * @see lm_query_proxy
+                             */
+                            virtual const word_uid & get_end_tag_uid() const {
+                                return m_end_tag_uid;
                             }
 
                             /**

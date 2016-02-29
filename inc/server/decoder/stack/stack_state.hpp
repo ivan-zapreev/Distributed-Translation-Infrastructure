@@ -62,7 +62,7 @@ namespace uva {
                         class stack_state_templ {
                         public:
                             //Make the tyopedef for the stack state history
-                            typedef circular_queue<const string, MAX_M_GRAM_LENGTH - 1 > stack_state_history;
+                            typedef circular_queue<word_uid, MAX_M_GRAM_LENGTH - 1 > stack_state_history;
 
                             //Stores the undefined word index
                             static constexpr int32_t UNDEFINED_WORD_IDX = -1;
@@ -82,8 +82,8 @@ namespace uva {
                                 //Mark the zero word as covered
                                 m_covered.set(ZERRO_WORD_IDX);
 
-                                //Add the sentence start to the target
-                                m_history.push_back(BEGIN_SENTENCE_TAG_STR);
+                                //Add the sentence begin tag uid to the target
+                                m_history.push_back(m_data.m_lm_query.get_begin_tag_uid());
                             }
 
                             /**

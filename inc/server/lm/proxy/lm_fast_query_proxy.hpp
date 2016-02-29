@@ -62,11 +62,16 @@ namespace uva {
                             virtual prob_weight get_unk_word_prob() const = 0;
                             
                             /**
-                             * Allows to retrieve the start/end tag uid values
-                             * @param begin_tag_uid [out] the start tag "<s>" uid
-                             * @param end_tag_uid [out] the end tag "<s>" uid
+                             * Allows to retrieve the begin tag uid value
+                             * @return the begin tag "<s>" uid
                              */
-                            virtual void get_begin_end_tag_uid(word_uid & begin_tag_uid, word_uid & end_tag_uid) const = 0;
+                            virtual const word_uid & get_begin_tag_uid() const = 0;
+                            
+                            /**
+                             * Allows to retrieve the end tag uid value
+                             * @return the end tag "</s>" uid
+                             */
+                            virtual const word_uid & get_end_tag_uid() const = 0;
 
                             /**
                              * Allows to retrieve the target language phrase word ids.

@@ -81,7 +81,7 @@ namespace uva {
                  * has been reached before this new element was pushed.
                  * @param elem the element to be stored in the queue
                  */
-                void push_back(elem_type & elem) {
+                void push_back(const elem_type & elem) {
                     //ToDo: Implement
                     THROW_NOT_IMPLEMENTED();
                 }
