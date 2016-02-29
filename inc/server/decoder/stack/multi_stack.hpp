@@ -91,14 +91,14 @@ namespace uva {
                             : m_params(params), m_is_stop(is_stop), m_sent_data(sent_data),
                             m_rm_query(rm_query), m_lm_query(lm_query),
                             m_num_levels(m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS),
-                            m_max_level(m_num_levels - 1), m_curr_level(MIN_STACK_LEVEL) {
+                            m_curr_level(MIN_STACK_LEVEL) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << m_params << END_LOG;
 
                                 //Instantiate an array of stack level pointers
                                 m_levels = new stack_level_ptr[m_num_levels]();
 
                                 //Initialize the stack levels
-                                for (uint32_t level = MIN_STACK_LEVEL; level < m_max_level; ++level) {
+                                for (uint32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
                                     m_levels[level] = new stack_level(m_params, m_is_stop);
                                 }
 
@@ -108,7 +108,7 @@ namespace uva {
                                 m_levels[MIN_STACK_LEVEL]->add_state(
                                         new stack_state(m_params, sent_data, rm_query, lm_query,
                                         bind(&multi_stack::add_stack_state, this, _1))
-                                );
+                                        );
                             }
 
                             /**
@@ -119,7 +119,7 @@ namespace uva {
                                 if (m_levels != NULL) {
 
                                     //Iterate through the levels and delete them
-                                    for (uint32_t level = MIN_STACK_LEVEL; level < m_max_level; ++level) {
+                                    for (uint32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
                                         delete m_levels[level];
                                     }
 
@@ -135,7 +135,7 @@ namespace uva {
                             void expand() {
                                 //Iterate the stack levels and expand them one by one 
                                 //until the last one or until we are requested to stop
-                                while (!m_is_stop && (m_curr_level <= m_max_level)) {
+                                while (!m_is_stop && (m_curr_level < m_num_levels)) {
                                     //Here we expand the stack level and then
                                     //increment the current level index variable
                                     m_levels[m_curr_level++]->expand();
@@ -150,11 +150,14 @@ namespace uva {
                             void get_best_trans(string & target_sent) const {
                                 if (!m_is_stop) {
                                     //Sanity check that the translation has been finished
-                                    ASSERT_SANITY_THROW((m_curr_level <= m_max_level),
-                                            string("The translation was not finished, the next stack level is ") +
-                                            to_string(m_curr_level) + string(" the last to consider is ") + to_string(m_max_level));
+                                    ASSERT_SANITY_THROW((m_curr_level != m_num_levels),
+                                            string("The translation was not finished, ") +
+                                            string("the next-to-consider stack level is ") +
+                                            to_string(m_curr_level) + string(" the last-to-") +
+                                            string("consider is ") + to_string(m_num_levels - 1));
+
                                     //Request the last level for the best translation
-                                    m_levels[m_max_level]->get_best_trans(target_sent);
+                                    m_levels[m_num_levels - 1]->get_best_trans(target_sent);
                                 }
                             }
 
@@ -172,10 +175,10 @@ namespace uva {
                                 const uint32_t level = new_state->get_stack_level();
 
                                 //Perform a sanity check that the state is of a proper level
-                                ASSERT_SANITY_THROW((level > m_max_level),
+                                ASSERT_SANITY_THROW((level >= m_num_levels),
                                         string("The new stack state stack level is too big: ") +
                                         to_string(level) + string(" the maximum allowed is: ") +
-                                        to_string(m_max_level));
+                                        to_string(m_num_levels - 1));
 
                                 //Add the state to the corresponding stack
                                 m_levels[level]->add_state(new_state);
@@ -196,10 +199,9 @@ namespace uva {
 
                             //Stores the number of multi-stack levels
                             const uint32_t m_num_levels;
-                            //Stores the maximum stack level index
-                            const uint32_t m_max_level;
                             //Stores the current stack level index
                             uint32_t m_curr_level;
+                            
                             //This is a pointer to the array of stacks, one stack per number of covered words.
                             stack_level_ptr * m_levels;
                         };
