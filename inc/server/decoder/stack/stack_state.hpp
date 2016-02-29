@@ -122,9 +122,23 @@ namespace uva {
                             }
 
                             /**
-                             * The basic destructor
+                             * The basic destructor, should free all the allocated
+                             * resources and delete the next state in the row
                              */
                             ~stack_state_templ() {
+                                //ToDo: Check that we do indeed delete all the allocated data
+                                
+                                //Delete the states that are recombined into this state
+                                for(vector<stack_state_ptr>::const_iterator iter = m_recomb_from.begin(); iter != m_recomb_from.end(); ++iter) {
+                                    delete *iter;
+                                }
+                                
+                                //Delete the next state if it exists, this
+                                //is for the stack level state deletion
+                                if(m_next != NULL) {
+                                    delete m_next;
+                                    m_next = NULL;
+                                }
                             }
 
                             /**
@@ -132,15 +146,31 @@ namespace uva {
                              * to the number of  so far translated words.
                              * @return the stack level
                              */
-                            uint32_t get_stack_level() {
+                            uint32_t get_stack_level() const {
                                 THROW_NOT_IMPLEMENTED();
                             }
 
                             /**
+                             * Allows the state to expand itself, it will
+                             * add itself to the proper stack.
+                             */
+                            inline void expand() {
+                                THROW_NOT_IMPLEMENTED();
+                            }
+
+                            /**
+                             * Allows to get the translation ending in this state.
+                             * @param target_sent [out] the variable to store the translation
+                             */
+                            inline void get_translation(string & target_sent) const {
+                                THROW_NOT_IMPLEMENTED();
+                            }
+                            
+                            /**
                              * Allows to get the next multi-state
                              * @return the poniter to the next multi-state in the list
                              */
-                            inline stack_state_ptr get_next() {
+                            inline stack_state_ptr get_next() const {
                                 return m_next;
                             }
 
@@ -168,14 +198,6 @@ namespace uva {
                              */
                             inline bool operator==(const stack_state & other) const {
                                 THROW_NOT_IMPLEMENTED();
-                            }
-
-                            inline float get_partial_score() {
-                                return m_partial_score;
-                            }
-
-                            inline float get_future_cost() {
-                                return m_future_cost;
                             }
 
                         private:

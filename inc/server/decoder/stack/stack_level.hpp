@@ -33,7 +33,7 @@ namespace uva {
             namespace server {
                 namespace decoder {
                     namespace stack {
-                        
+
                         //Forward declaration of the stack level class
                         class stack_level;
                         //The typedef of the stack level pointer
@@ -55,10 +55,17 @@ namespace uva {
                             }
 
                             /**
-                             * The basic destructor
+                             * The basic destructor, this implementation is iterative.
+                             * We could have done this in the loop as well, for destructor
+                             * we just do it the recursive way as it is simpler.
                              */
                             ~stack_level() {
-                                //ToDo: Iterate through the level states and delete them
+                                //If the pointer to the first state is present then
+                                //start the chain reaction of next state deletion.
+                                if(m_first_state != NULL) {
+                                    delete m_first_state;
+                                    m_first_state = NULL;
+                                }
                             }
 
                             /**
@@ -77,6 +84,7 @@ namespace uva {
                                 //the recombination is not done, then insert the
                                 //hypothesis to the found position based on cost
                                 //comparison.
+                                THROW_NOT_IMPLEMENTED();
 
                                 //Search for the proper position of the state,
                                 //or until we find an empty position, then stop.
@@ -90,6 +98,7 @@ namespace uva {
                                 //1. They cover the same words
                                 //2. They have the same last translated source word
                                 //3. They have the same history: last n-1 target words
+                                THROW_NOT_IMPLEMENTED();
 
                                 //Check if the found free
                                 if (place_state == NULL) {
@@ -102,13 +111,21 @@ namespace uva {
 
                             /**
                              * Allows to expand the stack elements, to do that this method just
-                             * goes through all the stack elements one by one and expands them
+                             * goes through all the stack elements one by one and expands them.
+                             * We could have done this recursively but this way we avoid stack
+                             * allocations so we might be just faster.
                              */
                             void expand() {
-                                if (!m_is_stop) {
-                                    //ToDo: Implement
+                                //Get the pointer to the first state
+                                stack_state_ptr curr_state = m_first_state;
+
+                                //Iterate while we do not need to stop or we reach the end of the stack
+                                while (!m_is_stop && (curr_state != NULL)) {
+                                    //Allow the state to expand itself
+                                    curr_state->expand();
+                                    //Move to the next state
+                                    curr_state = curr_state->get_next();
                                 }
-                                THROW_NOT_IMPLEMENTED();
                             }
 
                             /**
@@ -117,11 +134,13 @@ namespace uva {
                              * by costs stack and asks it to unroll itself to give its translation.
                              * @param target_sent [out] the variable to store the translation
                              */
-                            void get_best_trans(string & target_sent) {
-                                if (!m_is_stop) {
-                                    //ToDo: Implement
-                                }
-                                THROW_NOT_IMPLEMENTED();
+                            void get_best_trans(string & target_sent) const {
+                                //Assert sanity that there is something in the stack
+                                ASSERT_SANITY_THROW((m_first_state == NULL),
+                                        "Can't get the best translation, the stack level is empty!");
+                                
+                                //Call the get-translation function of the most probable state in the stack
+                                m_first_state->get_translation(target_sent);
                             }
 
                         protected:
@@ -131,7 +150,7 @@ namespace uva {
                             const de_parameters & m_params;
                             //Stores the stopping flag
                             acr_bool_flag m_is_stop;
-                            
+
                             //Stores the pointer to the first level state
                             stack_state_ptr m_first_state;
                         };
