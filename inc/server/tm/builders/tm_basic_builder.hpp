@@ -267,7 +267,7 @@ namespace uva {
                                     LOG_DEBUG << "The phrase: ___" << target << "__ lm-weight: " << lm_weight << END_LOG;
 
                                     //Initiate a new target entry
-                                    source_entry->add_translation(target_str, target_uid,
+                                    source_entry->add_target(target_str, target_uid,
                                             tmp_features_size, tmp_features,
                                             m_tmp_num_words, m_tmp_word_ids, lm_weight);
 

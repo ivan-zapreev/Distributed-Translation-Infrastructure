@@ -112,7 +112,7 @@ namespace uva {
                                 word_ids[0] = unk_word_id;
 
                                 //Add the translation entry
-                                m_unk_entry->add_translation(
+                                m_unk_entry->add_target(
                                         tm::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID,
                                         num_unk_features, unk_features,
                                         num_words, word_ids, lm_weight);

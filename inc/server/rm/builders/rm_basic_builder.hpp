@@ -198,7 +198,7 @@ namespace uva {
 
                                         //Check if the given translation phrase is known
                                         if ((target_uid == m_model.TARGET_UNK_UID) ||
-                                                source_entry->has_translation(target_uid)) {
+                                                source_entry->has_target(target_uid)) {
                                             if (count_or_build) {
                                                 //Increment the counter
                                                 ++m_num_entries;

@@ -159,7 +159,7 @@ namespace uva {
                                 if (source_entry != NULL) {
                                     LOG_DEBUG1 << "The source entry of phrase [" << start_idx << ", " << end_idx << "] is present." << END_LOG;
                                     //Check if this is a phrase with translation
-                                    if (source_entry->has_translation()) {
+                                    if (source_entry->has_translations()) {
                                         LOG_DEBUG1 << "The source entry [" << start_idx << ", " << end_idx << "] has translations." << END_LOG;
                                         //Set the value with the pre-computed minimum cost
                                         cost = source_entry->get_min_cost();
@@ -297,8 +297,8 @@ namespace uva {
                                     m_tm_query.execute(end_word_data.m_phrase_uid, end_word_data.m_source_entry);
 
                                     LOG_DEBUG1 << "The token ___" << token << "___ @ [" << ch_b_idx << ","
-                                            << ch_e_idx << ") has " << (end_word_data.m_source_entry->has_translation() ? "" : "NO")
-                                            << " translation(s), num entries: " << end_word_data.m_source_entry->num_translations() << END_LOG;
+                                            << ch_e_idx << ") has " << (end_word_data.m_source_entry->has_translations() ? "" : "NO")
+                                            << " translation(s), num entries: " << end_word_data.m_source_entry->num_targets() << END_LOG;
 
                                     //Compute the new phrases and phrase ids for the new column elements,
                                     //Note that, the longest phrase length to consider is defined by the
@@ -331,8 +331,8 @@ namespace uva {
                                         m_tm_query.execute(new_entry.m_phrase_uid, new_entry.m_source_entry);
 
                                         LOG_DEBUG1 << "Phrase: ___" << phrase << "___ uid: " << new_entry.m_phrase_uid << " has "
-                                                << (new_entry.m_source_entry->has_translation() ? "" : "NO") << " translation(s), "
-                                                << " num entries: " << new_entry.m_source_entry->num_translations() << END_LOG;
+                                                << (new_entry.m_source_entry->has_translations() ? "" : "NO") << " translation(s), "
+                                                << " num entries: " << new_entry.m_source_entry->num_targets() << END_LOG;
 
                                         //Check if we need to stop, if yes, then return
                                         if (m_is_stop) return;

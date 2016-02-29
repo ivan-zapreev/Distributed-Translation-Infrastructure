@@ -75,8 +75,8 @@ namespace uva {
                             stack_state_templ(const stack_data & data)
                             : m_data(data), m_parent(NULL), m_next_in_level(NULL), m_recomb_from(),
                             m_recomb_to(NULL), m_covered(), m_last_begin_pos(UNDEFINED_WORD_IDX),
-                            m_last_end_pos(UNDEFINED_WORD_IDX), m_history(), m_partial_score(0.0),
-                            m_future_cost(0.0) {
+                            m_last_end_pos(UNDEFINED_WORD_IDX), m_target(NULL), m_history(),
+                            m_partial_score(0.0), m_future_cost(0.0) {
                                 LOG_DEBUG2 << "multi_state create: " << m_data.m_params << END_LOG;
 
                                 //Mark the zero word as covered
@@ -93,11 +93,12 @@ namespace uva {
                             stack_state_templ(const stack_data & data,
                                     stack_state_ptr parent,
                                     const int32_t last_begin_pos,
-                                    const int32_t last_end_pos)
+                                    const int32_t last_end_pos,
+                                    tm_const_target_entry* target)
                             : m_data(data), m_parent(NULL), m_next_in_level(NULL), m_recomb_from(),
                             m_recomb_to(NULL), m_covered(), m_last_begin_pos(last_begin_pos),
-                            m_last_end_pos(last_end_pos), m_history(), m_partial_score(0.0),
-                            m_future_cost(0.0) {
+                            m_last_end_pos(last_end_pos), m_target(target), m_history(),
+                            m_partial_score(0.0), m_future_cost(0.0) {
                                 LOG_DEBUG2 << "multi_state create, with parent: " << m_data.m_params << END_LOG;
 
                                 //Compute the partial score;
@@ -270,22 +271,23 @@ namespace uva {
                                 tm_const_source_entry_ptr entry = m_data.m_sent_data[start_pos][end_pos].m_source_entry;
 
                                 //Check if we are in the situation of a single word
-                                if (single_word) {
-                                    //ToDo: Add translation history !!!!
-                                    THROW_NOT_IMPLEMENTED();
+                                if (single_word || entry->has_translations()) {
+                                    //Get the targets
+                                    tm_const_target_entry* targets = entry->get_targets();
 
-                                    //If this is a single word, we try to translate it any ways even if it is an UNK word
-                                    m_data.m_add_state(new stack_state(m_data, this, start_pos, end_pos));
-                                } else {
-                                    //If this is a phrase then we only try to translate it if there are translations
-                                    if (entry->has_translation()) {
-                                        //Iterate through possible translations
-
-                                        //ToDo: Implement
+                                    //Iterate through all the available target translations
+                                    for (size_t idx = 0; idx < entry->num_targets(); ++idx) {
+                                        //ToDo: Add translation and translation history !!!!
                                         THROW_NOT_IMPLEMENTED();
-                                    } else {
-                                        //Do nothing we have an unknown phrase, just log it!
+
+                                        //Add a new hypothesis state to the multi-stack
+                                        m_data.m_add_state(new stack_state(m_data, this, start_pos, end_pos, &targets[idx]));
                                     }
+                                } else {
+                                    //Do nothing we have an unknown phrase of length > 1
+
+                                    //ToDo: Just log it!
+                                    THROW_NOT_IMPLEMENTED();
                                 }
                             }
 
@@ -329,6 +331,9 @@ namespace uva {
 
                             //Stores the last translated word index
                             int32_t m_last_end_pos;
+
+                            //Stores the pointer to the target translation of the last phrase
+                            tm_const_target_entry* m_target;
 
                             //Stores the N-1 previously translated words
                             stack_state_history m_history;

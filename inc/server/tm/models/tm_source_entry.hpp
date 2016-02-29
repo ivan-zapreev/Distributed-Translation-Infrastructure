@@ -87,7 +87,7 @@ namespace uva {
                              * The UNK phrase is the phrase with an unknown translation
                              * @return false if the source entry is for the UNK phrase, otherwise false
                              */
-                            inline bool has_translation() const {
+                            inline bool has_translations() const {
                                 //Do the sanity check
                                 ASSERT_SANITY_THROW((m_source_uid == UNDEFINED_PHRASE_ID),
                                         "The source id is not set when checking for UNK!");
@@ -144,7 +144,7 @@ namespace uva {
                              * @param word_ids the LM word ids for the target phrase
                              * @param lm_weight the cost of the target translation from the LM model
                              */
-                            inline void add_translation(const string & target, const phrase_uid target_uid,
+                            inline void add_target(const string & target, const phrase_uid target_uid,
                                     const size_t num_features, const prob_weight * features,
                                     const phrase_length num_words, const word_uid * word_ids,
                                     const prob_weight lm_weight) {
@@ -181,7 +181,7 @@ namespace uva {
                              * @param target_uid the unique identifier of the taret
                              * @return true if the target is known, otherwise false
                              */
-                            inline bool has_translation(const phrase_uid target_uid) const {
+                            inline bool has_target(const phrase_uid target_uid) const {
                                 LOG_DEBUG1 << "Checking for a source/target (" << m_source_uid
                                         << "/" << target_uid << ") pair entry " << END_LOG;
 
@@ -232,7 +232,7 @@ namespace uva {
                              * Allows to get the number of target entries
                              * @return the number of target entries, or 0 if none
                              */
-                            size_t num_translations() const {
+                            size_t num_targets() const {
                                 return m_capacity;
                             }
 
