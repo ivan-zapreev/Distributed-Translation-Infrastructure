@@ -208,7 +208,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         LOG_INFO << params.m_rm_params << END_LOG;
 
         section = "Decoding Options";
-        params.m_de_params.m_distortion_limit = get_integer<uint32_t>(ini, section, "distortion_limit");
+        params.m_de_params.m_distortion_limit = get_integer<int32_t>(ini, section, "distortion_limit");
         params.m_de_params.m_pruning_threshold = get_float(ini, section, "pruning_threshold");
         params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, "stack_capacity");
         params.m_de_params.m_max_s_phrase_len = get_integer<uint8_t>(ini, section, "max_source_phrase_length");

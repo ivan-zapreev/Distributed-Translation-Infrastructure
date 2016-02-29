@@ -680,6 +680,7 @@
           </df>
           <df name="stack">
             <in>multi_stack.hpp</in>
+            <in>stack_data.hpp</in>
             <in>stack_level.hpp</in>
             <in>stack_state.hpp</in>
           </df>

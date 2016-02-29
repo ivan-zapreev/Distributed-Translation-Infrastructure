@@ -52,7 +52,7 @@ namespace uva {
                         //The stack expansion strategy
                         string m_expansion_strategy;
                         //The distortion limit to use
-                        uint32_t m_distortion_limit;
+                        int32_t m_distortion_limit;
                         //The maximum number of words to consider when making phrases
                         uint8_t m_max_s_phrase_len;
                         //The maximum number of words to consider when making phrases
@@ -70,8 +70,6 @@ namespace uva {
                          * Allows to verify the parameters to be correct.
                          */
                         void verify() {
-                            ASSERT_CONDITION_THROW((m_distortion_limit == 0),
-                                    string("The distortion_limit must not be 0!"));
                             ASSERT_CONDITION_THROW((m_max_s_phrase_len == 0),
                                     string("The max_source_phrase_len must not be 0!"));
                             ASSERT_CONDITION_THROW((m_max_t_phrase_len == 0),

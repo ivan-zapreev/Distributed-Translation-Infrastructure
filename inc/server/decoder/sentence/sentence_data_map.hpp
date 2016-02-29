@@ -89,7 +89,7 @@ namespace uva {
                             phrase_uid m_phrase_uid;
 
                             //Stores the pointer to the translation model source entry
-                            const tm_source_entry * m_source_entry;
+                            tm_const_source_entry_ptr m_source_entry;
                             
                             //Stores the future cost, log scale, for the given phrase.
                             prob_weight future_cost;

@@ -53,13 +53,29 @@ namespace uva {
                 /**
                  * The basic constructor
                  */
-                circular_queue() {
+                circular_queue() : m_size(0) {
                 }
 
                 /**
                  * The basic destructor
                  */
                 ~circular_queue() {
+                }
+
+                /**
+                 * Allows to obtain the number of stored elements
+                 * @return the number of stored elements
+                 */
+                size_t get_size() {
+                    return m_size;
+                }
+
+                /**
+                 * Allows to obtain the maximum number of elements to store
+                 * @return the maximum number of elements to store
+                 */
+                size_t get_capacity() {
+                    return capacity;
                 }
                 
                 /**
@@ -70,12 +86,15 @@ namespace uva {
                  * NOTE: The queue qill only store the pointer to the element but not the object!
                  * @param elem the element pointer to which will be stored inside the queue
                  */
-                void push_back(elem_type & elem){
+                void push_back(elem_type & elem) {
                     //ToDo: Implement
+                    THROW_NOT_IMPLEMENTED();
                 }
-                
+
             protected:
             private:
+                //Stores the number of stored elements
+                size_t m_size;
             };
         }
     }

@@ -28,7 +28,6 @@
 
 #include <vector>
 #include <bitset>
-#include <functional>
 
 #include "common/utils/containers/circular_queue.hpp"
 
@@ -38,7 +37,7 @@
 #include "server/decoder/de_configs.hpp"
 #include "server/decoder/de_parameters.hpp"
 
-#include "server/decoder/sentence/sentence_data_map.hpp"
+#include "server/decoder/stack/stack_data.hpp"
 
 using namespace std;
 
@@ -48,7 +47,6 @@ using namespace uva::smt::bpbd::server::lm::proxy;
 using namespace uva::smt::bpbd::server::rm::proxy;
 
 using namespace uva::smt::bpbd::server::decoder;
-using namespace uva::smt::bpbd::server::decoder::sentence;
 
 namespace uva {
     namespace smt {
@@ -56,19 +54,6 @@ namespace uva {
             namespace server {
                 namespace decoder {
                     namespace stack {
-
-                        //Forward declaration of the class
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_LENGTH>
-                        class stack_state_templ;
-
-                        //Typedef the multi state and instantiate it with the maximum number of words per sentence
-                        typedef stack_state_templ<MAX_WORDS_PER_SENTENCE, LM_M_GRAM_LEVEL_MAX> stack_state;
-
-                        //Define the multi state pointer
-                        typedef stack_state * stack_state_ptr;
-
-                        //The typedef for a function that adds a new state to the multi-stack
-                        typedef function<void(stack_state_ptr) > add_new_state_function;
 
                         /**
                          * This is the translation stack state class that is responsible for the sentence translation
@@ -85,17 +70,14 @@ namespace uva {
 
                             /**
                              * The basic constructor for the root stack state
-                             * @param max_target_phrase_len the maximum target phrase length
+                             * @param data the shared data container
                              */
-                            stack_state_templ(const de_parameters & params,
-                                    const sentence_data_map & sent_data,
-                                    const rm_query_proxy & rm_query,
-                                    lm_fast_query_proxy & lm_query,
-                                    add_new_state_function add_state)
-                            : m_parent(NULL), m_next_in_level(NULL), m_recomb_from(), m_recomb_to(NULL),
-                            m_covered(), m_last_covered(ZERRO_WORD_IDX),
-                            m_history(), m_partial_score(0.0), m_future_cost(0.0) {
-                                LOG_DEBUG2 << "multi_state create: " << params << END_LOG;
+                            stack_state_templ(const stack_data & data)
+                            : m_data(data), m_parent(NULL), m_next_in_level(NULL), m_recomb_from(),
+                            m_recomb_to(NULL), m_covered(), m_last_begin_pos(UNDEFINED_WORD_IDX),
+                            m_last_end_pos(UNDEFINED_WORD_IDX), m_history(), m_partial_score(0.0),
+                            m_future_cost(0.0) {
+                                LOG_DEBUG2 << "multi_state create: " << m_data.m_params << END_LOG;
 
                                 //Mark the zero word as covered
                                 m_covered.set(ZERRO_WORD_IDX);
@@ -108,12 +90,15 @@ namespace uva {
                              * The basic constructor for the non-root stack state
                              * @param parent the pointer to the parent element
                              */
-                            stack_state_templ(const de_parameters & params, stack_state_ptr parent)
-                            : m_parent(NULL), m_next_in_level(NULL), m_recomb_from(), m_recomb_to(NULL),
-                            m_covered(), m_last_covered(UNDEFINED_WORD_IDX),
-                            m_history(params.m_max_t_phrase_len - 1),
-                            m_partial_score(0.0), m_future_cost(0.0) {
-                                LOG_DEBUG2 << "multi_state create, with parent: " << params << END_LOG;
+                            stack_state_templ(const stack_data & data,
+                                    stack_state_ptr parent,
+                                    const int32_t last_begin_pos,
+                                    const int32_t last_end_pos)
+                            : m_data(data), m_parent(NULL), m_next_in_level(NULL), m_recomb_from(),
+                            m_recomb_to(NULL), m_covered(), m_last_begin_pos(last_begin_pos),
+                            m_last_end_pos(last_end_pos), m_history(), m_partial_score(0.0),
+                            m_future_cost(0.0) {
+                                LOG_DEBUG2 << "multi_state create, with parent: " << m_data.m_params << END_LOG;
 
                                 //Compute the partial score;
                                 compute_partial_score();
@@ -148,6 +133,7 @@ namespace uva {
                              * @return the stack level
                              */
                             uint32_t get_stack_level() const {
+                                //ToDo: Implement
                                 THROW_NOT_IMPLEMENTED();
                             }
 
@@ -156,7 +142,10 @@ namespace uva {
                              * add itself to the proper stack.
                              */
                             inline void expand() {
-                                THROW_NOT_IMPLEMENTED();
+                                //Expand to the left of the last phrase
+                                expand_left();
+                                //Expand to the right of the last phrase
+                                expand_right();
                             }
 
                             /**
@@ -164,6 +153,7 @@ namespace uva {
                              * @param target_sent [out] the variable to store the translation
                              */
                             inline void get_translation(string & target_sent) const {
+                                //ToDo: Implement
                                 THROW_NOT_IMPLEMENTED();
                             }
 
@@ -189,6 +179,7 @@ namespace uva {
                              * @return true if this state is smaller than the other one
                              */
                             inline bool operator<(const stack_state & other) const {
+                                //ToDo: Implement
                                 THROW_NOT_IMPLEMENTED();
                             }
 
@@ -198,15 +189,111 @@ namespace uva {
                              * @return true if this state is equal to the other one
                              */
                             inline bool operator==(const stack_state & other) const {
+                                //ToDo: Implement
                                 THROW_NOT_IMPLEMENTED();
                             }
 
-                        private:
+                        protected:
+
+                            /**
+                             * Allows to check that we are within the distortion limits
+                             * @param next_start_pos the next start position to test
+                             * @return true if we are within the distortion limits
+                             */
+                            inline bool is_dist_ok(const int32_t next_start_pos) {
+                                return (m_data.m_params.m_distortion_limit < 0) ||
+                                        (abs(m_last_end_pos + 1 - next_start_pos) <= m_data.m_params.m_distortion_limit);
+                            }
+
+                            /**
+                             * Expand to the left of the last phrase, for all the possible of start positions
+                             */
+                            inline void expand_left() {
+                                //Iterate to the left of the last begin positions until the position is valid and the distortion is within the limits
+                                for (int32_t start_pos = (m_last_begin_pos - 1);
+                                        (start_pos >= 0) && is_dist_ok(start_pos); start_pos--) {
+                                    //If the next position is not covered then expand the lengths
+                                    if (!m_covered[start_pos]) {
+                                        //Expand the lengths
+                                        expand_length(start_pos);
+                                    }
+                                }
+                            }
+
+                            /**
+                             * Expand to the right of the last phrase, for all the possible of start positions
+                             */
+                            inline void expand_right() {
+                                //Iterate to the right of the last positions until the position is valid and the distortion is within the limits
+                                for (uint32_t start_pos = (m_last_end_pos + 1);
+                                        (start_pos < m_data.m_sent_data.get_dim()) && is_dist_ok(start_pos); ++start_pos) {
+                                    //If the next position is not covered then expand the lengths
+                                    if (!m_covered[start_pos]) {
+                                        //Expand the lengths
+                                        expand_length(start_pos);
+                                    }
+                                }
+                            }
+
+                            /**
+                             * Allows to expand for all the possible phrase lengths
+                             */
+                            inline void expand_length(const size_t start_pos) {
+                                //Always take the one word translation even if
+                                //It is an unknown entry.
+                                size_t end_pos = start_pos;
+                                //Just expand the single word, this is always needed and possible
+                                expand_trans<true>(start_pos, end_pos);
+
+                                //Iterate through lengths > 1 until the maximum possible source phrase length is 
+                                //reached or we hit the end of the sentence or the end of the uncovered region
+                                for (size_t len = 1; len <= m_data.m_params.m_max_s_phrase_len; ++len) {
+                                    //Move to the next end position
+                                    ++end_pos;
+                                    //Check if we are in a good state
+                                    if ((end_pos < m_data.m_sent_data.get_dim()) && (!m_covered[end_pos])) {
+                                        //Expand the source phrase which is not a single word
+                                        expand_trans<false>(start_pos, end_pos);
+                                    } else {
+                                        //We've hit the end possible length here
+                                        break;
+                                    }
+                                }
+                            }
+
+                            /**
+                             * Allows to expand for all the possible translations
+                             */
+                            template<bool single_word>
+                            inline void expand_trans(const size_t start_pos, const size_t end_pos) {
+                                //Obtain the source entry for the currently considered source phrase
+                                tm_const_source_entry_ptr entry = m_data.m_sent_data[start_pos][end_pos].m_source_entry;
+
+                                //Check if we are in the situation of a single word
+                                if (single_word) {
+                                    //ToDo: Add translation history !!!!
+                                    THROW_NOT_IMPLEMENTED();
+
+                                    //If this is a single word, we try to translate it any ways even if it is an UNK word
+                                    m_data.m_add_state(new stack_state(m_data, this, start_pos, end_pos));
+                                } else {
+                                    //If this is a phrase then we only try to translate it if there are translations
+                                    if (entry->has_translation()) {
+                                        //Iterate through possible translations
+
+                                        //ToDo: Implement
+                                        THROW_NOT_IMPLEMENTED();
+                                    } else {
+                                        //Do nothing we have an unknown phrase, just log it!
+                                    }
+                                }
+                            }
 
                             /**
                              * Allows to compute the partial score of the current hypothesis
                              */
                             inline void compute_partial_score() {
+                                //ToDo: Implement
                                 THROW_NOT_IMPLEMENTED();
                             }
 
@@ -214,10 +301,14 @@ namespace uva {
                              * Allows to compute the future score of the current hypothesis
                              */
                             inline void compute_future_cost() {
+                                //ToDo: Implement
                                 THROW_NOT_IMPLEMENTED();
                             }
 
-                        protected:
+                        private:
+                            //Stores the reference to the parameters
+                            const stack_data & m_data;
+
                             //This variable stores the pointer to the parent state or NULL if it is the root state
                             stack_state_ptr m_parent;
 
@@ -234,7 +325,10 @@ namespace uva {
                             bitset<NUM_WORDS_PER_SENTENCE> m_covered;
 
                             //Stores the last translated word index
-                            int32_t m_last_covered;
+                            int32_t m_last_begin_pos;
+
+                            //Stores the last translated word index
+                            int32_t m_last_end_pos;
 
                             //Stores the N-1 previously translated words
                             stack_state_history m_history;

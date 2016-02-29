@@ -38,8 +38,9 @@
 
 #include "server/decoder/de_configs.hpp"
 #include "server/decoder/de_parameters.hpp"
-#include "server/decoder/sentence/sentence_data_map.hpp"
+
 #include "server/decoder/stack/stack_level.hpp"
+#include "server/decoder/stack/stack_data.hpp"
 
 using namespace std;
 using namespace std::placeholders;
@@ -51,9 +52,6 @@ using namespace uva::utils::exceptions;
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::lm::proxy;
 using namespace uva::smt::bpbd::server::rm::proxy;
-
-using namespace uva::smt::bpbd::server::decoder;
-using namespace uva::smt::bpbd::server::decoder::sentence;
 
 namespace uva {
     namespace smt {
@@ -88,27 +86,22 @@ namespace uva {
                                     const sentence_data_map & sent_data,
                                     const rm_query_proxy & rm_query,
                                     lm_fast_query_proxy & lm_query)
-                            : m_params(params), m_is_stop(is_stop), m_sent_data(sent_data),
-                            m_rm_query(rm_query), m_lm_query(lm_query),
-                            m_num_levels(m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS),
-                            m_curr_level(MIN_STACK_LEVEL) {
-                                LOG_DEBUG1 << "Created a multi stack with parameters: " << m_params << END_LOG;
+                            : m_data(params, is_stop, sent_data, rm_query, lm_query, bind(&multi_stack::add_stack_state, this, _1)),
+                            m_num_levels(m_data.m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS), m_curr_level(MIN_STACK_LEVEL) {
+                                LOG_DEBUG1 << "Created a multi stack with parameters: " << m_data.m_params << END_LOG;
 
                                 //Instantiate an array of stack level pointers
                                 m_levels = new stack_level_ptr[m_num_levels]();
 
                                 //Initialize the stack levels
                                 for (uint32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
-                                    m_levels[level] = new stack_level(m_params, m_is_stop);
+                                    m_levels[level] = new stack_level(m_data.m_params, m_data.m_is_stop);
                                 }
 
                                 //Add the root state to the stack, the root state must have 
                                 //information about the sentence data, rm and lm query and 
                                 //have a method for adding a state expansion to the stack.
-                                m_levels[MIN_STACK_LEVEL]->add_state(
-                                        new stack_state(m_params, sent_data, rm_query, lm_query,
-                                        bind(&multi_stack::add_stack_state, this, _1))
-                                        );
+                                m_levels[MIN_STACK_LEVEL]->add_state(new stack_state(m_data));
                             }
 
                             /**
@@ -135,7 +128,7 @@ namespace uva {
                             void expand() {
                                 //Iterate the stack levels and expand them one by one 
                                 //until the last one or until we are requested to stop
-                                while (!m_is_stop && (m_curr_level < m_num_levels)) {
+                                while (!m_data.m_is_stop && (m_curr_level < m_num_levels)) {
                                     //Here we expand the stack level and then
                                     //increment the current level index variable
                                     m_levels[m_curr_level++]->expand();
@@ -148,17 +141,15 @@ namespace uva {
                              * @param target_sent [out] the variable to store the translation
                              */
                             void get_best_trans(string & target_sent) const {
-                                if (!m_is_stop) {
-                                    //Sanity check that the translation has been finished
-                                    ASSERT_SANITY_THROW((m_curr_level != m_num_levels),
-                                            string("The translation was not finished, ") +
-                                            string("the next-to-consider stack level is ") +
-                                            to_string(m_curr_level) + string(" the last-to-") +
-                                            string("consider is ") + to_string(m_num_levels - 1));
+                                //Sanity check that the translation has been finished
+                                ASSERT_SANITY_THROW((m_curr_level != m_num_levels),
+                                        string("The translation was not finished, ") +
+                                        string("the next-to-consider stack level is ") +
+                                        to_string(m_curr_level) + string(" the last-to-") +
+                                        string("consider is ") + to_string(m_num_levels - 1));
 
-                                    //Request the last level for the best translation
-                                    m_levels[m_num_levels - 1]->get_best_trans(target_sent);
-                                }
+                                //Request the last level for the best translation
+                                m_levels[m_num_levels - 1]->get_best_trans(target_sent);
                             }
 
                         protected:
@@ -185,23 +176,14 @@ namespace uva {
                             }
 
                         private:
-                            //Stores the reference to the decoder parameters
-                            const de_parameters & m_params;
-                            //Stores the stopping flag
-                            acr_bool_flag m_is_stop;
-
-                            //The reference to the sentence data map
-                            const sentence_data_map & m_sent_data;
-                            //The reference to the reordering mode query data
-                            const rm_query_proxy & m_rm_query;
-                            //Sores the language mode query proxy
-                            lm_fast_query_proxy & m_lm_query;
+                            //Stores the shared data for the stack and its elements
+                            const stack_data m_data;
 
                             //Stores the number of multi-stack levels
                             const uint32_t m_num_levels;
                             //Stores the current stack level index
                             uint32_t m_curr_level;
-                            
+
                             //This is a pointer to the array of stacks, one stack per number of covered words.
                             stack_level_ptr * m_levels;
                         };
