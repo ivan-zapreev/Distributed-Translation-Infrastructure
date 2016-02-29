@@ -380,7 +380,7 @@ namespace uva {
 
                                 //If we are finished then retrieve the best 
                                 //translation. If we have stopped then nothing.
-                                m_stack.get_best_translation(m_target_sent);
+                                m_stack.get_best_trans(m_target_sent);
                             }
 
                         private:

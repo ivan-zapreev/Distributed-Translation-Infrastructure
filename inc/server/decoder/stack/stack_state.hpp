@@ -28,17 +28,27 @@
 
 #include <vector>
 #include <bitset>
+#include <functional>
 
 #include "common/utils/containers/circular_queue.hpp"
 
+#include "server/lm/lm_configurator.hpp"
+#include "server/rm/proxy/rm_query_proxy.hpp"
+
 #include "server/decoder/de_configs.hpp"
 #include "server/decoder/de_parameters.hpp"
+
+#include "server/decoder/sentence/sentence_data_map.hpp"
 
 using namespace std;
 
 using namespace uva::utils::containers;
 
+using namespace uva::smt::bpbd::server::lm::proxy;
+using namespace uva::smt::bpbd::server::rm::proxy;
+
 using namespace uva::smt::bpbd::server::decoder;
+using namespace uva::smt::bpbd::server::decoder::sentence;
 
 namespace uva {
     namespace smt {
@@ -56,6 +66,9 @@ namespace uva {
 
                         //Define the multi state pointer
                         typedef stack_state * stack_state_ptr;
+                        
+                        //The typedef for a function that adds a new state to the multi-stack
+                        typedef function<void(stack_state_ptr)> add_new_state_function;
 
                         /**
                          * This is the translation stack state class that is responsible for the sentence translation
@@ -72,17 +85,20 @@ namespace uva {
                              * The basic constructor for the root stack state
                              * @param max_target_phrase_len the maximum target phrase length
                              */
-                            stack_state_templ(const de_parameters & params)
+                            stack_state_templ(const de_parameters & params,
+                                    const sentence_data_map & sent_data,
+                                    const rm_query_proxy & rm_query,
+                                    lm_fast_query_proxy & lm_query,
+                                    add_new_state_function add_state)
                             : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
                             m_covered(), m_last_covered(ZERRO_WORD_IDX),
                             m_history(params.m_max_t_phrase_len - 1),
-                            m_partial_score(UNKNOWN_LOG_PROB_WEIGHT),
-                            m_future_cost(UNKNOWN_LOG_PROB_WEIGHT) {
+                            m_partial_score(0.0), m_future_cost(0.0) {
                                 LOG_DEBUG2 << "multi_state create: " << params << END_LOG;
 
                                 //Mark the zero word as covered
                                 m_covered.set(ZERRO_WORD_IDX);
-                                
+
                                 //Add the sentence start to the target
                                 m_history.push_back(BEGIN_SENTENCE_TAG_STR);
                             }
@@ -95,13 +111,12 @@ namespace uva {
                             : m_parent(NULL), m_next(NULL), m_recomb_from(), m_recomb_to(NULL),
                             m_covered(), m_last_covered(UNDEFINED_WORD_IDX),
                             m_history(params.m_max_t_phrase_len - 1),
-                            m_partial_score(UNKNOWN_LOG_PROB_WEIGHT),
-                            m_future_cost(UNKNOWN_LOG_PROB_WEIGHT) {
+                            m_partial_score(0.0), m_future_cost(0.0) {
                                 LOG_DEBUG2 << "multi_state create, with parent: " << params << END_LOG;
-                                
+
                                 //Compute the partial score;
                                 compute_partial_score();
-                                
+
                                 //Compute the future costs;
                                 compute_future_cost();
                             }
@@ -110,6 +125,15 @@ namespace uva {
                              * The basic destructor
                              */
                             ~stack_state_templ() {
+                            }
+
+                            /**
+                             * Allows to get the stack level, the latter is equal
+                             * to the number of  so far translated words.
+                             * @return the stack level
+                             */
+                            uint32_t get_stack_level() {
+                                THROW_NOT_IMPLEMENTED();
                             }
 
                             /**
@@ -134,8 +158,7 @@ namespace uva {
                              * @return true if this state is smaller than the other one
                              */
                             inline bool operator<(const stack_state & other) const {
-                                //ToDo: Implement the state compare
-                                return true;
+                                THROW_NOT_IMPLEMENTED();
                             }
 
                             /**
@@ -144,8 +167,7 @@ namespace uva {
                              * @return true if this state is equal to the other one
                              */
                             inline bool operator==(const stack_state & other) const {
-                                //ToDo: Implement the state compare
-                                return false;
+                                THROW_NOT_IMPLEMENTED();
                             }
 
                             inline float get_partial_score() {
@@ -162,14 +184,14 @@ namespace uva {
                              * Allows to compute the partial score of the current hypothesis
                              */
                             inline void compute_partial_score() {
-                                //ToDo: Implement
+                                THROW_NOT_IMPLEMENTED();
                             }
 
                             /**
                              * Allows to compute the future score of the current hypothesis
                              */
                             inline void compute_future_cost() {
-                                //ToDo: Implement
+                                THROW_NOT_IMPLEMENTED();
                             }
 
                         protected:

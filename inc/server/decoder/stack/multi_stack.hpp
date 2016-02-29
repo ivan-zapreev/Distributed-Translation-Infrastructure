@@ -27,6 +27,7 @@
 #define MULTI_STACK_HPP
 
 #include <string>
+#include <functional>
 
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
@@ -41,6 +42,7 @@
 #include "server/decoder/stack/stack_level.hpp"
 
 using namespace std;
+using namespace std::placeholders;
 
 using namespace uva::utils::threads;
 using namespace uva::utils::logging;
@@ -64,6 +66,9 @@ namespace uva {
                         //stack, the first one is for <s> and the second one is for </s>
                         static constexpr uint32_t NUM_EXTRA_STACK_LEVELS = 2;
 
+                        //Stores the minimum stack level index
+                        static constexpr uint32_t MIN_STACK_LEVEL = 0;
+
                         /**
                          * This is the translation stack class that is responsible for the sentence translation
                          */
@@ -85,13 +90,25 @@ namespace uva {
                                     lm_fast_query_proxy & lm_query)
                             : m_params(params), m_is_stop(is_stop), m_sent_data(sent_data),
                             m_rm_query(rm_query), m_lm_query(lm_query),
-                            m_num_levels(m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS) {
+                            m_num_levels(m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS),
+                            m_max_level(m_num_levels - 1), m_curr_level(MIN_STACK_LEVEL) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << m_params << END_LOG;
 
-                                //Instantiate the needed number of stack levels
-                                m_levels = new stack_level[m_num_levels]();
+                                //Instantiate an array of stack level pointers
+                                m_levels = new stack_level_ptr[m_num_levels]();
 
-                                //ToDo: Initialize the stack levels
+                                //Initialize the stack levels
+                                for (uint32_t level = MIN_STACK_LEVEL; level < m_max_level; ++level) {
+                                    m_levels[level] = new stack_level(m_params, m_is_stop);
+                                }
+
+                                //Add the root state to the stack, the root state must have 
+                                //information about the sentence data, rm and lm query and 
+                                //have a method for adding a state expansion to the stack.
+                                m_levels[MIN_STACK_LEVEL]->add_state(
+                                        new stack_state(m_params, sent_data, rm_query, lm_query,
+                                        bind(&multi_stack::add_stack_state, this, _1))
+                                );
                             }
 
                             /**
@@ -100,6 +117,13 @@ namespace uva {
                             ~multi_stack() {
                                 //Dispose the stacks
                                 if (m_levels != NULL) {
+
+                                    //Iterate through the levels and delete them
+                                    for (uint32_t level = MIN_STACK_LEVEL; level < m_max_level; ++level) {
+                                        delete m_levels[level];
+                                    }
+
+                                    //Delete the levels array itself
                                     delete[] m_levels;
                                     m_levels = NULL;
                                 }
@@ -109,10 +133,13 @@ namespace uva {
                              * Allows to extend the hypothesis, when extending the stack we immediately re-combine
                              */
                             void expand() {
-                                if (!m_is_stop) {
-                                    //ToDo: Implement
+                                //Iterate the stack levels and expand them one by one 
+                                //until the last one or until we are requested to stop
+                                while (!m_is_stop && (m_curr_level <= m_max_level)) {
+                                    //Here we expand the stack level and then
+                                    //increment the current level index variable
+                                    m_levels[m_curr_level++]->expand();
                                 }
-                                THROW_NOT_IMPLEMENTED();
                             }
 
                             /**
@@ -120,22 +147,38 @@ namespace uva {
                              * stack after the decoding has finished.
                              * @param target_sent [out] the variable to store the translation
                              */
-                            void get_best_translation(string & target_sent) const {
+                            void get_best_trans(string & target_sent) const {
                                 if (!m_is_stop) {
-                                //ToDo: Implement
+                                    //Sanity check that the translation has been finished
+                                    ASSERT_SANITY_THROW((m_curr_level <= m_max_level),
+                                            string("The translation was not finished, the next stack level is ") +
+                                            to_string(m_curr_level) + string(" the last to consider is ") + to_string(m_max_level));
+                                    //Request the last level for the best translation
+                                    m_levels[m_max_level]->get_best_trans(target_sent);
                                 }
-                                THROW_NOT_IMPLEMENTED();
                             }
 
                         protected:
 
                             /**
-                             * Allows to check if the translation has been finished
-                             * @return true if the translation has been finished, otherwise false
+                             * Allows to add a new stack state into the proper stack level
+                             * @param new_state the new stack state, not NULL
                              */
-                            bool has_finished() const {
-                                //ToDo: Implement
-                                THROW_NOT_IMPLEMENTED();
+                            void add_stack_state(stack_state_ptr new_state) {
+                                //Perform a NULL pointer sanity check
+                                ASSERT_SANITY_THROW((new_state == NULL), "A NULL pointer stack state!");
+
+                                //Get the new state stack level
+                                const uint32_t level = new_state->get_stack_level();
+
+                                //Perform a sanity check that the state is of a proper level
+                                ASSERT_SANITY_THROW((level > m_max_level),
+                                        string("The new stack state stack level is too big: ") +
+                                        to_string(level) + string(" the maximum allowed is: ") +
+                                        to_string(m_max_level));
+
+                                //Add the state to the corresponding stack
+                                m_levels[level]->add_state(new_state);
                             }
 
                         private:
@@ -153,8 +196,12 @@ namespace uva {
 
                             //Stores the number of multi-stack levels
                             const uint32_t m_num_levels;
+                            //Stores the maximum stack level index
+                            const uint32_t m_max_level;
+                            //Stores the current stack level index
+                            uint32_t m_curr_level;
                             //This is a pointer to the array of stacks, one stack per number of covered words.
-                            stack_level * m_levels;
+                            stack_level_ptr * m_levels;
                         };
                     }
                 }
