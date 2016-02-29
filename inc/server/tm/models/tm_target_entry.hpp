@@ -72,9 +72,8 @@ namespace uva {
                              * The basic constructor
                              */
                             tm_target_entry_temp()
-                            : m_st_uid(UNDEFINED_PHRASE_ID), m_target_phrase(""),
-                            m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total_weight(UNKNOWN_LOG_PROB_WEIGHT),
-                            m_num_words(0), m_word_ids(NULL) {
+                            : m_target_phrase(""),m_num_words(0), m_word_ids(NULL), m_st_uid(UNDEFINED_PHRASE_ID),
+                            m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total_weight(UNKNOWN_LOG_PROB_WEIGHT) {
                             }
 
                             /**
@@ -106,16 +105,16 @@ namespace uva {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;
 
+                                //Store the number of words and the corresponding word ids
+                                m_num_words = num_words;
+                                m_word_ids = new word_uid[m_num_words];
+                                memcpy(m_word_ids, word_ids, m_num_words * sizeof (word_uid));
+                                
                                 //Compute and store the source/target phrase uid
                                 m_st_uid = combine_phrase_uids(source_uid, target_uid);
 
                                 //Set the features 
                                 set_features(num_features, features);
-
-                                //Store the number of words and the corresponding word ids
-                                m_num_words = num_words;
-                                m_word_ids = new word_uid[m_num_words];
-                                memcpy(m_word_ids, word_ids, m_num_words * sizeof (word_uid));
 
                                 LOG_DEBUG1 << "Adding the source/target (" << source_uid << "/"
                                         << target_uid << ") entry with id" << m_st_uid << END_LOG;
@@ -195,18 +194,21 @@ namespace uva {
                             }
 
                         private:
-                            //Stores the source/target phrase id
-                            phrase_uid m_st_uid;
                             //Stores the target phrase of the translation which a key value
                             string m_target_phrase;
-                            //Stores the features[2] = p(e|f);
-                            prob_weight m_t_cond_s;
-                            //Stores the total weight of the entity
-                            prob_weight m_total_weight;
                             //Stores the number of words in the translation, maximum should be TM_MAX_TARGET_PHRASE_LEN
                             phrase_length m_num_words;
                             //Stores the target phrase Language model word ids 
                             word_uid * m_word_ids;
+
+                            //Stores the source/target phrase id
+                            phrase_uid m_st_uid;
+                            
+                            //Stores the features[2] = p(e|f);
+                            prob_weight m_t_cond_s;
+                            
+                            //Stores the total features weight of the entity
+                            prob_weight m_total_weight;
                         };
 
                         template<uint8_t num_features>

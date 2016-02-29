@@ -60,6 +60,10 @@ namespace uva {
                 namespace decoder {
                     namespace stack {
 
+                        //Stores the number of extrs stack levels that we will need in a multi-
+                        //stack, the first one is for <s> and the second one is for </s>
+                        static constexpr uint32_t NUM_EXTRA_STACK_LEVELS = 2;
+
                         /**
                          * This is the translation stack class that is responsible for the sentence translation
                          */
@@ -68,32 +72,32 @@ namespace uva {
 
                             /**
                              * The basic constructor
-                             * @param num_words the number of words in the sentence
                              * @param params the decoder parameters, stores the reference to it
                              * @param is_stop the stop flag
                              * @param sent_data the retrieved sentence data
                              * @param rm_query the reordering model query
+                             * @param lm_query the language model query object
                              */
                             multi_stack(const de_parameters & params,
                                     acr_bool_flag is_stop,
                                     const sentence_data_map & sent_data,
-                                    const rm_query_proxy & rm_query)
-                            : m_root_state(params), m_levels(NULL), m_params(params),
-                            m_is_stop(is_stop), m_sent_data(sent_data), m_rm_query(rm_query),
-                            m_lm_query(lm_configurator::allocate_fast_query_proxy()),
-                            m_las_stack_idx(m_sent_data.get_dim() - 1), m_last_exp_stack_idx(-1) {
+                                    const rm_query_proxy & rm_query,
+                                    lm_fast_query_proxy & lm_query)
+                            : m_params(params), m_is_stop(is_stop), m_sent_data(sent_data),
+                            m_rm_query(rm_query), m_lm_query(lm_query),
+                            m_num_levels(m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << m_params << END_LOG;
-                                //Instantiate the proper number of stacks, the same number as
-                                //there is words plus one. The last stack is for </s> words.
-                                m_levels = new stack_level[m_sent_data.get_dim() + 1]();
+
+                                //Instantiate the needed number of stack levels
+                                m_levels = new stack_level[m_num_levels]();
+
+                                //ToDo: Initialize the stack levels
                             }
 
                             /**
                              * The basic destructor
                              */
                             ~multi_stack() {
-                                //Dispose the language query object
-                                lm_configurator::dispose_fast_query_proxy(m_lm_query);
                                 //Dispose the stacks
                                 if (m_levels != NULL) {
                                     delete[] m_levels;
@@ -107,17 +111,8 @@ namespace uva {
                             void expand() {
                                 if (!m_is_stop) {
                                     //ToDo: Implement
-                                    ++m_last_exp_stack_idx;
                                 }
-                            }
-
-                            /**
-                             * Allows to prune the hypothesis
-                             */
-                            void prune() {
-                                if (!m_is_stop) {
-                                    //ToDo: Implement
-                                }
+                                THROW_NOT_IMPLEMENTED();
                             }
 
                             /**
@@ -125,18 +120,25 @@ namespace uva {
                              * stack after the decoding has finished.
                              * @param target_sent [out] the variable to store the translation
                              */
-                            void get_best_translation(string & target_sent) {
+                            void get_best_translation(string & target_sent) const {
+                                if (!m_is_stop) {
                                 //ToDo: Implement
+                                }
+                                THROW_NOT_IMPLEMENTED();
                             }
 
                         protected:
 
-                        private:
-                            //Stores the root multi-stack state element
-                            stack_state m_root_state;
-                            //This is a pointer to the array of stacks, one stack per number of covered words.
-                            stack_level * m_levels;
+                            /**
+                             * Allows to check if the translation has been finished
+                             * @return true if the translation has been finished, otherwise false
+                             */
+                            bool has_finished() const {
+                                //ToDo: Implement
+                                THROW_NOT_IMPLEMENTED();
+                            }
 
+                        private:
                             //Stores the reference to the decoder parameters
                             const de_parameters & m_params;
                             //Stores the stopping flag
@@ -146,15 +148,13 @@ namespace uva {
                             const sentence_data_map & m_sent_data;
                             //The reference to the reordering mode query data
                             const rm_query_proxy & m_rm_query;
-
                             //Sores the language mode query proxy
                             lm_fast_query_proxy & m_lm_query;
 
-                            //Stores the last stack index
-                            int32_t m_las_stack_idx;
-
-                            //Stores the last expanded stack id
-                            int32_t m_last_exp_stack_idx;
+                            //Stores the number of multi-stack levels
+                            const uint32_t m_num_levels;
+                            //This is a pointer to the array of stacks, one stack per number of covered words.
+                            stack_level * m_levels;
                         };
                     }
                 }
