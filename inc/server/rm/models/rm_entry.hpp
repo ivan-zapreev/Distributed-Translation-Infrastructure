@@ -48,6 +48,18 @@ namespace uva {
                     namespace models {
 
                         /**
+                         * Defined the reordering orientations in the lexicolized model
+                         */
+                        enum reordering_orientation {
+                            UNKNOWN_ORIENT = 0,
+                            MONOTONE_ORIENT = UNKNOWN_ORIENT + 1,
+                            SWAP_ORIENT = MONOTONE_ORIENT + 1,
+                            DISCONT_LEFT_ORIENT = SWAP_ORIENT + 1,
+                            DISCONT_RIGHT_ORIENT = DISCONT_LEFT_ORIENT + 1,
+                            size = DISCONT_RIGHT_ORIENT + 1
+                        };
+
+                        /**
                          * This is the reordering entry class it stores the
                          * reordering penalties for one source to target phrase.
                          * @param num_features is the number of reordering weights
@@ -62,7 +74,7 @@ namespace uva {
                              * The basic constructor
                              */
                             rm_entry_temp() : m_uid(UNDEFINED_PHRASE_ID) {
-                                memset(m_weights, 0, NUM_FEATURES * sizeof(float));
+                                memset(m_weights, 0, NUM_FEATURES * sizeof (prob_weight));
                             }
 
                             /**
@@ -72,15 +84,47 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to get the weight for the given distortion value
+                             * @param is_from the flag allowing to distinguish between the from and to case 
+                             * if true then we get the value from the from source phrase case
+                             * if false then we get the value for the to source phrase case
+                             * @param orient the reordering orientation
+                             * @return the weight for the given distortion value
+                             */
+                            template<bool is_from>
+                            const prob_weight & get_weight(const reordering_orientation orient) const {
+                                //Compute the static position correction for the from/to cases
+                                static constexpr uint32_t pos_corr = (is_from ? 0 : num_features);
+                                static constexpr uint32_t mon_pos = pos_corr;
+                                static constexpr uint32_t swap_pos = ((num_features <= 1) ? mon_pos : mon_pos + 1);
+                                static constexpr uint32_t disc_left_pos = ((num_features <= 2) ? swap_pos : swap_pos + 1);
+                                static constexpr uint32_t disc_right_pos = ((num_features <= 3) ? disc_left_pos : disc_left_pos + 1);
+
+                                //Return the proper weight based on the orientation
+                                switch (orient) {
+                                    case reordering_orientation::MONOTONE_ORIENT:
+                                        return m_weights[mon_pos];
+                                    case reordering_orientation::SWAP_ORIENT:
+                                        return m_weights[swap_pos];
+                                    case reordering_orientation::DISCONT_RIGHT_ORIENT:
+                                        return m_weights[disc_left_pos];
+                                    case reordering_orientation::DISCONT_LEFT_ORIENT:
+                                        return m_weights[disc_right_pos];
+                                    default:
+                                        THROW_EXCEPTION(string("Unsupported orientation value: ") + to_string(orient));
+                                }
+                            }
+
+                            /**
                              * This operator allows to work with the given reordering entry weights in an array fashion
                              * @param idx the index of the feature
                              * @return the feature value
                              */
-                            inline float & operator[](size_t idx) {
+                            inline prob_weight & operator[](size_t idx) {
                                 //Chech that the index is within the bounds
                                 ASSERT_SANITY_THROW(idx >= num_features, string("The index: ") + to_string(idx) +
                                         string(" is outside the bounds [0, ") + to_string(num_features - 1) + string("]"));
-                                
+
                                 //Return the reference to the corresponding weight
                                 return m_weights[idx];
                             }
@@ -106,12 +150,12 @@ namespace uva {
                             //Stores the phrase id, i.e. the unique identifier for the source/target phrase pair
                             phrase_uid m_uid;
                             //This is an array of reordering weights
-                            float m_weights[num_features];
+                            prob_weight m_weights[num_features];
                         };
-                        
+
                         template<uint8_t num_features>
                         constexpr uint8_t rm_entry_temp<num_features>::NUM_FEATURES;
-                        
+
                         //Instantiate template
                         typedef rm_entry_temp<MAX_NUM_RM_FEATURES> rm_entry;
                     }

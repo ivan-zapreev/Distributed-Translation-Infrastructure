@@ -34,6 +34,7 @@
 #include "common/utils/containers/circular_queue.hpp"
 
 #include "server/tm/models/tm_target_entry.hpp"
+#include "server/rm/models/rm_entry.hpp"
 
 #include "server/decoder/stack/stack_data.hpp"
 
@@ -45,6 +46,7 @@ using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 
 using namespace uva::smt::bpbd::server::tm::models;
+using namespace uva::smt::bpbd::server::rm::models;
 
 namespace uva {
     namespace smt {
@@ -63,6 +65,9 @@ namespace uva {
                             //Make the typedef for the stack state history
                             typedef circular_queue<word_uid, MAX_M_GRAM_QUERY_LENGTH > state_history;
 
+                            //Make the typedef for the covered bitset
+                            typedef bitset<NUM_WORDS_PER_SENTENCE> covered_info;
+
                             //Stores the undefined word index
                             static constexpr int32_t UNDEFINED_WORD_IDX = -1;
                             static constexpr int32_t ZERRO_WORD_IDX = UNDEFINED_WORD_IDX + 1;
@@ -73,12 +78,11 @@ namespace uva {
                              */
                             state_data_templ(const stack_data & stack_data)
                             : m_stack_data(stack_data),
-                            m_last_begin_pos(UNDEFINED_WORD_IDX), m_last_end_pos(UNDEFINED_WORD_IDX),
-                            m_stack_level(0),
-                            m_target(NULL), m_history(),
-                            m_covered(), m_partial_score(0.0), m_future_cost(0.0) {
-                                //Add the sentence begin tag uid to the target, since this is for the root state
-                                m_history.push_back(m_stack_data.m_lm_query.get_begin_tag_uid());
+                            m_s_begin_word_idx(UNDEFINED_WORD_IDX), m_s_end_word_idx(UNDEFINED_WORD_IDX),
+                            m_stack_level(0), m_target(NULL), rm_entry_data(stack_data.m_rm_query.get_begin_tag_reorderin()),
+                            //Add the sentence begin tag uid to the target, since this is for the root state
+                            m_history(1, &m_stack_data.m_lm_query.get_begin_tag_uid()),
+                            m_covered(), m_partial_score(0.0), m_total_score(0.0) {
                             }
 
                             /**
@@ -90,48 +94,37 @@ namespace uva {
                              * @param end_pos this state translated source phrase end position
                              * @param target the pointer to the target translation of the source phrase
                              */
-                            state_data_templ(const state_data_templ & state_data,
+                            state_data_templ(const state_data_templ & prev_state_data,
                                     const int32_t & begin_pos, const int32_t & end_pos,
                                     tm_const_target_entry* target)
-                            : m_stack_data(state_data.m_stack_data),
-                            m_last_begin_pos(begin_pos), m_last_end_pos(end_pos),
-                            m_stack_level(state_data.m_stack_level + (m_last_end_pos - m_last_begin_pos + 1)),
-                            m_target(target), m_history(state_data.m_history, m_target->get_num_words(), m_target->get_word_ids()),
-                            m_covered(state_data.m_covered), m_partial_score(state_data.m_partial_score), m_future_cost(state_data.m_future_cost) {
-                                
-                                //ToDo: update the covered vector with the bits that are now enabled
-                                THROW_NOT_IMPLEMENTED();
+                            : m_stack_data(prev_state_data.m_stack_data),
+                            m_s_begin_word_idx(begin_pos), m_s_end_word_idx(end_pos),
+                            m_stack_level(prev_state_data.m_stack_level + (m_s_end_word_idx - m_s_begin_word_idx + 1)),
+                            m_target(target), rm_entry_data(m_stack_data.m_rm_query.get_reordering(m_target->get_st_uid())),
+                            m_history(prev_state_data.m_history, m_target->get_num_words(), m_target->get_word_ids()),
+                            m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score), m_total_score(0.0) {
+                                //Update the covered vector with the bits that are now enabled
+                                //After the construction the covered bits vector is to stay fixed,
+                                //therefore it is declared as constant and here we do a const_cast
+                                covered_info & covered_ref = const_cast<covered_info &> (m_covered);
+                                for (phrase_length idx = m_s_begin_word_idx; idx <= end_pos; ++idx) {
+                                    covered_ref.set(idx);
+                                }
 
-                                //Compute the partial score;
-                                compute_partial_score();
+                                //Update the partial score;
+                                update_partial_score(prev_state_data);
 
-                                //Compute the future costs;
-                                compute_future_cost();
-                            }
-
-                            /**
-                             * Allows to compute the partial score of the current hypothesis
-                             */
-                            inline void compute_partial_score() {
-                                //ToDo: Implement
-                                THROW_NOT_IMPLEMENTED();
-                            }
-
-                            /**
-                             * Allows to compute the future score of the current hypothesis
-                             */
-                            inline void compute_future_cost() {
-                                //ToDo: Implement
-                                THROW_NOT_IMPLEMENTED();
+                                //Compute the total score;
+                                compute_total_score();
                             }
 
                             //Stores the reference to the parameters
                             const stack_data & m_stack_data;
 
-                            //Stores the last translated word index
-                            const int32_t m_last_begin_pos;
-                            //Stores the last translated word index
-                            const int32_t m_last_end_pos;
+                            //Stores the begin word index of the translated phrase in the source sentence
+                            const int32_t m_s_begin_word_idx;
+                            //Stores the end word index of the translated phrase in the source sentence
+                            const int32_t m_s_end_word_idx;
 
                             //Stores the stack level, i.e. the number of so far translated source words
                             const phrase_length m_stack_level;
@@ -139,21 +132,102 @@ namespace uva {
                             //Stores the pointer to the target translation of the last phrase
                             tm_const_target_entry * const m_target;
 
+                            //Stores the reference to the reordering model entry data corresponding to this state
+                            const rm_entry & rm_entry_data;
+
                             //Stores the translation history i.e. the number of translated
                             //word ids up until now. This structure should be large enough
                             //to store the maximum m-gram length - 1 from the LM plus the
                             //maximum target phrase length from TM
-                            state_history m_history;
+                            const state_history m_history;
 
                             //Stores the bitset of covered words indexes
-                            bitset<NUM_WORDS_PER_SENTENCE> m_covered;
+                            const covered_info m_covered;
 
                             //Stores the logarithmic partial score of the current hypothesis
-                            prob_weight m_partial_score;
+                            const prob_weight m_partial_score;
 
-                            //Stores the logarithmic future cost of the current hypothesis
-                            prob_weight m_future_cost;
+                            //Stores the logarithmic totasl score of the current hypothesis
+                            //The total score is the sum of the current partial score and
+                            //the future cost estimate for the given hypothesis state
+                            const prob_weight m_total_score;
 
+                        private:
+
+                            /**
+                             * Allows to compute the reordering orientatino for the phrase based lexicolized reordering model
+                             * @param prev_state_data the previous state translation
+                             * @return the reordering orientation
+                             */
+                            inline reordering_orientation get_reordering_orientation(const state_data_templ & prev_state_data) {
+                                if (m_s_begin_word_idx < prev_state_data.m_s_begin_word_idx) {
+                                    //We went to the left from the previous translation
+                                    if ((prev_state_data.m_s_begin_word_idx - m_s_end_word_idx) == 1) {
+                                        //The current phrase is right next to the previous
+                                        return reordering_orientation::SWAP_ORIENT;
+                                    } else {
+                                        //We have a discontinuous jump from the previous
+                                        return reordering_orientation::DISCONT_LEFT_ORIENT;
+                                    }
+                                } else {
+                                    //We went to the right from the previous translation
+                                    if ((m_s_begin_word_idx - prev_state_data.m_s_end_word_idx) == 1) {
+                                        //The current phrase is right next to the previous
+                                        return reordering_orientation::MONOTONE_ORIENT;
+                                    } else {
+                                        //We have a discontinuous jump from the previous
+                                        return reordering_orientation::DISCONT_RIGHT_ORIENT;
+                                    }
+                                }
+                            }
+
+                            /**
+                             * Allows to update the currently stored partial score from the
+                             * parent state with the partial score of the current hypothesis
+                             * @param prev_state_data the previous strate data
+                             */
+                            inline void update_partial_score(const state_data_templ & prev_state_data) {
+                                //After the construction the partial score is to stay fixed,
+                                //thus it is declared as constant and here we do a const_cast
+                                prob_weight & partial_score = const_cast<prob_weight &> (m_partial_score);
+
+                                //Add the phrase translation probability
+                                partial_score += m_target->get_total_weight();
+
+                                //ToDo: Add the language model probability
+                                //partial_score +=;
+                                THROW_NOT_IMPLEMENTED();
+
+                                //Add the phrase penalty
+                                partial_score += m_stack_data.m_params.m_phrase_penalty;
+
+                                //Add the word penalty
+                                partial_score += m_stack_data.m_params.m_word_penalty * m_target->get_num_words();
+
+                                //Add the distance based reordering penalty
+                                partial_score += -abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
+
+                                //Add the lexicolized reordering costs
+                                const reordering_orientation orient = get_reordering_orientation(prev_state_data);
+                                partial_score += prev_state_data.rm_entry_data.template get_weight<true>(orient);
+                                partial_score += rm_entry_data.template get_weight<false>(orient);
+                            }
+
+                            /**
+                             * Allows to compute the total score of the current hypothesis
+                             * I.e. the partial score plus the future cost estimate
+                             */
+                            inline void compute_total_score() {
+                                //After the construction the total score is to stay fixed,
+                                //thus it is declared as constant and here we do a const_cast
+                                prob_weight & total_score = const_cast<prob_weight &> (m_total_score);
+
+                                //Set the total score to the current partial score and then add the future costs
+                                total_score = m_partial_score;
+
+                                //ToDo: Add the future costs
+                                THROW_NOT_IMPLEMENTED();
+                            }
                         };
 
                         template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_QUERY_LENGTH>

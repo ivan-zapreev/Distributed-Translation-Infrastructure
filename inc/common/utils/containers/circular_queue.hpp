@@ -53,6 +53,17 @@ namespace uva {
                 }
 
                 /**
+                 * The basic constructor
+                 * @param num_elems the number of elements to put into the queue
+                 * @param elems the elements to put into the queue
+                 */
+                circular_queue(const size_t num_elems, const elem_type * elems) : m_size(num_elems) {
+                    //ToDo: Implement, note that the number of elements can be larger than
+                    //the queue capacity, then skip the number of first elements to fit
+                    THROW_NOT_IMPLEMENTED();
+                }
+
+                /**
                  * The special case of a copy constructor, it allows to take the
                  * parameter queue together with the extra elements and copy them
                  * into the given queue. This is done in a smart way to optimize

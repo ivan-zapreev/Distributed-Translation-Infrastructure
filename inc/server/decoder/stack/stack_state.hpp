@@ -195,7 +195,7 @@ namespace uva {
                              */
                             inline bool is_dist_ok(const int32_t next_start_pos) {
                                 return (m_state_data.m_stack_data.m_params.m_distortion_limit < 0) ||
-                                        (abs(m_state_data.m_last_end_pos + 1 - next_start_pos) <= m_state_data.m_stack_data.m_params.m_distortion_limit);
+                                        (abs(m_state_data.m_s_end_word_idx + 1 - next_start_pos) <= m_state_data.m_stack_data.m_params.m_distortion_limit);
                             }
 
                             /**
@@ -203,7 +203,7 @@ namespace uva {
                              */
                             inline void expand_left() {
                                 //Iterate to the left of the last begin positions until the position is valid and the distortion is within the limits
-                                for (int32_t start_pos = (m_state_data.m_last_begin_pos - 1);
+                                for (int32_t start_pos = (m_state_data.m_s_begin_word_idx - 1);
                                         (start_pos >= 0) && is_dist_ok(start_pos); start_pos--) {
                                     //If the next position is not covered then expand the lengths
                                     if (!m_state_data.m_covered[start_pos]) {
@@ -218,7 +218,7 @@ namespace uva {
                              */
                             inline void expand_right() {
                                 //Iterate to the right of the last positions until the position is valid and the distortion is within the limits
-                                for (uint32_t start_pos = (m_state_data.m_last_end_pos + 1);
+                                for (uint32_t start_pos = (m_state_data.m_s_end_word_idx + 1);
                                         (start_pos < m_state_data.m_stack_data.m_sent_data.get_dim()) && is_dist_ok(start_pos); ++start_pos) {
                                     //If the next position is not covered then expand the lengths
                                     if (!m_state_data.m_covered[start_pos]) {

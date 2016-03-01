@@ -56,6 +56,24 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to retrieve the begin tag reordering entry from the reordering model
+                             * @return the start tag reordering entry
+                             */
+                            virtual const rm_entry & get_begin_tag_reorderin() const {
+                                //ToDo: Return the <s> tag reordering entry
+                                THROW_NOT_IMPLEMENTED();
+                            }
+
+                            /**
+                             * Allows to retrieve the end tag reordering entry from the reordering model
+                             * @return the start tag reordering entry
+                             */
+                            virtual const rm_entry & get_end_tag_reorderin() const {
+                                //ToDo: Return the </s> tag reordering entry
+                                THROW_NOT_IMPLEMENTED();
+                            }
+
+                            /**
                              * @see rm_query_proxy
                              */
                             virtual const rm_entry & get_reordering(const phrase_uid uid) const {
