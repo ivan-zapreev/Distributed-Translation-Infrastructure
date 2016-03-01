@@ -144,6 +144,15 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to detect whether the given entry is an entry for the unknown phrase pair
+                             * @param entry the entry pointer to be checked for being from the UNK/UNK entry
+                             * @return true if this entry is for the unknown phrase pair, otherwise false
+                             */
+                            inline bool is_unk_entry(const rm_entry * entry) const {
+                                return (entry == m_unk_entry) || (*entry == *m_unk_entry);
+                            }
+
+                            /**
                              * Allows to get the reordering entry for the given source/target
                              * pair the latter is identified with a phrase id.
                              * In case the entry is not present we return the data for the UNK/UNK pair.

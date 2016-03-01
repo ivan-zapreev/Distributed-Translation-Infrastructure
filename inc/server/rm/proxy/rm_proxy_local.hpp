@@ -122,12 +122,12 @@ namespace uva {
                             void get_tag_entry(const string & tag, const rm_entry * & tag_entry) {
                                 //Get the phrase tag id
                                 const phrase_uid tag_uid = get_phrase_uid(tag);
-                                
+
                                 //Try to get the phrase tag reordering from the model
                                 tag_entry = m_model.get_entry(tag_uid, tag_uid);
 
-                                //Check that the entry is indeed found!
-                                ASSERT_CONDITION_THROW(tag_entry->is_unk_entry(),
+                                //Check that the entry is indeed found and is not an UNK entry!
+                                ASSERT_CONDITION_THROW(m_model.is_unk_entry(tag_entry),
                                         string("Could not find the '") + tag +
                                         string("' tag entry in the reordering model"));
                             }
