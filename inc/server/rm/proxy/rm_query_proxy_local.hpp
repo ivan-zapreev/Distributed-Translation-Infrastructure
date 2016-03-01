@@ -51,8 +51,12 @@ namespace uva {
                             /**
                              * The basic constructor that accepts the reordering model reference to query to
                              * @param model the reordering model to query
+                             * @param begin_tag_entry the reference to the begin tag reordering
+                             * @param end_tag_entry the reference to the end tag reordering
                              */
-                            rm_query_proxy_local(const model_type & model) : m_query(model) {
+                            rm_query_proxy_local(const model_type & model,
+                                    const rm_entry & begin_tag_entry, const rm_entry & end_tag_entry)
+                            : m_query(model), m_begin_tag_entry(begin_tag_entry), m_end_tag_entry(end_tag_entry) {
                             }
 
                             /**
@@ -60,8 +64,8 @@ namespace uva {
                              * @return the start tag reordering entry
                              */
                             virtual const rm_entry & get_begin_tag_reorderin() const {
-                                //ToDo: Return the <s> tag reordering entry
-                                THROW_NOT_IMPLEMENTED();
+                                //Return the <s> tag reordering entry
+                                return m_begin_tag_entry;
                             }
 
                             /**
@@ -69,8 +73,8 @@ namespace uva {
                              * @return the start tag reordering entry
                              */
                             virtual const rm_entry & get_end_tag_reorderin() const {
-                                //ToDo: Return the </s> tag reordering entry
-                                THROW_NOT_IMPLEMENTED();
+                                //Return the </s> tag reordering entry
+                                return m_end_tag_entry;
                             }
 
                             /**
@@ -97,6 +101,12 @@ namespace uva {
                         private:
                             //Stores the actual query
                             rm_query<model_type> m_query;
+
+                            //Stores the reference to the begin tag reordering 
+                            const rm_entry & m_begin_tag_entry;
+
+                            //Stores the reference to the end tag reordering 
+                            const rm_entry & m_end_tag_entry;
                         };
                     }
                 }

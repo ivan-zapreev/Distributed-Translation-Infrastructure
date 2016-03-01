@@ -136,6 +136,14 @@ namespace uva {
                             inline void set_entry_uid(const phrase_uid & uid) {
                                 m_uid = uid;
                             }
+                            
+                            /**
+                             * Allows to detect whether this entry is an entry for the unknown phrase pair
+                             * @return true if this entry is for the unknown phrase pair, otherwise false
+                             */
+                            inline bool is_unk_entry() const {
+                                return m_uid == UNKNOWN_PHRASE_ID;
+                            }
 
                             /**
                              * The comparison operator, allows to compare entries

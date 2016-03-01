@@ -30,6 +30,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/monitore/statistics_monitore.hpp"
 
+#include "server/server_configs.hpp"
 #include "server/rm/rm_configs.hpp"
 #include "server/rm/proxy/rm_query_proxy.hpp"
 #include "server/rm/proxy/rm_query_proxy_local.hpp"
@@ -79,6 +80,10 @@ namespace uva {
                                 //The whole purpose of this method connect here is
                                 //just to load the reordering model into the memory.
                                 load_model_data<rm_builder_type, CStyleFileReader>("Reordering Model", params);
+
+                                //Get the pointers to the begin and end tag reordering entries
+                                get_tag_entry(lm::BEGIN_SENTENCE_TAG_STR, m_begin_tag_entry);
+                                get_tag_entry(lm::END_SENTENCE_TAG_STR, m_end_tag_entry);
                             }
 
                             /**
@@ -94,7 +99,7 @@ namespace uva {
                             virtual rm_query_proxy & allocate_query_proxy() {
                                 //ToDo: In the future we should just use a number of stack
                                 //allocated objects in order to reduce the new/delete overhead
-                                return *(new rm_query_proxy_local<rm_model_type>(m_model));
+                                return *(new rm_query_proxy_local<rm_model_type>(m_model, *m_begin_tag_entry, *m_end_tag_entry));
                             }
 
                             /**
@@ -110,6 +115,24 @@ namespace uva {
                         protected:
 
                             /**
+                             * Allows to get the reordering model entry for the given tag
+                             * @param tag the tag to get the reordering entry for
+                             * @param tag_entry [out] the reordering model entry pointer reference to be set
+                             */
+                            void get_tag_entry(const string & tag, const rm_entry * & tag_entry) {
+                                //Get the phrase tag id
+                                const phrase_uid tag_uid = get_phrase_uid(tag);
+                                
+                                //Try to get the phrase tag reordering from the model
+                                tag_entry = m_model.get_entry(tag_uid, tag_uid);
+
+                                //Check that the entry is indeed found!
+                                ASSERT_CONDITION_THROW(tag_entry->is_unk_entry(),
+                                        string("Could not find the '") + tag +
+                                        string("' tag entry in the reordering model"));
+                            }
+
+                            /**
                              * Allows to load the model into the instance of the selected container class
                              * @param the name of the model being loaded
                              * @params params the model parameters
@@ -117,7 +140,7 @@ namespace uva {
                             template<typename rm_builder_type, typename file_reader_type>
                             void load_model_data(char const *model_name, const rm_parameters & params) {
                                 const string & model_file_name = params.m_conn_string;
-                                
+
                                 //Declare time variables for CPU times in seconds
                                 double start_time, end_time;
                                 //Declare the statistics monitor and its data
@@ -174,6 +197,12 @@ namespace uva {
                         private:
                             //Stores the reordering model instance
                             rm_model_type m_model;
+
+                            //Stores the pointer to the begin tag reordering 
+                            const rm_entry * m_begin_tag_entry;
+
+                            //Stores the pointer to the end tag reordering 
+                            const rm_entry * m_end_tag_entry;
                         };
                     }
                 }
