@@ -57,11 +57,14 @@ namespace uva {
                              * The basic constructor that accepts the trie reference to query to
                              * Note that the begin and end tag uids are provided only for the sake of performance optimization.
                              * @param trie the trie to query
+                             * @param unk_word_prob the unknown word LM probability
                              * @param begin_tag_uid the begin sentence tag word uid
                              * @param end_tag_uid the begin sentence tag word uid
                              */
-                            lm_fast_query_proxy_local(const trie_type & trie, const word_uid & begin_tag_uid, const word_uid & end_tag_uid)
-                            : m_trie(trie), m_begin_tag_uid(begin_tag_uid), m_end_tag_uid(end_tag_uid),
+                            lm_fast_query_proxy_local(const trie_type & trie, const prob_weight& unk_word_prob,
+                                    const word_uid & begin_tag_uid, const word_uid & end_tag_uid)
+                            : m_trie(trie), m_unk_word_prob(unk_word_prob),
+                            m_begin_tag_uid(begin_tag_uid), m_end_tag_uid(end_tag_uid),
                             m_word_idx(m_trie.get_word_index()), m_query(), m_joint_prob(0.0) {
                             }
 
@@ -76,16 +79,16 @@ namespace uva {
                              * @see lm_query_proxy
                              */
                             virtual prob_weight get_unk_word_prob() const {
-                                return m_trie.get_unk_word_prob();
+                                return m_unk_word_prob;
                             }
-                            
+
                             /**
                              * @see lm_query_proxy
                              */
                             virtual const word_uid & get_begin_tag_uid() const {
                                 return m_begin_tag_uid;
                             }
-                            
+
                             /**
                              * @see lm_query_proxy
                              */
@@ -323,8 +326,11 @@ namespace uva {
 
                             //Stores the reference to the trie
                             const trie_type & m_trie;
+                            
+                            //Stores the cached unknown word probability from LM
+                            const prob_weight m_unk_word_prob;
 
-                            //Sore the begin and end sentence tag word uids as retrieved from the LM word index.
+                            //Sore the cached begin and end sentence tag word uids as retrieved from the LM word index.
                             const word_uid m_begin_tag_uid;
                             const word_uid m_end_tag_uid;
 

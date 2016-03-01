@@ -72,7 +72,7 @@ namespace uva {
                             const de_parameters & m_params;
                             
                             //The stopping flag
-                            const acr_bool_flag m_is_stop;
+                            acr_bool_flag m_is_stop;
                             
                             //The sentence data
                             const sentence_data_map & m_sent_data;

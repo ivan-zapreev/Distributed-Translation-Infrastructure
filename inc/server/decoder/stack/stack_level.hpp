@@ -6,7 +6,7 @@
  */
 
 #ifndef STACK_LEVEL_HPP
-#define	STACK_LEVEL_HPP
+#define STACK_LEVEL_HPP
 
 #include <string>
 
@@ -52,6 +52,7 @@ namespace uva {
                              */
                             stack_level(const de_parameters & params, acr_bool_flag is_stop)
                             : m_params(params), m_is_stop(is_stop), m_first_state(NULL) {
+                                LOG_DEBUG2 << "stack_level create, with parameters: " << m_params << END_LOG;
                             }
 
                             /**
@@ -62,7 +63,7 @@ namespace uva {
                             ~stack_level() {
                                 //If the pointer to the first state is present then
                                 //start the chain reaction of next state deletion.
-                                if(m_first_state != NULL) {
+                                if (m_first_state != NULL) {
                                     delete m_first_state;
                                     m_first_state = NULL;
                                 }
@@ -138,7 +139,7 @@ namespace uva {
                                 //Assert sanity that there is something in the stack
                                 ASSERT_SANITY_THROW((m_first_state == NULL),
                                         "Can't get the best translation, the stack level is empty!");
-                                
+
                                 //Call the get-translation function of the most probable state in the stack
                                 m_first_state->get_translation(target_sent);
                             }
@@ -148,6 +149,7 @@ namespace uva {
                         private:
                             //Stores the reference to the decoder parameters
                             const de_parameters & m_params;
+
                             //Stores the stopping flag
                             acr_bool_flag m_is_stop;
 
@@ -161,5 +163,5 @@ namespace uva {
     }
 }
 
-#endif	/* MULTI_LEVEL_HPP */
+#endif /* MULTI_LEVEL_HPP */
 

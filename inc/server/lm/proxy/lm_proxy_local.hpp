@@ -91,6 +91,9 @@ namespace uva {
                                 //just to load the language model into the memory.
                                 load_model_data<lm_builder_type, CStyleFileReader>("Language Model", params);
 
+                                //Retrieve the unknown word probability
+                                get_unk_word_prob();
+                                
                                 //Retrieve the begin and end tag uid values
                                 get_tag_uid(BEGIN_SENTENCE_TAG_STR, m_begin_tag_uid);
                                 get_tag_uid(END_SENTENCE_TAG_STR, m_end_tag_uid);
@@ -110,7 +113,7 @@ namespace uva {
                             virtual lm_fast_query_proxy & allocate_fast_query_proxy() {
                                 //ToDo: In the future we should just use a number of stack
                                 //allocated objects in order to reduce the new/delete overhead
-                                return *(new lm_fast_query_proxy_local<lm_model_type>(m_model, m_begin_tag_uid, m_end_tag_uid));
+                                return *(new lm_fast_query_proxy_local<lm_model_type>(m_model, m_unk_word_prob, m_begin_tag_uid, m_end_tag_uid));
                             }
 
                             /**
@@ -141,6 +144,13 @@ namespace uva {
                             }
 
                         private:
+                            
+                            /**
+                             * Allows to retrieve the unknown word LM probability from the model for the sake of caching
+                             */
+                            void get_unk_word_prob(){
+                                m_unk_word_prob = m_model.get_unk_word_prob();
+                            }
 
                             /**
                              * Allows to retrieve the sentence tag uid from the model.
@@ -226,6 +236,9 @@ namespace uva {
 
                             //Stores the trie
                             lm_model_type m_model;
+                            
+                            //Stores the cached unknown word probability from LM
+                            prob_weight m_unk_word_prob;
 
                             //Sore the begin and end sentence tag word uids as retrieved from the LM word index.
                             word_uid m_begin_tag_uid;

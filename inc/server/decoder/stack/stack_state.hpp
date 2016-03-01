@@ -99,7 +99,7 @@ namespace uva {
                             m_recomb_to(NULL), m_covered(), m_last_begin_pos(last_begin_pos),
                             m_last_end_pos(last_end_pos), m_target(target), m_history(),
                             m_partial_score(0.0), m_future_cost(0.0) {
-                                LOG_DEBUG2 << "multi_state create, with parent: " << m_data.m_params << END_LOG;
+                                LOG_DEBUG2 << "stack_state create, with parameters: " << m_data.m_params << END_LOG;
 
                                 //Compute the partial score;
                                 compute_partial_score();
