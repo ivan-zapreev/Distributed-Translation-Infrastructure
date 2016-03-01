@@ -153,6 +153,7 @@ namespace uva {
                                 phrase_uid target_uid = UNDEFINED_PHRASE_ID;
                                 tm_const_source_entry_ptr source_entry = NULL;
                                 bool is_good_source = false;
+                                bool is_good_target = false;
 
                                 //Start reading the translation model file line by line
                                 while (m_reader.get_first_line(line)) {
@@ -162,26 +163,25 @@ namespace uva {
                                     //Get the current source phrase
                                     string next_source_str = source.str();
                                     trim(next_source_str);
-                                    
+
                                     //Check if this is a new source phrase
                                     if (source_str != next_source_str) {
                                         //Store the new source string
                                         source_str = next_source_str;
                                         //Compute the new source string uid
                                         source_uid = get_phrase_uid(source_str);
-                                        //Check if the have an UNK
-                                        if (source_uid == m_model.SOURCE_UNK_UID) {
-                                            //The UNK source is always good
-                                            is_good_source = true;
-                                        } else {
-                                            //Obtain the new source entry
-                                            source_entry = query.get_source_entry(source_uid);
-                                            //Check if we shall ignore this source
-                                            is_good_source = (source_entry != NULL);
-                                            
-                                            LOG_DEBUG1 << "The TM source entry for " << source_uid << " is "
-                                                    << (is_good_source? "": "not") << " found!" << END_LOG;
-                                        }
+
+                                        //Obtain the source entry
+                                        source_entry = query.get_source_entry(source_uid);
+
+                                        //Check if the a know the source entry
+                                        is_good_source = ((source_entry != NULL) ||
+                                                (source_uid == m_model.SOURCE_UNK_UID) ||
+                                                (target_uid == m_model.BEGIN_SENT_TAG_UID) ||
+                                                (target_uid == m_model.END_SENT_TAG_UID));
+
+                                        LOG_DEBUG1 << "The TM source entry '" << source_str << "' with id " << source_uid
+                                                << " is " << (is_good_source ? "" : "not") << " good!" << END_LOG;
                                     }
 
                                     //If the source is present then count the entry
@@ -197,8 +197,13 @@ namespace uva {
                                         target_uid = get_phrase_uid<true>(target_str);
 
                                         //Check if the given translation phrase is known
-                                        if ((target_uid == m_model.TARGET_UNK_UID) ||
-                                                source_entry->has_target(target_uid)) {
+                                        is_good_target = (source_entry->has_target(target_uid) ||
+                                                (target_uid == m_model.TARGET_UNK_UID) ||
+                                                (target_uid == m_model.BEGIN_SENT_TAG_UID) ||
+                                                (target_uid == m_model.END_SENT_TAG_UID));
+
+                                        //If the target is known then do the thing based on what we need
+                                        if (is_good_target) {
                                             if (count_or_build) {
                                                 //Increment the counter
                                                 ++m_num_entries;
@@ -207,6 +212,9 @@ namespace uva {
                                                 process_entry_weights(line, m_model.add_entry(source_uid, target_uid));
                                             }
                                         }
+
+                                        LOG_DEBUG1 << "The TM target entry '" << target_str << "' with id " << target_uid
+                                                << " is " << (is_good_target ? "" : "not") << " good!" << END_LOG;
                                     }
 
                                     //Update the progress bar status
@@ -252,6 +260,9 @@ namespace uva {
 
                                 //Find the UNK entry, this is needed for performance optimization.
                                 m_model.find_unk_entry();
+
+                                //Find the <s>,</s> entries, this is needed for performance optimization.
+                                m_model.find_begin_end_entries();
 
                                 //Stop the progress bar in case of no exception
                                 Logger::stop_progress_bar();

@@ -82,8 +82,8 @@ namespace uva {
                                 load_model_data<rm_builder_type, CStyleFileReader>("Reordering Model", params);
 
                                 //Get the pointers to the begin and end tag reordering entries
-                                get_tag_entry(lm::BEGIN_SENTENCE_TAG_STR, m_begin_tag_entry);
-                                get_tag_entry(lm::END_SENTENCE_TAG_STR, m_end_tag_entry);
+                                m_begin_tag_entry = m_model.get_begin_tag_entry();
+                                m_end_tag_entry = m_model.get_end_tag_entry();
                             }
 
                             /**
@@ -113,24 +113,6 @@ namespace uva {
                             }
 
                         protected:
-
-                            /**
-                             * Allows to get the reordering model entry for the given tag
-                             * @param tag the tag to get the reordering entry for
-                             * @param tag_entry [out] the reordering model entry pointer reference to be set
-                             */
-                            void get_tag_entry(const string & tag, const rm_entry * & tag_entry) {
-                                //Get the phrase tag id
-                                const phrase_uid tag_uid = get_phrase_uid(tag);
-
-                                //Try to get the phrase tag reordering from the model
-                                tag_entry = m_model.get_entry(tag_uid, tag_uid);
-
-                                //Check that the entry is indeed found and is not an UNK entry!
-                                ASSERT_CONDITION_THROW(m_model.is_unk_entry(tag_entry),
-                                        string("Could not find the '") + tag +
-                                        string("' tag entry in the reordering model"));
-                            }
 
                             /**
                              * Allows to load the model into the instance of the selected container class

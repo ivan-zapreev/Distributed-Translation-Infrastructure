@@ -65,6 +65,10 @@ namespace uva {
                             const phrase_uid SOURCE_UNK_UID;
                             //Store the UNK target phrase id 
                             const phrase_uid TARGET_UNK_UID;
+                            //Store the <s> phrase id 
+                            const phrase_uid BEGIN_SENT_TAG_UID;
+                            //Store the </s> phrase id 
+                            const phrase_uid END_SENT_TAG_UID;
 
                             //Define the translations data map. It represents possible translations for some source phrase.
                             typedef fixed_size_hashmap<rm_entry, const phrase_uid &> rm_entry_map;
@@ -75,7 +79,9 @@ namespace uva {
                             rm_basic_model()
                             : SOURCE_UNK_UID(get_phrase_uid<true>(rm::RM_UNK_SOURCE_PHRASE)),
                             TARGET_UNK_UID(get_phrase_uid<true>(rm::RM_UNK_TARGET_PHRASE)),
-                            m_rm_data(NULL), m_unk_entry(NULL) {
+                            BEGIN_SENT_TAG_UID(get_phrase_uid<true>(lm::BEGIN_SENTENCE_TAG_STR)),
+                            END_SENT_TAG_UID(get_phrase_uid<true>(lm::END_SENTENCE_TAG_STR)),
+                            m_rm_data(NULL), m_unk_entry(NULL), m_begin_entry(NULL), m_end_entry(NULL) {
                             }
 
                             /**
@@ -88,7 +94,7 @@ namespace uva {
                                     m_rm_data = NULL;
                                 }
                             }
-
+                            
                             /**
                              * This method allows to detect if the number of
                              * reordering entries is needed before the entries
@@ -143,6 +149,45 @@ namespace uva {
                                         string(" entry in the reordering model!"));
                             }
 
+                            /**
+                             * Allows to get the reordering model entry for the given tag
+                             * @param tag the tag to get the reordering entry for
+                             * @param tag_entry [out] the reordering model entry pointer reference to be set
+                             */
+                            inline void find_begin_end_entries() {
+                                //Try to find the <s> ||| <s> entry
+                                m_begin_entry = get_entry(BEGIN_SENT_TAG_UID, BEGIN_SENT_TAG_UID);
+
+                                //Assert on that the <s> ||| <s> entry is found!
+                                ASSERT_CONDITION_THROW((m_begin_entry == NULL), string("Could not find the ") +
+                                        lm::BEGIN_SENTENCE_TAG_STR + string("/") + lm::BEGIN_SENTENCE_TAG_STR +
+                                        string(" entry in the reordering model!"));
+                                
+                                //Try to find the </s> ||| </s> entry
+                                m_end_entry = get_entry(END_SENT_TAG_UID, END_SENT_TAG_UID);
+
+                                //Assert on that the </s> ||| </s> entry is found!
+                                ASSERT_CONDITION_THROW((m_end_entry == NULL), string("Could not find the ") +
+                                        lm::END_SENTENCE_TAG_STR + string("/") + lm::END_SENTENCE_TAG_STR +
+                                        string(" entry in the reordering model!"));
+                            }
+                            
+                            /**
+                             * Allows to get the sentence begin tag entry if found 
+                             * @return the sentence begin tag entry if found or NULL
+                             */
+                            inline const rm_entry * get_begin_tag_entry() const {
+                                return m_begin_entry;
+                            }
+                            
+                            /**
+                             * Allows to get the sentence end tag entry if found 
+                             * @return the sentence end tag entry if found or NULL
+                             */
+                            inline const rm_entry * get_end_tag_entry() const {
+                                return m_end_entry;
+                            }
+                            
                             /**
                              * Allows to detect whether the given entry is an entry for the unknown phrase pair
                              * @param entry the entry pointer to be checked for being from the UNK/UNK entry
@@ -201,8 +246,12 @@ namespace uva {
                         private:
                             //Stores the translation model data
                             rm_entry_map * m_rm_data;
-                            //Stores the pointer to the UNK entry if found
+                            //Stores the pointer to the UNK/UNK entry if found
                             const rm_entry * m_unk_entry;
+                            //Stores the pointer to the <s>/<s> entry if found
+                            const rm_entry * m_begin_entry;
+                            //Stores the pointer to the </s>/</s> entry if found
+                            const rm_entry * m_end_entry;
                         };
                     }
                 }
