@@ -75,14 +75,41 @@ namespace uva {
                             /**
                              * The basic constructor that is to be used for the root state
                              * @param stack_data the general shared stack data reference 
+                             * @param is_begin_end this flag allows to detect whether this
+                             * data is created for the begin or end tag. If true then it is
+                             * for the begin tag, if false then it is for the end tag
                              */
                             state_data_templ(const stack_data & stack_data)
                             : m_stack_data(stack_data),
                             m_s_begin_word_idx(UNDEFINED_WORD_IDX), m_s_end_word_idx(UNDEFINED_WORD_IDX),
-                            m_stack_level(0), m_target(NULL), rm_entry_data(stack_data.m_rm_query.get_begin_tag_reorderin()),
-                            //Add the sentence begin tag uid to the target, since this is for the root state
+                            m_stack_level(0), m_target(NULL),
+                            rm_entry_data(m_stack_data.m_rm_query.get_begin_tag_reorderin()),
+                            //Add the sentence begin tag uid to the target, since this is for the begin state
                             m_history(1, &m_stack_data.m_lm_query.get_begin_tag_uid()),
                             m_covered(), m_partial_score(0.0), m_total_score(0.0) {
+                            }
+
+                            /**
+                             * The basic constructor that is to be used for the root state
+                             * @param stack_data the general shared stack data reference 
+                             * @param is_begin_end this flag allows to detect whether this
+                             * data is created for the begin or end tag. If true then it is
+                             * for the begin tag, if false then it is for the end tag
+                             */
+                            state_data_templ(const state_data_templ & prev_state_data)
+                            : m_stack_data(prev_state_data.m_stack_data),
+                            //Set the start and end word index to be the index after the last word in the sentence
+                            m_s_begin_word_idx(m_stack_data.m_sent_data.get_dim()), m_s_end_word_idx(m_s_begin_word_idx),
+                            //This is the next state level, i.e. the last one but there is of course no target for </s>
+                            m_stack_level(prev_state_data.m_stack_level + 1), m_target(NULL),
+                            //The reordering entry should contain the end tag reordering
+                            rm_entry_data(m_stack_data.m_rm_query.get_end_tag_reorderin()),
+                            //Add the sentence end tag uid to the target, since this is for the end state
+                            m_history(prev_state_data.m_history, 1, &m_stack_data.m_lm_query.get_end_tag_uid()),
+                            //The coverage vector stays the same, nothin new is added, we take over the partial score
+                            m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score), m_total_score(0.0) {
+                                //Compute the end state final score, the new partial score is then the same as the total score
+                                compute_final_score(prev_state_data);
                             }
 
                             /**
@@ -179,6 +206,35 @@ namespace uva {
                                         return reordering_orientation::DISCONT_RIGHT_ORIENT;
                                     }
                                 }
+                            }
+
+                            /**
+                             * For the end translation hypothesis state is supposed to compute the partial and total score
+                             * @param prev_state_data the previous state data
+                             */
+                            inline void compute_final_score(const state_data_templ & prev_state_data) {
+                                //After the construction the partial score is to stay fixed,
+                                //thus it is declared as constant and here we do a const_cast
+                                prob_weight & partial_score = const_cast<prob_weight &> (m_partial_score);
+
+                                //ToDo: Add the language model probability
+                                //partial_score +=;
+                                THROW_NOT_IMPLEMENTED();
+
+                                //Add the distance based reordering penalty
+                                partial_score += -abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
+
+                                //Add the lexicolized reordering costs
+                                const reordering_orientation orient = get_reordering_orientation(prev_state_data);
+                                partial_score += prev_state_data.rm_entry_data.template get_weight<true>(orient);
+                                partial_score += rm_entry_data.template get_weight<false>(orient);
+
+                                //After the construction the total score is to stay fixed,
+                                //thus it is declared as constant and here we do a const_cast
+                                prob_weight & total_score = const_cast<prob_weight &> (m_total_score);
+
+                                //Set the total score to be equal to the partial score as the translation is finished
+                                total_score = partial_score;
                             }
 
                             /**

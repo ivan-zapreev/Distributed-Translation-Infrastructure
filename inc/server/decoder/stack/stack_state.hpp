@@ -68,7 +68,7 @@ namespace uva {
                             typedef state_data_templ<NUM_WORDS_PER_SENTENCE, MAX_M_GRAM_QUERY_LENGTH> state_data;
 
                             /**
-                             * The basic constructor for the root stack state
+                             * The basic constructor for the begin stack state
                              * @param data the shared data container
                              */
                             stack_state_templ(const stack_data & data)
@@ -78,12 +78,20 @@ namespace uva {
                             }
 
                             /**
-                             * The basic constructor for the non-root stack state
-                             * @param parent the pointer to the parent element
+                             * The basic constructor for the end stack state
+                             * @param parent the parent state pointer, NOT NULL!
+                             * @param prev_history the previous translation history
+                             */
+                            stack_state_templ(stack_state_ptr parent) :
+                            m_parent(parent), m_state_data(parent->m_state_data),
+                            m_next_in_level(NULL), m_recomb_from(), m_recomb_to(NULL) {
+                            }
+
+                            /**
+                             * The basic constructor for the non-begin/end stack state
                              * @param parent the parent state pointer, NOT NULL!
                              * @param begin_pos this state translated source phrase begin position
                              * @param end_pos this state translated source phrase end position
-                             * @param prev_history the previous translation history
                              * @param target the new translation target
                              */
                             stack_state_templ(stack_state_ptr parent,
@@ -129,11 +137,19 @@ namespace uva {
                              * add itself to the proper stack.
                              */
                             inline void expand() {
-                                //Expand to the left of the last phrase
-                                expand_left();
+                                //Check if this is the last state, i.e. we translated everything
+                                if (m_state_data.m_covered.all()) {
+                                    //All of the words have been translated, add the end state
+                                    m_state_data.m_stack_data.m_add_state(new stack_state(this));
+                                } else {
+                                    //If there are still things to translate then
 
-                                //Expand to the right of the last phrase
-                                expand_right();
+                                    //Expand to the left of the last phrase
+                                    expand_left();
+
+                                    //Expand to the right of the last phrase
+                                    expand_right();
+                                }
                             }
 
                             /**
