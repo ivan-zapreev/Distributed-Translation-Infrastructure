@@ -119,6 +119,14 @@ namespace uva {
                                 LOG_DEBUG1 << "Adding the source/target (" << source_uid << "/"
                                         << target_uid << ") entry with id" << m_st_uid << END_LOG;
                             }
+                            
+                            /**
+                             * Allows to get the target phrase
+                             * @return the reference to the const target phrase
+                             */
+                            const string & get_target_phrase() const {
+                                return m_target_phrase;
+                            }
 
                             /**
                              * Allows to retrieve the source/target phrase pair uid

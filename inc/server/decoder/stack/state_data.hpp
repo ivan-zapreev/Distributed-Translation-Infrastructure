@@ -137,7 +137,7 @@ namespace uva {
                             const phrase_length m_stack_level;
 
                             //Stores the pointer to the target translation of the last phrase
-                            tm_const_target_entry* m_target;
+                            tm_const_target_entry * const m_target;
 
                             //Stores the translation history i.e. the number of translated
                             //word ids up until now. This structure should be large enough

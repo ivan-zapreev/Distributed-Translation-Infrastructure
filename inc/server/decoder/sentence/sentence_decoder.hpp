@@ -94,8 +94,8 @@ namespace uva {
                             m_stack(m_params, m_is_stop, m_sent_data, m_rm_query, m_lm_query) {
                                 LOG_DEBUG << "Created a sentence decoder " << m_params << END_LOG;
 
-                                //Put some text into the translation, for now just put the source text
-                                m_target_sent = m_source_sent;
+                                //Initialize with an empty string
+                                m_target_sent = UTF8_EMPTY_STRING;
                             }
 
                             /**

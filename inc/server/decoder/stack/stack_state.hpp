@@ -30,6 +30,7 @@
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+#include "common/utils/string_utils.hpp"
 
 #include "server/lm/lm_configurator.hpp"
 #include "server/rm/proxy/rm_query_proxy.hpp"
@@ -43,6 +44,7 @@ using namespace std;
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
+using namespace uva::utils::text;
 
 using namespace uva::smt::bpbd::server::lm::proxy;
 using namespace uva::smt::bpbd::server::rm::proxy;
@@ -118,8 +120,8 @@ namespace uva {
                              * @return the stack level
                              */
                             uint32_t get_stack_level() const {
-                                //ToDo: Implement
-                                THROW_NOT_IMPLEMENTED();
+                                //Get the stack level as it was computed during the state creation.
+                                return m_state_data.m_stack_level;
                             }
 
                             /**
@@ -129,6 +131,7 @@ namespace uva {
                             inline void expand() {
                                 //Expand to the left of the last phrase
                                 expand_left();
+
                                 //Expand to the right of the last phrase
                                 expand_right();
                             }
@@ -138,8 +141,13 @@ namespace uva {
                              * @param target_sent [out] the variable to store the translation
                              */
                             inline void get_translation(string & target_sent) const {
-                                //ToDo: Implement
-                                THROW_NOT_IMPLEMENTED();
+                                //Go through parents until the root state and append translations when going back!
+                                if (m_parent != NULL) {
+                                    m_parent->get_translation(target_sent);
+                                }
+
+                                //Append the space plus the current state translation
+                                target_sent += UTF8_SPACE_STRING + m_state_data.m_target->get_target_phrase();
                             }
 
                             /**
@@ -164,7 +172,7 @@ namespace uva {
                              * @return true if this state is smaller than the other one
                              */
                             inline bool operator<(const stack_state & other) const {
-                                //ToDo: Implement
+                                //ToDo: Implement the comparison operator, 
                                 THROW_NOT_IMPLEMENTED();
                             }
 
@@ -266,9 +274,7 @@ namespace uva {
                                     }
                                 } else {
                                     //Do nothing we have an unknown phrase of length > 1
-
-                                    //ToDo: Just log it!
-                                    THROW_NOT_IMPLEMENTED();
+                                    LOG_DEBUG << "The source phrase " << start_pos << ", " << end_pos << "] has no translations, ignoring!" << END_LOG;
                                 }
                             }
 
