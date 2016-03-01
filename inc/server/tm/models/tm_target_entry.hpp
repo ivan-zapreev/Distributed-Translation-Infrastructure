@@ -150,7 +150,7 @@ namespace uva {
                              * Allows to get the number of words in the target translation
                              * @return the number of words
                              */
-                            inline phrase_length get_num_target_words() const {
+                            inline phrase_length get_num_words() const {
                                 return m_num_words;
                             }
 
@@ -158,7 +158,7 @@ namespace uva {
                              * This method allows to get the
                              * @return an array of word ids of the target phrase, the length must be equal to LM_QUERY_LENGTH_MAX
                              */
-                            inline const word_uid* get_target_word_ids() const {
+                            inline const word_uid* get_word_ids() const {
                                 return m_word_ids;
                             }
 

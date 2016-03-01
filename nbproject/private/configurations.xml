@@ -627,6 +627,7 @@
             <in>stack_data.hpp</in>
             <in>stack_level.hpp</in>
             <in>stack_state.hpp</in>
+            <in>state_data.hpp</in>
           </df>
           <in>de_configs.hpp</in>
           <in>de_configurator.hpp</in>
@@ -799,7 +800,7 @@
     <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <compile>
         <compiledirpicklist>

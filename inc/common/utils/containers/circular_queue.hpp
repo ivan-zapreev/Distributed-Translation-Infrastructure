@@ -53,6 +53,20 @@ namespace uva {
                 }
 
                 /**
+                 * The special case of a copy constructor, it allows to take the
+                 * parameter queue together with the extra elements and copy them
+                 * into the given queue. This is done in a smart way to optimize
+                 * performance.
+                 * @param other the other queue to copy from
+                 * @param num_elems the number of extra elements
+                 * @param elems the pointer to the array with the extra elements
+                 */
+                circular_queue(const circular_queue & other, const size_t num_elems, const elem_type * elems) : m_size(0) {
+                    //ToDo: Implement
+                    THROW_NOT_IMPLEMENTED();
+                }
+
+                /**
                  * The basic destructor
                  */
                 ~circular_queue() {
@@ -88,6 +102,9 @@ namespace uva {
 
             protected:
             private:
+                //Stores the array of elements
+                elem_type m_elems[capacity];
+                
                 //Stores the number of stored elements
                 size_t m_size;
             };

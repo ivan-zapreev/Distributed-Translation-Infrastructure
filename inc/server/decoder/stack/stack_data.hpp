@@ -33,11 +33,12 @@ namespace uva {
                     namespace stack {
 
                         //Forward declaration of the class
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_LENGTH>
+                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_QUERY_LENGTH>
                         class stack_state_templ;
 
-                        //Typedef the multi state and instantiate it with the maximum number of words per sentence
-                        typedef stack_state_templ<MAX_WORDS_PER_SENTENCE, LM_M_GRAM_LEVEL_MAX> stack_state;
+                        //Typedef the multi state and instantiate it with the maximum number of words per sentence and
+                        //the maximum LM query length as this is the max LM level - 1 plus the max target phrase length
+                        typedef stack_state_templ<MAX_WORDS_PER_SENTENCE, LM_MAX_QUERY_LEN> stack_state;
 
                         //Define the multi state pointer
                         typedef stack_state * stack_state_ptr;
