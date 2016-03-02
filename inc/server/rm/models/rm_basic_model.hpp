@@ -82,10 +82,10 @@ namespace uva {
                             BEGIN_SENT_TAG_UID(get_phrase_uid<true>(lm::BEGIN_SENTENCE_TAG_STR)),
                             END_SENT_TAG_UID(get_phrase_uid<true>(lm::END_SENTENCE_TAG_STR)),
                             m_rm_data(NULL), m_unk_entry(NULL), m_begin_entry(NULL), m_end_entry(NULL) {
-                                LOG_USAGE << "SOURCE_UNK_UID = " << SOURCE_UNK_UID << END_LOG;
-                                LOG_USAGE << "TARGET_UNK_UID = "<< TARGET_UNK_UID << END_LOG;
-                                LOG_USAGE << "BEGIN_SENT_TAG_UID = " << BEGIN_SENT_TAG_UID << END_LOG;
-                                LOG_USAGE << "END_SENT_TAG_UID = " << END_SENT_TAG_UID << END_LOG;
+                                LOG_DEBUG << "SOURCE_UNK_UID = " << SOURCE_UNK_UID << END_LOG;
+                                LOG_DEBUG << "TARGET_UNK_UID = "<< TARGET_UNK_UID << END_LOG;
+                                LOG_DEBUG << "BEGIN_SENT_TAG_UID = " << BEGIN_SENT_TAG_UID << END_LOG;
+                                LOG_DEBUG << "END_SENT_TAG_UID = " << END_SENT_TAG_UID << END_LOG;
                             }
 
                             /**
