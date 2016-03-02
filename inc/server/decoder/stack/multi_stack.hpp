@@ -139,10 +139,18 @@ namespace uva {
                             void expand() {
                                 //Iterate the stack levels and expand them one by one 
                                 //until the last one or until we are requested to stop
-                                while (!m_data.m_is_stop && (m_curr_level < m_num_levels)) {
+                                const size_t MAX_STACK_LEVEL = (m_num_levels-1); 
+                                while (!m_data.m_is_stop && (m_curr_level <= MAX_STACK_LEVEL)) {
+                                    LOG_DEBUG << ">>>>> Start LEVEL (" << m_curr_level << "/ " << MAX_STACK_LEVEL << ") expansion" << END_LOG;
+                                    
                                     //Here we expand the stack level and then
                                     //increment the current level index variable
-                                    m_levels[m_curr_level++]->expand();
+                                    m_levels[m_curr_level]->expand();
+                                    
+                                    LOG_DEBUG << "<<<<< End LEVEL (" << m_curr_level << "/ " << MAX_STACK_LEVEL << ") expansion" << END_LOG;
+                                    
+                                    //Move to the next level
+                                    m_curr_level++;
                                 }
                             }
 
@@ -175,6 +183,8 @@ namespace uva {
 
                                 //Get the new state stack level
                                 const uint32_t level = new_state->get_stack_level();
+                                
+                                LOG_DEBUG << "Adding a new state (" << new_state << ") to stack level " << level << END_LOG;
 
                                 //Perform a sanity check that the state is of a proper level
                                 ASSERT_SANITY_THROW((level >= m_num_levels),
@@ -184,6 +194,8 @@ namespace uva {
 
                                 //Add the state to the corresponding stack
                                 m_levels[level]->add_state(new_state);
+                                
+                                LOG_DEBUG << "The state (" << new_state << ") is added to level " << level << END_LOG;
                             }
 
                         private:

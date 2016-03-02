@@ -26,15 +26,19 @@
 #ifndef CIRCULAR_QUEUE_HPP
 #define CIRCULAR_QUEUE_HPP
 
+#include <ostream>
 #include <cstring>
 #include <algorithm>
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
+#include "common/utils/string_utils.hpp"
 
 using namespace std;
+
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
+using namespace uva::utils::text;
 
 namespace uva {
     namespace utils {
@@ -56,6 +60,9 @@ namespace uva {
                  * The basic constructor
                  */
                 circular_queue() : m_size(0) {
+                    LOG_DEBUG2 << "The queue capacity: " << capacity << END_LOG;
+
+                    LOG_DEBUG2 << "The queue state: " << *this << END_LOG;
                 }
 
                 /**
@@ -64,8 +71,13 @@ namespace uva {
                  * @param elems the elements to put into the queue
                  */
                 circular_queue(const size_t num_elems, const elem_type * elems) : m_size(0) {
+                    LOG_DEBUG2 << "Creating with: " << array_to_string<elem_type>(num_elems, elems)
+                            << ", the queue capacity: " << capacity << END_LOG;
+
                     //Push back the array of values
                     push_back(num_elems, elems);
+
+                    LOG_DEBUG2 << "The queue state: " << *this << END_LOG;
                 }
 
                 /**
@@ -78,15 +90,21 @@ namespace uva {
                  * @param elems the pointer to the array with the extra elements
                  */
                 circular_queue(const circular_queue & other, const size_t num_elems, const elem_type * elems) : m_size(0) {
-                    LOG_DEBUG2 << "The number of elements in the array: " << num_elems
-                            << ", is larger or equal to the queue capacity: " << capacity
-                            << ", the other queue size is: " << other.m_size << END_LOG;
+                    LOG_DEBUG2 << "Creating with queue: " << other << ", and array: "
+                            << array_to_string<elem_type>(num_elems, elems)
+                            << ", the queue capacity: " << capacity << END_LOG;
 
                     if ((num_elems >= capacity) || (other.m_size == 0)) {
+                        LOG_DEBUG2 << "The number of array elements: " << num_elems
+                                << ", is larget or equal to the queue capacity: " << capacity
+                                << ", or the other queue size (" << other.m_size << ") is zero" << END_LOG;
+
                         //The number of elements in the array is larger or equal
                         //to the queue capacity or the other queue is empty, then
                         //we can just ignore the other queue.
                         push_back(num_elems, elems);
+
+                        LOG_DEBUG2 << "The queue state: " << *this << END_LOG;
                     } else {
                         //The number of elements in the array is smaller than the
                         //capacity so we will fit both elements from the queue and
@@ -103,8 +121,12 @@ namespace uva {
                         //Add the other queue elements, only the ones that we need to take over
                         push_back(num_from_queue, other.m_elems + (other.m_size - num_from_queue));
 
+                        LOG_DEBUG2 << "The queue state: " << *this << END_LOG;
+
                         //Add the array elements
                         push_back(num_elems, elems);
+
+                        LOG_DEBUG2 << "The queue state: " << *this << END_LOG;
                     }
                 }
 
@@ -160,8 +182,8 @@ namespace uva {
                  * Allows to push back an entire array 
                  */
                 void push_back(const size_t num_elems, const elem_type * elems) {
-                    LOG_DEBUG2 << "Pushing " << num_elems << " elem(s) to the queue of size: "
-                            << m_size << " and capacity: " << capacity << END_LOG;
+                    LOG_DEBUG2 << "Pushing array: " << array_to_string<elem_type>(num_elems, elems)
+                            << " to the queue: " << *this << ", capacity: " << capacity << END_LOG;
 
                     //Compute the new size right away
                     const size_t new_size = min((m_size + num_elems), capacity);
@@ -176,7 +198,7 @@ namespace uva {
                                 << "position 0 to position: " << m_size << END_LOG;
 
                         //Copy the new data to the remainder of the queue
-                        memcpy(m_elems + m_size, elems, num_elems);
+                        memcpy(m_elems + m_size, elems, num_elems * sizeof(elem_type));
                     } else {
                         //The number of elements will become larger than the queue capacity
 
@@ -199,7 +221,7 @@ namespace uva {
                             const elem_type * sub_arr = elems + begin_idx;
 
                             //Copy the last part of the data, overwriting everything there was
-                            memcpy(m_elems, sub_arr, capacity);
+                            memcpy(m_elems, sub_arr, capacity * sizeof(elem_type));
                         } else {
                             //The number of elements we are to add is smaller than
                             //the queue capacity so they will all fit, but we need
@@ -220,13 +242,13 @@ namespace uva {
                                     << num_push_out << " to position 0" << END_LOG;
 
                             //Move the elements we have to keep to the beginning of the queue
-                            memmove(m_elems, m_elems + num_push_out, num_keep);
+                            memmove(m_elems, m_elems + num_push_out, num_keep * sizeof(elem_type));
 
                             LOG_DEBUG << "Copying " << num_elems << " elem(s) from "
                                     << "position 0 to position: " << num_keep << END_LOG;
 
                             //Copy the elements into the freed remainder of the array
-                            memcpy(m_elems + num_keep, elems, num_elems);
+                            memcpy(m_elems + num_keep, elems, num_elems * sizeof(elem_type));
                         }
                     }
 
@@ -241,6 +263,17 @@ namespace uva {
                 //Stores the number of stored elements
                 size_t m_size;
             };
+
+            /**
+             * Allows to output the circular_queue object to the stream
+             * @param stream the stream to output into
+             * @param queue the queue object
+             * @return the stream that we output into
+             */
+            template<typename elem, size_t capacity>
+            static inline std::ostream& operator<<(std::ostream& stream, const circular_queue<elem, capacity> & queue) {
+                return stream << array_to_string<elem>(queue.get_size(), queue.get_elems());
+            }
         }
     }
 }

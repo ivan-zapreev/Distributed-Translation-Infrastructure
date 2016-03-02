@@ -92,12 +92,14 @@ namespace uva {
                              * @param parent the parent state pointer, NOT NULL!
                              * @param begin_pos this state translated source phrase begin position
                              * @param end_pos this state translated source phrase end position
+                             * @param covered the pre-cooked covered vector, for efficiency reasons.
                              * @param target the new translation target
                              */
                             stack_state_templ(stack_state_ptr parent,
                                     const int32_t begin_pos, const int32_t end_pos,
+                                    const typename state_data::covered_info & covered,
                                     tm_const_target_entry* target)
-                            : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, target),
+                            : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, covered, target),
                             m_next_in_level(NULL), m_recomb_from(), m_recomb_to(NULL) {
                                 LOG_DEBUG2 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
@@ -138,7 +140,7 @@ namespace uva {
                              */
                             inline void expand() {
                                 //Check if this is the last state, i.e. we translated everything
-                                if (m_state_data.m_covered.all()) {
+                                if (m_state_data.m_covered.count() == m_state_data.m_stack_data.m_sent_data.get_dim()) {
                                     //All of the words have been translated, add the end state
                                     m_state_data.m_stack_data.m_add_state(new stack_state(this));
                                 } else {
@@ -238,6 +240,8 @@ namespace uva {
                              * Expand to the left of the last phrase, for all the possible of start positions
                              */
                             inline void expand_left() {
+                                LOG_DEBUG1 << ">>>>>" << END_LOG;
+                                
                                 //Iterate to the left of the last begin positions until the position is valid and the distortion is within the limits
                                 for (int32_t start_pos = (m_state_data.m_s_begin_word_idx - 1);
                                         (start_pos >= 0) && is_dist_ok(start_pos); start_pos--) {
@@ -247,12 +251,16 @@ namespace uva {
                                         expand_length(start_pos);
                                     }
                                 }
+                                
+                                LOG_DEBUG1 << "<<<<<" << END_LOG;
                             }
 
                             /**
                              * Expand to the right of the last phrase, for all the possible of start positions
                              */
                             inline void expand_right() {
+                                LOG_DEBUG1 << ">>>>>" << END_LOG;
+                                
                                 //Iterate to the right of the last positions until the position is valid and the distortion is within the limits
                                 for (uint32_t start_pos = (m_state_data.m_s_end_word_idx + 1);
                                         (start_pos < m_state_data.m_stack_data.m_sent_data.get_dim()) && is_dist_ok(start_pos); ++start_pos) {
@@ -262,12 +270,16 @@ namespace uva {
                                         expand_length(start_pos);
                                     }
                                 }
+
+                                LOG_DEBUG1 << "<<<<<" << END_LOG;
                             }
 
                             /**
                              * Allows to expand for all the possible phrase lengths
                              */
                             inline void expand_length(const size_t start_pos) {
+                                LOG_DEBUG1 << ">>>>> [" << start_pos << "]" << END_LOG;
+                                
                                 //Always take the one word translation even if
                                 //It is an unknown entry.
                                 size_t end_pos = start_pos;
@@ -276,7 +288,7 @@ namespace uva {
 
                                 //Iterate through lengths > 1 until the maximum possible source phrase length is 
                                 //reached or we hit the end of the sentence or the end of the uncovered region
-                                for (size_t len = 1; len <= m_state_data.m_stack_data.m_params.m_max_s_phrase_len; ++len) {
+                                for (size_t len = 2; len <= m_state_data.m_stack_data.m_params.m_max_s_phrase_len; ++len) {
                                     //Move to the next end position
                                     ++end_pos;
                                     //Check if we are in a good state
@@ -288,6 +300,8 @@ namespace uva {
                                         break;
                                     }
                                 }
+
+                                LOG_DEBUG1 << "<<<<< [" << start_pos << "]" << END_LOG;
                             }
 
                             /**
@@ -295,23 +309,37 @@ namespace uva {
                              */
                             template<bool single_word>
                             inline void expand_trans(const size_t start_pos, const size_t end_pos) {
+                                LOG_DEBUG1 << ">>>>> [" << start_pos << ", " << end_pos << "]" << END_LOG;
+                                
                                 //Obtain the source entry for the currently considered source phrase
                                 tm_const_source_entry_ptr entry = m_state_data.m_stack_data.m_sent_data[start_pos][end_pos].m_source_entry;
+                                
+                                ASSERT_SANITY_THROW((entry == NULL),
+                                        string("The source entry [") + to_string(start_pos) +
+                                        string(", ") + to_string(end_pos) + string("] is NULL!"));
 
                                 //Check if we are in the situation of a single word
                                 if (single_word || entry->has_translations()) {
                                     //Get the targets
                                     tm_const_target_entry* targets = entry->get_targets();
 
+                                    //Initialize the new covered vector, take the old one plus enable the new states
+                                    typename state_data::covered_info covered(m_state_data.m_covered);
+                                    for (phrase_length idx = start_pos; idx <= end_pos; ++idx) {
+                                        covered.set(idx);
+                                    }
+
                                     //Iterate through all the available target translations
                                     for (size_t idx = 0; idx < entry->num_targets(); ++idx) {
                                         //Add a new hypothesis state to the multi-stack
-                                        m_state_data.m_stack_data.m_add_state(new stack_state(this, start_pos, end_pos, &targets[idx]));
+                                        m_state_data.m_stack_data.m_add_state(new stack_state(this, start_pos, end_pos, covered, &targets[idx]));
                                     }
                                 } else {
                                     //Do nothing we have an unknown phrase of length > 1
-                                    LOG_DEBUG << "The source phrase " << start_pos << ", " << end_pos << "] has no translations, ignoring!" << END_LOG;
+                                    LOG_DEBUG << "The source phrase [" << start_pos << ", " << end_pos << "] has no translations, ignoring!" << END_LOG;
                                 }
+                                
+                                LOG_DEBUG1 << "<<<<< [" << start_pos << ", " << end_pos << "]" << END_LOG;
                             }
 
                         private:

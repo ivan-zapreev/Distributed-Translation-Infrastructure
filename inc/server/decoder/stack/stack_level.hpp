@@ -74,21 +74,30 @@ namespace uva {
                              * @param new_state the new state to add
                              */
                             void add_state(stack_state_ptr new_state) {
+                                LOG_DEBUG1 << "Adding a new state (" << new_state << ")" << END_LOG;
+
                                 //If there is no states in the level yet, then set this one as the first
                                 if (m_first_state == NULL) {
                                     m_first_state = new_state;
+                                    
+                                    LOG_DEBUG1 << "Setting (" << m_first_state << ") as the first in the level!" << END_LOG;
                                 } else {
                                     //If there are some states in the level already then
                                     //search for the proper position to insert this one
 
                                     //ToDo: Add pruning and recombination
-                                    LOG_WARNING << "Adding a new state, no ordering, recombination or pruning!" << END_LOG;
+                                    //LOG_WARNING << "Adding a new state, no ordering, recombination or pruning!" << END_LOG;
 
                                     //Just search for the last state in the level for now
                                     stack_state_ptr place_state = m_first_state;
+
+                                    LOG_DEBUG1 << "Searching for the end of the level starting from state (" << place_state << ")" << END_LOG;
                                     while (place_state->get_next_in_level() != NULL) {
+                                        place_state = place_state->get_next_in_level();
+                                        LOG_DEBUG3 << "Moving to the next state (" << place_state << ")!" << END_LOG;
                                     }
-                                    
+                                    LOG_DEBUG1 << "The state (" << place_state << ") is the last one, adding!" << END_LOG;
+
                                     //Set the new state after the last one
                                     place_state->set_next_in_level(new_state);
                                 }
@@ -145,8 +154,13 @@ namespace uva {
 
                                 //Iterate while we do not need to stop or we reach the end of the stack
                                 while (!m_is_stop && (curr_state != NULL)) {
+                                    LOG_DEBUG << ">>>>> Start STATE (" << curr_state << ") expansion" << END_LOG;
+
                                     //Allow the state to expand itself
                                     curr_state->expand();
+
+                                    LOG_DEBUG << "<<<<< End STATE (" << curr_state << ") expansion" << END_LOG;
+
                                     //Move to the next state
                                     curr_state = curr_state->get_next_in_level();
                                 }

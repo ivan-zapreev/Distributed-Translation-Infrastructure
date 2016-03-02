@@ -103,7 +103,7 @@ namespace uva {
                     //Get the bucket index from the hash
                     uint_fast64_t bucket_idx = get_bucket_idx(key_uid);
 
-                    LOG_DEBUG2 << "Got bucket_idx: " << bucket_idx
+                    LOG_DEBUG3 << "Got bucket_idx: " << bucket_idx
                             << " max bucket index: " << (m_buckets_capacity - 1)
                             << " for uid value: " << key_uid
                             << " element idx: " << m_next_elem_idx
@@ -111,22 +111,22 @@ namespace uva {
 
                     //Search for the first empty bucket
                     while (m_buckets[bucket_idx] != NO_ELEMENT_INDEX) {
-                        LOG_DEBUG2 << "The bucket: " << bucket_idx <<
+                        LOG_DEBUG3 << "The bucket: " << bucket_idx <<
                                 " is full, skipping to the next." << END_LOG;
                         get_next_bucket_idx(bucket_idx);
                     }
 
-                    LOG_DEBUG2 << "The first empty bucket index is: " << bucket_idx << END_LOG;
+                    LOG_DEBUG3 << "The first empty bucket index is: " << bucket_idx << END_LOG;
 
                     //Get the element index and increment
                     const IDX_TYPE elem_idx = m_next_elem_idx++;
 
-                    LOG_DEBUG2 << "The element index is: " << elem_idx << END_LOG;
+                    LOG_DEBUG3 << "The element index is: " << elem_idx << END_LOG;
 
                     //Set the bucket to point to the given element
                     m_buckets[bucket_idx] = elem_idx;
 
-                    LOG_DEBUG2 << "Returning the reference to the element: " << elem_idx << END_LOG;
+                    LOG_DEBUG3 << "Returning the reference to the element: " << elem_idx << END_LOG;
 
                     //Return the element under the index
                     return m_elems[elem_idx];
@@ -145,14 +145,14 @@ namespace uva {
                     //Get the bucket index from the hash
                     uint_fast64_t bucket_idx = get_bucket_idx(key_uid);
 
-                    LOG_DEBUG2 << "Got bucket_idx: " << bucket_idx << " for uid value: " << key_uid << END_LOG;
+                    LOG_DEBUG3 << "Got bucket_idx: " << bucket_idx << " for uid value: " << key_uid << END_LOG;
 
                     //Search for the first empty bucket
                     while (m_buckets[bucket_idx] != NO_ELEMENT_INDEX) {
                         //Check if the element is equal to the key
                         if (m_elems[m_buckets[bucket_idx]] == key) {
                             //The element is found, return
-                            LOG_DEBUG2 << "Found the element index: " << m_buckets[bucket_idx]
+                            LOG_DEBUG3 << "Found the element index: " << m_buckets[bucket_idx]
                                     << " in bucket: " << bucket_idx << END_LOG;
                             return &m_elems[m_buckets[bucket_idx]];
                         }
@@ -160,7 +160,7 @@ namespace uva {
                         get_next_bucket_idx(bucket_idx);
                     }
 
-                    LOG_DEBUG2 << "Could not find an element for key uid: " << key_uid
+                    LOG_DEBUG3 << "Could not find an element for key uid: " << key_uid
                             << ", last bucket index: " << bucket_idx << END_LOG;
 
                     return NULL;

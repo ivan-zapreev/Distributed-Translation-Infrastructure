@@ -88,6 +88,13 @@ namespace uva {
                             m_trans_frame(1, &m_stack_data.m_lm_query.get_begin_tag_uid()),
                             m_begin_lm_level(M_GRAM_LEVEL_1),
                             m_covered(), m_partial_score(0.0), m_total_score(0.0) {
+                                LOG_DEBUG1 << "Creating a new BEGIN state, translating [" << m_s_begin_word_idx
+                                        << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
+                                        << ", lm_level=" << m_begin_lm_level << ", target = ___<s>___" << END_LOG;
+                                
+                                LOG_DEBUG1 << "Trans frame: " << m_trans_frame << END_LOG;
+                                
+                                LOG_DEBUG1 << "Covered: " << m_covered << END_LOG;
                             }
 
                             /**
@@ -110,6 +117,14 @@ namespace uva {
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             //The coverage vector stays the same, nothin new is added, we take over the partial score
                             m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score), m_total_score(0.0) {
+                                LOG_DEBUG1 << "Creating a new END state, translating [" << m_s_begin_word_idx
+                                        << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
+                                        << ", lm_level=" << m_begin_lm_level << ", target = ___</s>___" << END_LOG;
+                                
+                                LOG_DEBUG1 << "Trans frame: " << m_trans_frame << END_LOG;
+                                
+                                LOG_DEBUG1 << "Covered: " << m_covered << END_LOG;
+                                
                                 //Compute the end state final score, the new partial score is then the same as the total score
                                 compute_final_score(prev_state_data);
                             }
@@ -125,21 +140,22 @@ namespace uva {
                              */
                             state_data_templ(const state_data_templ & prev_state_data,
                                     const int32_t & begin_pos, const int32_t & end_pos,
-                                    tm_const_target_entry* target)
+                                    const covered_info & covered, tm_const_target_entry* target)
                             : m_stack_data(prev_state_data.m_stack_data),
                             m_s_begin_word_idx(begin_pos), m_s_end_word_idx(end_pos),
                             m_stack_level(prev_state_data.m_stack_level + (m_s_end_word_idx - m_s_begin_word_idx + 1)),
                             m_target(target), rm_entry_data(m_stack_data.m_rm_query.get_reordering(m_target->get_st_uid())),
                             m_trans_frame(prev_state_data.m_trans_frame, m_target->get_num_words(), m_target->get_word_ids()),
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
-                            m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score), m_total_score(0.0) {
-                                //Update the covered vector with the bits that are now enabled
-                                //After the construction the covered bits vector is to stay fixed,
-                                //therefore it is declared as constant and here we do a const_cast
-                                covered_info & covered_ref = const_cast<covered_info &> (m_covered);
-                                for (phrase_length idx = m_s_begin_word_idx; idx <= end_pos; ++idx) {
-                                    covered_ref.set(idx);
-                                }
+                            m_covered(covered), m_partial_score(prev_state_data.m_partial_score), m_total_score(0.0) {
+                                LOG_DEBUG1 << "Creating a new state, translating [" << m_s_begin_word_idx
+                                        << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
+                                        << ", lm_level=" << m_begin_lm_level << ", target = ___"
+                                        << m_target->get_target_phrase() << "___" << END_LOG;
+                                
+                                LOG_DEBUG1 << "Trans frame: " << m_trans_frame << END_LOG;
+                                
+                                LOG_DEBUG1 << "Covered: " << m_covered << END_LOG;
 
                                 //Update the partial score;
                                 update_partial_score(prev_state_data);
@@ -211,7 +227,11 @@ namespace uva {
                                 const word_uid * query_word_ids = m_trans_frame.get_elems() + num_words_to_skip;
 
                                 //Execute the query and return the value
-                                return m_stack_data.m_lm_query.execute(num_query_words, query_word_ids, m_begin_lm_level);
+                                //Logger::get_reporting_level() = DebugLevelsEnum::INFO2;
+                                const prob_weight prob =  m_stack_data.m_lm_query.execute(num_query_words, query_word_ids, m_begin_lm_level);
+                                //Logger::get_reporting_level() = DebugLevelsEnum::DEBUG2;
+                                
+                                return prob;
                             }
 
                             /**
