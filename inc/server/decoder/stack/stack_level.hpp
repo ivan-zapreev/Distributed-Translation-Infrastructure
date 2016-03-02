@@ -159,7 +159,9 @@ namespace uva {
                              * @param target_sent [out] the variable to store the translation
                              */
                             void get_best_trans(string & target_sent) const {
-                                //Assert sanity that there is something in the stack
+                                //Assert that there is something in the stack, if not
+                                //then it is possible we could not get any translation due
+                                //to an unexpected situation in the algorithms
                                 ASSERT_CONDITION_THROW((m_first_state == NULL),
                                         "The translation process failed, not translations!");
 
