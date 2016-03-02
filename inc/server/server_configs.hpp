@@ -72,9 +72,6 @@ namespace uva {
                     static const string TM_UNKNOWN_SOURCE_STR = u8"UNK";
                     //Stores the unknown target phrase string, should be configurable
                     static const string TM_UNKNOWN_TARGET_STR = u8"<unk>";
-
-                    //Stores the unknown source word log probability penalty
-                    static constexpr prob_weight UNK_SOURCE_WORD_LOG_PROB = -10.0f;
                 }
 
                 namespace lm {
@@ -99,7 +96,7 @@ namespace uva {
                     static const string END_SENTENCE_TAG_STR = u8"</s>";
                     
                     //The default value of the unknown word probability weight
-                    const prob_weight DEFAULT_UNK_WORD_LOG_PROB_WEIGHT = -10.0f;
+                    const prob_weight DEF_UNK_WORD_LOG_PROB_WEIGHT = -10.0f;
                 }
 
                 namespace rm {

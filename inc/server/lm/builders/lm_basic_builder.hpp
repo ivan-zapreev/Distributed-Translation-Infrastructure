@@ -73,7 +73,7 @@ namespace uva {
                              * This function will read from the file and build the trie
                              */
                             void build();
-
+                            
                             virtual ~lm_basic_builder();
                         private:
                             //Stores the reference to the model parameters
@@ -106,6 +106,12 @@ namespace uva {
                              * @param counts the learned M-gram counts
                              */
                             void pre_allocate(size_t counts[LM_M_GRAM_LEVEL_MAX]);
+
+                            /**
+                             * Allows to set the default UNK word data into the model,
+                             * shall be done before the uni-grams are loaded!
+                             */
+                            void set_def_unk_word_prob();
 
                             /**
                              * This method is used to read and process the ARPA data section

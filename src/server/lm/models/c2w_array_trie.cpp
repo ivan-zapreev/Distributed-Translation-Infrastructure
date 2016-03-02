@@ -50,7 +50,7 @@ namespace uva {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
-                        ASSERT_CONDITION_THROW((sizeof(uint32_t) != sizeof(word_uid)), string("Only works with a 32 bit word_uid!"));
+                        ASSERT_CONDITION_THROW((sizeof (uint32_t) != sizeof (word_uid)), string("Only works with a 32 bit word_uid!"));
 
                         //Memset the M grams reference and data arrays
                         memset(m_m_gram_ctx_2_data, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TSubArrReference *));
@@ -83,12 +83,7 @@ namespace uva {
                         m_1_gram_data = new m_gram_payload[m_one_gram_arr_size];
                         memset(m_1_gram_data, 0, m_one_gram_arr_size * sizeof (m_gram_payload));
 
-                        //04) Insert the unknown word data into the allocated array
-                        m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
-                        m_unk_data->m_prob = DEFAULT_UNK_WORD_LOG_PROB_WEIGHT;
-                        m_unk_data->m_back = 0.0;
-
-                        //05) Allocate data for the M-grams
+                        //04) Allocate data for the M-grams
 
                         //First allocate the contexts to data mappings for the 2-grams (stored under index 0)
                         //The number of contexts is the number of words in previous level 1 i.e. counts[0]
@@ -114,9 +109,17 @@ namespace uva {
                             memset(m_m_gram_data[i], 0, m_m_n_gram_num_ctx_ids[i] * sizeof (TWordIdPBEntry));
                         }
 
-                        //06) Allocate the data for the M-Grams.
+                        //05) Allocate the data for the M-Grams.
                         m_n_gram_data = new TCtxIdProbEntry[m_m_n_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR]];
                         memset(m_n_gram_data, 0, m_m_n_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] * sizeof (TCtxIdProbEntry));
+                    }
+
+                    template<typename WordIndexType>
+                    void C2WArrayTrie<WordIndexType>::set_def_unk_word_prob(const prob_weight prob) {
+                        //Insert the unknown word data into the allocated array
+                        m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
+                        m_unk_data->m_prob = prob;
+                        m_unk_data->m_back = 0.0;
                     }
 
                     template<typename WordIndexType>

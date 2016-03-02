@@ -60,75 +60,77 @@ namespace uva {
                         ASSERT_CONDITION_THROW((sizeof (uint32_t) != sizeof (word_uid)),
                                 string("Only works with a ") + to_string(sizeof (uint32_t)) + string(" byte word_uid!"));
 
-                                //Perform sanity checks
+                        //Perform sanity checks
                         if (DO_SANITY_CHECKS) {
                             //Initialize the hash statistics map
                             for (int i = 0; i < LM_M_GRAM_LEVEL_MAX; i++) {
 
                                 m_hash_sizes[i].first = UINT64_MAX;
-                                        m_hash_sizes[i].second = 0;
+                                m_hash_sizes[i].second = 0;
                             }
                         }
                     }
 
                     template<typename WordIndexType>
-                            void C2DMapTrie<WordIndexType>::pre_allocate_1_grams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                    void C2DMapTrie<WordIndexType>::pre_allocate_1_grams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Compute the number of words to be stored
 
                         const size_t num_word_ids = BASE::get_word_index().get_number_of_words(counts[0]);
 
-                                //Pre-allocate the 1-Gram data
-                                m_1_gram_data = new m_gram_payload[num_word_ids];
-                                memset(m_1_gram_data, 0, num_word_ids * sizeof (m_gram_payload));
-
-
-                                //Record the dummy probability and back-off values for the unknown word
-                                m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
-                                m_unk_data->m_prob = DEFAULT_UNK_WORD_LOG_PROB_WEIGHT;
-                                m_unk_data->m_back = 0.0;
+                        //Pre-allocate the 1-Gram data
+                        m_1_gram_data = new m_gram_payload[num_word_ids];
+                        memset(m_1_gram_data, 0, num_word_ids * sizeof (m_gram_payload));
                     }
 
                     template<typename WordIndexType>
-                            void C2DMapTrie<WordIndexType>::pre_allocate_m_grams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                    void C2DMapTrie<WordIndexType>::set_def_unk_word_prob(const prob_weight prob) {
+                        //Record the dummy probability and back-off values for the unknown word
+                        m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
+                        m_unk_data->m_prob = prob;
+                        m_unk_data->m_back = 0.0;
+                    }
+
+                    template<typename WordIndexType>
+                    void C2DMapTrie<WordIndexType>::pre_allocate_m_grams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Pre-allocate for the M-grams with 1 < M < N
                         for (int idx = 1; idx < (LM_M_GRAM_LEVEL_MAX - 1); idx++) {
                             //Get the number of elements to pre-allocate
 
                             const uint numEntries = counts[idx];
 
-                                    //Reserve the memory for the map
-                                    reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&m_m_gram_map_ptrs[idx - 1], &m_m_gram_alloc_ptrs[idx - 1], numEntries, "M-Grams", m_mgram_mem_factor);
+                            //Reserve the memory for the map
+                            reserve_mem_unordered_map<TMGramsMap, TMGramAllocator>(&m_m_gram_map_ptrs[idx - 1], &m_m_gram_alloc_ptrs[idx - 1], numEntries, "M-Grams", m_mgram_mem_factor);
                         }
                     }
 
                     template<typename WordIndexType>
-                            void C2DMapTrie<WordIndexType>::pre_allocate_n_grams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                    void C2DMapTrie<WordIndexType>::pre_allocate_n_grams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Get the number of elements to pre-allocate
 
                         const size_t numEntries = counts[LM_M_GRAM_LEVEL_MAX - 1];
 
-                                //Reserve the memory for the map
-                                reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&m_n_gram_map_ptr, &m_n_gram_alloc_ptr, numEntries, "N-Grams", m_ngram_mem_factor);
+                        //Reserve the memory for the map
+                        reserve_mem_unordered_map<TNGramsMap, TNGramAllocator>(&m_n_gram_map_ptr, &m_n_gram_alloc_ptr, numEntries, "N-Grams", m_ngram_mem_factor);
                     }
 
                     template<typename WordIndexType>
-                            void C2DMapTrie<WordIndexType>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                    void C2DMapTrie<WordIndexType>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Call the super class pre-allocator!
 
                         BASE::pre_allocate(counts);
 
-                                //Pre-allocate 0-Grams
-                                pre_allocate_1_grams(counts);
+                        //Pre-allocate 0-Grams
+                        pre_allocate_1_grams(counts);
 
-                                //Pre-allocate M-Grams
-                                pre_allocate_m_grams(counts);
+                        //Pre-allocate M-Grams
+                        pre_allocate_m_grams(counts);
 
-                                //Pre-allocate N-Grams
-                                pre_allocate_n_grams(counts);
+                        //Pre-allocate N-Grams
+                        pre_allocate_n_grams(counts);
                     }
 
                     template<typename WordIndexType>
-                            C2DMapTrie<WordIndexType>::~C2DMapTrie() {
+                    C2DMapTrie<WordIndexType>::~C2DMapTrie() {
                         if (DO_SANITY_CHECKS) {
                             //Print the hash sizes statistics
                             for (int i = 0; i < LM_M_GRAM_LEVEL_MAX; i++) {
@@ -152,10 +154,10 @@ namespace uva {
 
                     //Make sure that there will be templates instantiated, at least for the given parameter values
                     INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, basic_word_index);
-                            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, counting_word_index);
-                            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, hashing_word_index);
-                            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, basic_optimizing_word_index);
-                            INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, counting_optimizing_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, counting_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, hashing_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, basic_optimizing_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DMapTrie, counting_optimizing_word_index);
                 }
             }
         }

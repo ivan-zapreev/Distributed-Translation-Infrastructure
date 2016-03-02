@@ -68,10 +68,6 @@ namespace uva {
                         //Call the base-class
                         BASE::pre_allocate(counts);
 
-                        //Default initialize the unknown word payload data
-                        m_unk_data.m_prob = DEFAULT_UNK_WORD_LOG_PROB_WEIGHT;
-                        m_unk_data.m_back = 0.0;
-
                         //Initialize the m-gram maps
                         for (phrase_length idx = 0; idx < NUM_M_GRAM_LEVELS; idx++) {
                             m_m_gram_data[idx] = new TProbBackMap(__H2DMapTrie::BUCKETS_FACTOR, counts[idx]);
@@ -80,6 +76,13 @@ namespace uva {
                         //Initialize the n-gram's map
                         m_n_gram_data = new TProbMap(__H2DMapTrie::BUCKETS_FACTOR, counts[LM_M_GRAM_LEVEL_MAX - 1]);
                     };
+
+                    template<typename WordIndexType>
+                    void H2DMapTrie<WordIndexType>::set_def_unk_word_prob(const prob_weight prob) {
+                        //Default initialize the unknown word payload data
+                        m_unk_data.m_prob = prob;
+                        m_unk_data.m_back = 0.0;
+                    }
 
                     template<typename WordIndexType>
                     H2DMapTrie<WordIndexType>::~H2DMapTrie() {

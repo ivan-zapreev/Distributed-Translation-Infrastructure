@@ -211,6 +211,11 @@ namespace uva {
                         virtual void pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
 
                         /**
+                         * @see word_index_trie_base
+                         */
+                        void set_def_unk_word_prob(const prob_weight prob);
+
+                        /**
                          * This method allows to check if post processing should be called after
                          * all the X level grams are read. This method is virtual.
                          * For more details @see WordIndexTrieBase
@@ -311,7 +316,7 @@ namespace uva {
 
                             //The data is always present.
                             query.set_curr_payload(&m_1_gram_data[word_id]);
-                            
+
                             LOG_DEBUG << "The uni-gram word id " << SSTR(word_id) << " payload : "
                                     << (string) m_1_gram_data[word_id] << END_LOG;
                         };
@@ -321,7 +326,7 @@ namespace uva {
                          * For more details @see LayeredTrieBase
                          */
                         inline void get_m_gram_payload(m_gram_query & query, MGramStatusEnum & status) const {
-                            LOG_DEBUG << "Getting the payload for sub-m-gram : "<< query << END_LOG;
+                            LOG_DEBUG << "Getting the payload for sub-m-gram : " << query << END_LOG;
 
                             //First ensure the context of the given sub-m-gram
                             LAYERED_BASE_ENSURE_CONTEXT(query, status);
@@ -333,7 +338,7 @@ namespace uva {
                                 const TShortId & word_id = query.get_curr_end_word_id();
 
                                 //Compute the distance between words
-                                const phrase_length & curr_level =query.get_curr_level();
+                                const phrase_length & curr_level = query.get_curr_level();
                                 LOG_DEBUG << "curr_level: " << SSTR(curr_level) << ", ctx_id: " << ctx_id << ", m_end_word_idx: "
                                         << SSTR(query.m_curr_end_word_idx) << ", end word id: " << word_id << END_LOG;
 

@@ -122,14 +122,6 @@ namespace uva {
                             }
 
                             /**
-                             * Allows retrieve the UNK phrase entry
-                             * @return the pointer to the UNK entry
-                             */
-                            tm_const_source_entry * get_unk_entry() const {
-                                return m_unk_entry;
-                            }
-
-                            /**
                              * This method allows to detect if the number of entries
                              * (source phrases) is needed before the translation
                              * entries are being added.

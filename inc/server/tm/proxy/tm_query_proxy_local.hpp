@@ -64,13 +64,6 @@ namespace uva {
                             /**
                              * @see tm_query_proxy
                              */
-                            virtual tm_const_source_entry * get_unk_entry(){
-                                return m_query.get_unk_entry();
-                            }
-
-                            /**
-                             * @see tm_query_proxy
-                             */
                             virtual tm_const_source_entry * get_source_entry(const phrase_uid uid) {
                                 return m_query.get_source_entry(uid);
                             }

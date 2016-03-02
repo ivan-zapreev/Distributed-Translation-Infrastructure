@@ -98,6 +98,14 @@ namespace uva {
                         };
 
                         /**
+                         * Allows to set the default UNK word probability value, the back-off is set to zero
+                         * @param prob the unk word default probability value
+                         */
+                        void set_def_unk_word_prob(const prob_weight prob) {
+                            THROW_MUST_OVERRIDE();
+                        }
+
+                        /**
                          * Allows to retrieve the stored word index, if any
                          * @return the pointer to the stored word index or NULL if none
                          */

@@ -50,7 +50,7 @@ namespace uva {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
-                        ASSERT_CONDITION_THROW((sizeof(uint32_t) != sizeof(word_uid)), string("Only works with a 32 bit word_uid!"));
+                        ASSERT_CONDITION_THROW((sizeof (uint32_t) != sizeof (word_uid)), string("Only works with a 32 bit word_uid!"));
 
                         //Check for the storage memory sized. This one is needed to be able to store
                         //N-gram probabilities in the C type container as its value! See description
@@ -86,11 +86,6 @@ namespace uva {
                         m_mgram_data[0] = new m_gram_payload[m_word_arr_size];
                         memset(m_mgram_data[0], 0, m_word_arr_size * sizeof (m_gram_payload));
 
-                        //Record the dummy probability and back-off values for the unknown word
-                        m_unk_data = &m_mgram_data[0][UNKNOWN_WORD_ID];
-                        m_unk_data->m_prob = DEFAULT_UNK_WORD_LOG_PROB_WEIGHT;
-                        m_unk_data->m_back = 0.0;
-
                         //Allocate more memory for probabilities and back off weight for
                         //the remaining M-gram levels until M < N. For M==N there is no
                         //back-off weights and thus we will store the probabilities just
@@ -106,6 +101,15 @@ namespace uva {
                             m_mgram_mapping[idx] = new StorageContainer*[m_word_arr_size];
                             memset(m_mgram_mapping[idx], 0, m_word_arr_size * sizeof (StorageContainer*));
                         }
+                    }
+
+                    template<typename WordIndexType, template<phrase_length > class StorageFactory, class StorageContainer>
+                    void W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>::set_def_unk_word_prob(const prob_weight prob) {
+                        //Record the dummy probability and back-off values for the unknown word
+                        m_unk_data = &m_mgram_data[0][UNKNOWN_WORD_ID];
+                        m_unk_data->m_prob = prob;
+                        m_unk_data->m_back = 0.0;
+
                     }
 
                     template<typename WordIndexType, template<phrase_length > class StorageFactory, class StorageContainer>

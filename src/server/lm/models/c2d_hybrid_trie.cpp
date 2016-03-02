@@ -54,7 +54,7 @@ namespace uva {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX < M_GRAM_LEVEL_2), string("The minimum supported trie level is") + std::to_string(M_GRAM_LEVEL_2));
                         ASSERT_CONDITION_THROW((!word_index.is_word_index_continuous()), "This trie can not be used with a discontinuous word index!");
-                        ASSERT_CONDITION_THROW((sizeof(uint32_t) != sizeof(word_uid)), string("Only works with a 32 bit word_uid!"));
+                        ASSERT_CONDITION_THROW((sizeof (uint32_t) != sizeof (word_uid)), string("Only works with a 32 bit word_uid!"));
 
                         //Memset the M grams reference and data arrays
                         memset(m_m_gram_alloc_ptrs, 0, BASE::NUM_M_GRAM_LEVELS * sizeof (TMGramAllocator *));
@@ -78,11 +78,13 @@ namespace uva {
                         //Pre-allocate the 1-Gram data
                         m_1_gram_data = new m_gram_payload[num_word_ids];
                         memset(m_1_gram_data, 0, num_word_ids * sizeof (m_gram_payload));
+                    }
 
-
+                    template<typename WordIndexType>
+                    void C2DHybridTrie<WordIndexType>::set_def_unk_word_prob(const prob_weight prob) {
                         //Record the dummy probability and back-off values for the unknown word
                         m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
-                        m_unk_data->m_prob = DEFAULT_UNK_WORD_LOG_PROB_WEIGHT;
+                        m_unk_data->m_prob = prob;
                         m_unk_data->m_back = 0.0;
                     }
 

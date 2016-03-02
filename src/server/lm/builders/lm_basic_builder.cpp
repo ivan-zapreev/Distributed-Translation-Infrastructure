@@ -325,7 +325,7 @@ namespace uva {
                             //Check if the line that was input is the header of the N-grams section for N=level
                             if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
                                 //Check if we need to multiply with the m-gram weight
-                                if ( m_params.is_lm_weight()) {
+                                if (m_params.is_lm_weight()) {
                                     //Read the M-grams of the given level
                                     read_m_gram_level<CURR_LEVEL, true>();
                                 } else {
@@ -432,6 +432,11 @@ namespace uva {
                             read_data(counts);
                         }
 
+                        template<typename TrieType, typename TFileReaderModel>
+                        void lm_basic_builder<TrieType, TFileReaderModel>::set_def_unk_word_prob() {
+                            //Get the default log probability multiplied by the lambda weight
+                            m_trie.set_def_unk_word_prob( m_params.get_lm_weight() * DEF_UNK_WORD_LOG_PROB_WEIGHT);
+                        }
 
                         //Iterate through the ARPA file and fill in the back-off model of the trie
                         //Note that, this file reader will be made ads flexible as possible,
@@ -464,6 +469,9 @@ namespace uva {
 
                                 //Get the word counts, if needed
                                 get_word_counts();
+
+                                //Set the default UNK word data
+                                set_def_unk_word_prob();
 
                                 //Read the N-grams, starting from 1-Grams
                                 read_grams<M_GRAM_LEVEL_1>();

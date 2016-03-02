@@ -284,6 +284,11 @@ namespace uva {
                         }
 
                         /**
+                         * @see word_index_trie_base
+                         */
+                        void set_def_unk_word_prob(const prob_weight prob);
+                        
+                        /**
                          * The basic destructor
                          */
                         virtual ~C2DMapTrie();

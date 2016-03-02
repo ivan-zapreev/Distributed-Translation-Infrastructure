@@ -51,13 +51,7 @@ namespace uva {
                              * @param entry_ptr the reference to the source entry pointer to be set with the data
                              */
                             virtual void execute(const phrase_uid uid, tm_const_source_entry_ptr & entry_ptr) = 0;
-
-                            /**
-                             * Allows retrieve the UNK phrase entry
-                             * @return the pointer to the UNK entry
-                             */
-                            virtual tm_const_source_entry * get_unk_entry() = 0;
-
+                            
                             /**
                              * Allows retrieve the translations of the given source entry
                              * @param uid the unique identifier of the source phrase
@@ -72,14 +66,6 @@ namespace uva {
                              * @param st_uids the container for the source/target phrase identifiers
                              */
                             virtual void get_st_uids(vector<phrase_uid> & st_uids) const = 0;
-
-                            /**
-                             * Allows to retrieve the unknown source word log probability penalty 
-                             * @return the unknown source word log probability penalty
-                             */
-                            inline prob_weight get_unk_word_prob() const {
-                                return tm::UNK_SOURCE_WORD_LOG_PROB;
-                            }
 
                             /**
                              * The basic virtual destructor

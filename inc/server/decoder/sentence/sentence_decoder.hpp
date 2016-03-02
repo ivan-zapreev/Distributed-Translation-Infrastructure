@@ -168,9 +168,9 @@ namespace uva {
                                         LOG_DEBUG1 << "The source entry of phrase [" << start_idx << ", " << end_idx << "] is UNK translation." << END_LOG;
                                         //Check if this just a single unknown word
                                         if (start_idx == end_idx) {
-                                            //If it is an unknown word then get the lm probability plus the the unknown source word probability
-                                            //ToDo: Perhaps we shall use source_entry->get_min_cost(); instead, as this one is also computed!
-                                            cost = m_tm_query.get_unk_word_prob() + m_lm_query.get_unk_word_prob();
+                                            //For a single UNK word we take its minimum cost which will be actually 
+                                            //just the UNK translation cost plus the UNK language model probability
+                                            cost = source_entry->get_min_cost();
                                             LOG_DEBUG1 << "Initialize UNK word cost [" << start_idx << ", " << end_idx << "] = " << cost << END_LOG;
                                         } else {
                                             //The undefined log probability value "-1000" is set in the phrase data entry in its constructor!

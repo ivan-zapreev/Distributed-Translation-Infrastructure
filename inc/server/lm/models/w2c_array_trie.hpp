@@ -184,6 +184,11 @@ namespace uva {
                         }
 
                         /**
+                         * @see word_index_trie_base
+                         */
+                        void set_def_unk_word_prob(const prob_weight prob);
+
+                        /**
                          * This method can be used to provide the N-gram count information
                          * That should allow for pre-allocation of the memory
                          * For more details @see LayeredTrieBase

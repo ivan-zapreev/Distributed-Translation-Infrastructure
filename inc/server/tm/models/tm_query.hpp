@@ -115,14 +115,6 @@ namespace uva {
                             }
 
                             /**
-                             * Allows retrieve the UNK phrase entry
-                             * @return the pointer to the UNK entry
-                             */
-                            tm_const_source_entry * get_unk_entry() {
-                                return m_model.get_unk_entry();
-                            }
-
-                            /**
                              * Allows to get translations for the given source entry
                              * @param uid the unique identifier of the source phrase
                              * @return the pointer to the source entry or NULL if the translation is not found
