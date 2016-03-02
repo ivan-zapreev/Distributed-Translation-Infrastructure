@@ -146,30 +146,8 @@ namespace uva {
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual phrase_length execute(const phrase_length num_words,
-                                    const word_uid * word_ids, phrase_length min_level,
-                                    prob_weight & prob) {
-
-                                //Call the generic method, note that min_level is changed
-                                prob = execute(num_words, word_ids, min_level);
-
-                                LOG_DEBUG1 << "The resulting LM query probability is: " << prob << END_LOG;
-
-                                //Return the last considered min level
-                                return min_level;
-                            }
-
-                        protected:
-
-                            /**
-                             * Implements the query execution
-                             * @param num_words the number of words in the query
-                             * @param word_ids the word ids of the query
-                             * @param min_level [in/out] the m-gram level to begin with/the maximum considered m-gram level
-                             * @return the probability value
-                             */
-                            inline prob_weight execute(const phrase_length num_words, const word_uid * word_ids,
-                                    phrase_length & min_level) {
+                            virtual prob_weight execute(const phrase_length num_words,
+                                    const word_uid * word_ids, phrase_length & min_level) {
                                 //Re-initialize the joint prob reault with zero
                                 m_joint_prob = 0.0;
 

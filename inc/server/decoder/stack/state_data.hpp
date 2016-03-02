@@ -60,10 +60,10 @@ namespace uva {
                          * that however changes/mutates from state to state and thus
                          * is to be passed on from each state to its child.
                          */
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
                         struct state_data_templ {
-                            //Make the typedef for the stack state history
-                            typedef circular_queue<word_uid, MAX_M_GRAM_QUERY_LENGTH > state_history;
+                            //Make the typedef for the stack state translation frame
+                            typedef circular_queue<word_uid, MAX_M_GRAM_QUERY_LENGTH > state_frame;
 
                             //Make the typedef for the covered bitset
                             typedef bitset<NUM_WORDS_PER_SENTENCE> covered_info;
@@ -83,9 +83,10 @@ namespace uva {
                             : m_stack_data(stack_data),
                             m_s_begin_word_idx(UNDEFINED_WORD_IDX), m_s_end_word_idx(UNDEFINED_WORD_IDX),
                             m_stack_level(0), m_target(NULL),
-                            rm_entry_data(m_stack_data.m_rm_query.get_begin_tag_reorderin()),
+                            rm_entry_data(m_stack_data.m_rm_query.get_begin_tag_reordering()),
                             //Add the sentence begin tag uid to the target, since this is for the begin state
-                            m_history(1, &m_stack_data.m_lm_query.get_begin_tag_uid()),
+                            m_trans_frame(1, &m_stack_data.m_lm_query.get_begin_tag_uid()),
+                            m_begin_lm_level(M_GRAM_LEVEL_1),
                             m_covered(), m_partial_score(0.0), m_total_score(0.0) {
                             }
 
@@ -103,9 +104,10 @@ namespace uva {
                             //This is the next state level, i.e. the last one but there is of course no target for </s>
                             m_stack_level(prev_state_data.m_stack_level + 1), m_target(NULL),
                             //The reordering entry should contain the end tag reordering
-                            rm_entry_data(m_stack_data.m_rm_query.get_end_tag_reorderin()),
+                            rm_entry_data(m_stack_data.m_rm_query.get_end_tag_reordering()),
                             //Add the sentence end tag uid to the target, since this is for the end state
-                            m_history(prev_state_data.m_history, 1, &m_stack_data.m_lm_query.get_end_tag_uid()),
+                            m_trans_frame(prev_state_data.m_trans_frame, 1, &m_stack_data.m_lm_query.get_end_tag_uid()),
+                            m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             //The coverage vector stays the same, nothin new is added, we take over the partial score
                             m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score), m_total_score(0.0) {
                                 //Compute the end state final score, the new partial score is then the same as the total score
@@ -128,7 +130,8 @@ namespace uva {
                             m_s_begin_word_idx(begin_pos), m_s_end_word_idx(end_pos),
                             m_stack_level(prev_state_data.m_stack_level + (m_s_end_word_idx - m_s_begin_word_idx + 1)),
                             m_target(target), rm_entry_data(m_stack_data.m_rm_query.get_reordering(m_target->get_st_uid())),
-                            m_history(prev_state_data.m_history, m_target->get_num_words(), m_target->get_word_ids()),
+                            m_trans_frame(prev_state_data.m_trans_frame, m_target->get_num_words(), m_target->get_word_ids()),
+                            m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score), m_total_score(0.0) {
                                 //Update the covered vector with the bits that are now enabled
                                 //After the construction the covered bits vector is to stay fixed,
@@ -162,11 +165,14 @@ namespace uva {
                             //Stores the reference to the reordering model entry data corresponding to this state
                             const rm_entry & rm_entry_data;
 
-                            //Stores the translation history i.e. the number of translated
-                            //word ids up until now. This structure should be large enough
-                            //to store the maximum m-gram length - 1 from the LM plus the
-                            //maximum target phrase length from TM
-                            const state_history m_history;
+                            //Stores the translation frame i.e. the number of translated
+                            //word ids up until and including now. This structure should
+                            //be large enough to store the maximum m-gram length - 1 from
+                            //the LM plus the maximum target phrase length from TM
+                            const state_frame m_trans_frame;
+
+                            //Stores the minimum m-gram level to consider when computing the LM probability of the history
+                            phrase_length m_begin_lm_level;
 
                             //Stores the bitset of covered words indexes
                             const covered_info m_covered;
@@ -180,6 +186,33 @@ namespace uva {
                             const prob_weight m_total_score;
 
                         private:
+
+                            /**
+                             * Allows to retrieve the language model probability for the given query, to
+                             * do that we need to extract the query from the current translation frame
+                             */
+                            prob_weight get_lm_probability() {
+                                //The number of new words that came into translation is either the
+                                //number of words in the target or one, for the <s> or </s> tags
+                                const size_t num_new_words = ((m_target != NULL) ? m_target->get_num_words() : 1);
+
+                                //It is only for these new words that we need to compute the lm probabilities
+                                //for. So compute the current number of elements in the words' history.
+                                const size_t all_hist_words = m_trans_frame.get_size() - num_new_words;
+                                //The number of interesting words from the history is bounded by MAX_HISTORY_LENGTH
+                                const size_t act_hist_words = min(all_hist_words, MAX_HISTORY_LENGTH);
+                                
+                                //Compute the query length to consider
+                                const size_t num_query_words = act_hist_words + num_new_words;
+                                
+                                //Compute the number of words we need to skip in the query from the translation frame
+                                const size_t num_words_to_skip = all_hist_words - act_hist_words;
+                                //Compute the pointer to the beginning of the query words array
+                                const word_uid * query_word_ids = m_trans_frame.get_elems() + num_words_to_skip;
+
+                                //Execute the query and return the value
+                                return m_stack_data.m_lm_query.execute(num_query_words, query_word_ids, m_begin_lm_level);
+                            }
 
                             /**
                              * Allows to compute the reordering orientatino for the phrase based lexicolized reordering model
@@ -217,9 +250,8 @@ namespace uva {
                                 //thus it is declared as constant and here we do a const_cast
                                 prob_weight & partial_score = const_cast<prob_weight &> (m_partial_score);
 
-                                //ToDo: Add the language model probability
-                                //partial_score +=;
-                                THROW_NOT_IMPLEMENTED();
+                                //Add the language model probability
+                                partial_score += get_lm_probability();
 
                                 //Add the distance based reordering penalty
                                 partial_score += -abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
@@ -250,9 +282,8 @@ namespace uva {
                                 //Add the phrase translation probability
                                 partial_score += m_target->get_total_weight();
 
-                                //ToDo: Add the language model probability
-                                //partial_score +=;
-                                THROW_NOT_IMPLEMENTED();
+                                //Add the language model probability
+                                partial_score += get_lm_probability();
 
                                 //Add the phrase penalty
                                 partial_score += m_stack_data.m_params.m_phrase_penalty;
@@ -286,11 +317,11 @@ namespace uva {
                             }
                         };
 
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_QUERY_LENGTH>
-                        constexpr int32_t state_data_templ<NUM_WORDS_PER_SENTENCE, MAX_M_GRAM_QUERY_LENGTH>::UNDEFINED_WORD_IDX;
+                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        constexpr int32_t state_data_templ<NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>::UNDEFINED_WORD_IDX;
 
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_QUERY_LENGTH>
-                        constexpr int32_t state_data_templ<NUM_WORDS_PER_SENTENCE, MAX_M_GRAM_QUERY_LENGTH>::ZERRO_WORD_IDX;
+                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        constexpr int32_t state_data_templ<NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>::ZERRO_WORD_IDX;
                     }
                 }
             }

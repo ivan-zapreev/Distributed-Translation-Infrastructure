@@ -63,13 +63,13 @@ namespace uva {
                              * Allows to retrieve the begin tag reordering entry from the reordering model
                              * @return the start tag reordering entry
                              */
-                            virtual const rm_entry & get_begin_tag_reorderin() const = 0;
+                            virtual const rm_entry & get_begin_tag_reordering() const = 0;
                             
                             /**
                              * Allows to retrieve the end tag reordering entry from the reordering model
                              * @return the start tag reordering entry
                              */
-                            virtual const rm_entry & get_end_tag_reorderin() const = 0;
+                            virtual const rm_entry & get_end_tag_reordering() const = 0;
 
                             /**
                              * Allows to get the source/target reordering data from the reordering model

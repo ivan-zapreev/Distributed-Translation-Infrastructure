@@ -61,11 +61,11 @@ namespace uva {
                         /**
                          * This is the translation stack state class that is responsible for the sentence translation
                          */
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
                         class stack_state_templ {
                         public:
                             //Typedef the state data template for a shorter name
-                            typedef state_data_templ<NUM_WORDS_PER_SENTENCE, MAX_M_GRAM_QUERY_LENGTH> state_data;
+                            typedef state_data_templ<NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> state_data;
 
                             /**
                              * The basic constructor for the begin stack state

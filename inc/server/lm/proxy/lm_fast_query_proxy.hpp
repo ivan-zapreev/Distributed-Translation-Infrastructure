@@ -60,13 +60,13 @@ namespace uva {
                              * @return the target source word log probability penalty
                              */
                             virtual prob_weight get_unk_word_prob() const = 0;
-                            
+
                             /**
                              * Allows to retrieve the begin tag uid value
                              * @return the begin tag "<s>" uid
                              */
                             virtual const word_uid & get_begin_tag_uid() const = 0;
-                            
+
                             /**
                              * Allows to retrieve the end tag uid value
                              * @return the end tag "</s>" uid
@@ -115,13 +115,12 @@ namespace uva {
                              * of words must be LM_MAX_QUERY_LEN
                              * @param [in] word_ids the word identifiers of the words of the target phrase
                              * to compute the probability for
-                             * @param [in] min_level the first m-gram level to consider
-                             * @param [out] the variable to add the probability weight to
-                             * @return the next minimum m-gram level to consider
+                             * @param [in/out] min_level the first m-gram level to consider, the next
+                             * minimum m-gram level to consider, is limited by LM_M_GRAM_LEVEL_MAX
+                             * @return the resulting probability weight
                              */
-                            virtual phrase_length execute(const phrase_length num_words,
-                                    const word_uid * word_ids, phrase_length min_level,
-                                    prob_weight & prob) = 0;
+                            virtual prob_weight execute(const phrase_length num_words,
+                                    const word_uid * word_ids, phrase_length & min_level) = 0;
                         };
                     }
                 }

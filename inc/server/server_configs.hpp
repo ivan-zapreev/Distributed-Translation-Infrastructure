@@ -85,8 +85,10 @@ namespace uva {
 
                     //The considered maximum length of the N-gram 
                     static constexpr uint8_t LM_M_GRAM_LEVEL_MAX = 5u;
+                    //The maximum considered length of the m-gram history
+                    static constexpr uint8_t LM_HISTORY_LEN_MAX = LM_M_GRAM_LEVEL_MAX - 1;
                     //The considered maximum length of the N-gram query
-                    static constexpr uint8_t LM_MAX_QUERY_LEN = tm::TM_MAX_TARGET_PHRASE_LEN + LM_M_GRAM_LEVEL_MAX - 1;
+                    static constexpr uint8_t LM_MAX_QUERY_LEN = tm::TM_MAX_TARGET_PHRASE_LEN + LM_HISTORY_LEN_MAX;
 
                     //Stores the unknown word string, should be configurable
                     static const string UNKNOWN_WORD_STR = u8"<unk>";

@@ -125,15 +125,23 @@ namespace uva {
                  * Allows to obtain the number of stored elements
                  * @return the number of stored elements
                  */
-                size_t get_size() {
+                size_t get_size() const {
                     return m_size;
+                }
+
+                /**
+                 * Allows to obtain the pointer to the array storing the elements
+                 * @return the pointer to the array storing the elements
+                 */
+                const elem_type * get_elems() const {
+                    return m_elems;
                 }
 
                 /**
                  * Allows to obtain the maximum number of elements to store
                  * @return the maximum number of elements to store
                  */
-                size_t get_capacity() {
+                size_t get_capacity() const {
                     return capacity;
                 }
 
