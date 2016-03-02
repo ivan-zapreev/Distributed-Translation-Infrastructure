@@ -160,8 +160,8 @@ namespace uva {
                              */
                             void get_best_trans(string & target_sent) const {
                                 //Assert sanity that there is something in the stack
-                                ASSERT_SANITY_THROW((m_first_state == NULL),
-                                        "Can't get the best translation, the stack level is empty!");
+                                ASSERT_CONDITION_THROW((m_first_state == NULL),
+                                        "The translation process failed, not translations!");
 
                                 //Call the get-translation function of the most probable state in the stack
                                 m_first_state->get_translation(target_sent);
