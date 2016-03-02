@@ -89,7 +89,7 @@ namespace uva {
                                     const rm_query_proxy & rm_query,
                                     lm_fast_query_proxy & lm_query)
                             : m_data(params, is_stop, source_sent, sent_data, rm_query, lm_query, bind(&multi_stack::add_stack_state, this, _1)),
-                            m_num_levels(m_data.m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS), m_curr_level(MIN_STACK_LEVEL) {
+                            m_num_levels(m_data.m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << m_data.m_params << END_LOG;
 
                                 LOG_DEBUG2 << "Creating a stack levels array of " << m_num_levels << " elements." << END_LOG;
@@ -98,7 +98,7 @@ namespace uva {
                                 m_levels = new stack_level_ptr[m_num_levels]();
 
                                 LOG_DEBUG2 << "The minimum stack level is " << MIN_STACK_LEVEL << END_LOG;
-                                
+
                                 //Initialize the stack levels
                                 for (uint32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
                                     m_levels[level] = new stack_level(m_data.m_params, m_data.m_is_stop);
@@ -137,20 +137,26 @@ namespace uva {
                              * Allows to extend the hypothesis, when extending the stack we immediately re-combine
                              */
                             void expand() {
+                                //Define the max stack level constant
+                                const size_t MAX_STACK_LEVEL = (m_num_levels - 1);
+                                //Stores the current stack level index
+                                uint32_t curr_level = MIN_STACK_LEVEL;
+
                                 //Iterate the stack levels and expand them one by one 
                                 //until the last one or until we are requested to stop
-                                const size_t MAX_STACK_LEVEL = (m_num_levels-1); 
-                                while (!m_data.m_is_stop && (m_curr_level <= MAX_STACK_LEVEL)) {
-                                    LOG_DEBUG << ">>>>> Start LEVEL (" << m_curr_level << "/ " << MAX_STACK_LEVEL << ") expansion" << END_LOG;
-                                    
+                                //Note: the last stack level is for the end state </s>
+                                //it should not be expanded!
+                                while (!m_data.m_is_stop && (curr_level < MAX_STACK_LEVEL)) {
+                                    LOG_DEBUG << ">>>>> Start LEVEL (" << curr_level << "/ " << MAX_STACK_LEVEL << ") expansion" << END_LOG;
+
                                     //Here we expand the stack level and then
                                     //increment the current level index variable
-                                    m_levels[m_curr_level]->expand();
-                                    
-                                    LOG_DEBUG << "<<<<< End LEVEL (" << m_curr_level << "/ " << MAX_STACK_LEVEL << ") expansion" << END_LOG;
-                                    
+                                    m_levels[curr_level]->expand();
+
+                                    LOG_DEBUG << "<<<<< End LEVEL (" << curr_level << "/ " << MAX_STACK_LEVEL << ") expansion" << END_LOG;
+
                                     //Move to the next level
-                                    m_curr_level++;
+                                    ++curr_level;
                                 }
                             }
 
@@ -160,15 +166,16 @@ namespace uva {
                              * @param target_sent [out] the variable to store the translation
                              */
                             void get_best_trans(string & target_sent) const {
-                                //Sanity check that the translation has been finished
-                                ASSERT_SANITY_THROW((m_curr_level != m_num_levels),
-                                        string("The translation was not finished, ") +
-                                        string("the next-to-consider stack level is ") +
-                                        to_string(m_curr_level) + string(" the last-to-") +
-                                        string("consider is ") + to_string(m_num_levels - 1));
-
+                                //Define the max stack level constant
+                                const size_t MAX_STACK_LEVEL = (m_num_levels - 1);
+                                
+                                LOG_DEBUG << "Requesting the best translation from level " << MAX_STACK_LEVEL << END_LOG;
+                                
                                 //Request the last level for the best translation
-                                m_levels[m_num_levels - 1]->get_best_trans(target_sent);
+                                m_levels[MAX_STACK_LEVEL]->get_best_trans(target_sent);
+                                
+                                LOG_DEBUG << "The best translation from level " << MAX_STACK_LEVEL
+                                        << " is ___" << target_sent << "___" << END_LOG;
                             }
 
                         protected:
@@ -183,7 +190,7 @@ namespace uva {
 
                                 //Get the new state stack level
                                 const uint32_t level = new_state->get_stack_level();
-                                
+
                                 LOG_DEBUG << "Adding a new state (" << new_state << ") to stack level " << level << END_LOG;
 
                                 //Perform a sanity check that the state is of a proper level
@@ -194,7 +201,7 @@ namespace uva {
 
                                 //Add the state to the corresponding stack
                                 m_levels[level]->add_state(new_state);
-                                
+
                                 LOG_DEBUG << "The state (" << new_state << ") is added to level " << level << END_LOG;
                             }
 
@@ -204,8 +211,6 @@ namespace uva {
 
                             //Stores the number of multi-stack levels
                             const uint32_t m_num_levels;
-                            //Stores the current stack level index
-                            uint32_t m_curr_level;
 
                             //This is a pointer to the array of stacks, one stack per number of covered words.
                             stack_level_ptr * m_levels;

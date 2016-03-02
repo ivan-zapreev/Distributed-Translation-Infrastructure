@@ -163,28 +163,32 @@ namespace uva {
                                 if (m_parent != NULL) {
                                     //Go recursively to the parent
                                     m_parent->get_translation(target_sent);
-
-                                    //Add the space after the parent's text
-                                    target_sent += UTF8_SPACE_STRING;
                                 }
 
-                                //Append the space plus the current state translation
-                                if (m_state_data.m_target->is_unk_trans()) {
-                                    //If this is an unknown translation then just copy the original source text
+                                //Check that the target is not NULL if it is then
+                                //it is either the begin <s> or end </s> state
+                                if (m_state_data.m_target != NULL) {
+                                    //Append the space plus the current state translation
+                                    if (m_state_data.m_target->is_unk_trans()) {
+                                        //If this is an unknown translation then just copy the original source text
 
-                                    //Get the begin and end source phrase word indexes
-                                    const phrase_length begin_word_idx = m_state_data.m_s_begin_word_idx;
-                                    const phrase_length end_word_idx = m_state_data.m_s_end_word_idx;
+                                        //Get the begin and end source phrase word indexes
+                                        const phrase_length begin_word_idx = m_state_data.m_s_begin_word_idx;
+                                        const phrase_length end_word_idx = m_state_data.m_s_end_word_idx;
 
-                                    //Get the begin and end source phrase character indexes
-                                    const uint32_t begin_ch_idx = m_state_data.m_stack_data.m_sent_data[begin_word_idx][begin_word_idx].m_begin_ch_idx;
-                                    const uint32_t end_ch_idx = m_state_data.m_stack_data.m_sent_data[end_word_idx][end_word_idx].m_end_ch_idx;
+                                        //Get the begin and end source phrase character indexes
+                                        const uint32_t begin_ch_idx = m_state_data.m_stack_data.m_sent_data[begin_word_idx][begin_word_idx].m_begin_ch_idx;
+                                        const uint32_t end_ch_idx = m_state_data.m_stack_data.m_sent_data[end_word_idx][end_word_idx].m_end_ch_idx;
 
-                                    //Add the source phrase to the target
-                                    target_sent += m_state_data.m_stack_data.m_source_sent.substr(begin_ch_idx, end_ch_idx - begin_ch_idx);
-                                } else {
-                                    //If this is a known translation then add the translation text
-                                    target_sent += m_state_data.m_target->get_target_phrase();
+                                        //Add the source phrase to the target
+                                        target_sent += m_state_data.m_stack_data.m_source_sent.substr(begin_ch_idx, end_ch_idx - begin_ch_idx);
+                                    } else {
+                                        //If this is a known translation then add the translation text
+                                        target_sent += m_state_data.m_target->get_target_phrase();
+                                    }
+                                    
+                                    //Add the space after the new phrase
+                                    target_sent += UTF8_SPACE_STRING;
                                 }
                             }
 
@@ -241,7 +245,7 @@ namespace uva {
                              */
                             inline void expand_left() {
                                 LOG_DEBUG1 << ">>>>>" << END_LOG;
-                                
+
                                 //Iterate to the left of the last begin positions until the position is valid and the distortion is within the limits
                                 for (int32_t start_pos = (m_state_data.m_s_begin_word_idx - 1);
                                         (start_pos >= 0) && is_dist_ok(start_pos); start_pos--) {
@@ -251,7 +255,7 @@ namespace uva {
                                         expand_length(start_pos);
                                     }
                                 }
-                                
+
                                 LOG_DEBUG1 << "<<<<<" << END_LOG;
                             }
 
@@ -260,7 +264,7 @@ namespace uva {
                              */
                             inline void expand_right() {
                                 LOG_DEBUG1 << ">>>>>" << END_LOG;
-                                
+
                                 //Iterate to the right of the last positions until the position is valid and the distortion is within the limits
                                 for (uint32_t start_pos = (m_state_data.m_s_end_word_idx + 1);
                                         (start_pos < m_state_data.m_stack_data.m_sent_data.get_dim()) && is_dist_ok(start_pos); ++start_pos) {
@@ -279,7 +283,7 @@ namespace uva {
                              */
                             inline void expand_length(const size_t start_pos) {
                                 LOG_DEBUG1 << ">>>>> [" << start_pos << "]" << END_LOG;
-                                
+
                                 //Always take the one word translation even if
                                 //It is an unknown entry.
                                 size_t end_pos = start_pos;
@@ -310,10 +314,10 @@ namespace uva {
                             template<bool single_word>
                             inline void expand_trans(const size_t start_pos, const size_t end_pos) {
                                 LOG_DEBUG1 << ">>>>> [" << start_pos << ", " << end_pos << "]" << END_LOG;
-                                
+
                                 //Obtain the source entry for the currently considered source phrase
                                 tm_const_source_entry_ptr entry = m_state_data.m_stack_data.m_sent_data[start_pos][end_pos].m_source_entry;
-                                
+
                                 ASSERT_SANITY_THROW((entry == NULL),
                                         string("The source entry [") + to_string(start_pos) +
                                         string(", ") + to_string(end_pos) + string("] is NULL!"));
@@ -338,7 +342,7 @@ namespace uva {
                                     //Do nothing we have an unknown phrase of length > 1
                                     LOG_DEBUG << "The source phrase [" << start_pos << ", " << end_pos << "] has no translations, ignoring!" << END_LOG;
                                 }
-                                
+
                                 LOG_DEBUG1 << "<<<<< [" << start_pos << ", " << end_pos << "]" << END_LOG;
                             }
 
