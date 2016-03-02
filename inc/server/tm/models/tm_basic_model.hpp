@@ -122,6 +122,14 @@ namespace uva {
                             }
 
                             /**
+                             * Allows retrieve the UNK phrase entry
+                             * @return the pointer to the UNK entry
+                             */
+                            tm_const_source_entry * get_unk_entry() const {
+                                return m_unk_entry;
+                            }
+
+                            /**
                              * This method allows to detect if the number of entries
                              * (source phrases) is needed before the translation
                              * entries are being added.
@@ -201,22 +209,27 @@ namespace uva {
                              *               if false then if the entry is not present we return NULL
                              *               The default value is true.
                              * @param entry_id the source phrase id
-                             * @return the source phrase entry or UNK or NULL
+                             * @return the source phrase entry or UNK if the entry is not found
                              */
-                            template<bool do_unk = true >
-                            tm_const_source_entry_ptr get_source_entry(const phrase_uid entry_id) const {
+                            template<bool do_unk>
+                            tm_const_source_entry * get_source_entry(const phrase_uid entry_id) const {
                                 tm_const_source_entry_ptr entry = m_tm_data->get_element(entry_id, entry_id);
-                                if (do_unk) {
-                                    if (entry != NULL) {
-                                        LOG_DEBUG1 << "Found the source entry for the source uid: " << entry_id << END_LOG;
-                                        return entry;
-                                    } else {
-                                        LOG_DEBUG1 << "Returning the UNK translation for the source uid: " << entry_id << END_LOG;
-                                        return m_unk_entry;
-                                    }
-                                } else {
+                                if (do_unk || (entry != NULL)) {
+                                    LOG_DEBUG1 << "The ptr to the source entry of uid: " << entry_id << " is " << entry << END_LOG;
                                     return entry;
+                                } else {
+                                    LOG_DEBUG1 << "Returning the UNK translation for the source uid: " << entry_id << END_LOG;
+                                    return m_unk_entry;
                                 }
+                            }
+
+                            /**
+                             * Allows to check in the given entry is the UNK entry
+                             * @param entry the pointer to the entry to be tested
+                             * @return true if this is an UNK entry otherwise false
+                             */
+                            inline bool is_unk_entry(tm_const_source_entry * entry) const {
+                                return (entry == m_unk_entry) || (*entry == *m_unk_entry);
                             }
 
                             /**

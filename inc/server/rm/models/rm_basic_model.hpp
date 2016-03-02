@@ -159,17 +159,17 @@ namespace uva {
                                 m_begin_entry = get_entry(BEGIN_SENT_TAG_UID, BEGIN_SENT_TAG_UID);
 
                                 //Assert on that the <s> ||| <s> entry is found!
-                                ASSERT_CONDITION_THROW((m_begin_entry == NULL), string("Could not find the ") +
-                                        lm::BEGIN_SENTENCE_TAG_STR + string("/") + lm::BEGIN_SENTENCE_TAG_STR +
-                                        string(" entry in the reordering model!"));
+                                ASSERT_CONDITION_THROW(((m_begin_entry == NULL) || (m_begin_entry == m_unk_entry)),
+                                        string("Could not find the ") + lm::BEGIN_SENTENCE_TAG_STR + string("/") +
+                                        lm::BEGIN_SENTENCE_TAG_STR + string(" entry in the reordering model!"));
                                 
                                 //Try to find the </s> ||| </s> entry
                                 m_end_entry = get_entry(END_SENT_TAG_UID, END_SENT_TAG_UID);
 
                                 //Assert on that the </s> ||| </s> entry is found!
-                                ASSERT_CONDITION_THROW((m_end_entry == NULL), string("Could not find the ") +
-                                        lm::END_SENTENCE_TAG_STR + string("/") + lm::END_SENTENCE_TAG_STR +
-                                        string(" entry in the reordering model!"));
+                                ASSERT_CONDITION_THROW(((m_end_entry == NULL) || (m_end_entry == m_unk_entry)),
+                                        string("Could not find the ") + lm::END_SENTENCE_TAG_STR + string("/") +
+                                        lm::END_SENTENCE_TAG_STR + string(" entry in the reordering model!"));
                             }
                             
                             /**

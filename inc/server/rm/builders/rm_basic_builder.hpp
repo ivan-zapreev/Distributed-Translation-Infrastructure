@@ -151,7 +151,7 @@ namespace uva {
                                 string source_str = "";
                                 phrase_uid source_uid = UNDEFINED_PHRASE_ID;
                                 phrase_uid target_uid = UNDEFINED_PHRASE_ID;
-                                tm_const_source_entry_ptr source_entry = NULL;
+                                tm_const_source_entry * source_entry = NULL;
                                 bool is_good_source = false;
                                 bool is_good_target = false;
 
@@ -180,7 +180,7 @@ namespace uva {
                                                 (target_uid == m_model.BEGIN_SENT_TAG_UID) ||
                                                 (target_uid == m_model.END_SENT_TAG_UID));
 
-                                        LOG_DEBUG1 << "The TM source entry '" << source_str << "' with id " << source_uid
+                                        LOG_DEBUG1 << "The RM source entry '" << source_str << "' with id " << source_uid
                                                 << " is " << (is_good_source ? "" : "not") << " good!" << END_LOG;
                                     }
 
@@ -191,13 +191,13 @@ namespace uva {
                                         string target_str = target.str();
                                         trim(target_str);
 
-                                        LOG_DEBUG << "Got rm entry: " << source_str << " / " << target_str << END_LOG;
+                                        LOG_DEBUG << "Got the RM source/target entry: " << source_str << " / " << target_str << END_LOG;
 
                                         //Parse the rest of the target entry
                                         target_uid = get_phrase_uid<true>(target_str);
 
                                         //Check if the given translation phrase is known
-                                        is_good_target = (source_entry->has_target(target_uid) ||
+                                        is_good_target = (((source_entry != NULL) && source_entry->has_target(target_uid)) ||
                                                 (target_uid == m_model.TARGET_UNK_UID) ||
                                                 (target_uid == m_model.BEGIN_SENT_TAG_UID) ||
                                                 (target_uid == m_model.END_SENT_TAG_UID));

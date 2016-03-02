@@ -229,6 +229,15 @@ namespace uva {
                             }
 
                             /**
+                             * The comparison operator, allows to compare source entries
+                             * @param other the the source entry to compare with
+                             * @return true if the uid of the provided entry is equal to the uid of this entry, otherwise false 
+                             */
+                            inline bool operator==(const tm_source_entry & other) const {
+                                return (m_source_uid == other.m_source_uid);
+                            }
+
+                            /**
                              * Allows to get the number of target entries
                              * @return the number of target entries, or 0 if none
                              */
@@ -257,8 +266,11 @@ namespace uva {
                             prob_weight m_min_cost;
                         };
 
+                        //Define the constant source entry
+                        typedef const tm_source_entry tm_const_source_entry;
+                        
                         //Define the pointer to the const source entry
-                        typedef const tm_source_entry * tm_const_source_entry_ptr;
+                        typedef tm_const_source_entry * tm_const_source_entry_ptr;
 
                         //Define the pointer to the source entry
                         typedef tm_source_entry * tm_source_entry_ptr;

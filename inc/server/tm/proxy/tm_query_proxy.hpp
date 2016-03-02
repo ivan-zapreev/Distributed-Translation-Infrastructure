@@ -53,11 +53,17 @@ namespace uva {
                             virtual void execute(const phrase_uid uid, tm_const_source_entry_ptr & entry_ptr) = 0;
 
                             /**
+                             * Allows retrieve the UNK phrase entry
+                             * @return the pointer to the UNK entry
+                             */
+                            virtual tm_const_source_entry * get_unk_entry() = 0;
+
+                            /**
                              * Allows retrieve the translations of the given source entry
                              * @param uid the unique identifier of the source phrase
-                             * @return the pointer to the source entry or NULL if the entry is not present
+                             * @return the pointer to the source entry or NULL if the translation is not found
                              */
-                            virtual tm_const_source_entry_ptr get_source_entry(const phrase_uid uid) = 0;
+                            virtual tm_const_source_entry * get_source_entry(const phrase_uid uid) = 0;
 
                             /**
                              * Allows to get all the source/target phrase identifiers

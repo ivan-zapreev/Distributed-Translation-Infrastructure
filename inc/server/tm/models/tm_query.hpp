@@ -96,7 +96,7 @@ namespace uva {
                                 //If there has not been retrieved anything for this phrase then ask the model                                
                                 if (iter == m_query_data.end()) {
                                     //Search the model and store the pointer to the found entry
-                                    entry_ptr = m_model.get_source_entry(uid);
+                                    entry_ptr = m_model.template get_source_entry<true>(uid);
 
                                     //Store the pointer into the local map
                                     m_query_data[uid] = entry_ptr;
@@ -115,13 +115,21 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to check whether the given source phrase has translation
-                             * @param uid the unique identifier of the source phrase
-                             * @return true if the translations of this phrase are known, otherwise false
+                             * Allows retrieve the UNK phrase entry
+                             * @return the pointer to the UNK entry
                              */
-                            inline tm_const_source_entry_ptr get_source_entry(const phrase_uid uid) {
-                                LOG_DEBUG1 << "Getting translations for the phrase uid: " << uid << END_LOG;
+                            tm_const_source_entry * get_unk_entry() {
+                                return m_model.get_unk_entry();
+                            }
 
+                            /**
+                             * Allows to get translations for the given source entry
+                             * @param uid the unique identifier of the source phrase
+                             * @return the pointer to the source entry or NULL if the translation is not found
+                             */
+                            inline tm_const_source_entry * get_source_entry(const phrase_uid uid) {
+                                LOG_DEBUG1 << "Getting translations for the phrase uid: " << uid << END_LOG;
+                                
                                 return m_model.template get_source_entry<false>(uid);
                             }
 
