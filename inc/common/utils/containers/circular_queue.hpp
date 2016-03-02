@@ -97,8 +97,8 @@ namespace uva {
                         //Compute the number of elements from the queue to keep
                         const size_t num_from_queue = min(other.m_size, max_num_from_queue);
 
-                        LOG_DEBUG2 << "The max num of elems to copy from the other queue is: " << max_num_from_queue
-                                << ", the number of elems that will be copied is: " << num_from_queue << END_LOG;
+                        LOG_DEBUG2 << "The max num of elem(s) to copy from the other queue is: " << max_num_from_queue
+                                << ", the number of elem(s) that will be copied is: " << num_from_queue << END_LOG;
 
                         //Add the other queue elements, only the ones that we need to take over
                         push_back(num_from_queue, other.m_elems + (other.m_size - num_from_queue));
@@ -152,7 +152,7 @@ namespace uva {
                  * Allows to push back an entire array 
                  */
                 void push_back(const size_t num_elems, const elem_type * elems) {
-                    LOG_DEBUG2 << "Pushing " << num_elems << " elems to the queue of size: "
+                    LOG_DEBUG2 << "Pushing " << num_elems << " elem(s) to the queue of size: "
                             << m_size << " and capacity: " << capacity << END_LOG;
 
                     //Compute the new size right away
@@ -184,7 +184,7 @@ namespace uva {
                             //Compute the sub-array element index to copy from
                             const size_t begin_idx = (num_elems - capacity);
 
-                            LOG_DEBUG2 << "Copying " << capacity << " elems from position: "
+                            LOG_DEBUG2 << "Copying " << capacity << " elem(s) from position: "
                                     << begin_idx << " to position 0 of the target " << END_LOG;
 
                             //Compute the position to start copying from, we only need last "capacity" elements
@@ -214,7 +214,7 @@ namespace uva {
                             //Move the elements we have to keep to the beginning of the queue
                             memmove(m_elems, m_elems + num_push_out, num_keep);
 
-                            LOG_DEBUG << "Copying " << num_elems << " elements from "
+                            LOG_DEBUG << "Copying " << num_elems << " elem(s) from "
                                     << "position 0 to position: " << num_keep << END_LOG;
 
                             //Copy the elements into the freed remainder of the array
