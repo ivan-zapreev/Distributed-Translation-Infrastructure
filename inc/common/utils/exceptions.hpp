@@ -49,6 +49,7 @@ namespace uva {
     } else { \
         msg << __FILENAME__ << ": " << (text); \
     } \
+    LOG_DEBUG << "<THROWING> " << msg.str() << END_LOG; \
     throw Exception(msg.str()); \
 }
             

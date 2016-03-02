@@ -90,9 +90,13 @@ namespace uva {
                             m_num_levels(m_data.m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS), m_curr_level(MIN_STACK_LEVEL) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << m_data.m_params << END_LOG;
 
+                                LOG_DEBUG2 << "Creating a stack levels array of " << m_num_levels << " elements." << END_LOG;
+
                                 //Instantiate an array of stack level pointers
                                 m_levels = new stack_level_ptr[m_num_levels]();
 
+                                LOG_DEBUG2 << "The minimum stack level is " << MIN_STACK_LEVEL << END_LOG;
+                                
                                 //Initialize the stack levels
                                 for (uint32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
                                     m_levels[level] = new stack_level(m_data.m_params, m_data.m_is_stop);
@@ -101,7 +105,12 @@ namespace uva {
                                 //Add the root state to the stack, the root state must have 
                                 //information about the sentence data, rm and lm query and 
                                 //have a method for adding a state expansion to the stack.
-                                m_levels[MIN_STACK_LEVEL]->add_state(new stack_state(m_data));
+                                LOG_DEBUG2 << "Creating the begin stack state" << END_LOG;
+                                stack_state_ptr begin_state = new stack_state(m_data);
+                                LOG_DEBUG2 << "Adding the begin stack state to level " << MIN_STACK_LEVEL << END_LOG;
+                                m_levels[MIN_STACK_LEVEL]->add_state(begin_state);
+
+                                LOG_DEBUG2 << "The multi-stack creation is done" << END_LOG;
                             }
 
                             /**
