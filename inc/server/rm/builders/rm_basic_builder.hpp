@@ -177,8 +177,8 @@ namespace uva {
                                         //Check if the a know the source entry
                                         is_good_source = ((source_entry != NULL) ||
                                                 (source_uid == m_model.SOURCE_UNK_UID) ||
-                                                (target_uid == m_model.BEGIN_SENT_TAG_UID) ||
-                                                (target_uid == m_model.END_SENT_TAG_UID));
+                                                (source_uid == m_model.BEGIN_SENT_TAG_UID) ||
+                                                (source_uid == m_model.END_SENT_TAG_UID));
 
                                         LOG_DEBUG1 << "The RM source entry '" << source_str << "' with id " << source_uid
                                                 << " is " << (is_good_source ? "" : "not") << " good!" << END_LOG;
@@ -191,7 +191,7 @@ namespace uva {
                                         string target_str = target.str();
                                         trim(target_str);
 
-                                        LOG_DEBUG << "Got the RM source/target entry: " << source_str << " / " << target_str << END_LOG;
+                                        LOG_DEBUG1 << "Got the RM source/target entry: " << source_str << " / " << target_str << END_LOG;
 
                                         //Parse the rest of the target entry
                                         target_uid = get_phrase_uid<true>(target_str);

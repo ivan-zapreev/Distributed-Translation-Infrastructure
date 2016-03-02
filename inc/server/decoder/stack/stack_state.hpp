@@ -179,7 +179,7 @@ namespace uva {
                              * @param next the poniter to the next multi-state in the list
                              */
                             inline void set_next_in_level(stack_state_ptr next) {
-                                return m_next_in_level = next;
+                                m_next_in_level = next;
                             }
 
                             /**

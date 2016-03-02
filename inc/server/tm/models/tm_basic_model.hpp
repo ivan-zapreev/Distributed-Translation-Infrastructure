@@ -214,12 +214,12 @@ namespace uva {
                             template<bool do_unk>
                             tm_const_source_entry * get_source_entry(const phrase_uid entry_id) const {
                                 tm_const_source_entry_ptr entry = m_tm_data->get_element(entry_id, entry_id);
-                                if (do_unk || (entry != NULL)) {
-                                    LOG_DEBUG1 << "The ptr to the source entry of uid: " << entry_id << " is " << entry << END_LOG;
-                                    return entry;
-                                } else {
+                                if (do_unk && (entry == NULL)) {
                                     LOG_DEBUG1 << "Returning the UNK translation for the source uid: " << entry_id << END_LOG;
                                     return m_unk_entry;
+                                } else {
+                                    LOG_DEBUG1 << "The ptr to the source entry of uid: " << entry_id << " is " << entry << END_LOG;
+                                    return entry;
                                 }
                             }
 

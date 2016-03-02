@@ -59,7 +59,7 @@ namespace uva {
 
                 namespace tm {
                     //Define the feature weights delimiter string for the config file
-                    static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
+                    static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = u8"|";
                     //The various numbers of TM features
                     static constexpr size_t FOUR_TM_FEATURES = 4u;
                     //Stores the maximum number of the translation model features
@@ -69,9 +69,9 @@ namespace uva {
                     static constexpr uint8_t TM_MAX_TARGET_PHRASE_LEN = 7u;
 
                     //Stores the unknown source phrase string, should be configurable
-                    static const string TM_UNKNOWN_SOURCE_STR = "UNK";
+                    static const string TM_UNKNOWN_SOURCE_STR = u8"UNK";
                     //Stores the unknown target phrase string, should be configurable
-                    static const string TM_UNKNOWN_TARGET_STR = "<unk>";
+                    static const string TM_UNKNOWN_TARGET_STR = u8"<unk>";
 
                     //Stores the unknown source word log probability penalty
                     static constexpr prob_weight UNK_SOURCE_WORD_LOG_PROB = -10.0f;
@@ -89,12 +89,12 @@ namespace uva {
                     static constexpr uint8_t LM_MAX_QUERY_LEN = tm::TM_MAX_TARGET_PHRASE_LEN + LM_M_GRAM_LEVEL_MAX - 1;
 
                     //Stores the unknown word string, should be configurable
-                    static const string UNKNOWN_WORD_STR = "<unk>";
+                    static const string UNKNOWN_WORD_STR = u8"<unk>";
 
                     //Stores the start of the sentence symbol
-                    static const string BEGIN_SENTENCE_TAG_STR = "<s>";
+                    static const string BEGIN_SENTENCE_TAG_STR = u8"<s>";
                     //Stores the end of the sentence symbol
-                    static const string END_SENTENCE_TAG_STR = "</s>";
+                    static const string END_SENTENCE_TAG_STR = u8"</s>";
                     
                     //The default value of the unknown word probability weight
                     const prob_weight DEFAULT_UNK_WORD_LOG_PROB_WEIGHT = -10.0f;
@@ -102,7 +102,7 @@ namespace uva {
 
                 namespace rm {
                     //Define the feature weights delimiter string for the config file
-                    static const string RM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
+                    static const string RM_FEATURE_WEIGHTS_DELIMITER_STR = u8"|";
                     //Stores the various supported numbers of RM features
                     static constexpr size_t SIX_RM_FEATURES = 6u;
                     static constexpr size_t EIGHT_RM_FEATURES = 8u;
@@ -110,9 +110,9 @@ namespace uva {
                     static constexpr size_t MAX_NUM_RM_FEATURES = EIGHT_RM_FEATURES;
 
                     //Stores the unknown source phrase string, should be configurable
-                    static const string RM_UNK_SOURCE_PHRASE = "UNK";
+                    static const string RM_UNK_SOURCE_PHRASE = u8"UNK";
                     //Stores the unknown target phrase string, should be configurable
-                    static const string RM_UNK_TARGET_PHRASE = "UNK";
+                    static const string RM_UNK_TARGET_PHRASE = u8"UNK";
                 }
             }
         }

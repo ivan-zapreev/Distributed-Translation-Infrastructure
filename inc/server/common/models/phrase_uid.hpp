@@ -99,7 +99,7 @@ namespace uva {
                             if (is_token) {
                                 //If it is just a single token then compute the string hash
                                 p_uid = compute_hash(phrase);
-                                LOG_DEBUG1 << "The phrase ___" << phrase << "___ uid = " << p_uid << END_LOG;
+                                LOG_DEBUG1 << "The token phrase ___" << phrase << "___ uid = " << p_uid << END_LOG;
                             } else {
                                 //This phrase is to be treated as a phrase
                                 const string& delim = UTF8_SPACE_STRING;
@@ -142,7 +142,7 @@ namespace uva {
                             //Shift the value up to get the minimum valid id
                             p_uid |= (1 << 1);
 
-                            LOG_DEBUG2 << "Phrase ___" << phrase << "___ got id " << p_uid << END_LOG;
+                            LOG_DEBUG2 << "Final phrase ___" << phrase << "___ uid = " << p_uid << END_LOG;
 
                             return p_uid;
                         }

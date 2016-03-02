@@ -74,6 +74,27 @@ namespace uva {
                              * @param new_state the new state to add
                              */
                             void add_state(stack_state_ptr new_state) {
+                                //If there is no states in the level yet, then set this one as the first
+                                if (m_first_state == NULL) {
+                                    m_first_state = new_state;
+                                } else {
+                                    //If there are some states in the level already then
+                                    //search for the proper position to insert this one
+
+                                    //ToDo: Add pruning and recombination
+                                    LOG_WARNING << "Adding a new state, no ordering, recombination or pruning!" << END_LOG;
+
+                                    //Just search for the last state in the level for now
+                                    stack_state_ptr place_state = m_first_state;
+                                    while (place_state->get_next_in_level() != NULL) {
+                                    }
+                                    
+                                    //Set the new state after the last one
+                                    place_state->set_next_in_level(new_state);
+                                }
+                            }
+
+                            /*
                                 //Initialize the reference to the pointer to the
                                 //state place where we should put the new one
                                 stack_state_ptr & place_state = m_first_state;
@@ -106,9 +127,11 @@ namespace uva {
                                     //Assign the state to the found position
                                     place_state = new_state;
                                 } else {
-                                    //If the place state is not NULL then
+                                    //If the place state is not NULL then the new
+                                    //state is >= that the place state, so insert
+                                    //the new state before this one
                                 }
-                            }
+                             */
 
                             /**
                              * Allows to expand the stack elements, to do that this method just
