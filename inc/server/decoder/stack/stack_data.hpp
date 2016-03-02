@@ -57,15 +57,16 @@ namespace uva {
                              * The basic constructor to initialize the stored references
                              * @param params the decoder parameters
                              * @param is_stop the stopping flag
+                             * @param source_sent the reference to the source sentence
                              * @param sent_data the sentence data
                              * @param rm_query the reordering model query
                              * @param lm_query the language model query to be used
                              * @param add_state the function needed to add new states
                              */
-                            stack_data(const de_parameters & params, acr_bool_flag is_stop,
+                            stack_data(const de_parameters & params, acr_bool_flag is_stop, const string & source_sent,
                                     const sentence_data_map & sent_data, const rm_query_proxy & rm_query,
                                     lm_fast_query_proxy & lm_query, const add_new_state_function & add_state)
-                            : m_params(params), m_is_stop(is_stop), m_sent_data(sent_data),
+                            : m_params(params), m_is_stop(is_stop), m_source_sent(source_sent), m_sent_data(sent_data),
                             m_rm_query(rm_query), m_lm_query(lm_query), m_add_state(add_state) {
                             }
 
@@ -74,6 +75,9 @@ namespace uva {
                             
                             //The stopping flag
                             acr_bool_flag m_is_stop;
+                            
+                            //Stores the reference to the source sentence
+                            const string & m_source_sent;
                             
                             //The sentence data
                             const sentence_data_map & m_sent_data;

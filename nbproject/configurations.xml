@@ -62,6 +62,9 @@
           <in>rm_configurator.cpp</in>
         </df>
         <df name="tm">
+          <df name="models">
+            <in>tm_target_entry.cpp</in>
+          </df>
           <in>tm_configurator.cpp</in>
         </df>
         <in>bpbd_server.cpp</in>
@@ -277,6 +280,11 @@
       <item path="src/server/rm/rm_configurator.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
+      </item>
+      <item path="src/server/tm/models/tm_target_entry.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/server/tm/tm_configurator.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">

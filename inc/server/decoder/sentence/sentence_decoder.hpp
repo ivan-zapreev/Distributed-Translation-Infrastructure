@@ -91,7 +91,7 @@ namespace uva {
                             m_lm_query(lm_configurator::allocate_fast_query_proxy()),
                             m_tm_query(tm_configurator::allocate_query_proxy()),
                             m_rm_query(rm_configurator::allocate_query_proxy()),
-                            m_stack(m_params, m_is_stop, m_sent_data, m_rm_query, m_lm_query) {
+                            m_stack(m_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query, m_lm_query) {
                                 LOG_DEBUG << "Created a sentence decoder " << m_params << END_LOG;
 
                                 //Initialize with an empty string

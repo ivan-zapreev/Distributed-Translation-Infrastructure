@@ -67,6 +67,9 @@ namespace uva {
                         public:
                             //Define the number of weights constant for the reordering entry
                             static constexpr uint8_t NUM_FEATURES = max_num_features;
+                            
+                            //Define the variable storing the unknown target uid
+                            static const phrase_uid UNKNOWN_TARGET_ENTRY_UID;
 
                             /**
                              * The basic constructor
@@ -118,6 +121,14 @@ namespace uva {
 
                                 LOG_DEBUG1 << "Adding the source/target (" << source_uid << "/"
                                         << target_uid << ") entry with id" << m_st_uid << END_LOG;
+                            }
+                            
+                            /**
+                             * Allows to check whether this is an unknown translation
+                             * @return true if this is UNK translation, otherwise false
+                             */
+                            bool is_unk_trans() const {
+                                return (m_st_uid == UNKNOWN_TARGET_ENTRY_UID);
                             }
                             
                             /**

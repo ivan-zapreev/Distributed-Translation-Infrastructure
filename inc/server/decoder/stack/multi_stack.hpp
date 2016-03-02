@@ -77,16 +77,18 @@ namespace uva {
                              * The basic constructor
                              * @param params the decoder parameters, stores the reference to it
                              * @param is_stop the stop flag
+                             * @param source_sent the reference to the source sentence
                              * @param sent_data the retrieved sentence data
                              * @param rm_query the reordering model query
                              * @param lm_query the language model query object
                              */
                             multi_stack(const de_parameters & params,
                                     acr_bool_flag is_stop,
+                                    const string & source_sent,
                                     const sentence_data_map & sent_data,
                                     const rm_query_proxy & rm_query,
                                     lm_fast_query_proxy & lm_query)
-                            : m_data(params, is_stop, sent_data, rm_query, lm_query, bind(&multi_stack::add_stack_state, this, _1)),
+                            : m_data(params, is_stop, source_sent, sent_data, rm_query, lm_query, bind(&multi_stack::add_stack_state, this, _1)),
                             m_num_levels(m_data.m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS), m_curr_level(MIN_STACK_LEVEL) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << m_data.m_params << END_LOG;
 

@@ -159,11 +159,31 @@ namespace uva {
                             inline void get_translation(string & target_sent) const {
                                 //Go through parents until the root state and append translations when going back!
                                 if (m_parent != NULL) {
+                                    //Go recursively to the parent
                                     m_parent->get_translation(target_sent);
+
+                                    //Add the space after the parent's text
+                                    target_sent += UTF8_SPACE_STRING;
                                 }
 
                                 //Append the space plus the current state translation
-                                target_sent += UTF8_SPACE_STRING + m_state_data.m_target->get_target_phrase();
+                                if (m_state_data.m_target->is_unk_trans()) {
+                                    //If this is an unknown translation then just copy the original source text
+
+                                    //Get the begin and end source phrase word indexes
+                                    const phrase_length begin_word_idx = m_state_data.m_s_begin_word_idx;
+                                    const phrase_length end_word_idx = m_state_data.m_s_end_word_idx;
+
+                                    //Get the begin and end source phrase character indexes
+                                    const uint32_t begin_ch_idx = m_state_data.m_stack_data.m_sent_data[begin_word_idx][begin_word_idx].m_begin_ch_idx;
+                                    const uint32_t end_ch_idx = m_state_data.m_stack_data.m_sent_data[end_word_idx][end_word_idx].m_end_ch_idx;
+
+                                    //Add the source phrase to the target
+                                    target_sent += m_state_data.m_stack_data.m_source_sent.substr(begin_ch_idx, end_ch_idx - begin_ch_idx);
+                                } else {
+                                    //If this is a known translation then add the translation text
+                                    target_sent += m_state_data.m_target->get_target_phrase();
+                                }
                             }
 
                             /**

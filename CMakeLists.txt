@@ -41,6 +41,7 @@ set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
     src/server/decoder/de_configurator.cpp
     src/server/lm/lm_configurator.cpp
     src/server/tm/tm_configurator.cpp
+    src/server/tm/models/tm_target_entry.cpp
     src/server/rm/rm_configurator.cpp
     src/server/lm/models/m_gram_query.cpp
     src/server/lm/models/w2c_hybrid_trie.cpp

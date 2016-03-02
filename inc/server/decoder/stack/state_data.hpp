@@ -201,10 +201,10 @@ namespace uva {
                                 const size_t all_hist_words = m_trans_frame.get_size() - num_new_words;
                                 //The number of interesting words from the history is bounded by MAX_HISTORY_LENGTH
                                 const size_t act_hist_words = min(all_hist_words, MAX_HISTORY_LENGTH);
-                                
+
                                 //Compute the query length to consider
                                 const size_t num_query_words = act_hist_words + num_new_words;
-                                
+
                                 //Compute the number of words we need to skip in the query from the translation frame
                                 const size_t num_words_to_skip = all_hist_words - act_hist_words;
                                 //Compute the pointer to the beginning of the query words array
@@ -312,8 +312,25 @@ namespace uva {
                                 //Set the total score to the current partial score and then add the future costs
                                 total_score = m_partial_score;
 
-                                //ToDo: Add the future costs
-                                THROW_NOT_IMPLEMENTED();
+                                //Iterate through all the non-translated phrase spans and add the future costs thereof
+                                const size_t num_words = m_stack_data.m_sent_data.get_dim();
+                                for (phrase_length begin_idx = 0; begin_idx < num_words; ++begin_idx) {
+                                    if (!m_covered[begin_idx]) {
+                                        //Start from the next word
+                                        phrase_length end_idx = begin_idx + 1;
+
+                                        //Iterate until we are beyond the last word or the word is covered
+                                        while ((end_idx < num_words) && !m_covered[end_idx]) {
+                                            ++end_idx;
+                                        }
+
+                                        //The previous end word was the last cood one, add the span's costs
+                                        total_score += m_stack_data.m_sent_data[begin_idx][end_idx - 1].future_cost;
+
+                                        //Start searching further from the first word after the bad one found
+                                        begin_idx = end_idx + 1;
+                                    }
+                                }
                             }
                         };
 
