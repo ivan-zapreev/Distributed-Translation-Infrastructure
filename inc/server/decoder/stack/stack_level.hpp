@@ -117,22 +117,15 @@ namespace uva {
                                         //All other states are more probable
 
                                         //Check if there is free space left in the level
-                                        if (is_space_left()) {
-                                            //If there is free space left check and the
-                                            //state satisfied the threshold pruning
-                                            if (is_probable_state(new_state)) {
-                                                //The new state satisfies the 
-                                                insert_as_last(new_state);
-                                            } else {
-                                                //There is no place in the existence for this
-                                                //poor fellow, destroy it. This is part of
-                                                //threshold pruning method.
-                                                delete new_state;
-                                            }
+                                        if (is_space_left() && is_probable_state(new_state)) {
+                                            //If there is free space left and the
+                                            //state satisfies the threshold pruning
+                                            //then we add it to the list of states
+                                            insert_as_last(new_state);
                                         } else {
                                             //There is no place in the existence for this
                                             //poor fellow, destroy it. This is part of
-                                            //histogram pruning method.
+                                            //histogram and threshold pruning method.
                                             delete new_state;
                                         }
                                     }
@@ -176,7 +169,7 @@ namespace uva {
                                 //then it is possible we could not get any translation due
                                 //to an unexpected situation in the algorithms
                                 ASSERT_CONDITION_THROW((m_first_state == NULL),
-                                        "The translation process failed, not translations!");
+                                        "The translation process failed, no translations!");
 
                                 //Call the get-translation function of the most probable state in the stack
                                 m_first_state->get_translation(target_sent);
