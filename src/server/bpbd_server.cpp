@@ -180,7 +180,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 params.m_lm_params.m_lambdas,
                 params.m_lm_params.m_num_lambdas,
                 LM_FEATURE_WEIGHTS_DELIMITER_STR);
-        params.m_lm_params.verify();
+        params.m_lm_params.finalize();
         LOG_INFO << params.m_lm_params << END_LOG;
 
         section = "Translation Models";
@@ -195,7 +195,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
         params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, "translation_limit");
         params.m_tm_params.m_min_tran_prob = get_float(ini, section, "min_trans_prob");
-        params.m_tm_params.verify();
+        params.m_tm_params.finalize();
         LOG_INFO << params.m_tm_params << END_LOG;
 
         section = "Reordering Models";
@@ -204,7 +204,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 params.m_rm_params.m_lambdas,
                 params.m_rm_params.m_num_lambdas,
                 RM_FEATURE_WEIGHTS_DELIMITER_STR);
-        params.m_rm_params.verify();
+        params.m_rm_params.finalize();
         LOG_INFO << params.m_rm_params << END_LOG;
 
         section = "Decoding Options";
@@ -216,7 +216,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_de_params.m_word_penalty = get_float(ini, section, "word_penalty");
         params.m_de_params.m_phrase_penalty = get_float(ini, section, "phrase_penalty");
         params.m_de_params.m_expansion_strategy = get_string(ini, section, "expansion_strategy");
-        params.m_de_params.verify();
+        params.m_de_params.finalize();
         LOG_INFO << params.m_de_params << END_LOG;
 
         LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
