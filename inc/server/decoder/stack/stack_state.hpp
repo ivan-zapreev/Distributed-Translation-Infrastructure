@@ -201,14 +201,14 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to compare two states
+                             * Allows to compare two states, the comparison is based on the state total score.
+                             * The state with the bigger total score is considered to be bigger, i.e. more probable.
+                             * The state with the smalle total score is considered to be smaller, i.e. less probable.
                              * @param other the other state to compare with
                              * @return true if this state is smaller than the other one
                              */
                             inline bool operator<(const stack_state & other) const {
-                                //ToDo: Implement the comparison operator, 
-
-                                THROW_NOT_IMPLEMENTED();
+                                return (m_state_data.m_total_score < other.m_state_data.m_total_score);
                             }
 
                             /**

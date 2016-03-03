@@ -91,22 +91,31 @@ namespace uva {
                                     LOG_DEBUG1 << "Setting (" << new_state
                                             << ") as the last in the level!" << END_LOG;
 
-                                    //Currently just add the new state to the end
-                                    insert_as_first(new_state);
-                                }
+                                    //Initialize the reference to the pointer to the
+                                    //state place where we should put the new one
+                                    stack_state_ptr & curr_state = m_first_state;
 
-                                //Now it is time to increment the count
-                                ++m_size;
+                                    //Search for the proper position of the state,
+                                    //or until we find an empty position, then stop.
+                                    while ((curr_state != NULL) && (*new_state < *curr_state)) {
+                                        //Move further to the next state
+                                        curr_state = curr_state->get_next();
+                                    }
 
-                                //Check if the stack capacity is exceeded
-                                if (m_size > m_params.m_stack_capacity) {
-                                    LOG_DEBUG1 << "The stack size: " << m_size
-                                            << " exceeds its capacity: "
-                                            << m_params.m_stack_capacity
-                                            << " pushing out the last state " << END_LOG;
+                                    //Check if we add the new state as the last one
+                                    if (curr_state != NULL) {
+                                        //Insert this state before the 
+                                        insert_before(curr_state, new_state);
 
-                                    //Destroy the last state in the list
-                                    destroy(m_last_state);
+                                        //Perform the histogram pruning
+                                        prune_histogram();
+                                    } else {
+                                        //Check if there is free space left in the level
+                                        if (is_space_left()) {
+                                            //If there is free space left insert the state as the last one
+                                            insert_as_last(new_state);
+                                        }
+                                    }
                                 }
 
                                 LOG_DEBUG1 << "The new number of level states: " << m_size << END_LOG;
@@ -156,7 +165,36 @@ namespace uva {
                         protected:
 
                             /**
+                             * Allows to check if there is still space left for adding states into the level
+                             * If there is no space left then we can still add states but we shall do histogram
+                             * pruning afterwards in order to keep the stack size within the capacity limits.
+                             * @return true if there is empty space left for adding states
+                             */
+                            inline bool is_space_left() const {
+                                return (m_size < m_params.m_stack_capacity);
+                            }
+
+                            /**
+                             * The histogram pruning makes sure there is not too many
+                             * elements in the stack, the last ones are removed.
+                             * This method decrements the level size counter.
+                             */
+                            inline void prune_histogram() {
+                                //Check if the stack capacity is exceeded
+                                while (m_size > m_params.m_stack_capacity) {
+                                    LOG_DEBUG1 << "The stack size: " << m_size
+                                            << " exceeds its capacity: "
+                                            << m_params.m_stack_capacity
+                                            << " pushing out the last state " << END_LOG;
+
+                                    //Destroy the last state in the list
+                                    destroy(m_last_state);
+                                }
+                            }
+
+                            /**
                              * Allows to insert the stack state as the first one in the level
+                             * This method increments the level size counter.
                              * @param state the state to insert
                              */
                             inline void insert_as_first(stack_state_ptr state) {
@@ -174,10 +212,14 @@ namespace uva {
                                     //first one should point to this one as to its previous
                                     m_first_state->m_prev = state;
                                 }
+
+                                //Now it is time to increment the count
+                                ++m_size;
                             }
 
                             /**
                              * Allows to insert the stack state as the last one in the level
+                             * This method increments the level size counter.
                              * @param state the state to insert
                              */
                             inline void insert_as_last(stack_state_ptr state) {
@@ -195,15 +237,23 @@ namespace uva {
                                     //last one should point to this one as to its next
                                     m_last_state->m_next = state;
                                 }
+
+                                //Now it is time to increment the count
+                                ++m_size;
                             }
 
                             /**
                              * Allows to insert the stack state in between the given two elements
+                             * Note that the next and previous states are to be different!
+                             * This method increments the level size counter.
                              * @param prev the pointer reference to the prev state, NOT NULL
                              * @param next the pointer reference to the next state, NOT NULL
                              * @param state the state to insert,  NUL NULL
                              */
                             inline void insert_between(stack_state_ptr prev, stack_state_ptr next, stack_state_ptr state) {
+                                ASSERT_SANITY_THROW((prev == next),
+                                        string("Bad pointers: prev = next!"));
+
                                 //Store the previous and next states for this one
                                 state->m_prev = prev;
                                 state->m_next = next;
@@ -218,10 +268,33 @@ namespace uva {
                                 //Update the previous and next states of the others
                                 prev->m_next = state;
                                 next->m_prev = state;
+
+                                //Now it is time to increment the count
+                                ++m_size;
+                            }
+
+                            /**
+                             * Allows to insert a new element before the given stack element in the level list
+                             * This method increments the level size counter.
+                             * @param curr_state the state before which the new state is to be inserted, not NULL
+                             * @param new_state the state to be inserted, NOT NULL
+                             */
+                            inline void insert_before(stack_state_ptr curr_state, stack_state_ptr new_state) {
+                                if (curr_state == m_first_state) {
+                                    //If the current state is the first one then insert
+                                    //the new state as the first state in the list
+                                    insert_as_first(new_state);
+                                } else {
+                                    //We should insert before a state which is not the first state
+                                    //in the list, so it is definite that the current state has a
+                                    //previous, so we are to insert between these two states.
+                                    insert_between(curr_state->get_prev(), curr_state, new_state);
+                                }
                             }
 
                             /**
                              * Allows to destroy the given state from the level
+                             * This method decrements the level size counter.
                              * @param state the state to insert
                              */
                             inline void destroy(stack_state_ptr state) {
@@ -260,6 +333,9 @@ namespace uva {
 
                                 //Commit suicide ;D
                                 delete this;
+
+                                //Now it is time to decrement the count
+                                m_size--;
                             }
 
                         private:
