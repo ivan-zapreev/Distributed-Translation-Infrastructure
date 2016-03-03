@@ -57,15 +57,18 @@ namespace uva {
 
                             /**
                              * The basic destructor, this implementation is iterative.
-                             * We could have done this in the loop as well, for destructor
-                             * we just do it the recursive way as it is simpler.
                              */
                             ~stack_level() {
-                                //If the pointer to the first state is present then
-                                //start the chain reaction of next state deletion.
-                                if (m_first_state != NULL) {
-                                    delete m_first_state;
-                                    m_first_state = NULL;
+                                //Delete the states one by one
+                                stack_state_ptr curr_state = m_first_state;
+                                stack_state_ptr next_state = NULL;
+                                while (curr_state != NULL) {
+                                    //Store the next state
+                                    next_state = curr_state->get_next_in_level();
+                                    //Delete the current state
+                                    delete curr_state;
+                                    //Set the next state as the current one
+                                    curr_state = next_state;
                                 }
                             }
 
@@ -100,7 +103,7 @@ namespace uva {
                                     //Check if the stack capacity is exceeded
                                     if (m_size < m_params.m_stack_capacity) {
                                         LOG_DEBUG1 << "The stack size does not exceed its capacity "
-                                                << m_params.m_stack_capacity <<", incrementing the "
+                                                << m_params.m_stack_capacity << ", incrementing the "
                                                 << "stack size" << END_LOG;
 
                                         //If not then just increment the count
@@ -114,7 +117,6 @@ namespace uva {
                                         //This is just for now to keep things rolling.
                                         stack_state_ptr tmp = m_first_state;
                                         m_first_state = m_first_state->get_next_in_level();
-                                        tmp->set_next_in_level(NULL);
                                         delete tmp;
                                     }
                                 }

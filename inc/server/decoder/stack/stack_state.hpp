@@ -73,7 +73,7 @@ namespace uva {
                              */
                             stack_state_templ(const stack_data & data)
                             : m_parent(NULL), m_state_data(data),
-                            m_next_in_level(NULL), m_recomb_from(), m_recomb_to(NULL) {
+                            m_next_in_level(NULL), m_recomb_from() {
                                 LOG_DEBUG2 << "multi_state create: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
 
@@ -84,7 +84,7 @@ namespace uva {
                              */
                             stack_state_templ(stack_state_ptr parent) :
                             m_parent(parent), m_state_data(parent->m_state_data),
-                            m_next_in_level(NULL), m_recomb_from(), m_recomb_to(NULL) {
+                            m_next_in_level(NULL), m_recomb_from() {
                             }
 
                             /**
@@ -100,7 +100,7 @@ namespace uva {
                                     const typename state_data::covered_info & covered,
                                     tm_const_target_entry* target)
                             : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, covered, target),
-                            m_next_in_level(NULL), m_recomb_from(), m_recomb_to(NULL) {
+                            m_next_in_level(NULL), m_recomb_from() {
                                 LOG_DEBUG2 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
 
@@ -109,18 +109,10 @@ namespace uva {
                              * resources and delete the next state in the row
                              */
                             ~stack_state_templ() {
-                                //ToDo: Check that we do indeed delete all the allocated data
-
-                                //Delete the states that are recombined into this state
+                                //Delete the states that are recombined into this
+                                //state as they are not in any stack level
                                 for (vector<stack_state_ptr>::const_iterator iter = m_recomb_from.begin(); iter != m_recomb_from.end(); ++iter) {
                                     delete *iter;
-                                }
-
-                                //Delete the next state if it exists, this
-                                //is for the stack level state deletion
-                                if (m_next_in_level != NULL) {
-                                    delete m_next_in_level;
-                                    m_next_in_level = NULL;
                                 }
                             }
 
@@ -358,9 +350,6 @@ namespace uva {
 
                             //This vector stores the list of states recombined into this state
                             vector<stack_state_ptr> m_recomb_from;
-
-                            //This variable stores to which state this state was recombined or NULL
-                            stack_state_ptr m_recomb_to;
 
                         };
                     }
