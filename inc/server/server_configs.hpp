@@ -66,7 +66,7 @@ namespace uva {
                     static constexpr size_t MAX_NUM_TM_FEATURES = FOUR_TM_FEATURES;
                     
                     //The considered maximum length of the target phrase
-                    static constexpr uint8_t TM_MAX_TARGET_PHRASE_LEN = 7u;
+                    static constexpr uint16_t TM_MAX_TARGET_PHRASE_LEN = 7u;
 
                     //Stores the unknown source phrase string, should be configurable
                     static const string TM_UNKNOWN_SOURCE_STR = u8"UNK";
@@ -81,11 +81,11 @@ namespace uva {
                     static constexpr size_t LM_MAX_NUM_FEATURES = 1u;
 
                     //The considered maximum length of the N-gram 
-                    static constexpr uint8_t LM_M_GRAM_LEVEL_MAX = 5u;
+                    static constexpr uint16_t LM_M_GRAM_LEVEL_MAX = 5u;
                     //The maximum considered length of the m-gram history
-                    static constexpr uint8_t LM_HISTORY_LEN_MAX = LM_M_GRAM_LEVEL_MAX - 1;
+                    static constexpr uint16_t LM_HISTORY_LEN_MAX = LM_M_GRAM_LEVEL_MAX - 1;
                     //The considered maximum length of the N-gram query
-                    static constexpr uint8_t LM_MAX_QUERY_LEN = tm::TM_MAX_TARGET_PHRASE_LEN + LM_HISTORY_LEN_MAX;
+                    static constexpr uint16_t LM_MAX_QUERY_LEN = tm::TM_MAX_TARGET_PHRASE_LEN + LM_HISTORY_LEN_MAX;
 
                     //Stores the unknown word string, should be configurable
                     static const string UNKNOWN_WORD_STR = u8"<unk>";

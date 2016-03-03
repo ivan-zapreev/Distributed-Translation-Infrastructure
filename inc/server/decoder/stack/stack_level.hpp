@@ -78,7 +78,7 @@ namespace uva {
                              */
                             void add_state(stack_state_ptr new_state) {
                                 LOG_DEBUG1 << "Adding a new state (" << new_state << ") to the "
-                                        << "level with " << m_size << " states." << END_LOG;
+                                        << "level with " << m_size << " state(s)." << END_LOG;
 
                                 //If there is no states in the level yet, then set this one as the first
                                 if (m_first_state == NULL) {
@@ -93,7 +93,7 @@ namespace uva {
 
                                     //Initialize the reference to the pointer to the
                                     //state place where we should put the new one
-                                    stack_state_ptr & curr_state = m_first_state;
+                                    stack_state_ptr curr_state = m_first_state;
 
                                     //Search for the proper position of the state,
                                     //or until we find an empty position, then stop.
@@ -102,9 +102,12 @@ namespace uva {
                                         curr_state = curr_state->get_next();
                                     }
 
+                                    LOG_DEBUG1 << "The last considered state is: " << curr_state << END_LOG;
+
                                     //Check if we found a state which is less probable than the new one
                                     if (curr_state != NULL) {
                                         //There is a less probable state
+                                        LOG_DEBUG1 << "The new state is to be added before: " << curr_state << END_LOG;
 
                                         //Insert this state before the 
                                         insert_before(curr_state, new_state);
@@ -115,6 +118,7 @@ namespace uva {
                                         shrink_to_capacity();
                                     } else {
                                         //All other states are more probable
+                                        LOG_DEBUG1 << "The new state is to be added to the end of the level" << END_LOG;
 
                                         //Check if there is free space left in the level
                                         if (is_space_left() && is_probable_state(new_state)) {
@@ -175,6 +179,14 @@ namespace uva {
                                 m_first_state->get_translation(target_sent);
                             }
 
+                            /**
+                             * This method allows to retrieve the number of stack level elements
+                             * @return the number of stack level elements.
+                             */
+                            inline size_t get_size() const {
+                                return m_size;
+                            }
+
                         protected:
 
                             /**
@@ -182,12 +194,25 @@ namespace uva {
                              * threshold limit from the best scoring state. This method
                              * must be called only if there is already at least one
                              * state in the stack level! I.e. m_first_state is not NULL!
-                             * @param state the state to be tested for satisfying the pruning threshold
+                             * @param state the state to be tested for satisfying the pruning threshold,  not NULL
                              * @return true if the state is good to keep, otherwise false
                              */
                             inline bool is_probable_state(stack_state_ptr state) const {
-                                return (state->m_state_data.m_total_score >=
-                                        (m_first_state->m_state_data.m_total_score * m_params.m_pruning_threshold));
+                                ASSERT_SANITY_THROW((m_first_state == NULL), "Bad pointer m_first_state == NULL");
+                                ASSERT_SANITY_THROW((state == NULL), "Bad pointer state == NULL");
+
+                                //Get the best state score
+                                const float best_state_score = m_first_state->m_state_data.m_total_score;
+                                //Get the new state score
+                                const float new_state_score = state->m_state_data.m_total_score;
+                                //Compute the score lower bound
+                                const float score_bound = best_state_score * m_params.m_pruning_threshold;
+
+                                LOG_DEBUG1 << "new_state_score: " << new_state_score
+                                        << ", best_state_score: " << best_state_score
+                                        << ", score_bound: " << score_bound << END_LOG;
+
+                                return ( new_state_score >= score_bound);
                             }
 
                             /**
@@ -197,6 +222,8 @@ namespace uva {
                              * @return true if there is empty space left for adding states
                              */
                             inline bool is_space_left() const {
+                                LOG_DEBUG1 << "The current level size is: " << m_size
+                                        << ", capacity is: " << m_params.m_stack_capacity << END_LOG;
                                 return (m_size < m_params.m_stack_capacity);
                             }
 
@@ -239,6 +266,9 @@ namespace uva {
                                     m_first_state->m_prev = state;
                                 }
 
+                                //Set the new first state
+                                m_first_state = state;
+
                                 //Now it is time to increment the count
                                 ++m_size;
                             }
@@ -263,6 +293,9 @@ namespace uva {
                                     //last one should point to this one as to its next
                                     m_last_state->m_next = state;
                                 }
+
+                                //Set the new last state
+                                m_last_state = state;
 
                                 //Now it is time to increment the count
                                 ++m_size;
@@ -322,17 +355,29 @@ namespace uva {
                              * Allows to destroy the given state from the level
                              * This method decrements the level size counter.
                              * The given state must be within the level list of states!
-                             * @param state the state to insert
+                             * @param state the state to be destroyed
                              */
                             inline void remove_and_destroy(stack_state_ptr state) {
+                                ASSERT_SANITY_THROW((state == NULL),
+                                        "Bad pointer state == NULL!");
+
                                 if (m_first_state == m_last_state) {
+                                    LOG_DEBUG1 << "Removing the only state " << state << " from the list " << END_LOG;
+                                    ASSERT_SANITY_THROW((state != m_first_state),
+                                            "The provided state is not in the list!");
+
                                     //This is the only element in the list
                                     m_first_state = NULL;
                                     m_last_state = NULL;
                                 } else {
                                     //There is more elements in the list
                                     if (state == m_last_state) {
-                                        //We are deleting the last element of the list
+                                        LOG_DEBUG1 << "Removing the last state!" << END_LOG;
+
+                                        //We are deleting the last element of the list, and
+                                        //there is more than one element in the list
+                                        ASSERT_SANITY_THROW((state->m_prev == NULL),
+                                                "The previous state can not be NULL!");
 
                                         //The new last element will be the previous of this one
                                         m_last_state = state->m_prev;
@@ -340,7 +385,12 @@ namespace uva {
                                         m_last_state->m_next = NULL;
                                     } else {
                                         if (state == m_first_state) {
-                                            //We are deleting the first element of the list
+                                            LOG_DEBUG1 << "Removing the first state!" << END_LOG;
+
+                                            //We are deleting the first element of the list, and
+                                            //there is more than one element in the list
+                                            ASSERT_SANITY_THROW((state->m_next == NULL),
+                                                    "The next state can not be NULL!");
 
                                             //The new first element will be the next of this one
                                             m_first_state = state->m_next;
@@ -348,6 +398,7 @@ namespace uva {
                                             m_first_state->m_prev = NULL;
                                         } else {
                                             //We are deleting some intermediate element
+                                            LOG_DEBUG1 << "Removing an intermediate state!" << END_LOG;
 
                                             //The previous of this shall now point to the next of this as next
                                             state->m_prev->m_next = state->m_next;
@@ -358,8 +409,9 @@ namespace uva {
                                     }
                                 }
 
-                                //Commit suicide ;D
-                                delete this;
+                                LOG_DEBUG1 << "Destroying the state itself!" << END_LOG;
+                                //Delete the state
+                                delete state;
 
                                 //Now it is time to decrement the count
                                 m_size--;

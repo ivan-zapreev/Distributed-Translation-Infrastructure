@@ -147,13 +147,15 @@ namespace uva {
                                 //Note: the last stack level is for the end state </s>
                                 //it should not be expanded!
                                 while (!m_data.m_is_stop && (curr_level < MAX_STACK_LEVEL)) {
-                                    LOG_DEBUG << ">>>>> Start LEVEL (" << curr_level << "/ " << MAX_STACK_LEVEL << ") expansion" << END_LOG;
+                                    LOG_DEBUG << ">>>>> Start LEVEL (" << curr_level << "/ " << MAX_STACK_LEVEL
+                                            << ") expansion, #states=" << m_levels[curr_level]->get_size() << END_LOG;
 
                                     //Here we expand the stack level and then
                                     //increment the current level index variable
                                     m_levels[curr_level]->expand();
 
-                                    LOG_DEBUG << "<<<<< End LEVEL (" << curr_level << "/ " << MAX_STACK_LEVEL << ") expansion" << END_LOG;
+                                    LOG_DEBUG << "<<<<< End LEVEL (" << curr_level << "/ " << MAX_STACK_LEVEL
+                                            << ") expansion, #states=" << m_levels[curr_level]->get_size() << END_LOG;
 
                                     //Move to the next level
                                     ++curr_level;
