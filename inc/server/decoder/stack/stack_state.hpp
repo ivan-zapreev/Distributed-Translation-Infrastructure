@@ -201,103 +201,6 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to insert the stack state as the first one in the level
-                             * @param first the pointer reference to first state in the level
-                             * @param last the pointer reference to last state in the level
-                             */
-                            inline void insert_as_first(stack_state_ptr & first, stack_state_ptr & last) {
-                                //This state will be the first in the level, so the previous is NULL
-                                m_prev = NULL;
-                                //The next state will be the current first state
-                                m_next = first;
-
-                                //Check if there was something inside the level
-                                if (first == NULL) {
-                                    //If there was no first state then this state is also the last one
-                                    last = this;
-                                } else {
-                                    //If there was something within the level then the old
-                                    //first one should point to this one as to its previous
-                                    first->m_prev = this;
-                                }
-                            }
-
-                            /**
-                             * Allows to insert the stack state as the last one in the level
-                             * @param first the pointer reference to first state in the level
-                             * @param last the pointer reference to last state in the level
-                             */
-                            inline void insert_as_last(stack_state_ptr & first, stack_state_ptr & last) {
-                                //This state is the last one in the level so its next should be NULL
-                                m_next = NULL;
-                                //The previous state will be the current last state
-                                m_prev = last;
-
-                                //Check if there was something inside the level
-                                if (last == NULL) {
-                                    //If there was no last state then this state is also the first one
-                                    first = this;
-                                } else {
-                                    //If there was something within the level then the old
-                                    //last one should point to this one as to its next
-                                    last->m_next = this;
-                                }
-                            }
-
-                            /**
-                             * Allows to insert the stack state in between the given two elements
-                             * @param prev the pointer reference to the prev state, NOT NULL
-                             * @param next the pointer reference to the next state, NOT NULL
-                             */
-                            inline void insert_between(stack_state_ptr & prev, stack_state_ptr & next) {
-                                //Store the previous and next states for this one
-                                m_prev = prev;
-                                m_next = next;
-
-                                //Update the previous and next states of the others
-                                prev->m_next = this;
-                                next->m_prev = this;
-                            }
-
-                            inline void destroy(stack_state_ptr & first, stack_state_ptr & last) {
-                                if (first == last) {
-                                    //This is the only element in the list
-                                    first = NULL;
-                                    last = NULL;
-                                } else {
-                                    //There is more elements in the list
-                                    if (this == last) {
-                                        //We are deleting the last element of the list
-
-                                        //The new last element will be the previous of this one
-                                        last = this->m_prev;
-                                        //The new last element shall have no next element 
-                                        last->m_next = NULL;
-                                    } else {
-                                        if (this == first) {
-                                            //We are deleting the first element of the list
-
-                                            //The new first element will be the next of this one
-                                            first = m_next;
-                                            //The new first element shall have no previous element
-                                            first->m_prev = NULL;
-                                        } else {
-                                            //We are deleting some intermediate element
-                                            
-                                            //The previous of this shall now point to the next of this as next
-                                            m_prev->m_next = m_next;
-
-                                            //The next of this shall now point to the previous of this as previous
-                                            m_next->m_prev = m_prev;
-                                        }
-                                    }
-                                }
-
-                                //Commit suicide ;D
-                                delete this;
-                            }
-
-                            /**
                              * Allows to compare two states
                              * @param other the other state to compare with
                              * @return true if this state is smaller than the other one
@@ -457,6 +360,8 @@ namespace uva {
                             //This vector stores the list of states recombined into this state
                             vector<stack_state_ptr> m_recomb_from;
 
+                            //Make the stack level the friend of this class
+                            friend class stack_level;
                         };
                     }
                 }

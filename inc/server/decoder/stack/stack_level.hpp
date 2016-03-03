@@ -86,13 +86,13 @@ namespace uva {
                                             << ") as the first/last in the level!" << END_LOG;
 
                                     //Insert this state as the first one
-                                    new_state->insert_as_first(m_first_state, m_last_state);
+                                    insert_as_first(new_state);
                                 } else {
                                     LOG_DEBUG1 << "Setting (" << new_state
                                             << ") as the last in the level!" << END_LOG;
 
                                     //Currently just add the new state to the end
-                                    new_state->insert_as_first(m_first_state, m_last_state);
+                                    insert_as_first(new_state);
                                 }
 
                                 //Now it is time to increment the count
@@ -106,50 +106,11 @@ namespace uva {
                                             << " pushing out the last state " << END_LOG;
 
                                     //Destroy the last state in the list
-                                    m_last_state->destroy(m_first_state, m_last_state);
+                                    destroy(m_last_state);
                                 }
 
                                 LOG_DEBUG1 << "The new number of level states: " << m_size << END_LOG;
                             }
-
-                            /*
-                                //Initialize the reference to the pointer to the
-                                //state place where we should put the new one
-                                stack_state_ptr & place_state = m_first_state;
-
-                                //ToDo: Search through the list for two things:
-                                // 1. The equal hypothesis == - for recombination
-                                // 2. The order position < for cost ordering.
-                                //In case the equal hypothesis is not found and
-                                //the recombination is not done, then insert the
-                                //hypothesis to the found position based on cost
-                                //comparison.
-                                THROW_NOT_IMPLEMENTED();
-
-                                //Search for the proper position of the state,
-                                //or until we find an empty position, then stop.
-                                while ((place_state != NULL) && (*new_state < *place_state)) {
-                                    //Move further to the next state
-                                    place_state = place_state->get_next_in_level();
-                                }
-
-                                //ToDo: How can we combine it with recombination?
-                                //We re-combine two hypothesis if:
-                                //1. They cover the same words
-                                //2. They have the same last translated source word
-                                //3. They have the same history: last n-1 target words
-                                THROW_NOT_IMPLEMENTED();
-
-                                //Check if the found free
-                                if (place_state == NULL) {
-                                    //Assign the state to the found position
-                                    place_state = new_state;
-                                } else {
-                                    //If the place state is not NULL then the new
-                                    //state is >= that the place state, so insert
-                                    //the new state before this one
-                                }
-                             */
 
                             /**
                              * Allows to expand the stack elements, to do that this method just
@@ -193,6 +154,113 @@ namespace uva {
                             }
 
                         protected:
+
+                            /**
+                             * Allows to insert the stack state as the first one in the level
+                             * @param state the state to insert
+                             */
+                            inline void insert_as_first(stack_state_ptr state) {
+                                //This state will be the first in the level, so the previous is NULL
+                                state->m_prev = NULL;
+                                //The next state will be the current first state
+                                state->m_next = m_first_state;
+
+                                //Check if there was something inside the level
+                                if (m_first_state == NULL) {
+                                    //If there was no first state then this state is also the last one
+                                    m_last_state = state;
+                                } else {
+                                    //If there was something within the level then the old
+                                    //first one should point to this one as to its previous
+                                    m_first_state->m_prev = state;
+                                }
+                            }
+
+                            /**
+                             * Allows to insert the stack state as the last one in the level
+                             * @param state the state to insert
+                             */
+                            inline void insert_as_last(stack_state_ptr state) {
+                                //This state is the last one in the level so its next should be NULL
+                                state->m_next = NULL;
+                                //The previous state will be the current last state
+                                state->m_prev = m_last_state;
+
+                                //Check if there was something inside the level
+                                if (m_last_state == NULL) {
+                                    //If there was no last state then this state is also the first one
+                                    m_first_state = state;
+                                } else {
+                                    //If there was something within the level then the old
+                                    //last one should point to this one as to its next
+                                    m_last_state->m_next = state;
+                                }
+                            }
+
+                            /**
+                             * Allows to insert the stack state in between the given two elements
+                             * @param prev the pointer reference to the prev state, NOT NULL
+                             * @param next the pointer reference to the next state, NOT NULL
+                             * @param state the state to insert,  NUL NULL
+                             */
+                            inline void insert_between(stack_state_ptr prev, stack_state_ptr next, stack_state_ptr state) {
+                                //Store the previous and next states for this one
+                                state->m_prev = prev;
+                                state->m_next = next;
+
+                                ASSERT_SANITY_THROW((prev == NULL),
+                                        string("Bad pointer: prev = NULL!"));
+                                ASSERT_SANITY_THROW((next == NULL),
+                                        string("Bad pointer: next = NULL!"));
+                                ASSERT_SANITY_THROW((state == NULL),
+                                        string("Bad pointer: state = NULL!"));
+
+                                //Update the previous and next states of the others
+                                prev->m_next = state;
+                                next->m_prev = state;
+                            }
+
+                            /**
+                             * Allows to destroy the given state from the level
+                             * @param state the state to insert
+                             */
+                            inline void destroy(stack_state_ptr state) {
+                                if (m_first_state == m_last_state) {
+                                    //This is the only element in the list
+                                    m_first_state = NULL;
+                                    m_last_state = NULL;
+                                } else {
+                                    //There is more elements in the list
+                                    if (state == m_last_state) {
+                                        //We are deleting the last element of the list
+
+                                        //The new last element will be the previous of this one
+                                        m_last_state = state->m_prev;
+                                        //The new last element shall have no next element 
+                                        m_last_state->m_next = NULL;
+                                    } else {
+                                        if (state == m_first_state) {
+                                            //We are deleting the first element of the list
+
+                                            //The new first element will be the next of this one
+                                            m_first_state = state->m_next;
+                                            //The new first element shall have no previous element
+                                            m_first_state->m_prev = NULL;
+                                        } else {
+                                            //We are deleting some intermediate element
+
+                                            //The previous of this shall now point to the next of this as next
+                                            state->m_prev->m_next = state->m_next;
+
+                                            //The next of this shall now point to the previous of this as previous
+                                            state->m_next->m_prev = state->m_prev;
+                                        }
+                                    }
+                                }
+
+                                //Commit suicide ;D
+                                delete this;
+                            }
 
                         private:
                             //Stores the reference to the decoder parameters
