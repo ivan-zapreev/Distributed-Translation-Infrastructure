@@ -57,7 +57,9 @@ namespace uva {
                         uint8_t m_max_s_phrase_len;
                         //The maximum number of words to consider when making phrases
                         uint8_t m_max_t_phrase_len;
-                        //The pruning threshold to be used
+                        //The pruning threshold to be used. The hypothesis which are
+                        //more than this many times away from the top scoring one
+                        //will be pruned out
                         float m_pruning_threshold;
                         //The stack capacity for stack pruning
                         uint32_t m_stack_capacity;
