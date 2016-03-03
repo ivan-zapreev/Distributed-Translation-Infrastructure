@@ -64,7 +64,7 @@ namespace uva {
                                 stack_state_ptr next_state = NULL;
                                 while (curr_state != NULL) {
                                     //Store the next state
-                                    next_state = curr_state->get_next_in_level();
+                                    next_state = curr_state->get_next();
                                     //Delete the current state
                                     delete curr_state;
                                     //Set the next state as the current one
@@ -82,43 +82,31 @@ namespace uva {
 
                                 //If there is no states in the level yet, then set this one as the first
                                 if (m_first_state == NULL) {
-                                    m_first_state = new_state;
-                                    m_last_state = new_state;
-                                    ++m_size;
-
-                                    LOG_DEBUG1 << "Setting (" << m_first_state << "/" << m_last_state
+                                    LOG_DEBUG1 << "Setting (" << new_state
                                             << ") as the first/last in the level!" << END_LOG;
-                                } else {
-                                    //Currently just add the new state to the end
 
+                                    //Insert this state as the first one
+                                    new_state->insert_as_first(m_first_state, m_last_state);
+                                } else {
                                     LOG_DEBUG1 << "Setting (" << new_state
                                             << ") as the last in the level!" << END_LOG;
 
-                                    //Set the new state after the last one
-                                    m_last_state->set_next_in_level(new_state);
+                                    //Currently just add the new state to the end
+                                    new_state->insert_as_first(m_first_state, m_last_state);
+                                }
 
-                                    //Set the new state to be the last one.
-                                    m_last_state = new_state;
+                                //Now it is time to increment the count
+                                ++m_size;
 
-                                    //Check if the stack capacity is exceeded
-                                    if (m_size < m_params.m_stack_capacity) {
-                                        LOG_DEBUG1 << "The stack size does not exceed its capacity "
-                                                << m_params.m_stack_capacity << ", incrementing the "
-                                                << "stack size" << END_LOG;
+                                //Check if the stack capacity is exceeded
+                                if (m_size > m_params.m_stack_capacity) {
+                                    LOG_DEBUG1 << "The stack size: " << m_size
+                                            << " exceeds its capacity: "
+                                            << m_params.m_stack_capacity
+                                            << " pushing out the last state " << END_LOG;
 
-                                        //If not then just increment the count
-                                        ++m_size;
-                                    } else {
-                                        LOG_DEBUG1 << "The stack exceeds its capacity: "
-                                                << m_params.m_stack_capacity
-                                                << " deleting the first state " << END_LOG;
-
-                                        //If exceeded then remove the first state
-                                        //This is just for now to keep things rolling.
-                                        stack_state_ptr tmp = m_first_state;
-                                        m_first_state = m_first_state->get_next_in_level();
-                                        delete tmp;
-                                    }
+                                    //Destroy the last state in the list
+                                    m_last_state->destroy(m_first_state, m_last_state);
                                 }
 
                                 LOG_DEBUG1 << "The new number of level states: " << m_size << END_LOG;
@@ -183,7 +171,7 @@ namespace uva {
                                     LOG_DEBUG << "<<<<< End STATE (" << curr_state << ") expansion" << END_LOG;
 
                                     //Move to the next state
-                                    curr_state = curr_state->get_next_in_level();
+                                    curr_state = curr_state->get_next();
                                 }
                             }
 

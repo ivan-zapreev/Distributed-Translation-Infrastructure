@@ -73,7 +73,7 @@ namespace uva {
                              */
                             stack_state_templ(const stack_data & data)
                             : m_parent(NULL), m_state_data(data),
-                            m_next_in_level(NULL), m_recomb_from() {
+                            m_prev(NULL), m_next(NULL), m_recomb_from() {
                                 LOG_DEBUG2 << "multi_state create: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
 
@@ -84,7 +84,7 @@ namespace uva {
                              */
                             stack_state_templ(stack_state_ptr parent) :
                             m_parent(parent), m_state_data(parent->m_state_data),
-                            m_next_in_level(NULL), m_recomb_from() {
+                            m_prev(NULL), m_next(NULL), m_recomb_from() {
                             }
 
                             /**
@@ -100,7 +100,7 @@ namespace uva {
                                     const typename state_data::covered_info & covered,
                                     tm_const_target_entry* target)
                             : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, covered, target),
-                            m_next_in_level(NULL), m_recomb_from() {
+                            m_prev(NULL), m_next(NULL), m_recomb_from() {
                                 LOG_DEBUG2 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
 
@@ -178,26 +178,123 @@ namespace uva {
                                         //If this is a known translation then add the translation text
                                         target_sent += m_state_data.m_target->get_target_phrase();
                                     }
-                                    
+
                                     //Add the space after the new phrase
                                     target_sent += UTF8_SPACE_STRING;
                                 }
                             }
 
                             /**
-                             * Allows to get the next multi-state
-                             * @return the poniter to the next multi-state in the list
+                             * Allows to get the previous stack-state within the level
+                             * @return the pointer reference to the previous stack-state in the level
                              */
-                            inline stack_state_ptr get_next_in_level() const {
-                                return m_next_in_level;
+                            inline stack_state_ptr get_prev() const {
+                                return m_prev;
                             }
 
                             /**
-                             * Allows to set the next multi-state
-                             * @param next the poniter to the next multi-state in the list
+                             * Allows to get the next stack-state within the level
+                             * @return the pointer reference to the next stack-state in the level
                              */
-                            inline void set_next_in_level(stack_state_ptr next) {
-                                m_next_in_level = next;
+                            inline stack_state_ptr get_next() const {
+                                return m_next;
+                            }
+
+                            /**
+                             * Allows to insert the stack state as the first one in the level
+                             * @param first the pointer reference to first state in the level
+                             * @param last the pointer reference to last state in the level
+                             */
+                            inline void insert_as_first(stack_state_ptr & first, stack_state_ptr & last) {
+                                //This state will be the first in the level, so the previous is NULL
+                                m_prev = NULL;
+                                //The next state will be the current first state
+                                m_next = first;
+
+                                //Check if there was something inside the level
+                                if (first == NULL) {
+                                    //If there was no first state then this state is also the last one
+                                    last = this;
+                                } else {
+                                    //If there was something within the level then the old
+                                    //first one should point to this one as to its previous
+                                    first->m_prev = this;
+                                }
+                            }
+
+                            /**
+                             * Allows to insert the stack state as the last one in the level
+                             * @param first the pointer reference to first state in the level
+                             * @param last the pointer reference to last state in the level
+                             */
+                            inline void insert_as_last(stack_state_ptr & first, stack_state_ptr & last) {
+                                //This state is the last one in the level so its next should be NULL
+                                m_next = NULL;
+                                //The previous state will be the current last state
+                                m_prev = last;
+
+                                //Check if there was something inside the level
+                                if (last == NULL) {
+                                    //If there was no last state then this state is also the first one
+                                    first = this;
+                                } else {
+                                    //If there was something within the level then the old
+                                    //last one should point to this one as to its next
+                                    last->m_next = this;
+                                }
+                            }
+
+                            /**
+                             * Allows to insert the stack state in between the given two elements
+                             * @param prev the pointer reference to the prev state, NOT NULL
+                             * @param next the pointer reference to the next state, NOT NULL
+                             */
+                            inline void insert_between(stack_state_ptr & prev, stack_state_ptr & next) {
+                                //Store the previous and next states for this one
+                                m_prev = prev;
+                                m_next = next;
+
+                                //Update the previous and next states of the others
+                                prev->m_next = this;
+                                next->m_prev = this;
+                            }
+
+                            inline void destroy(stack_state_ptr & first, stack_state_ptr & last) {
+                                if (first == last) {
+                                    //This is the only element in the list
+                                    first = NULL;
+                                    last = NULL;
+                                } else {
+                                    //There is more elements in the list
+                                    if (this == last) {
+                                        //We are deleting the last element of the list
+
+                                        //The new last element will be the previous of this one
+                                        last = this->m_prev;
+                                        //The new last element shall have no next element 
+                                        last->m_next = NULL;
+                                    } else {
+                                        if (this == first) {
+                                            //We are deleting the first element of the list
+
+                                            //The new first element will be the next of this one
+                                            first = m_next;
+                                            //The new first element shall have no previous element
+                                            first->m_prev = NULL;
+                                        } else {
+                                            //We are deleting some intermediate element
+                                            
+                                            //The previous of this shall now point to the next of this as next
+                                            m_prev->m_next = m_next;
+
+                                            //The next of this shall now point to the previous of this as previous
+                                            m_next->m_prev = m_prev;
+                                        }
+                                    }
+                                }
+
+                                //Commit suicide ;D
+                                delete this;
                             }
 
                             /**
@@ -207,6 +304,7 @@ namespace uva {
                              */
                             inline bool operator<(const stack_state & other) const {
                                 //ToDo: Implement the comparison operator, 
+
                                 THROW_NOT_IMPLEMENTED();
                             }
 
@@ -217,6 +315,7 @@ namespace uva {
                              */
                             inline bool operator==(const stack_state & other) const {
                                 //ToDo: Implement
+
                                 THROW_NOT_IMPLEMENTED();
                             }
 
@@ -228,6 +327,7 @@ namespace uva {
                              * @return true if we are within the distortion limits
                              */
                             inline bool is_dist_ok(const int32_t next_start_pos) {
+
                                 return (m_state_data.m_stack_data.m_params.m_distortion_limit < 0) ||
                                         (abs(m_state_data.m_s_end_word_idx + 1 - next_start_pos) <= m_state_data.m_stack_data.m_params.m_distortion_limit);
                             }
@@ -236,7 +336,7 @@ namespace uva {
                              * Expand to the left of the last phrase, for all the possible of start positions
                              */
                             inline void expand_left() {
-                                LOG_DEBUG1 << ">>>>>" << END_LOG;
+                                LOG_DEBUG1 << ">>>>> left" << END_LOG;
 
                                 //Iterate to the left of the last begin positions until the position is valid and the distortion is within the limits
                                 for (int32_t start_pos = (m_state_data.m_s_begin_word_idx - 1);
@@ -244,18 +344,19 @@ namespace uva {
                                     //If the next position is not covered then expand the lengths
                                     if (!m_state_data.m_covered[start_pos]) {
                                         //Expand the lengths
+
                                         expand_length(start_pos);
                                     }
                                 }
 
-                                LOG_DEBUG1 << "<<<<<" << END_LOG;
+                                LOG_DEBUG1 << "<<<<< left" << END_LOG;
                             }
 
                             /**
                              * Expand to the right of the last phrase, for all the possible of start positions
                              */
                             inline void expand_right() {
-                                LOG_DEBUG1 << ">>>>>" << END_LOG;
+                                LOG_DEBUG1 << ">>>>> right" << END_LOG;
 
                                 //Iterate to the right of the last positions until the position is valid and the distortion is within the limits
                                 for (uint32_t start_pos = (m_state_data.m_s_end_word_idx + 1);
@@ -263,18 +364,19 @@ namespace uva {
                                     //If the next position is not covered then expand the lengths
                                     if (!m_state_data.m_covered[start_pos]) {
                                         //Expand the lengths
+
                                         expand_length(start_pos);
                                     }
                                 }
 
-                                LOG_DEBUG1 << "<<<<<" << END_LOG;
+                                LOG_DEBUG1 << "<<<<< right" << END_LOG;
                             }
 
                             /**
                              * Allows to expand for all the possible phrase lengths
                              */
                             inline void expand_length(const size_t start_pos) {
-                                LOG_DEBUG1 << ">>>>> [" << start_pos << "]" << END_LOG;
+                                LOG_DEBUG1 << ">>>>> [start_pos] = [" << start_pos << "]" << END_LOG;
 
                                 //Always take the one word translation even if
                                 //It is an unknown entry.
@@ -293,11 +395,12 @@ namespace uva {
                                         expand_trans<false>(start_pos, end_pos);
                                     } else {
                                         //We've hit the end possible length here
+
                                         break;
                                     }
                                 }
 
-                                LOG_DEBUG1 << "<<<<< [" << start_pos << "]" << END_LOG;
+                                LOG_DEBUG1 << "<<<<< [start_pos] = [" << start_pos << "]" << END_LOG;
                             }
 
                             /**
@@ -305,7 +408,7 @@ namespace uva {
                              */
                             template<bool single_word>
                             inline void expand_trans(const size_t start_pos, const size_t end_pos) {
-                                LOG_DEBUG1 << ">>>>> [" << start_pos << ", " << end_pos << "]" << END_LOG;
+                                LOG_DEBUG1 << ">>>>> [start_pos, end_pos] = [" << start_pos << ", " << end_pos << "]" << END_LOG;
 
                                 //Obtain the source entry for the currently considered source phrase
                                 tm_const_source_entry_ptr entry = m_state_data.m_stack_data.m_sent_data[start_pos][end_pos].m_source_entry;
@@ -335,7 +438,7 @@ namespace uva {
                                     LOG_DEBUG << "The source phrase [" << start_pos << ", " << end_pos << "] has no translations, ignoring!" << END_LOG;
                                 }
 
-                                LOG_DEBUG1 << "<<<<< [" << start_pos << ", " << end_pos << "]" << END_LOG;
+                                LOG_DEBUG1 << "<<<<< [start_pos, end_pos] = [" << start_pos << ", " << end_pos << "]" << END_LOG;
                             }
 
                         private:
@@ -345,8 +448,11 @@ namespace uva {
                             //Stores the state data that is to be passed on the the children
                             state_data m_state_data;
 
+                            //This variable stores the pointer to the previous state in the stack level or NULL if it is the first one
+                            stack_state_ptr m_prev;
+
                             //This variable stores the pointer to the next state in the stack level or NULL if it is the last one
-                            stack_state_ptr m_next_in_level;
+                            stack_state_ptr m_next;
 
                             //This vector stores the list of states recombined into this state
                             vector<stack_state_ptr> m_recomb_from;
