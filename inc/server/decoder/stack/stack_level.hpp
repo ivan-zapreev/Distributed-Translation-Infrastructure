@@ -102,18 +102,38 @@ namespace uva {
                                         curr_state = curr_state->get_next();
                                     }
 
-                                    //Check if we add the new state as the last one
+                                    //Check if we found a state which is less probable than the new one
                                     if (curr_state != NULL) {
+                                        //There is a less probable state
+
                                         //Insert this state before the 
                                         insert_before(curr_state, new_state);
 
-                                        //Perform the histogram pruning
-                                        prune_histogram();
+                                        //Remove the states that now have the lowest
+                                        //scores to keep up with the stack capacity
+                                        //This is part of histogram pruning method.
+                                        shrink_to_capacity();
                                     } else {
+                                        //All other states are more probable
+
                                         //Check if there is free space left in the level
                                         if (is_space_left()) {
-                                            //If there is free space left insert the state as the last one
-                                            insert_as_last(new_state);
+                                            //If there is free space left check and the
+                                            //state satisfied the threshold pruning
+                                            if (is_probable_state(new_state)) {
+                                                //The new state satisfies the 
+                                                insert_as_last(new_state);
+                                            } else {
+                                                //There is no place in the existence for this
+                                                //poor fellow, destroy it. This is part of
+                                                //threshold pruning method.
+                                                delete new_state;
+                                            }
+                                        } else {
+                                            //There is no place in the existence for this
+                                            //poor fellow, destroy it. This is part of
+                                            //histogram pruning method.
+                                            delete new_state;
                                         }
                                     }
                                 }
@@ -165,6 +185,19 @@ namespace uva {
                         protected:
 
                             /**
+                             * Allows to check if the given new state is within the
+                             * threshold limit from the best scoring state. This method
+                             * must be called only if there is already at least one
+                             * state in the stack level! I.e. m_first_state is not NULL!
+                             * @param state the state to be tested for satisfying the pruning threshold
+                             * @return true if the state is good to keep, otherwise false
+                             */
+                            inline bool is_probable_state(stack_state_ptr state) const {
+                                return (state->m_state_data.m_total_score >=
+                                        (m_first_state->m_state_data.m_total_score * m_params.m_pruning_threshold));
+                            }
+
+                            /**
                              * Allows to check if there is still space left for adding states into the level
                              * If there is no space left then we can still add states but we shall do histogram
                              * pruning afterwards in order to keep the stack size within the capacity limits.
@@ -175,11 +208,11 @@ namespace uva {
                             }
 
                             /**
-                             * The histogram pruning makes sure there is not too many
+                             * This method makes sure there is not too many
                              * elements in the stack, the last ones are removed.
                              * This method decrements the level size counter.
                              */
-                            inline void prune_histogram() {
+                            inline void shrink_to_capacity() {
                                 //Check if the stack capacity is exceeded
                                 while (m_size > m_params.m_stack_capacity) {
                                     LOG_DEBUG1 << "The stack size: " << m_size
@@ -188,7 +221,7 @@ namespace uva {
                                             << " pushing out the last state " << END_LOG;
 
                                     //Destroy the last state in the list
-                                    destroy(m_last_state);
+                                    remove_and_destroy(m_last_state);
                                 }
                             }
 
@@ -295,9 +328,10 @@ namespace uva {
                             /**
                              * Allows to destroy the given state from the level
                              * This method decrements the level size counter.
+                             * The given state must be within the level list of states!
                              * @param state the state to insert
                              */
-                            inline void destroy(stack_state_ptr state) {
+                            inline void remove_and_destroy(stack_state_ptr state) {
                                 if (m_first_state == m_last_state) {
                                     //This is the only element in the list
                                     m_first_state = NULL;
