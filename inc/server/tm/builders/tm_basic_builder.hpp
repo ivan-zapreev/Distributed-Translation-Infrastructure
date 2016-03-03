@@ -448,6 +448,11 @@ namespace uva {
                                 //Declare an array of features, zero-valued
                                 feature_array unk_features = {};
 
+                                LOG_DEBUG << "The UNK initial features: "
+                                        << array_to_string<prob_weight>(m_params.m_num_unk_features, m_params.m_unk_features) << END_LOG;
+                                LOG_DEBUG << "The UNK lambdas: "
+                                        << array_to_string<prob_weight>(m_params.m_num_unk_features, m_params.m_lambdas) << END_LOG;
+
                                 //Copy the values of the unk features to the writable array
                                 for (size_t idx = 0; idx < m_params.m_num_unk_features; ++idx) {
                                     //Now convert to the log probability and multiply with the appropriate weight

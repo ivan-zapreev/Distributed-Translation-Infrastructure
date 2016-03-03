@@ -51,8 +51,9 @@ namespace uva {
                              * @param is_stop the stop flag
                              */
                             stack_level(const de_parameters & params, acr_bool_flag is_stop)
-                            : m_params(params), m_is_stop(is_stop), m_first_state(NULL), m_last_state(NULL), m_size(0) {
-                                LOG_DEBUG2 << "stack_level create, with parameters: " << m_params << END_LOG;
+                            : m_params(params), m_is_stop(is_stop), m_first_state(NULL),
+                            m_last_state(NULL), m_size(0), m_score_bound(0.0) {
+                                LOG_DEBUG3 << "stack_level create, with parameters: " << m_params << END_LOG;
                             }
 
                             /**
@@ -112,16 +113,14 @@ namespace uva {
                                         //Insert this state before the 
                                         insert_before(curr_state, new_state);
 
-                                        //Remove the states that now have the lowest
-                                        //scores to keep up with the stack capacity
-                                        //This is part of histogram pruning method.
-                                        shrink_to_capacity();
+                                        //Perform pruning techniques
+                                        prune_states();
                                     } else {
                                         //All other states are more probable
                                         LOG_DEBUG1 << "The new state is to be added to the end of the level" << END_LOG;
 
                                         //Check if there is free space left in the level
-                                        if (is_space_left() && is_probable_state(new_state)) {
+                                        if (is_space_left() && is_above_threshold(new_state)) {
                                             //If there is free space left and the
                                             //state satisfies the threshold pruning
                                             //then we add it to the list of states
@@ -190,6 +189,21 @@ namespace uva {
                         protected:
 
                             /**
+                             * Allows to update the best score, or rather threshold for threshold pruning.
+                             */
+                            inline void remember_best_score() {
+                                ASSERT_SANITY_THROW((m_first_state == NULL), "Bad pointer m_first_state == NULL");
+                                //Get the best state score
+                                const float best_score = m_first_state->m_state_data.m_total_score;
+                                //Compute the score lower bound
+                                m_score_bound = best_score * m_params.m_pruning_threshold;
+
+                                LOG_DEBUG1 << "new best state: " << m_first_state
+                                        << ", new max score: " << best_score
+                                        << ", new bound: " << m_score_bound << END_LOG;
+                            }
+
+                            /**
                              * Allows to check if the given new state is within the
                              * threshold limit from the best scoring state. This method
                              * must be called only if there is already at least one
@@ -197,22 +211,16 @@ namespace uva {
                              * @param state the state to be tested for satisfying the pruning threshold,  not NULL
                              * @return true if the state is good to keep, otherwise false
                              */
-                            inline bool is_probable_state(stack_state_ptr state) const {
-                                ASSERT_SANITY_THROW((m_first_state == NULL), "Bad pointer m_first_state == NULL");
+                            inline bool is_above_threshold(stack_state_ptr state) const {
                                 ASSERT_SANITY_THROW((state == NULL), "Bad pointer state == NULL");
 
-                                //Get the best state score
-                                const float best_state_score = m_first_state->m_state_data.m_total_score;
                                 //Get the new state score
-                                const float new_state_score = state->m_state_data.m_total_score;
-                                //Compute the score lower bound
-                                const float score_bound = best_state_score * m_params.m_pruning_threshold;
+                                const float score = state->m_state_data.m_total_score;
 
-                                LOG_DEBUG1 << "new_state_score: " << new_state_score
-                                        << ", best_state_score: " << best_state_score
-                                        << ", score_bound: " << score_bound << END_LOG;
+                                LOG_DEBUG1 << "state " << state << " score is: " << score
+                                        << ", m_score_bound: " << m_score_bound << END_LOG;
 
-                                return ( new_state_score >= score_bound);
+                                return ( score >= m_score_bound);
                             }
 
                             /**
@@ -232,22 +240,24 @@ namespace uva {
                              * elements in the stack, the last ones are removed.
                              * This method decrements the level size counter.
                              */
-                            inline void shrink_to_capacity() {
-                                //Check if the stack capacity is exceeded
-                                while (m_size > m_params.m_stack_capacity) {
-                                    LOG_DEBUG1 << "The stack size: " << m_size
-                                            << " exceeds its capacity: "
-                                            << m_params.m_stack_capacity
-                                            << " pushing out the last state " << END_LOG;
+                            inline void prune_states() {
+                                //Check if the stack capacity is exceeded or the last states are not probable
+                                //Remove the last state until both conditions are falsified
+                                while ((m_size > m_params.m_stack_capacity) || !is_above_threshold(m_last_state)) {
+                                    LOG_DEBUG1 << "Pushing out the last state " << m_last_state << END_LOG;
 
                                     //Destroy the last state in the list
                                     remove_and_destroy(m_last_state);
                                 }
+
+                                ASSERT_SANITY_THROW((m_first_state == NULL),
+                                        "This should not be happening, we deleted all states!");
                             }
 
                             /**
                              * Allows to insert the stack state as the first one in the level
-                             * This method increments the level size counter.
+                             * This method increments the level size counter. Updates the best
+                             * score!
                              * @param state the state to insert
                              */
                             inline void insert_as_first(stack_state_ptr state) {
@@ -263,6 +273,7 @@ namespace uva {
                                 } else {
                                     //If there was something within the level then the old
                                     //first one should point to this one as to its previous
+
                                     m_first_state->m_prev = state;
                                 }
 
@@ -271,11 +282,15 @@ namespace uva {
 
                                 //Now it is time to increment the count
                                 ++m_size;
+
+                                //Remember the best score
+                                remember_best_score();
                             }
 
                             /**
                              * Allows to insert the stack state as the last one in the level
-                             * This method increments the level size counter.
+                             * This method increments the level size counter. Updates the best
+                             * score!
                              * @param state the state to insert
                              */
                             inline void insert_as_last(stack_state_ptr state) {
@@ -288,6 +303,9 @@ namespace uva {
                                 if (m_last_state == NULL) {
                                     //If there was no last state then this state is also the first one
                                     m_first_state = state;
+
+                                    //Remember the best score
+                                    remember_best_score();
                                 } else {
                                     //If there was something within the level then the old
                                     //last one should point to this one as to its next
@@ -334,7 +352,7 @@ namespace uva {
 
                             /**
                              * Allows to insert a new element before the given stack element in the level list
-                             * This method increments the level size counter.
+                             * This method increments the level size counter. Updates the best score!
                              * @param curr_state the state before which the new state is to be inserted, not NULL
                              * @param new_state the state to be inserted, NOT NULL
                              */
@@ -359,7 +377,7 @@ namespace uva {
                              */
                             inline void remove_and_destroy(stack_state_ptr state) {
                                 ASSERT_SANITY_THROW((state == NULL),
-                                        "Bad pointer state == NULL!");
+                                        "Bad pointer state == NULL");
 
                                 if (m_first_state == m_last_state) {
                                     LOG_DEBUG1 << "Removing the only state " << state << " from the list " << END_LOG;
@@ -433,6 +451,9 @@ namespace uva {
                             //Stores the stack size, i.e. the number
                             //of elements stored inside the stack
                             size_t m_size;
+
+                            //Stores the probability score bound for threshold pruning
+                            prob_weight m_score_bound;
                         };
                     }
                 }

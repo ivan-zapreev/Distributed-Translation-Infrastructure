@@ -57,9 +57,9 @@ namespace uva {
                         uint8_t m_max_s_phrase_len;
                         //The maximum number of words to consider when making phrases
                         uint8_t m_max_t_phrase_len;
-                        //The pruning threshold to be used. The hypothesis which are
-                        //more than this many times away from the top scoring one
-                        //will be pruned out
+                        //The pruning threshold is to be a <positive float> it is 
+                        //the deviation from the best hypothesis score. I.e. must
+                        //be a value from the half open interval [1.0, +inf)
                         float m_pruning_threshold;
                         //The stack capacity for stack pruning
                         uint32_t m_stack_capacity;
@@ -71,22 +71,28 @@ namespace uva {
                         /**
                          * Allows to verify the parameters to be correct.
                          */
-                        void verify() {
+                        void finalize() {
                             ASSERT_CONDITION_THROW((m_max_s_phrase_len == 0),
                                     string("The max_source_phrase_len must not be 0!"));
+
                             ASSERT_CONDITION_THROW((m_max_t_phrase_len == 0),
                                     string("The max_target_phrase_len must not be 0!"));
+
                             ASSERT_CONDITION_THROW((m_max_t_phrase_len > tm::TM_MAX_TARGET_PHRASE_LEN),
                                     string("The max_target_phrase_len must not be <= ") +
                                     to_string(tm::TM_MAX_TARGET_PHRASE_LEN));
-                            ASSERT_CONDITION_THROW((m_pruning_threshold == 0.0),
-                                    string("The pruning_threshold must not be 0.0!"));
+
+                            ASSERT_CONDITION_THROW((m_pruning_threshold < 1.0),
+                                    string("The pruning_threshold must be >= 1.0!"));
+
                             ASSERT_CONDITION_THROW((m_word_penalty == 0.0),
                                     string("The word_penalty must not be 0.0!"));
+
                             ASSERT_CONDITION_THROW((m_phrase_penalty == 0.0),
                                     string("The phrase_penalty must not be 0.0!"));
+
                             ASSERT_CONDITION_THROW((m_stack_capacity == 0),
-                                    string("The stack_capacity must not be 0!"));
+                                    string("The stack_capacity must be > 0!"));
                         }
                     } de_parameters;
 

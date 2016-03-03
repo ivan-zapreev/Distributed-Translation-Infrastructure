@@ -74,7 +74,7 @@ namespace uva {
                             stack_state_templ(const stack_data & data)
                             : m_parent(NULL), m_state_data(data),
                             m_prev(NULL), m_next(NULL), m_recomb_from() {
-                                LOG_DEBUG2 << "multi_state create: " << m_state_data.m_stack_data.m_params << END_LOG;
+                                LOG_DEBUG3 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
 
                             /**
@@ -85,6 +85,7 @@ namespace uva {
                             stack_state_templ(stack_state_ptr parent) :
                             m_parent(parent), m_state_data(parent->m_state_data),
                             m_prev(NULL), m_next(NULL), m_recomb_from() {
+                                LOG_DEBUG3 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
 
                             /**
@@ -101,7 +102,7 @@ namespace uva {
                                     tm_const_target_entry* target)
                             : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, covered, target),
                             m_prev(NULL), m_next(NULL), m_recomb_from() {
-                                LOG_DEBUG2 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
+                                LOG_DEBUG3 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
 
                             /**

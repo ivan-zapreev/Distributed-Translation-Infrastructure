@@ -111,6 +111,10 @@ namespace uva {
                                 word_uid word_ids[num_words];
                                 word_ids[0] = unk_word_id;
 
+                                LOG_DEBUG << "The UNK translation LM weight is: " << lm_weight << END_LOG;
+                                LOG_DEBUG << "The UNK translation features: "
+                                        << array_to_string<prob_weight>(num_unk_features, unk_features) << END_LOG;
+
                                 //Add the translation entry
                                 m_unk_entry->add_target(
                                         tm::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID,
@@ -119,6 +123,8 @@ namespace uva {
 
                                 //Finalize the source entry
                                 m_unk_entry->finalize();
+
+                                LOG_DEBUG << "The UNK translation total weight is: " << m_unk_entry->get_targets()[0].get_total_weight() << END_LOG;
                             }
 
                             /**

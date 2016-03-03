@@ -60,10 +60,8 @@ namespace uva {
                 namespace tm {
                     //Define the feature weights delimiter string for the config file
                     static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = u8"|";
-                    //The various numbers of TM features
-                    static constexpr size_t FOUR_TM_FEATURES = 4u;
                     //Stores the maximum number of the translation model features
-                    static constexpr size_t MAX_NUM_TM_FEATURES = FOUR_TM_FEATURES;
+                    static constexpr size_t MAX_NUM_TM_FEATURES = 4u;
                     
                     //The considered maximum length of the target phrase
                     static constexpr uint16_t TM_MAX_TARGET_PHRASE_LEN = 7u;

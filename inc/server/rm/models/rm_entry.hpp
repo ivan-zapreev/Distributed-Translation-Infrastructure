@@ -94,21 +94,29 @@ namespace uva {
                             template<bool is_from>
                             const prob_weight & get_weight(const reordering_orientation orient) const {
                                 //Compute the static position correction for the from/to cases
-                                static constexpr uint32_t pos_corr = (is_from ? 0 : num_features);
+                                static constexpr uint32_t pos_corr = (is_from ? 0 : num_features / 2 );
                                 static constexpr uint32_t mon_pos = pos_corr;
                                 static constexpr uint32_t swap_pos = ((num_features <= 1) ? mon_pos : mon_pos + 1);
                                 static constexpr uint32_t disc_left_pos = ((num_features <= 2) ? swap_pos : swap_pos + 1);
                                 static constexpr uint32_t disc_right_pos = ((num_features <= 3) ? disc_left_pos : disc_left_pos + 1);
-
+                                
                                 //Return the proper weight based on the orientation
                                 switch (orient) {
                                     case reordering_orientation::MONOTONE_ORIENT:
+                                        LOG_DEBUG1 << "MONOTONE_ORIENT " << (is_from ? "'from'" : "'to'")
+                                                << " position: " << mon_pos << ", value: " << m_weights[mon_pos] << END_LOG;
                                         return m_weights[mon_pos];
                                     case reordering_orientation::SWAP_ORIENT:
+                                        LOG_DEBUG1 << "SWAP_ORIENT " << (is_from ? "'from'" : "'to'")
+                                                << " position: " << swap_pos << ", value: " << m_weights[swap_pos] << END_LOG;
                                         return m_weights[swap_pos];
                                     case reordering_orientation::DISCONT_RIGHT_ORIENT:
+                                        LOG_DEBUG1 << "DISCONT_RIGHT_ORIENT " << (is_from ? "'from'" : "'to'")
+                                                << " position: " << disc_left_pos << ", value: " << m_weights[disc_left_pos] << END_LOG;
                                         return m_weights[disc_left_pos];
                                     case reordering_orientation::DISCONT_LEFT_ORIENT:
+                                        LOG_DEBUG1 << "DISCONT_LEFT_ORIENT " << (is_from ? "'from'" : "'to'")
+                                                << " position: " << disc_right_pos << ", value: " << m_weights[disc_right_pos] << END_LOG;
                                         return m_weights[disc_right_pos];
                                     default:
                                         THROW_EXCEPTION(string("Unsupported orientation value: ") + to_string(orient));

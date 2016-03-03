@@ -63,7 +63,7 @@ namespace uva {
                         /**
                          * Allows to verify the parameters to be correct.
                          */
-                        void verify() {
+                        void finalize() {
                             ASSERT_CONDITION_THROW((m_num_lambdas > MAX_NUM_RM_FEATURES),
                                     string("The number of RM features: ") + to_string(m_num_lambdas) +
                                     string(" must be <= ") + to_string(MAX_NUM_RM_FEATURES));

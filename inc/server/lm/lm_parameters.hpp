@@ -80,7 +80,7 @@ namespace uva {
                         /**
                          * Allows to verify the parameters to be correct.
                          */
-                        void verify() {
+                        void finalize() {
                             ASSERT_CONDITION_THROW((m_num_lambdas > LM_MAX_NUM_FEATURES),
                                     string("The number of LM features: ") + to_string(m_num_lambdas) +
                                     string(" must be <= ") + to_string(LM_MAX_NUM_FEATURES));
