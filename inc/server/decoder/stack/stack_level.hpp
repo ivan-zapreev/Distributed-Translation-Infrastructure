@@ -51,7 +51,7 @@ namespace uva {
                              * @param is_stop the stop flag
                              */
                             stack_level(const de_parameters & params, acr_bool_flag is_stop)
-                            : m_params(params), m_is_stop(is_stop), m_first_state(NULL) {
+                            : m_params(params), m_is_stop(is_stop), m_first_state(NULL), m_last_state(NULL), m_size(0) {
                                 LOG_DEBUG2 << "stack_level create, with parameters: " << m_params << END_LOG;
                             }
 
@@ -74,33 +74,52 @@ namespace uva {
                              * @param new_state the new state to add
                              */
                             void add_state(stack_state_ptr new_state) {
-                                LOG_DEBUG1 << "Adding a new state (" << new_state << ")" << END_LOG;
+                                LOG_DEBUG1 << "Adding a new state (" << new_state << ") to the "
+                                        << "level with " << m_size << " states." << END_LOG;
 
                                 //If there is no states in the level yet, then set this one as the first
                                 if (m_first_state == NULL) {
                                     m_first_state = new_state;
-                                    
-                                    LOG_DEBUG1 << "Setting (" << m_first_state << ") as the first in the level!" << END_LOG;
+                                    m_last_state = new_state;
+                                    ++m_size;
+
+                                    LOG_DEBUG1 << "Setting (" << m_first_state << "/" << m_last_state
+                                            << ") as the first/last in the level!" << END_LOG;
                                 } else {
-                                    //If there are some states in the level already then
-                                    //search for the proper position to insert this one
+                                    //Currently just add the new state to the end
 
-                                    //ToDo: Add pruning and recombination
-                                    //LOG_WARNING << "Adding a new state, no ordering, recombination or pruning!" << END_LOG;
-
-                                    //Just search for the last state in the level for now
-                                    stack_state_ptr place_state = m_first_state;
-
-                                    LOG_DEBUG1 << "Searching for the end of the level starting from state (" << place_state << ")" << END_LOG;
-                                    while (place_state->get_next_in_level() != NULL) {
-                                        place_state = place_state->get_next_in_level();
-                                        LOG_DEBUG3 << "Moving to the next state (" << place_state << ")!" << END_LOG;
-                                    }
-                                    LOG_DEBUG1 << "The state (" << place_state << ") is the last one, adding!" << END_LOG;
+                                    LOG_DEBUG1 << "Setting (" << new_state
+                                            << ") as the last in the level!" << END_LOG;
 
                                     //Set the new state after the last one
-                                    place_state->set_next_in_level(new_state);
+                                    m_last_state->set_next_in_level(new_state);
+
+                                    //Set the new state to be the last one.
+                                    m_last_state = new_state;
+
+                                    //Check if the stack capacity is exceeded
+                                    if (m_size < m_params.m_stack_capacity) {
+                                        LOG_DEBUG1 << "The stack size does not exceed its capacity "
+                                                << m_params.m_stack_capacity <<", incrementing the "
+                                                << "stack size" << END_LOG;
+
+                                        //If not then just increment the count
+                                        ++m_size;
+                                    } else {
+                                        LOG_DEBUG1 << "The stack exceeds its capacity: "
+                                                << m_params.m_stack_capacity
+                                                << " deleting the first state " << END_LOG;
+
+                                        //If exceeded then remove the first state
+                                        //This is just for now to keep things rolling.
+                                        stack_state_ptr tmp = m_first_state;
+                                        m_first_state = m_first_state->get_next_in_level();
+                                        tmp->set_next_in_level(NULL);
+                                        delete tmp;
+                                    }
                                 }
+
+                                LOG_DEBUG1 << "The new number of level states: " << m_size << END_LOG;
                             }
 
                             /*
@@ -194,6 +213,13 @@ namespace uva {
 
                             //Stores the pointer to the first level state
                             stack_state_ptr m_first_state;
+
+                            //Stores the pointer to the last level state
+                            stack_state_ptr m_last_state;
+
+                            //Stores the stack size, i.e. the number
+                            //of elements stored inside the stack
+                            size_t m_size;
                         };
                     }
                 }
