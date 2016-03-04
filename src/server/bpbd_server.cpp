@@ -208,14 +208,14 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         LOG_INFO << params.m_rm_params << END_LOG;
 
         section = "Decoding Options";
-        params.m_de_params.m_distortion_limit = get_integer<int32_t>(ini, section, "distortion_limit");
+        params.m_de_params.m_distortion_left = get_integer<int32_t>(ini, section, "distortion_left");
+        params.m_de_params.m_distortion_right = get_integer<int32_t>(ini, section, "distortion_right");
         params.m_de_params.m_pruning_threshold = get_float(ini, section, "pruning_threshold");
         params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, "stack_capacity");
-        params.m_de_params.m_max_s_phrase_len = get_integer<uint8_t>(ini, section, "max_source_phrase_length");
-        params.m_de_params.m_max_t_phrase_len = get_integer<uint8_t>(ini, section, "max_target_phrase_length");
+        params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section, "max_source_phrase_length");
+        params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, "max_target_phrase_length");
         params.m_de_params.m_word_penalty = get_float(ini, section, "word_penalty");
         params.m_de_params.m_phrase_penalty = get_float(ini, section, "phrase_penalty");
-        params.m_de_params.m_expansion_strategy = get_string(ini, section, "expansion_strategy");
         params.m_de_params.finalize();
         LOG_INFO << params.m_de_params << END_LOG;
 

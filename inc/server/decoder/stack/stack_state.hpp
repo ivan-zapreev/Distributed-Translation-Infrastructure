@@ -240,18 +240,22 @@ namespace uva {
 
                                 //Get the value of the distortion flag
                                 const bool & is_dist_left = m_state_data.m_stack_data.m_params.m_is_dist_left;
-                                
+
                                 //If the distortion limit is zero then there is no distortion limit
                                 //If the distortion limit is not zero then the begin position is bounded
-                                const uint32_t min_start_pos = ((is_dist_left) ? max(m_min_word_idx, m_state_data.m_s_begin_word_idx - dist) : m_min_word_idx);
+                                const int32_t min_start_pos = ((is_dist_left) ? max(m_min_word_idx, m_state_data.m_s_begin_word_idx - dist) : m_min_word_idx);
 
                                 //We shall start expanding from the first word before
                                 //the beginning of the last translated phrase
                                 int32_t start_pos = (m_state_data.m_s_begin_word_idx - 1);
 
+                                LOG_DEBUG << "min_start_pos = " << min_start_pos << ", start_pos = " << start_pos << END_LOG;
+
                                 //Iterate to the left of the last begin positions until the
                                 //position is valid and the distortion is within the limits
-                                while (min_start_pos <= start_pos) {
+                                while (start_pos >= min_start_pos) {
+                                    LOG_DEBUG << "Checking the coverage vector @ position " << start_pos << END_LOG;
+                                    
                                     //If the next position is not covered then expand the lengths
                                     if (!m_state_data.m_covered[start_pos]) {
                                         //Expand the lengths
@@ -279,18 +283,22 @@ namespace uva {
 
                                 //Get the value of the distortion flag
                                 const bool & is_dist_right = m_state_data.m_stack_data.m_params.m_is_dist_right;
-                                
+
                                 //If the distortion limit is zero then there is no distortion limit
                                 //If the distortion limit is not zero then the begin position is bounded
-                                const uint32_t max_start_pos = ((is_dist_right) ? min(m_max_word_idx, m_state_data.m_s_end_word_idx + dist) : m_max_word_idx);
+                                const int32_t max_start_pos = ((is_dist_right) ? min(m_max_word_idx, m_state_data.m_s_end_word_idx + dist) : m_max_word_idx);
 
                                 //We shall start expanding from the first word
                                 //after the end of the last translated phrase
                                 int32_t start_pos = (m_state_data.m_s_end_word_idx + 1);
 
+                                LOG_DEBUG << "max_start_pos = " << max_start_pos << ", start_pos = " << start_pos << END_LOG;
+
                                 //Iterate to the right of the last positions until the
                                 //position is valid and the distortion is within the limits
                                 while (start_pos <= max_start_pos) {
+                                    LOG_DEBUG << "Checking the coverage vector @ position " << start_pos << END_LOG;
+                                    
                                     //If the next position is not covered then expand the lengths
                                     if (!m_state_data.m_covered[start_pos]) {
                                         //Expand the lengths
