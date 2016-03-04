@@ -69,11 +69,12 @@ namespace uva {
                  * @param dimension the dimension of the matrix, it will be a square upper diagonal matrix.
                  */
                 upp_diag_matrix(const size_t dim) : m_max_idx(dim - 1), m_dim(dim) {
+                    LOG_DEBUG2 << "Creating the upper diagonal matrix of " << m_dim << " dimensions" << END_LOG;
+
                     //Compute the number of elements to be used
                     const size_t num_elements = (dim - 1) * dim / 2 + dim;
 
-                    LOG_DEBUG2 << "upp_diag_matrix create: " << m_dim << " dimensions,"
-                            " and " << num_elements << " elements." << END_LOG;
+                    LOG_DEBUG2 << "Allocating " << num_elements << " elements." << END_LOG;
 
                     //First allocate the number of elements we need
                     m_elems = new element_type[num_elements]();
