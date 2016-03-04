@@ -88,10 +88,13 @@ namespace uva {
                                     const sentence_data_map & sent_data,
                                     const rm_query_proxy & rm_query,
                                     lm_fast_query_proxy & lm_query)
-                            : m_data(params, is_stop, source_sent, sent_data, rm_query, lm_query, bind(&multi_stack::add_stack_state, this, _1)),
+                            : m_data(params, is_stop, source_sent, sent_data, rm_query, lm_query),
                             m_num_levels(m_data.m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << m_data.m_params << END_LOG;
 
+                                //Set the add state function into the structure, we do it now as otherwise there is a bug with using this.
+                                const_cast<add_new_state_function &>(m_data.m_add_state) = bind(&multi_stack::add_stack_state, this, _1);
+                                
                                 LOG_DEBUG2 << "Creating a stack levels array of " << m_num_levels << " elements." << END_LOG;
 
                                 //Instantiate an array of stack level pointers
