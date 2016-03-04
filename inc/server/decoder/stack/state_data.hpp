@@ -73,7 +73,7 @@ namespace uva {
                             static constexpr int32_t ZERRO_WORD_IDX = UNDEFINED_WORD_IDX + 1;
 
                             /**
-                             * The basic constructor that is to be used for the root state
+                             * The basic constructor that is to be used for the begin state
                              * @param stack_data the general shared stack data reference 
                              * @param is_begin_end this flag allows to detect whether this
                              * data is created for the begin or end tag. If true then it is
@@ -98,7 +98,7 @@ namespace uva {
                             }
 
                             /**
-                             * The basic constructor that is to be used for the root state
+                             * The basic constructor that is to be used for the end state
                              * @param stack_data the general shared stack data reference 
                              * @param is_begin_end this flag allows to detect whether this
                              * data is created for the begin or end tag. If true then it is

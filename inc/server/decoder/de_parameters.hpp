@@ -49,27 +49,25 @@ namespace uva {
                      * This structure stores the decoder parameters
                      */
                     typedef struct {
-                        //The the number of words to the left of the last
-                        //translated phrase to consider then expanding
-                        //The negative distortion value means no limit 
-                        int32_t m_distortion_left;
+                        //The distortion limit to use; <integer>
+                        //The the number of words to the right and left
+                        //from the last phrase end word to consider
+                        int32_t m_distortion;
                         //Stores the flag indicating wether there is a left distortion limit
                         //or not, the value is set by this class in the finalize method
-                        bool m_is_dist_left;
-                        
-                        //The the number of words to the right of the last
-                        //translated phrase to consider then expanding
-                        //The negative distortion value means no limit 
-                        int32_t m_distortion_right;
-                        //Stores the flag indicating wether there is a left distortion limit
-                        //or not, the value is set by this class in the finalize method
-                        bool m_is_dist_right;
-                        
+                        bool m_is_dist;
+
+                        //The extra left distortion limit to use; <unsigned integer>
+                        //The the number of words to the left of the last translated phrase
+                        //begin word to consider in case that the regular distortion limit
+                        //does not allow to jump left to the last translated phrase 
+                        int32_t m_ext_dist_left;
+
                         //The maximum number of words to consider when making phrases
                         phrase_length m_max_s_phrase_len;
                         //The maximum number of words to consider when making phrases
                         phrase_length m_max_t_phrase_len;
-                        
+
                         //The pruning threshold is to be a <positive float> it is 
                         //the deviation from the best hypothesis score. I.e. must
                         //be a value from the half open interval [1.0, +inf)
@@ -85,14 +83,13 @@ namespace uva {
                          * Allows to verify the parameters to be correct.
                          */
                         void finalize() {
-                            ASSERT_CONDITION_THROW((m_distortion_left == 0),
-                                    string("The distortion_left must not be 0!"));
-                            m_is_dist_left = (m_distortion_left > 0);
-                            
-                            ASSERT_CONDITION_THROW((m_distortion_right == 0),
-                                    string("The distortion_right must not be 0!"));
-                            m_is_dist_right = (m_distortion_right > 0);
-                            
+                            ASSERT_CONDITION_THROW((m_ext_dist_left < 0),
+                                    string("The ext_dist_left must not be >= 0!"));
+
+                            ASSERT_CONDITION_THROW((m_distortion == 0),
+                                    string("The m_distortion must not be 0!"));
+                            m_is_dist = (m_distortion > 0);
+
                             ASSERT_CONDITION_THROW((m_max_s_phrase_len == 0),
                                     string("The max_source_phrase_len must not be 0!"));
 
@@ -124,9 +121,9 @@ namespace uva {
                      * @return the stream that we output into
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const de_parameters & params) {
-                        return stream << "DE parameters: [ is_distortion = [" << params.m_is_dist_left << ", " << params.m_is_dist_right
-                                << "], dist values = [" << params.m_distortion_left << ", " << params.m_distortion_right
-                                << "], m_max_source_phrase_len = " << to_string(params.m_max_s_phrase_len)
+                        return stream << "DE parameters: [ is_distortion = " << params.m_is_dist << ", distortion = "
+                                << params.m_distortion << ", extra left distortion = " << params.m_ext_dist_left
+                                << ", m_max_source_phrase_len = " << to_string(params.m_max_s_phrase_len)
                                 << ", m_max_target_phrase_len = " << to_string(params.m_max_t_phrase_len)
                                 << ", pruning_threshold = " << params.m_pruning_threshold
                                 << ", stack_capacity = " << params.m_stack_capacity

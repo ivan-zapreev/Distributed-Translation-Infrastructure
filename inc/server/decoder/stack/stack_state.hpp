@@ -103,7 +103,8 @@ namespace uva {
                                     tm_const_target_entry* target)
                             : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, covered, target),
                             m_prev(NULL), m_next(NULL), m_recomb_from() {
-                                LOG_DEBUG3 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
+                                LOG_DEBUG1 << "stack_state create for source[" << begin_pos << "," << end_pos
+                                        << "], target ___" << target->get_target_phrase() << "___" << END_LOG;
                             }
 
                             /**
@@ -230,86 +231,91 @@ namespace uva {
                              * Expand to the left of the last phrase, for all the possible of start positions
                              */
                             inline void expand_left() {
-                                LOG_DEBUG1 << ">>>>> left" << END_LOG;
+                                LOG_DEBUG1 << ">>>>> expand left from [" << m_state_data.m_s_begin_word_idx
+                                        << "," << m_state_data.m_s_end_word_idx << "]" << END_LOG;
 
-                                //Get the distortion limit shorthand
-                                const int32_t & dist = m_state_data.m_stack_data.m_params.m_distortion_left;
-
-                                //Get the maximum word index
-                                const int32_t & m_min_word_idx = m_state_data.m_stack_data.m_sent_data.m_min_idx;
-
-                                //Get the value of the distortion flag
-                                const bool & is_dist_left = m_state_data.m_stack_data.m_params.m_is_dist_left;
-
-                                //If the distortion limit is zero then there is no distortion limit
-                                //If the distortion limit is not zero then the begin position is bounded
-                                const int32_t min_start_pos = ((is_dist_left) ? max(m_min_word_idx, m_state_data.m_s_begin_word_idx - dist) : m_min_word_idx);
+                                //Compute the minimum position to consider, based on distortion
+                                int32_t min_pos;
+                                if (m_state_data.m_stack_data.m_params.m_is_dist) {
+                                    //Compute the normal minimum position for distortion
+                                    min_pos = (m_state_data.m_s_end_word_idx - m_state_data.m_stack_data.m_params.m_distortion);
+                                    //If the minimum position is then within the last translated
+                                    //phrase take into account the extra left distortion
+                                    if (min_pos >= m_state_data.m_s_begin_word_idx) {
+                                        min_pos = (m_state_data.m_s_begin_word_idx - m_state_data.m_stack_data.m_params.m_ext_dist_left);
+                                    }
+                                    //Bound the position by the minimum word index
+                                    min_pos = max(min_pos, m_state_data.m_stack_data.m_sent_data.m_min_idx);
+                                } else {
+                                    //There is no distortion limit
+                                    min_pos = m_state_data.m_stack_data.m_sent_data.m_min_idx;
+                                }
 
                                 //We shall start expanding from the first word before
                                 //the beginning of the last translated phrase
-                                int32_t start_pos = (m_state_data.m_s_begin_word_idx - 1);
+                                int32_t curr_pos = (m_state_data.m_s_begin_word_idx - 1);
 
-                                LOG_DEBUG << "min_start_pos = " << min_start_pos << ", start_pos = " << start_pos << END_LOG;
+                                LOG_DEBUG << "start pos = " << curr_pos << ", min pos = " << min_pos << END_LOG;
 
                                 //Iterate to the left of the last begin positions until the
                                 //position is valid and the distortion is within the limits
-                                while (start_pos >= min_start_pos) {
-                                    LOG_DEBUG << "Checking the coverage vector @ position " << start_pos << END_LOG;
-                                    
+                                while (curr_pos >= min_pos) {
+                                    LOG_DEBUG << "Checking the coverage vector @ position " << curr_pos << END_LOG;
+
                                     //If the next position is not covered then expand the lengths
-                                    if (!m_state_data.m_covered[start_pos]) {
+                                    if (!m_state_data.m_covered[curr_pos]) {
                                         //Expand the lengths
-                                        expand_length(start_pos);
+                                        expand_length(curr_pos);
                                     }
 
                                     //Decrement the start position
-                                    start_pos--;
+                                    curr_pos--;
                                 }
 
-                                LOG_DEBUG1 << "<<<<< left" << END_LOG;
+                                LOG_DEBUG1 << "<<<<< expand left" << END_LOG;
                             }
 
                             /**
                              * Expand to the right of the last phrase, for all the possible of start positions
                              */
                             inline void expand_right() {
-                                LOG_DEBUG1 << ">>>>> right" << END_LOG;
+                                LOG_DEBUG1 << ">>>>> expand right from [" << m_state_data.m_s_begin_word_idx
+                                        << "," << m_state_data.m_s_end_word_idx << "]" << END_LOG;
 
-                                //Get the distortion limit shorthand
-                                const int32_t & dist = m_state_data.m_stack_data.m_params.m_distortion_right;
-
-                                //Get the maximum word index
-                                const int32_t & m_max_word_idx = m_state_data.m_stack_data.m_sent_data.m_max_idx;
-
-                                //Get the value of the distortion flag
-                                const bool & is_dist_right = m_state_data.m_stack_data.m_params.m_is_dist_right;
-
-                                //If the distortion limit is zero then there is no distortion limit
-                                //If the distortion limit is not zero then the begin position is bounded
-                                const int32_t max_start_pos = ((is_dist_right) ? min(m_max_word_idx, m_state_data.m_s_end_word_idx + dist) : m_max_word_idx);
+                                //Compute the maximum position to consider, based on distortion
+                                int32_t max_pos;
+                                if (m_state_data.m_stack_data.m_params.m_is_dist) {
+                                    //Compute the normal maximum position for distortion
+                                    max_pos = m_state_data.m_s_end_word_idx + m_state_data.m_stack_data.m_params.m_distortion;
+                                    //Bound the position by the maximum word index
+                                    max_pos = min(max_pos, m_state_data.m_stack_data.m_sent_data.m_max_idx);
+                                } else {
+                                    //There is no distortion limit
+                                    max_pos = m_state_data.m_stack_data.m_sent_data.m_max_idx;
+                                }
 
                                 //We shall start expanding from the first word
                                 //after the end of the last translated phrase
-                                int32_t start_pos = (m_state_data.m_s_end_word_idx + 1);
+                                int32_t curr_pos = (m_state_data.m_s_end_word_idx + 1);
 
-                                LOG_DEBUG << "max_start_pos = " << max_start_pos << ", start_pos = " << start_pos << END_LOG;
+                                LOG_DEBUG << "start pos = " << curr_pos << ", max pos = " << max_pos << END_LOG;
 
                                 //Iterate to the right of the last positions until the
                                 //position is valid and the distortion is within the limits
-                                while (start_pos <= max_start_pos) {
-                                    LOG_DEBUG << "Checking the coverage vector @ position " << start_pos << END_LOG;
-                                    
+                                while (curr_pos <= max_pos) {
+                                    LOG_DEBUG << "Checking the coverage vector @ position " << curr_pos << END_LOG;
+
                                     //If the next position is not covered then expand the lengths
-                                    if (!m_state_data.m_covered[start_pos]) {
+                                    if (!m_state_data.m_covered[curr_pos]) {
                                         //Expand the lengths
-                                        expand_length(start_pos);
+                                        expand_length(curr_pos);
                                     }
 
                                     //Increment the start position
-                                    ++start_pos;
+                                    ++curr_pos;
                                 }
 
-                                LOG_DEBUG1 << "<<<<< right" << END_LOG;
+                                LOG_DEBUG1 << "<<<<< expand right" << END_LOG;
                             }
 
                             /**

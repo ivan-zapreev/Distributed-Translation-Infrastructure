@@ -79,6 +79,8 @@ namespace uva {
                                 acr_bool_flag is_stop,
                                 const string & source_sent,
                                 string & target_sent) {
+                            LOG_DEBUG << "Starting to allocate sentence decoder for: ___" << source_sent << "___" << END_LOG;
+                            
                             //ToDo: Pre-allocate decoders, make as many as there are threads
                             return *(new sentence_decoder(m_params, is_stop, source_sent, target_sent));
                         }

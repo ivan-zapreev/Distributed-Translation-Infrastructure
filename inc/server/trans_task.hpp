@@ -128,6 +128,8 @@ namespace uva {
                         //Obtain the new decoder instance
                         sentence_decoder & dec = de_configurator::allocate_decoder(m_is_interrupted, m_source_text, m_target_text);
 
+                        LOG_DEBUG1 << "Invoking the sentence translation for task " << m_task_id << END_LOG;
+                        
                         //Perform the decoding task
                         try {
                             dec.translate();
