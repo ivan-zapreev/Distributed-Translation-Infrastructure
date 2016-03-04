@@ -330,7 +330,7 @@ public:
 
         ec = lib::error_code();
 
-        //std::cout << "consume: " << utility::to_hex(buf,len) << std::endl;
+        std::cout << "consume: " << utility::to_hex(buf,len) << std::endl;
 
         // Loop while we don't have a message ready and we still have bytes
         // left to process.
