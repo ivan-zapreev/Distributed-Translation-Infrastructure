@@ -168,7 +168,7 @@ namespace uva {
 
                     /**
                      * Attempts to send the translation job request
-                     * @param request thge translation job request
+                     * @param request the translation job request
                      */
                     void send(const trans_job_request_ptr request) {
                         //Declare the error code
