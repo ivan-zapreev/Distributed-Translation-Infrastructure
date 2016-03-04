@@ -192,7 +192,7 @@ int main(int argc, char** argv) {
         manager.start();
 
         //Wait until the translations are done
-        LOG_USAGE << "Waiting for the the translation process to finish ..." << END_LOG;
+        LOG_USAGE << "Waiting for the translation process to finish ..." << END_LOG;
         manager.wait();
         
         //Stop the translation manager
