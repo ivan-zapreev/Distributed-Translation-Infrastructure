@@ -37,7 +37,7 @@ namespace uva {
                         const phrase_uid tm_target_entry_temp<num_features>::UNKNOWN_TARGET_ENTRY_UID = combine_phrase_uids(UNKNOWN_PHRASE_ID, UNKNOWN_PHRASE_ID);
                         
                         //Instantiate the template
-                        template class tm_target_entry_temp<MAX_NUM_TM_FEATURES>;
+                        template class tm_target_entry_temp<NUM_TM_FEATURES>;
                     }
                 }
             }

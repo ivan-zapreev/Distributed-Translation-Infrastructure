@@ -58,15 +58,18 @@ namespace uva {
                         size_t m_num_lambdas;
 
                         //Stores the reordering model weights
-                        float m_lambdas[MAX_NUM_RM_FEATURES];
+                        float m_lambdas[NUM_RM_FEATURES];
 
                         /**
                          * Allows to verify the parameters to be correct.
                          */
                         void finalize() {
-                            ASSERT_CONDITION_THROW((m_num_lambdas > MAX_NUM_RM_FEATURES),
+                            //The number of lambdas must correspond to the expected one
+                            ASSERT_CONDITION_THROW((m_num_lambdas != NUM_RM_FEATURES),
                                     string("The number of RM features: ") + to_string(m_num_lambdas) +
-                                    string(" must be <= ") + to_string(MAX_NUM_RM_FEATURES));
+                                    string(" must be == ") + to_string(NUM_RM_FEATURES));
+
+                            //The other values are currently not supported, need to do the code check before introduced.
                             ASSERT_CONDITION_THROW(
                                     (m_num_lambdas != SIX_RM_FEATURES) &&
                                     (m_num_lambdas != EIGHT_RM_FEATURES),

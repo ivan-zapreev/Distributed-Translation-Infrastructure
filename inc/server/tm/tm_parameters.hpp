@@ -58,13 +58,13 @@ namespace uva {
                         size_t m_num_lambdas;
 
                         //Stores the translation model weights
-                        float m_lambdas[MAX_NUM_TM_FEATURES];
+                        float m_lambdas[NUM_TM_FEATURES];
 
                         //Stores the number of unk entry features
                         size_t m_num_unk_features;
 
                         //Stores the unk entry features
-                        float m_unk_features[MAX_NUM_TM_FEATURES];
+                        float m_unk_features[NUM_TM_FEATURES];
 
                         //Stores the translation limit - the number of top translation
                         //to be read from the translation model file per source phrase
@@ -80,15 +80,30 @@ namespace uva {
                          * Allows to verify the parameters to be correct.
                          */
                         void finalize() {
-                            ASSERT_CONDITION_THROW((m_num_lambdas > MAX_NUM_TM_FEATURES),
+                            //The number of lambdas must correspond to the expected one
+                            ASSERT_CONDITION_THROW((m_num_lambdas != NUM_TM_FEATURES),
                                     string("The number of TM lambdas: ") + to_string(m_num_lambdas) +
-                                    string(" must be <= ") + to_string(MAX_NUM_TM_FEATURES));
-                            ASSERT_CONDITION_THROW((m_num_unk_features > MAX_NUM_TM_FEATURES),
+                                    string(" must be == ") + to_string(NUM_TM_FEATURES));
+                            
+                            //The other values are currently not supported, need to do the code check before introduced.
+                            ASSERT_CONDITION_THROW(
+                                    (m_num_lambdas != FOUR_TM_FEATURES),
+                                    string("The number of TM features: ") + to_string(m_num_lambdas) +
+                                    string(" must be ") + to_string(FOUR_TM_FEATURES));
+
+                            //The number of features must correspond to the expected one
+                            ASSERT_CONDITION_THROW((m_num_unk_features != NUM_TM_FEATURES),
                                     string("The number of TM unk features: ") + to_string(m_num_unk_features) +
-                                    string(" must be <= ") + to_string(MAX_NUM_TM_FEATURES));
+                                    string(" must be == ") + to_string(NUM_TM_FEATURES));
+                            
+                            //The other values are currently not supported, need to do the code check before introduced.
+                            ASSERT_CONDITION_THROW(
+                                    (m_num_lambdas != FOUR_TM_FEATURES),
+                                    string("The number of TM unk features: ") + to_string(m_num_unk_features) +
+                                    string(" must be ") + to_string(FOUR_TM_FEATURES));
 
                             //Check that the UNK features are not zero - this will result in a -inf log10 weights!
-                            for (size_t idx = 0; idx < MAX_NUM_TM_FEATURES; ++idx) {
+                            for (size_t idx = 0; idx < NUM_TM_FEATURES; ++idx) {
                                 ASSERT_CONDITION_THROW((m_unk_features[idx] == 0.0),
                                         string("Translation parameters UNK feature[") +
                                         to_string(idx) + string("] is zero!"));

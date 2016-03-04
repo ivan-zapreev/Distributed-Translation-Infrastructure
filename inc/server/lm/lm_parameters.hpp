@@ -59,7 +59,7 @@ namespace uva {
                         size_t m_num_lambdas;
 
                         //Stores the language model weights
-                        float m_lambdas[LM_MAX_NUM_FEATURES];
+                        float m_lambdas[NUM_LM_FEATURES];
                         
                         /**
                          * Allows to detect that the lm weight is set and needs to be used
@@ -81,9 +81,16 @@ namespace uva {
                          * Allows to verify the parameters to be correct.
                          */
                         void finalize() {
-                            ASSERT_CONDITION_THROW((m_num_lambdas > LM_MAX_NUM_FEATURES),
+                            //The number of lambdas must correspond to the expected one
+                            ASSERT_CONDITION_THROW((m_num_lambdas != NUM_LM_FEATURES),
                                     string("The number of LM features: ") + to_string(m_num_lambdas) +
-                                    string(" must be <= ") + to_string(LM_MAX_NUM_FEATURES));
+                                    string(" must be == ") + to_string(NUM_LM_FEATURES));
+
+                            //The other values are currently not supported, need to do the code check before introduced.
+                            ASSERT_CONDITION_THROW(
+                                    (m_num_lambdas != ONE_LM_FEATURE),
+                                    string("The number of LM features: ") + to_string(m_num_lambdas) +
+                                    string(" must be ") + to_string(ONE_LM_FEATURE));
                         }
                     } lm_parameters;
 

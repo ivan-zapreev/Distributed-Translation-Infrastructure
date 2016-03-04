@@ -176,7 +176,8 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
         section = "Language Models";
         params.m_lm_params.m_conn_string = get_string(ini, section, "connection_string");
-        tokenize_s_t_f<LM_MAX_NUM_FEATURES>(get_string(ini, section, "lm_feature_weights"),
+        tokenize_s_t_f<NUM_LM_FEATURES>("lm_feature_weights",
+                get_string(ini, section, "lm_feature_weights"),
                 params.m_lm_params.m_lambdas,
                 params.m_lm_params.m_num_lambdas,
                 LM_FEATURE_WEIGHTS_DELIMITER_STR);
@@ -185,11 +186,13 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
         section = "Translation Models";
         params.m_tm_params.m_conn_string = get_string(ini, section, "connection_string");
-        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(get_string(ini, section, "tm_feature_weights"),
+        tokenize_s_t_f<NUM_TM_FEATURES>("tm_feature_weights",
+                get_string(ini, section, "tm_feature_weights"),
                 params.m_tm_params.m_lambdas,
                 params.m_tm_params.m_num_lambdas,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
-        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(get_string(ini, section, "tm_unk_features"),
+        tokenize_s_t_f<NUM_TM_FEATURES>("tm_unk_features",
+                get_string(ini, section, "tm_unk_features"),
                 params.m_tm_params.m_unk_features,
                 params.m_tm_params.m_num_unk_features,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
@@ -200,7 +203,8 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
         section = "Reordering Models";
         params.m_rm_params.m_conn_string = get_string(ini, section, "connection_string");
-        tokenize_s_t_f<MAX_NUM_RM_FEATURES>(get_string(ini, section, "rm_feature_weights"),
+        tokenize_s_t_f<NUM_RM_FEATURES>("rm_feature_weights",
+                get_string(ini, section, "rm_feature_weights"),
                 params.m_rm_params.m_lambdas,
                 params.m_rm_params.m_num_lambdas,
                 RM_FEATURE_WEIGHTS_DELIMITER_STR);
@@ -248,7 +252,7 @@ void print_server_commands() {
 void connect_to_models(const server_parameters & params) {
     //Connect to the language model
     lm_configurator::connect(params.m_lm_params);
-    
+
     //Connect to the translation model
     tm_configurator::connect(params.m_tm_params);
 

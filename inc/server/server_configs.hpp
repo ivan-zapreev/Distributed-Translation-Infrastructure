@@ -60,9 +60,12 @@ namespace uva {
                 namespace tm {
                     //Define the feature weights delimiter string for the config file
                     static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = u8"|";
-                    //Stores the maximum number of the translation model features
-                    static constexpr size_t MAX_NUM_TM_FEATURES = 4u;
                     
+                    //Stores the different values of TM features                    
+                    static constexpr size_t FOUR_TM_FEATURES = 4u;
+                    //Stores the number of the translation model features
+                    static constexpr size_t NUM_TM_FEATURES = FOUR_TM_FEATURES;
+
                     //The considered maximum length of the target phrase
                     static constexpr uint16_t TM_MAX_TARGET_PHRASE_LEN = 7u;
 
@@ -75,8 +78,11 @@ namespace uva {
                 namespace lm {
                     //Define the feature weights delimiter string for the config file
                     static const string LM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
-                    //Stores the maximum number of the language model features
-                    static constexpr size_t LM_MAX_NUM_FEATURES = 1u;
+
+                    //Stores the different values of RM features                    
+                    static constexpr size_t ONE_LM_FEATURE = 1u;
+                    //Stores the number of the language model features
+                    static constexpr size_t NUM_LM_FEATURES = ONE_LM_FEATURE;
 
                     //The considered maximum length of the N-gram 
                     static constexpr uint16_t LM_M_GRAM_LEVEL_MAX = 5u;
@@ -92,7 +98,7 @@ namespace uva {
                     static const string BEGIN_SENTENCE_TAG_STR = u8"<s>";
                     //Stores the end of the sentence symbol
                     static const string END_SENTENCE_TAG_STR = u8"</s>";
-                    
+
                     //The default value of the unknown word probability weight
                     const prob_weight DEF_UNK_WORD_LOG_PROB_WEIGHT = -10.0f;
                 }
@@ -100,11 +106,14 @@ namespace uva {
                 namespace rm {
                     //Define the feature weights delimiter string for the config file
                     static const string RM_FEATURE_WEIGHTS_DELIMITER_STR = u8"|";
-                    //Stores the various supported numbers of RM features
+
+                    //Stores the different values of RM features  
+                    static constexpr size_t TWO_RM_FEATURES = 2u;
+                    static constexpr size_t FOUR_RM_FEATURES = 4u;
                     static constexpr size_t SIX_RM_FEATURES = 6u;
                     static constexpr size_t EIGHT_RM_FEATURES = 8u;
-                    //Stores the maximum number of the reordering model features
-                    static constexpr size_t MAX_NUM_RM_FEATURES = EIGHT_RM_FEATURES;
+                    //Stores the number of the reordering model features
+                    static constexpr size_t NUM_RM_FEATURES = SIX_RM_FEATURES;
 
                     //Stores the unknown source phrase string, should be configurable
                     static const string RM_UNK_SOURCE_PHRASE = u8"UNK";

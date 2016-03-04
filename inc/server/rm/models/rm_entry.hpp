@@ -84,6 +84,14 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to get the entry weights array
+                             * @return the entry weights array
+                             */
+                            const prob_weight * get_weights() const {
+                                return m_weights;
+                            }
+                            
+                            /**
                              * Allows to get the weight for the given distortion value
                              * @param is_from the flag allowing to distinguish between the from and to case 
                              * if true then we get the value from the from source phrase case
@@ -92,13 +100,13 @@ namespace uva {
                              * @return the weight for the given distortion value
                              */
                             template<bool is_from>
-                            const prob_weight & get_weight(const reordering_orientation orient) const {
+                            const prob_weight get_weight(const reordering_orientation orient) const {
                                 //Compute the static position correction for the from/to cases
                                 static constexpr uint32_t pos_corr = (is_from ? 0 : num_features / 2 );
                                 static constexpr uint32_t mon_pos = pos_corr;
-                                static constexpr uint32_t swap_pos = ((num_features <= 1) ? mon_pos : mon_pos + 1);
-                                static constexpr uint32_t disc_left_pos = ((num_features <= 2) ? swap_pos : swap_pos + 1);
-                                static constexpr uint32_t disc_right_pos = ((num_features <= 3) ? disc_left_pos : disc_left_pos + 1);
+                                static constexpr uint32_t swap_pos = ((num_features <= TWO_RM_FEATURES) ? mon_pos : mon_pos + 1);
+                                static constexpr uint32_t disc_left_pos = ((num_features <= FOUR_RM_FEATURES) ? swap_pos : swap_pos + 1);
+                                static constexpr uint32_t disc_right_pos = ((num_features <= SIX_RM_FEATURES) ? disc_left_pos : disc_left_pos + 1);
                                 
                                 //Return the proper weight based on the orientation
                                 switch (orient) {
@@ -174,7 +182,7 @@ namespace uva {
                         constexpr uint8_t rm_entry_temp<num_features>::NUM_FEATURES;
 
                         //Instantiate template
-                        typedef rm_entry_temp<MAX_NUM_RM_FEATURES> rm_entry;
+                        typedef rm_entry_temp<NUM_RM_FEATURES> rm_entry;
                     }
                 }
             }

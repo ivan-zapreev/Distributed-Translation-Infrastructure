@@ -234,7 +234,7 @@ namespace uva {
                         constexpr uint8_t tm_target_entry_temp<num_features>::NUM_FEATURES;
 
                         //Instantiate template
-                        typedef tm_target_entry_temp<MAX_NUM_TM_FEATURES> tm_target_entry;
+                        typedef tm_target_entry_temp<NUM_TM_FEATURES> tm_target_entry;
 
                         //Define the constant entry
                         typedef const tm_target_entry tm_const_target_entry;

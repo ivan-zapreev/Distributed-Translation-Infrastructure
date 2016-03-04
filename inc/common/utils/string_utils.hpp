@@ -146,15 +146,17 @@ namespace uva {
             }
 
             /**
-             * Tokenise a given string into a a bunch of strings each of which will be parsed into a float
-             * @param data the string to tokenise
+             * Tokenize a given string into a a bunch of strings each of which will be parsed into a float
+             * @param name the name of the data we are parsing for error messages
+             * @param data the string to tokenize
              * @param elems the array to fill the data into
              * @param num_elems the actual number of elements
              * @param delim the delimiter string storing the token delimiters, default is UTF8_SPACE_STRING
              */
-            template<size_t MAX_NUM_ELEMS>
-            static inline void tokenize_s_t_f(const std::string &data,
-                    float elems[MAX_NUM_ELEMS], size_t & num_elems,
+            template<size_t EXP_NUM_ELEMS>
+            static inline void tokenize_s_t_f(
+                    const char * name, const std::string &data,
+                    float elems[EXP_NUM_ELEMS], size_t & num_elems,
                     const string& delim = UTF8_SPACE_STRING) {
                 size_t start = 0;
                 size_t end = data.find_first_of(delim);
@@ -165,9 +167,9 @@ namespace uva {
                 //Search for the delimiter and make tokens
                 while (end <= std::string::npos) {
                     //Check that the number of elements is not exceeded
-                    ASSERT_CONDITION_THROW((num_elems > MAX_NUM_ELEMS),
-                            string("Exceeding the maximum allowed number of elements: ")
-                            + to_string(MAX_NUM_ELEMS) + string(" when parsing: ") + data);
+                    ASSERT_CONDITION_THROW((num_elems > EXP_NUM_ELEMS),
+                            string("Exceeding the maximum allowed number of ") + string(name) +
+                            string(": ") + to_string(EXP_NUM_ELEMS) + string(" when parsing: ") + data);
 
                     //Parse the next token into the float
                     string str = data.substr(start, end - start);
@@ -181,6 +183,11 @@ namespace uva {
                         break;
                     }
                 }
+
+                ASSERT_CONDITION_THROW((num_elems < EXP_NUM_ELEMS),
+                        string("The expected number of ") + string(name) +
+                        string(": ") + to_string(EXP_NUM_ELEMS) +
+                        string(" got only: ") + to_string(num_elems));
             }
 
             /**
@@ -405,14 +412,14 @@ namespace uva {
                         ++c;
                     }
                     LOG_DEBUG4 << "Exponent value is: " << e << END_LOG;
-                    
+
                     //Get the min and max exponent values, both should be taken as positive values
                     static constexpr uint max_exponent10 = std::numeric_limits<float>::min_exponent10;
                     static constexpr uint min_exponent10 = -std::numeric_limits<float>::min_exponent10;
 
                     if (!neg && e > max_exponent10) {
                         e = max_exponent10;
-                    } else if (e > min_exponent10 ) {
+                    } else if (e > min_exponent10) {
                         e = min_exponent10;
                     }
 
@@ -437,7 +444,7 @@ namespace uva {
                     } else {
                         res *= scale_exp;
                     }
-                    
+
                     LOG_DEBUG4 << "The result is: " << ((neg) ? -res : res) << END_LOG;
                 }
 
