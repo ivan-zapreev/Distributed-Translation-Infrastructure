@@ -92,12 +92,18 @@ namespace uva {
                     {
                         unique_guard guard(m_queue_mutex);
 
+                        LOG_DEBUG << "Pushing the task " << trans_task << " to the list of translation tasks." << END_LOG;
+
                         //Add the translation task to the queue
                         m_tasks.push_back(trans_task);
                     }
 
+                    LOG_DEBUG << "Notifying threads that there is a translation task present!" << END_LOG;
+
                     //Wake up a thread to do a translation job
                     m_condition.notify_one();
+
+                    LOG_DEBUG << "Done planning a new task." << END_LOG;
                 };
             }
         }

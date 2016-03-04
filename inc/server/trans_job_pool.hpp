@@ -247,6 +247,8 @@ namespace uva {
                             m_tasks_pool.plan_new_task(*it);
                         }
 
+                        LOG_DEBUG << "Adding the job with ptr: " << trans_job << " to the job pool is done!" << END_LOG;
+
                         //ToDo: Later, the tasks pool shall be chosen based on the
                         //source and target language. This is for when a server can
                         //translate from multiple languages to multiple languages.

@@ -94,6 +94,7 @@ namespace uva {
                      * @param notify_task_cancel_func the function to call in case this task is being cancelled.
                      */
                     void set_cancel_task_notifier(cancel_task_notifier notify_task_cancel_func) {
+                        LOG_DEBUG << "Setting the cancel task notifier function!" << END_LOG;
                         m_notify_task_cancel_func = notify_task_cancel_func;
                     }
 
