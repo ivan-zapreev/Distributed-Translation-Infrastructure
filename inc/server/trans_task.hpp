@@ -133,7 +133,7 @@ namespace uva {
                             dec.translate();
                         } catch (Exception & ex) {
                             m_code = trans_job_code::RESULT_ERROR;
-                            LOG_ERROR << ex.get_message() << END_LOG;
+                            LOG_DEBUG << "SERVER ERROR: " << ex.get_message() << END_LOG;
                         }
 
                         //Dispose the decoder instance 
