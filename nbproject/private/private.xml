@@ -10,11 +10,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/src/server/bpbd_server.cpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/server_configs.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/sentence/sentence_decoder.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/stack/stack_state.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/stack/stack_data.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/stack/state_data.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/common/utils/containers/circular_queue.hpp</file>
         </group>
     </open-files>
 </project-private>

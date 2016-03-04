@@ -49,14 +49,27 @@ namespace uva {
                      * This structure stores the decoder parameters
                      */
                     typedef struct {
-                        //The stack expansion strategy
-                        string m_expansion_strategy;
-                        //The distortion limit to use
-                        int32_t m_distortion_limit;
+                        //The the number of words to the left of the last
+                        //translated phrase to consider then expanding
+                        //The negative distortion value means no limit 
+                        int32_t m_distortion_left;
+                        //Stores the flag indicating wether there is a left distortion limit
+                        //or not, the value is set by this class in the finalize method
+                        bool m_is_dist_left;
+                        
+                        //The the number of words to the right of the last
+                        //translated phrase to consider then expanding
+                        //The negative distortion value means no limit 
+                        int32_t m_distortion_right;
+                        //Stores the flag indicating wether there is a left distortion limit
+                        //or not, the value is set by this class in the finalize method
+                        bool m_is_dist_right;
+                        
                         //The maximum number of words to consider when making phrases
-                        uint8_t m_max_s_phrase_len;
+                        phrase_length m_max_s_phrase_len;
                         //The maximum number of words to consider when making phrases
-                        uint8_t m_max_t_phrase_len;
+                        phrase_length m_max_t_phrase_len;
+                        
                         //The pruning threshold is to be a <positive float> it is 
                         //the deviation from the best hypothesis score. I.e. must
                         //be a value from the half open interval [1.0, +inf)
@@ -72,6 +85,14 @@ namespace uva {
                          * Allows to verify the parameters to be correct.
                          */
                         void finalize() {
+                            ASSERT_CONDITION_THROW((m_distortion_left == 0),
+                                    string("The distortion_left must not be 0!"));
+                            m_is_dist_left = (m_distortion_left > 0);
+                            
+                            ASSERT_CONDITION_THROW((m_distortion_right == 0),
+                                    string("The distortion_right must not be 0!"));
+                            m_is_dist_right = (m_distortion_right > 0);
+                            
                             ASSERT_CONDITION_THROW((m_max_s_phrase_len == 0),
                                     string("The max_source_phrase_len must not be 0!"));
 
@@ -103,9 +124,9 @@ namespace uva {
                      * @return the stream that we output into
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const de_parameters & params) {
-                        return stream << "DE parameters: [ expansion_strategy = " << params.m_expansion_strategy
-                                << ", distortion_limit = " << params.m_distortion_limit
-                                << ", m_max_source_phrase_len = " << to_string(params.m_max_s_phrase_len)
+                        return stream << "DE parameters: [ is_distortion = [" << params.m_is_dist_left << ", " << params.m_is_dist_right
+                                << "], dist values = [" << params.m_distortion_left << ", " << params.m_distortion_right
+                                << "], m_max_source_phrase_len = " << to_string(params.m_max_s_phrase_len)
                                 << ", m_max_target_phrase_len = " << to_string(params.m_max_t_phrase_len)
                                 << ", pruning_threshold = " << params.m_pruning_threshold
                                 << ", stack_capacity = " << params.m_stack_capacity

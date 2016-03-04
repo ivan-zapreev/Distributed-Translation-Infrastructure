@@ -27,6 +27,7 @@
 #define STACK_STATE_HPP
 
 #include <vector>
+#include <algorithm>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -226,31 +227,39 @@ namespace uva {
                         protected:
 
                             /**
-                             * Allows to check that we are within the distortion limits
-                             * @param next_start_pos the next start position to test
-                             * @return true if we are within the distortion limits
-                             */
-                            inline bool is_dist_ok(const int32_t next_start_pos) {
-
-                                return (m_state_data.m_stack_data.m_params.m_distortion_limit < 0) ||
-                                        (abs(m_state_data.m_s_end_word_idx + 1 - next_start_pos) <= m_state_data.m_stack_data.m_params.m_distortion_limit);
-                            }
-
-                            /**
                              * Expand to the left of the last phrase, for all the possible of start positions
                              */
                             inline void expand_left() {
                                 LOG_DEBUG1 << ">>>>> left" << END_LOG;
 
-                                //Iterate to the left of the last begin positions until the position is valid and the distortion is within the limits
-                                for (int32_t start_pos = (m_state_data.m_s_begin_word_idx - 1);
-                                        (start_pos >= 0) && is_dist_ok(start_pos); start_pos--) {
+                                //Get the distortion limit shorthand
+                                const int32_t & dist = m_state_data.m_stack_data.m_params.m_distortion_left;
+
+                                //Get the maximum word index
+                                const int32_t & m_min_word_idx = m_state_data.m_stack_data.m_sent_data.m_min_idx;
+
+                                //Get the value of the distortion flag
+                                const bool & is_dist_left = m_state_data.m_stack_data.m_params.m_is_dist_left;
+                                
+                                //If the distortion limit is zero then there is no distortion limit
+                                //If the distortion limit is not zero then the begin position is bounded
+                                const uint32_t min_start_pos = ((is_dist_left) ? max(m_min_word_idx, m_state_data.m_s_begin_word_idx - dist) : m_min_word_idx);
+
+                                //We shall start expanding from the first word before
+                                //the beginning of the last translated phrase
+                                int32_t start_pos = (m_state_data.m_s_begin_word_idx - 1);
+
+                                //Iterate to the left of the last begin positions until the
+                                //position is valid and the distortion is within the limits
+                                while (min_start_pos <= start_pos) {
                                     //If the next position is not covered then expand the lengths
                                     if (!m_state_data.m_covered[start_pos]) {
                                         //Expand the lengths
-
                                         expand_length(start_pos);
                                     }
+
+                                    //Decrement the start position
+                                    start_pos--;
                                 }
 
                                 LOG_DEBUG1 << "<<<<< left" << END_LOG;
@@ -262,15 +271,34 @@ namespace uva {
                             inline void expand_right() {
                                 LOG_DEBUG1 << ">>>>> right" << END_LOG;
 
-                                //Iterate to the right of the last positions until the position is valid and the distortion is within the limits
-                                for (uint32_t start_pos = (m_state_data.m_s_end_word_idx + 1);
-                                        (start_pos < m_state_data.m_stack_data.m_sent_data.get_dim()) && is_dist_ok(start_pos); ++start_pos) {
+                                //Get the distortion limit shorthand
+                                const int32_t & dist = m_state_data.m_stack_data.m_params.m_distortion_right;
+
+                                //Get the maximum word index
+                                const int32_t & m_max_word_idx = m_state_data.m_stack_data.m_sent_data.m_max_idx;
+
+                                //Get the value of the distortion flag
+                                const bool & is_dist_right = m_state_data.m_stack_data.m_params.m_is_dist_right;
+                                
+                                //If the distortion limit is zero then there is no distortion limit
+                                //If the distortion limit is not zero then the begin position is bounded
+                                const uint32_t max_start_pos = ((is_dist_right) ? min(m_max_word_idx, m_state_data.m_s_end_word_idx + dist) : m_max_word_idx);
+
+                                //We shall start expanding from the first word
+                                //after the end of the last translated phrase
+                                int32_t start_pos = (m_state_data.m_s_end_word_idx + 1);
+
+                                //Iterate to the right of the last positions until the
+                                //position is valid and the distortion is within the limits
+                                while (start_pos <= max_start_pos) {
                                     //If the next position is not covered then expand the lengths
                                     if (!m_state_data.m_covered[start_pos]) {
                                         //Expand the lengths
-
                                         expand_length(start_pos);
                                     }
+
+                                    //Increment the start position
+                                    ++start_pos;
                                 }
 
                                 LOG_DEBUG1 << "<<<<< right" << END_LOG;

@@ -58,11 +58,17 @@ namespace uva {
                 //Declare the pointer to the lement type
                 typedef element_type * element_type_ptr;
 
+                //Stores the minimum dimension index
+                static constexpr int32_t m_min_idx = 0;
+
+                //Stores the maximum dimension index
+                const int32_t m_max_idx;
+
                 /**
                  * The basic constructor
                  * @param dimension the dimension of the matrix, it will be a square upper diagonal matrix.
                  */
-                upp_diag_matrix(const size_t dim) : m_dim(dim) {
+                upp_diag_matrix(const size_t dim) : m_max_idx(dim - 1), m_dim(dim) {
                     //Compute the number of elements to be used
                     const size_t num_elements = (dim - 1) * dim / 2 + dim;
 
@@ -127,6 +133,9 @@ namespace uva {
                 //Stores the array of pointers to matrix rows
                 element_type_ptr * m_rows;
             };
+
+            template<typename element_type>
+            constexpr int32_t upp_diag_matrix<element_type>::m_min_idx;
         }
     }
 }
