@@ -65,7 +65,7 @@ namespace uva {
                                 stack_state_ptr next_state = NULL;
                                 while (curr_state != NULL) {
                                     //Store the next state
-                                    next_state = curr_state->get_next();
+                                    next_state = curr_state->m_next;
                                     //Delete the current state
                                     delete curr_state;
                                     //Set the next state as the current one
@@ -100,7 +100,7 @@ namespace uva {
                                     //or until we find an empty position, then stop.
                                     while ((curr_state != NULL) && (*new_state < *curr_state)) {
                                         //Move further to the next state
-                                        curr_state = curr_state->get_next();
+                                        curr_state = curr_state->m_next;
                                     }
 
                                     LOG_DEBUG1 << "The last considered state is: " << curr_state << END_LOG;
@@ -157,7 +157,7 @@ namespace uva {
                                     LOG_DEBUG << "<<<<< End STATE (" << curr_state << ") expansion" << END_LOG;
 
                                     //Move to the next state
-                                    curr_state = curr_state->get_next();
+                                    curr_state = curr_state->m_next;
                                 }
                             }
 
@@ -365,7 +365,7 @@ namespace uva {
                                     //We should insert before a state which is not the first state
                                     //in the list, so it is definite that the current state has a
                                     //previous, so we are to insert between these two states.
-                                    insert_between(curr_state->get_prev(), curr_state, new_state);
+                                    insert_between(curr_state->m_prev, curr_state, new_state);
                                 }
                             }
 

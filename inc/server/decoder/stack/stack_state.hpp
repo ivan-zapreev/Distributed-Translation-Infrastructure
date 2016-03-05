@@ -188,22 +188,6 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to get the previous stack-state within the level
-                             * @return the pointer reference to the previous stack-state in the level
-                             */
-                            inline stack_state_ptr get_prev() const {
-                                return m_prev;
-                            }
-
-                            /**
-                             * Allows to get the next stack-state within the level
-                             * @return the pointer reference to the next stack-state in the level
-                             */
-                            inline stack_state_ptr get_next() const {
-                                return m_next;
-                            }
-
-                            /**
                              * Allows to compare two states, the comparison is based on the state total score.
                              * The state with the bigger total score is considered to be bigger, i.e. more probable.
                              * The state with the smalle total score is considered to be smaller, i.e. less probable.
