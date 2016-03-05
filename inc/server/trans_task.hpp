@@ -135,8 +135,12 @@ namespace uva {
                         try {
                             dec.translate();
                         } catch (Exception & ex) {
+                            //Set the response code
                             m_code = trans_job_code::RESULT_ERROR;
-                            LOG_DEBUG << "SERVER ERROR: " << ex.get_message() << END_LOG;
+                            //Set the error message to be the target text to be sent back
+                            m_target_text = ex.get_message();
+                            //Do local logging
+                            LOG_DEBUG << "SERVER ERROR: " << m_target_text << END_LOG;
                         }
 
                         //Dispose the decoder instance 
@@ -204,8 +208,8 @@ namespace uva {
                     void process_task_result() {
                         //Set the task is not canceled then set the result, otherwise set the canceled code.
                         if (m_code == trans_job_code::RESULT_ERROR) {
-                            //If there was an error during translation send back the source
-                            m_target_text = string("<error>: ") + m_source_text;
+                            //If there was an error during translation send back the error message stored in the target texts
+                            m_target_text = string("<error>: ") + m_target_text;
                         } else {
                             //Unless it was an error while translating there should be an undefined status
                             ASSERT_SANITY_THROW((m_code != trans_job_code::RESULT_UNDEFINED),

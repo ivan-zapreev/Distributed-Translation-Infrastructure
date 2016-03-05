@@ -172,7 +172,7 @@ namespace uva {
                                 //then it is possible we could not get any translation due
                                 //to an unexpected situation in the algorithms
                                 ASSERT_CONDITION_THROW((m_first_state == NULL),
-                                        "The translation process failed, no translations!");
+                                        "We could not find any translation, increase distortion?");
 
                                 //Call the get-translation function of the most probable state in the stack
                                 m_first_state->get_translation(target_sent);
