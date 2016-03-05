@@ -147,7 +147,7 @@ namespace uva {
                                 //Try to find the UNK/UNK entry
                                 m_unk_entry = get_entry(SOURCE_UNK_UID, TARGET_UNK_UID);
 
-                                LOG_USAGE << "UNK->UNK reordering: " << array_to_string<prob_weight>(m_unk_entry->NUM_FEATURES, m_unk_entry->get_weights()) << END_LOG;
+                                LOG_DEBUG << "UNK->UNK reordering: " << array_to_string<prob_weight>(m_unk_entry->NUM_FEATURES, m_unk_entry->get_weights()) << END_LOG;
                                 
                                 //Assert on that the UNK/UNK entry is found!
                                 ASSERT_CONDITION_THROW((m_unk_entry == NULL), string("Could not find the ") +
