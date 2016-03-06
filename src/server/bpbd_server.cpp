@@ -212,6 +212,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         LOG_INFO << params.m_rm_params << END_LOG;
 
         section = "Decoding Options";
+        params.m_de_params.m_num_best_trans = get_integer<uint32_t>(ini, section, "num_best_trans");
         params.m_de_params.m_distortion = get_integer<int32_t>(ini, section, "distortion");
         params.m_de_params.m_ext_dist_left = get_integer<int32_t>(ini, section, "ext_dist_left");
         params.m_de_params.m_pruning_threshold = get_float(ini, section, "pruning_threshold");
