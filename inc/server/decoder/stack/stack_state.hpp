@@ -74,7 +74,7 @@ namespace uva {
                              */
                             stack_state_templ(const stack_data & data)
                             : m_parent(NULL), m_state_data(data),
-                            m_prev(NULL), m_next(NULL), m_recomb_from() {
+                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL) {
                                 LOG_DEBUG3 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
 
@@ -85,7 +85,7 @@ namespace uva {
                              */
                             stack_state_templ(stack_state_ptr parent) :
                             m_parent(parent), m_state_data(parent->m_state_data),
-                            m_prev(NULL), m_next(NULL), m_recomb_from() {
+                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL) {
                                 LOG_DEBUG3 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
 
@@ -102,20 +102,32 @@ namespace uva {
                                     const typename state_data::covered_info & covered,
                                     tm_const_target_entry* target)
                             : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, covered, target),
-                            m_prev(NULL), m_next(NULL), m_recomb_from() {
+                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL) {
                                 LOG_DEBUG1 << "stack_state create for source[" << begin_pos << "," << end_pos
                                         << "], target ___" << target->get_target_phrase() << "___" << END_LOG;
                             }
 
                             /**
                              * The basic destructor, should free all the allocated
-                             * resources and delete the next state in the row
+                             * resources. Deletes the states that are recombined
+                             * into this state as they are not in any stack level
                              */
                             ~stack_state_templ() {
-                                //Delete the states that are recombined into this
-                                //state as they are not in any stack level
-                                for (vector<stack_state_ptr>::const_iterator iter = m_recomb_from.begin(); iter != m_recomb_from.end(); ++iter) {
-                                    delete *iter;
+                                //We need two pointers one to point to the current state to
+                                //be deleted and another one for the next state to move to.
+                                stack_state_ptr curr_state = m_recomb_from;
+                                stack_state_ptr next_state = NULL;
+
+                                //While there is states to delete
+                                while (curr_state != NULL) {
+                                    //Save the next state
+                                    next_state = curr_state->m_next;
+
+                                    //Delete the revious state
+                                    delete curr_state;
+
+                                    //Move on to the next state;
+                                    curr_state = next_state;
                                 }
                             }
 
@@ -223,7 +235,7 @@ namespace uva {
                             inline bool operator!=(const stack_state & other) const {
                                 return !(*this == other);
                             }
-                            
+
                             /**
                              * Allows to add a state recombined into this one,
                              * i.e. the one equivalent to this one but having
@@ -238,6 +250,14 @@ namespace uva {
                              * @param other the state to recombine into this one.
                              */
                             inline void recombine_from(stack_state_ptr other) {
+                                //ToDo: Attempt to insert the other new state into the recombined from list.
+
+                                //If the state itself had states recombined into this one then these 
+                                if (other->m_recomb_from != NULL) {
+                                    //ToDo: Merge these new states after the newly inserted
+                                    //one, if there will be any place for them
+                                }
+                                
                                 THROW_NOT_IMPLEMENTED();
                             }
 
@@ -416,8 +436,8 @@ namespace uva {
                             //This variable stores the pointer to the next state in the stack level or NULL if it is the last one
                             stack_state_ptr m_next;
 
-                            //This vector stores the list of states recombined into this state
-                            vector<stack_state_ptr> m_recomb_from;
+                            //This double-linked list stores the list of states recombined into this state
+                            stack_state_ptr m_recomb_from;
 
                             //Make the stack level the friend of this class
                             friend class stack_level;
