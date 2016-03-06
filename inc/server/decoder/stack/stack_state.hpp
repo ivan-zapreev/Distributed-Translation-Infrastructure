@@ -206,12 +206,39 @@ namespace uva {
                              *    2. They have the same history of target words
                              *    3. They cover the same source words
                              * @param other the other state to compare with
-                             * @return true if this state is equal to the other one
+                             * @return true if this state is equal to the other one, otherwise false.
                              */
                             inline bool operator==(const stack_state & other) const {
                                 return (m_state_data.m_s_end_word_idx == other.m_state_data.m_s_end_word_idx) &&
                                         (m_state_data.m_trans_frame.is_equal_last(other.m_state_data.m_trans_frame, MAX_HISTORY_LENGTH)) &&
                                         (m_state_data.m_covered == other.m_state_data.m_covered);
+                            }
+
+                            /**
+                             * Allows to compare two states for not being equal,
+                             * this is an inverse of the == operator.
+                             * @param other the other state to compare with
+                             * @return true if this state is not equal to the other one, otherwise false.
+                             */
+                            inline bool operator!=(const stack_state & other) const {
+                                return !(*this == other);
+                            }
+                            
+                            /**
+                             * Allows to add a state recombined into this one,
+                             * i.e. the one equivalent to this one but having
+                             * the lower value of the total cost. In case this state
+                             * already has too many states recombined into this one
+                             * and the new state probability is lower than that of
+                             * the others, then we just delete it. Also, if there
+                             * were states recombined into the other one, then they
+                             * have lower costs, so proper merging of them is to
+                             * be done as well. Eventually the states recombined into
+                             * this one must have their m_recomb_from arrays empty.
+                             * @param other the state to recombine into this one.
+                             */
+                            inline void recombine_from(stack_state_ptr other) {
+                                THROW_NOT_IMPLEMENTED();
                             }
 
                         protected:

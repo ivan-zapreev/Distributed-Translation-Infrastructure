@@ -97,10 +97,21 @@ namespace uva {
                                     stack_state_ptr curr_state = m_first_state;
 
                                     //Search for the proper position of the state,
-                                    //or until we find an empty position, then stop.
+                                    //the state we could recombine into or until
+                                    //we find an empty position, then stop.
                                     while ((curr_state != NULL) && (*new_state < *curr_state)) {
-                                        //Move further to the next state
-                                        curr_state = curr_state->m_next;
+                                        if (*new_state == *curr_state) {
+                                            //The two states are equal meaning that they can be recombined.
+                                            //Since the new state is smaller than the current one it has
+                                            //smaller probability, therefore we need to recombine it into
+                                            //the current state and then we can just abort the process as
+                                            curr_state->recombine_from(new_state);
+                                            //The number of elements in the level does not change, so return.
+                                            return;
+                                        } else {
+                                            //Move further to the next state
+                                            curr_state = curr_state->m_next;
+                                        }
                                     }
 
                                     LOG_DEBUG1 << "The last considered state is: " << curr_state << END_LOG;
@@ -113,10 +124,28 @@ namespace uva {
                                         //Insert this state before the 
                                         insert_before(curr_state, new_state);
 
-                                        //Perform pruning techniques
+                                        //Search further from the curr_state, including curr_state,
+                                        //For a state that could be recombined into the newly added
+                                        //one. There can not be more than one of such states due to
+                                        //incremental nature of building up the stack level.
+                                        while ((curr_state != NULL) && (*new_state != *curr_state)) {
+                                            //Move further to the next state
+                                            curr_state = curr_state->m_next;
+                                        }
+
+                                        //We found a state that is to be recombined into the new one.
+                                        if (curr_state != NULL) {
+                                            //Recombine the current state state into the new one
+                                            new_state->recombine_from(curr_state);
+                                            //Remove the current state from the level
+                                            remove_from_level(curr_state);
+                                        }
+
+                                        //Perform pruning techniques, we might not have added a new
+                                        //state but we could have gotten the new best scoring state.
                                         prune_states();
                                     } else {
-                                        //All other states are more probable
+                                        //All other states are more probable and non is equivalent to the new one
                                         LOG_DEBUG1 << "The new state is to be added to the end of the level" << END_LOG;
 
                                         //Check if there is free space left in the level
@@ -126,9 +155,9 @@ namespace uva {
                                             //then we add it to the list of states
                                             insert_as_last(new_state);
                                         } else {
-                                            //There is no place in the existence for this
-                                            //poor fellow, destroy it. This is part of
-                                            //histogram and threshold pruning method.
+                                            //There is no place in the existence for this poor fellow, destroy
+                                            //it. This is part of histogram and threshold pruning method.
+                                            LOG_DEBUG1 << "Deleting the (" << new_state << ") state!" << END_LOG;
                                             delete new_state;
                                         }
                                     }
@@ -246,8 +275,11 @@ namespace uva {
                                 while ((m_size > m_params.m_stack_capacity) || !is_above_threshold(m_last_state)) {
                                     LOG_DEBUG1 << "Pushing out the last state " << m_last_state << END_LOG;
 
-                                    //Destroy the last state in the list
-                                    remove_and_destroy(m_last_state);
+                                    //Remove the last state from the level states
+                                    remove_from_level(m_last_state);
+
+                                    LOG_DEBUG1 << "Deleting the (" << m_last_state << ") state!" << END_LOG;
+                                    delete m_last_state;
                                 }
 
                                 ASSERT_SANITY_THROW((m_first_state == NULL),
@@ -370,12 +402,13 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to destroy the given state from the level
+                             * Allows to remove the given state from the level.
+                             * The state is not destroyed, its memory is not deleted.
                              * This method decrements the level size counter.
                              * The given state must be within the level list of states!
                              * @param state the state to be destroyed
                              */
-                            inline void remove_and_destroy(stack_state_ptr state) {
+                            inline void remove_from_level(stack_state_ptr state) {
                                 ASSERT_SANITY_THROW((state == NULL),
                                         "Bad pointer state == NULL");
 
@@ -426,10 +459,6 @@ namespace uva {
                                         }
                                     }
                                 }
-
-                                LOG_DEBUG1 << "Destroying the state itself!" << END_LOG;
-                                //Delete the state
-                                delete state;
 
                                 //Now it is time to decrement the count
                                 m_size--;

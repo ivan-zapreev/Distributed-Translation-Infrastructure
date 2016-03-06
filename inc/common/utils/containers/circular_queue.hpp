@@ -148,7 +148,7 @@ namespace uva {
                  * true if both elements have less than num_elems but the number of elements is equal and the elements are equal
                  * false otherwise
                  */
-                bool is_equal_last(const circular_queue & other, const size_t num_elems) {
+                bool is_equal_last(const circular_queue & other, const size_t num_elems) const {
                     if ((m_size >= num_elems) && (other.m_size >= num_elems)) {
                         //Compare the last num_elems elements
                         return (memcmp((m_elems + (m_size - num_elems)),
