@@ -169,7 +169,7 @@ namespace uva {
                  * Allows to empty the queue
                  */
                 void empty_queue() {
-
+                    //Just re-setthe queue size, the data will be overwritten if needed.
                     m_size = 0;
                 }
 
@@ -178,7 +178,6 @@ namespace uva {
                  * @return the number of stored elements
                  */
                 size_t get_size() const {
-
                     return m_size;
                 }
 
@@ -187,7 +186,6 @@ namespace uva {
                  * @return the pointer to the array storing the elements
                  */
                 const elem_type * get_elems() const {
-
                     return m_elems;
                 }
 
@@ -196,7 +194,6 @@ namespace uva {
                  * @return the maximum number of elements to store
                  */
                 size_t get_capacity() const {
-
                     return capacity;
                 }
 
@@ -208,7 +205,6 @@ namespace uva {
                  * @param elem the element to be stored in the queue
                  */
                 void push_back(const elem_type & elem) {
-
                     push_back(1, &elem);
                 }
 
