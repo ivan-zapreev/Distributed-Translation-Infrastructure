@@ -199,14 +199,19 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to compare two states
+                             * Allows to compare two states, the states are equal if the solve
+                             * the same sub-problem i.e. are eligible for recombination.
+                             * The states are equal if and only if:
+                             *    1. They have the same last translated word
+                             *    2. They have the same history of target words
+                             *    3. They cover the same source words
                              * @param other the other state to compare with
                              * @return true if this state is equal to the other one
                              */
                             inline bool operator==(const stack_state & other) const {
-                                //ToDo: Implement
-
-                                THROW_NOT_IMPLEMENTED();
+                                return (m_state_data.m_s_end_word_idx == other.m_state_data.m_s_end_word_idx) &&
+                                        (m_state_data.m_trans_frame.is_equal_last(other.m_state_data.m_trans_frame, MAX_HISTORY_LENGTH)) &&
+                                        (m_state_data.m_covered == other.m_state_data.m_covered);
                             }
 
                         protected:

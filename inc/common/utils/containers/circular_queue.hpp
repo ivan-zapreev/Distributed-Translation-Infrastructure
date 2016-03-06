@@ -47,10 +47,12 @@ namespace uva {
             /**
              * This class represents a circular queue class that
              * is needed to store a limited and fixed amount of
-             * elements.
+             * elements. This queue is designed to store only basic type elements
              * WARNING: Class does a shallow copy of elements using the memcpy!
              * So do not store here complex data structures with pointers and
              * the overridden assign operator!
+             * WARNING: When comparing elements of the queue does a byte
+             * comparison with memcmp and not the == operator!
              */
             template<typename elem_type, size_t capacity>
             class circular_queue {
@@ -137,9 +139,37 @@ namespace uva {
                 }
 
                 /**
+                 * Allows to check if a certain amount of this queue last elements
+                 * is equal to the certain amount of the other queue last elements.
+                 * @param other the other queue to compare with
+                 * @param num_elems the number of last elements to compare
+                 * @return true or false depending on?
+                 * true if both queues have more than or equal to num_elems elements and the last num_elems are equal.
+                 * true if both elements have less than num_elems but the number of elements is equal and the elements are equal
+                 * false otherwise
+                 */
+                bool is_equal_last(const circular_queue & other, const size_t num_elems) {
+                    if ((m_size >= num_elems) && (other.m_size >= num_elems)) {
+                        //Compare the last num_elems elements
+                        return (memcmp((m_elems + (m_size - num_elems)),
+                                (other.m_elems + (other.m_size - num_elems)), num_elems) == 0);
+                    } else {
+                        if (m_size == other.m_size) {
+                            //The number of elements is equal so compare the last m_size elements
+                            return (memcmp(m_elems, other.m_elems, m_size) == 0);
+                        } else {
+                            //The number of last elements is different and
+                            //at least one queue has less than num_elems
+                            return false;
+                        }
+                    }
+                }
+
+                /**
                  * Allows to empty the queue
                  */
                 void empty_queue() {
+
                     m_size = 0;
                 }
 
@@ -148,6 +178,7 @@ namespace uva {
                  * @return the number of stored elements
                  */
                 size_t get_size() const {
+
                     return m_size;
                 }
 
@@ -156,6 +187,7 @@ namespace uva {
                  * @return the pointer to the array storing the elements
                  */
                 const elem_type * get_elems() const {
+
                     return m_elems;
                 }
 
@@ -164,6 +196,7 @@ namespace uva {
                  * @return the maximum number of elements to store
                  */
                 size_t get_capacity() const {
+
                     return capacity;
                 }
 
@@ -175,6 +208,7 @@ namespace uva {
                  * @param elem the element to be stored in the queue
                  */
                 void push_back(const elem_type & elem) {
+
                     push_back(1, &elem);
                 }
 
@@ -198,7 +232,7 @@ namespace uva {
                                 << "position 0 to position: " << m_size << END_LOG;
 
                         //Copy the new data to the remainder of the queue
-                        memcpy(m_elems + m_size, elems, num_elems * sizeof(elem_type));
+                        memcpy(m_elems + m_size, elems, num_elems * sizeof (elem_type));
                     } else {
                         //The number of elements will become larger than the queue capacity
 
@@ -221,13 +255,14 @@ namespace uva {
                             const elem_type * sub_arr = elems + begin_idx;
 
                             //Copy the last part of the data, overwriting everything there was
-                            memcpy(m_elems, sub_arr, capacity * sizeof(elem_type));
+                            memcpy(m_elems, sub_arr, capacity * sizeof (elem_type));
                         } else {
                             //The number of elements we are to add is smaller than
                             //the queue capacity so they will all fit, but we need
                             //to push some of the old elements out
 
                             //Compute the number of free slots
+
                             const size_t num_empty = capacity - m_size;
                             //Compute the number of slots we need to free
                             const size_t num_push_out = num_elems - num_empty;
@@ -242,13 +277,13 @@ namespace uva {
                                     << num_push_out << " to position 0" << END_LOG;
 
                             //Move the elements we have to keep to the beginning of the queue
-                            memmove(m_elems, m_elems + num_push_out, num_keep * sizeof(elem_type));
+                            memmove(m_elems, m_elems + num_push_out, num_keep * sizeof (elem_type));
 
                             LOG_DEBUG << "Copying " << num_elems << " elem(s) from "
                                     << "position 0 to position: " << num_keep << END_LOG;
 
                             //Copy the elements into the freed remainder of the array
-                            memcpy(m_elems + num_keep, elems, num_elems * sizeof(elem_type));
+                            memcpy(m_elems + num_keep, elems, num_elems * sizeof (elem_type));
                         }
                     }
 
