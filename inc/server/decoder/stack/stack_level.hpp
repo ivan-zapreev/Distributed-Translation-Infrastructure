@@ -270,16 +270,22 @@ namespace uva {
                              * This method decrements the level size counter.
                              */
                             inline void prune_states() {
+                                //the pointer to the state to be deleted.
+                                stack_state_ptr state_to_delete = NULL;
+
                                 //Check if the stack capacity is exceeded or the last states are not probable
                                 //Remove the last state until both conditions are falsified
                                 while ((m_size > m_params.m_stack_capacity) || !is_above_threshold(m_last_state)) {
                                     LOG_DEBUG1 << "Pushing out the last state " << m_last_state << END_LOG;
 
+                                    //Remember the pointer to the state to be deleted.
+                                    state_to_delete = m_last_state;
+
                                     //Remove the last state from the level states
                                     remove_from_level(m_last_state);
 
-                                    LOG_DEBUG1 << "Deleting the (" << m_last_state << ") state!" << END_LOG;
-                                    delete m_last_state;
+                                    LOG_DEBUG1 << "Deleting the (" << state_to_delete << ") state!" << END_LOG;
+                                    delete state_to_delete;
                                 }
 
                                 ASSERT_SANITY_THROW((m_first_state == NULL),
