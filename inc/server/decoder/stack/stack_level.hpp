@@ -92,74 +92,23 @@ namespace uva {
                                     LOG_DEBUG1 << "Setting (" << new_state
                                             << ") as the last in the level!" << END_LOG;
 
-                                    //Initialize the reference to the pointer to the
-                                    //state place where we should put the new one
-                                    stack_state_ptr curr_state = m_first_state;
-
-                                    //Search for the proper position of the state,
-                                    //the state we could recombine into or until
-                                    //we find an empty position, then stop.
-                                    while ((curr_state != NULL) && (*new_state < *curr_state)) {
-                                        if (*new_state == *curr_state) {
-                                            //The two states are equal meaning that they can be recombined.
-                                            //Since the new state is smaller than the current one it has
-                                            //smaller probability, therefore we need to recombine it into
-                                            //the current state and then we can just abort the process as
-                                            curr_state->recombine_from(new_state);
-                                            //The number of elements in the level does not change, so return.
-                                            return;
-                                        } else {
-                                            //Move further to the next state
-                                            curr_state = curr_state->m_next;
-                                        }
+                                    //find the position the new state is to be inserted into
+                                    //or possibly recombine it with the existing state.
+                                    stack_state_ptr curr_state = NULL;
+                                    if (find_recombine(curr_state, *new_state)) {
+                                        //The new state was recombined into an existing one, no need to proceed.
+                                        return;
                                     }
 
                                     LOG_DEBUG1 << "The last considered state is: " << curr_state << END_LOG;
 
                                     //Check if we found a state which is less probable than the new one
                                     if (curr_state != NULL) {
-                                        //There is a less probable state
-                                        LOG_DEBUG1 << "The new state is to be added before: " << curr_state << END_LOG;
-
-                                        //Insert this state before the 
-                                        insert_before(curr_state, new_state);
-
-                                        //Search further from the curr_state, including curr_state,
-                                        //For a state that could be recombined into the newly added
-                                        //one. There can not be more than one of such states due to
-                                        //incremental nature of building up the stack level.
-                                        while ((curr_state != NULL) && (*new_state != *curr_state)) {
-                                            //Move further to the next state
-                                            curr_state = curr_state->m_next;
-                                        }
-
-                                        //We found a state that is to be recombined into the new one.
-                                        if (curr_state != NULL) {
-                                            //Recombine the current state state into the new one
-                                            new_state->recombine_from(curr_state);
-                                            //Remove the current state from the level
-                                            remove_from_level(curr_state);
-                                        }
-
-                                        //Perform pruning techniques, we might not have added a new
-                                        //state but we could have gotten the new best scoring state.
-                                        prune_states();
+                                        //We need to add the new state before some existing state
+                                        add_before(curr_state, new_state);
                                     } else {
-                                        //All other states are more probable and non is equivalent to the new one
-                                        LOG_DEBUG1 << "The new state is to be added to the end of the level" << END_LOG;
-
-                                        //Check if there is free space left in the level
-                                        if (is_space_left() && is_above_threshold(new_state)) {
-                                            //If there is free space left and the
-                                            //state satisfies the threshold pruning
-                                            //then we add it to the list of states
-                                            insert_as_last(new_state);
-                                        } else {
-                                            //There is no place in the existence for this poor fellow, destroy
-                                            //it. This is part of histogram and threshold pruning method.
-                                            LOG_DEBUG1 << "Deleting the (" << new_state << ") state!" << END_LOG;
-                                            delete new_state;
-                                        }
+                                        //Add the new state as the last state inside the level
+                                        add_last(new_state);
                                     }
                                 }
 
@@ -216,6 +165,101 @@ namespace uva {
                             }
 
                         protected:
+
+                            /**
+                             * This method allows to search for a position to insert the new state into.
+                             * @param curr_state [out]
+                             * @param new_state [in] the new state to be inserted into the list
+                             * @return true if the new state was recombined into an existing one, otherwise false.
+                             */
+                            inline bool find_recombine(stack_state_ptr & curr_state, stack_state & new_state) {
+                                //Initialize the reference to the pointer to the
+                                //state place where we should put the new one
+                                curr_state = m_first_state;
+
+                                //Search for the proper position of the state,
+                                //the state we could recombine into or until
+                                //we find an empty position, then stop.
+                                while ((curr_state != NULL) && (new_state < *curr_state)) {
+                                    if (new_state == *curr_state) {
+                                        //The two states are equal meaning that they can be recombined.
+                                        //Since the new state is smaller than the current one it has
+                                        //smaller probability, therefore we need to recombine it into
+                                        //the current state and then we can just abort the process as
+                                        curr_state->recombine_from(&new_state);
+                                        //The number of elements in the level does not change, so return.
+                                        return true;
+                                    } else {
+                                        //Move further to the next state
+                                        curr_state = curr_state->m_next;
+                                    }
+                                }
+                                return false;
+                            }
+
+                            /**
+                             * Allows to add the new state as the last one to the level.
+                             * This new stat is to have the smallest weight that all the
+                             * other states in the level and is not to be equal (recombinable)
+                             * to any other state to the level
+                             * @param new_state the new state to add as the last one, if satisfies the pruning thresholds.
+                             */
+                            inline void add_last(stack_state_ptr new_state) {
+                                //All other states are more probable and non is equivalent to the new one
+                                LOG_DEBUG1 << "The new state is to be added to the end of the level" << END_LOG;
+
+                                //Check if there is free space left in the level
+                                if (is_space_left() && is_above_threshold(new_state)) {
+                                    //If there is free space left and the
+                                    //state satisfies the threshold pruning
+                                    //then we add it to the list of states
+                                    insert_as_last(new_state);
+                                } else {
+                                    //There is no place in the existence for this poor fellow, destroy
+                                    //it. This is part of histogram and threshold pruning method.
+                                    LOG_DEBUG1 << "Deleting the (" << new_state << ") state!" << END_LOG;
+                                    delete new_state;
+                                }
+                            }
+
+                            /**
+                             * Allows to add a new state to the level before some existing state.
+                             * The new state is to have a bigger weight that the provided current
+                             * state and is to be non equal (recombinable) to any other state before.
+                             * This method makes sure that any state after the new one will be checked
+                             * for a possible recombination to the new one, if yes the recombination
+                             * will be done. Pruning is performed unconditionally.
+                             * @param curr_state the pointer to the state, not NULL, we need to add the new state prior to.
+                             * @param new_state the pointer to the new state, not NULL
+                             */
+                            inline void add_before(stack_state_ptr curr_state, stack_state_ptr new_state) {
+                                //There is a less probable state
+                                LOG_DEBUG1 << "The new state is to be added before: " << curr_state << END_LOG;
+
+                                //Insert this state before the 
+                                insert_before(curr_state, new_state);
+
+                                //Search further from the curr_state, including curr_state,
+                                //For a state that could be recombined into the newly added
+                                //one. There can not be more than one of such states due to
+                                //incremental nature of building up the stack level.
+                                while ((curr_state != NULL) && (*new_state != *curr_state)) {
+                                    //Move further to the next state
+                                    curr_state = curr_state->m_next;
+                                }
+
+                                //We found a state that is to be recombined into the new one.
+                                if (curr_state != NULL) {
+                                    //Recombine the current state state into the new one
+                                    new_state->recombine_from(curr_state);
+                                    //Remove the current state from the level
+                                    remove_from_level(curr_state);
+                                }
+
+                                //Perform pruning techniques, we might not have added a new
+                                //state but we could have gotten the new best scoring state.
+                                prune_states();
+                            }
 
                             /**
                              * Allows to update the best score, or rather threshold for threshold pruning.
