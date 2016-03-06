@@ -89,26 +89,31 @@ namespace uva {
                                     //Insert this state as the first one
                                     insert_as_first(new_state);
                                 } else {
-                                    LOG_DEBUG1 << "Setting (" << new_state
-                                            << ") as the last in the level!" << END_LOG;
+                                    //Do not even consider the new state unless it is above the threshold
+                                    if (new_state->is_above_threshold(m_score_bound)) {
+                                        //find the position the new state is to be inserted into
+                                        //or possibly recombine it with the existing state.
+                                        stack_state_ptr curr_state = NULL;
+                                        if (find_recombine(curr_state, *new_state)) {
+                                            //The new state was recombined into an existing one, no need to proceed.
+                                            return;
+                                        }
 
-                                    //find the position the new state is to be inserted into
-                                    //or possibly recombine it with the existing state.
-                                    stack_state_ptr curr_state = NULL;
-                                    if (find_recombine(curr_state, *new_state)) {
-                                        //The new state was recombined into an existing one, no need to proceed.
-                                        return;
-                                    }
+                                        LOG_DEBUG1 << "The last considered state is: " << curr_state << END_LOG;
 
-                                    LOG_DEBUG1 << "The last considered state is: " << curr_state << END_LOG;
-
-                                    //Check if we found a state which is less probable than the new one
-                                    if (curr_state != NULL) {
-                                        //We need to add the new state before some existing state
-                                        add_before(curr_state, new_state);
+                                        //Check if we found a state which is less probable than the new one
+                                        if (curr_state != NULL) {
+                                            //We need to add the new state before some existing state
+                                            add_before(curr_state, new_state);
+                                        } else {
+                                            //Add the new state as the last state inside the level
+                                            add_last(new_state);
+                                        }
                                     } else {
-                                        //Add the new state as the last state inside the level
-                                        add_last(new_state);
+                                        //The new state is below the threshold, so delete it
+                                        LOG_DEBUG1 << "Deleting (threshold pruning) the ("
+                                                << new_state << ") state!" << END_LOG;
+                                        delete new_state;
                                     }
                                 }
 
@@ -168,11 +173,15 @@ namespace uva {
 
                             /**
                              * This method allows to search for a position to insert the new state into.
+                             * We known that the state satisfies the total weight threshold.
                              * @param curr_state [out]
                              * @param new_state [in] the new state to be inserted into the list
                              * @return true if the new state was recombined into an existing one, otherwise false.
                              */
                             inline bool find_recombine(stack_state_ptr & curr_state, stack_state & new_state) {
+                                LOG_DEBUG1 << "Searching for the place for the " << &new_state
+                                        << " state within the level!" << END_LOG;
+
                                 //Initialize the reference to the pointer to the
                                 //state place where we should put the new one
                                 curr_state = m_first_state;
@@ -199,9 +208,10 @@ namespace uva {
 
                             /**
                              * Allows to add the new state as the last one to the level.
-                             * This new stat is to have the smallest weight that all the
+                             * This new state is to have the smallest weight that all the
                              * other states in the level and is not to be equal (recombinable)
-                             * to any other state to the level
+                             * to any other state to the level. Note that we know that the new
+                             * state cost is within the current threshold bound.
                              * @param new_state the new state to add as the last one, if satisfies the pruning thresholds.
                              */
                             inline void add_last(stack_state_ptr new_state) {
@@ -209,15 +219,16 @@ namespace uva {
                                 LOG_DEBUG1 << "The new state is to be added to the end of the level" << END_LOG;
 
                                 //Check if there is free space left in the level
-                                if (is_space_left() && is_above_threshold(new_state)) {
+                                if (is_space_left()) {
                                     //If there is free space left and the
                                     //state satisfies the threshold pruning
                                     //then we add it to the list of states
                                     insert_as_last(new_state);
                                 } else {
-                                    //There is no place in the existence for this poor fellow, destroy
-                                    //it. This is part of histogram and threshold pruning method.
-                                    LOG_DEBUG1 << "Deleting the (" << new_state << ") state!" << END_LOG;
+                                    //There is no place in the existence for this poor fellow, 
+                                    //destroy it. This is part of histogram pruning method.
+                                    LOG_DEBUG1 << "Deleting (histogram pruning) the ("
+                                            << new_state << ") state!" << END_LOG;
                                     delete new_state;
                                 }
                             }
@@ -229,6 +240,7 @@ namespace uva {
                              * This method makes sure that any state after the new one will be checked
                              * for a possible recombination to the new one, if yes the recombination
                              * will be done. Pruning is performed unconditionally.
+                             * We known that the state satisfies the total weight threshold.
                              * @param curr_state the pointer to the state, not NULL, we need to add the new state prior to.
                              * @param new_state the pointer to the new state, not NULL
                              */
@@ -239,21 +251,30 @@ namespace uva {
                                 //Insert this state before the 
                                 insert_before(curr_state, new_state);
 
+                                //There is a less probable state
+                                LOG_DEBUG1 << "Checking for states equivalent to " << new_state
+                                        << " starting from " << curr_state << END_LOG;
+
                                 //Search further from the curr_state, including curr_state,
                                 //For a state that could be recombined into the newly added
                                 //one. There can not be more than one of such states due to
                                 //incremental nature of building up the stack level.
                                 while ((curr_state != NULL) && (*new_state != *curr_state)) {
+                                    LOG_DEBUG << "Checking " << curr_state << " == " << new_state << END_LOG;
                                     //Move further to the next state
                                     curr_state = curr_state->m_next;
                                 }
 
                                 //We found a state that is to be recombined into the new one.
                                 if (curr_state != NULL) {
-                                    //Recombine the current state state into the new one
-                                    new_state->recombine_from(curr_state);
+                                    LOG_DEBUG << "Found an equivalent state " << curr_state
+                                            << " == " << new_state << " !" << END_LOG;
+
                                     //Remove the current state from the level
                                     remove_from_level(curr_state);
+
+                                    //Recombine the current state state into the new one
+                                    new_state->recombine_from(curr_state);
                                 }
 
                                 //Perform pruning techniques, we might not have added a new
@@ -277,26 +298,6 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to check if the given new state is within the
-                             * threshold limit from the best scoring state. This method
-                             * must be called only if there is already at least one
-                             * state in the stack level! I.e. m_first_state is not NULL!
-                             * @param state the state to be tested for satisfying the pruning threshold,  not NULL
-                             * @return true if the state is good to keep, otherwise false
-                             */
-                            inline bool is_above_threshold(stack_state_ptr state) const {
-                                ASSERT_SANITY_THROW((state == NULL), "Bad pointer state == NULL");
-
-                                //Get the new state score
-                                const float score = state->m_state_data.m_total_score;
-
-                                LOG_DEBUG1 << "state " << state << " score is: " << score
-                                        << ", m_score_bound: " << m_score_bound << END_LOG;
-
-                                return ( score >= m_score_bound);
-                            }
-
-                            /**
                              * Allows to check if there is still space left for adding states into the level
                              * If there is no space left then we can still add states but we shall do histogram
                              * pruning afterwards in order to keep the stack size within the capacity limits.
@@ -317,10 +318,14 @@ namespace uva {
                                 //the pointer to the state to be deleted.
                                 stack_state_ptr state_to_delete = NULL;
 
+                                LOG_DEBUG1 << "Pruning the states backwards from: " << m_last_state << END_LOG;
+
                                 //Check if the stack capacity is exceeded or the last states are not probable
                                 //Remove the last state until both conditions are falsified
-                                while ((m_size > m_params.m_stack_capacity) || !is_above_threshold(m_last_state)) {
-                                    LOG_DEBUG1 << "Pushing out the last state " << m_last_state << END_LOG;
+                                while ((m_size > m_params.m_stack_capacity) ||
+                                        !m_last_state->is_above_threshold(m_score_bound)) {
+                                    LOG_DEBUG1 << "m_size = " << m_size << "/ " << m_params.m_stack_capacity
+                                            << ", pushing out " << m_last_state << END_LOG;
 
                                     //Remember the pointer to the state to be deleted.
                                     state_to_delete = m_last_state;
@@ -343,6 +348,8 @@ namespace uva {
                              * @param state the state to insert
                              */
                             inline void insert_as_first(stack_state_ptr state) {
+                                LOG_DEBUG << "Inserting the state " << state << " as the first one!" << END_LOG;
+
                                 //This state will be the first in the level, so the previous is NULL
                                 state->m_prev = NULL;
                                 //The next state will be the current first state
@@ -413,6 +420,9 @@ namespace uva {
                                 ASSERT_SANITY_THROW((prev == next),
                                         string("Bad pointers: prev = next!"));
 
+                                LOG_DEBUG << "Inserting the state " << state << " between "
+                                        << prev << " and " << next << " !" << END_LOG;
+
                                 //Store the previous and next states for this one
                                 state->m_prev = prev;
                                 state->m_next = next;
@@ -473,7 +483,7 @@ namespace uva {
                                 } else {
                                     //There is more elements in the list
                                     if (state == m_last_state) {
-                                        LOG_DEBUG1 << "Removing the last state!" << END_LOG;
+                                        LOG_DEBUG1 << "Removing the last state " << state << "!" << END_LOG;
 
                                         //We are deleting the last element of the list, and
                                         //there is more than one element in the list
@@ -486,7 +496,7 @@ namespace uva {
                                         m_last_state->m_next = NULL;
                                     } else {
                                         if (state == m_first_state) {
-                                            LOG_DEBUG1 << "Removing the first state!" << END_LOG;
+                                            LOG_DEBUG1 << "Removing the first state " << state << "!" << END_LOG;
 
                                             //We are deleting the first element of the list, and
                                             //there is more than one element in the list
@@ -499,7 +509,7 @@ namespace uva {
                                             m_first_state->m_prev = NULL;
                                         } else {
                                             //We are deleting some intermediate element
-                                            LOG_DEBUG1 << "Removing an intermediate state!" << END_LOG;
+                                            LOG_DEBUG1 << "Removing an intermediate state " << state << "!" << END_LOG;
 
                                             //The previous of this shall now point to the next of this as next
                                             state->m_prev->m_next = state->m_next;

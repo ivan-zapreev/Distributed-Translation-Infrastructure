@@ -78,6 +78,11 @@ namespace uva {
                         float m_word_penalty;
                         //Stores the phrase penalty - the cost of each target phrase
                         float m_phrase_penalty;
+                        
+                        //Stores the number of best translations we want to track
+                        //This is the maximum number of states that we will keep
+                        //in the recombination array for each state
+                        size_t m_num_best_trans;
 
                         /**
                          * Allows to verify the parameters to be correct.
@@ -111,6 +116,9 @@ namespace uva {
 
                             ASSERT_CONDITION_THROW((m_stack_capacity == 0),
                                     string("The stack_capacity must be > 0!"));
+
+                            ASSERT_CONDITION_THROW((m_num_best_trans == 0),
+                                    string("The num_best_trans must be > 0!"));
                         }
                     } de_parameters;
 

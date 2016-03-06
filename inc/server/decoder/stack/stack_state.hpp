@@ -74,7 +74,7 @@ namespace uva {
                              */
                             stack_state_templ(const stack_data & data)
                             : m_parent(NULL), m_state_data(data),
-                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL) {
+                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) {
                                 LOG_DEBUG3 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
 
@@ -85,7 +85,7 @@ namespace uva {
                              */
                             stack_state_templ(stack_state_ptr parent) :
                             m_parent(parent), m_state_data(parent->m_state_data),
-                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL) {
+                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) {
                                 LOG_DEBUG3 << "stack_state create, with parameters: " << m_state_data.m_stack_data.m_params << END_LOG;
                             }
 
@@ -102,7 +102,7 @@ namespace uva {
                                     const typename state_data::covered_info & covered,
                                     tm_const_target_entry* target)
                             : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, covered, target),
-                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL) {
+                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) {
                                 LOG_DEBUG1 << "stack_state create for source[" << begin_pos << "," << end_pos
                                         << "], target ___" << target->get_target_phrase() << "___" << END_LOG;
                             }
@@ -118,10 +118,14 @@ namespace uva {
                                 stack_state_ptr curr_state = m_recomb_from;
                                 stack_state_ptr next_state = NULL;
 
+                                LOG_DEBUG1 << "State destructor, first recomined from state is: " << curr_state << END_LOG;
+
                                 //While there is states to delete
                                 while (curr_state != NULL) {
                                     //Save the next state
                                     next_state = curr_state->m_next;
+
+                                    LOG_DEBUG1 << "Deleting recombined from state: " << curr_state << END_LOG;
 
                                     //Delete the revious state
                                     delete curr_state;
@@ -237,6 +241,18 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to check if the given new state is within the
+                             * threshold limit.
+                             * @param score_bound the bound to compare with
+                             * @return true if the state's totl cost is >= score_bound, otherwise false
+                             */
+                            inline bool is_above_threshold(const prob_weight & score_bound) const {
+                                LOG_DEBUG1 << "state " << this << " score is: " << m_state_data.m_total_score
+                                        << ", score_bound: " << score_bound << END_LOG;
+                                return ( m_state_data.m_total_score >= score_bound);
+                            }
+
+                            /**
                              * Allows to add a state recombined into this one,
                              * i.e. the one equivalent to this one but having
                              * the lower value of the total cost. In case this state
@@ -247,21 +263,192 @@ namespace uva {
                              * have lower costs, so proper merging of them is to
                              * be done as well. Eventually the states recombined into
                              * this one must have their m_recomb_from arrays empty.
-                             * @param other the state to recombine into this one.
+                             * @param new_state the state to recombine into this one.
                              */
-                            inline void recombine_from(stack_state_ptr other) {
-                                //ToDo: Attempt to insert the other new state into the recombined from list.
-
-                                //If the state itself had states recombined into this one then these 
-                                if (other->m_recomb_from != NULL) {
-                                    //ToDo: Merge these new states after the newly inserted
-                                    //one, if there will be any place for them
+                            inline void recombine_from(stack_state_ptr other_state) {
+                                //Combine the new state with its recombined from states
+                                const stack_state_ptr recomb_from = other_state;
+                                const size_t recomb_from_count = 1 + other_state->m_recomb_from_count;
+                                recomb_from->m_prev = NULL;
+                                recomb_from->m_next = other_state->m_recomb_from;
+                                if (other_state->m_recomb_from != NULL) {
+                                    //If there was something in the other's state recombine from then link the list
+                                    other_state->m_recomb_from->m_prev = recomb_from;
+                                    //Clean the recombined from data
+                                    other_state->m_recomb_from = NULL;
+                                    other_state->m_recomb_from_count = 0;
                                 }
-                                
-                                THROW_NOT_IMPLEMENTED();
+
+                                //Attempt to insert the other new state into the recombined from list.
+                                if (m_recomb_from == NULL) {
+                                    //If this state has no recombined-from states
+                                    //then just set the other list into this state
+                                    m_recomb_from = recomb_from;
+                                    m_recomb_from_count = recomb_from_count;
+
+                                    //Do not prune the extra recombined from states, as 
+                                    //there an be just one extra. We can postpone  this
+                                    //until more states are recombined into this one.
+                                } else {
+                                    //If this state has recombined-from states
+                                    //then merge this and the other list.
+                                    merge_recomb_from(recomb_from, recomb_from_count);
+                                }
                             }
 
                         protected:
+
+                            /**
+                             * Allows to cut the tail of states starting from this one.
+                             * The states present in the cut tail are to be deleted.
+                             * @param tail the tails of staits to delete
+                             */
+                            void cut_the_tail(stack_state_ptr tail) {
+                                //If the tail is not empty
+                                if (tail != NULL) {
+                                    //If the tail has a preceeding state
+                                    if (tail->m_prev != NULL) {
+                                        //Cut from the preceeding state
+                                        tail->m_prev->m_next = NULL;
+                                    }
+
+                                    //Iterate through the states and delete them
+                                    stack_state_ptr next = NULL;
+                                    while (tail != NULL) {
+                                        //Store the next element
+                                        next = tail->m_next;
+                                        //Delete the tail first element
+                                        delete tail;
+                                        //Move to the next tail element
+                                        tail = next;
+                                    }
+                                }
+                            }
+
+                            /**
+                             * Count the number of states in the remaining tail,
+                             * once the maximum capacity is reached the remaining
+                             * tail elements are to be deleted.
+                             * @param state_count the number of elements up until the tail element
+                             * @param tail the pointer to the firt tail element
+                             */
+                            void count_and_prune(size_t state_count, stack_state_ptr tail) {
+                                //While the tail is not empty or we reached the capacity
+                                while ((tail != NULL) &&
+                                        (state_count < m_state_data.m_stack_data.m_params.m_num_best_trans)) {
+                                    //Count the element
+                                    ++state_count;
+                                    //Move to the next one
+                                    tail = tail->m_next;
+                                }
+
+                                //Delete the remained tail
+                                cut_the_tail(tail);
+                            }
+
+                            /**
+                             * Allows to combine the two recombine from lists together.
+                             * We combine them into the current list. The states that
+                             * are remained over are deleted. There remaining states are
+                             * the ones from both lists that go outside the list capacity.
+                             * This method must only be called if the m_recomb_from != NULL
+                             * or alternatively m_recomb_from_count > 0.
+                             * @param recomb_from the recombine from list with at least one element
+                             * @param recomb_from_count the number of elements in the recomb from list
+                             */
+                            inline void merge_recomb_from(const stack_state_ptr recomb_from, const size_t recomb_from_count) {
+                                //Store the counter for the number of states in the resulting list
+                                size_t state_count = 0;
+
+                                //The current state from the target list
+                                stack_state_ptr target_state = m_recomb_from;
+                                //The current state from the source list
+                                stack_state_ptr source_state = recomb_from;
+                                //Will store the pointer to the last target state
+                                stack_state_ptr last_target_state = NULL;
+
+                                //Iterate until we have enough states in the resulting
+                                //list or we reach the end of one of the lists
+                                bool is_go_on = true;
+                                while (is_go_on) {
+                                    if (source_state != NULL) {
+                                        if (target_state != NULL) {
+                                            //Case: (source_state != NULL) && (target_state != NULL)
+
+                                            //Both source and target are not null, so we can compare them
+                                            if (*source_state < *target_state) {
+                                                //If this is the last target state, remember it.
+                                                if (target_state->m_next == NULL) {
+                                                    last_target_state = target_state;
+                                                }
+                                                //Move to the next element within the target list
+                                                target_state = target_state->m_next;
+                                                //We move to the next state in the target
+                                                ++state_count;
+                                            } else {
+                                                //Remember the next source state 
+                                                stack_state_ptr next_source_state = source_state->m_next;
+                                                //Insert the current source state before the current target state.
+                                                if (target_state->m_prev == NULL) {
+                                                    //There is no previous, set this as the first one
+                                                    m_recomb_from = source_state;
+                                                    source_state->m_next = target_state;
+                                                    target_state->m_prev = source_state;
+                                                } else {
+                                                    //Set the new one in between the two existing states
+                                                    target_state->m_prev->m_next = source_state;
+                                                    source_state->m_prev = target_state->m_prev;
+                                                    source_state->m_next = target_state;
+                                                    target_state->m_prev = source_state;
+                                                }
+                                                //We added a new state to the target
+                                                ++state_count;
+                                                //Move on to the next source state
+                                                source_state = next_source_state;
+                                            }
+
+                                            //Check if we need to stop due to reaching the capacity
+                                            if (state_count == m_state_data.m_stack_data.m_params.m_num_best_trans) {
+                                                //We've reached the capacity, need to stop now
+                                                is_go_on = false;
+
+                                                //If we have enough states delete both tails
+                                                cut_the_tail(target_state);
+                                                cut_the_tail(source_state);
+                                            }
+                                        } else {
+                                            //Case: (source_state != NULL) && (target_state == NULL)
+
+                                            //The target state is NULL, we moved past the last element
+                                            //of the target list, all the subsequent source list states
+                                            //are to be added to the end of the target list.
+                                            last_target_state->m_next = source_state;
+                                            source_state->m_prev = last_target_state;
+
+                                            //Count the remaining source list and delete the extra ones.
+                                            count_and_prune(state_count, source_state);
+
+                                            //No need to proceed, we can stop
+                                            is_go_on = false;
+                                        }
+                                    } else {
+                                        //The source state is NULL, there is no more elements to merge into the target list
+                                        if (target_state != NULL) {
+                                            //Case: (source_state == NULL) && (target_state != NULL)
+
+                                            //Count the remaining target list and delete the extra ones.
+                                            count_and_prune(state_count, target_state);
+                                        } else {
+                                            //Case: (source_state == NULL) && (target_state == NULL)
+
+                                            //There is nothing to be done here, both lists are exhausted
+                                        }
+
+                                        //No need to proceed, we can stop
+                                        is_go_on = false;
+                                    }
+                                }
+                            }
 
                             /**
                              * Expand to the left of the last phrase, for all the possible of start positions
@@ -438,6 +625,8 @@ namespace uva {
 
                             //This double-linked list stores the list of states recombined into this state
                             stack_state_ptr m_recomb_from;
+                            //Stores the number of recombined from elements in the recombined from list
+                            size_t m_recomb_from_count;
 
                             //Make the stack level the friend of this class
                             friend class stack_level;
