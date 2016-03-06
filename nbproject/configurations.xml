@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
+    </df>
+    <df root="ext" name="3">
     </df>
     <df root="inc" name="1">
       <df name="server">
@@ -11,6 +13,8 @@
           </df>
         </df>
       </df>
+    </df>
+    <df root="inc" name="4">
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -72,6 +76,17 @@
         <in>trans_task_pool_worker.cpp</in>
       </df>
     </df>
+    <df root="src" name="5">
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>CMakeLists.txt</itemPath>
+      <itemPath>build/Makefile</itemPath>
+      <itemPath>data/default.big.cfg</itemPath>
+      <itemPath>data/default.small.cfg</itemPath>
+    </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false"
@@ -84,6 +99,9 @@
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>ext</Elem>
     <Elem>src</Elem>
     <Elem>inc</Elem>
     <Elem>ext</Elem>
@@ -124,10 +142,6 @@
             </incDir>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
       <item path="inc/server/decoder/stack/stack_data.hpp"
             ex="false"
