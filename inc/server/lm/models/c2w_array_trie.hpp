@@ -318,7 +318,7 @@ namespace uva {
                             query.set_curr_payload(&m_1_gram_data[word_id]);
 
                             LOG_DEBUG << "The uni-gram word id " << SSTR(word_id) << " payload : "
-                                    << (string) m_1_gram_data[word_id] << END_LOG;
+                                    << m_1_gram_data[word_id] << END_LOG;
                         };
 
                         /**
@@ -348,7 +348,7 @@ namespace uva {
                                     LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                                     //There is data found under this context
                                     query.set_curr_payload(&m_m_gram_data[level_idx][ctx_id].payload);
-                                    LOG_DEBUG << "The payload is retrieved: " << (string) m_m_gram_data[level_idx][ctx_id].payload << END_LOG;
+                                    LOG_DEBUG << "The payload is retrieved: " << m_m_gram_data[level_idx][ctx_id].payload << END_LOG;
                                 } else {
                                     //The payload could not be found
                                     LOG_DEBUG1 << "Unable to find m-gram data for ctx_id: " << SSTR(ctx_id)

@@ -119,6 +119,8 @@ namespace uva {
                              * The basic destructor
                              */
                             ~multi_stack() {
+                                LOG_DEBUG1 << "Destructing stack" << this << ", # levels: " << m_num_levels << END_LOG;
+                                
                                 //Dispose the stacks
                                 if (m_levels != NULL) {
 

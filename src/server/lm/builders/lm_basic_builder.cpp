@@ -434,8 +434,14 @@ namespace uva {
 
                         template<typename TrieType, typename TFileReaderModel>
                         void lm_basic_builder<TrieType, TFileReaderModel>::set_def_unk_word_prob() {
+                            //Obtain the LM weight
+                            const prob_weight lm_weight = (m_params.is_lm_weight() ? m_params.get_lm_weight() : 1.0);
+
+                            LOG_DEBUG << "LM weight: " << lm_weight << ", default UNK "
+                                    << "word prob weight: " << DEF_UNK_WORD_LOG_PROB_WEIGHT << END_LOG;
+
                             //Get the default log probability multiplied by the lambda weight
-                            m_trie.set_def_unk_word_prob( m_params.get_lm_weight() * DEF_UNK_WORD_LOG_PROB_WEIGHT);
+                            m_trie.set_def_unk_word_prob(lm_weight * DEF_UNK_WORD_LOG_PROB_WEIGHT);
                         }
 
                         //Iterate through the ARPA file and fill in the back-off model of the trie

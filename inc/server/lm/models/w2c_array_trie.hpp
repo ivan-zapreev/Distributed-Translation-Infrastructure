@@ -284,7 +284,7 @@ namespace uva {
                             query.set_curr_payload(&m_1_gram_data[word_id]);
                             
                             LOG_DEBUG << "The uni-gram word id " << SSTR(word_id) << " payload : "
-                                    << (string) m_1_gram_data[word_id] << END_LOG;
+                                    << m_1_gram_data[word_id] << END_LOG;
                         };
 
                         /**
@@ -313,7 +313,7 @@ namespace uva {
                                 if (get_m_n_gram_entry<T_M_GramWordEntry>(ptr, word_id, ctx_id, &entry_ptr)) {
                                     //Return the data
                                     query.set_curr_payload(&entry_ptr->payload);
-                                    LOG_DEBUG << "The payload is retrieved: " << (string) entry_ptr->payload << END_LOG;
+                                    LOG_DEBUG << "The payload is retrieved: " << entry_ptr->payload << END_LOG;
                                 } else {
                                     //The payload could not be found
                                     LOG_DEBUG1 << "Unable to find m-gram data for ctx_id: " << SSTR(ctx_id)

@@ -199,6 +199,7 @@ namespace uva {
                                         to_string(num_features) + string(" exceeds the maximum: ") + to_string(max_num_features));
 
                                 //Compute the total weight
+                                m_total_weight = 0.0; //First re-set to zero
                                 for (size_t idx = 0; idx < num_features; ++idx) {
                                     m_total_weight += features[idx];
                                 }

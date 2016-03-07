@@ -118,7 +118,8 @@ namespace uva {
                                 stack_state_ptr curr_state = m_recomb_from;
                                 stack_state_ptr next_state = NULL;
 
-                                LOG_DEBUG1 << "State destructor, first recomined from state is: " << curr_state << END_LOG;
+                                LOG_DEBUG1 << "Destructing state" << this << ", recombined-"
+                                        << "from states ptr: " << curr_state << END_LOG;
 
                                 //While there is states to delete
                                 while (curr_state != NULL) {
@@ -211,7 +212,21 @@ namespace uva {
                              * @return true if this state is smaller than the other one
                              */
                             inline bool operator<(const stack_state & other) const {
-                                return (m_state_data.m_total_score < other.m_state_data.m_total_score);
+                                //Get the shorthand for the other state data
+                                const state_data & other_data = other.m_state_data;
+
+                                LOG_DEBUG2 << "Checking states: " << this << " <? " << &other << END_LOG;
+                                LOG_DEBUG2 << "Total scores: " << m_state_data.m_total_score << " <> "
+                                        << other_data.m_total_score << END_LOG;
+
+                                //Compute the comparison result
+                                const bool is_less = (m_state_data.m_total_score < other_data.m_total_score);
+
+                                //Log the comparison result
+                                LOG_DEBUG2 << "Result, state: " << this << (is_less ? " < " : " >= ") << &other << END_LOG;
+
+                                //Return the comparison result
+                                return is_less;
                             }
 
                             /**
@@ -225,9 +240,25 @@ namespace uva {
                              * @return true if this state is equal to the other one, otherwise false.
                              */
                             inline bool operator==(const stack_state & other) const {
-                                return (m_state_data.m_s_end_word_idx == other.m_state_data.m_s_end_word_idx) &&
-                                        (m_state_data.m_trans_frame.is_equal_last(other.m_state_data.m_trans_frame, MAX_HISTORY_LENGTH)) &&
-                                        (m_state_data.m_covered == other.m_state_data.m_covered);
+                                //Get the shorthand for the other state data
+                                const state_data & other_data = other.m_state_data;
+
+                                LOG_DEBUG2 << "Checking state " << this << " ==? " << &other << END_LOG;
+                                LOG_DEBUG2 << m_state_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << " ==? "
+                                        << other_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << END_LOG;
+                                LOG_DEBUG2 << m_state_data.covered_to_string() << " ==? "
+                                        << other_data.covered_to_string() << END_LOG;
+
+                                //Compute the comparison result
+                                const bool is_equal = (m_state_data.m_s_end_word_idx == other_data.m_s_end_word_idx) &&
+                                        (m_state_data.m_trans_frame.is_equal_last(other_data.m_trans_frame, MAX_HISTORY_LENGTH)) &&
+                                        (m_state_data.m_covered == other_data.m_covered);
+
+                                //Log the comparison result
+                                LOG_DEBUG2 << "Result, state: " << this << (is_equal ? " == " : " != ") << &other << END_LOG;
+
+                                //Return the comparison result
+                                return is_equal;
                             }
 
                             /**
@@ -247,8 +278,8 @@ namespace uva {
                              * @return true if the state's totl cost is >= score_bound, otherwise false
                              */
                             inline bool is_above_threshold(const prob_weight & score_bound) const {
-                                LOG_DEBUG1 << "state " << this << " score is: " << m_state_data.m_total_score
-                                        << ", score_bound: " << score_bound << END_LOG;
+                                LOG_DEBUG1 << "checking state " << this << " score: " << m_state_data.m_total_score
+                                        << ", threshold: " << score_bound << END_LOG;
                                 return ( m_state_data.m_total_score >= score_bound);
                             }
 
@@ -266,13 +297,18 @@ namespace uva {
                              * @param new_state the state to recombine into this one.
                              */
                             inline void recombine_from(stack_state_ptr other_state) {
+                                LOG_DEBUG2 << "====================================================================" << END_LOG;
+                                LOG_DEBUG1 << "Recombining " << other_state << " into " << this << END_LOG;
+
                                 //Combine the new state with its recombined from states
                                 const stack_state_ptr recomb_from = other_state;
                                 const size_t recomb_from_count = 1 + other_state->m_recomb_from_count;
                                 recomb_from->m_prev = NULL;
                                 recomb_from->m_next = other_state->m_recomb_from;
+                                //If there was something in the other's state recombine from then link the list
                                 if (other_state->m_recomb_from != NULL) {
-                                    //If there was something in the other's state recombine from then link the list
+                                    LOG_DEBUG << "State " << other_state << " recombined from "
+                                            << "ptr = " << other_state->m_recomb_from << END_LOG;
                                     other_state->m_recomb_from->m_prev = recomb_from;
                                     //Clean the recombined from data
                                     other_state->m_recomb_from = NULL;
@@ -281,6 +317,9 @@ namespace uva {
 
                                 //Attempt to insert the other new state into the recombined from list.
                                 if (m_recomb_from == NULL) {
+                                    LOG_DEBUG << "State " << other_state << " is the first"
+                                            << " state recombined into " << this << END_LOG;
+
                                     //If this state has no recombined-from states
                                     //then just set the other list into this state
                                     m_recomb_from = recomb_from;
@@ -290,10 +329,15 @@ namespace uva {
                                     //there an be just one extra. We can postpone  this
                                     //until more states are recombined into this one.
                                 } else {
+                                    LOG_DEBUG << "State " << this << " has more recombined-from states, merging "
+                                            << " state " << other_state << " into the list" << END_LOG;
+
                                     //If this state has recombined-from states
                                     //then merge this and the other list.
                                     merge_recomb_from(recomb_from, recomb_from_count);
                                 }
+                                LOG_DEBUG1 << "Recombining " << other_state << " into " << this << " is done!" << END_LOG;
+                                LOG_DEBUG2 << "====================================================================" << END_LOG;
                             }
 
                         protected:

@@ -207,7 +207,7 @@ namespace uva {
                             query.set_curr_payload(&m_1_gram_data[word_id]);
 
                             LOG_DEBUG << "The uni-gram word id " << SSTR(word_id) << " payload : "
-                                    << (string) m_1_gram_data[word_id] << END_LOG;
+                                    << m_1_gram_data[word_id] << END_LOG;
                         }
 
                         /**

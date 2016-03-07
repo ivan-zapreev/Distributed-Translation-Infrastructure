@@ -75,6 +75,7 @@ static vector<string> trie_types_vec;
 static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
 static ValueArg<string> * p_debug_level_arg = NULL;
+static ValueArg<float> * p_lm_lambda = NULL;
 
 /**
  * Creates and sets up the command line parameters parser
@@ -93,6 +94,9 @@ void create_arguments_parser() {
     Logger::get_reporting_levels(&debug_levels);
     p_debug_levels_constr = new ValuesConstraint<string>(debug_levels);
     p_debug_level_arg = new ValueArg<string>("d", "debug", "The debug level to be used", false, RESULT_PARAM_VALUE, p_debug_levels_constr, *p_cmd_args);
+
+    //Add the -l0 the optional LM lambda parameter
+    p_lm_lambda = new ValueArg<float>("l", "lambda", "The Language Model probability lambda weight", false, 1.0, "lm lambda weight", *p_cmd_args);
 }
 
 /**
@@ -104,6 +108,8 @@ void destroy_arguments_parser() {
 
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
+
+    SAFE_DESTROY(p_lm_lambda);
 
     SAFE_DESTROY(p_cmd_args);
 }
@@ -128,7 +134,13 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     //Store the parsed parameter values
     params.m_query_file_name = p_query_arg->getValue();
     params.m_lm_params.m_conn_string = p_model_arg->getValue();
-    params.m_lm_params.m_num_lambdas = 0;
+
+    //Get the lambda weight
+    params.m_lm_params.m_num_lambdas = 1;
+    params.m_lm_params.m_lambdas[0] = p_lm_lambda->getValue();
+
+    //Finalize the LM parameters
+    params.m_lm_params.finalize();
 }
 
 /**

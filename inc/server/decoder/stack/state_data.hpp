@@ -26,6 +26,7 @@
 #ifndef STATE_DATA_HPP
 #define STATE_DATA_HPP
 
+#include <string>
 #include <bitset>
 
 #include "common/utils/exceptions.hpp"
@@ -94,7 +95,7 @@ namespace uva {
 
                                 LOG_DEBUG1 << "Trans frame: " << m_trans_frame << END_LOG;
 
-                                LOG_DEBUG1 << "Covered: " << m_covered << END_LOG;
+                                LOG_DEBUG1 << "Covered: " << covered_to_string() << END_LOG;
                             }
 
                             /**
@@ -123,7 +124,7 @@ namespace uva {
 
                                 LOG_DEBUG1 << "Trans frame: " << m_trans_frame << END_LOG;
 
-                                LOG_DEBUG1 << "Covered: " << m_covered << END_LOG;
+                                LOG_DEBUG1 << "Covered: " << covered_to_string() << END_LOG;
 
                                 //Compute the end state final score, the new partial score is then the same as the total score
                                 compute_final_score(prev_state_data);
@@ -155,13 +156,33 @@ namespace uva {
 
                                 LOG_DEBUG1 << "Trans frame: " << m_trans_frame << END_LOG;
 
-                                LOG_DEBUG1 << "Covered: " << m_covered << END_LOG;
+                                LOG_DEBUG1 << "Covered: " << covered_to_string() << END_LOG;
 
                                 //Update the partial score;
                                 update_partial_score(prev_state_data);
 
                                 //Compute the total score;
                                 compute_total_score();
+                            }
+
+                            /**
+                             * Allows to give the string representation of the covered vector
+                             * @return the string representation of the covered vector
+                             */
+                            string covered_to_string() const {
+                                string result = "[";
+                                for (int32_t idx = m_stack_data.m_sent_data.m_min_idx;
+                                        idx <= m_stack_data.m_sent_data.m_max_idx; ++idx) {
+                                    if (idx == m_s_end_word_idx) {
+                                        ASSERT_SANITY_THROW(!m_covered[idx], string("The last covered word index ") +
+                                                to_string(idx) + string(" is not marked as covered!"));
+
+                                        result += string("*");
+                                    } else {
+                                        result += string(m_covered[idx] ? "1" : "0");
+                                    }
+                                }
+                                return result + "]";
                             }
 
                             //Stores the reference to the parameters

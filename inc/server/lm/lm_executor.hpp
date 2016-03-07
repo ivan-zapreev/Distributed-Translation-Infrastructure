@@ -136,6 +136,9 @@ namespace uva {
                             //Connect to the language model
                             lm_configurator::connect(params.m_lm_params);
 
+                            //Override the reporting level for testing purposes
+                            //Logger::get_reporting_level() = DebugLevelsEnum::DEBUG2;
+
                             //Execute the queries
                             execute_queries(test_file);
 

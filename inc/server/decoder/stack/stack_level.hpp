@@ -60,6 +60,8 @@ namespace uva {
                              * The basic destructor, this implementation is iterative.
                              */
                             ~stack_level() {
+                                LOG_DEBUG1 << "Destructing level" << this << ", # states: " << m_size << END_LOG;
+
                                 //Delete the states one by one
                                 stack_state_ptr curr_state = m_first_state;
                                 stack_state_ptr next_state = NULL;
@@ -78,6 +80,7 @@ namespace uva {
                              * @param new_state the new state to add
                              */
                             void add_state(stack_state_ptr new_state) {
+                                LOG_DEBUG2 << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
                                 LOG_DEBUG1 << "Adding a new state (" << new_state << ") to the "
                                         << "level with " << m_size << " state(s)." << END_LOG;
 
@@ -118,6 +121,7 @@ namespace uva {
                                 }
 
                                 LOG_DEBUG1 << "The new number of level states: " << m_size << END_LOG;
+                                LOG_DEBUG2 << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
                             }
 
                             /**
@@ -260,7 +264,7 @@ namespace uva {
                                 //one. There can not be more than one of such states due to
                                 //incremental nature of building up the stack level.
                                 while ((curr_state != NULL) && (*new_state != *curr_state)) {
-                                    LOG_DEBUG << "Checking " << curr_state << " == " << new_state << END_LOG;
+                                    LOG_DEBUG << "Moving from " << curr_state << " to " << curr_state->m_next << END_LOG;
                                     //Move further to the next state
                                     curr_state = curr_state->m_next;
                                 }
@@ -294,7 +298,7 @@ namespace uva {
 
                                 LOG_DEBUG1 << "new best state: " << m_first_state
                                         << ", new max score: " << best_score
-                                        << ", new bound: " << m_score_bound << END_LOG;
+                                        << ", new threshold: " << m_score_bound << END_LOG;
                             }
 
                             /**

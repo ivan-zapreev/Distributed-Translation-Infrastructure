@@ -29,7 +29,6 @@
 
 #include <websocketpp/common/thread.hpp>
 #include <tclap/CmdLine.h>
-#include <INI.h>
 
 #include "main.hpp"
 
@@ -101,41 +100,6 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
     SAFE_DESTROY(p_cmd_args);
-}
-
-//Declare the default value
-static const string UNKNOWN_INI_FILE_VALUE = "<UNKNOWN_VALUE>";
-
-//Allows to get and assert on the given section/key value presence
-#define GET_ASSERT(ini, section, key, value_str) \
-    const string value_str = ini.get(section, key, UNKNOWN_INI_FILE_VALUE); \
-    ASSERT_CONDITION_THROW((value_str == UNKNOWN_INI_FILE_VALUE), \
-            string("Could not find '[") + section + string("]/") + \
-            key + string("' section/key in the configuration file!"));
-
-template<typename INT_TYPE>
-INT_TYPE get_integer(INI<> &ini, string section, string key) {
-    //Get the value and assert on its presence
-    GET_ASSERT(ini, section, key, value_str);
-
-    //Parse this value to an integer
-    return (INT_TYPE) stoi(value_str);
-}
-
-string get_string(INI<> &ini, string section, string key) {
-    //Get the value and assert on its presence
-    GET_ASSERT(ini, section, key, value_str);
-
-    //Parse this value to an integer
-    return value_str;
-}
-
-float get_float(INI<> &ini, string section, string key) {
-    //Get the value and assert on its presence
-    GET_ASSERT(ini, section, key, value_str);
-
-    //Parse this value to an integer
-    return stof(value_str);
 }
 
 /**

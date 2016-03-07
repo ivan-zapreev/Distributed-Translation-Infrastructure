@@ -26,6 +26,7 @@
 #ifndef CIRCULAR_QUEUE_HPP
 #define CIRCULAR_QUEUE_HPP
 
+#include <string>
 #include <ostream>
 #include <cstring>
 #include <algorithm>
@@ -136,6 +137,21 @@ namespace uva {
                  * The basic destructor
                  */
                 ~circular_queue() {
+                }
+
+                /**
+                 * Allows to get a string representation of the the specified
+                 * number of tail elements. If there is less elements present
+                 * in the queue then we represent as many as there are:
+                 * @param num_elems the number of tail elements to represent
+                 * @return the string of tail elements
+                 */
+                string tail_to_string(const size_t num_elems) const {
+                    //Get the actual number of elements in the tail
+                    const size_t tail_size = min(m_size, num_elems);
+
+                    //get the string representation
+                    return array_to_string<elem_type>(tail_size, m_elems + (m_size - tail_size));
                 }
 
                 /**

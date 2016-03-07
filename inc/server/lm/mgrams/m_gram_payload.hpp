@@ -27,6 +27,7 @@
 #define BASEMGRAM_HPP
 
 #include <string>       // std::string
+#include <ostream>      // std::ostream
 
 #include "server/lm/lm_consts.hpp"
 #include "common/utils/exceptions.hpp"
@@ -49,6 +50,13 @@ namespace uva {
                 namespace lm {
                     namespace m_grams {
 
+                        //Forward declaration of the payload structure
+                        struct m_gram_payload_s;
+                        //typedef for the payload structure
+                        typedef m_gram_payload_s m_gram_payload;
+                        //Forward declaration of the output operator
+                        static inline ostream & operator<<(ostream & stream, const m_gram_payload & payload);
+                        
                         /**
                          * This data structure stores the probability and back off weight payload for an m-gram
                          */
@@ -56,21 +64,20 @@ namespace uva {
                             prob_weight m_prob; // 4 byte for a float
                             prob_weight m_back; // 4 byte for a float
 
-                            m_gram_payload_s() {
+                            explicit m_gram_payload_s()
+                            : m_prob(UNKNOWN_LOG_PROB_WEIGHT), m_back(UNKNOWN_LOG_PROB_WEIGHT) {
+                                LOG_DEBUG2 << "Created " << *this << END_LOG;
                             }
 
-                            m_gram_payload_s(prob_weight prob, prob_weight back) {
-                                m_prob = prob;
-                                m_back = back;
-                            }
-
-                            operator string() const {
-                                stringstream strbf;
-                                strbf << "[ prob: " << m_prob << ", back: " << m_back << " ]";
-                                return strbf.str();
+                            m_gram_payload_s(prob_weight prob, prob_weight back)
+                            : m_prob(prob),m_back(back) {
+                                LOG_DEBUG2 << "Created " << *this << END_LOG;
                             }
                         };
-                        typedef m_gram_payload_s m_gram_payload;
+
+                        static inline ostream & operator<<(ostream & stream, const m_gram_payload & payload) {
+                            return stream << &payload << "=[ prob: " << payload.m_prob << ", back: " << payload.m_back << " ]";
+                        }
 
                         /**
                          * This class is the base class for all the M-gram classes used

@@ -10,16 +10,19 @@
 
 #include <stdexcept>
 #include <execinfo.h>
+#include <INI.h>
 
+#include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace common {
-                
+
                 // Check windows
 #if _WIN32 || _WIN64
 #if _WIN64
@@ -83,6 +86,41 @@ namespace uva {
                     }
                     free(stack_syms);
                     exit(1);
+                }
+
+                //Declare the default value
+                static const string UNKNOWN_INI_FILE_VALUE = "<UNKNOWN_VALUE>";
+
+                //Allows to get and assert on the given section/key value presence
+#define GET_ASSERT(ini, section, key, value_str) \
+    const string value_str = ini.get(section, key, UNKNOWN_INI_FILE_VALUE); \
+    ASSERT_CONDITION_THROW((value_str == UNKNOWN_INI_FILE_VALUE), \
+            string("Could not find '[") + section + string("]/") + \
+            key + string("' section/key in the configuration file!"));
+
+                template<typename INT_TYPE>
+                INT_TYPE get_integer(INI<> &ini, string section, string key) {
+                    //Get the value and assert on its presence
+                    GET_ASSERT(ini, section, key, value_str);
+
+                    //Parse this value to an integer
+                    return (INT_TYPE) stoi(value_str);
+                }
+
+                string get_string(INI<> &ini, string section, string key) {
+                    //Get the value and assert on its presence
+                    GET_ASSERT(ini, section, key, value_str);
+
+                    //Parse this value to an integer
+                    return value_str;
+                }
+
+                float get_float(INI<> &ini, string section, string key) {
+                    //Get the value and assert on its presence
+                    GET_ASSERT(ini, section, key, value_str);
+
+                    //Parse this value to an integer
+                    return stof(value_str);
                 }
             }
         }

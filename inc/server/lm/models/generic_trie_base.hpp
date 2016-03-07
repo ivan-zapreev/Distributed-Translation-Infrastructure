@@ -366,7 +366,7 @@ namespace uva {
                             //Retrieve the payload
                             static_cast<const TrieType*> (this)->get_unigram_payload(query);
                             LOG_DEBUG << "The 1-gram is found, payload: "
-                                    << (string) (* (const m_gram_payload *) payload_ref) << END_LOG;
+                                    << *((const m_gram_payload *) payload_ref) << END_LOG;
 
                             //No need to check on the status, it is always good for the uni-gram
                             query.m_probs[word_idx] += ((const m_gram_payload *) payload_ref)->m_prob;
@@ -424,7 +424,7 @@ namespace uva {
                                     //Append the probability if the retrieval was successful
                                     if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
                                         LOG_DEBUG << "The m-gram is found, payload: "
-                                                << (string) (* ((const m_gram_payload *) payload_ref)) << END_LOG;
+                                                << *((const m_gram_payload *) payload_ref) << END_LOG;
                                         query.m_probs[query.m_curr_end_word_idx] += ((const m_gram_payload *) payload_ref)->m_prob;
                                         LOG_DEBUG << "probs[" << SSTR(query.m_curr_begin_word_idx) << "] += "
                                                 << ((const m_gram_payload *) payload_ref)->m_prob << END_LOG;
@@ -483,7 +483,7 @@ namespace uva {
                             //If the back-off payload is present, then take it into account, else try to retrieve it and take into account
                             if ((bo_payload_ref != NULL) || (get_uni_m_gram_payload(query) == MGramStatusEnum::GOOD_PRESENT_MGS)) {
                                 LOG_DEBUG << "The m-gram is found, payload: "
-                                        << (string) (* ((const m_gram_payload *) bo_payload_ref)) << END_LOG;
+                                        << *((const m_gram_payload *) bo_payload_ref) << END_LOG;
                                 query.m_probs[query.m_curr_end_word_idx + 1] += ((const m_gram_payload *) bo_payload_ref)->m_back;
                                 LOG_DEBUG << "probs[" << SSTR(query.m_curr_end_word_idx + 1) << "] += "
                                         << ((const m_gram_payload *) bo_payload_ref)->m_back << END_LOG;

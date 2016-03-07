@@ -33,12 +33,16 @@
 #include "common/utils/exceptions.hpp"
 
 using namespace std;
+
 using namespace TCLAP;
-using namespace uva::smt::bpbd::client;
-using namespace uva::smt::bpbd::common;
-using namespace uva::smt::bpbd::common::messaging;
+
 using namespace uva::utils::exceptions;
 using namespace uva::utils::file;
+
+using namespace uva::smt::bpbd::client;
+
+using namespace uva::smt::bpbd::common;
+using namespace uva::smt::bpbd::common::messaging;
 
 //Declare the program version string
 #define PROGRAM_VERSION_STR "1.0"

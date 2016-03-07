@@ -60,15 +60,15 @@ namespace uva {
 
                         //Stores the language model weights
                         float m_lambdas[NUM_LM_FEATURES];
-                        
+
                         /**
                          * Allows to detect that the lm weight is set and needs to be used
-                         * @return the lm weight
+                         * @return true if we need to multiply with the lambda weight otherwise not.
                          */
                         bool is_lm_weight() const {
-                            return (m_num_lambdas >=1) && (m_lambdas[0] != 1.0) && (m_lambdas[0] != 0.0);
+                            return (m_num_lambdas >= 1) && (m_lambdas[0] != 1.0) && (m_lambdas[0] != 0.0);
                         }
-                        
+
                         /**
                          * Allows to retrieve the language model m-gram weight
                          * @return the language model m-gram weight
@@ -91,6 +91,12 @@ namespace uva {
                                     (m_num_lambdas != ONE_LM_FEATURE),
                                     string("The number of LM features: ") + to_string(m_num_lambdas) +
                                     string(" must be ") + to_string(ONE_LM_FEATURE));
+
+                            //The Language model weight must not be zero or negative
+                            ASSERT_CONDITION_THROW((m_lambdas[0] <= 0.0),
+                                    string("Improper value of LM weight: ") +
+                                    to_string(m_lambdas[0]) + string(" must be > 0.0 "));
+
                         }
                     } lm_parameters;
 

@@ -293,6 +293,8 @@ namespace uva {
                                     LOG_DEBUG1 << "The token ___" << token << "___ @ [" << ch_b_idx << ","
                                             << ch_e_idx << ") uid is: " << end_word_data.m_phrase_uid << END_LOG;
 
+                                    LOG_DEBUG1 << "Considering the token [" << end_wd_idx << ", " << end_wd_idx << "] translation." << END_LOG;
+
                                     //Get the uni-gram phrase (word) translations
                                     m_tm_query.execute(end_word_data.m_phrase_uid, end_word_data.m_source_entry);
 
