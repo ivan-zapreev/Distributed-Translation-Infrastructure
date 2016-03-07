@@ -89,7 +89,7 @@ namespace uva {
                             m_trans_frame(1, &m_stack_data.m_lm_query.get_begin_tag_uid()),
                             m_begin_lm_level(M_GRAM_LEVEL_1),
                             m_covered(), m_partial_score(0.0), m_total_score(0.0) {
-                                LOG_DEBUG1 << "Creating a new BEGIN state, translating [" << m_s_begin_word_idx
+                                LOG_DEBUG1 << "New BEGIN state data: " << this << ", translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___<s>___" << END_LOG;
 
@@ -118,7 +118,7 @@ namespace uva {
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             //The coverage vector stays the same, nothin new is added, we take over the partial score
                             m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score), m_total_score(0.0) {
-                                LOG_DEBUG1 << "Creating a new END state, translating [" << m_s_begin_word_idx
+                                LOG_DEBUG1 << "New END state data: " << this << " translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___</s>___" << END_LOG;
 
@@ -149,7 +149,7 @@ namespace uva {
                             m_trans_frame(prev_state_data.m_trans_frame, m_target->get_num_words(), m_target->get_word_ids()),
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             m_covered(covered), m_partial_score(prev_state_data.m_partial_score), m_total_score(0.0) {
-                                LOG_DEBUG1 << "Creating a new state, translating [" << m_s_begin_word_idx
+                                LOG_DEBUG1 << "New state data: " << this << ", translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___"
                                         << m_target->get_target_phrase() << "___" << END_LOG;
@@ -295,24 +295,24 @@ namespace uva {
                                 //thus it is declared as constant and here we do a const_cast
                                 prob_weight & partial_score = const_cast<prob_weight &> (m_partial_score);
 
-                                LOG_DEBUG2 << "Initial partial score is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "Initial partial score is: " << partial_score << END_LOG;
 
                                 //Add the language model probability
                                 partial_score += get_lm_probability();
 
-                                LOG_DEBUG2 << "partial score + LM is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "partial score + LM is: " << partial_score << END_LOG;
 
                                 //Add the distance based reordering penalty
                                 partial_score += -abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
 
-                                LOG_DEBUG2 << "partial score + RM discrete is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "partial score + RM discrete is: " << partial_score << END_LOG;
 
                                 //Add the lexicolized reordering costs
                                 const reordering_orientation orient = get_reordering_orientation(prev_state_data);
                                 partial_score += prev_state_data.rm_entry_data.template get_weight<true>(orient);
                                 partial_score += rm_entry_data.template get_weight<false>(orient);
 
-                                LOG_DEBUG2 << "partial score + RM lexicolized is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "partial score + RM lexicolized is: " << partial_score << END_LOG;
 
                                 //After the construction the total score is to stay fixed,
                                 //thus it is declared as constant and here we do a const_cast
@@ -321,7 +321,7 @@ namespace uva {
                                 //Set the total score to be equal to the partial score as the translation is finished
                                 total_score = partial_score;
 
-                                LOG_DEBUG2 << "Total score: " << total_score << END_LOG;
+                                LOG_DEBUG1 << "Total score: " << total_score << END_LOG;
                             }
 
                             /**
@@ -334,39 +334,39 @@ namespace uva {
                                 //thus it is declared as constant and here we do a const_cast
                                 prob_weight & partial_score = const_cast<prob_weight &> (m_partial_score);
 
-                                LOG_DEBUG2 << "Initial partial score is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "Initial partial score is: " << partial_score << END_LOG;
 
                                 //Add the phrase translation probability
                                 partial_score += m_target->get_total_weight();
 
-                                LOG_DEBUG2 << "partial score + TM is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "partial score + TM is: " << partial_score << END_LOG;
 
                                 //Add the language model probability
                                 partial_score += get_lm_probability();
 
-                                LOG_DEBUG2 << "partial score + LM is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "partial score + LM is: " << partial_score << END_LOG;
 
                                 //Add the phrase penalty
                                 partial_score += m_stack_data.m_params.m_phrase_penalty;
 
-                                LOG_DEBUG2 << "partial score + phrase penalty is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "partial score + phrase penalty is: " << partial_score << END_LOG;
 
                                 //Add the word penalty
                                 partial_score += m_stack_data.m_params.m_word_penalty * m_target->get_num_words();
 
-                                LOG_DEBUG2 << "partial score + word penalty is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "partial score + word penalty is: " << partial_score << END_LOG;
 
                                 //Add the distance based reordering penalty
                                 partial_score += -abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
 
-                                LOG_DEBUG2 << "partial score + RM discrete is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "partial score + RM discrete is: " << partial_score << END_LOG;
 
                                 //Add the lexicolized reordering costs
                                 const reordering_orientation orient = get_reordering_orientation(prev_state_data);
                                 partial_score += prev_state_data.rm_entry_data.template get_weight<true>(orient);
                                 partial_score += rm_entry_data.template get_weight<false>(orient);
 
-                                LOG_DEBUG2 << "partial score + RM lexicolized is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "partial score + RM lexicolized is: " << partial_score << END_LOG;
                             }
 
                             /**
@@ -381,19 +381,27 @@ namespace uva {
                                 //Set the total score to the current partial score and then add the future costs
                                 total_score = m_partial_score;
 
-                                LOG_DEBUG2 << "Initial total score: " << total_score << END_LOG;
+                                LOG_DEBUG1 << "Initial total score: " << total_score << END_LOG;
 
                                 //Iterate through all the non-translated phrase spans and add the future costs thereof
-                                const size_t num_words = m_stack_data.m_sent_data.get_dim();
-                                for (phrase_length begin_idx = 0; begin_idx < num_words; ++begin_idx) {
+                                phrase_length begin_idx = m_stack_data.m_sent_data.m_min_idx;
+                                while (begin_idx <= m_stack_data.m_sent_data.m_max_idx) {
+                                    LOG_DEBUG2 << "m_covered[" << begin_idx << "] = "
+                                            << (m_covered[begin_idx] ? "true" : "false") << END_LOG;
+
                                     if (!m_covered[begin_idx]) {
-                                        //Start from the next word
-                                        phrase_length end_idx = begin_idx + 1;
+                                        //Start from the begin word, as may be this is the only uncovered word left.
+                                        phrase_length end_idx = begin_idx;
+
+                                        LOG_DEBUG2 << "first end_idx: " << end_idx << END_LOG;
 
                                         //Iterate until we are beyond the last word or the word is covered
-                                        while ((end_idx < num_words) && !m_covered[end_idx]) {
+                                        while ((end_idx <= m_stack_data.m_sent_data.m_max_idx) && !m_covered[end_idx]) {
                                             ++end_idx;
+                                            LOG_DEBUG2 << "Considering end_idx: " << end_idx << END_LOG;
                                         }
+
+                                        LOG_DEBUG2 << "First bad end_idx: " << end_idx << " the previous was good!" << END_LOG;
 
                                         //The previous end word was the last good one, add the span's costs
                                         total_score += m_stack_data.m_sent_data[begin_idx][end_idx - 1].future_cost;
@@ -401,12 +409,17 @@ namespace uva {
                                         LOG_DEBUG2 << "total score + future_cost[" << begin_idx << ", "
                                                 << (end_idx - 1) << "]: " << total_score << END_LOG;
 
-                                        //Start searching further from the first word after the bad one found
+                                        //Start searching further from the first word after the bad one we just found
                                         begin_idx = end_idx + 1;
+                                    } else {
+                                        //Move on to the next begin index
+                                        ++begin_idx;
                                     }
+
+                                    LOG_DEBUG2 << "next begin_idx: " << begin_idx << END_LOG;
                                 }
 
-                                LOG_DEBUG2 << "Total score: " << total_score << END_LOG;
+                                LOG_DEBUG1 << "Total score: " << total_score << END_LOG;
                             }
                         };
 
