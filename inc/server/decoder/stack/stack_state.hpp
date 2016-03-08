@@ -103,7 +103,7 @@ namespace uva {
                                     tm_const_target_entry* target)
                             : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, covered, target),
                             m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) {
-                                LOG_DEBUG1 << "New END state: " << this << ", source[" << begin_pos << "," << end_pos
+                                LOG_DEBUG1 << "New state: " << this << ", source[" << begin_pos << "," << end_pos
                                         << "], target ___" << target->get_target_phrase() << "___" << END_LOG;
                             }
 
@@ -151,8 +151,16 @@ namespace uva {
                              * add itself to the proper stack.
                              */
                             inline void expand() {
+                                //Create shorthands for the data to compare and log
+                                const size_t curr_count = m_state_data.m_covered.count();
+                                const size_t & num_words = m_state_data.m_stack_data.m_sent_data.get_dim();
+
+                                LOG_DEBUG << "Num words = " << num_words << ", covered: "
+                                        << m_state_data.covered_to_string() << ", curr_count = "
+                                        << curr_count << END_LOG;
+
                                 //Check if this is the last state, i.e. we translated everything
-                                if (m_state_data.m_covered.count() == m_state_data.m_stack_data.m_sent_data.get_dim()) {
+                                if (curr_count == num_words) {
                                     //All of the words have been translated, add the end state
                                     m_state_data.m_stack_data.m_add_state(new stack_state(this));
                                 } else {
@@ -216,7 +224,7 @@ namespace uva {
                                 const state_data & other_data = other.m_state_data;
 
                                 LOG_DEBUG2 << "Checking states: " << this << " <? " << &other << END_LOG;
-                                LOG_DEBUG2 << "Total scores: " << m_state_data.m_total_score << " <> "
+                                LOG_DEBUG2 << "Total scores: " << m_state_data.m_total_score << " <? "
                                         << other_data.m_total_score << END_LOG;
 
                                 //Compute the comparison result

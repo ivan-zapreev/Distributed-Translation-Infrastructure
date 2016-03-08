@@ -80,7 +80,6 @@ namespace uva {
                              * @param new_state the new state to add
                              */
                             void add_state(stack_state_ptr new_state) {
-                                LOG_DEBUG2 << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
                                 LOG_DEBUG1 << "Adding a new state (" << new_state << ") to the "
                                         << "level with " << m_size << " state(s)." << END_LOG;
 
@@ -121,7 +120,6 @@ namespace uva {
                                 }
 
                                 LOG_DEBUG1 << "The new number of level states: " << m_size << END_LOG;
-                                LOG_DEBUG2 << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
                             }
 
                             /**

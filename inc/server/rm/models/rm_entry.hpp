@@ -90,7 +90,7 @@ namespace uva {
                             const prob_weight * get_weights() const {
                                 return m_weights;
                             }
-                            
+
                             /**
                              * Allows to get the weight for the given distortion value
                              * @param is_from the flag allowing to distinguish between the from and to case 
@@ -102,12 +102,12 @@ namespace uva {
                             template<bool is_from>
                             const prob_weight get_weight(const reordering_orientation orient) const {
                                 //Compute the static position correction for the from/to cases
-                                static constexpr uint32_t pos_corr = (is_from ? 0 : num_features / 2 );
+                                static constexpr uint32_t pos_corr = (is_from ? 0 : num_features / 2);
                                 static constexpr uint32_t mon_pos = pos_corr;
                                 static constexpr uint32_t swap_pos = ((num_features <= TWO_RM_FEATURES) ? mon_pos : mon_pos + 1);
                                 static constexpr uint32_t disc_left_pos = ((num_features <= FOUR_RM_FEATURES) ? swap_pos : swap_pos + 1);
                                 static constexpr uint32_t disc_right_pos = ((num_features <= SIX_RM_FEATURES) ? disc_left_pos : disc_left_pos + 1);
-                                
+
                                 //Return the proper weight based on the orientation
                                 switch (orient) {
                                     case reordering_orientation::MONOTONE_ORIENT:
@@ -176,6 +176,10 @@ namespace uva {
                             phrase_uid m_uid;
                             //This is an array of reordering weights
                             prob_weight m_weights[num_features];
+
+                            //Add a friend operator for easy output
+                            template<uint8_t num_weights>
+                            friend ostream & operator<<(ostream & stream, const rm_entry_temp<num_weights> & entry);
                         };
 
                         template<uint8_t num_features>
@@ -183,6 +187,18 @@ namespace uva {
 
                         //Instantiate template
                         typedef rm_entry_temp<NUM_RM_FEATURES> rm_entry;
+
+                        /**
+                         * This operator allows to stream the reordering entry to the output stream
+                         * @param stream the stream to send the data into
+                         * @param entry the entry to stream
+                         * @return the reference to the same stream is returned
+                         */
+                        template<uint8_t num_weights>
+                        static inline ostream & operator<<(ostream & stream, const rm_entry_temp<num_weights> & entry) {
+                            return stream << "[ uid: " << entry.m_uid << ", weights: "
+                                    << array_to_string<prob_weight>(rm_entry::NUM_FEATURES, entry.m_weights) << " ]";
+                        }
                     }
                 }
             }

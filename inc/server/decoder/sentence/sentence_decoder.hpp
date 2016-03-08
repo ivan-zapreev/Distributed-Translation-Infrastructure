@@ -299,7 +299,7 @@ namespace uva {
                                     m_tm_query.execute(end_word_data.m_phrase_uid, end_word_data.m_source_entry);
 
                                     LOG_DEBUG1 << "The token ___" << token << "___ @ [" << ch_b_idx << ","
-                                            << ch_e_idx << ") has " << (end_word_data.m_source_entry->has_translations() ? "" : "NO")
+                                            << ch_e_idx << ") HAS" << (end_word_data.m_source_entry->has_translations() ? "" : " NO")
                                             << " translation(s), num entries: " << end_word_data.m_source_entry->num_targets() << END_LOG;
 
                                     //Compute the new phrases and phrase ids for the new column elements,
@@ -332,8 +332,8 @@ namespace uva {
                                         //Add the m-gram phrase to the query
                                         m_tm_query.execute(new_entry.m_phrase_uid, new_entry.m_source_entry);
 
-                                        LOG_DEBUG1 << "Phrase: ___" << phrase << "___ uid: " << new_entry.m_phrase_uid << " has "
-                                                << (new_entry.m_source_entry->has_translations() ? "" : "NO") << " translation(s), "
+                                        LOG_DEBUG1 << "Phrase: ___" << phrase << "___ uid: " << new_entry.m_phrase_uid << " HAS"
+                                                << (new_entry.m_source_entry->has_translations() ? "" : " NO") << " translation(s),"
                                                 << " num entries: " << new_entry.m_source_entry->num_targets() << END_LOG;
 
                                         //Check if we need to stop, if yes, then return

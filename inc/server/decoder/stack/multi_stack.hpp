@@ -110,7 +110,7 @@ namespace uva {
                                 LOG_DEBUG2 << "Creating the begin stack state" << END_LOG;
                                 stack_state_ptr begin_state = new stack_state(m_data);
                                 LOG_DEBUG2 << "Adding the begin stack state to level " << MIN_STACK_LEVEL << END_LOG;
-                                m_levels[MIN_STACK_LEVEL]->add_state(begin_state);
+                                add_stack_state(begin_state);
 
                                 LOG_DEBUG2 << "The multi-stack creation is done" << END_LOG;
                             }
@@ -120,7 +120,7 @@ namespace uva {
                              */
                             ~multi_stack() {
                                 LOG_DEBUG1 << "Destructing stack" << this << ", # levels: " << m_num_levels << END_LOG;
-                                
+
                                 //Dispose the stacks
                                 if (m_levels != NULL) {
 
@@ -172,12 +172,12 @@ namespace uva {
                             void get_best_trans(string & target_sent) const {
                                 //Define the max stack level constant
                                 const size_t MAX_STACK_LEVEL = (m_num_levels - 1);
-                                
+
                                 LOG_DEBUG << "Requesting the best translation from level " << MAX_STACK_LEVEL << END_LOG;
-                                
+
                                 //Request the last level for the best translation
                                 m_levels[MAX_STACK_LEVEL]->get_best_trans(target_sent);
-                                
+
                                 LOG_DEBUG << "The best translation from level " << MAX_STACK_LEVEL
                                         << " is ___" << target_sent << "___" << END_LOG;
                             }
@@ -189,6 +189,8 @@ namespace uva {
                              * @param new_state the new stack state, not NULL
                              */
                             void add_stack_state(stack_state_ptr new_state) {
+                                LOG_DEBUG2 << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
+
                                 //Perform a NULL pointer sanity check
                                 ASSERT_SANITY_THROW((new_state == NULL), "A NULL pointer stack state!");
 
@@ -207,6 +209,8 @@ namespace uva {
                                 m_levels[level]->add_state(new_state);
 
                                 LOG_DEBUG << "The state (" << new_state << ") is added to level " << level << END_LOG;
+
+                                LOG_DEBUG2 << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
                             }
 
                         private:

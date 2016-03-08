@@ -92,10 +92,10 @@ namespace uva {
                                 LOG_DEBUG1 << "New BEGIN state data: " << this << ", translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___<s>___" << END_LOG;
-
-                                LOG_DEBUG1 << "Trans frame: " << m_trans_frame << END_LOG;
-
-                                LOG_DEBUG1 << "Covered: " << covered_to_string() << END_LOG;
+                                
+                                LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
+                                LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
+                                LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
                             }
 
                             /**
@@ -121,10 +121,10 @@ namespace uva {
                                 LOG_DEBUG1 << "New END state data: " << this << " translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___</s>___" << END_LOG;
-
-                                LOG_DEBUG1 << "Trans frame: " << m_trans_frame << END_LOG;
-
-                                LOG_DEBUG1 << "Covered: " << covered_to_string() << END_LOG;
+                                
+                                LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
+                                LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
+                                LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
 
                                 //Compute the end state final score, the new partial score is then the same as the total score
                                 compute_final_score(prev_state_data);
@@ -153,10 +153,10 @@ namespace uva {
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___"
                                         << m_target->get_target_phrase() << "___" << END_LOG;
-
-                                LOG_DEBUG1 << "Trans frame: " << m_trans_frame << END_LOG;
-
-                                LOG_DEBUG1 << "Covered: " << covered_to_string() << END_LOG;
+                                
+                                LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
+                                LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
+                                LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
 
                                 //Update the partial score;
                                 update_partial_score(prev_state_data);
@@ -386,27 +386,27 @@ namespace uva {
                                 //Iterate through all the non-translated phrase spans and add the future costs thereof
                                 phrase_length begin_idx = m_stack_data.m_sent_data.m_min_idx;
                                 while (begin_idx <= m_stack_data.m_sent_data.m_max_idx) {
-                                    LOG_DEBUG2 << "m_covered[" << begin_idx << "] = "
+                                    LOG_DEBUG3 << "m_covered[" << begin_idx << "] = "
                                             << (m_covered[begin_idx] ? "true" : "false") << END_LOG;
 
                                     if (!m_covered[begin_idx]) {
                                         //Start from the begin word, as may be this is the only uncovered word left.
                                         phrase_length end_idx = begin_idx;
 
-                                        LOG_DEBUG2 << "first end_idx: " << end_idx << END_LOG;
+                                        LOG_DEBUG3 << "first end_idx: " << end_idx << END_LOG;
 
                                         //Iterate until we are beyond the last word or the word is covered
                                         while ((end_idx <= m_stack_data.m_sent_data.m_max_idx) && !m_covered[end_idx]) {
                                             ++end_idx;
-                                            LOG_DEBUG2 << "Considering end_idx: " << end_idx << END_LOG;
+                                            LOG_DEBUG3 << "Considering end_idx: " << end_idx << END_LOG;
                                         }
 
-                                        LOG_DEBUG2 << "First bad end_idx: " << end_idx << " the previous was good!" << END_LOG;
+                                        LOG_DEBUG3 << "First bad end_idx: " << end_idx << " the previous was good!" << END_LOG;
 
                                         //The previous end word was the last good one, add the span's costs
                                         total_score += m_stack_data.m_sent_data[begin_idx][end_idx - 1].future_cost;
 
-                                        LOG_DEBUG2 << "total score + future_cost[" << begin_idx << ", "
+                                        LOG_DEBUG3 << "total score + future_cost[" << begin_idx << ", "
                                                 << (end_idx - 1) << "]: " << total_score << END_LOG;
 
                                         //Start searching further from the first word after the bad one we just found
@@ -416,7 +416,7 @@ namespace uva {
                                         ++begin_idx;
                                     }
 
-                                    LOG_DEBUG2 << "next begin_idx: " << begin_idx << END_LOG;
+                                    LOG_DEBUG3 << "next begin_idx: " << begin_idx << END_LOG;
                                 }
 
                                 LOG_DEBUG1 << "Total score: " << total_score << END_LOG;
