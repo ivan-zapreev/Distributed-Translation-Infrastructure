@@ -93,6 +93,13 @@ namespace uva {
                         //Set the port that the server will listen to
                         m_server.listen(port);
                     }
+                    
+                    /**
+                     * Allows to report the runtime information about the server.
+                     */
+                    void report_run_time_info() {
+                        m_manager.report_run_time_info();
+                    }
 
                     /**
                      * Allows to run the server

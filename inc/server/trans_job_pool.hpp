@@ -138,6 +138,22 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to report the runtime information.
+                     */
+                    void report_run_time_info() {
+                        //Remove the job from the pool's administration 
+                        {
+                            recursive_guard guard_all_jobs(m_all_jobs_lock);
+
+                            LOG_USAGE << "#sessions: " << m_sessions_map.size()
+                                    << ", #jobs: " << m_job_count << END_LOG;
+                        }
+
+                        //Report data from the tasks pool
+                        m_tasks_pool.report_run_time_info();
+                    }
+
+                    /**
                      * Allows to set the response sender function for sending the replies to the client
                      * @param notify_job_finished_func the setter functional to be set
                      */

@@ -44,6 +44,19 @@ namespace uva {
                     trans_task_pool(const size_t num_threads);
 
                     /**
+                     * Allows to report the runtime information.
+                     */
+                    void report_run_time_info() {
+                        //Add the task to the pool
+                        {
+                            unique_guard guard(m_queue_mutex);
+
+                            LOG_USAGE << "#taks: " << m_tasks.size()
+                                    << ", #workers: " << m_workers.size() << END_LOG;
+                        }
+                    }
+
+                    /**
                      * The class destructor
                      */
                     virtual ~trans_task_pool();

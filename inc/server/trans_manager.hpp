@@ -96,7 +96,15 @@ namespace uva {
                         //No need to do anything the manager is destroyed only when the application is stopped.
                         //The scheduled jobs will be canceled by the by the trans_job_pool destructor
                     }
-
+                    
+                    /**
+                     * Allows to report the runtime information.
+                     */
+                    void report_run_time_info() {
+                        //Report data from the jobs pool
+                        m_job_pool.report_run_time_info();
+                    }
+                    
                     /**
                      * Allows to create and register a new session object, synchronized.
                      * If for some reason a new session can not be opened, an exception is thrown.
