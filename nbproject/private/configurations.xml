@@ -859,7 +859,7 @@
     <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>4</platform>
+        <platform>2</platform>
       </toolsSet>
       <compile>
         <compiledirpicklist>

@@ -154,6 +154,7 @@ namespace uva {
                      * Allows to wait until the translations are done
                      */
                     void wait() {
+                        LOG_INFO << "Started creating and sending out jobs!" << END_LOG;
 
                         //Wait until all the jobs are sent
                         {
@@ -165,6 +166,8 @@ namespace uva {
                             }
                         }
 
+                        LOG_INFO << "Sent out " << m_jobs_list.size() << " jobs, waiting for results." << END_LOG;
+
                         //Wait until all the jobs are finished or the connection is closed
                         {
                             //Make sure that translation-waiting activity is synchronized
@@ -174,6 +177,8 @@ namespace uva {
                             while (!m_is_all_jobs_done && (m_jobs_done_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
                             }
                         }
+
+                        LOG_INFO << "Dumping results to file." << END_LOG;
                     }
 
                     /**
@@ -316,6 +321,10 @@ namespace uva {
                             } else {
                                 LOG_ERROR << "One of the job responses could not be parsed!" << END_LOG;
                             }
+
+                            LOG_INFO << "The job " << job_id << " is finished, "
+                                    << m_num_done_jobs << "/" << m_jobs_list.size()
+                                    << "." << END_LOG;
 
                             //Check if the jobs are done and notify
                             check_jobs_done_and_notify();
