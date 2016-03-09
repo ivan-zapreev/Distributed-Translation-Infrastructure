@@ -90,13 +90,13 @@ namespace uva {
                     }
                 } server_parameters;
 
-                        /**
-                         * Allows to output the parameters object to the stream
-                         * @param stream the stream to output into
-                         * @param params the parameters object
-                         * @return the stream that we output into
-                         */
-                        static inline std::ostream& operator<<(std::ostream& stream, const server_parameters & params) {
+                /**
+                 * Allows to output the parameters object to the stream
+                 * @param stream the stream to output into
+                 * @param params the parameters object
+                 * @return the stream that we output into
+                 */
+                static inline std::ostream& operator<<(std::ostream& stream, const server_parameters & params) {
                     return stream << "Server parameters:\nMain [ source_lang = " << params.m_source_lang
                             << ", target_lang = " << params.m_target_lang
                             << ", server_port = " << params.m_server_port
