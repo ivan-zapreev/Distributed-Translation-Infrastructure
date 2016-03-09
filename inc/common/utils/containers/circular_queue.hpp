@@ -63,9 +63,9 @@ namespace uva {
                  * The basic constructor
                  */
                 circular_queue() : m_size(0) {
-                    LOG_DEBUG2 << "The queue capacity: " << capacity << END_LOG;
+                    LOG_DEBUG3 << "The queue capacity: " << capacity << END_LOG;
 
-                    LOG_DEBUG2 << "The queue state: " << *this << END_LOG;
+                    LOG_DEBUG3 << "The queue state: " << *this << END_LOG;
                 }
 
                 /**
@@ -74,13 +74,13 @@ namespace uva {
                  * @param elems the elements to put into the queue
                  */
                 circular_queue(const size_t num_elems, const elem_type * elems) : m_size(0) {
-                    LOG_DEBUG2 << "Creating with: " << array_to_string<elem_type>(num_elems, elems)
+                    LOG_DEBUG3 << "Creating with: " << array_to_string<elem_type>(num_elems, elems)
                             << ", the queue capacity: " << capacity << END_LOG;
 
                     //Push back the array of values
                     push_back(num_elems, elems);
 
-                    LOG_DEBUG2 << "The queue state: " << *this << END_LOG;
+                    LOG_DEBUG3 << "The queue state: " << *this << END_LOG;
                 }
 
                 /**
@@ -93,12 +93,12 @@ namespace uva {
                  * @param elems the pointer to the array with the extra elements
                  */
                 circular_queue(const circular_queue & other, const size_t num_elems, const elem_type * elems) : m_size(0) {
-                    LOG_DEBUG2 << "Creating with queue: " << other << ", and array: "
+                    LOG_DEBUG3 << "Creating with queue: " << other << ", and array: "
                             << array_to_string<elem_type>(num_elems, elems)
                             << ", the queue capacity: " << capacity << END_LOG;
 
                     if ((num_elems >= capacity) || (other.m_size == 0)) {
-                        LOG_DEBUG2 << "The number of array elements: " << num_elems
+                        LOG_DEBUG3 << "The number of array elements: " << num_elems
                                 << ", is larget or equal to the queue capacity: " << capacity
                                 << ", or the other queue size (" << other.m_size << ") is zero" << END_LOG;
 
@@ -107,7 +107,7 @@ namespace uva {
                         //we can just ignore the other queue.
                         push_back(num_elems, elems);
 
-                        LOG_DEBUG2 << "The queue state: " << *this << END_LOG;
+                        LOG_DEBUG3 << "The queue state: " << *this << END_LOG;
                     } else {
                         //The number of elements in the array is smaller than the
                         //capacity so we will fit both elements from the queue and
@@ -118,18 +118,18 @@ namespace uva {
                         //Compute the number of elements from the queue to keep
                         const size_t num_from_queue = min(other.m_size, max_num_from_queue);
 
-                        LOG_DEBUG2 << "The max num of elem(s) to copy from the other queue is: " << max_num_from_queue
+                        LOG_DEBUG3 << "The max num of elem(s) to copy from the other queue is: " << max_num_from_queue
                                 << ", the number of elem(s) that will be copied is: " << num_from_queue << END_LOG;
 
                         //Add the other queue elements, only the ones that we need to take over
                         push_back(num_from_queue, other.m_elems + (other.m_size - num_from_queue));
 
-                        LOG_DEBUG2 << "The queue state: " << *this << END_LOG;
+                        LOG_DEBUG3 << "The queue state: " << *this << END_LOG;
 
                         //Add the array elements
                         push_back(num_elems, elems);
 
-                        LOG_DEBUG2 << "The queue state: " << *this << END_LOG;
+                        LOG_DEBUG3 << "The queue state: " << *this << END_LOG;
                     }
                 }
 
@@ -228,19 +228,19 @@ namespace uva {
                  * Allows to push back an entire array 
                  */
                 void push_back(const size_t num_elems, const elem_type * elems) {
-                    LOG_DEBUG2 << "Pushing array: " << array_to_string<elem_type>(num_elems, elems)
+                    LOG_DEBUG3 << "Pushing array: " << array_to_string<elem_type>(num_elems, elems)
                             << " to the queue: " << *this << ", capacity: " << capacity << END_LOG;
 
                     //Compute the new size right away
                     const size_t new_size = min((m_size + num_elems), capacity);
 
-                    LOG_DEBUG2 << "The new queue size will be " << new_size << END_LOG;
+                    LOG_DEBUG3 << "The new queue size will be " << new_size << END_LOG;
 
                     //Check if we can fit the data without shifting or not
                     if ((m_size + num_elems) <= capacity) {
                         //There is space to accommodate everything without shifting
 
-                        LOG_DEBUG2 << "Copying " << num_elems << " elem(s) from "
+                        LOG_DEBUG3 << "Copying " << num_elems << " elem(s) from "
                                 << "position 0 to position: " << m_size << END_LOG;
 
                         //Copy the new data to the remainder of the queue
@@ -254,13 +254,13 @@ namespace uva {
                             //the queue capacity so we need to push all of the old 
                             //elements out and may be some of the new elements.
 
-                            LOG_DEBUG2 << "The added number of elements " << num_elems
+                            LOG_DEBUG3 << "The added number of elements " << num_elems
                                     << " is larger the capacity: " << capacity << END_LOG;
 
                             //Compute the sub-array element index to copy from
                             const size_t begin_idx = (num_elems - capacity);
 
-                            LOG_DEBUG2 << "Copying " << capacity << " elem(s) from position: "
+                            LOG_DEBUG3 << "Copying " << capacity << " elem(s) from position: "
                                     << begin_idx << " to position 0 of the target " << END_LOG;
 
                             //Compute the position to start copying from, we only need last "capacity" elements
@@ -281,7 +281,7 @@ namespace uva {
                             //Compute the number of elements to keep
                             const size_t num_keep = m_size - num_push_out;
 
-                            LOG_DEBUG2 << "Number of free slots is: " << num_empty << ", yet to free "
+                            LOG_DEBUG3 << "Number of free slots is: " << num_empty << ", yet to free "
                                     << num_push_out << " slots, the number of elements to keep is: "
                                     << num_keep << END_LOG;
 
