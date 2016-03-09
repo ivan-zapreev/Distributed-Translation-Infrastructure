@@ -135,8 +135,8 @@ namespace uva {
                          */
                         inline void log_model_type_info() const {
                             LOG_USAGE << "Using the <" << __FILENAME__ << "> model." << END_LOG;
-                            LOG_INFO << "Using the #buckets factor: "
-                                    << SSTR(__H2DMapTrie::BUCKETS_FACTOR) << END_LOG;
+                            LOG_INFO << "The <" << __FILENAME__ << "> model's buckets factor: "
+                                    << __H2DMapTrie::BUCKETS_FACTOR << END_LOG;
                         }
 
                         /**
