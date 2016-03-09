@@ -247,7 +247,7 @@ int main(int argc, char** argv) {
 
     try {
         //Define en empty parameters structure
-        server_parameters params = {};
+        server_parameters params;
 
         //Attempt to extract the program arguments
         extract_arguments(argc, argv, params);

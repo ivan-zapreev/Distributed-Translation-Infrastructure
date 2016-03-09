@@ -50,7 +50,7 @@ namespace uva {
                     /**
                      * This structure stores the decoder parameters
                      */
-                    typedef struct {
+                    struct de_parameters_struct {
                         //The distortion limit to use; <integer>
                         //The the number of words to the right and left
                         //from the last phrase end word to consider
@@ -80,11 +80,47 @@ namespace uva {
                         atomic<float> m_word_penalty;
                         //Stores the phrase penalty - the cost of each target phrase
                         atomic<float> m_phrase_penalty;
-                        
+
                         //Stores the number of best translations we want to track
                         //This is the maximum number of states that we will keep
                         //in the recombination array for each state
                         atomic<size_t> m_num_best_trans;
+                        
+                        /**
+                         * The basic constructor, does nothing
+                         */
+                        de_parameters_struct() {
+                        }
+
+                        /**
+                         * The assignment operator
+                         * @param other the object to assign from
+                         * @return this object updated with new values
+                         */
+                        de_parameters_struct& operator=(const de_parameters_struct & other) {
+                            if (this != &other) {
+                                this->m_distortion = other.m_distortion.load();
+                                this->m_ext_dist_left = other.m_ext_dist_left.load();
+                                this->m_is_dist = other.m_is_dist.load();
+                                this->m_max_s_phrase_len = other.m_max_s_phrase_len;
+                                this->m_max_t_phrase_len = other.m_max_t_phrase_len;
+                                this->m_num_best_trans = other.m_num_best_trans.load();
+                                this->m_phrase_penalty = other.m_phrase_penalty.load();
+                                this->m_pruning_threshold = other.m_pruning_threshold.load();
+                                this->m_stack_capacity = other.m_stack_capacity.load();
+                                this->m_word_penalty = other.m_word_penalty.load();
+                            }
+                            
+                            return *this;
+                        }
+
+                        /**
+                         * The copy constructor
+                         * @param other the object to construct from
+                         */
+                        de_parameters_struct(const de_parameters_struct & other) {
+                            *this = other;
+                        }
 
                         /**
                          * Allows to verify the parameters to be correct.
@@ -122,7 +158,10 @@ namespace uva {
                             ASSERT_CONDITION_THROW((m_num_best_trans == 0),
                                     string("The num_best_trans must be > 0!"));
                         }
-                    } de_parameters;
+                    };
+
+                    //Typedef the structure
+                    typedef de_parameters_struct de_parameters;
 
                     /**
                      * Allows to output the parameters object to the stream
