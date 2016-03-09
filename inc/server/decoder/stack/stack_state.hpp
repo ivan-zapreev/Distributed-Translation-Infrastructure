@@ -224,15 +224,15 @@ namespace uva {
                                 //Get the shorthand for the other state data
                                 const state_data & other_data = other.m_state_data;
 
-                                LOG_DEBUG2 << "Checking states: " << this << " <? " << &other << END_LOG;
-                                LOG_DEBUG2 << "Total scores: " << m_state_data.m_total_score << " <? "
+                                LOG_DEBUG3 << "Checking states: " << this << " <? " << &other << END_LOG;
+                                LOG_DEBUG3 << "Total scores: " << m_state_data.m_total_score << " <? "
                                         << other_data.m_total_score << END_LOG;
 
                                 //Compute the comparison result
                                 const bool is_less = (m_state_data.m_total_score < other_data.m_total_score);
 
                                 //Log the comparison result
-                                LOG_DEBUG2 << "Result, state: " << this << (is_less ? " < " : " >= ") << &other << END_LOG;
+                                LOG_DEBUG3 << "Result, state: " << this << (is_less ? " < " : " >= ") << &other << END_LOG;
 
                                 //Return the comparison result
                                 return is_less;
@@ -252,10 +252,10 @@ namespace uva {
                                 //Get the shorthand for the other state data
                                 const state_data & other_data = other.m_state_data;
 
-                                LOG_DEBUG2 << "Checking state " << this << " ==? " << &other << END_LOG;
-                                LOG_DEBUG2 << m_state_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << " ==? "
+                                LOG_DEBUG3 << "Checking state " << this << " ==? " << &other << END_LOG;
+                                LOG_DEBUG3 << m_state_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << " ==? "
                                         << other_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << END_LOG;
-                                LOG_DEBUG2 << m_state_data.covered_to_string() << " ==? "
+                                LOG_DEBUG3 << m_state_data.covered_to_string() << " ==? "
                                         << other_data.covered_to_string() << END_LOG;
 
                                 //Compute the comparison result
@@ -264,7 +264,7 @@ namespace uva {
                                         (m_state_data.m_covered == other_data.m_covered);
 
                                 //Log the comparison result
-                                LOG_DEBUG2 << "Result, state: " << this << (is_equal ? " == " : " != ") << &other << END_LOG;
+                                LOG_DEBUG3 << "Result, state: " << this << (is_equal ? " == " : " != ") << &other << END_LOG;
 
                                 //Return the comparison result
                                 return is_equal;
