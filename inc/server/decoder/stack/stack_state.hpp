@@ -75,7 +75,7 @@ namespace uva {
                             stack_state_templ(const stack_data & data)
                             : m_parent(NULL), m_state_data(data),
                             m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) {
-                                LOG_DEBUG1 << "New BEGIN state: " << this << END_LOG;
+                                LOG_DEBUG1 << "New BEGIN state: " << this << ", parent: " << m_parent << END_LOG;
                             }
 
                             /**
@@ -86,7 +86,7 @@ namespace uva {
                             stack_state_templ(stack_state_ptr parent) :
                             m_parent(parent), m_state_data(parent->m_state_data),
                             m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) {
-                                LOG_DEBUG1 << "New END state: " << this << END_LOG;
+                                LOG_DEBUG1 << "New END state: " << this << ", parent: " << m_parent << END_LOG;
                             }
 
                             /**
@@ -103,8 +103,9 @@ namespace uva {
                                     tm_const_target_entry* target)
                             : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, covered, target),
                             m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) {
-                                LOG_DEBUG1 << "New state: " << this << ", source[" << begin_pos << "," << end_pos
-                                        << "], target ___" << target->get_target_phrase() << "___" << END_LOG;
+                                LOG_DEBUG1 << "New state: " << this << ", parent: " << m_parent
+                                        << ", source[" << begin_pos << "," << end_pos << "], target ___"
+                                        << target->get_target_phrase() << "___" << END_LOG;
                             }
 
                             /**
