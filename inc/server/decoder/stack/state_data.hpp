@@ -92,7 +92,7 @@ namespace uva {
                                 LOG_DEBUG1 << "New BEGIN state data: " << this << ", translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___<s>___" << END_LOG;
-                                
+
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
                                 LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
                                 LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
@@ -121,7 +121,7 @@ namespace uva {
                                 LOG_DEBUG1 << "New END state data: " << this << " translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___</s>___" << END_LOG;
-                                
+
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
                                 LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
                                 LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
@@ -153,7 +153,7 @@ namespace uva {
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___"
                                         << m_target->get_target_phrase() << "___" << END_LOG;
-                                
+
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
                                 LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
                                 LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
@@ -261,7 +261,10 @@ namespace uva {
                              * @return the reordering orientation
                              */
                             inline reordering_orientation get_reordering_orientation(const state_data_templ & prev_state_data) {
-                                if (m_s_begin_word_idx < prev_state_data.m_s_begin_word_idx) {
+                                LOG_DEBUG2 << "Previous state end_word_idx: " << prev_state_data.m_s_end_word_idx
+                                        << ", new state begin_word_idx: " << m_s_begin_word_idx << END_LOG;
+
+                                if (m_s_begin_word_idx < prev_state_data.m_s_end_word_idx) {
                                     //We went to the left from the previous translation
                                     if ((prev_state_data.m_s_begin_word_idx - m_s_end_word_idx) == 1) {
                                         LOG_DEBUG2 << "SWAP_ORIENT" << END_LOG;
