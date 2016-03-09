@@ -233,6 +233,12 @@ namespace uva {
                                 //number of words in the target or one, for the <s> or </s> tags
                                 const size_t num_new_words = ((m_target != NULL) ? m_target->get_num_words() : 1);
 
+                                //Do the sanity check
+                                ASSERT_SANITY_THROW(((MAX_HISTORY_LENGTH + num_new_words) > MAX_M_GRAM_QUERY_LENGTH ),
+                                        string("MAX_HISTORY_LENGTH (") + to_string(MAX_HISTORY_LENGTH) +
+                                        string(") + num_new_words (") + to_string(num_new_words) +
+                                        string(") > MAX_M_GRAM_QUERY_LENGTH (") + to_string(MAX_M_GRAM_QUERY_LENGTH) + string(")"));
+                                
                                 //It is only for these new words that we need to compute the lm probabilities
                                 //for. So compute the current number of elements in the words' history.
                                 const size_t all_hist_words = m_trans_frame.get_size() - num_new_words;
@@ -247,6 +253,10 @@ namespace uva {
                                 //Compute the pointer to the beginning of the query words array
                                 const word_uid * query_word_ids = m_trans_frame.get_elems() + num_words_to_skip;
 
+                                LOG_DEBUG1 << "Begin lm_level: " << m_begin_lm_level << ", hist_words: "
+                                        << act_hist_words << ", new_words: " << num_new_words << ", query words: "
+                                        << array_to_string<word_uid>(num_query_words, query_word_ids) << END_LOG;
+                                
                                 //Execute the query and return the value
                                 //Logger::get_reporting_level() = DebugLevelsEnum::INFO2;
                                 const prob_weight prob = m_stack_data.m_lm_query.execute(num_query_words, query_word_ids, m_begin_lm_level);
