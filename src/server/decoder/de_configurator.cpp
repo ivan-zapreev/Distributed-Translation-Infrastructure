@@ -30,8 +30,8 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace decoder {
-                   //Define the static member
-                   de_parameters de_configurator::m_params;
+                    //Just give a default initialization
+                    const de_parameters * de_configurator::m_params = NULL;
                 }
             }
         }

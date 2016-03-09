@@ -55,7 +55,7 @@ namespace uva {
                          * class only stores the referent to the parameters.
                          */
                         static void connect(const de_parameters & params) {
-                            m_params = params;
+                            m_params = &params;
                         }
 
                         /**
@@ -80,9 +80,9 @@ namespace uva {
                                 const string & source_sent,
                                 string & target_sent) {
                             LOG_DEBUG << "Starting to allocate sentence decoder for: ___" << source_sent << "___" << END_LOG;
-                            
+
                             //ToDo: Pre-allocate decoders, make as many as there are threads
-                            return *(new sentence_decoder(m_params, is_stop, source_sent, target_sent));
+                            return *(new sentence_decoder(*m_params, is_stop, source_sent, target_sent));
                         }
 
                         /**
@@ -95,8 +95,8 @@ namespace uva {
                         }
 
                     private:
-                        //Stores the decoding parameters
-                        static de_parameters m_params;
+                        //Stores the pointer to the configuration parameters
+                        static const de_parameters * m_params;
                     };
                 }
             }

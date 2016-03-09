@@ -30,8 +30,8 @@ namespace uva {
         namespace bpbd {
             namespace server {
                 namespace rm {
-                    //No default initialization is needed
-                    rm_parameters rm_configurator::m_params;
+                    //Just give a default initialization
+                    const rm_parameters * rm_configurator::m_params = NULL;
                     
                     //Just give a default initialization
                     rm_proxy * rm_configurator::m_model_proxy = NULL;

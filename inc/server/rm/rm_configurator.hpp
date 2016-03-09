@@ -61,13 +61,13 @@ namespace uva {
                          */
                         static void connect(const rm_parameters & params) {
                             //Store the parameters for future use
-                            m_params = params;
+                            m_params = &params;
 
                             //At the moment we only support a local proxy
                             m_model_proxy = new rm_proxy_local();
                             
                             //Connect to the model instance using the given parameters
-                            m_model_proxy->connect(m_params);
+                            m_model_proxy->connect(*m_params);
                         }
 
                         /**
@@ -104,8 +104,8 @@ namespace uva {
                         }
                         
                     private:
-                        //Stores the copy of the configuration parameters
-                        static rm_parameters m_params;
+                        //Stores the pointer to the configuration parameters
+                        static const rm_parameters * m_params;
                         
                         //Store the trie proxy object
                         static rm_proxy * m_model_proxy;
