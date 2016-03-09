@@ -31,6 +31,7 @@
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
+#include "common/utils/threads.hpp"
 
 #include "server/decoder/de_configs.hpp"
 
@@ -38,6 +39,7 @@ using namespace std;
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
+using namespace uva::utils::threads;
 
 namespace uva {
     namespace smt {
@@ -52,16 +54,16 @@ namespace uva {
                         //The distortion limit to use; <integer>
                         //The the number of words to the right and left
                         //from the last phrase end word to consider
-                        int32_t m_distortion;
-                        //Stores the flag indicating wether there is a left distortion limit
+                        atomic<int32_t> m_distortion;
+                        //Stores the flag indicating whether there is a left distortion limit
                         //or not, the value is set by this class in the finalize method
-                        bool m_is_dist;
+                        atomic<bool> m_is_dist;
 
                         //The extra left distortion limit to use; <unsigned integer>
                         //The the number of words to the left of the last translated phrase
                         //begin word to consider in case that the regular distortion limit
                         //does not allow to jump left to the last translated phrase 
-                        int32_t m_ext_dist_left;
+                        atomic<int32_t> m_ext_dist_left;
 
                         //The maximum number of words to consider when making phrases
                         phrase_length m_max_s_phrase_len;
@@ -71,18 +73,18 @@ namespace uva {
                         //The pruning threshold is to be a <positive float> it is 
                         //the deviation from the best hypothesis score. I.e. must
                         //be a value from the half open interval [1.0, +inf)
-                        float m_pruning_threshold;
+                        atomic<float> m_pruning_threshold;
                         //The stack capacity for stack pruning
-                        uint32_t m_stack_capacity;
+                        atomic<uint32_t> m_stack_capacity;
                         //Stores the word penalty - the cost of each target word
-                        float m_word_penalty;
+                        atomic<float> m_word_penalty;
                         //Stores the phrase penalty - the cost of each target phrase
-                        float m_phrase_penalty;
+                        atomic<float> m_phrase_penalty;
                         
                         //Stores the number of best translations we want to track
                         //This is the maximum number of states that we will keep
                         //in the recombination array for each state
-                        size_t m_num_best_trans;
+                        atomic<size_t> m_num_best_trans;
 
                         /**
                          * Allows to verify the parameters to be correct.

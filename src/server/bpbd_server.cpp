@@ -42,6 +42,8 @@
 #include "server/tm/tm_configurator.hpp"
 #include "server/rm/rm_configurator.hpp"
 
+#include "server/cmd_line_handler.hpp"
+
 using namespace std;
 using namespace TCLAP;
 
@@ -58,11 +60,6 @@ using websocketpp::lib::bind;
 
 //Declare the program version string
 #define PROGRAM_VERSION_STR "1.0"
-
-//Declare the program exit letter
-#define PROGRAM_EXIT_LETTER 'q'
-//Declare the program info letter
-#define PROGRAM_INFO_LETTER 'i'
 
 /**
  * This functions does nothing more but printing the program header information
@@ -198,22 +195,6 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 }
 
 /**
- * Allows to print the prompt
- */
-void print_the_prompt() {
-    cout << ">> ";
-}
-
-/**
- * Prints the available server commands
- */
-void print_server_commands() {
-    LOG_USAGE << "Available server commands: " << END_LOG;
-    LOG_USAGE << "\t'" << PROGRAM_EXIT_LETTER << " & <enter>'  - to exit." << END_LOG;
-    LOG_USAGE << "\t'" << PROGRAM_INFO_LETTER << " & <enter>'  - print info." << END_LOG;
-}
-
-/**
  * Allows to establish connections to the models: language, translation, reordering
  * @param params the parameters needed to establish connections to the models
  */
@@ -246,86 +227,6 @@ void disconnect_from_models() {
 
     //Disconnect from the decoder
     de_configurator::disconnect();
-}
-
-/**
- * Allows to stop the server;
- * @param server the server being run
- * @param server_thread the server thread
- */
-void stop(translation_server &server, thread &server_thread) {
-    //Stop the translation server
-    LOG_USAGE << "Stopping the server ..." << END_LOG;
-    server.stop();
-
-    //Wait until the server's thread stops
-    server_thread.join();
-
-    LOG_USAGE << "The server has stopped!" << END_LOG;
-}
-
-//Stores the command buffer size
-static constexpr size_t CMD_BUFF_SIZE = 256;
-
-/**
- * Allowsto process the command
- * @param server the server being run
- * @param server_thread the server thread
- * @param command the command sting to handle
- * @return true if we need to stop, otherwise false
- */
-bool process_input_cmd(translation_server &server, thread &server_thread, char command[CMD_BUFF_SIZE]) {
-    switch (strlen(command)) {
-        case 0:
-            break;
-        case 1:
-            switch (command[0]) {
-                case PROGRAM_EXIT_LETTER:
-                    //Stop the server
-                    stop(server, server_thread);
-                    //Terminate the main loop
-                    return true;
-                case PROGRAM_INFO_LETTER:
-                    //Report the runtime information to the console
-                    server.report_run_time_info();
-                    //Continue to the next command.
-                    return false;
-            }
-        default:
-            LOG_ERROR << "The command '" << string(command) << "' is unknown!" << END_LOG;
-            //Print the server commands menu
-            print_server_commands();
-    }
-    return false;
-}
-
-/**
- * Runs the server's command loop
- * @param server the server being run
- * @param server_thread the server thread
- */
-void perform_command_loop(translation_server &server, thread &server_thread) {
-    //Command buffer
-    char command[CMD_BUFF_SIZE];
-
-    //Print the server commands menu
-    print_server_commands();
-
-    //Print the prompt
-    print_the_prompt();
-
-    while (true) {
-        //Wait for the input
-        cin.getline(command, CMD_BUFF_SIZE);
-
-        //Process input
-        if (process_input_cmd(server, server_thread, command)) {
-            return;
-        }
-
-        //Print the prompt
-        print_the_prompt();
-    }
 }
 
 /**
@@ -366,7 +267,7 @@ int main(int argc, char** argv) {
         //Logger::get_reporting_level() = DebugLevelsEnum::DEBUG2;
 
         //Wait until the server is stopped by pressing and exit button
-        perform_command_loop(server, server_thread);
+        perform_command_loop(params, server, server_thread);
 
     } catch (Exception & ex) {
         //The argument's extraction has failed, print the error message and quit
