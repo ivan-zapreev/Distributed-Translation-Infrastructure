@@ -172,8 +172,8 @@ namespace uva {
                     static inline std::ostream& operator<<(std::ostream& stream, const de_parameters & params) {
                         return stream << "DE parameters: [ is_distortion = " << params.m_is_dist << ", distortion = "
                                 << params.m_distortion << ", extra left distortion = " << params.m_ext_dist_left
-                                << ", m_max_source_phrase_len = " << to_string(params.m_max_s_phrase_len)
-                                << ", m_max_target_phrase_len = " << to_string(params.m_max_t_phrase_len)
+                                << ", max_source_phrase_len = " << to_string(params.m_max_s_phrase_len)
+                                << ", max_target_phrase_len = " << to_string(params.m_max_t_phrase_len)
                                 << ", pruning_threshold = " << params.m_pruning_threshold
                                 << ", stack_capacity = " << params.m_stack_capacity
                                 << ", word_penalty = " << params.m_word_penalty

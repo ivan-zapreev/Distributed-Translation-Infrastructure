@@ -97,15 +97,14 @@ namespace uva {
                          * @return the stream that we output into
                          */
                         static inline std::ostream& operator<<(std::ostream& stream, const server_parameters & params) {
-                    return stream << "Server parameters: [ source_lang = " << params.m_source_lang
+                    return stream << "Server parameters:\nMain [ source_lang = " << params.m_source_lang
                             << ", target_lang = " << params.m_target_lang
                             << ", server_port = " << params.m_server_port
                             << ", num_threads = " << params.m_num_threads
-                            << ", " << params.m_de_params
-                            << ", " << params.m_lm_params
-                            << ", " << params.m_tm_params
-                            << ", " << params.m_rm_params
-                            << " ]";
+                            << "]\n" << params.m_de_params
+                            << "\n" << params.m_lm_params
+                            << "\n" << params.m_tm_params
+                            << "\n" << params.m_rm_params;
                 }
             }
         }

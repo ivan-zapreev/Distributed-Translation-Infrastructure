@@ -24,6 +24,8 @@ namespace uva {
                 static const string PROGRAM_INFO_CMD = "i";
                 //Declare the program runtime command
                 static const string PROGRAM_RUNTIME_CMD = "r";
+                //Declare the command for parameters logging
+                static const string PROGRAM_PARAMS_CMD = "p";
                 //Declare the program nothing command
                 static const string PROGRAM_NOTHING_CMD = "";
                 //Declare the program "set" commands, NOTE the end spaces are needed!
@@ -66,6 +68,7 @@ namespace uva {
                     LOG_USAGE << "\t'" << PROGRAM_EXIT_CMD << " & <enter>'  - to exit." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_INFO_CMD << " & <enter>'  - print info." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_RUNTIME_CMD << " & <enter>'  -run-time statistics." << END_LOG;
+                    LOG_USAGE << "\t'" << PROGRAM_PARAMS_CMD << " & <enter>'  - print server parameters." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_NBT_CMD << "<unsigned integer> & <enter>'  - set the number of best translations." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_D_CMD << "<integer> & <enter>'  - set the distortion limit." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_EDL_CMD << "<unsigned integer> & <enter>'  - set the extra left distortion." << END_LOG;
@@ -146,6 +149,12 @@ namespace uva {
                         return false;
                     }
 
+                    //Lor parameters
+                    if (cmd == PROGRAM_PARAMS_CMD) {
+                        LOG_USAGE << params << END_LOG;
+                        return false;
+                    }
+
                     //Set some of the server runtime parameters
                     try {
                         //Get a copy of current decoder parameters
@@ -186,7 +195,7 @@ namespace uva {
 
                         //Set the parameters back
                         params.m_de_params = de_local;
-                        
+
                     } catch (Exception &ex) {
                         LOG_ERROR << ex.get_message() << " Enter '" << PROGRAM_INFO_CMD << "' for help!" << END_LOG;
                     }
