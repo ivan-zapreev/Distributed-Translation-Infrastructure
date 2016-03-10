@@ -1,16 +1,77 @@
 # Back Off Language Model(s) for SMT
 
-<big>Author: Dr. Ivan S. Zapreev</big>: <https://nl.linkedin.com/in/zapreevis>
+**Author: Dr. Ivan S. Zapreev**: <https://nl.linkedin.com/in/zapreevis>
 
-<big>Git-Hub</big>: <https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT>
+**Git-Hub**: <https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT>
 
 ## Introduction
-This is a fork project from the Automated-Translation-Tries project, made as a test exercise for automated machine translation (aiming at automated translation of text in different languages).
+This is a fork project from the Back Off Language Model(s) for SMT project aimed at creating the entire phrase-based SMT translation infrastructure.
+This project follows a client/server atchitecture based on WebSockets for C++ and consists of the three main applications:
+
++ **bpbd-client** - is a thin client to send the translation job requests to the translation server and obtain results
++ **bpbd-server** - the the translation server consisting of the following main components:
+    - *Decoder* - the decoder component responsible for translating text from one language into another
+    - *LM* - the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities.
+    - *TM* - the translation model implementation required for providing source to target language phrase translation and the probailities thereof.
+    - *RM* - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof
++ **lm-query** - a stand-alone language model query tool that allows to perform labguage model queries and estimate the joint phrase probabilities.
+
+##License
+
+This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+##Project structure
+This is a Netbeans 8.0.2 project, based on cmake, and its' top-level structure is as follows:
+
+* **[Project-Folder]**/
+    * **doc/** - contains the project-related documents including the Doxygen-generated code documentation
+    * **ext/** - stores the external header only libraries used in the project
+    * **inc/** - stores the C++ header files of the implementation
+    * **src/** - stores the C++ source files of the implementation
+    * **nbproject/** - stores the Netbeans project data, such as makefiles
+    * **data/** - stores the test-related data such as test models and query intput files, as well as some experimental results.
+    * LICENSE - the code license (GPL 2.0)
+    * CMakeLists.txt - the cmake build script for generating the project's make files
+    * README.md - this document
+    * Doxyfile - the Doxygen configuration file
+
+##Supported platforms
+Currently this project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:
+
+* **Centos 6.6 64-bit** - Complete functionality.
+* **Ubuntu 15.04 64-bit** - Complete functionality.
+* **Mac OS X Yosemite 10.10 64-bit** - Limited by inability to collect memory-usage statistics.
+
+There was only a limited testing performed on 32-bit systems so there is no gaurantee the software will work out of the box.
+
+##Building the project
+Building this project requires **gcc** version >= *4.9.1* and **cmake** version >= 2.8.12.2. The project can be build in two ways:
+
++ From the Netbeans environment by running Build in the IDE
+    - Perform `mkdir build` in the project folder.
+    - In Netbeans menu: *Tools/Options/"C/C++"* make sure that the cmake executable is properly set.
+    - Netbeans will always run cmake for the DEBUG version of the project
+    - To build project in RELEASE version use building from Linux console
++ From the Linux command-line console perform the following steps
+    - `cd [Project-Folder]`
+    - `mkdir build`
+    - `cd build`
+    - `cmake -DCMAKE_BUILD_TYPE=Release ..` OR `cmake -DCMAKE_BUILD_TYPE=DEBUG ..`
+    - `make -j [NUMBER-OF-THREADS]` add `VERBOSE=1` to make the compile-time options visible
+
+The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run `make clean`.
+
+###Project compile-time parameters
+
+One can limit the debug-level printing of the code by changing the value of the *LOGER_MAX_LEVEL* constant in the *./inc/Configuration.hpp*. The possible range of values, with increasing logging level is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.
+
+##LM implementation and its details
+
 
 For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.
 
 ### Background
-An <i>n-gram</i> refers to a continuous sequence of n tokens. For instance, given the following sentence: our neighbor , who moved in recently , came by . If n = 3, then the possible n-grams of
+An *n-gram* refers to a continuous sequence of n tokens. For instance, given the following sentence: our neighbor , who moved in recently , came by . If n = 3, then the possible n-grams of
 this sentence include: 
 <code>
 "our neighbor ,"
@@ -60,86 +121,10 @@ and
 >          bibsource = {dblp computer science bibliography, http://dblp.org}
 >        }
 
-The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using <i>std::unordered_map</i> of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations
-
-##License
-
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-##Project structure
-This is a Netbeans 8.0.2 project, and its' top-level structure is as follows:
-
->     ./docs/
->     ./inc/
->     ./src/
->     ./nbproject/
->     ./doxygen/
->     ./test-data/
->     ./LICENSE
->     ./Makefile
->     ./README.md
->     ./Doxyfile
->     ./make_centos.sh
->     ./make_debug_centos.sh
->     ./make_profile_centos.sh
->     ./make_release_centos.sh
-
-Further, we give a few explanations of the structure above
-
-* [Project-Folder]/
-    * doc/ - contains the project-related documents
-    * inc/ - stores the C++ header files used in the implementation
-    * src/ - stores the C++ source files used in the implementation
-    * nbproject/ - stores the Netbeans project data, such as makefiles
-    * doxygen/ - stores the Doxygen-generated code documentation
-    * test-data/ - stores the test-related data such as test models and query intput files, as well as the experimental results.
-    * LICENSE - the code license (GPL 2.0)
-    * Makefile - the Makefile used to build the project
-    * README.md - this document
-    * Doxyfile - the Doxygen configuration file
-    * make_centos.sh - the script to build all available configurations on the Centos platform
-    * make_debug_centos.sh - the script to build debug configuration on the Centos platform
-    * make_profile_centos.sh - the script to profiling debug configuration on the Centos platform
-    * make_release_centos.sh - the script to release debug configuration on the Centos platform
-
-##Supported platforms
-Currently this project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:
-
-* <big>Centos 6.6 64-bit</big> - Complete functionality.
-* <big>Ubuntu 15.04 64-bit</big> - Complete functionality.
-* <big>Mac OS X Yosemite 10.10 64-bit</big> - Limited by inability to collect memory-usage statistics.
-
-Testing on 32-bit systems was not performed.
-
-##Building the project
-Building this project requires gcc version 4.9.1 and higher. The project can be build in two ways:
-
-+ From the Netbeans environment by running Build in the IDE
-+ From the Linux command-line console
-    - Open the console
-    - Navigate to the project folder
-    - Run <i>"make all"</i>
-    - The binary will be generated and placed into <i>./dist/[type]_[platform]/</i> folder
-    - The name of the executable is <i>back-off-language-model-smt</i>
-
-In order to clean the project from the command line run <i>"make clean"</i>.
-
-For the sake of simplicity and speed building on Centos platform is also possible by using make_*_centos.sh scripts. There are four of suck scripts available:
-
-* make_debug_centos.sh - allows to build the debug configuration: ready to be used with valgrind and gdb.
-* make_profile_centos.sh - allows to build the profiling configuration: ready to be used for gathering performance information for gprof: produce the gmon.out file.
-* make_release_centos.sh - allows to build the release configuration: the version build for performance with platform specific optimization's.
-* make_centos.sh - allows to build all the above configurations at once.
-
-One can limit the debug-level printing of the code by changing the value of the <i>LOGER_MAX_LEVEL</i> constant in the <i>./inc/Configuration.hpp</i>. The possible range of values, with increasing logging level is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.
-
+The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using *std::unordered_map* of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations
 
 ##Usage
-In order to get the program usage information please run <i>./back-off-language-model-smt</i>
+In order to get the program usage information please run *./back-off-language-model-smt*
 from the command line, the output of the program is supposed to be as follows:
         
         $ ../dist/Release__MacOs_/back-off-language-model-smt
@@ -182,37 +167,40 @@ from the command line, the output of the program is supposed to be as follows:
 
 ##Implementation Details
 
-In this section we mention a few implementation details, for more details see the source code documentation. At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option <i>JAVADOC_AUTOBRIEF</i> set to <i>YES</i>. The generated documentation is located in the <big>./doxygen/</big> folder of the project.
+In this section we mention a few implementation details, for more details see the source code documentation. At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in the **./doxygen/** folder of the project.
 
 The code contains the following important source files:
 
-* <big>main.cpp</big> - contains the entry point of the program
-* <big>Executor.cpp</big> -  contains some utility functions including the one reading the test document and performing the queries on a filled in Trie instance.
-* <big>ARPATrieBuilder.hpp / ARPATrieBuilder.cpp</big> - contains the class responsible for reading the ARPA file format and building up the trie model using the ARPAGramBuilder.
-* <big>TrieDriver.hpp</big> - is the driver for all trie implementations - allows to execute queries to the tries.
-* <big>LayeredTrieDriver.hpp</big> - is a wrapper driver for all the layered trie implementations - allows to retrieve N-gram probabilities and back-off weights.
-* <big>C2DHashMapTrie.hpp / C2DHashMapTrie.cpp</big> - contains the Context-to-Data mapping trie implementation based on unordered_map.
-* <big>C2DMapArrayTrie.hpp / C2DMapArrayTrie.cpp</big> - contains the Context-to-Data mapping trie implementation based  on unordered_map and ordered arrays.
-* <big>C2WOrderedArrayTrie.hpp / C2WOrderedArrayTrie.cpp</big> - contains the Context-to-Word mapping trie implementation based on ordered arrays.
-* <big>G2DHashMapTrie.hpp / G2DHashMapTrie.cpp</big> - contains the M-Gram-to-Data mapping trie implementation based on self-made hash maps.
-* <big>W2CHybridMemoryTrie.hpp / W2CHybridMemoryTrie.cpp</big> - contains the Word-to-Context mapping trie implementation based on unordered_map and ordered arrays.
-* <big>W2COrderedArrayTrie.hpp / W2COrderedArrayTrie.cpp</big> - contains the Word-to-Context mapping trie implementation based on ordered arrays.
-* <big>Configuration.hpp</big> - contains configuration parameter for the word index and trie and memory management entities.
-* <big>Exceptions.hpp</big> - stores the implementations of the used exception classes.
-* <big>HashingUtils.hpp</big> - stores the hashing utility functions.
-* <big> ARPAGramBuilder.hpp / ARPAGramBuilder.cpp</big> - contains the class responsible for building n-grams from a line of text and storing it into Trie.
-* <big>StatisticsMonitor.hpp / StatisticsMonitor.cpp</big> - contains a class responsible for gathering memory and CPU usage statistics
-* <big>Logger.hpp/Logger.cpp</big> - contains a basic logging facility class
+* **main.cpp** - contains the entry point of the program
+* **Executor.cpp** -  contains some utility functions including the one reading the test document and performing the queries on a filled in Trie instance.
+* **ARPATrieBuilder.hpp / ARPATrieBuilder.cpp** - contains the class responsible for reading the ARPA file format and building up the trie model using the ARPAGramBuilder.
+* **TrieDriver.hpp** - is the driver for all trie implementations - allows to execute queries to the tries.
+* **LayeredTrieDriver.hpp** - is a wrapper driver for all the layered trie implementations - allows to retrieve N-gram probabilities and back-off weights.
+* **C2DHashMapTrie.hpp / C2DHashMapTrie.cpp** - contains the Context-to-Data mapping trie implementation based on unordered_map.
+* **C2DMapArrayTrie.hpp / C2DMapArrayTrie.cpp** - contains the Context-to-Data mapping trie implementation based  on unordered_map and ordered arrays.
+* **C2WOrderedArrayTrie.hpp / C2WOrderedArrayTrie.cpp** - contains the Context-to-Word mapping trie implementation based on ordered arrays.
+* **G2DHashMapTrie.hpp / G2DHashMapTrie.cpp** - contains the M-Gram-to-Data mapping trie implementation based on self-made hash maps.
+* **W2CHybridMemoryTrie.hpp / W2CHybridMemoryTrie.cpp** - contains the Word-to-Context mapping trie implementation based on unordered_map and ordered arrays.
+* **W2COrderedArrayTrie.hpp / W2COrderedArrayTrie.cpp** - contains the Word-to-Context mapping trie implementation based on ordered arrays.
+* **Configuration.hpp** - contains configuration parameter for the word index and trie and memory management entities.
+* **Exceptions.hpp** - stores the implementations of the used exception classes.
+* **HashingUtils.hpp** - stores the hashing utility functions.
+* ** ARPAGramBuilder.hpp / ARPAGramBuilder.cpp** - contains the class responsible for building n-grams from a line of text and storing it into Trie.
+* **StatisticsMonitor.hpp / StatisticsMonitor.cpp** - contains a class responsible for gathering memory and CPU usage statistics
+* **Logger.hpp/Logger.cpp** - contains a basic logging facility class
 
 ##ToDo
-* <big> C2DHashMapTrie.hpp / C2DHashMapTrie.cpp </big> - the current implementation is potentially error prone to hash collisions in case of context id overflows. Overflows were not observed on the tries of up to 20 Gb but a more thorough testing must be needed and perhaps the collision detection must be always on for this trie.
-* <big>Tries</big> - It is possible to introduce more templating into the tries, e.g. the gram-level-based templating. It must improve performance as many checks can be resolved compile-time.
-* <big>G2DHashMapTrie.hpp / G2DHashMapTrie.cpp</big> - This trie is very performance efficient but its memory consumption is at present sub optimal. It needs a significant re-work in the way data is stored.
-* <big>Thread safety</big> - Not all the code is thread safe. Tries are to be reviewed for using class data members during filling in the tries or querying. One can just make the entire trie interface synchronized but this is sub-optimal therefore the idea is, when querying, to use the shared class members only for reading and all the temporary storage data is to be allocated and passed through the call stack by reference. This is, for the most, already so but requires and extra check.
-* <big>Testing</big> - the testing done with this code was limited. Potentially the Trie code, and the rest, still contains error. So it is recommended to add unit and functional tests for this project
-* <big>Code</big> - in some places more of the old style C functions are used, which might have good equivalent in C++. Also, the naming convention is not always ideally followed. The using of Templates in the code might be to complex, although potentially gives some performance and genericity advantages.
+* ** C2DHashMapTrie.hpp / C2DHashMapTrie.cpp ** - the current implementation is potentially error prone to hash collisions in case of context id overflows. Overflows were not observed on the tries of up to 20 Gb but a more thorough testing must be needed and perhaps the collision detection must be always on for this trie.
+* **Tries** - It is possible to introduce more templating into the tries, e.g. the gram-level-based templating. It must improve performance as many checks can be resolved compile-time.
+* **G2DHashMapTrie.hpp / G2DHashMapTrie.cpp** - This trie is very performance efficient but its memory consumption is at present sub optimal. It needs a significant re-work in the way data is stored.
+* **Thread safety** - Not all the code is thread safe. Tries are to be reviewed for using class data members during filling in the tries or querying. One can just make the entire trie interface synchronized but this is sub-optimal therefore the idea is, when querying, to use the shared class members only for reading and all the temporary storage data is to be allocated and passed through the call stack by reference. This is, for the most, already so but requires and extra check.
+* **Testing** - the testing done with this code was limited. Potentially the Trie code, and the rest, still contains error. So it is recommended to add unit and functional tests for this project
+* **Code** - in some places more of the old style C functions are used, which might have good equivalent in C++. Also, the naming convention is not always ideally followed. The using of Templates in the code might be to complex, although potentially gives some performance and genericity advantages.
  
 ##History
-* <big>21.04.2015</big> - Created
-* <big>27.07.2015</big> - Changed project name and some to-do's
-* <big>21.09.2015</big> - Updated with the latest developments preparing for the version 1, Owl release. 
+* **21.04.2015** - Created
+* **27.07.2015** - Changed project name and some to-do's
+* **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. 
+
+
+https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet

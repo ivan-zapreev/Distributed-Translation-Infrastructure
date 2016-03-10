@@ -64,7 +64,7 @@ namespace uva {
             }
 #else
 
-            void stat_monitore::get_mem_stat(TMemotyUsage & memStat) throw (uva_exception) {
+            void stat_monitore::get_mem_stat(TMemotyUsage & memStat) {
                 char *line;
                 char *vmsize = NULL;
                 char *vmpeak = NULL;
