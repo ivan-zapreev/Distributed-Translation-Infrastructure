@@ -199,6 +199,14 @@ namespace uva {
                 };
 
                 /**
+                 * Allows to obtain the current reporting level string
+                 * @return the current reporting level string
+                 */
+                static inline const string get_curr_level_str() {
+                    return m_debug_level_str[m_curr_level];
+                };
+
+                /**
                  * The function that start progress bar
                  * Works if the current debug level is <= INFO
                  * @param msg the message to display

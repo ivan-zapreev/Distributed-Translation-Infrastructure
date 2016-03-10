@@ -8,8 +8,12 @@
 #ifndef CMD_LINE_HANDLER_HPP
 #define	CMD_LINE_HANDLER_HPP
 
+#include "common/utils/logging/logger.hpp"
+
 #include "server/server_parameters.hpp"
 #include "server/translation_server.hpp"
+
+using namespace uva::utils::logging;
 
 using namespace uva::smt::bpbd::server;
 
@@ -28,6 +32,8 @@ namespace uva {
                 static const string PROGRAM_PARAMS_CMD = "p";
                 //Declare the program nothing command
                 static const string PROGRAM_NOTHING_CMD = "";
+                //The log level setting commands
+                static const string PROGRAM_SET_LL_CMD = "set ll ";
                 //Declare the program "set" commands, NOTE the end spaces are needed!
                 static const string PROGRAM_SET_NBT_CMD = "set nbt ";
                 static const string PROGRAM_SET_D_CMD = "set d ";
@@ -69,6 +75,7 @@ namespace uva {
                     LOG_USAGE << "\t'" << PROGRAM_INFO_CMD << " & <enter>'  - print info." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_RUNTIME_CMD << " & <enter>'  -run-time statistics." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_PARAMS_CMD << " & <enter>'  - print server parameters." << END_LOG;
+                    LOG_USAGE << "\t'" << PROGRAM_SET_LL_CMD << "<level> & <enter>'  - set log level." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_NBT_CMD << "<unsigned integer> & <enter>'  - set the number of best translations." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_D_CMD << "<integer> & <enter>'  - set the distortion limit." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_EDL_CMD << "<unsigned integer> & <enter>'  - set the extra left distortion." << END_LOG;
@@ -92,14 +99,23 @@ namespace uva {
                 }
 
                 /**
+                 * Allows to parse the command parameter and return it as a string
+                 * @param str the command string
+                 * @param prefix the command pregix
+                 * @return the parsed value
+                 */
+                inline string get_string_value(const string & str, const string & prefix) {
+                    return str.substr(prefix.length(), str.length() - prefix.length() + 1);
+                }
+
+                /**
                  * Allows to parse the command parameter and return it
                  * @param str the command string
                  * @param prefix the command pregix
                  * @return the parsed value
                  */
                 inline int32_t get_int_value(const string & str, const string & prefix) {
-                    string value_str = str.substr(prefix.length(), str.length() - prefix.length() + 1);
-                    return stoi(value_str);
+                    return stoi(get_string_value(str, prefix));
                 }
 
                 /**
@@ -109,8 +125,68 @@ namespace uva {
                  * @return the parsed value
                  */
                 inline float get_float_value(const string & str, const string & prefix) {
-                    string value_str = str.substr(prefix.length(), str.length() - prefix.length() + 1);
-                    return stof(value_str);
+                    return stof(get_string_value(str, prefix));
+                }
+
+                /**
+                 * Allows to set the debug level
+                 * @param cmd the debug level
+                 */
+                inline void set_log_level(const string & cmd, const string & prefix) {
+                    Logger::set_reporting_level(get_string_value(cmd, prefix));
+                }
+
+                /**
+                 * Allows to set some decoder parameters
+                 * @param cmd the command to process, if not a command for
+                 * setting decoder parameters an error will be reported.
+                 * @param m_de_params the reference to the decoder parameters to set with new values.
+                 */
+                inline void set_decoder_params(const string & cmd, de_parameters & de_params) {
+                    //Set some of the server runtime parameters
+                    try {
+                        //Get a copy of current decoder parameters
+                        de_parameters de_local = de_params;
+
+                        if (begins_with(cmd, PROGRAM_SET_NBT_CMD)) {
+                            de_local.m_num_best_trans = get_int_value(cmd, PROGRAM_SET_NBT_CMD);
+                        } else {
+                            if (begins_with(cmd, PROGRAM_SET_D_CMD)) {
+                                de_local.m_distortion = get_int_value(cmd, PROGRAM_SET_D_CMD);
+                            } else {
+                                if (begins_with(cmd, PROGRAM_SET_EDL_CMD)) {
+                                    de_local.m_ext_dist_left = get_int_value(cmd, PROGRAM_SET_EDL_CMD);
+                                } else {
+                                    if (begins_with(cmd, PROGRAM_SET_PT_CMD)) {
+                                        de_local.m_pruning_threshold = get_float_value(cmd, PROGRAM_SET_PT_CMD);
+                                    } else {
+                                        if (begins_with(cmd, PROGRAM_SET_SC_CMD)) {
+                                            de_local.m_stack_capacity = get_int_value(cmd, PROGRAM_SET_SC_CMD);
+                                        } else {
+                                            if (begins_with(cmd, PROGRAM_SET_WP_CMD)) {
+                                                de_local.m_word_penalty = get_float_value(cmd, PROGRAM_SET_WP_CMD);
+                                            } else {
+                                                if (begins_with(cmd, PROGRAM_SET_PP_CMD)) {
+                                                    de_local.m_phrase_penalty = get_float_value(cmd, PROGRAM_SET_PP_CMD);
+                                                } else {
+                                                    THROW_EXCEPTION(string("The command '") + cmd + string("' is unknown!"));
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        //Finalize the parameters
+                        de_local.finalize();
+
+                        //Set the parameters back
+                        de_params = de_local;
+
+                    } catch (Exception &ex) {
+                        LOG_ERROR << ex.get_message() << " Enter '" << PROGRAM_INFO_CMD << "' for help!" << END_LOG;
+                    }
                 }
 
                 /**
@@ -121,7 +197,7 @@ namespace uva {
                  * @param command the command sting to handle
                  * @return true if we need to stop, otherwise false
                  */
-                bool process_input_cmd(server_parameters & params, translation_server &server,
+                inline bool process_input_cmd(server_parameters & params, translation_server &server,
                         thread &server_thread, char command[CMD_BUFF_SIZE]) {
                     //Convert the buffer into string
                     string cmd(command);
@@ -151,54 +227,19 @@ namespace uva {
 
                     //Lor parameters
                     if (cmd == PROGRAM_PARAMS_CMD) {
-                        LOG_USAGE << params << END_LOG;
+                        LOG_USAGE << "Log level: " << Logger::get_curr_level_str()
+                                << ", " << params << END_LOG;
                         return false;
                     }
 
-                    //Set some of the server runtime parameters
-                    try {
-                        //Get a copy of current decoder parameters
-                        de_parameters de_local = params.m_de_params;
-
-                        if (begins_with(cmd, PROGRAM_SET_NBT_CMD)) {
-                            de_local.m_num_best_trans = get_int_value(cmd, PROGRAM_SET_NBT_CMD);
-                        } else {
-                            if (begins_with(cmd, PROGRAM_SET_D_CMD)) {
-                                de_local.m_distortion = get_int_value(cmd, PROGRAM_SET_D_CMD);
-                            } else {
-                                if (begins_with(cmd, PROGRAM_SET_EDL_CMD)) {
-                                    de_local.m_ext_dist_left = get_int_value(cmd, PROGRAM_SET_EDL_CMD);
-                                } else {
-                                    if (begins_with(cmd, PROGRAM_SET_PT_CMD)) {
-                                        de_local.m_pruning_threshold = get_float_value(cmd, PROGRAM_SET_PT_CMD);
-                                    } else {
-                                        if (begins_with(cmd, PROGRAM_SET_SC_CMD)) {
-                                            de_local.m_stack_capacity = get_int_value(cmd, PROGRAM_SET_SC_CMD);
-                                        } else {
-                                            if (begins_with(cmd, PROGRAM_SET_WP_CMD)) {
-                                                de_local.m_word_penalty = get_float_value(cmd, PROGRAM_SET_WP_CMD);
-                                            } else {
-                                                if (begins_with(cmd, PROGRAM_SET_PP_CMD)) {
-                                                    de_local.m_phrase_penalty = get_float_value(cmd, PROGRAM_SET_PP_CMD);
-                                                } else {
-                                                    THROW_EXCEPTION(string("The command '") + string(command) + string("' is unknown!"));
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        //Finalize the parameters
-                        de_local.finalize();
-
-                        //Set the parameters back
-                        params.m_de_params = de_local;
-
-                    } catch (Exception &ex) {
-                        LOG_ERROR << ex.get_message() << " Enter '" << PROGRAM_INFO_CMD << "' for help!" << END_LOG;
+                    //Set the debug level
+                    if (begins_with(cmd, PROGRAM_SET_LL_CMD)) {
+                        set_log_level(cmd, PROGRAM_SET_LL_CMD);
+                        return false;
                     }
+
+                    //Set other decoder parameters
+                    set_decoder_params(cmd, params.m_de_params);
 
                     //Continue to the next command.
                     return false;
