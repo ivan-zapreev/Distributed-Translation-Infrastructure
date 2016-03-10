@@ -1,4 +1,4 @@
-# Back Off Language Model(s) for SMT
+# The Basic Phrase-Based Statistical Machine Translation Tool
 
 **Author: Dr. Ivan S. Zapreev**: <https://nl.linkedin.com/in/zapreevis>
 
