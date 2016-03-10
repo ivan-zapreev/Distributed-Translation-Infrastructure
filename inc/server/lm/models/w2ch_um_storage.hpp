@@ -49,7 +49,7 @@ namespace uva {
                     //The type of key,value pairs to be stored
                     typedef pair< const TShortId, TShortId> TStorageMapEntry;
                     //The typedef for the map allocator
-                    typedef GreedyMemoryAllocator< TStorageMapEntry > TStorageMapAllocator;
+                    typedef greedy_memory_allocator< TStorageMapEntry > TStorageMapAllocator;
                     //The unsigned map type
                     typedef unordered_map<TShortId, TShortId, std::hash<TShortId>, std::equal_to<TShortId>, TStorageMapAllocator > TStorageUnsignedMap;
                     //The unsigned map type
@@ -107,7 +107,7 @@ namespace uva {
                          */
                         W2CH_UM_StorageFactory(const size_t _counts[N], const float factor = __W2CHybridTrie::UM_CTX_TO_PB_MAP_STORE_MEMORY_FACTOR) {
                             for (size_t i = 1; i < N; i++) {
-                                const GreedyMemoryStorage::size_type size = _counts[i] * factor;
+                                const greedy_memory_storage::size_type size = _counts[i] * factor;
                                 m_p_alloc[i - 1] = new TStorageMapAllocator(size);
                                 LOG_DEBUG2 << "Allocating a new TStorageMapAllocator("
                                         << size << ") for level " << i + 1

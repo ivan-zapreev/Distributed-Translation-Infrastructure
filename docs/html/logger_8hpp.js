@@ -1,7 +1,7 @@
 var logger_8hpp =
 [
     [ "logging_synch", "structuva_1_1utils_1_1logging_1_1logging__synch.html", "structuva_1_1utils_1_1logging_1_1logging__synch" ],
-    [ "Logger", "classuva_1_1utils_1_1logging_1_1_logger.html", "classuva_1_1utils_1_1logging_1_1_logger" ],
+    [ "logger", "classuva_1_1utils_1_1logging_1_1logger.html", "classuva_1_1utils_1_1logging_1_1logger" ],
     [ "__FILENAME__", "logger_8hpp.html#a5fccb4fc71e44089a1b1a77fc76c0b68", null ],
     [ "DEBUG1_PARAM_VALUE", "logger_8hpp.html#adf15fa14513d5726dc604a148ea51cb8", null ],
     [ "DEBUG2_PARAM_VALUE", "logger_8hpp.html#af4ae2cfc470ee4127ae7e9f64fc8aabd", null ],
@@ -38,21 +38,21 @@ var logger_8hpp =
     [ "USAGE_PARAM_VALUE", "logger_8hpp.html#a2e2e195d6efc14c993a50401cbef63f9", null ],
     [ "WARNING_PARAM_VALUE", "logger_8hpp.html#a8490160ad5cabd466d371e0dcdd5a15e", null ],
     [ "WHITE_SPACE_SEPARATOR", "logger_8hpp.html#a1eb1ed6371d114fceca882f392880fdb", null ],
-    [ "DebugLevelsEnum", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7", [
-      [ "ERROR", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7a7c1fb15df08f29cd496708a97fc333c1", null ],
-      [ "WARNING", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7ae693617d79d97b499628f90c5e557eb8", null ],
-      [ "USAGE", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7af5cd05b95444193b423ea40feede729b", null ],
-      [ "RESULT", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7aa0521b3e0eeff0c4b4ca3b45f3280636", null ],
-      [ "INFO", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7a1a720d673ed8622627218b80ff66e8d6", null ],
-      [ "INFO1", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7a8954f0682f0054bc3956280ebbe1fdb2", null ],
-      [ "INFO2", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7a7bd6d0c25b0fbe7c4988c71681e6d668", null ],
-      [ "INFO3", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7a3c1c367d3f40af1f3ce253d2f9b4286f", null ],
-      [ "DEBUG", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7a769c8fde9f0b395bfbf4d9749a972556", null ],
-      [ "DEBUG1", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7a6644d60858e696215e6812a4faf4b45f", null ],
-      [ "DEBUG2", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7a558d4bbb4f28ca348b7c08c344e270b6", null ],
-      [ "DEBUG3", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7a46094376b0ec7b929af77bcfddb177ab", null ],
-      [ "DEBUG4", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7a9851e705c8c11e98d07144ccd054b8a7", null ],
-      [ "size", "logger_8hpp.html#afe529dbf8d7fef2c75698798ec3e65e7a383a8f9e34911f0984ca013792de9e95", null ]
+    [ "debug_levels_enum", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053", [
+      [ "ERROR", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053a7c1fb15df08f29cd496708a97fc333c1", null ],
+      [ "WARNING", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053ae693617d79d97b499628f90c5e557eb8", null ],
+      [ "USAGE", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053af5cd05b95444193b423ea40feede729b", null ],
+      [ "RESULT", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053aa0521b3e0eeff0c4b4ca3b45f3280636", null ],
+      [ "INFO", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053a1a720d673ed8622627218b80ff66e8d6", null ],
+      [ "INFO1", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053a8954f0682f0054bc3956280ebbe1fdb2", null ],
+      [ "INFO2", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053a7bd6d0c25b0fbe7c4988c71681e6d668", null ],
+      [ "INFO3", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053a3c1c367d3f40af1f3ce253d2f9b4286f", null ],
+      [ "DEBUG", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053a769c8fde9f0b395bfbf4d9749a972556", null ],
+      [ "DEBUG1", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053a6644d60858e696215e6812a4faf4b45f", null ],
+      [ "DEBUG2", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053a558d4bbb4f28ca348b7c08c344e270b6", null ],
+      [ "DEBUG3", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053a46094376b0ec7b929af77bcfddb177ab", null ],
+      [ "DEBUG4", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053a9851e705c8c11e98d07144ccd054b8a7", null ],
+      [ "size", "logger_8hpp.html#ab570eadc941242827b7432ab5b7d9053a383a8f9e34911f0984ca013792de9e95", null ]
     ] ],
     [ "operator<<", "logger_8hpp.html#ad1377b19aa409e93a549c8ed70bc3884", null ],
     [ "operator<<", "logger_8hpp.html#a474ae73eb584975dd16f1e11df47d84a", null ]

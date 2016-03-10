@@ -50,7 +50,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -228,20 +227,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">if</span>(<span class="keyword">sizeof</span>(value_type) == 2) { \</div>
-<div class="line">    (<a class="code" href="namespacewebsocketpp_1_1session_1_1state.html#a12acca56cdb6c10f467dfb10fc763ca5">value</a>) = __builtin_bswap16((<a class="code" href="namespacewebsocketpp_1_1session_1_1state.html#a12acca56cdb6c10f467dfb10fc763ca5">value</a>)); \</div>
+<div class="line">    (value) = __builtin_bswap16((value)); \</div>
 <div class="line">} <span class="keywordflow">else</span> { \</div>
 <div class="line">    if(<span class="keyword">sizeof</span>(value_type) == 4) { \</div>
-<div class="line">        (<a class="code" href="namespacewebsocketpp_1_1session_1_1state.html#a12acca56cdb6c10f467dfb10fc763ca5">value</a>) = __builtin_bswap32((<a class="code" href="namespacewebsocketpp_1_1session_1_1state.html#a12acca56cdb6c10f467dfb10fc763ca5">value</a>)); \</div>
+<div class="line">        (value) = __builtin_bswap32((value)); \</div>
 <div class="line">    } <span class="keywordflow">else</span> { \</div>
 <div class="line">        if(<span class="keyword">sizeof</span>(value_type) == 8) { \</div>
-<div class="line">            (<a class="code" href="namespacewebsocketpp_1_1session_1_1state.html#a12acca56cdb6c10f467dfb10fc763ca5">value</a>) = __builtin_bswap64((<a class="code" href="namespacewebsocketpp_1_1session_1_1state.html#a12acca56cdb6c10f467dfb10fc763ca5">value</a>)); \</div>
+<div class="line">            (value) = __builtin_bswap64((value)); \</div>
 <div class="line">        } <span class="keywordflow">else</span> { \</div>
-<div class="line">            throw <a class="code" href="classuva_1_1utils_1_1exceptions_1_1_exception.html">Exception</a>(<span class="stringliteral">&quot;HANDLE_ENDIAN(value_type, value): Unsupported value type!&quot;</span>); \</div>
+<div class="line">            throw <a class="code" href="classuva_1_1utils_1_1exceptions_1_1uva__exception.html">uva_exception</a>(<span class="stringliteral">&quot;HANDLE_ENDIAN(value_type, value): Unsupported value type!&quot;</span>); \</div>
 <div class="line">        } \</div>
 <div class="line">    } \</div>
 <div class="line">}</div>
-<div class="ttc" id="classuva_1_1utils_1_1exceptions_1_1_exception_html"><div class="ttname"><a href="classuva_1_1utils_1_1exceptions_1_1_exception.html">uva::utils::exceptions::Exception</a></div><div class="ttdef"><b>Definition:</b> <a href="exceptions_8hpp_source.html#l00069">exceptions.hpp:69</a></div></div>
-<div class="ttc" id="namespacewebsocketpp_1_1session_1_1state_html_a12acca56cdb6c10f467dfb10fc763ca5"><div class="ttname"><a href="namespacewebsocketpp_1_1session_1_1state.html#a12acca56cdb6c10f467dfb10fc763ca5">websocketpp::session::state::value</a></div><div class="ttdeci">value</div><div class="ttdef"><b>Definition:</b> <a href="connection_8hpp_source.html#l00179">connection.hpp:179</a></div></div>
+<div class="ttc" id="classuva_1_1utils_1_1exceptions_1_1uva__exception_html"><div class="ttname"><a href="classuva_1_1utils_1_1exceptions_1_1uva__exception.html">uva::utils::exceptions::uva_exception</a></div><div class="ttdef"><b>Definition:</b> <a href="exceptions_8hpp_source.html#l00069">exceptions.hpp:69</a></div></div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="math__utils_8hpp_source.html#l00156">156</a> of file <a class="el" href="math__utils_8hpp_source.html">math_utils.hpp</a>.</p>
 

@@ -97,7 +97,7 @@ namespace uva {
                              * If the word is not known then an unknown word ID is returned: UNKNOWN_WORD_ID
                              * @see AWordIndex
                              */
-                            inline word_uid get_word_id(const TextPieceReader & token) const {
+                            inline word_uid get_word_id(const text_piece_reader & token) const {
                                 TWordIndexMapConstIter result = m_word_index_map_ptr->find(token.str());
                                 if (result == m_word_index_map_ptr->end()) {
                                     LOG_DEBUG << "Word: '" << token << "' is not known! Mapping it to: '"
@@ -122,7 +122,7 @@ namespace uva {
                              * This function creates/gets a hash for the given word.
                              * @see AWordIndex
                              */
-                            inline word_uid register_word(const TextPieceReader & token) {
+                            inline word_uid register_word(const text_piece_reader & token) {
                                 //First get/create an existing/new word entry from from/in the word index
                                 word_uid& hash = m_word_index_map_ptr->operator[](token.str());
 
@@ -149,7 +149,7 @@ namespace uva {
                              * This method is to be used when the word counting is needed.
                              * @see AWordIndex
                              */
-                            inline void count_word(const TextPieceReader & word, prob_weight prob) {
+                            inline void count_word(const text_piece_reader & word, prob_weight prob) {
                                 //There is nothing to be done
                                 THROW_MUST_NOT_CALL();
                             };
@@ -209,7 +209,7 @@ namespace uva {
                             /**
                              * The typedef for the word index allocator
                              */
-                            typedef GreedyMemoryAllocator< TWordIndexEntry > TWordIndexAllocator;
+                            typedef greedy_memory_allocator< TWordIndexEntry > TWordIndexAllocator;
 
                             /**
                              * The word index map type
@@ -246,7 +246,7 @@ namespace uva {
                             basic_word_index(const basic_word_index & other)
                             : m_word_index_alloc_ptr(NULL), m_word_index_map_ptr(NULL),
                             m_next_new_word_id(MIN_KNOWN_WORD_ID), m_word_index_mem_factor(0.0) {
-                                throw Exception("HashMapWordIndex copy constructor is not to be used, unless implemented!");
+                                throw uva_exception("HashMapWordIndex copy constructor is not to be used, unless implemented!");
                             }
                             //This is the pointer to the fixed memory allocator used to allocate the map's memory
                             TWordIndexAllocator * m_word_index_alloc_ptr;

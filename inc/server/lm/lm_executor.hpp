@@ -87,7 +87,7 @@ namespace uva {
                             double start_time = 0.0, end_time = 0.0;
 
                             //Will store the read line (word1 word2 word3 word4 word5)
-                            TextPieceReader line;
+                            text_piece_reader line;
 
                             //Get the query executor proxy object
                             lm_slow_query_proxy & query = lm_configurator::allocate_slow_query_proxy();
@@ -95,7 +95,7 @@ namespace uva {
                             LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
 
                             //Start the timer
-                            start_time = StatisticsMonitor::getCPUTime();
+                            start_time = stat_monitore::get_cpu_time();
 
                             //Read the test file line by line
                             while (test_file.get_first_line(line)) {
@@ -104,14 +104,14 @@ namespace uva {
                                 try {
                                     //Query the Trie for the results and log them
                                     query.execute(line);
-                                } catch (Exception & ex) {
+                                } catch (uva_exception & ex) {
                                     //The query has failed! print an exception and proceed!
                                     LOG_ERROR << ex.get_message() << END_LOG;
                                 }
                             }
 
                             //Stop the timer
-                            end_time = StatisticsMonitor::getCPUTime();
+                            end_time = stat_monitore::get_cpu_time();
 
                             //Dispose the query
                             lm_configurator::dispose_slow_query_proxy(query);
@@ -127,7 +127,7 @@ namespace uva {
                          */
                         static void perform_tasks(const __executor::lm_exec_params & params) {
                             //Attempt to open the test file
-                            MemoryMappedFileReader test_file(params.m_query_file_name.c_str());
+                            memory_mapped_file_reader test_file(params.m_query_file_name.c_str());
 
                             //Assert that the query file is opened
                             ASSERT_CONDITION_THROW(!test_file.is_open(), string("The Test Queries file: '")

@@ -80,7 +80,7 @@ namespace uva {
                              *      P(w2|w1) + P(w3|w1w2) + P(w4|w1w2w3) + P(w5|w2w3w4) + P(w6|w3w4w5)
                              * @param line the text piece reader storing the m-gram query line
                              */
-                            virtual void execute(TextPieceReader & line) {
+                            virtual void execute(text_piece_reader & line) {
                                 //Re-initialize the joint prob reault with zero
                                 m_joint_prob = 0.0;
 
@@ -193,7 +193,7 @@ namespace uva {
                                     return "<none>";
                                 } else {
                                     if (begin_word_idx == end_word_idx) {
-                                        const TextPieceReader & token = m_tokens[begin_word_idx];
+                                        const text_piece_reader & token = m_tokens[begin_word_idx];
                                         return token.str().empty() ? "<empty>" : token.str();
                                     } else {
                                         string result = m_tokens[end_word_idx].str() + " |";
@@ -217,7 +217,7 @@ namespace uva {
                                     return "<none>";
                                 } else {
                                     if (m_num_words == 1) {
-                                        const TextPieceReader & token = m_tokens[0];
+                                        const text_piece_reader & token = m_tokens[0];
                                         return token.str().empty() ? "<empty>" : token.str();
                                     } else {
                                         string result;
@@ -232,7 +232,7 @@ namespace uva {
                             /**
                              * Allows to parse the m-gram into the tokens and get the word ids
                              */
-                            virtual void set_tokens_and_word_ids(TextPieceReader phrase) {
+                            virtual void set_tokens_and_word_ids(text_piece_reader phrase) {
                                 //Initialize with zero words
                                 m_num_words = 0;
 
@@ -278,7 +278,7 @@ namespace uva {
                             word_uid m_word_ids[LM_MAX_QUERY_LEN] = {};
 
                             //Stores the m-gram tokens
-                            TextPieceReader m_tokens[LM_MAX_QUERY_LEN] = {};
+                            text_piece_reader m_tokens[LM_MAX_QUERY_LEN] = {};
 
                             //Stores the joint probability result for the query
                             prob_weight m_joint_prob;

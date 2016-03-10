@@ -1,15 +1,20 @@
 var searchData=
 [
-  ['info1_5fparam_5fvalue',['INFO1_PARAM_VALUE',['../logger_8hpp.html#a3c7100cc5bf5365a4983db49bbf356f9',1,'logger.hpp']]],
-  ['info2_5fparam_5fvalue',['INFO2_PARAM_VALUE',['../logger_8hpp.html#aa3253c8898bfc1d1719434fada6c59a9',1,'logger.hpp']]],
-  ['info3_5fparam_5fvalue',['INFO3_PARAM_VALUE',['../logger_8hpp.html#ad5a2339aded0489ecc1c44f719728e9e',1,'logger.hpp']]],
-  ['info_5fparam_5fvalue',['INFO_PARAM_VALUE',['../logger_8hpp.html#a71979fc65a21e2bf27f0df1f7c9d4721',1,'logger.hpp']]],
-  ['instantiate_5farpa_5fgram_5fbuilder_5flevel',['INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL',['../lm__gram__builder_8cpp.html#af9992a7ce4bfbe4845d0a6d87e9a4c4d',1,'lm_gram_builder.cpp']]],
-  ['instantiate_5farpa_5fgram_5fbuilder_5flevel_5fweight',['INSTANTIATE_ARPA_GRAM_BUILDER_LEVEL_WEIGHT',['../lm__gram__builder_8cpp.html#afbf818378765cecd92de0e9140487574',1,'lm_gram_builder.cpp']]],
-  ['instantiate_5flayered_5ftrie_5ftemplates_5fname_5ftype',['INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE',['../layered__trie__base_8hpp.html#a4f172714336173e782ce15a85a6f5b08',1,'layered_trie_base.hpp']]],
-  ['instantiate_5ftrie_5fbuilder_5ffile_5freader',['INSTANTIATE_TRIE_BUILDER_FILE_READER',['../lm__basic__builder_8cpp.html#a930ce31a7e3b7f3291fed0c8f548a046',1,'lm_basic_builder.cpp']]],
-  ['instantiate_5ftrie_5ffuncs_5flevel',['INSTANTIATE_TRIE_FUNCS_LEVEL',['../generic__trie__base_8hpp.html#a48cbc63327221ef60d3cbe084d7432ce',1,'generic_trie_base.hpp']]],
-  ['instantiate_5ftrie_5ftemplate_5ftype',['INSTANTIATE_TRIE_TEMPLATE_TYPE',['../generic__trie__base_8hpp.html#a2765078929a27130518e2390a12923b9',1,'generic_trie_base.hpp']]],
-  ['is_5fenough_5flogging_5flevel',['IS_ENOUGH_LOGGING_LEVEL',['../logger_8cpp.html#ad6a560901b05cd67158b119e10a31180',1,'logger.cpp']]],
-  ['is_5fequal',['IS_EQUAL',['../optimizing__word__index_8hpp.html#a016c65b68aa2f276738c9875206831c2',1,'optimizing_word_index.hpp']]]
+  ['layered_5fbase_5fensure_5fcontext',['LAYERED_BASE_ENSURE_CONTEXT',['../layered__trie__base_8hpp.html#a8a4dc17a56ef024e2d26bb521eaa14b2',1,'layered_trie_base.hpp']]],
+  ['line_5fstring',['LINE_STRING',['../logger_8hpp.html#aa627383e16ea66813a5245995ee6671f',1,'logger.hpp']]],
+  ['log_5fdebug',['LOG_DEBUG',['../logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a',1,'logger.hpp']]],
+  ['log_5fdebug1',['LOG_DEBUG1',['../logger_8hpp.html#a86b83e67e838f35b174e0b09e38c02f4',1,'logger.hpp']]],
+  ['log_5fdebug2',['LOG_DEBUG2',['../logger_8hpp.html#a173816c382b4ec16b3c8ff8d25974b70',1,'logger.hpp']]],
+  ['log_5fdebug3',['LOG_DEBUG3',['../logger_8hpp.html#ab1a4bdfb9a07ba0fc565aa7cef8d8033',1,'logger.hpp']]],
+  ['log_5fdebug4',['LOG_DEBUG4',['../logger_8hpp.html#a4ae785e7226c52ff7076f153a1e95f84',1,'logger.hpp']]],
+  ['log_5ferror',['LOG_ERROR',['../logger_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08',1,'logger.hpp']]],
+  ['log_5finfo',['LOG_INFO',['../logger_8hpp.html#aeb4f36db01bd128c7afeac5889dac311',1,'logger.hpp']]],
+  ['log_5finfo1',['LOG_INFO1',['../logger_8hpp.html#a419fed07bd0ebd677dc6ddb1c19ee9f1',1,'logger.hpp']]],
+  ['log_5finfo2',['LOG_INFO2',['../logger_8hpp.html#a25c1f6789124a9190b607220ea5ce646',1,'logger.hpp']]],
+  ['log_5finfo3',['LOG_INFO3',['../logger_8hpp.html#ad57c88d373984016cf3c89c74e727861',1,'logger.hpp']]],
+  ['log_5fresult',['LOG_RESULT',['../logger_8hpp.html#a83517142e41fc0d6262d01fd5d925ff8',1,'logger.hpp']]],
+  ['log_5fusage',['LOG_USAGE',['../logger_8hpp.html#afa0bc156f2e1f7056324caf133f33917',1,'logger.hpp']]],
+  ['log_5fwarning',['LOG_WARNING',['../logger_8hpp.html#adf4476a6a4ea6c74231c826e899d7189',1,'logger.hpp']]],
+  ['logger',['LOGGER',['../logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031',1,'logger.hpp']]],
+  ['logger_5fdebug',['LOGGER_DEBUG',['../logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e',1,'logger.hpp']]]
 ];

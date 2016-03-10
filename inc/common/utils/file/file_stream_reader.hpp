@@ -46,7 +46,7 @@ namespace uva {
              * much memory as MemoryMappedFileReader and is seemingly as fast
              * as the latter one on our applications.
              */
-            class FileStreamReader : public AFileReader {
+            class file_stream_reader : public afile_reader {
             private:
                 //Stores the input file stream
                 ifstream m_file_stream;
@@ -59,8 +59,8 @@ namespace uva {
                  * The basic constructor
                  * @param fileName the file name
                  */
-                FileStreamReader(const char * fileName)
-                : AFileReader(), m_file_stream(fileName, ifstream::in), m_curr_line(NULL) {
+                file_stream_reader(const char * fileName)
+                : afile_reader(), m_file_stream(fileName, ifstream::in), m_curr_line(NULL) {
                     LOG_DEBUG << "Opened the file '"
                             << fileName << "' is_open: " << (bool) m_file_stream
                             << ", attempting to allocate " << MAX_TEXT_PIECE_LENGTH
@@ -76,7 +76,7 @@ namespace uva {
                     LOG_USAGE << "Using the <" << __FILENAME__ << "> file reader!" << END_LOG;
                 }
 
-                virtual ~FileStreamReader() {
+                virtual ~file_stream_reader() {
                     if (m_curr_line != NULL) {
                         delete[] m_curr_line;
                         m_curr_line = NULL;
@@ -88,7 +88,7 @@ namespace uva {
                     m_file_stream.seekg(0, std::ios::beg);
                 };
 
-                inline bool get_first_line(TextPieceReader& out) {
+                inline bool get_first_line(text_piece_reader& out) {
                     LOG_DEBUG3 << "Searching for a new line!" << END_LOG;
 
                     //First read the line from the file

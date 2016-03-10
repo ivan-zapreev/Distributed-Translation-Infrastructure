@@ -67,7 +67,7 @@ namespace uva {
                          * @param ctx_id the context id, if computed
                          * @return the level of the m-gram for which the last context id could be computed
                          */
-                        template<typename TrieType, phrase_length CURR_LEVEL, bool GET_BACK_OFF_CTX_ID, DebugLevelsEnum LOG_LEVEL = DebugLevelsEnum::DEBUG1>
+                        template<typename TrieType, phrase_length CURR_LEVEL, bool GET_BACK_OFF_CTX_ID, debug_levels_enum LOG_LEVEL = debug_levels_enum::DEBUG1>
                         inline phrase_length search_m_gram_ctx_id(const TrieType & trie, const word_uid * const word_ids, TLongId & prev_ctx_id, TLongId & ctx_id) {
                             //Assert that this method is called for proper m-gram levels
                             ASSERT_SANITY_THROW(((CURR_LEVEL < M_GRAM_LEVEL_2) || (CURR_LEVEL > M_GRAM_LEVEL_5)), string("The level: ") + std::to_string(CURR_LEVEL) + string(" is not supported yet!"));
@@ -109,7 +109,7 @@ namespace uva {
                          * @param the resulting hash of the context(w1 w2 w3)
                          * @return true if the context was found otherwise false
                          */
-                        template<typename TrieType, phrase_length CURR_LEVEL, DebugLevelsEnum LOG_LEVEL>
+                        template<typename TrieType, phrase_length CURR_LEVEL, debug_levels_enum LOG_LEVEL>
                         inline void get_context_id(TrieType & trie, const model_m_gram &gram, TLongId & ctx_id) {
                             //Perform sanity check for the level values they should be the same!
                             ASSERT_SANITY_THROW(CURR_LEVEL != gram.get_num_words(),

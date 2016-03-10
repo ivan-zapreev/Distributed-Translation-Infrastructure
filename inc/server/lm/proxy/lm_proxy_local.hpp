@@ -89,7 +89,7 @@ namespace uva {
                             virtual void connect(const lm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the language model into the memory.
-                                load_model_data<lm_builder_type, CStyleFileReader>("Language Model", params);
+                                load_model_data<lm_builder_type, cstyle_file_reader>("Language Model", params);
 
                                 //Retrieve the unknown word probability
                                 get_unk_word_prob();
@@ -157,7 +157,7 @@ namespace uva {
                              */
                             void get_tag_uid(const string & tag_str, word_uid & uid) {
                                 //Create the text piece reader
-                                TextPieceReader tag(tag_str.c_str(), tag_str.length());
+                                text_piece_reader tag(tag_str.c_str(), tag_str.length());
 
                                 //Get the end sentence tag word id
                                 uid = m_model.get_word_index().get_word_id(tag);
@@ -188,21 +188,21 @@ namespace uva {
 
                                 //ToDo: Add the possibility to choose between the file readers from the command line!
                                 LOG_DEBUG << "Getting the memory statistics before opening the " << model_name << " file ..." << END_LOG;
-                                StatisticsMonitor::getMemoryStatistics(mem_stat_start);
+                                stat_monitore::get_mem_stat(mem_stat_start);
 
                                 //Attempt to open the model file
                                 file_reader_type model_file(model_file_name.c_str());
                                 model_file.log_reader_type_info();
                                 LOG_DEBUG << "Getting the memory statistics after opening the " << model_name << " file ..." << END_LOG;
-                                StatisticsMonitor::getMemoryStatistics(mem_stat_end);
+                                stat_monitore::get_mem_stat(mem_stat_end);
 
                                 //Log the usage information
                                 m_model.log_model_type_info();
 
                                 LOG_DEBUG << "Getting the memory statistics before loading the " << model_name << " ..." << END_LOG;
-                                StatisticsMonitor::getMemoryStatistics(mem_stat_start);
+                                stat_monitore::get_mem_stat(mem_stat_start);
                                 LOG_DEBUG << "Getting the time statistics before creating the " << model_name << " ..." << END_LOG;
-                                start_time = StatisticsMonitor::getCPUTime();
+                                start_time = stat_monitore::get_cpu_time();
 
                                 //Assert that the model file is opened
                                 ASSERT_CONDITION_THROW(!model_file.is_open(), string("The ") + string(model_name) + string(" file: '")
@@ -214,20 +214,20 @@ namespace uva {
                                 builder.build();
 
                                 LOG_DEBUG << "Getting the time statistics after loading the " << model_name << " ..." << END_LOG;
-                                end_time = StatisticsMonitor::getCPUTime();
+                                end_time = stat_monitore::get_cpu_time();
                                 LOG_USAGE << "Reading the " << model_name << " took " << (end_time - start_time) << " CPU seconds." << END_LOG;
                                 LOG_DEBUG << "Getting the memory statistics after loading the " << model_name << " ..." << END_LOG;
-                                StatisticsMonitor::getMemoryStatistics(mem_stat_end);
+                                stat_monitore::get_mem_stat(mem_stat_end);
                                 LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
                                 const string action_name = string("Loading the ") + string(model_name);
                                 report_memory_usage(action_name.c_str(), mem_stat_start, mem_stat_end, true);
 
                                 LOG_DEBUG << "Getting the memory statistics before closing the " << model_name << " file ..." << END_LOG;
-                                StatisticsMonitor::getMemoryStatistics(mem_stat_start);
+                                stat_monitore::get_mem_stat(mem_stat_start);
                                 LOG_DEBUG << "Closing the model file ..." << END_LOG;
                                 model_file.close();
                                 LOG_DEBUG << "Getting the memory statistics after closing the " << model_name << " file ..." << END_LOG;
-                                StatisticsMonitor::getMemoryStatistics(mem_stat_end);
+                                stat_monitore::get_mem_stat(mem_stat_end);
                             }
 
                         protected:

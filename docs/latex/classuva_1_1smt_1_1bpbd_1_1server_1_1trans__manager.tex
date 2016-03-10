@@ -7,11 +7,11 @@
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-typedef function$<$ void(\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{websocketpp\+::connection\+\_\+hdl}, \hyperlink{classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1trans__job__response}{trans\+\_\+job\+\_\+response} \&) $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ac7a3a0d2d4e7d21b2ce55161bf84f53e}{response\+\_\+sender}
+typedef function$<$ void(websocketpp\+::connection\+\_\+hdl, \hyperlink{classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1trans__job__response}{trans\+\_\+job\+\_\+response} \&) $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ac7a3a0d2d4e7d21b2ce55161bf84f53e}{response\+\_\+sender}
 \item 
-typedef std\+::map$<$ \hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{websocketpp\+::connection\+\_\+hdl}, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging_a17ad17f94b78abb87ab5f3f3d6f09588}{session\+\_\+id\+\_\+type}, std\+::owner\+\_\+less$<$ \hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{websocketpp\+::connection\+\_\+hdl} $>$ $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_aea69500c7a8a6bcb5b2035a684537bcb}{sessions\+\_\+map\+\_\+type}
+typedef std\+::map$<$ websocketpp\+::connection\+\_\+hdl, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging_a17ad17f94b78abb87ab5f3f3d6f09588}{session\+\_\+id\+\_\+type}, std\+::owner\+\_\+less$<$ websocketpp\+::connection\+\_\+hdl $>$ $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_aea69500c7a8a6bcb5b2035a684537bcb}{sessions\+\_\+map\+\_\+type}
 \item 
-typedef std\+::map$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging_a17ad17f94b78abb87ab5f3f3d6f09588}{session\+\_\+id\+\_\+type}, \hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{websocketpp\+::connection\+\_\+hdl} $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ad5d869b7da9455a2903c5682dde5bcfe}{handlers\+\_\+map\+\_\+type}
+typedef std\+::map$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging_a17ad17f94b78abb87ab5f3f3d6f09588}{session\+\_\+id\+\_\+type}, websocketpp\+::connection\+\_\+hdl $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ad5d869b7da9455a2903c5682dde5bcfe}{handlers\+\_\+map\+\_\+type}
 \item 
 typedef handlers\+\_\+map\+\_\+type\+::iterator \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_adec62cec51f0ade28dbf9311b3a3b4ad}{handlers\+\_\+map\+\_\+iter\+\_\+type}
 \end{DoxyCompactItemize}
@@ -28,11 +28,11 @@ void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_a27073dba125
 \item 
 void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ab943355ee7859a85c9d0e0cc6fd57206}{report\+\_\+run\+\_\+time\+\_\+info} ()
 \item 
-void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ac1d444c0788fe1ebbd2e771bff2dd5b9}{open\+\_\+session} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{websocketpp\+::connection\+\_\+hdl} hdl)
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ac1d444c0788fe1ebbd2e771bff2dd5b9}{open\+\_\+session} (websocketpp\+::connection\+\_\+hdl hdl)
 \item 
-void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_adfc5b34f1b6e6211f3c87626ccc2cfa0}{translate} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{websocketpp\+::connection\+\_\+hdl} hdl, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging_af373ab262c0cab837c6ebe5e2eb62ea2}{trans\+\_\+job\+\_\+request\+\_\+ptr} request\+\_\+ptr)
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_adfc5b34f1b6e6211f3c87626ccc2cfa0}{translate} (websocketpp\+::connection\+\_\+hdl hdl, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging_af373ab262c0cab837c6ebe5e2eb62ea2}{trans\+\_\+job\+\_\+request\+\_\+ptr} request\+\_\+ptr)
 \item 
-void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_a52ec4ea1281d987909f26d9775d7a543}{close\+\_\+session} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{websocketpp\+::connection\+\_\+hdl} hdl)
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_a52ec4ea1281d987909f26d9775d7a543}{close\+\_\+session} (websocketpp\+::connection\+\_\+hdl hdl)
 \item 
 void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_a8c538e77c532642d4ecd2cd2655f5db7}{stop} ()
 \end{DoxyCompactItemize}
@@ -60,21 +60,21 @@ Definition at line 68 of file trans\+\_\+manager.\+hpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ad5d869b7da9455a2903c5682dde5bcfe}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager}!handlers\+\_\+map\+\_\+type@{handlers\+\_\+map\+\_\+type}}
 \index{handlers\+\_\+map\+\_\+type@{handlers\+\_\+map\+\_\+type}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager}}
-\subsubsection[{handlers\+\_\+map\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::map$<${\bf session\+\_\+id\+\_\+type}, {\bf websocketpp\+::connection\+\_\+hdl}$>$ {\bf uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager\+::handlers\+\_\+map\+\_\+type}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ad5d869b7da9455a2903c5682dde5bcfe}
+\subsubsection[{handlers\+\_\+map\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::map$<${\bf session\+\_\+id\+\_\+type}, websocketpp\+::connection\+\_\+hdl$>$ {\bf uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager\+::handlers\+\_\+map\+\_\+type}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ad5d869b7da9455a2903c5682dde5bcfe}
 
 
 Definition at line 67 of file trans\+\_\+manager.\+hpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ac7a3a0d2d4e7d21b2ce55161bf84f53e}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager}!response\+\_\+sender@{response\+\_\+sender}}
 \index{response\+\_\+sender@{response\+\_\+sender}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager}}
-\subsubsection[{response\+\_\+sender}]{\setlength{\rightskip}{0pt plus 5cm}typedef function$<$void({\bf websocketpp\+::connection\+\_\+hdl}, {\bf trans\+\_\+job\+\_\+response} \&) $>$ {\bf uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager\+::response\+\_\+sender}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ac7a3a0d2d4e7d21b2ce55161bf84f53e}
+\subsubsection[{response\+\_\+sender}]{\setlength{\rightskip}{0pt plus 5cm}typedef function$<$void(websocketpp\+::connection\+\_\+hdl, {\bf trans\+\_\+job\+\_\+response} \&) $>$ {\bf uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager\+::response\+\_\+sender}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ac7a3a0d2d4e7d21b2ce55161bf84f53e}
 
 
 Definition at line 63 of file trans\+\_\+manager.\+hpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_aea69500c7a8a6bcb5b2035a684537bcb}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager}!sessions\+\_\+map\+\_\+type@{sessions\+\_\+map\+\_\+type}}
 \index{sessions\+\_\+map\+\_\+type@{sessions\+\_\+map\+\_\+type}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager}}
-\subsubsection[{sessions\+\_\+map\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::map$<${\bf websocketpp\+::connection\+\_\+hdl}, {\bf session\+\_\+id\+\_\+type}, std\+::owner\+\_\+less$<${\bf websocketpp\+::connection\+\_\+hdl}$>$ $>$ {\bf uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager\+::sessions\+\_\+map\+\_\+type}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_aea69500c7a8a6bcb5b2035a684537bcb}
+\subsubsection[{sessions\+\_\+map\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::map$<$websocketpp\+::connection\+\_\+hdl, {\bf session\+\_\+id\+\_\+type}, std\+::owner\+\_\+less$<$websocketpp\+::connection\+\_\+hdl$>$ $>$ {\bf uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager\+::sessions\+\_\+map\+\_\+type}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_aea69500c7a8a6bcb5b2035a684537bcb}
 
 
 Definition at line 66 of file trans\+\_\+manager.\+hpp.
@@ -116,7 +116,7 @@ Definition at line 95 of file trans\+\_\+manager.\+hpp.
 \index{close\+\_\+session@{close\+\_\+session}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager}}
 \subsubsection[{close\+\_\+session(websocketpp\+::connection\+\_\+hdl hdl)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager\+::close\+\_\+session (
 \begin{DoxyParamCaption}
-\item[{{\bf websocketpp\+::connection\+\_\+hdl}}]{hdl}
+\item[{websocketpp\+::connection\+\_\+hdl}]{hdl}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_a52ec4ea1281d987909f26d9775d7a543}
 Allows to erase the session object from the map and return the stored object, synchronized. Returns N\+U\+L\+L if there was no session object associated with the given handler. 
@@ -151,7 +151,7 @@ Definition at line 235 of file trans\+\_\+manager.\+hpp.
 \index{open\+\_\+session@{open\+\_\+session}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager}}
 \subsubsection[{open\+\_\+session(websocketpp\+::connection\+\_\+hdl hdl)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager\+::open\+\_\+session (
 \begin{DoxyParamCaption}
-\item[{{\bf websocketpp\+::connection\+\_\+hdl}}]{hdl}
+\item[{websocketpp\+::connection\+\_\+hdl}]{hdl}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_ac1d444c0788fe1ebbd2e771bff2dd5b9}
 Allows to create and register a new session object, synchronized. If for some reason a new session can not be opened, an exception is thrown. 
@@ -221,7 +221,7 @@ Definition at line 223 of file trans\+\_\+manager.\+hpp.
 \index{translate@{translate}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager}}
 \subsubsection[{translate(websocketpp\+::connection\+\_\+hdl hdl, trans\+\_\+job\+\_\+request\+\_\+ptr request\+\_\+ptr)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::trans\+\_\+manager\+::translate (
 \begin{DoxyParamCaption}
-\item[{{\bf websocketpp\+::connection\+\_\+hdl}}]{hdl, }
+\item[{websocketpp\+::connection\+\_\+hdl}]{hdl, }
 \item[{{\bf trans\+\_\+job\+\_\+request\+\_\+ptr}}]{request\+\_\+ptr}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_adfc5b34f1b6e6211f3c87626ccc2cfa0}

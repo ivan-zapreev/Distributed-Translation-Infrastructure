@@ -90,7 +90,7 @@ namespace uva {
                              * Returns the reference to the next new token of the m-gram
                              * @return the reference to the next new token of the m-gram
                              */
-                            inline TextPieceReader & get_next_new_token() {
+                            inline text_piece_reader & get_next_new_token() {
                                 ASSERT_SANITY_THROW((m_curr_index > BASE::get_last_word_idx()),
                                         string("The next token does not exist, exceeded the maximum of ") +
                                         to_string(BASE::get_num_words()) + string(" elements!"));
@@ -171,7 +171,7 @@ namespace uva {
                             word_uid m_word_ids[MODEL_M_GRAM_MAX_LEN] = {};
 
                             //Stores the m-gram tokens
-                            TextPieceReader m_tokens[MODEL_M_GRAM_MAX_LEN] = {};
+                            text_piece_reader m_tokens[MODEL_M_GRAM_MAX_LEN] = {};
 
                             //The data structure to store the N-gram hashes
                             uint64_t m_hash_values[MODEL_M_GRAM_MAX_LEN] = {};

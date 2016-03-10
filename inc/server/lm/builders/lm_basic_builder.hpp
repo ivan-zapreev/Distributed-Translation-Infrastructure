@@ -83,7 +83,7 @@ namespace uva {
                             //The reference to the input file with language model
                             reader_type & m_file;
                             //Stores the next line data
-                            TextPieceReader m_line;
+                            text_piece_reader m_line;
                             //The regular expression for matching the n-gram amount entry of the data section
                             const regex m_ng_amount_reg_exp;
                             //The regular expression for matching the n-grams section
@@ -170,7 +170,7 @@ namespace uva {
                                         msg << "Incorrect ARPA format: Got '" << builder.m_line
                                                 << "' instead of '" << END_OF_ARPA_FILE
                                                 << "' when reading " << LM_M_GRAM_LEVEL_MAX << "-grams section!";
-                                        throw Exception(msg.str());
+                                        throw uva_exception(msg.str());
                                     }
                                 }
                             };

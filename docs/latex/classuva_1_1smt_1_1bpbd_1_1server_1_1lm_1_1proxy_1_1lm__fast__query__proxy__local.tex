@@ -28,7 +28,7 @@ virtual const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7
 \item 
 virtual const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid} \& \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local_a324b9d32f9ffb5c1a134a66e06e14002}{get\+\_\+end\+\_\+tag\+\_\+uid} () const 
 \item 
-virtual void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local_a3fe646d39b9b15ef6fd3f6db92f124ee}{get\+\_\+word\+\_\+ids} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} phrase, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} \&num\+\_\+words, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid} word\+\_\+ids\mbox{[}tm\+::\+T\+M\+\_\+\+M\+A\+X\+\_\+\+T\+A\+R\+G\+E\+T\+\_\+\+P\+H\+R\+A\+S\+E\+\_\+\+L\+E\+N\mbox{]}) const 
+virtual void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local_af2a1db87b5e25ac64dec4f60d511efb0}{get\+\_\+word\+\_\+ids} (\hyperlink{classuva_1_1utils_1_1file_1_1text__piece__reader}{text\+\_\+piece\+\_\+reader} phrase, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} \&num\+\_\+words, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid} word\+\_\+ids\mbox{[}tm\+::\+T\+M\+\_\+\+M\+A\+X\+\_\+\+T\+A\+R\+G\+E\+T\+\_\+\+P\+H\+R\+A\+S\+E\+\_\+\+L\+E\+N\mbox{]}) const 
 \item 
 virtual \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local_a64a114e6c001a4ad2e1141f4a1fc2119}{execute} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} num\+\_\+words, const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid} $\ast$word\+\_\+ids)
 \item 
@@ -260,21 +260,21 @@ Implements \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fa
 
 Definition at line 81 of file lm\+\_\+fast\+\_\+query\+\_\+proxy\+\_\+local.\+hpp.
 
-\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local_a3fe646d39b9b15ef6fd3f6db92f124ee}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+fast\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+fast\+\_\+query\+\_\+proxy\+\_\+local}!get\+\_\+word\+\_\+ids@{get\+\_\+word\+\_\+ids}}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local_af2a1db87b5e25ac64dec4f60d511efb0}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+fast\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+fast\+\_\+query\+\_\+proxy\+\_\+local}!get\+\_\+word\+\_\+ids@{get\+\_\+word\+\_\+ids}}
 \index{get\+\_\+word\+\_\+ids@{get\+\_\+word\+\_\+ids}!uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+fast\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+fast\+\_\+query\+\_\+proxy\+\_\+local}}
-\subsubsection[{get\+\_\+word\+\_\+ids(\+Text\+Piece\+Reader phrase, phrase\+\_\+length \&num\+\_\+words, word\+\_\+uid word\+\_\+ids[tm\+::\+T\+M\+\_\+\+M\+A\+X\+\_\+\+T\+A\+R\+G\+E\+T\+\_\+\+P\+H\+R\+A\+S\+E\+\_\+\+L\+E\+N]) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename trie\+\_\+type$>$ virtual void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+fast\+\_\+query\+\_\+proxy\+\_\+local}$<$ trie\+\_\+type $>$\+::get\+\_\+word\+\_\+ids (
+\subsubsection[{get\+\_\+word\+\_\+ids(text\+\_\+piece\+\_\+reader phrase, phrase\+\_\+length \&num\+\_\+words, word\+\_\+uid word\+\_\+ids[tm\+::\+T\+M\+\_\+\+M\+A\+X\+\_\+\+T\+A\+R\+G\+E\+T\+\_\+\+P\+H\+R\+A\+S\+E\+\_\+\+L\+E\+N]) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename trie\+\_\+type$>$ virtual void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+fast\+\_\+query\+\_\+proxy\+\_\+local}$<$ trie\+\_\+type $>$\+::get\+\_\+word\+\_\+ids (
 \begin{DoxyParamCaption}
-\item[{{\bf Text\+Piece\+Reader}}]{phrase, }
+\item[{{\bf text\+\_\+piece\+\_\+reader}}]{phrase, }
 \item[{{\bf phrase\+\_\+length} \&}]{num\+\_\+words, }
 \item[{{\bf word\+\_\+uid}}]{word\+\_\+ids\mbox{[}tm\+::\+T\+M\+\_\+\+M\+A\+X\+\_\+\+T\+A\+R\+G\+E\+T\+\_\+\+P\+H\+R\+A\+S\+E\+\_\+\+L\+E\+N\mbox{]}}
 \end{DoxyParamCaption}
-) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local_a3fe646d39b9b15ef6fd3f6db92f124ee}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local_af2a1db87b5e25ac64dec4f60d511efb0}
 \begin{DoxySeeAlso}{See also}
 lm\+\_\+query\+\_\+proxy 
 \end{DoxySeeAlso}
 
 
-Implements \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy_a637b1314f8e00fd7c985bce920adee00}{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+fast\+\_\+query\+\_\+proxy}.
+Implements \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy_a4847cbd47aa8fb863962b1f372d42337}{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+fast\+\_\+query\+\_\+proxy}.
 
 
 

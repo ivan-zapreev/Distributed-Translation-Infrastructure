@@ -50,7 +50,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -119,7 +118,6 @@ $(document).ready(function(){initNavTree('hashing__utils_8hpp.html','');});
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;stdint.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="logger_8hpp_source.html">common/utils/logging/logger.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="xxhash_8h_source.html">xxhash.h</a>&quot;</code><br />
 </div>
 <p><a href="hashing__utils_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -134,8 +132,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:acde9dad44d3e0e432474bef93e12f9e7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hashing__utils_8hpp.html#acde9dad44d3e0e432474bef93e12f9e7">XXH_NAMESPACE</a></td></tr>
-<tr class="separator:acde9dad44d3e0e432474bef93e12f9e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc7d71657be8975a51684e41029b7964"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hashing__utils_8hpp.html#abc7d71657be8975a51684e41029b7964">get16bits</a>(d)</td></tr>
 <tr class="separator:abc7d71657be8975a51684e41029b7964"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a955f504eccf76b4eb2489c0adab03121"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hashing__utils_8hpp.html#a955f504eccf76b4eb2489c0adab03121">A</a>&#160;&#160;&#160;54059 /* a prime */</td></tr>
@@ -169,7 +165,7 @@ Macros</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the resulting hash </dd></dl>
 
-<p>Definition at line <a class="el" href="hashing__utils_8hpp_source.html#l00245">245</a> of file <a class="el" href="hashing__utils_8hpp_source.html">hashing_utils.hpp</a>.</p>
+<p>Definition at line <a class="el" href="hashing__utils_8hpp_source.html#l00217">217</a> of file <a class="el" href="hashing__utils_8hpp_source.html">hashing_utils.hpp</a>.</p>
 
 </div>
 </div>
@@ -183,7 +179,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="hashing__utils_8hpp_source.html#l00246">246</a> of file <a class="el" href="hashing__utils_8hpp_source.html">hashing_utils.hpp</a>.</p>
+<p>Definition at line <a class="el" href="hashing__utils_8hpp_source.html#l00218">218</a> of file <a class="el" href="hashing__utils_8hpp_source.html">hashing_utils.hpp</a>.</p>
 
 </div>
 </div>
@@ -197,7 +193,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="hashing__utils_8hpp_source.html#l00247">247</a> of file <a class="el" href="hashing__utils_8hpp_source.html">hashing_utils.hpp</a>.</p>
+<p>Definition at line <a class="el" href="hashing__utils_8hpp_source.html#l00219">219</a> of file <a class="el" href="hashing__utils_8hpp_source.html">hashing_utils.hpp</a>.</p>
 
 </div>
 </div>
@@ -290,21 +286,7 @@ Macros</h2></td></tr>
 <p>Note that the XXHASH should be the best with respect to everything, see: <a href="https://github.com/Cyan4973/xxHash">https://github.com/Cyan4973/xxHash</a></p>
 <p>Yet it is not even on a 64 bit machine with XXH64 it is beated by RSHash! At least the hash based trie performs faster (200 vs 250 CPU seconds) on a 20 Gb model with 100.000.000 queries. So for us XXHASH is not the best. The following is the Paul Hsieh implementation of a string hashing function This one seems to be very efficient in computation time and has good distribution: <a href="http://www.azillionmonkeys.com/qed/hash.html">http://www.azillionmonkeys.com/qed/hash.html</a> </p>
 
-<p>Definition at line <a class="el" href="hashing__utils_8hpp_source.html#l00146">146</a> of file <a class="el" href="hashing__utils_8hpp_source.html">hashing_utils.hpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="acde9dad44d3e0e432474bef93e12f9e7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define XXH_NAMESPACE</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="hashing__utils_8hpp_source.html#l00035">35</a> of file <a class="el" href="hashing__utils_8hpp_source.html">hashing_utils.hpp</a>.</p>
+<p>Definition at line <a class="el" href="hashing__utils_8hpp_source.html#l00118">118</a> of file <a class="el" href="hashing__utils_8hpp_source.html">hashing_utils.hpp</a>.</p>
 
 </div>
 </div>

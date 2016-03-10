@@ -48,7 +48,7 @@ namespace uva {
              * much memory as MemoryMappedFileReader and potentially is faster
              * than the C++ stream based reader.
              */
-            class CStyleFileReader : public AFileReader {
+            class cstyle_file_reader : public afile_reader {
             private:
                 //Stores the input file stream
                 FILE * m_file_ptr;
@@ -63,8 +63,8 @@ namespace uva {
                  * The basic constructor
                  * @param fileName the file name
                  */
-                CStyleFileReader(const char * fileName)
-                : AFileReader(), m_file_ptr(NULL), m_buff_ptr(NULL), m_buff_size(MAX_TEXT_PIECE_LENGTH) {
+                cstyle_file_reader(const char * fileName)
+                : afile_reader(), m_file_ptr(NULL), m_buff_ptr(NULL), m_buff_size(MAX_TEXT_PIECE_LENGTH) {
                     //Open file for reading
                     m_file_ptr = fopen(fileName, "r");
 
@@ -84,7 +84,7 @@ namespace uva {
                  * The basic constructor
                  * @param file_name the file name
                  */
-                CStyleFileReader(const string & file_name) : CStyleFileReader(file_name.c_str()) {
+                cstyle_file_reader(const string & file_name) : cstyle_file_reader(file_name.c_str()) {
                 }
 
                 /**
@@ -94,7 +94,7 @@ namespace uva {
                     LOG_USAGE << "Using the <" << __FILENAME__ << "> file reader!" << END_LOG;
                 }
 
-                virtual ~CStyleFileReader() {
+                virtual ~cstyle_file_reader() {
                     //Close the file if it is still open
                     close();
                     //Clear memory
@@ -110,7 +110,7 @@ namespace uva {
                     }
                 };
 
-                inline bool get_first_line(TextPieceReader& out) {
+                inline bool get_first_line(text_piece_reader& out) {
                     LOG_DEBUG3 << "Searching for a new line, m_file_ptr = " << m_file_ptr << END_LOG;
 
                     //First read the line from the file

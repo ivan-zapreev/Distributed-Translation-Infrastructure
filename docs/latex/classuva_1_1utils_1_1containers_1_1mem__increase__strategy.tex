@@ -1,0 +1,117 @@
+\hypertarget{classuva_1_1utils_1_1containers_1_1mem__increase__strategy}{}\section{uva\+:\+:utils\+:\+:containers\+:\+:mem\+\_\+increase\+\_\+strategy Class Reference}
+\label{classuva_1_1utils_1_1containers_1_1mem__increase__strategy}\index{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy@{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy}}
+
+
+{\ttfamily \#include $<$dynamic\+\_\+memory\+\_\+arrays.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_ae4f60525eebcba5fe62e871fb91b3d2d}{mem\+\_\+increase\+\_\+strategy} (const \hyperlink{namespaceuva_1_1utils_1_1containers_a2dfd5027e0c656e7b8433760967da62d}{mem\+\_\+inc\+\_\+types\+\_\+enum} \&stype, const \hyperlink{namespaceuva_1_1utils_1_1containers_ab6acd1b6093503e17f6d8b942e9fccf1}{T\+Capacity\+Inc\+Funct} get\+\_\+capacity\+\_\+inc\+\_\+func, const size\+\_\+t min\+\_\+mem\+\_\+inc, const size\+\_\+t mem\+\_\+inc\+\_\+factor)
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_a912249f9c54674d2963a56069ae2733c}{mem\+\_\+increase\+\_\+strategy} ()
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_adf5440cfd95aafb6551e846321b3c764}{mem\+\_\+increase\+\_\+strategy} (const \hyperlink{classuva_1_1utils_1_1containers_1_1mem__increase__strategy}{mem\+\_\+increase\+\_\+strategy} \&other)
+\item 
+string \hyperlink{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_a139b7e3cc3231660800f698625c875bd}{get\+\_\+strategy\+\_\+info} () const 
+\item 
+const size\+\_\+t \hyperlink{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_a35282eca175b4d34dae20dd77390ab8a}{get\+\_\+new\+\_\+capacity} (const size\+\_\+t capacity) const 
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class stores the memory increment strategy and allows to use it 
+
+Definition at line 74 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_ae4f60525eebcba5fe62e871fb91b3d2d}{}\index{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy@{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy}!mem\+\_\+increase\+\_\+strategy@{mem\+\_\+increase\+\_\+strategy}}
+\index{mem\+\_\+increase\+\_\+strategy@{mem\+\_\+increase\+\_\+strategy}!uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy@{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy}}
+\subsubsection[{mem\+\_\+increase\+\_\+strategy(const mem\+\_\+inc\+\_\+types\+\_\+enum \&stype, const T\+Capacity\+Inc\+Funct get\+\_\+capacity\+\_\+inc\+\_\+func, const size\+\_\+t min\+\_\+mem\+\_\+inc, const size\+\_\+t mem\+\_\+inc\+\_\+factor)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy\+::mem\+\_\+increase\+\_\+strategy (
+\begin{DoxyParamCaption}
+\item[{const {\bf mem\+\_\+inc\+\_\+types\+\_\+enum} \&}]{stype, }
+\item[{const {\bf T\+Capacity\+Inc\+Funct}}]{get\+\_\+capacity\+\_\+inc\+\_\+func, }
+\item[{const size\+\_\+t}]{min\+\_\+mem\+\_\+inc, }
+\item[{const size\+\_\+t}]{mem\+\_\+inc\+\_\+factor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_ae4f60525eebcba5fe62e871fb91b3d2d}
+The main constructor to be used 
+\begin{DoxyParams}{Parameters}
+{\em stype} & the strategy type \\
+\hline
+{\em get\+\_\+capacity\+\_\+inc\+\_\+func} & the strategy function \\
+\hline
+{\em min\+\_\+mem\+\_\+inc} & the minimum memory increase in number of elements \\
+\hline
+{\em mem\+\_\+inc\+\_\+factor} & the memory increment factor, the number we will multiply by the computed increment \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 94 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_a912249f9c54674d2963a56069ae2733c}{}\index{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy@{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy}!mem\+\_\+increase\+\_\+strategy@{mem\+\_\+increase\+\_\+strategy}}
+\index{mem\+\_\+increase\+\_\+strategy@{mem\+\_\+increase\+\_\+strategy}!uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy@{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy}}
+\subsubsection[{mem\+\_\+increase\+\_\+strategy()}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy\+::mem\+\_\+increase\+\_\+strategy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_a912249f9c54674d2963a56069ae2733c}
+
+
+Definition at line 104 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_adf5440cfd95aafb6551e846321b3c764}{}\index{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy@{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy}!mem\+\_\+increase\+\_\+strategy@{mem\+\_\+increase\+\_\+strategy}}
+\index{mem\+\_\+increase\+\_\+strategy@{mem\+\_\+increase\+\_\+strategy}!uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy@{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy}}
+\subsubsection[{mem\+\_\+increase\+\_\+strategy(const mem\+\_\+increase\+\_\+strategy \&other)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy\+::mem\+\_\+increase\+\_\+strategy (
+\begin{DoxyParamCaption}
+\item[{const {\bf mem\+\_\+increase\+\_\+strategy} \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_adf5440cfd95aafb6551e846321b3c764}
+
+
+Definition at line 109 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_a35282eca175b4d34dae20dd77390ab8a}{}\index{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy@{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy}!get\+\_\+new\+\_\+capacity@{get\+\_\+new\+\_\+capacity}}
+\index{get\+\_\+new\+\_\+capacity@{get\+\_\+new\+\_\+capacity}!uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy@{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy}}
+\subsubsection[{get\+\_\+new\+\_\+capacity(const size\+\_\+t capacity) const }]{\setlength{\rightskip}{0pt plus 5cm}const size\+\_\+t uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy\+::get\+\_\+new\+\_\+capacity (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{capacity}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_a35282eca175b4d34dae20dd77390ab8a}
+Compute the new capacity given the provided one, this function used the capacity increase function stored in m\+\_\+get\+\_\+capacity\+\_\+inc\+\_\+func. 
+\begin{DoxyParams}{Parameters}
+{\em capacity} & the current capacity \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the proposed capacity increase 
+\end{DoxyReturn}
+
+
+Definition at line 132 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_a139b7e3cc3231660800f698625c875bd}{}\index{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy@{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy}!get\+\_\+strategy\+\_\+info@{get\+\_\+strategy\+\_\+info}}
+\index{get\+\_\+strategy\+\_\+info@{get\+\_\+strategy\+\_\+info}!uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy@{uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy}}
+\subsubsection[{get\+\_\+strategy\+\_\+info() const }]{\setlength{\rightskip}{0pt plus 5cm}string uva\+::utils\+::containers\+::mem\+\_\+increase\+\_\+strategy\+::get\+\_\+strategy\+\_\+info (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1mem__increase__strategy_a139b7e3cc3231660800f698625c875bd}
+Allows to retrieve the strategy name \begin{DoxyReturn}{Returns}
+the strategy name 
+\end{DoxyReturn}
+
+
+Definition at line 118 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/common/utils/containers/\hyperlink{dynamic__memory__arrays_8hpp}{dynamic\+\_\+memory\+\_\+arrays.\+hpp}\end{DoxyCompactItemize}

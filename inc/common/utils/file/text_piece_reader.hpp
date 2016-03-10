@@ -58,7 +58,7 @@ namespace uva {
              * Note that, the string here is not necessarily \0 terminated and the
              * text memory can be Gb large! Also the memory is not managed by the class.
              */
-            class TextPieceReader {
+            class text_piece_reader {
             private:
                 //The pointer to the first text character.
                 //The text is NOT necessarily \0 terminated and can be Gb large!
@@ -81,7 +81,7 @@ namespace uva {
                 /**
                  * The basic constructor initializes empty text
                  */
-                TextPieceReader()
+                text_piece_reader()
                 : m_begin_ptr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_rest_ptr(NULL), m_rest_len(0) {
                 }
 
@@ -90,7 +90,7 @@ namespace uva {
                  * @param beginPtr the pointer to the begin of the text
                  * @param len the length of the text
                  */
-                explicit TextPieceReader(const void * begin_ptr, const size_t len)
+                explicit text_piece_reader(const void * begin_ptr, const size_t len)
                 : m_begin_ptr(NULL), m_len(0), m_is_gen_str(true), m_str(""), m_rest_ptr(NULL), m_rest_len(0) {
                     set(begin_ptr, len);
                 }
@@ -99,7 +99,7 @@ namespace uva {
                  * The copy constructor.
                  * @param other the const reference to the object to copy from
                  */
-                TextPieceReader(const TextPieceReader & other) {
+                text_piece_reader(const text_piece_reader & other) {
                     m_begin_ptr = other.m_begin_ptr;
                     m_len = other.m_len;
                     m_is_gen_str = other.m_is_gen_str;
@@ -182,13 +182,13 @@ namespace uva {
                  * if the source length is larger - an exception will be raised!
                  */
                 template<const size_t LEN_LIMIT>
-                inline void copy_string(const TextPieceReader& other) {
+                inline void copy_string(const text_piece_reader& other) {
                     if (DO_SANITY_CHECKS && (LEN_LIMIT < other.m_len)) {
                         stringstream msg;
                         msg << "Unable to copy the string data to the target, "
                                 << "maximum copy length is " << LEN_LIMIT
                                 << ", the source length is " << other.m_len << "!";
-                        throw Exception(msg.str());
+                        throw uva_exception(msg.str());
                     } else {
                         //Copy the data
                         (void) strncpy(const_cast<char *> (m_begin_ptr),
@@ -208,7 +208,7 @@ namespace uva {
                  * @return true if a text piece was read, otherwise false (end of file)
                  */
                 template<const char delim, const uint8_t delim_len = 1 >
-                inline bool get_first(TextPieceReader& out) {
+                inline bool get_first(text_piece_reader& out) {
                     //If there is no remaining length or the pointer is NULL then return false
                     if (!m_rest_len || (m_rest_ptr == NULL)) {
                         return false;
@@ -284,7 +284,7 @@ namespace uva {
                  * @return true if a line was read, otherwise false (end of file)
                  */
                 template<const char delim, const uint8_t delim_card = 1 >
-                inline bool get_last(TextPieceReader& out) {
+                inline bool get_last(text_piece_reader& out) {
                     //If there is no remaining length or the pointer is NULL then return false
                     if (!m_rest_len || (m_rest_ptr == NULL)) {
                         return false;
@@ -350,7 +350,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if data was read, otherwise false
                  */
-                inline bool get_first_line(TextPieceReader& out) {
+                inline bool get_first_line(text_piece_reader& out) {
                     LOG_DEBUG4 << "Searching forward for a new line!" << END_LOG;
 
                     return get_first<'\n'>(out);
@@ -363,7 +363,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if data was read, otherwise false
                  */
-                inline bool get_first_space(TextPieceReader& out) {
+                inline bool get_first_space(text_piece_reader& out) {
                     LOG_DEBUG4 << "Searching forward for a space!" << END_LOG;
 
                     return get_first<' '>(out);
@@ -377,7 +377,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if data was read, otherwise false
                  */
-                inline bool get_last_space(TextPieceReader& out) {
+                inline bool get_last_space(text_piece_reader& out) {
                     LOG_DEBUG4 << "Searching backward for a space!" << END_LOG;
 
                     return get_last<' '>(out);
@@ -390,7 +390,7 @@ namespace uva {
                  * @param out the out parameter - the read line 
                  * @return true if data was read, otherwise false
                  */
-                inline bool get_first_tab(TextPieceReader& out) {
+                inline bool get_first_tab(text_piece_reader& out) {
                     LOG_DEBUG4 << "Searching forward for a tab!" << END_LOG;
 
                     return get_first<'\t'>(out);
@@ -407,7 +407,7 @@ namespace uva {
                         stringstream msg;
                         msg << "The improper index '" << idx
                                 << "' must be within [0, " << m_len << "]!";
-                        throw Exception(msg.str());
+                        throw uva_exception(msg.str());
                     } else {
 
                         return m_begin_ptr[idx];
@@ -418,7 +418,7 @@ namespace uva {
                  * The comparison operator implementation
                  * @param other text piece to compare with
                  */
-                inline bool operator==(const TextPieceReader & other) const {
+                inline bool operator==(const text_piece_reader & other) const {
                     if (other.m_len == m_len) {
                         return !strncmp(m_begin_ptr, other.m_begin_ptr, m_len);
                     } else {
@@ -431,7 +431,7 @@ namespace uva {
                  * The comparison operator implementation
                  * @param other text piece to compare with
                  */
-                inline bool operator!=(const TextPieceReader & other) const {
+                inline bool operator!=(const text_piece_reader & other) const {
 
                     return !this->operator==(other);
                 }
@@ -558,7 +558,7 @@ namespace uva {
              * @param val the value to print
              * @return the output stream
              */
-            inline ostream& operator<<(ostream &output, const TextPieceReader & val) {
+            inline ostream& operator<<(ostream &output, const text_piece_reader & val) {
                 return output << val.str();
             };
 
@@ -570,7 +570,7 @@ namespace uva {
              * @return the resulting string
              */
             template<size_t NUM_TOKENS>
-            inline string tokens_to_string(const TextPieceReader tokens[NUM_TOKENS], const size_t begin_idx, const size_t end_idx) {
+            inline string tokens_to_string(const text_piece_reader tokens[NUM_TOKENS], const size_t begin_idx, const size_t end_idx) {
                 stringstream data;
                 data << "[ ";
                 LOG_DEBUG4 << "Appending tokens from idx: " << SSTR(begin_idx) << " to idx: " << SSTR(end_idx) << END_LOG;

@@ -50,7 +50,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -124,11 +123,11 @@ $(document).ready(function(){initNavTree('classuva_1_1smt_1_1bpbd_1_1server_1_1t
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ac7a3a0d2d4e7d21b2ce55161bf84f53e"><td class="memItemLeft" align="right" valign="top">typedef function&lt; void(<a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a>, <a class="el" href="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1trans__job__response.html">trans_job_response</a> &amp;) &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#ac7a3a0d2d4e7d21b2ce55161bf84f53e">response_sender</a></td></tr>
+<tr class="memitem:ac7a3a0d2d4e7d21b2ce55161bf84f53e"><td class="memItemLeft" align="right" valign="top">typedef function&lt; void(websocketpp::connection_hdl, <a class="el" href="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1trans__job__response.html">trans_job_response</a> &amp;) &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#ac7a3a0d2d4e7d21b2ce55161bf84f53e">response_sender</a></td></tr>
 <tr class="separator:ac7a3a0d2d4e7d21b2ce55161bf84f53e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea69500c7a8a6bcb5b2035a684537bcb"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; <a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a>, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging.html#a17ad17f94b78abb87ab5f3f3d6f09588">session_id_type</a>, std::owner_less&lt; <a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#aea69500c7a8a6bcb5b2035a684537bcb">sessions_map_type</a></td></tr>
+<tr class="memitem:aea69500c7a8a6bcb5b2035a684537bcb"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; websocketpp::connection_hdl, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging.html#a17ad17f94b78abb87ab5f3f3d6f09588">session_id_type</a>, std::owner_less&lt; websocketpp::connection_hdl &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#aea69500c7a8a6bcb5b2035a684537bcb">sessions_map_type</a></td></tr>
 <tr class="separator:aea69500c7a8a6bcb5b2035a684537bcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5d869b7da9455a2903c5682dde5bcfe"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging.html#a17ad17f94b78abb87ab5f3f3d6f09588">session_id_type</a>, <a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#ad5d869b7da9455a2903c5682dde5bcfe">handlers_map_type</a></td></tr>
+<tr class="memitem:ad5d869b7da9455a2903c5682dde5bcfe"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging.html#a17ad17f94b78abb87ab5f3f3d6f09588">session_id_type</a>, websocketpp::connection_hdl &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#ad5d869b7da9455a2903c5682dde5bcfe">handlers_map_type</a></td></tr>
 <tr class="separator:ad5d869b7da9455a2903c5682dde5bcfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adec62cec51f0ade28dbf9311b3a3b4ad"><td class="memItemLeft" align="right" valign="top">typedef handlers_map_type::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#adec62cec51f0ade28dbf9311b3a3b4ad">handlers_map_iter_type</a></td></tr>
 <tr class="separator:adec62cec51f0ade28dbf9311b3a3b4ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,11 +144,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a27073dba1257cacb734cc1063f2ee647"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab943355ee7859a85c9d0e0cc6fd57206"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#ab943355ee7859a85c9d0e0cc6fd57206">report_run_time_info</a> ()</td></tr>
 <tr class="separator:ab943355ee7859a85c9d0e0cc6fd57206"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1d444c0788fe1ebbd2e771bff2dd5b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#ac1d444c0788fe1ebbd2e771bff2dd5b9">open_session</a> (<a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a> hdl)</td></tr>
+<tr class="memitem:ac1d444c0788fe1ebbd2e771bff2dd5b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#ac1d444c0788fe1ebbd2e771bff2dd5b9">open_session</a> (websocketpp::connection_hdl hdl)</td></tr>
 <tr class="separator:ac1d444c0788fe1ebbd2e771bff2dd5b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfc5b34f1b6e6211f3c87626ccc2cfa0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#adfc5b34f1b6e6211f3c87626ccc2cfa0">translate</a> (<a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a> hdl, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging.html#af373ab262c0cab837c6ebe5e2eb62ea2">trans_job_request_ptr</a> request_ptr)</td></tr>
+<tr class="memitem:adfc5b34f1b6e6211f3c87626ccc2cfa0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#adfc5b34f1b6e6211f3c87626ccc2cfa0">translate</a> (websocketpp::connection_hdl hdl, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging.html#af373ab262c0cab837c6ebe5e2eb62ea2">trans_job_request_ptr</a> request_ptr)</td></tr>
 <tr class="separator:adfc5b34f1b6e6211f3c87626ccc2cfa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52ec4ea1281d987909f26d9775d7a543"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#a52ec4ea1281d987909f26d9775d7a543">close_session</a> (<a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a> hdl)</td></tr>
+<tr class="memitem:a52ec4ea1281d987909f26d9775d7a543"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#a52ec4ea1281d987909f26d9775d7a543">close_session</a> (websocketpp::connection_hdl hdl)</td></tr>
 <tr class="separator:a52ec4ea1281d987909f26d9775d7a543"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c538e77c532642d4ecd2cd2655f5db7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#a8c538e77c532642d4ecd2cd2655f5db7">stop</a> ()</td></tr>
 <tr class="separator:a8c538e77c532642d4ecd2cd2655f5db7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,7 +182,7 @@ Protected Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::map&lt;<a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging.html#a17ad17f94b78abb87ab5f3f3d6f09588">session_id_type</a>, <a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a>&gt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#ad5d869b7da9455a2903c5682dde5bcfe">uva::smt::bpbd::server::trans_manager::handlers_map_type</a></td>
+          <td class="memname">typedef std::map&lt;<a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging.html#a17ad17f94b78abb87ab5f3f3d6f09588">session_id_type</a>, websocketpp::connection_hdl&gt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#ad5d869b7da9455a2903c5682dde5bcfe">uva::smt::bpbd::server::trans_manager::handlers_map_type</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -197,7 +196,7 @@ Protected Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef function&lt;void(<a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a>, <a class="el" href="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1trans__job__response.html">trans_job_response</a> &amp;) &gt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#ac7a3a0d2d4e7d21b2ce55161bf84f53e">uva::smt::bpbd::server::trans_manager::response_sender</a></td>
+          <td class="memname">typedef function&lt;void(websocketpp::connection_hdl, <a class="el" href="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1trans__job__response.html">trans_job_response</a> &amp;) &gt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#ac7a3a0d2d4e7d21b2ce55161bf84f53e">uva::smt::bpbd::server::trans_manager::response_sender</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -211,7 +210,7 @@ Protected Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::map&lt;<a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a>, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging.html#a17ad17f94b78abb87ab5f3f3d6f09588">session_id_type</a>, std::owner_less&lt;<a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a>&gt; &gt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#aea69500c7a8a6bcb5b2035a684537bcb">uva::smt::bpbd::server::trans_manager::sessions_map_type</a></td>
+          <td class="memname">typedef std::map&lt;websocketpp::connection_hdl, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging.html#a17ad17f94b78abb87ab5f3f3d6f09588">session_id_type</a>, std::owner_less&lt;websocketpp::connection_hdl&gt; &gt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager.html#aea69500c7a8a6bcb5b2035a684537bcb">uva::smt::bpbd::server::trans_manager::sessions_map_type</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -291,7 +290,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void uva::smt::bpbd::server::trans_manager::close_session </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a>&#160;</td>
+          <td class="paramtype">websocketpp::connection_hdl&#160;</td>
           <td class="paramname"><em>hdl</em></td><td>)</td>
           <td></td>
         </tr>
@@ -356,7 +355,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void uva::smt::bpbd::server::trans_manager::open_session </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a>&#160;</td>
+          <td class="paramtype">websocketpp::connection_hdl&#160;</td>
           <td class="paramname"><em>hdl</em></td><td>)</td>
           <td></td>
         </tr>
@@ -504,7 +503,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void uva::smt::bpbd::server::trans_manager::translate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacewebsocketpp.html#a6b3d26a10ee7229b84b776786332631d">websocketpp::connection_hdl</a>&#160;</td>
+          <td class="paramtype">websocketpp::connection_hdl&#160;</td>
           <td class="paramname"><em>hdl</em>, </td>
         </tr>
         <tr>

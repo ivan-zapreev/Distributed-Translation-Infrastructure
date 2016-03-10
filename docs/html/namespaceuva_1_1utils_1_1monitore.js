@@ -1,5 +1,5 @@
 var namespaceuva_1_1utils_1_1monitore =
 [
-    [ "SMemotyUsage", "structuva_1_1utils_1_1monitore_1_1_s_memoty_usage.html", "structuva_1_1utils_1_1monitore_1_1_s_memoty_usage" ],
-    [ "StatisticsMonitor", "classuva_1_1utils_1_1monitore_1_1_statistics_monitor.html", null ]
+    [ "memory_usage", "structuva_1_1utils_1_1monitore_1_1memory__usage.html", "structuva_1_1utils_1_1monitore_1_1memory__usage" ],
+    [ "stat_monitore", "classuva_1_1utils_1_1monitore_1_1stat__monitore.html", null ]
 ];

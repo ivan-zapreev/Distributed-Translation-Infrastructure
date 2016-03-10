@@ -75,7 +75,7 @@ namespace uva {
                          */
                         inline void pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                             m_word_index.reserve(counts[0]);
-                            Logger::update_progress_bar();
+                            logger::update_progress_bar();
                         };
 
                         /**

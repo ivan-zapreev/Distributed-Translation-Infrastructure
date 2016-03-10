@@ -84,9 +84,9 @@ namespace uva {
                         //Get the text to be translated
                         string text = m_request_ptr->get_text();
                         //Obtain the text to be parsed
-                        TextPieceReader reader(text.c_str(), text.length());
+                        text_piece_reader reader(text.c_str(), text.length());
                         //This reader will store the read text sentence
-                        TextPieceReader sentence;
+                        text_piece_reader sentence;
 
                         //Get the session and job id for the translation task constructor
                         const session_id_type session_id = request_ptr->get_session_id();

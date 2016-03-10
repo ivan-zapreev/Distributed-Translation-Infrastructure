@@ -43,7 +43,7 @@ namespace uva {
              * or which are swapped out.
              * For more information see http://man7.org/linux/man-pages/man5/proc.5.html
              */
-            struct SMemotyUsage {
+            struct memory_usage {
                 //Virtual memory size in Kb
                 int vmsize;
                 //Peak virtual memory size in Kb
@@ -53,17 +53,17 @@ namespace uva {
                 //Peak resident set size in Kb
                 int vmhwm;
 
-                SMemotyUsage() : vmsize(0), vmpeak(0), vmrss(0), vmhwm(0) {
+                memory_usage() : vmsize(0), vmpeak(0), vmrss(0), vmhwm(0) {
                 }
             };
 
-            typedef SMemotyUsage TMemotyUsage;
+            typedef memory_usage TMemotyUsage;
 
             /**
              * This class is responsible for monitoring the program statistics, such as the used memory and CPU times.
              * This class is a trivial singleton
              */
-            class StatisticsMonitor {
+            class stat_monitore {
             public:
 
                 /**
@@ -71,7 +71,7 @@ namespace uva {
                  * @param memStat this is an out parameter that will store the obtained data
                  * @throws Exception in case the memory statistics can not be obtained.
                  */
-                static void getMemoryStatistics(TMemotyUsage & memStat) throw (Exception);
+                static void get_mem_stat(TMemotyUsage & memStat);
 
                 /**
                  * This function returns the current CPU time as given in the article
@@ -79,17 +79,17 @@ namespace uva {
                  * @return Returns the amount of CPU time used by the current process,
                  *         in seconds, or -1.0 if an error occurred.
                  */
-                static double getCPUTime();
+                static double get_cpu_time();
 
             private:
 
-                StatisticsMonitor() {
+                stat_monitore() {
                 }
 
-                StatisticsMonitor(const StatisticsMonitor& orig) {
+                stat_monitore(const stat_monitore& orig) {
                 }
 
-                virtual ~StatisticsMonitor() {
+                virtual ~stat_monitore() {
                 }
 
             };

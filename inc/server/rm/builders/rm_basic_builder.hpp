@@ -113,9 +113,9 @@ namespace uva {
                              * @param rest the line to be parsed, starts with a space
                              * @param entry the entry to put the values into
                              */
-                            void process_entry_weights(TextPieceReader & rest, rm_entry & entry) {
+                            void process_entry_weights(text_piece_reader & rest, rm_entry & entry) {
                                 //Declare the token to store weights
-                                TextPieceReader token;
+                                text_piece_reader token;
 
                                 //Skip the first space
                                 ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not skip the first space!");
@@ -145,7 +145,7 @@ namespace uva {
                             template<bool count_or_build>
                             inline void parse_rm_file(tm_query_proxy & query) {
                                 //Declare the text piece reader for storing the read line and source phrase
-                                TextPieceReader line, source, target;
+                                text_piece_reader line, source, target;
 
                                 //Store the cached source string and its uid values
                                 string source_str = "";
@@ -218,7 +218,7 @@ namespace uva {
                                     }
 
                                     //Update the progress bar status
-                                    Logger::update_progress_bar();
+                                    logger::update_progress_bar();
                                 }
                             }
 
@@ -230,7 +230,7 @@ namespace uva {
                              * query the translation model for present entries
                              */
                             inline void count_source_target_phrases(tm_query_proxy & query) {
-                                Logger::start_progress_bar(string("Counting reordering entries"));
+                                logger::start_progress_bar(string("Counting reordering entries"));
 
                                 //Count the number of valid entries
                                 parse_rm_file<true>(query);
@@ -242,7 +242,7 @@ namespace uva {
                                 m_reader.reset();
 
                                 //Stop the progress bar in case of no exception
-                                Logger::stop_progress_bar();
+                                logger::stop_progress_bar();
 
                                 LOG_INFO << "The number of RM source/target entries matching TM is: " << m_num_entries << END_LOG;
                             }
@@ -253,7 +253,7 @@ namespace uva {
                              * query the translation model for present entries
                              */
                             void process_source_entries(tm_query_proxy & query) {
-                                Logger::start_progress_bar(string("Building reordering model"));
+                                logger::start_progress_bar(string("Building reordering model"));
 
                                 //Build the RM model
                                 parse_rm_file<false>(query);
@@ -265,7 +265,7 @@ namespace uva {
                                 m_model.find_begin_end_entries();
 
                                 //Stop the progress bar in case of no exception
-                                Logger::stop_progress_bar();
+                                logger::stop_progress_bar();
                             }
 
                         private:

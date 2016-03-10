@@ -181,7 +181,7 @@ namespace uva {
                         try {
                             //Create a new session object for the handler
                             m_manager.open_session(hdl);
-                        } catch (Exception & ex) {
+                        } catch (uva_exception & ex) {
                             //Locally report error
                             string err_msg = ex.get_message();
                             LOG_ERROR << err_msg << END_LOG;
@@ -224,7 +224,7 @@ namespace uva {
 
                             //Schedule a translation job
                             m_manager.translate(hdl, request_ptr);
-                        } catch (Exception & ex) {
+                        } catch (uva_exception & ex) {
                             //Locally report error
                             LOG_ERROR << ex.get_message() << END_LOG;
 

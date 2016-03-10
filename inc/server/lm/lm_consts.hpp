@@ -142,7 +142,7 @@ namespace uva {
                         //based memory increase strategy is used, otherwise it is log10 base.
                         //For log10 the percentage of memory increase drops slower than for log2
                         //with the growth of the #number of already allocated elements
-                        static constexpr MemIncTypesEnum MEM_INC_TYPE = MemIncTypesEnum::LOG_2;
+                        static constexpr mem_inc_types_enum MEM_INC_TYPE = mem_inc_types_enum::LOG_2;
                         //Stores the word index type to be used in this trie, the  COUNTING
                         //index gives about 5% faster faster querying. The optimizing
                         //word index gives about 10% performance improvement!

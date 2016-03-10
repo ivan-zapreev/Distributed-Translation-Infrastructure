@@ -42,10 +42,10 @@ namespace uva {
              * This is an abstract base class for the file readers
              * we are going to be using to read model files
              */
-            class AFileReader : public TextPieceReader {
+            class afile_reader : public text_piece_reader {
             public:
 
-                AFileReader() : TextPieceReader() {
+                afile_reader() : text_piece_reader() {
                 }
 
                 /**
@@ -71,7 +71,7 @@ namespace uva {
                  * throws an exception.
                  */
                 virtual void reset() {
-                    throw Exception("Not implemented for this File reader type!");
+                    throw uva_exception("Not implemented for this File reader type!");
                 };
 
                 /**
@@ -79,7 +79,7 @@ namespace uva {
                  * argument delimiter symbol.
                  */
                 template<const char delim, const uint8_t delim_len = 1 >
-                inline bool get_first(TextPieceReader& out) {
+                inline bool get_first(text_piece_reader& out) {
                     THROW_MUST_OVERRIDE();
                 }
 
@@ -88,7 +88,7 @@ namespace uva {
                  * argument delimiter symbol.
                  */
                 template<const char delim, const uint8_t delim_len = 1 >
-                inline bool get_last(TextPieceReader& out) {
+                inline bool get_last(text_piece_reader& out) {
                     THROW_MUST_OVERRIDE();
                 }
 
@@ -96,7 +96,7 @@ namespace uva {
                  * Each file reader implementation will need to override these method, if needed.
                  * The method is non-virtual for performance reasons!
                  */
-                bool get_first_line(TextPieceReader& out) {
+                bool get_first_line(text_piece_reader& out) {
                     THROW_MUST_OVERRIDE();
                 }
 
@@ -104,7 +104,7 @@ namespace uva {
                  * Each file reader implementation will need to override these method, if needed.
                  * The method is non-virtual for performance reasons!
                  */
-                bool get_first_space(TextPieceReader& out) {
+                bool get_first_space(text_piece_reader& out) {
                     THROW_MUST_OVERRIDE();
                 }
 
@@ -112,7 +112,7 @@ namespace uva {
                  * Each file reader implementation will need to override these method, if needed.
                  * The method is non-virtual for performance reasons!
                  */
-                bool get_last_space(TextPieceReader& out) {
+                bool get_last_space(text_piece_reader& out) {
                     THROW_MUST_OVERRIDE();
                 }
 
@@ -120,7 +120,7 @@ namespace uva {
                  * Each file reader implementation will need to override these method, if needed.
                  * The method is non-virtual for performance reasons!
                  */
-                bool get_first_tab(TextPieceReader& out) {
+                bool get_first_tab(text_piece_reader& out) {
                     THROW_MUST_OVERRIDE();
                 }
 
@@ -133,7 +133,7 @@ namespace uva {
                 /**
                  * The basic destructor, calls the close method
                  */
-                virtual ~AFileReader() {
+                virtual ~afile_reader() {
                     //Just close the file if it has not been closed yet
                     close();
                 }

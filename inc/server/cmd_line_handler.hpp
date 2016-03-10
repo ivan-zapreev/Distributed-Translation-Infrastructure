@@ -154,7 +154,7 @@ namespace uva {
                  * @param cmd the debug level
                  */
                 inline void set_log_level(const string & cmd, const string & prefix) {
-                    Logger::set_reporting_level(get_string_value(cmd, prefix));
+                    logger::set_reporting_level(get_string_value(cmd, prefix));
                 }
 
                 /**
@@ -182,7 +182,7 @@ namespace uva {
                             LOG_WARNING << "The number of worker threads is already: "
                                     << num_threads << "!" << END_LOG;
                         }
-                    } catch (Exception &ex) {
+                    } catch (uva_exception &ex) {
                         LOG_ERROR << ex.get_message() << "\nEnter '" << PROGRAM_INFO_CMD << "' for help!" << END_LOG;
                     }
                 }
@@ -235,7 +235,7 @@ namespace uva {
                         //Set the parameters back
                         de_params = de_local;
 
-                    } catch (Exception &ex) {
+                    } catch (uva_exception &ex) {
                         LOG_ERROR << ex.get_message() << " Enter '" << PROGRAM_INFO_CMD << "' for help!" << END_LOG;
                     }
                 }
@@ -278,7 +278,7 @@ namespace uva {
 
                     //Lor parameters
                     if (cmd == PROGRAM_PARAMS_CMD) {
-                        LOG_USAGE << "Log level: " << Logger::get_curr_level_str()
+                        LOG_USAGE << "Log level: " << logger::get_curr_level_str()
                                 << ", " << params << END_LOG;
                         return false;
                     }

@@ -50,7 +50,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -138,9 +137,9 @@ Inheritance diagram for uva::smt::bpbd::server::lm::dictionary::basic_word_index
 Public Types</h2></td></tr>
 <tr class="memitem:a61bd773bb1c79c5be7679fc557f27747"><td class="memItemLeft" align="right" valign="top">typedef pair&lt; const string, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a61bd773bb1c79c5be7679fc557f27747">TWordIndexEntry</a></td></tr>
 <tr class="separator:a61bd773bb1c79c5be7679fc557f27747"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a056edf8ef4a61b1cfde2f2269437f6d5"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator.html">GreedyMemoryAllocator</a>&lt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a61bd773bb1c79c5be7679fc557f27747">TWordIndexEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a056edf8ef4a61b1cfde2f2269437f6d5">TWordIndexAllocator</a></td></tr>
-<tr class="separator:a056edf8ef4a61b1cfde2f2269437f6d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab58bffa80202cb71ba13ba19814b622c"><td class="memItemLeft" align="right" valign="top">typedef unordered_map&lt; string, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>, std::hash&lt; string &gt;, std::equal_to&lt; string &gt;, <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a056edf8ef4a61b1cfde2f2269437f6d5">TWordIndexAllocator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#ab58bffa80202cb71ba13ba19814b622c">TWordIndexMap</a></td></tr>
+<tr class="memitem:a7dcfe947b277f05987cf55dfbd1fd021"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classuva_1_1utils_1_1containers_1_1alloc_1_1greedy__memory__allocator.html">greedy_memory_allocator</a>&lt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a61bd773bb1c79c5be7679fc557f27747">TWordIndexEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a7dcfe947b277f05987cf55dfbd1fd021">TWordIndexAllocator</a></td></tr>
+<tr class="separator:a7dcfe947b277f05987cf55dfbd1fd021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab58bffa80202cb71ba13ba19814b622c"><td class="memItemLeft" align="right" valign="top">typedef unordered_map&lt; string, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>, std::hash&lt; string &gt;, std::equal_to&lt; string &gt;, <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a7dcfe947b277f05987cf55dfbd1fd021">TWordIndexAllocator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#ab58bffa80202cb71ba13ba19814b622c">TWordIndexMap</a></td></tr>
 <tr class="separator:ab58bffa80202cb71ba13ba19814b622c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac35f9263ddd75993ac68944b4521ec38"><td class="memItemLeft" align="right" valign="top">typedef TWordIndexMap::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#ac35f9263ddd75993ac68944b4521ec38">TWordIndexMapConstIter</a></td></tr>
 <tr class="separator:ac35f9263ddd75993ac68944b4521ec38"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,16 +152,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2e6562b6e3c323bc626d9301cf196cf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a277ab4195560f7760caba857109d64a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a277ab4195560f7760caba857109d64a5">reserve</a> (const size_t num_words)</td></tr>
 <tr class="separator:a277ab4195560f7760caba857109d64a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acffe24fc47da578fa203fa649a1dce8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#acffe24fc47da578fa203fa649a1dce8a">get_word_id</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token) const </td></tr>
-<tr class="separator:acffe24fc47da578fa203fa649a1dce8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a111312606be4e4d17b5209e5bc399811"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a111312606be4e4d17b5209e5bc399811">get_word_id</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1text__piece__reader.html">text_piece_reader</a> &amp;token) const </td></tr>
+<tr class="separator:a111312606be4e4d17b5209e5bc399811"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60b55124e8f0fea219dff9ca76fdf51a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a60b55124e8f0fea219dff9ca76fdf51a">is_word_registering_needed</a> () const </td></tr>
 <tr class="separator:a60b55124e8f0fea219dff9ca76fdf51a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a365ee49bb8d0685f47eec8be4149611a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a365ee49bb8d0685f47eec8be4149611a">register_word</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token)</td></tr>
-<tr class="separator:a365ee49bb8d0685f47eec8be4149611a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ae44d0a48a107ff9c1160b46ee4df6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a7ae44d0a48a107ff9c1160b46ee4df6e">register_word</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1text__piece__reader.html">text_piece_reader</a> &amp;token)</td></tr>
+<tr class="separator:a7ae44d0a48a107ff9c1160b46ee4df6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f13e6413dd71a283d391a98a6949c55"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a4f13e6413dd71a283d391a98a6949c55">is_word_counts_needed</a> () const </td></tr>
 <tr class="separator:a4f13e6413dd71a283d391a98a6949c55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50ebfbe44aac2c6f0fba345309a1fc7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a50ebfbe44aac2c6f0fba345309a1fc7a">count_word</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;word, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">prob_weight</a> prob)</td></tr>
-<tr class="separator:a50ebfbe44aac2c6f0fba345309a1fc7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad760fd42e1106877001577f453a0a3ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#ad760fd42e1106877001577f453a0a3ea">count_word</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1text__piece__reader.html">text_piece_reader</a> &amp;word, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">prob_weight</a> prob)</td></tr>
+<tr class="separator:ad760fd42e1106877001577f453a0a3ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf79abcb2e0fe7cf8f2b620c07d92e71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#acf79abcb2e0fe7cf8f2b620c07d92e71">do_post_word_count</a> ()</td></tr>
 <tr class="separator:acf79abcb2e0fe7cf8f2b620c07d92e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a110c800325226169f3d4ab1e66972534"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a110c800325226169f3d4ab1e66972534">is_post_actions_needed</a> () const </td></tr>
@@ -180,16 +179,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7d7be9ae362d430168ffee3e5ee29d19 inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cd9869585cb021307aeac99f4a3c4b0 inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index.html#a2cd9869585cb021307aeac99f4a3c4b0">get_number_of_words</a> (const size_t num_words) const </td></tr>
 <tr class="separator:a2cd9869585cb021307aeac99f4a3c4b0 inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb62e2b8b8ff0ac22994c85847579bed inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index.html#abb62e2b8b8ff0ac22994c85847579bed">get_word_id</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token) const </td></tr>
-<tr class="separator:abb62e2b8b8ff0ac22994c85847579bed inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70b2789b3772e5528f0c139197e9d4ef inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index.html#a70b2789b3772e5528f0c139197e9d4ef">get_word_id</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1text__piece__reader.html">text_piece_reader</a> &amp;token) const </td></tr>
+<tr class="separator:a70b2789b3772e5528f0c139197e9d4ef inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e7b2c33607674f174e9847d3c84a8ae inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index.html#a9e7b2c33607674f174e9847d3c84a8ae">is_word_registering_needed</a> () const </td></tr>
 <tr class="separator:a9e7b2c33607674f174e9847d3c84a8ae inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6151a3208a60744f9019a8e848c7f35b inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index.html#a6151a3208a60744f9019a8e848c7f35b">register_word</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;token)</td></tr>
-<tr class="separator:a6151a3208a60744f9019a8e848c7f35b inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9c84ca180a3edf7f81f2c3a06463582 inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index.html#ac9c84ca180a3edf7f81f2c3a06463582">register_word</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1text__piece__reader.html">text_piece_reader</a> &amp;token)</td></tr>
+<tr class="separator:ac9c84ca180a3edf7f81f2c3a06463582 inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9daa2e0472ae75f8747810a1a9165bce inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index.html#a9daa2e0472ae75f8747810a1a9165bce">is_word_counts_needed</a> () const </td></tr>
 <tr class="separator:a9daa2e0472ae75f8747810a1a9165bce inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9d7e1c248fd29cd35abe4d51fda633c inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index.html#aa9d7e1c248fd29cd35abe4d51fda633c">count_word</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;word, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">prob_weight</a> prob)</td></tr>
-<tr class="separator:aa9d7e1c248fd29cd35abe4d51fda633c inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38a128ba030fe3cbc5898d376facd922 inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index.html#a38a128ba030fe3cbc5898d376facd922">count_word</a> (const <a class="el" href="classuva_1_1utils_1_1file_1_1text__piece__reader.html">text_piece_reader</a> &amp;word, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">prob_weight</a> prob)</td></tr>
+<tr class="separator:a38a128ba030fe3cbc5898d376facd922 inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9aa515706b0bdd2162aeabb61a38011d inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index.html#a9aa515706b0bdd2162aeabb61a38011d">do_post_word_count</a> ()</td></tr>
 <tr class="separator:a9aa515706b0bdd2162aeabb61a38011d inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3966d5e5839c475942276384b4d527af inherit pub_methods_classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1aword__index.html#a3966d5e5839c475942276384b4d527af">is_post_actions_needed</a> () const </td></tr>
@@ -214,7 +213,7 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:acbd75f75b5ba0115573b24273e901e03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a056edf8ef4a61b1cfde2f2269437f6d5">TWordIndexAllocator</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#acbd75f75b5ba0115573b24273e901e03">m_word_index_alloc_ptr</a></td></tr>
+<tr class="memitem:acbd75f75b5ba0115573b24273e901e03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a7dcfe947b277f05987cf55dfbd1fd021">TWordIndexAllocator</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#acbd75f75b5ba0115573b24273e901e03">m_word_index_alloc_ptr</a></td></tr>
 <tr class="separator:acbd75f75b5ba0115573b24273e901e03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc879e3d774df5b009385c5e6f466438"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#ab58bffa80202cb71ba13ba19814b622c">TWordIndexMap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#afc879e3d774df5b009385c5e6f466438">m_word_index_map_ptr</a></td></tr>
 <tr class="separator:afc879e3d774df5b009385c5e6f466438"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -228,12 +227,12 @@ Protected Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="basic__word__index_8hpp_source.html#l00057">57</a> of file <a class="el" href="basic__word__index_8hpp_source.html">basic_word_index.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a class="anchor" id="a056edf8ef4a61b1cfde2f2269437f6d5"></a>
+<a class="anchor" id="a7dcfe947b277f05987cf55dfbd1fd021"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef <a class="el" href="classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator.html">GreedyMemoryAllocator</a>&lt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a61bd773bb1c79c5be7679fc557f27747">TWordIndexEntry</a> &gt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a056edf8ef4a61b1cfde2f2269437f6d5">uva::smt::bpbd::server::lm::dictionary::basic_word_index::TWordIndexAllocator</a></td>
+          <td class="memname">typedef <a class="el" href="classuva_1_1utils_1_1containers_1_1alloc_1_1greedy__memory__allocator.html">greedy_memory_allocator</a>&lt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a61bd773bb1c79c5be7679fc557f27747">TWordIndexEntry</a> &gt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a7dcfe947b277f05987cf55dfbd1fd021">uva::smt::bpbd::server::lm::dictionary::basic_word_index::TWordIndexAllocator</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -263,7 +262,7 @@ Protected Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef unordered_map&lt;string, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>, std::hash&lt;string&gt;, std::equal_to&lt;string&gt;, <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a056edf8ef4a61b1cfde2f2269437f6d5">TWordIndexAllocator</a> &gt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#ab58bffa80202cb71ba13ba19814b622c">uva::smt::bpbd::server::lm::dictionary::basic_word_index::TWordIndexMap</a></td>
+          <td class="memname">typedef unordered_map&lt;string, <a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>, std::hash&lt;string&gt;, std::equal_to&lt;string&gt;, <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a7dcfe947b277f05987cf55dfbd1fd021">TWordIndexAllocator</a> &gt; <a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#ab58bffa80202cb71ba13ba19814b622c">uva::smt::bpbd::server::lm::dictionary::basic_word_index::TWordIndexMap</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -406,7 +405,7 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a50ebfbe44aac2c6f0fba345309a1fc7a"></a>
+<a class="anchor" id="ad760fd42e1106877001577f453a0a3ea"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -416,7 +415,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">void uva::smt::bpbd::server::lm::dictionary::basic_word_index::count_word </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classuva_1_1utils_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classuva_1_1utils_1_1file_1_1text__piece__reader.html">text_piece_reader</a> &amp;&#160;</td>
           <td class="paramname"><em>word</em>, </td>
         </tr>
         <tr>
@@ -548,7 +547,7 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="acffe24fc47da578fa203fa649a1dce8a"></a>
+<a class="anchor" id="a111312606be4e4d17b5209e5bc399811"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -558,7 +557,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a> uva::smt::bpbd::server::lm::dictionary::basic_word_index::get_word_id </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classuva_1_1utils_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classuva_1_1utils_1_1file_1_1text__piece__reader.html">text_piece_reader</a> &amp;&#160;</td>
           <td class="paramname"><em>token</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -680,7 +679,7 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a365ee49bb8d0685f47eec8be4149611a"></a>
+<a class="anchor" id="a7ae44d0a48a107ff9c1160b46ee4df6e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -690,7 +689,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a> uva::smt::bpbd::server::lm::dictionary::basic_word_index::register_word </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classuva_1_1utils_1_1file_1_1_text_piece_reader.html">TextPieceReader</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classuva_1_1utils_1_1file_1_1text__piece__reader.html">text_piece_reader</a> &amp;&#160;</td>
           <td class="paramname"><em>token</em></td><td>)</td>
           <td></td>
         </tr>
@@ -765,7 +764,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a056edf8ef4a61b1cfde2f2269437f6d5">TWordIndexAllocator</a>* uva::smt::bpbd::server::lm::dictionary::basic_word_index::m_word_index_alloc_ptr</td>
+          <td class="memname"><a class="el" href="classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a7dcfe947b277f05987cf55dfbd1fd021">TWordIndexAllocator</a>* uva::smt::bpbd::server::lm::dictionary::basic_word_index::m_word_index_alloc_ptr</td>
         </tr>
       </table>
   </td>

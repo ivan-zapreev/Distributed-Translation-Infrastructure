@@ -100,7 +100,7 @@ namespace uva {
              * OS will write out the changed sections. I think this also happens when the memory is swapped
              * out as well (in low physical memory situations), since your buffer is simply a window onto the file.
              */
-            class MemoryMappedFileReader : public AFileReader {
+            class memory_mapped_file_reader : public afile_reader {
             private:
 
                 //The file descriptor of the mapped file
@@ -112,7 +112,7 @@ namespace uva {
                  * The basic constructor
                  * @param fileName the file name
                  */
-                MemoryMappedFileReader(const char * fileName) : AFileReader(), m_fileDesc(0) {
+                memory_mapped_file_reader(const char * fileName) : afile_reader(), m_fileDesc(0) {
                     m_fileDesc = open(fileName, O_RDONLY);
                     LOG_DEBUG << "Opened the file '" << fileName << "' descriptor: " << SSTR(m_fileDesc) << END_LOG;
 
@@ -145,7 +145,7 @@ namespace uva {
                             LOG_DEBUG << "Memory mapping the file '" << fileName << "' gave: " << SSTR(beginPtr) << " pointer." << END_LOG;
 
                             //Set the data to the base class
-                            TextPieceReader::set(beginPtr, len);
+                            text_piece_reader::set(beginPtr, len);
                         }
                     }
                 }
@@ -157,8 +157,8 @@ namespace uva {
                     LOG_USAGE << "Using the <" << __FILENAME__ << "> file reader!" << END_LOG;
                 }
 
-                inline bool get_first_line(TextPieceReader& out) {
-                    return TextPieceReader::get_first_line(out);
+                inline bool get_first_line(text_piece_reader& out) {
+                    return text_piece_reader::get_first_line(out);
                 }
                 
                 /**
@@ -166,7 +166,7 @@ namespace uva {
                  * @return true if the file is successfully opened otherwise false.
                  */
                 virtual bool is_open() const {
-                    return (TextPieceReader::get_begin_ptr() != NULL);
+                    return (text_piece_reader::get_begin_ptr() != NULL);
                 };
 
                 /**
@@ -182,8 +182,8 @@ namespace uva {
                  */
                 virtual void close() {
                     // Release the memory (unnecessary because the program exits).
-                    const void * filePtr = TextPieceReader::get_begin_ptr();
-                    const size_t len = TextPieceReader::length();
+                    const void * filePtr = text_piece_reader::get_begin_ptr();
+                    const size_t len = text_piece_reader::length();
                     if (filePtr != NULL) {
                         LOG_DEBUG << "Releasing the Memory Mapped File memory: ptr = " <<
                                 SSTR(filePtr) << ", len = " << len << END_LOG;

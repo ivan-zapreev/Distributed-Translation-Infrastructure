@@ -167,7 +167,7 @@ namespace uva {
                                 //Define the context id variable
                                 TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
-                                __LayeredTrieBase::get_context_id<C2DMapTrie<WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
+                                __LayeredTrieBase::get_context_id<C2DMapTrie<WordIndexType>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Obtain this m-gram id
                                 (void) get_ctx_id(CURR_LEVEL - BASE::MGRAM_IDX_OFFSET, word_id, ctx_id);
@@ -308,7 +308,7 @@ namespace uva {
                         //The type of key,value pairs to be stored in the M Grams map
                         typedef pair< const TLongId, m_gram_payload> TMGramEntry;
                         //The typedef for the M Grams map allocator
-                        typedef GreedyMemoryAllocator< TMGramEntry > TMGramAllocator;
+                        typedef greedy_memory_allocator< TMGramEntry > TMGramAllocator;
                         //The N Grams map type
                         typedef unordered_map<TLongId, m_gram_payload, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                         //The actual data storage for the M Grams for 1 < M < N
@@ -319,7 +319,7 @@ namespace uva {
                         //The type of key,value pairs to be stored in the N Grams map
                         typedef pair< const TLongId, prob_weight> TNGramEntry;
                         //The typedef for the N Grams map allocator
-                        typedef GreedyMemoryAllocator< TNGramEntry > TNGramAllocator;
+                        typedef greedy_memory_allocator< TNGramEntry > TNGramAllocator;
                         //The N Grams map type
                         typedef unordered_map<TLongId, prob_weight, std::hash<TLongId>, std::equal_to<TLongId>, TNGramAllocator > TNGramsMap;
                         //The actual data storage for the N Grams

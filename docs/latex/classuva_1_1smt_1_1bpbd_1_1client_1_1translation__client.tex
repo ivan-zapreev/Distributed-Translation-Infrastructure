@@ -7,7 +7,7 @@
 \subsection*{Public Types}
 \begin{DoxyCompactItemize}
 \item 
-typedef \hyperlink{classwebsocketpp_1_1client}{websocketpp\+::client}$<$ \hyperlink{structwebsocketpp_1_1config_1_1asio__client}{websocketpp\+::config\+::asio\+\_\+client} $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a390fa2321ff9549e1f31ca2dcbd4a88c}{client}
+typedef websocketpp\+::client$<$ websocketpp\+::config\+::asio\+\_\+client $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a390fa2321ff9549e1f31ca2dcbd4a88c}{client}
 \item 
 typedef function$<$ void(const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging_a13f39e68e38d11dbd940edb12359e1a3}{trans\+\_\+job\+\_\+response\+\_\+ptr} trans\+\_\+job\+\_\+resp) $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_aee49acfd2764e30f042c29b1d365f21d}{response\+\_\+setter}
 \item 
@@ -26,13 +26,13 @@ void \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a311232
 \item 
 void \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a38bf3e2d812a0d7fe12a3f3f5f6af7e3}{send} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging_af373ab262c0cab837c6ebe5e2eb62ea2}{trans\+\_\+job\+\_\+request\+\_\+ptr} request)
 \item 
-void \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a2249d6ab4f4dd15a37703d7796a60c48}{on\+\_\+message} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{websocketpp\+::connection\+\_\+hdl} hdl, \hyperlink{classwebsocketpp_1_1endpoint_a585ecbbfd9689d4e4229e4c8378bd672}{client\+::message\+\_\+ptr} msg)
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a2249d6ab4f4dd15a37703d7796a60c48}{on\+\_\+message} (websocketpp\+::connection\+\_\+hdl hdl, client\+::message\+\_\+ptr msg)
 \item 
-void \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a1103c5f24564a2d96484c1cd0042946e}{on\+\_\+open} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{websocketpp\+::connection\+\_\+hdl} hdl)
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a1103c5f24564a2d96484c1cd0042946e}{on\+\_\+open} (websocketpp\+::connection\+\_\+hdl hdl)
 \item 
-void \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_ad37d08d88eff9a5eadf5ce26dc01b80a}{on\+\_\+close} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{websocketpp\+::connection\+\_\+hdl} hdl)
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_ad37d08d88eff9a5eadf5ce26dc01b80a}{on\+\_\+close} (websocketpp\+::connection\+\_\+hdl hdl)
 \item 
-void \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a749abfbb48da4b4afeb9059f8444bbba}{on\+\_\+fail} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{websocketpp\+::connection\+\_\+hdl} hdl)
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a749abfbb48da4b4afeb9059f8444bbba}{on\+\_\+fail} (websocketpp\+::connection\+\_\+hdl hdl)
 \item 
 const string \hyperlink{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a3eda42ede736d896f012aabefaabad69}{get\+\_\+uri} ()
 \end{DoxyCompactItemize}
@@ -53,7 +53,7 @@ Definition at line 61 of file translation\+\_\+client.\+hpp.
 \subsection{Member Typedef Documentation}
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a390fa2321ff9549e1f31ca2dcbd4a88c}{}\index{uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client@{uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client}!client@{client}}
 \index{client@{client}!uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client@{uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client}}
-\subsubsection[{client}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf websocketpp\+::client}$<${\bf websocketpp\+::config\+::asio\+\_\+client}$>$ {\bf uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client\+::client}}\label{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a390fa2321ff9549e1f31ca2dcbd4a88c}
+\subsubsection[{client}]{\setlength{\rightskip}{0pt plus 5cm}typedef websocketpp\+::client$<$websocketpp\+::config\+::asio\+\_\+client$>$ {\bf uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client\+::client}}\label{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a390fa2321ff9549e1f31ca2dcbd4a88c}
 
 
 Definition at line 63 of file translation\+\_\+client.\+hpp.
@@ -151,7 +151,7 @@ Definition at line 252 of file translation\+\_\+client.\+hpp.
 \index{on\+\_\+close@{on\+\_\+close}!uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client@{uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client}}
 \subsubsection[{on\+\_\+close(websocketpp\+::connection\+\_\+hdl hdl)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client\+::on\+\_\+close (
 \begin{DoxyParamCaption}
-\item[{{\bf websocketpp\+::connection\+\_\+hdl}}]{hdl}
+\item[{websocketpp\+::connection\+\_\+hdl}]{hdl}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_ad37d08d88eff9a5eadf5ce26dc01b80a}
 The close handler will signal that we should stop sending translation job(s) 
@@ -167,7 +167,7 @@ Definition at line 218 of file translation\+\_\+client.\+hpp.
 \index{on\+\_\+fail@{on\+\_\+fail}!uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client@{uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client}}
 \subsubsection[{on\+\_\+fail(websocketpp\+::connection\+\_\+hdl hdl)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client\+::on\+\_\+fail (
 \begin{DoxyParamCaption}
-\item[{{\bf websocketpp\+::connection\+\_\+hdl}}]{hdl}
+\item[{websocketpp\+::connection\+\_\+hdl}]{hdl}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a749abfbb48da4b4afeb9059f8444bbba}
 The fail handler will signal that we should stop sending translation job(s) 
@@ -183,8 +183,8 @@ Definition at line 235 of file translation\+\_\+client.\+hpp.
 \index{on\+\_\+message@{on\+\_\+message}!uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client@{uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client}}
 \subsubsection[{on\+\_\+message(websocketpp\+::connection\+\_\+hdl hdl, client\+::message\+\_\+ptr msg)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client\+::on\+\_\+message (
 \begin{DoxyParamCaption}
-\item[{{\bf websocketpp\+::connection\+\_\+hdl}}]{hdl, }
-\item[{{\bf client\+::message\+\_\+ptr}}]{msg}
+\item[{websocketpp\+::connection\+\_\+hdl}]{hdl, }
+\item[{client\+::message\+\_\+ptr}]{msg}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a2249d6ab4f4dd15a37703d7796a60c48}
 This method is used to receive the job translation messages 
@@ -202,7 +202,7 @@ Definition at line 197 of file translation\+\_\+client.\+hpp.
 \index{on\+\_\+open@{on\+\_\+open}!uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client@{uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client}}
 \subsubsection[{on\+\_\+open(websocketpp\+::connection\+\_\+hdl hdl)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::client\+::translation\+\_\+client\+::on\+\_\+open (
 \begin{DoxyParamCaption}
-\item[{{\bf websocketpp\+::connection\+\_\+hdl}}]{hdl}
+\item[{websocketpp\+::connection\+\_\+hdl}]{hdl}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client_a1103c5f24564a2d96484c1cd0042946e}
 The open handler will signal that we are ready to start sending translation job(s) 

@@ -32,9 +32,6 @@
 
 #include "common/utils/logging/logger.hpp"
 
-#define XXH_NAMESPACE
-#include "xxhash.h"   // XXH32 XXH64
-
 using namespace std;
 
 namespace uva {
@@ -87,31 +84,6 @@ namespace uva {
 
             static inline uint_fast32_t hash32_str(const string & token) {
                 return hash32_str(token.c_str(), token.length());
-            }
-
-            /*****************************************************************************************************/
-
-            //The seed for xxhash
-            static const unsigned XXHASH_SEED = 0u;
-
-            static inline uint_fast32_t computeXXHash32(const char * data, uint32_t len) {
-
-                return XXH32(data, len, XXHASH_SEED);
-            }
-
-            static inline uint_fast32_t computeXXHash32(const string & token) {
-
-                return XXH32(token.c_str(), token.length(), XXHASH_SEED);
-            }
-
-            static inline uint_fast64_t computeXXHash64(const char * data, uint32_t len) {
-
-                return XXH64(data, len, XXHASH_SEED);
-            }
-
-            static inline uint_fast64_t computeXXHash64(const string & token) {
-
-                return XXH64(token.c_str(), token.length(), XXHASH_SEED);
             }
 
             /*****************************************************************************************************/

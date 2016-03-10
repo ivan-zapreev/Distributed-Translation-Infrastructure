@@ -50,7 +50,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -124,7 +123,7 @@ $(document).ready(function(){initNavTree('main_8hpp_source.html','');});
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;execinfo.h&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="_i_n_i_8h.html">INI.h</a>&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;INI.h&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="exceptions_8hpp.html">common/utils/exceptions.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="logger_8hpp.html">common/utils/logging/logger.hpp</a>&quot;</span></div>
@@ -207,7 +206,7 @@ $(document).ready(function(){initNavTree('main_8hpp_source.html','');});
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">            key + string(&quot;&#39; section/key in the configuration file!&quot;));</span></div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                <span class="keyword">template</span>&lt;<span class="keyword">typename</span> INT_TYPE&gt;</div>
-<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#ab5ef0ff72106f8ccb64fcfae925766d9">  102</a></span>&#160;                INT_TYPE <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#ab5ef0ff72106f8ccb64fcfae925766d9">get_integer</a>(<a class="code" href="class_i_n_i.html">INI&lt;&gt;</a> &amp;ini, <span class="keywordtype">string</span> section, <span class="keywordtype">string</span> key) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#ab5ef0ff72106f8ccb64fcfae925766d9">  102</a></span>&#160;                INT_TYPE <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#ab5ef0ff72106f8ccb64fcfae925766d9">get_integer</a>(INI&lt;&gt; &amp;ini, <span class="keywordtype">string</span> section, <span class="keywordtype">string</span> key) {</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    <span class="comment">//Get the value and assert on its presence</span></div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                    <a class="code" href="main_8hpp.html#aa3b45101420a63bdf270d4ed2b84c58e">GET_ASSERT</a>(ini, section, key, value_str);</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
@@ -215,7 +214,7 @@ $(document).ready(function(){initNavTree('main_8hpp_source.html','');});
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    <span class="keywordflow">return</span> (INT_TYPE) stoi(value_str);</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                }</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#ad595aee313a8074f2be766f3144049e1">  110</a></span>&#160;                <span class="keywordtype">string</span> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#ad595aee313a8074f2be766f3144049e1">get_string</a>(<a class="code" href="class_i_n_i.html">INI&lt;&gt;</a> &amp;ini, <span class="keywordtype">string</span> section, <span class="keywordtype">string</span> key) {</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#ad595aee313a8074f2be766f3144049e1">  110</a></span>&#160;                <span class="keywordtype">string</span> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#ad595aee313a8074f2be766f3144049e1">get_string</a>(INI&lt;&gt; &amp;ini, <span class="keywordtype">string</span> section, <span class="keywordtype">string</span> key) {</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                    <span class="comment">//Get the value and assert on its presence</span></div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                    <a class="code" href="main_8hpp.html#aa3b45101420a63bdf270d4ed2b84c58e">GET_ASSERT</a>(ini, section, key, value_str);</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
@@ -223,7 +222,7 @@ $(document).ready(function(){initNavTree('main_8hpp_source.html','');});
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                    <span class="keywordflow">return</span> value_str;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                }</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#a39b978ef25b6d6c77386568454b15a33">  118</a></span>&#160;                <span class="keywordtype">float</span> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#a39b978ef25b6d6c77386568454b15a33">get_float</a>(<a class="code" href="class_i_n_i.html">INI&lt;&gt;</a> &amp;ini, <span class="keywordtype">string</span> section, <span class="keywordtype">string</span> key) {</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#a39b978ef25b6d6c77386568454b15a33">  118</a></span>&#160;                <span class="keywordtype">float</span> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#a39b978ef25b6d6c77386568454b15a33">get_float</a>(INI&lt;&gt; &amp;ini, <span class="keywordtype">string</span> section, <span class="keywordtype">string</span> key) {</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                    <span class="comment">//Get the value and assert on its presence</span></div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                    <a class="code" href="main_8hpp.html#aa3b45101420a63bdf270d4ed2b84c58e">GET_ASSERT</a>(ini, section, key, value_str);</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
@@ -246,12 +245,10 @@ $(document).ready(function(){initNavTree('main_8hpp_source.html','');});
 <div class="ttc" id="logger_8hpp_html_a80f2223fb302398deb65324a1543b8db"><div class="ttname"><a href="logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">END_LOG</a></div><div class="ttdeci">#define END_LOG</div><div class="ttdef"><b>Definition:</b> <a href="logger_8hpp_source.html#l00117">logger.hpp:117</a></div></div>
 <div class="ttc" id="main_8hpp_html_aa3b45101420a63bdf270d4ed2b84c58e"><div class="ttname"><a href="main_8hpp.html#aa3b45101420a63bdf270d4ed2b84c58e">GET_ASSERT</a></div><div class="ttdeci">#define GET_ASSERT(ini, section, key, value_str)</div><div class="ttdef"><b>Definition:</b> <a href="main_8hpp_source.html#l00095">main.hpp:95</a></div></div>
 <div class="ttc" id="namespaceuva_1_1utils_1_1exceptions_html"><div class="ttname"><a href="namespaceuva_1_1utils_1_1exceptions.html">uva::utils::exceptions</a></div><div class="ttdef"><b>Definition:</b> <a href="exceptions_8hpp_source.html#l00038">exceptions.hpp:38</a></div></div>
-<div class="ttc" id="_i_n_i_8h_html"><div class="ttname"><a href="_i_n_i_8h.html">INI.h</a></div></div>
 <div class="ttc" id="namespaceuva_html"><div class="ttname"><a href="namespaceuva.html">uva</a></div><div class="ttdef"><b>Definition:</b> <a href="client__config_8hpp_source.html#l00029">client_config.hpp:29</a></div></div>
 <div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1common_html_ab5ef0ff72106f8ccb64fcfae925766d9"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#ab5ef0ff72106f8ccb64fcfae925766d9">uva::smt::bpbd::common::get_integer</a></div><div class="ttdeci">INT_TYPE get_integer(INI&lt;&gt; &amp;ini, string section, string key)</div><div class="ttdef"><b>Definition:</b> <a href="main_8hpp_source.html#l00102">main.hpp:102</a></div></div>
 <div class="ttc" id="logger_8hpp_html_aced66975c154ea0e2a8ec3bc818b4e08"><div class="ttname"><a href="logger_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a></div><div class="ttdeci">#define LOG_ERROR</div><div class="ttdef"><b>Definition:</b> <a href="logger_8hpp_source.html#l00103">logger.hpp:103</a></div></div>
 <div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1common_html_a39b978ef25b6d6c77386568454b15a33"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1common.html#a39b978ef25b6d6c77386568454b15a33">uva::smt::bpbd::common::get_float</a></div><div class="ttdeci">float get_float(INI&lt;&gt; &amp;ini, string section, string key)</div><div class="ttdef"><b>Definition:</b> <a href="main_8hpp_source.html#l00118">main.hpp:118</a></div></div>
-<div class="ttc" id="class_i_n_i_html"><div class="ttname"><a href="class_i_n_i.html">INI</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_n_i_8h_source.html#l00091">INI.h:91</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

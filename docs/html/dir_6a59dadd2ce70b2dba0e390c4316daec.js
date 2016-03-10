@@ -8,7 +8,7 @@ var dir_6a59dadd2ce70b2dba0e390c4316daec =
     ] ],
     [ "greedy_memory_allocator.hpp", "greedy__memory__allocator_8hpp.html", "greedy__memory__allocator_8hpp" ],
     [ "greedy_memory_storage.hpp", "greedy__memory__storage_8hpp.html", [
-      [ "GreedyMemoryStorage", "classuva_1_1utils_1_1containers_1_1_greedy_memory_storage.html", "classuva_1_1utils_1_1containers_1_1_greedy_memory_storage" ]
+      [ "greedy_memory_storage", "classuva_1_1utils_1_1containers_1_1greedy__memory__storage.html", "classuva_1_1utils_1_1containers_1_1greedy__memory__storage" ]
     ] ],
     [ "upp_diag_matrix.hpp", "upp__diag__matrix_8hpp.html", [
       [ "upp_diag_matrix", "classuva_1_1utils_1_1containers_1_1upp__diag__matrix.html", "classuva_1_1utils_1_1containers_1_1upp__diag__matrix" ]

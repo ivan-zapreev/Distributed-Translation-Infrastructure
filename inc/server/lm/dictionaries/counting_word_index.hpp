@@ -112,7 +112,7 @@ namespace uva {
                              * This function creates/gets a hash for the given word.
                              * @see AWordIndex
                              */
-                            word_uid register_word(const TextPieceReader & token) {
+                            word_uid register_word(const text_piece_reader & token) {
                                 //Note that, by now all the words must have been counted
                                 //and have their unique words ids, so here we do it simple!
                                 //Return the id that has already been issued!
@@ -124,7 +124,7 @@ namespace uva {
                              * This method is to be used when the word counting is needed.
                              * @see AWordIndex
                              */
-                            inline void count_word(const TextPieceReader & word, prob_weight prob) {
+                            inline void count_word(const text_piece_reader & word, prob_weight prob) {
                                 //Misuse the internal word index map for storing the word counts in it.
 
                                 LOG_DEBUG1 << "Adding the word: '" << word.str() << "', with prob: " << prob << END_LOG;

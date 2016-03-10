@@ -50,7 +50,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -131,7 +130,7 @@ $(document).ready(function(){initNavTree('logger_8hpp.html','');});
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuva_1_1utils_1_1logging_1_1logging__synch.html">uva::utils::logging::logging_synch</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1utils_1_1logging_1_1_logger.html">uva::utils::logging::Logger</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuva_1_1utils_1_1logging_1_1logger.html">uva::utils::logging::logger</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -161,31 +160,31 @@ Macros</h2></td></tr>
 <tr class="separator:a5fccb4fc71e44089a1b1a77fc76c0b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a942a1242d726684aa9ba3f601247ce4e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(level)                                                </td></tr>
 <tr class="separator:a942a1242d726684aa9ba3f601247ce4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aced66975c154ea0e2a8ec3bc818b4e08"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::ERROR)</td></tr>
+<tr class="memitem:aced66975c154ea0e2a8ec3bc818b4e08"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#aced66975c154ea0e2a8ec3bc818b4e08">LOG_ERROR</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::ERROR)</td></tr>
 <tr class="separator:aced66975c154ea0e2a8ec3bc818b4e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf4476a6a4ea6c74231c826e899d7189"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#adf4476a6a4ea6c74231c826e899d7189">LOG_WARNING</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::WARNING)</td></tr>
+<tr class="memitem:adf4476a6a4ea6c74231c826e899d7189"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#adf4476a6a4ea6c74231c826e899d7189">LOG_WARNING</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::WARNING)</td></tr>
 <tr class="separator:adf4476a6a4ea6c74231c826e899d7189"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa0bc156f2e1f7056324caf133f33917"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#afa0bc156f2e1f7056324caf133f33917">LOG_USAGE</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::USAGE)</td></tr>
+<tr class="memitem:afa0bc156f2e1f7056324caf133f33917"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#afa0bc156f2e1f7056324caf133f33917">LOG_USAGE</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::USAGE)</td></tr>
 <tr class="separator:afa0bc156f2e1f7056324caf133f33917"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83517142e41fc0d6262d01fd5d925ff8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a83517142e41fc0d6262d01fd5d925ff8">LOG_RESULT</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::RESULT)</td></tr>
+<tr class="memitem:a83517142e41fc0d6262d01fd5d925ff8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a83517142e41fc0d6262d01fd5d925ff8">LOG_RESULT</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::RESULT)</td></tr>
 <tr class="separator:a83517142e41fc0d6262d01fd5d925ff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb4f36db01bd128c7afeac5889dac311"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">LOG_INFO</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::INFO)</td></tr>
+<tr class="memitem:aeb4f36db01bd128c7afeac5889dac311"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#aeb4f36db01bd128c7afeac5889dac311">LOG_INFO</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::INFO)</td></tr>
 <tr class="separator:aeb4f36db01bd128c7afeac5889dac311"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a419fed07bd0ebd677dc6ddb1c19ee9f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a419fed07bd0ebd677dc6ddb1c19ee9f1">LOG_INFO1</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::INFO1)</td></tr>
+<tr class="memitem:a419fed07bd0ebd677dc6ddb1c19ee9f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a419fed07bd0ebd677dc6ddb1c19ee9f1">LOG_INFO1</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::INFO1)</td></tr>
 <tr class="separator:a419fed07bd0ebd677dc6ddb1c19ee9f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25c1f6789124a9190b607220ea5ce646"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a25c1f6789124a9190b607220ea5ce646">LOG_INFO2</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::INFO2)</td></tr>
+<tr class="memitem:a25c1f6789124a9190b607220ea5ce646"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a25c1f6789124a9190b607220ea5ce646">LOG_INFO2</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::INFO2)</td></tr>
 <tr class="separator:a25c1f6789124a9190b607220ea5ce646"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad57c88d373984016cf3c89c74e727861"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#ad57c88d373984016cf3c89c74e727861">LOG_INFO3</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::INFO3)</td></tr>
+<tr class="memitem:ad57c88d373984016cf3c89c74e727861"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#ad57c88d373984016cf3c89c74e727861">LOG_INFO3</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::INFO3)</td></tr>
 <tr class="separator:ad57c88d373984016cf3c89c74e727861"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ff63e8955665c4a58b1598f2b07c51a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(DebugLevelsEnum::DEBUG)</td></tr>
+<tr class="memitem:a6ff63e8955665c4a58b1598f2b07c51a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a6ff63e8955665c4a58b1598f2b07c51a">LOG_DEBUG</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(debug_levels_enum::DEBUG)</td></tr>
 <tr class="separator:a6ff63e8955665c4a58b1598f2b07c51a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86b83e67e838f35b174e0b09e38c02f4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a86b83e67e838f35b174e0b09e38c02f4">LOG_DEBUG1</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(DebugLevelsEnum::DEBUG1)</td></tr>
+<tr class="memitem:a86b83e67e838f35b174e0b09e38c02f4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a86b83e67e838f35b174e0b09e38c02f4">LOG_DEBUG1</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(debug_levels_enum::DEBUG1)</td></tr>
 <tr class="separator:a86b83e67e838f35b174e0b09e38c02f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a173816c382b4ec16b3c8ff8d25974b70"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a173816c382b4ec16b3c8ff8d25974b70">LOG_DEBUG2</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(DebugLevelsEnum::DEBUG2)</td></tr>
+<tr class="memitem:a173816c382b4ec16b3c8ff8d25974b70"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a173816c382b4ec16b3c8ff8d25974b70">LOG_DEBUG2</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(debug_levels_enum::DEBUG2)</td></tr>
 <tr class="separator:a173816c382b4ec16b3c8ff8d25974b70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1a4bdfb9a07ba0fc565aa7cef8d8033"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#ab1a4bdfb9a07ba0fc565aa7cef8d8033">LOG_DEBUG3</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(DebugLevelsEnum::DEBUG3)</td></tr>
+<tr class="memitem:ab1a4bdfb9a07ba0fc565aa7cef8d8033"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#ab1a4bdfb9a07ba0fc565aa7cef8d8033">LOG_DEBUG3</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(debug_levels_enum::DEBUG3)</td></tr>
 <tr class="separator:ab1a4bdfb9a07ba0fc565aa7cef8d8033"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ae785e7226c52ff7076f153a1e95f84"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a4ae785e7226c52ff7076f153a1e95f84">LOG_DEBUG4</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(DebugLevelsEnum::DEBUG4)</td></tr>
+<tr class="memitem:a4ae785e7226c52ff7076f153a1e95f84"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a4ae785e7226c52ff7076f153a1e95f84">LOG_DEBUG4</a>&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(debug_levels_enum::DEBUG4)</td></tr>
 <tr class="separator:a4ae785e7226c52ff7076f153a1e95f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80f2223fb302398deb65324a1543b8db"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="logger_8hpp.html#a80f2223fb302398deb65324a1543b8db">END_LOG</a></td></tr>
 <tr class="separator:a80f2223fb302398deb65324a1543b8db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,26 +219,26 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:afe529dbf8d7fef2c75698798ec3e65e7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7">uva::utils::logging::DebugLevelsEnum</a> { <br />
-&#160;&#160;<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7a7c1fb15df08f29cd496708a97fc333c1">uva::utils::logging::ERROR</a> = 0, 
-<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7ae693617d79d97b499628f90c5e557eb8">uva::utils::logging::WARNING</a> = ERROR + 1, 
-<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7af5cd05b95444193b423ea40feede729b">uva::utils::logging::USAGE</a> = WARNING + 1, 
-<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7aa0521b3e0eeff0c4b4ca3b45f3280636">uva::utils::logging::RESULT</a> = USAGE + 1, 
+<tr class="memitem:ab570eadc941242827b7432ab5b7d9053"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053">uva::utils::logging::debug_levels_enum</a> { <br />
+&#160;&#160;<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053a7c1fb15df08f29cd496708a97fc333c1">uva::utils::logging::ERROR</a> = 0, 
+<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053ae693617d79d97b499628f90c5e557eb8">uva::utils::logging::WARNING</a> = ERROR + 1, 
+<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053af5cd05b95444193b423ea40feede729b">uva::utils::logging::USAGE</a> = WARNING + 1, 
+<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053aa0521b3e0eeff0c4b4ca3b45f3280636">uva::utils::logging::RESULT</a> = USAGE + 1, 
 <br />
-&#160;&#160;<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7a1a720d673ed8622627218b80ff66e8d6">uva::utils::logging::INFO</a> = RESULT + 1, 
-<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7a8954f0682f0054bc3956280ebbe1fdb2">uva::utils::logging::INFO1</a> = INFO + 1, 
-<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7a7bd6d0c25b0fbe7c4988c71681e6d668">uva::utils::logging::INFO2</a> = INFO1 + 1, 
-<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7a3c1c367d3f40af1f3ce253d2f9b4286f">uva::utils::logging::INFO3</a> = INFO2 + 1, 
+&#160;&#160;<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053a1a720d673ed8622627218b80ff66e8d6">uva::utils::logging::INFO</a> = RESULT + 1, 
+<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053a8954f0682f0054bc3956280ebbe1fdb2">uva::utils::logging::INFO1</a> = INFO + 1, 
+<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053a7bd6d0c25b0fbe7c4988c71681e6d668">uva::utils::logging::INFO2</a> = INFO1 + 1, 
+<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053a3c1c367d3f40af1f3ce253d2f9b4286f">uva::utils::logging::INFO3</a> = INFO2 + 1, 
 <br />
-&#160;&#160;<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7a769c8fde9f0b395bfbf4d9749a972556">uva::utils::logging::DEBUG</a> = INFO3 + 1, 
-<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7a6644d60858e696215e6812a4faf4b45f">uva::utils::logging::DEBUG1</a> = DEBUG + 1, 
-<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7a558d4bbb4f28ca348b7c08c344e270b6">uva::utils::logging::DEBUG2</a> = DEBUG1 + 1, 
-<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7a46094376b0ec7b929af77bcfddb177ab">uva::utils::logging::DEBUG3</a> = DEBUG2 + 1, 
+&#160;&#160;<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053a769c8fde9f0b395bfbf4d9749a972556">uva::utils::logging::DEBUG</a> = INFO3 + 1, 
+<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053a6644d60858e696215e6812a4faf4b45f">uva::utils::logging::DEBUG1</a> = DEBUG + 1, 
+<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053a558d4bbb4f28ca348b7c08c344e270b6">uva::utils::logging::DEBUG2</a> = DEBUG1 + 1, 
+<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053a46094376b0ec7b929af77bcfddb177ab">uva::utils::logging::DEBUG3</a> = DEBUG2 + 1, 
 <br />
-&#160;&#160;<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7a9851e705c8c11e98d07144ccd054b8a7">uva::utils::logging::DEBUG4</a> = DEBUG3 + 1, 
-<a class="el" href="namespaceuva_1_1utils_1_1logging.html#afe529dbf8d7fef2c75698798ec3e65e7a383a8f9e34911f0984ca013792de9e95">uva::utils::logging::size</a> = DEBUG4 + 1
+&#160;&#160;<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053a9851e705c8c11e98d07144ccd054b8a7">uva::utils::logging::DEBUG4</a> = DEBUG3 + 1, 
+<a class="el" href="namespaceuva_1_1utils_1_1logging.html#ab570eadc941242827b7432ab5b7d9053a383a8f9e34911f0984ca013792de9e95">uva::utils::logging::size</a> = DEBUG4 + 1
 <br />
- }<tr class="separator:afe529dbf8d7fef2c75698798ec3e65e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+ }<tr class="separator:ab570eadc941242827b7432ab5b7d9053"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
@@ -439,7 +438,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_DEBUG&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(DebugLevelsEnum::DEBUG)</td>
+          <td class="memname">#define LOG_DEBUG&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(debug_levels_enum::DEBUG)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -453,7 +452,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_DEBUG1&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(DebugLevelsEnum::DEBUG1)</td>
+          <td class="memname">#define LOG_DEBUG1&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(debug_levels_enum::DEBUG1)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -467,7 +466,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_DEBUG2&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(DebugLevelsEnum::DEBUG2)</td>
+          <td class="memname">#define LOG_DEBUG2&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(debug_levels_enum::DEBUG2)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -481,7 +480,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_DEBUG3&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(DebugLevelsEnum::DEBUG3)</td>
+          <td class="memname">#define LOG_DEBUG3&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(debug_levels_enum::DEBUG3)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -495,7 +494,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_DEBUG4&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(DebugLevelsEnum::DEBUG4)</td>
+          <td class="memname">#define LOG_DEBUG4&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a942a1242d726684aa9ba3f601247ce4e">LOGGER_DEBUG</a>(debug_levels_enum::DEBUG4)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -509,7 +508,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_ERROR&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::ERROR)</td>
+          <td class="memname">#define LOG_ERROR&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::ERROR)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -523,7 +522,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_INFO&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::INFO)</td>
+          <td class="memname">#define LOG_INFO&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::INFO)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -537,7 +536,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_INFO1&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::INFO1)</td>
+          <td class="memname">#define LOG_INFO1&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::INFO1)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -551,7 +550,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_INFO2&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::INFO2)</td>
+          <td class="memname">#define LOG_INFO2&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::INFO2)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -565,7 +564,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_INFO3&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::INFO3)</td>
+          <td class="memname">#define LOG_INFO3&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::INFO3)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -579,7 +578,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_RESULT&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::RESULT)</td>
+          <td class="memname">#define LOG_RESULT&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::RESULT)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -593,7 +592,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_USAGE&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::USAGE)</td>
+          <td class="memname">#define LOG_USAGE&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::USAGE)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -607,7 +606,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define LOG_WARNING&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(DebugLevelsEnum::WARNING)</td>
+          <td class="memname">#define LOG_WARNING&#160;&#160;&#160;<a class="el" href="logger_8hpp.html#a45b2dbaf9de002e4b3a8472fac12d031">LOGGER</a>(debug_levels_enum::WARNING)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -631,11 +630,9 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">{                                                    \</div>
 <div class="line">  logging_synch::rec_scoped_lock lock(logging_synch::mv);\</div>
-<div class="line">  if (<a class="code" href="namespacewebsocketpp_1_1log.html#a12d4d17939f102db8c9183d400a41960">level</a> &gt; LOGER_M_GRAM_LEVEL_MAX) ;                     \</div>
-<div class="line">  else <span class="keywordflow">if</span> (<a class="code" href="namespacewebsocketpp_1_1log.html#a12d4d17939f102db8c9183d400a41960">level</a> &gt; Logger::get_reporting_level()) ;  \</div>
-<div class="line">       else <a class="code" href="namespaceasio.html#aab95c6736198fcded5573a1d43fe25ed">Logger::get</a>(<a class="code" href="namespacewebsocketpp_1_1log.html#a12d4d17939f102db8c9183d400a41960">level</a>)</div>
-<div class="ttc" id="namespaceasio_html_aab95c6736198fcded5573a1d43fe25ed"><div class="ttname"><a href="namespaceasio.html#aab95c6736198fcded5573a1d43fe25ed">asio::get</a></div><div class="ttdeci">detail::read_until_match_op&lt; AsyncReadStream, Allocator, MatchCondition, ASIO_HANDLER_TYPE(ReadHandler, void(asio::error_code, std::size_t))&gt;(s, b, match_condition, init.handler)(asio return init result get()</div></div>
-<div class="ttc" id="namespacewebsocketpp_1_1log_html_a12d4d17939f102db8c9183d400a41960"><div class="ttname"><a href="namespacewebsocketpp_1_1log.html#a12d4d17939f102db8c9183d400a41960">websocketpp::log::level</a></div><div class="ttdeci">uint32_t level</div><div class="ttdoc">Type of a channel package. </div><div class="ttdef"><b>Definition:</b> <a href="levels_8hpp_source.html#l00037">levels.hpp:37</a></div></div>
+<div class="line">  if (level &gt; LOGER_M_GRAM_LEVEL_MAX) ;                     \</div>
+<div class="line">  else <span class="keywordflow">if</span> (level &gt; logger::get_reporting_level()) ;  \</div>
+<div class="line">       else logger::get(level)</div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="logger_8hpp_source.html#l00083">83</a> of file <a class="el" href="logger_8hpp_source.html">logger.hpp</a>.</p>
 
@@ -656,13 +653,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">{                                                    \</div>
 <div class="line">  logging_synch::rec_scoped_lock lock(logging_synch::mv);\</div>
-<div class="line">  if (<a class="code" href="namespacewebsocketpp_1_1log.html#a12d4d17939f102db8c9183d400a41960">level</a> &gt; LOGER_M_GRAM_LEVEL_MAX) ;                     \</div>
-<div class="line">  else <span class="keywordflow">if</span> (<a class="code" href="namespacewebsocketpp_1_1log.html#a12d4d17939f102db8c9183d400a41960">level</a> &gt; Logger::get_reporting_level()) ;  \</div>
-<div class="line">       else <a class="code" href="namespaceasio.html#aab95c6736198fcded5573a1d43fe25ed">Logger::get</a>(<a class="code" href="namespacewebsocketpp_1_1log.html#a12d4d17939f102db8c9183d400a41960">level</a>, <a class="code" href="logger_8hpp.html#a5fccb4fc71e44089a1b1a77fc76c0b68">__FILENAME__</a>, __FUNCTION__, <a class="code" href="logger_8hpp.html#aa627383e16ea66813a5245995ee6671f">LINE_STRING</a>)</div>
+<div class="line">  if (level &gt; LOGER_M_GRAM_LEVEL_MAX) ;                     \</div>
+<div class="line">  else <span class="keywordflow">if</span> (level &gt; logger::get_reporting_level()) ;  \</div>
+<div class="line">       else logger::get(level, <a class="code" href="logger_8hpp.html#a5fccb4fc71e44089a1b1a77fc76c0b68">__FILENAME__</a>, __FUNCTION__, <a class="code" href="logger_8hpp.html#aa627383e16ea66813a5245995ee6671f">LINE_STRING</a>)</div>
 <div class="ttc" id="logger_8hpp_html_aa627383e16ea66813a5245995ee6671f"><div class="ttname"><a href="logger_8hpp.html#aa627383e16ea66813a5245995ee6671f">LINE_STRING</a></div><div class="ttdeci">#define LINE_STRING</div><div class="ttdef"><b>Definition:</b> <a href="logger_8hpp_source.html#l00078">logger.hpp:78</a></div></div>
-<div class="ttc" id="namespaceasio_html_aab95c6736198fcded5573a1d43fe25ed"><div class="ttname"><a href="namespaceasio.html#aab95c6736198fcded5573a1d43fe25ed">asio::get</a></div><div class="ttdeci">detail::read_until_match_op&lt; AsyncReadStream, Allocator, MatchCondition, ASIO_HANDLER_TYPE(ReadHandler, void(asio::error_code, std::size_t))&gt;(s, b, match_condition, init.handler)(asio return init result get()</div></div>
 <div class="ttc" id="logger_8hpp_html_a5fccb4fc71e44089a1b1a77fc76c0b68"><div class="ttname"><a href="logger_8hpp.html#a5fccb4fc71e44089a1b1a77fc76c0b68">__FILENAME__</a></div><div class="ttdeci">#define __FILENAME__</div><div class="ttdef"><b>Definition:</b> <a href="logger_8hpp_source.html#l00090">logger.hpp:90</a></div></div>
-<div class="ttc" id="namespacewebsocketpp_1_1log_html_a12d4d17939f102db8c9183d400a41960"><div class="ttname"><a href="namespacewebsocketpp_1_1log.html#a12d4d17939f102db8c9183d400a41960">websocketpp::log::level</a></div><div class="ttdeci">uint32_t level</div><div class="ttdoc">Type of a channel package. </div><div class="ttdef"><b>Definition:</b> <a href="levels_8hpp_source.html#l00037">levels.hpp:37</a></div></div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="logger_8hpp_source.html#l00092">92</a> of file <a class="el" href="logger_8hpp_source.html">logger.hpp</a>.</p>
 

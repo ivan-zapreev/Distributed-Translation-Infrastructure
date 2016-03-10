@@ -1,5 +1,5 @@
 /* 
- * File:   Logger.hpp
+ * File:   logger.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Some of the ideas and code implemented here were taken from:
@@ -45,7 +45,7 @@ namespace uva {
             /**
              * This enumeration stores all the available logging levels.
              */
-            enum DebugLevelsEnum {
+            enum debug_levels_enum {
                 ERROR = 0, WARNING = ERROR + 1, USAGE = WARNING + 1, RESULT = USAGE + 1,
                 INFO = RESULT + 1, INFO1 = INFO + 1, INFO2 = INFO1 + 1, INFO3 = INFO2 + 1,
                 DEBUG = INFO3 + 1, DEBUG1 = DEBUG + 1, DEBUG2 = DEBUG1 + 1, DEBUG3 = DEBUG2 + 1,
@@ -53,10 +53,10 @@ namespace uva {
             };
 
             //Defines the maximum logging level
-            static constexpr DebugLevelsEnum LOGER_M_GRAM_LEVEL_MAX = INFO3;
+            static constexpr debug_levels_enum LOGER_M_GRAM_LEVEL_MAX = INFO3;
 
             //Defines the log level from which the detailed timing info is available
-            static constexpr DebugLevelsEnum PROGRESS_ACTIVE_LEVEL = INFO2;
+            static constexpr debug_levels_enum PROGRESS_ACTIVE_LEVEL = INFO2;
 
             /**
              * This structures stores the recursive synchronization mutex for logging.
@@ -84,8 +84,8 @@ namespace uva {
 {                                                    \
   logging_synch::rec_scoped_lock lock(logging_synch::mv);\
   if (level > LOGER_M_GRAM_LEVEL_MAX) ;                     \
-  else if (level > Logger::get_reporting_level()) ;  \
-       else Logger::get(level)
+  else if (level > logger::get_reporting_level()) ;  \
+       else logger::get(level)
 
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
@@ -93,26 +93,26 @@ namespace uva {
 {                                                    \
   logging_synch::rec_scoped_lock lock(logging_synch::mv);\
   if (level > LOGER_M_GRAM_LEVEL_MAX) ;                     \
-  else if (level > Logger::get_reporting_level()) ;  \
-       else Logger::get(level, __FILENAME__, __FUNCTION__, LINE_STRING)
+  else if (level > logger::get_reporting_level()) ;  \
+       else logger::get(level, __FILENAME__, __FUNCTION__, LINE_STRING)
 
             //The Macro commands to be used for logging data with different log levels,
             //For example, to log a warning one can use:
             //      LOG_WARNING << "This is a warning message!" << END_LOG;
             //Here, the END_LOG is optional and is currently used for a new line only.
-#define LOG_ERROR   LOGGER(DebugLevelsEnum::ERROR)
-#define LOG_WARNING LOGGER(DebugLevelsEnum::WARNING)
-#define LOG_USAGE   LOGGER(DebugLevelsEnum::USAGE)
-#define LOG_RESULT  LOGGER(DebugLevelsEnum::RESULT)
-#define LOG_INFO    LOGGER(DebugLevelsEnum::INFO)
-#define LOG_INFO1    LOGGER(DebugLevelsEnum::INFO1)
-#define LOG_INFO2    LOGGER(DebugLevelsEnum::INFO2)
-#define LOG_INFO3    LOGGER(DebugLevelsEnum::INFO3)
-#define LOG_DEBUG   LOGGER_DEBUG(DebugLevelsEnum::DEBUG)
-#define LOG_DEBUG1  LOGGER_DEBUG(DebugLevelsEnum::DEBUG1)
-#define LOG_DEBUG2  LOGGER_DEBUG(DebugLevelsEnum::DEBUG2)
-#define LOG_DEBUG3  LOGGER_DEBUG(DebugLevelsEnum::DEBUG3)
-#define LOG_DEBUG4  LOGGER_DEBUG(DebugLevelsEnum::DEBUG4)
+#define LOG_ERROR   LOGGER(debug_levels_enum::ERROR)
+#define LOG_WARNING LOGGER(debug_levels_enum::WARNING)
+#define LOG_USAGE   LOGGER(debug_levels_enum::USAGE)
+#define LOG_RESULT  LOGGER(debug_levels_enum::RESULT)
+#define LOG_INFO    LOGGER(debug_levels_enum::INFO)
+#define LOG_INFO1    LOGGER(debug_levels_enum::INFO1)
+#define LOG_INFO2    LOGGER(debug_levels_enum::INFO2)
+#define LOG_INFO3    LOGGER(debug_levels_enum::INFO3)
+#define LOG_DEBUG   LOGGER_DEBUG(debug_levels_enum::DEBUG)
+#define LOG_DEBUG1  LOGGER_DEBUG(debug_levels_enum::DEBUG1)
+#define LOG_DEBUG2  LOGGER_DEBUG(debug_levels_enum::DEBUG2)
+#define LOG_DEBUG3  LOGGER_DEBUG(debug_levels_enum::DEBUG3)
+#define LOG_DEBUG4  LOGGER_DEBUG(debug_levels_enum::DEBUG4)
 
 #define END_LOG     endl << flush; \
 }
@@ -144,10 +144,10 @@ namespace uva {
              * This is a trivial logging facility that exchibits a singleton
              * behavior and does output to stderr and stdout.
              */
-            class Logger {
+            class logger {
             public:
 
-                virtual ~Logger() {
+                virtual ~logger() {
                 };
 
                 /**
@@ -167,7 +167,7 @@ namespace uva {
                  * @param level the log level for the messages to print
                  * @return the output stream object
                  */
-                static inline std::ostream& get(DebugLevelsEnum level) {
+                static inline std::ostream& get(debug_levels_enum level) {
                     return cout << m_debug_level_str[level] << ":" << WHITE_SPACE_SEPARATOR;
                 }
 
@@ -176,7 +176,7 @@ namespace uva {
                  * @param level the log level for the messages to print
                  * @return the output stream object
                  */
-                static inline std::ostream& get(DebugLevelsEnum level, const char * file, const char * func, const char * line) {
+                static inline std::ostream& get(debug_levels_enum level, const char * file, const char * func, const char * line) {
                     return cout << m_debug_level_str[level] << WHITE_SPACE_SEPARATOR << "<"
                             << file << "::" << func << "(...):" << line << ">:" << WHITE_SPACE_SEPARATOR;
                 }
@@ -186,7 +186,7 @@ namespace uva {
                  * @return the reporting level to check
                  * @return true if the given reporting level is smaller or equal to the current, otherwise false
                  */
-                static inline bool is_relevant_level(const DebugLevelsEnum& level) {
+                static inline bool is_relevant_level(const debug_levels_enum& level) {
                     return level <= m_curr_level;
                 };
 
@@ -194,7 +194,7 @@ namespace uva {
                  * Returns the reference to the internal log level variable
                  * @return the reference to the internal log level variable
                  */
-                static inline DebugLevelsEnum& get_reporting_level() {
+                static inline debug_levels_enum& get_reporting_level() {
                     return m_curr_level;
                 };
 
@@ -251,13 +251,13 @@ namespace uva {
                 //Stores the length of the previously output time
                 static size_t m_time_str_len;
 
-                Logger();
+                logger();
                 ;
 
-                Logger(const Logger&) {
+                logger(const logger&) {
                 };
 
-                Logger& operator=(const Logger&) {
+                logger& operator=(const logger&) {
                     return *this;
                 };
 
@@ -277,7 +277,7 @@ namespace uva {
                 static string compute_time_clear_string(const size_t length);
 
                 //Stores the current used message level
-                static DebugLevelsEnum m_curr_level;
+                static debug_levels_enum m_curr_level;
 
                 //Stores the progress bar characters
                 static const vector<string> m_progress_chars;

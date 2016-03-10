@@ -93,11 +93,11 @@ namespace uva {
                                 }
 
                                 //Update the progress bar status
-                                Logger::update_progress_bar();
+                                logger::update_progress_bar();
 
                                 //Read the next line from the file if it is there
                                 if (!m_file.get_first_line(m_line)) {
-                                    throw Exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA headers!");
+                                    throw uva_exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA headers!");
                                 }
                             }
 
@@ -110,16 +110,16 @@ namespace uva {
                                     << array_to_string<size_t, LM_M_GRAM_LEVEL_MAX>(counts) << END_LOG;
 
                             //Do the progress bard indicator
-                            Logger::start_progress_bar(string("Pre-allocating memory"));
+                            logger::start_progress_bar(string("Pre-allocating memory"));
 
                             //Provide the N-Gram counts data to the Trie
                             m_trie.pre_allocate(counts);
 
-                            Logger::update_progress_bar();
+                            logger::update_progress_bar();
 
                             LOG_DEBUG << "Finished pre-allocating memory" << END_LOG;
                             //Stop the progress bar in case of no exception
-                            Logger::stop_progress_bar();
+                            logger::stop_progress_bar();
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
@@ -136,7 +136,7 @@ namespace uva {
                                         LOG_DEBUG1 << "Read data (?) line: '" << m_line.str() << "'" << END_LOG;
 
                                         //Update the progress bar status
-                                        Logger::update_progress_bar();
+                                        logger::update_progress_bar();
 
                                         //If the line is empty then we keep reading
                                         if (m_line.has_more()) {
@@ -166,7 +166,7 @@ namespace uva {
                                                     msg << "Incorrect ARPA format: Can not parse the "
                                                             << level << "-gram amount: '" << amount
                                                             << "' from string: '" << m_line << "'";
-                                                    throw Exception(msg.str());
+                                                    throw uva_exception(msg.str());
                                                 }
                                             } else {
                                                 LOG_DEBUG1 << "Is something other than n-gram amount, moving to n-gram sections!" << END_LOG;
@@ -176,7 +176,7 @@ namespace uva {
                                             LOG_DEBUG1 << "Is an empty line, skipping forward" << END_LOG;
                                         }
                                     } else {
-                                        throw Exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA data section!");
+                                        throw uva_exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA data section!");
                                     }
                                     level++;
                                 }
@@ -184,7 +184,7 @@ namespace uva {
                                 stringstream msg;
                                 msg << "Incorrect ARPA format: Got '" << m_line << "' instead of '"
                                         << END_OF_ARPA_FILE << "' when starting on the data section!";
-                                throw Exception(msg.str());
+                                throw uva_exception(msg.str());
                             }
 
                             LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
@@ -222,12 +222,12 @@ namespace uva {
                                         }
 
                                         //Update the progress bar status
-                                        Logger::update_progress_bar();
+                                        logger::update_progress_bar();
                                     } else {
                                         //If the next line does not exist then it an error as we expect the end of data section any way
                                         stringstream msg;
                                         msg << "Incorrect ARPA format: Unexpected end of file, missing the '" << END_OF_ARPA_FILE << "' tag!";
-                                        throw Exception(msg.str());
+                                        throw uva_exception(msg.str());
                                     }
                                 }
                             } catch (...) {
@@ -242,7 +242,7 @@ namespace uva {
 
                             LOG_DEBUG << "Finished reading ARPA " << CURR_LEVEL << "-Grams." << END_LOG;
                             //Stop the progress bar in case of no exception
-                            Logger::stop_progress_bar();
+                            logger::stop_progress_bar();
                         }
 
                         template<typename TrieType, typename TFileReaderModel>
@@ -253,13 +253,13 @@ namespace uva {
                                 //Do the progress bard indicator
                                 stringstream msg;
                                 msg << "Cultivating " << CURR_LEVEL << "-Grams";
-                                Logger::start_progress_bar(msg.str());
+                                logger::start_progress_bar(msg.str());
 
                                 //Do the post level actions
                                 m_trie.template post_grams<CURR_LEVEL>();
 
                                 //Stop the progress bar in case of no exception
-                                Logger::stop_progress_bar();
+                                logger::stop_progress_bar();
                                 LOG_DEBUG << "Finished post actions of " << CURR_LEVEL << "-Grams." << END_LOG;
                             } else {
                                 LOG_INFO3 << "Cultivating " << CURR_LEVEL << "-Grams:\t Not needed!" << END_LOG;
@@ -271,7 +271,7 @@ namespace uva {
                             //Check if we need another pass for words counting.
                             if (m_trie.get_word_index().is_word_counts_needed()) {
                                 //Do the progress bard indicator
-                                Logger::start_progress_bar(string("Counting all words"));
+                                logger::start_progress_bar(string("Counting all words"));
 
                                 //Start recursive counting of words
                                 get_word_counts_from_unigrams();
@@ -282,7 +282,7 @@ namespace uva {
 
                                 LOG_DEBUG << "Finished counting all words" << END_LOG;
                                 //Stop the progress bar in case of no exception
-                                Logger::stop_progress_bar();
+                                logger::stop_progress_bar();
 
                                 //Rewind to the beginning of the 1-grams section
                                 return_to_grams();
@@ -294,7 +294,7 @@ namespace uva {
                             //Perform the post actions if needed
                             if (m_trie.get_word_index().is_post_actions_needed()) {
                                 //Do the progress bard indicator
-                                Logger::start_progress_bar(string("Word Index actions"));
+                                logger::start_progress_bar(string("Word Index actions"));
 
                                 LOG_DEBUG << "Starting to perform the Word Index post actions" << END_LOG;
 
@@ -304,7 +304,7 @@ namespace uva {
                                 LOG_DEBUG << "Finished performing the Word Index post actions" << END_LOG;
 
                                 //Stop the progress bar in case of no exception
-                                Logger::stop_progress_bar();
+                                logger::stop_progress_bar();
                             }
                         }
 
@@ -314,7 +314,7 @@ namespace uva {
                             stringstream msg;
                             //Do the progress bard indicator
                             msg << "Reading ARPA " << CURR_LEVEL << "-Grams";
-                            Logger::start_progress_bar(msg.str());
+                            logger::start_progress_bar(msg.str());
 
                             //The regular expression for matching the n-grams section
                             stringstream regexpStr;
@@ -375,7 +375,7 @@ namespace uva {
                             //Check if the line that was input is the header of the N-grams section for N=level
                             if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
                                 //Declare the variables needed to get the word counts
-                                TextPieceReader word;
+                                text_piece_reader word;
                                 prob_weight prob;
 
                                 //Read the current level N-grams and add them to the trie
@@ -389,7 +389,7 @@ namespace uva {
                                             //Set the word with its probability into the word index
                                             word_index.count_word(word, prob);
                                             //Update the progress bar status
-                                            Logger::update_progress_bar();
+                                            logger::update_progress_bar();
                                         } else {
                                             //This is not an expected M-gram
                                             LOG_DEBUG1 << "Stopping words counting in M-gram level: " << SSTR(M_GRAM_LEVEL_1) << END_LOG;
@@ -405,7 +405,7 @@ namespace uva {
                             }
 
                             //Update the progress bar status
-                            Logger::update_progress_bar();
+                            logger::update_progress_bar();
                         }
 
                         /**
@@ -483,7 +483,7 @@ namespace uva {
                                 read_grams<M_GRAM_LEVEL_1>();
                             } catch (...) {
                                 //Stop the progress bar in case of an exception
-                                Logger::stop_progress_bar();
+                                logger::stop_progress_bar();
                                 throw;
                             }
 
@@ -528,9 +528,9 @@ namespace uva {
                 template class lm_basic_builder<TH2DMapTrieOptCount, TFileReaderModel>; \
                 template class lm_basic_builder<TH2DMapTrieHashing, TFileReaderModel>;
 
-                        INSTANTIATE_TRIE_BUILDER_FILE_READER(CStyleFileReader);
-                        INSTANTIATE_TRIE_BUILDER_FILE_READER(FileStreamReader);
-                        INSTANTIATE_TRIE_BUILDER_FILE_READER(MemoryMappedFileReader);
+                        INSTANTIATE_TRIE_BUILDER_FILE_READER(cstyle_file_reader);
+                        INSTANTIATE_TRIE_BUILDER_FILE_READER(file_stream_reader);
+                        INSTANTIATE_TRIE_BUILDER_FILE_READER(memory_mapped_file_reader);
                     }
                 }
             }

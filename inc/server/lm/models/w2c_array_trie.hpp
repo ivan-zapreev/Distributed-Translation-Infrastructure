@@ -66,11 +66,11 @@ namespace uva {
                             PAYLOAD_TYPE payload;
 
                             //Stores the memory increase strategy object
-                            const static MemIncreaseStrategy m_mem_strat;
+                            const static mem_increase_strategy m_mem_strat;
                         };
 
                         template<typename PAYLOAD_TYPE>
-                        const MemIncreaseStrategy S_M_GramData<PAYLOAD_TYPE>::m_mem_strat =
+                        const mem_increase_strategy S_M_GramData<PAYLOAD_TYPE>::m_mem_strat =
                         get_mem_incr_strat(__W2CArrayTrie::MEM_INC_TYPE,
                                 __W2CArrayTrie::MIN_MEM_INC_NUM, __W2CArrayTrie::MEM_INC_FACTOR);
 
@@ -250,7 +250,7 @@ namespace uva {
                                 //Define the context id variable
                                 TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
-                                __LayeredTrieBase::get_context_id<W2CArrayTrie<WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
+                                __LayeredTrieBase::get_context_id<W2CArrayTrie<WordIndexType>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Store the payload
                                 if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
@@ -373,7 +373,7 @@ namespace uva {
                          * @param cio the context index offset for computing the next contex index.
                          */
                         template<typename ARRAY_ELEM_TYPE>
-                        class WordDataEntry : public DynamicStackArray<ARRAY_ELEM_TYPE, uint32_t> {
+                        class WordDataEntry : public dynamic_stack_array<ARRAY_ELEM_TYPE, uint32_t> {
                         public:
                             TShortId cio;
                         };

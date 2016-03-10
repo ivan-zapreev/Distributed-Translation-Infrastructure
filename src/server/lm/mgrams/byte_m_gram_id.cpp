@@ -104,7 +104,7 @@ namespace uva {
                                                                 LOG_DEBUG4 << "# bytes to store " << word_id << " is: 8, as it is <= " << MAX_VALUE_UINT64_T << END_LOG;
                                                                 return 8u;
                                                             } else {
-                                                                throw Exception("uint8_t get_number_of_bytes(const uint64_t word_id): Does not support more than 8 byte values yet!");
+                                                                throw uva_exception("uint8_t get_number_of_bytes(const uint64_t word_id): Does not support more than 8 byte values yet!");
                                                             }
                                                         }
                                                     }

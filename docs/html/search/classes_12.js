@@ -1,15 +1,12 @@
 var searchData=
 [
-  ['udp',['udp',['../classasio_1_1ip_1_1udp.html',1,'asio::ip']]],
-  ['uint16_5fconverter',['uint16_converter',['../unionwebsocketpp_1_1frame_1_1uint16__converter.html',1,'websocketpp::frame']]],
-  ['uint32_5fconverter',['uint32_converter',['../unionwebsocketpp_1_1frame_1_1uint32__converter.html',1,'websocketpp::frame']]],
-  ['uint64_5fconverter',['uint64_converter',['../unionwebsocketpp_1_1frame_1_1uint64__converter.html',1,'websocketpp::frame']]],
-  ['unicast_5fhops',['unicast_hops',['../classasio_1_1ip_1_1detail_1_1socket__option_1_1unicast__hops.html',1,'asio::ip::detail::socket_option']]],
-  ['unlabeledmultiarg',['UnlabeledMultiArg',['../class_t_c_l_a_p_1_1_unlabeled_multi_arg.html',1,'TCLAP']]],
-  ['unlabeledvaluearg',['UnlabeledValueArg',['../class_t_c_l_a_p_1_1_unlabeled_value_arg.html',1,'TCLAP']]],
-  ['unspecified_5fbool_5ftype_5ft',['unspecified_bool_type_t',['../structasio_1_1error__code_1_1unspecified__bool__type__t.html',1,'asio::error_code']]],
-  ['upp_5fdiag_5fmatrix',['upp_diag_matrix',['../classuva_1_1utils_1_1containers_1_1upp__diag__matrix.html',1,'uva::utils::containers']]],
-  ['upp_5fdiag_5fmatrix_3c_20phrase_5fdata_5fentry_20_3e',['upp_diag_matrix&lt; phrase_data_entry &gt;',['../classuva_1_1utils_1_1containers_1_1upp__diag__matrix.html',1,'uva::utils::containers']]],
-  ['uri',['uri',['../classwebsocketpp_1_1uri.html',1,'websocketpp']]],
-  ['use_5ffuture_5ft',['use_future_t',['../classasio_1_1use__future__t.html',1,'asio']]]
+  ['w2carraytrie',['W2CArrayTrie',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_array_trie.html',1,'uva::smt::bpbd::server::lm']]],
+  ['w2ch_5fum_5fstorage',['W2CH_UM_Storage',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_h___u_m___storage.html',1,'uva::smt::bpbd::server::lm']]],
+  ['w2ch_5fum_5fstoragefactory',['W2CH_UM_StorageFactory',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_h___u_m___storage_factory.html',1,'uva::smt::bpbd::server::lm']]],
+  ['w2chybridtrie',['W2CHybridTrie',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_hybrid_trie.html',1,'uva::smt::bpbd::server::lm']]],
+  ['word_5findex_5fbucket_5fentry',['word_index_bucket_entry',['../structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____optimizing__word__index_1_1word__index__bucket__entry.html',1,'uva::smt::bpbd::server::lm::dictionary::__optimizing_word_index']]],
+  ['worddataentry',['WordDataEntry',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_array_trie_1_1_word_data_entry.html',1,'uva::smt::bpbd::server::lm::W2CArrayTrie']]],
+  ['wordindextriebase',['WordIndexTrieBase',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base.html',1,'uva::smt::bpbd::server::lm']]],
+  ['wordindextriebase_3c_20lm_5fword_5findex_20_3e',['WordIndexTrieBase&lt; lm_word_index &gt;',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base.html',1,'uva::smt::bpbd::server::lm']]],
+  ['wordindextriebase_3c_20wordindextype_20_3e',['WordIndexTrieBase&lt; WordIndexType &gt;',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base.html',1,'uva::smt::bpbd::server::lm']]]
 ];

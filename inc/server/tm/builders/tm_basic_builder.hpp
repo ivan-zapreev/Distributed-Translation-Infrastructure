@@ -151,9 +151,9 @@ namespace uva {
                              * @return true if the features satisfy the constraints, otherwise false
                              */
                             template<bool is_get_weights>
-                            inline bool process_features(TextPieceReader weights, size_t & num_features, prob_weight * storage) {
+                            inline bool process_features(text_piece_reader weights, size_t & num_features, prob_weight * storage) {
                                 //Declare the token
-                                TextPieceReader token;
+                                text_piece_reader token;
                                 //Store the read probability weight
                                 size_t idx = 0;
                                 //Store the read weight value
@@ -204,8 +204,8 @@ namespace uva {
                              * @param tmp_features the temporary weights storage
                              * @return true if the conditions are satisfied, otherwise false
                              */
-                            inline bool is_good_features(TextPieceReader rest, size_t & tmp_features_size, prob_weight * tmp_features) {
-                                TextPieceReader target;
+                            inline bool is_good_features(text_piece_reader rest, size_t & tmp_features_size, prob_weight * tmp_features) {
+                                text_piece_reader target;
 
                                 //Skip the target phrase with its end delimiter
                                 rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
@@ -232,12 +232,12 @@ namespace uva {
                              * @param tmp_features_size [out] the number of read features
                              * @param tmp_features the temporary feature storage
                              */
-                            inline void process_target_entry(tm_source_entry * source_entry, TextPieceReader &rest,
+                            inline void process_target_entry(tm_source_entry * source_entry, text_piece_reader &rest,
                                     size_t & count_ref, size_t & tmp_features_size, prob_weight * tmp_features) {
                                 LOG_DEBUG2 << "Got translation line to parse: ___" << rest << "___" << END_LOG;
 
                                 //Declare the target entry storing reader
-                                TextPieceReader target;
+                                text_piece_reader target;
 
                                 //Skip the first space symbol that follows the delimiter with the source
                                 rest.get_first_space(target);
@@ -291,7 +291,7 @@ namespace uva {
                             inline void parse_tm_file() {
 
                                 //Declare the text piece reader for storing the read line and source phrase
-                                TextPieceReader line, source;
+                                text_piece_reader line, source;
 
                                 //Store the source entry
                                 tm_source_entry * source_entry = NULL;
@@ -388,7 +388,7 @@ namespace uva {
                                     }
 
                                     //Update the progress bar status
-                                    Logger::update_progress_bar();
+                                    logger::update_progress_bar();
                                 }
 
                                 if (count_or_build) {
@@ -411,7 +411,7 @@ namespace uva {
                              * Allows to count and set the number of source phrases
                              */
                             inline void count_source_phrases() {
-                                Logger::start_progress_bar(string("Counting phrase translations"));
+                                logger::start_progress_bar(string("Counting phrase translations"));
 
                                 //Count the good entries
                                 parse_tm_file<true>();
@@ -423,7 +423,7 @@ namespace uva {
                                 m_reader.reset();
 
                                 //Stop the progress bar in case of no exception
-                                Logger::stop_progress_bar();
+                                logger::stop_progress_bar();
 
                                 LOG_INFO << "The number of valid TM source entries is: " << m_sizes.size() << END_LOG;
                             }
@@ -432,13 +432,13 @@ namespace uva {
                              * Allows to process translations.
                              */
                             inline void process_source_entries() {
-                                Logger::start_progress_bar(string("Building translation model"));
+                                logger::start_progress_bar(string("Building translation model"));
 
                                 //Build the model
                                 parse_tm_file<false>();
 
                                 //Stop the progress bar in case of no exception
-                                Logger::stop_progress_bar();
+                                logger::stop_progress_bar();
                             }
 
                             /**

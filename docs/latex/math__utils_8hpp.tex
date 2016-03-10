@@ -84,15 +84,16 @@ Definition at line 147 of file math\+\_\+utils.\+hpp.
 {\bfseries Value\+:}
 \begin{DoxyCode}
 \textcolor{keywordflow}{if}(\textcolor{keyword}{sizeof}(value\_type) == 2) \{ \(\backslash\)
-    (\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value}) = \_\_builtin\_bswap16((\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value})); \(\backslash\)
+    (value) = \_\_builtin\_bswap16((value)); \(\backslash\)
 \} \textcolor{keywordflow}{else} \{ \(\backslash\)
     if(\textcolor{keyword}{sizeof}(value\_type) == 4) \{ \(\backslash\)
-        (\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value}) = \_\_builtin\_bswap32((\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value})); \(\backslash\)
+        (value) = \_\_builtin\_bswap32((value)); \(\backslash\)
     \} \textcolor{keywordflow}{else} \{ \(\backslash\)
         if(\textcolor{keyword}{sizeof}(value\_type) == 8) \{ \(\backslash\)
-            (\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value}) = \_\_builtin\_bswap64((\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value})); \(\backslash\)
+            (value) = \_\_builtin\_bswap64((value)); \(\backslash\)
         \} \textcolor{keywordflow}{else} \{ \(\backslash\)
-            throw \hyperlink{classuva_1_1utils_1_1exceptions_1_1_exception}{Exception}(\textcolor{stringliteral}{"HANDLE\_ENDIAN(value\_type, value): Unsupported value type!"}); \(\backslash\)
+            throw \hyperlink{classuva_1_1utils_1_1exceptions_1_1uva__exception}{uva\_exception}(\textcolor{stringliteral}{"HANDLE\_ENDIAN(value\_type, value): Unsupported value type!"}); 
+      \(\backslash\)
         \} \(\backslash\)
     \} \(\backslash\)
 \}

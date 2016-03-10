@@ -58,13 +58,13 @@ namespace uva {
              */
 #ifdef __APPLE__
 
-            void StatisticsMonitor::getMemoryStatistics(TMemotyUsage & memStat) throw (Exception) {
+            void stat_monitore::get_mem_stat(TMemotyUsage & memStat) {
                 LOG_DEBUG << "Unable to obtain memory usage statistics on Mac OS yet!" << END_LOG;
                 memStat = {};
             }
 #else
 
-            void StatisticsMonitor::getMemoryStatistics(TMemotyUsage & memStat) throw (Exception) {
+            void stat_monitore::get_mem_stat(TMemotyUsage & memStat) throw (uva_exception) {
                 char *line;
                 char *vmsize = NULL;
                 char *vmpeak = NULL;
@@ -77,13 +77,13 @@ namespace uva {
                 len = 128;
 
                 f = fopen("/proc/self/status", "r");
-                if (!f) throw Exception("Unable to open /proc/self/status for reading!");
+                if (!f) throw uva_exception("Unable to open /proc/self/status for reading!");
 
                 /* Read memory size data from /proc/self/status */
                 while (!vmsize || !vmpeak || !vmrss || !vmhwm) {
                     if (getline(&line, &len, f) == -1) {
                         /* Some of the information isn't there, die */
-                        throw Exception("Unable to read memory statistics data from /proc/self/status");
+                        throw uva_exception("Unable to read memory statistics data from /proc/self/status");
                     }
 
                     /* Find VmPeak */
@@ -141,7 +141,7 @@ namespace uva {
              * Returns the amount of CPU time used by the current process,
              * in seconds, or -1.0 if an error occurred.
              */
-            double StatisticsMonitor::getCPUTime() {
+            double stat_monitore::get_cpu_time() {
 #if defined(_WIN32)
                 /* Windows -------------------------------------------------- */
                 FILETIME createTime;

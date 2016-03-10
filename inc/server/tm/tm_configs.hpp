@@ -49,7 +49,7 @@ namespace uva {
                     typedef tm_basic_model tm_model_type;
 
                     //Define the builder type 
-                    typedef tm_basic_builder<tm_model_type, CStyleFileReader> tm_builder_type;
+                    typedef tm_basic_builder<tm_model_type, cstyle_file_reader> tm_builder_type;
                 }
             }
         }

@@ -1,9 +1,6 @@
 var searchData=
 [
   ['g2dmaptrie',['G2DMapTrie',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_g2_d_map_trie.html',1,'uva::smt::bpbd::server::lm']]],
-  ['gai_5fsearch',['gai_search',['../structasio_1_1detail_1_1socket__ops_1_1gai__search.html',1,'asio::detail::socket_ops']]],
-  ['gcd',['gcd',['../structasio_1_1detail_1_1gcd.html',1,'asio::detail']]],
-  ['gcd_3c_20v1_2c_200_20_3e',['gcd&lt; v1, 0 &gt;',['../structasio_1_1detail_1_1gcd_3_01v1_00_010_01_4.html',1,'asio::detail']]],
   ['generictriebase',['GenericTrieBase',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html',1,'uva::smt::bpbd::server::lm']]],
   ['generictriebase_3c_20c2dhybridtrie_3c_20wordindextype_20_3e_2c_20wordindextype_2c_20bitmap_5fhash_5fcache_5fbuckets_5ffactor_20_3e',['GenericTrieBase&lt; C2DHybridTrie&lt; WordIndexType &gt;, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR &gt;',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html',1,'uva::smt::bpbd::server::lm']]],
   ['generictriebase_3c_20c2dmaptrie_3c_20wordindextype_20_3e_2c_20wordindextype_2c_20bitmap_5fhash_5fcache_5fbuckets_5ffactor_20_3e',['GenericTrieBase&lt; C2DMapTrie&lt; WordIndexType &gt;, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR &gt;',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html',1,'uva::smt::bpbd::server::lm']]],
@@ -13,6 +10,6 @@ var searchData=
   ['generictriebase_3c_20h2dmaptrie_3c_20wordindextype_20_3e_2c_20wordindextype_2c_20_5f_5fh2dmaptrie_3a_3abitmap_5fhash_5fcache_5fbuckets_5ffactor_20_3e',['GenericTrieBase&lt; H2DMapTrie&lt; WordIndexType &gt;, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR &gt;',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html',1,'uva::smt::bpbd::server::lm']]],
   ['generictriebase_3c_20w2carraytrie_3c_20wordindextype_20_3e_2c_20wordindextype_2c_20bitmap_5fhash_5fcache_5fbuckets_5ffactor_20_3e',['GenericTrieBase&lt; W2CArrayTrie&lt; WordIndexType &gt;, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR &gt;',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html',1,'uva::smt::bpbd::server::lm']]],
   ['generictriebase_3c_20w2chybridtrie_3c_20wordindextype_2c_20storagefactory_2c_20storagecontainer_20_3e_2c_20wordindextype_2c_20bitmap_5fhash_5fcache_5fbuckets_5ffactor_20_3e',['GenericTrieBase&lt; W2CHybridTrie&lt; WordIndexType, StorageFactory, StorageContainer &gt;, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR &gt;',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html',1,'uva::smt::bpbd::server::lm']]],
-  ['greedymemoryallocator',['GreedyMemoryAllocator',['../classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator.html',1,'uva::utils::containers::alloc']]],
-  ['greedymemorystorage',['GreedyMemoryStorage',['../classuva_1_1utils_1_1containers_1_1_greedy_memory_storage.html',1,'uva::utils::containers']]]
+  ['greedy_5fmemory_5fallocator',['greedy_memory_allocator',['../classuva_1_1utils_1_1containers_1_1alloc_1_1greedy__memory__allocator.html',1,'uva::utils::containers::alloc']]],
+  ['greedy_5fmemory_5fstorage',['greedy_memory_storage',['../classuva_1_1utils_1_1containers_1_1greedy__memory__storage.html',1,'uva::utils::containers']]]
 ];

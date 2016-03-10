@@ -161,7 +161,7 @@ namespace uva {
                                 //Define the context id variable
                                 TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
-                                __LayeredTrieBase::get_context_id<C2DHybridTrie<WordIndexType>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
+                                __LayeredTrieBase::get_context_id<C2DHybridTrie<WordIndexType>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Obtain the context key and then create a new mapping
                                 const TLongId key = put_32_32_in_64(ctx_id, word_id);
@@ -298,7 +298,7 @@ namespace uva {
                         //The type of key,value pairs to be stored in the M Grams map
                         typedef pair< const TLongId, TShortId> TMGramEntry;
                         //The typedef for the M Grams map allocator
-                        typedef GreedyMemoryAllocator< TMGramEntry > TMGramAllocator;
+                        typedef greedy_memory_allocator< TMGramEntry > TMGramAllocator;
                         //The N Grams map type
                         typedef unordered_map<TLongId, TShortId, std::hash<TLongId>, std::equal_to<TLongId>, TMGramAllocator > TMGramsMap;
                         //The actual data storage for the M Grams for 1 < M < N
@@ -312,7 +312,7 @@ namespace uva {
                         //The type of key,value pairs to be stored in the N Grams map
                         typedef pair< const TLongId, prob_weight> TNGramEntry;
                         //The typedef for the N Grams map allocator
-                        typedef GreedyMemoryAllocator< TNGramEntry > TNGramAllocator;
+                        typedef greedy_memory_allocator< TNGramEntry > TNGramAllocator;
                         //The N Grams map type
                         typedef unordered_map<TLongId, prob_weight, std::hash<TLongId>, std::equal_to<TLongId>, TNGramAllocator > TNGramsMap;
                         //The actual data storage for the N Grams

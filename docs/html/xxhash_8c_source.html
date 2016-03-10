@@ -50,7 +50,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -224,7 +223,7 @@ $(document).ready(function(){initNavTree('xxhash_8c_source.html','');});
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">/* Modify the local functions below should you wish to use some other memory routines */</span></div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">/* for malloc(), free() */</span></div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span>* XXH_malloc(<span class="keywordtype">size_t</span> <a class="code" href="group__async__connect.html#ga31ab74b9ea6c77932dddd016cfc7920a">s</a>) { <span class="keywordflow">return</span> malloc(s); }</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span>* XXH_malloc(<span class="keywordtype">size_t</span> s) { <span class="keywordflow">return</span> malloc(s); }</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword">static</span> <span class="keywordtype">void</span>  XXH_free  (<span class="keywordtype">void</span>* p)  { free(p); }</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">/* for memcpy() */</span></div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span></div>
@@ -1084,7 +1083,6 @@ $(document).ready(function(){initNavTree('xxhash_8c_source.html','');});
 <div class="ttc" id="xxhash_8c_html_a235e518684d715cbb04353c997ad81e9ae38c7420bad548564395edb8cb4b6b60"><div class="ttname"><a href="xxhash_8c.html#a235e518684d715cbb04353c997ad81e9ae38c7420bad548564395edb8cb4b6b60">XXH_bigEndian</a></div><div class="ttdef"><b>Definition:</b> <a href="xxhash_8c_source.html#l00222">xxhash.c:222</a></div></div>
 <div class="ttc" id="xxhash_8c_html_a4ae1dab0fb4b072a66584546209e7d58"><div class="ttname"><a href="xxhash_8c.html#a4ae1dab0fb4b072a66584546209e7d58">BYTE</a></div><div class="ttdeci">unsigned char BYTE</div><div class="ttdef"><b>Definition:</b> <a href="xxhash_8c_source.html#l00131">xxhash.c:131</a></div></div>
 <div class="ttc" id="struct_x_x_h__istate64__t_html_af12b1222f841660bef64efaae2a6a5a6"><div class="ttname"><a href="struct_x_x_h__istate64__t.html#af12b1222f841660bef64efaae2a6a5a6">XXH_istate64_t::total_len</a></div><div class="ttdeci">U64 total_len</div><div class="ttdef"><b>Definition:</b> <a href="xxhash_8c_source.html#l00552">xxhash.c:552</a></div></div>
-<div class="ttc" id="group__async__connect_html_ga31ab74b9ea6c77932dddd016cfc7920a"><div class="ttname"><a href="group__async__connect.html#ga31ab74b9ea6c77932dddd016cfc7920a">asio::s</a></div><div class="ttdeci">SocketService &amp; s</div><div class="ttdef"><b>Definition:</b> <a href="connect_8hpp_source.html#l00521">connect.hpp:521</a></div></div>
 <div class="ttc" id="xxhash_8c_html_afec4eee51a8198b8b366d75e0b42eb58"><div class="ttname"><a href="xxhash_8c.html#afec4eee51a8198b8b366d75e0b42eb58">XXH64_update</a></div><div class="ttdeci">XXH_errorcode XXH64_update(XXH64_state_t *state_in, const void *input, size_t len)</div><div class="ttdef"><b>Definition:</b> <a href="xxhash_8c_source.html#l00858">xxhash.c:858</a></div></div>
 <div class="ttc" id="xxhash_8c_html_a19022a1454ec4d58390ca2c9896b350e"><div class="ttname"><a href="xxhash_8c.html#a19022a1454ec4d58390ca2c9896b350e">XXH32_createState</a></div><div class="ttdeci">XXH32_state_t * XXH32_createState(void)</div><div class="ttdef"><b>Definition:</b> <a href="xxhash_8c_source.html#l00563">xxhash.c:563</a></div></div>
 <div class="ttc" id="xxhash_8c_html_a056473e50ab5e7acb43d00ca3d41632e"><div class="ttname"><a href="xxhash_8c.html#a056473e50ab5e7acb43d00ca3d41632e">XXH_rotl64</a></div><div class="ttdeci">#define XXH_rotl64(x, r)</div><div class="ttdef"><b>Definition:</b> <a href="xxhash_8c_source.html#l00188">xxhash.c:188</a></div></div>

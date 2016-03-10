@@ -111,7 +111,7 @@ namespace uva {
                                 } else {
                                     //The reserve is called at stage of data preallocation
                                     //At that moment the disposable word index must still be present.
-                                    throw Exception("OptimizingWordIndex::reserve: Un-timed request!");
+                                    throw uva_exception("OptimizingWordIndex::reserve: Un-timed request!");
                                 }
 
                                 //Store the number of words as indicated by the disposable word index
@@ -133,7 +133,7 @@ namespace uva {
                                 } else {
                                     //The number of words is now typically needed only at stage of data preallocation
                                     //At that moment the disposable word index must still be present.
-                                    throw Exception("OptimizingWordIndex::get_number_of_words: Un-timed request!");
+                                    throw uva_exception("OptimizingWordIndex::get_number_of_words: Un-timed request!");
                                 }
                             };
 
@@ -143,7 +143,7 @@ namespace uva {
                              * This function gets an id for the given word word based no the stored 1-Grams.
                              * @see AWordIndex
                              */
-                            inline word_uid get_word_id(const TextPieceReader & token) const {
+                            inline word_uid get_word_id(const text_piece_reader & token) const {
                                 //Compute the bucket id
                                 uint_fast64_t bucket_idx = get_bucket_idx(token);
 
@@ -176,7 +176,7 @@ namespace uva {
                              * This function creates/gets an id for the given word.
                              * @see AWordIndex
                              */
-                            inline word_uid register_word(const TextPieceReader & token) {
+                            inline word_uid register_word(const text_piece_reader & token) {
                                 return m_disp_word_index_ptr->register_word(token);
                             };
 
@@ -193,7 +193,7 @@ namespace uva {
                              * This method is to be used when the word counting is needed.
                              * @see AWordIndex
                              */
-                            inline void count_word(const TextPieceReader & word, prob_weight prob) {
+                            inline void count_word(const text_piece_reader & word, prob_weight prob) {
                                 m_disp_word_index_ptr->count_word(word, prob);
                             };
 
@@ -332,7 +332,7 @@ namespace uva {
                              * @param token the token to compute the bucket id for
                              * @return the bucket id
                              */
-                            inline uint_fast64_t get_bucket_idx(const TextPieceReader & token) const {
+                            inline uint_fast64_t get_bucket_idx(const text_piece_reader & token) const {
                                 return compute_hash(token.get_begin_c_str(), token.length()) & m_capacity;
                             }
 

@@ -1,24 +1,4 @@
 var searchData=
 [
-  ['m_5fgram_5fid_2ehpp',['m_gram_id.hpp',['../m__gram__id_8hpp.html',1,'']]],
-  ['m_5fgram_5fid_5ftables_2ehpp',['m_gram_id_tables.hpp',['../m__gram__id__tables_8hpp.html',1,'']]],
-  ['m_5fgram_5fpayload_2ehpp',['m_gram_payload.hpp',['../m__gram__payload_8hpp.html',1,'']]],
-  ['m_5fgram_5fquery_2ecpp',['m_gram_query.cpp',['../m__gram__query_8cpp.html',1,'']]],
-  ['m_5fgram_5fquery_2ehpp',['m_gram_query.hpp',['../m__gram__query_8hpp.html',1,'']]],
-  ['macos_5ffenced_5fblock_2ehpp',['macos_fenced_block.hpp',['../macos__fenced__block_8hpp.html',1,'']]],
-  ['main_2ehpp',['main.hpp',['../main_8hpp.html',1,'']]],
-  ['math_5futils_2ehpp',['math_utils.hpp',['../math__utils_8hpp.html',1,'']]],
-  ['md5_2ehpp',['md5.hpp',['../md5_8hpp.html',1,'']]],
-  ['memory_2ehpp',['memory.hpp',['../memory_8hpp.html',1,'']]],
-  ['memory_5fmapped_5ffile_5freader_2ehpp',['memory_mapped_file_reader.hpp',['../memory__mapped__file__reader_8hpp.html',1,'']]],
-  ['message_2ehpp',['message.hpp',['../message_8hpp.html',1,'']]],
-  ['minimal_5fclient_2ehpp',['minimal_client.hpp',['../minimal__client_8hpp.html',1,'']]],
-  ['minimal_5fserver_2ehpp',['minimal_server.hpp',['../minimal__server_8hpp.html',1,'']]],
-  ['model_5fm_5fgram_2ecpp',['model_m_gram.cpp',['../model__m__gram_8cpp.html',1,'']]],
-  ['model_5fm_5fgram_2ehpp',['model_m_gram.hpp',['../model__m__gram_8hpp.html',1,'']]],
-  ['multi_5fstack_2ehpp',['multi_stack.hpp',['../multi__stack_8hpp.html',1,'']]],
-  ['multiarg_2eh',['MultiArg.h',['../_multi_arg_8h.html',1,'']]],
-  ['multicast_2ehpp',['multicast.hpp',['../multicast_8hpp.html',1,'']]],
-  ['multiswitcharg_2eh',['MultiSwitchArg.h',['../_multi_switch_arg_8h.html',1,'']]],
-  ['mutex_2ehpp',['mutex.hpp',['../mutex_8hpp.html',1,'']]]
+  ['optimizing_5fword_5findex_2ehpp',['optimizing_word_index.hpp',['../optimizing__word__index_8hpp.html',1,'']]]
 ];

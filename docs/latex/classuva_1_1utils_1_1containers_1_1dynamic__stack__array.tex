@@ -1,0 +1,270 @@
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array}{}\section{uva\+:\+:utils\+:\+:containers\+:\+:dynamic\+\_\+stack\+\_\+array$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$ Class Template Reference}
+\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$}}
+
+
+{\ttfamily \#include $<$dynamic\+\_\+memory\+\_\+arrays.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a28bc953e0b84129b26badd8de1c7708f}{T\+Elem\+Type}
+\item 
+typedef I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_af11e2fba505f2b4c1ddf9babf9a1063c}{T\+Index\+Type}
+\item 
+typedef E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $\ast$ \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_ab1324861137e6dafb483cb53967f439b}{E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+T\+R}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a1754532fe13afc671fb39b7c21180d5d}{dynamic\+\_\+stack\+\_\+array} ()
+\item 
+void \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a87a918e1b53a24703705413d15c09a1e}{pre\+\_\+allocate} (const I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E capacity)
+\item 
+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E \& \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_abeeed1d0abb83f9156eb88df90f409dc}{allocate} ()
+\item 
+void \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a5e87976588d212270bfefe71f876d394}{shrink} ()
+\item 
+const E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E \& \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a7f9603910fd1716ade9d8ec4829deeb8}{operator\mbox{[}$\,$\mbox{]}} (I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E idx) const 
+\item 
+I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a29162acd67bace7ace958e889602a404}{size} () const 
+\item 
+const E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $\ast$ \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_ae1b82ff422b2f9c6e350e74ca5af3bae}{data} () const 
+\item 
+bool \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a2cc81846d67f0ef80fc4f015f3c8c5e0}{has\+\_\+data} () const 
+\item 
+void \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_ab15aa9af1a762c6739a3a43dc54882c5}{sort} ()
+\item 
+void \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a879883a293bd797d2067860ba9fc59c1}{sort} (typename \hyperlink{structuva_1_1utils_1_1containers_1_1utils_1_1_t___i_s___c_o_m_p_a_r_e___f_u_n_c}{T\+\_\+\+I\+S\+\_\+\+C\+O\+M\+P\+A\+R\+E\+\_\+\+F\+U\+N\+C}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+type is\+\_\+less\+\_\+func)
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a22984ca8d2a650bfe9d12614724a0902}{$\sim$dynamic\+\_\+stack\+\_\+array} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const size\+\_\+t \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_adc6adc27e0e8b8f14145e145775f9ca7}{M\+A\+X\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+V\+A\+L\+U\+E} = M\+A\+X\+\_\+\+U\+\_\+\+T\+Y\+P\+E\+\_\+\+V\+A\+L\+U\+E\+S\mbox{[}sizeof (I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E) -\/ 1\mbox{]}
+\item 
+static constexpr size\+\_\+t \hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a347effea92930daddfb9ba492dedd03a}{P\+A\+R\+A\+M\+E\+T\+E\+R\+S\+\_\+\+S\+I\+Z\+E\+\_\+\+B\+Y\+T\+E\+S} = (sizeof (\hyperlink{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_ab1324861137e6dafb483cb53967f439b}{E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+T\+R}) + 2 $\ast$ sizeof (I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E))
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$class uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$}
+
+This class represents a dynamic memory array and stores the main methods needed for its operation 
+\begin{DoxyParams}{Parameters}
+{\em E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E} & the array element type \\
+\hline
+{\em I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E} & the type is to be used for the size, capacity and index variables, should be an unsigned type! \\
+\hline
+{\em I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y} & the number of words, which defines the initial capacity. \\
+\hline
+{\em D\+E\+S\+T\+R\+U\+C\+T\+O\+R} & the destructor function to be used on the elements when the container is deleted, default is N\+U\+L\+L \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 202 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_ab1324861137e6dafb483cb53967f439b}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+T\+R@{E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+T\+R}}
+\index{E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+T\+R@{E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+T\+R}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+T\+R}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ typedef E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$\ast$ {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::{\bf E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+T\+R}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_ab1324861137e6dafb483cb53967f439b}
+
+
+Definition at line 212 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a28bc953e0b84129b26badd8de1c7708f}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!T\+Elem\+Type@{T\+Elem\+Type}}
+\index{T\+Elem\+Type@{T\+Elem\+Type}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{T\+Elem\+Type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ typedef E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::{\bf T\+Elem\+Type}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a28bc953e0b84129b26badd8de1c7708f}
+
+
+Definition at line 206 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_af11e2fba505f2b4c1ddf9babf9a1063c}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!T\+Index\+Type@{T\+Index\+Type}}
+\index{T\+Index\+Type@{T\+Index\+Type}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{T\+Index\+Type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ typedef I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::{\bf T\+Index\+Type}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_af11e2fba505f2b4c1ddf9babf9a1063c}
+
+
+Definition at line 209 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a1754532fe13afc671fb39b7c21180d5d}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!dynamic\+\_\+stack\+\_\+array@{dynamic\+\_\+stack\+\_\+array}}
+\index{dynamic\+\_\+stack\+\_\+array@{dynamic\+\_\+stack\+\_\+array}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{dynamic\+\_\+stack\+\_\+array()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::{\bf dynamic\+\_\+stack\+\_\+array} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a1754532fe13afc671fb39b7c21180d5d}
+The basic constructor, does not pre-\/allocate any memory 
+
+Definition at line 223 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a22984ca8d2a650bfe9d12614724a0902}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!````~dynamic\+\_\+stack\+\_\+array@{$\sim$dynamic\+\_\+stack\+\_\+array}}
+\index{````~dynamic\+\_\+stack\+\_\+array@{$\sim$dynamic\+\_\+stack\+\_\+array}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{$\sim$dynamic\+\_\+stack\+\_\+array()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::$\sim${\bf dynamic\+\_\+stack\+\_\+array} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a22984ca8d2a650bfe9d12614724a0902}
+The basic destructor 
+
+Definition at line 375 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_abeeed1d0abb83f9156eb88df90f409dc}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!allocate@{allocate}}
+\index{allocate@{allocate}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{allocate()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E\& {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::allocate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_abeeed1d0abb83f9156eb88df90f409dc}
+Allows to retrieve the next new/unused element. Reallocates memory, if needed, to get space for the new element \begin{DoxyReturn}{Returns}
+the next new element 
+\end{DoxyReturn}
+
+
+Definition at line 274 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_ae1b82ff422b2f9c6e350e74ca5af3bae}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!data@{data}}
+\index{data@{data}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{data() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ const E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$\ast$ {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_ae1b82ff422b2f9c6e350e74ca5af3bae}
+Allows to get the pointer to the stored data, note that this pointer is only guaranteed to be valid until a new element is added to the array, due to possible memory reallocation \begin{DoxyReturn}{Returns}
+the pointer to the data array 
+\end{DoxyReturn}
+
+
+Definition at line 340 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a2cc81846d67f0ef80fc4f015f3c8c5e0}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!has\+\_\+data@{has\+\_\+data}}
+\index{has\+\_\+data@{has\+\_\+data}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{has\+\_\+data() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ bool {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::has\+\_\+data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a2cc81846d67f0ef80fc4f015f3c8c5e0}
+Allows to check if there is data stored \begin{DoxyReturn}{Returns}
+true if there is at least one data element stored otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 349 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a7f9603910fd1716ade9d8ec4829deeb8}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{operator[](\+I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E idx) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ const E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E\& {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}]{idx}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a7f9603910fd1716ade9d8ec4829deeb8}
+This operator allows to retrieve the reference to an array element by the given index 
+\begin{DoxyParams}{Parameters}
+{\em idx} & the array element index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the reference to the array element under the given index 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em out\+\_\+of\+\_\+range} & exception if the index is outside the array size. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 311 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a87a918e1b53a24703705413d15c09a1e}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!pre\+\_\+allocate@{pre\+\_\+allocate}}
+\index{pre\+\_\+allocate@{pre\+\_\+allocate}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{pre\+\_\+allocate(const I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E capacity)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ void {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::pre\+\_\+allocate (
+\begin{DoxyParamCaption}
+\item[{const I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E}]{capacity}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a87a918e1b53a24703705413d15c09a1e}
+Allows pre-\/allocate some capacity 
+\begin{DoxyParams}{Parameters}
+{\em capacity} & the capacity to pre-\/allocate \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 260 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a5e87976588d212270bfefe71f876d394}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!shrink@{shrink}}
+\index{shrink@{shrink}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{shrink()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ void {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::shrink (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a5e87976588d212270bfefe71f876d394}
+De-\/allocated the un-\/used memory, if any 
+
+Definition at line 296 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a29162acd67bace7ace958e889602a404}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!size@{size}}
+\index{size@{size}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{size() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a29162acd67bace7ace958e889602a404}
+Allows to retrieve the currently used number of elements \begin{DoxyReturn}{Returns}
+the number of elements stored in the stack array. 
+\end{DoxyReturn}
+
+
+Definition at line 329 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_ab15aa9af1a762c6739a3a43dc54882c5}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!sort@{sort}}
+\index{sort@{sort}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{sort()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ void {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::sort (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_ab15aa9af1a762c6739a3a43dc54882c5}
+Allows to sort the data stored in this stack array. How th data is sorted is defined by the $<$ operator of the E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E 
+
+Definition at line 358 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a879883a293bd797d2067860ba9fc59c1}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!sort@{sort}}
+\index{sort@{sort}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{sort(typename T\+\_\+\+I\+S\+\_\+\+C\+O\+M\+P\+A\+R\+E\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+type is\+\_\+less\+\_\+func)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ void {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::sort (
+\begin{DoxyParamCaption}
+\item[{typename {\bf T\+\_\+\+I\+S\+\_\+\+C\+O\+M\+P\+A\+R\+E\+\_\+\+F\+U\+N\+C}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+type}]{is\+\_\+less\+\_\+func}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a879883a293bd797d2067860ba9fc59c1}
+Allows to sort the data stored in this stack array. How th data is sorted is defined by the $<$ operator of the E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E 
+
+Definition at line 367 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_adc6adc27e0e8b8f14145e145775f9ca7}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!M\+A\+X\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+V\+A\+L\+U\+E@{M\+A\+X\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+V\+A\+L\+U\+E}}
+\index{M\+A\+X\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+V\+A\+L\+U\+E@{M\+A\+X\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+V\+A\+L\+U\+E}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{M\+A\+X\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+V\+A\+L\+U\+E}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ const size\+\_\+t {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::M\+A\+X\+\_\+\+S\+I\+Z\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+V\+A\+L\+U\+E = M\+A\+X\+\_\+\+U\+\_\+\+T\+Y\+P\+E\+\_\+\+V\+A\+L\+U\+E\+S\mbox{[}sizeof (I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E) -\/ 1\mbox{]}\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_adc6adc27e0e8b8f14145e145775f9ca7}
+
+
+Definition at line 215 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a347effea92930daddfb9ba492dedd03a}{}\index{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}!P\+A\+R\+A\+M\+E\+T\+E\+R\+S\+\_\+\+S\+I\+Z\+E\+\_\+\+B\+Y\+T\+E\+S@{P\+A\+R\+A\+M\+E\+T\+E\+R\+S\+\_\+\+S\+I\+Z\+E\+\_\+\+B\+Y\+T\+E\+S}}
+\index{P\+A\+R\+A\+M\+E\+T\+E\+R\+S\+\_\+\+S\+I\+Z\+E\+\_\+\+B\+Y\+T\+E\+S@{P\+A\+R\+A\+M\+E\+T\+E\+R\+S\+\_\+\+S\+I\+Z\+E\+\_\+\+B\+Y\+T\+E\+S}!uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array@{uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}}
+\subsubsection[{P\+A\+R\+A\+M\+E\+T\+E\+R\+S\+\_\+\+S\+I\+Z\+E\+\_\+\+B\+Y\+T\+E\+S}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, typename I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y = 0, typename E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E $>$\+::func\+\_\+ptr D\+E\+S\+T\+R\+U\+C\+T\+O\+R = E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C$<$\+E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E$>$\+::\+N\+U\+L\+L\+\_\+\+F\+U\+N\+C\+\_\+\+P\+T\+R$>$ constexpr size\+\_\+t {\bf uva\+::utils\+::containers\+::dynamic\+\_\+stack\+\_\+array}$<$ E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E, I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E, I\+N\+I\+T\+I\+A\+L\+\_\+\+C\+A\+P\+A\+C\+I\+T\+Y, D\+E\+S\+T\+R\+U\+C\+T\+O\+R $>$\+::P\+A\+R\+A\+M\+E\+T\+E\+R\+S\+\_\+\+S\+I\+Z\+E\+\_\+\+B\+Y\+T\+E\+S = (sizeof ({\bf E\+L\+E\+M\+E\+N\+T\+\_\+\+T\+Y\+P\+E\+\_\+\+P\+T\+R}) + 2 $\ast$ sizeof (I\+D\+X\+\_\+\+D\+A\+T\+A\+\_\+\+T\+Y\+P\+E))\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1utils_1_1containers_1_1dynamic__stack__array_a347effea92930daddfb9ba492dedd03a}
+
+
+Definition at line 218 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/common/utils/containers/\hyperlink{dynamic__memory__arrays_8hpp}{dynamic\+\_\+memory\+\_\+arrays.\+hpp}\end{DoxyCompactItemize}

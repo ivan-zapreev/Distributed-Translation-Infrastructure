@@ -15,9 +15,9 @@ Inheritance diagram for uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:dictiona
 \item 
 typedef pair$<$ const string, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid} $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a61bd773bb1c79c5be7679fc557f27747}{T\+Word\+Index\+Entry}
 \item 
-typedef \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator}{Greedy\+Memory\+Allocator}$<$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a61bd773bb1c79c5be7679fc557f27747}{T\+Word\+Index\+Entry} $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a056edf8ef4a61b1cfde2f2269437f6d5}{T\+Word\+Index\+Allocator}
+typedef \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1greedy__memory__allocator}{greedy\+\_\+memory\+\_\+allocator}$<$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a61bd773bb1c79c5be7679fc557f27747}{T\+Word\+Index\+Entry} $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a7dcfe947b277f05987cf55dfbd1fd021}{T\+Word\+Index\+Allocator}
 \item 
-typedef unordered\+\_\+map$<$ string, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid}, std\+::hash$<$ string $>$, std\+::equal\+\_\+to$<$ string $>$, \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a056edf8ef4a61b1cfde2f2269437f6d5}{T\+Word\+Index\+Allocator} $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_ab58bffa80202cb71ba13ba19814b622c}{T\+Word\+Index\+Map}
+typedef unordered\+\_\+map$<$ string, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid}, std\+::hash$<$ string $>$, std\+::equal\+\_\+to$<$ string $>$, \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a7dcfe947b277f05987cf55dfbd1fd021}{T\+Word\+Index\+Allocator} $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_ab58bffa80202cb71ba13ba19814b622c}{T\+Word\+Index\+Map}
 \item 
 typedef T\+Word\+Index\+Map\+::const\+\_\+iterator \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_ac35f9263ddd75993ac68944b4521ec38}{T\+Word\+Index\+Map\+Const\+Iter}
 \end{DoxyCompactItemize}
@@ -30,15 +30,15 @@ size\+\_\+t \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1
 \item 
 void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a277ab4195560f7760caba857109d64a5}{reserve} (const size\+\_\+t num\+\_\+words)
 \item 
-\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_acffe24fc47da578fa203fa649a1dce8a}{get\+\_\+word\+\_\+id} (const \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token) const 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a111312606be4e4d17b5209e5bc399811}{get\+\_\+word\+\_\+id} (const \hyperlink{classuva_1_1utils_1_1file_1_1text__piece__reader}{text\+\_\+piece\+\_\+reader} \&token) const 
 \item 
 bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a60b55124e8f0fea219dff9ca76fdf51a}{is\+\_\+word\+\_\+registering\+\_\+needed} () const 
 \item 
-\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a365ee49bb8d0685f47eec8be4149611a}{register\+\_\+word} (const \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token)
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a7ae44d0a48a107ff9c1160b46ee4df6e}{register\+\_\+word} (const \hyperlink{classuva_1_1utils_1_1file_1_1text__piece__reader}{text\+\_\+piece\+\_\+reader} \&token)
 \item 
 bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a4f13e6413dd71a283d391a98a6949c55}{is\+\_\+word\+\_\+counts\+\_\+needed} () const 
 \item 
-void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a50ebfbe44aac2c6f0fba345309a1fc7a}{count\+\_\+word} (const \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&word, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} prob)
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_ad760fd42e1106877001577f453a0a3ea}{count\+\_\+word} (const \hyperlink{classuva_1_1utils_1_1file_1_1text__piece__reader}{text\+\_\+piece\+\_\+reader} \&word, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} prob)
 \item 
 void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_acf79abcb2e0fe7cf8f2b620c07d92e71}{do\+\_\+post\+\_\+word\+\_\+count} ()
 \item 
@@ -65,7 +65,7 @@ static constexpr bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dict
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a056edf8ef4a61b1cfde2f2269437f6d5}{T\+Word\+Index\+Allocator} $\ast$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_acbd75f75b5ba0115573b24273e901e03}{m\+\_\+word\+\_\+index\+\_\+alloc\+\_\+ptr}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a7dcfe947b277f05987cf55dfbd1fd021}{T\+Word\+Index\+Allocator} $\ast$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_acbd75f75b5ba0115573b24273e901e03}{m\+\_\+word\+\_\+index\+\_\+alloc\+\_\+ptr}
 \item 
 \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_ab58bffa80202cb71ba13ba19814b622c}{T\+Word\+Index\+Map} $\ast$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_afc879e3d774df5b009385c5e6f466438}{m\+\_\+word\+\_\+index\+\_\+map\+\_\+ptr}
 \item 
@@ -83,9 +83,9 @@ Definition at line 57 of file basic\+\_\+word\+\_\+index.\+hpp.
 
 
 \subsection{Member Typedef Documentation}
-\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a056edf8ef4a61b1cfde2f2269437f6d5}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}!T\+Word\+Index\+Allocator@{T\+Word\+Index\+Allocator}}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a7dcfe947b277f05987cf55dfbd1fd021}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}!T\+Word\+Index\+Allocator@{T\+Word\+Index\+Allocator}}
 \index{T\+Word\+Index\+Allocator@{T\+Word\+Index\+Allocator}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}}
-\subsubsection[{T\+Word\+Index\+Allocator}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf Greedy\+Memory\+Allocator}$<$ {\bf T\+Word\+Index\+Entry} $>$ {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index\+::\+T\+Word\+Index\+Allocator}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a056edf8ef4a61b1cfde2f2269437f6d5}
+\subsubsection[{T\+Word\+Index\+Allocator}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf greedy\+\_\+memory\+\_\+allocator}$<$ {\bf T\+Word\+Index\+Entry} $>$ {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index\+::\+T\+Word\+Index\+Allocator}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a7dcfe947b277f05987cf55dfbd1fd021}
 The typedef for the word index allocator 
 
 Definition at line 212 of file basic\+\_\+word\+\_\+index.\+hpp.
@@ -174,14 +174,14 @@ the begin constant iterator
 
 Definition at line 228 of file basic\+\_\+word\+\_\+index.\+hpp.
 
-\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a50ebfbe44aac2c6f0fba345309a1fc7a}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}!count\+\_\+word@{count\+\_\+word}}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_ad760fd42e1106877001577f453a0a3ea}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}!count\+\_\+word@{count\+\_\+word}}
 \index{count\+\_\+word@{count\+\_\+word}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}}
-\subsubsection[{count\+\_\+word(const Text\+Piece\+Reader \&word, prob\+\_\+weight prob)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index\+::count\+\_\+word (
+\subsubsection[{count\+\_\+word(const text\+\_\+piece\+\_\+reader \&word, prob\+\_\+weight prob)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index\+::count\+\_\+word (
 \begin{DoxyParamCaption}
-\item[{const {\bf Text\+Piece\+Reader} \&}]{word, }
+\item[{const {\bf text\+\_\+piece\+\_\+reader} \&}]{word, }
 \item[{{\bf prob\+\_\+weight}}]{prob}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a50ebfbe44aac2c6f0fba345309a1fc7a}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_ad760fd42e1106877001577f453a0a3ea}
 This method is to be used when the word counting is needed. \begin{DoxySeeAlso}{See also}
 A\+Word\+Index 
 \end{DoxySeeAlso}
@@ -245,13 +245,13 @@ A\+Word\+Index
 
 Definition at line 73 of file basic\+\_\+word\+\_\+index.\+hpp.
 
-\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_acffe24fc47da578fa203fa649a1dce8a}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}!get\+\_\+word\+\_\+id@{get\+\_\+word\+\_\+id}}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a111312606be4e4d17b5209e5bc399811}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}!get\+\_\+word\+\_\+id@{get\+\_\+word\+\_\+id}}
 \index{get\+\_\+word\+\_\+id@{get\+\_\+word\+\_\+id}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}}
-\subsubsection[{get\+\_\+word\+\_\+id(const Text\+Piece\+Reader \&token) const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf word\+\_\+uid} uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index\+::get\+\_\+word\+\_\+id (
+\subsubsection[{get\+\_\+word\+\_\+id(const text\+\_\+piece\+\_\+reader \&token) const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf word\+\_\+uid} uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index\+::get\+\_\+word\+\_\+id (
 \begin{DoxyParamCaption}
-\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\item[{const {\bf text\+\_\+piece\+\_\+reader} \&}]{token}
 \end{DoxyParamCaption}
-) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_acffe24fc47da578fa203fa649a1dce8a}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a111312606be4e4d17b5209e5bc399811}
 This function gets an id for the given word word based no the stored 1-\/\+Grams. If the word is not known then an unknown word I\+D is returned\+: U\+N\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D \begin{DoxySeeAlso}{See also}
 A\+Word\+Index 
 \end{DoxySeeAlso}
@@ -318,13 +318,13 @@ A\+Word\+Index
 
 Definition at line 117 of file basic\+\_\+word\+\_\+index.\+hpp.
 
-\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a365ee49bb8d0685f47eec8be4149611a}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}!register\+\_\+word@{register\+\_\+word}}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a7ae44d0a48a107ff9c1160b46ee4df6e}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}!register\+\_\+word@{register\+\_\+word}}
 \index{register\+\_\+word@{register\+\_\+word}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index}}
-\subsubsection[{register\+\_\+word(const Text\+Piece\+Reader \&token)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf word\+\_\+uid} uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index\+::register\+\_\+word (
+\subsubsection[{register\+\_\+word(const text\+\_\+piece\+\_\+reader \&token)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf word\+\_\+uid} uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+word\+\_\+index\+::register\+\_\+word (
 \begin{DoxyParamCaption}
-\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\item[{const {\bf text\+\_\+piece\+\_\+reader} \&}]{token}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a365ee49bb8d0685f47eec8be4149611a}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index_a7ae44d0a48a107ff9c1160b46ee4df6e}
 This function creates/gets a hash for the given word. \begin{DoxySeeAlso}{See also}
 A\+Word\+Index 
 \end{DoxySeeAlso}

@@ -130,10 +130,10 @@ namespace uva {
                  * changed, we do no do any memory deallocation here!
                  */
                 template <typename T>
-                class GreedyMemoryAllocator {
+                class greedy_memory_allocator {
                 public:
                     typedef T value_type;
-                    typedef GreedyMemoryStorage::size_type size_type;
+                    typedef greedy_memory_storage::size_type size_type;
                     typedef std::ptrdiff_t difference_type;
                     typedef T* pointer;
                     typedef const T* const_pointer;
@@ -142,14 +142,14 @@ namespace uva {
 
                     template <typename U>
                     struct rebind {
-                        typedef GreedyMemoryAllocator<U> other;
+                        typedef greedy_memory_allocator<U> other;
                     };
 
                     /**
                      * The basic constructor.
                      * @param numElems the number of elements of template type T to pre-allocate memory for.
                      */
-                    GreedyMemoryAllocator(size_type numElems) throw () :
+                    greedy_memory_allocator(size_type numElems) throw () :
                     _manager(_storage),
                     _storage(numElems * sizeof (T)) {
                         LOG_DEBUG4 << "Creating FixedMemoryAllocator for "
@@ -160,7 +160,7 @@ namespace uva {
                     /**
                      * The basic copy constructor. 
                      */
-                    GreedyMemoryAllocator(const GreedyMemoryAllocator& other) throw () :
+                    greedy_memory_allocator(const greedy_memory_allocator& other) throw () :
                     _manager(other.getStorageRef()) {
                         LOG_DEBUG4 << "Calling the FixedMemoryAllocator copy constructor." << END_LOG;
                     }
@@ -171,7 +171,7 @@ namespace uva {
                      * the stored container elements. 
                      */
                     template <typename U>
-                    GreedyMemoryAllocator(const GreedyMemoryAllocator<U>& other) throw () :
+                    greedy_memory_allocator(const greedy_memory_allocator<U>& other) throw () :
                     _manager(other.getStorageRef()) {
                         LOG_DEBUG4 << "Calling the FixedMemoryAllocator re-bind constructor for " << typeid (T).name() << "." << END_LOG;
                     }
@@ -179,7 +179,7 @@ namespace uva {
                     /**
                      * The standard destructor
                      */
-                    virtual ~GreedyMemoryAllocator() throw () {
+                    virtual ~greedy_memory_allocator() throw () {
                         //Nothing to be done!
                         LOG_DEBUG4 << "" << __FUNCTION__ << END_LOG;
                     }
@@ -273,24 +273,24 @@ namespace uva {
                      * Returns the reference to the buffer manager
                      * @return the reference to the buffer manager
                      */
-                    GreedyMemoryStorage& getStorageRef() const {
+                    greedy_memory_storage& getStorageRef() const {
                         return _manager;
                     }
 
                 protected:
                     //The reference to the buffer manager that is actively being used
-                    GreedyMemoryStorage& _manager;
+                    greedy_memory_storage& _manager;
 
                 private:
                     //The space for a buffer_manager object if this object isn't copy-constructed
-                    GreedyMemoryStorage _storage;
+                    greedy_memory_storage _storage;
 
                     /**
                      * The default constructor
                      */
-                    GreedyMemoryAllocator() throw () :
+                    greedy_memory_allocator() throw () :
                     _manager(_storage), _storage(0) {
-                        throw Exception("The default constructor is not to be used!");
+                        throw uva_exception("The default constructor is not to be used!");
                     }
 
                 };
@@ -298,22 +298,22 @@ namespace uva {
                 // these are a necessary evil cos some STL classes (e.g. std::basic_string uses them)
 
                 template<typename T, typename U>
-                bool operator==(const GreedyMemoryAllocator<T>&, const GreedyMemoryAllocator<U>&) {
+                bool operator==(const greedy_memory_allocator<T>&, const greedy_memory_allocator<U>&) {
                     return true;
                 }
 
                 template<typename T>
-                bool operator==(const GreedyMemoryAllocator<T>&, const GreedyMemoryAllocator<T>&) {
+                bool operator==(const greedy_memory_allocator<T>&, const greedy_memory_allocator<T>&) {
                     return true;
                 }
 
                 template<typename T, typename U>
-                bool operator!=(const GreedyMemoryAllocator<T>&, const GreedyMemoryAllocator<U>&) {
+                bool operator!=(const greedy_memory_allocator<T>&, const greedy_memory_allocator<U>&) {
                     return false;
                 }
 
                 template<typename T>
-                bool operator!=(const GreedyMemoryAllocator<T>&, const GreedyMemoryAllocator<T>&) {
+                bool operator!=(const greedy_memory_allocator<T>&, const greedy_memory_allocator<T>&) {
                     return false;
                 }
             }

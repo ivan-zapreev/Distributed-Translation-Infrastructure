@@ -84,7 +84,7 @@ namespace uva {
                              * @param token the word to hash
                              * @return the word id or UNKNOWN_WORD_ID if the word is not found
                              */
-                            inline word_uid get_word_id(const TextPieceReader & token) const {
+                            inline word_uid get_word_id(const text_piece_reader & token) const {
                                 THROW_MUST_OVERRIDE();
                             };
 
@@ -104,7 +104,7 @@ namespace uva {
                              * @param token the word to hash
                              * @return the resulting hash
                              */
-                            inline word_uid register_word(const TextPieceReader & token) {
+                            inline word_uid register_word(const text_piece_reader & token) {
                                 THROW_MUST_OVERRIDE();
                             };
 
@@ -125,7 +125,7 @@ namespace uva {
                              * @param token the word to count
                              * @param prob the word log probability
                              */
-                            inline void count_word(const TextPieceReader & word, prob_weight prob) {
+                            inline void count_word(const text_piece_reader & word, prob_weight prob) {
                                 THROW_MUST_OVERRIDE();
                             };
 

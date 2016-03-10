@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['len',['len',['../structwebsocketpp_1_1transport_1_1buffer.html#a89627b29fb3670a3a611ea2737d39821',1,'websocketpp::transport::buffer']]],
   ['level_5f2_5fgram_5fto_5fbyte_5flen',['LEVEL_2_GRAM_TO_BYTE_LEN',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__id_1_1_byte___m___gram___id.html#adc72d40d97c794544da3f9d70dac40e0',1,'uva::smt::bpbd::server::lm::m_grams::m_gram_id::Byte_M_Gram_Id']]],
   ['level_5f2_5fgram_5fto_5ftype_5flen',['LEVEL_2_GRAM_TO_TYPE_LEN',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__id_1_1_byte___m___gram___id.html#a8e00ffa9494f8bd246b2c7b874ae929a',1,'uva::smt::bpbd::server::lm::m_grams::m_gram_id::Byte_M_Gram_Id']]],
   ['level_5f3_5fgram_5fto_5fbyte_5flen',['LEVEL_3_GRAM_TO_BYTE_LEN',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__id_1_1_byte___m___gram___id.html#a3cd411cdeda61989f2061a4d7b4b5e2e',1,'uva::smt::bpbd::server::lm::m_grams::m_gram_id::Byte_M_Gram_Id']]],
@@ -10,8 +9,5 @@ var searchData=
   ['level_5f5_5fgram_5fto_5fbyte_5flen',['LEVEL_5_GRAM_TO_BYTE_LEN',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__id_1_1_byte___m___gram___id.html#a9f88e7c86bd5e93cb7d5ebbf2cf680c7',1,'uva::smt::bpbd::server::lm::m_grams::m_gram_id::Byte_M_Gram_Id']]],
   ['level_5f5_5fgram_5fto_5ftype_5flen',['LEVEL_5_GRAM_TO_TYPE_LEN',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__id_1_1_byte___m___gram___id.html#a507bc2f20c4fe7cb6ce181cbed3d7409',1,'uva::smt::bpbd::server::lm::m_grams::m_gram_id::Byte_M_Gram_Id']]],
   ['level_5f6_5fgram_5fto_5fbyte_5flen',['LEVEL_6_GRAM_TO_BYTE_LEN',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__id_1_1_byte___m___gram___id.html#aab931d9bc7a87784464c2ffce0a00978',1,'uva::smt::bpbd::server::lm::m_grams::m_gram_id::Byte_M_Gram_Id']]],
-  ['level_5f6_5fgram_5fto_5ftype_5flen',['LEVEL_6_GRAM_TO_TYPE_LEN',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__id_1_1_byte___m___gram___id.html#a9628997a876d0ad9216d8dd1b3ff96ea',1,'uva::smt::bpbd::server::lm::m_grams::m_gram_id::Byte_M_Gram_Id']]],
-  ['library',['library',['../structwebsocketpp_1_1log_1_1elevel.html#a2b862d4f143d9b77619ddbacd1763674',1,'websocketpp::log::elevel']]],
-  ['ll',['ll',['../struct_x_x_h32__state__t.html#aa403a337d57bf3ae25092199ff57b8ee',1,'XXH32_state_t::ll()'],['../struct_x_x_h64__state__t.html#a9733d20d40ce914eabba76b954920ff9',1,'XXH64_state_t::ll()']]],
-  ['lock_5f',['lock_',['../structasio_1_1detail_1_1task__io__service_1_1task__cleanup.html#ae9c67e42631c6773758da0c727adf4eb',1,'asio::detail::task_io_service::task_cleanup::lock_()'],['../structasio_1_1detail_1_1task__io__service_1_1work__cleanup.html#a50ea4d46247dd232bbeaa5853921ca95',1,'asio::detail::task_io_service::work_cleanup::lock_()']]]
+  ['level_5f6_5fgram_5fto_5ftype_5flen',['LEVEL_6_GRAM_TO_TYPE_LEN',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__id_1_1_byte___m___gram___id.html#a9628997a876d0ad9216d8dd1b3ff96ea',1,'uva::smt::bpbd::server::lm::m_grams::m_gram_id::Byte_M_Gram_Id']]]
 ];

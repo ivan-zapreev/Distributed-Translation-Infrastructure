@@ -91,7 +91,7 @@ void create_arguments_parser() {
     p_query_arg = new ValueArg<string>("q", "query", "A text file containing new line separated M-gram queries", true, "", "query file name", *p_cmd_args);
 
     //Add the -d the debug level parameter - optional, default is e.g. RESULT
-    Logger::get_reporting_levels(&debug_levels);
+    logger::get_reporting_levels(&debug_levels);
     p_debug_levels_constr = new ValuesConstraint<string>(debug_levels);
     p_debug_level_arg = new ValueArg<string>("d", "debug", "The debug level to be used", false, RESULT_PARAM_VALUE, p_debug_levels_constr, *p_cmd_args);
 
@@ -129,7 +129,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     }
 
     //Set the logging level right away
-    Logger::set_reporting_level(p_debug_level_arg->getValue());
+    logger::set_reporting_level(p_debug_level_arg->getValue());
 
     //Store the parsed parameter values
     params.m_query_file_name = p_query_arg->getValue();
@@ -175,7 +175,7 @@ int main(int argc, char** argv) {
         //Do the actual work, read the text corpse, create trie and do queries
         __executor::perform_tasks(params);
 
-    } catch (Exception & ex) {
+    } catch (uva_exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.get_message() << END_LOG;
         returnCode = 1;

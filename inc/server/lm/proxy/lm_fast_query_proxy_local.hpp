@@ -99,13 +99,13 @@ namespace uva {
                             /**
                              * @see lm_query_proxy
                              */
-                            virtual void get_word_ids(TextPieceReader phrase, phrase_length & num_words,
+                            virtual void get_word_ids(text_piece_reader phrase, phrase_length & num_words,
                                     word_uid word_ids[tm::TM_MAX_TARGET_PHRASE_LEN]) const {
                                 //Initialize with zero words
                                 num_words = 0;
 
                                 //Declare the text piece reader for storing words
-                                TextPieceReader word;
+                                text_piece_reader word;
 
                                 LOG_DEBUG1 << "Getting word uids for phrase: ___" << phrase << "___" << END_LOG;
 

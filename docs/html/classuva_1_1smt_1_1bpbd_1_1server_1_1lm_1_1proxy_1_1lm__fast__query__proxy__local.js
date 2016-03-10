@@ -11,6 +11,6 @@ var classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__
     [ "get_query_str", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local.html#a835b3d5747d7fb12d024ecb744305f0e", null ],
     [ "get_report_interm_results", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local.html#af4b77e946428af9acf3df5090cd2c828", null ],
     [ "get_unk_word_prob", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local.html#a8ea28c0c78a2e6e13d90e83191c399bb", null ],
-    [ "get_word_ids", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local.html#a3fe646d39b9b15ef6fd3f6db92f124ee", null ],
+    [ "get_word_ids", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local.html#af2a1db87b5e25ac64dec4f60d511efb0", null ],
     [ "report_final_result", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy__local.html#a96685ee96a1a8f447b91edd41f51d5aa", null ]
 ];

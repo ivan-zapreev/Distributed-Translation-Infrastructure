@@ -28,7 +28,6 @@ set(LM_QUERY_SOURCES
     src/server/lm/builders/lm_gram_builder.cpp
     src/common/utils/monitore/statistics_monitor.cpp 
     src/common/utils/logging/logger.cpp
-    src/common/utils/xxhash.c
 )
 #Define the server executable
 add_executable(lm-query ${LM_QUERY_SOURCES})
@@ -58,7 +57,6 @@ set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
     src/server/lm/builders/lm_gram_builder.cpp
     src/common/utils/monitore/statistics_monitor.cpp 
     src/common/utils/logging/logger.cpp
-    src/common/utils/xxhash.c
     src/common/messaging/trans_job_code.cpp
     src/server/trans_task_pool_worker.cpp
     src/server/trans_task_pool.cpp

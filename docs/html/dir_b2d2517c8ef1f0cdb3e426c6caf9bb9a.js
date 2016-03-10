@@ -8,6 +8,5 @@ var dir_b2d2517c8ef1f0cdb3e426c6caf9bb9a =
     [ "hashing_utils.hpp", "hashing__utils_8hpp.html", "hashing__utils_8hpp" ],
     [ "math_utils.hpp", "math__utils_8hpp.html", "math__utils_8hpp" ],
     [ "string_utils.hpp", "string__utils_8hpp.html", "string__utils_8hpp" ],
-    [ "threads.hpp", "threads_8hpp.html", "threads_8hpp" ],
-    [ "xxhash.h", "xxhash_8h.html", "xxhash_8h" ]
+    [ "threads.hpp", "threads_8hpp.html", "threads_8hpp" ]
 ];

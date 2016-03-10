@@ -46,7 +46,7 @@ namespace uva {
             /**
              * Stores the possible memory increase types
              */
-            enum MemIncTypesEnum {
+            enum mem_inc_types_enum {
                 UNDEFINED = 0,
                 CONSTANT = UNDEFINED + 1,
                 LINEAR = CONSTANT + 1,
@@ -66,15 +66,15 @@ namespace uva {
              * Stores the string names of the memory increase strategies,
              * should correspond with the enum MemIncTypesEnum indexes!
              */
-            const char * const _memIncTypesEnumStr[MemIncTypesEnum::size] = {"CONSTANT", "LINEAR", "LOG_2", "LOG_10"};
+            const char * const _memIncTypesEnumStr[mem_inc_types_enum::size] = {"CONSTANT", "LINEAR", "LOG_2", "LOG_10"};
 
             /**
              * This class stores the memory increment strategy and allows to use it
              */
-            class MemIncreaseStrategy {
+            class mem_increase_strategy {
             private:
                 //Stores the increment strategy type
-                MemIncTypesEnum m_stype;
+                mem_inc_types_enum m_stype;
                 //The field storing the strategy capacity increase function
                 TCapacityIncFunct m_get_capacity_inc_func;
                 //Stores the minimum allowed memory increment, in number of elements
@@ -91,7 +91,7 @@ namespace uva {
                  * @param min_mem_inc the minimum memory increase in number of elements
                  * @param mem_inc_factor the memory increment factor, the number we will multiply by the computed increment
                  */
-                MemIncreaseStrategy(const MemIncTypesEnum & stype,
+                mem_increase_strategy(const mem_inc_types_enum & stype,
                         const TCapacityIncFunct get_capacity_inc_func,
                         const size_t min_mem_inc, const size_t mem_inc_factor)
                 : m_stype(stype), m_get_capacity_inc_func(get_capacity_inc_func),
@@ -101,12 +101,12 @@ namespace uva {
                     ASSERT_SANITY_THROW((m_mem_inc_factor == 0), "Inappropriate memory increment factor!");
                 }
 
-                MemIncreaseStrategy()
-                : m_stype(MemIncTypesEnum::UNDEFINED), m_get_capacity_inc_func(NULL),
+                mem_increase_strategy()
+                : m_stype(mem_inc_types_enum::UNDEFINED), m_get_capacity_inc_func(NULL),
                 m_min_mem_inc(0), m_mem_inc_factor(0) {
                 }
 
-                MemIncreaseStrategy(const MemIncreaseStrategy & other)
+                mem_increase_strategy(const mem_increase_strategy & other)
                 : m_stype(other.m_stype), m_get_capacity_inc_func(other.m_get_capacity_inc_func),
                 m_min_mem_inc(other.m_min_mem_inc), m_mem_inc_factor(other.m_mem_inc_factor) {
                 }
@@ -143,29 +143,29 @@ namespace uva {
              * @param mem_inc_factor the memory increment factor, the number we will multiply by the computed increment
              * @return the pointer to a newly allocated strategy object
              */
-            inline MemIncreaseStrategy get_mem_incr_strat(const MemIncTypesEnum stype,
+            inline mem_increase_strategy get_mem_incr_strat(const mem_inc_types_enum stype,
                     const size_t min_mem_inc, const size_t mem_inc_factor) {
                 TCapacityIncFunct inc_func;
 
                 //ToDo: optimize this switch, it is pretty ugly, use a map or something
                 switch (stype) {
-                    case MemIncTypesEnum::CONSTANT:
+                    case mem_inc_types_enum::CONSTANT:
                         inc_func = [] (const size_t fcap) -> size_t {
                             //Return zero as then the minimum constant increase will be used!
                             return 0;
                         };
                         break;
-                    case MemIncTypesEnum::LINEAR:
+                    case mem_inc_types_enum::LINEAR:
                         inc_func = [] (const size_t fcap) -> size_t {
                             return fcap;
                         };
                         break;
-                    case MemIncTypesEnum::LOG_2:
+                    case mem_inc_types_enum::LOG_2:
                         inc_func = [] (const size_t fcap) -> size_t {
                             return fcap * (1 / log(fcap));
                         };
                         break;
-                    case MemIncTypesEnum::LOG_10:
+                    case mem_inc_types_enum::LOG_10:
                         inc_func = [] (const size_t fcap) -> size_t {
                             return fcap * (1 / log10(fcap));
                         };
@@ -173,11 +173,11 @@ namespace uva {
                     default:
                         stringstream msg;
                         msg << "Unrecognized memory allocation strategy: " << stype;
-                        throw Exception(msg.str());
+                        throw uva_exception(msg.str());
                 }
 
                 //return the result object
-                return MemIncreaseStrategy(stype, inc_func, min_mem_inc, mem_inc_factor);
+                return mem_increase_strategy(stype, inc_func, min_mem_inc, mem_inc_factor);
             };
 
             /**
@@ -199,7 +199,7 @@ namespace uva {
              */
             template<typename ELEMENT_TYPE, typename IDX_DATA_TYPE, IDX_DATA_TYPE INITIAL_CAPACITY = 0,
             typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR = ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR>
-            class DynamicStackArray {
+            class dynamic_stack_array {
             public:
 
                 //Make the element type publicly available
@@ -220,7 +220,7 @@ namespace uva {
                 /**
                  * The basic constructor, does not pre-allocate any memory
                  */
-                DynamicStackArray() {
+                dynamic_stack_array() {
                     //Initialize the array
                     memset(m_params, 0, PARAMETERS_SIZE_BYTES);
                     //If the initial capacity is given then pre-allocate data
@@ -372,7 +372,7 @@ namespace uva {
                 /**
                  * The basic destructor
                  */
-                ~DynamicStackArray() {
+                ~dynamic_stack_array() {
                     EXTRACT_P(m_ptr);
                     if (m_ptr != NULL) {
                         if (DESTRUCTOR != ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::NULL_FUNC_PTR) {
@@ -495,7 +495,7 @@ namespace uva {
             //Get the maximum value for the given template type
             template<typename ELEMENT_TYPE, typename IDX_DATA_TYPE, IDX_DATA_TYPE INITIAL_CAPACITY,
             typename ELEMENT_DEALLOC_FUNC<ELEMENT_TYPE>::func_ptr DESTRUCTOR>
-            const size_t DynamicStackArray<ELEMENT_TYPE, IDX_DATA_TYPE, INITIAL_CAPACITY, DESTRUCTOR>::MAX_SIZE_TYPE_VALUE = MAX_U_TYPE_VALUES[sizeof (IDX_DATA_TYPE) - 1];
+            const size_t dynamic_stack_array<ELEMENT_TYPE, IDX_DATA_TYPE, INITIAL_CAPACITY, DESTRUCTOR>::MAX_SIZE_TYPE_VALUE = MAX_U_TYPE_VALUES[sizeof (IDX_DATA_TYPE) - 1];
         }
     }
 }

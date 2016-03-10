@@ -144,7 +144,7 @@ namespace uva {
                                 //Define the context id variable
                                 TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
-                                __LayeredTrieBase::get_context_id<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, CURR_LEVEL, DebugLevelsEnum::DEBUG2>(*this, gram, ctx_id);
+                                __LayeredTrieBase::get_context_id<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Store the payload
                                 if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {

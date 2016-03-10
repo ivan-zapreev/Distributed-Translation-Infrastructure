@@ -134,7 +134,7 @@ namespace uva {
                         //Perform the decoding task
                         try {
                             dec.translate();
-                        } catch (Exception & ex) {
+                        } catch (uva_exception & ex) {
                             //Set the response code
                             m_code = trans_job_code::RESULT_ERROR;
                             //Set the error message to be the target text to be sent back

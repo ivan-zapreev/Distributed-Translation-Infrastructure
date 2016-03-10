@@ -66,7 +66,7 @@ namespace uva {
                              *      P(w2|w1) + P(w3|w1w2) + P(w4|w1w2w3) + P(w5|w2w3w4) + P(w6|w3w4w5)
                              * @param line the text piece reader storing the m-gram query line
                              */
-                            virtual void execute(TextPieceReader & line) = 0;
+                            virtual void execute(text_piece_reader & line) = 0;
                         };
                     }
                 }

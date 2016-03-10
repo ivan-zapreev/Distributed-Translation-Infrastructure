@@ -77,7 +77,7 @@ namespace uva {
                              * @result returns true if the provided line is NOT recognized
                              *         as the N-Gram of the specified level.
                              */
-                            bool parse_line(TextPieceReader & data);
+                            bool parse_line(text_piece_reader & data);
 
                             /**
                              * Takes the uni-gram line and parses it to the word and its probability, no back-off weight!
@@ -86,7 +86,7 @@ namespace uva {
                              * @param prob [out] the variable to set the probability value into
                              * @return true if the uni-gram was successfully parsed
                              */
-                            static inline bool unigram_to_prob(TextPieceReader &text, TextPieceReader & word, prob_weight & prob) {
+                            static inline bool unigram_to_prob(text_piece_reader &text, text_piece_reader & word, prob_weight & prob) {
                                 //There should be some text left it it is an M-gram
                                 if (text.has_more()) {
                                     //First read text until the first tab, it should be present if it is a uni-gram line
@@ -129,7 +129,7 @@ namespace uva {
                             typename TAddGramFunct<WordIndexType>::func m_add_garm_func;
 
                             //The temporary storage for read pieces of text
-                            TextPieceReader m_token;
+                            text_piece_reader m_token;
 
                             //This is the N-Gram container to store the parsed N-gram data
                             model_m_gram m_m_gram;
@@ -143,7 +143,7 @@ namespace uva {
                              * @param line the piece of text to parse into the M-gram
                              * @return true if the line has been successfully parsed
                              */
-                            bool parse_to_gram(TextPieceReader & line);
+                            bool parse_to_gram(text_piece_reader & line);
 
                             /**
                              * The copy constructor

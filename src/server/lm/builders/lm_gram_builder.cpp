@@ -73,7 +73,7 @@ namespace uva {
                         }
 
                         template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
-                        bool lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::parse_to_gram(TextPieceReader &line) {
+                        bool lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::parse_to_gram(text_piece_reader &line) {
                             //Read the first element until the tab, we read until the tab because it should be the probability
                             if (line.get_first_tab(m_token)) {
                                 //Try to parse the probability to float
@@ -154,7 +154,7 @@ namespace uva {
                         }
 
                         template<typename WordIndexType, phrase_length CURR_LEVEL, bool is_mult_weight>
-                        bool lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::parse_line(TextPieceReader & line) {
+                        bool lm_gram_builder<WordIndexType, CURR_LEVEL, is_mult_weight>::parse_line(text_piece_reader & line) {
                             LOG_DEBUG << "Processing the " << CURR_LEVEL << "-Gram (?) line: '" << line << "'" << END_LOG;
                             //We expect a good input, so the result is set to false by default.
                             bool result = false;

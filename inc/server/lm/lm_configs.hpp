@@ -70,7 +70,7 @@ namespace uva {
                     typedef H2DMapTrie<lm_word_index> lm_model_type;
 
                     //Define the builder type 
-                    typedef lm_basic_builder<lm_model_type, CStyleFileReader> lm_builder_type;
+                    typedef lm_basic_builder<lm_model_type, cstyle_file_reader> lm_builder_type;
                 }
             }
         }

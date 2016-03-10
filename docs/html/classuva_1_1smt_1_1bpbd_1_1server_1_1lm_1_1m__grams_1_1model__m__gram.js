@@ -3,7 +3,7 @@ var classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram =
     [ "BASE", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram.html#a4089a31decb5c2b1afe81e02043543c7", null ],
     [ "model_m_gram", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram.html#a8a567c654f739ce36458ee07f2f279fd", null ],
     [ "get_hash", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram.html#a9b5d37949aac6cab2e914d2ba430b5b5", null ],
-    [ "get_next_new_token", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram.html#a5c923cb716c8ae1cc80d960a82d025ac", null ],
+    [ "get_next_new_token", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram.html#a60ee2deb3db4eef86abb1ff51caf5d46", null ],
     [ "is_unk_unigram", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram.html#ac77c4bc9c53fbdbb9cfcd0f2bdc1d391", null ],
     [ "prepare_for_adding", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram.html#aa4d16455853e9440de0f54749dcd73fd", null ],
     [ "start_new_m_gram", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram.html#ad9ee622d6f170d9b149b23f71fe95fdf", null ],

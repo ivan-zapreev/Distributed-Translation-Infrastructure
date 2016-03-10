@@ -1,9 +1,5 @@
 var searchData=
 [
-  ['keep_5falive',['keep_alive',['../classasio_1_1socket__base.html#a18672db1f78d0e0e58899e90100bf688',1,'asio::socket_base']]],
-  ['key_5ft',['key_t',['../class_i_n_i.html#acfa659efbac1eb0c62c1a910b0b09541',1,'INI']]],
-  ['key_5ftype',['key_type',['../classasio_1_1detail_1_1reactor__op__queue.html#ae750b96efe78afd9b508725eedcd6b8b',1,'asio::detail::reactor_op_queue']]],
-  ['keys_5ft',['keys_t',['../class_i_n_i.html#a4254e881abdbf891a408cb032e0d717d',1,'INI']]],
-  ['keysit_5ft',['keysit_t',['../class_i_n_i.html#ae33c58e217d5ee3fbc8cae737560ce53',1,'INI']]],
-  ['keyspair_5ft',['keyspair_t',['../class_i_n_i.html#a74debe5259e76d734b5376c99b0ba1c8',1,'INI']]]
+  ['m_5fgram_5fid_5ftype',['m_gram_id_type',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1phrase__base.html#a719fe3b2c7cc694329fa19e510dc0ced',1,'uva::smt::bpbd::server::lm::m_grams::phrase_base']]],
+  ['m_5fgram_5fpayload',['m_gram_payload',['../namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams.html#a1422aa6b3f3cb9377916d20e9bf16c0a',1,'uva::smt::bpbd::server::lm::m_grams']]]
 ];

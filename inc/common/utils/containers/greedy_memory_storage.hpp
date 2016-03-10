@@ -46,7 +46,7 @@ namespace uva {
              * This is the greedy memory storage class that in the first place
              * allocates some storage and then only grows it if more space is needed!
              */
-            class GreedyMemoryStorage {
+            class greedy_memory_storage {
             public:
 
                 //The data type used for data storage elements for the custom allocators
@@ -58,14 +58,14 @@ namespace uva {
                 /**
                  * The basic constructor
                  */
-                explicit GreedyMemoryStorage() {
+                explicit greedy_memory_storage() {
                 }
 
                 /**
                  * The basic constructor of the greedy storage.
                  * @param numBytes the number of bytes to pre-allocate the buffer for - the initial buffer capacity
                  */
-                explicit GreedyMemoryStorage(size_type numBytes) :
+                explicit greedy_memory_storage(size_type numBytes) :
                 _numBytes(numBytes),
                 _allocBytes(0) {
                     //Allocate the data buffer
@@ -82,17 +82,17 @@ namespace uva {
                 /**
                  * The copy constructor
                  */
-                GreedyMemoryStorage(const GreedyMemoryStorage& source) :
+                greedy_memory_storage(const greedy_memory_storage& source) :
                 _pBuffer(source._pBuffer),
                 _numBytes(source._numBytes),
                 _allocBytes(source._allocBytes) {
-                    throw Exception("The GreedyMemoryStorage is not to be copied!");
+                    throw uva_exception("The GreedyMemoryStorage is not to be copied!");
                 }
 
                 /**
                  * The basic destructor.
                  */
-                ~GreedyMemoryStorage() {
+                ~greedy_memory_storage() {
                     //Deallocate the actual storage
                     for (std::vector<void*>::iterator it = _memoryBuffers.begin(); it != _memoryBuffers.end(); ++it) {
                         delete [] static_cast<TStorageData*> (*it);

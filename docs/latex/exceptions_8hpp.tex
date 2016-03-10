@@ -6,7 +6,7 @@
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{classuva_1_1utils_1_1exceptions_1_1_exception}{uva\+::utils\+::exceptions\+::\+Exception}
+class \hyperlink{classuva_1_1utils_1_1exceptions_1_1uva__exception}{uva\+::utils\+::exceptions\+::uva\+\_\+exception}
 \end{DoxyCompactItemize}
 \subsection*{Namespaces}
 \begin{DoxyCompactItemize}
@@ -81,14 +81,14 @@ Definition at line 63 of file exceptions.\+hpp.
 \begin{DoxyCode}
 \{ \(\backslash\)
     stringstream msg; \(\backslash\)
-    if (Logger::get\_reporting\_level() >= \hyperlink{namespaceuva_1_1utils_1_1logging_afe529dbf8d7fef2c75698798ec3e65e7a3c1c367d3f40af1f3ce253d2f9b4286f}{DebugLevelsEnum::INFO3}) \{ \(\backslash\)
+    if (logger::get\_reporting\_level() >= \hyperlink{namespaceuva_1_1utils_1_1logging_ab570eadc941242827b7432ab5b7d9053a3c1c367d3f40af1f3ce253d2f9b4286f}{debug\_levels\_enum::INFO3}) \{ \(\backslash\)
         msg << \hyperlink{logger_8hpp_a5fccb4fc71e44089a1b1a77fc76c0b68}{\_\_FILENAME\_\_} << \textcolor{stringliteral}{"::"} << \_\_FUNCTION\_\_ \(\backslash\)
-            << \textcolor{stringliteral}{"(...) "} << \_\_LINE\_\_ << \textcolor{stringliteral}{" : "} << (\hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5ea6b65f28626b19b2eef447744c564e727}{text}); \(\backslash\)
+            << \textcolor{stringliteral}{"(...) "} << \_\_LINE\_\_ << \textcolor{stringliteral}{" : "} << (text); \(\backslash\)
     \} \textcolor{keywordflow}{else} \{ \(\backslash\)
-        msg << \hyperlink{logger_8hpp_a5fccb4fc71e44089a1b1a77fc76c0b68}{\_\_FILENAME\_\_} << \textcolor{stringliteral}{": "} << (\hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5ea6b65f28626b19b2eef447744c564e727}{text}); \(\backslash\)
+        msg << \hyperlink{logger_8hpp_a5fccb4fc71e44089a1b1a77fc76c0b68}{\_\_FILENAME\_\_} << \textcolor{stringliteral}{": "} << (text); \(\backslash\)
     \} \(\backslash\)
     LOG\_DEBUG << \textcolor{stringliteral}{"<THROWING> "} << msg.str() << \hyperlink{logger_8hpp_a80f2223fb302398deb65324a1543b8db}{END\_LOG}; \(\backslash\)
-    throw Exception(msg.str()); \(\backslash\)
+    throw uva\_exception(msg.str()); \(\backslash\)
 \}
 \end{DoxyCode}
 

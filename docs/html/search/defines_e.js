@@ -1,13 +1,13 @@
 var searchData=
 [
-  ['reenter',['reenter',['../yield_8hpp.html#a845826f234aec2b016cac4e60aff9bb5',1,'yield.hpp']]],
-  ['remaining_5fbit_5fidx',['REMAINING_BIT_IDX',['../math__utils_8hpp.html#a20af5a9dc33935882c0d7f2c64e23556',1,'math_utils.hpp']]],
-  ['report_5fcollision_5fwarning',['REPORT_COLLISION_WARNING',['../generic__trie__base_8hpp.html#aff304331a07b4be71f28da2444145026',1,'generic_trie_base.hpp']]],
-  ['result_5fcanceled_5fstr',['RESULT_CANCELED_STR',['../trans__job__code_8cpp.html#a67936d79dd16dc6328b84d25941dfc0a',1,'trans_job_code.cpp']]],
-  ['result_5ferror_5fstr',['RESULT_ERROR_STR',['../trans__job__code_8cpp.html#a69114c810c8d3cc6322d545e53618ff0',1,'trans_job_code.cpp']]],
-  ['result_5fok_5fstr',['RESULT_OK_STR',['../trans__job__code_8cpp.html#a1641f7aa71e60468d429033b0d8b71e1',1,'trans_job_code.cpp']]],
-  ['result_5fparam_5fvalue',['RESULT_PARAM_VALUE',['../logger_8hpp.html#ab0b859af554a2a951c6beee845c34777',1,'logger.hpp']]],
-  ['result_5fpartial_5fstr',['RESULT_PARTIAL_STR',['../trans__job__code_8cpp.html#aad5365b5f1343d30b18b7c340e8d893b',1,'trans_job_code.cpp']]],
-  ['result_5fundefined_5fstr',['RESULT_UNDEFINED_STR',['../trans__job__code_8cpp.html#a8f8ce07826660aae5ed88486916217d3',1,'trans_job_code.cpp']]],
-  ['result_5funknown_5fstr',['RESULT_UNKNOWN_STR',['../trans__job__code_8cpp.html#a671bb357e6c3567c99379a981d8b28a7',1,'trans_job_code.cpp']]]
+  ['safe_5fdestroy',['SAFE_DESTROY',['../main_8hpp.html#a1331abd62b3e08547baab298651cb8c2',1,'main.hpp']]],
+  ['sstr',['SSTR',['../logger_8hpp.html#a0d2f37137ee1fd6ff4a0ef803849dd63',1,'logger.hpp']]],
+  ['status_5freq_5finitialized_5fstr',['STATUS_REQ_INITIALIZED_STR',['../trans__job__status_8cpp.html#a57a00ad3e8a3776143c3e2de65f2aaed',1,'trans_job_status.cpp']]],
+  ['status_5freq_5fsent_5ffail_5fstr',['STATUS_REQ_SENT_FAIL_STR',['../trans__job__status_8cpp.html#a85fc8d01fa09b3408aed326ca70a5f7d',1,'trans_job_status.cpp']]],
+  ['status_5freq_5fsent_5fgood_5fstr',['STATUS_REQ_SENT_GOOD_STR',['../trans__job__status_8cpp.html#a29e31a0f20482a272cd18f044c081b48',1,'trans_job_status.cpp']]],
+  ['status_5fres_5freceived_5fstr',['STATUS_RES_RECEIVED_STR',['../trans__job__status_8cpp.html#a491ede1d7e4c338104d25ebf92ccbf88',1,'trans_job_status.cpp']]],
+  ['status_5fundefined_5fstr',['STATUS_UNDEFINED_STR',['../trans__job__status_8cpp.html#aac018516de9ba3b3310a049f51117a91',1,'trans_job_status.cpp']]],
+  ['status_5funknown_5fstr',['STATUS_UNKNOWN_STR',['../trans__job__status_8cpp.html#af544f4a25eb9f08568fd44f6402502ff',1,'trans_job_status.cpp']]],
+  ['stringize',['STRINGIZE',['../logger_8hpp.html#a3428692efe6051ef30016ffde1a9f7bb',1,'logger.hpp']]],
+  ['stringize2',['STRINGIZE2',['../logger_8hpp.html#a07adf97daf307190d143f32b213f2dad',1,'logger.hpp']]]
 ];

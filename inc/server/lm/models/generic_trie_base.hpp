@@ -161,7 +161,7 @@ namespace uva {
                             if (NEEDS_BITMAP_HASH_CACHE) {
                                 for (size_t idx = 0; idx < NUM_M_N_GRAM_LEVELS; ++idx) {
                                     m_bitmap_hash_cach[idx].pre_allocate(counts[idx + 1], BITMAP_HASH_CACHE_BUCKETS_FACTOR);
-                                    Logger::update_progress_bar();
+                                    logger::update_progress_bar();
                                 }
                             }
                         }

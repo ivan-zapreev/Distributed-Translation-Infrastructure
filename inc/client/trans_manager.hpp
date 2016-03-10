@@ -397,7 +397,7 @@ namespace uva {
                                 m_client.send(data->m_request);
                                 //Mark the job sending as good in the administration
                                 data->m_status = trans_job_status::STATUS_REQ_SENT_GOOD;
-                            } catch (Exception e) {
+                            } catch (uva_exception e) {
                                 //Log the error message
                                 LOG_ERROR << "Error when sending a translation request "
                                         << data->m_request->get_job_id() << ": "
@@ -441,7 +441,7 @@ namespace uva {
                     translation_client m_client;
 
                     //Stores the source text
-                    CStyleFileReader m_source_file;
+                    cstyle_file_reader m_source_file;
 
                     //Stores the list of the translation job objects in the
                     //same order as they were created from the input file
@@ -478,7 +478,7 @@ namespace uva {
                      */
                     void create_translation_jobs() {
                         //Declare the variable to store the sentence line
-                        TextPieceReader line;
+                        text_piece_reader line;
 
                         LOG_DEBUG << "Reading text from the source file ..." << END_LOG;
                         bool is_done = false;

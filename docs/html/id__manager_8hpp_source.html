@@ -50,7 +50,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -140,7 +139,7 @@ $(document).ready(function(){initNavTree('id__manager_8hpp_source.html','');});
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifndef SYNCHRONIZED_ID_MANAGER_HPP</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define SYNCHRONIZED_ID_MANAGER_HPP</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="websocketpp_2common_2thread_8hpp.html">websocketpp/common/thread.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;websocketpp/common/thread.hpp&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceuva.html">uva</a> {</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">namespace </span>smt {</div>
@@ -172,7 +171,7 @@ $(document).ready(function(){initNavTree('id__manager_8hpp_source.html','');});
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                        <span class="comment">//Stores the next id to be used</span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                        uint32_t m_next_id;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                        <span class="comment">//Stores the synchronization mutex for issuing new ids</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                        <a class="code" href="namespaceasio_1_1detail.html#a5740d9cd098ece66556d1e8644cf3060">websocketpp::lib::mutex</a> m_lock_id;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                        websocketpp::lib::mutex m_lock_id;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                    };</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                }</div>
@@ -185,13 +184,11 @@ $(document).ready(function(){initNavTree('id__manager_8hpp_source.html','');});
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SYNCHRONIZED_ID_MANAGER_HPP */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
 <div class="ttc" id="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1id__manager_html_ab1d5aaded757f7a949a9a72738d880fb"><div class="ttname"><a href="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1id__manager.html#ab1d5aaded757f7a949a9a72738d880fb">uva::smt::bpbd::common::messaging::id_manager::get_next_id</a></div><div class="ttdeci">uint32_t get_next_id()</div><div class="ttdef"><b>Definition:</b> <a href="id__manager_8hpp_source.html#l00062">id_manager.hpp:62</a></div></div>
-<div class="ttc" id="namespaceasio_1_1detail_html_a5740d9cd098ece66556d1e8644cf3060"><div class="ttname"><a href="namespaceasio_1_1detail.html#a5740d9cd098ece66556d1e8644cf3060">asio::detail::mutex</a></div><div class="ttdeci">null_mutex mutex</div><div class="ttdef"><b>Definition:</b> <a href="mutex_8hpp_source.html#l00036">mutex.hpp:36</a></div></div>
 <div class="ttc" id="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1id__manager_html_a393d90137186010617fe08c58a800c87"><div class="ttname"><a href="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1id__manager.html#a393d90137186010617fe08c58a800c87">uva::smt::bpbd::common::messaging::id_manager::id_manager</a></div><div class="ttdeci">id_manager(const id_type min_id)</div><div class="ttdef"><b>Definition:</b> <a href="id__manager_8hpp_source.html#l00054">id_manager.hpp:54</a></div></div>
 <div class="ttc" id="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1id__manager_html_aafd78a96c08b99a2d2ad36d75cfcb7e9"><div class="ttname"><a href="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1id__manager.html#aafd78a96c08b99a2d2ad36d75cfcb7e9">uva::smt::bpbd::common::messaging::id_manager::scoped_lock</a></div><div class="ttdeci">websocketpp::lib::lock_guard&lt; websocketpp::lib::mutex &gt; scoped_lock</div><div class="ttdef"><b>Definition:</b> <a href="id__manager_8hpp_source.html#l00045">id_manager.hpp:45</a></div></div>
 <div class="ttc" id="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1id__manager_html"><div class="ttname"><a href="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1id__manager.html">uva::smt::bpbd::common::messaging::id_manager</a></div><div class="ttdef"><b>Definition:</b> <a href="id__manager_8hpp_source.html#l00043">id_manager.hpp:43</a></div></div>
 <div class="ttc" id="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1id__manager_html_ac54860dad06da844e94ec196905ee4d0"><div class="ttname"><a href="classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1id__manager.html#ac54860dad06da844e94ec196905ee4d0">uva::smt::bpbd::common::messaging::id_manager::get_min_id</a></div><div class="ttdeci">const id_type &amp; get_min_id() const </div><div class="ttdef"><b>Definition:</b> <a href="id__manager_8hpp_source.html#l00072">id_manager.hpp:72</a></div></div>
 <div class="ttc" id="namespaceuva_html"><div class="ttname"><a href="namespaceuva.html">uva</a></div><div class="ttdef"><b>Definition:</b> <a href="client__config_8hpp_source.html#l00029">client_config.hpp:29</a></div></div>
-<div class="ttc" id="websocketpp_2common_2thread_8hpp_html"><div class="ttname"><a href="websocketpp_2common_2thread_8hpp.html">thread.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -90,11 +90,11 @@ namespace uva {
                          */
                         void de_serialize(const string & message) {
                             //Initialize the reader
-                            TextPieceReader reader(message.c_str(), message.length());
+                            text_piece_reader reader(message.c_str(), message.length());
                             LOG_DEBUG1 << "De-serializing request message: '" << reader.str() << "'" << END_LOG;
 
                             //The text will contain the read text from the reader
-                            TextPieceReader text;
+                            text_piece_reader text;
 
                             //First get the job id
                             if (reader.get_first<HEADER_DELIMITER>(text)) {

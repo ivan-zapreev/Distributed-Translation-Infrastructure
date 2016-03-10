@@ -1,5 +1,5 @@
 /* 
- * File:   Exceptions.hpp
+ * File:   exceptions.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -43,14 +43,14 @@ namespace uva {
 
 #define THROW_EXCEPTION(text) { \
     stringstream msg; \
-    if (Logger::get_reporting_level() >= DebugLevelsEnum::INFO3) { \
+    if (logger::get_reporting_level() >= debug_levels_enum::INFO3) { \
         msg << __FILENAME__ << "::" << __FUNCTION__ \
             << "(...) " << __LINE__ << " : " << (text); \
     } else { \
         msg << __FILENAME__ << ": " << (text); \
     } \
     LOG_DEBUG << "<THROWING> " << msg.str() << END_LOG; \
-    throw Exception(msg.str()); \
+    throw uva_exception(msg.str()); \
 }
             
 #define THROW_MUST_OVERRIDE() THROW_EXCEPTION("Must be overridden in the sub class!")
@@ -66,24 +66,24 @@ ASSERT_CONDITION_THROW(DO_SANITY_CHECKS && (CONDITION), MESSAGE);
             /**
              * This is an application exception class that is capable of storing an error message
              */
-            class Exception : public exception {
+            class uva_exception : public exception {
             private:
                 //The error message to be stored
                 string msg;
 
             public:
 
-                explicit Exception(const char * message) : exception(), msg(message) {
+                explicit uva_exception(const char * message) : exception(), msg(message) {
                 }
 
-                explicit Exception(const string &message) : exception(), msg(message) {
+                explicit uva_exception(const string &message) : exception(), msg(message) {
                 }
 
                 /**
                  * The copy constructor
                  * @param other the other exception to copy from
                  */
-                Exception(Exception const & other) {
+                uva_exception(uva_exception const & other) {
                     this->msg = other.msg;
                 }
 
@@ -98,7 +98,7 @@ ASSERT_CONDITION_THROW(DO_SANITY_CHECKS && (CONDITION), MESSAGE);
                 /** Destructor.
                  * Virtual to allow for subclassing.
                  */
-                virtual ~Exception() throw () {
+                virtual ~uva_exception() throw () {
                 }
 
                 /** Returns a pointer to the (constant) error description.

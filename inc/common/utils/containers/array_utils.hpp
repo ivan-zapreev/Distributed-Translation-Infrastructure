@@ -298,7 +298,7 @@ namespace uva {
                         msg << "Impossible binary search parameters, l_idx = "
                                 << SSTR(l_idx) << ", u_idx = "
                                 << SSTR(u_idx) << "!";
-                        throw Exception(msg.str());
+                        throw uva_exception(msg.str());
                     }
 
                     //Do the binary search
@@ -429,7 +429,7 @@ namespace uva {
                 inline bool is_less(const ELEM_TYPE & first, const ELEM_TYPE & second) {
                     if (IS_PROGRESS) {
                         //Update the progress bar status
-                        Logger::update_progress_bar();
+                        logger::update_progress_bar();
                     }
                     //Return the result
                     return (first < second);

@@ -1,32 +1,4 @@
 var searchData=
 [
-  ['element_5fdealloc_5ffunc',['ELEMENT_DEALLOC_FUNC',['../structuva_1_1utils_1_1containers_1_1_e_l_e_m_e_n_t___d_e_a_l_l_o_c___f_u_n_c.html',1,'uva::utils::containers']]],
-  ['elevel',['elevel',['../structwebsocketpp_1_1log_1_1elevel.html',1,'websocketpp::log']]],
-  ['enable_5fif',['enable_if',['../structasio_1_1enable__if.html',1,'asio']]],
-  ['enable_5fif_3c_20is_5fconvertible_3c_20protocol_2c_20protocol1_20_3e_3a_3avalue_20_3e',['enable_if&lt; is_convertible&lt; Protocol, Protocol1 &gt;::value &gt;',['../structasio_1_1enable__if.html',1,'asio']]],
-  ['enabled',['enabled',['../classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1enabled.html',1,'websocketpp::extensions::permessage_deflate']]],
-  ['endpoint',['endpoint',['../classwebsocketpp_1_1endpoint.html',1,'websocketpp']]],
-  ['endpoint',['endpoint',['../classwebsocketpp_1_1transport_1_1asio_1_1endpoint.html',1,'websocketpp::transport::asio']]],
-  ['endpoint',['endpoint',['../classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1endpoint.html',1,'websocketpp::transport::asio::basic_socket']]],
-  ['endpoint',['endpoint',['../classwebsocketpp_1_1transport_1_1asio_1_1tls__socket_1_1endpoint.html',1,'websocketpp::transport::asio::tls_socket']]],
-  ['endpoint',['endpoint',['../classasio_1_1ip_1_1detail_1_1endpoint.html',1,'asio::ip::detail']]],
-  ['endpoint',['endpoint',['../classwebsocketpp_1_1transport_1_1debug_1_1endpoint.html',1,'websocketpp::transport::debug']]],
-  ['endpoint',['endpoint',['../classwebsocketpp_1_1transport_1_1iostream_1_1endpoint.html',1,'websocketpp::transport::iostream']]],
-  ['endpoint',['endpoint',['../classasio_1_1generic_1_1detail_1_1endpoint.html',1,'asio::generic::detail']]],
-  ['endpoint',['endpoint',['../classwebsocketpp_1_1transport_1_1stub_1_1endpoint.html',1,'websocketpp::transport::stub']]],
-  ['endpoint_3c_20connection_3c_20config_20_3e_2c_20config_20_3e',['endpoint&lt; connection&lt; config &gt;, config &gt;',['../classwebsocketpp_1_1endpoint.html',1,'websocketpp']]],
-  ['endpoint_3c_20connection_3c_20websocketpp_3a_3aconfig_3a_3aasio_20_3e_2c_20websocketpp_3a_3aconfig_3a_3aasio_20_3e',['endpoint&lt; connection&lt; websocketpp::config::asio &gt;, websocketpp::config::asio &gt;',['../classwebsocketpp_1_1endpoint.html',1,'websocketpp']]],
-  ['endpoint_3c_20connection_3c_20websocketpp_3a_3aconfig_3a_3aasio_5fclient_20_3e_2c_20websocketpp_3a_3aconfig_3a_3aasio_5fclient_20_3e',['endpoint&lt; connection&lt; websocketpp::config::asio_client &gt;, websocketpp::config::asio_client &gt;',['../classwebsocketpp_1_1endpoint.html',1,'websocketpp']]],
-  ['endpoint_5fbase',['endpoint_base',['../classwebsocketpp_1_1endpoint__base.html',1,'websocketpp']]],
-  ['endpoint_5fmsg_5fmanager',['endpoint_msg_manager',['../classwebsocketpp_1_1message__buffer_1_1pool_1_1endpoint__msg__manager.html',1,'websocketpp::message_buffer::pool']]],
-  ['endpoint_5fmsg_5fmanager',['endpoint_msg_manager',['../classwebsocketpp_1_1message__buffer_1_1alloc_1_1endpoint__msg__manager.html',1,'websocketpp::message_buffer::alloc']]],
-  ['engine',['engine',['../classasio_1_1ssl_1_1detail_1_1engine.html',1,'asio::ssl::detail']]],
-  ['error_5fcategory',['error_category',['../classasio_1_1error__category.html',1,'asio']]],
-  ['error_5fcode',['error_code',['../classasio_1_1error__code.html',1,'asio']]],
-  ['evp_5fpkey_5fcleanup',['evp_pkey_cleanup',['../structasio_1_1ssl_1_1context_1_1evp__pkey__cleanup.html',1,'asio::ssl::context']]],
-  ['exception',['exception',['../classwebsocketpp_1_1exception.html',1,'websocketpp']]],
-  ['exception',['Exception',['../classuva_1_1utils_1_1exceptions_1_1_exception.html',1,'uva::utils::exceptions']]],
-  ['exception',['exception',['../classwebsocketpp_1_1http_1_1exception.html',1,'websocketpp::http']]],
-  ['exitexception',['ExitException',['../class_t_c_l_a_p_1_1_exit_exception.html',1,'TCLAP']]],
-  ['extended_5fheader',['extended_header',['../structwebsocketpp_1_1frame_1_1extended__header.html',1,'websocketpp::frame']]]
+  ['element_5fdealloc_5ffunc',['ELEMENT_DEALLOC_FUNC',['../structuva_1_1utils_1_1containers_1_1_e_l_e_m_e_n_t___d_e_a_l_l_o_c___f_u_n_c.html',1,'uva::utils::containers']]]
 ];

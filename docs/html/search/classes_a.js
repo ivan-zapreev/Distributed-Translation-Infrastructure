@@ -2,22 +2,9 @@ var searchData=
 [
   ['m_5fgram_5fpayload_5fs',['m_gram_payload_s',['../structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__payload__s.html',1,'uva::smt::bpbd::server::lm::m_grams']]],
   ['m_5fgram_5fquery',['m_gram_query',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__gram__query.html',1,'uva::smt::bpbd::server::lm']]],
-  ['mapped_5ftype',['mapped_type',['../structasio_1_1detail_1_1reactor__op__queue_1_1mapped__type.html',1,'asio::detail::reactor_op_queue']]],
-  ['md5_5fstate_5fs',['md5_state_s',['../structwebsocketpp_1_1md5_1_1md5__state__s.html',1,'websocketpp::md5']]],
-  ['memincreasestrategy',['MemIncreaseStrategy',['../classuva_1_1utils_1_1containers_1_1_mem_increase_strategy.html',1,'uva::utils::containers']]],
-  ['memorymappedfilereader',['MemoryMappedFileReader',['../classuva_1_1utils_1_1file_1_1_memory_mapped_file_reader.html',1,'uva::utils::file']]],
-  ['message',['message',['../classwebsocketpp_1_1message__buffer_1_1message.html',1,'websocketpp::message_buffer']]],
-  ['minimal_5fserver',['minimal_server',['../structwebsocketpp_1_1config_1_1minimal__server.html',1,'websocketpp::config']]],
-  ['misc_5fcategory',['misc_category',['../classasio_1_1error_1_1detail_1_1misc__category.html',1,'asio::error::detail']]],
+  ['mem_5fincrease_5fstrategy',['mem_increase_strategy',['../classuva_1_1utils_1_1containers_1_1mem__increase__strategy.html',1,'uva::utils::containers']]],
+  ['memory_5fmapped_5ffile_5freader',['memory_mapped_file_reader',['../classuva_1_1utils_1_1file_1_1memory__mapped__file__reader.html',1,'uva::utils::file']]],
+  ['memory_5fusage',['memory_usage',['../structuva_1_1utils_1_1monitore_1_1memory__usage.html',1,'uva::utils::monitore']]],
   ['model_5fm_5fgram',['model_m_gram',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram.html',1,'uva::smt::bpbd::server::lm::m_grams']]],
-  ['msg_5fmetadata',['msg_metadata',['../structwebsocketpp_1_1processor_1_1hybi13_1_1msg__metadata.html',1,'websocketpp::processor::hybi13']]],
-  ['multi_5fstack',['multi_stack',['../classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1multi__stack.html',1,'uva::smt::bpbd::server::decoder::stack']]],
-  ['multiarg',['MultiArg',['../class_t_c_l_a_p_1_1_multi_arg.html',1,'TCLAP']]],
-  ['multicast_5fenable_5floopback',['multicast_enable_loopback',['../classasio_1_1ip_1_1detail_1_1socket__option_1_1multicast__enable__loopback.html',1,'asio::ip::detail::socket_option']]],
-  ['multicast_5fhops',['multicast_hops',['../classasio_1_1ip_1_1detail_1_1socket__option_1_1multicast__hops.html',1,'asio::ip::detail::socket_option']]],
-  ['multicast_5frequest',['multicast_request',['../classasio_1_1ip_1_1detail_1_1socket__option_1_1multicast__request.html',1,'asio::ip::detail::socket_option']]],
-  ['multiswitcharg',['MultiSwitchArg',['../class_t_c_l_a_p_1_1_multi_switch_arg.html',1,'TCLAP']]],
-  ['mutable_5fbuffer',['mutable_buffer',['../classasio_1_1mutable__buffer.html',1,'asio']]],
-  ['mutable_5fbuffers_5f1',['mutable_buffers_1',['../classasio_1_1mutable__buffers__1.html',1,'asio']]],
-  ['my_5fequal',['my_equal',['../structwebsocketpp_1_1utility_1_1my__equal.html',1,'websocketpp::utility']]]
+  ['multi_5fstack',['multi_stack',['../classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1multi__stack.html',1,'uva::smt::bpbd::server::decoder::stack']]]
 ];

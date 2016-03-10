@@ -1,6 +1,6 @@
 var exceptions_8hpp =
 [
-    [ "Exception", "classuva_1_1utils_1_1exceptions_1_1_exception.html", "classuva_1_1utils_1_1exceptions_1_1_exception" ],
+    [ "uva_exception", "classuva_1_1utils_1_1exceptions_1_1uva__exception.html", "classuva_1_1utils_1_1exceptions_1_1uva__exception" ],
     [ "ASSERT_CONDITION_THROW", "exceptions_8hpp.html#a7cbdcc40e072e9104a2d56c864528443", null ],
     [ "ASSERT_SANITY_THROW", "exceptions_8hpp.html#a6da7c6aba7d6422f70b6b1597f38e143", null ],
     [ "THROW_EXCEPTION", "exceptions_8hpp.html#af0cef80fd59702870671c5b0aff6308d", null ],

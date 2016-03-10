@@ -81,7 +81,7 @@ namespace uva {
                              * @param num_words [out] the number of words to be set
                              * @param word_ids [out] the words ids to be set
                              */
-                            virtual void get_word_ids(TextPieceReader phrase, phrase_length & num_words,
+                            virtual void get_word_ids(text_piece_reader phrase, phrase_length & num_words,
                                     word_uid word_ids[tm::TM_MAX_TARGET_PHRASE_LEN]) const = 0;
 
                             /**

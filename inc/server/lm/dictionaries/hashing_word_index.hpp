@@ -86,7 +86,7 @@ namespace uva {
                              * The returned word id is >= MIN_KNOWN_WORD_ID
                              * @see AWordIndex
                              */
-                            inline word_uid get_word_id(const TextPieceReader & token) const {
+                            inline word_uid get_word_id(const text_piece_reader & token) const {
                                 //Return the word index making sure that it is at least
                                 //equal to two. So that the undefined and unknown word
                                 //indexes are not used and no overflow or other checks.
@@ -108,7 +108,7 @@ namespace uva {
                              * The word registration is not needed, for this word index.
                              * @see AWordIndex
                              */
-                            inline word_uid register_word(const TextPieceReader & token) {
+                            inline word_uid register_word(const text_piece_reader & token) {
                                 THROW_MUST_NOT_CALL();
                             };
 
