@@ -1,0 +1,144 @@
+\hypertarget{classasio_1_1detail_1_1consuming__buffers}{}\section{asio\+:\+:detail\+:\+:consuming\+\_\+buffers$<$ Buffer, Buffers $>$ Class Template Reference}
+\label{classasio_1_1detail_1_1consuming__buffers}\index{asio\+::detail\+::consuming\+\_\+buffers$<$ Buffer, Buffers $>$@{asio\+::detail\+::consuming\+\_\+buffers$<$ Buffer, Buffers $>$}}
+
+
+{\ttfamily \#include $<$consuming\+\_\+buffers.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Buffer \hyperlink{classasio_1_1detail_1_1consuming__buffers_a3063fd648bf703fb9c861db934f61ed5}{value\+\_\+type}
+\item 
+typedef \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator}{consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, typename Buffers\+::const\+\_\+iterator $>$ \hyperlink{classasio_1_1detail_1_1consuming__buffers_a0abc4cc4aed2717a1de4b38d78f3d525}{const\+\_\+iterator}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1detail_1_1consuming__buffers_a341db3b10600a97331d79989a0fce056}{consuming\+\_\+buffers} (const Buffers \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers})
+\item 
+\hyperlink{classasio_1_1detail_1_1consuming__buffers_ad69056f3f2a85dbe502043701bb50b50}{consuming\+\_\+buffers} (const \hyperlink{classasio_1_1detail_1_1consuming__buffers}{consuming\+\_\+buffers} \&other)
+\item 
+\hyperlink{classasio_1_1detail_1_1consuming__buffers}{consuming\+\_\+buffers} \& \hyperlink{classasio_1_1detail_1_1consuming__buffers_aabd80b6bd5ea9ca825104c39c434512b}{operator=} (const \hyperlink{classasio_1_1detail_1_1consuming__buffers}{consuming\+\_\+buffers} \&other)
+\item 
+\hyperlink{classasio_1_1detail_1_1consuming__buffers_a0abc4cc4aed2717a1de4b38d78f3d525}{const\+\_\+iterator} \hyperlink{classasio_1_1detail_1_1consuming__buffers_a27a3ebd615b5c09d031a9dfd903c4d38}{begin} () const 
+\item 
+\hyperlink{classasio_1_1detail_1_1consuming__buffers_a0abc4cc4aed2717a1de4b38d78f3d525}{const\+\_\+iterator} \hyperlink{classasio_1_1detail_1_1consuming__buffers_af0b2734ba892215a6d6a69e973bc06d4}{end} () const 
+\item 
+void \hyperlink{classasio_1_1detail_1_1consuming__buffers_a5df95ce56da8fad7e548f51efdf0d976}{prepare} (std\+::size\+\_\+t max\+\_\+size)
+\item 
+void \hyperlink{classasio_1_1detail_1_1consuming__buffers_a0cbeff9a36e57806ae9ab88778d4d99e}{consume} (std\+::size\+\_\+t size)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Buffer, typename Buffers$>$class asio\+::detail\+::consuming\+\_\+buffers$<$ Buffer, Buffers $>$}
+
+
+
+Definition at line 155 of file consuming\+\_\+buffers.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1detail_1_1consuming__buffers_a0abc4cc4aed2717a1de4b38d78f3d525}{}\index{asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}!const\+\_\+iterator@{const\+\_\+iterator}}
+\index{const\+\_\+iterator@{const\+\_\+iterator}!asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}}
+\subsubsection[{const\+\_\+iterator}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer, typename Buffers$>$ typedef {\bf consuming\+\_\+buffers\+\_\+iterator}$<$Buffer, typename Buffers\+::const\+\_\+iterator$>$ {\bf asio\+::detail\+::consuming\+\_\+buffers}$<$ Buffer, Buffers $>$\+::{\bf const\+\_\+iterator}}\label{classasio_1_1detail_1_1consuming__buffers_a0abc4cc4aed2717a1de4b38d78f3d525}
+
+
+Definition at line 163 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers_a3063fd648bf703fb9c861db934f61ed5}{}\index{asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}!value\+\_\+type@{value\+\_\+type}}
+\index{value\+\_\+type@{value\+\_\+type}!asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}}
+\subsubsection[{value\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer, typename Buffers$>$ typedef Buffer {\bf asio\+::detail\+::consuming\+\_\+buffers}$<$ Buffer, Buffers $>$\+::{\bf value\+\_\+type}}\label{classasio_1_1detail_1_1consuming__buffers_a3063fd648bf703fb9c861db934f61ed5}
+
+
+Definition at line 159 of file consuming\+\_\+buffers.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1consuming__buffers_a341db3b10600a97331d79989a0fce056}{}\index{asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}!consuming\+\_\+buffers@{consuming\+\_\+buffers}}
+\index{consuming\+\_\+buffers@{consuming\+\_\+buffers}!asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}}
+\subsubsection[{consuming\+\_\+buffers(const Buffers \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer, typename Buffers$>$ {\bf asio\+::detail\+::consuming\+\_\+buffers}$<$ Buffer, Buffers $>$\+::{\bf consuming\+\_\+buffers} (
+\begin{DoxyParamCaption}
+\item[{const Buffers \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers_a341db3b10600a97331d79989a0fce056}
+
+
+Definition at line 166 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers_ad69056f3f2a85dbe502043701bb50b50}{}\index{asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}!consuming\+\_\+buffers@{consuming\+\_\+buffers}}
+\index{consuming\+\_\+buffers@{consuming\+\_\+buffers}!asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}}
+\subsubsection[{consuming\+\_\+buffers(const consuming\+\_\+buffers \&other)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer, typename Buffers$>$ {\bf asio\+::detail\+::consuming\+\_\+buffers}$<$ Buffer, Buffers $>$\+::{\bf consuming\+\_\+buffers} (
+\begin{DoxyParamCaption}
+\item[{const {\bf consuming\+\_\+buffers}$<$ Buffer, Buffers $>$ \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers_ad69056f3f2a85dbe502043701bb50b50}
+
+
+Definition at line 180 of file consuming\+\_\+buffers.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1consuming__buffers_a27a3ebd615b5c09d031a9dfd903c4d38}{}\index{asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}!begin@{begin}}
+\index{begin@{begin}!asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}}
+\subsubsection[{begin() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer, typename Buffers$>$ {\bf const\+\_\+iterator} {\bf asio\+::detail\+::consuming\+\_\+buffers}$<$ Buffer, Buffers $>$\+::begin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers_a27a3ebd615b5c09d031a9dfd903c4d38}
+
+
+Definition at line 207 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers_a0cbeff9a36e57806ae9ab88778d4d99e}{}\index{asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}!consume@{consume}}
+\index{consume@{consume}!asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}}
+\subsubsection[{consume(std\+::size\+\_\+t size)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer, typename Buffers$>$ void {\bf asio\+::detail\+::consuming\+\_\+buffers}$<$ Buffer, Buffers $>$\+::consume (
+\begin{DoxyParamCaption}
+\item[{std\+::size\+\_\+t}]{size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers_a0cbeff9a36e57806ae9ab88778d4d99e}
+
+
+Definition at line 226 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers_af0b2734ba892215a6d6a69e973bc06d4}{}\index{asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}!end@{end}}
+\index{end@{end}!asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}}
+\subsubsection[{end() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer, typename Buffers$>$ {\bf const\+\_\+iterator} {\bf asio\+::detail\+::consuming\+\_\+buffers}$<$ Buffer, Buffers $>$\+::end (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers_af0b2734ba892215a6d6a69e973bc06d4}
+
+
+Definition at line 214 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers_aabd80b6bd5ea9ca825104c39c434512b}{}\index{asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}!operator=@{operator=}}
+\index{operator=@{operator=}!asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}}
+\subsubsection[{operator=(const consuming\+\_\+buffers \&other)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer, typename Buffers$>$ {\bf consuming\+\_\+buffers}\& {\bf asio\+::detail\+::consuming\+\_\+buffers}$<$ Buffer, Buffers $>$\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf consuming\+\_\+buffers}$<$ Buffer, Buffers $>$ \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers_aabd80b6bd5ea9ca825104c39c434512b}
+
+
+Definition at line 193 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers_a5df95ce56da8fad7e548f51efdf0d976}{}\index{asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}!prepare@{prepare}}
+\index{prepare@{prepare}!asio\+::detail\+::consuming\+\_\+buffers@{asio\+::detail\+::consuming\+\_\+buffers}}
+\subsubsection[{prepare(std\+::size\+\_\+t max\+\_\+size)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer, typename Buffers$>$ void {\bf asio\+::detail\+::consuming\+\_\+buffers}$<$ Buffer, Buffers $>$\+::prepare (
+\begin{DoxyParamCaption}
+\item[{std\+::size\+\_\+t}]{max\+\_\+size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers_a5df95ce56da8fad7e548f51efdf0d976}
+
+
+Definition at line 220 of file consuming\+\_\+buffers.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/detail/\hyperlink{consuming__buffers_8hpp}{consuming\+\_\+buffers.\+hpp}\end{DoxyCompactItemize}

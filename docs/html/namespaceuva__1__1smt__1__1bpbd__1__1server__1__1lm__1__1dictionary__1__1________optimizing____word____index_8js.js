@@ -1,0 +1,4 @@
+var namespaceuva__1__1smt__1__1bpbd__1__1server__1__1lm__1__1dictionary__1__1________optimizing____word____index_8js =
+[
+    [ "namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____optimizing__word__index", "namespaceuva__1__1smt__1__1bpbd__1__1server__1__1lm__1__1dictionary__1__1________optimizing____word____index_8js.html#a0204d7d140422a489bd998d4f5c0c60f", null ]
+];

@@ -1,0 +1,145 @@
+\hypertarget{class_t_c_l_a_p_1_1_xor_handler}{}\section{T\+C\+L\+A\+P\+:\+:Xor\+Handler Class Reference}
+\label{class_t_c_l_a_p_1_1_xor_handler}\index{T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}}
+
+
+{\ttfamily \#include $<$Xor\+Handler.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_xor_handler_a195391f50b7fe5eb939c2f6d236f571e}{Xor\+Handler} ()
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_xor_handler_a76f156bf36a8aede334801aa242f31b9}{add} (std\+::vector$<$ \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$ $>$ \&ors)
+\item 
+int \hyperlink{class_t_c_l_a_p_1_1_xor_handler_a3df7722e4c4c5d331de69fc902336b00}{check} (const \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$a)
+\item 
+std\+::string \hyperlink{class_t_c_l_a_p_1_1_xor_handler_aca185a80e9df6e4250a230fa5aec7891}{short\+Usage} ()
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_xor_handler_a257a855934eb343a0fad3c4e5fe5ff57}{print\+Long\+Usage} (std\+::ostream \&os)
+\item 
+bool \hyperlink{class_t_c_l_a_p_1_1_xor_handler_a1a74fab4667cc591a1e3094c91bc942d}{contains} (const \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$a)
+\item 
+std\+::vector$<$ std\+::vector$<$ \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$ $>$ $>$ \& \hyperlink{class_t_c_l_a_p_1_1_xor_handler_a0e0d95c697d227cc51f82424b8530182}{get\+Xor\+List} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::vector$<$ \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$ $>$ $>$ \hyperlink{class_t_c_l_a_p_1_1_xor_handler_a4ebd5b96e23a0ab03bdd431fe622d4e1}{\+\_\+or\+List}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class handles lists of \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}\textquotesingle{}s that are to be X\+O\+R\textquotesingle{}d on the command line. This is used by \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} and you shouldn\textquotesingle{}t ever use it. 
+
+Definition at line 38 of file Xor\+Handler.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_xor_handler_a195391f50b7fe5eb939c2f6d236f571e}{}\index{T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}!Xor\+Handler@{Xor\+Handler}}
+\index{Xor\+Handler@{Xor\+Handler}!T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}}
+\subsubsection[{Xor\+Handler()}]{\setlength{\rightskip}{0pt plus 5cm}T\+C\+L\+A\+P\+::\+Xor\+Handler\+::\+Xor\+Handler (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_xor_handler_a195391f50b7fe5eb939c2f6d236f571e}
+Constructor. Does nothing. 
+
+Definition at line 52 of file Xor\+Handler.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_xor_handler_a76f156bf36a8aede334801aa242f31b9}{}\index{T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}!add@{add}}
+\index{add@{add}!T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}}
+\subsubsection[{add(std\+::vector$<$ Arg $\ast$ $>$ \&ors)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Xor\+Handler\+::add (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Arg} $\ast$ $>$ \&}]{ors}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_xor_handler_a76f156bf36a8aede334801aa242f31b9}
+Add a list of Arg$\ast$\textquotesingle{}s that will be orred together. 
+\begin{DoxyParams}{Parameters}
+{\em ors} & -\/ list of Arg$\ast$ that will be xor\textquotesingle{}d. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 95 of file Xor\+Handler.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_xor_handler_a3df7722e4c4c5d331de69fc902336b00}{}\index{T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}!check@{check}}
+\index{check@{check}!T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}}
+\subsubsection[{check(const Arg $\ast$a)}]{\setlength{\rightskip}{0pt plus 5cm}int T\+C\+L\+A\+P\+::\+Xor\+Handler\+::check (
+\begin{DoxyParamCaption}
+\item[{const {\bf Arg} $\ast$}]{a}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_xor_handler_a3df7722e4c4c5d331de69fc902336b00}
+Checks whether the specified \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} is in one of the xor lists and if it does match one, returns the size of the xor list that the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} matched. If the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} matches, then it also sets the rest of the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}\textquotesingle{}s in the list. You shouldn\textquotesingle{}t use this. 
+\begin{DoxyParams}{Parameters}
+{\em a} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} to be checked. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 100 of file Xor\+Handler.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_xor_handler_a1a74fab4667cc591a1e3094c91bc942d}{}\index{T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}!contains@{contains}}
+\index{contains@{contains}!T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}}
+\subsubsection[{contains(const Arg $\ast$a)}]{\setlength{\rightskip}{0pt plus 5cm}bool T\+C\+L\+A\+P\+::\+Xor\+Handler\+::contains (
+\begin{DoxyParamCaption}
+\item[{const {\bf Arg} $\ast$}]{a}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_xor_handler_a1a74fab4667cc591a1e3094c91bc942d}
+Simply checks whether the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} is contained in one of the arg lists. 
+\begin{DoxyParams}{Parameters}
+{\em a} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} to be checked. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 141 of file Xor\+Handler.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_xor_handler_a0e0d95c697d227cc51f82424b8530182}{}\index{T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}!get\+Xor\+List@{get\+Xor\+List}}
+\index{get\+Xor\+List@{get\+Xor\+List}!T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}}
+\subsubsection[{get\+Xor\+List()}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$ std\+::vector$<$ {\bf Arg} $\ast$ $>$ $>$ \& T\+C\+L\+A\+P\+::\+Xor\+Handler\+::get\+Xor\+List (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_xor_handler_a0e0d95c697d227cc51f82424b8530182}
+
+
+Definition at line 153 of file Xor\+Handler.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_xor_handler_a257a855934eb343a0fad3c4e5fe5ff57}{}\index{T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}!print\+Long\+Usage@{print\+Long\+Usage}}
+\index{print\+Long\+Usage@{print\+Long\+Usage}!T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}}
+\subsubsection[{print\+Long\+Usage(std\+::ostream \&os)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Xor\+Handler\+::print\+Long\+Usage (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_xor_handler_a257a855934eb343a0fad3c4e5fe5ff57}
+Prints the X\+O\+R specific long usage. 
+\begin{DoxyParams}{Parameters}
+{\em os} & -\/ Stream to print to. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_t_c_l_a_p_1_1_xor_handler_aca185a80e9df6e4250a230fa5aec7891}{}\index{T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}!short\+Usage@{short\+Usage}}
+\index{short\+Usage@{short\+Usage}!T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}}
+\subsubsection[{short\+Usage()}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string T\+C\+L\+A\+P\+::\+Xor\+Handler\+::short\+Usage (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_xor_handler_aca185a80e9df6e4250a230fa5aec7891}
+Returns the X\+O\+R specific short usage. 
+
+\subsection{Member Data Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_xor_handler_a4ebd5b96e23a0ab03bdd431fe622d4e1}{}\index{T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}!\+\_\+or\+List@{\+\_\+or\+List}}
+\index{\+\_\+or\+List@{\+\_\+or\+List}!T\+C\+L\+A\+P\+::\+Xor\+Handler@{T\+C\+L\+A\+P\+::\+Xor\+Handler}}
+\subsubsection[{\+\_\+or\+List}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$ std\+::vector$<${\bf Arg}$\ast$$>$ $>$ T\+C\+L\+A\+P\+::\+Xor\+Handler\+::\+\_\+or\+List\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_xor_handler_a4ebd5b96e23a0ab03bdd431fe622d4e1}
+The list of of lists of \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}\textquotesingle{}s to be or\textquotesingle{}d together. 
+
+Definition at line 45 of file Xor\+Handler.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/tclap/\hyperlink{_xor_handler_8h}{Xor\+Handler.\+h}\end{DoxyCompactItemize}

@@ -1,0 +1,133 @@
+\hypertarget{namespacewebsocketpp_1_1md5}{}\section{websocketpp\+:\+:md5 Namespace Reference}
+\label{namespacewebsocketpp_1_1md5}\index{websocketpp\+::md5@{websocketpp\+::md5}}
+
+
+Provides M\+D5 hashing functionality.  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structwebsocketpp_1_1md5_1_1md5__state__s}{md5\+\_\+state\+\_\+s}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef unsigned char \hyperlink{namespacewebsocketpp_1_1md5_a0c434041715d244182207c3413e36e71}{md5\+\_\+byte\+\_\+t}
+\item 
+typedef unsigned int \hyperlink{namespacewebsocketpp_1_1md5_a0ece422ac11bb1332dcf342ced42ac96}{md5\+\_\+word\+\_\+t}
+\item 
+typedef struct \hyperlink{structwebsocketpp_1_1md5_1_1md5__state__s}{websocketpp\+::md5\+::md5\+\_\+state\+\_\+s} \hyperlink{namespacewebsocketpp_1_1md5_a4be84c20ee3f9d9c76d4e2f7befe2eff}{md5\+\_\+state\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespacewebsocketpp_1_1md5_a73499ae9912f813cdbb98d27b6487112}{md5\+\_\+init} (\hyperlink{namespacewebsocketpp_1_1md5_a4be84c20ee3f9d9c76d4e2f7befe2eff}{md5\+\_\+state\+\_\+t} $\ast$pms)
+\item 
+void \hyperlink{namespacewebsocketpp_1_1md5_afd827a71255e45a8293b9df13342ceb3}{md5\+\_\+append} (\hyperlink{namespacewebsocketpp_1_1md5_a4be84c20ee3f9d9c76d4e2f7befe2eff}{md5\+\_\+state\+\_\+t} $\ast$pms, \hyperlink{namespacewebsocketpp_1_1md5_a0c434041715d244182207c3413e36e71}{md5\+\_\+byte\+\_\+t} const $\ast$data, size\+\_\+t nbytes)
+\item 
+void \hyperlink{namespacewebsocketpp_1_1md5_a29e7adb892ae2de7d2c4853bc7ace034}{md5\+\_\+finish} (\hyperlink{namespacewebsocketpp_1_1md5_a4be84c20ee3f9d9c76d4e2f7befe2eff}{md5\+\_\+state\+\_\+t} $\ast$pms, \hyperlink{namespacewebsocketpp_1_1md5_a0c434041715d244182207c3413e36e71}{md5\+\_\+byte\+\_\+t} digest\mbox{[}16\mbox{]})
+\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1md5_ab445cdc2367665afb8fd4e983a354e0f}{md5\+\_\+hash\+\_\+string} (std\+::string const \&s)
+\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1md5_a9fbd05134b509739ff15175fe7104443}{md5\+\_\+hash\+\_\+hex} (std\+::string const \&input)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const char \hyperlink{namespacewebsocketpp_1_1md5_a6c9cff96cd43c87cb0fc47f7d641dac8}{hexval} \mbox{[}16\mbox{]} = \{\textquotesingle{}0\textquotesingle{}, \textquotesingle{}1\textquotesingle{}, \textquotesingle{}2\textquotesingle{}, \textquotesingle{}3\textquotesingle{}, \textquotesingle{}4\textquotesingle{}, \textquotesingle{}5\textquotesingle{}, \textquotesingle{}6\textquotesingle{}, \textquotesingle{}7\textquotesingle{}, \textquotesingle{}8\textquotesingle{}, \textquotesingle{}9\textquotesingle{}, \textquotesingle{}a\textquotesingle{}, \textquotesingle{}b\textquotesingle{}, \textquotesingle{}c\textquotesingle{}, \textquotesingle{}d\textquotesingle{}, \textquotesingle{}e\textquotesingle{}, \textquotesingle{}f\textquotesingle{}\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Provides M\+D5 hashing functionality. 
+
+\subsection{Typedef Documentation}
+\hypertarget{namespacewebsocketpp_1_1md5_a0c434041715d244182207c3413e36e71}{}\index{websocketpp\+::md5@{websocketpp\+::md5}!md5\+\_\+byte\+\_\+t@{md5\+\_\+byte\+\_\+t}}
+\index{md5\+\_\+byte\+\_\+t@{md5\+\_\+byte\+\_\+t}!websocketpp\+::md5@{websocketpp\+::md5}}
+\subsubsection[{md5\+\_\+byte\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned char {\bf websocketpp\+::md5\+::md5\+\_\+byte\+\_\+t}}\label{namespacewebsocketpp_1_1md5_a0c434041715d244182207c3413e36e71}
+
+
+Definition at line 78 of file md5.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1md5_a4be84c20ee3f9d9c76d4e2f7befe2eff}{}\index{websocketpp\+::md5@{websocketpp\+::md5}!md5\+\_\+state\+\_\+t@{md5\+\_\+state\+\_\+t}}
+\index{md5\+\_\+state\+\_\+t@{md5\+\_\+state\+\_\+t}!websocketpp\+::md5@{websocketpp\+::md5}}
+\subsubsection[{md5\+\_\+state\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf websocketpp\+::md5\+::md5\+\_\+state\+\_\+s}  {\bf websocketpp\+::md5\+::md5\+\_\+state\+\_\+t}}\label{namespacewebsocketpp_1_1md5_a4be84c20ee3f9d9c76d4e2f7befe2eff}
+\hypertarget{namespacewebsocketpp_1_1md5_a0ece422ac11bb1332dcf342ced42ac96}{}\index{websocketpp\+::md5@{websocketpp\+::md5}!md5\+\_\+word\+\_\+t@{md5\+\_\+word\+\_\+t}}
+\index{md5\+\_\+word\+\_\+t@{md5\+\_\+word\+\_\+t}!websocketpp\+::md5@{websocketpp\+::md5}}
+\subsubsection[{md5\+\_\+word\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned int {\bf websocketpp\+::md5\+::md5\+\_\+word\+\_\+t}}\label{namespacewebsocketpp_1_1md5_a0ece422ac11bb1332dcf342ced42ac96}
+
+
+Definition at line 79 of file md5.\+hpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{namespacewebsocketpp_1_1md5_afd827a71255e45a8293b9df13342ceb3}{}\index{websocketpp\+::md5@{websocketpp\+::md5}!md5\+\_\+append@{md5\+\_\+append}}
+\index{md5\+\_\+append@{md5\+\_\+append}!websocketpp\+::md5@{websocketpp\+::md5}}
+\subsubsection[{md5\+\_\+append(md5\+\_\+state\+\_\+t $\ast$pms, md5\+\_\+byte\+\_\+t const $\ast$data, size\+\_\+t nbytes)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::md5\+::md5\+\_\+append (
+\begin{DoxyParamCaption}
+\item[{{\bf md5\+\_\+state\+\_\+t} $\ast$}]{pms, }
+\item[{{\bf md5\+\_\+byte\+\_\+t} const $\ast$}]{data, }
+\item[{size\+\_\+t}]{nbytes}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1md5_afd827a71255e45a8293b9df13342ceb3}
+
+
+Definition at line 357 of file md5.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1md5_a29e7adb892ae2de7d2c4853bc7ace034}{}\index{websocketpp\+::md5@{websocketpp\+::md5}!md5\+\_\+finish@{md5\+\_\+finish}}
+\index{md5\+\_\+finish@{md5\+\_\+finish}!websocketpp\+::md5@{websocketpp\+::md5}}
+\subsubsection[{md5\+\_\+finish(md5\+\_\+state\+\_\+t $\ast$pms, md5\+\_\+byte\+\_\+t digest[16])}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::md5\+::md5\+\_\+finish (
+\begin{DoxyParamCaption}
+\item[{{\bf md5\+\_\+state\+\_\+t} $\ast$}]{pms, }
+\item[{{\bf md5\+\_\+byte\+\_\+t}}]{digest\mbox{[}16\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1md5_a29e7adb892ae2de7d2c4853bc7ace034}
+
+
+Definition at line 393 of file md5.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1md5_a9fbd05134b509739ff15175fe7104443}{}\index{websocketpp\+::md5@{websocketpp\+::md5}!md5\+\_\+hash\+\_\+hex@{md5\+\_\+hash\+\_\+hex}}
+\index{md5\+\_\+hash\+\_\+hex@{md5\+\_\+hash\+\_\+hex}!websocketpp\+::md5@{websocketpp\+::md5}}
+\subsubsection[{md5\+\_\+hash\+\_\+hex(std\+::string const \&input)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::md5\+::md5\+\_\+hash\+\_\+hex (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{input}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1md5_a9fbd05134b509739ff15175fe7104443}
+
+
+Definition at line 433 of file md5.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1md5_ab445cdc2367665afb8fd4e983a354e0f}{}\index{websocketpp\+::md5@{websocketpp\+::md5}!md5\+\_\+hash\+\_\+string@{md5\+\_\+hash\+\_\+string}}
+\index{md5\+\_\+hash\+\_\+string@{md5\+\_\+hash\+\_\+string}!websocketpp\+::md5@{websocketpp\+::md5}}
+\subsubsection[{md5\+\_\+hash\+\_\+string(std\+::string const \&s)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::md5\+::md5\+\_\+hash\+\_\+string (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1md5_ab445cdc2367665afb8fd4e983a354e0f}
+
+
+Definition at line 415 of file md5.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1md5_a73499ae9912f813cdbb98d27b6487112}{}\index{websocketpp\+::md5@{websocketpp\+::md5}!md5\+\_\+init@{md5\+\_\+init}}
+\index{md5\+\_\+init@{md5\+\_\+init}!websocketpp\+::md5@{websocketpp\+::md5}}
+\subsubsection[{md5\+\_\+init(md5\+\_\+state\+\_\+t $\ast$pms)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::md5\+::md5\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{{\bf md5\+\_\+state\+\_\+t} $\ast$}]{pms}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1md5_a73499ae9912f813cdbb98d27b6487112}
+
+
+Definition at line 349 of file md5.\+hpp.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespacewebsocketpp_1_1md5_a6c9cff96cd43c87cb0fc47f7d641dac8}{}\index{websocketpp\+::md5@{websocketpp\+::md5}!hexval@{hexval}}
+\index{hexval@{hexval}!websocketpp\+::md5@{websocketpp\+::md5}}
+\subsubsection[{hexval}]{\setlength{\rightskip}{0pt plus 5cm}const char websocketpp\+::md5\+::hexval\mbox{[}16\mbox{]} = \{\textquotesingle{}0\textquotesingle{}, \textquotesingle{}1\textquotesingle{}, \textquotesingle{}2\textquotesingle{}, \textquotesingle{}3\textquotesingle{}, \textquotesingle{}4\textquotesingle{}, \textquotesingle{}5\textquotesingle{}, \textquotesingle{}6\textquotesingle{}, \textquotesingle{}7\textquotesingle{}, \textquotesingle{}8\textquotesingle{}, \textquotesingle{}9\textquotesingle{}, \textquotesingle{}a\textquotesingle{}, \textquotesingle{}b\textquotesingle{}, \textquotesingle{}c\textquotesingle{}, \textquotesingle{}d\textquotesingle{}, \textquotesingle{}e\textquotesingle{}, \textquotesingle{}f\textquotesingle{}\}}\label{namespacewebsocketpp_1_1md5_a6c9cff96cd43c87cb0fc47f7d641dac8}
+
+
+Definition at line 431 of file md5.\+hpp.
+

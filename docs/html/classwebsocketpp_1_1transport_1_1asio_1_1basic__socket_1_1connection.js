@@ -1,0 +1,27 @@
+var classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection =
+[
+    [ "io_service_ptr", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#af4c876008bd8610fb497c5d5be56faab", null ],
+    [ "ptr", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#a1a4fa6887235c53c7ddd13307798b280", null ],
+    [ "socket_ptr", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#a7a4985155bab6340a0ca9b165ccf51a4", null ],
+    [ "socket_type", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#ad08ccb2cf63fc0fae8543677daf54839", null ],
+    [ "strand_ptr", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#aed8283ac4f3aa27ada9cd899d579e497", null ],
+    [ "type", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#a449a7d627f3e231de1f25668b544478a", null ],
+    [ "connection", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#a8c8b36c6623f84e77e5a628c5f2ca92c", null ],
+    [ "async_shutdown", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#ac82ce93dad13c5b909367c75a3195759", null ],
+    [ "cancel_socket", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#aaf1e0b99023c2653ebbe7953c874cc6d", null ],
+    [ "get_ec", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#a4d178034a56b1f2669da2a44d66e31f8", null ],
+    [ "get_next_layer", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#aad9f1b8fec827bc502f450cbf2c0d583", null ],
+    [ "get_raw_socket", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#a2735b03146b13e956bf58cd9f2e51ff6", null ],
+    [ "get_remote_endpoint", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#a284a75098ce6c3d73011ef8309acc17b", null ],
+    [ "get_shared", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#ade8aecc68665126f6beb82e74169a96d", null ],
+    [ "get_socket", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#ae5026a6893c7bc54be3f7981fceaf849", null ],
+    [ "init_asio", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#ac458885eaebea790795dbe5e7ab62dc9", null ],
+    [ "is_secure", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#afafd7e9eba4a356136e9897f7714a5d4", null ],
+    [ "post_init", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#abeee4b73e1f47d21dd42e455f1272d64", null ],
+    [ "pre_init", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#ab49994bd223b8d0a2eaa11d0029a1b78", null ],
+    [ "set_handle", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#aac8318bcf892664a4f66a1f1435ed5ce", null ],
+    [ "set_socket_init_handler", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#a2ea605a8c2ed46812057b36b7a0ddf6a", null ],
+    [ "set_uri", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#a303d114dca4ca6ce161fca608e1a7138", null ],
+    [ "translate_ec", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#a3ce50f4cb485ca4e98577f9f7af4b635", null ],
+    [ "translate_ec", "classwebsocketpp_1_1transport_1_1asio_1_1basic__socket_1_1connection.html#a92b3f3132f48c3b57f48514557f6e653", null ]
+];

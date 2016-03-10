@@ -1,0 +1,45 @@
+\hypertarget{close_8hpp}{}\section{ext/websocketpp/close.hpp File Reference}
+\label{close_8hpp}\index{ext/websocketpp/close.\+hpp@{ext/websocketpp/close.\+hpp}}
+{\ttfamily \#include $<$websocketpp/error.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/common/network.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/common/stdint.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/utf8\+\_\+validator.\+hpp$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+union \hyperlink{unionwebsocketpp_1_1close_1_1code__converter}{websocketpp\+::close\+::code\+\_\+converter}
+\begin{DoxyCompactList}\small\item\em Type used to convert close statuses between integer and wire representations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacewebsocketpp}{websocketpp}
+\begin{DoxyCompactList}\small\item\em Namespace for the Web\+Socket++ project. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1close}{websocketpp\+::close}
+\begin{DoxyCompactList}\small\item\em A package of types and methods for manipulating Web\+Socket close codes. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1close_1_1status}{websocketpp\+::close\+::status}
+\begin{DoxyCompactList}\small\item\em A package of types and methods for manipulating Web\+Socket close status\textquotesingle{}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef uint16\+\_\+t \hyperlink{namespacewebsocketpp_1_1close_1_1status_a8614a5c4733d708e2d2a32191c5bef84}{websocketpp\+::close\+::status\+::value}
+\begin{DoxyCompactList}\small\item\em The type of a close code value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{namespacewebsocketpp_1_1close_1_1status_af26a61f8a8c3247cf656349f96ea3008}{websocketpp\+::close\+::status\+::reserved} (value code)
+\begin{DoxyCompactList}\small\item\em Test whether a close code is in a reserved range. \end{DoxyCompactList}\item 
+bool \hyperlink{namespacewebsocketpp_1_1close_1_1status_ad024f852889be28eadcec8209fdf9bc8}{websocketpp\+::close\+::status\+::invalid} (value code)
+\begin{DoxyCompactList}\small\item\em Test whether a close code is invalid on the wire. \end{DoxyCompactList}\item 
+bool \hyperlink{namespacewebsocketpp_1_1close_1_1status_a3f9ce953f12693f74493e2eb7a80952b}{websocketpp\+::close\+::status\+::terminal} (value code)
+\begin{DoxyCompactList}\small\item\em Determine if the code represents an unrecoverable error. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1close_1_1status_a4bf4987c79165b134ed1207a567ce209}{websocketpp\+::close\+::status\+::get\+\_\+string} (value code)
+\begin{DoxyCompactList}\small\item\em Return a human readable interpretation of a Web\+Socket close code. \end{DoxyCompactList}\item 
+status\+::value \hyperlink{namespacewebsocketpp_1_1close_aa47dacf7d2e13705d1f68d9ab5b9dad0}{websocketpp\+::close\+::extract\+\_\+code} (std\+::string const \&payload, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Extract a close code value from a close payload. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1close_a537f66833c7b6e745b3cf5dc0252c0ca}{websocketpp\+::close\+::extract\+\_\+reason} (std\+::string const \&payload, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Extract the reason string from a close payload. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A package of types and methods for manipulating Web\+Socket close codes. 

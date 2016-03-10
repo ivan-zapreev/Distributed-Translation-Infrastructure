@@ -1,0 +1,72 @@
+\hypertarget{namespacewebsocketpp_1_1transport_1_1asio_1_1socket}{}\section{websocketpp\+:\+:transport\+:\+:asio\+:\+:socket Namespace Reference}
+\label{namespacewebsocketpp_1_1transport_1_1asio_1_1socket}\index{websocketpp\+::transport\+::asio\+::socket@{websocketpp\+::transport\+::asio\+::socket}}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error}{error}
+\begin{DoxyCompactList}\small\item\em Errors related to asio transport sockets. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classwebsocketpp_1_1transport_1_1asio_1_1socket_1_1socket__category}{socket\+\_\+category}
+\begin{DoxyCompactList}\small\item\em Error category related to asio transport socket policies. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef lib\+::function$<$ void(lib\+::asio\+::error\+\_\+code const \&)$>$ \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_a864ed8b0d8fa1a92a5f016c112efc4ad}{shutdown\+\_\+handler}
+\item 
+typedef lib\+::function$<$ void(const lib\+::error\+\_\+code \&)$>$ \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_a2eda0fed502e748230883016b3fb3e82}{init\+\_\+handler}
+\begin{DoxyCompactList}\small\item\em Type of asio transport socket policy initialization handlers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+lib\+::error\+\_\+category const \& \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_afaeeedd853a7c7793a4c7f9646d6886f}{get\+\_\+socket\+\_\+category} ()
+\item 
+lib\+::error\+\_\+code \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_a9e5cb8d54b6d0d1376168955a99fe458}{make\+\_\+error\+\_\+code} (\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05a}{error\+::value} e)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_a2eda0fed502e748230883016b3fb3e82}{}\index{websocketpp\+::transport\+::asio\+::socket@{websocketpp\+::transport\+::asio\+::socket}!init\+\_\+handler@{init\+\_\+handler}}
+\index{init\+\_\+handler@{init\+\_\+handler}!websocketpp\+::transport\+::asio\+::socket@{websocketpp\+::transport\+::asio\+::socket}}
+\subsubsection[{init\+\_\+handler}]{\setlength{\rightskip}{0pt plus 5cm}typedef lib\+::function$<$void(const lib\+::error\+\_\+code\&)$>$ {\bf websocketpp\+::transport\+::asio\+::socket\+::init\+\_\+handler}}\label{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_a2eda0fed502e748230883016b3fb3e82}
+
+
+Type of asio transport socket policy initialization handlers. 
+
+
+
+Definition at line 152 of file base.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_a864ed8b0d8fa1a92a5f016c112efc4ad}{}\index{websocketpp\+::transport\+::asio\+::socket@{websocketpp\+::transport\+::asio\+::socket}!shutdown\+\_\+handler@{shutdown\+\_\+handler}}
+\index{shutdown\+\_\+handler@{shutdown\+\_\+handler}!websocketpp\+::transport\+::asio\+::socket@{websocketpp\+::transport\+::asio\+::socket}}
+\subsubsection[{shutdown\+\_\+handler}]{\setlength{\rightskip}{0pt plus 5cm}typedef lib\+::function$<$void(lib\+::asio\+::error\+\_\+code const \&)$>$ {\bf websocketpp\+::transport\+::asio\+::socket\+::shutdown\+\_\+handler}}\label{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_a864ed8b0d8fa1a92a5f016c112efc4ad}
+
+
+Definition at line 67 of file base.\+hpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_afaeeedd853a7c7793a4c7f9646d6886f}{}\index{websocketpp\+::transport\+::asio\+::socket@{websocketpp\+::transport\+::asio\+::socket}!get\+\_\+socket\+\_\+category@{get\+\_\+socket\+\_\+category}}
+\index{get\+\_\+socket\+\_\+category@{get\+\_\+socket\+\_\+category}!websocketpp\+::transport\+::asio\+::socket@{websocketpp\+::transport\+::asio\+::socket}}
+\subsubsection[{get\+\_\+socket\+\_\+category()}]{\setlength{\rightskip}{0pt plus 5cm}lib\+::error\+\_\+category const\& websocketpp\+::transport\+::asio\+::socket\+::get\+\_\+socket\+\_\+category (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_afaeeedd853a7c7793a4c7f9646d6886f}
+
+
+Definition at line 142 of file base.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_a9e5cb8d54b6d0d1376168955a99fe458}{}\index{websocketpp\+::transport\+::asio\+::socket@{websocketpp\+::transport\+::asio\+::socket}!make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}}
+\index{make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}!websocketpp\+::transport\+::asio\+::socket@{websocketpp\+::transport\+::asio\+::socket}}
+\subsubsection[{make\+\_\+error\+\_\+code(error\+::value e)}]{\setlength{\rightskip}{0pt plus 5cm}lib\+::error\+\_\+code websocketpp\+::transport\+::asio\+::socket\+::make\+\_\+error\+\_\+code (
+\begin{DoxyParamCaption}
+\item[{{\bf error\+::value}}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_a9e5cb8d54b6d0d1376168955a99fe458}
+
+
+Definition at line 147 of file base.\+hpp.
+

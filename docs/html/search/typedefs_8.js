@@ -1,0 +1,9 @@
+var searchData=
+[
+  ['job_5fid_5ftype',['job_id_type',['../namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging.html#af12d41e7490214ac057969e9d4af1436',1,'uva::smt::bpbd::common::messaging']]],
+  ['jobs_5flist_5fiter_5ftype',['jobs_list_iter_type',['../classuva_1_1smt_1_1bpbd_1_1client_1_1trans__manager.html#a07f34153efcba519e36ead6bf39c881e',1,'uva::smt::bpbd::client::trans_manager::jobs_list_iter_type()'],['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool.html#a425f33ff0864b19e0ba351c17036d823',1,'uva::smt::bpbd::server::trans_job_pool::jobs_list_iter_type()']]],
+  ['jobs_5flist_5ftype',['jobs_list_type',['../classuva_1_1smt_1_1bpbd_1_1client_1_1trans__manager.html#aab9c124d930eca091e5140faa0b306f2',1,'uva::smt::bpbd::client::trans_manager::jobs_list_type()'],['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool.html#a7d67763b6e1818c785e515f2a61fe23d',1,'uva::smt::bpbd::server::trans_job_pool::jobs_list_type()']]],
+  ['jobs_5fmap_5fiter_5ftype',['jobs_map_iter_type',['../classuva_1_1smt_1_1bpbd_1_1client_1_1trans__manager.html#a682b34240d22a905295f1273cfd03310',1,'uva::smt::bpbd::client::trans_manager::jobs_map_iter_type()'],['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool.html#a8991aa93c2caf5fb2c6354bb3564f268',1,'uva::smt::bpbd::server::trans_job_pool::jobs_map_iter_type()']]],
+  ['jobs_5fmap_5ftype',['jobs_map_type',['../classuva_1_1smt_1_1bpbd_1_1client_1_1trans__manager.html#a8aac327989f3657f3977a52e614262ef',1,'uva::smt::bpbd::client::trans_manager::jobs_map_type()'],['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool.html#a3fec3b5759e5296106b61143a5d229b2',1,'uva::smt::bpbd::server::trans_job_pool::jobs_map_type()']]],
+  ['join_5fgroup',['join_group',['../namespaceasio_1_1ip_1_1multicast.html#af1296ad63123b3adc414c0bbeb328db3',1,'asio::ip::multicast']]]
+];

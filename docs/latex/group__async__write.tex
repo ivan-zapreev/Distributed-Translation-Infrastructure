@@ -1,0 +1,365 @@
+\hypertarget{group__async__write}{}\section{asio\+:\+:async\+\_\+write}
+\label{group__async__write}\index{asio\+::async\+\_\+write@{asio\+::async\+\_\+write}}
+
+
+Start an asynchronous operation to write a certain amount of data to a stream.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Async\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\\hyperlink{group__async__write_ga7b61e40209cec169c7de5fafc16a6f9c}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+write(Async\+Write\+Stream \&s
+\item 
+const Const\+Buffer\+Sequence Completion\+Condition \hyperlink{group__async__write_ga9600cc9bb72a930568b318a8d6f79afa}{asio\+::\+A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Write\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Async\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Completion\+Condition , typename Write\+Handler $>$ }\\\hyperlink{group__async__write_ga5a1e5b963aeb45f6fc692c4e1a07ed04}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+write(Async\+Write\+Stream \&s
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Start an asynchronous operation to write a certain amount of data to a stream. 
+
+
+
+\subsection{Function Documentation}
+\hypertarget{group__async__write_ga5a1e5b963aeb45f6fc692c4e1a07ed04}{}\index{asio\+::async\+\_\+write@{asio\+::async\+\_\+write}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::async\+\_\+write@{asio\+::async\+\_\+write}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Write\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+write(\+Async\+Write\+Stream \&s}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Async\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Completion\+Condition , typename Write\+Handler $>$ asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__async__write_ga5a1e5b963aeb45f6fc692c4e1a07ed04}
+Start an asynchronous operation to write a certain amount of data to a stream. This function is used to asynchronously write a certain number of bytes of data to a stream. The function call always returns immediately. The asynchronous operation will continue until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied buffers has been written. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s async\+\_\+write\+\_\+some function, and is known as a {\itshape composed operation}. The program must ensure that the stream performs no other write operations (such as async\+\_\+write, the stream\textquotesingle{}s async\+\_\+write\+\_\+some function, or any other composed operations that perform writes) until this operation completes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Async\+Write\+Stream concept.\\
+\hline
+{\em buffers} & One or more buffers containing the data to be written. Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the write operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest async\_write\_some operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the write operation is complete. A non-\/zero return value indicates the maximum number of bytes to be written on the next call to the stream\textquotesingle{}s async\+\_\+write\+\_\+some function.\\
+\hline
+{\em handler} & The handler to be called when the write operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes written from the}
+                                          \textcolor{comment}{// buffers. If an error occurred,}
+                                          \textcolor{comment}{// this will be less than the sum}
+                                          \textcolor{comment}{// of the buffer sizes.}
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyParagraph}{Example}
+To write a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+asio::async\_write(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s},
+   \hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size),
+   \hyperlink{group__completion__condition_ga2b10af704afcd6c7ed7f0d3b740033ef}{asio::transfer\_at\_least}(32),
+   handler); 
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on writing multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector.
+\end{DoxyParagraph}
+Start an asynchronous operation to write a certain amount of data to a stream. This function is used to asynchronously write a certain number of bytes of data to a stream. The function call always returns immediately. The asynchronous operation will continue until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} has been written.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s async\+\_\+write\+\_\+some function, and is known as a {\itshape composed operation}. The program must ensure that the stream performs no other write operations (such as async\+\_\+write, the stream\textquotesingle{}s async\+\_\+write\+\_\+some function, or any other composed operations that perform writes) until this operation completes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Async\+Write\+Stream concept.\\
+\hline
+{\em b} & A \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object from which data will be written. Ownership of the streambuf is retained by the caller, which must guarantee that it remains valid until the handler is called.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the write operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest async\_write\_some operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the write operation is complete. A non-\/zero return value indicates the maximum number of bytes to be written on the next call to the stream\textquotesingle{}s async\+\_\+write\+\_\+some function.\\
+\hline
+{\em handler} & The handler to be called when the write operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes written from the}
+                                          \textcolor{comment}{// buffers. If an error occurred,}
+                                          \textcolor{comment}{// this will be less than the sum}
+                                          \textcolor{comment}{// of the buffer sizes.}
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+Start an asynchronous operation to write a certain amount of data at the specified offset. This function is used to asynchronously write a certain number of bytes of data to a random access device at a specified offset. The function call always returns immediately. The asynchronous operation will continue until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied buffers has been written. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s async\+\_\+write\+\_\+some\+\_\+at function, and is known as a {\itshape composed operation}. The program must ensure that the device performs no {\itshape overlapping} write operations (such as async\+\_\+write\+\_\+at, the device\textquotesingle{}s async\+\_\+write\+\_\+some\+\_\+at function, or any other composed operations that perform writes) until this operation completes. Operations are overlapping if the regions defined by their offsets, and the numbers of bytes to write, intersect.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device to which the data is to be written. The type must support the Async\+Random\+Access\+Write\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be written.\\
+\hline
+{\em buffers} & One or more buffers containing the data to be written. Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the write operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest async\_write\_some\_at operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the write operation is complete. A non-\/zero return value indicates the maximum number of bytes to be written on the next call to the device\textquotesingle{}s async\+\_\+write\+\_\+some\+\_\+at function.\\
+\hline
+{\em handler} & The handler to be called when the write operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{comment}{// Result of operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes written from the buffers. If an error}
+  \textcolor{comment}{// occurred, this will be less than the sum of the buffer sizes.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyParagraph}{Example}
+To write a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+asio::async\_write\_at(d, 42,
+   \hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size),
+   \hyperlink{group__completion__condition_ga2b10af704afcd6c7ed7f0d3b740033ef}{asio::transfer\_at\_least}(32),
+   handler); 
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on writing multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector.
+\end{DoxyParagraph}
+Start an asynchronous operation to write a certain amount of data at the specified offset. This function is used to asynchronously write a certain number of bytes of data to a random access device at a specified offset. The function call always returns immediately. The asynchronous operation will continue until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} has been written.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s async\+\_\+write\+\_\+some\+\_\+at function, and is known as a {\itshape composed operation}. The program must ensure that the device performs no {\itshape overlapping} write operations (such as async\+\_\+write\+\_\+at, the device\textquotesingle{}s async\+\_\+write\+\_\+some\+\_\+at function, or any other composed operations that perform writes) until this operation completes. Operations are overlapping if the regions defined by their offsets, and the numbers of bytes to write, intersect.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device to which the data is to be written. The type must support the Async\+Random\+Access\+Write\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be written.\\
+\hline
+{\em b} & A \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object from which data will be written. Ownership of the streambuf is retained by the caller, which must guarantee that it remains valid until the handler is called.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the write operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest async\_write\_some\_at operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the write operation is complete. A non-\/zero return value indicates the maximum number of bytes to be written on the next call to the device\textquotesingle{}s async\+\_\+write\+\_\+some\+\_\+at function.\\
+\hline
+{\em handler} & The handler to be called when the write operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{comment}{// Result of operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes written from the buffers. If an error}
+  \textcolor{comment}{// occurred, this will be less than the sum of the buffer sizes.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}. \\
+\hline
+\end{DoxyParams}
+\hypertarget{group__async__write_ga7b61e40209cec169c7de5fafc16a6f9c}{}\index{asio\+::async\+\_\+write@{asio\+::async\+\_\+write}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::async\+\_\+write@{asio\+::async\+\_\+write}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Write\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+write(\+Async\+Write\+Stream \&s}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Async\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__async__write_ga7b61e40209cec169c7de5fafc16a6f9c}
+Start an asynchronous operation to write all of the supplied data to a stream. This function is used to asynchronously write a certain number of bytes of data to a stream. The function call always returns immediately. The asynchronous operation will continue until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied buffers has been written. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s async\+\_\+write\+\_\+some function, and is known as a {\itshape composed operation}. The program must ensure that the stream performs no other write operations (such as async\+\_\+write, the stream\textquotesingle{}s async\+\_\+write\+\_\+some function, or any other composed operations that perform writes) until this operation completes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Async\+Write\+Stream concept.\\
+\hline
+{\em buffers} & One or more buffers containing the data to be written. Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em handler} & The handler to be called when the write operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes written from the}
+                                          \textcolor{comment}{// buffers. If an error occurred,}
+                                          \textcolor{comment}{// this will be less than the sum}
+                                          \textcolor{comment}{// of the buffer sizes.}
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyParagraph}{Example}
+To write a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+asio::async\_write(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, \hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), handler);
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on writing multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector.
+\end{DoxyParagraph}
+Start an asynchronous operation to write all of the supplied data to a stream. This function is used to asynchronously write a certain number of bytes of data to a stream. The function call always returns immediately. The asynchronous operation will continue until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} has been written.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s async\+\_\+write\+\_\+some function, and is known as a {\itshape composed operation}. The program must ensure that the stream performs no other write operations (such as async\+\_\+write, the stream\textquotesingle{}s async\+\_\+write\+\_\+some function, or any other composed operations that perform writes) until this operation completes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Async\+Write\+Stream concept.\\
+\hline
+{\em b} & A \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object from which data will be written. Ownership of the streambuf is retained by the caller, which must guarantee that it remains valid until the handler is called.\\
+\hline
+{\em handler} & The handler to be called when the write operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes written from the}
+                                          \textcolor{comment}{// buffers. If an error occurred,}
+                                          \textcolor{comment}{// this will be less than the sum}
+                                          \textcolor{comment}{// of the buffer sizes.}
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+Start an asynchronous operation to write all of the supplied data at the specified offset. This function is used to asynchronously write a certain number of bytes of data to a random access device at a specified offset. The function call always returns immediately. The asynchronous operation will continue until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied buffers has been written. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s async\+\_\+write\+\_\+some\+\_\+at function, and is known as a {\itshape composed operation}. The program must ensure that the device performs no {\itshape overlapping} write operations (such as async\+\_\+write\+\_\+at, the device\textquotesingle{}s async\+\_\+write\+\_\+some\+\_\+at function, or any other composed operations that perform writes) until this operation completes. Operations are overlapping if the regions defined by their offsets, and the numbers of bytes to write, intersect.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device to which the data is to be written. The type must support the Async\+Random\+Access\+Write\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be written.\\
+\hline
+{\em buffers} & One or more buffers containing the data to be written. Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em handler} & The handler to be called when the write operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{comment}{// Result of operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes written from the buffers. If an error}
+  \textcolor{comment}{// occurred, this will be less than the sum of the buffer sizes.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyParagraph}{Example}
+To write a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+asio::async\_write\_at(d, 42, \hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), handler);
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on writing multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector.
+\end{DoxyParagraph}
+Start an asynchronous operation to write all of the supplied data at the specified offset. This function is used to asynchronously write a certain number of bytes of data to a random access device at a specified offset. The function call always returns immediately. The asynchronous operation will continue until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} has been written.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s async\+\_\+write\+\_\+some\+\_\+at function, and is known as a {\itshape composed operation}. The program must ensure that the device performs no {\itshape overlapping} write operations (such as async\+\_\+write\+\_\+at, the device\textquotesingle{}s async\+\_\+write\+\_\+some\+\_\+at function, or any other composed operations that perform writes) until this operation completes. Operations are overlapping if the regions defined by their offsets, and the numbers of bytes to write, intersect.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device to which the data is to be written. The type must support the Async\+Random\+Access\+Write\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be written.\\
+\hline
+{\em b} & A \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object from which data will be written. Ownership of the streambuf is retained by the caller, which must guarantee that it remains valid until the handler is called.\\
+\hline
+{\em handler} & The handler to be called when the write operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{comment}{// Result of operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes written from the buffers. If an error}
+  \textcolor{comment}{// occurred, this will be less than the sum of the buffer sizes.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}. \\
+\hline
+\end{DoxyParams}
+\hypertarget{group__async__write_ga9600cc9bb72a930568b318a8d6f79afa}{}\index{asio\+::async\+\_\+write@{asio\+::async\+\_\+write}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::async\+\_\+write@{asio\+::async\+\_\+write}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Write\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}const Const\+Buffer\+Sequence Completion\+Condition asio\+::\+A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{}
+\end{DoxyParamCaption}
+)}\label{group__async__write_ga9600cc9bb72a930568b318a8d6f79afa}
+
+
+Definition at line 586 of file write.\+hpp.
+

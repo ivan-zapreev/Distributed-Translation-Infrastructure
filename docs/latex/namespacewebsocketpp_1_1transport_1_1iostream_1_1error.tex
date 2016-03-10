@@ -1,0 +1,92 @@
+\hypertarget{namespacewebsocketpp_1_1transport_1_1iostream_1_1error}{}\section{websocketpp\+:\+:transport\+:\+:iostream\+:\+:error Namespace Reference}
+\label{namespacewebsocketpp_1_1transport_1_1iostream_1_1error}\index{websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}}
+
+
+iostream transport errors  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1error_1_1category}{category}
+\begin{DoxyCompactList}\small\item\em iostream transport error category \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737}{value} \{ \\*
+\hyperlink{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737a509b29b678dabf2fa2776636b3ba3c98}{general} = 1, 
+\hyperlink{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737aa185b313b5353e821c3fce4bf62f50a6}{invalid\+\_\+num\+\_\+bytes}, 
+\hyperlink{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737ac1ae213118c53b4d7eceb10876d88266}{double\+\_\+read}, 
+\hyperlink{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737a92341254bd27c7cb97fb5e1aca5310f3}{output\+\_\+stream\+\_\+required}, 
+\\*
+\hyperlink{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737ad46c640654d1d96c517444d95d24da45}{bad\+\_\+stream}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+lib\+::error\+\_\+category const \& \hyperlink{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_ad2ef7ab6e441db4510158b3723a2bff6}{get\+\_\+category} ()
+\begin{DoxyCompactList}\small\item\em Get a reference to a static copy of the iostream transport error category. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a6b208c9eb4b1b76090e564e6e462fbcf}{make\+\_\+error\+\_\+code} (\hyperlink{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737}{error\+::value} e)
+\begin{DoxyCompactList}\small\item\em Get an error code with the given value and the iostream transport category. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+iostream transport errors 
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737}{}\index{websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}!value@{value}}
+\index{value@{value}!websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}}
+\subsubsection[{value}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf websocketpp\+::transport\+::iostream\+::error\+::value}}\label{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{general@{general}!websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}}\index{websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}!general@{general}}\item[{\em 
+\hypertarget{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737a509b29b678dabf2fa2776636b3ba3c98}{}general\label{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737a509b29b678dabf2fa2776636b3ba3c98}
+}]Catch-\/all error for transport policy errors that don\textquotesingle{}t fit in other categories \index{invalid\+\_\+num\+\_\+bytes@{invalid\+\_\+num\+\_\+bytes}!websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}}\index{websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}!invalid\+\_\+num\+\_\+bytes@{invalid\+\_\+num\+\_\+bytes}}\item[{\em 
+\hypertarget{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737aa185b313b5353e821c3fce4bf62f50a6}{}invalid\+\_\+num\+\_\+bytes\label{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737aa185b313b5353e821c3fce4bf62f50a6}
+}]async\+\_\+read\+\_\+at\+\_\+least call requested more bytes than buffer can store \index{double\+\_\+read@{double\+\_\+read}!websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}}\index{websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}!double\+\_\+read@{double\+\_\+read}}\item[{\em 
+\hypertarget{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737ac1ae213118c53b4d7eceb10876d88266}{}double\+\_\+read\label{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737ac1ae213118c53b4d7eceb10876d88266}
+}]async\+\_\+read called while another async\+\_\+read was in progress \index{output\+\_\+stream\+\_\+required@{output\+\_\+stream\+\_\+required}!websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}}\index{websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}!output\+\_\+stream\+\_\+required@{output\+\_\+stream\+\_\+required}}\item[{\em 
+\hypertarget{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737a92341254bd27c7cb97fb5e1aca5310f3}{}output\+\_\+stream\+\_\+required\label{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737a92341254bd27c7cb97fb5e1aca5310f3}
+}]An operation that requires an output stream was attempted before setting one. \index{bad\+\_\+stream@{bad\+\_\+stream}!websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}}\index{websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}!bad\+\_\+stream@{bad\+\_\+stream}}\item[{\em 
+\hypertarget{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737ad46c640654d1d96c517444d95d24da45}{}bad\+\_\+stream\label{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a647b428e260748d7606c92255e1e9737ad46c640654d1d96c517444d95d24da45}
+}]stream error \end{description}
+\end{Desc}
+
+
+Definition at line 65 of file base.\+hpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_ad2ef7ab6e441db4510158b3723a2bff6}{}\index{websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}!get\+\_\+category@{get\+\_\+category}}
+\index{get\+\_\+category@{get\+\_\+category}!websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}}
+\subsubsection[{get\+\_\+category()}]{\setlength{\rightskip}{0pt plus 5cm}lib\+::error\+\_\+category const\& websocketpp\+::transport\+::iostream\+::error\+::get\+\_\+category (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_ad2ef7ab6e441db4510158b3723a2bff6}
+
+
+Get a reference to a static copy of the iostream transport error category. 
+
+
+
+Definition at line 112 of file base.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a6b208c9eb4b1b76090e564e6e462fbcf}{}\index{websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}!make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}}
+\index{make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}!websocketpp\+::transport\+::iostream\+::error@{websocketpp\+::transport\+::iostream\+::error}}
+\subsubsection[{make\+\_\+error\+\_\+code(error\+::value e)}]{\setlength{\rightskip}{0pt plus 5cm}lib\+::error\+\_\+code websocketpp\+::transport\+::iostream\+::error\+::make\+\_\+error\+\_\+code (
+\begin{DoxyParamCaption}
+\item[{{\bf error\+::value}}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1transport_1_1iostream_1_1error_a6b208c9eb4b1b76090e564e6e462fbcf}
+
+
+Get an error code with the given value and the iostream transport category. 
+
+
+
+Definition at line 118 of file base.\+hpp.
+

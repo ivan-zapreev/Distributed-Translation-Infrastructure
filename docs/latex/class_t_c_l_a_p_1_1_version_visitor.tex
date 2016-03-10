@@ -1,0 +1,95 @@
+\hypertarget{class_t_c_l_a_p_1_1_version_visitor}{}\section{T\+C\+L\+A\+P\+:\+:Version\+Visitor Class Reference}
+\label{class_t_c_l_a_p_1_1_version_visitor}\index{T\+C\+L\+A\+P\+::\+Version\+Visitor@{T\+C\+L\+A\+P\+::\+Version\+Visitor}}
+
+
+{\ttfamily \#include $<$Version\+Visitor.\+h$>$}
+
+Inheritance diagram for T\+C\+L\+A\+P\+:\+:Version\+Visitor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_t_c_l_a_p_1_1_version_visitor}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_version_visitor_a6e5c16f245e2333dcc568dc9c4e6d537}{Version\+Visitor} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} $\ast$cmd, \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output}{Cmd\+Line\+Output} $\ast$$\ast$out)
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_version_visitor_a30b0d5bd22ac41364d027b94bded4fc0}{visit} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} $\ast$ \hyperlink{class_t_c_l_a_p_1_1_version_visitor_ac789d900e73daa8b4b53a1e9b80b756e}{\+\_\+cmd}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_cmd_line_output}{Cmd\+Line\+Output} $\ast$$\ast$ \hyperlink{class_t_c_l_a_p_1_1_version_visitor_ab4c9f44a2bd62830e42f79b35ac4d300}{\+\_\+out}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A Vistor that will call the version method of the given \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output}{Cmd\+Line\+Output} for the specified \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} object and then exit. 
+
+Definition at line 37 of file Version\+Visitor.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_version_visitor_a6e5c16f245e2333dcc568dc9c4e6d537}{}\index{T\+C\+L\+A\+P\+::\+Version\+Visitor@{T\+C\+L\+A\+P\+::\+Version\+Visitor}!Version\+Visitor@{Version\+Visitor}}
+\index{Version\+Visitor@{Version\+Visitor}!T\+C\+L\+A\+P\+::\+Version\+Visitor@{T\+C\+L\+A\+P\+::\+Version\+Visitor}}
+\subsubsection[{Version\+Visitor(\+Cmd\+Line\+Interface $\ast$cmd, Cmd\+Line\+Output $\ast$$\ast$out)}]{\setlength{\rightskip}{0pt plus 5cm}T\+C\+L\+A\+P\+::\+Version\+Visitor\+::\+Version\+Visitor (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} $\ast$}]{cmd, }
+\item[{{\bf Cmd\+Line\+Output} $\ast$$\ast$}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_version_visitor_a6e5c16f245e2333dcc568dc9c4e6d537}
+Constructor. 
+\begin{DoxyParams}{Parameters}
+{\em cmd} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} the output is generated for. \\
+\hline
+{\em out} & -\/ The type of output. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 65 of file Version\+Visitor.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_version_visitor_a30b0d5bd22ac41364d027b94bded4fc0}{}\index{T\+C\+L\+A\+P\+::\+Version\+Visitor@{T\+C\+L\+A\+P\+::\+Version\+Visitor}!visit@{visit}}
+\index{visit@{visit}!T\+C\+L\+A\+P\+::\+Version\+Visitor@{T\+C\+L\+A\+P\+::\+Version\+Visitor}}
+\subsubsection[{visit()}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Version\+Visitor\+::visit (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_version_visitor_a30b0d5bd22ac41364d027b94bded4fc0}
+Calls the version method of the output object using the specified \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line}. 
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_visitor_a08625664637579a24ba2f0ab3e713670}{T\+C\+L\+A\+P\+::\+Visitor}.
+
+
+
+Definition at line 72 of file Version\+Visitor.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_version_visitor_ac789d900e73daa8b4b53a1e9b80b756e}{}\index{T\+C\+L\+A\+P\+::\+Version\+Visitor@{T\+C\+L\+A\+P\+::\+Version\+Visitor}!\+\_\+cmd@{\+\_\+cmd}}
+\index{\+\_\+cmd@{\+\_\+cmd}!T\+C\+L\+A\+P\+::\+Version\+Visitor@{T\+C\+L\+A\+P\+::\+Version\+Visitor}}
+\subsubsection[{\+\_\+cmd}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Cmd\+Line\+Interface}$\ast$ T\+C\+L\+A\+P\+::\+Version\+Visitor\+::\+\_\+cmd\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_version_visitor_ac789d900e73daa8b4b53a1e9b80b756e}
+The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} of interest. 
+
+Definition at line 51 of file Version\+Visitor.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_version_visitor_ab4c9f44a2bd62830e42f79b35ac4d300}{}\index{T\+C\+L\+A\+P\+::\+Version\+Visitor@{T\+C\+L\+A\+P\+::\+Version\+Visitor}!\+\_\+out@{\+\_\+out}}
+\index{\+\_\+out@{\+\_\+out}!T\+C\+L\+A\+P\+::\+Version\+Visitor@{T\+C\+L\+A\+P\+::\+Version\+Visitor}}
+\subsubsection[{\+\_\+out}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Cmd\+Line\+Output}$\ast$$\ast$ T\+C\+L\+A\+P\+::\+Version\+Visitor\+::\+\_\+out\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_version_visitor_ab4c9f44a2bd62830e42f79b35ac4d300}
+The output object. 
+
+Definition at line 56 of file Version\+Visitor.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/tclap/\hyperlink{_version_visitor_8h}{Version\+Visitor.\+h}\end{DoxyCompactItemize}

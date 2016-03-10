@@ -1,0 +1,283 @@
+\hypertarget{classwebsocketpp_1_1server}{}\section{websocketpp\+:\+:server$<$ config $>$ Class Template Reference}
+\label{classwebsocketpp_1_1server}\index{websocketpp\+::server$<$ config $>$@{websocketpp\+::server$<$ config $>$}}
+
+
+Server endpoint role based on the given config.  
+
+
+
+
+{\ttfamily \#include $<$server\+\_\+endpoint.\+hpp$>$}
+
+Inheritance diagram for websocketpp\+:\+:server$<$ config $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.500000cm]{classwebsocketpp_1_1server}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1server}{server}$<$ config $>$ \hyperlink{classwebsocketpp_1_1server_a265fd3d99141089206f0053c6b842790}{type}
+\begin{DoxyCompactList}\small\item\em Type of this endpoint. \end{DoxyCompactList}\item 
+typedef config\+::concurrency\+\_\+type \hyperlink{classwebsocketpp_1_1server_ad389e3f96682b13a16f2bf01568eeabd}{concurrency\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the endpoint concurrency component. \end{DoxyCompactList}\item 
+typedef config\+::transport\+\_\+type \hyperlink{classwebsocketpp_1_1server_a762a51efebd0c0f87918f0369434f04f}{transport\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the endpoint transport component. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1connection}{connection}$<$ config $>$ \hyperlink{classwebsocketpp_1_1server_a82d3d94b70a49b2073c9b3378ec7047c}{connection\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the connections this server will create. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1connection_ab910d42e3bde91546183cc54642f32ab}{connection\+\_\+type\+::ptr} \hyperlink{classwebsocketpp_1_1server_a0b93f09ceae3d1dafd2f7b1da759c2ad}{connection\+\_\+ptr}
+\begin{DoxyCompactList}\small\item\em Type of a shared pointer to the connections this server will create. \end{DoxyCompactList}\item 
+typedef transport\+\_\+type\+::transport\+\_\+con\+\_\+type \hyperlink{classwebsocketpp_1_1server_a0515060720d024fb5d0ee7db1b4498a6}{transport\+\_\+con\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the connection transport component. \end{DoxyCompactList}\item 
+typedef transport\+\_\+con\+\_\+type\+::ptr \hyperlink{classwebsocketpp_1_1server_af23763a1899c4636299f59f130570aab}{transport\+\_\+con\+\_\+ptr}
+\begin{DoxyCompactList}\small\item\em Type of a shared pointer to the connection transport component. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1endpoint}{endpoint}$<$ \hyperlink{classwebsocketpp_1_1server_a82d3d94b70a49b2073c9b3378ec7047c}{connection\+\_\+type}, config $>$ \hyperlink{classwebsocketpp_1_1server_a40f4d4bb132daf5164ccc290e9dbceb7}{endpoint\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the endpoint component of this server. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classwebsocketpp_1_1server_ae6ed4fd23f86c3079277ff70b9fe2e52}{server} ()
+\item 
+\hyperlink{classwebsocketpp_1_1server_aa9f0c40951f9a365e23233551fbc3f6b}{$\sim$server} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\hyperlink{classwebsocketpp_1_1server_a0b93f09ceae3d1dafd2f7b1da759c2ad}{connection\+\_\+ptr} \hyperlink{classwebsocketpp_1_1server_a9146c63ed1afb5bdec29eca52c487226}{get\+\_\+connection} ()
+\begin{DoxyCompactList}\small\item\em Create and initialize a new connection. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1server_a0204a7d444144f7ea5b8bbcf14689fc1}{start\+\_\+accept} (lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Starts the server\textquotesingle{}s async connection acceptance loop (exception free) \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1server_ab61bcdf9fd532fe7ebd934f8d84fdfea}{start\+\_\+accept} ()
+\begin{DoxyCompactList}\small\item\em Starts the server\textquotesingle{}s async connection acceptance loop. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1server_aa24feb1c5d2bde47de8b11f5369c54d4}{handle\+\_\+accept} (\hyperlink{classwebsocketpp_1_1server_a0b93f09ceae3d1dafd2f7b1da759c2ad}{connection\+\_\+ptr} con, lib\+::error\+\_\+code const \&ec)
+\begin{DoxyCompactList}\small\item\em Handler callback for start\+\_\+accept. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classwebsocketpp_1_1server_a408f6796a357de56c73c3beb2f13c61d}{connection$<$ config $>$}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename config$>$class websocketpp\+::server$<$ config $>$}
+
+Server endpoint role based on the given config. 
+
+Definition at line 44 of file server\+\_\+endpoint.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classwebsocketpp_1_1server_ad389e3f96682b13a16f2bf01568eeabd}{}\index{websocketpp\+::server@{websocketpp\+::server}!concurrency\+\_\+type@{concurrency\+\_\+type}}
+\index{concurrency\+\_\+type@{concurrency\+\_\+type}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{concurrency\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef config\+::concurrency\+\_\+type {\bf websocketpp\+::server}$<$ config $>$\+::{\bf concurrency\+\_\+type}}\label{classwebsocketpp_1_1server_ad389e3f96682b13a16f2bf01568eeabd}
+
+
+Type of the endpoint concurrency component. 
+
+
+
+Definition at line 50 of file server\+\_\+endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1server_a0b93f09ceae3d1dafd2f7b1da759c2ad}{}\index{websocketpp\+::server@{websocketpp\+::server}!connection\+\_\+ptr@{connection\+\_\+ptr}}
+\index{connection\+\_\+ptr@{connection\+\_\+ptr}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{connection\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef {\bf connection\+\_\+type\+::ptr} {\bf websocketpp\+::server}$<$ config $>$\+::{\bf connection\+\_\+ptr}}\label{classwebsocketpp_1_1server_a0b93f09ceae3d1dafd2f7b1da759c2ad}
+
+
+Type of a shared pointer to the connections this server will create. 
+
+
+
+Definition at line 57 of file server\+\_\+endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1server_a82d3d94b70a49b2073c9b3378ec7047c}{}\index{websocketpp\+::server@{websocketpp\+::server}!connection\+\_\+type@{connection\+\_\+type}}
+\index{connection\+\_\+type@{connection\+\_\+type}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{connection\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef {\bf connection}$<$config$>$ {\bf websocketpp\+::server}$<$ config $>$\+::{\bf connection\+\_\+type}}\label{classwebsocketpp_1_1server_a82d3d94b70a49b2073c9b3378ec7047c}
+
+
+Type of the connections this server will create. 
+
+
+
+Definition at line 55 of file server\+\_\+endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1server_a40f4d4bb132daf5164ccc290e9dbceb7}{}\index{websocketpp\+::server@{websocketpp\+::server}!endpoint\+\_\+type@{endpoint\+\_\+type}}
+\index{endpoint\+\_\+type@{endpoint\+\_\+type}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{endpoint\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef {\bf endpoint}$<${\bf connection\+\_\+type},config$>$ {\bf websocketpp\+::server}$<$ config $>$\+::{\bf endpoint\+\_\+type}}\label{classwebsocketpp_1_1server_a40f4d4bb132daf5164ccc290e9dbceb7}
+
+
+Type of the endpoint component of this server. 
+
+
+
+Definition at line 65 of file server\+\_\+endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1server_af23763a1899c4636299f59f130570aab}{}\index{websocketpp\+::server@{websocketpp\+::server}!transport\+\_\+con\+\_\+ptr@{transport\+\_\+con\+\_\+ptr}}
+\index{transport\+\_\+con\+\_\+ptr@{transport\+\_\+con\+\_\+ptr}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{transport\+\_\+con\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef transport\+\_\+con\+\_\+type\+::ptr {\bf websocketpp\+::server}$<$ config $>$\+::{\bf transport\+\_\+con\+\_\+ptr}}\label{classwebsocketpp_1_1server_af23763a1899c4636299f59f130570aab}
+
+
+Type of a shared pointer to the connection transport component. 
+
+
+
+Definition at line 62 of file server\+\_\+endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1server_a0515060720d024fb5d0ee7db1b4498a6}{}\index{websocketpp\+::server@{websocketpp\+::server}!transport\+\_\+con\+\_\+type@{transport\+\_\+con\+\_\+type}}
+\index{transport\+\_\+con\+\_\+type@{transport\+\_\+con\+\_\+type}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{transport\+\_\+con\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef transport\+\_\+type\+::transport\+\_\+con\+\_\+type {\bf websocketpp\+::server}$<$ config $>$\+::{\bf transport\+\_\+con\+\_\+type}}\label{classwebsocketpp_1_1server_a0515060720d024fb5d0ee7db1b4498a6}
+
+
+Type of the connection transport component. 
+
+
+
+Definition at line 60 of file server\+\_\+endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1server_a762a51efebd0c0f87918f0369434f04f}{}\index{websocketpp\+::server@{websocketpp\+::server}!transport\+\_\+type@{transport\+\_\+type}}
+\index{transport\+\_\+type@{transport\+\_\+type}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{transport\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef config\+::transport\+\_\+type {\bf websocketpp\+::server}$<$ config $>$\+::{\bf transport\+\_\+type}}\label{classwebsocketpp_1_1server_a762a51efebd0c0f87918f0369434f04f}
+
+
+Type of the endpoint transport component. 
+
+
+
+Definition at line 52 of file server\+\_\+endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1server_a265fd3d99141089206f0053c6b842790}{}\index{websocketpp\+::server@{websocketpp\+::server}!type@{type}}
+\index{type@{type}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef {\bf server}$<$config$>$ {\bf websocketpp\+::server}$<$ config $>$\+::{\bf type}}\label{classwebsocketpp_1_1server_a265fd3d99141089206f0053c6b842790}
+
+
+Type of this endpoint. 
+
+
+
+Definition at line 47 of file server\+\_\+endpoint.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classwebsocketpp_1_1server_ae6ed4fd23f86c3079277ff70b9fe2e52}{}\index{websocketpp\+::server@{websocketpp\+::server}!server@{server}}
+\index{server@{server}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{server()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf websocketpp\+::server}$<$ config $>$\+::{\bf server} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classwebsocketpp_1_1server_ae6ed4fd23f86c3079277ff70b9fe2e52}
+
+
+Definition at line 69 of file server\+\_\+endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1server_aa9f0c40951f9a365e23233551fbc3f6b}{}\index{websocketpp\+::server@{websocketpp\+::server}!````~server@{$\sim$server}}
+\index{````~server@{$\sim$server}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{$\sim$server()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf websocketpp\+::server}$<$ config $>$\+::$\sim${\bf server} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1server_aa9f0c40951f9a365e23233551fbc3f6b}
+
+
+Destructor. 
+
+
+
+Definition at line 75 of file server\+\_\+endpoint.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classwebsocketpp_1_1server_a9146c63ed1afb5bdec29eca52c487226}{}\index{websocketpp\+::server@{websocketpp\+::server}!get\+\_\+connection@{get\+\_\+connection}}
+\index{get\+\_\+connection@{get\+\_\+connection}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{get\+\_\+connection()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf connection\+\_\+ptr} {\bf websocketpp\+::server}$<$ config $>$\+::get\+\_\+connection (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1server_a9146c63ed1afb5bdec29eca52c487226}
+
+
+Create and initialize a new connection. 
+
+The connection will be initialized and ready to begin. Call its start() method to begin the processing loop.
+
+Note\+: The connection must either be started or terminated using \hyperlink{classwebsocketpp_1_1connection_a7267aae677a77e5e9379ecb6db1789a3}{connection\+::terminate} in order to avoid memory leaks.
+
+\begin{DoxyReturn}{Returns}
+A pointer to the new connection. 
+\end{DoxyReturn}
+
+
+Definition at line 106 of file server\+\_\+endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1server_aa24feb1c5d2bde47de8b11f5369c54d4}{}\index{websocketpp\+::server@{websocketpp\+::server}!handle\+\_\+accept@{handle\+\_\+accept}}
+\index{handle\+\_\+accept@{handle\+\_\+accept}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{handle\+\_\+accept(connection\+\_\+ptr con, lib\+::error\+\_\+code const \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::server}$<$ config $>$\+::handle\+\_\+accept (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+ptr}}]{con, }
+\item[{lib\+::error\+\_\+code const \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1server_aa24feb1c5d2bde47de8b11f5369c54d4}
+
+
+Handler callback for start\+\_\+accept. 
+
+
+
+Definition at line 161 of file server\+\_\+endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1server_a0204a7d444144f7ea5b8bbcf14689fc1}{}\index{websocketpp\+::server@{websocketpp\+::server}!start\+\_\+accept@{start\+\_\+accept}}
+\index{start\+\_\+accept@{start\+\_\+accept}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{start\+\_\+accept(lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::server}$<$ config $>$\+::start\+\_\+accept (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1server_a0204a7d444144f7ea5b8bbcf14689fc1}
+
+
+Starts the server\textquotesingle{}s async connection acceptance loop (exception free) 
+
+Initiates the server connection acceptance loop. Must be called after listen. This method will have no effect until the underlying io\+\_\+service starts running. It may be called after the io\+\_\+service is already running.
+
+Refer to documentation for the transport policy you are using for instructions on how to stop this acceptance loop.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em ec} & A status code indicating an error, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 121 of file server\+\_\+endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1server_ab61bcdf9fd532fe7ebd934f8d84fdfea}{}\index{websocketpp\+::server@{websocketpp\+::server}!start\+\_\+accept@{start\+\_\+accept}}
+\index{start\+\_\+accept@{start\+\_\+accept}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{start\+\_\+accept()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::server}$<$ config $>$\+::start\+\_\+accept (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1server_ab61bcdf9fd532fe7ebd934f8d84fdfea}
+
+
+Starts the server\textquotesingle{}s async connection acceptance loop. 
+
+Initiates the server connection acceptance loop. Must be called after listen. This method will have no effect until the underlying io\+\_\+service starts running. It may be called after the io\+\_\+service is already running.
+
+Refer to documentation for the transport policy you are using for instructions on how to stop this acceptance loop. 
+
+Definition at line 152 of file server\+\_\+endpoint.\+hpp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classwebsocketpp_1_1server_a408f6796a357de56c73c3beb2f13c61d}{}\index{websocketpp\+::server@{websocketpp\+::server}!connection$<$ config $>$@{connection$<$ config $>$}}
+\index{connection$<$ config $>$@{connection$<$ config $>$}!websocketpp\+::server@{websocketpp\+::server}}
+\subsubsection[{connection$<$ config $>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ friend class {\bf connection}$<$ config $>$\hspace{0.3cm}{\ttfamily [friend]}}\label{classwebsocketpp_1_1server_a408f6796a357de56c73c3beb2f13c61d}
+
+
+Definition at line 67 of file server\+\_\+endpoint.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/roles/\hyperlink{server__endpoint_8hpp}{server\+\_\+endpoint.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,4 @@
+var structasio_1_1handler__type_3_01use__future__t_3_01_allocator_01_4_00_01_01_01_01_01_01_01_01_01912bb47ba4497b53d32e350e5bfa0a51 =
+[
+    [ "type", "structasio_1_1handler__type_3_01use__future__t_3_01_allocator_01_4_00_01_01_01_01_01_01_01_01_01912bb47ba4497b53d32e350e5bfa0a51.html#a77bcd6ab17577d0adf5835708fb32989", null ]
+];

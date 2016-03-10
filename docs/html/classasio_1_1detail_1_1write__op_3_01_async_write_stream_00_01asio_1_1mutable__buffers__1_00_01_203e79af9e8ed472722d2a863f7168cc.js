@@ -1,0 +1,10 @@
+var classasio_1_1detail_1_1write__op_3_01_async_write_stream_00_01asio_1_1mutable__buffers__1_00_01_203e79af9e8ed472722d2a863f7168cc =
+[
+    [ "write_op", "classasio_1_1detail_1_1write__op_3_01_async_write_stream_00_01asio_1_1mutable__buffers__1_00_01_203e79af9e8ed472722d2a863f7168cc.html#ab978d16ce91bafdd7b8940a35f8f3392", null ],
+    [ "operator()", "classasio_1_1detail_1_1write__op_3_01_async_write_stream_00_01asio_1_1mutable__buffers__1_00_01_203e79af9e8ed472722d2a863f7168cc.html#a5fab8154123ff86d75d809de044c2a35", null ],
+    [ "buffer_", "classasio_1_1detail_1_1write__op_3_01_async_write_stream_00_01asio_1_1mutable__buffers__1_00_01_203e79af9e8ed472722d2a863f7168cc.html#abd0a53f2f29936807379f6ee76a406aa", null ],
+    [ "handler_", "classasio_1_1detail_1_1write__op_3_01_async_write_stream_00_01asio_1_1mutable__buffers__1_00_01_203e79af9e8ed472722d2a863f7168cc.html#a739503b7d3fb902fe1cfdd006921279c", null ],
+    [ "start_", "classasio_1_1detail_1_1write__op_3_01_async_write_stream_00_01asio_1_1mutable__buffers__1_00_01_203e79af9e8ed472722d2a863f7168cc.html#a17fc0b35542316cc467061ada86393b5", null ],
+    [ "stream_", "classasio_1_1detail_1_1write__op_3_01_async_write_stream_00_01asio_1_1mutable__buffers__1_00_01_203e79af9e8ed472722d2a863f7168cc.html#a6eaf85d425f3fbbf09beae615a465398", null ],
+    [ "total_transferred_", "classasio_1_1detail_1_1write__op_3_01_async_write_stream_00_01asio_1_1mutable__buffers__1_00_01_203e79af9e8ed472722d2a863f7168cc.html#a00fca045b44c95411577cab89e34c41c", null ]
+];

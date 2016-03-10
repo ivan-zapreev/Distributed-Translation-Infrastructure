@@ -1,0 +1,95 @@
+\hypertarget{class_t_c_l_a_p_1_1_help_visitor}{}\section{T\+C\+L\+A\+P\+:\+:Help\+Visitor Class Reference}
+\label{class_t_c_l_a_p_1_1_help_visitor}\index{T\+C\+L\+A\+P\+::\+Help\+Visitor@{T\+C\+L\+A\+P\+::\+Help\+Visitor}}
+
+
+{\ttfamily \#include $<$Help\+Visitor.\+h$>$}
+
+Inheritance diagram for T\+C\+L\+A\+P\+:\+:Help\+Visitor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_t_c_l_a_p_1_1_help_visitor}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_help_visitor_a425e96efa6950b1949f1f81d4ff133f1}{Help\+Visitor} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} $\ast$cmd, \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output}{Cmd\+Line\+Output} $\ast$$\ast$out)
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_help_visitor_a157294efe254edb2b713b7c458aad3f2}{visit} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} $\ast$ \hyperlink{class_t_c_l_a_p_1_1_help_visitor_afc7e0402f4e09ab6eff91680ea87ea57}{\+\_\+cmd}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_cmd_line_output}{Cmd\+Line\+Output} $\ast$$\ast$ \hyperlink{class_t_c_l_a_p_1_1_help_visitor_ae12c2d2208b64377a6360fb335454877}{\+\_\+out}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A \hyperlink{class_t_c_l_a_p_1_1_visitor}{Visitor} object that calls the usage method of the given \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output}{Cmd\+Line\+Output} object for the specified \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} object. 
+
+Definition at line 35 of file Help\+Visitor.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_help_visitor_a425e96efa6950b1949f1f81d4ff133f1}{}\index{T\+C\+L\+A\+P\+::\+Help\+Visitor@{T\+C\+L\+A\+P\+::\+Help\+Visitor}!Help\+Visitor@{Help\+Visitor}}
+\index{Help\+Visitor@{Help\+Visitor}!T\+C\+L\+A\+P\+::\+Help\+Visitor@{T\+C\+L\+A\+P\+::\+Help\+Visitor}}
+\subsubsection[{Help\+Visitor(\+Cmd\+Line\+Interface $\ast$cmd, Cmd\+Line\+Output $\ast$$\ast$out)}]{\setlength{\rightskip}{0pt plus 5cm}T\+C\+L\+A\+P\+::\+Help\+Visitor\+::\+Help\+Visitor (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} $\ast$}]{cmd, }
+\item[{{\bf Cmd\+Line\+Output} $\ast$$\ast$}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_help_visitor_a425e96efa6950b1949f1f81d4ff133f1}
+Constructor. 
+\begin{DoxyParams}{Parameters}
+{\em cmd} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} the output will be generated for. \\
+\hline
+{\em out} & -\/ The type of output. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 63 of file Help\+Visitor.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_help_visitor_a157294efe254edb2b713b7c458aad3f2}{}\index{T\+C\+L\+A\+P\+::\+Help\+Visitor@{T\+C\+L\+A\+P\+::\+Help\+Visitor}!visit@{visit}}
+\index{visit@{visit}!T\+C\+L\+A\+P\+::\+Help\+Visitor@{T\+C\+L\+A\+P\+::\+Help\+Visitor}}
+\subsubsection[{visit()}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Help\+Visitor\+::visit (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_help_visitor_a157294efe254edb2b713b7c458aad3f2}
+Calls the usage method of the \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output}{Cmd\+Line\+Output} for the specified \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line}. 
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_visitor_a08625664637579a24ba2f0ab3e713670}{T\+C\+L\+A\+P\+::\+Visitor}.
+
+
+
+Definition at line 70 of file Help\+Visitor.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_help_visitor_afc7e0402f4e09ab6eff91680ea87ea57}{}\index{T\+C\+L\+A\+P\+::\+Help\+Visitor@{T\+C\+L\+A\+P\+::\+Help\+Visitor}!\+\_\+cmd@{\+\_\+cmd}}
+\index{\+\_\+cmd@{\+\_\+cmd}!T\+C\+L\+A\+P\+::\+Help\+Visitor@{T\+C\+L\+A\+P\+::\+Help\+Visitor}}
+\subsubsection[{\+\_\+cmd}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Cmd\+Line\+Interface}$\ast$ T\+C\+L\+A\+P\+::\+Help\+Visitor\+::\+\_\+cmd\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_help_visitor_afc7e0402f4e09ab6eff91680ea87ea57}
+The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} the output will be generated for. 
+
+Definition at line 49 of file Help\+Visitor.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_help_visitor_ae12c2d2208b64377a6360fb335454877}{}\index{T\+C\+L\+A\+P\+::\+Help\+Visitor@{T\+C\+L\+A\+P\+::\+Help\+Visitor}!\+\_\+out@{\+\_\+out}}
+\index{\+\_\+out@{\+\_\+out}!T\+C\+L\+A\+P\+::\+Help\+Visitor@{T\+C\+L\+A\+P\+::\+Help\+Visitor}}
+\subsubsection[{\+\_\+out}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Cmd\+Line\+Output}$\ast$$\ast$ T\+C\+L\+A\+P\+::\+Help\+Visitor\+::\+\_\+out\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_help_visitor_ae12c2d2208b64377a6360fb335454877}
+The output object. 
+
+Definition at line 54 of file Help\+Visitor.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/tclap/\hyperlink{_help_visitor_8h}{Help\+Visitor.\+h}\end{DoxyCompactItemize}

@@ -1,0 +1,101 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:trans\+\_\+task\+\_\+pool\+\_\+worker Class Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker}}
+
+
+{\ttfamily \#include $<$trans\+\_\+task\+\_\+pool\+\_\+worker.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_af29354a4ec8fd7587053f130bf853c01}{trans\+\_\+task\+\_\+pool\+\_\+worker} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool}{trans\+\_\+task\+\_\+pool} \&pool)
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_a6660e1b15ec174215ef2de8d9d2025e8}{$\sim$trans\+\_\+task\+\_\+pool\+\_\+worker} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_adeb6443bcb2bcf957145548e7bc32a28}{stop} ()
+\item 
+atomic$<$ bool $>$ \& \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_a93e5169286d17d5ca8427bef223f1c49}{is\+\_\+busy} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_ade30354690def6d11d450918f0bce63e}{operator()} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class represents a translation tasks pool worker. This is class is to be used around the actual translation task inside the translation tasks pool. We need this class as a synchronization layer for the thread pool, as each of instances of this class will be run by a thread. 
+
+Definition at line 50 of file trans\+\_\+task\+\_\+pool\+\_\+worker.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_af29354a4ec8fd7587053f130bf853c01}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker}!trans\+\_\+task\+\_\+pool\+\_\+worker@{trans\+\_\+task\+\_\+pool\+\_\+worker}}
+\index{trans\+\_\+task\+\_\+pool\+\_\+worker@{trans\+\_\+task\+\_\+pool\+\_\+worker}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker}}
+\subsubsection[{trans\+\_\+task\+\_\+pool\+\_\+worker(trans\+\_\+task\+\_\+pool \&pool)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker\+::trans\+\_\+task\+\_\+pool\+\_\+worker (
+\begin{DoxyParamCaption}
+\item[{{\bf trans\+\_\+task\+\_\+pool} \&}]{pool}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_af29354a4ec8fd7587053f130bf853c01}
+This is a basic constructor that needs the thread pool reference as an argument. 
+\begin{DoxyParams}{Parameters}
+{\em pool} & the task pool reference \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 57 of file trans\+\_\+task\+\_\+pool\+\_\+worker.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_a6660e1b15ec174215ef2de8d9d2025e8}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker}!````~trans\+\_\+task\+\_\+pool\+\_\+worker@{$\sim$trans\+\_\+task\+\_\+pool\+\_\+worker}}
+\index{````~trans\+\_\+task\+\_\+pool\+\_\+worker@{$\sim$trans\+\_\+task\+\_\+pool\+\_\+worker}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker}}
+\subsubsection[{$\sim$trans\+\_\+task\+\_\+pool\+\_\+worker()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker\+::$\sim$trans\+\_\+task\+\_\+pool\+\_\+worker (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_a6660e1b15ec174215ef2de8d9d2025e8}
+The basic destructor 
+
+Definition at line 64 of file trans\+\_\+task\+\_\+pool\+\_\+worker.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_a93e5169286d17d5ca8427bef223f1c49}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker}!is\+\_\+busy@{is\+\_\+busy}}
+\index{is\+\_\+busy@{is\+\_\+busy}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker}}
+\subsubsection[{is\+\_\+busy()}]{\setlength{\rightskip}{0pt plus 5cm}atomic$<$bool$>$\& uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker\+::is\+\_\+busy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_a93e5169286d17d5ca8427bef223f1c49}
+Returns the reference to the worker\textquotesingle{}s is\+\_\+busy flag \begin{DoxyReturn}{Returns}
+the worker\textquotesingle{}s is busy flag reference to see if the worker is busy or not. 
+\end{DoxyReturn}
+
+
+Definition at line 79 of file trans\+\_\+task\+\_\+pool\+\_\+worker.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_ade30354690def6d11d450918f0bce63e}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker}!operator()@{operator()}}
+\index{operator()@{operator()}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker}}
+\subsubsection[{operator()()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker\+::operator() (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_ade30354690def6d11d450918f0bce63e}
+This operator will be called to run the thread, its implementation will run the tasks scheduled in the thread pool. 
+
+Definition at line 34 of file trans\+\_\+task\+\_\+pool\+\_\+worker.\+cpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_adeb6443bcb2bcf957145548e7bc32a28}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker}!stop@{stop}}
+\index{stop@{stop}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker}}
+\subsubsection[{stop()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool\+\_\+worker\+::stop (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker_adeb6443bcb2bcf957145548e7bc32a28}
+Forces the given worker to stop 
+
+Definition at line 71 of file trans\+\_\+task\+\_\+pool\+\_\+worker.\+hpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/\hyperlink{trans__task__pool__worker_8hpp}{trans\+\_\+task\+\_\+pool\+\_\+worker.\+hpp}\item 
+src/server/\hyperlink{trans__task__pool__worker_8cpp}{trans\+\_\+task\+\_\+pool\+\_\+worker.\+cpp}\end{DoxyCompactItemize}

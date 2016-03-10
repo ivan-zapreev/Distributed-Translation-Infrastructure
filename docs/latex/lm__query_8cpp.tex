@@ -1,0 +1,79 @@
+\hypertarget{lm__query_8cpp}{}\section{src/server/lm/lm\+\_\+query.cpp File Reference}
+\label{lm__query_8cpp}\index{src/server/lm/lm\+\_\+query.\+cpp@{src/server/lm/lm\+\_\+query.\+cpp}}
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}tclap/\+Cmd\+Line.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}main.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/monitore/statistics\+\_\+monitore.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/logging/logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/string\+\_\+utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/file/afile\+\_\+reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/file/memory\+\_\+mapped\+\_\+file\+\_\+reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/file/file\+\_\+stream\+\_\+reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/file/cstyle\+\_\+file\+\_\+reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/lm\+\_\+executor.\+hpp\char`\"{}}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{lm__query_8cpp_a7b840156050051a42341fb349765bba9}{P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R}~\char`\"{}1.\+1\char`\"{}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{lm__query_8cpp_ae33bb4ba4438f5eb49aa5537fcd20bce}{create\+\_\+arguments\+\_\+parser} ()
+\item 
+void \hyperlink{lm__query_8cpp_a865eae59e487cdcab1b549cc29b01ae6}{destroy\+\_\+arguments\+\_\+parser} ()
+\item 
+int \hyperlink{lm__query_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{lm__query_8cpp_a7b840156050051a42341fb349765bba9}{}\index{lm\+\_\+query.\+cpp@{lm\+\_\+query.\+cpp}!P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R@{P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R}}
+\index{P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R@{P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R}!lm\+\_\+query.\+cpp@{lm\+\_\+query.\+cpp}}
+\subsubsection[{P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R~\char`\"{}1.\+1\char`\"{}}\label{lm__query_8cpp_a7b840156050051a42341fb349765bba9}
+
+
+Definition at line 61 of file lm\+\_\+query.\+cpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{lm__query_8cpp_ae33bb4ba4438f5eb49aa5537fcd20bce}{}\index{lm\+\_\+query.\+cpp@{lm\+\_\+query.\+cpp}!create\+\_\+arguments\+\_\+parser@{create\+\_\+arguments\+\_\+parser}}
+\index{create\+\_\+arguments\+\_\+parser@{create\+\_\+arguments\+\_\+parser}!lm\+\_\+query.\+cpp@{lm\+\_\+query.\+cpp}}
+\subsubsection[{create\+\_\+arguments\+\_\+parser()}]{\setlength{\rightskip}{0pt plus 5cm}void create\+\_\+arguments\+\_\+parser (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{lm__query_8cpp_ae33bb4ba4438f5eb49aa5537fcd20bce}
+Creates and sets up the command line parameters parser 
+
+Definition at line 83 of file lm\+\_\+query.\+cpp.
+
+\hypertarget{lm__query_8cpp_a865eae59e487cdcab1b549cc29b01ae6}{}\index{lm\+\_\+query.\+cpp@{lm\+\_\+query.\+cpp}!destroy\+\_\+arguments\+\_\+parser@{destroy\+\_\+arguments\+\_\+parser}}
+\index{destroy\+\_\+arguments\+\_\+parser@{destroy\+\_\+arguments\+\_\+parser}!lm\+\_\+query.\+cpp@{lm\+\_\+query.\+cpp}}
+\subsubsection[{destroy\+\_\+arguments\+\_\+parser()}]{\setlength{\rightskip}{0pt plus 5cm}void destroy\+\_\+arguments\+\_\+parser (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{lm__query_8cpp_a865eae59e487cdcab1b549cc29b01ae6}
+Allows to deallocate the parameters parser if it is needed 
+
+Definition at line 105 of file lm\+\_\+query.\+cpp.
+
+\hypertarget{lm__query_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{}\index{lm\+\_\+query.\+cpp@{lm\+\_\+query.\+cpp}!main@{main}}
+\index{main@{main}!lm\+\_\+query.\+cpp@{lm\+\_\+query.\+cpp}}
+\subsubsection[{main(int argc, char $\ast$$\ast$argv)}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$$\ast$}]{argv}
+\end{DoxyParamCaption}
+)}\label{lm__query_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}
+The main program entry point 
+
+Definition at line 149 of file lm\+\_\+query.\+cpp.
+

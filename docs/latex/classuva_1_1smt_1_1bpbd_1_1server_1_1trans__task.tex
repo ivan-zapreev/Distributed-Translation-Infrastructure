@@ -1,0 +1,216 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:trans\+\_\+task Class Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+
+
+{\ttfamily \#include $<$trans\+\_\+task.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef function$<$ void(\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a4dea4bb1185fe5d148be18ad12fea74a}{trans\+\_\+task\+\_\+ptr}) $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a0bbeddd9f0896c3ecb32ed4c2c5e66e1}{done\+\_\+task\+\_\+notifier}
+\item 
+typedef function$<$ void(\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a4dea4bb1185fe5d148be18ad12fea74a}{trans\+\_\+task\+\_\+ptr}) $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_aa3ee37277c0d0fd6ffdb44b67f1a5384}{cancel\+\_\+task\+\_\+notifier}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a0fa8eacb72332e4a4e2ee8f76b286dfd}{trans\+\_\+task} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging_a17ad17f94b78abb87ab5f3f3d6f09588}{session\+\_\+id\+\_\+type} session\+\_\+id, const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1common_1_1messaging_af12d41e7490214ac057969e9d4af1436}{job\+\_\+id\+\_\+type} job\+\_\+id, const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a67f8b384118030b4ae63f1239253f9ed}{task\+\_\+id\+\_\+type} task\+\_\+id, const string \&source\+\_\+sentence, \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a0bbeddd9f0896c3ecb32ed4c2c5e66e1}{done\+\_\+task\+\_\+notifier} notify\+\_\+task\+\_\+done\+\_\+func)
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_aa1bb5790e96aa17e38dc8b5ece08e961}{$\sim$trans\+\_\+task} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_ad1a21a8c197d2fe7d23963ab0fda85b4}{set\+\_\+cancel\+\_\+task\+\_\+notifier} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_aa3ee37277c0d0fd6ffdb44b67f1a5384}{cancel\+\_\+task\+\_\+notifier} notify\+\_\+task\+\_\+cancel\+\_\+func)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_afb1b79f1939721f90458ae41e6775325}{cancel} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_adfc46fc066c24a06a0e455e640c36904}{translate} ()
+\item 
+const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a67f8b384118030b4ae63f1239253f9ed}{task\+\_\+id\+\_\+type} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a7c4fb56a5ad154a01e0b1ce3224029ae}{get\+\_\+task\+\_\+id} () const 
+\item 
+const \hyperlink{classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1trans__job__code}{trans\+\_\+job\+\_\+code} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a7989069b2c8ac4a53c4b61cfb7ca2ae9}{get\+\_\+code} () const 
+\item 
+const string \& \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a6207deffc6fece01ae5fe55f14da31f9}{get\+\_\+source\+\_\+text} () const 
+\item 
+const string \& \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a6b6e12de683ef6ec75ae3d2ef53c4845}{get\+\_\+target\+\_\+text} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a73c3298cc2d8ab7eaadc7d3e08e444bd}{process\+\_\+task\+\_\+result} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class represents the translation task. Every translation task is a sentence to be translated and its id. 
+
+Definition at line 61 of file trans\+\_\+task.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_aa3ee37277c0d0fd6ffdb44b67f1a5384}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!cancel\+\_\+task\+\_\+notifier@{cancel\+\_\+task\+\_\+notifier}}
+\index{cancel\+\_\+task\+\_\+notifier@{cancel\+\_\+task\+\_\+notifier}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{cancel\+\_\+task\+\_\+notifier}]{\setlength{\rightskip}{0pt plus 5cm}typedef function$<$void({\bf trans\+\_\+task\+\_\+ptr}) $>$ {\bf uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::cancel\+\_\+task\+\_\+notifier}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_aa3ee37277c0d0fd6ffdb44b67f1a5384}
+
+
+Definition at line 66 of file trans\+\_\+task.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a0bbeddd9f0896c3ecb32ed4c2c5e66e1}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!done\+\_\+task\+\_\+notifier@{done\+\_\+task\+\_\+notifier}}
+\index{done\+\_\+task\+\_\+notifier@{done\+\_\+task\+\_\+notifier}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{done\+\_\+task\+\_\+notifier}]{\setlength{\rightskip}{0pt plus 5cm}typedef function$<$void({\bf trans\+\_\+task\+\_\+ptr}) $>$ {\bf uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::done\+\_\+task\+\_\+notifier}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a0bbeddd9f0896c3ecb32ed4c2c5e66e1}
+
+
+Definition at line 64 of file trans\+\_\+task.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a0fa8eacb72332e4a4e2ee8f76b286dfd}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!trans\+\_\+task@{trans\+\_\+task}}
+\index{trans\+\_\+task@{trans\+\_\+task}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{trans\+\_\+task(const session\+\_\+id\+\_\+type session\+\_\+id, const job\+\_\+id\+\_\+type job\+\_\+id, const task\+\_\+id\+\_\+type task\+\_\+id, const string \&source\+\_\+sentence, done\+\_\+task\+\_\+notifier notify\+\_\+task\+\_\+done\+\_\+func)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::trans\+\_\+task (
+\begin{DoxyParamCaption}
+\item[{const {\bf session\+\_\+id\+\_\+type}}]{session\+\_\+id, }
+\item[{const {\bf job\+\_\+id\+\_\+type}}]{job\+\_\+id, }
+\item[{const {\bf task\+\_\+id\+\_\+type}}]{task\+\_\+id, }
+\item[{const string \&}]{source\+\_\+sentence, }
+\item[{{\bf done\+\_\+task\+\_\+notifier}}]{notify\+\_\+task\+\_\+done\+\_\+func}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a0fa8eacb72332e4a4e2ee8f76b286dfd}
+The basic constructor allowing to initialize the main class constants 
+\begin{DoxyParams}{Parameters}
+{\em session\+\_\+id} & the session id of the task, is used for logging \\
+\hline
+{\em job\+\_\+id} & the job id of the task, is used for logging \\
+\hline
+{\em \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1task__id}{task\+\_\+id}} & the id of the translation task within the translation job \\
+\hline
+{\em source\+\_\+sentence} & the sentence to be translated \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 75 of file trans\+\_\+task.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_aa1bb5790e96aa17e38dc8b5ece08e961}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!````~trans\+\_\+task@{$\sim$trans\+\_\+task}}
+\index{````~trans\+\_\+task@{$\sim$trans\+\_\+task}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{$\sim$trans\+\_\+task()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::$\sim$trans\+\_\+task (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_aa1bb5790e96aa17e38dc8b5ece08e961}
+The basic destructor 
+
+Definition at line 88 of file trans\+\_\+task.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_afb1b79f1939721f90458ae41e6775325}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!cancel@{cancel}}
+\index{cancel@{cancel}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{cancel()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::cancel (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_afb1b79f1939721f90458ae41e6775325}
+Allows to cancel the translation task 
+
+Definition at line 104 of file trans\+\_\+task.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a7989069b2c8ac4a53c4b61cfb7ca2ae9}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!get\+\_\+code@{get\+\_\+code}}
+\index{get\+\_\+code@{get\+\_\+code}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{get\+\_\+code() const }]{\setlength{\rightskip}{0pt plus 5cm}const {\bf trans\+\_\+job\+\_\+code} uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::get\+\_\+code (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a7989069b2c8ac4a53c4b61cfb7ca2ae9}
+Allows to retrieve the translation task result code \begin{DoxyReturn}{Returns}
+the translation task result code 
+\end{DoxyReturn}
+
+
+Definition at line 176 of file trans\+\_\+task.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a6207deffc6fece01ae5fe55f14da31f9}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!get\+\_\+source\+\_\+text@{get\+\_\+source\+\_\+text}}
+\index{get\+\_\+source\+\_\+text@{get\+\_\+source\+\_\+text}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{get\+\_\+source\+\_\+text() const }]{\setlength{\rightskip}{0pt plus 5cm}const string\& uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::get\+\_\+source\+\_\+text (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a6207deffc6fece01ae5fe55f14da31f9}
+Allows to retrieve the sentence in the source language \begin{DoxyReturn}{Returns}
+the sentence in the source language 
+\end{DoxyReturn}
+
+
+Definition at line 184 of file trans\+\_\+task.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a6b6e12de683ef6ec75ae3d2ef53c4845}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!get\+\_\+target\+\_\+text@{get\+\_\+target\+\_\+text}}
+\index{get\+\_\+target\+\_\+text@{get\+\_\+target\+\_\+text}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{get\+\_\+target\+\_\+text()}]{\setlength{\rightskip}{0pt plus 5cm}const string\& uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::get\+\_\+target\+\_\+text (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a6b6e12de683ef6ec75ae3d2ef53c4845}
+Allows to retrieve the sentence in the target language or an error message \begin{DoxyReturn}{Returns}
+the sentence in the target language or an error message 
+\end{DoxyReturn}
+
+
+Definition at line 192 of file trans\+\_\+task.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a7c4fb56a5ad154a01e0b1ce3224029ae}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!get\+\_\+task\+\_\+id@{get\+\_\+task\+\_\+id}}
+\index{get\+\_\+task\+\_\+id@{get\+\_\+task\+\_\+id}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{get\+\_\+task\+\_\+id() const }]{\setlength{\rightskip}{0pt plus 5cm}const {\bf task\+\_\+id\+\_\+type} uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::get\+\_\+task\+\_\+id (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a7c4fb56a5ad154a01e0b1ce3224029ae}
+Allows to retrieve the task id \begin{DoxyReturn}{Returns}
+the task id 
+\end{DoxyReturn}
+
+
+Definition at line 168 of file trans\+\_\+task.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a73c3298cc2d8ab7eaadc7d3e08e444bd}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!process\+\_\+task\+\_\+result@{process\+\_\+task\+\_\+result}}
+\index{process\+\_\+task\+\_\+result@{process\+\_\+task\+\_\+result}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{process\+\_\+task\+\_\+result()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::process\+\_\+task\+\_\+result (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_a73c3298cc2d8ab7eaadc7d3e08e444bd}
+Allows to process the translation task result in case of a successful and abnormal task termination. This includes sending the notification to the translation job that the task is finished. N\+O\+T\+E\+: This method is not thread safe! 
+
+Definition at line 208 of file trans\+\_\+task.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_ad1a21a8c197d2fe7d23963ab0fda85b4}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!set\+\_\+cancel\+\_\+task\+\_\+notifier@{set\+\_\+cancel\+\_\+task\+\_\+notifier}}
+\index{set\+\_\+cancel\+\_\+task\+\_\+notifier@{set\+\_\+cancel\+\_\+task\+\_\+notifier}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{set\+\_\+cancel\+\_\+task\+\_\+notifier(cancel\+\_\+task\+\_\+notifier notify\+\_\+task\+\_\+cancel\+\_\+func)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::set\+\_\+cancel\+\_\+task\+\_\+notifier (
+\begin{DoxyParamCaption}
+\item[{{\bf cancel\+\_\+task\+\_\+notifier}}]{notify\+\_\+task\+\_\+cancel\+\_\+func}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_ad1a21a8c197d2fe7d23963ab0fda85b4}
+Allows to set the function which must be called by the tasks if it is being cancelled. 
+\begin{DoxyParams}{Parameters}
+{\em notify\+\_\+task\+\_\+cancel\+\_\+func} & the function to call in case this task is being cancelled. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 96 of file trans\+\_\+task.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_adfc46fc066c24a06a0e455e640c36904}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}!translate@{translate}}
+\index{translate@{translate}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task}}
+\subsubsection[{translate()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+::translate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task_adfc46fc066c24a06a0e455e640c36904}
+Performs the translation for the given sentence 
+
+Definition at line 126 of file trans\+\_\+task.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/\hyperlink{trans__task_8hpp}{trans\+\_\+task.\+hpp}\end{DoxyCompactItemize}

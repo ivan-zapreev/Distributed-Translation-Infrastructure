@@ -1,0 +1,235 @@
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service}{}\section{asio\+:\+:detail\+:\+:deadline\+\_\+timer\+\_\+service$<$ Time\+\_\+\+Traits $>$ Class Template Reference}
+\label{classasio_1_1detail_1_1deadline__timer__service}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service$<$ Time\+\_\+\+Traits $>$@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service$<$ Time\+\_\+\+Traits $>$}}
+
+
+{\ttfamily \#include $<$deadline\+\_\+timer\+\_\+service.\+hpp$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structasio_1_1detail_1_1deadline__timer__service_1_1implementation__type}{implementation\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Time\+\_\+\+Traits\+::time\+\_\+type \hyperlink{classasio_1_1detail_1_1deadline__timer__service_a217817497abe6136c056c0facdd3f8aa}{time\+\_\+type}
+\item 
+typedef Time\+\_\+\+Traits\+::duration\+\_\+type \hyperlink{classasio_1_1detail_1_1deadline__timer__service_aa2f42592b15216b94578b059efa9b304}{duration\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1detail_1_1deadline__timer__service_a9d778b855ccb8db82f300ed107929322}{deadline\+\_\+timer\+\_\+service} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service})
+\item 
+\hyperlink{classasio_1_1detail_1_1deadline__timer__service_a4b5571b64d826e239d8908e13053516f}{$\sim$deadline\+\_\+timer\+\_\+service} ()
+\item 
+void \hyperlink{classasio_1_1detail_1_1deadline__timer__service_a206122f643a903feb1ccd94ad5d41149}{shutdown\+\_\+service} ()
+\item 
+void \hyperlink{classasio_1_1detail_1_1deadline__timer__service_a0ce93932e78e84f6cb13e51afb755e9b}{construct} (\hyperlink{structasio_1_1detail_1_1deadline__timer__service_1_1implementation__type}{implementation\+\_\+type} \&impl)
+\item 
+void \hyperlink{classasio_1_1detail_1_1deadline__timer__service_a9dec32db50666ae9824a293fc17d8055}{destroy} (\hyperlink{structasio_1_1detail_1_1deadline__timer__service_1_1implementation__type}{implementation\+\_\+type} \&impl)
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1detail_1_1deadline__timer__service_adbdd18c03bca98d0021f9fbe2caf7566}{cancel} (\hyperlink{structasio_1_1detail_1_1deadline__timer__service_1_1implementation__type}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1detail_1_1deadline__timer__service_a9ec1a022de9bf22834fa75d1d6eee2a5}{cancel\+\_\+one} (\hyperlink{structasio_1_1detail_1_1deadline__timer__service_1_1implementation__type}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{classasio_1_1detail_1_1deadline__timer__service_a217817497abe6136c056c0facdd3f8aa}{time\+\_\+type} \hyperlink{classasio_1_1detail_1_1deadline__timer__service_a8fa751ddf7cdd5b96f725a84c684798e}{expires\+\_\+at} (const \hyperlink{structasio_1_1detail_1_1deadline__timer__service_1_1implementation__type}{implementation\+\_\+type} \&impl) const 
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1detail_1_1deadline__timer__service_a8311dad77493ccfbcb16380f68c85ea3}{expires\+\_\+at} (\hyperlink{structasio_1_1detail_1_1deadline__timer__service_1_1implementation__type}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1detail_1_1deadline__timer__service_a217817497abe6136c056c0facdd3f8aa}{time\+\_\+type} \&expiry\+\_\+time, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{classasio_1_1detail_1_1deadline__timer__service_aa2f42592b15216b94578b059efa9b304}{duration\+\_\+type} \hyperlink{classasio_1_1detail_1_1deadline__timer__service_a8972e370a49fc788fe673b94835461c6}{expires\+\_\+from\+\_\+now} (const \hyperlink{structasio_1_1detail_1_1deadline__timer__service_1_1implementation__type}{implementation\+\_\+type} \&impl) const 
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1detail_1_1deadline__timer__service_acc977f61c1ab001024d76e178c1721a6}{expires\+\_\+from\+\_\+now} (\hyperlink{structasio_1_1detail_1_1deadline__timer__service_1_1implementation__type}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1detail_1_1deadline__timer__service_aa2f42592b15216b94578b059efa9b304}{duration\+\_\+type} \&expiry\+\_\+time, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+void \hyperlink{classasio_1_1detail_1_1deadline__timer__service_abe22f0f8f186b5e00d8f9fee667a5a44}{wait} (\hyperlink{structasio_1_1detail_1_1deadline__timer__service_1_1implementation__type}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Handler $>$ }\\void \hyperlink{classasio_1_1detail_1_1deadline__timer__service_af147b64af28c0d36b54849aa36bb492c}{async\+\_\+wait} (\hyperlink{structasio_1_1detail_1_1deadline__timer__service_1_1implementation__type}{implementation\+\_\+type} \&impl, Handler \&handler)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Time\+\_\+\+Traits$>$class asio\+::detail\+::deadline\+\_\+timer\+\_\+service$<$ Time\+\_\+\+Traits $>$}
+
+
+
+Definition at line 44 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_aa2f42592b15216b94578b059efa9b304}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!duration\+\_\+type@{duration\+\_\+type}}
+\index{duration\+\_\+type@{duration\+\_\+type}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{duration\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ typedef Time\+\_\+\+Traits\+::duration\+\_\+type {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::{\bf duration\+\_\+type}}\label{classasio_1_1detail_1_1deadline__timer__service_aa2f42592b15216b94578b059efa9b304}
+
+
+Definition at line 51 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_a217817497abe6136c056c0facdd3f8aa}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!time\+\_\+type@{time\+\_\+type}}
+\index{time\+\_\+type@{time\+\_\+type}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{time\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ typedef Time\+\_\+\+Traits\+::time\+\_\+type {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::{\bf time\+\_\+type}}\label{classasio_1_1detail_1_1deadline__timer__service_a217817497abe6136c056c0facdd3f8aa}
+
+
+Definition at line 48 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_a9d778b855ccb8db82f300ed107929322}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!deadline\+\_\+timer\+\_\+service@{deadline\+\_\+timer\+\_\+service}}
+\index{deadline\+\_\+timer\+\_\+service@{deadline\+\_\+timer\+\_\+service}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{deadline\+\_\+timer\+\_\+service(asio\+::io\+\_\+service \&io\+\_\+service)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::{\bf deadline\+\_\+timer\+\_\+service} (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_a9d778b855ccb8db82f300ed107929322}
+
+
+Definition at line 64 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_a4b5571b64d826e239d8908e13053516f}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!````~deadline\+\_\+timer\+\_\+service@{$\sim$deadline\+\_\+timer\+\_\+service}}
+\index{````~deadline\+\_\+timer\+\_\+service@{$\sim$deadline\+\_\+timer\+\_\+service}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{$\sim$deadline\+\_\+timer\+\_\+service()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::$\sim${\bf deadline\+\_\+timer\+\_\+service} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_a4b5571b64d826e239d8908e13053516f}
+
+
+Definition at line 72 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_af147b64af28c0d36b54849aa36bb492c}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!async\+\_\+wait@{async\+\_\+wait}}
+\index{async\+\_\+wait@{async\+\_\+wait}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{async\+\_\+wait(implementation\+\_\+type \&impl, Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ template$<$typename Handler $>$ void {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::async\+\_\+wait (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_af147b64af28c0d36b54849aa36bb492c}
+
+
+Definition at line 178 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_adbdd18c03bca98d0021f9fbe2caf7566}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!cancel@{cancel}}
+\index{cancel@{cancel}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{cancel(implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ std\+::size\+\_\+t {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::cancel (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_adbdd18c03bca98d0021f9fbe2caf7566}
+
+
+Definition at line 97 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_a9ec1a022de9bf22834fa75d1d6eee2a5}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!cancel\+\_\+one@{cancel\+\_\+one}}
+\index{cancel\+\_\+one@{cancel\+\_\+one}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{cancel\+\_\+one(implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ std\+::size\+\_\+t {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::cancel\+\_\+one (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_a9ec1a022de9bf22834fa75d1d6eee2a5}
+
+
+Definition at line 114 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_a0ce93932e78e84f6cb13e51afb755e9b}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!construct@{construct}}
+\index{construct@{construct}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{construct(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ void {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::construct (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_a0ce93932e78e84f6cb13e51afb755e9b}
+
+
+Definition at line 83 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_a9dec32db50666ae9824a293fc17d8055}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!destroy@{destroy}}
+\index{destroy@{destroy}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{destroy(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ void {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::destroy (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_a9dec32db50666ae9824a293fc17d8055}
+
+
+Definition at line 90 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_a8fa751ddf7cdd5b96f725a84c684798e}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!expires\+\_\+at@{expires\+\_\+at}}
+\index{expires\+\_\+at@{expires\+\_\+at}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{expires\+\_\+at(const implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ {\bf time\+\_\+type} {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::expires\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_a8fa751ddf7cdd5b96f725a84c684798e}
+
+
+Definition at line 134 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_a8311dad77493ccfbcb16380f68c85ea3}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!expires\+\_\+at@{expires\+\_\+at}}
+\index{expires\+\_\+at@{expires\+\_\+at}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{expires\+\_\+at(implementation\+\_\+type \&impl, const time\+\_\+type \&expiry\+\_\+time, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ std\+::size\+\_\+t {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::expires\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf time\+\_\+type} \&}]{expiry\+\_\+time, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_a8311dad77493ccfbcb16380f68c85ea3}
+
+
+Definition at line 140 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_a8972e370a49fc788fe673b94835461c6}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}}
+\index{expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{expires\+\_\+from\+\_\+now(const implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ {\bf duration\+\_\+type} {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::expires\+\_\+from\+\_\+now (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_a8972e370a49fc788fe673b94835461c6}
+
+
+Definition at line 150 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_acc977f61c1ab001024d76e178c1721a6}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}}
+\index{expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{expires\+\_\+from\+\_\+now(implementation\+\_\+type \&impl, const duration\+\_\+type \&expiry\+\_\+time, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ std\+::size\+\_\+t {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::expires\+\_\+from\+\_\+now (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf duration\+\_\+type} \&}]{expiry\+\_\+time, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_acc977f61c1ab001024d76e178c1721a6}
+
+
+Definition at line 156 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_a206122f643a903feb1ccd94ad5d41149}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!shutdown\+\_\+service@{shutdown\+\_\+service}}
+\index{shutdown\+\_\+service@{shutdown\+\_\+service}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{shutdown\+\_\+service()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ void {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::shutdown\+\_\+service (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_a206122f643a903feb1ccd94ad5d41149}
+
+
+Definition at line 78 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1deadline__timer__service_abe22f0f8f186b5e00d8f9fee667a5a44}{}\index{asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}!wait@{wait}}
+\index{wait@{wait}!asio\+::detail\+::deadline\+\_\+timer\+\_\+service@{asio\+::detail\+::deadline\+\_\+timer\+\_\+service}}
+\subsubsection[{wait(implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits$>$ void {\bf asio\+::detail\+::deadline\+\_\+timer\+\_\+service}$<$ Time\+\_\+\+Traits $>$\+::wait (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1deadline__timer__service_abe22f0f8f186b5e00d8f9fee667a5a44}
+
+
+Definition at line 164 of file deadline\+\_\+timer\+\_\+service.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/detail/\hyperlink{detail_2deadline__timer__service_8hpp}{deadline\+\_\+timer\+\_\+service.\+hpp}\end{DoxyCompactItemize}

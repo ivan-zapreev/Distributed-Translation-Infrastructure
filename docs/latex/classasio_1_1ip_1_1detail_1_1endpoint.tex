@@ -1,0 +1,272 @@
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint}{}\section{asio\+:\+:ip\+:\+:detail\+:\+:endpoint Class Reference}
+\label{classasio_1_1ip_1_1detail_1_1endpoint}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+
+
+{\ttfamily \#include $<$endpoint.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_ae9b74e5512dffd8c1345aa920d7b93f6}{endpoint} ()
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_abb98e177f94abf87e732a4a5d30bbfce}{endpoint} (int family, unsigned short port\+\_\+num)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_a4baec745d6b53673fe984e068d98e7f0}{endpoint} (const \hyperlink{classasio_1_1ip_1_1address}{asio\+::ip\+::address} \&addr, unsigned short port\+\_\+num)
+\item 
+\hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_aa1e05e8571b464bcdb98ff7ef00c5ef3}{endpoint} (const \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint}{endpoint} \&other)
+\item 
+\hyperlink{classasio_1_1ip_1_1detail_1_1endpoint}{endpoint} \& \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_ae18141845bbc2a921bdba02451c9fdb6}{operator=} (const \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint}{endpoint} \&other)
+\item 
+\hyperlink{namespaceasio_1_1detail_a40a7b0385a38f87815ffbb8df5e34d05}{asio\+::detail\+::socket\+\_\+addr\+\_\+type} $\ast$ \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_a9c0c398c537a440aa84bbb891dccfc99}{data} ()
+\item 
+const \hyperlink{namespaceasio_1_1detail_a40a7b0385a38f87815ffbb8df5e34d05}{asio\+::detail\+::socket\+\_\+addr\+\_\+type} $\ast$ \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_ab81d42a9af82b6b59a3ebcb0f2007f6b}{data} () const 
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_a6f90770dfdf1ae13e65bf52aa09a87f2}{size} () const 
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_a351151a62463d6f3c5bc3dbbdcb407e5}{resize} (std\+::size\+\_\+t new\+\_\+size)
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_ad7183aad01582f4e7270626b754832f5}{capacity} () const 
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} unsigned short \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_ada2c12e4d705041969082ceedec9eeea}{port} () const 
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_ae787dc8af2c02a78cd27493cdfc6ed5a}{port} (unsigned short port\+\_\+num)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address}{asio\+::ip\+::address} \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_a89db3d9a5df0bbda1566a8cefc2865d5}{address} () const 
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_a7adea49885bafcb1c6b5dd2f4aba5ba1}{address} (const \hyperlink{classasio_1_1ip_1_1address}{asio\+::ip\+::address} \&addr)
+\item 
+bool \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_a65339043ed862c89a16a528ef6884ac4}{is\+\_\+v4} () const 
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} std\+::string \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_a3bea4bcc94c1b85ff0f402a119a496ec}{to\+\_\+string} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} friend bool \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_aede125e94d7da4445025c9927de4a563}{operator==} (const \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint}{endpoint} \&e1, const \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint}{endpoint} \&e2)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} friend bool \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint_a7fb7f83bbfa9b04409156faa61c8089d}{operator$<$} (const \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint}{endpoint} \&e1, const \hyperlink{classasio_1_1ip_1_1detail_1_1endpoint}{endpoint} \&e2)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 32 of file endpoint.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_ae9b74e5512dffd8c1345aa920d7b93f6}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!endpoint@{endpoint}}
+\index{endpoint@{endpoint}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{endpoint()}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ip\+::detail\+::endpoint\+::endpoint (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ip_1_1detail_1_1endpoint_ae9b74e5512dffd8c1345aa920d7b93f6}
+
+
+Definition at line 34 of file endpoint.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_abb98e177f94abf87e732a4a5d30bbfce}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!endpoint@{endpoint}}
+\index{endpoint@{endpoint}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{endpoint(int family, unsigned short port\+\_\+num)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ip\+::detail\+::endpoint\+::endpoint (
+\begin{DoxyParamCaption}
+\item[{int}]{family, }
+\item[{unsigned short}]{port\+\_\+num}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ip_1_1detail_1_1endpoint_abb98e177f94abf87e732a4a5d30bbfce}
+
+
+Definition at line 42 of file endpoint.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_a4baec745d6b53673fe984e068d98e7f0}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!endpoint@{endpoint}}
+\index{endpoint@{endpoint}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{endpoint(const asio\+::ip\+::address \&addr, unsigned short port\+\_\+num)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ip\+::detail\+::endpoint\+::endpoint (
+\begin{DoxyParamCaption}
+\item[{const {\bf asio\+::ip\+::address} \&}]{addr, }
+\item[{unsigned short}]{port\+\_\+num}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ip_1_1detail_1_1endpoint_a4baec745d6b53673fe984e068d98e7f0}
+
+
+Definition at line 71 of file endpoint.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_aa1e05e8571b464bcdb98ff7ef00c5ef3}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!endpoint@{endpoint}}
+\index{endpoint@{endpoint}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{endpoint(const endpoint \&other)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ip\+::detail\+::endpoint\+::endpoint (
+\begin{DoxyParamCaption}
+\item[{const {\bf endpoint} \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1detail_1_1endpoint_aa1e05e8571b464bcdb98ff7ef00c5ef3}
+
+
+Definition at line 46 of file endpoint.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_a89db3d9a5df0bbda1566a8cefc2865d5}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!address@{address}}
+\index{address@{address}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{address() const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::ip\+::address} asio\+::ip\+::detail\+::endpoint\+::address (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1detail_1_1endpoint_a89db3d9a5df0bbda1566a8cefc2865d5}
+
+
+Definition at line 138 of file endpoint.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_a7adea49885bafcb1c6b5dd2f4aba5ba1}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!address@{address}}
+\index{address@{address}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{address(const asio\+::ip\+::address \&addr)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::ip\+::detail\+::endpoint\+::address (
+\begin{DoxyParamCaption}
+\item[{const {\bf asio\+::ip\+::address} \&}]{addr}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ip_1_1detail_1_1endpoint_a7adea49885bafcb1c6b5dd2f4aba5ba1}
+
+
+Definition at line 159 of file endpoint.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_ad7183aad01582f4e7270626b754832f5}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!capacity@{capacity}}
+\index{capacity@{capacity}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{capacity() const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::size\+\_\+t asio\+::ip\+::detail\+::endpoint\+::capacity (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1detail_1_1endpoint_ad7183aad01582f4e7270626b754832f5}
+
+
+Definition at line 83 of file endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_a9c0c398c537a440aa84bbb891dccfc99}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!data@{data}}
+\index{data@{data}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{data()}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::detail\+::socket\+\_\+addr\+\_\+type}$\ast$ asio\+::ip\+::detail\+::endpoint\+::data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1detail_1_1endpoint_a9c0c398c537a440aa84bbb891dccfc99}
+
+
+Definition at line 59 of file endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_ab81d42a9af82b6b59a3ebcb0f2007f6b}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!data@{data}}
+\index{data@{data}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{data() const }]{\setlength{\rightskip}{0pt plus 5cm}const {\bf asio\+::detail\+::socket\+\_\+addr\+\_\+type}$\ast$ asio\+::ip\+::detail\+::endpoint\+::data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1detail_1_1endpoint_ab81d42a9af82b6b59a3ebcb0f2007f6b}
+
+
+Definition at line 65 of file endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_a65339043ed862c89a16a528ef6884ac4}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!is\+\_\+v4@{is\+\_\+v4}}
+\index{is\+\_\+v4@{is\+\_\+v4}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{is\+\_\+v4() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::detail\+::endpoint\+::is\+\_\+v4 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1detail_1_1endpoint_a65339043ed862c89a16a528ef6884ac4}
+
+
+Definition at line 109 of file endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_ae18141845bbc2a921bdba02451c9fdb6}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!operator=@{operator=}}
+\index{operator=@{operator=}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{operator=(const endpoint \&other)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf endpoint}\& asio\+::ip\+::detail\+::endpoint\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf endpoint} \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1detail_1_1endpoint_ae18141845bbc2a921bdba02451c9fdb6}
+
+
+Definition at line 52 of file endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_ada2c12e4d705041969082ceedec9eeea}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!port@{port}}
+\index{port@{port}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{port() const }]{\setlength{\rightskip}{0pt plus 5cm}unsigned short asio\+::ip\+::detail\+::endpoint\+::port (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1detail_1_1endpoint_ada2c12e4d705041969082ceedec9eeea}
+
+
+Definition at line 110 of file endpoint.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_ae787dc8af2c02a78cd27493cdfc6ed5a}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!port@{port}}
+\index{port@{port}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{port(unsigned short port\+\_\+num)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::ip\+::detail\+::endpoint\+::port (
+\begin{DoxyParamCaption}
+\item[{unsigned short}]{port\+\_\+num}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ip_1_1detail_1_1endpoint_ae787dc8af2c02a78cd27493cdfc6ed5a}
+
+
+Definition at line 124 of file endpoint.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_a351151a62463d6f3c5bc3dbbdcb407e5}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!resize@{resize}}
+\index{resize@{resize}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{resize(std\+::size\+\_\+t new\+\_\+size)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::ip\+::detail\+::endpoint\+::resize (
+\begin{DoxyParamCaption}
+\item[{std\+::size\+\_\+t}]{new\+\_\+size}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ip_1_1detail_1_1endpoint_a351151a62463d6f3c5bc3dbbdcb407e5}
+
+
+Definition at line 101 of file endpoint.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_a6f90770dfdf1ae13e65bf52aa09a87f2}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!size@{size}}
+\index{size@{size}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{size() const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::size\+\_\+t asio\+::ip\+::detail\+::endpoint\+::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1detail_1_1endpoint_a6f90770dfdf1ae13e65bf52aa09a87f2}
+
+
+Definition at line 71 of file endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_a3bea4bcc94c1b85ff0f402a119a496ec}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!to\+\_\+string@{to\+\_\+string}}
+\index{to\+\_\+string@{to\+\_\+string}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{to\+\_\+string(asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::string asio\+::ip\+::detail\+::endpoint\+::to\+\_\+string (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1detail_1_1endpoint_a3bea4bcc94c1b85ff0f402a119a496ec}
+
+
+Definition at line 180 of file endpoint.\+ipp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_a7fb7f83bbfa9b04409156faa61c8089d}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{operator$<$}]{\setlength{\rightskip}{0pt plus 5cm}{\bf A\+S\+I\+O\+\_\+\+D\+E\+C\+L} friend bool operator$<$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf endpoint} \&}]{e1, }
+\item[{const {\bf endpoint} \&}]{e2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1detail_1_1endpoint_a7fb7f83bbfa9b04409156faa61c8089d}
+
+
+Definition at line 170 of file endpoint.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1detail_1_1endpoint_aede125e94d7da4445025c9927de4a563}{}\index{asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}!operator==@{operator==}}
+\index{operator==@{operator==}!asio\+::ip\+::detail\+::endpoint@{asio\+::ip\+::detail\+::endpoint}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}{\bf A\+S\+I\+O\+\_\+\+D\+E\+C\+L} friend bool operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf endpoint} \&}]{e1, }
+\item[{const {\bf endpoint} \&}]{e2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1detail_1_1endpoint_aede125e94d7da4445025c9927de4a563}
+
+
+Definition at line 165 of file endpoint.\+ipp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ip/detail/\hyperlink{asio_2ip_2detail_2endpoint_8hpp}{endpoint.\+hpp}\item 
+ext/asio/ip/detail/impl/\hyperlink{ip_2detail_2impl_2endpoint_8ipp}{endpoint.\+ipp}\end{DoxyCompactItemize}

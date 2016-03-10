@@ -1,0 +1,59 @@
+
+\begin{DoxyRefList}
+\item[\label{todo__todo000005}%
+\hypertarget{todo__todo000005}{}%
+Member \hyperlink{classwebsocketpp_1_1connection_a867f94b82788e978ea116d50cf83d72e}{websocketpp\+:\+:connection$<$ config $>$\+:\+:handle\+\_\+write\+\_\+frame} (lib\+::error\+\_\+code const \&ec)]unit tests 
+\item[\label{todo__todo000003}%
+\hypertarget{todo__todo000003}{}%
+Member \hyperlink{classwebsocketpp_1_1connection_a29900da403dbafab8095c0989104be90}{websocketpp\+:\+:connection$<$ config $>$\+:\+:send} (message\+\_\+ptr msg)]make exception system\+\_\+error rather than error\+\_\+code 
+\item[\label{todo__todo000004}%
+\hypertarget{todo__todo000004}{}%
+Member \hyperlink{classwebsocketpp_1_1connection_a8d26a29e90d4847f3882c280112c6b60}{websocketpp\+:\+:connection$<$ config $>$\+:\+:write\+\_\+frame} ()]unit tests 
+\item[\label{todo__todo000012}%
+\hypertarget{todo__todo000012}{}%
+Member \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1enabled_a3002ea83fbc0066f9ecf23b4be082365}{websocketpp\+:\+:extensions\+:\+:permessage\+\_\+deflate\+:\+:enabled$<$ config $>$\+:\+:compress} (std\+::string const \&in, std\+::string \&out)]\+: avail\+\_\+in/out is 32 bit, need to fix for cases of $>$32 bit frames on 64 bit machines. 
+\item[\label{todo__todo000011}%
+\hypertarget{todo__todo000011}{}%
+Member \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1enabled_a21e8e0200cab9dd276842ce9ecbd6639}{websocketpp\+:\+:extensions\+:\+:permessage\+\_\+deflate\+:\+:enabled$<$ config $>$\+:\+:enable\+\_\+client\+\_\+no\+\_\+context\+\_\+takeover} ()]Document to what extent memory usage will be reduced 
+\item[\label{todo__todo000010}%
+\hypertarget{todo__todo000010}{}%
+Member \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1enabled_a9275c22cfd6782ef72a722168d663d8b}{websocketpp\+:\+:extensions\+:\+:permessage\+\_\+deflate\+:\+:enabled$<$ config $>$\+:\+:enable\+\_\+server\+\_\+no\+\_\+context\+\_\+takeover} ()]Document to what extent memory usage will be reduced 
+\item[\label{todo__todo000009}%
+\hypertarget{todo__todo000009}{}%
+Member \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1enabled_a0d842cb0cd2add8016e739dfcd675ba0}{websocketpp\+:\+:extensions\+:\+:permessage\+\_\+deflate\+:\+:enabled$<$ config $>$\+:\+:init} (bool is\+\_\+server)]memory level, strategy, etc are hardcoded 
+\item[\label{todo__todo000015}%
+\hypertarget{todo__todo000015}{}%
+Member \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_abd39762de5ec467a29a537d79602b603}{websocketpp\+:\+:http\+:\+:parser\+:\+:parser\+:\+:append\+\_\+header} (std\+::string const \&key, std\+::string const \&val)]Make this method case insensitive. 
+
+Should there be any restrictions on which keys are allowed? 
+
+Exception free varient 
+\item[\label{todo__todo000014}%
+\hypertarget{todo__todo000014}{}%
+Member \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a6a2a10752449789e6a2af06972c53d94}{websocketpp\+:\+:http\+:\+:parser\+:\+:parser\+:\+:get\+\_\+header} (std\+::string const \&key) const ]Make this method case insensitive. 
+\item[\label{todo__todo000018}%
+\hypertarget{todo__todo000018}{}%
+Member \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a4dbb443fd916f8b4306e7afdb2e8ff45}{websocketpp\+:\+:http\+:\+:parser\+:\+:parser\+:\+:process\+\_\+header} (std\+::string\+::iterator begin, std\+::string\+::iterator end)]Update this method to be exception free. 
+\item[\label{todo__todo000017}%
+\hypertarget{todo__todo000017}{}%
+Member \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a64ff49a6a1ddbf70b9767874ffdd513e}{websocketpp\+:\+:http\+:\+:parser\+:\+:parser\+:\+:remove\+\_\+header} (std\+::string const \&key)]Make this method case insensitive. 
+\item[\label{todo__todo000016}%
+\hypertarget{todo__todo000016}{}%
+Member \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_aba2991b2aa41ca60d9427950502b0b93}{websocketpp\+:\+:http\+:\+:parser\+:\+:parser\+:\+:replace\+\_\+header} (std\+::string const \&key, std\+::string const \&val)]Make this method case insensitive. 
+
+Should there be any restrictions on which keys are allowed? 
+
+Exception free varient 
+\item[\label{todo__todo000013}%
+\hypertarget{todo__todo000013}{}%
+Member \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a5c2e0e2bc0b2769db5a785b7d47a66ee}{websocketpp\+:\+:http\+:\+:parser\+:\+:parser\+:\+:set\+\_\+version} (std\+::string const \&version)]Does this method need any validation? 
+\item[\label{todo__todo000019}%
+\hypertarget{todo__todo000019}{}%
+Member \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a8fd85b472ff816d0b7c54759abeff640}{websocketpp\+:\+:processor\+:\+:hybi00$<$ config $>$\+:\+:get\+\_\+key3} () const ]This doesn\textquotesingle{}t appear to be used anymore. It might be able to be removed  
+\item[\label{todo__todo000020}%
+\hypertarget{todo__todo000020}{}%
+Member \hyperlink{classwebsocketpp_1_1processor_1_1hybi13_af6218c464ee04b8c92731e3dcc3421b9}{websocketpp\+:\+:processor\+:\+:hybi13$<$ config $>$\+:\+:validate\+\_\+incoming\+\_\+extended\+\_\+header} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{frame\+::basic\+\_\+header} h, \hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{frame\+::extended\+\_\+header} e) const ]unit test for the $>$32 bit frames on 32 bit systems case 
+\item[\label{todo__todo000021}%
+\hypertarget{todo__todo000021}{}%
+Member \hyperlink{namespacewebsocketpp_1_1utility_a90383b2decd273f7a66bbb87c66b5ddd}{websocketpp\+:\+:utility\+:\+:ci\+\_\+find\+\_\+substr} (T const \&haystack, typename T\+::value\+\_\+type const $\ast$needle, typename T\+::size\+\_\+type size, std\+::locale const \&loc=std\+::locale())]Is this still used? This method may not make sense.. should use iterators or be less generic. As is it is too tightly coupled to std\+::string
+\end{DoxyRefList}

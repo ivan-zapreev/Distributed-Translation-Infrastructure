@@ -1,0 +1,69 @@
+\hypertarget{group__buffer__cast}{}\section{asio\+:\+:buffer\+\_\+cast}
+\label{group__buffer__cast}\index{asio\+::buffer\+\_\+cast@{asio\+::buffer\+\_\+cast}}
+
+
+The \hyperlink{group__buffer__cast_ga6faa5f9daa2512cc9c3cefa8b5ab0704}{asio\+::buffer\+\_\+cast} function is used to obtain a pointer to the underlying memory region associated with a buffer.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Pointer\+To\+Pod\+Type $>$ }\\Pointer\+To\+Pod\+Type \hyperlink{group__buffer__cast_ga6faa5f9daa2512cc9c3cefa8b5ab0704}{asio\+::buffer\+\_\+cast} (const mutable\+\_\+buffer \&b)
+\begin{DoxyCompactList}\small\item\em Cast a non-\/modifiable buffer to a specified pointer to P\+O\+D type. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Pointer\+To\+Pod\+Type $>$ }\\Pointer\+To\+Pod\+Type \hyperlink{group__buffer__cast_ga0bc1fdf63b08b041819a9e18423ef630}{asio\+::buffer\+\_\+cast} (const const\+\_\+buffer \&b)
+\begin{DoxyCompactList}\small\item\em Cast a non-\/modifiable buffer to a specified pointer to P\+O\+D type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{group__buffer__cast_ga6faa5f9daa2512cc9c3cefa8b5ab0704}{asio\+::buffer\+\_\+cast} function is used to obtain a pointer to the underlying memory region associated with a buffer. 
+
+\begin{DoxyParagraph}{Examples\+:}
+
+\end{DoxyParagraph}
+To access the memory of a non-\/modifiable buffer, use\+: 
+\begin{DoxyCode}
+ \hyperlink{classasio_1_1const__buffer}{asio::const\_buffer} b1 = ...;
+\textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}* p1 = \hyperlink{group__buffer__cast_ga6faa5f9daa2512cc9c3cefa8b5ab0704}{asio::buffer\_cast}<\textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}*>(b1);
+\end{DoxyCode}
+
+
+To access the memory of a modifiable buffer, use\+: 
+\begin{DoxyCode}
+ \hyperlink{classasio_1_1mutable__buffer}{asio::mutable\_buffer} b2 = ...;
+\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}* p2 = \hyperlink{group__buffer__cast_ga6faa5f9daa2512cc9c3cefa8b5ab0704}{asio::buffer\_cast}<\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}*>(b2);
+\end{DoxyCode}
+
+
+The \hyperlink{group__buffer__cast_ga6faa5f9daa2512cc9c3cefa8b5ab0704}{asio\+::buffer\+\_\+cast} function permits violations of type safety, so uses of it in application code should be carefully considered. 
+
+\subsection{Function Documentation}
+\hypertarget{group__buffer__cast_ga6faa5f9daa2512cc9c3cefa8b5ab0704}{}\index{asio\+::buffer\+\_\+cast@{asio\+::buffer\+\_\+cast}!buffer\+\_\+cast@{buffer\+\_\+cast}}
+\index{buffer\+\_\+cast@{buffer\+\_\+cast}!asio\+::buffer\+\_\+cast@{asio\+::buffer\+\_\+cast}}
+\subsubsection[{buffer\+\_\+cast(const mutable\+\_\+buffer \&b)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Pointer\+To\+Pod\+Type $>$ Pointer\+To\+Pod\+Type asio\+::buffer\+\_\+cast (
+\begin{DoxyParamCaption}
+\item[{const {\bf mutable\+\_\+buffer} \&}]{b}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__buffer__cast_ga6faa5f9daa2512cc9c3cefa8b5ab0704}
+
+
+Cast a non-\/modifiable buffer to a specified pointer to P\+O\+D type. 
+
+
+
+Definition at line 424 of file buffer.\+hpp.
+
+\hypertarget{group__buffer__cast_ga0bc1fdf63b08b041819a9e18423ef630}{}\index{asio\+::buffer\+\_\+cast@{asio\+::buffer\+\_\+cast}!buffer\+\_\+cast@{buffer\+\_\+cast}}
+\index{buffer\+\_\+cast@{buffer\+\_\+cast}!asio\+::buffer\+\_\+cast@{asio\+::buffer\+\_\+cast}}
+\subsubsection[{buffer\+\_\+cast(const const\+\_\+buffer \&b)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Pointer\+To\+Pod\+Type $>$ Pointer\+To\+Pod\+Type asio\+::buffer\+\_\+cast (
+\begin{DoxyParamCaption}
+\item[{const {\bf const\+\_\+buffer} \&}]{b}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__buffer__cast_ga0bc1fdf63b08b041819a9e18423ef630}
+
+
+Cast a non-\/modifiable buffer to a specified pointer to P\+O\+D type. 
+
+
+
+Definition at line 431 of file buffer.\+hpp.
+

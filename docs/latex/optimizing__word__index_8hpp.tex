@@ -1,0 +1,117 @@
+\hypertarget{optimizing__word__index_8hpp}{}\section{inc/server/lm/dictionaries/optimizing\+\_\+word\+\_\+index.hpp File Reference}
+\label{optimizing__word__index_8hpp}\index{inc/server/lm/dictionaries/optimizing\+\_\+word\+\_\+index.\+hpp@{inc/server/lm/dictionaries/optimizing\+\_\+word\+\_\+index.\+hpp}}
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$cstring$>$}\\*
+{\ttfamily \#include \char`\"{}server/lm/lm\+\_\+consts.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/logging/logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/math\+\_\+utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/aword\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/basic\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/containers/array\+\_\+utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/file/text\+\_\+piece\+\_\+reader.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____optimizing__word__index_1_1word__index__bucket__entry}{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::\+\_\+\+\_\+optimizing\+\_\+word\+\_\+index\+::word\+\_\+index\+\_\+bucket\+\_\+entry$<$ word\+\_\+id\+\_\+type $>$}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1optimizing__word__index}{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::optimizing\+\_\+word\+\_\+index$<$ sub\+\_\+word\+\_\+index\+\_\+type $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd}{uva\+::smt\+::bpbd}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server}{uva\+::smt\+::bpbd\+::server}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm}{uva\+::smt\+::bpbd\+::server\+::lm}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary}{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____optimizing__word__index}{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::\+\_\+\+\_\+optimizing\+\_\+word\+\_\+index}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{optimizing__word__index_8hpp_a016c65b68aa2f276738c9875206831c2}{I\+S\+\_\+\+E\+Q\+U\+A\+L}(token,  entry)~(((token).length() == (entry).\hyperlink{optimizing__word__index_8hpp_a9dbc5db18ad217b30badb72da0dff810}{m\+\_\+len}) \&\& (strncmp((token).get\+\_\+begin\+\_\+c\+\_\+str(), (entry).\hyperlink{optimizing__word__index_8hpp_a05ce3da4cf0afaf8f07ca33162ab5f59}{m\+\_\+word}, (entry).\hyperlink{optimizing__word__index_8hpp_a9dbc5db18ad217b30badb72da0dff810}{m\+\_\+len}) == 0))
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef optimizing\+\_\+word\+\_\+index$<$ basic\+\_\+word\+\_\+index $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_a3001583c904eec702b4a4125082a7ecd}{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::basic\+\_\+optimizing\+\_\+word\+\_\+index}
+\item 
+typedef optimizing\+\_\+word\+\_\+index$<$ counting\+\_\+word\+\_\+index $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_a61cbd647b15de785ccf4cdd26661c366}{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::counting\+\_\+optimizing\+\_\+word\+\_\+index}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename word\+\_\+id\+\_\+type $>$ }\\struct \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____optimizing__word__index_1_1word__index__bucket__entry}{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::\+\_\+\+\_\+optimizing\+\_\+word\+\_\+index\+::word\+\_\+index\+\_\+bucket\+\_\+entry} \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____optimizing__word__index_a1dbc9f299cedd6a867e220ddfc543ee0}{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::\+\_\+\+\_\+optimizing\+\_\+word\+\_\+index\+::\+\_\+\+\_\+attribute\+\_\+\+\_\+} ((packed))
+\item 
+\hyperlink{optimizing__word__index_8hpp_ac1de4fb38d3eb8e53223d998cd4515ef}{word\+\_\+index\+\_\+bucket\+\_\+entry} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \hyperlink{optimizing__word__index_8hpp_a05ce3da4cf0afaf8f07ca33162ab5f59}{m\+\_\+word}
+\item 
+uint8\+\_\+t \hyperlink{optimizing__word__index_8hpp_a9dbc5db18ad217b30badb72da0dff810}{m\+\_\+len}
+\item 
+word\+\_\+id\+\_\+type \hyperlink{optimizing__word__index_8hpp_a59c35c8554d9f4bbf50512388825da1b}{m\+\_\+word\+\_\+id}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{optimizing__word__index_8hpp_a016c65b68aa2f276738c9875206831c2}{}\index{optimizing\+\_\+word\+\_\+index.\+hpp@{optimizing\+\_\+word\+\_\+index.\+hpp}!I\+S\+\_\+\+E\+Q\+U\+A\+L@{I\+S\+\_\+\+E\+Q\+U\+A\+L}}
+\index{I\+S\+\_\+\+E\+Q\+U\+A\+L@{I\+S\+\_\+\+E\+Q\+U\+A\+L}!optimizing\+\_\+word\+\_\+index.\+hpp@{optimizing\+\_\+word\+\_\+index.\+hpp}}
+\subsubsection[{I\+S\+\_\+\+E\+Q\+U\+A\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+S\+\_\+\+E\+Q\+U\+A\+L(
+\begin{DoxyParamCaption}
+\item[{}]{token, }
+\item[{}]{entry}
+\end{DoxyParamCaption}
+)~(((token).length() == (entry).{\bf m\+\_\+len}) \&\& (strncmp((token).get\+\_\+begin\+\_\+c\+\_\+str(), (entry).{\bf m\+\_\+word}, (entry).{\bf m\+\_\+len}) == 0))}\label{optimizing__word__index_8hpp_a016c65b68aa2f276738c9875206831c2}
+
+
+Definition at line 140 of file optimizing\+\_\+word\+\_\+index.\+hpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{optimizing__word__index_8hpp_ac1de4fb38d3eb8e53223d998cd4515ef}{}\index{optimizing\+\_\+word\+\_\+index.\+hpp@{optimizing\+\_\+word\+\_\+index.\+hpp}!word\+\_\+index\+\_\+bucket\+\_\+entry@{word\+\_\+index\+\_\+bucket\+\_\+entry}}
+\index{word\+\_\+index\+\_\+bucket\+\_\+entry@{word\+\_\+index\+\_\+bucket\+\_\+entry}!optimizing\+\_\+word\+\_\+index.\+hpp@{optimizing\+\_\+word\+\_\+index.\+hpp}}
+\subsubsection[{word\+\_\+index\+\_\+bucket\+\_\+entry()}]{\setlength{\rightskip}{0pt plus 5cm}\+\_\+\+\_\+attribute\+\_\+\+\_\+\+::word\+\_\+index\+\_\+bucket\+\_\+entry (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{optimizing__word__index_8hpp_ac1de4fb38d3eb8e53223d998cd4515ef}
+
+
+Definition at line 417 of file optimizing\+\_\+word\+\_\+index.\+hpp.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{optimizing__word__index_8hpp_a9dbc5db18ad217b30badb72da0dff810}{}\index{optimizing\+\_\+word\+\_\+index.\+hpp@{optimizing\+\_\+word\+\_\+index.\+hpp}!m\+\_\+len@{m\+\_\+len}}
+\index{m\+\_\+len@{m\+\_\+len}!optimizing\+\_\+word\+\_\+index.\+hpp@{optimizing\+\_\+word\+\_\+index.\+hpp}}
+\subsubsection[{m\+\_\+len}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t m\+\_\+len}\label{optimizing__word__index_8hpp_a9dbc5db18ad217b30badb72da0dff810}
+
+
+Definition at line 420 of file optimizing\+\_\+word\+\_\+index.\+hpp.
+
+\hypertarget{optimizing__word__index_8hpp_a05ce3da4cf0afaf8f07ca33162ab5f59}{}\index{optimizing\+\_\+word\+\_\+index.\+hpp@{optimizing\+\_\+word\+\_\+index.\+hpp}!m\+\_\+word@{m\+\_\+word}}
+\index{m\+\_\+word@{m\+\_\+word}!optimizing\+\_\+word\+\_\+index.\+hpp@{optimizing\+\_\+word\+\_\+index.\+hpp}}
+\subsubsection[{m\+\_\+word}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ m\+\_\+word}\label{optimizing__word__index_8hpp_a05ce3da4cf0afaf8f07ca33162ab5f59}
+
+
+Definition at line 419 of file optimizing\+\_\+word\+\_\+index.\+hpp.
+
+\hypertarget{optimizing__word__index_8hpp_a59c35c8554d9f4bbf50512388825da1b}{}\index{optimizing\+\_\+word\+\_\+index.\+hpp@{optimizing\+\_\+word\+\_\+index.\+hpp}!m\+\_\+word\+\_\+id@{m\+\_\+word\+\_\+id}}
+\index{m\+\_\+word\+\_\+id@{m\+\_\+word\+\_\+id}!optimizing\+\_\+word\+\_\+index.\+hpp@{optimizing\+\_\+word\+\_\+index.\+hpp}}
+\subsubsection[{m\+\_\+word\+\_\+id}]{\setlength{\rightskip}{0pt plus 5cm}word\+\_\+id\+\_\+type m\+\_\+word\+\_\+id}\label{optimizing__word__index_8hpp_a59c35c8554d9f4bbf50512388825da1b}
+
+
+Definition at line 421 of file optimizing\+\_\+word\+\_\+index.\+hpp.
+

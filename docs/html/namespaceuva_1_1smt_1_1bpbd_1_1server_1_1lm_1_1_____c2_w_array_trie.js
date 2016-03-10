@@ -1,0 +1,5 @@
+var namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie =
+[
+    [ "TCtxIdProbData", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_1_1_t_ctx_id_prob_data.html", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_1_1_t_ctx_id_prob_data" ],
+    [ "TWordIdPBData", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_1_1_t_word_id_p_b_data.html", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_1_1_t_word_id_p_b_data" ]
+];

@@ -1,0 +1,4 @@
+var classwebsocketpp__1__1processor__1__1error__1__1processor____category_8js =
+[
+    [ "classwebsocketpp_1_1processor_1_1error_1_1processor__category", "classwebsocketpp__1__1processor__1__1error__1__1processor____category_8js.html#af69d7d5962b52c8ab34ba92d7d90c7ae", null ]
+];

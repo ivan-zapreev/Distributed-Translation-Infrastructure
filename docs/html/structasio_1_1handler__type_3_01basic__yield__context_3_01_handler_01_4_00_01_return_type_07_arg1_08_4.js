@@ -1,0 +1,4 @@
+var structasio_1_1handler__type_3_01basic__yield__context_3_01_handler_01_4_00_01_return_type_07_arg1_08_4 =
+[
+    [ "type", "structasio_1_1handler__type_3_01basic__yield__context_3_01_handler_01_4_00_01_return_type_07_arg1_08_4.html#a9c6d3bd9f6e0cbc667f5c8faa12328cc", null ]
+];

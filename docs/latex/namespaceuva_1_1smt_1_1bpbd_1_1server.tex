@@ -1,0 +1,373 @@
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server Namespace Reference}
+\label{namespaceuva_1_1smt_1_1bpbd_1_1server}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1common}{common}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder}{decoder}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm}{lm}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1rm}{rm}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1task__id}{task\+\_\+id}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm}{tm}
+\end{DoxyCompactItemize}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1server__parameters}{server\+\_\+parameters}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job}{trans\+\_\+job}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool}{trans\+\_\+job\+\_\+pool}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager}{trans\+\_\+manager}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task}{trans\+\_\+task}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool}{trans\+\_\+task\+\_\+pool}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker}{trans\+\_\+task\+\_\+pool\+\_\+worker}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1translation__server}{translation\+\_\+server}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef uint16\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length}
+\item 
+typedef float \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight}
+\item 
+typedef uint64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_ad18d4cdf5504e76c22b0c124ff60b44f}{phrase\+\_\+uid}
+\item 
+typedef uint64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job}{trans\+\_\+job} $\ast$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_acb76132c82e66b5dbf7e3aa0e5af2580}{trans\+\_\+job\+\_\+ptr}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task}{trans\+\_\+task} $\ast$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a4dea4bb1185fe5d148be18ad12fea74a}{trans\+\_\+task\+\_\+ptr}
+\item 
+typedef uint64\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a67f8b384118030b4ae63f1239253f9ed}{task\+\_\+id\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a7d9e43711d1695901561d85ad78c52ef}{stop} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1translation__server}{translation\+\_\+server} \&\hyperlink{classwebsocketpp_1_1server}{server}, thread \&server\+\_\+thread)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a4801856928dba67cacf60a5073b27b62}{print\+\_\+the\+\_\+prompt} ()
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_aeb4d06a599928c221d900e7a630414a0}{print\+\_\+server\+\_\+commands} ()
+\item 
+bool \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af54c3a6ef0c3b7ef3c01ec359b4e2d43}{begins\+\_\+with} (const string \&str, const string \&prefix)
+\item 
+string \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a2b51ccfeb175ba10143e2466d590306c}{get\+\_\+string\+\_\+value} (const string \&str, const string \&prefix)
+\item 
+int32\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a86c43879f19a20574c39b0414db1fe8d}{get\+\_\+int\+\_\+value} (const string \&str, const string \&prefix)
+\item 
+float \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6520b534357e7c5fddc717e45de2f61f}{get\+\_\+float\+\_\+value} (const string \&str, const string \&prefix)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a7607f243d5aee3158f017c678e74efd2}{set\+\_\+log\+\_\+level} (const string \&cmd, const string \&prefix)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a54e62e40e91cc1e29f19e15251a493ae}{set\+\_\+num\+\_\+threads} (\hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1server__parameters}{server\+\_\+parameters} \&params, \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1translation__server}{translation\+\_\+server} \&\hyperlink{classwebsocketpp_1_1server}{server}, const string \&cmd, const string \&prefix)
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a58e963f12403043ba7c2a5bf6e69340a}{set\+\_\+decoder\+\_\+params} (const string \&cmd, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_aaf4d5faf3a48156401c854d163d4b848}{de\+\_\+parameters} \&de\+\_\+params)
+\item 
+bool \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a4385d92deb1529577d431efd2aa5d892}{process\+\_\+input\+\_\+cmd} (\hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1server__parameters}{server\+\_\+parameters} \&params, \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1translation__server}{translation\+\_\+server} \&\hyperlink{classwebsocketpp_1_1server}{server}, thread \&server\+\_\+thread, char command\mbox{[}C\+M\+D\+\_\+\+B\+U\+F\+F\+\_\+\+S\+I\+Z\+E\mbox{]})
+\item 
+void \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_ae58e404a227b2fc3b03fea84f7e91a83}{perform\+\_\+command\+\_\+loop} (\hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1server__parameters}{server\+\_\+parameters} \&params, \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1translation__server}{translation\+\_\+server} \&\hyperlink{classwebsocketpp_1_1server}{server}, thread \&server\+\_\+thread)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!phrase\+\_\+length@{phrase\+\_\+length}}
+\index{phrase\+\_\+length@{phrase\+\_\+length}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{phrase\+\_\+length}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint16\+\_\+t {\bf uva\+::smt\+::bpbd\+::server\+::phrase\+\_\+length}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}
+
+
+Definition at line 39 of file server\+\_\+configs.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_ad18d4cdf5504e76c22b0c124ff60b44f}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!phrase\+\_\+uid@{phrase\+\_\+uid}}
+\index{phrase\+\_\+uid@{phrase\+\_\+uid}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{phrase\+\_\+uid}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint64\+\_\+t {\bf uva\+::smt\+::bpbd\+::server\+::phrase\+\_\+uid}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_ad18d4cdf5504e76c22b0c124ff60b44f}
+
+
+Definition at line 45 of file server\+\_\+configs.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!prob\+\_\+weight@{prob\+\_\+weight}}
+\index{prob\+\_\+weight@{prob\+\_\+weight}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{prob\+\_\+weight}]{\setlength{\rightskip}{0pt plus 5cm}typedef float {\bf uva\+::smt\+::bpbd\+::server\+::prob\+\_\+weight}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}
+
+
+Definition at line 42 of file server\+\_\+configs.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a67f8b384118030b4ae63f1239253f9ed}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!task\+\_\+id\+\_\+type@{task\+\_\+id\+\_\+type}}
+\index{task\+\_\+id\+\_\+type@{task\+\_\+id\+\_\+type}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{task\+\_\+id\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint64\+\_\+t {\bf uva\+::smt\+::bpbd\+::server\+::task\+\_\+id\+\_\+type}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a67f8b384118030b4ae63f1239253f9ed}
+
+
+Definition at line 39 of file trans\+\_\+task\+\_\+id.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_acb76132c82e66b5dbf7e3aa0e5af2580}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!trans\+\_\+job\+\_\+ptr@{trans\+\_\+job\+\_\+ptr}}
+\index{trans\+\_\+job\+\_\+ptr@{trans\+\_\+job\+\_\+ptr}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{trans\+\_\+job\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf trans\+\_\+job}$\ast$ {\bf uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+ptr}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_acb76132c82e66b5dbf7e3aa0e5af2580}
+
+
+Definition at line 51 of file trans\+\_\+job.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a4dea4bb1185fe5d148be18ad12fea74a}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!trans\+\_\+task\+\_\+ptr@{trans\+\_\+task\+\_\+ptr}}
+\index{trans\+\_\+task\+\_\+ptr@{trans\+\_\+task\+\_\+ptr}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{trans\+\_\+task\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf trans\+\_\+task} $\ast$ {\bf uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+ptr}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a4dea4bb1185fe5d148be18ad12fea74a}
+
+
+Definition at line 55 of file trans\+\_\+task.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!word\+\_\+uid@{word\+\_\+uid}}
+\index{word\+\_\+uid@{word\+\_\+uid}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{word\+\_\+uid}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint64\+\_\+t {\bf uva\+::smt\+::bpbd\+::server\+::word\+\_\+uid}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}
+
+
+Definition at line 48 of file server\+\_\+configs.\+hpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_af54c3a6ef0c3b7ef3c01ec359b4e2d43}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!begins\+\_\+with@{begins\+\_\+with}}
+\index{begins\+\_\+with@{begins\+\_\+with}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{begins\+\_\+with(const string \&str, const string \&prefix)}]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::smt\+::bpbd\+::server\+::begins\+\_\+with (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str, }
+\item[{const string \&}]{prefix}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_af54c3a6ef0c3b7ef3c01ec359b4e2d43}
+Allows to test if a string begins with a substring 
+\begin{DoxyParams}{Parameters}
+{\em str} & the string to check \\
+\hline
+{\em the} & prefix \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the string begins with the prefix 
+\end{DoxyReturn}
+
+
+Definition at line 100 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a6520b534357e7c5fddc717e45de2f61f}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!get\+\_\+float\+\_\+value@{get\+\_\+float\+\_\+value}}
+\index{get\+\_\+float\+\_\+value@{get\+\_\+float\+\_\+value}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{get\+\_\+float\+\_\+value(const string \&str, const string \&prefix)}]{\setlength{\rightskip}{0pt plus 5cm}float uva\+::smt\+::bpbd\+::server\+::get\+\_\+float\+\_\+value (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str, }
+\item[{const string \&}]{prefix}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a6520b534357e7c5fddc717e45de2f61f}
+Allows to parse the command parameter and return it 
+\begin{DoxyParams}{Parameters}
+{\em str} & the command string \\
+\hline
+{\em prefix} & the command pregix \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the parsed value 
+\end{DoxyReturn}
+
+
+Definition at line 139 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a86c43879f19a20574c39b0414db1fe8d}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!get\+\_\+int\+\_\+value@{get\+\_\+int\+\_\+value}}
+\index{get\+\_\+int\+\_\+value@{get\+\_\+int\+\_\+value}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{get\+\_\+int\+\_\+value(const string \&str, const string \&prefix)}]{\setlength{\rightskip}{0pt plus 5cm}int32\+\_\+t uva\+::smt\+::bpbd\+::server\+::get\+\_\+int\+\_\+value (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str, }
+\item[{const string \&}]{prefix}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a86c43879f19a20574c39b0414db1fe8d}
+Allows to parse the command parameter and return it 
+\begin{DoxyParams}{Parameters}
+{\em str} & the command string \\
+\hline
+{\em prefix} & the command pregix \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the parsed value 
+\end{DoxyReturn}
+
+
+Definition at line 120 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a2b51ccfeb175ba10143e2466d590306c}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!get\+\_\+string\+\_\+value@{get\+\_\+string\+\_\+value}}
+\index{get\+\_\+string\+\_\+value@{get\+\_\+string\+\_\+value}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{get\+\_\+string\+\_\+value(const string \&str, const string \&prefix)}]{\setlength{\rightskip}{0pt plus 5cm}string uva\+::smt\+::bpbd\+::server\+::get\+\_\+string\+\_\+value (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{str, }
+\item[{const string \&}]{prefix}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a2b51ccfeb175ba10143e2466d590306c}
+Allows to parse the command parameter and return it as a string 
+\begin{DoxyParams}{Parameters}
+{\em str} & the command string \\
+\hline
+{\em prefix} & the command pregix \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the parsed value 
+\end{DoxyReturn}
+
+
+Definition at line 110 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_ae58e404a227b2fc3b03fea84f7e91a83}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!perform\+\_\+command\+\_\+loop@{perform\+\_\+command\+\_\+loop}}
+\index{perform\+\_\+command\+\_\+loop@{perform\+\_\+command\+\_\+loop}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{perform\+\_\+command\+\_\+loop(server\+\_\+parameters \&params, translation\+\_\+server \&server, thread \&server\+\_\+thread)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::perform\+\_\+command\+\_\+loop (
+\begin{DoxyParamCaption}
+\item[{{\bf server\+\_\+parameters} \&}]{params, }
+\item[{{\bf translation\+\_\+server} \&}]{server, }
+\item[{thread \&}]{server\+\_\+thread}
+\end{DoxyParamCaption}
+)}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_ae58e404a227b2fc3b03fea84f7e91a83}
+Runs the server\textquotesingle{}s command loop 
+\begin{DoxyParams}{Parameters}
+{\em params} & some server params \\
+\hline
+{\em server} & the server being run \\
+\hline
+{\em server\+\_\+thread} & the server thread \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 311 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_aeb4d06a599928c221d900e7a630414a0}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!print\+\_\+server\+\_\+commands@{print\+\_\+server\+\_\+commands}}
+\index{print\+\_\+server\+\_\+commands@{print\+\_\+server\+\_\+commands}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{print\+\_\+server\+\_\+commands()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::print\+\_\+server\+\_\+commands (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_aeb4d06a599928c221d900e7a630414a0}
+Prints the available server commands 
+
+Definition at line 74 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a4801856928dba67cacf60a5073b27b62}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!print\+\_\+the\+\_\+prompt@{print\+\_\+the\+\_\+prompt}}
+\index{print\+\_\+the\+\_\+prompt@{print\+\_\+the\+\_\+prompt}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{print\+\_\+the\+\_\+prompt()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::print\+\_\+the\+\_\+prompt (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a4801856928dba67cacf60a5073b27b62}
+Allows to print the prompt 
+
+Definition at line 67 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a4385d92deb1529577d431efd2aa5d892}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!process\+\_\+input\+\_\+cmd@{process\+\_\+input\+\_\+cmd}}
+\index{process\+\_\+input\+\_\+cmd@{process\+\_\+input\+\_\+cmd}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{process\+\_\+input\+\_\+cmd(server\+\_\+parameters \&params, translation\+\_\+server \&server, thread \&server\+\_\+thread, char command[C\+M\+D\+\_\+\+B\+U\+F\+F\+\_\+\+S\+I\+Z\+E])}]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::smt\+::bpbd\+::server\+::process\+\_\+input\+\_\+cmd (
+\begin{DoxyParamCaption}
+\item[{{\bf server\+\_\+parameters} \&}]{params, }
+\item[{{\bf translation\+\_\+server} \&}]{server, }
+\item[{thread \&}]{server\+\_\+thread, }
+\item[{char}]{command\mbox{[}\+C\+M\+D\+\_\+\+B\+U\+F\+F\+\_\+\+S\+I\+Z\+E\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a4385d92deb1529577d431efd2aa5d892}
+Allowsto process the command  params some server parameters 
+\begin{DoxyParams}{Parameters}
+{\em server} & the server being run \\
+\hline
+{\em server\+\_\+thread} & the server thread \\
+\hline
+{\em command} & the command sting to handle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if we need to stop, otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 251 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a58e963f12403043ba7c2a5bf6e69340a}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!set\+\_\+decoder\+\_\+params@{set\+\_\+decoder\+\_\+params}}
+\index{set\+\_\+decoder\+\_\+params@{set\+\_\+decoder\+\_\+params}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{set\+\_\+decoder\+\_\+params(const string \&cmd, de\+\_\+parameters \&de\+\_\+params)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::set\+\_\+decoder\+\_\+params (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{cmd, }
+\item[{{\bf de\+\_\+parameters} \&}]{de\+\_\+params}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a58e963f12403043ba7c2a5bf6e69340a}
+Allows to set some decoder parameters 
+\begin{DoxyParams}{Parameters}
+{\em cmd} & the command to process, if not a command for setting decoder parameters an error will be reported. \\
+\hline
+{\em m\+\_\+de\+\_\+params} & the reference to the decoder parameters to set with new values. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 196 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a7607f243d5aee3158f017c678e74efd2}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!set\+\_\+log\+\_\+level@{set\+\_\+log\+\_\+level}}
+\index{set\+\_\+log\+\_\+level@{set\+\_\+log\+\_\+level}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{set\+\_\+log\+\_\+level(const string \&cmd, const string \&prefix)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::set\+\_\+log\+\_\+level (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{cmd, }
+\item[{const string \&}]{prefix}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a7607f243d5aee3158f017c678e74efd2}
+Allows to set the debug level 
+\begin{DoxyParams}{Parameters}
+{\em cmd} & the debug level \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 156 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a54e62e40e91cc1e29f19e15251a493ae}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!set\+\_\+num\+\_\+threads@{set\+\_\+num\+\_\+threads}}
+\index{set\+\_\+num\+\_\+threads@{set\+\_\+num\+\_\+threads}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{set\+\_\+num\+\_\+threads(server\+\_\+parameters \&params, translation\+\_\+server \&server, const string \&cmd, const string \&prefix)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::set\+\_\+num\+\_\+threads (
+\begin{DoxyParamCaption}
+\item[{{\bf server\+\_\+parameters} \&}]{params, }
+\item[{{\bf translation\+\_\+server} \&}]{server, }
+\item[{const string \&}]{cmd, }
+\item[{const string \&}]{prefix}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a54e62e40e91cc1e29f19e15251a493ae}
+Allows to set the number of worker threads 
+\begin{DoxyParams}{Parameters}
+{\em params} & the server parameters \\
+\hline
+{\em server} & the translation server \\
+\hline
+{\em cmd} & the input command \\
+\hline
+{\em prefix} & the command prefix \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 167 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+
+\hypertarget{namespaceuva_1_1smt_1_1bpbd_1_1server_a7d9e43711d1695901561d85ad78c52ef}{}\index{uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}!stop@{stop}}
+\index{stop@{stop}!uva\+::smt\+::bpbd\+::server@{uva\+::smt\+::bpbd\+::server}}
+\subsubsection[{stop(translation\+\_\+server \&server, thread \&server\+\_\+thread)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::stop (
+\begin{DoxyParamCaption}
+\item[{{\bf translation\+\_\+server} \&}]{server, }
+\item[{thread \&}]{server\+\_\+thread}
+\end{DoxyParamCaption}
+)}\label{namespaceuva_1_1smt_1_1bpbd_1_1server_a7d9e43711d1695901561d85ad78c52ef}
+Allows to stop the server; 
+\begin{DoxyParams}{Parameters}
+{\em server} & the server being run \\
+\hline
+{\em server\+\_\+thread} & the server thread \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 53 of file cmd\+\_\+line\+\_\+handler.\+hpp.
+

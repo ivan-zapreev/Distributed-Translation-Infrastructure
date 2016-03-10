@@ -1,0 +1,69 @@
+\hypertarget{impl_2src_8hpp}{}\section{ext/asio/impl/src.hpp File Reference}
+\label{impl_2src_8hpp}\index{ext/asio/impl/src.\+hpp@{ext/asio/impl/src.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/impl/error.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/impl/error\+\_\+code.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/impl/handler\+\_\+alloc\+\_\+hook.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/impl/io\+\_\+service.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/impl/serial\+\_\+port\+\_\+base.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/buffer\+\_\+sequence\+\_\+adapter.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/descriptor\+\_\+ops.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/dev\+\_\+poll\+\_\+reactor.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/epoll\+\_\+reactor.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/eventfd\+\_\+select\+\_\+interrupter.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/handler\+\_\+tracking.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/kqueue\+\_\+reactor.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/pipe\+\_\+select\+\_\+interrupter.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/posix\+\_\+event.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/posix\+\_\+mutex.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/posix\+\_\+thread.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/posix\+\_\+tss\+\_\+ptr.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/reactive\+\_\+descriptor\+\_\+service.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/reactive\+\_\+serial\+\_\+port\+\_\+service.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/resolver\+\_\+service\+\_\+base.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/select\+\_\+reactor.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/service\+\_\+registry.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/signal\+\_\+set\+\_\+service.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/socket\+\_\+ops.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/socket\+\_\+select\+\_\+interrupter.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/strand\+\_\+service.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/task\+\_\+io\+\_\+service.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/throw\+\_\+error.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/timer\+\_\+queue\+\_\+ptime.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/timer\+\_\+queue\+\_\+set.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/win\+\_\+iocp\+\_\+handle\+\_\+service.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/win\+\_\+iocp\+\_\+io\+\_\+service.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/win\+\_\+iocp\+\_\+serial\+\_\+port\+\_\+service.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/win\+\_\+iocp\+\_\+socket\+\_\+service\+\_\+base.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/win\+\_\+event.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/win\+\_\+mutex.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/win\+\_\+object\+\_\+handle\+\_\+service.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/win\+\_\+static\+\_\+mutex.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/win\+\_\+thread.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/win\+\_\+tss\+\_\+ptr.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/winrt\+\_\+ssocket\+\_\+service\+\_\+base.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/winrt\+\_\+timer\+\_\+scheduler.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/impl/winsock\+\_\+init.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/generic/detail/impl/endpoint.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/ip/impl/address.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/ip/impl/address\+\_\+v4.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/ip/impl/address\+\_\+v6.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/ip/impl/host\+\_\+name.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/ip/detail/impl/endpoint.\+ipp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/local/detail/impl/endpoint.\+ipp\char`\"{}}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{impl_2src_8hpp_a41201237c54e1bbbc23efe19b9310e9b}{A\+S\+I\+O\+\_\+\+S\+O\+U\+R\+C\+E}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{impl_2src_8hpp_a41201237c54e1bbbc23efe19b9310e9b}{}\index{impl/src.\+hpp@{impl/src.\+hpp}!A\+S\+I\+O\+\_\+\+S\+O\+U\+R\+C\+E@{A\+S\+I\+O\+\_\+\+S\+O\+U\+R\+C\+E}}
+\index{A\+S\+I\+O\+\_\+\+S\+O\+U\+R\+C\+E@{A\+S\+I\+O\+\_\+\+S\+O\+U\+R\+C\+E}!impl/src.\+hpp@{impl/src.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+O\+U\+R\+C\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+S\+O\+U\+R\+C\+E}\label{impl_2src_8hpp_a41201237c54e1bbbc23efe19b9310e9b}
+
+
+Definition at line 14 of file src.\+hpp.
+

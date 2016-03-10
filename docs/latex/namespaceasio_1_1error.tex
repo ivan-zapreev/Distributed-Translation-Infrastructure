@@ -1,0 +1,355 @@
+\hypertarget{namespaceasio_1_1error}{}\section{asio\+:\+:error Namespace Reference}
+\label{namespaceasio_1_1error}\index{asio\+::error@{asio\+::error}}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio_1_1error_1_1detail}{detail}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90d}{basic\+\_\+errors} \{ \\*
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daff52a0e33360fd2af12f8cbcced29247}{access\+\_\+denied} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+A\+C\+C\+E\+S), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dae50b6748a38ea794dcc8d172aff0c31a}{address\+\_\+family\+\_\+not\+\_\+supported} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+A\+F\+N\+O\+S\+U\+P\+P\+O\+R\+T), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da85d50d863456785ea46ec276c044f876}{address\+\_\+in\+\_\+use} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+A\+D\+D\+R\+I\+N\+U\+S\+E), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daeb9468dc8a5b947cc74adda5619cb494}{already\+\_\+connected} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+I\+S\+C\+O\+N\+N), 
+\\*
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da84dcfe868a614e09f2eeffae31078e46}{already\+\_\+started} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+A\+L\+R\+E\+A\+D\+Y), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da06e55f0a216fd830948aa8aa92a06cca}{broken\+\_\+pipe}, 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da58e2f13d5e22e6a6381c7e96883b76e1}{connection\+\_\+aborted} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+C\+O\+N\+N\+A\+B\+O\+R\+T\+E\+D), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da0f6eb257eb70230bc0d78dbdef37637e}{connection\+\_\+refused} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+C\+O\+N\+N\+R\+E\+F\+U\+S\+E\+D), 
+\\*
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da44621d10f46e44b4cd2ba59a1bbf1f8f}{connection\+\_\+reset} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+C\+O\+N\+N\+R\+E\+S\+E\+T), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da7ab2640546f08e87ee9677b4889d6119}{bad\+\_\+descriptor} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+B\+A\+D\+F), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da9663d9d0d0a50bc3248a8da0f43622b4}{fault} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+F\+A\+U\+L\+T), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dade0dcf9202df4c7c674367074005a289}{host\+\_\+unreachable} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+H\+O\+S\+T\+U\+N\+R\+E\+A\+C\+H), 
+\\*
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dafbf7e6bc4a0ef286836138b007b6586e}{in\+\_\+progress} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+I\+N\+P\+R\+O\+G\+R\+E\+S\+S), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da949a87be73ee9cdca623f92fb27cd45c}{interrupted} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+I\+N\+T\+R), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da30cedfce8621ca9c21dddce0ac27cd09}{invalid\+\_\+argument} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+I\+N\+V\+A\+L), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dac13764309c06848d37acba7081e54af6}{message\+\_\+size} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+M\+S\+G\+S\+I\+Z\+E), 
+\\*
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da4759d10e19aa58de1c636175d5ac77f0}{name\+\_\+too\+\_\+long} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+N\+A\+M\+E\+T\+O\+O\+L\+O\+N\+G), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da2c214899927a2593a88a2baa6f791ee4}{network\+\_\+down} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+N\+E\+T\+D\+O\+W\+N), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da10b2bf637fbe6dee178553b586bd3ad6}{network\+\_\+reset} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+N\+E\+T\+R\+E\+S\+E\+T), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dad3ebbc3bb7f0c7b30a90b583427fff4c}{network\+\_\+unreachable} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+N\+E\+T\+U\+N\+R\+E\+A\+C\+H), 
+\\*
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dae1cd6701ac2cd5983907ea532fea4925}{no\+\_\+descriptors} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+M\+F\+I\+L\+E), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da6eec2fc53ea8d7d0f456d4cc5860f982}{no\+\_\+buffer\+\_\+space} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+N\+O\+B\+U\+F\+S), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da5ff2b1be4d644488e318e560abf332ba}{no\+\_\+memory}, 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da4678f6b77de9be74f9960be0be6a8e63}{no\+\_\+permission}, 
+\\*
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da373626f3af78333e06e3deee103cc381}{no\+\_\+protocol\+\_\+option} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+N\+O\+P\+R\+O\+T\+O\+O\+P\+T), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dadbfca1e8f4058cf94eedb651bd430c3b}{no\+\_\+such\+\_\+device}, 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dab8142fa300f28366f3849a545f1569ff}{not\+\_\+connected} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+N\+O\+T\+C\+O\+N\+N), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da0ef41be507a73436fca5dad4310e0262}{not\+\_\+socket} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+N\+O\+T\+S\+O\+C\+K), 
+\\*
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dacde6760763051561f6c2ffc4ddf2be1b}{operation\+\_\+aborted}, 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daf5c69ee1029871764a105a18648aec91}{operation\+\_\+not\+\_\+supported} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+O\+P\+N\+O\+T\+S\+U\+P\+P), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daf8a9d86b159145b2b422afad2230b197}{shut\+\_\+down} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+S\+H\+U\+T\+D\+O\+W\+N), 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dac59a687090ae7b5505d4f64b0c9d59c4}{timed\+\_\+out} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+T\+I\+M\+E\+D\+O\+U\+T), 
+\\*
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da6e9965827dc7afaba3b2b90a02b19058}{try\+\_\+again}, 
+\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da8e8ff1984495eb85ec17c37e3e5a89e5}{would\+\_\+block} = A\+S\+I\+O\+\_\+\+S\+O\+C\+K\+E\+T\+\_\+\+E\+R\+R\+O\+R(E\+W\+O\+U\+L\+D\+B\+L\+O\+C\+K)
+ \}
+\item 
+enum \hyperlink{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466de}{netdb\+\_\+errors} \{ \hyperlink{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466deaf64fcddcd2e17022dfffe63ff8b34824}{host\+\_\+not\+\_\+found} = A\+S\+I\+O\+\_\+\+N\+E\+T\+D\+B\+\_\+\+E\+R\+R\+O\+R(H\+O\+S\+T\+\_\+\+N\+O\+T\+\_\+\+F\+O\+U\+N\+D), 
+\hyperlink{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466dea2b2d611b78f72788d95f0c7cb1e112c2}{host\+\_\+not\+\_\+found\+\_\+try\+\_\+again} = A\+S\+I\+O\+\_\+\+N\+E\+T\+D\+B\+\_\+\+E\+R\+R\+O\+R(T\+R\+Y\+\_\+\+A\+G\+A\+I\+N), 
+\hyperlink{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466dea762dc635009aaa1c6d7da916fc98d36d}{no\+\_\+data} = A\+S\+I\+O\+\_\+\+N\+E\+T\+D\+B\+\_\+\+E\+R\+R\+O\+R(N\+O\+\_\+\+D\+A\+T\+A), 
+\hyperlink{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466deabcd387d106312eb39ae9265ad6d0bde9}{no\+\_\+recovery} = A\+S\+I\+O\+\_\+\+N\+E\+T\+D\+B\+\_\+\+E\+R\+R\+O\+R(N\+O\+\_\+\+R\+E\+C\+O\+V\+E\+R\+Y)
+ \}
+\item 
+enum \hyperlink{namespaceasio_1_1error_aad09966951a812a25f9cd9e7d92c2764}{addrinfo\+\_\+errors} \{ \hyperlink{namespaceasio_1_1error_aad09966951a812a25f9cd9e7d92c2764a18af5b8ae0eb91b5f3538fa36f1d398d}{service\+\_\+not\+\_\+found}, 
+\hyperlink{namespaceasio_1_1error_aad09966951a812a25f9cd9e7d92c2764a781d78de28182df7809b8e3b4e1d53ec}{socket\+\_\+type\+\_\+not\+\_\+supported}
+ \}
+\item 
+enum \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847}{misc\+\_\+errors} \{ \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847ab57843ad5fc4f314afebfa76cedff29e}{already\+\_\+open} = 1, 
+\hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847abb0b3b47deff67dd67b180d9d1e34154}{eof}, 
+\hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb}{not\+\_\+found}, 
+\hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a75104dfe4e0804fdee643db012130ca0}{fd\+\_\+set\+\_\+failure}
+ \}
+\item 
+enum \hyperlink{namespaceasio_1_1error_a2f5ce38329dc0833d602aa313da3df7a}{ssl\+\_\+errors} 
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classasio_1_1error__category}{asio\+::error\+\_\+category} \& \hyperlink{namespaceasio_1_1error_ab830b9c09076398a1b0e72f619eb0204}{get\+\_\+system\+\_\+category} ()
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} const \hyperlink{classasio_1_1error__category}{asio\+::error\+\_\+category} \& \hyperlink{namespaceasio_1_1error_a1ac89eaed3a7078406f329068a71b8ba}{get\+\_\+netdb\+\_\+category} ()
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} const \hyperlink{classasio_1_1error__category}{asio\+::error\+\_\+category} \& \hyperlink{namespaceasio_1_1error_a371cb8e6425ed58337e192fe35b4afe9}{get\+\_\+addrinfo\+\_\+category} ()
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} const \hyperlink{classasio_1_1error__category}{asio\+::error\+\_\+category} \& \hyperlink{namespaceasio_1_1error_a57ab0c3eda415bc1d2c58f93875ff60f}{get\+\_\+misc\+\_\+category} ()
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{namespaceasio_1_1error_a4073e7c990fd629754e5a3c1cfc6078a}{make\+\_\+error\+\_\+code} (\hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90d}{basic\+\_\+errors} e)
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{namespaceasio_1_1error_ae490df1c16abd8fd4d414a36b8f9df3e}{make\+\_\+error\+\_\+code} (\hyperlink{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466de}{netdb\+\_\+errors} e)
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{namespaceasio_1_1error_a983d74ed795fee93a3633b26d8180215}{make\+\_\+error\+\_\+code} (\hyperlink{namespaceasio_1_1error_aad09966951a812a25f9cd9e7d92c2764}{addrinfo\+\_\+errors} e)
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{namespaceasio_1_1error_a88c08b7aff0b95d1a9fa9b2fb89189c7}{make\+\_\+error\+\_\+code} (\hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847}{misc\+\_\+errors} e)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} const \hyperlink{classasio_1_1error__category}{asio\+::error\+\_\+category} \& \hyperlink{namespaceasio_1_1error_a0e204a09e28aaebddc5437232c643ae7}{get\+\_\+ssl\+\_\+category} ()
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{namespaceasio_1_1error_a54b0d76c8bfbadd378a32f66ce7e7ef0}{make\+\_\+error\+\_\+code} (\hyperlink{namespaceasio_1_1error_a2f5ce38329dc0833d602aa313da3df7a}{ssl\+\_\+errors} e)
+\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{namespaceasio_1_1error_aad09966951a812a25f9cd9e7d92c2764}{}\index{asio\+::error@{asio\+::error}!addrinfo\+\_\+errors@{addrinfo\+\_\+errors}}
+\index{addrinfo\+\_\+errors@{addrinfo\+\_\+errors}!asio\+::error@{asio\+::error}}
+\subsubsection[{addrinfo\+\_\+errors}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf asio\+::error\+::addrinfo\+\_\+errors}}\label{namespaceasio_1_1error_aad09966951a812a25f9cd9e7d92c2764}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{service\+\_\+not\+\_\+found@{service\+\_\+not\+\_\+found}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!service\+\_\+not\+\_\+found@{service\+\_\+not\+\_\+found}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_aad09966951a812a25f9cd9e7d92c2764a18af5b8ae0eb91b5f3538fa36f1d398d}{}service\+\_\+not\+\_\+found\label{namespaceasio_1_1error_aad09966951a812a25f9cd9e7d92c2764a18af5b8ae0eb91b5f3538fa36f1d398d}
+}]The service is not supported for the given socket type. \index{socket\+\_\+type\+\_\+not\+\_\+supported@{socket\+\_\+type\+\_\+not\+\_\+supported}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!socket\+\_\+type\+\_\+not\+\_\+supported@{socket\+\_\+type\+\_\+not\+\_\+supported}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_aad09966951a812a25f9cd9e7d92c2764a781d78de28182df7809b8e3b4e1d53ec}{}socket\+\_\+type\+\_\+not\+\_\+supported\label{namespaceasio_1_1error_aad09966951a812a25f9cd9e7d92c2764a781d78de28182df7809b8e3b4e1d53ec}
+}]The socket type is not supported. \end{description}
+\end{Desc}
+
+
+Definition at line 198 of file error.\+hpp.
+
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90d}{}\index{asio\+::error@{asio\+::error}!basic\+\_\+errors@{basic\+\_\+errors}}
+\index{basic\+\_\+errors@{basic\+\_\+errors}!asio\+::error@{asio\+::error}}
+\subsubsection[{basic\+\_\+errors}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf asio\+::error\+::basic\+\_\+errors}}\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90d}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{access\+\_\+denied@{access\+\_\+denied}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!access\+\_\+denied@{access\+\_\+denied}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daff52a0e33360fd2af12f8cbcced29247}{}access\+\_\+denied\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daff52a0e33360fd2af12f8cbcced29247}
+}]Permission denied. \index{address\+\_\+family\+\_\+not\+\_\+supported@{address\+\_\+family\+\_\+not\+\_\+supported}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!address\+\_\+family\+\_\+not\+\_\+supported@{address\+\_\+family\+\_\+not\+\_\+supported}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dae50b6748a38ea794dcc8d172aff0c31a}{}address\+\_\+family\+\_\+not\+\_\+supported\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dae50b6748a38ea794dcc8d172aff0c31a}
+}]Address family not supported by protocol. \index{address\+\_\+in\+\_\+use@{address\+\_\+in\+\_\+use}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!address\+\_\+in\+\_\+use@{address\+\_\+in\+\_\+use}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da85d50d863456785ea46ec276c044f876}{}address\+\_\+in\+\_\+use\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da85d50d863456785ea46ec276c044f876}
+}]Address already in use. \index{already\+\_\+connected@{already\+\_\+connected}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!already\+\_\+connected@{already\+\_\+connected}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daeb9468dc8a5b947cc74adda5619cb494}{}already\+\_\+connected\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daeb9468dc8a5b947cc74adda5619cb494}
+}]Transport endpoint is already connected. \index{already\+\_\+started@{already\+\_\+started}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!already\+\_\+started@{already\+\_\+started}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da84dcfe868a614e09f2eeffae31078e46}{}already\+\_\+started\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da84dcfe868a614e09f2eeffae31078e46}
+}]Operation already in progress. \index{broken\+\_\+pipe@{broken\+\_\+pipe}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!broken\+\_\+pipe@{broken\+\_\+pipe}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da06e55f0a216fd830948aa8aa92a06cca}{}broken\+\_\+pipe\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da06e55f0a216fd830948aa8aa92a06cca}
+}]Broken pipe. \index{connection\+\_\+aborted@{connection\+\_\+aborted}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!connection\+\_\+aborted@{connection\+\_\+aborted}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da58e2f13d5e22e6a6381c7e96883b76e1}{}connection\+\_\+aborted\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da58e2f13d5e22e6a6381c7e96883b76e1}
+}]A connection has been aborted. \index{connection\+\_\+refused@{connection\+\_\+refused}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!connection\+\_\+refused@{connection\+\_\+refused}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da0f6eb257eb70230bc0d78dbdef37637e}{}connection\+\_\+refused\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da0f6eb257eb70230bc0d78dbdef37637e}
+}]Connection refused. \index{connection\+\_\+reset@{connection\+\_\+reset}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!connection\+\_\+reset@{connection\+\_\+reset}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da44621d10f46e44b4cd2ba59a1bbf1f8f}{}connection\+\_\+reset\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da44621d10f46e44b4cd2ba59a1bbf1f8f}
+}]Connection reset by peer. \index{bad\+\_\+descriptor@{bad\+\_\+descriptor}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!bad\+\_\+descriptor@{bad\+\_\+descriptor}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da7ab2640546f08e87ee9677b4889d6119}{}bad\+\_\+descriptor\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da7ab2640546f08e87ee9677b4889d6119}
+}]Bad file descriptor. \index{fault@{fault}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!fault@{fault}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da9663d9d0d0a50bc3248a8da0f43622b4}{}fault\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da9663d9d0d0a50bc3248a8da0f43622b4}
+}]Bad address. \index{host\+\_\+unreachable@{host\+\_\+unreachable}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!host\+\_\+unreachable@{host\+\_\+unreachable}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dade0dcf9202df4c7c674367074005a289}{}host\+\_\+unreachable\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dade0dcf9202df4c7c674367074005a289}
+}]No route to host. \index{in\+\_\+progress@{in\+\_\+progress}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!in\+\_\+progress@{in\+\_\+progress}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dafbf7e6bc4a0ef286836138b007b6586e}{}in\+\_\+progress\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dafbf7e6bc4a0ef286836138b007b6586e}
+}]Operation now in progress. \index{interrupted@{interrupted}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!interrupted@{interrupted}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da949a87be73ee9cdca623f92fb27cd45c}{}interrupted\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da949a87be73ee9cdca623f92fb27cd45c}
+}]Interrupted system call. \index{invalid\+\_\+argument@{invalid\+\_\+argument}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!invalid\+\_\+argument@{invalid\+\_\+argument}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da30cedfce8621ca9c21dddce0ac27cd09}{}invalid\+\_\+argument\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da30cedfce8621ca9c21dddce0ac27cd09}
+}]Invalid argument. \index{message\+\_\+size@{message\+\_\+size}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!message\+\_\+size@{message\+\_\+size}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dac13764309c06848d37acba7081e54af6}{}message\+\_\+size\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dac13764309c06848d37acba7081e54af6}
+}]Message too long. \index{name\+\_\+too\+\_\+long@{name\+\_\+too\+\_\+long}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!name\+\_\+too\+\_\+long@{name\+\_\+too\+\_\+long}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da4759d10e19aa58de1c636175d5ac77f0}{}name\+\_\+too\+\_\+long\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da4759d10e19aa58de1c636175d5ac77f0}
+}]The name was too long. \index{network\+\_\+down@{network\+\_\+down}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!network\+\_\+down@{network\+\_\+down}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da2c214899927a2593a88a2baa6f791ee4}{}network\+\_\+down\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da2c214899927a2593a88a2baa6f791ee4}
+}]Network is down. \index{network\+\_\+reset@{network\+\_\+reset}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!network\+\_\+reset@{network\+\_\+reset}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da10b2bf637fbe6dee178553b586bd3ad6}{}network\+\_\+reset\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da10b2bf637fbe6dee178553b586bd3ad6}
+}]Network dropped connection on reset. \index{network\+\_\+unreachable@{network\+\_\+unreachable}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!network\+\_\+unreachable@{network\+\_\+unreachable}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dad3ebbc3bb7f0c7b30a90b583427fff4c}{}network\+\_\+unreachable\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dad3ebbc3bb7f0c7b30a90b583427fff4c}
+}]Network is unreachable. \index{no\+\_\+descriptors@{no\+\_\+descriptors}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!no\+\_\+descriptors@{no\+\_\+descriptors}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dae1cd6701ac2cd5983907ea532fea4925}{}no\+\_\+descriptors\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dae1cd6701ac2cd5983907ea532fea4925}
+}]Too many open files. \index{no\+\_\+buffer\+\_\+space@{no\+\_\+buffer\+\_\+space}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!no\+\_\+buffer\+\_\+space@{no\+\_\+buffer\+\_\+space}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da6eec2fc53ea8d7d0f456d4cc5860f982}{}no\+\_\+buffer\+\_\+space\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da6eec2fc53ea8d7d0f456d4cc5860f982}
+}]No buffer space available. \index{no\+\_\+memory@{no\+\_\+memory}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!no\+\_\+memory@{no\+\_\+memory}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da5ff2b1be4d644488e318e560abf332ba}{}no\+\_\+memory\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da5ff2b1be4d644488e318e560abf332ba}
+}]Cannot allocate memory. \index{no\+\_\+permission@{no\+\_\+permission}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!no\+\_\+permission@{no\+\_\+permission}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da4678f6b77de9be74f9960be0be6a8e63}{}no\+\_\+permission\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da4678f6b77de9be74f9960be0be6a8e63}
+}]Operation not permitted. \index{no\+\_\+protocol\+\_\+option@{no\+\_\+protocol\+\_\+option}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!no\+\_\+protocol\+\_\+option@{no\+\_\+protocol\+\_\+option}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da373626f3af78333e06e3deee103cc381}{}no\+\_\+protocol\+\_\+option\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da373626f3af78333e06e3deee103cc381}
+}]Protocol not available. \index{no\+\_\+such\+\_\+device@{no\+\_\+such\+\_\+device}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!no\+\_\+such\+\_\+device@{no\+\_\+such\+\_\+device}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dadbfca1e8f4058cf94eedb651bd430c3b}{}no\+\_\+such\+\_\+device\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dadbfca1e8f4058cf94eedb651bd430c3b}
+}]No such device. \index{not\+\_\+connected@{not\+\_\+connected}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!not\+\_\+connected@{not\+\_\+connected}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dab8142fa300f28366f3849a545f1569ff}{}not\+\_\+connected\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dab8142fa300f28366f3849a545f1569ff}
+}]Transport endpoint is not connected. \index{not\+\_\+socket@{not\+\_\+socket}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!not\+\_\+socket@{not\+\_\+socket}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da0ef41be507a73436fca5dad4310e0262}{}not\+\_\+socket\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da0ef41be507a73436fca5dad4310e0262}
+}]Socket operation on non-\/socket. \index{operation\+\_\+aborted@{operation\+\_\+aborted}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!operation\+\_\+aborted@{operation\+\_\+aborted}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dacde6760763051561f6c2ffc4ddf2be1b}{}operation\+\_\+aborted\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dacde6760763051561f6c2ffc4ddf2be1b}
+}]Operation cancelled. \index{operation\+\_\+not\+\_\+supported@{operation\+\_\+not\+\_\+supported}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!operation\+\_\+not\+\_\+supported@{operation\+\_\+not\+\_\+supported}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daf5c69ee1029871764a105a18648aec91}{}operation\+\_\+not\+\_\+supported\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daf5c69ee1029871764a105a18648aec91}
+}]Operation not supported. \index{shut\+\_\+down@{shut\+\_\+down}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!shut\+\_\+down@{shut\+\_\+down}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daf8a9d86b159145b2b422afad2230b197}{}shut\+\_\+down\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90daf8a9d86b159145b2b422afad2230b197}
+}]Cannot send after transport endpoint shutdown. \index{timed\+\_\+out@{timed\+\_\+out}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!timed\+\_\+out@{timed\+\_\+out}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dac59a687090ae7b5505d4f64b0c9d59c4}{}timed\+\_\+out\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dac59a687090ae7b5505d4f64b0c9d59c4}
+}]Connection timed out. \index{try\+\_\+again@{try\+\_\+again}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!try\+\_\+again@{try\+\_\+again}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da6e9965827dc7afaba3b2b90a02b19058}{}try\+\_\+again\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da6e9965827dc7afaba3b2b90a02b19058}
+}]Resource temporarily unavailable. \index{would\+\_\+block@{would\+\_\+block}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!would\+\_\+block@{would\+\_\+block}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da8e8ff1984495eb85ec17c37e3e5a89e5}{}would\+\_\+block\label{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da8e8ff1984495eb85ec17c37e3e5a89e5}
+}]The socket is marked non-\/blocking and the requested operation would block. \end{description}
+\end{Desc}
+
+
+Definition at line 66 of file error.\+hpp.
+
+\hypertarget{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847}{}\index{asio\+::error@{asio\+::error}!misc\+\_\+errors@{misc\+\_\+errors}}
+\index{misc\+\_\+errors@{misc\+\_\+errors}!asio\+::error@{asio\+::error}}
+\subsubsection[{misc\+\_\+errors}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf asio\+::error\+::misc\+\_\+errors}}\label{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{already\+\_\+open@{already\+\_\+open}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!already\+\_\+open@{already\+\_\+open}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847ab57843ad5fc4f314afebfa76cedff29e}{}already\+\_\+open\label{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847ab57843ad5fc4f314afebfa76cedff29e}
+}]Already open. \index{eof@{eof}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!eof@{eof}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847abb0b3b47deff67dd67b180d9d1e34154}{}eof\label{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847abb0b3b47deff67dd67b180d9d1e34154}
+}]End of file or stream. \index{not\+\_\+found@{not\+\_\+found}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!not\+\_\+found@{not\+\_\+found}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb}{}not\+\_\+found\label{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb}
+}]Element not found. \index{fd\+\_\+set\+\_\+failure@{fd\+\_\+set\+\_\+failure}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!fd\+\_\+set\+\_\+failure@{fd\+\_\+set\+\_\+failure}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a75104dfe4e0804fdee643db012130ca0}{}fd\+\_\+set\+\_\+failure\label{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a75104dfe4e0804fdee643db012130ca0}
+}]The descriptor cannot fit into the select system call\textquotesingle{}s fd\+\_\+set. \end{description}
+\end{Desc}
+
+
+Definition at line 211 of file error.\+hpp.
+
+\hypertarget{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466de}{}\index{asio\+::error@{asio\+::error}!netdb\+\_\+errors@{netdb\+\_\+errors}}
+\index{netdb\+\_\+errors@{netdb\+\_\+errors}!asio\+::error@{asio\+::error}}
+\subsubsection[{netdb\+\_\+errors}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf asio\+::error\+::netdb\+\_\+errors}}\label{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466de}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{host\+\_\+not\+\_\+found@{host\+\_\+not\+\_\+found}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!host\+\_\+not\+\_\+found@{host\+\_\+not\+\_\+found}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466deaf64fcddcd2e17022dfffe63ff8b34824}{}host\+\_\+not\+\_\+found\label{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466deaf64fcddcd2e17022dfffe63ff8b34824}
+}]Host not found (authoritative). \index{host\+\_\+not\+\_\+found\+\_\+try\+\_\+again@{host\+\_\+not\+\_\+found\+\_\+try\+\_\+again}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!host\+\_\+not\+\_\+found\+\_\+try\+\_\+again@{host\+\_\+not\+\_\+found\+\_\+try\+\_\+again}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466dea2b2d611b78f72788d95f0c7cb1e112c2}{}host\+\_\+not\+\_\+found\+\_\+try\+\_\+again\label{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466dea2b2d611b78f72788d95f0c7cb1e112c2}
+}]Host not found (non-\/authoritative). \index{no\+\_\+data@{no\+\_\+data}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!no\+\_\+data@{no\+\_\+data}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466dea762dc635009aaa1c6d7da916fc98d36d}{}no\+\_\+data\label{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466dea762dc635009aaa1c6d7da916fc98d36d}
+}]The query is valid but does not have associated address data. \index{no\+\_\+recovery@{no\+\_\+recovery}!asio\+::error@{asio\+::error}}\index{asio\+::error@{asio\+::error}!no\+\_\+recovery@{no\+\_\+recovery}}\item[{\em 
+\hypertarget{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466deabcd387d106312eb39ae9265ad6d0bde9}{}no\+\_\+recovery\label{namespaceasio_1_1error_aca1d28016f48d8f815c602788bc466deabcd387d106312eb39ae9265ad6d0bde9}
+}]A non-\/recoverable error occurred. \end{description}
+\end{Desc}
+
+
+Definition at line 183 of file error.\+hpp.
+
+\hypertarget{namespaceasio_1_1error_a2f5ce38329dc0833d602aa313da3df7a}{}\index{asio\+::error@{asio\+::error}!ssl\+\_\+errors@{ssl\+\_\+errors}}
+\index{ssl\+\_\+errors@{ssl\+\_\+errors}!asio\+::error@{asio\+::error}}
+\subsubsection[{ssl\+\_\+errors}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf asio\+::error\+::ssl\+\_\+errors}}\label{namespaceasio_1_1error_a2f5ce38329dc0833d602aa313da3df7a}
+
+
+Definition at line 26 of file error.\+hpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{namespaceasio_1_1error_a371cb8e6425ed58337e192fe35b4afe9}{}\index{asio\+::error@{asio\+::error}!get\+\_\+addrinfo\+\_\+category@{get\+\_\+addrinfo\+\_\+category}}
+\index{get\+\_\+addrinfo\+\_\+category@{get\+\_\+addrinfo\+\_\+category}!asio\+::error@{asio\+::error}}
+\subsubsection[{get\+\_\+addrinfo\+\_\+category()}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf asio\+::error\+\_\+category} \& asio\+::error\+::get\+\_\+addrinfo\+\_\+category (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1error_a371cb8e6425ed58337e192fe35b4afe9}
+
+
+Definition at line 83 of file error.\+ipp.
+
+\hypertarget{namespaceasio_1_1error_a57ab0c3eda415bc1d2c58f93875ff60f}{}\index{asio\+::error@{asio\+::error}!get\+\_\+misc\+\_\+category@{get\+\_\+misc\+\_\+category}}
+\index{get\+\_\+misc\+\_\+category@{get\+\_\+misc\+\_\+category}!asio\+::error@{asio\+::error}}
+\subsubsection[{get\+\_\+misc\+\_\+category()}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf asio\+::error\+\_\+category} \& asio\+::error\+::get\+\_\+misc\+\_\+category (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1error_a57ab0c3eda415bc1d2c58f93875ff60f}
+
+
+Definition at line 117 of file error.\+ipp.
+
+\hypertarget{namespaceasio_1_1error_a1ac89eaed3a7078406f329068a71b8ba}{}\index{asio\+::error@{asio\+::error}!get\+\_\+netdb\+\_\+category@{get\+\_\+netdb\+\_\+category}}
+\index{get\+\_\+netdb\+\_\+category@{get\+\_\+netdb\+\_\+category}!asio\+::error@{asio\+::error}}
+\subsubsection[{get\+\_\+netdb\+\_\+category()}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf asio\+::error\+\_\+category} \& asio\+::error\+::get\+\_\+netdb\+\_\+category (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1error_a1ac89eaed3a7078406f329068a71b8ba}
+
+
+Definition at line 55 of file error.\+ipp.
+
+\hypertarget{namespaceasio_1_1error_a0e204a09e28aaebddc5437232c643ae7}{}\index{asio\+::error@{asio\+::error}!get\+\_\+ssl\+\_\+category@{get\+\_\+ssl\+\_\+category}}
+\index{get\+\_\+ssl\+\_\+category@{get\+\_\+ssl\+\_\+category}!asio\+::error@{asio\+::error}}
+\subsubsection[{get\+\_\+ssl\+\_\+category()}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf asio\+::error\+\_\+category} \& asio\+::error\+::get\+\_\+ssl\+\_\+category (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1error_a0e204a09e28aaebddc5437232c643ae7}
+
+
+Definition at line 46 of file error.\+ipp.
+
+\hypertarget{namespaceasio_1_1error_ab830b9c09076398a1b0e72f619eb0204}{}\index{asio\+::error@{asio\+::error}!get\+\_\+system\+\_\+category@{get\+\_\+system\+\_\+category}}
+\index{get\+\_\+system\+\_\+category@{get\+\_\+system\+\_\+category}!asio\+::error@{asio\+::error}}
+\subsubsection[{get\+\_\+system\+\_\+category()}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf asio\+::error\+\_\+category}\& asio\+::error\+::get\+\_\+system\+\_\+category (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceasio_1_1error_ab830b9c09076398a1b0e72f619eb0204}
+
+
+Definition at line 226 of file error.\+hpp.
+
+\hypertarget{namespaceasio_1_1error_a54b0d76c8bfbadd378a32f66ce7e7ef0}{}\index{asio\+::error@{asio\+::error}!make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}}
+\index{make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}!asio\+::error@{asio\+::error}}
+\subsubsection[{make\+\_\+error\+\_\+code(ssl\+\_\+errors e)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::error\+::make\+\_\+error\+\_\+code (
+\begin{DoxyParamCaption}
+\item[{{\bf ssl\+\_\+errors}}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceasio_1_1error_a54b0d76c8bfbadd378a32f66ce7e7ef0}
+
+
+Definition at line 53 of file error.\+hpp.
+
+\hypertarget{namespaceasio_1_1error_a4073e7c990fd629754e5a3c1cfc6078a}{}\index{asio\+::error@{asio\+::error}!make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}}
+\index{make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}!asio\+::error@{asio\+::error}}
+\subsubsection[{make\+\_\+error\+\_\+code(basic\+\_\+errors e)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::error\+::make\+\_\+error\+\_\+code (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+errors}}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceasio_1_1error_a4073e7c990fd629754e5a3c1cfc6078a}
+
+
+Definition at line 297 of file error.\+hpp.
+
+\hypertarget{namespaceasio_1_1error_ae490df1c16abd8fd4d414a36b8f9df3e}{}\index{asio\+::error@{asio\+::error}!make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}}
+\index{make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}!asio\+::error@{asio\+::error}}
+\subsubsection[{make\+\_\+error\+\_\+code(netdb\+\_\+errors e)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::error\+::make\+\_\+error\+\_\+code (
+\begin{DoxyParamCaption}
+\item[{{\bf netdb\+\_\+errors}}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceasio_1_1error_ae490df1c16abd8fd4d414a36b8f9df3e}
+
+
+Definition at line 303 of file error.\+hpp.
+
+\hypertarget{namespaceasio_1_1error_a983d74ed795fee93a3633b26d8180215}{}\index{asio\+::error@{asio\+::error}!make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}}
+\index{make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}!asio\+::error@{asio\+::error}}
+\subsubsection[{make\+\_\+error\+\_\+code(addrinfo\+\_\+errors e)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::error\+::make\+\_\+error\+\_\+code (
+\begin{DoxyParamCaption}
+\item[{{\bf addrinfo\+\_\+errors}}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceasio_1_1error_a983d74ed795fee93a3633b26d8180215}
+
+
+Definition at line 309 of file error.\+hpp.
+
+\hypertarget{namespaceasio_1_1error_a88c08b7aff0b95d1a9fa9b2fb89189c7}{}\index{asio\+::error@{asio\+::error}!make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}}
+\index{make\+\_\+error\+\_\+code@{make\+\_\+error\+\_\+code}!asio\+::error@{asio\+::error}}
+\subsubsection[{make\+\_\+error\+\_\+code(misc\+\_\+errors e)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::error\+::make\+\_\+error\+\_\+code (
+\begin{DoxyParamCaption}
+\item[{{\bf misc\+\_\+errors}}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceasio_1_1error_a88c08b7aff0b95d1a9fa9b2fb89189c7}
+
+
+Definition at line 315 of file error.\+hpp.
+

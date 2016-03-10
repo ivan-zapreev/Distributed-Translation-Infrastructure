@@ -1,0 +1,36 @@
+\hypertarget{tls_8hpp}{}\section{ext/websocketpp/transport/asio/security/tls.hpp File Reference}
+\label{tls_8hpp}\index{ext/websocketpp/transport/asio/security/tls.\+hpp@{ext/websocketpp/transport/asio/security/tls.\+hpp}}
+{\ttfamily \#include $<$websocketpp/transport/asio/security/base.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/uri.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/common/asio\+\_\+ssl.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/common/asio.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/common/connection\+\_\+hdl.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/common/functional.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/common/memory.\+hpp$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classwebsocketpp_1_1transport_1_1asio_1_1tls__socket_1_1connection}{websocketpp\+::transport\+::asio\+::tls\+\_\+socket\+::connection}
+\begin{DoxyCompactList}\small\item\em T\+L\+S enabled Asio connection socket component. \end{DoxyCompactList}\item 
+class \hyperlink{classwebsocketpp_1_1transport_1_1asio_1_1tls__socket_1_1endpoint}{websocketpp\+::transport\+::asio\+::tls\+\_\+socket\+::endpoint}
+\begin{DoxyCompactList}\small\item\em T\+L\+S enabled Asio endpoint socket component. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacewebsocketpp}{websocketpp}
+\begin{DoxyCompactList}\small\item\em Namespace for the Web\+Socket++ project. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1transport}{websocketpp\+::transport}
+\begin{DoxyCompactList}\small\item\em Transport policies provide network connectivity and timers. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1transport_1_1asio}{websocketpp\+::transport\+::asio}
+\begin{DoxyCompactList}\small\item\em Transport policy that uses asio. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1tls__socket}{websocketpp\+::transport\+::asio\+::tls\+\_\+socket}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef lib\+::function$<$ void(connection\+\_\+hdl, lib\+::asio\+::ssl\+::stream$<$ lib\+::asio\+::ip\+::tcp\+::socket $>$ \&)$>$ \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1tls__socket_a0ec24de8bf054a4bc6f6c018e743efea}{websocketpp\+::transport\+::asio\+::tls\+\_\+socket\+::socket\+\_\+init\+\_\+handler}
+\begin{DoxyCompactList}\small\item\em The signature of the socket\+\_\+init\+\_\+handler for this socket policy. \end{DoxyCompactList}\item 
+typedef lib\+::function$<$ lib\+::shared\+\_\+ptr$<$ lib\+::asio\+::ssl\+::context $>$connection\+\_\+hdl)$>$ \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1tls__socket_a6fe279813cc19b05a3897d20f10f16d2}{websocketpp\+::transport\+::asio\+::tls\+\_\+socket\+::tls\+\_\+init\+\_\+handler}
+\begin{DoxyCompactList}\small\item\em The signature of the tls\+\_\+init\+\_\+handler for this socket policy. \end{DoxyCompactList}\end{DoxyCompactItemize}

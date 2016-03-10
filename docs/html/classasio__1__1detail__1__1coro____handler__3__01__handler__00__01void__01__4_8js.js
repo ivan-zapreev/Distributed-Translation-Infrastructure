@@ -1,0 +1,4 @@
+var classasio__1__1detail__1__1coro____handler__3__01__handler__00__01void__01__4_8js =
+[
+    [ "classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4", "classasio__1__1detail__1__1coro____handler__3__01__handler__00__01void__01__4_8js.html#a39228e0de3db846e9fd650081eda5f11", null ]
+];

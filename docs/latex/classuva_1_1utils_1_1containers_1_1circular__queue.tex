@@ -1,0 +1,238 @@
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue}{}\section{uva\+:\+:utils\+:\+:containers\+:\+:circular\+\_\+queue$<$ elem\+\_\+type, capacity $>$ Class Template Reference}
+\label{classuva_1_1utils_1_1containers_1_1circular__queue}\index{uva\+::utils\+::containers\+::circular\+\_\+queue$<$ elem\+\_\+type, capacity $>$@{uva\+::utils\+::containers\+::circular\+\_\+queue$<$ elem\+\_\+type, capacity $>$}}
+
+
+{\ttfamily \#include $<$circular\+\_\+queue.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_a0f3cfa7c8a76b1686871c77ec3508b48}{circular\+\_\+queue} ()
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_a7eda88bb8d265d2e59b5297bc7432975}{circular\+\_\+queue} (const size\+\_\+t num\+\_\+elems, const elem\+\_\+type $\ast$elems)
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_a715ab0cc8582e8085e90ae1199554b92}{circular\+\_\+queue} (const \hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue}{circular\+\_\+queue} \&other, const size\+\_\+t num\+\_\+elems, const elem\+\_\+type $\ast$elems)
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_a72869d5ebcccdb8d539905daddf57423}{$\sim$circular\+\_\+queue} ()
+\item 
+string \hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_a37758c3a912988f36270c70c8dd6f14b}{tail\+\_\+to\+\_\+string} (const size\+\_\+t num\+\_\+elems) const 
+\item 
+bool \hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_a1b203fec6a2094d1de2c2ef1e02b444a}{is\+\_\+equal\+\_\+last} (const \hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue}{circular\+\_\+queue} \&other, const size\+\_\+t num\+\_\+elems) const 
+\item 
+void \hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_a9b013f67ae21602ac9a59d0d732864bd}{empty\+\_\+queue} ()
+\item 
+size\+\_\+t \hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_a2c3d2c71de59ad163603340ac2ea3ee8}{get\+\_\+size} () const 
+\item 
+const elem\+\_\+type $\ast$ \hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_ac38be9d542adbe80413949f271b572f4}{get\+\_\+elems} () const 
+\item 
+size\+\_\+t \hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_a13152fd9c24949b59f6fee447c57ea6b}{get\+\_\+capacity} () const 
+\item 
+void \hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_a356d927e319e0909e28564fdbeaa6c4f}{push\+\_\+back} (const elem\+\_\+type \&elem)
+\item 
+void \hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue_a02f8b7922515eccb3512266210eabb90}{push\+\_\+back} (const size\+\_\+t num\+\_\+elems, const elem\+\_\+type $\ast$elems)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename elem\+\_\+type, size\+\_\+t capacity$>$class uva\+::utils\+::containers\+::circular\+\_\+queue$<$ elem\+\_\+type, capacity $>$}
+
+This class represents a circular queue class that is needed to store a limited and fixed amount of elements. This queue is designed to store only basic type elements W\+A\+R\+N\+I\+N\+G\+: Class does a shallow copy of elements using the memcpy! So do not store here complex data structures with pointers and the overridden assign operator! W\+A\+R\+N\+I\+N\+G\+: When comparing elements of the queue does a byte comparison with memcmp and not the == operator! 
+
+Definition at line 59 of file circular\+\_\+queue.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_a0f3cfa7c8a76b1686871c77ec3508b48}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!circular\+\_\+queue@{circular\+\_\+queue}}
+\index{circular\+\_\+queue@{circular\+\_\+queue}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{circular\+\_\+queue()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::{\bf circular\+\_\+queue} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_a0f3cfa7c8a76b1686871c77ec3508b48}
+The basic constructor 
+
+Definition at line 65 of file circular\+\_\+queue.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_a7eda88bb8d265d2e59b5297bc7432975}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!circular\+\_\+queue@{circular\+\_\+queue}}
+\index{circular\+\_\+queue@{circular\+\_\+queue}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{circular\+\_\+queue(const size\+\_\+t num\+\_\+elems, const elem\+\_\+type $\ast$elems)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::{\bf circular\+\_\+queue} (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{num\+\_\+elems, }
+\item[{const elem\+\_\+type $\ast$}]{elems}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_a7eda88bb8d265d2e59b5297bc7432975}
+The basic constructor 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+elems} & the number of elements to put into the queue \\
+\hline
+{\em elems} & the elements to put into the queue \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 76 of file circular\+\_\+queue.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_a715ab0cc8582e8085e90ae1199554b92}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!circular\+\_\+queue@{circular\+\_\+queue}}
+\index{circular\+\_\+queue@{circular\+\_\+queue}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{circular\+\_\+queue(const circular\+\_\+queue \&other, const size\+\_\+t num\+\_\+elems, const elem\+\_\+type $\ast$elems)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::{\bf circular\+\_\+queue} (
+\begin{DoxyParamCaption}
+\item[{const {\bf circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$ \&}]{other, }
+\item[{const size\+\_\+t}]{num\+\_\+elems, }
+\item[{const elem\+\_\+type $\ast$}]{elems}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_a715ab0cc8582e8085e90ae1199554b92}
+The special case of a copy constructor, it allows to take the parameter queue together with the extra elements and copy them into the given queue. This is done in a smart way to optimize performance. 
+\begin{DoxyParams}{Parameters}
+{\em other} & the other queue to copy from \\
+\hline
+{\em num\+\_\+elems} & the number of extra elements \\
+\hline
+{\em elems} & the pointer to the array with the extra elements \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 95 of file circular\+\_\+queue.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_a72869d5ebcccdb8d539905daddf57423}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!````~circular\+\_\+queue@{$\sim$circular\+\_\+queue}}
+\index{````~circular\+\_\+queue@{$\sim$circular\+\_\+queue}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{$\sim$circular\+\_\+queue()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::$\sim${\bf circular\+\_\+queue} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_a72869d5ebcccdb8d539905daddf57423}
+The basic destructor 
+
+Definition at line 139 of file circular\+\_\+queue.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_a9b013f67ae21602ac9a59d0d732864bd}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!empty\+\_\+queue@{empty\+\_\+queue}}
+\index{empty\+\_\+queue@{empty\+\_\+queue}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{empty\+\_\+queue()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ void {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::empty\+\_\+queue (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_a9b013f67ae21602ac9a59d0d732864bd}
+Allows to empty the queue 
+
+Definition at line 187 of file circular\+\_\+queue.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_a13152fd9c24949b59f6fee447c57ea6b}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!get\+\_\+capacity@{get\+\_\+capacity}}
+\index{get\+\_\+capacity@{get\+\_\+capacity}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{get\+\_\+capacity() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ size\+\_\+t {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::get\+\_\+capacity (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_a13152fd9c24949b59f6fee447c57ea6b}
+Allows to obtain the maximum number of elements to store \begin{DoxyReturn}{Returns}
+the maximum number of elements to store 
+\end{DoxyReturn}
+
+
+Definition at line 212 of file circular\+\_\+queue.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_ac38be9d542adbe80413949f271b572f4}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!get\+\_\+elems@{get\+\_\+elems}}
+\index{get\+\_\+elems@{get\+\_\+elems}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{get\+\_\+elems() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ const elem\+\_\+type$\ast$ {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::get\+\_\+elems (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_ac38be9d542adbe80413949f271b572f4}
+Allows to obtain the pointer to the array storing the elements \begin{DoxyReturn}{Returns}
+the pointer to the array storing the elements 
+\end{DoxyReturn}
+
+
+Definition at line 204 of file circular\+\_\+queue.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_a2c3d2c71de59ad163603340ac2ea3ee8}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!get\+\_\+size@{get\+\_\+size}}
+\index{get\+\_\+size@{get\+\_\+size}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{get\+\_\+size() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ size\+\_\+t {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::get\+\_\+size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_a2c3d2c71de59ad163603340ac2ea3ee8}
+Allows to obtain the number of stored elements \begin{DoxyReturn}{Returns}
+the number of stored elements 
+\end{DoxyReturn}
+
+
+Definition at line 196 of file circular\+\_\+queue.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_a1b203fec6a2094d1de2c2ef1e02b444a}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!is\+\_\+equal\+\_\+last@{is\+\_\+equal\+\_\+last}}
+\index{is\+\_\+equal\+\_\+last@{is\+\_\+equal\+\_\+last}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{is\+\_\+equal\+\_\+last(const circular\+\_\+queue \&other, const size\+\_\+t num\+\_\+elems) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ bool {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::is\+\_\+equal\+\_\+last (
+\begin{DoxyParamCaption}
+\item[{const {\bf circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$ \&}]{other, }
+\item[{const size\+\_\+t}]{num\+\_\+elems}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_a1b203fec6a2094d1de2c2ef1e02b444a}
+Allows to check if a certain amount of this queue last elements is equal to the certain amount of the other queue last elements. 
+\begin{DoxyParams}{Parameters}
+{\em other} & the other queue to compare with \\
+\hline
+{\em num\+\_\+elems} & the number of last elements to compare \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true or false depending on? true if both queues have more than or equal to num\+\_\+elems elements and the last num\+\_\+elems are equal. true if both elements have less than num\+\_\+elems but the number of elements is equal and the elements are equal false otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 167 of file circular\+\_\+queue.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_a356d927e319e0909e28564fdbeaa6c4f}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!push\+\_\+back@{push\+\_\+back}}
+\index{push\+\_\+back@{push\+\_\+back}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{push\+\_\+back(const elem\+\_\+type \&elem)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ void {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::push\+\_\+back (
+\begin{DoxyParamCaption}
+\item[{const elem\+\_\+type \&}]{elem}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_a356d927e319e0909e28564fdbeaa6c4f}
+Allows to put the new element to the end of the queue, potentially pushing out the beginning of the queue element. The latter happens only if the maximum number of elements has been reached before this new element was pushed. 
+\begin{DoxyParams}{Parameters}
+{\em elem} & the element to be stored in the queue \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 223 of file circular\+\_\+queue.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_a02f8b7922515eccb3512266210eabb90}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!push\+\_\+back@{push\+\_\+back}}
+\index{push\+\_\+back@{push\+\_\+back}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{push\+\_\+back(const size\+\_\+t num\+\_\+elems, const elem\+\_\+type $\ast$elems)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ void {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::push\+\_\+back (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{num\+\_\+elems, }
+\item[{const elem\+\_\+type $\ast$}]{elems}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_a02f8b7922515eccb3512266210eabb90}
+Allows to push back an entire array 
+
+Definition at line 230 of file circular\+\_\+queue.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1circular__queue_a37758c3a912988f36270c70c8dd6f14b}{}\index{uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}!tail\+\_\+to\+\_\+string@{tail\+\_\+to\+\_\+string}}
+\index{tail\+\_\+to\+\_\+string@{tail\+\_\+to\+\_\+string}!uva\+::utils\+::containers\+::circular\+\_\+queue@{uva\+::utils\+::containers\+::circular\+\_\+queue}}
+\subsubsection[{tail\+\_\+to\+\_\+string(const size\+\_\+t num\+\_\+elems) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename elem\+\_\+type , size\+\_\+t capacity$>$ string {\bf uva\+::utils\+::containers\+::circular\+\_\+queue}$<$ elem\+\_\+type, capacity $>$\+::tail\+\_\+to\+\_\+string (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{num\+\_\+elems}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1circular__queue_a37758c3a912988f36270c70c8dd6f14b}
+Allows to get a string representation of the the specified number of tail elements. If there is less elements present in the queue then we represent as many as there are\+: 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+elems} & the number of tail elements to represent \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the string of tail elements 
+\end{DoxyReturn}
+
+
+Definition at line 149 of file circular\+\_\+queue.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/common/utils/containers/\hyperlink{circular__queue_8hpp}{circular\+\_\+queue.\+hpp}\end{DoxyCompactItemize}

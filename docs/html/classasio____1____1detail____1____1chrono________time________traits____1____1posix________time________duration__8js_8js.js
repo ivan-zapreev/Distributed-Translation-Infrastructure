@@ -1,0 +1,4 @@
+var classasio____1____1detail____1____1chrono________time________traits____1____1posix________time________duration__8js_8js =
+[
+    [ "classasio__1__1detail__1__1chrono____time____traits__1__1posix____time____duration_8js", "classasio____1____1detail____1____1chrono________time________traits____1____1posix________time________duration__8js_8js.html#a53e48056c4ef3cbbda12f15f4a154e4e", null ]
+];

@@ -1,0 +1,958 @@
+\hypertarget{classasio_1_1basic__stream__socket}{}\section{asio\+:\+:basic\+\_\+stream\+\_\+socket$<$ Protocol, Stream\+Socket\+Service $>$ Class Template Reference}
+\label{classasio_1_1basic__stream__socket}\index{asio\+::basic\+\_\+stream\+\_\+socket$<$ Protocol, Stream\+Socket\+Service $>$@{asio\+::basic\+\_\+stream\+\_\+socket$<$ Protocol, Stream\+Socket\+Service $>$}}
+
+
+Provides stream-\/oriented socket functionality.  
+
+
+
+
+{\ttfamily \#include $<$basic\+\_\+stream\+\_\+socket.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:basic\+\_\+stream\+\_\+socket$<$ Protocol, Stream\+Socket\+Service $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.288828cm]{classasio_1_1basic__stream__socket}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Stream\+Socket\+Service\+::native\+\_\+handle\+\_\+type \hyperlink{classasio_1_1basic__stream__socket_a0e1052ee023a793196175697720dcce2}{native\+\_\+type}
+\item 
+typedef Stream\+Socket\+Service\+::native\+\_\+handle\+\_\+type \hyperlink{classasio_1_1basic__stream__socket_a3afcab378b90959f1779a74b25e4ad1e}{native\+\_\+handle\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The native representation of a socket. \end{DoxyCompactList}\item 
+typedef Protocol \hyperlink{classasio_1_1basic__stream__socket_a50b36dfd32d1cca507415b41ab7274d9}{protocol\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The protocol type. \end{DoxyCompactList}\item 
+typedef Protocol\+::endpoint \hyperlink{classasio_1_1basic__stream__socket_a910d3f9ffa82f284f3fccbecb2f2d3fb}{endpoint\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The endpoint type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1basic__stream__socket_a3b4a4a7fd4ae067886af89f685282a6c}{basic\+\_\+stream\+\_\+socket} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service})
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{classasio_1_1basic__stream__socket}{basic\+\_\+stream\+\_\+socket} without opening it. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__stream__socket_a6ded436ad179fa1204b8a6a42524f693}{basic\+\_\+stream\+\_\+socket} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service}, const \hyperlink{classasio_1_1basic__stream__socket_a50b36dfd32d1cca507415b41ab7274d9}{protocol\+\_\+type} \&protocol)
+\begin{DoxyCompactList}\small\item\em Construct and open a \hyperlink{classasio_1_1basic__stream__socket}{basic\+\_\+stream\+\_\+socket}. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__stream__socket_a099d36894656e54d71f926e73f4f0a63}{basic\+\_\+stream\+\_\+socket} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service}, const \hyperlink{classasio_1_1basic__stream__socket_a910d3f9ffa82f284f3fccbecb2f2d3fb}{endpoint\+\_\+type} \&endpoint)
+\item 
+\hyperlink{classasio_1_1basic__stream__socket_a90200909391b8547d41e64fea860a019}{basic\+\_\+stream\+\_\+socket} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service}, const \hyperlink{classasio_1_1basic__stream__socket_a50b36dfd32d1cca507415b41ab7274d9}{protocol\+\_\+type} \&protocol, const \hyperlink{classasio_1_1basic__stream__socket_a3afcab378b90959f1779a74b25e4ad1e}{native\+\_\+handle\+\_\+type} \&native\+\_\+socket)
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{classasio_1_1basic__stream__socket}{basic\+\_\+stream\+\_\+socket} on an existing native socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1basic__stream__socket_af5bb44446d47423959c14c28a41a3dd8}{send} (const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers})
+\begin{DoxyCompactList}\small\item\em Send some data on the socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1basic__stream__socket_afe228e06332e5ed761f87045e77b5e41}{send} (const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1basic__stream__socket_a49da9b10ef73407f4991c633ced27111}{flags})
+\begin{DoxyCompactList}\small\item\em Send some data on the socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1basic__stream__socket_a76f64068ffaf3715a242602cbef085e9}{send} (const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1basic__stream__socket_a49da9b10ef73407f4991c633ced27111}{flags}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Send some data on the socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\\hyperlink{classasio_1_1basic__stream__socket_afcace4f7f04c4ac287edd53e23eb9985}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+send(const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}
+\begin{DoxyCompactList}\small\item\em Start an asynchronous send. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__stream__socket_a01062cf1f327c352999ef3aa1efebd98}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Write\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\\hyperlink{classasio_1_1basic__stream__socket_afcace4f7f04c4ac287edd53e23eb9985}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+send(const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}
+\begin{DoxyCompactList}\small\item\em Start an asynchronous send. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1basic__stream__socket_a7838e53001f30c046af84c50b39700a5}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Write\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1basic__stream__socket_ae2f7eb55984892225ecc8670a26fd6c5}{receive} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers})
+\begin{DoxyCompactList}\small\item\em Receive some data on the socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1basic__stream__socket_a68abffc3fc471f0dbf194f68dfef7e5c}{receive} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1basic__stream__socket_a49da9b10ef73407f4991c633ced27111}{flags})
+\begin{DoxyCompactList}\small\item\em Receive some data on the socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1basic__stream__socket_ac973f4905e256cf6fde6f9a61b704464}{receive} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1basic__stream__socket_a49da9b10ef73407f4991c633ced27111}{flags}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Receive some data on a connected socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ }\\\hyperlink{classasio_1_1basic__stream__socket_a88f965bd1ab0af8e56afa67891c412d2}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Read\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+receive(const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}
+\begin{DoxyCompactList}\small\item\em Start an asynchronous receive. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__stream__socket_ab4d3d3c54c32d560b4a3b7e8df39a1c3}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Read\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ }\\\hyperlink{classasio_1_1basic__stream__socket_a88f965bd1ab0af8e56afa67891c412d2}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Read\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+receive(const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}
+\begin{DoxyCompactList}\small\item\em Start an asynchronous receive. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1basic__stream__socket_ad5b09443b99f5b58ca63bf5f276a352f}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Read\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1basic__stream__socket_a181159dc2a64323d39f09563e9fdc4e3}{write\+\_\+some} (const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers})
+\begin{DoxyCompactList}\small\item\em Write some data to the socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1basic__stream__socket_a6b3873c18a1ce5abf99aa61859ecb058}{write\+\_\+some} (const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write some data to the socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\\hyperlink{classasio_1_1basic__stream__socket_ad159945cedc82195e788407f715bb638}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+write\+\_\+some(const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}
+\begin{DoxyCompactList}\small\item\em Start an asynchronous write. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__stream__socket_a01062cf1f327c352999ef3aa1efebd98}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Write\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1basic__stream__socket_ae8a201d4567b3e588b439a0352271cf1}{read\+\_\+some} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers})
+\begin{DoxyCompactList}\small\item\em Read some data from the socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1basic__stream__socket_a0c5b977fdc7a55f36566ffa6000ca016}{read\+\_\+some} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Read some data from the socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ }\\\hyperlink{classasio_1_1basic__stream__socket_a344952f6d1aa44da849ce0b274a27950}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Read\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+read\+\_\+some(const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}
+\begin{DoxyCompactList}\small\item\em Start an asynchronous read. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__stream__socket_ab4d3d3c54c32d560b4a3b7e8df39a1c3}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Read\+Handler) handler)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1basic__stream__socket_a49da9b10ef73407f4991c633ced27111}{flags}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Protocol, typename Stream\+Socket\+Service = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$class asio\+::basic\+\_\+stream\+\_\+socket$<$ Protocol, Stream\+Socket\+Service $>$}
+
+Provides stream-\/oriented socket functionality. 
+
+The \hyperlink{classasio_1_1basic__stream__socket}{basic\+\_\+stream\+\_\+socket} class template provides asynchronous and blocking stream-\/oriented socket functionality.
+
+\begin{DoxyParagraph}{Thread Safety}
+{\itshape Distinct} {\itshape objects\+:} Safe.~\newline
+{\itshape Shared} {\itshape objects\+:} Unsafe.
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Async\+Read\+Stream, Async\+Write\+Stream, Stream, Sync\+Read\+Stream, Sync\+Write\+Stream. 
+\end{DoxyParagraph}
+
+
+Definition at line 45 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1basic__stream__socket_a910d3f9ffa82f284f3fccbecb2f2d3fb}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!endpoint\+\_\+type@{endpoint\+\_\+type}}
+\index{endpoint\+\_\+type@{endpoint\+\_\+type}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{endpoint\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ typedef Protocol\+::endpoint {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::{\bf endpoint\+\_\+type}}\label{classasio_1_1basic__stream__socket_a910d3f9ffa82f284f3fccbecb2f2d3fb}
+
+
+The endpoint type. 
+
+
+
+Definition at line 60 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a3afcab378b90959f1779a74b25e4ad1e}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!native\+\_\+handle\+\_\+type@{native\+\_\+handle\+\_\+type}}
+\index{native\+\_\+handle\+\_\+type@{native\+\_\+handle\+\_\+type}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{native\+\_\+handle\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ typedef Stream\+Socket\+Service\+::native\+\_\+handle\+\_\+type {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::{\bf native\+\_\+handle\+\_\+type}}\label{classasio_1_1basic__stream__socket_a3afcab378b90959f1779a74b25e4ad1e}
+
+
+The native representation of a socket. 
+
+
+
+Definition at line 54 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a0e1052ee023a793196175697720dcce2}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!native\+\_\+type@{native\+\_\+type}}
+\index{native\+\_\+type@{native\+\_\+type}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{native\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ typedef Stream\+Socket\+Service\+::native\+\_\+handle\+\_\+type {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::{\bf native\+\_\+type}}\label{classasio_1_1basic__stream__socket_a0e1052ee023a793196175697720dcce2}
+(Deprecated\+: Use native\+\_\+handle\+\_\+type.) The native representation of a socket. 
+
+Definition at line 51 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a50b36dfd32d1cca507415b41ab7274d9}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!protocol\+\_\+type@{protocol\+\_\+type}}
+\index{protocol\+\_\+type@{protocol\+\_\+type}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{protocol\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ typedef Protocol {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::{\bf protocol\+\_\+type}}\label{classasio_1_1basic__stream__socket_a50b36dfd32d1cca507415b41ab7274d9}
+
+
+The protocol type. 
+
+
+
+Definition at line 57 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1basic__stream__socket_a3b4a4a7fd4ae067886af89f685282a6c}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!basic\+\_\+stream\+\_\+socket@{basic\+\_\+stream\+\_\+socket}}
+\index{basic\+\_\+stream\+\_\+socket@{basic\+\_\+stream\+\_\+socket}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{basic\+\_\+stream\+\_\+socket(asio\+::io\+\_\+service \&io\+\_\+service)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::{\bf basic\+\_\+stream\+\_\+socket} (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1basic__stream__socket_a3b4a4a7fd4ae067886af89f685282a6c}
+
+
+Construct a \hyperlink{classasio_1_1basic__stream__socket}{basic\+\_\+stream\+\_\+socket} without opening it. 
+
+This constructor creates a stream socket without opening it. The socket needs to be opened and then connected or accepted before data can be sent or received on it.
+
+
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{classasio_1_1io__service}{io\+\_\+service}} & The \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that the stream socket will use to dispatch handlers for any asynchronous operations performed on the socket. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 71 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a6ded436ad179fa1204b8a6a42524f693}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!basic\+\_\+stream\+\_\+socket@{basic\+\_\+stream\+\_\+socket}}
+\index{basic\+\_\+stream\+\_\+socket@{basic\+\_\+stream\+\_\+socket}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{basic\+\_\+stream\+\_\+socket(asio\+::io\+\_\+service \&io\+\_\+service, const protocol\+\_\+type \&protocol)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::{\bf basic\+\_\+stream\+\_\+socket} (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service, }
+\item[{const {\bf protocol\+\_\+type} \&}]{protocol}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_a6ded436ad179fa1204b8a6a42524f693}
+
+
+Construct and open a \hyperlink{classasio_1_1basic__stream__socket}{basic\+\_\+stream\+\_\+socket}. 
+
+This constructor creates and opens a stream socket. The socket needs to be connected or accepted before data can be sent or received on it.
+
+
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{classasio_1_1io__service}{io\+\_\+service}} & The \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that the stream socket will use to dispatch handlers for any asynchronous operations performed on the socket.\\
+\hline
+{\em protocol} & An object specifying protocol parameters to be used.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 88 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a099d36894656e54d71f926e73f4f0a63}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!basic\+\_\+stream\+\_\+socket@{basic\+\_\+stream\+\_\+socket}}
+\index{basic\+\_\+stream\+\_\+socket@{basic\+\_\+stream\+\_\+socket}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{basic\+\_\+stream\+\_\+socket(asio\+::io\+\_\+service \&io\+\_\+service, const endpoint\+\_\+type \&endpoint)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::{\bf basic\+\_\+stream\+\_\+socket} (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service, }
+\item[{const {\bf endpoint\+\_\+type} \&}]{endpoint}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_a099d36894656e54d71f926e73f4f0a63}
+Construct a \hyperlink{classasio_1_1basic__stream__socket}{basic\+\_\+stream\+\_\+socket}, opening it and binding it to the given local endpoint. This constructor creates a stream socket and automatically opens it bound to the specified endpoint on the local machine. The protocol used is the protocol associated with the given endpoint.
+
+
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{classasio_1_1io__service}{io\+\_\+service}} & The \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that the stream socket will use to dispatch handlers for any asynchronous operations performed on the socket.\\
+\hline
+{\em endpoint} & An endpoint on the local machine to which the stream socket will be bound.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 109 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a90200909391b8547d41e64fea860a019}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!basic\+\_\+stream\+\_\+socket@{basic\+\_\+stream\+\_\+socket}}
+\index{basic\+\_\+stream\+\_\+socket@{basic\+\_\+stream\+\_\+socket}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{basic\+\_\+stream\+\_\+socket(asio\+::io\+\_\+service \&io\+\_\+service, const protocol\+\_\+type \&protocol, const native\+\_\+handle\+\_\+type \&native\+\_\+socket)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::{\bf basic\+\_\+stream\+\_\+socket} (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service, }
+\item[{const {\bf protocol\+\_\+type} \&}]{protocol, }
+\item[{const {\bf native\+\_\+handle\+\_\+type} \&}]{native\+\_\+socket}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_a90200909391b8547d41e64fea860a019}
+
+
+Construct a \hyperlink{classasio_1_1basic__stream__socket}{basic\+\_\+stream\+\_\+socket} on an existing native socket. 
+
+This constructor creates a stream socket object to hold an existing native socket.
+
+
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{classasio_1_1io__service}{io\+\_\+service}} & The \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that the stream socket will use to dispatch handlers for any asynchronous operations performed on the socket.\\
+\hline
+{\em protocol} & An object specifying protocol parameters to be used.\\
+\hline
+{\em native\+\_\+socket} & The new underlying socket implementation.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 129 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1basic__stream__socket_afcace4f7f04c4ac287edd53e23eb9985}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Write\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+send(const Const\+Buffer\+Sequence \&buffers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1basic__stream__socket_afcace4f7f04c4ac287edd53e23eb9985}
+
+
+Start an asynchronous send. 
+
+This function is used to asynchronously send data on the stream socket. The function call always returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more data buffers to be sent on the socket. Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em handler} & The handler to be called when the send operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes sent.}
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The send operation may not transmit all of the data to the peer. Consider using the \hyperlink{group__async__write}{asio\+::async\+\_\+write} function if you need to ensure that all data is written before the asynchronous operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To send a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.async\_send(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), handler);
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on sending multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+\hypertarget{classasio_1_1basic__stream__socket_afcace4f7f04c4ac287edd53e23eb9985}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Write\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+send(const Const\+Buffer\+Sequence \&buffers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1basic__stream__socket_afcace4f7f04c4ac287edd53e23eb9985}
+
+
+Start an asynchronous send. 
+
+This function is used to asynchronously send data on the stream socket. The function call always returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more data buffers to be sent on the socket. Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em flags} & Flags specifying how the send call is to be made.\\
+\hline
+{\em handler} & The handler to be called when the send operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes sent.}
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The send operation may not transmit all of the data to the peer. Consider using the \hyperlink{group__async__write}{asio\+::async\+\_\+write} function if you need to ensure that all data is written before the asynchronous operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To send a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.async\_send(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), 0, handler);
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on sending multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+\hypertarget{classasio_1_1basic__stream__socket_a88f965bd1ab0af8e56afa67891c412d2}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Read\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+receive(const Mutable\+Buffer\+Sequence \&buffers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1basic__stream__socket_a88f965bd1ab0af8e56afa67891c412d2}
+
+
+Start an asynchronous receive. 
+
+This function is used to asynchronously receive data from the stream socket. The function call always returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more buffers into which the data will be received. Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em handler} & The handler to be called when the receive operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes received.}
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The receive operation may not receive all of the requested number of bytes. Consider using the \hyperlink{group__async__read}{asio\+::async\+\_\+read} function if you need to ensure that the requested amount of data is received before the asynchronous operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To receive into a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.async\_receive(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), handler);
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on receiving into multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+\hypertarget{classasio_1_1basic__stream__socket_a88f965bd1ab0af8e56afa67891c412d2}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Read\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+receive(const Mutable\+Buffer\+Sequence \&buffers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1basic__stream__socket_a88f965bd1ab0af8e56afa67891c412d2}
+
+
+Start an asynchronous receive. 
+
+This function is used to asynchronously receive data from the stream socket. The function call always returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more buffers into which the data will be received. Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em flags} & Flags specifying how the receive call is to be made.\\
+\hline
+{\em handler} & The handler to be called when the receive operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes received.}
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The receive operation may not receive all of the requested number of bytes. Consider using the \hyperlink{group__async__read}{asio\+::async\+\_\+read} function if you need to ensure that the requested amount of data is received before the asynchronous operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To receive into a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.async\_receive(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), 0, handler);
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on receiving into multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+\hypertarget{classasio_1_1basic__stream__socket_ad159945cedc82195e788407f715bb638}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Write\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+write\+\_\+some(const Const\+Buffer\+Sequence \&buffers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1basic__stream__socket_ad159945cedc82195e788407f715bb638}
+
+
+Start an asynchronous write. 
+
+This function is used to asynchronously write data to the stream socket. The function call always returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more data buffers to be written to the socket. Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em handler} & The handler to be called when the write operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes written.}
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The write operation may not transmit all of the data to the peer. Consider using the \hyperlink{group__async__write}{asio\+::async\+\_\+write} function if you need to ensure that all data is written before the asynchronous operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To write a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.async\_write\_some(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), handler);
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on writing multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+\hypertarget{classasio_1_1basic__stream__socket_a344952f6d1aa44da849ce0b274a27950}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Read\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+read\+\_\+some(const Mutable\+Buffer\+Sequence \&buffers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1basic__stream__socket_a344952f6d1aa44da849ce0b274a27950}
+
+
+Start an asynchronous read. 
+
+This function is used to asynchronously read data from the stream socket. The function call always returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more buffers into which the data will be read. Although the buffers object may be copied as necessary, ownership of the underlying memory blocks is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em handler} & The handler to be called when the read operation completes. Copies will be made of the handler as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes read.}
+); 
+\end{DoxyCode}
+ Regardless of whether the asynchronous operation completes immediately or not, the handler will not be invoked from within this function. Invocation of the handler will be performed in a manner equivalent to using \hyperlink{classasio_1_1io__service_ae01f809800017295e39786f5bca6652e}{asio\+::io\+\_\+service\+::post()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The read operation may not read all of the requested number of bytes. Consider using the \hyperlink{group__async__read}{asio\+::async\+\_\+read} function if you need to ensure that the requested amount of data is read before the asynchronous operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To read into a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.async\_read\_some(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), handler);
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on reading into multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+\hypertarget{classasio_1_1basic__stream__socket_a01062cf1f327c352999ef3aa1efebd98}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Write\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_a01062cf1f327c352999ef3aa1efebd98}
+
+
+Definition at line 351 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a7838e53001f30c046af84c50b39700a5}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Write\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ {\bf socket\+\_\+base\+::message\+\_\+flags} {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_a7838e53001f30c046af84c50b39700a5}
+
+
+Definition at line 404 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_ab4d3d3c54c32d560b4a3b7e8df39a1c3}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Read\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_ab4d3d3c54c32d560b4a3b7e8df39a1c3}
+
+
+Definition at line 561 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_ad5b09443b99f5b58ca63bf5f276a352f}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Read\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ {\bf socket\+\_\+base\+::message\+\_\+flags} {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_ad5b09443b99f5b58ca63bf5f276a352f}
+
+
+Definition at line 615 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a01062cf1f327c352999ef3aa1efebd98}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Write\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_a01062cf1f327c352999ef3aa1efebd98}
+
+
+Definition at line 724 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_ab4d3d3c54c32d560b4a3b7e8df39a1c3}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Read\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_ab4d3d3c54c32d560b4a3b7e8df39a1c3}
+
+
+Definition at line 837 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_ae8a201d4567b3e588b439a0352271cf1}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!read\+\_\+some@{read\+\_\+some}}
+\index{read\+\_\+some@{read\+\_\+some}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{read\+\_\+some(const Mutable\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::read\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_ae8a201d4567b3e588b439a0352271cf1}
+
+
+Read some data from the socket. 
+
+This function is used to read data from the stream socket. The function call will block until one or more bytes of data has been read successfully, or until an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more buffers into which the data will be read.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes read.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. An error code of \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847abb0b3b47deff67dd67b180d9d1e34154}{asio\+::error\+::eof} indicates that the connection was closed by the peer.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The read\+\_\+some operation may not read all of the requested number of bytes. Consider using the \hyperlink{group__read}{asio\+::read} function if you need to ensure that the requested amount of data is read before the blocking operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To read into a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.read\_some(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size));
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on reading into multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+
+
+Definition at line 763 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a0c5b977fdc7a55f36566ffa6000ca016}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!read\+\_\+some@{read\+\_\+some}}
+\index{read\+\_\+some@{read\+\_\+some}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{read\+\_\+some(const Mutable\+Buffer\+Sequence \&buffers, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::read\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_a0c5b977fdc7a55f36566ffa6000ca016}
+
+
+Read some data from the socket. 
+
+This function is used to read data from the stream socket. The function call will block until one or more bytes of data has been read successfully, or until an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more buffers into which the data will be read.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes read. Returns 0 if an error occurred.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The read\+\_\+some operation may not read all of the requested number of bytes. Consider using the \hyperlink{group__read}{asio\+::read} function if you need to ensure that the requested amount of data is read before the blocking operation completes. 
+\end{DoxyNote}
+
+
+Definition at line 790 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_ae2f7eb55984892225ecc8670a26fd6c5}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!receive@{receive}}
+\index{receive@{receive}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{receive(const Mutable\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::receive (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_ae2f7eb55984892225ecc8670a26fd6c5}
+
+
+Receive some data on the socket. 
+
+This function is used to receive data on the stream socket. The function call will block until one or more bytes of data has been received successfully, or until an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more buffers into which the data will be received.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes received.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. An error code of \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847abb0b3b47deff67dd67b180d9d1e34154}{asio\+::error\+::eof} indicates that the connection was closed by the peer.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The receive operation may not receive all of the requested number of bytes. Consider using the \hyperlink{group__read}{asio\+::read} function if you need to ensure that the requested amount of data is read before the blocking operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To receive into a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.receive(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size));
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on receiving into multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+
+
+Definition at line 444 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a68abffc3fc471f0dbf194f68dfef7e5c}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!receive@{receive}}
+\index{receive@{receive}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{receive(const Mutable\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags flags)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::receive (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_a68abffc3fc471f0dbf194f68dfef7e5c}
+
+
+Receive some data on the socket. 
+
+This function is used to receive data on the stream socket. The function call will block until one or more bytes of data has been received successfully, or until an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more buffers into which the data will be received.\\
+\hline
+{\em flags} & Flags specifying how the receive call is to be made.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes received.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. An error code of \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847abb0b3b47deff67dd67b180d9d1e34154}{asio\+::error\+::eof} indicates that the connection was closed by the peer.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The receive operation may not receive all of the requested number of bytes. Consider using the \hyperlink{group__read}{asio\+::read} function if you need to ensure that the requested amount of data is read before the blocking operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To receive into a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.receive(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), 0);
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on receiving into multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+
+
+Definition at line 484 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_ac973f4905e256cf6fde6f9a61b704464}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!receive@{receive}}
+\index{receive@{receive}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{receive(const Mutable\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::receive (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_ac973f4905e256cf6fde6f9a61b704464}
+
+
+Receive some data on a connected socket. 
+
+This function is used to receive data on the stream socket. The function call will block until one or more bytes of data has been received successfully, or until an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more buffers into which the data will be received.\\
+\hline
+{\em flags} & Flags specifying how the receive call is to be made.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes received. Returns 0 if an error occurred.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The receive operation may not receive all of the requested number of bytes. Consider using the \hyperlink{group__read}{asio\+::read} function if you need to ensure that the requested amount of data is read before the blocking operation completes. 
+\end{DoxyNote}
+
+
+Definition at line 513 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_af5bb44446d47423959c14c28a41a3dd8}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!send@{send}}
+\index{send@{send}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{send(const Const\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{const Const\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_af5bb44446d47423959c14c28a41a3dd8}
+
+
+Send some data on the socket. 
+
+This function is used to send data on the stream socket. The function call will block until one or more bytes of the data has been sent successfully, or an until error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more data buffers to be sent on the socket.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes sent.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The send operation may not transmit all of the data to the peer. Consider using the \hyperlink{group__write}{asio\+::write} function if you need to ensure that all data is written before the blocking operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To send a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.send(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size));
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on sending multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+
+
+Definition at line 239 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_afe228e06332e5ed761f87045e77b5e41}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!send@{send}}
+\index{send@{send}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{send(const Const\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags flags)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_afe228e06332e5ed761f87045e77b5e41}
+
+
+Send some data on the socket. 
+
+This function is used to send data on the stream socket. The function call will block until one or more bytes of the data has been sent successfully, or an until error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more data buffers to be sent on the socket.\\
+\hline
+{\em flags} & Flags specifying how the send call is to be made.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes sent.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The send operation may not transmit all of the data to the peer. Consider using the \hyperlink{group__write}{asio\+::write} function if you need to ensure that all data is written before the blocking operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To send a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.send(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), 0);
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on sending multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+
+
+Definition at line 276 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a76f64068ffaf3715a242602cbef085e9}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!send@{send}}
+\index{send@{send}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{send(const Const\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_a76f64068ffaf3715a242602cbef085e9}
+
+
+Send some data on the socket. 
+
+This function is used to send data on the stream socket. The function call will block until one or more bytes of the data has been sent successfully, or an until error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more data buffers to be sent on the socket.\\
+\hline
+{\em flags} & Flags specifying how the send call is to be made.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes sent. Returns 0 if an error occurred.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The send operation may not transmit all of the data to the peer. Consider using the \hyperlink{group__write}{asio\+::write} function if you need to ensure that all data is written before the blocking operation completes. 
+\end{DoxyNote}
+
+
+Definition at line 305 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a181159dc2a64323d39f09563e9fdc4e3}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!write\+\_\+some@{write\+\_\+some}}
+\index{write\+\_\+some@{write\+\_\+some}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{write\+\_\+some(const Const\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::write\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Const\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_a181159dc2a64323d39f09563e9fdc4e3}
+
+
+Write some data to the socket. 
+
+This function is used to write data to the stream socket. The function call will block until one or more bytes of the data has been written successfully, or until an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more data buffers to be written to the socket.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes written.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. An error code of \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847abb0b3b47deff67dd67b180d9d1e34154}{asio\+::error\+::eof} indicates that the connection was closed by the peer.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The write\+\_\+some operation may not transmit all of the data to the peer. Consider using the \hyperlink{group__write}{asio\+::write} function if you need to ensure that all data is written before the blocking operation completes.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To write a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.write\_some(\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size));
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on writing multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+
+
+Definition at line 653 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+\hypertarget{classasio_1_1basic__stream__socket_a6b3873c18a1ce5abf99aa61859ecb058}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!write\+\_\+some@{write\+\_\+some}}
+\index{write\+\_\+some@{write\+\_\+some}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{write\+\_\+some(const Const\+Buffer\+Sequence \&buffers, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ template$<$typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::write\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__stream__socket_a6b3873c18a1ce5abf99aa61859ecb058}
+
+
+Write some data to the socket. 
+
+This function is used to write data to the stream socket. The function call will block until one or more bytes of the data has been written successfully, or until an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & One or more data buffers to be written to the socket.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes written. Returns 0 if an error occurred.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The write\+\_\+some operation may not transmit all of the data to the peer. Consider using the \hyperlink{group__write}{asio\+::write} function if you need to ensure that all data is written before the blocking operation completes. 
+\end{DoxyNote}
+
+
+Definition at line 679 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classasio_1_1basic__stream__socket_a49da9b10ef73407f4991c633ced27111}{}\index{asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}!flags@{flags}}
+\index{flags@{flags}!asio\+::basic\+\_\+stream\+\_\+socket@{asio\+::basic\+\_\+stream\+\_\+socket}}
+\subsubsection[{flags}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$$>$ {\bf socket\+\_\+base\+::message\+\_\+flags} {\bf asio\+::basic\+\_\+stream\+\_\+socket}$<$ Protocol, Stream\+Socket\+Service $>$\+::flags}\label{classasio_1_1basic__stream__socket_a49da9b10ef73407f4991c633ced27111}
+
+
+Definition at line 403 of file basic\+\_\+stream\+\_\+socket.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{basic__stream__socket_8hpp}{basic\+\_\+stream\+\_\+socket.\+hpp}\end{DoxyCompactItemize}

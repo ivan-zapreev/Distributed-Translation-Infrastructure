@@ -1,0 +1,37 @@
+\hypertarget{namespacewebsocketpp_1_1message__buffer}{}\section{websocketpp\+:\+:message\+\_\+buffer Namespace Reference}
+\label{namespacewebsocketpp_1_1message__buffer}\index{websocketpp\+::message\+\_\+buffer@{websocketpp\+::message\+\_\+buffer}}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacewebsocketpp_1_1message__buffer_1_1alloc}{alloc}
+\item 
+ \hyperlink{namespacewebsocketpp_1_1message__buffer_1_1pool}{pool}
+\end{DoxyCompactItemize}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classwebsocketpp_1_1message__buffer_1_1message}{message}
+\begin{DoxyCompactList}\small\item\em Represents a buffer for a single Web\+Socket message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \hyperlink{namespacewebsocketpp_1_1message__buffer_abb46c6d5b9cd984a158996029cadfa88}{message\+\_\+deleter} (T $\ast$msg)
+\begin{DoxyCompactList}\small\item\em Custom deleter for use in shared\+\_\+ptrs to message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespacewebsocketpp_1_1message__buffer_abb46c6d5b9cd984a158996029cadfa88}{}\index{websocketpp\+::message\+\_\+buffer@{websocketpp\+::message\+\_\+buffer}!message\+\_\+deleter@{message\+\_\+deleter}}
+\index{message\+\_\+deleter@{message\+\_\+deleter}!websocketpp\+::message\+\_\+buffer@{websocketpp\+::message\+\_\+buffer}}
+\subsubsection[{message\+\_\+deleter(\+T $\ast$msg)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void websocketpp\+::message\+\_\+buffer\+::message\+\_\+deleter (
+\begin{DoxyParamCaption}
+\item[{T $\ast$}]{msg}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1message__buffer_abb46c6d5b9cd984a158996029cadfa88}
+
+
+Custom deleter for use in shared\+\_\+ptrs to message. 
+
+This is used to catch messages about to be deleted and offer the manager the ability to recycle them instead. Message\+::recycle will return true if it was successfully recycled and false otherwise. In the case of exceptions or error this deleter frees the memory. 
+
+Definition at line 84 of file pool.\+hpp.
+

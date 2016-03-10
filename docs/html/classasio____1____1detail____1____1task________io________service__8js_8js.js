@@ -1,0 +1,4 @@
+var classasio____1____1detail____1____1task________io________service__8js_8js =
+[
+    [ "classasio__1__1detail__1__1task____io____service_8js", "classasio____1____1detail____1____1task________io________service__8js_8js.html#a7e9b8b354ebbaf242f7bf02d2b16bc10", null ]
+];

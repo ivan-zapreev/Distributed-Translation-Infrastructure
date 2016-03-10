@@ -1,0 +1,64 @@
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config}{}\section{websocketpp\+:\+:config\+:\+:minimal\+\_\+server\+:\+:permessage\+\_\+deflate\+\_\+config Struct Reference}
+\label{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config}\index{websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config@{websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config}}
+
+
+Extension specific settings\+:  
+
+
+
+
+{\ttfamily \#include $<$minimal\+\_\+server.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{structwebsocketpp_1_1config_1_1core_a6b17eee7cb81f247afc8f3d7b3a3fc9e}{core\+::request\+\_\+type} \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config_a3011304a1e8bf6893f946bfd41e967f6}{request\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const bool \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config_a6e01239ebe19410d4214db6bd1b83d53}{allow\+\_\+disabling\+\_\+context\+\_\+takeover} = true
+\item 
+static const uint8\+\_\+t \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config_a6faed3e781638f77c451d003578d5ca2}{minimum\+\_\+outgoing\+\_\+window\+\_\+bits} = 8
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Extension specific settings\+: 
+
+permessage\+\_\+compress extension 
+
+Definition at line 275 of file minimal\+\_\+server.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config_a3011304a1e8bf6893f946bfd41e967f6}{}\index{websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config@{websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config}!request\+\_\+type@{request\+\_\+type}}
+\index{request\+\_\+type@{request\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config@{websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config}}
+\subsubsection[{request\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf core\+::request\+\_\+type} {\bf websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config\+::request\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config_a3011304a1e8bf6893f946bfd41e967f6}
+
+
+Definition at line 276 of file minimal\+\_\+server.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config_a6e01239ebe19410d4214db6bd1b83d53}{}\index{websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config@{websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config}!allow\+\_\+disabling\+\_\+context\+\_\+takeover@{allow\+\_\+disabling\+\_\+context\+\_\+takeover}}
+\index{allow\+\_\+disabling\+\_\+context\+\_\+takeover@{allow\+\_\+disabling\+\_\+context\+\_\+takeover}!websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config@{websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config}}
+\subsubsection[{allow\+\_\+disabling\+\_\+context\+\_\+takeover}]{\setlength{\rightskip}{0pt plus 5cm}const bool websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config\+::allow\+\_\+disabling\+\_\+context\+\_\+takeover = true\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config_a6e01239ebe19410d4214db6bd1b83d53}
+If the remote endpoint requests that we reset the compression context after each message should we honor the request? 
+
+Definition at line 280 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config_a6faed3e781638f77c451d003578d5ca2}{}\index{websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config@{websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config}!minimum\+\_\+outgoing\+\_\+window\+\_\+bits@{minimum\+\_\+outgoing\+\_\+window\+\_\+bits}}
+\index{minimum\+\_\+outgoing\+\_\+window\+\_\+bits@{minimum\+\_\+outgoing\+\_\+window\+\_\+bits}!websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config@{websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config}}
+\subsubsection[{minimum\+\_\+outgoing\+\_\+window\+\_\+bits}]{\setlength{\rightskip}{0pt plus 5cm}const uint8\+\_\+t websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+config\+::minimum\+\_\+outgoing\+\_\+window\+\_\+bits = 8\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config_a6faed3e781638f77c451d003578d5ca2}
+If the remote endpoint requests that we reduce the size of the L\+Z77 sliding window size this is the lowest value that will be allowed. Values range from 8 to 15. A value of 8 means we will allow any possible window size. A value of 15 means do not allow negotiation of the window size (ie require the default). 
+
+Definition at line 287 of file minimal\+\_\+server.\+hpp.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/config/\hyperlink{minimal__server_8hpp}{minimal\+\_\+server.\+hpp}\end{DoxyCompactItemize}

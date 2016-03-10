@@ -1,0 +1,216 @@
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator}{}\section{asio\+:\+:detail\+:\+:consuming\+\_\+buffers\+\_\+iterator$<$ Buffer, Buffer\+\_\+\+Iterator $>$ Class Template Reference}
+\label{classasio_1_1detail_1_1consuming__buffers__iterator}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator$<$ Buffer, Buffer\+\_\+\+Iterator $>$@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator$<$ Buffer, Buffer\+\_\+\+Iterator $>$}}
+
+
+{\ttfamily \#include $<$consuming\+\_\+buffers.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::ptrdiff\+\_\+t \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_ae0f3c33c5ca70ab6fb129299f6092b78}{difference\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type used for the distance between two iterators. \end{DoxyCompactList}\item 
+typedef Buffer \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_a2462f38aaa732fe3694cae9d8896ee7e}{value\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type of the value pointed to by the iterator. \end{DoxyCompactList}\item 
+typedef const Buffer $\ast$ \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_ae79f642abeaf9c9cd33a326a1cf00293}{pointer}
+\begin{DoxyCompactList}\small\item\em The type of the result of applying \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_a2eaf29938b709e047a7d77ce79113a59}{operator-\/$>$()} to the iterator. \end{DoxyCompactList}\item 
+typedef const Buffer \& \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_afb896cbf35f476cb828083b5439d0991}{reference}
+\begin{DoxyCompactList}\small\item\em The type of the result of applying \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_a2ab29aa14557ac04a71b1f5015a06c0d}{operator$\ast$()} to the iterator. \end{DoxyCompactList}\item 
+typedef std\+::forward\+\_\+iterator\+\_\+tag \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_a23bcf111a9ac4efe9ce2daebd4bd11c9}{iterator\+\_\+category}
+\begin{DoxyCompactList}\small\item\em The iterator category. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_a9c8724cf876664ca8d8cc9ffc0946a72}{consuming\+\_\+buffers\+\_\+iterator} ()
+\item 
+\hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_a6d9a4fc6dad9af8979f5ca991612985b}{consuming\+\_\+buffers\+\_\+iterator} (bool at\+\_\+end, const Buffer \&first, Buffer\+\_\+\+Iterator begin\+\_\+remainder, Buffer\+\_\+\+Iterator end\+\_\+remainder, std\+::size\+\_\+t max\+\_\+size)
+\item 
+const Buffer \& \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_a2ab29aa14557ac04a71b1f5015a06c0d}{operator$\ast$} () const 
+\item 
+const Buffer $\ast$ \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_a2eaf29938b709e047a7d77ce79113a59}{operator-\/$>$} () const 
+\item 
+\hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator}{consuming\+\_\+buffers\+\_\+iterator} \& \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_a552656665d22c59edf9d4579909ed9aa}{operator++} ()
+\item 
+\hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator}{consuming\+\_\+buffers\+\_\+iterator} \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_ad461a03cac97b7846e73ac26e10290bd}{operator++} (int)
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_ab16002dbe7c4b2813044f299c8372195}{operator==} (const \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator}{consuming\+\_\+buffers\+\_\+iterator} \&a, const \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator}{consuming\+\_\+buffers\+\_\+iterator} \&\hyperlink{group__async__read_ga945a5c18fa77a9e2eba420f8f44b2a4f}{b})
+\item 
+bool \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_abd4cff78f2ecab48a7175237131f3bcb}{operator!=} (const \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator}{consuming\+\_\+buffers\+\_\+iterator} \&a, const \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator}{consuming\+\_\+buffers\+\_\+iterator} \&\hyperlink{group__async__read_ga945a5c18fa77a9e2eba420f8f44b2a4f}{b})
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Buffer, typename Buffer\+\_\+\+Iterator$>$class asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator$<$ Buffer, Buffer\+\_\+\+Iterator $>$}
+
+
+
+Definition at line 31 of file consuming\+\_\+buffers.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_ae0f3c33c5ca70ab6fb129299f6092b78}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!difference\+\_\+type@{difference\+\_\+type}}
+\index{difference\+\_\+type@{difference\+\_\+type}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{difference\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ typedef std\+::ptrdiff\+\_\+t {\bf asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$\+::{\bf difference\+\_\+type}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_ae0f3c33c5ca70ab6fb129299f6092b78}
+
+
+The type used for the distance between two iterators. 
+
+
+
+Definition at line 35 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_a23bcf111a9ac4efe9ce2daebd4bd11c9}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!iterator\+\_\+category@{iterator\+\_\+category}}
+\index{iterator\+\_\+category@{iterator\+\_\+category}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{iterator\+\_\+category}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ typedef std\+::forward\+\_\+iterator\+\_\+tag {\bf asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$\+::{\bf iterator\+\_\+category}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_a23bcf111a9ac4efe9ce2daebd4bd11c9}
+
+
+The iterator category. 
+
+
+
+Definition at line 47 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_ae79f642abeaf9c9cd33a326a1cf00293}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!pointer@{pointer}}
+\index{pointer@{pointer}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{pointer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ typedef const Buffer$\ast$ {\bf asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$\+::{\bf pointer}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_ae79f642abeaf9c9cd33a326a1cf00293}
+
+
+The type of the result of applying \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_a2eaf29938b709e047a7d77ce79113a59}{operator-\/$>$()} to the iterator. 
+
+
+
+Definition at line 41 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_afb896cbf35f476cb828083b5439d0991}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!reference@{reference}}
+\index{reference@{reference}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{reference}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ typedef const Buffer\& {\bf asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$\+::{\bf reference}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_afb896cbf35f476cb828083b5439d0991}
+
+
+The type of the result of applying \hyperlink{classasio_1_1detail_1_1consuming__buffers__iterator_a2ab29aa14557ac04a71b1f5015a06c0d}{operator$\ast$()} to the iterator. 
+
+
+
+Definition at line 44 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_a2462f38aaa732fe3694cae9d8896ee7e}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!value\+\_\+type@{value\+\_\+type}}
+\index{value\+\_\+type@{value\+\_\+type}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{value\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ typedef Buffer {\bf asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$\+::{\bf value\+\_\+type}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_a2462f38aaa732fe3694cae9d8896ee7e}
+
+
+The type of the value pointed to by the iterator. 
+
+
+
+Definition at line 38 of file consuming\+\_\+buffers.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_a9c8724cf876664ca8d8cc9ffc0946a72}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!consuming\+\_\+buffers\+\_\+iterator@{consuming\+\_\+buffers\+\_\+iterator}}
+\index{consuming\+\_\+buffers\+\_\+iterator@{consuming\+\_\+buffers\+\_\+iterator}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{consuming\+\_\+buffers\+\_\+iterator()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ {\bf asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$\+::{\bf consuming\+\_\+buffers\+\_\+iterator} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_a9c8724cf876664ca8d8cc9ffc0946a72}
+
+
+Definition at line 50 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_a6d9a4fc6dad9af8979f5ca991612985b}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!consuming\+\_\+buffers\+\_\+iterator@{consuming\+\_\+buffers\+\_\+iterator}}
+\index{consuming\+\_\+buffers\+\_\+iterator@{consuming\+\_\+buffers\+\_\+iterator}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{consuming\+\_\+buffers\+\_\+iterator(bool at\+\_\+end, const Buffer \&first, Buffer\+\_\+\+Iterator begin\+\_\+remainder, Buffer\+\_\+\+Iterator end\+\_\+remainder, std\+::size\+\_\+t max\+\_\+size)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ {\bf asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$\+::{\bf consuming\+\_\+buffers\+\_\+iterator} (
+\begin{DoxyParamCaption}
+\item[{bool}]{at\+\_\+end, }
+\item[{const Buffer \&}]{first, }
+\item[{Buffer\+\_\+\+Iterator}]{begin\+\_\+remainder, }
+\item[{Buffer\+\_\+\+Iterator}]{end\+\_\+remainder, }
+\item[{std\+::size\+\_\+t}]{max\+\_\+size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_a6d9a4fc6dad9af8979f5ca991612985b}
+
+
+Definition at line 57 of file consuming\+\_\+buffers.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_a2ab29aa14557ac04a71b1f5015a06c0d}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{operator$\ast$() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ const Buffer\& {\bf asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_a2ab29aa14557ac04a71b1f5015a06c0d}
+
+
+Definition at line 70 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_a552656665d22c59edf9d4579909ed9aa}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!operator++@{operator++}}
+\index{operator++@{operator++}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{operator++()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ {\bf consuming\+\_\+buffers\+\_\+iterator}\& {\bf asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$\+::operator++ (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_a552656665d22c59edf9d4579909ed9aa}
+
+
+Definition at line 82 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_ad461a03cac97b7846e73ac26e10290bd}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!operator++@{operator++}}
+\index{operator++@{operator++}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{operator++(int)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ {\bf consuming\+\_\+buffers\+\_\+iterator} {\bf asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$\+::operator++ (
+\begin{DoxyParamCaption}
+\item[{int}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_ad461a03cac97b7846e73ac26e10290bd}
+
+
+Definition at line 89 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_a2eaf29938b709e047a7d77ce79113a59}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!operator-\/$>$@{operator-\/$>$}}
+\index{operator-\/$>$@{operator-\/$>$}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{operator-\/$>$() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ const Buffer$\ast$ {\bf asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$\+::operator-\/$>$ (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_a2eaf29938b709e047a7d77ce79113a59}
+
+
+Definition at line 76 of file consuming\+\_\+buffers.\+hpp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_abd4cff78f2ecab48a7175237131f3bcb}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{operator"!=}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ bool operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$ \&}]{a, }
+\item[{const {\bf consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$ \&}]{b}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_abd4cff78f2ecab48a7175237131f3bcb}
+
+
+Definition at line 104 of file consuming\+\_\+buffers.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1consuming__buffers__iterator_ab16002dbe7c4b2813044f299c8372195}{}\index{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}!operator==@{operator==}}
+\index{operator==@{operator==}!asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator@{asio\+::detail\+::consuming\+\_\+buffers\+\_\+iterator}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Buffer , typename Buffer\+\_\+\+Iterator $>$ bool operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$ \&}]{a, }
+\item[{const {\bf consuming\+\_\+buffers\+\_\+iterator}$<$ Buffer, Buffer\+\_\+\+Iterator $>$ \&}]{b}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1detail_1_1consuming__buffers__iterator_ab16002dbe7c4b2813044f299c8372195}
+
+
+Definition at line 97 of file consuming\+\_\+buffers.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/detail/\hyperlink{consuming__buffers_8hpp}{consuming\+\_\+buffers.\+hpp}\end{DoxyCompactItemize}

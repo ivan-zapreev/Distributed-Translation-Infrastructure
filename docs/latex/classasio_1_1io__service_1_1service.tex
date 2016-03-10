@@ -1,0 +1,113 @@
+\hypertarget{classasio_1_1io__service_1_1service}{}\section{asio\+:\+:io\+\_\+service\+:\+:service Class Reference}
+\label{classasio_1_1io__service_1_1service}\index{asio\+::io\+\_\+service\+::service@{asio\+::io\+\_\+service\+::service}}
+
+
+Base class for all \hyperlink{classasio_1_1io__service}{io\+\_\+service} services.  
+
+
+
+
+{\ttfamily \#include $<$io\+\_\+service.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:io\+\_\+service\+:\+:service\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=11.612904cm]{classasio_1_1io__service_1_1service}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \& \hyperlink{classasio_1_1io__service_1_1service_a4f70ce5f41425e67ac1a72cfff653485}{get\+\_\+io\+\_\+service} ()
+\begin{DoxyCompactList}\small\item\em Get the \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that owns the service. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1io__service_1_1service_a232ccb62d3fbe59c5037fdde4ec0bc01}{service} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&owner)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1io__service_1_1service_a04b8d9a842a3f24ee7c060c0a10ac967}{$\sim$service} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1io__service_1_1service_a710247c6dc5880a6111aa99d4d256811}{asio\+::detail\+::service\+\_\+registry}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Base class for all \hyperlink{classasio_1_1io__service}{io\+\_\+service} services. 
+
+Definition at line 674 of file io\+\_\+service.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1io__service_1_1service_a232ccb62d3fbe59c5037fdde4ec0bc01}{}\index{asio\+::io\+\_\+service\+::service@{asio\+::io\+\_\+service\+::service}!service@{service}}
+\index{service@{service}!asio\+::io\+\_\+service\+::service@{asio\+::io\+\_\+service\+::service}}
+\subsubsection[{service(asio\+::io\+\_\+service \&owner)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::io\+\_\+service\+::service\+::service (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{owner}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{classasio_1_1io__service_1_1service_a232ccb62d3fbe59c5037fdde4ec0bc01}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em owner} & The \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that owns the service. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 127 of file io\+\_\+service.\+ipp.
+
+\hypertarget{classasio_1_1io__service_1_1service_a04b8d9a842a3f24ee7c060c0a10ac967}{}\index{asio\+::io\+\_\+service\+::service@{asio\+::io\+\_\+service\+::service}!````~service@{$\sim$service}}
+\index{````~service@{$\sim$service}!asio\+::io\+\_\+service\+::service@{asio\+::io\+\_\+service\+::service}}
+\subsubsection[{$\sim$service()}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::io\+\_\+service\+::service\+::$\sim$service (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classasio_1_1io__service_1_1service_a04b8d9a842a3f24ee7c060c0a10ac967}
+
+
+Destructor. 
+
+
+
+Definition at line 133 of file io\+\_\+service.\+ipp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1io__service_1_1service_a4f70ce5f41425e67ac1a72cfff653485}{}\index{asio\+::io\+\_\+service\+::service@{asio\+::io\+\_\+service\+::service}!get\+\_\+io\+\_\+service@{get\+\_\+io\+\_\+service}}
+\index{get\+\_\+io\+\_\+service@{get\+\_\+io\+\_\+service}!asio\+::io\+\_\+service\+::service@{asio\+::io\+\_\+service\+::service}}
+\subsubsection[{get\+\_\+io\+\_\+service()}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::io\+\_\+service} \& asio\+::io\+\_\+service\+::service\+::get\+\_\+io\+\_\+service (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1io__service_1_1service_a4f70ce5f41425e67ac1a72cfff653485}
+
+
+Get the \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that owns the service. 
+
+
+
+Definition at line 143 of file io\+\_\+service.\+hpp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classasio_1_1io__service_1_1service_a710247c6dc5880a6111aa99d4d256811}{}\index{asio\+::io\+\_\+service\+::service@{asio\+::io\+\_\+service\+::service}!asio\+::detail\+::service\+\_\+registry@{asio\+::detail\+::service\+\_\+registry}}
+\index{asio\+::detail\+::service\+\_\+registry@{asio\+::detail\+::service\+\_\+registry}!asio\+::io\+\_\+service\+::service@{asio\+::io\+\_\+service\+::service}}
+\subsubsection[{asio\+::detail\+::service\+\_\+registry}]{\setlength{\rightskip}{0pt plus 5cm}friend class {\bf asio\+::detail\+::service\+\_\+registry}\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1io__service_1_1service_a710247c6dc5880a6111aa99d4d256811}
+
+
+Definition at line 704 of file io\+\_\+service.\+hpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{io__service_8hpp}{io\+\_\+service.\+hpp}\item 
+ext/asio/impl/\hyperlink{io__service_8ipp}{io\+\_\+service.\+ipp}\end{DoxyCompactItemize}

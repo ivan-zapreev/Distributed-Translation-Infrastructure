@@ -1,0 +1,843 @@
+\hypertarget{classasio_1_1raw__socket__service}{}\section{asio\+:\+:raw\+\_\+socket\+\_\+service$<$ Protocol $>$ Class Template Reference}
+\label{classasio_1_1raw__socket__service}\index{asio\+::raw\+\_\+socket\+\_\+service$<$ Protocol $>$@{asio\+::raw\+\_\+socket\+\_\+service$<$ Protocol $>$}}
+
+
+Default service implementation for a raw socket.  
+
+
+
+
+{\ttfamily \#include $<$raw\+\_\+socket\+\_\+service.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:raw\+\_\+socket\+\_\+service$<$ Protocol $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classasio_1_1raw__socket__service}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Protocol \hyperlink{classasio_1_1raw__socket__service_a7d559e265719280febe97fe07fbb524d}{protocol\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The protocol type. \end{DoxyCompactList}\item 
+typedef Protocol\+::endpoint \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The endpoint type. \end{DoxyCompactList}\item 
+typedef \hyperlink{structasio_1_1detail_1_1reactive__socket__service_1_1implementation__type}{service\+\_\+impl\+\_\+type\+::implementation\+\_\+type} \hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type of a raw socket. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1reactive__socket__service_a2fc869359f3eb7b6f25925f10e594e1d}{service\+\_\+impl\+\_\+type\+::native\+\_\+handle\+\_\+type} \hyperlink{classasio_1_1raw__socket__service_ac593d0ef0d19e36b2226e91476fd6566}{native\+\_\+type}
+\begin{DoxyCompactList}\small\item\em (Deprecated\+: Use native\+\_\+handle\+\_\+type.) The native socket type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1reactive__socket__service_a2fc869359f3eb7b6f25925f10e594e1d}{service\+\_\+impl\+\_\+type\+::native\+\_\+handle\+\_\+type} \hyperlink{classasio_1_1raw__socket__service_a79802711654c4d649ff11b7fe238b927}{native\+\_\+handle\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The native socket type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1raw__socket__service_ab1472767bef27b633f73b5244ea715d2}{raw\+\_\+socket\+\_\+service} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service})
+\begin{DoxyCompactList}\small\item\em Construct a new raw socket service for the specified \hyperlink{classasio_1_1io__service}{io\+\_\+service}. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1raw__socket__service_a5d7099fa55e414c87a1657da7736e8ce}{construct} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em Construct a new raw socket implementation. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1raw__socket__service_a7fbd39eb2454396c71835f64dfbfa246}{destroy} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em Destroy a raw socket implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_a35095439db38736aaa8d0590e8297b42}{open} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1raw__socket__service_a7d559e265719280febe97fe07fbb524d}{protocol\+\_\+type} \&protocol, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_ad5d62e2730ff170e77c70ac14c837da6}{assign} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1raw__socket__service_a7d559e265719280febe97fe07fbb524d}{protocol\+\_\+type} \&protocol, const \hyperlink{classasio_1_1raw__socket__service_a79802711654c4d649ff11b7fe238b927}{native\+\_\+handle\+\_\+type} \&native\+\_\+socket, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Assign an existing native socket to a raw socket. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1raw__socket__service_abd56a205f1658c69192af28632769ddc}{is\+\_\+open} (const \hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl) const 
+\begin{DoxyCompactList}\small\item\em Determine whether the socket is open. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_a76dcf2b7fa269237fbbc62f2feb21734}{close} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Close a raw socket implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1raw__socket__service_ac593d0ef0d19e36b2226e91476fd6566}{native\+\_\+type} \hyperlink{classasio_1_1raw__socket__service_a9549df363a51e46a039aa948670ecad6}{native} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em (Deprecated\+: Use \hyperlink{classasio_1_1raw__socket__service_abe528a1deb11b2363b94afbe8ff704ef}{native\+\_\+handle()}.) Get the native socket implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1raw__socket__service_a79802711654c4d649ff11b7fe238b927}{native\+\_\+handle\+\_\+type} \hyperlink{classasio_1_1raw__socket__service_abe528a1deb11b2363b94afbe8ff704ef}{native\+\_\+handle} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em Get the native socket implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_a9f310b13cf931cdfe65fa819bad722d3}{cancel} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Cancel all asynchronous operations associated with the socket. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1raw__socket__service_a45c4a90bb8ba4f8aac6200c92636ca4e}{at\+\_\+mark} (const \hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\begin{DoxyCompactList}\small\item\em Determine whether the socket is at the out-\/of-\/band data mark. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1raw__socket__service_a64f8ea11eafa7d796ade1f7cfeecf63c}{available} (const \hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\begin{DoxyCompactList}\small\item\em Determine the number of bytes available for reading. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_afb89fa2a6726df74b952c8ee4bc48304}{bind} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \&endpoint, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_a66508109d7ba310620133b31a1d88aad}{connect} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \&\hyperlink{classasio_1_1raw__socket__service_ad9ddc4af36bf42586989e53bbd880cd5}{peer\+\_\+endpoint}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Connect the raw socket to the specified endpoint. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Connect\+Handler $>$ }\\\hyperlink{classasio_1_1raw__socket__service_ac3047cc564a20bfbe6c27c1473969852}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Connect\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code})) async\+\_\+connect(\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl
+\begin{DoxyCompactList}\small\item\em Start an asynchronous connect. \end{DoxyCompactList}\item 
+const \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \hyperlink{classasio_1_1raw__socket__service_af54f7a642f4b7f29acf1b790d71c2022}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Connect\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Settable\+Socket\+Option $>$ }\\\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_add7120cd3f4b85a216ab0f80ded04d52}{set\+\_\+option} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, const Settable\+Socket\+Option \&option, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Set a socket option. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Gettable\+Socket\+Option $>$ }\\\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_af43fc20682cef419b4a7db2eca8dec47}{get\+\_\+option} (const \hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, Gettable\+Socket\+Option \&option, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\begin{DoxyCompactList}\small\item\em Get a socket option. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Io\+Control\+Command $>$ }\\\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_a3c8a4f120cff5ce9b764858fb397d4d4}{io\+\_\+control} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, Io\+Control\+Command \&command, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Perform an I\+O control command on the socket. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1raw__socket__service_acf1430d9ff067fa91a0309fec562699f}{non\+\_\+blocking} (const \hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl) const 
+\begin{DoxyCompactList}\small\item\em Gets the non-\/blocking mode of the socket. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_a92ad1f33097116df4f4fefacc3d9b73b}{non\+\_\+blocking} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, bool mode, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Sets the non-\/blocking mode of the socket. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1raw__socket__service_a04ddcd4bf24d630ee2a0f89ca6ce93c3}{native\+\_\+non\+\_\+blocking} (const \hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl) const 
+\begin{DoxyCompactList}\small\item\em Gets the non-\/blocking mode of the native socket implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_a3bcc1fd09e0a74b91769b456be81624d}{native\+\_\+non\+\_\+blocking} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, bool mode, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Sets the non-\/blocking mode of the native socket implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \hyperlink{classasio_1_1raw__socket__service_a076ef170b837767169909ed2a367e1cc}{local\+\_\+endpoint} (const \hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\begin{DoxyCompactList}\small\item\em Get the local endpoint. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \hyperlink{classasio_1_1raw__socket__service_a6f2b76260cf91e54abb7d1895e94a841}{remote\+\_\+endpoint} (const \hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\begin{DoxyCompactList}\small\item\em Get the remote endpoint. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1raw__socket__service_a0bc7a2863e11caa3f96743315d085a57}{shutdown} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37}{socket\+\_\+base\+::shutdown\+\_\+type} what, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Disable sends or receives on the socket. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1raw__socket__service_acd7e33dc429703b91a0e171448b78234}{send} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, const Const\+Buffer\+Sequence \&\hyperlink{classasio_1_1raw__socket__service_a45cf013e3c3889296ee65fd303253db6}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_a735387eb54985dafc0ba5314df84590a}{flags}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Send the given data to the peer. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\\hyperlink{classasio_1_1raw__socket__service_ac01c6e124779ee50915302874b4a7d74}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+send(\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl
+\begin{DoxyCompactList}\small\item\em Start an asynchronous send. \end{DoxyCompactList}\item 
+const Const\+Buffer\+Sequence \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_a57f14c2fd09c3b93b2079a1d367ffcd8}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Write\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1raw__socket__service_a00a843cedf0147e2b82c48698657fde8}{send\+\_\+to} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, const Const\+Buffer\+Sequence \&\hyperlink{classasio_1_1raw__socket__service_a45cf013e3c3889296ee65fd303253db6}{buffers}, const \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \&\hyperlink{classasio_1_1raw__socket__service_a862ad7c956d71979dbe3702d78540643}{destination}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_a735387eb54985dafc0ba5314df84590a}{flags}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Send raw data to the specified endpoint. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\\hyperlink{classasio_1_1raw__socket__service_a7a270306e1b7a907bb03d55abf859bd5}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+send\+\_\+to(\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl
+\begin{DoxyCompactList}\small\item\em Start an asynchronous send. \end{DoxyCompactList}\item 
+const Const\+Buffer\+Sequence const \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_a07fa507d5f366daa737ffb2abdfb653c}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Write\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1raw__socket__service_a30612ca61a04b409472a9c4746c327bf}{receive} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, const Mutable\+Buffer\+Sequence \&\hyperlink{classasio_1_1raw__socket__service_a45cf013e3c3889296ee65fd303253db6}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_a735387eb54985dafc0ba5314df84590a}{flags}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Receive some data from the peer. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ }\\\hyperlink{classasio_1_1raw__socket__service_a1aedfe496159540e08c88f56510f0978}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Read\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+receive(\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl
+\begin{DoxyCompactList}\small\item\em Start an asynchronous receive. \end{DoxyCompactList}\item 
+const Mutable\+Buffer\+Sequence \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_a0c23147b6b5bb3cabb9abfee44dc9109}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Read\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1raw__socket__service_a45685268e5afce3efb3eabf03a2bf279}{receive\+\_\+from} (\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl, const Mutable\+Buffer\+Sequence \&\hyperlink{classasio_1_1raw__socket__service_a45cf013e3c3889296ee65fd303253db6}{buffers}, \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \&\hyperlink{classasio_1_1raw__socket__service_a0b930d4292ec8fdf3e1065f3d033db49}{sender\+\_\+endpoint}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_a735387eb54985dafc0ba5314df84590a}{flags}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Receive raw data with the endpoint of the sender. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ }\\\hyperlink{classasio_1_1raw__socket__service_aaba23dd3d04e9f93fe45370d95ad599f}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Read\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+receive\+\_\+from(\hyperlink{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{implementation\+\_\+type} \&impl
+\begin{DoxyCompactList}\small\item\em Start an asynchronous receive that will get the endpoint of the sender. \end{DoxyCompactList}\item 
+const Mutable\+Buffer\+Sequence \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_adcdbfd2a8612312b293de5cf6fbfb97d}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Read\+Handler) handler)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \& \hyperlink{classasio_1_1raw__socket__service_ad9ddc4af36bf42586989e53bbd880cd5}{peer\+\_\+endpoint}
+\item 
+const Const\+Buffer\+Sequence \& \hyperlink{classasio_1_1raw__socket__service_a45cf013e3c3889296ee65fd303253db6}{buffers}
+\item 
+const Const\+Buffer\+Sequence \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_a735387eb54985dafc0ba5314df84590a}{flags}
+\item 
+const Const\+Buffer\+Sequence const \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \& \hyperlink{classasio_1_1raw__socket__service_a862ad7c956d71979dbe3702d78540643}{destination}
+\item 
+const Const\+Buffer\+Sequence const \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_a168e511287872068dd5009a20d36b8cd}{flags}
+\item 
+const Mutable\+Buffer\+Sequence \& \hyperlink{classasio_1_1raw__socket__service_aaa3ea28d6710a8dc189c9cea10d362a0}{buffers}
+\item 
+const Mutable\+Buffer\+Sequence \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_a4cf894534b8f3ead1207ed06b557bc40}{flags}
+\item 
+const Mutable\+Buffer\+Sequence \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \& \hyperlink{classasio_1_1raw__socket__service_a0b930d4292ec8fdf3e1065f3d033db49}{sender\+\_\+endpoint}
+\item 
+const Mutable\+Buffer\+Sequence \hyperlink{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{endpoint\+\_\+type} \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \hyperlink{classasio_1_1raw__socket__service_a5de9c380dbb3006f2945ee2753c3c268}{flags}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Protocol$>$class asio\+::raw\+\_\+socket\+\_\+service$<$ Protocol $>$}
+
+Default service implementation for a raw socket. 
+
+Definition at line 39 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!endpoint\+\_\+type@{endpoint\+\_\+type}}
+\index{endpoint\+\_\+type@{endpoint\+\_\+type}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{endpoint\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ typedef Protocol\+::endpoint {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::{\bf endpoint\+\_\+type}}\label{classasio_1_1raw__socket__service_a8278f352f4e4424d431320f924e8b496}
+
+
+The endpoint type. 
+
+
+
+Definition at line 56 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!implementation\+\_\+type@{implementation\+\_\+type}}
+\index{implementation\+\_\+type@{implementation\+\_\+type}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{implementation\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ typedef {\bf service\+\_\+impl\+\_\+type\+::implementation\+\_\+type} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::{\bf implementation\+\_\+type}}\label{classasio_1_1raw__socket__service_aa2e0ef73d6504fbcab510cb835e9e3d9}
+
+
+The type of a raw socket. 
+
+
+
+Definition at line 73 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a79802711654c4d649ff11b7fe238b927}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!native\+\_\+handle\+\_\+type@{native\+\_\+handle\+\_\+type}}
+\index{native\+\_\+handle\+\_\+type@{native\+\_\+handle\+\_\+type}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{native\+\_\+handle\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ typedef {\bf service\+\_\+impl\+\_\+type\+::native\+\_\+handle\+\_\+type} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::{\bf native\+\_\+handle\+\_\+type}}\label{classasio_1_1raw__socket__service_a79802711654c4d649ff11b7fe238b927}
+
+
+The native socket type. 
+
+
+
+Definition at line 87 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_ac593d0ef0d19e36b2226e91476fd6566}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!native\+\_\+type@{native\+\_\+type}}
+\index{native\+\_\+type@{native\+\_\+type}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{native\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ typedef {\bf service\+\_\+impl\+\_\+type\+::native\+\_\+handle\+\_\+type} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::{\bf native\+\_\+type}}\label{classasio_1_1raw__socket__service_ac593d0ef0d19e36b2226e91476fd6566}
+
+
+(Deprecated\+: Use native\+\_\+handle\+\_\+type.) The native socket type. 
+
+
+
+Definition at line 80 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a7d559e265719280febe97fe07fbb524d}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!protocol\+\_\+type@{protocol\+\_\+type}}
+\index{protocol\+\_\+type@{protocol\+\_\+type}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{protocol\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ typedef Protocol {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::{\bf protocol\+\_\+type}}\label{classasio_1_1raw__socket__service_a7d559e265719280febe97fe07fbb524d}
+
+
+The protocol type. 
+
+
+
+Definition at line 53 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1raw__socket__service_ab1472767bef27b633f73b5244ea715d2}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!raw\+\_\+socket\+\_\+service@{raw\+\_\+socket\+\_\+service}}
+\index{raw\+\_\+socket\+\_\+service@{raw\+\_\+socket\+\_\+service}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{raw\+\_\+socket\+\_\+service(asio\+::io\+\_\+service \&io\+\_\+service)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::{\bf raw\+\_\+socket\+\_\+service} (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1raw__socket__service_ab1472767bef27b633f73b5244ea715d2}
+
+
+Construct a new raw socket service for the specified \hyperlink{classasio_1_1io__service}{io\+\_\+service}. 
+
+
+
+Definition at line 91 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1raw__socket__service_ac3047cc564a20bfbe6c27c1473969852}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Connect\+Handler, void(asio\+::error\+\_\+code)) async\+\_\+connect(implementation\+\_\+type \&impl}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Connect\+Handler $>$ {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Connect\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code})}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1raw__socket__service_ac3047cc564a20bfbe6c27c1473969852}
+
+
+Start an asynchronous connect. 
+
+\hypertarget{classasio_1_1raw__socket__service_ac01c6e124779ee50915302874b4a7d74}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Write\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+send(implementation\+\_\+type \&impl}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1raw__socket__service_ac01c6e124779ee50915302874b4a7d74}
+
+
+Start an asynchronous send. 
+
+\hypertarget{classasio_1_1raw__socket__service_a7a270306e1b7a907bb03d55abf859bd5}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Write\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+send\+\_\+to(implementation\+\_\+type \&impl}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1raw__socket__service_a7a270306e1b7a907bb03d55abf859bd5}
+
+
+Start an asynchronous send. 
+
+\hypertarget{classasio_1_1raw__socket__service_a1aedfe496159540e08c88f56510f0978}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Read\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+receive(implementation\+\_\+type \&impl}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1raw__socket__service_a1aedfe496159540e08c88f56510f0978}
+
+
+Start an asynchronous receive. 
+
+\hypertarget{classasio_1_1raw__socket__service_aaba23dd3d04e9f93fe45370d95ad599f}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Read\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+receive\+\_\+from(implementation\+\_\+type \&impl}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1raw__socket__service_aaba23dd3d04e9f93fe45370d95ad599f}
+
+
+Start an asynchronous receive that will get the endpoint of the sender. 
+
+\hypertarget{classasio_1_1raw__socket__service_af54f7a642f4b7f29acf1b790d71c2022}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Connect\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const {\bf endpoint\+\_\+type} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Connect\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_af54f7a642f4b7f29acf1b790d71c2022}
+
+
+Definition at line 225 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a57f14c2fd09c3b93b2079a1d367ffcd8}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Write\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Const\+Buffer\+Sequence {\bf socket\+\_\+base\+::message\+\_\+flags} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a57f14c2fd09c3b93b2079a1d367ffcd8}
+
+
+Definition at line 322 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a07fa507d5f366daa737ffb2abdfb653c}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Write\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Const\+Buffer\+Sequence const {\bf endpoint\+\_\+type} {\bf socket\+\_\+base\+::message\+\_\+flags} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a07fa507d5f366daa737ffb2abdfb653c}
+
+
+Definition at line 349 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a0c23147b6b5bb3cabb9abfee44dc9109}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Read\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Mutable\+Buffer\+Sequence {\bf socket\+\_\+base\+::message\+\_\+flags} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a0c23147b6b5bb3cabb9abfee44dc9109}
+
+
+Definition at line 377 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_adcdbfd2a8612312b293de5cf6fbfb97d}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Read\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Mutable\+Buffer\+Sequence {\bf endpoint\+\_\+type} {\bf socket\+\_\+base\+::message\+\_\+flags} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_adcdbfd2a8612312b293de5cf6fbfb97d}
+
+
+Definition at line 405 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_ad5d62e2730ff170e77c70ac14c837da6}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!assign@{assign}}
+\index{assign@{assign}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{assign(implementation\+\_\+type \&impl, const protocol\+\_\+type \&protocol, const native\+\_\+handle\+\_\+type \&native\+\_\+socket, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::assign (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf protocol\+\_\+type} \&}]{protocol, }
+\item[{const {\bf native\+\_\+handle\+\_\+type} \&}]{native\+\_\+socket, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_ad5d62e2730ff170e77c70ac14c837da6}
+
+
+Assign an existing native socket to a raw socket. 
+
+
+
+Definition at line 152 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a45c4a90bb8ba4f8aac6200c92636ca4e}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!at\+\_\+mark@{at\+\_\+mark}}
+\index{at\+\_\+mark@{at\+\_\+mark}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{at\+\_\+mark(const implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ bool {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::at\+\_\+mark (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a45c4a90bb8ba4f8aac6200c92636ca4e}
+
+
+Determine whether the socket is at the out-\/of-\/band data mark. 
+
+
+
+Definition at line 192 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a64f8ea11eafa7d796ade1f7cfeecf63c}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!available@{available}}
+\index{available@{available}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{available(const implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ std\+::size\+\_\+t {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::available (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a64f8ea11eafa7d796ade1f7cfeecf63c}
+
+
+Determine the number of bytes available for reading. 
+
+
+
+Definition at line 199 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_afb89fa2a6726df74b952c8ee4bc48304}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!bind@{bind}}
+\index{bind@{bind}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{bind(implementation\+\_\+type \&impl, const endpoint\+\_\+type \&endpoint, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::bind (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf endpoint\+\_\+type} \&}]{endpoint, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_afb89fa2a6726df74b952c8ee4bc48304}
+
+
+Definition at line 206 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a9f310b13cf931cdfe65fa819bad722d3}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!cancel@{cancel}}
+\index{cancel@{cancel}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{cancel(implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::cancel (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a9f310b13cf931cdfe65fa819bad722d3}
+
+
+Cancel all asynchronous operations associated with the socket. 
+
+
+
+Definition at line 185 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a76dcf2b7fa269237fbbc62f2feb21734}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!close@{close}}
+\index{close@{close}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{close(implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::close (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a76dcf2b7fa269237fbbc62f2feb21734}
+
+
+Close a raw socket implementation. 
+
+
+
+Definition at line 166 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a66508109d7ba310620133b31a1d88aad}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!connect@{connect}}
+\index{connect@{connect}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{connect(implementation\+\_\+type \&impl, const endpoint\+\_\+type \&peer\+\_\+endpoint, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::connect (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf endpoint\+\_\+type} \&}]{peer\+\_\+endpoint, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a66508109d7ba310620133b31a1d88aad}
+
+
+Connect the raw socket to the specified endpoint. 
+
+
+
+Definition at line 213 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a5d7099fa55e414c87a1657da7736e8ce}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!construct@{construct}}
+\index{construct@{construct}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{construct(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ void {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::construct (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a5d7099fa55e414c87a1657da7736e8ce}
+
+
+Construct a new raw socket implementation. 
+
+
+
+Definition at line 99 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a7fbd39eb2454396c71835f64dfbfa246}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!destroy@{destroy}}
+\index{destroy@{destroy}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{destroy(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ void {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::destroy (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a7fbd39eb2454396c71835f64dfbfa246}
+
+
+Destroy a raw socket implementation. 
+
+
+
+Definition at line 135 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_af43fc20682cef419b4a7db2eca8dec47}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!get\+\_\+option@{get\+\_\+option}}
+\index{get\+\_\+option@{get\+\_\+option}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{get\+\_\+option(const implementation\+\_\+type \&impl, Gettable\+Socket\+Option \&option, asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Gettable\+Socket\+Option $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::get\+\_\+option (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl, }
+\item[{Gettable\+Socket\+Option \&}]{option, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_af43fc20682cef419b4a7db2eca8dec47}
+
+
+Get a socket option. 
+
+
+
+Definition at line 246 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a3c8a4f120cff5ce9b764858fb397d4d4}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!io\+\_\+control@{io\+\_\+control}}
+\index{io\+\_\+control@{io\+\_\+control}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{io\+\_\+control(implementation\+\_\+type \&impl, Io\+Control\+Command \&command, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Io\+Control\+Command $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::io\+\_\+control (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{Io\+Control\+Command \&}]{command, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a3c8a4f120cff5ce9b764858fb397d4d4}
+
+
+Perform an I\+O control command on the socket. 
+
+
+
+Definition at line 254 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_abd56a205f1658c69192af28632769ddc}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!is\+\_\+open@{is\+\_\+open}}
+\index{is\+\_\+open@{is\+\_\+open}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{is\+\_\+open(const implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ bool {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::is\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_abd56a205f1658c69192af28632769ddc}
+
+
+Determine whether the socket is open. 
+
+
+
+Definition at line 160 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a076ef170b837767169909ed2a367e1cc}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!local\+\_\+endpoint@{local\+\_\+endpoint}}
+\index{local\+\_\+endpoint@{local\+\_\+endpoint}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{local\+\_\+endpoint(const implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf endpoint\+\_\+type} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::local\+\_\+endpoint (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a076ef170b837767169909ed2a367e1cc}
+
+
+Get the local endpoint. 
+
+
+
+Definition at line 287 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a9549df363a51e46a039aa948670ecad6}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!native@{native}}
+\index{native@{native}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{native(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf native\+\_\+type} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::native (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a9549df363a51e46a039aa948670ecad6}
+
+
+(Deprecated\+: Use \hyperlink{classasio_1_1raw__socket__service_abe528a1deb11b2363b94afbe8ff704ef}{native\+\_\+handle()}.) Get the native socket implementation. 
+
+
+
+Definition at line 173 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_abe528a1deb11b2363b94afbe8ff704ef}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!native\+\_\+handle@{native\+\_\+handle}}
+\index{native\+\_\+handle@{native\+\_\+handle}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{native\+\_\+handle(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf native\+\_\+handle\+\_\+type} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::native\+\_\+handle (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_abe528a1deb11b2363b94afbe8ff704ef}
+
+
+Get the native socket implementation. 
+
+
+
+Definition at line 179 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a04ddcd4bf24d630ee2a0f89ca6ce93c3}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}}
+\index{native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{native\+\_\+non\+\_\+blocking(const implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ bool {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::native\+\_\+non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a04ddcd4bf24d630ee2a0f89ca6ce93c3}
+
+
+Gets the non-\/blocking mode of the native socket implementation. 
+
+
+
+Definition at line 274 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a3bcc1fd09e0a74b91769b456be81624d}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}}
+\index{native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{native\+\_\+non\+\_\+blocking(implementation\+\_\+type \&impl, bool mode, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::native\+\_\+non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{bool}]{mode, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a3bcc1fd09e0a74b91769b456be81624d}
+
+
+Sets the non-\/blocking mode of the native socket implementation. 
+
+
+
+Definition at line 280 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_acf1430d9ff067fa91a0309fec562699f}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!non\+\_\+blocking@{non\+\_\+blocking}}
+\index{non\+\_\+blocking@{non\+\_\+blocking}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{non\+\_\+blocking(const implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ bool {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_acf1430d9ff067fa91a0309fec562699f}
+
+
+Gets the non-\/blocking mode of the socket. 
+
+
+
+Definition at line 261 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a92ad1f33097116df4f4fefacc3d9b73b}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!non\+\_\+blocking@{non\+\_\+blocking}}
+\index{non\+\_\+blocking@{non\+\_\+blocking}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{non\+\_\+blocking(implementation\+\_\+type \&impl, bool mode, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{bool}]{mode, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a92ad1f33097116df4f4fefacc3d9b73b}
+
+
+Sets the non-\/blocking mode of the socket. 
+
+
+
+Definition at line 267 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a35095439db38736aaa8d0590e8297b42}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!open@{open}}
+\index{open@{open}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{open(implementation\+\_\+type \&impl, const protocol\+\_\+type \&protocol, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::open (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf protocol\+\_\+type} \&}]{protocol, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a35095439db38736aaa8d0590e8297b42}
+
+
+Definition at line 141 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a30612ca61a04b409472a9c4746c327bf}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!receive@{receive}}
+\index{receive@{receive}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{receive(implementation\+\_\+type \&impl, const Mutable\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::receive (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a30612ca61a04b409472a9c4746c327bf}
+
+
+Receive some data from the peer. 
+
+
+
+Definition at line 363 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a45685268e5afce3efb3eabf03a2bf279}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!receive\+\_\+from@{receive\+\_\+from}}
+\index{receive\+\_\+from@{receive\+\_\+from}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{receive\+\_\+from(implementation\+\_\+type \&impl, const Mutable\+Buffer\+Sequence \&buffers, endpoint\+\_\+type \&sender\+\_\+endpoint, socket\+\_\+base\+::message\+\_\+flags flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::receive\+\_\+from (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf endpoint\+\_\+type} \&}]{sender\+\_\+endpoint, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a45685268e5afce3efb3eabf03a2bf279}
+
+
+Receive raw data with the endpoint of the sender. 
+
+
+
+Definition at line 390 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a6f2b76260cf91e54abb7d1895e94a841}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!remote\+\_\+endpoint@{remote\+\_\+endpoint}}
+\index{remote\+\_\+endpoint@{remote\+\_\+endpoint}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{remote\+\_\+endpoint(const implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf endpoint\+\_\+type} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::remote\+\_\+endpoint (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a6f2b76260cf91e54abb7d1895e94a841}
+
+
+Get the remote endpoint. 
+
+
+
+Definition at line 294 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_acd7e33dc429703b91a0e171448b78234}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!send@{send}}
+\index{send@{send}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{send(implementation\+\_\+type \&impl, const Const\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_acd7e33dc429703b91a0e171448b78234}
+
+
+Send the given data to the peer. 
+
+
+
+Definition at line 309 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a00a843cedf0147e2b82c48698657fde8}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!send\+\_\+to@{send\+\_\+to}}
+\index{send\+\_\+to@{send\+\_\+to}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{send\+\_\+to(implementation\+\_\+type \&impl, const Const\+Buffer\+Sequence \&buffers, const endpoint\+\_\+type \&destination, socket\+\_\+base\+::message\+\_\+flags flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::send\+\_\+to (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{const {\bf endpoint\+\_\+type} \&}]{destination, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a00a843cedf0147e2b82c48698657fde8}
+
+
+Send raw data to the specified endpoint. 
+
+
+
+Definition at line 335 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_add7120cd3f4b85a216ab0f80ded04d52}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!set\+\_\+option@{set\+\_\+option}}
+\index{set\+\_\+option@{set\+\_\+option}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{set\+\_\+option(implementation\+\_\+type \&impl, const Settable\+Socket\+Option \&option, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Settable\+Socket\+Option $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::set\+\_\+option (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const Settable\+Socket\+Option \&}]{option, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_add7120cd3f4b85a216ab0f80ded04d52}
+
+
+Set a socket option. 
+
+
+
+Definition at line 238 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a0bc7a2863e11caa3f96743315d085a57}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{shutdown(implementation\+\_\+type \&impl, socket\+\_\+base\+::shutdown\+\_\+type what, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::shutdown (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf socket\+\_\+base\+::shutdown\+\_\+type}}]{what, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1raw__socket__service_a0bc7a2863e11caa3f96743315d085a57}
+
+
+Disable sends or receives on the socket. 
+
+
+
+Definition at line 301 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classasio_1_1raw__socket__service_a45cf013e3c3889296ee65fd303253db6}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!buffers@{buffers}}
+\index{buffers@{buffers}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{buffers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Mutable\+Buffer\+Sequence \& {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::buffers}\label{classasio_1_1raw__socket__service_a45cf013e3c3889296ee65fd303253db6}
+
+
+Definition at line 320 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_aaa3ea28d6710a8dc189c9cea10d362a0}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!buffers@{buffers}}
+\index{buffers@{buffers}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{buffers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Mutable\+Buffer\+Sequence\& {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::buffers}\label{classasio_1_1raw__socket__service_aaa3ea28d6710a8dc189c9cea10d362a0}
+
+
+Definition at line 375 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a862ad7c956d71979dbe3702d78540643}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!destination@{destination}}
+\index{destination@{destination}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{destination}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Const\+Buffer\+Sequence const {\bf endpoint\+\_\+type}\& {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::destination}\label{classasio_1_1raw__socket__service_a862ad7c956d71979dbe3702d78540643}
+
+
+Definition at line 347 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a735387eb54985dafc0ba5314df84590a}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!flags@{flags}}
+\index{flags@{flags}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{flags}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Const\+Buffer\+Sequence {\bf socket\+\_\+base\+::message\+\_\+flags} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::flags}\label{classasio_1_1raw__socket__service_a735387eb54985dafc0ba5314df84590a}
+
+
+Definition at line 320 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a168e511287872068dd5009a20d36b8cd}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!flags@{flags}}
+\index{flags@{flags}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{flags}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Const\+Buffer\+Sequence const {\bf endpoint\+\_\+type} {\bf socket\+\_\+base\+::message\+\_\+flags} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::flags}\label{classasio_1_1raw__socket__service_a168e511287872068dd5009a20d36b8cd}
+
+
+Definition at line 347 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a4cf894534b8f3ead1207ed06b557bc40}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!flags@{flags}}
+\index{flags@{flags}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{flags}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Mutable\+Buffer\+Sequence {\bf socket\+\_\+base\+::message\+\_\+flags} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::flags}\label{classasio_1_1raw__socket__service_a4cf894534b8f3ead1207ed06b557bc40}
+
+
+Definition at line 375 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a5de9c380dbb3006f2945ee2753c3c268}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!flags@{flags}}
+\index{flags@{flags}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{flags}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Mutable\+Buffer\+Sequence {\bf endpoint\+\_\+type} {\bf socket\+\_\+base\+::message\+\_\+flags} {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::flags}\label{classasio_1_1raw__socket__service_a5de9c380dbb3006f2945ee2753c3c268}
+
+
+Definition at line 403 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_ad9ddc4af36bf42586989e53bbd880cd5}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!peer\+\_\+endpoint@{peer\+\_\+endpoint}}
+\index{peer\+\_\+endpoint@{peer\+\_\+endpoint}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{peer\+\_\+endpoint}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const {\bf endpoint\+\_\+type}\& {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::peer\+\_\+endpoint}\label{classasio_1_1raw__socket__service_ad9ddc4af36bf42586989e53bbd880cd5}
+
+
+Definition at line 224 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1raw__socket__service_a0b930d4292ec8fdf3e1065f3d033db49}{}\index{asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}!sender\+\_\+endpoint@{sender\+\_\+endpoint}}
+\index{sender\+\_\+endpoint@{sender\+\_\+endpoint}!asio\+::raw\+\_\+socket\+\_\+service@{asio\+::raw\+\_\+socket\+\_\+service}}
+\subsubsection[{sender\+\_\+endpoint}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ const Mutable\+Buffer\+Sequence {\bf endpoint\+\_\+type}\& {\bf asio\+::raw\+\_\+socket\+\_\+service}$<$ Protocol $>$\+::sender\+\_\+endpoint}\label{classasio_1_1raw__socket__service_a0b930d4292ec8fdf3e1065f3d033db49}
+
+
+Definition at line 403 of file raw\+\_\+socket\+\_\+service.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{raw__socket__service_8hpp}{raw\+\_\+socket\+\_\+service.\+hpp}\end{DoxyCompactItemize}

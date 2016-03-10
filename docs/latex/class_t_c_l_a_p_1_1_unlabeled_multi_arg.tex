@@ -1,0 +1,287 @@
+\hypertarget{class_t_c_l_a_p_1_1_unlabeled_multi_arg}{}\section{T\+C\+L\+A\+P\+:\+:Unlabeled\+Multi\+Arg$<$ T $>$ Class Template Reference}
+\label{class_t_c_l_a_p_1_1_unlabeled_multi_arg}\index{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg$<$ T $>$@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg$<$ T $>$}}
+
+
+{\ttfamily \#include $<$Unlabeled\+Multi\+Arg.\+h$>$}
+
+Inheritance diagram for T\+C\+L\+A\+P\+:\+:Unlabeled\+Multi\+Arg$<$ T $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_t_c_l_a_p_1_1_unlabeled_multi_arg}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a776c124bf343d0ecfb73e7cc28423807}{Unlabeled\+Multi\+Arg} (const std\+::string \&name, const std\+::string \&desc, bool req, const std\+::string \&type\+Desc, bool ignoreable=false, \hyperlink{class_t_c_l_a_p_1_1_visitor}{Visitor} $\ast$v=N\+U\+L\+L)
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a5c81005897f6b9673b39f5d1107f4074}{Unlabeled\+Multi\+Arg} (const std\+::string \&name, const std\+::string \&desc, bool req, const std\+::string \&type\+Desc, \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&parser, bool ignoreable=false, \hyperlink{class_t_c_l_a_p_1_1_visitor}{Visitor} $\ast$v=N\+U\+L\+L)
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_aa065c76cd23b4acfe62c4b31d73dcf87}{Unlabeled\+Multi\+Arg} (const std\+::string \&name, const std\+::string \&desc, bool req, \hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint}$<$ T $>$ $\ast$constraint, bool ignoreable=false, \hyperlink{class_t_c_l_a_p_1_1_visitor}{Visitor} $\ast$v=N\+U\+L\+L)
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_ad3d8c37cd3c71deb2275b48115a59f11}{Unlabeled\+Multi\+Arg} (const std\+::string \&name, const std\+::string \&desc, bool req, \hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint}$<$ T $>$ $\ast$constraint, \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&parser, bool ignoreable=false, \hyperlink{class_t_c_l_a_p_1_1_visitor}{Visitor} $\ast$v=N\+U\+L\+L)
+\item 
+virtual bool \hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_aa5a35665519518dcb60e53d3a4858802}{process\+Arg} (int $\ast$i, std\+::vector$<$ std\+::string $>$ \&args)
+\item 
+virtual std\+::string \hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a5971af8f29fa4d798ffde3293504c15b}{short\+I\+D} (const std\+::string \&val=\char`\"{}val\char`\"{}) const 
+\item 
+virtual std\+::string \hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a1e7262967b850fb30e1003890a45f1ca}{long\+I\+D} (const std\+::string \&val=\char`\"{}val\char`\"{}) const 
+\item 
+virtual bool \hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a059fa00203a9f643a10334fedbd43e39}{operator==} (const \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} \&a) const 
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a290b15792de11abb5a4cf1c312d6a0d7}{add\+To\+List} (std\+::list$<$ \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$ $>$ \&arg\+List) const 
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T$>$class T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg$<$ T $>$}
+
+Just like a \hyperlink{class_t_c_l_a_p_1_1_multi_arg}{Multi\+Arg}, except that the arguments are unlabeled. Basically, this \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} will slurp up everything that hasn\textquotesingle{}t been matched to another \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}. 
+
+Definition at line 40 of file Unlabeled\+Multi\+Arg.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a776c124bf343d0ecfb73e7cc28423807}{}\index{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}!Unlabeled\+Multi\+Arg@{Unlabeled\+Multi\+Arg}}
+\index{Unlabeled\+Multi\+Arg@{Unlabeled\+Multi\+Arg}!T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}}
+\subsubsection[{Unlabeled\+Multi\+Arg(const std\+::string \&name, const std\+::string \&desc, bool req, const std\+::string \&type\+Desc, bool ignoreable=false, Visitor $\ast$v=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}$<$ T $>$\+::{\bf Unlabeled\+Multi\+Arg} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const std\+::string \&}]{desc, }
+\item[{bool}]{req, }
+\item[{const std\+::string \&}]{type\+Desc, }
+\item[{bool}]{ignoreable = {\ttfamily false}, }
+\item[{{\bf Visitor} $\ast$}]{v = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a776c124bf343d0ecfb73e7cc28423807}
+Constructor. 
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ The name of the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}. Note that this is used for identification, not as a long flag. \\
+\hline
+{\em desc} & -\/ A description of what the argument is for or does. \\
+\hline
+{\em req} & -\/ Whether the argument is required on the command line. \\
+\hline
+{\em type\+Desc} & -\/ A short, human readable description of the type that this object expects. This is used in the generation of the U\+S\+A\+G\+E statement. The goal is to be helpful to the end user of the program. \\
+\hline
+{\em ignoreable} & -\/ Whether or not this argument can be ignored using the \char`\"{}-\/-\/\char`\"{} flag. \\
+\hline
+{\em v} & -\/ An optional visitor. You probably should not use this unless you have a very good reason. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 187 of file Unlabeled\+Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a5c81005897f6b9673b39f5d1107f4074}{}\index{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}!Unlabeled\+Multi\+Arg@{Unlabeled\+Multi\+Arg}}
+\index{Unlabeled\+Multi\+Arg@{Unlabeled\+Multi\+Arg}!T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}}
+\subsubsection[{Unlabeled\+Multi\+Arg(const std\+::string \&name, const std\+::string \&desc, bool req, const std\+::string \&type\+Desc, Cmd\+Line\+Interface \&parser, bool ignoreable=false, Visitor $\ast$v=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}$<$ T $>$\+::{\bf Unlabeled\+Multi\+Arg} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const std\+::string \&}]{desc, }
+\item[{bool}]{req, }
+\item[{const std\+::string \&}]{type\+Desc, }
+\item[{{\bf Cmd\+Line\+Interface} \&}]{parser, }
+\item[{bool}]{ignoreable = {\ttfamily false}, }
+\item[{{\bf Visitor} $\ast$}]{v = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a5c81005897f6b9673b39f5d1107f4074}
+Constructor. 
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ The name of the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}. Note that this is used for identification, not as a long flag. \\
+\hline
+{\em desc} & -\/ A description of what the argument is for or does. \\
+\hline
+{\em req} & -\/ Whether the argument is required on the command line. \\
+\hline
+{\em type\+Desc} & -\/ A short, human readable description of the type that this object expects. This is used in the generation of the U\+S\+A\+G\+E statement. The goal is to be helpful to the end user of the program. \\
+\hline
+{\em parser} & -\/ A \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} parser object to add this \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} to \\
+\hline
+{\em ignoreable} & -\/ Whether or not this argument can be ignored using the \char`\"{}-\/-\/\char`\"{} flag. \\
+\hline
+{\em v} & -\/ An optional visitor. You probably should not use this unless you have a very good reason. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 200 of file Unlabeled\+Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_unlabeled_multi_arg_aa065c76cd23b4acfe62c4b31d73dcf87}{}\index{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}!Unlabeled\+Multi\+Arg@{Unlabeled\+Multi\+Arg}}
+\index{Unlabeled\+Multi\+Arg@{Unlabeled\+Multi\+Arg}!T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}}
+\subsubsection[{Unlabeled\+Multi\+Arg(const std\+::string \&name, const std\+::string \&desc, bool req, Constraint$<$ T $>$ $\ast$constraint, bool ignoreable=false, Visitor $\ast$v=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}$<$ T $>$\+::{\bf Unlabeled\+Multi\+Arg} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const std\+::string \&}]{desc, }
+\item[{bool}]{req, }
+\item[{{\bf Constraint}$<$ T $>$ $\ast$}]{constraint, }
+\item[{bool}]{ignoreable = {\ttfamily false}, }
+\item[{{\bf Visitor} $\ast$}]{v = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_unlabeled_multi_arg_aa065c76cd23b4acfe62c4b31d73dcf87}
+Constructor. 
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ The name of the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}. Note that this is used for identification, not as a long flag. \\
+\hline
+{\em desc} & -\/ A description of what the argument is for or does. \\
+\hline
+{\em req} & -\/ Whether the argument is required on the command line. \\
+\hline
+{\em constraint} & -\/ A pointer to a \hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint} object used to constrain this \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}. \\
+\hline
+{\em ignoreable} & -\/ Whether or not this argument can be ignored using the \char`\"{}-\/-\/\char`\"{} flag. \\
+\hline
+{\em v} & -\/ An optional visitor. You probably should not use this unless you have a very good reason. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 216 of file Unlabeled\+Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_unlabeled_multi_arg_ad3d8c37cd3c71deb2275b48115a59f11}{}\index{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}!Unlabeled\+Multi\+Arg@{Unlabeled\+Multi\+Arg}}
+\index{Unlabeled\+Multi\+Arg@{Unlabeled\+Multi\+Arg}!T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}}
+\subsubsection[{Unlabeled\+Multi\+Arg(const std\+::string \&name, const std\+::string \&desc, bool req, Constraint$<$ T $>$ $\ast$constraint, Cmd\+Line\+Interface \&parser, bool ignoreable=false, Visitor $\ast$v=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}$<$ T $>$\+::{\bf Unlabeled\+Multi\+Arg} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{const std\+::string \&}]{desc, }
+\item[{bool}]{req, }
+\item[{{\bf Constraint}$<$ T $>$ $\ast$}]{constraint, }
+\item[{{\bf Cmd\+Line\+Interface} \&}]{parser, }
+\item[{bool}]{ignoreable = {\ttfamily false}, }
+\item[{{\bf Visitor} $\ast$}]{v = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_unlabeled_multi_arg_ad3d8c37cd3c71deb2275b48115a59f11}
+Constructor. 
+\begin{DoxyParams}{Parameters}
+{\em name} & -\/ The name of the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}. Note that this is used for identification, not as a long flag. \\
+\hline
+{\em desc} & -\/ A description of what the argument is for or does. \\
+\hline
+{\em req} & -\/ Whether the argument is required on the command line. \\
+\hline
+{\em constraint} & -\/ A pointer to a \hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint} object used to constrain this \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}. \\
+\hline
+{\em parser} & -\/ A \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} parser object to add this \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} to \\
+\hline
+{\em ignoreable} & -\/ Whether or not this argument can be ignored using the \char`\"{}-\/-\/\char`\"{} flag. \\
+\hline
+{\em v} & -\/ An optional visitor. You probably should not use this unless you have a very good reason. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 229 of file Unlabeled\+Multi\+Arg.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a290b15792de11abb5a4cf1c312d6a0d7}{}\index{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}!add\+To\+List@{add\+To\+List}}
+\index{add\+To\+List@{add\+To\+List}!T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}}
+\subsubsection[{add\+To\+List(std\+::list$<$ Arg $\ast$ $>$ \&arg\+List) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void {\bf T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}$<$ T $>$\+::add\+To\+List (
+\begin{DoxyParamCaption}
+\item[{std\+::list$<$ {\bf Arg} $\ast$ $>$ \&}]{arg\+List}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a290b15792de11abb5a4cf1c312d6a0d7}
+Pushes this to back of list rather than front. 
+\begin{DoxyParams}{Parameters}
+{\em arg\+List} & -\/ The list this should be added to. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_arg_a9ff1564beeea2ef855f7fa483c37d0e2}{T\+C\+L\+A\+P\+::\+Arg}.
+
+
+
+Definition at line 294 of file Unlabeled\+Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a1e7262967b850fb30e1003890a45f1ca}{}\index{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}!long\+I\+D@{long\+I\+D}}
+\index{long\+I\+D@{long\+I\+D}!T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}}
+\subsubsection[{long\+I\+D(const std\+::string \&val=""val"") const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ std\+::string {\bf T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}$<$ T $>$\+::long\+I\+D (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{val = {\ttfamily \char`\"{}val\char`\"{}}}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a1e7262967b850fb30e1003890a45f1ca}
+Returns the a long id string. Used in the usage. 
+\begin{DoxyParams}{Parameters}
+{\em val} & -\/ value to be used. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_multi_arg_a16c00fbce6876bceabb3dab4723f7e79}{T\+C\+L\+A\+P\+::\+Multi\+Arg$<$ T $>$}.
+
+
+
+Definition at line 278 of file Unlabeled\+Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a059fa00203a9f643a10334fedbd43e39}{}\index{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}!operator==@{operator==}}
+\index{operator==@{operator==}!T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}}
+\subsubsection[{operator==(const Arg \&a) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ bool {\bf T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}$<$ T $>$\+::operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf Arg} \&}]{a}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a059fa00203a9f643a10334fedbd43e39}
+Opertor ==. 
+\begin{DoxyParams}{Parameters}
+{\em a} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} to be compared to this. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_arg_a657a8d2842b7de9ced5a5a55db01d367}{T\+C\+L\+A\+P\+::\+Arg}.
+
+
+
+Definition at line 285 of file Unlabeled\+Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_unlabeled_multi_arg_aa5a35665519518dcb60e53d3a4858802}{}\index{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}!process\+Arg@{process\+Arg}}
+\index{process\+Arg@{process\+Arg}!T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}}
+\subsubsection[{process\+Arg(int $\ast$i, std\+::vector$<$ std\+::string $>$ \&args)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ bool {\bf T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}$<$ T $>$\+::process\+Arg (
+\begin{DoxyParamCaption}
+\item[{int $\ast$}]{i, }
+\item[{std\+::vector$<$ std\+::string $>$ \&}]{args}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_unlabeled_multi_arg_aa5a35665519518dcb60e53d3a4858802}
+Handles the processing of the argument. This re-\/implements the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} version of this method to set the \+\_\+value of the argument appropriately. It knows the difference between labeled and unlabeled. 
+\begin{DoxyParams}{Parameters}
+{\em i} & -\/ Pointer the the current argument in the list. \\
+\hline
+{\em args} & -\/ Mutable list of strings. Passed from \hyperlink{_c_make_c_compiler_id_8c_a0ddf1224851353fc92bfbff6f499fa97}{main()}. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_multi_arg_a344d3cf2128c510f92825e421ea667c7}{T\+C\+L\+A\+P\+::\+Multi\+Arg$<$ T $>$}.
+
+
+
+Definition at line 245 of file Unlabeled\+Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a5971af8f29fa4d798ffde3293504c15b}{}\index{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}!short\+I\+D@{short\+I\+D}}
+\index{short\+I\+D@{short\+I\+D}!T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}}
+\subsubsection[{short\+I\+D(const std\+::string \&val=""val"") const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ std\+::string {\bf T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg}$<$ T $>$\+::short\+I\+D (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{val = {\ttfamily \char`\"{}val\char`\"{}}}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a5971af8f29fa4d798ffde3293504c15b}
+Returns the a short id string. Used in the usage. 
+\begin{DoxyParams}{Parameters}
+{\em val} & -\/ value to be used. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_multi_arg_ac2c962112704b899f4c8b8565f2c4bb3}{T\+C\+L\+A\+P\+::\+Multi\+Arg$<$ T $>$}.
+
+
+
+Definition at line 271 of file Unlabeled\+Multi\+Arg.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/tclap/\hyperlink{_unlabeled_multi_arg_8h}{Unlabeled\+Multi\+Arg.\+h}\end{DoxyCompactItemize}

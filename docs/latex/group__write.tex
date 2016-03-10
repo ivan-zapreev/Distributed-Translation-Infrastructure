@@ -1,0 +1,448 @@
+\hypertarget{group__write}{}\section{asio\+:\+:write}
+\label{group__write}\index{asio\+::write@{asio\+::write}}
+
+
+Write a certain amount of data to a stream before returning.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_gab293266ad69e271fdda0ff6f8086fb5c}{asio\+::write} (Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_gacfe88679a7a77cbb22870cafa20414cb}{asio\+::write} (Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_ga646f54905cf959c2c16f221a2e1c1ce7}{asio\+::write} (Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_gaf53a6638aac728c8bf61621b12fa8fce}{asio\+::write} (Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_ga85807d13da87adf48b62979f65f41152}{asio\+::write} (Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_gaf72f7eddd7d4629ea2e2b7f5b7f355bc}{asio\+::write} (Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Allocator , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_gaa80988391fb309ee53cc557d0065550a}{asio\+::write} (Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Allocator , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_ga393e12e427f89cb932c6a2bd800236fb}{asio\+::write} (Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data to a stream before returning. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Write a certain amount of data to a stream before returning. 
+
+
+
+\subsection{Function Documentation}
+\hypertarget{group__write_gaf53a6638aac728c8bf61621b12fa8fce}{}\index{asio\+::write@{asio\+::write}!write@{write}}
+\index{write@{write}!asio\+::write@{asio\+::write}}
+\subsubsection[{write(\+Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Completion\+Condition $>$ std\+::size\+\_\+t asio\+::write (
+\begin{DoxyParamCaption}
+\item[{Sync\+Write\+Stream \&}]{s, }
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{Completion\+Condition}]{completion\+\_\+condition, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{group__write_gaf53a6638aac728c8bf61621b12fa8fce}
+
+
+Write a certain amount of data to a stream before returning. 
+
+This function is used to write a certain number of bytes of data to a stream. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied buffers has been written. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s write\+\_\+some function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Sync\+Write\+Stream concept.\\
+\hline
+{\em buffers} & One or more buffers containing the data to be written. The sum of the buffer sizes indicates the maximum number of bytes to write to the stream.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the write operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest write\_some operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the write operation is complete. A non-\/zero return value indicates the maximum number of bytes to be written on the next call to the stream\textquotesingle{}s write\+\_\+some function.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes written. If an error occurs, returns the total number of bytes successfully transferred prior to the error. 
+\end{DoxyReturn}
+
+
+Definition at line 37 of file write.\+hpp.
+
+\hypertarget{group__write_gab293266ad69e271fdda0ff6f8086fb5c}{}\index{asio\+::write@{asio\+::write}!write@{write}}
+\index{write@{write}!asio\+::write@{asio\+::write}}
+\subsubsection[{write(\+Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t asio\+::write (
+\begin{DoxyParamCaption}
+\item[{Sync\+Write\+Stream \&}]{s, }
+\item[{const Const\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__write_gab293266ad69e271fdda0ff6f8086fb5c}
+
+
+Write all of the supplied data to a stream before returning. 
+
+This function is used to write a certain number of bytes of data to a stream. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied buffers has been written. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s write\+\_\+some function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Sync\+Write\+Stream concept.\\
+\hline
+{\em buffers} & One or more buffers containing the data to be written. The sum of the buffer sizes indicates the maximum number of bytes to write to the stream.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyParagraph}{Example}
+To write a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{group__write_gaf53a6638aac728c8bf61621b12fa8fce}{asio::write}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, \hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size)); 
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on writing multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector.
+\end{DoxyParagraph}
+\begin{DoxyNote}{Note}
+This overload is equivalent to calling\+: 
+\begin{DoxyCode}
+\hyperlink{group__write_gaf53a6638aac728c8bf61621b12fa8fce}{asio::write}(
+   \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, buffers,
+   \hyperlink{group__completion__condition_ga4a82e92df79aa8401a8bc2117d4cf900}{asio::transfer\_all}()); 
+\end{DoxyCode}
+ 
+\end{DoxyNote}
+
+
+Definition at line 58 of file write.\+hpp.
+
+\hypertarget{group__write_gacfe88679a7a77cbb22870cafa20414cb}{}\index{asio\+::write@{asio\+::write}!write@{write}}
+\index{write@{write}!asio\+::write@{asio\+::write}}
+\subsubsection[{write(\+Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t asio\+::write (
+\begin{DoxyParamCaption}
+\item[{Sync\+Write\+Stream \&}]{s, }
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__write_gacfe88679a7a77cbb22870cafa20414cb}
+
+
+Write all of the supplied data to a stream before returning. 
+
+This function is used to write a certain number of bytes of data to a stream. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied buffers has been written. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s write\+\_\+some function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Sync\+Write\+Stream concept.\\
+\hline
+{\em buffers} & One or more buffers containing the data to be written. The sum of the buffer sizes indicates the maximum number of bytes to write to the stream.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+\begin{DoxyParagraph}{Example}
+To write a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{group__write_gaf53a6638aac728c8bf61621b12fa8fce}{asio::write}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, \hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), ec); 
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on writing multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector.
+\end{DoxyParagraph}
+\begin{DoxyNote}{Note}
+This overload is equivalent to calling\+: 
+\begin{DoxyCode}
+\hyperlink{group__write_gaf53a6638aac728c8bf61621b12fa8fce}{asio::write}(
+   \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, buffers,
+   \hyperlink{group__completion__condition_ga4a82e92df79aa8401a8bc2117d4cf900}{asio::transfer\_all}(), ec); 
+\end{DoxyCode}
+ 
+\end{DoxyNote}
+
+
+Definition at line 67 of file write.\+hpp.
+
+\hypertarget{group__write_ga646f54905cf959c2c16f221a2e1c1ce7}{}\index{asio\+::write@{asio\+::write}!write@{write}}
+\index{write@{write}!asio\+::write@{asio\+::write}}
+\subsubsection[{write(\+Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Completion\+Condition $>$ std\+::size\+\_\+t asio\+::write (
+\begin{DoxyParamCaption}
+\item[{Sync\+Write\+Stream \&}]{s, }
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{Completion\+Condition}]{completion\+\_\+condition}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__write_ga646f54905cf959c2c16f221a2e1c1ce7}
+
+
+Write a certain amount of data to a stream before returning. 
+
+This function is used to write a certain number of bytes of data to a stream. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied buffers has been written. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s write\+\_\+some function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Sync\+Write\+Stream concept.\\
+\hline
+{\em buffers} & One or more buffers containing the data to be written. The sum of the buffer sizes indicates the maximum number of bytes to write to the stream.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the write operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest write\_some operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the write operation is complete. A non-\/zero return value indicates the maximum number of bytes to be written on the next call to the stream\textquotesingle{}s write\+\_\+some function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyParagraph}{Example}
+To write a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{group__write_gaf53a6638aac728c8bf61621b12fa8fce}{asio::write}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, \hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size),
+   \hyperlink{group__completion__condition_ga2b10af704afcd6c7ed7f0d3b740033ef}{asio::transfer\_at\_least}(32)); 
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on writing multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+
+
+Definition at line 75 of file write.\+hpp.
+
+\hypertarget{group__write_ga393e12e427f89cb932c6a2bd800236fb}{}\index{asio\+::write@{asio\+::write}!write@{write}}
+\index{write@{write}!asio\+::write@{asio\+::write}}
+\subsubsection[{write(\+Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Write\+Stream , typename Allocator , typename Completion\+Condition $>$ std\+::size\+\_\+t asio\+::write (
+\begin{DoxyParamCaption}
+\item[{Sync\+Write\+Stream \&}]{s, }
+\item[{{\bf basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{Completion\+Condition}]{completion\+\_\+condition, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{group__write_ga393e12e427f89cb932c6a2bd800236fb}
+
+
+Write a certain amount of data to a stream before returning. 
+
+This function is used to write a certain number of bytes of data to a stream. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} has been written.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s write\+\_\+some function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Sync\+Write\+Stream concept.\\
+\hline
+{\em b} & The \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object from which data will be written.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the write operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest write\_some operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the write operation is complete. A non-\/zero return value indicates the maximum number of bytes to be written on the next call to the stream\textquotesingle{}s write\+\_\+some function.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes written. If an error occurs, returns the total number of bytes successfully transferred prior to the error. 
+\end{DoxyReturn}
+
+
+Definition at line 88 of file write.\+hpp.
+
+\hypertarget{group__write_ga85807d13da87adf48b62979f65f41152}{}\index{asio\+::write@{asio\+::write}!write@{write}}
+\index{write@{write}!asio\+::write@{asio\+::write}}
+\subsubsection[{write(\+Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Write\+Stream , typename Allocator $>$ std\+::size\+\_\+t asio\+::write (
+\begin{DoxyParamCaption}
+\item[{Sync\+Write\+Stream \&}]{s, }
+\item[{{\bf basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__write_ga85807d13da87adf48b62979f65f41152}
+
+
+Write all of the supplied data to a stream before returning. 
+
+This function is used to write a certain number of bytes of data to a stream. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} has been written.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s write\+\_\+some function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Sync\+Write\+Stream concept.\\
+\hline
+{\em b} & The \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object from which data will be written.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+This overload is equivalent to calling\+: 
+\begin{DoxyCode}
+\hyperlink{group__write_gaf53a6638aac728c8bf61621b12fa8fce}{asio::write}(
+   \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, b,
+   \hyperlink{group__completion__condition_ga4a82e92df79aa8401a8bc2117d4cf900}{asio::transfer\_all}()); 
+\end{DoxyCode}
+ 
+\end{DoxyNote}
+
+
+Definition at line 98 of file write.\+hpp.
+
+\hypertarget{group__write_gaf72f7eddd7d4629ea2e2b7f5b7f355bc}{}\index{asio\+::write@{asio\+::write}!write@{write}}
+\index{write@{write}!asio\+::write@{asio\+::write}}
+\subsubsection[{write(\+Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Write\+Stream , typename Allocator $>$ std\+::size\+\_\+t asio\+::write (
+\begin{DoxyParamCaption}
+\item[{Sync\+Write\+Stream \&}]{s, }
+\item[{{\bf basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__write_gaf72f7eddd7d4629ea2e2b7f5b7f355bc}
+
+
+Write all of the supplied data to a stream before returning. 
+
+This function is used to write a certain number of bytes of data to a stream. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} has been written.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s write\+\_\+some function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Sync\+Write\+Stream concept.\\
+\hline
+{\em b} & The \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object from which data will be written.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This overload is equivalent to calling\+: 
+\begin{DoxyCode}
+\hyperlink{group__write_gaf53a6638aac728c8bf61621b12fa8fce}{asio::write}(
+   \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, b,
+   \hyperlink{group__completion__condition_ga4a82e92df79aa8401a8bc2117d4cf900}{asio::transfer\_all}(), ec); 
+\end{DoxyCode}
+ 
+\end{DoxyNote}
+
+
+Definition at line 108 of file write.\+hpp.
+
+\hypertarget{group__write_gaa80988391fb309ee53cc557d0065550a}{}\index{asio\+::write@{asio\+::write}!write@{write}}
+\index{write@{write}!asio\+::write@{asio\+::write}}
+\subsubsection[{write(\+Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Write\+Stream , typename Allocator , typename Completion\+Condition $>$ std\+::size\+\_\+t asio\+::write (
+\begin{DoxyParamCaption}
+\item[{Sync\+Write\+Stream \&}]{s, }
+\item[{{\bf basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{Completion\+Condition}]{completion\+\_\+condition}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__write_gaa80988391fb309ee53cc557d0065550a}
+
+
+Write a certain amount of data to a stream before returning. 
+
+This function is used to write a certain number of bytes of data to a stream. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item All of the data in the supplied \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} has been written.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s write\+\_\+some function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream to which the data is to be written. The type must support the Sync\+Write\+Stream concept.\\
+\hline
+{\em b} & The \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object from which data will be written.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the write operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest write\_some operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the write operation is complete. A non-\/zero return value indicates the maximum number of bytes to be written on the next call to the stream\textquotesingle{}s write\+\_\+some function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 117 of file write.\+hpp.
+

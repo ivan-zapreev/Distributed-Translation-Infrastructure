@@ -1,0 +1,111 @@
+\hypertarget{classasio_1_1detail_1_1buffer__sequence__adapter__base}{}\section{asio\+:\+:detail\+:\+:buffer\+\_\+sequence\+\_\+adapter\+\_\+base Class Reference}
+\label{classasio_1_1detail_1_1buffer__sequence__adapter__base}\index{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base@{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base}}
+
+
+{\ttfamily \#include $<$buffer\+\_\+sequence\+\_\+adapter.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:detail\+:\+:buffer\+\_\+sequence\+\_\+adapter\+\_\+base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.648148cm]{classasio_1_1detail_1_1buffer__sequence__adapter__base}
+\end{center}
+\end{figure}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+enum 
+\item 
+typedef iovec \hyperlink{classasio_1_1detail_1_1buffer__sequence__adapter__base_a91d037bd052777b8df514e6b94ec9e71}{native\+\_\+buffer\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Static Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{classasio_1_1detail_1_1buffer__sequence__adapter__base_a7fb7b0ec258640205812c8e63fe4b334}{init\+\_\+iov\+\_\+base} (void $\ast$\&base, void $\ast$addr)
+\item 
+{\footnotesize template$<$typename T $>$ }\\static void \hyperlink{classasio_1_1detail_1_1buffer__sequence__adapter__base_a1791d2dfb509ba5c3202625e4462aa81}{init\+\_\+iov\+\_\+base} (T \&base, void $\ast$addr)
+\item 
+static void \hyperlink{classasio_1_1detail_1_1buffer__sequence__adapter__base_aacb19d9f1ddf93bfc18f64352b67726d}{init\+\_\+native\+\_\+buffer} (iovec \&iov, const \hyperlink{classasio_1_1mutable__buffer}{asio\+::mutable\+\_\+buffer} \&\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{buffer})
+\item 
+static void \hyperlink{classasio_1_1detail_1_1buffer__sequence__adapter__base_a5122ae3238570a50367716e41d572787}{init\+\_\+native\+\_\+buffer} (iovec \&iov, const \hyperlink{classasio_1_1const__buffer}{asio\+::const\+\_\+buffer} \&\hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{buffer})
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 28 of file buffer\+\_\+sequence\+\_\+adapter.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1detail_1_1buffer__sequence__adapter__base_a91d037bd052777b8df514e6b94ec9e71}{}\index{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base@{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base}!native\+\_\+buffer\+\_\+type@{native\+\_\+buffer\+\_\+type}}
+\index{native\+\_\+buffer\+\_\+type@{native\+\_\+buffer\+\_\+type}!asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base@{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base}}
+\subsubsection[{native\+\_\+buffer\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef iovec {\bf asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base\+::native\+\_\+buffer\+\_\+type}\hspace{0.3cm}{\ttfamily [protected]}}\label{classasio_1_1detail_1_1buffer__sequence__adapter__base_a91d037bd052777b8df514e6b94ec9e71}
+
+
+Definition at line 67 of file buffer\+\_\+sequence\+\_\+adapter.\+hpp.
+
+
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classasio_1_1detail_1_1buffer__sequence__adapter__base_a6c590e0974693b52fa61ed66c56e0e21}{}\subsubsection[{anonymous enum}]{\setlength{\rightskip}{0pt plus 5cm}anonymous enum\hspace{0.3cm}{\ttfamily [protected]}}\label{classasio_1_1detail_1_1buffer__sequence__adapter__base_a6c590e0974693b52fa61ed66c56e0e21}
+
+
+Definition at line 65 of file buffer\+\_\+sequence\+\_\+adapter.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1buffer__sequence__adapter__base_a7fb7b0ec258640205812c8e63fe4b334}{}\index{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base@{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base}!init\+\_\+iov\+\_\+base@{init\+\_\+iov\+\_\+base}}
+\index{init\+\_\+iov\+\_\+base@{init\+\_\+iov\+\_\+base}!asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base@{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base}}
+\subsubsection[{init\+\_\+iov\+\_\+base(void $\ast$\&base, void $\ast$addr)}]{\setlength{\rightskip}{0pt plus 5cm}static void asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base\+::init\+\_\+iov\+\_\+base (
+\begin{DoxyParamCaption}
+\item[{void $\ast$\&}]{base, }
+\item[{void $\ast$}]{addr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}\label{classasio_1_1detail_1_1buffer__sequence__adapter__base_a7fb7b0ec258640205812c8e63fe4b334}
+
+
+Definition at line 69 of file buffer\+\_\+sequence\+\_\+adapter.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffer__sequence__adapter__base_a1791d2dfb509ba5c3202625e4462aa81}{}\index{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base@{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base}!init\+\_\+iov\+\_\+base@{init\+\_\+iov\+\_\+base}}
+\index{init\+\_\+iov\+\_\+base@{init\+\_\+iov\+\_\+base}!asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base@{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base}}
+\subsubsection[{init\+\_\+iov\+\_\+base(\+T \&base, void $\ast$addr)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ static void asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base\+::init\+\_\+iov\+\_\+base (
+\begin{DoxyParamCaption}
+\item[{T \&}]{base, }
+\item[{void $\ast$}]{addr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}\label{classasio_1_1detail_1_1buffer__sequence__adapter__base_a1791d2dfb509ba5c3202625e4462aa81}
+
+
+Definition at line 75 of file buffer\+\_\+sequence\+\_\+adapter.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffer__sequence__adapter__base_aacb19d9f1ddf93bfc18f64352b67726d}{}\index{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base@{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base}!init\+\_\+native\+\_\+buffer@{init\+\_\+native\+\_\+buffer}}
+\index{init\+\_\+native\+\_\+buffer@{init\+\_\+native\+\_\+buffer}!asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base@{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base}}
+\subsubsection[{init\+\_\+native\+\_\+buffer(iovec \&iov, const asio\+::mutable\+\_\+buffer \&buffer)}]{\setlength{\rightskip}{0pt plus 5cm}static void asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base\+::init\+\_\+native\+\_\+buffer (
+\begin{DoxyParamCaption}
+\item[{iovec \&}]{iov, }
+\item[{const {\bf asio\+::mutable\+\_\+buffer} \&}]{buffer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}\label{classasio_1_1detail_1_1buffer__sequence__adapter__base_aacb19d9f1ddf93bfc18f64352b67726d}
+
+
+Definition at line 80 of file buffer\+\_\+sequence\+\_\+adapter.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffer__sequence__adapter__base_a5122ae3238570a50367716e41d572787}{}\index{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base@{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base}!init\+\_\+native\+\_\+buffer@{init\+\_\+native\+\_\+buffer}}
+\index{init\+\_\+native\+\_\+buffer@{init\+\_\+native\+\_\+buffer}!asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base@{asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base}}
+\subsubsection[{init\+\_\+native\+\_\+buffer(iovec \&iov, const asio\+::const\+\_\+buffer \&buffer)}]{\setlength{\rightskip}{0pt plus 5cm}static void asio\+::detail\+::buffer\+\_\+sequence\+\_\+adapter\+\_\+base\+::init\+\_\+native\+\_\+buffer (
+\begin{DoxyParamCaption}
+\item[{iovec \&}]{iov, }
+\item[{const {\bf asio\+::const\+\_\+buffer} \&}]{buffer}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [protected]}}\label{classasio_1_1detail_1_1buffer__sequence__adapter__base_a5122ae3238570a50367716e41d572787}
+
+
+Definition at line 87 of file buffer\+\_\+sequence\+\_\+adapter.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/detail/\hyperlink{buffer__sequence__adapter_8hpp}{buffer\+\_\+sequence\+\_\+adapter.\+hpp}\end{DoxyCompactItemize}

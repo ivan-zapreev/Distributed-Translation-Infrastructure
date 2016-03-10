@@ -1,0 +1,433 @@
+\hypertarget{group__read__at}{}\section{asio\+:\+:read\+\_\+at}
+\label{group__read__at}\index{asio\+::read\+\_\+at@{asio\+::read\+\_\+at}}
+
+
+Attempt to read a certain amount of data at the specified offset before returning.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Read\+Device , typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__at_ga4ef7a26ff401494d673ad462a3f3f5c0}{asio\+::read\+\_\+at} (Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, const Mutable\+Buffer\+Sequence \&buffers)
+\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Read\+Device , typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__at_ga6587e766e26325457154a5dac2a0b785}{asio\+::read\+\_\+at} (Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, const Mutable\+Buffer\+Sequence \&buffers, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Read\+Device , typename Mutable\+Buffer\+Sequence , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__at_gaa16ebd52ad98e521ea4b75676d4db9fd}{asio\+::read\+\_\+at} (Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, const Mutable\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition)
+\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Read\+Device , typename Mutable\+Buffer\+Sequence , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__at_ga88604242259da9fb0bacf3c4f0cc0002}{asio\+::read\+\_\+at} (Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, const Mutable\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Read\+Device , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__at_ga301406c670bc22190df6e8628cbf0037}{asio\+::read\+\_\+at} (Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b)
+\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Read\+Device , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__at_ga4511bad893697fc58d379d6e00aa84ff}{asio\+::read\+\_\+at} (Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Read\+Device , typename Allocator , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__at_ga0126c00568f324b47c24b494c97ece14}{asio\+::read\+\_\+at} (Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition)
+\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Read\+Device , typename Allocator , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__at_ga926222f6d0bb8a716a17161a1eb725aa}{asio\+::read\+\_\+at} (Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Attempt to read a certain amount of data at the specified offset before returning. 
+
+
+
+\subsection{Function Documentation}
+\hypertarget{group__read__at_ga88604242259da9fb0bacf3c4f0cc0002}{}\index{asio\+::read\+\_\+at@{asio\+::read\+\_\+at}!read\+\_\+at@{read\+\_\+at}}
+\index{read\+\_\+at@{read\+\_\+at}!asio\+::read\+\_\+at@{asio\+::read\+\_\+at}}
+\subsubsection[{read\+\_\+at(\+Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, const Mutable\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Random\+Access\+Read\+Device , typename Mutable\+Buffer\+Sequence , typename Completion\+Condition $>$ std\+::size\+\_\+t asio\+::read\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{Sync\+Random\+Access\+Read\+Device \&}]{d, }
+\item[{uint64\+\_\+t}]{offset, }
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{Completion\+Condition}]{completion\+\_\+condition, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{group__read__at_ga88604242259da9fb0bacf3c4f0cc0002}
+Attempt to read a certain amount of data at the specified offset before returning. This function is used to read a certain number of bytes of data from a random access device at the specified offset. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The supplied buffers are full. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device from which the data is to be read. The type must support the Sync\+Random\+Access\+Read\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be read.\\
+\hline
+{\em buffers} & One or more buffers into which the data will be read. The sum of the buffer sizes indicates the maximum number of bytes to read from the device.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the read operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest read\_some\_at operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the read operation is complete. A non-\/zero return value indicates the maximum number of bytes to be read on the next call to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes read. If an error occurs, returns the total number of bytes successfully transferred prior to the error. 
+\end{DoxyReturn}
+
+
+Definition at line 39 of file read\+\_\+at.\+hpp.
+
+\hypertarget{group__read__at_ga4ef7a26ff401494d673ad462a3f3f5c0}{}\index{asio\+::read\+\_\+at@{asio\+::read\+\_\+at}!read\+\_\+at@{read\+\_\+at}}
+\index{read\+\_\+at@{read\+\_\+at}!asio\+::read\+\_\+at@{asio\+::read\+\_\+at}}
+\subsubsection[{read\+\_\+at(\+Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, const Mutable\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Random\+Access\+Read\+Device , typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t asio\+::read\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{Sync\+Random\+Access\+Read\+Device \&}]{d, }
+\item[{uint64\+\_\+t}]{offset, }
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__read__at_ga4ef7a26ff401494d673ad462a3f3f5c0}
+Attempt to read a certain amount of data at the specified offset before returning. This function is used to read a certain number of bytes of data from a random access device at the specified offset. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The supplied buffers are full. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device from which the data is to be read. The type must support the Sync\+Random\+Access\+Read\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be read.\\
+\hline
+{\em buffers} & One or more buffers into which the data will be read. The sum of the buffer sizes indicates the maximum number of bytes to read from the device.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyParagraph}{Example}
+To read into a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{group__read__at_ga88604242259da9fb0bacf3c4f0cc0002}{asio::read\_at}(d, 42, \hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size)); 
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on reading into multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector.
+\end{DoxyParagraph}
+\begin{DoxyNote}{Note}
+This overload is equivalent to calling\+: 
+\begin{DoxyCode}
+\hyperlink{group__read__at_ga88604242259da9fb0bacf3c4f0cc0002}{asio::read\_at}(
+   d, 42, buffers,
+   \hyperlink{group__completion__condition_ga4a82e92df79aa8401a8bc2117d4cf900}{asio::transfer\_all}()); 
+\end{DoxyCode}
+ 
+\end{DoxyNote}
+
+
+Definition at line 62 of file read\+\_\+at.\+hpp.
+
+\hypertarget{group__read__at_ga6587e766e26325457154a5dac2a0b785}{}\index{asio\+::read\+\_\+at@{asio\+::read\+\_\+at}!read\+\_\+at@{read\+\_\+at}}
+\index{read\+\_\+at@{read\+\_\+at}!asio\+::read\+\_\+at@{asio\+::read\+\_\+at}}
+\subsubsection[{read\+\_\+at(\+Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, const Mutable\+Buffer\+Sequence \&buffers, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Random\+Access\+Read\+Device , typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t asio\+::read\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{Sync\+Random\+Access\+Read\+Device \&}]{d, }
+\item[{uint64\+\_\+t}]{offset, }
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__read__at_ga6587e766e26325457154a5dac2a0b785}
+Attempt to read a certain amount of data at the specified offset before returning. This function is used to read a certain number of bytes of data from a random access device at the specified offset. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The supplied buffers are full. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device from which the data is to be read. The type must support the Sync\+Random\+Access\+Read\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be read.\\
+\hline
+{\em buffers} & One or more buffers into which the data will be read. The sum of the buffer sizes indicates the maximum number of bytes to read from the device.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+\begin{DoxyParagraph}{Example}
+To read into a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{group__read__at_ga88604242259da9fb0bacf3c4f0cc0002}{asio::read\_at}(d, 42,
+   \hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size), ec); 
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on reading into multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector.
+\end{DoxyParagraph}
+\begin{DoxyNote}{Note}
+This overload is equivalent to calling\+: 
+\begin{DoxyCode}
+\hyperlink{group__read__at_ga88604242259da9fb0bacf3c4f0cc0002}{asio::read\_at}(
+   d, 42, buffers,
+   \hyperlink{group__completion__condition_ga4a82e92df79aa8401a8bc2117d4cf900}{asio::transfer\_all}(), ec); 
+\end{DoxyCode}
+ 
+\end{DoxyNote}
+
+
+Definition at line 73 of file read\+\_\+at.\+hpp.
+
+\hypertarget{group__read__at_gaa16ebd52ad98e521ea4b75676d4db9fd}{}\index{asio\+::read\+\_\+at@{asio\+::read\+\_\+at}!read\+\_\+at@{read\+\_\+at}}
+\index{read\+\_\+at@{read\+\_\+at}!asio\+::read\+\_\+at@{asio\+::read\+\_\+at}}
+\subsubsection[{read\+\_\+at(\+Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, const Mutable\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Random\+Access\+Read\+Device , typename Mutable\+Buffer\+Sequence , typename Completion\+Condition $>$ std\+::size\+\_\+t asio\+::read\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{Sync\+Random\+Access\+Read\+Device \&}]{d, }
+\item[{uint64\+\_\+t}]{offset, }
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{Completion\+Condition}]{completion\+\_\+condition}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__read__at_gaa16ebd52ad98e521ea4b75676d4db9fd}
+Attempt to read a certain amount of data at the specified offset before returning. This function is used to read a certain number of bytes of data from a random access device at the specified offset. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The supplied buffers are full. That is, the bytes transferred is equal to the sum of the buffer sizes.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device from which the data is to be read. The type must support the Sync\+Random\+Access\+Read\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be read.\\
+\hline
+{\em buffers} & One or more buffers into which the data will be read. The sum of the buffer sizes indicates the maximum number of bytes to read from the device.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the read operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest read\_some\_at operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the read operation is complete. A non-\/zero return value indicates the maximum number of bytes to be read on the next call to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyParagraph}{Example}
+To read into a single data buffer use the \hyperlink{group__buffer}{asio\+::buffer} function as follows\+: 
+\begin{DoxyCode}
+\hyperlink{group__read__at_ga88604242259da9fb0bacf3c4f0cc0002}{asio::read\_at}(d, 42, \hyperlink{group__buffer_ga1ed66e401559cbfd19595392f653b47c}{asio::buffer}(data, size),
+   \hyperlink{group__completion__condition_ga2b10af704afcd6c7ed7f0d3b740033ef}{asio::transfer\_at\_least}(32)); 
+\end{DoxyCode}
+ See the \hyperlink{group__buffer}{asio\+::buffer} documentation for information on reading into multiple buffers in one go, and how to use it with arrays, \hyperlink{classboost_1_1array}{boost\+::array} or std\+::vector. 
+\end{DoxyParagraph}
+
+
+Definition at line 82 of file read\+\_\+at.\+hpp.
+
+\hypertarget{group__read__at_ga926222f6d0bb8a716a17161a1eb725aa}{}\index{asio\+::read\+\_\+at@{asio\+::read\+\_\+at}!read\+\_\+at@{read\+\_\+at}}
+\index{read\+\_\+at@{read\+\_\+at}!asio\+::read\+\_\+at@{asio\+::read\+\_\+at}}
+\subsubsection[{read\+\_\+at(\+Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, asio\+::basic\+\_\+streambuf$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Random\+Access\+Read\+Device , typename Allocator , typename Completion\+Condition $>$ std\+::size\+\_\+t asio\+::read\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{Sync\+Random\+Access\+Read\+Device \&}]{d, }
+\item[{uint64\+\_\+t}]{offset, }
+\item[{{\bf basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{Completion\+Condition}]{completion\+\_\+condition, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{group__read__at_ga926222f6d0bb8a716a17161a1eb725aa}
+Attempt to read a certain amount of data at the specified offset before returning. This function is used to read a certain number of bytes of data from a random access device at the specified offset. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device from which the data is to be read. The type must support the Sync\+Random\+Access\+Read\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be read.\\
+\hline
+{\em b} & The \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object into which the data will be read.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the read operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest read\_some\_at operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the read operation is complete. A non-\/zero return value indicates the maximum number of bytes to be read on the next call to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes read. If an error occurs, returns the total number of bytes successfully transferred prior to the error. 
+\end{DoxyReturn}
+
+
+Definition at line 97 of file read\+\_\+at.\+hpp.
+
+\hypertarget{group__read__at_ga301406c670bc22190df6e8628cbf0037}{}\index{asio\+::read\+\_\+at@{asio\+::read\+\_\+at}!read\+\_\+at@{read\+\_\+at}}
+\index{read\+\_\+at@{read\+\_\+at}!asio\+::read\+\_\+at@{asio\+::read\+\_\+at}}
+\subsubsection[{read\+\_\+at(\+Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, asio\+::basic\+\_\+streambuf$<$ Allocator $>$ \&b)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Random\+Access\+Read\+Device , typename Allocator $>$ std\+::size\+\_\+t asio\+::read\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{Sync\+Random\+Access\+Read\+Device \&}]{d, }
+\item[{uint64\+\_\+t}]{offset, }
+\item[{{\bf basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__read__at_ga301406c670bc22190df6e8628cbf0037}
+Attempt to read a certain amount of data at the specified offset before returning. This function is used to read a certain number of bytes of data from a random access device at the specified offset. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device from which the data is to be read. The type must support the Sync\+Random\+Access\+Read\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be read.\\
+\hline
+{\em b} & The \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object into which the data will be read.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+This overload is equivalent to calling\+: 
+\begin{DoxyCode}
+\hyperlink{group__read__at_ga88604242259da9fb0bacf3c4f0cc0002}{asio::read\_at}(
+   d, 42, b,
+   \hyperlink{group__completion__condition_ga4a82e92df79aa8401a8bc2117d4cf900}{asio::transfer\_all}()); 
+\end{DoxyCode}
+ 
+\end{DoxyNote}
+
+
+Definition at line 120 of file read\+\_\+at.\+hpp.
+
+\hypertarget{group__read__at_ga4511bad893697fc58d379d6e00aa84ff}{}\index{asio\+::read\+\_\+at@{asio\+::read\+\_\+at}!read\+\_\+at@{read\+\_\+at}}
+\index{read\+\_\+at@{read\+\_\+at}!asio\+::read\+\_\+at@{asio\+::read\+\_\+at}}
+\subsubsection[{read\+\_\+at(\+Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, asio\+::basic\+\_\+streambuf$<$ Allocator $>$ \&b, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Random\+Access\+Read\+Device , typename Allocator $>$ std\+::size\+\_\+t asio\+::read\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{Sync\+Random\+Access\+Read\+Device \&}]{d, }
+\item[{uint64\+\_\+t}]{offset, }
+\item[{{\bf basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__read__at_ga4511bad893697fc58d379d6e00aa84ff}
+Attempt to read a certain amount of data at the specified offset before returning. This function is used to read a certain number of bytes of data from a random access device at the specified offset. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device from which the data is to be read. The type must support the Sync\+Random\+Access\+Read\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be read.\\
+\hline
+{\em b} & The \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object into which the data will be read.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This overload is equivalent to calling\+: 
+\begin{DoxyCode}
+\hyperlink{group__read__at_ga88604242259da9fb0bacf3c4f0cc0002}{asio::read\_at}(
+   d, 42, b,
+   \hyperlink{group__completion__condition_ga4a82e92df79aa8401a8bc2117d4cf900}{asio::transfer\_all}(), ec); 
+\end{DoxyCode}
+ 
+\end{DoxyNote}
+
+
+Definition at line 131 of file read\+\_\+at.\+hpp.
+
+\hypertarget{group__read__at_ga0126c00568f324b47c24b494c97ece14}{}\index{asio\+::read\+\_\+at@{asio\+::read\+\_\+at}!read\+\_\+at@{read\+\_\+at}}
+\index{read\+\_\+at@{read\+\_\+at}!asio\+::read\+\_\+at@{asio\+::read\+\_\+at}}
+\subsubsection[{read\+\_\+at(\+Sync\+Random\+Access\+Read\+Device \&d, uint64\+\_\+t offset, asio\+::basic\+\_\+streambuf$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Random\+Access\+Read\+Device , typename Allocator , typename Completion\+Condition $>$ std\+::size\+\_\+t asio\+::read\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{Sync\+Random\+Access\+Read\+Device \&}]{d, }
+\item[{uint64\+\_\+t}]{offset, }
+\item[{{\bf basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{Completion\+Condition}]{completion\+\_\+condition}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__read__at_ga0126c00568f324b47c24b494c97ece14}
+Attempt to read a certain amount of data at the specified offset before returning. This function is used to read a certain number of bytes of data from a random access device at the specified offset. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The completion\+\_\+condition function object returns 0.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em d} & The device from which the data is to be read. The type must support the Sync\+Random\+Access\+Read\+Device concept.\\
+\hline
+{\em offset} & The offset at which the data will be read.\\
+\hline
+{\em b} & The \hyperlink{classasio_1_1basic__streambuf}{basic\+\_\+streambuf} object into which the data will be read.\\
+\hline
+{\em completion\+\_\+condition} & The function object to be called to determine whether the read operation is complete. The signature of the function object must be\+: 
+\begin{DoxyCode}
+ std::size\_t \hyperlink{group__async__read_gae2e215d5013596cc2b385bb6c13fa518}{completion\_condition}(
+  \textcolor{comment}{// Result of latest read\_some\_at operation.}
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error,
+
+  \textcolor{comment}{// Number of bytes transferred so far.}
+  std::size\_t bytes\_transferred
+); 
+\end{DoxyCode}
+ A return value of 0 indicates that the read operation is complete. A non-\/zero return value indicates the maximum number of bytes to be read on the next call to the device\textquotesingle{}s read\+\_\+some\+\_\+at function.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes transferred.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 140 of file read\+\_\+at.\+hpp.
+

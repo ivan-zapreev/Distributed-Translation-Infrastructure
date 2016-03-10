@@ -1,0 +1,120 @@
+\hypertarget{classasio_1_1detail_1_1read__until__delim__string__op}{}\section{asio\+:\+:detail\+:\+:read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$ Class Template Reference}
+\label{classasio_1_1detail_1_1read__until__delim__string__op}\index{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$}}
+
+
+{\ttfamily \#include $<$read\+\_\+until.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1detail_1_1read__until__delim__string__op_aa2df29e1d309ef89d7df5d1f2558eb71}{read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op} (Async\+Read\+Stream \&stream, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&\hyperlink{namespaceasio_a6a7ba348943527312eeace3492bf32ee}{streambuf}, const std\+::string \&\hyperlink{group__async__read__until_gafbf62a75ad736aff941c1f70d4b3c223}{delim}, Read\+Handler \&handler)
+\item 
+void \hyperlink{classasio_1_1detail_1_1read__until__delim__string__op_aa8a7c10f635f8b200326724cff9cc230}{operator()} (const \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, std\+::size\+\_\+t bytes\+\_\+transferred, int start=0)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Async\+Read\+Stream \& \hyperlink{classasio_1_1detail_1_1read__until__delim__string__op_afcad1583fe64f8d6eb8b5ca51b0f2510}{stream\+\_\+}
+\item 
+\hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \& \hyperlink{classasio_1_1detail_1_1read__until__delim__string__op_a5ceafbc126fdd4ca7025d250e9d4fcdf}{streambuf\+\_\+}
+\item 
+std\+::string \hyperlink{classasio_1_1detail_1_1read__until__delim__string__op_a24e5eb26f7b7fcb147e690b659acc2f5}{delim\+\_\+}
+\item 
+int \hyperlink{classasio_1_1detail_1_1read__until__delim__string__op_a6a220ea1de38a1c04f0dc706b9e6f04c}{start\+\_\+}
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1detail_1_1read__until__delim__string__op_ae47f60cd8b8f757c747b83ac1a50a5ec}{search\+\_\+position\+\_\+}
+\item 
+Read\+Handler \hyperlink{classasio_1_1detail_1_1read__until__delim__string__op_ac2a5d6356c57ee87c7a0b21fc50dee8f}{handler\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Async\+Read\+Stream, typename Allocator, typename Read\+Handler$>$class asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$}
+
+
+
+Definition at line 521 of file read\+\_\+until.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1read__until__delim__string__op_aa2df29e1d309ef89d7df5d1f2558eb71}{}\index{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}!read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}}
+\index{read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}!asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}}
+\subsubsection[{read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op(\+Async\+Read\+Stream \&stream, asio\+::basic\+\_\+streambuf$<$ Allocator $>$ \&streambuf, const std\+::string \&delim, Read\+Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Async\+Read\+Stream , typename Allocator , typename Read\+Handler $>$ {\bf asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$\+::{\bf read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op} (
+\begin{DoxyParamCaption}
+\item[{Async\+Read\+Stream \&}]{stream, }
+\item[{{\bf asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{streambuf, }
+\item[{const std\+::string \&}]{delim, }
+\item[{Read\+Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1read__until__delim__string__op_aa2df29e1d309ef89d7df5d1f2558eb71}
+
+
+Definition at line 524 of file read\+\_\+until.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1read__until__delim__string__op_aa8a7c10f635f8b200326724cff9cc230}{}\index{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}!operator()@{operator()}}
+\index{operator()@{operator()}!asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}}
+\subsubsection[{operator()(const asio\+::error\+\_\+code \&ec, std\+::size\+\_\+t bytes\+\_\+transferred, int start=0)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Async\+Read\+Stream , typename Allocator , typename Read\+Handler $>$ void {\bf asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$\+::operator() (
+\begin{DoxyParamCaption}
+\item[{const {\bf asio\+::error\+\_\+code} \&}]{ec, }
+\item[{std\+::size\+\_\+t}]{bytes\+\_\+transferred, }
+\item[{int}]{start = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1read__until__delim__string__op_aa8a7c10f635f8b200326724cff9cc230}
+
+
+Definition at line 558 of file read\+\_\+until.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classasio_1_1detail_1_1read__until__delim__string__op_a24e5eb26f7b7fcb147e690b659acc2f5}{}\index{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}!delim\+\_\+@{delim\+\_\+}}
+\index{delim\+\_\+@{delim\+\_\+}!asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}}
+\subsubsection[{delim\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Async\+Read\+Stream , typename Allocator , typename Read\+Handler $>$ std\+::string {\bf asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$\+::delim\+\_\+}\label{classasio_1_1detail_1_1read__until__delim__string__op_a24e5eb26f7b7fcb147e690b659acc2f5}
+
+
+Definition at line 642 of file read\+\_\+until.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1read__until__delim__string__op_ac2a5d6356c57ee87c7a0b21fc50dee8f}{}\index{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}!handler\+\_\+@{handler\+\_\+}}
+\index{handler\+\_\+@{handler\+\_\+}!asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}}
+\subsubsection[{handler\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Async\+Read\+Stream , typename Allocator , typename Read\+Handler $>$ Read\+Handler {\bf asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$\+::handler\+\_\+}\label{classasio_1_1detail_1_1read__until__delim__string__op_ac2a5d6356c57ee87c7a0b21fc50dee8f}
+
+
+Definition at line 645 of file read\+\_\+until.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1read__until__delim__string__op_ae47f60cd8b8f757c747b83ac1a50a5ec}{}\index{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}!search\+\_\+position\+\_\+@{search\+\_\+position\+\_\+}}
+\index{search\+\_\+position\+\_\+@{search\+\_\+position\+\_\+}!asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}}
+\subsubsection[{search\+\_\+position\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Async\+Read\+Stream , typename Allocator , typename Read\+Handler $>$ std\+::size\+\_\+t {\bf asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$\+::search\+\_\+position\+\_\+}\label{classasio_1_1detail_1_1read__until__delim__string__op_ae47f60cd8b8f757c747b83ac1a50a5ec}
+
+
+Definition at line 644 of file read\+\_\+until.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1read__until__delim__string__op_a6a220ea1de38a1c04f0dc706b9e6f04c}{}\index{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}!start\+\_\+@{start\+\_\+}}
+\index{start\+\_\+@{start\+\_\+}!asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}}
+\subsubsection[{start\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Async\+Read\+Stream , typename Allocator , typename Read\+Handler $>$ int {\bf asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$\+::start\+\_\+}\label{classasio_1_1detail_1_1read__until__delim__string__op_a6a220ea1de38a1c04f0dc706b9e6f04c}
+
+
+Definition at line 643 of file read\+\_\+until.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1read__until__delim__string__op_afcad1583fe64f8d6eb8b5ca51b0f2510}{}\index{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}!stream\+\_\+@{stream\+\_\+}}
+\index{stream\+\_\+@{stream\+\_\+}!asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}}
+\subsubsection[{stream\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Async\+Read\+Stream , typename Allocator , typename Read\+Handler $>$ Async\+Read\+Stream\& {\bf asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$\+::stream\+\_\+}\label{classasio_1_1detail_1_1read__until__delim__string__op_afcad1583fe64f8d6eb8b5ca51b0f2510}
+
+
+Definition at line 640 of file read\+\_\+until.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1read__until__delim__string__op_a5ceafbc126fdd4ca7025d250e9d4fcdf}{}\index{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}!streambuf\+\_\+@{streambuf\+\_\+}}
+\index{streambuf\+\_\+@{streambuf\+\_\+}!asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op@{asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}}
+\subsubsection[{streambuf\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Async\+Read\+Stream , typename Allocator , typename Read\+Handler $>$ {\bf asio\+::basic\+\_\+streambuf}$<$Allocator$>$\& {\bf asio\+::detail\+::read\+\_\+until\+\_\+delim\+\_\+string\+\_\+op}$<$ Async\+Read\+Stream, Allocator, Read\+Handler $>$\+::streambuf\+\_\+}\label{classasio_1_1detail_1_1read__until__delim__string__op_a5ceafbc126fdd4ca7025d250e9d4fcdf}
+
+
+Definition at line 641 of file read\+\_\+until.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/impl/\hyperlink{impl_2read__until_8hpp}{read\+\_\+until.\+hpp}\end{DoxyCompactItemize}

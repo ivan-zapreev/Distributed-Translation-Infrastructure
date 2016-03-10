@@ -1,0 +1,4 @@
+var structasio____1____1detail____1____1is________write________buffered________big________type__8js_8js =
+[
+    [ "structasio__1__1detail__1__1is____write____buffered____big____type_8js", "structasio____1____1detail____1____1is________write________buffered________big________type__8js_8js.html#af7319f7c9bdc08fcd7269909769fdc6d", null ]
+];

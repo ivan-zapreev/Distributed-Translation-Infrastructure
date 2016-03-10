@@ -1,0 +1,239 @@
+\hypertarget{namespacewebsocketpp_1_1utility}{}\section{websocketpp\+:\+:utility Namespace Reference}
+\label{namespacewebsocketpp_1_1utility}\index{websocketpp\+::utility@{websocketpp\+::utility}}
+
+
+Generic non-\/websocket specific utility functions and data structures.  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structwebsocketpp_1_1utility_1_1ci__less}{ci\+\_\+less}
+\begin{DoxyCompactList}\small\item\em Helper less than functor for case insensitive find. \end{DoxyCompactList}\item 
+struct \hyperlink{structwebsocketpp_1_1utility_1_1my__equal}{my\+\_\+equal}
+\begin{DoxyCompactList}\small\item\em Helper functor for case insensitive find. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1utility_aa96a743a4f0392aac39742c3e5dfd1cc}{to\+\_\+lower} (std\+::string const \&in)
+\begin{DoxyCompactList}\small\item\em Convert a string to lowercase. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1utility_a26e5a26395d95d2f6bf3a9edb8d06dd2}{to\+\_\+hex} (std\+::string const \&input)
+\begin{DoxyCompactList}\small\item\em Convert std\+::string to ascii printed string of hex digits. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1utility_a42132bbbc1632f7ba964bd87ac5f288f}{to\+\_\+hex} (uint8\+\_\+t const $\ast$input, size\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Convert byte array (uint8\+\_\+t) to ascii printed string of hex digits. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1utility_af1fbe277765d5d3c27eb5a369b7cd938}{to\+\_\+hex} (const char $\ast$input, size\+\_\+t length)
+\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1utility_a5d36afd6d8da4b22b5d634e035bfb450}{string\+\_\+replace\+\_\+all} (std\+::string subject, std\+::string const \&search, std\+::string const \&replace)
+\begin{DoxyCompactList}\small\item\em Replace all occurrances of a substring with another. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T\+::const\+\_\+iterator \hyperlink{namespacewebsocketpp_1_1utility_a484f1287b93cf58cc6514e46eed41568}{ci\+\_\+find\+\_\+substr} (T const \&haystack, T const \&needle, std\+::locale const \&loc=std\+::locale())
+\begin{DoxyCompactList}\small\item\em Find substring (case insensitive) \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T\+::const\+\_\+iterator \hyperlink{namespacewebsocketpp_1_1utility_a90383b2decd273f7a66bbb87c66b5ddd}{ci\+\_\+find\+\_\+substr} (T const \&haystack, typename T\+::value\+\_\+type const $\ast$needle, typename T\+::size\+\_\+type size, std\+::locale const \&loc=std\+::locale())
+\begin{DoxyCompactList}\small\item\em Find substring (case insensitive) \end{DoxyCompactList}\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1utility_a9f9ed51337c9b493abc97b639b0fbe2e}{to\+\_\+hex} (char const $\ast$input, size\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Convert char array to ascii printed string of hex digits. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Generic non-\/websocket specific utility functions and data structures. 
+
+\subsection{Function Documentation}
+\hypertarget{namespacewebsocketpp_1_1utility_a484f1287b93cf58cc6514e46eed41568}{}\index{websocketpp\+::utility@{websocketpp\+::utility}!ci\+\_\+find\+\_\+substr@{ci\+\_\+find\+\_\+substr}}
+\index{ci\+\_\+find\+\_\+substr@{ci\+\_\+find\+\_\+substr}!websocketpp\+::utility@{websocketpp\+::utility}}
+\subsubsection[{ci\+\_\+find\+\_\+substr(\+T const \&haystack, T const \&needle, std\+::locale const \&loc=std\+::locale())}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T\+::const\+\_\+iterator websocketpp\+::utility\+::ci\+\_\+find\+\_\+substr (
+\begin{DoxyParamCaption}
+\item[{T const \&}]{haystack, }
+\item[{T const \&}]{needle, }
+\item[{std\+::locale const \&}]{loc = {\ttfamily std\+:\+:locale()}}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1utility_a484f1287b93cf58cc6514e46eed41568}
+
+
+Find substring (case insensitive) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em haystack} & The string to search in \\
+\hline
+\mbox{\tt in}  & {\em needle} & The string to search for \\
+\hline
+\mbox{\tt in}  & {\em loc} & The locale to use for determining the case of values. Defaults to the current locale. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An iterator to the first element of the first occurrance of needle in haystack. If the sequence is not found, the function returns \hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{haystack.\+end()} 
+\end{DoxyReturn}
+
+
+Definition at line 103 of file utilities.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1utility_a90383b2decd273f7a66bbb87c66b5ddd}{}\index{websocketpp\+::utility@{websocketpp\+::utility}!ci\+\_\+find\+\_\+substr@{ci\+\_\+find\+\_\+substr}}
+\index{ci\+\_\+find\+\_\+substr@{ci\+\_\+find\+\_\+substr}!websocketpp\+::utility@{websocketpp\+::utility}}
+\subsubsection[{ci\+\_\+find\+\_\+substr(\+T const \&haystack, typename T\+::value\+\_\+type const $\ast$needle, typename T\+::size\+\_\+type size, std\+::locale const \&loc=std\+::locale())}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T\+::const\+\_\+iterator websocketpp\+::utility\+::ci\+\_\+find\+\_\+substr (
+\begin{DoxyParamCaption}
+\item[{T const \&}]{haystack, }
+\item[{typename T\+::value\+\_\+type const $\ast$}]{needle, }
+\item[{typename T\+::size\+\_\+type}]{size, }
+\item[{std\+::locale const \&}]{loc = {\ttfamily std\+:\+:locale()}}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1utility_a90383b2decd273f7a66bbb87c66b5ddd}
+
+
+Find substring (case insensitive) 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000021}{Todo}]Is this still used? This method may not make sense.. should use iterators or be less generic. As is it is too tightly coupled to std\+::string\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em haystack} & The string to search in \\
+\hline
+\mbox{\tt in}  & {\em needle} & The string to search for as a char array of values \\
+\hline
+\mbox{\tt in}  & {\em size} & Length of needle \\
+\hline
+\mbox{\tt in}  & {\em loc} & The locale to use for determining the case of values. Defaults to the current locale. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An iterator to the first element of the first occurrance of needle in haystack. If the sequence is not found, the function returns \hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{haystack.\+end()} 
+\end{DoxyReturn}
+
+
+Definition at line 125 of file utilities.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1utility_a5d36afd6d8da4b22b5d634e035bfb450}{}\index{websocketpp\+::utility@{websocketpp\+::utility}!string\+\_\+replace\+\_\+all@{string\+\_\+replace\+\_\+all}}
+\index{string\+\_\+replace\+\_\+all@{string\+\_\+replace\+\_\+all}!websocketpp\+::utility@{websocketpp\+::utility}}
+\subsubsection[{string\+\_\+replace\+\_\+all(std\+::string subject, std\+::string const \&search, std\+::string const \&replace)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::utility\+::string\+\_\+replace\+\_\+all (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{subject, }
+\item[{std\+::string const \&}]{search, }
+\item[{std\+::string const \&}]{replace}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1utility_a5d36afd6d8da4b22b5d634e035bfb450}
+
+
+Replace all occurrances of a substring with another. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em subject} & The string to search in \\
+\hline
+\mbox{\tt in}  & {\em search} & The string to search for \\
+\hline
+\mbox{\tt in}  & {\em replace} & The string to replace with \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A copy of {\ttfamily subject} with all occurances of {\ttfamily search} replaced with {\ttfamily replace} 
+\end{DoxyReturn}
+
+
+Definition at line 73 of file utilities\+\_\+impl.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1utility_a26e5a26395d95d2f6bf3a9edb8d06dd2}{}\index{websocketpp\+::utility@{websocketpp\+::utility}!to\+\_\+hex@{to\+\_\+hex}}
+\index{to\+\_\+hex@{to\+\_\+hex}!websocketpp\+::utility@{websocketpp\+::utility}}
+\subsubsection[{to\+\_\+hex(std\+::string const \&input)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::utility\+::to\+\_\+hex (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{input}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1utility_a26e5a26395d95d2f6bf3a9edb8d06dd2}
+
+
+Convert std\+::string to ascii printed string of hex digits. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em input} & The string to print \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A copy of {\ttfamily input} converted to the printable representation of the hex values of its data. 
+\end{DoxyReturn}
+
+
+Definition at line 43 of file utilities\+\_\+impl.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1utility_a42132bbbc1632f7ba964bd87ac5f288f}{}\index{websocketpp\+::utility@{websocketpp\+::utility}!to\+\_\+hex@{to\+\_\+hex}}
+\index{to\+\_\+hex@{to\+\_\+hex}!websocketpp\+::utility@{websocketpp\+::utility}}
+\subsubsection[{to\+\_\+hex(uint8\+\_\+t const $\ast$input, size\+\_\+t length)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::utility\+::to\+\_\+hex (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t const $\ast$}]{input, }
+\item[{size\+\_\+t}]{length}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1utility_a42132bbbc1632f7ba964bd87ac5f288f}
+
+
+Convert byte array (uint8\+\_\+t) to ascii printed string of hex digits. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em input} & The byte array to print \\
+\hline
+\mbox{\tt in}  & {\em length} & The length of input \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A copy of {\ttfamily input} converted to the printable representation of the hex values of its data. 
+\end{DoxyReturn}
+
+
+Definition at line 56 of file utilities\+\_\+impl.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1utility_af1fbe277765d5d3c27eb5a369b7cd938}{}\index{websocketpp\+::utility@{websocketpp\+::utility}!to\+\_\+hex@{to\+\_\+hex}}
+\index{to\+\_\+hex@{to\+\_\+hex}!websocketpp\+::utility@{websocketpp\+::utility}}
+\subsubsection[{to\+\_\+hex(const char $\ast$input, size\+\_\+t length)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::utility\+::to\+\_\+hex (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{input, }
+\item[{size\+\_\+t}]{length}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1utility_af1fbe277765d5d3c27eb5a369b7cd938}
+
+
+Definition at line 69 of file utilities\+\_\+impl.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1utility_a9f9ed51337c9b493abc97b639b0fbe2e}{}\index{websocketpp\+::utility@{websocketpp\+::utility}!to\+\_\+hex@{to\+\_\+hex}}
+\index{to\+\_\+hex@{to\+\_\+hex}!websocketpp\+::utility@{websocketpp\+::utility}}
+\subsubsection[{to\+\_\+hex(char const $\ast$input, size\+\_\+t length)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::utility\+::to\+\_\+hex (
+\begin{DoxyParamCaption}
+\item[{char const $\ast$}]{input, }
+\item[{size\+\_\+t}]{length}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1utility_a9f9ed51337c9b493abc97b639b0fbe2e}
+
+
+Convert char array to ascii printed string of hex digits. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em input} & The char array to print \\
+\hline
+\mbox{\tt in}  & {\em length} & The length of input \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A copy of {\ttfamily input} converted to the printable representation of the hex values of its data. 
+\end{DoxyReturn}
+\hypertarget{namespacewebsocketpp_1_1utility_aa96a743a4f0392aac39742c3e5dfd1cc}{}\index{websocketpp\+::utility@{websocketpp\+::utility}!to\+\_\+lower@{to\+\_\+lower}}
+\index{to\+\_\+lower@{to\+\_\+lower}!websocketpp\+::utility@{websocketpp\+::utility}}
+\subsubsection[{to\+\_\+lower(std\+::string const \&in)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::utility\+::to\+\_\+lower (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{in}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1utility_aa96a743a4f0392aac39742c3e5dfd1cc}
+
+
+Convert a string to lowercase. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em in} & The string to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The converted string 
+\end{DoxyReturn}
+
+
+Definition at line 37 of file utilities\+\_\+impl.\+hpp.
+

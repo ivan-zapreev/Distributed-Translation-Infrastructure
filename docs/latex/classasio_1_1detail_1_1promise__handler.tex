@@ -1,0 +1,84 @@
+\hypertarget{classasio_1_1detail_1_1promise__handler}{}\section{asio\+:\+:detail\+:\+:promise\+\_\+handler$<$ T $>$ Class Template Reference}
+\label{classasio_1_1detail_1_1promise__handler}\index{asio\+::detail\+::promise\+\_\+handler$<$ T $>$@{asio\+::detail\+::promise\+\_\+handler$<$ T $>$}}
+
+
+{\ttfamily \#include $<$use\+\_\+future.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Allocator $>$ }\\\hyperlink{classasio_1_1detail_1_1promise__handler_a1b3c5120fe5c917f6ce4ee6beac524e3}{promise\+\_\+handler} (\hyperlink{classasio_1_1use__future__t}{use\+\_\+future\+\_\+t}$<$ Allocator $>$ uf)
+\item 
+void \hyperlink{classasio_1_1detail_1_1promise__handler_a65feb728ee2cd0d59a599b34a2ac8eff}{operator()} (T t)
+\item 
+void \hyperlink{classasio_1_1detail_1_1promise__handler_a0ad4f18058eedbf29ca109bf3e36e8d4}{operator()} (const \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, T t)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ std\+::promise$<$ T $>$ $>$ \hyperlink{classasio_1_1detail_1_1promise__handler_a996b0e878a20b28688b682514c62f103}{promise\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$class asio\+::detail\+::promise\+\_\+handler$<$ T $>$}
+
+
+
+Definition at line 32 of file use\+\_\+future.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1promise__handler_a1b3c5120fe5c917f6ce4ee6beac524e3}{}\index{asio\+::detail\+::promise\+\_\+handler@{asio\+::detail\+::promise\+\_\+handler}!promise\+\_\+handler@{promise\+\_\+handler}}
+\index{promise\+\_\+handler@{promise\+\_\+handler}!asio\+::detail\+::promise\+\_\+handler@{asio\+::detail\+::promise\+\_\+handler}}
+\subsubsection[{promise\+\_\+handler(use\+\_\+future\+\_\+t$<$ Allocator $>$ uf)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ template$<$typename Allocator $>$ {\bf asio\+::detail\+::promise\+\_\+handler}$<$ T $>$\+::{\bf promise\+\_\+handler} (
+\begin{DoxyParamCaption}
+\item[{{\bf use\+\_\+future\+\_\+t}$<$ Allocator $>$}]{uf}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1promise__handler_a1b3c5120fe5c917f6ce4ee6beac524e3}
+
+
+Definition at line 37 of file use\+\_\+future.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1promise__handler_a65feb728ee2cd0d59a599b34a2ac8eff}{}\index{asio\+::detail\+::promise\+\_\+handler@{asio\+::detail\+::promise\+\_\+handler}!operator()@{operator()}}
+\index{operator()@{operator()}!asio\+::detail\+::promise\+\_\+handler@{asio\+::detail\+::promise\+\_\+handler}}
+\subsubsection[{operator()(\+T t)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf asio\+::detail\+::promise\+\_\+handler}$<$ T $>$\+::operator() (
+\begin{DoxyParamCaption}
+\item[{T}]{t}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1promise__handler_a65feb728ee2cd0d59a599b34a2ac8eff}
+
+
+Definition at line 43 of file use\+\_\+future.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1promise__handler_a0ad4f18058eedbf29ca109bf3e36e8d4}{}\index{asio\+::detail\+::promise\+\_\+handler@{asio\+::detail\+::promise\+\_\+handler}!operator()@{operator()}}
+\index{operator()@{operator()}!asio\+::detail\+::promise\+\_\+handler@{asio\+::detail\+::promise\+\_\+handler}}
+\subsubsection[{operator()(const asio\+::error\+\_\+code \&ec, T t)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf asio\+::detail\+::promise\+\_\+handler}$<$ T $>$\+::operator() (
+\begin{DoxyParamCaption}
+\item[{const {\bf asio\+::error\+\_\+code} \&}]{ec, }
+\item[{T}]{t}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1promise__handler_a0ad4f18058eedbf29ca109bf3e36e8d4}
+
+
+Definition at line 48 of file use\+\_\+future.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classasio_1_1detail_1_1promise__handler_a996b0e878a20b28688b682514c62f103}{}\index{asio\+::detail\+::promise\+\_\+handler@{asio\+::detail\+::promise\+\_\+handler}!promise\+\_\+@{promise\+\_\+}}
+\index{promise\+\_\+@{promise\+\_\+}!asio\+::detail\+::promise\+\_\+handler@{asio\+::detail\+::promise\+\_\+handler}}
+\subsubsection[{promise\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ std\+::shared\+\_\+ptr$<$std\+::promise$<$T$>$ $>$ {\bf asio\+::detail\+::promise\+\_\+handler}$<$ T $>$\+::promise\+\_\+}\label{classasio_1_1detail_1_1promise__handler_a996b0e878a20b28688b682514c62f103}
+
+
+Definition at line 59 of file use\+\_\+future.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/impl/\hyperlink{impl_2use__future_8hpp}{use\+\_\+future.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,41 @@
+\hypertarget{buffers__iterator_8hpp}{}\section{ext/asio/buffers\+\_\+iterator.hpp File Reference}
+\label{buffers__iterator_8hpp}\index{ext/asio/buffers\+\_\+iterator.\+hpp@{ext/asio/buffers\+\_\+iterator.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$cstddef$>$}\\*
+{\ttfamily \#include $<$iterator$>$}\\*
+{\ttfamily \#include \char`\"{}asio/buffer.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/assert.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/type\+\_\+traits.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structasio_1_1detail_1_1buffers__iterator__types__helper}{asio\+::detail\+::buffers\+\_\+iterator\+\_\+types\+\_\+helper$<$ Is\+Mutable $>$}
+\item 
+struct \hyperlink{structasio_1_1detail_1_1buffers__iterator__types__helper_3_01false_01_4}{asio\+::detail\+::buffers\+\_\+iterator\+\_\+types\+\_\+helper$<$ false $>$}
+\item 
+struct \hyperlink{structasio_1_1detail_1_1buffers__iterator__types__helper_3_01false_01_4_1_1byte__type}{asio\+::detail\+::buffers\+\_\+iterator\+\_\+types\+\_\+helper$<$ false $>$\+::byte\+\_\+type$<$ Byte\+Type $>$}
+\item 
+struct \hyperlink{structasio_1_1detail_1_1buffers__iterator__types__helper_3_01true_01_4}{asio\+::detail\+::buffers\+\_\+iterator\+\_\+types\+\_\+helper$<$ true $>$}
+\item 
+struct \hyperlink{structasio_1_1detail_1_1buffers__iterator__types__helper_3_01true_01_4_1_1byte__type}{asio\+::detail\+::buffers\+\_\+iterator\+\_\+types\+\_\+helper$<$ true $>$\+::byte\+\_\+type$<$ Byte\+Type $>$}
+\item 
+struct \hyperlink{structasio_1_1detail_1_1buffers__iterator__types}{asio\+::detail\+::buffers\+\_\+iterator\+\_\+types$<$ Buffer\+Sequence, Byte\+Type $>$}
+\item 
+class \hyperlink{classasio_1_1buffers__iterator}{asio\+::buffers\+\_\+iterator$<$ Buffer\+Sequence, Byte\+Type $>$}
+\begin{DoxyCompactList}\small\item\em A random access iterator over the bytes in a buffer sequence. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1detail}{asio\+::detail}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Buffer\+Sequence $>$ }\\buffers\+\_\+iterator$<$ Buffer\+Sequence $>$ \hyperlink{namespaceasio_a9d6099d23e9bf78b2b1ad82d164d3d7e}{asio\+::buffers\+\_\+begin} (const Buffer\+Sequence \&buffers)
+\begin{DoxyCompactList}\small\item\em Construct an iterator representing the beginning of the buffers\textquotesingle{} data. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Buffer\+Sequence $>$ }\\buffers\+\_\+iterator$<$ Buffer\+Sequence $>$ \hyperlink{namespaceasio_a2ef4b181d4561848de38fac7907d4a0b}{asio\+::buffers\+\_\+end} (const Buffer\+Sequence \&buffers)
+\begin{DoxyCompactList}\small\item\em Construct an iterator representing the end of the buffers\textquotesingle{} data. \end{DoxyCompactList}\end{DoxyCompactItemize}

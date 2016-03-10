@@ -1,0 +1,135 @@
+\hypertarget{classasio_1_1mutable__buffers__1}{}\section{asio\+:\+:mutable\+\_\+buffers\+\_\+1 Class Reference}
+\label{classasio_1_1mutable__buffers__1}\index{asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}}
+
+
+{\ttfamily \#include $<$buffer.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:mutable\+\_\+buffers\+\_\+1\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classasio_1_1mutable__buffers__1}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classasio_1_1mutable__buffer}{mutable\+\_\+buffer} \hyperlink{classasio_1_1mutable__buffers__1_ad0f0d91dda82c809af784aaedafc4890}{value\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type for each element in the list of buffers. \end{DoxyCompactList}\item 
+typedef const \hyperlink{classasio_1_1mutable__buffer}{mutable\+\_\+buffer} $\ast$ \hyperlink{classasio_1_1mutable__buffers__1_a50acb7cfb33b2e076062b79930452b51}{const\+\_\+iterator}
+\begin{DoxyCompactList}\small\item\em A random-\/access iterator type that may be used to read elements. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1mutable__buffers__1_a1c56a78f3d2a5a16d29293ea04ce9ba4}{mutable\+\_\+buffers\+\_\+1} (void $\ast$data, std\+::size\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Construct to represent a given memory range. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1mutable__buffers__1_ac208ed5e1958c6937a287a19940e960d}{mutable\+\_\+buffers\+\_\+1} (const \hyperlink{classasio_1_1mutable__buffer}{mutable\+\_\+buffer} \&\hyperlink{group__async__read_ga945a5c18fa77a9e2eba420f8f44b2a4f}{b})
+\begin{DoxyCompactList}\small\item\em Construct to represent a single modifiable buffer. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1mutable__buffers__1_a50acb7cfb33b2e076062b79930452b51}{const\+\_\+iterator} \hyperlink{classasio_1_1mutable__buffers__1_a6352c8cf98df2808063bf2e8ffea68f8}{begin} () const 
+\begin{DoxyCompactList}\small\item\em Get a random-\/access iterator to the first element. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1mutable__buffers__1_a50acb7cfb33b2e076062b79930452b51}{const\+\_\+iterator} \hyperlink{classasio_1_1mutable__buffers__1_ab3e0eb9085c474828650e901bc9f630a}{end} () const 
+\begin{DoxyCompactList}\small\item\em Get a random-\/access iterator for one past the last element. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Adapts a single modifiable buffer so that it meets the requirements of the Mutable\+Buffer\+Sequence concept. 
+
+Definition at line 157 of file buffer.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1mutable__buffers__1_a50acb7cfb33b2e076062b79930452b51}{}\index{asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}!const\+\_\+iterator@{const\+\_\+iterator}}
+\index{const\+\_\+iterator@{const\+\_\+iterator}!asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}}
+\subsubsection[{const\+\_\+iterator}]{\setlength{\rightskip}{0pt plus 5cm}typedef const {\bf mutable\+\_\+buffer}$\ast$ {\bf asio\+::mutable\+\_\+buffers\+\_\+1\+::const\+\_\+iterator}}\label{classasio_1_1mutable__buffers__1_a50acb7cfb33b2e076062b79930452b51}
+
+
+A random-\/access iterator type that may be used to read elements. 
+
+
+
+Definition at line 165 of file buffer.\+hpp.
+
+\hypertarget{classasio_1_1mutable__buffers__1_ad0f0d91dda82c809af784aaedafc4890}{}\index{asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}!value\+\_\+type@{value\+\_\+type}}
+\index{value\+\_\+type@{value\+\_\+type}!asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}}
+\subsubsection[{value\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf mutable\+\_\+buffer} {\bf asio\+::mutable\+\_\+buffers\+\_\+1\+::value\+\_\+type}}\label{classasio_1_1mutable__buffers__1_ad0f0d91dda82c809af784aaedafc4890}
+
+
+The type for each element in the list of buffers. 
+
+
+
+Definition at line 162 of file buffer.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1mutable__buffers__1_a1c56a78f3d2a5a16d29293ea04ce9ba4}{}\index{asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}!mutable\+\_\+buffers\+\_\+1@{mutable\+\_\+buffers\+\_\+1}}
+\index{mutable\+\_\+buffers\+\_\+1@{mutable\+\_\+buffers\+\_\+1}!asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}}
+\subsubsection[{mutable\+\_\+buffers\+\_\+1(void $\ast$data, std\+::size\+\_\+t size)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::mutable\+\_\+buffers\+\_\+1\+::mutable\+\_\+buffers\+\_\+1 (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{data, }
+\item[{std\+::size\+\_\+t}]{size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1mutable__buffers__1_a1c56a78f3d2a5a16d29293ea04ce9ba4}
+
+
+Construct to represent a given memory range. 
+
+
+
+Definition at line 168 of file buffer.\+hpp.
+
+\hypertarget{classasio_1_1mutable__buffers__1_ac208ed5e1958c6937a287a19940e960d}{}\index{asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}!mutable\+\_\+buffers\+\_\+1@{mutable\+\_\+buffers\+\_\+1}}
+\index{mutable\+\_\+buffers\+\_\+1@{mutable\+\_\+buffers\+\_\+1}!asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}}
+\subsubsection[{mutable\+\_\+buffers\+\_\+1(const mutable\+\_\+buffer \&b)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::mutable\+\_\+buffers\+\_\+1\+::mutable\+\_\+buffers\+\_\+1 (
+\begin{DoxyParamCaption}
+\item[{const {\bf mutable\+\_\+buffer} \&}]{b}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1mutable__buffers__1_ac208ed5e1958c6937a287a19940e960d}
+
+
+Construct to represent a single modifiable buffer. 
+
+
+
+Definition at line 174 of file buffer.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1mutable__buffers__1_a6352c8cf98df2808063bf2e8ffea68f8}{}\index{asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}!begin@{begin}}
+\index{begin@{begin}!asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}}
+\subsubsection[{begin() const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf const\+\_\+iterator} asio\+::mutable\+\_\+buffers\+\_\+1\+::begin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1mutable__buffers__1_a6352c8cf98df2808063bf2e8ffea68f8}
+
+
+Get a random-\/access iterator to the first element. 
+
+
+
+Definition at line 180 of file buffer.\+hpp.
+
+\hypertarget{classasio_1_1mutable__buffers__1_ab3e0eb9085c474828650e901bc9f630a}{}\index{asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}!end@{end}}
+\index{end@{end}!asio\+::mutable\+\_\+buffers\+\_\+1@{asio\+::mutable\+\_\+buffers\+\_\+1}}
+\subsubsection[{end() const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf const\+\_\+iterator} asio\+::mutable\+\_\+buffers\+\_\+1\+::end (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1mutable__buffers__1_ab3e0eb9085c474828650e901bc9f630a}
+
+
+Get a random-\/access iterator for one past the last element. 
+
+
+
+Definition at line 186 of file buffer.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{buffer_8hpp}{buffer.\+hpp}\end{DoxyCompactItemize}

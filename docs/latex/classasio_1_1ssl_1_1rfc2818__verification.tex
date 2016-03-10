@@ -1,0 +1,110 @@
+\hypertarget{classasio_1_1ssl_1_1rfc2818__verification}{}\section{asio\+:\+:ssl\+:\+:rfc2818\+\_\+verification Class Reference}
+\label{classasio_1_1ssl_1_1rfc2818__verification}\index{asio\+::ssl\+::rfc2818\+\_\+verification@{asio\+::ssl\+::rfc2818\+\_\+verification}}
+
+
+{\ttfamily \#include $<$rfc2818\+\_\+verification.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef bool \hyperlink{classasio_1_1ssl_1_1rfc2818__verification_a793767089e5bc88c7c28ed182e9cba02}{result\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type of the function object\textquotesingle{}s result. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1ssl_1_1rfc2818__verification_a169b8df5bed1cdf4099bc424b0e99ddd}{rfc2818\+\_\+verification} (const std\+::string \&host)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ssl_1_1rfc2818__verification_a0ffc96e1ffe4cc3966b31c9f129534f7}{operator()} (bool preverified, \hyperlink{classasio_1_1ssl_1_1verify__context}{verify\+\_\+context} \&ctx) const 
+\begin{DoxyCompactList}\small\item\em Perform certificate verification. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Verifies a certificate against a hostname according to the rules described in R\+F\+C 2818. \begin{DoxyParagraph}{Example}
+The following example shows how to synchronously open a secure connection to a given host name\+: 
+\begin{DoxyCode}
+\textcolor{keyword}{using} \hyperlink{classasio_1_1ip_1_1tcp}{asio::ip::tcp};
+\textcolor{keyword}{namespace }ssl = \hyperlink{namespaceasio_1_1ssl}{asio::ssl};
+\textcolor{keyword}{typedef} ssl::stream<tcp::socket> ssl\_socket;
+
+\textcolor{comment}{// Create a context that uses the default paths for finding CA certificates.}
+ssl::context ctx(\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ae478c3ede58b50c99d6c6ff9ed7c0124}{ssl::context::sslv23});
+ctx.set\_default\_verify\_paths();
+
+\textcolor{comment}{// Open a socket and connect it to the remote host.}
+\hyperlink{classasio_1_1io__service}{asio::io\_service} io\_service;
+ssl\_socket sock(io\_service, ctx);
+tcp::resolver resolver(io\_service);
+tcp::resolver::query query(\textcolor{stringliteral}{"host.name"}, \textcolor{stringliteral}{"https"});
+\hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio::connect}(sock.lowest\_layer(), resolver.resolve(query));
+sock.lowest\_layer().set\_option(tcp::no\_delay(\textcolor{keyword}{true}));
+
+\textcolor{comment}{// Perform SSL handshake and verify the remote host's certificate.}
+sock.set\_verify\_mode(\hyperlink{namespaceasio_1_1ssl_ae71141f1eff86b35a2a2491501d55926}{ssl::verify\_peer});
+sock.set\_verify\_callback(ssl::rfc2818\_verification(\textcolor{stringliteral}{"host.name"}));
+sock.handshake(ssl\_socket::client);
+
+\textcolor{comment}{// ... read and write as normal ...}
+\end{DoxyCode}
+ 
+\end{DoxyParagraph}
+
+
+Definition at line 64 of file rfc2818\+\_\+verification.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1ssl_1_1rfc2818__verification_a793767089e5bc88c7c28ed182e9cba02}{}\index{asio\+::ssl\+::rfc2818\+\_\+verification@{asio\+::ssl\+::rfc2818\+\_\+verification}!result\+\_\+type@{result\+\_\+type}}
+\index{result\+\_\+type@{result\+\_\+type}!asio\+::ssl\+::rfc2818\+\_\+verification@{asio\+::ssl\+::rfc2818\+\_\+verification}}
+\subsubsection[{result\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef bool {\bf asio\+::ssl\+::rfc2818\+\_\+verification\+::result\+\_\+type}}\label{classasio_1_1ssl_1_1rfc2818__verification_a793767089e5bc88c7c28ed182e9cba02}
+
+
+The type of the function object\textquotesingle{}s result. 
+
+
+
+Definition at line 68 of file rfc2818\+\_\+verification.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1ssl_1_1rfc2818__verification_a169b8df5bed1cdf4099bc424b0e99ddd}{}\index{asio\+::ssl\+::rfc2818\+\_\+verification@{asio\+::ssl\+::rfc2818\+\_\+verification}!rfc2818\+\_\+verification@{rfc2818\+\_\+verification}}
+\index{rfc2818\+\_\+verification@{rfc2818\+\_\+verification}!asio\+::ssl\+::rfc2818\+\_\+verification@{asio\+::ssl\+::rfc2818\+\_\+verification}}
+\subsubsection[{rfc2818\+\_\+verification(const std\+::string \&host)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::rfc2818\+\_\+verification\+::rfc2818\+\_\+verification (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{host}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1ssl_1_1rfc2818__verification_a169b8df5bed1cdf4099bc424b0e99ddd}
+
+
+Constructor. 
+
+
+
+Definition at line 71 of file rfc2818\+\_\+verification.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ssl_1_1rfc2818__verification_a0ffc96e1ffe4cc3966b31c9f129534f7}{}\index{asio\+::ssl\+::rfc2818\+\_\+verification@{asio\+::ssl\+::rfc2818\+\_\+verification}!operator()@{operator()}}
+\index{operator()@{operator()}!asio\+::ssl\+::rfc2818\+\_\+verification@{asio\+::ssl\+::rfc2818\+\_\+verification}}
+\subsubsection[{operator()(bool preverified, verify\+\_\+context \&ctx) const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ssl\+::rfc2818\+\_\+verification\+::operator() (
+\begin{DoxyParamCaption}
+\item[{bool}]{preverified, }
+\item[{{\bf verify\+\_\+context} \&}]{ctx}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ssl_1_1rfc2818__verification_a0ffc96e1ffe4cc3966b31c9f129534f7}
+
+
+Perform certificate verification. 
+
+
+
+Definition at line 35 of file rfc2818\+\_\+verification.\+ipp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ssl/\hyperlink{rfc2818__verification_8hpp}{rfc2818\+\_\+verification.\+hpp}\item 
+ext/asio/ssl/impl/\hyperlink{rfc2818__verification_8ipp}{rfc2818\+\_\+verification.\+ipp}\end{DoxyCompactItemize}

@@ -1,0 +1,550 @@
+\hypertarget{class_i_n_i}{}\section{I\+N\+I$<$ T, U, V $>$ Class Template Reference}
+\label{class_i_n_i}\index{I\+N\+I$<$ T, U, V $>$@{I\+N\+I$<$ T, U, V $>$}}
+
+
+{\ttfamily \#include $<$I\+N\+I.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{class_i_n_i_a0e7d70a0276fc704cdd427c9b02f7a03}{source\+\_\+e} \{ \hyperlink{class_i_n_i_a0e7d70a0276fc704cdd427c9b02f7a03a0bec937da54b19ad14ecaded8360b65f}{S\+O\+U\+R\+C\+E\+\_\+\+F\+I\+L\+E}, 
+\hyperlink{class_i_n_i_a0e7d70a0276fc704cdd427c9b02f7a03aaaa209937bb226994c131a9b35fe0984}{S\+O\+U\+R\+C\+E\+\_\+\+M\+E\+M\+O\+R\+Y}
+ \}
+\item 
+typedef T \hyperlink{class_i_n_i_a82551bff97cdd5c7ff183b24bd9b2188}{section\+\_\+t}
+\item 
+typedef U \hyperlink{class_i_n_i_acfa659efbac1eb0c62c1a910b0b09541}{key\+\_\+t}
+\item 
+typedef V \hyperlink{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{value\+\_\+t}
+\item 
+typedef \hyperlink{class_i_n_i}{I\+N\+I}$<$ \hyperlink{class_i_n_i_a82551bff97cdd5c7ff183b24bd9b2188}{section\+\_\+t}, \hyperlink{class_i_n_i_acfa659efbac1eb0c62c1a910b0b09541}{key\+\_\+t}, \hyperlink{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{value\+\_\+t} $>$ \hyperlink{class_i_n_i_a510efd26938d16fcaac1b3b8bdd47f34}{ini\+\_\+t}
+\item 
+typedef std\+::map$<$ \hyperlink{class_i_n_i_acfa659efbac1eb0c62c1a910b0b09541}{key\+\_\+t}, \hyperlink{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{value\+\_\+t} $>$ \hyperlink{class_i_n_i_a4254e881abdbf891a408cb032e0d717d}{keys\+\_\+t}
+\begin{DoxyCompactList}\small\item\em Type definition declarations. \end{DoxyCompactList}\item 
+typedef std\+::map$<$ \hyperlink{class_i_n_i_a82551bff97cdd5c7ff183b24bd9b2188}{section\+\_\+t}, \hyperlink{class_i_n_i_a4254e881abdbf891a408cb032e0d717d}{keys\+\_\+t} $\ast$ $>$ \hyperlink{class_i_n_i_ab5fa6745b8a64763b20964a254469aa2}{sections\+\_\+t}
+\item 
+typedef keys\+\_\+t\+::iterator \hyperlink{class_i_n_i_ae33c58e217d5ee3fbc8cae737560ce53}{keysit\+\_\+t}
+\item 
+typedef sections\+\_\+t\+::iterator \hyperlink{class_i_n_i_a847131e25df0c4d420599b1990a21132}{sectionsit\+\_\+t}
+\item 
+typedef std\+::pair$<$ \hyperlink{class_i_n_i_acfa659efbac1eb0c62c1a910b0b09541}{key\+\_\+t}, \hyperlink{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{value\+\_\+t} $>$ \hyperlink{class_i_n_i_a74debe5259e76d734b5376c99b0ba1c8}{keyspair\+\_\+t}
+\item 
+typedef std\+::pair$<$ \hyperlink{class_i_n_i_a82551bff97cdd5c7ff183b24bd9b2188}{section\+\_\+t}, \hyperlink{class_i_n_i_a4254e881abdbf891a408cb032e0d717d}{keys\+\_\+t} $\ast$ $>$ \hyperlink{class_i_n_i_a87b850df48a4bf8c792df26927dec359}{sectionspair\+\_\+t}
+\item 
+typedef char \hyperlink{class_i_n_i_a611e44f4d3abb28d901f7e2aaf183811}{data\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_i_n_i_a5dcc2ba1277bf200bd2e60278640db52}{I\+N\+I} (const std\+::string \hyperlink{class_i_n_i_af52e483d586ea3416df114e70755e96c}{filename}, bool do\+Parse)
+\begin{DoxyCompactList}\small\item\em Constuctor/\+Destructor. \end{DoxyCompactList}\item 
+\hyperlink{class_i_n_i_ad94b2a2f7fb2636bb67afa1bbad7e961}{I\+N\+I} (void $\ast$\hyperlink{class_i_n_i_a3a7884bd145b42e76290f22711536668}{data}, size\+\_\+t \hyperlink{class_i_n_i_a602d6b20ea275f3e654f1508a95ceea6}{data\+Size}, bool do\+Parse)
+\item 
+\hyperlink{class_i_n_i_aa4bd1dbe434aaadf429a5ddfd26d25f8}{$\sim$\+I\+N\+I} ()
+\item 
+\hyperlink{class_i_n_i_a4254e881abdbf891a408cb032e0d717d}{keys\+\_\+t} \& \hyperlink{class_i_n_i_abac006fb18cd3c8a12815ec8850006b5}{operator\mbox{[}$\,$\mbox{]}} (\hyperlink{class_i_n_i_a82551bff97cdd5c7ff183b24bd9b2188}{section\+\_\+t} section)
+\begin{DoxyCompactList}\small\item\em Access Content. \end{DoxyCompactList}\item 
+bool \hyperlink{class_i_n_i_a946c00af4146190918b479cfe849bb88}{create} (const \hyperlink{class_i_n_i_a82551bff97cdd5c7ff183b24bd9b2188}{section\+\_\+t} section)
+\item 
+bool \hyperlink{class_i_n_i_a6132ce549f8fa43ecb4faf5c5fd6dbf0}{select} (const \hyperlink{class_i_n_i_a82551bff97cdd5c7ff183b24bd9b2188}{section\+\_\+t} section)
+\item 
+bool \hyperlink{class_i_n_i_a60aea0868d612b12941b53304bb2d8f3}{set} (const \hyperlink{class_i_n_i_acfa659efbac1eb0c62c1a910b0b09541}{key\+\_\+t} key, const \hyperlink{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{value\+\_\+t} value)
+\begin{DoxyCompactList}\small\item\em Set. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename W , typename X $>$ }\\bool \hyperlink{class_i_n_i_aa1dd6129122078d11d4e59198c303ffb}{set} (const W key, const X value)
+\item 
+\hyperlink{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{value\+\_\+t} \hyperlink{class_i_n_i_a236ab0dc2059eb6180d1c611115492c3}{get} (const \hyperlink{class_i_n_i_acfa659efbac1eb0c62c1a910b0b09541}{key\+\_\+t} key, \hyperlink{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{value\+\_\+t} def=\hyperlink{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{value\+\_\+t}())
+\begin{DoxyCompactList}\small\item\em Get. \end{DoxyCompactList}\item 
+\hyperlink{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{value\+\_\+t} \hyperlink{class_i_n_i_afe29b99fbf8804e9a4965e197ceed24e}{get} (const \hyperlink{class_i_n_i_a82551bff97cdd5c7ff183b24bd9b2188}{section\+\_\+t} section, const \hyperlink{class_i_n_i_acfa659efbac1eb0c62c1a910b0b09541}{key\+\_\+t} key, \hyperlink{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{value\+\_\+t} def)
+\item 
+{\footnotesize template$<$typename W , typename X $>$ }\\X \hyperlink{class_i_n_i_ab55a726e7ed9346a98b032c6a0cb7d37}{get} (const W key, const X def=\hyperlink{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{value\+\_\+t}())
+\item 
+{\footnotesize template$<$typename W $>$ }\\\hyperlink{_i_n_i_8h_a38d09ae9d340b15b8580649e578974db}{fini\+\_\+string\+\_\+t} \hyperlink{class_i_n_i_ab01b7aa55c1216246a329ccebae53f49}{get} (const W key, const \hyperlink{_i_n_i_8h_a03d482c4c241009c15ce537c9df118df}{fini\+\_\+char\+\_\+t} $\ast$def=\hyperlink{_i_n_i_8h_ae936e4c15227768f7da4e0951def89c8}{\+\_\+\+T}(\char`\"{}\char`\"{}))
+\item 
+{\footnotesize template$<$typename W , typename X , typename Y $>$ }\\Y \hyperlink{class_i_n_i_a237fc101e4977fa4f4e1de750c7e9aa3}{get} (const W section, const X key, const Y def)
+\item 
+{\footnotesize template$<$typename W , typename X $>$ }\\\hyperlink{_i_n_i_8h_a38d09ae9d340b15b8580649e578974db}{fini\+\_\+string\+\_\+t} \hyperlink{class_i_n_i_a4a2ca86ad6e5532a1fa5f8de4a71965f}{get} (const W section, const X key, const \hyperlink{_i_n_i_8h_a03d482c4c241009c15ce537c9df118df}{fini\+\_\+char\+\_\+t} $\ast$def)
+\item 
+void \hyperlink{class_i_n_i_aada51d135d18d4f67c3458f18d822883}{parse} (std\+::istream \&file)
+\begin{DoxyCompactList}\small\item\em Functions. \end{DoxyCompactList}\item 
+bool \hyperlink{class_i_n_i_a01cfaf1daca70fccef0a4db662de04c1}{parse} ()
+\item 
+bool \hyperlink{class_i_n_i_a86f88bfe47723393fc2460c88ab11d45}{parse\+Binary} ()
+\item 
+void \hyperlink{class_i_n_i_ac60a9cc0817d3435795caaebfa5e9b4e}{clear} ()
+\item 
+bool \hyperlink{class_i_n_i_a6b5cd2a495a3b8c8139b92ee45c74165}{save} (const std\+::string \hyperlink{class_i_n_i_af52e483d586ea3416df114e70755e96c}{filename}=\char`\"{}\char`\"{})
+\begin{DoxyCompactList}\small\item\em Output. \end{DoxyCompactList}\item 
+bool \hyperlink{class_i_n_i_a1bb1de72f3bdf63172740ab9c60f3f06}{save\+Binary} (const std\+::string \hyperlink{class_i_n_i_af52e483d586ea3416df114e70755e96c}{filename}=\char`\"{}\char`\"{})
+\item 
+bool \hyperlink{class_i_n_i_ac9ce0a9a622eb36388f7b0fb17819ad6}{save\+Binary\+Experimental} (std\+::string \hyperlink{class_i_n_i_af52e483d586ea3416df114e70755e96c}{filename}=\char`\"{}\char`\"{})
+\item 
+void \hyperlink{class_i_n_i_a2495473d9ccef11c6bf54af807d65ae9}{merge} (\hyperlink{class_i_n_i_a510efd26938d16fcaac1b3b8bdd47f34}{ini\+\_\+t} \&other, bool retain\+Values=true)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \hyperlink{class_i_n_i_af52e483d586ea3416df114e70755e96c}{filename}
+\begin{DoxyCompactList}\small\item\em Data members. \end{DoxyCompactList}\item 
+\hyperlink{class_i_n_i_a611e44f4d3abb28d901f7e2aaf183811}{data\+\_\+t} $\ast$ \hyperlink{class_i_n_i_a3a7884bd145b42e76290f22711536668}{data}
+\item 
+size\+\_\+t \hyperlink{class_i_n_i_a602d6b20ea275f3e654f1508a95ceea6}{data\+Size}
+\item 
+\hyperlink{class_i_n_i_a4254e881abdbf891a408cb032e0d717d}{keys\+\_\+t} $\ast$ \hyperlink{class_i_n_i_ac4b0b619f54171871f75c2a7f0fb16a7}{current}
+\item 
+\hyperlink{class_i_n_i_ab5fa6745b8a64763b20964a254469aa2}{sections\+\_\+t} \hyperlink{class_i_n_i_ab1825501769c4bb2cdc1d7ddd6a7be7a}{sections}
+\item 
+\hyperlink{class_i_n_i_a0e7d70a0276fc704cdd427c9b02f7a03}{source\+\_\+e} \hyperlink{class_i_n_i_a0a65472be1d0807d6ad380dc0b7b29d3}{source}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$class I\+N\+I$<$ T, U, V $>$}
+
+
+
+Definition at line 91 of file I\+N\+I.\+h.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{class_i_n_i_a611e44f4d3abb28d901f7e2aaf183811}{}\index{I\+N\+I@{I\+N\+I}!data\+\_\+t@{data\+\_\+t}}
+\index{data\+\_\+t@{data\+\_\+t}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{data\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ typedef char {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf data\+\_\+t}}\label{class_i_n_i_a611e44f4d3abb28d901f7e2aaf183811}
+
+
+Definition at line 113 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a510efd26938d16fcaac1b3b8bdd47f34}{}\index{I\+N\+I@{I\+N\+I}!ini\+\_\+t@{ini\+\_\+t}}
+\index{ini\+\_\+t@{ini\+\_\+t}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{ini\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ typedef {\bf I\+N\+I}$<${\bf section\+\_\+t}, {\bf key\+\_\+t}, {\bf value\+\_\+t}$>$ {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf ini\+\_\+t}}\label{class_i_n_i_a510efd26938d16fcaac1b3b8bdd47f34}
+
+
+Definition at line 96 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_acfa659efbac1eb0c62c1a910b0b09541}{}\index{I\+N\+I@{I\+N\+I}!key\+\_\+t@{key\+\_\+t}}
+\index{key\+\_\+t@{key\+\_\+t}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{key\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ typedef U {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf key\+\_\+t}}\label{class_i_n_i_acfa659efbac1eb0c62c1a910b0b09541}
+
+
+Definition at line 94 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a4254e881abdbf891a408cb032e0d717d}{}\index{I\+N\+I@{I\+N\+I}!keys\+\_\+t@{keys\+\_\+t}}
+\index{keys\+\_\+t@{keys\+\_\+t}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{keys\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ typedef std\+::map$<${\bf key\+\_\+t}, {\bf value\+\_\+t}$>$ {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf keys\+\_\+t}}\label{class_i_n_i_a4254e881abdbf891a408cb032e0d717d}
+
+
+Type definition declarations. 
+
+
+
+Definition at line 103 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_ae33c58e217d5ee3fbc8cae737560ce53}{}\index{I\+N\+I@{I\+N\+I}!keysit\+\_\+t@{keysit\+\_\+t}}
+\index{keysit\+\_\+t@{keysit\+\_\+t}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{keysit\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ typedef keys\+\_\+t\+::iterator {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf keysit\+\_\+t}}\label{class_i_n_i_ae33c58e217d5ee3fbc8cae737560ce53}
+
+
+Definition at line 107 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a74debe5259e76d734b5376c99b0ba1c8}{}\index{I\+N\+I@{I\+N\+I}!keyspair\+\_\+t@{keyspair\+\_\+t}}
+\index{keyspair\+\_\+t@{keyspair\+\_\+t}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{keyspair\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ typedef std\+::pair$<${\bf key\+\_\+t}, {\bf value\+\_\+t}$>$ {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf keyspair\+\_\+t}}\label{class_i_n_i_a74debe5259e76d734b5376c99b0ba1c8}
+
+
+Definition at line 110 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a82551bff97cdd5c7ff183b24bd9b2188}{}\index{I\+N\+I@{I\+N\+I}!section\+\_\+t@{section\+\_\+t}}
+\index{section\+\_\+t@{section\+\_\+t}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{section\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ typedef T {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf section\+\_\+t}}\label{class_i_n_i_a82551bff97cdd5c7ff183b24bd9b2188}
+
+
+Definition at line 93 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_ab5fa6745b8a64763b20964a254469aa2}{}\index{I\+N\+I@{I\+N\+I}!sections\+\_\+t@{sections\+\_\+t}}
+\index{sections\+\_\+t@{sections\+\_\+t}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{sections\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ typedef std\+::map$<${\bf section\+\_\+t}, {\bf keys\+\_\+t}$\ast$$>$ {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf sections\+\_\+t}}\label{class_i_n_i_ab5fa6745b8a64763b20964a254469aa2}
+
+
+Definition at line 104 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a847131e25df0c4d420599b1990a21132}{}\index{I\+N\+I@{I\+N\+I}!sectionsit\+\_\+t@{sectionsit\+\_\+t}}
+\index{sectionsit\+\_\+t@{sectionsit\+\_\+t}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{sectionsit\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ typedef sections\+\_\+t\+::iterator {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf sectionsit\+\_\+t}}\label{class_i_n_i_a847131e25df0c4d420599b1990a21132}
+
+
+Definition at line 108 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a87b850df48a4bf8c792df26927dec359}{}\index{I\+N\+I@{I\+N\+I}!sectionspair\+\_\+t@{sectionspair\+\_\+t}}
+\index{sectionspair\+\_\+t@{sectionspair\+\_\+t}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{sectionspair\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ typedef std\+::pair$<${\bf section\+\_\+t}, {\bf keys\+\_\+t}$\ast$$>$ {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf sectionspair\+\_\+t}}\label{class_i_n_i_a87b850df48a4bf8c792df26927dec359}
+
+
+Definition at line 111 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}{}\index{I\+N\+I@{I\+N\+I}!value\+\_\+t@{value\+\_\+t}}
+\index{value\+\_\+t@{value\+\_\+t}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{value\+\_\+t}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ typedef V {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf value\+\_\+t}}\label{class_i_n_i_aeda858880798b4d54ba09bbd00ee1683}
+
+
+Definition at line 95 of file I\+N\+I.\+h.
+
+
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{class_i_n_i_a0e7d70a0276fc704cdd427c9b02f7a03}{}\index{I\+N\+I@{I\+N\+I}!source\+\_\+e@{source\+\_\+e}}
+\index{source\+\_\+e@{source\+\_\+e}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{source\+\_\+e}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ enum {\bf I\+N\+I\+::source\+\_\+e}}\label{class_i_n_i_a0e7d70a0276fc704cdd427c9b02f7a03}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{S\+O\+U\+R\+C\+E\+\_\+\+F\+I\+L\+E@{S\+O\+U\+R\+C\+E\+\_\+\+F\+I\+L\+E}!I\+N\+I@{I\+N\+I}}\index{I\+N\+I@{I\+N\+I}!S\+O\+U\+R\+C\+E\+\_\+\+F\+I\+L\+E@{S\+O\+U\+R\+C\+E\+\_\+\+F\+I\+L\+E}}\item[{\em 
+\hypertarget{class_i_n_i_a0e7d70a0276fc704cdd427c9b02f7a03a0bec937da54b19ad14ecaded8360b65f}{}S\+O\+U\+R\+C\+E\+\_\+\+F\+I\+L\+E\label{class_i_n_i_a0e7d70a0276fc704cdd427c9b02f7a03a0bec937da54b19ad14ecaded8360b65f}
+}]\index{S\+O\+U\+R\+C\+E\+\_\+\+M\+E\+M\+O\+R\+Y@{S\+O\+U\+R\+C\+E\+\_\+\+M\+E\+M\+O\+R\+Y}!I\+N\+I@{I\+N\+I}}\index{I\+N\+I@{I\+N\+I}!S\+O\+U\+R\+C\+E\+\_\+\+M\+E\+M\+O\+R\+Y@{S\+O\+U\+R\+C\+E\+\_\+\+M\+E\+M\+O\+R\+Y}}\item[{\em 
+\hypertarget{class_i_n_i_a0e7d70a0276fc704cdd427c9b02f7a03aaaa209937bb226994c131a9b35fe0984}{}S\+O\+U\+R\+C\+E\+\_\+\+M\+E\+M\+O\+R\+Y\label{class_i_n_i_a0e7d70a0276fc704cdd427c9b02f7a03aaaa209937bb226994c131a9b35fe0984}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line 115 of file I\+N\+I.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_i_n_i_a5dcc2ba1277bf200bd2e60278640db52}{}\index{I\+N\+I@{I\+N\+I}!I\+N\+I@{I\+N\+I}}
+\index{I\+N\+I@{I\+N\+I}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{I\+N\+I(const std\+::string filename, bool do\+Parse)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf I\+N\+I} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{filename, }
+\item[{bool}]{do\+Parse}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a5dcc2ba1277bf200bd2e60278640db52}
+
+
+Constuctor/\+Destructor. 
+
+
+
+Definition at line 130 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_ad94b2a2f7fb2636bb67afa1bbad7e961}{}\index{I\+N\+I@{I\+N\+I}!I\+N\+I@{I\+N\+I}}
+\index{I\+N\+I@{I\+N\+I}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{I\+N\+I(void $\ast$data, size\+\_\+t data\+Size, bool do\+Parse)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ {\bf I\+N\+I}$<$ T, U, V $>$\+::{\bf I\+N\+I} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{data, }
+\item[{size\+\_\+t}]{data\+Size, }
+\item[{bool}]{do\+Parse}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_ad94b2a2f7fb2636bb67afa1bbad7e961}
+
+
+Definition at line 136 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_aa4bd1dbe434aaadf429a5ddfd26d25f8}{}\index{I\+N\+I@{I\+N\+I}!````~I\+N\+I@{$\sim$\+I\+N\+I}}
+\index{````~I\+N\+I@{$\sim$\+I\+N\+I}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{$\sim$\+I\+N\+I()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ {\bf I\+N\+I}$<$ T, U, V $>$\+::$\sim${\bf I\+N\+I} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_aa4bd1dbe434aaadf429a5ddfd26d25f8}
+
+
+Definition at line 140 of file I\+N\+I.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_i_n_i_ac60a9cc0817d3435795caaebfa5e9b4e}{}\index{I\+N\+I@{I\+N\+I}!clear@{clear}}
+\index{clear@{clear}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{clear()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ void {\bf I\+N\+I}$<$ T, U, V $>$\+::clear (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_ac60a9cc0817d3435795caaebfa5e9b4e}
+
+
+Definition at line 389 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a946c00af4146190918b479cfe849bb88}{}\index{I\+N\+I@{I\+N\+I}!create@{create}}
+\index{create@{create}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{create(const section\+\_\+t section)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ bool {\bf I\+N\+I}$<$ T, U, V $>$\+::create (
+\begin{DoxyParamCaption}
+\item[{const {\bf section\+\_\+t}}]{section}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a946c00af4146190918b479cfe849bb88}
+
+
+Definition at line 158 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a236ab0dc2059eb6180d1c611115492c3}{}\index{I\+N\+I@{I\+N\+I}!get@{get}}
+\index{get@{get}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{get(const key\+\_\+t key, value\+\_\+t def=value\+\_\+t())}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ {\bf value\+\_\+t} {\bf I\+N\+I}$<$ T, U, V $>$\+::get (
+\begin{DoxyParamCaption}
+\item[{const {\bf key\+\_\+t}}]{key, }
+\item[{{\bf value\+\_\+t}}]{def = {\ttfamily {\bf value\+\_\+t}()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a236ab0dc2059eb6180d1c611115492c3}
+
+
+Get. 
+
+
+
+Definition at line 201 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_afe29b99fbf8804e9a4965e197ceed24e}{}\index{I\+N\+I@{I\+N\+I}!get@{get}}
+\index{get@{get}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{get(const section\+\_\+t section, const key\+\_\+t key, value\+\_\+t def)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ {\bf value\+\_\+t} {\bf I\+N\+I}$<$ T, U, V $>$\+::get (
+\begin{DoxyParamCaption}
+\item[{const {\bf section\+\_\+t}}]{section, }
+\item[{const {\bf key\+\_\+t}}]{key, }
+\item[{{\bf value\+\_\+t}}]{def}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_afe29b99fbf8804e9a4965e197ceed24e}
+
+
+Definition at line 209 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_ab55a726e7ed9346a98b032c6a0cb7d37}{}\index{I\+N\+I@{I\+N\+I}!get@{get}}
+\index{get@{get}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{get(const W key, const X def=value\+\_\+t())}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ template$<$typename W , typename X $>$ X {\bf I\+N\+I}$<$ T, U, V $>$\+::get (
+\begin{DoxyParamCaption}
+\item[{const W}]{key, }
+\item[{const X}]{def = {\ttfamily {\bf value\+\_\+t}()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_ab55a726e7ed9346a98b032c6a0cb7d37}
+
+
+Definition at line 217 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_ab01b7aa55c1216246a329ccebae53f49}{}\index{I\+N\+I@{I\+N\+I}!get@{get}}
+\index{get@{get}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{get(const W key, const fini\+\_\+char\+\_\+t $\ast$def=\+\_\+\+T(""""))}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ template$<$typename W $>$ {\bf fini\+\_\+string\+\_\+t} {\bf I\+N\+I}$<$ T, U, V $>$\+::get (
+\begin{DoxyParamCaption}
+\item[{const W}]{key, }
+\item[{const {\bf fini\+\_\+char\+\_\+t} $\ast$}]{def = {\ttfamily {\bf \+\_\+\+T}(\char`\"{}\char`\"{})}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_ab01b7aa55c1216246a329ccebae53f49}
+
+
+Definition at line 222 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a237fc101e4977fa4f4e1de750c7e9aa3}{}\index{I\+N\+I@{I\+N\+I}!get@{get}}
+\index{get@{get}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{get(const W section, const X key, const Y def)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ template$<$typename W , typename X , typename Y $>$ Y {\bf I\+N\+I}$<$ T, U, V $>$\+::get (
+\begin{DoxyParamCaption}
+\item[{const W}]{section, }
+\item[{const X}]{key, }
+\item[{const Y}]{def}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a237fc101e4977fa4f4e1de750c7e9aa3}
+
+
+Definition at line 228 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a4a2ca86ad6e5532a1fa5f8de4a71965f}{}\index{I\+N\+I@{I\+N\+I}!get@{get}}
+\index{get@{get}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{get(const W section, const X key, const fini\+\_\+char\+\_\+t $\ast$def)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ template$<$typename W , typename X $>$ {\bf fini\+\_\+string\+\_\+t} {\bf I\+N\+I}$<$ T, U, V $>$\+::get (
+\begin{DoxyParamCaption}
+\item[{const W}]{section, }
+\item[{const X}]{key, }
+\item[{const {\bf fini\+\_\+char\+\_\+t} $\ast$}]{def}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a4a2ca86ad6e5532a1fa5f8de4a71965f}
+
+
+Definition at line 233 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a2495473d9ccef11c6bf54af807d65ae9}{}\index{I\+N\+I@{I\+N\+I}!merge@{merge}}
+\index{merge@{merge}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{merge(ini\+\_\+t \&other, bool retain\+Values=true)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ void {\bf I\+N\+I}$<$ T, U, V $>$\+::merge (
+\begin{DoxyParamCaption}
+\item[{{\bf ini\+\_\+t} \&}]{other, }
+\item[{bool}]{retain\+Values = {\ttfamily true}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a2495473d9ccef11c6bf54af807d65ae9}
+
+
+Definition at line 496 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_abac006fb18cd3c8a12815ec8850006b5}{}\index{I\+N\+I@{I\+N\+I}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{operator[](section\+\_\+t section)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ {\bf keys\+\_\+t}\& {\bf I\+N\+I}$<$ T, U, V $>$\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{{\bf section\+\_\+t}}]{section}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_abac006fb18cd3c8a12815ec8850006b5}
+
+
+Access Content. 
+
+
+
+Definition at line 147 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_aada51d135d18d4f67c3458f18d822883}{}\index{I\+N\+I@{I\+N\+I}!parse@{parse}}
+\index{parse@{parse}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{parse(std\+::istream \&file)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ void {\bf I\+N\+I}$<$ T, U, V $>$\+::parse (
+\begin{DoxyParamCaption}
+\item[{std\+::istream \&}]{file}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_aada51d135d18d4f67c3458f18d822883}
+
+
+Functions. 
+
+
+
+Definition at line 240 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a01cfaf1daca70fccef0a4db662de04c1}{}\index{I\+N\+I@{I\+N\+I}!parse@{parse}}
+\index{parse@{parse}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{parse()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ bool {\bf I\+N\+I}$<$ T, U, V $>$\+::parse (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a01cfaf1daca70fccef0a4db662de04c1}
+
+
+Definition at line 324 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a86f88bfe47723393fc2460c88ab11d45}{}\index{I\+N\+I@{I\+N\+I}!parse\+Binary@{parse\+Binary}}
+\index{parse\+Binary@{parse\+Binary}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{parse\+Binary()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ bool {\bf I\+N\+I}$<$ T, U, V $>$\+::parse\+Binary (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a86f88bfe47723393fc2460c88ab11d45}
+
+
+Definition at line 352 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a6b5cd2a495a3b8c8139b92ee45c74165}{}\index{I\+N\+I@{I\+N\+I}!save@{save}}
+\index{save@{save}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{save(const std\+::string filename="""")}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ bool {\bf I\+N\+I}$<$ T, U, V $>$\+::save (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{filename = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a6b5cd2a495a3b8c8139b92ee45c74165}
+
+
+Output. 
+
+
+
+Definition at line 397 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a1bb1de72f3bdf63172740ab9c60f3f06}{}\index{I\+N\+I@{I\+N\+I}!save\+Binary@{save\+Binary}}
+\index{save\+Binary@{save\+Binary}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{save\+Binary(const std\+::string filename="""")}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ bool {\bf I\+N\+I}$<$ T, U, V $>$\+::save\+Binary (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{filename = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a1bb1de72f3bdf63172740ab9c60f3f06}
+
+
+Definition at line 430 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_ac9ce0a9a622eb36388f7b0fb17819ad6}{}\index{I\+N\+I@{I\+N\+I}!save\+Binary\+Experimental@{save\+Binary\+Experimental}}
+\index{save\+Binary\+Experimental@{save\+Binary\+Experimental}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{save\+Binary\+Experimental(std\+::string filename="""")}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ bool {\bf I\+N\+I}$<$ T, U, V $>$\+::save\+Binary\+Experimental (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{filename = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_ac9ce0a9a622eb36388f7b0fb17819ad6}
+
+
+Definition at line 463 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a6132ce549f8fa43ecb4faf5c5fd6dbf0}{}\index{I\+N\+I@{I\+N\+I}!select@{select}}
+\index{select@{select}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{select(const section\+\_\+t section)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ bool {\bf I\+N\+I}$<$ T, U, V $>$\+::select (
+\begin{DoxyParamCaption}
+\item[{const {\bf section\+\_\+t}}]{section}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a6132ce549f8fa43ecb4faf5c5fd6dbf0}
+
+
+Definition at line 172 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a60aea0868d612b12941b53304bb2d8f3}{}\index{I\+N\+I@{I\+N\+I}!set@{set}}
+\index{set@{set}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{set(const key\+\_\+t key, const value\+\_\+t value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ bool {\bf I\+N\+I}$<$ T, U, V $>$\+::set (
+\begin{DoxyParamCaption}
+\item[{const {\bf key\+\_\+t}}]{key, }
+\item[{const {\bf value\+\_\+t}}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_a60aea0868d612b12941b53304bb2d8f3}
+
+
+Set. 
+
+
+
+Definition at line 185 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_aa1dd6129122078d11d4e59198c303ffb}{}\index{I\+N\+I@{I\+N\+I}!set@{set}}
+\index{set@{set}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{set(const W key, const X value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ template$<$typename W , typename X $>$ bool {\bf I\+N\+I}$<$ T, U, V $>$\+::set (
+\begin{DoxyParamCaption}
+\item[{const W}]{key, }
+\item[{const X}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_i_n_i_aa1dd6129122078d11d4e59198c303ffb}
+
+
+Definition at line 195 of file I\+N\+I.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_i_n_i_ac4b0b619f54171871f75c2a7f0fb16a7}{}\index{I\+N\+I@{I\+N\+I}!current@{current}}
+\index{current@{current}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{current}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ {\bf keys\+\_\+t}$\ast$ {\bf I\+N\+I}$<$ T, U, V $>$\+::current}\label{class_i_n_i_ac4b0b619f54171871f75c2a7f0fb16a7}
+
+
+Definition at line 123 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a3a7884bd145b42e76290f22711536668}{}\index{I\+N\+I@{I\+N\+I}!data@{data}}
+\index{data@{data}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{data}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ {\bf data\+\_\+t}$\ast$ {\bf I\+N\+I}$<$ T, U, V $>$\+::data}\label{class_i_n_i_a3a7884bd145b42e76290f22711536668}
+
+
+Definition at line 121 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a602d6b20ea275f3e654f1508a95ceea6}{}\index{I\+N\+I@{I\+N\+I}!data\+Size@{data\+Size}}
+\index{data\+Size@{data\+Size}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{data\+Size}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ size\+\_\+t {\bf I\+N\+I}$<$ T, U, V $>$\+::data\+Size}\label{class_i_n_i_a602d6b20ea275f3e654f1508a95ceea6}
+
+
+Definition at line 122 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_af52e483d586ea3416df114e70755e96c}{}\index{I\+N\+I@{I\+N\+I}!filename@{filename}}
+\index{filename@{filename}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{filename}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ std\+::string {\bf I\+N\+I}$<$ T, U, V $>$\+::filename}\label{class_i_n_i_af52e483d586ea3416df114e70755e96c}
+
+
+Data members. 
+
+
+
+Definition at line 120 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_ab1825501769c4bb2cdc1d7ddd6a7be7a}{}\index{I\+N\+I@{I\+N\+I}!sections@{sections}}
+\index{sections@{sections}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{sections}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ {\bf sections\+\_\+t} {\bf I\+N\+I}$<$ T, U, V $>$\+::sections}\label{class_i_n_i_ab1825501769c4bb2cdc1d7ddd6a7be7a}
+
+
+Definition at line 124 of file I\+N\+I.\+h.
+
+\hypertarget{class_i_n_i_a0a65472be1d0807d6ad380dc0b7b29d3}{}\index{I\+N\+I@{I\+N\+I}!source@{source}}
+\index{source@{source}!I\+N\+I@{I\+N\+I}}
+\subsubsection[{source}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T = fini\+\_\+string\+\_\+t, typename U = fini\+\_\+string\+\_\+t, typename V = fini\+\_\+string\+\_\+t$>$ {\bf source\+\_\+e} {\bf I\+N\+I}$<$ T, U, V $>$\+::source}\label{class_i_n_i_a0a65472be1d0807d6ad380dc0b7b29d3}
+
+
+Definition at line 125 of file I\+N\+I.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/\hyperlink{_i_n_i_8h}{I\+N\+I.\+h}\end{DoxyCompactItemize}

@@ -1,0 +1,4 @@
+var structasio_1_1handler__type_3_01use__future__t_3_01_allocator_01_4_00_01_return_type_07_arg1_08_4 =
+[
+    [ "type", "structasio_1_1handler__type_3_01use__future__t_3_01_allocator_01_4_00_01_return_type_07_arg1_08_4.html#aa4bca092e3f7ab436ab9a136bbae80f5", null ]
+];

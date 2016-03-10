@@ -1,0 +1,37 @@
+\hypertarget{spawn_8hpp}{}\section{ext/asio/spawn.hpp File Reference}
+\label{spawn_8hpp}\index{ext/asio/spawn.\+hpp@{ext/asio/spawn.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$boost/coroutine/all.\+hpp$>$}\\*
+{\ttfamily \#include \char`\"{}asio/detail/weak\+\_\+ptr.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/wrapped\+\_\+handler.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/io\+\_\+service.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/strand.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/impl/spawn.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1basic__yield__context}{asio\+::basic\+\_\+yield\+\_\+context$<$ Handler $>$}
+\begin{DoxyCompactList}\small\item\em Context object the represents the currently executing coroutine. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef basic\+\_\+yield\+\_\+context$<$ detail\+::wrapped\+\_\+handler$<$ io\+\_\+service\+::strand, void($\ast$)(), detail\+::is\+\_\+continuation\+\_\+if\+\_\+running $>$ $>$ \hyperlink{namespaceasio_a41e285c1148c5ff12c443f3bfa9bdd9a}{asio\+::yield\+\_\+context}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Handler , typename Function $>$ }\\void \hyperlink{group__spawn_ga4f2228347a699338928b72b60b52e345}{asio\+::spawn} (\hyperlink{config_8hpp_a4a0e0a3e374fd7362ab5590338533950}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}(Handler) handler, \hyperlink{config_8hpp_a4a0e0a3e374fd7362ab5590338533950}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}(Function) function, const boost\+::coroutines\+::attributes \&attributes)
+\item 
+{\footnotesize template$<$typename Handler , typename Function $>$ }\\void \hyperlink{group__spawn_ga96a673b1867f7983c6701bb0dc658c36}{asio\+::spawn} (basic\+\_\+yield\+\_\+context$<$ Handler $>$ ctx, \hyperlink{config_8hpp_a4a0e0a3e374fd7362ab5590338533950}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}(Function) function, const boost\+::coroutines\+::attributes \&attributes=boost\+::coroutines\+::attributes())
+\begin{DoxyCompactList}\small\item\em Start a new stackful coroutine, inheriting the execution context of another. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Function $>$ }\\void \hyperlink{group__spawn_ga832418b551fda9707d57eadcbb40142c}{asio\+::spawn} (\hyperlink{classasio_1_1io__service_1_1strand}{asio\+::io\+\_\+service\+::strand} strand, \hyperlink{config_8hpp_a4a0e0a3e374fd7362ab5590338533950}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}(Function) function, const boost\+::coroutines\+::attributes \&attributes=boost\+::coroutines\+::attributes())
+\begin{DoxyCompactList}\small\item\em Start a new stackful coroutine that executes in the context of a strand. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Function $>$ }\\void \hyperlink{group__spawn_gab669a6a11388d45fb48bc9be9e5bda38}{asio\+::spawn} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&io\+\_\+service, \hyperlink{config_8hpp_a4a0e0a3e374fd7362ab5590338533950}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}(Function) function, const boost\+::coroutines\+::attributes \&attributes=boost\+::coroutines\+::attributes())
+\begin{DoxyCompactList}\small\item\em Start a new stackful coroutine that executes on a given \hyperlink{classasio_1_1io__service}{io\+\_\+service}. \end{DoxyCompactList}\end{DoxyCompactItemize}

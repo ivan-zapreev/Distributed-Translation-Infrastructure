@@ -1,0 +1,158 @@
+\hypertarget{math__utils_8hpp}{}\section{inc/common/utils/math\+\_\+utils.hpp File Reference}
+\label{math__utils_8hpp}\index{inc/common/utils/math\+\_\+utils.\+hpp@{inc/common/utils/math\+\_\+utils.\+hpp}}
+{\ttfamily \#include $<$cstdint$>$}\\*
+{\ttfamily \#include $<$cstring$>$}\\*
+{\ttfamily \#include $<$bitset$>$}\\*
+{\ttfamily \#include \char`\"{}common/utils/logging/logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/exceptions.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1utils}{uva\+::utils}
+\item 
+ \hyperlink{namespaceuva_1_1utils_1_1math}{uva\+::utils\+::math}
+\item 
+ \hyperlink{namespaceuva_1_1utils_1_1math_1_1const__expr}{uva\+::utils\+::math\+::const\+\_\+expr}
+\item 
+ \hyperlink{namespaceuva_1_1utils_1_1math_1_1log2}{uva\+::utils\+::math\+::log2}
+\item 
+ \hyperlink{namespaceuva_1_1utils_1_1math_1_1bits}{uva\+::utils\+::math\+::bits}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{math__utils_8hpp_a7f0f0aa2d8a46fb70b89e38da72abd37}{B\+Y\+T\+E\+\_\+\+I\+D\+X}(total\+\_\+bit\+\_\+pos)~((total\+\_\+bit\+\_\+pos) / N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)
+\item 
+\#define \hyperlink{math__utils_8hpp_a20af5a9dc33935882c0d7f2c64e23556}{R\+E\+M\+A\+I\+N\+I\+N\+G\+\_\+\+B\+I\+T\+\_\+\+I\+D\+X}(total\+\_\+bit\+\_\+pos)~((total\+\_\+bit\+\_\+pos) \% N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)
+\item 
+\#define \hyperlink{math__utils_8hpp_a1ee34e6ad19b67551cfa85f3d3e2d88e}{N\+U\+M\+\_\+\+F\+U\+L\+L\+\_\+\+B\+Y\+T\+E\+S}(number\+\_\+of\+\_\+bits)~((number\+\_\+of\+\_\+bits) / N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)
+\item 
+\#define \hyperlink{math__utils_8hpp_a6a5e22024bb4e970642e00befa8727b9}{N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+R\+E\+M\+A\+I\+N\+D\+E\+R}(number\+\_\+of\+\_\+bits)~((number\+\_\+of\+\_\+bits) \% N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)
+\item 
+\#define \hyperlink{math__utils_8hpp_aa8795dc3825e3a5e2381c593f1d14f5e}{N\+U\+M\+\_\+\+B\+Y\+T\+E\+S\+\_\+4\+\_\+\+B\+I\+T\+S}(number\+\_\+of\+\_\+bits)~(((number\+\_\+of\+\_\+bits) + (N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8 -\/ 1)) / N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)
+\item 
+\#define \hyperlink{math__utils_8hpp_a1178e1e3118ed30f4ed917b18b1e0961}{B\+Y\+T\+E\+S\+\_\+\+T\+O\+\_\+\+B\+I\+T\+S}(number\+\_\+of\+\_\+bytes)~((number\+\_\+of\+\_\+bytes) $\ast$ N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)
+\item 
+\#define \hyperlink{math__utils_8hpp_abb235d96b5acfb3cf6ee016f8c3befc7}{V\+A\+L\+U\+E\+\_\+\+L\+E\+N\+\_\+\+B\+Y\+T\+E\+S}(V\+A\+L\+U\+E)~static\+\_\+cast$<$uint8\+\_\+t$>$ (const\+\_\+expr\+::ceil(const\+\_\+expr\+::log2(V\+A\+L\+U\+E)/8))
+\item 
+\#define \hyperlink{math__utils_8hpp_a87e2623ee539f873f35cc3896dcc6860}{H\+A\+N\+D\+L\+E\+\_\+\+E\+N\+D\+I\+A\+N}(value\+\_\+type,  value)
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr double \hyperlink{namespaceuva_1_1utils_1_1math_1_1const__expr_a51d8e9d286b0ac9c0d01350081008082}{uva\+::utils\+::math\+::const\+\_\+expr\+::log2} (double value, double pow=0.\+0)
+\item 
+constexpr uint64\+\_\+t \hyperlink{namespaceuva_1_1utils_1_1math_1_1const__expr_a1c7fa08dcebb20ed8f0d12ec5cfa513d}{uva\+::utils\+::math\+::const\+\_\+expr\+::ceil} (double value)
+\item 
+constexpr uint64\+\_\+t \hyperlink{namespaceuva_1_1utils_1_1math_1_1const__expr_af88edac03f2feda3027da86d576d5b46}{uva\+::utils\+::math\+::const\+\_\+expr\+::power} (uint64\+\_\+t value, uint8\+\_\+t pow)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{math__utils_8hpp_a7f0f0aa2d8a46fb70b89e38da72abd37}{}\index{math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}!B\+Y\+T\+E\+\_\+\+I\+D\+X@{B\+Y\+T\+E\+\_\+\+I\+D\+X}}
+\index{B\+Y\+T\+E\+\_\+\+I\+D\+X@{B\+Y\+T\+E\+\_\+\+I\+D\+X}!math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}}
+\subsubsection[{B\+Y\+T\+E\+\_\+\+I\+D\+X}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\+Y\+T\+E\+\_\+\+I\+D\+X(
+\begin{DoxyParamCaption}
+\item[{}]{total\+\_\+bit\+\_\+pos}
+\end{DoxyParamCaption}
+)~((total\+\_\+bit\+\_\+pos) / N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)}\label{math__utils_8hpp_a7f0f0aa2d8a46fb70b89e38da72abd37}
+
+
+Definition at line 136 of file math\+\_\+utils.\+hpp.
+
+\hypertarget{math__utils_8hpp_a1178e1e3118ed30f4ed917b18b1e0961}{}\index{math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}!B\+Y\+T\+E\+S\+\_\+\+T\+O\+\_\+\+B\+I\+T\+S@{B\+Y\+T\+E\+S\+\_\+\+T\+O\+\_\+\+B\+I\+T\+S}}
+\index{B\+Y\+T\+E\+S\+\_\+\+T\+O\+\_\+\+B\+I\+T\+S@{B\+Y\+T\+E\+S\+\_\+\+T\+O\+\_\+\+B\+I\+T\+S}!math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}}
+\subsubsection[{B\+Y\+T\+E\+S\+\_\+\+T\+O\+\_\+\+B\+I\+T\+S}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\+Y\+T\+E\+S\+\_\+\+T\+O\+\_\+\+B\+I\+T\+S(
+\begin{DoxyParamCaption}
+\item[{}]{number\+\_\+of\+\_\+bytes}
+\end{DoxyParamCaption}
+)~((number\+\_\+of\+\_\+bytes) $\ast$ N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)}\label{math__utils_8hpp_a1178e1e3118ed30f4ed917b18b1e0961}
+
+
+Definition at line 147 of file math\+\_\+utils.\+hpp.
+
+\hypertarget{math__utils_8hpp_a87e2623ee539f873f35cc3896dcc6860}{}\index{math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}!H\+A\+N\+D\+L\+E\+\_\+\+E\+N\+D\+I\+A\+N@{H\+A\+N\+D\+L\+E\+\_\+\+E\+N\+D\+I\+A\+N}}
+\index{H\+A\+N\+D\+L\+E\+\_\+\+E\+N\+D\+I\+A\+N@{H\+A\+N\+D\+L\+E\+\_\+\+E\+N\+D\+I\+A\+N}!math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}}
+\subsubsection[{H\+A\+N\+D\+L\+E\+\_\+\+E\+N\+D\+I\+A\+N}]{\setlength{\rightskip}{0pt plus 5cm}\#define H\+A\+N\+D\+L\+E\+\_\+\+E\+N\+D\+I\+A\+N(
+\begin{DoxyParamCaption}
+\item[{}]{value\+\_\+type, }
+\item[{}]{value}
+\end{DoxyParamCaption}
+)}\label{math__utils_8hpp_a87e2623ee539f873f35cc3896dcc6860}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if}(\textcolor{keyword}{sizeof}(value\_type) == 2) \{ \(\backslash\)
+    (\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value}) = \_\_builtin\_bswap16((\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value})); \(\backslash\)
+\} \textcolor{keywordflow}{else} \{ \(\backslash\)
+    if(\textcolor{keyword}{sizeof}(value\_type) == 4) \{ \(\backslash\)
+        (\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value}) = \_\_builtin\_bswap32((\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value})); \(\backslash\)
+    \} \textcolor{keywordflow}{else} \{ \(\backslash\)
+        if(\textcolor{keyword}{sizeof}(value\_type) == 8) \{ \(\backslash\)
+            (\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value}) = \_\_builtin\_bswap64((\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{value})); \(\backslash\)
+        \} \textcolor{keywordflow}{else} \{ \(\backslash\)
+            throw \hyperlink{classuva_1_1utils_1_1exceptions_1_1_exception}{Exception}(\textcolor{stringliteral}{"HANDLE\_ENDIAN(value\_type, value): Unsupported value type!"}); \(\backslash\)
+        \} \(\backslash\)
+    \} \(\backslash\)
+\}
+\end{DoxyCode}
+
+
+Definition at line 156 of file math\+\_\+utils.\+hpp.
+
+\hypertarget{math__utils_8hpp_a6a5e22024bb4e970642e00befa8727b9}{}\index{math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}!N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+R\+E\+M\+A\+I\+N\+D\+E\+R@{N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+R\+E\+M\+A\+I\+N\+D\+E\+R}}
+\index{N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+R\+E\+M\+A\+I\+N\+D\+E\+R@{N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+R\+E\+M\+A\+I\+N\+D\+E\+R}!math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}}
+\subsubsection[{N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+R\+E\+M\+A\+I\+N\+D\+E\+R}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+R\+E\+M\+A\+I\+N\+D\+E\+R(
+\begin{DoxyParamCaption}
+\item[{}]{number\+\_\+of\+\_\+bits}
+\end{DoxyParamCaption}
+)~((number\+\_\+of\+\_\+bits) \% N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)}\label{math__utils_8hpp_a6a5e22024bb4e970642e00befa8727b9}
+
+
+Definition at line 143 of file math\+\_\+utils.\+hpp.
+
+\hypertarget{math__utils_8hpp_aa8795dc3825e3a5e2381c593f1d14f5e}{}\index{math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}!N\+U\+M\+\_\+\+B\+Y\+T\+E\+S\+\_\+4\+\_\+\+B\+I\+T\+S@{N\+U\+M\+\_\+\+B\+Y\+T\+E\+S\+\_\+4\+\_\+\+B\+I\+T\+S}}
+\index{N\+U\+M\+\_\+\+B\+Y\+T\+E\+S\+\_\+4\+\_\+\+B\+I\+T\+S@{N\+U\+M\+\_\+\+B\+Y\+T\+E\+S\+\_\+4\+\_\+\+B\+I\+T\+S}!math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}}
+\subsubsection[{N\+U\+M\+\_\+\+B\+Y\+T\+E\+S\+\_\+4\+\_\+\+B\+I\+T\+S}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\+U\+M\+\_\+\+B\+Y\+T\+E\+S\+\_\+4\+\_\+\+B\+I\+T\+S(
+\begin{DoxyParamCaption}
+\item[{}]{number\+\_\+of\+\_\+bits}
+\end{DoxyParamCaption}
+)~(((number\+\_\+of\+\_\+bits) + (N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8 -\/ 1)) / N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)}\label{math__utils_8hpp_aa8795dc3825e3a5e2381c593f1d14f5e}
+
+
+Definition at line 145 of file math\+\_\+utils.\+hpp.
+
+\hypertarget{math__utils_8hpp_a1ee34e6ad19b67551cfa85f3d3e2d88e}{}\index{math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}!N\+U\+M\+\_\+\+F\+U\+L\+L\+\_\+\+B\+Y\+T\+E\+S@{N\+U\+M\+\_\+\+F\+U\+L\+L\+\_\+\+B\+Y\+T\+E\+S}}
+\index{N\+U\+M\+\_\+\+F\+U\+L\+L\+\_\+\+B\+Y\+T\+E\+S@{N\+U\+M\+\_\+\+F\+U\+L\+L\+\_\+\+B\+Y\+T\+E\+S}!math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}}
+\subsubsection[{N\+U\+M\+\_\+\+F\+U\+L\+L\+\_\+\+B\+Y\+T\+E\+S}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\+U\+M\+\_\+\+F\+U\+L\+L\+\_\+\+B\+Y\+T\+E\+S(
+\begin{DoxyParamCaption}
+\item[{}]{number\+\_\+of\+\_\+bits}
+\end{DoxyParamCaption}
+)~((number\+\_\+of\+\_\+bits) / N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)}\label{math__utils_8hpp_a1ee34e6ad19b67551cfa85f3d3e2d88e}
+
+
+Definition at line 141 of file math\+\_\+utils.\+hpp.
+
+\hypertarget{math__utils_8hpp_a20af5a9dc33935882c0d7f2c64e23556}{}\index{math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}!R\+E\+M\+A\+I\+N\+I\+N\+G\+\_\+\+B\+I\+T\+\_\+\+I\+D\+X@{R\+E\+M\+A\+I\+N\+I\+N\+G\+\_\+\+B\+I\+T\+\_\+\+I\+D\+X}}
+\index{R\+E\+M\+A\+I\+N\+I\+N\+G\+\_\+\+B\+I\+T\+\_\+\+I\+D\+X@{R\+E\+M\+A\+I\+N\+I\+N\+G\+\_\+\+B\+I\+T\+\_\+\+I\+D\+X}!math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}}
+\subsubsection[{R\+E\+M\+A\+I\+N\+I\+N\+G\+\_\+\+B\+I\+T\+\_\+\+I\+D\+X}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\+E\+M\+A\+I\+N\+I\+N\+G\+\_\+\+B\+I\+T\+\_\+\+I\+D\+X(
+\begin{DoxyParamCaption}
+\item[{}]{total\+\_\+bit\+\_\+pos}
+\end{DoxyParamCaption}
+)~((total\+\_\+bit\+\_\+pos) \% N\+U\+M\+\_\+\+B\+I\+T\+S\+\_\+\+I\+N\+\_\+\+U\+I\+N\+T\+\_\+8)}\label{math__utils_8hpp_a20af5a9dc33935882c0d7f2c64e23556}
+
+
+Definition at line 138 of file math\+\_\+utils.\+hpp.
+
+\hypertarget{math__utils_8hpp_abb235d96b5acfb3cf6ee016f8c3befc7}{}\index{math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}!V\+A\+L\+U\+E\+\_\+\+L\+E\+N\+\_\+\+B\+Y\+T\+E\+S@{V\+A\+L\+U\+E\+\_\+\+L\+E\+N\+\_\+\+B\+Y\+T\+E\+S}}
+\index{V\+A\+L\+U\+E\+\_\+\+L\+E\+N\+\_\+\+B\+Y\+T\+E\+S@{V\+A\+L\+U\+E\+\_\+\+L\+E\+N\+\_\+\+B\+Y\+T\+E\+S}!math\+\_\+utils.\+hpp@{math\+\_\+utils.\+hpp}}
+\subsubsection[{V\+A\+L\+U\+E\+\_\+\+L\+E\+N\+\_\+\+B\+Y\+T\+E\+S}]{\setlength{\rightskip}{0pt plus 5cm}\#define V\+A\+L\+U\+E\+\_\+\+L\+E\+N\+\_\+\+B\+Y\+T\+E\+S(
+\begin{DoxyParamCaption}
+\item[{}]{V\+A\+L\+U\+E}
+\end{DoxyParamCaption}
+)~static\+\_\+cast$<$uint8\+\_\+t$>$ (const\+\_\+expr\+::ceil(const\+\_\+expr\+::log2(V\+A\+L\+U\+E)/8))}\label{math__utils_8hpp_abb235d96b5acfb3cf6ee016f8c3befc7}
+
+
+Definition at line 149 of file math\+\_\+utils.\+hpp.
+

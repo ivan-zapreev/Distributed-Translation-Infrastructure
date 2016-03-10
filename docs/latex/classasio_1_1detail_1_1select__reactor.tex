@@ -1,0 +1,361 @@
+\hypertarget{classasio_1_1detail_1_1select__reactor}{}\section{asio\+:\+:detail\+:\+:select\+\_\+reactor Class Reference}
+\label{classasio_1_1detail_1_1select__reactor}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+
+
+{\ttfamily \#include $<$select\+\_\+reactor.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:detail\+:\+:select\+\_\+reactor\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classasio_1_1detail_1_1select__reactor}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structasio_1_1detail_1_1select__reactor_1_1per__descriptor__data}{per\+\_\+descriptor\+\_\+data}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37}{op\+\_\+types} \{ \\*
+\hyperlink{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37ab22de8bbf84e6d43de4e6f6a8bf70da5}{read\+\_\+op} = 0, 
+\hyperlink{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a0d28233dd5e828b1e17ae9989d33a74d}{write\+\_\+op} = 1, 
+\hyperlink{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a12faaedfaf78763570a2db254b6698df}{except\+\_\+op} = 2, 
+\hyperlink{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a6ad9d2ec476a32b5c7d1edc68ada6504}{max\+\_\+select\+\_\+ops} = 3, 
+\\*
+\hyperlink{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37af9e5ef1037c31bf9fcfc88032dc7f9e9}{connect\+\_\+op} = 1, 
+\hyperlink{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a2fce81cdf971a8af0c04fa6fea53ca92}{max\+\_\+ops} = 3
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1detail_1_1select__reactor_a715584458d9991b53be5a38c9f7ac714}{select\+\_\+reactor} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service})
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1detail_1_1select__reactor_ae16c8e9c3279eecdba814d8e31297c7e}{$\sim$select\+\_\+reactor} ()
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1select__reactor_a7167186a2d11da718454ec79742bd8fb}{shutdown\+\_\+service} ()
+\begin{DoxyCompactList}\small\item\em Destroy all user-\/defined handler objects owned by the service. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1select__reactor_ac891c6cc7ddd0bdc5917d03e083e0569}{fork\+\_\+service} (\hyperlink{classasio_1_1io__service_a45f084ae64e601f7ead3f891d5ed0fc6}{asio\+::io\+\_\+service\+::fork\+\_\+event} fork\+\_\+ev)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1select__reactor_a9501a75f82bcb0c4438d1c774cd17366}{init\+\_\+task} ()
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{classasio_1_1detail_1_1select__reactor_a40cbe8f146bdff27ea23f48069fc62ef}{register\+\_\+descriptor} (\hyperlink{namespaceasio_1_1detail_a6798c771dd84b79798b1a08150706ea9}{socket\+\_\+type}, \hyperlink{structasio_1_1detail_1_1select__reactor_1_1per__descriptor__data}{per\+\_\+descriptor\+\_\+data} \&)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{classasio_1_1detail_1_1select__reactor_a6593fb666eb1aac45e56f87cd7e59d91}{register\+\_\+internal\+\_\+descriptor} (int op\+\_\+type, \hyperlink{namespaceasio_1_1detail_a6798c771dd84b79798b1a08150706ea9}{socket\+\_\+type} descriptor, \hyperlink{structasio_1_1detail_1_1select__reactor_1_1per__descriptor__data}{per\+\_\+descriptor\+\_\+data} \&descriptor\+\_\+data, \hyperlink{classasio_1_1detail_1_1reactor__op}{reactor\+\_\+op} $\ast$op)
+\item 
+void \hyperlink{classasio_1_1detail_1_1select__reactor_a01786d5d73b69942001c68a555a97fe2}{post\+\_\+immediate\+\_\+completion} (\hyperlink{classasio_1_1detail_1_1reactor__op}{reactor\+\_\+op} $\ast$op, bool is\+\_\+continuation)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1select__reactor_a7279e720c8228f7935885a4b2e5d3e1d}{start\+\_\+op} (int op\+\_\+type, \hyperlink{namespaceasio_1_1detail_a6798c771dd84b79798b1a08150706ea9}{socket\+\_\+type} descriptor, \hyperlink{structasio_1_1detail_1_1select__reactor_1_1per__descriptor__data}{per\+\_\+descriptor\+\_\+data} \&, \hyperlink{classasio_1_1detail_1_1reactor__op}{reactor\+\_\+op} $\ast$op, bool is\+\_\+continuation, bool)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1select__reactor_a573be73d54e15b9cbc419ba0eb2c904d}{cancel\+\_\+ops} (\hyperlink{namespaceasio_1_1detail_a6798c771dd84b79798b1a08150706ea9}{socket\+\_\+type} descriptor, \hyperlink{structasio_1_1detail_1_1select__reactor_1_1per__descriptor__data}{per\+\_\+descriptor\+\_\+data} \&)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1select__reactor_a548e7a62f94c21de50020bbf05f71fd2}{deregister\+\_\+descriptor} (\hyperlink{namespaceasio_1_1detail_a6798c771dd84b79798b1a08150706ea9}{socket\+\_\+type} descriptor, \hyperlink{structasio_1_1detail_1_1select__reactor_1_1per__descriptor__data}{per\+\_\+descriptor\+\_\+data} \&, bool closing)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1select__reactor_abb284994b52f89d88fdcb739557635ec}{deregister\+\_\+internal\+\_\+descriptor} (\hyperlink{namespaceasio_1_1detail_a6798c771dd84b79798b1a08150706ea9}{socket\+\_\+type} descriptor, \hyperlink{structasio_1_1detail_1_1select__reactor_1_1per__descriptor__data}{per\+\_\+descriptor\+\_\+data} \&descriptor\+\_\+data)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1select__reactor_a2c234d7bc286c431e556a6031b300384}{move\+\_\+descriptor} (\hyperlink{namespaceasio_1_1detail_a6798c771dd84b79798b1a08150706ea9}{socket\+\_\+type} descriptor, \hyperlink{structasio_1_1detail_1_1select__reactor_1_1per__descriptor__data}{per\+\_\+descriptor\+\_\+data} \&target\+\_\+descriptor\+\_\+data, \hyperlink{structasio_1_1detail_1_1select__reactor_1_1per__descriptor__data}{per\+\_\+descriptor\+\_\+data} \&source\+\_\+descriptor\+\_\+data)
+\item 
+{\footnotesize template$<$typename Time\+\_\+\+Traits $>$ }\\void \hyperlink{classasio_1_1detail_1_1select__reactor_a9d0111485a88f61ff5b2d0359da1648d}{add\+\_\+timer\+\_\+queue} (\hyperlink{classasio_1_1detail_1_1timer__queue}{timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$ \&queue)
+\item 
+{\footnotesize template$<$typename Time\+\_\+\+Traits $>$ }\\void \hyperlink{classasio_1_1detail_1_1select__reactor_acc5e4fd590579b35a2013e7443ec9aab}{remove\+\_\+timer\+\_\+queue} (\hyperlink{classasio_1_1detail_1_1timer__queue}{timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$ \&queue)
+\item 
+{\footnotesize template$<$typename Time\+\_\+\+Traits $>$ }\\void \hyperlink{classasio_1_1detail_1_1select__reactor_a74079c17bdd5b0546d723aa21e97bad9}{schedule\+\_\+timer} (\hyperlink{classasio_1_1detail_1_1timer__queue}{timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$ \&queue, const typename Time\+\_\+\+Traits\+::time\+\_\+type \&time, typename \hyperlink{classasio_1_1detail_1_1timer__queue}{timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$\+::per\+\_\+timer\+\_\+data \&timer, \hyperlink{classasio_1_1detail_1_1wait__op}{wait\+\_\+op} $\ast$op)
+\item 
+{\footnotesize template$<$typename Time\+\_\+\+Traits $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1detail_1_1select__reactor_ac5b68a2b1abf0a5fc92174be124b5c5b}{cancel\+\_\+timer} (\hyperlink{classasio_1_1detail_1_1timer__queue}{timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$ \&queue, typename \hyperlink{classasio_1_1detail_1_1timer__queue}{timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$\+::per\+\_\+timer\+\_\+data \&timer, std\+::size\+\_\+t max\+\_\+cancelled=(std\+::numeric\+\_\+limits$<$ std\+::size\+\_\+t $>$\+::max)())
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1select__reactor_a16589c3baed79b28977fe1001e3be565}{run} (bool block, \hyperlink{classasio_1_1detail_1_1op__queue}{op\+\_\+queue}$<$ \hyperlink{namespaceasio_1_1detail_a338968609bec20e37145309f8f9ec936}{operation} $>$ \&ops)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1select__reactor_a58cb1aa36264f0cb376a622d44b1ef20}{interrupt} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 49 of file select\+\_\+reactor.\+hpp.
+
+
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!op\+\_\+types@{op\+\_\+types}}
+\index{op\+\_\+types@{op\+\_\+types}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{op\+\_\+types}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf asio\+::detail\+::select\+\_\+reactor\+::op\+\_\+types}}\label{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{read\+\_\+op@{read\+\_\+op}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!read\+\_\+op@{read\+\_\+op}}\item[{\em 
+\hypertarget{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37ab22de8bbf84e6d43de4e6f6a8bf70da5}{}read\+\_\+op\label{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37ab22de8bbf84e6d43de4e6f6a8bf70da5}
+}]\index{write\+\_\+op@{write\+\_\+op}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!write\+\_\+op@{write\+\_\+op}}\item[{\em 
+\hypertarget{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a0d28233dd5e828b1e17ae9989d33a74d}{}write\+\_\+op\label{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a0d28233dd5e828b1e17ae9989d33a74d}
+}]\index{except\+\_\+op@{except\+\_\+op}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!except\+\_\+op@{except\+\_\+op}}\item[{\em 
+\hypertarget{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a12faaedfaf78763570a2db254b6698df}{}except\+\_\+op\label{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a12faaedfaf78763570a2db254b6698df}
+}]\index{max\+\_\+select\+\_\+ops@{max\+\_\+select\+\_\+ops}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!max\+\_\+select\+\_\+ops@{max\+\_\+select\+\_\+ops}}\item[{\em 
+\hypertarget{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a6ad9d2ec476a32b5c7d1edc68ada6504}{}max\+\_\+select\+\_\+ops\label{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a6ad9d2ec476a32b5c7d1edc68ada6504}
+}]\index{connect\+\_\+op@{connect\+\_\+op}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!connect\+\_\+op@{connect\+\_\+op}}\item[{\em 
+\hypertarget{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37af9e5ef1037c31bf9fcfc88032dc7f9e9}{}connect\+\_\+op\label{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37af9e5ef1037c31bf9fcfc88032dc7f9e9}
+}]\index{max\+\_\+ops@{max\+\_\+ops}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!max\+\_\+ops@{max\+\_\+ops}}\item[{\em 
+\hypertarget{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a2fce81cdf971a8af0c04fa6fea53ca92}{}max\+\_\+ops\label{classasio_1_1detail_1_1select__reactor_aa68ba3d214f9f046a27ad6b4ad743b37a2fce81cdf971a8af0c04fa6fea53ca92}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line 57 of file select\+\_\+reactor.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1select__reactor_a715584458d9991b53be5a38c9f7ac714}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!select\+\_\+reactor@{select\+\_\+reactor}}
+\index{select\+\_\+reactor@{select\+\_\+reactor}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{select\+\_\+reactor(asio\+::io\+\_\+service \&io\+\_\+service)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::detail\+::select\+\_\+reactor\+::select\+\_\+reactor (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a715584458d9991b53be5a38c9f7ac714}
+
+
+Definition at line 37 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_ae16c8e9c3279eecdba814d8e31297c7e}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!````~select\+\_\+reactor@{$\sim$select\+\_\+reactor}}
+\index{````~select\+\_\+reactor@{$\sim$select\+\_\+reactor}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{$\sim$select\+\_\+reactor()}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::detail\+::select\+\_\+reactor\+::$\sim$select\+\_\+reactor (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_ae16c8e9c3279eecdba814d8e31297c7e}
+
+
+Definition at line 55 of file select\+\_\+reactor.\+ipp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1select__reactor_a9d0111485a88f61ff5b2d0359da1648d}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!add\+\_\+timer\+\_\+queue@{add\+\_\+timer\+\_\+queue}}
+\index{add\+\_\+timer\+\_\+queue@{add\+\_\+timer\+\_\+queue}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{add\+\_\+timer\+\_\+queue(timer\+\_\+queue$<$ Time\+\_\+\+Traits $>$ \&queue)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits $>$ void asio\+::detail\+::select\+\_\+reactor\+::add\+\_\+timer\+\_\+queue (
+\begin{DoxyParamCaption}
+\item[{{\bf timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$ \&}]{queue}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a9d0111485a88f61ff5b2d0359da1648d}
+
+
+Definition at line 32 of file select\+\_\+reactor.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a573be73d54e15b9cbc419ba0eb2c904d}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!cancel\+\_\+ops@{cancel\+\_\+ops}}
+\index{cancel\+\_\+ops@{cancel\+\_\+ops}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{cancel\+\_\+ops(socket\+\_\+type descriptor, per\+\_\+descriptor\+\_\+data \&)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::select\+\_\+reactor\+::cancel\+\_\+ops (
+\begin{DoxyParamCaption}
+\item[{{\bf socket\+\_\+type}}]{descriptor, }
+\item[{{\bf select\+\_\+reactor\+::per\+\_\+descriptor\+\_\+data} \&}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a573be73d54e15b9cbc419ba0eb2c904d}
+
+
+Definition at line 142 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_ac5b68a2b1abf0a5fc92174be124b5c5b}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!cancel\+\_\+timer@{cancel\+\_\+timer}}
+\index{cancel\+\_\+timer@{cancel\+\_\+timer}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{cancel\+\_\+timer(timer\+\_\+queue$<$ Time\+\_\+\+Traits $>$ \&queue, typename timer\+\_\+queue$<$ Time\+\_\+\+Traits $>$\+::per\+\_\+timer\+\_\+data \&timer, std\+::size\+\_\+t max\+\_\+cancelled=(std\+::numeric\+\_\+limits$<$ std\+::size\+\_\+t $>$\+::max)())}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits $>$ std\+::size\+\_\+t asio\+::detail\+::select\+\_\+reactor\+::cancel\+\_\+timer (
+\begin{DoxyParamCaption}
+\item[{{\bf timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$ \&}]{queue, }
+\item[{typename {\bf timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$\+::per\+\_\+timer\+\_\+data \&}]{timer, }
+\item[{std\+::size\+\_\+t}]{max\+\_\+cancelled = {\ttfamily (std\+:\+:numeric\+\_\+limits$<$std\+:\+:size\+\_\+t$>$\+:\+:max)()}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_ac5b68a2b1abf0a5fc92174be124b5c5b}
+
+
+Definition at line 64 of file select\+\_\+reactor.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a548e7a62f94c21de50020bbf05f71fd2}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!deregister\+\_\+descriptor@{deregister\+\_\+descriptor}}
+\index{deregister\+\_\+descriptor@{deregister\+\_\+descriptor}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{deregister\+\_\+descriptor(socket\+\_\+type descriptor, per\+\_\+descriptor\+\_\+data \&, bool closing)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::select\+\_\+reactor\+::deregister\+\_\+descriptor (
+\begin{DoxyParamCaption}
+\item[{{\bf socket\+\_\+type}}]{descriptor, }
+\item[{{\bf select\+\_\+reactor\+::per\+\_\+descriptor\+\_\+data} \&}]{, }
+\item[{bool}]{closing}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a548e7a62f94c21de50020bbf05f71fd2}
+
+
+Definition at line 149 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_abb284994b52f89d88fdcb739557635ec}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!deregister\+\_\+internal\+\_\+descriptor@{deregister\+\_\+internal\+\_\+descriptor}}
+\index{deregister\+\_\+internal\+\_\+descriptor@{deregister\+\_\+internal\+\_\+descriptor}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{deregister\+\_\+internal\+\_\+descriptor(socket\+\_\+type descriptor, per\+\_\+descriptor\+\_\+data \&descriptor\+\_\+data)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::select\+\_\+reactor\+::deregister\+\_\+internal\+\_\+descriptor (
+\begin{DoxyParamCaption}
+\item[{{\bf socket\+\_\+type}}]{descriptor, }
+\item[{{\bf select\+\_\+reactor\+::per\+\_\+descriptor\+\_\+data} \&}]{descriptor\+\_\+data}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_abb284994b52f89d88fdcb739557635ec}
+
+
+Definition at line 156 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_ac891c6cc7ddd0bdc5917d03e083e0569}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!fork\+\_\+service@{fork\+\_\+service}}
+\index{fork\+\_\+service@{fork\+\_\+service}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{fork\+\_\+service(asio\+::io\+\_\+service\+::fork\+\_\+event fork\+\_\+ev)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::select\+\_\+reactor\+::fork\+\_\+service (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service\+::fork\+\_\+event}}]{event}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classasio_1_1detail_1_1select__reactor_ac891c6cc7ddd0bdc5917d03e083e0569}
+Handle notification of a fork-\/related event to perform any necessary housekeeping. This function is not a pure virtual so that services only have to implement it if necessary. The default implementation does nothing. 
+
+Reimplemented from \hyperlink{classasio_1_1io__service_1_1service}{asio\+::io\+\_\+service\+::service}.
+
+
+
+Definition at line 89 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a9501a75f82bcb0c4438d1c774cd17366}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!init\+\_\+task@{init\+\_\+task}}
+\index{init\+\_\+task@{init\+\_\+task}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{init\+\_\+task()}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::select\+\_\+reactor\+::init\+\_\+task (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a9501a75f82bcb0c4438d1c774cd17366}
+
+
+Definition at line 95 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a58cb1aa36264f0cb376a622d44b1ef20}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!interrupt@{interrupt}}
+\index{interrupt@{interrupt}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{interrupt()}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::select\+\_\+reactor\+::interrupt (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a58cb1aa36264f0cb376a622d44b1ef20}
+
+
+Definition at line 242 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a2c234d7bc286c431e556a6031b300384}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!move\+\_\+descriptor@{move\+\_\+descriptor}}
+\index{move\+\_\+descriptor@{move\+\_\+descriptor}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{move\+\_\+descriptor(socket\+\_\+type descriptor, per\+\_\+descriptor\+\_\+data \&target\+\_\+descriptor\+\_\+data, per\+\_\+descriptor\+\_\+data \&source\+\_\+descriptor\+\_\+data)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::select\+\_\+reactor\+::move\+\_\+descriptor (
+\begin{DoxyParamCaption}
+\item[{{\bf socket\+\_\+type}}]{descriptor, }
+\item[{{\bf select\+\_\+reactor\+::per\+\_\+descriptor\+\_\+data} \&}]{target\+\_\+descriptor\+\_\+data, }
+\item[{{\bf select\+\_\+reactor\+::per\+\_\+descriptor\+\_\+data} \&}]{source\+\_\+descriptor\+\_\+data}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a2c234d7bc286c431e556a6031b300384}
+
+
+Definition at line 118 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a01786d5d73b69942001c68a555a97fe2}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!post\+\_\+immediate\+\_\+completion@{post\+\_\+immediate\+\_\+completion}}
+\index{post\+\_\+immediate\+\_\+completion@{post\+\_\+immediate\+\_\+completion}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{post\+\_\+immediate\+\_\+completion(reactor\+\_\+op $\ast$op, bool is\+\_\+continuation)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::select\+\_\+reactor\+::post\+\_\+immediate\+\_\+completion (
+\begin{DoxyParamCaption}
+\item[{{\bf reactor\+\_\+op} $\ast$}]{op, }
+\item[{bool}]{is\+\_\+continuation}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1select__reactor_a01786d5d73b69942001c68a555a97fe2}
+
+
+Definition at line 93 of file select\+\_\+reactor.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a40cbe8f146bdff27ea23f48069fc62ef}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!register\+\_\+descriptor@{register\+\_\+descriptor}}
+\index{register\+\_\+descriptor@{register\+\_\+descriptor}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{register\+\_\+descriptor(socket\+\_\+type, per\+\_\+descriptor\+\_\+data \&)}]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::detail\+::select\+\_\+reactor\+::register\+\_\+descriptor (
+\begin{DoxyParamCaption}
+\item[{{\bf socket\+\_\+type}}]{, }
+\item[{{\bf select\+\_\+reactor\+::per\+\_\+descriptor\+\_\+data} \&}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a40cbe8f146bdff27ea23f48069fc62ef}
+
+
+Definition at line 100 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a6593fb666eb1aac45e56f87cd7e59d91}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!register\+\_\+internal\+\_\+descriptor@{register\+\_\+internal\+\_\+descriptor}}
+\index{register\+\_\+internal\+\_\+descriptor@{register\+\_\+internal\+\_\+descriptor}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{register\+\_\+internal\+\_\+descriptor(int op\+\_\+type, socket\+\_\+type descriptor, per\+\_\+descriptor\+\_\+data \&descriptor\+\_\+data, reactor\+\_\+op $\ast$op)}]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::detail\+::select\+\_\+reactor\+::register\+\_\+internal\+\_\+descriptor (
+\begin{DoxyParamCaption}
+\item[{int}]{op\+\_\+type, }
+\item[{{\bf socket\+\_\+type}}]{descriptor, }
+\item[{{\bf select\+\_\+reactor\+::per\+\_\+descriptor\+\_\+data} \&}]{descriptor\+\_\+data, }
+\item[{{\bf reactor\+\_\+op} $\ast$}]{op}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a6593fb666eb1aac45e56f87cd7e59d91}
+
+
+Definition at line 106 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_acc5e4fd590579b35a2013e7443ec9aab}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!remove\+\_\+timer\+\_\+queue@{remove\+\_\+timer\+\_\+queue}}
+\index{remove\+\_\+timer\+\_\+queue@{remove\+\_\+timer\+\_\+queue}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{remove\+\_\+timer\+\_\+queue(timer\+\_\+queue$<$ Time\+\_\+\+Traits $>$ \&queue)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits $>$ void asio\+::detail\+::select\+\_\+reactor\+::remove\+\_\+timer\+\_\+queue (
+\begin{DoxyParamCaption}
+\item[{{\bf timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$ \&}]{queue}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_acc5e4fd590579b35a2013e7443ec9aab}
+
+
+Definition at line 39 of file select\+\_\+reactor.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a16589c3baed79b28977fe1001e3be565}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!run@{run}}
+\index{run@{run}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{run(bool block, op\+\_\+queue$<$ operation $>$ \&ops)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::select\+\_\+reactor\+::run (
+\begin{DoxyParamCaption}
+\item[{bool}]{block, }
+\item[{{\bf op\+\_\+queue}$<$ {\bf operation} $>$ \&}]{ops}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a16589c3baed79b28977fe1001e3be565}
+
+
+Definition at line 165 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a74079c17bdd5b0546d723aa21e97bad9}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!schedule\+\_\+timer@{schedule\+\_\+timer}}
+\index{schedule\+\_\+timer@{schedule\+\_\+timer}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{schedule\+\_\+timer(timer\+\_\+queue$<$ Time\+\_\+\+Traits $>$ \&queue, const typename Time\+\_\+\+Traits\+::time\+\_\+type \&time, typename timer\+\_\+queue$<$ Time\+\_\+\+Traits $>$\+::per\+\_\+timer\+\_\+data \&timer, wait\+\_\+op $\ast$op)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Time\+\_\+\+Traits $>$ void asio\+::detail\+::select\+\_\+reactor\+::schedule\+\_\+timer (
+\begin{DoxyParamCaption}
+\item[{{\bf timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$ \&}]{queue, }
+\item[{const typename Time\+\_\+\+Traits\+::time\+\_\+type \&}]{time, }
+\item[{typename {\bf timer\+\_\+queue}$<$ Time\+\_\+\+Traits $>$\+::per\+\_\+timer\+\_\+data \&}]{timer, }
+\item[{{\bf wait\+\_\+op} $\ast$}]{op}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a74079c17bdd5b0546d723aa21e97bad9}
+
+
+Definition at line 45 of file select\+\_\+reactor.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a7167186a2d11da718454ec79742bd8fb}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!shutdown\+\_\+service@{shutdown\+\_\+service}}
+\index{shutdown\+\_\+service@{shutdown\+\_\+service}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{shutdown\+\_\+service()}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::select\+\_\+reactor\+::shutdown\+\_\+service (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classasio_1_1detail_1_1select__reactor_a7167186a2d11da718454ec79742bd8fb}
+
+
+Destroy all user-\/defined handler objects owned by the service. 
+
+
+
+Implements \hyperlink{classasio_1_1io__service_1_1service}{asio\+::io\+\_\+service\+::service}.
+
+
+
+Definition at line 60 of file select\+\_\+reactor.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1select__reactor_a7279e720c8228f7935885a4b2e5d3e1d}{}\index{asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}!start\+\_\+op@{start\+\_\+op}}
+\index{start\+\_\+op@{start\+\_\+op}!asio\+::detail\+::select\+\_\+reactor@{asio\+::detail\+::select\+\_\+reactor}}
+\subsubsection[{start\+\_\+op(int op\+\_\+type, socket\+\_\+type descriptor, per\+\_\+descriptor\+\_\+data \&, reactor\+\_\+op $\ast$op, bool is\+\_\+continuation, bool)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::select\+\_\+reactor\+::start\+\_\+op (
+\begin{DoxyParamCaption}
+\item[{int}]{op\+\_\+type, }
+\item[{{\bf socket\+\_\+type}}]{descriptor, }
+\item[{{\bf select\+\_\+reactor\+::per\+\_\+descriptor\+\_\+data} \&}]{, }
+\item[{{\bf reactor\+\_\+op} $\ast$}]{op, }
+\item[{bool}]{is\+\_\+continuation, }
+\item[{bool}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1select__reactor_a7279e720c8228f7935885a4b2e5d3e1d}
+
+
+Definition at line 124 of file select\+\_\+reactor.\+ipp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/detail/\hyperlink{select__reactor_8hpp}{select\+\_\+reactor.\+hpp}\item 
+ext/asio/detail/impl/\hyperlink{select__reactor_8ipp}{select\+\_\+reactor.\+ipp}\end{DoxyCompactItemize}

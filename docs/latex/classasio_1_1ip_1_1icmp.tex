@@ -1,0 +1,215 @@
+\hypertarget{classasio_1_1ip_1_1icmp}{}\section{asio\+:\+:ip\+:\+:icmp Class Reference}
+\label{classasio_1_1ip_1_1icmp}\index{asio\+::ip\+::icmp@{asio\+::ip\+::icmp}}
+
+
+Encapsulates the flags needed for I\+C\+M\+P.  
+
+
+
+
+{\ttfamily \#include $<$icmp.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ \hyperlink{classasio_1_1ip_1_1icmp}{icmp} $>$ \hyperlink{classasio_1_1ip_1_1icmp_a3b92dc29eb90413d1dc80966c2d4b6ae}{endpoint}
+\begin{DoxyCompactList}\small\item\em The type of a I\+C\+M\+P endpoint. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1basic__raw__socket}{basic\+\_\+raw\+\_\+socket}$<$ \hyperlink{classasio_1_1ip_1_1icmp}{icmp} $>$ \hyperlink{classasio_1_1ip_1_1icmp_a97be192e262054c0adee620d89b9feab}{socket}
+\begin{DoxyCompactList}\small\item\em The I\+C\+M\+P socket type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1ip_1_1basic__resolver}{basic\+\_\+resolver}$<$ \hyperlink{classasio_1_1ip_1_1icmp}{icmp} $>$ \hyperlink{classasio_1_1ip_1_1icmp_a326f93699ba9f42654917e676fd967aa}{resolver}
+\begin{DoxyCompactList}\small\item\em The I\+C\+M\+P resolver type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classasio_1_1ip_1_1icmp_a0514b883342ffbdcbed377ce87b62e36}{type} () const 
+\begin{DoxyCompactList}\small\item\em Obtain an identifier for the type of the protocol. \end{DoxyCompactList}\item 
+int \hyperlink{classasio_1_1ip_1_1icmp_a6f31f1b1a6596e35fe433a5b7aad5e98}{protocol} () const 
+\begin{DoxyCompactList}\small\item\em Obtain an identifier for the protocol. \end{DoxyCompactList}\item 
+int \hyperlink{classasio_1_1ip_1_1icmp_ad4d1df69e3630639c6d13d2c16b7dfba}{family} () const 
+\begin{DoxyCompactList}\small\item\em Obtain an identifier for the protocol family. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classasio_1_1ip_1_1icmp}{icmp} \hyperlink{classasio_1_1ip_1_1icmp_a7545d246fedc3b70c3b42c95840d40eb}{v4} ()
+\begin{DoxyCompactList}\small\item\em Construct to represent the I\+Pv4 I\+C\+M\+P protocol. \end{DoxyCompactList}\item 
+static \hyperlink{classasio_1_1ip_1_1icmp}{icmp} \hyperlink{classasio_1_1ip_1_1icmp_add63845bd330aa8ae9264ff9e5c0c1a7}{v6} ()
+\begin{DoxyCompactList}\small\item\em Construct to represent the I\+Pv6 I\+C\+M\+P protocol. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classasio_1_1ip_1_1icmp_ab0a2b61230da49b7671f462c4d1c38b5}{operator==} (const \hyperlink{classasio_1_1ip_1_1icmp}{icmp} \&p1, const \hyperlink{classasio_1_1ip_1_1icmp}{icmp} \&p2)
+\begin{DoxyCompactList}\small\item\em Compare two protocols for equality. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1icmp_a01f669f18d50a316a1f84c57572063d3}{operator!=} (const \hyperlink{classasio_1_1ip_1_1icmp}{icmp} \&p1, const \hyperlink{classasio_1_1ip_1_1icmp}{icmp} \&p2)
+\begin{DoxyCompactList}\small\item\em Compare two protocols for inequality. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Encapsulates the flags needed for I\+C\+M\+P. 
+
+The \hyperlink{classasio_1_1ip_1_1icmp}{asio\+::ip\+::icmp} class contains flags necessary for I\+C\+M\+P sockets.
+
+\begin{DoxyParagraph}{Thread Safety}
+{\itshape Distinct} {\itshape objects\+:} Safe.~\newline
+{\itshape Shared} {\itshape objects\+:} Safe.
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Protocol, Internet\+Protocol. 
+\end{DoxyParagraph}
+
+
+Definition at line 42 of file icmp.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1ip_1_1icmp_a3b92dc29eb90413d1dc80966c2d4b6ae}{}\index{asio\+::ip\+::icmp@{asio\+::ip\+::icmp}!endpoint@{endpoint}}
+\index{endpoint@{endpoint}!asio\+::ip\+::icmp@{asio\+::ip\+::icmp}}
+\subsubsection[{endpoint}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf basic\+\_\+endpoint}$<${\bf icmp}$>$ {\bf asio\+::ip\+::icmp\+::endpoint}}\label{classasio_1_1ip_1_1icmp_a3b92dc29eb90413d1dc80966c2d4b6ae}
+
+
+The type of a I\+C\+M\+P endpoint. 
+
+
+
+Definition at line 46 of file icmp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1icmp_a326f93699ba9f42654917e676fd967aa}{}\index{asio\+::ip\+::icmp@{asio\+::ip\+::icmp}!resolver@{resolver}}
+\index{resolver@{resolver}!asio\+::ip\+::icmp@{asio\+::ip\+::icmp}}
+\subsubsection[{resolver}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf basic\+\_\+resolver}$<${\bf icmp}$>$ {\bf asio\+::ip\+::icmp\+::resolver}}\label{classasio_1_1ip_1_1icmp_a326f93699ba9f42654917e676fd967aa}
+
+
+The I\+C\+M\+P resolver type. 
+
+
+
+Definition at line 84 of file icmp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1icmp_a97be192e262054c0adee620d89b9feab}{}\index{asio\+::ip\+::icmp@{asio\+::ip\+::icmp}!socket@{socket}}
+\index{socket@{socket}!asio\+::ip\+::icmp@{asio\+::ip\+::icmp}}
+\subsubsection[{socket}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf basic\+\_\+raw\+\_\+socket}$<${\bf icmp}$>$ {\bf asio\+::ip\+::icmp\+::socket}}\label{classasio_1_1ip_1_1icmp_a97be192e262054c0adee620d89b9feab}
+
+
+The I\+C\+M\+P socket type. 
+
+
+
+Definition at line 81 of file icmp.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ip_1_1icmp_ad4d1df69e3630639c6d13d2c16b7dfba}{}\index{asio\+::ip\+::icmp@{asio\+::ip\+::icmp}!family@{family}}
+\index{family@{family}!asio\+::ip\+::icmp@{asio\+::ip\+::icmp}}
+\subsubsection[{family() const }]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::ip\+::icmp\+::family (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1icmp_ad4d1df69e3630639c6d13d2c16b7dfba}
+
+
+Obtain an identifier for the protocol family. 
+
+
+
+Definition at line 75 of file icmp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1icmp_a6f31f1b1a6596e35fe433a5b7aad5e98}{}\index{asio\+::ip\+::icmp@{asio\+::ip\+::icmp}!protocol@{protocol}}
+\index{protocol@{protocol}!asio\+::ip\+::icmp@{asio\+::ip\+::icmp}}
+\subsubsection[{protocol() const }]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::ip\+::icmp\+::protocol (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1icmp_a6f31f1b1a6596e35fe433a5b7aad5e98}
+
+
+Obtain an identifier for the protocol. 
+
+
+
+Definition at line 69 of file icmp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1icmp_a0514b883342ffbdcbed377ce87b62e36}{}\index{asio\+::ip\+::icmp@{asio\+::ip\+::icmp}!type@{type}}
+\index{type@{type}!asio\+::ip\+::icmp@{asio\+::ip\+::icmp}}
+\subsubsection[{type() const }]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::ip\+::icmp\+::type (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1icmp_a0514b883342ffbdcbed377ce87b62e36}
+
+
+Obtain an identifier for the type of the protocol. 
+
+
+
+Definition at line 63 of file icmp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1icmp_a7545d246fedc3b70c3b42c95840d40eb}{}\index{asio\+::ip\+::icmp@{asio\+::ip\+::icmp}!v4@{v4}}
+\index{v4@{v4}!asio\+::ip\+::icmp@{asio\+::ip\+::icmp}}
+\subsubsection[{v4()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf icmp} asio\+::ip\+::icmp\+::v4 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classasio_1_1ip_1_1icmp_a7545d246fedc3b70c3b42c95840d40eb}
+
+
+Construct to represent the I\+Pv4 I\+C\+M\+P protocol. 
+
+
+
+Definition at line 49 of file icmp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1icmp_add63845bd330aa8ae9264ff9e5c0c1a7}{}\index{asio\+::ip\+::icmp@{asio\+::ip\+::icmp}!v6@{v6}}
+\index{v6@{v6}!asio\+::ip\+::icmp@{asio\+::ip\+::icmp}}
+\subsubsection[{v6()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf icmp} asio\+::ip\+::icmp\+::v6 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classasio_1_1ip_1_1icmp_add63845bd330aa8ae9264ff9e5c0c1a7}
+
+
+Construct to represent the I\+Pv6 I\+C\+M\+P protocol. 
+
+
+
+Definition at line 56 of file icmp.\+hpp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classasio_1_1ip_1_1icmp_a01f669f18d50a316a1f84c57572063d3}{}\index{asio\+::ip\+::icmp@{asio\+::ip\+::icmp}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!asio\+::ip\+::icmp@{asio\+::ip\+::icmp}}
+\subsubsection[{operator"!=}]{\setlength{\rightskip}{0pt plus 5cm}bool operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf icmp} \&}]{p1, }
+\item[{const {\bf icmp} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1icmp_a01f669f18d50a316a1f84c57572063d3}
+
+
+Compare two protocols for inequality. 
+
+
+
+Definition at line 93 of file icmp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1icmp_ab0a2b61230da49b7671f462c4d1c38b5}{}\index{asio\+::ip\+::icmp@{asio\+::ip\+::icmp}!operator==@{operator==}}
+\index{operator==@{operator==}!asio\+::ip\+::icmp@{asio\+::ip\+::icmp}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}bool operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf icmp} \&}]{p1, }
+\item[{const {\bf icmp} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1icmp_ab0a2b61230da49b7671f462c4d1c38b5}
+
+
+Compare two protocols for equality. 
+
+
+
+Definition at line 87 of file icmp.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ip/\hyperlink{icmp_8hpp}{icmp.\+hpp}\end{DoxyCompactItemize}

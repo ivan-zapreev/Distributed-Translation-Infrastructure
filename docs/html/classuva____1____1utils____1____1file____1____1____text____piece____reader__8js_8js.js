@@ -1,0 +1,4 @@
+var classuva____1____1utils____1____1file____1____1____text____piece____reader__8js_8js =
+[
+    [ "classuva__1__1utils__1__1file__1__1__text__piece__reader_8js", "classuva____1____1utils____1____1file____1____1____text____piece____reader__8js_8js.html#a28167c7199348d8f516db1a5485fcebc", null ]
+];

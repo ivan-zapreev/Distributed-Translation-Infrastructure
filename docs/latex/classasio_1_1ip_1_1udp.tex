@@ -1,0 +1,215 @@
+\hypertarget{classasio_1_1ip_1_1udp}{}\section{asio\+:\+:ip\+:\+:udp Class Reference}
+\label{classasio_1_1ip_1_1udp}\index{asio\+::ip\+::udp@{asio\+::ip\+::udp}}
+
+
+Encapsulates the flags needed for U\+D\+P.  
+
+
+
+
+{\ttfamily \#include $<$udp.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ \hyperlink{classasio_1_1ip_1_1udp}{udp} $>$ \hyperlink{classasio_1_1ip_1_1udp_a6356426903164272827153752845368c}{endpoint}
+\begin{DoxyCompactList}\small\item\em The type of a U\+D\+P endpoint. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1basic__datagram__socket}{basic\+\_\+datagram\+\_\+socket}$<$ \hyperlink{classasio_1_1ip_1_1udp}{udp} $>$ \hyperlink{classasio_1_1ip_1_1udp_ab8f8cc1a666bdbbd6c3963f2396f253e}{socket}
+\begin{DoxyCompactList}\small\item\em The U\+D\+P socket type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1ip_1_1basic__resolver}{basic\+\_\+resolver}$<$ \hyperlink{classasio_1_1ip_1_1udp}{udp} $>$ \hyperlink{classasio_1_1ip_1_1udp_abb4d8eff41b11c6c2053bf799d43dba2}{resolver}
+\begin{DoxyCompactList}\small\item\em The U\+D\+P resolver type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classasio_1_1ip_1_1udp_ab2ec5d4de92e3764b9c1ce893bc0e3d3}{type} () const 
+\begin{DoxyCompactList}\small\item\em Obtain an identifier for the type of the protocol. \end{DoxyCompactList}\item 
+int \hyperlink{classasio_1_1ip_1_1udp_a8ae12ae65ca77be06bed37b5b39dbaa9}{protocol} () const 
+\begin{DoxyCompactList}\small\item\em Obtain an identifier for the protocol. \end{DoxyCompactList}\item 
+int \hyperlink{classasio_1_1ip_1_1udp_aec7ea9c65873b353460f304721c415f9}{family} () const 
+\begin{DoxyCompactList}\small\item\em Obtain an identifier for the protocol family. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classasio_1_1ip_1_1udp}{udp} \hyperlink{classasio_1_1ip_1_1udp_a59d5e1cf1796499a03e41afdf0275713}{v4} ()
+\begin{DoxyCompactList}\small\item\em Construct to represent the I\+Pv4 U\+D\+P protocol. \end{DoxyCompactList}\item 
+static \hyperlink{classasio_1_1ip_1_1udp}{udp} \hyperlink{classasio_1_1ip_1_1udp_ab5a9085001a291525f1fdd60a3ebef84}{v6} ()
+\begin{DoxyCompactList}\small\item\em Construct to represent the I\+Pv6 U\+D\+P protocol. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classasio_1_1ip_1_1udp_a2cc08fe9f5c9186018e71eebcecb2310}{operator==} (const \hyperlink{classasio_1_1ip_1_1udp}{udp} \&p1, const \hyperlink{classasio_1_1ip_1_1udp}{udp} \&p2)
+\begin{DoxyCompactList}\small\item\em Compare two protocols for equality. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1udp_a86bb54ad4ac96d2e219bc2c357476c7c}{operator!=} (const \hyperlink{classasio_1_1ip_1_1udp}{udp} \&p1, const \hyperlink{classasio_1_1ip_1_1udp}{udp} \&p2)
+\begin{DoxyCompactList}\small\item\em Compare two protocols for inequality. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Encapsulates the flags needed for U\+D\+P. 
+
+The \hyperlink{classasio_1_1ip_1_1udp}{asio\+::ip\+::udp} class contains flags necessary for U\+D\+P sockets.
+
+\begin{DoxyParagraph}{Thread Safety}
+{\itshape Distinct} {\itshape objects\+:} Safe.~\newline
+{\itshape Shared} {\itshape objects\+:} Safe.
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Protocol, Internet\+Protocol. 
+\end{DoxyParagraph}
+
+
+Definition at line 42 of file udp.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1ip_1_1udp_a6356426903164272827153752845368c}{}\index{asio\+::ip\+::udp@{asio\+::ip\+::udp}!endpoint@{endpoint}}
+\index{endpoint@{endpoint}!asio\+::ip\+::udp@{asio\+::ip\+::udp}}
+\subsubsection[{endpoint}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf basic\+\_\+endpoint}$<${\bf udp}$>$ {\bf asio\+::ip\+::udp\+::endpoint}}\label{classasio_1_1ip_1_1udp_a6356426903164272827153752845368c}
+
+
+The type of a U\+D\+P endpoint. 
+
+
+
+Definition at line 46 of file udp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1udp_abb4d8eff41b11c6c2053bf799d43dba2}{}\index{asio\+::ip\+::udp@{asio\+::ip\+::udp}!resolver@{resolver}}
+\index{resolver@{resolver}!asio\+::ip\+::udp@{asio\+::ip\+::udp}}
+\subsubsection[{resolver}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf basic\+\_\+resolver}$<${\bf udp}$>$ {\bf asio\+::ip\+::udp\+::resolver}}\label{classasio_1_1ip_1_1udp_abb4d8eff41b11c6c2053bf799d43dba2}
+
+
+The U\+D\+P resolver type. 
+
+
+
+Definition at line 82 of file udp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1udp_ab8f8cc1a666bdbbd6c3963f2396f253e}{}\index{asio\+::ip\+::udp@{asio\+::ip\+::udp}!socket@{socket}}
+\index{socket@{socket}!asio\+::ip\+::udp@{asio\+::ip\+::udp}}
+\subsubsection[{socket}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf basic\+\_\+datagram\+\_\+socket}$<${\bf udp}$>$ {\bf asio\+::ip\+::udp\+::socket}}\label{classasio_1_1ip_1_1udp_ab8f8cc1a666bdbbd6c3963f2396f253e}
+
+
+The U\+D\+P socket type. 
+
+
+
+Definition at line 79 of file udp.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ip_1_1udp_aec7ea9c65873b353460f304721c415f9}{}\index{asio\+::ip\+::udp@{asio\+::ip\+::udp}!family@{family}}
+\index{family@{family}!asio\+::ip\+::udp@{asio\+::ip\+::udp}}
+\subsubsection[{family() const }]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::ip\+::udp\+::family (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1udp_aec7ea9c65873b353460f304721c415f9}
+
+
+Obtain an identifier for the protocol family. 
+
+
+
+Definition at line 73 of file udp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1udp_a8ae12ae65ca77be06bed37b5b39dbaa9}{}\index{asio\+::ip\+::udp@{asio\+::ip\+::udp}!protocol@{protocol}}
+\index{protocol@{protocol}!asio\+::ip\+::udp@{asio\+::ip\+::udp}}
+\subsubsection[{protocol() const }]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::ip\+::udp\+::protocol (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1udp_a8ae12ae65ca77be06bed37b5b39dbaa9}
+
+
+Obtain an identifier for the protocol. 
+
+
+
+Definition at line 67 of file udp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1udp_ab2ec5d4de92e3764b9c1ce893bc0e3d3}{}\index{asio\+::ip\+::udp@{asio\+::ip\+::udp}!type@{type}}
+\index{type@{type}!asio\+::ip\+::udp@{asio\+::ip\+::udp}}
+\subsubsection[{type() const }]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::ip\+::udp\+::type (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1udp_ab2ec5d4de92e3764b9c1ce893bc0e3d3}
+
+
+Obtain an identifier for the type of the protocol. 
+
+
+
+Definition at line 61 of file udp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1udp_a59d5e1cf1796499a03e41afdf0275713}{}\index{asio\+::ip\+::udp@{asio\+::ip\+::udp}!v4@{v4}}
+\index{v4@{v4}!asio\+::ip\+::udp@{asio\+::ip\+::udp}}
+\subsubsection[{v4()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf udp} asio\+::ip\+::udp\+::v4 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classasio_1_1ip_1_1udp_a59d5e1cf1796499a03e41afdf0275713}
+
+
+Construct to represent the I\+Pv4 U\+D\+P protocol. 
+
+
+
+Definition at line 49 of file udp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1udp_ab5a9085001a291525f1fdd60a3ebef84}{}\index{asio\+::ip\+::udp@{asio\+::ip\+::udp}!v6@{v6}}
+\index{v6@{v6}!asio\+::ip\+::udp@{asio\+::ip\+::udp}}
+\subsubsection[{v6()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf udp} asio\+::ip\+::udp\+::v6 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classasio_1_1ip_1_1udp_ab5a9085001a291525f1fdd60a3ebef84}
+
+
+Construct to represent the I\+Pv6 U\+D\+P protocol. 
+
+
+
+Definition at line 55 of file udp.\+hpp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classasio_1_1ip_1_1udp_a86bb54ad4ac96d2e219bc2c357476c7c}{}\index{asio\+::ip\+::udp@{asio\+::ip\+::udp}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!asio\+::ip\+::udp@{asio\+::ip\+::udp}}
+\subsubsection[{operator"!=}]{\setlength{\rightskip}{0pt plus 5cm}bool operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf udp} \&}]{p1, }
+\item[{const {\bf udp} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1udp_a86bb54ad4ac96d2e219bc2c357476c7c}
+
+
+Compare two protocols for inequality. 
+
+
+
+Definition at line 91 of file udp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1udp_a2cc08fe9f5c9186018e71eebcecb2310}{}\index{asio\+::ip\+::udp@{asio\+::ip\+::udp}!operator==@{operator==}}
+\index{operator==@{operator==}!asio\+::ip\+::udp@{asio\+::ip\+::udp}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}bool operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf udp} \&}]{p1, }
+\item[{const {\bf udp} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1udp_a2cc08fe9f5c9186018e71eebcecb2310}
+
+
+Compare two protocols for equality. 
+
+
+
+Definition at line 85 of file udp.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ip/\hyperlink{udp_8hpp}{udp.\+hpp}\end{DoxyCompactItemize}

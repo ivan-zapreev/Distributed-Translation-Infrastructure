@@ -1,0 +1,1027 @@
+\hypertarget{namespacewebsocketpp_1_1frame}{}\section{websocketpp\+:\+:frame Namespace Reference}
+\label{namespacewebsocketpp_1_1frame}\index{websocketpp\+::frame@{websocketpp\+::frame}}
+
+
+Data structures and utility functions for manipulating Web\+Socket frames.  
+
+
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacewebsocketpp_1_1frame_1_1limits}{limits}
+\begin{DoxyCompactList}\small\item\em Constants related to frame and payload limits. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1frame_1_1opcode}{opcode}
+\begin{DoxyCompactList}\small\item\em Constants and utility functions related to Web\+Socket opcodes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header}
+\begin{DoxyCompactList}\small\item\em The constant size component of a Web\+Socket frame header. \end{DoxyCompactList}\item 
+struct \hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{extended\+\_\+header}
+\begin{DoxyCompactList}\small\item\em The variable size component of a Web\+Socket frame header. \end{DoxyCompactList}\item 
+union \hyperlink{unionwebsocketpp_1_1frame_1_1uint16__converter}{uint16\+\_\+converter}
+\begin{DoxyCompactList}\small\item\em Two byte conversion union. \end{DoxyCompactList}\item 
+union \hyperlink{unionwebsocketpp_1_1frame_1_1uint32__converter}{uint32\+\_\+converter}
+\begin{DoxyCompactList}\small\item\em Four byte conversion union. \end{DoxyCompactList}\item 
+union \hyperlink{unionwebsocketpp_1_1frame_1_1uint64__converter}{uint64\+\_\+converter}
+\begin{DoxyCompactList}\small\item\em Eight byte conversion union. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{unionwebsocketpp_1_1frame_1_1uint32__converter}{uint32\+\_\+converter} \hyperlink{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{masking\+\_\+key\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{namespacewebsocketpp_1_1frame_a66b39e273681d8509128e420cfaef6b0}{get\+\_\+fin} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&h)
+\begin{DoxyCompactList}\small\item\em Check whether the frame\textquotesingle{}s F\+I\+N bit is set. \end{DoxyCompactList}\item 
+void \hyperlink{namespacewebsocketpp_1_1frame_abe746242507916e5d6ae2ca26bd9f69e}{set\+\_\+fin} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h, bool value)
+\begin{DoxyCompactList}\small\item\em Set the frame\textquotesingle{}s F\+I\+N bit. \end{DoxyCompactList}\item 
+bool \hyperlink{namespacewebsocketpp_1_1frame_af8b4992f23ff5c43b907fa2edb44b80c}{get\+\_\+rsv1} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&h)
+\item 
+void \hyperlink{namespacewebsocketpp_1_1frame_ab706b1d5ef7de377671547993eb35062}{set\+\_\+rsv1} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h, bool value)
+\begin{DoxyCompactList}\small\item\em Set the frame\textquotesingle{}s R\+S\+V1 bit. \end{DoxyCompactList}\item 
+bool \hyperlink{namespacewebsocketpp_1_1frame_a76d62b4e036b5efb968ae827542872f8}{get\+\_\+rsv2} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&h)
+\item 
+void \hyperlink{namespacewebsocketpp_1_1frame_a0c97068961b3b3d2e1b83a9bd273c5cf}{set\+\_\+rsv2} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h, bool value)
+\begin{DoxyCompactList}\small\item\em Set the frame\textquotesingle{}s R\+S\+V2 bit. \end{DoxyCompactList}\item 
+bool \hyperlink{namespacewebsocketpp_1_1frame_afc9bce4c9fdbe9fe78e884c8858cccac}{get\+\_\+rsv3} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&h)
+\item 
+void \hyperlink{namespacewebsocketpp_1_1frame_a293e2ed0dd6efa704f27c29a1e595715}{set\+\_\+rsv3} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h, bool value)
+\begin{DoxyCompactList}\small\item\em Set the frame\textquotesingle{}s R\+S\+V3 bit. \end{DoxyCompactList}\item 
+\hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5e}{opcode\+::value} \hyperlink{namespacewebsocketpp_1_1frame_af72de43b056cf14e66b3c5b0e648f96c}{get\+\_\+opcode} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&h)
+\item 
+bool \hyperlink{namespacewebsocketpp_1_1frame_a4e8cf8ae88a7a8fdb2b3ea86623d01d2}{get\+\_\+masked} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&h)
+\begin{DoxyCompactList}\small\item\em check whether the frame is masked \end{DoxyCompactList}\item 
+void \hyperlink{namespacewebsocketpp_1_1frame_a9adfd26ffa9dccf738e6b62b5dccf7f0}{set\+\_\+masked} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h, bool value)
+\begin{DoxyCompactList}\small\item\em Set the frame\textquotesingle{}s M\+A\+S\+K bit. \end{DoxyCompactList}\item 
+uint8\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_a0b9efbf554fb766c9661b68a613612fb}{get\+\_\+basic\+\_\+size} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&)
+\item 
+size\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_abd4f23c906cc48fb3b34603fd4284b01}{get\+\_\+header\+\_\+len} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&h)
+\begin{DoxyCompactList}\small\item\em Calculates the full length of the header based on the first bytes. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{namespacewebsocketpp_1_1frame_a574812ba4110e6d6f3206222507efb92}{get\+\_\+masking\+\_\+key\+\_\+offset} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&)
+\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1frame_a510f505f5208e9f3a06e32e50b9b4e89}{write\+\_\+header} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&, \hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{extended\+\_\+header} const \&)
+\item 
+\hyperlink{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{masking\+\_\+key\+\_\+type} \hyperlink{namespacewebsocketpp_1_1frame_a24903598597ffd1068510908a47b5e59}{get\+\_\+masking\+\_\+key} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&, \hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{extended\+\_\+header} const \&)
+\item 
+uint16\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_a5f2ca23724e5ae99f8445a0b140d1c0a}{get\+\_\+extended\+\_\+size} (\hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{extended\+\_\+header} const \&)
+\item 
+uint64\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_ad1ec01438c837f3411dfd2c42a805d73}{get\+\_\+jumbo\+\_\+size} (\hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{extended\+\_\+header} const \&)
+\item 
+uint64\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_a8af14e44955e4f05a83f1f2b1b191734}{get\+\_\+payload\+\_\+size} (\hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} const \&, \hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{extended\+\_\+header} const \&)
+\item 
+size\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_a34fb805fa5dc58265101904b3077aada}{prepare\+\_\+masking\+\_\+key} (\hyperlink{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{masking\+\_\+key\+\_\+type} const \&key)
+\item 
+size\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_a76bf120d54d47d760eb8bd803572b004}{circshift\+\_\+prepared\+\_\+key} (size\+\_\+t prepared\+\_\+key, size\+\_\+t offset)
+\begin{DoxyCompactList}\small\item\em circularly shifts the supplied prepared masking key by offset bytes \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename input\+\_\+iter , typename output\+\_\+iter $>$ }\\void \hyperlink{namespacewebsocketpp_1_1frame_a417650d76aa2433163942d6a13334a6a}{byte\+\_\+mask} (input\+\_\+iter first, input\+\_\+iter last, output\+\_\+iter result, \hyperlink{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{masking\+\_\+key\+\_\+type} const \&key, size\+\_\+t key\+\_\+offset)
+\begin{DoxyCompactList}\small\item\em Byte by byte mask/unmask. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename iter\+\_\+type $>$ }\\void \hyperlink{namespacewebsocketpp_1_1frame_a57740a0ac6dca6789eb3d020b7f31ed8}{byte\+\_\+mask} (iter\+\_\+type b, iter\+\_\+type e, \hyperlink{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{masking\+\_\+key\+\_\+type} const \&key, size\+\_\+t key\+\_\+offset)
+\begin{DoxyCompactList}\small\item\em Byte by byte mask/unmask (in place) \end{DoxyCompactList}\item 
+void \hyperlink{namespacewebsocketpp_1_1frame_acaaa889ec2dc660d7a3cbb310e1a118c}{word\+\_\+mask\+\_\+exact} (uint8\+\_\+t $\ast$input, uint8\+\_\+t $\ast$output, size\+\_\+t length, \hyperlink{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{masking\+\_\+key\+\_\+type} const \&key)
+\item 
+void \hyperlink{namespacewebsocketpp_1_1frame_a6ef7d51858a5c357c009af6945ab5bf0}{word\+\_\+mask\+\_\+exact} (uint8\+\_\+t $\ast$data, size\+\_\+t length, \hyperlink{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{masking\+\_\+key\+\_\+type} const \&key)
+\item 
+size\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_aa3458068f08acb26e350e39375265085}{word\+\_\+mask\+\_\+circ} (uint8\+\_\+t $\ast$input, uint8\+\_\+t $\ast$output, size\+\_\+t length, size\+\_\+t prepared\+\_\+key)
+\begin{DoxyCompactList}\small\item\em Circular word aligned mask/unmask. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_af1365b296d14ee7dea6e17d0af368821}{word\+\_\+mask\+\_\+circ} (uint8\+\_\+t $\ast$data, size\+\_\+t length, size\+\_\+t prepared\+\_\+key)
+\begin{DoxyCompactList}\small\item\em Circular word aligned mask/unmask (in place) \end{DoxyCompactList}\item 
+bool \hyperlink{namespacewebsocketpp_1_1frame_a90556de9dd71c1f063153b791abeb81c}{get\+\_\+rsv1} (const \hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h)
+\begin{DoxyCompactList}\small\item\em check whether the frame\textquotesingle{}s R\+S\+V1 bit is set \end{DoxyCompactList}\item 
+bool \hyperlink{namespacewebsocketpp_1_1frame_a531509bc14ee0a6641662b17d5670460}{get\+\_\+rsv2} (const \hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h)
+\begin{DoxyCompactList}\small\item\em check whether the frame\textquotesingle{}s R\+S\+V2 bit is set \end{DoxyCompactList}\item 
+bool \hyperlink{namespacewebsocketpp_1_1frame_a4dc0cc35b38986b9b56120ef297dd795}{get\+\_\+rsv3} (const \hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h)
+\begin{DoxyCompactList}\small\item\em check whether the frame\textquotesingle{}s R\+S\+V3 bit is set \end{DoxyCompactList}\item 
+\hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5e}{opcode\+::value} \hyperlink{namespacewebsocketpp_1_1frame_a235192baaf86f38158dc33f178c04661}{get\+\_\+opcode} (const \hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h)
+\begin{DoxyCompactList}\small\item\em Extract opcode from basic header. \end{DoxyCompactList}\item 
+uint8\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_a2ceb63e6a2fe19964d13363ba2bb9e15}{get\+\_\+basic\+\_\+size} (const \hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h)
+\begin{DoxyCompactList}\small\item\em Extracts the raw payload length specified in the basic header. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{namespacewebsocketpp_1_1frame_a001d6c5e538d5eb1ef5ddc21aeb61ee3}{get\+\_\+masking\+\_\+key\+\_\+offset} (const \hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h)
+\begin{DoxyCompactList}\small\item\em Calculate the offset location of the masking key within the extended header. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1frame_ae63c3e01399a6787ed09b710853344a4}{prepare\+\_\+header} (const \hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h, const \hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{extended\+\_\+header} \&e)
+\begin{DoxyCompactList}\small\item\em Generate a properly sized contiguous string that encodes a full frame header. \end{DoxyCompactList}\item 
+\hyperlink{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{masking\+\_\+key\+\_\+type} \hyperlink{namespacewebsocketpp_1_1frame_aed7edd146ce3aa5b87adc9fcc5fcb10f}{get\+\_\+masking\+\_\+key} (const \hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h, const \hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{extended\+\_\+header} \&e)
+\begin{DoxyCompactList}\small\item\em Extract the masking key from a frame header. \end{DoxyCompactList}\item 
+uint16\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_a5ae0cc87ac44bb78c5dc41983c43a0c4}{get\+\_\+extended\+\_\+size} (const \hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{extended\+\_\+header} \&e)
+\begin{DoxyCompactList}\small\item\em Extract the extended size field from an extended header. \end{DoxyCompactList}\item 
+uint64\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_ac55b672bcd3baf4c5a074816f6eb035b}{get\+\_\+jumbo\+\_\+size} (const \hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{extended\+\_\+header} \&e)
+\begin{DoxyCompactList}\small\item\em Extract the jumbo size field from an extended header. \end{DoxyCompactList}\item 
+uint64\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_a2ca0b9ba6077f201997da543d45b067f}{get\+\_\+payload\+\_\+size} (const \hyperlink{structwebsocketpp_1_1frame_1_1basic__header}{basic\+\_\+header} \&h, const \hyperlink{structwebsocketpp_1_1frame_1_1extended__header}{extended\+\_\+header} \&e)
+\begin{DoxyCompactList}\small\item\em Extract the full payload size field from a Web\+Socket header. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_af80eee705eb39fb533cf4ab3d7a6d3bb}{prepare\+\_\+masking\+\_\+key} (const \hyperlink{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{masking\+\_\+key\+\_\+type} \&key)
+\begin{DoxyCompactList}\small\item\em Extract a masking key into a value the size of a machine word. \end{DoxyCompactList}\item 
+void \hyperlink{namespacewebsocketpp_1_1frame_acb2ccda66981a8a12a3b97fb4b179aa3}{word\+\_\+mask\+\_\+exact} (uint8\+\_\+t $\ast$input, uint8\+\_\+t $\ast$output, size\+\_\+t length, const \hyperlink{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{masking\+\_\+key\+\_\+type} \&key)
+\begin{DoxyCompactList}\small\item\em Exact word aligned mask/unmask. \end{DoxyCompactList}\item 
+void \hyperlink{namespacewebsocketpp_1_1frame_ab5cb468072d1f3f4b430eb2e0baff69d}{word\+\_\+mask\+\_\+exact} (uint8\+\_\+t $\ast$data, size\+\_\+t length, const \hyperlink{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{masking\+\_\+key\+\_\+type} \&key)
+\begin{DoxyCompactList}\small\item\em Exact word aligned mask/unmask (in place) \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_a3e0ba89b475df758d84dab352a76c3b3}{byte\+\_\+mask\+\_\+circ} (uint8\+\_\+t $\ast$input, uint8\+\_\+t $\ast$output, size\+\_\+t length, size\+\_\+t prepared\+\_\+key)
+\begin{DoxyCompactList}\small\item\em Circular byte aligned mask/unmask. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{namespacewebsocketpp_1_1frame_a5e0b4f532f0d309a605e232cfdb03960}{byte\+\_\+mask\+\_\+circ} (uint8\+\_\+t $\ast$data, size\+\_\+t length, size\+\_\+t prepared\+\_\+key)
+\begin{DoxyCompactList}\small\item\em Circular byte aligned mask/unmask (in place) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Data structures and utility functions for manipulating Web\+Socket frames. 
+
+namespace frame provides a number of data structures and utility functions for reading, writing, and manipulating binary encoded Web\+Socket frames. 
+
+\subsection{Typedef Documentation}
+\hypertarget{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!masking\+\_\+key\+\_\+type@{masking\+\_\+key\+\_\+type}}
+\index{masking\+\_\+key\+\_\+type@{masking\+\_\+key\+\_\+type}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{masking\+\_\+key\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf uint32\+\_\+converter} {\bf websocketpp\+::frame\+::masking\+\_\+key\+\_\+type}}\label{namespacewebsocketpp_1_1frame_a8bdac8ec44c78c027fcf55aa3bad3f86}
+
+
+Definition at line 186 of file frame.\+hpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{namespacewebsocketpp_1_1frame_a417650d76aa2433163942d6a13334a6a}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!byte\+\_\+mask@{byte\+\_\+mask}}
+\index{byte\+\_\+mask@{byte\+\_\+mask}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{byte\+\_\+mask(input\+\_\+iter first, input\+\_\+iter last, output\+\_\+iter result, masking\+\_\+key\+\_\+type const \&key, size\+\_\+t key\+\_\+offset)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename input\+\_\+iter , typename output\+\_\+iter $>$ void websocketpp\+::frame\+::byte\+\_\+mask (
+\begin{DoxyParamCaption}
+\item[{input\+\_\+iter}]{first, }
+\item[{input\+\_\+iter}]{last, }
+\item[{output\+\_\+iter}]{result, }
+\item[{{\bf masking\+\_\+key\+\_\+type} const \&}]{key, }
+\item[{size\+\_\+t}]{key\+\_\+offset}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_a417650d76aa2433163942d6a13334a6a}
+
+
+Byte by byte mask/unmask. 
+
+Iterator based byte by byte masking and unmasking for Web\+Socket payloads. Performs masking in place using the supplied key offset by the supplied offset number of bytes.
+
+This function is simple and can be done in place on input with arbitrary lengths and does not vary based on machine word size. It is slow.
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Beginning iterator to start masking\\
+\hline
+{\em e} & Ending iterator to end masking\\
+\hline
+{\em o} & Beginning iterator to store masked results\\
+\hline
+{\em key} & 32 bit key to mask with.\\
+\hline
+{\em key\+\_\+offset} & offset value to start masking at. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 642 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a57740a0ac6dca6789eb3d020b7f31ed8}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!byte\+\_\+mask@{byte\+\_\+mask}}
+\index{byte\+\_\+mask@{byte\+\_\+mask}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{byte\+\_\+mask(iter\+\_\+type b, iter\+\_\+type e, masking\+\_\+key\+\_\+type const \&key, size\+\_\+t key\+\_\+offset)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename iter\+\_\+type $>$ void websocketpp\+::frame\+::byte\+\_\+mask (
+\begin{DoxyParamCaption}
+\item[{iter\+\_\+type}]{b, }
+\item[{iter\+\_\+type}]{e, }
+\item[{{\bf masking\+\_\+key\+\_\+type} const \&}]{key, }
+\item[{size\+\_\+t}]{key\+\_\+offset}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_a57740a0ac6dca6789eb3d020b7f31ed8}
+
+
+Byte by byte mask/unmask (in place) 
+
+Iterator based byte by byte masking and unmasking for Web\+Socket payloads. Performs masking in place using the supplied key offset by the supplied offset number of bytes.
+
+This function is simple and can be done in place on input with arbitrary lengths and does not vary based on machine word size. It is slow.
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Beginning iterator to start masking\\
+\hline
+{\em e} & Ending iterator to end masking\\
+\hline
+{\em key} & 32 bit key to mask with.\\
+\hline
+{\em key\+\_\+offset} & offset value to start masking at. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 672 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a3e0ba89b475df758d84dab352a76c3b3}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!byte\+\_\+mask\+\_\+circ@{byte\+\_\+mask\+\_\+circ}}
+\index{byte\+\_\+mask\+\_\+circ@{byte\+\_\+mask\+\_\+circ}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{byte\+\_\+mask\+\_\+circ(uint8\+\_\+t $\ast$input, uint8\+\_\+t $\ast$output, size\+\_\+t length, size\+\_\+t prepared\+\_\+key)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::frame\+::byte\+\_\+mask\+\_\+circ (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{input, }
+\item[{uint8\+\_\+t $\ast$}]{output, }
+\item[{size\+\_\+t}]{length, }
+\item[{size\+\_\+t}]{prepared\+\_\+key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a3e0ba89b475df758d84dab352a76c3b3}
+
+
+Circular byte aligned mask/unmask. 
+
+Performs a circular mask/unmask in byte sized chunks using pre-\/prepared keys that store state between calls. Best for providing streaming masking or unmasking of small chunks at a time of a larger message. Requires that the underlying allocated size of the data buffer be a multiple of the word size. Data in the buffer after {\ttfamily length} will be overwritten only with the same values that were originally present.
+
+word\+\_\+mask returns a copy of prepared\+\_\+key circularly shifted based on the length value. The returned value may be fed back into byte\+\_\+mask when more data is available.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Character buffer to mask\\
+\hline
+{\em length} & Length of data\\
+\hline
+{\em prepared\+\_\+key} & Prepared key to use.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the prepared\+\_\+key shifted to account for the input length 
+\end{DoxyReturn}
+
+
+Definition at line 827 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a5e0b4f532f0d309a605e232cfdb03960}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!byte\+\_\+mask\+\_\+circ@{byte\+\_\+mask\+\_\+circ}}
+\index{byte\+\_\+mask\+\_\+circ@{byte\+\_\+mask\+\_\+circ}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{byte\+\_\+mask\+\_\+circ(uint8\+\_\+t $\ast$data, size\+\_\+t length, size\+\_\+t prepared\+\_\+key)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::frame\+::byte\+\_\+mask\+\_\+circ (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{data, }
+\item[{size\+\_\+t}]{length, }
+\item[{size\+\_\+t}]{prepared\+\_\+key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a5e0b4f532f0d309a605e232cfdb03960}
+
+
+Circular byte aligned mask/unmask (in place) 
+
+In place version of byte\+\_\+mask\+\_\+circ
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{namespacewebsocketpp_1_1frame_a3e0ba89b475df758d84dab352a76c3b3}{byte\+\_\+mask\+\_\+circ}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Character buffer to read from and write to\\
+\hline
+{\em length} & Length of data\\
+\hline
+{\em prepared\+\_\+key} & Prepared key to use.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the prepared\+\_\+key shifted to account for the input length 
+\end{DoxyReturn}
+
+
+Definition at line 854 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a76bf120d54d47d760eb8bd803572b004}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!circshift\+\_\+prepared\+\_\+key@{circshift\+\_\+prepared\+\_\+key}}
+\index{circshift\+\_\+prepared\+\_\+key@{circshift\+\_\+prepared\+\_\+key}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{circshift\+\_\+prepared\+\_\+key(size\+\_\+t prepared\+\_\+key, size\+\_\+t offset)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::frame\+::circshift\+\_\+prepared\+\_\+key (
+\begin{DoxyParamCaption}
+\item[{size\+\_\+t}]{prepared\+\_\+key, }
+\item[{size\+\_\+t}]{offset}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a76bf120d54d47d760eb8bd803572b004}
+
+
+circularly shifts the supplied prepared masking key by offset bytes 
+
+Prepared\+\_\+key must be the output of prepare\+\_\+masking\+\_\+key with the associated restrictions on the machine word size. offset must be greater than or equal to zero and less than sizeof(size\+\_\+t). 
+
+Definition at line 612 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a0b9efbf554fb766c9661b68a613612fb}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+basic\+\_\+size@{get\+\_\+basic\+\_\+size}}
+\index{get\+\_\+basic\+\_\+size@{get\+\_\+basic\+\_\+size}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+basic\+\_\+size(basic\+\_\+header const \&)}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t websocketpp\+::frame\+::get\+\_\+basic\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_a0b9efbf554fb766c9661b68a613612fb}
+\hypertarget{namespacewebsocketpp_1_1frame_a2ceb63e6a2fe19964d13363ba2bb9e15}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+basic\+\_\+size@{get\+\_\+basic\+\_\+size}}
+\index{get\+\_\+basic\+\_\+size@{get\+\_\+basic\+\_\+size}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+basic\+\_\+size(const basic\+\_\+header \&h)}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t websocketpp\+::frame\+::get\+\_\+basic\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+header} \&}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a2ceb63e6a2fe19964d13363ba2bb9e15}
+
+
+Extracts the raw payload length specified in the basic header. 
+
+A basic Web\+Socket frame header contains a 7 bit value that represents the payload size. There are two reserved values that are used to indicate that the actual payload size will not fit in 7 bits and that the full payload size is included in a separate field. The values are as follows\+:
+
+P\+A\+Y\+L\+O\+A\+D\+\_\+\+S\+I\+Z\+E\+\_\+\+C\+O\+D\+E\+\_\+16\+B\+I\+T (0x7\+E) indicates that the actual payload is less than 16 bit
+
+P\+A\+Y\+L\+O\+A\+D\+\_\+\+S\+I\+Z\+E\+\_\+\+C\+O\+D\+E\+\_\+64\+B\+I\+T (0x7\+F) indicates that the actual payload is less than 63 bit
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em h} & Basic header to read value from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The exact size encoded in h. 
+\end{DoxyReturn}
+
+
+Definition at line 431 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a5f2ca23724e5ae99f8445a0b140d1c0a}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+extended\+\_\+size@{get\+\_\+extended\+\_\+size}}
+\index{get\+\_\+extended\+\_\+size@{get\+\_\+extended\+\_\+size}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+extended\+\_\+size(extended\+\_\+header const \&)}]{\setlength{\rightskip}{0pt plus 5cm}uint16\+\_\+t websocketpp\+::frame\+::get\+\_\+extended\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{{\bf extended\+\_\+header} const \&}]{}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_a5f2ca23724e5ae99f8445a0b140d1c0a}
+\hypertarget{namespacewebsocketpp_1_1frame_a5ae0cc87ac44bb78c5dc41983c43a0c4}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+extended\+\_\+size@{get\+\_\+extended\+\_\+size}}
+\index{get\+\_\+extended\+\_\+size@{get\+\_\+extended\+\_\+size}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+extended\+\_\+size(const extended\+\_\+header \&e)}]{\setlength{\rightskip}{0pt plus 5cm}uint16\+\_\+t websocketpp\+::frame\+::get\+\_\+extended\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{const {\bf extended\+\_\+header} \&}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a5ae0cc87ac44bb78c5dc41983c43a0c4}
+
+
+Extract the extended size field from an extended header. 
+
+It is the responsibility of the caller to verify that e is a valid extended header. This function assumes that e contains an extended payload size.
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & The extended header to extract from\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The size encoded in the extended header in host byte order 
+\end{DoxyReturn}
+
+
+Definition at line 540 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a66b39e273681d8509128e420cfaef6b0}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+fin@{get\+\_\+fin}}
+\index{get\+\_\+fin@{get\+\_\+fin}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+fin(basic\+\_\+header const \&h)}]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::frame\+::get\+\_\+fin (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a66b39e273681d8509128e420cfaef6b0}
+
+
+Check whether the frame\textquotesingle{}s F\+I\+N bit is set. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em h} & The basic header to extract from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the header\textquotesingle{}s fin bit is set. 
+\end{DoxyReturn}
+
+
+Definition at line 321 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_abd4f23c906cc48fb3b34603fd4284b01}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+header\+\_\+len@{get\+\_\+header\+\_\+len}}
+\index{get\+\_\+header\+\_\+len@{get\+\_\+header\+\_\+len}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+header\+\_\+len(basic\+\_\+header const \&h)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::frame\+::get\+\_\+header\+\_\+len (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_abd4f23c906cc48fb3b34603fd4284b01}
+
+
+Calculates the full length of the header based on the first bytes. 
+
+A Web\+Socket frame header always has at least two bytes. Encoded within the first two bytes is all the information necessary to calculate the full (variable) header length. \hyperlink{namespacewebsocketpp_1_1frame_abd4f23c906cc48fb3b34603fd4284b01}{get\+\_\+header\+\_\+len()} calculates the full header length for the given two byte basic header.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & Basic frame header to extract size from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Full length of the extended header. 
+\end{DoxyReturn}
+
+
+Definition at line 445 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_ad1ec01438c837f3411dfd2c42a805d73}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+jumbo\+\_\+size@{get\+\_\+jumbo\+\_\+size}}
+\index{get\+\_\+jumbo\+\_\+size@{get\+\_\+jumbo\+\_\+size}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+jumbo\+\_\+size(extended\+\_\+header const \&)}]{\setlength{\rightskip}{0pt plus 5cm}uint64\+\_\+t websocketpp\+::frame\+::get\+\_\+jumbo\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{{\bf extended\+\_\+header} const \&}]{}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_ad1ec01438c837f3411dfd2c42a805d73}
+\hypertarget{namespacewebsocketpp_1_1frame_ac55b672bcd3baf4c5a074816f6eb035b}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+jumbo\+\_\+size@{get\+\_\+jumbo\+\_\+size}}
+\index{get\+\_\+jumbo\+\_\+size@{get\+\_\+jumbo\+\_\+size}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+jumbo\+\_\+size(const extended\+\_\+header \&e)}]{\setlength{\rightskip}{0pt plus 5cm}uint64\+\_\+t websocketpp\+::frame\+::get\+\_\+jumbo\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{const {\bf extended\+\_\+header} \&}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_ac55b672bcd3baf4c5a074816f6eb035b}
+
+
+Extract the jumbo size field from an extended header. 
+
+It is the responsibility of the caller to verify that e is a valid extended header. This function assumes that e contains a jumbo payload size.
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & The extended header to extract from\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The size encoded in the extended header in host byte order 
+\end{DoxyReturn}
+
+
+Definition at line 555 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a4e8cf8ae88a7a8fdb2b3ea86623d01d2}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+masked@{get\+\_\+masked}}
+\index{get\+\_\+masked@{get\+\_\+masked}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+masked(basic\+\_\+header const \&h)}]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::frame\+::get\+\_\+masked (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a4e8cf8ae88a7a8fdb2b3ea86623d01d2}
+
+
+check whether the frame is masked 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em h} & The basic header to extract from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the header mask bit is set. 
+\end{DoxyReturn}
+
+
+Definition at line 402 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a24903598597ffd1068510908a47b5e59}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+masking\+\_\+key@{get\+\_\+masking\+\_\+key}}
+\index{get\+\_\+masking\+\_\+key@{get\+\_\+masking\+\_\+key}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+masking\+\_\+key(basic\+\_\+header const \&, extended\+\_\+header const \&)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf masking\+\_\+key\+\_\+type} websocketpp\+::frame\+::get\+\_\+masking\+\_\+key (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{, }
+\item[{{\bf extended\+\_\+header} const \&}]{}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_a24903598597ffd1068510908a47b5e59}
+\hypertarget{namespacewebsocketpp_1_1frame_aed7edd146ce3aa5b87adc9fcc5fcb10f}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+masking\+\_\+key@{get\+\_\+masking\+\_\+key}}
+\index{get\+\_\+masking\+\_\+key@{get\+\_\+masking\+\_\+key}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+masking\+\_\+key(const basic\+\_\+header \&h, const extended\+\_\+header \&e)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf masking\+\_\+key\+\_\+type} websocketpp\+::frame\+::get\+\_\+masking\+\_\+key (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+header} \&}]{h, }
+\item[{const {\bf extended\+\_\+header} \&}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_aed7edd146ce3aa5b87adc9fcc5fcb10f}
+
+
+Extract the masking key from a frame header. 
+
+Note that while read and written as an integer at times, this value is not an integer and should never be interpreted as one. Big and little endian machines will generate and store masking keys differently without issue as long as the integer values remain irrelivant.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The basic header to extract from \\
+\hline
+{\em e} & The extended header to extract from\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The masking key as an integer. 
+\end{DoxyReturn}
+
+
+Definition at line 516 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a574812ba4110e6d6f3206222507efb92}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+masking\+\_\+key\+\_\+offset@{get\+\_\+masking\+\_\+key\+\_\+offset}}
+\index{get\+\_\+masking\+\_\+key\+\_\+offset@{get\+\_\+masking\+\_\+key\+\_\+offset}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+masking\+\_\+key\+\_\+offset(basic\+\_\+header const \&)}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int websocketpp\+::frame\+::get\+\_\+masking\+\_\+key\+\_\+offset (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_a574812ba4110e6d6f3206222507efb92}
+\hypertarget{namespacewebsocketpp_1_1frame_a001d6c5e538d5eb1ef5ddc21aeb61ee3}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+masking\+\_\+key\+\_\+offset@{get\+\_\+masking\+\_\+key\+\_\+offset}}
+\index{get\+\_\+masking\+\_\+key\+\_\+offset@{get\+\_\+masking\+\_\+key\+\_\+offset}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+masking\+\_\+key\+\_\+offset(const basic\+\_\+header \&h)}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int websocketpp\+::frame\+::get\+\_\+masking\+\_\+key\+\_\+offset (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+header} \&}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a001d6c5e538d5eb1ef5ddc21aeb61ee3}
+
+
+Calculate the offset location of the masking key within the extended header. 
+
+Calculate the offset location of the masking key within the extended header using information from its corresponding basic header
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & Corresponding basic header to calculate from.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+byte offset of the first byte of the masking key 
+\end{DoxyReturn}
+
+
+Definition at line 469 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_af72de43b056cf14e66b3c5b0e648f96c}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+opcode@{get\+\_\+opcode}}
+\index{get\+\_\+opcode@{get\+\_\+opcode}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+opcode(basic\+\_\+header const \&h)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf opcode\+::value} websocketpp\+::frame\+::get\+\_\+opcode (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{h}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_af72de43b056cf14e66b3c5b0e648f96c}
+\hypertarget{namespacewebsocketpp_1_1frame_a235192baaf86f38158dc33f178c04661}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+opcode@{get\+\_\+opcode}}
+\index{get\+\_\+opcode@{get\+\_\+opcode}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+opcode(const basic\+\_\+header \&h)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf opcode\+::value} websocketpp\+::frame\+::get\+\_\+opcode (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+header} \&}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a235192baaf86f38158dc33f178c04661}
+
+
+Extract opcode from basic header. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em h} & The basic header to extract from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The opcode value of the header. 
+\end{DoxyReturn}
+
+
+Definition at line 393 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a8af14e44955e4f05a83f1f2b1b191734}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+payload\+\_\+size@{get\+\_\+payload\+\_\+size}}
+\index{get\+\_\+payload\+\_\+size@{get\+\_\+payload\+\_\+size}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+payload\+\_\+size(basic\+\_\+header const \&, extended\+\_\+header const \&)}]{\setlength{\rightskip}{0pt plus 5cm}uint64\+\_\+t websocketpp\+::frame\+::get\+\_\+payload\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{, }
+\item[{{\bf extended\+\_\+header} const \&}]{}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_a8af14e44955e4f05a83f1f2b1b191734}
+\hypertarget{namespacewebsocketpp_1_1frame_a2ca0b9ba6077f201997da543d45b067f}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+payload\+\_\+size@{get\+\_\+payload\+\_\+size}}
+\index{get\+\_\+payload\+\_\+size@{get\+\_\+payload\+\_\+size}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+payload\+\_\+size(const basic\+\_\+header \&h, const extended\+\_\+header \&e)}]{\setlength{\rightskip}{0pt plus 5cm}uint64\+\_\+t websocketpp\+::frame\+::get\+\_\+payload\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+header} \&}]{h, }
+\item[{const {\bf extended\+\_\+header} \&}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a2ca0b9ba6077f201997da543d45b067f}
+
+
+Extract the full payload size field from a Web\+Socket header. 
+
+It is the responsibility of the caller to verify that h and e together represent a valid Web\+Socket frame header. This function assumes only that h and e are valid. It uses information in the basic header to determine where to look for the payload\+\_\+size
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The basic header to extract from \\
+\hline
+{\em e} & The extended header to extract from\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The size encoded in the combined header in host byte order. 
+\end{DoxyReturn}
+
+
+Definition at line 573 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_af8b4992f23ff5c43b907fa2edb44b80c}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+rsv1@{get\+\_\+rsv1}}
+\index{get\+\_\+rsv1@{get\+\_\+rsv1}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+rsv1(basic\+\_\+header const \&h)}]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::frame\+::get\+\_\+rsv1 (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{h}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_af8b4992f23ff5c43b907fa2edb44b80c}
+\hypertarget{namespacewebsocketpp_1_1frame_a90556de9dd71c1f063153b791abeb81c}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+rsv1@{get\+\_\+rsv1}}
+\index{get\+\_\+rsv1@{get\+\_\+rsv1}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+rsv1(const basic\+\_\+header \&h)}]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::frame\+::get\+\_\+rsv1 (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+header} \&}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a90556de9dd71c1f063153b791abeb81c}
+
+
+check whether the frame\textquotesingle{}s R\+S\+V1 bit is set 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em h} & The basic header to extract from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the header\textquotesingle{}s R\+S\+V1 bit is set. 
+\end{DoxyReturn}
+
+
+Definition at line 339 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a76d62b4e036b5efb968ae827542872f8}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+rsv2@{get\+\_\+rsv2}}
+\index{get\+\_\+rsv2@{get\+\_\+rsv2}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+rsv2(basic\+\_\+header const \&h)}]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::frame\+::get\+\_\+rsv2 (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{h}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_a76d62b4e036b5efb968ae827542872f8}
+\hypertarget{namespacewebsocketpp_1_1frame_a531509bc14ee0a6641662b17d5670460}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+rsv2@{get\+\_\+rsv2}}
+\index{get\+\_\+rsv2@{get\+\_\+rsv2}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+rsv2(const basic\+\_\+header \&h)}]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::frame\+::get\+\_\+rsv2 (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+header} \&}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a531509bc14ee0a6641662b17d5670460}
+
+
+check whether the frame\textquotesingle{}s R\+S\+V2 bit is set 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em h} & The basic header to extract from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the header\textquotesingle{}s R\+S\+V2 bit is set. 
+\end{DoxyReturn}
+
+
+Definition at line 357 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_afc9bce4c9fdbe9fe78e884c8858cccac}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+rsv3@{get\+\_\+rsv3}}
+\index{get\+\_\+rsv3@{get\+\_\+rsv3}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+rsv3(basic\+\_\+header const \&h)}]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::frame\+::get\+\_\+rsv3 (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{h}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_afc9bce4c9fdbe9fe78e884c8858cccac}
+\hypertarget{namespacewebsocketpp_1_1frame_a4dc0cc35b38986b9b56120ef297dd795}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!get\+\_\+rsv3@{get\+\_\+rsv3}}
+\index{get\+\_\+rsv3@{get\+\_\+rsv3}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{get\+\_\+rsv3(const basic\+\_\+header \&h)}]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::frame\+::get\+\_\+rsv3 (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+header} \&}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a4dc0cc35b38986b9b56120ef297dd795}
+
+
+check whether the frame\textquotesingle{}s R\+S\+V3 bit is set 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em h} & The basic header to extract from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the header\textquotesingle{}s R\+S\+V3 bit is set. 
+\end{DoxyReturn}
+
+
+Definition at line 375 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_ae63c3e01399a6787ed09b710853344a4}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!prepare\+\_\+header@{prepare\+\_\+header}}
+\index{prepare\+\_\+header@{prepare\+\_\+header}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{prepare\+\_\+header(const basic\+\_\+header \&h, const extended\+\_\+header \&e)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::frame\+::prepare\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+header} \&}]{h, }
+\item[{const {\bf extended\+\_\+header} \&}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_ae63c3e01399a6787ed09b710853344a4}
+
+
+Generate a properly sized contiguous string that encodes a full frame header. 
+
+Copy the basic header h and extended header e into a properly sized contiguous frame header string for the purposes of writing out to the wire.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The basic header to include \\
+\hline
+{\em e} & The extended header to include\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A contiguous string containing h and e 
+\end{DoxyReturn}
+
+
+Definition at line 489 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a34fb805fa5dc58265101904b3077aada}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!prepare\+\_\+masking\+\_\+key@{prepare\+\_\+masking\+\_\+key}}
+\index{prepare\+\_\+masking\+\_\+key@{prepare\+\_\+masking\+\_\+key}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{prepare\+\_\+masking\+\_\+key(masking\+\_\+key\+\_\+type const \&key)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::frame\+::prepare\+\_\+masking\+\_\+key (
+\begin{DoxyParamCaption}
+\item[{{\bf masking\+\_\+key\+\_\+type} const \&}]{key}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_a34fb805fa5dc58265101904b3077aada}
+\hypertarget{namespacewebsocketpp_1_1frame_af80eee705eb39fb533cf4ab3d7a6d3bb}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!prepare\+\_\+masking\+\_\+key@{prepare\+\_\+masking\+\_\+key}}
+\index{prepare\+\_\+masking\+\_\+key@{prepare\+\_\+masking\+\_\+key}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{prepare\+\_\+masking\+\_\+key(const masking\+\_\+key\+\_\+type \&key)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::frame\+::prepare\+\_\+masking\+\_\+key (
+\begin{DoxyParamCaption}
+\item[{const {\bf masking\+\_\+key\+\_\+type} \&}]{key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_af80eee705eb39fb533cf4ab3d7a6d3bb}
+
+
+Extract a masking key into a value the size of a machine word. 
+
+Machine word size must be 4 or 8.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & Masking key to extract from\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+prepared key as a machine word 
+\end{DoxyReturn}
+
+
+Definition at line 595 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_abe746242507916e5d6ae2ca26bd9f69e}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!set\+\_\+fin@{set\+\_\+fin}}
+\index{set\+\_\+fin@{set\+\_\+fin}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{set\+\_\+fin(basic\+\_\+header \&h, bool value)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::frame\+::set\+\_\+fin (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} \&}]{h, }
+\item[{bool}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_abe746242507916e5d6ae2ca26bd9f69e}
+
+
+Set the frame\textquotesingle{}s F\+I\+N bit. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em h} & Header to set. \\
+\hline
+\mbox{\tt in}  & {\em value} & Value to set it to. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 330 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a9adfd26ffa9dccf738e6b62b5dccf7f0}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!set\+\_\+masked@{set\+\_\+masked}}
+\index{set\+\_\+masked@{set\+\_\+masked}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{set\+\_\+masked(basic\+\_\+header \&h, bool value)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::frame\+::set\+\_\+masked (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} \&}]{h, }
+\item[{bool}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a9adfd26ffa9dccf738e6b62b5dccf7f0}
+
+
+Set the frame\textquotesingle{}s M\+A\+S\+K bit. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em h} & Header to set. \\
+\hline
+ & {\em value} & Value to set it to. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 411 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_ab706b1d5ef7de377671547993eb35062}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!set\+\_\+rsv1@{set\+\_\+rsv1}}
+\index{set\+\_\+rsv1@{set\+\_\+rsv1}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{set\+\_\+rsv1(basic\+\_\+header \&h, bool value)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::frame\+::set\+\_\+rsv1 (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} \&}]{h, }
+\item[{bool}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_ab706b1d5ef7de377671547993eb35062}
+
+
+Set the frame\textquotesingle{}s R\+S\+V1 bit. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em h} & Header to set. \\
+\hline
+\mbox{\tt in}  & {\em value} & Value to set it to. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 348 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a0c97068961b3b3d2e1b83a9bd273c5cf}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!set\+\_\+rsv2@{set\+\_\+rsv2}}
+\index{set\+\_\+rsv2@{set\+\_\+rsv2}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{set\+\_\+rsv2(basic\+\_\+header \&h, bool value)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::frame\+::set\+\_\+rsv2 (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} \&}]{h, }
+\item[{bool}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a0c97068961b3b3d2e1b83a9bd273c5cf}
+
+
+Set the frame\textquotesingle{}s R\+S\+V2 bit. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em h} & Header to set. \\
+\hline
+\mbox{\tt in}  & {\em value} & Value to set it to. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 366 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a293e2ed0dd6efa704f27c29a1e595715}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!set\+\_\+rsv3@{set\+\_\+rsv3}}
+\index{set\+\_\+rsv3@{set\+\_\+rsv3}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{set\+\_\+rsv3(basic\+\_\+header \&h, bool value)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::frame\+::set\+\_\+rsv3 (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} \&}]{h, }
+\item[{bool}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_a293e2ed0dd6efa704f27c29a1e595715}
+
+
+Set the frame\textquotesingle{}s R\+S\+V3 bit. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em h} & Header to set. \\
+\hline
+\mbox{\tt in}  & {\em value} & Value to set it to. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 384 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_aa3458068f08acb26e350e39375265085}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!word\+\_\+mask\+\_\+circ@{word\+\_\+mask\+\_\+circ}}
+\index{word\+\_\+mask\+\_\+circ@{word\+\_\+mask\+\_\+circ}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{word\+\_\+mask\+\_\+circ(uint8\+\_\+t $\ast$input, uint8\+\_\+t $\ast$output, size\+\_\+t length, size\+\_\+t prepared\+\_\+key)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::frame\+::word\+\_\+mask\+\_\+circ (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{input, }
+\item[{uint8\+\_\+t $\ast$}]{output, }
+\item[{size\+\_\+t}]{length, }
+\item[{size\+\_\+t}]{prepared\+\_\+key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_aa3458068f08acb26e350e39375265085}
+
+
+Circular word aligned mask/unmask. 
+
+Performs a circular mask/unmask in word sized chunks using pre-\/prepared keys that store state between calls. Best for providing streaming masking or unmasking of small chunks at a time of a larger message. Requires that the underlying allocated size of the data buffer be a multiple of the word size. Data in the buffer after {\ttfamily length} will be overwritten only with the same values that were originally present.
+
+Buffer based word by word masking and unmasking for Web\+Socket payloads. Performs masking in place using the supplied key. Casts the data buffer to an array of size\+\_\+t\textquotesingle{}s and performs masking word by word. The underlying buffer size must be a muliple of the word size.
+
+word\+\_\+mask returns a copy of prepared\+\_\+key circularly shifted based on the length value. The returned value may be fed back into word\+\_\+mask when more data is available.
+
+input and output must both have length at least\+: ceil(length/sizeof(size\+\_\+t))$\ast$sizeof(size\+\_\+t) Exactly that many bytes will be written, although only exactly length bytes will be changed (trailing bytes will be replaced without masking)
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Character buffer to mask\\
+\hline
+{\em length} & Length of data\\
+\hline
+{\em prepared\+\_\+key} & Prepared key to use.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the prepared\+\_\+key shifted to account for the input length 
+\end{DoxyReturn}
+
+
+Definition at line 765 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_af1365b296d14ee7dea6e17d0af368821}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!word\+\_\+mask\+\_\+circ@{word\+\_\+mask\+\_\+circ}}
+\index{word\+\_\+mask\+\_\+circ@{word\+\_\+mask\+\_\+circ}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{word\+\_\+mask\+\_\+circ(uint8\+\_\+t $\ast$data, size\+\_\+t length, size\+\_\+t prepared\+\_\+key)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::frame\+::word\+\_\+mask\+\_\+circ (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{data, }
+\item[{size\+\_\+t}]{length, }
+\item[{size\+\_\+t}]{prepared\+\_\+key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_af1365b296d14ee7dea6e17d0af368821}
+
+
+Circular word aligned mask/unmask (in place) 
+
+In place version of word\+\_\+mask\+\_\+circ
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{namespacewebsocketpp_1_1frame_aa3458068f08acb26e350e39375265085}{word\+\_\+mask\+\_\+circ}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Character buffer to read from and write to\\
+\hline
+{\em length} & Length of data\\
+\hline
+{\em prepared\+\_\+key} & Prepared key to use.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the prepared\+\_\+key shifted to account for the input length 
+\end{DoxyReturn}
+
+
+Definition at line 802 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_acaaa889ec2dc660d7a3cbb310e1a118c}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!word\+\_\+mask\+\_\+exact@{word\+\_\+mask\+\_\+exact}}
+\index{word\+\_\+mask\+\_\+exact@{word\+\_\+mask\+\_\+exact}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{word\+\_\+mask\+\_\+exact(uint8\+\_\+t $\ast$input, uint8\+\_\+t $\ast$output, size\+\_\+t length, masking\+\_\+key\+\_\+type const \&key)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::frame\+::word\+\_\+mask\+\_\+exact (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{input, }
+\item[{uint8\+\_\+t $\ast$}]{output, }
+\item[{size\+\_\+t}]{length, }
+\item[{{\bf masking\+\_\+key\+\_\+type} const \&}]{key}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_acaaa889ec2dc660d7a3cbb310e1a118c}
+\hypertarget{namespacewebsocketpp_1_1frame_a6ef7d51858a5c357c009af6945ab5bf0}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!word\+\_\+mask\+\_\+exact@{word\+\_\+mask\+\_\+exact}}
+\index{word\+\_\+mask\+\_\+exact@{word\+\_\+mask\+\_\+exact}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{word\+\_\+mask\+\_\+exact(uint8\+\_\+t $\ast$data, size\+\_\+t length, masking\+\_\+key\+\_\+type const \&key)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::frame\+::word\+\_\+mask\+\_\+exact (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{data, }
+\item[{size\+\_\+t}]{length, }
+\item[{{\bf masking\+\_\+key\+\_\+type} const \&}]{key}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_a6ef7d51858a5c357c009af6945ab5bf0}
+\hypertarget{namespacewebsocketpp_1_1frame_acb2ccda66981a8a12a3b97fb4b179aa3}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!word\+\_\+mask\+\_\+exact@{word\+\_\+mask\+\_\+exact}}
+\index{word\+\_\+mask\+\_\+exact@{word\+\_\+mask\+\_\+exact}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{word\+\_\+mask\+\_\+exact(uint8\+\_\+t $\ast$input, uint8\+\_\+t $\ast$output, size\+\_\+t length, const masking\+\_\+key\+\_\+type \&key)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::frame\+::word\+\_\+mask\+\_\+exact (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{input, }
+\item[{uint8\+\_\+t $\ast$}]{output, }
+\item[{size\+\_\+t}]{length, }
+\item[{const {\bf masking\+\_\+key\+\_\+type} \&}]{key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_acb2ccda66981a8a12a3b97fb4b179aa3}
+
+
+Exact word aligned mask/unmask. 
+
+Balanced combination of byte by byte and circular word by word masking. Best used to mask complete messages at once. Has much higher setup costs than word\+\_\+mask\+\_\+circ but works with exact sized buffers.
+
+Buffer based word by word masking and unmasking for Web\+Socket payloads. Masking is done in word by word chunks with the remainder not divisible by the word size done byte by byte.
+
+input and output must both be at least length bytes. Exactly length bytes will be written.
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & buffer to mask or unmask\\
+\hline
+{\em output} & buffer to store the output. May be the same as input.\\
+\hline
+{\em length} & length of data buffer\\
+\hline
+{\em key} & Masking key to use \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 699 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_ab5cb468072d1f3f4b430eb2e0baff69d}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!word\+\_\+mask\+\_\+exact@{word\+\_\+mask\+\_\+exact}}
+\index{word\+\_\+mask\+\_\+exact@{word\+\_\+mask\+\_\+exact}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{word\+\_\+mask\+\_\+exact(uint8\+\_\+t $\ast$data, size\+\_\+t length, const masking\+\_\+key\+\_\+type \&key)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::frame\+::word\+\_\+mask\+\_\+exact (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{data, }
+\item[{size\+\_\+t}]{length, }
+\item[{const {\bf masking\+\_\+key\+\_\+type} \&}]{key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1frame_ab5cb468072d1f3f4b430eb2e0baff69d}
+
+
+Exact word aligned mask/unmask (in place) 
+
+In place version of word\+\_\+mask\+\_\+exact
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{namespacewebsocketpp_1_1frame_acaaa889ec2dc660d7a3cbb310e1a118c}{word\+\_\+mask\+\_\+exact}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em data} & buffer to read and write from\\
+\hline
+{\em length} & length of data buffer\\
+\hline
+{\em key} & Masking key to use \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 728 of file frame.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1frame_a510f505f5208e9f3a06e32e50b9b4e89}{}\index{websocketpp\+::frame@{websocketpp\+::frame}!write\+\_\+header@{write\+\_\+header}}
+\index{write\+\_\+header@{write\+\_\+header}!websocketpp\+::frame@{websocketpp\+::frame}}
+\subsubsection[{write\+\_\+header(basic\+\_\+header const \&, extended\+\_\+header const \&)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::frame\+::write\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+header} const \&}]{, }
+\item[{{\bf extended\+\_\+header} const \&}]{}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1frame_a510f505f5208e9f3a06e32e50b9b4e89}

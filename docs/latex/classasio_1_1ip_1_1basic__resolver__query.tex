@@ -1,0 +1,251 @@
+\hypertarget{classasio_1_1ip_1_1basic__resolver__query}{}\section{asio\+:\+:ip\+:\+:basic\+\_\+resolver\+\_\+query$<$ Internet\+Protocol $>$ Class Template Reference}
+\label{classasio_1_1ip_1_1basic__resolver__query}\index{asio\+::ip\+::basic\+\_\+resolver\+\_\+query$<$ Internet\+Protocol $>$@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query$<$ Internet\+Protocol $>$}}
+
+
+An query to be passed to a resolver.  
+
+
+
+
+{\ttfamily \#include $<$basic\+\_\+resolver\+\_\+query.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:ip\+:\+:basic\+\_\+resolver\+\_\+query$<$ Internet\+Protocol $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classasio_1_1ip_1_1basic__resolver__query}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Internet\+Protocol \hyperlink{classasio_1_1ip_1_1basic__resolver__query_afc47f8001caf9274f6f567ae541e224a}{protocol\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The protocol type associated with the endpoint query. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1ip_1_1basic__resolver__query_aa183a3ff114b6508a52112b72ba9e94f}{basic\+\_\+resolver\+\_\+query} (const std\+::string \&service, \hyperlink{classasio_1_1ip_1_1resolver__query__base_a458691242de07dc542fd9834f7b15cfe}{resolver\+\_\+query\+\_\+base\+::flags} resolve\+\_\+flags=\hyperlink{classasio_1_1ip_1_1resolver__query__base_a458691242de07dc542fd9834f7b15cfea2b72b18f2bf20dd05242e133e3a6cb79}{passive}$\vert$\hyperlink{classasio_1_1ip_1_1resolver__query__base_a458691242de07dc542fd9834f7b15cfea72387a0c1a4eec494d376e28fefa7b8d}{address\+\_\+configured})
+\begin{DoxyCompactList}\small\item\em Construct with specified service name for any protocol. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ip_1_1basic__resolver__query_a017da1f4f24366b7edb68dd9f716ee0b}{basic\+\_\+resolver\+\_\+query} (const \hyperlink{classasio_1_1ip_1_1basic__resolver__query_afc47f8001caf9274f6f567ae541e224a}{protocol\+\_\+type} \&protocol, const std\+::string \&service, \hyperlink{classasio_1_1ip_1_1resolver__query__base_a458691242de07dc542fd9834f7b15cfe}{resolver\+\_\+query\+\_\+base\+::flags} resolve\+\_\+flags=\hyperlink{classasio_1_1ip_1_1resolver__query__base_a458691242de07dc542fd9834f7b15cfea2b72b18f2bf20dd05242e133e3a6cb79}{passive}$\vert$\hyperlink{classasio_1_1ip_1_1resolver__query__base_a458691242de07dc542fd9834f7b15cfea72387a0c1a4eec494d376e28fefa7b8d}{address\+\_\+configured})
+\begin{DoxyCompactList}\small\item\em Construct with specified service name for a given protocol. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ip_1_1basic__resolver__query_a5bd1cb4719e72cfd850a9ba31875b7b3}{basic\+\_\+resolver\+\_\+query} (const std\+::string \&host, const std\+::string \&service, \hyperlink{classasio_1_1ip_1_1resolver__query__base_a458691242de07dc542fd9834f7b15cfe}{resolver\+\_\+query\+\_\+base\+::flags} resolve\+\_\+flags=\hyperlink{classasio_1_1ip_1_1resolver__query__base_a458691242de07dc542fd9834f7b15cfea72387a0c1a4eec494d376e28fefa7b8d}{address\+\_\+configured})
+\begin{DoxyCompactList}\small\item\em Construct with specified host name and service name for any protocol. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ip_1_1basic__resolver__query_a328a1edf40fdd0595ff045e2e7e55ad3}{basic\+\_\+resolver\+\_\+query} (const \hyperlink{classasio_1_1ip_1_1basic__resolver__query_afc47f8001caf9274f6f567ae541e224a}{protocol\+\_\+type} \&protocol, const std\+::string \&host, const std\+::string \&service, \hyperlink{classasio_1_1ip_1_1resolver__query__base_a458691242de07dc542fd9834f7b15cfe}{resolver\+\_\+query\+\_\+base\+::flags} resolve\+\_\+flags=\hyperlink{classasio_1_1ip_1_1resolver__query__base_a458691242de07dc542fd9834f7b15cfea72387a0c1a4eec494d376e28fefa7b8d}{address\+\_\+configured})
+\begin{DoxyCompactList}\small\item\em Construct with specified host name and service name for a given protocol. \end{DoxyCompactList}\item 
+const \hyperlink{namespaceasio_1_1detail_ad8df56a17e3aa9ce2ad251fb76426e67}{asio\+::detail\+::addrinfo\+\_\+type} \& \hyperlink{classasio_1_1ip_1_1basic__resolver__query_afe49f3f80df1085c6126264c59a717be}{hints} () const 
+\begin{DoxyCompactList}\small\item\em Get the hints associated with the query. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classasio_1_1ip_1_1basic__resolver__query_a70325245c88e41fece8d50e959cf10df}{host\+\_\+name} () const 
+\begin{DoxyCompactList}\small\item\em Get the host name associated with the query. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classasio_1_1ip_1_1basic__resolver__query_a8546eb4b23a8dc1c9f0d6efb871b748f}{service\+\_\+name} () const 
+\begin{DoxyCompactList}\small\item\em Get the service name associated with the query. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Internet\+Protocol$>$class asio\+::ip\+::basic\+\_\+resolver\+\_\+query$<$ Internet\+Protocol $>$}
+
+An query to be passed to a resolver. 
+
+The \hyperlink{classasio_1_1ip_1_1basic__resolver__query}{asio\+::ip\+::basic\+\_\+resolver\+\_\+query} class template describes a query that can be passed to a resolver.
+
+\begin{DoxyParagraph}{Thread Safety}
+{\itshape Distinct} {\itshape objects\+:} Safe.~\newline
+{\itshape Shared} {\itshape objects\+:} Unsafe. 
+\end{DoxyParagraph}
+
+
+Definition at line 38 of file basic\+\_\+resolver\+\_\+query.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1ip_1_1basic__resolver__query_afc47f8001caf9274f6f567ae541e224a}{}\index{asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}!protocol\+\_\+type@{protocol\+\_\+type}}
+\index{protocol\+\_\+type@{protocol\+\_\+type}!asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}}
+\subsubsection[{protocol\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ typedef Internet\+Protocol {\bf asio\+::ip\+::basic\+\_\+resolver\+\_\+query}$<$ Internet\+Protocol $>$\+::{\bf protocol\+\_\+type}}\label{classasio_1_1ip_1_1basic__resolver__query_afc47f8001caf9274f6f567ae541e224a}
+
+
+The protocol type associated with the endpoint query. 
+
+
+
+Definition at line 43 of file basic\+\_\+resolver\+\_\+query.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1ip_1_1basic__resolver__query_aa183a3ff114b6508a52112b72ba9e94f}{}\index{asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}!basic\+\_\+resolver\+\_\+query@{basic\+\_\+resolver\+\_\+query}}
+\index{basic\+\_\+resolver\+\_\+query@{basic\+\_\+resolver\+\_\+query}!asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}}
+\subsubsection[{basic\+\_\+resolver\+\_\+query(const std\+::string \&service, resolver\+\_\+query\+\_\+base\+::flags resolve\+\_\+flags=passive\texttt{"|}address\+\_\+configured)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf asio\+::ip\+::basic\+\_\+resolver\+\_\+query}$<$ Internet\+Protocol $>$\+::{\bf basic\+\_\+resolver\+\_\+query} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{service, }
+\item[{{\bf resolver\+\_\+query\+\_\+base\+::flags}}]{resolve\+\_\+flags = {\ttfamily {\bf passive}~$\vert$~{\bf address\+\_\+configured}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__resolver__query_aa183a3ff114b6508a52112b72ba9e94f}
+
+
+Construct with specified service name for any protocol. 
+
+This constructor is typically used to perform name resolution for local service binding.
+
+
+\begin{DoxyParams}{Parameters}
+{\em service} & A string identifying the requested service. This may be a descriptive name or a numeric string corresponding to a port number.\\
+\hline
+{\em resolve\+\_\+flags} & A set of flags that determine how name resolution should be performed. The default flags are suitable for local service binding.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+On P\+O\+S\+I\+X systems, service names are typically defined in the file {\ttfamily /etc/services}. On Windows, service names may be found in the file {\ttfamily c\+:\textbackslash{}windows\textbackslash{}system32\textbackslash{}drivers\textbackslash{}etc\textbackslash{}services}. Operating systems may use additional locations when resolving service names. 
+\end{DoxyNote}
+
+
+Definition at line 62 of file basic\+\_\+resolver\+\_\+query.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__resolver__query_a017da1f4f24366b7edb68dd9f716ee0b}{}\index{asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}!basic\+\_\+resolver\+\_\+query@{basic\+\_\+resolver\+\_\+query}}
+\index{basic\+\_\+resolver\+\_\+query@{basic\+\_\+resolver\+\_\+query}!asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}}
+\subsubsection[{basic\+\_\+resolver\+\_\+query(const protocol\+\_\+type \&protocol, const std\+::string \&service, resolver\+\_\+query\+\_\+base\+::flags resolve\+\_\+flags=passive\texttt{"|}address\+\_\+configured)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf asio\+::ip\+::basic\+\_\+resolver\+\_\+query}$<$ Internet\+Protocol $>$\+::{\bf basic\+\_\+resolver\+\_\+query} (
+\begin{DoxyParamCaption}
+\item[{const {\bf protocol\+\_\+type} \&}]{protocol, }
+\item[{const std\+::string \&}]{service, }
+\item[{{\bf resolver\+\_\+query\+\_\+base\+::flags}}]{resolve\+\_\+flags = {\ttfamily {\bf passive}~$\vert$~{\bf address\+\_\+configured}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__resolver__query_a017da1f4f24366b7edb68dd9f716ee0b}
+
+
+Construct with specified service name for a given protocol. 
+
+This constructor is typically used to perform name resolution for local service binding with a specific protocol version.
+
+
+\begin{DoxyParams}{Parameters}
+{\em protocol} & A protocol object, normally representing either the I\+Pv4 or I\+Pv6 version of an internet protocol.\\
+\hline
+{\em service} & A string identifying the requested service. This may be a descriptive name or a numeric string corresponding to a port number.\\
+\hline
+{\em resolve\+\_\+flags} & A set of flags that determine how name resolution should be performed. The default flags are suitable for local service binding.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+On P\+O\+S\+I\+X systems, service names are typically defined in the file {\ttfamily /etc/services}. On Windows, service names may be found in the file {\ttfamily c\+:\textbackslash{}windows\textbackslash{}system32\textbackslash{}drivers\textbackslash{}etc\textbackslash{}services}. Operating systems may use additional locations when resolving service names. 
+\end{DoxyNote}
+
+
+Definition at line 99 of file basic\+\_\+resolver\+\_\+query.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__resolver__query_a5bd1cb4719e72cfd850a9ba31875b7b3}{}\index{asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}!basic\+\_\+resolver\+\_\+query@{basic\+\_\+resolver\+\_\+query}}
+\index{basic\+\_\+resolver\+\_\+query@{basic\+\_\+resolver\+\_\+query}!asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}}
+\subsubsection[{basic\+\_\+resolver\+\_\+query(const std\+::string \&host, const std\+::string \&service, resolver\+\_\+query\+\_\+base\+::flags resolve\+\_\+flags=address\+\_\+configured)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf asio\+::ip\+::basic\+\_\+resolver\+\_\+query}$<$ Internet\+Protocol $>$\+::{\bf basic\+\_\+resolver\+\_\+query} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{host, }
+\item[{const std\+::string \&}]{service, }
+\item[{{\bf resolver\+\_\+query\+\_\+base\+::flags}}]{resolve\+\_\+flags = {\ttfamily {\bf address\+\_\+configured}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__resolver__query_a5bd1cb4719e72cfd850a9ba31875b7b3}
+
+
+Construct with specified host name and service name for any protocol. 
+
+This constructor is typically used to perform name resolution for communication with remote hosts.
+
+
+\begin{DoxyParams}{Parameters}
+{\em host} & A string identifying a location. May be a descriptive name or a numeric address string. If an empty string and the passive flag has been specified, the resolved endpoints are suitable for local service binding. If an empty string and passive is not specified, the resolved endpoints will use the loopback address.\\
+\hline
+{\em service} & A string identifying the requested service. This may be a descriptive name or a numeric string corresponding to a port number. May be an empty string, in which case all resolved endpoints will have a port number of 0.\\
+\hline
+{\em resolve\+\_\+flags} & A set of flags that determine how name resolution should be performed. The default flags are suitable for communication with remote hosts.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+On P\+O\+S\+I\+X systems, host names may be locally defined in the file {\ttfamily /etc/hosts}. On Windows, host names may be defined in the file {\ttfamily c\+:\textbackslash{}windows\textbackslash{}system32\textbackslash{}drivers\textbackslash{}etc\textbackslash{}hosts}. Remote host name resolution is performed using D\+N\+S. Operating systems may use additional locations when resolving host names (such as N\+E\+T\+B\+I\+O\+S names on Windows).
+\end{DoxyNote}
+On P\+O\+S\+I\+X systems, service names are typically defined in the file {\ttfamily /etc/services}. On Windows, service names may be found in the file {\ttfamily c\+:\textbackslash{}windows\textbackslash{}system32\textbackslash{}drivers\textbackslash{}etc\textbackslash{}services}. Operating systems may use additional locations when resolving service names. 
+
+Definition at line 147 of file basic\+\_\+resolver\+\_\+query.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__resolver__query_a328a1edf40fdd0595ff045e2e7e55ad3}{}\index{asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}!basic\+\_\+resolver\+\_\+query@{basic\+\_\+resolver\+\_\+query}}
+\index{basic\+\_\+resolver\+\_\+query@{basic\+\_\+resolver\+\_\+query}!asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}}
+\subsubsection[{basic\+\_\+resolver\+\_\+query(const protocol\+\_\+type \&protocol, const std\+::string \&host, const std\+::string \&service, resolver\+\_\+query\+\_\+base\+::flags resolve\+\_\+flags=address\+\_\+configured)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf asio\+::ip\+::basic\+\_\+resolver\+\_\+query}$<$ Internet\+Protocol $>$\+::{\bf basic\+\_\+resolver\+\_\+query} (
+\begin{DoxyParamCaption}
+\item[{const {\bf protocol\+\_\+type} \&}]{protocol, }
+\item[{const std\+::string \&}]{host, }
+\item[{const std\+::string \&}]{service, }
+\item[{{\bf resolver\+\_\+query\+\_\+base\+::flags}}]{resolve\+\_\+flags = {\ttfamily {\bf address\+\_\+configured}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__resolver__query_a328a1edf40fdd0595ff045e2e7e55ad3}
+
+
+Construct with specified host name and service name for a given protocol. 
+
+This constructor is typically used to perform name resolution for communication with remote hosts.
+
+
+\begin{DoxyParams}{Parameters}
+{\em protocol} & A protocol object, normally representing either the I\+Pv4 or I\+Pv6 version of an internet protocol.\\
+\hline
+{\em host} & A string identifying a location. May be a descriptive name or a numeric address string. If an empty string and the passive flag has been specified, the resolved endpoints are suitable for local service binding. If an empty string and passive is not specified, the resolved endpoints will use the loopback address.\\
+\hline
+{\em service} & A string identifying the requested service. This may be a descriptive name or a numeric string corresponding to a port number. May be an empty string, in which case all resolved endpoints will have a port number of 0.\\
+\hline
+{\em resolve\+\_\+flags} & A set of flags that determine how name resolution should be performed. The default flags are suitable for communication with remote hosts.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+On P\+O\+S\+I\+X systems, host names may be locally defined in the file {\ttfamily /etc/hosts}. On Windows, host names may be defined in the file {\ttfamily c\+:\textbackslash{}windows\textbackslash{}system32\textbackslash{}drivers\textbackslash{}etc\textbackslash{}hosts}. Remote host name resolution is performed using D\+N\+S. Operating systems may use additional locations when resolving host names (such as N\+E\+T\+B\+I\+O\+S names on Windows).
+\end{DoxyNote}
+On P\+O\+S\+I\+X systems, service names are typically defined in the file {\ttfamily /etc/services}. On Windows, service names may be found in the file {\ttfamily c\+:\textbackslash{}windows\textbackslash{}system32\textbackslash{}drivers\textbackslash{}etc\textbackslash{}services}. Operating systems may use additional locations when resolving service names. 
+
+Definition at line 198 of file basic\+\_\+resolver\+\_\+query.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ip_1_1basic__resolver__query_afe49f3f80df1085c6126264c59a717be}{}\index{asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}!hints@{hints}}
+\index{hints@{hints}!asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}}
+\subsubsection[{hints() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ const {\bf asio\+::detail\+::addrinfo\+\_\+type}\& {\bf asio\+::ip\+::basic\+\_\+resolver\+\_\+query}$<$ Internet\+Protocol $>$\+::hints (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__resolver__query_afe49f3f80df1085c6126264c59a717be}
+
+
+Get the hints associated with the query. 
+
+
+
+Definition at line 216 of file basic\+\_\+resolver\+\_\+query.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__resolver__query_a70325245c88e41fece8d50e959cf10df}{}\index{asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}!host\+\_\+name@{host\+\_\+name}}
+\index{host\+\_\+name@{host\+\_\+name}!asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}}
+\subsubsection[{host\+\_\+name() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ std\+::string {\bf asio\+::ip\+::basic\+\_\+resolver\+\_\+query}$<$ Internet\+Protocol $>$\+::host\+\_\+name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__resolver__query_a70325245c88e41fece8d50e959cf10df}
+
+
+Get the host name associated with the query. 
+
+
+
+Definition at line 222 of file basic\+\_\+resolver\+\_\+query.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__resolver__query_a8546eb4b23a8dc1c9f0d6efb871b748f}{}\index{asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}!service\+\_\+name@{service\+\_\+name}}
+\index{service\+\_\+name@{service\+\_\+name}!asio\+::ip\+::basic\+\_\+resolver\+\_\+query@{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}}
+\subsubsection[{service\+\_\+name() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ std\+::string {\bf asio\+::ip\+::basic\+\_\+resolver\+\_\+query}$<$ Internet\+Protocol $>$\+::service\+\_\+name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__resolver__query_a8546eb4b23a8dc1c9f0d6efb871b748f}
+
+
+Get the service name associated with the query. 
+
+
+
+Definition at line 228 of file basic\+\_\+resolver\+\_\+query.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ip/\hyperlink{basic__resolver__query_8hpp}{basic\+\_\+resolver\+\_\+query.\+hpp}\end{DoxyCompactItemize}

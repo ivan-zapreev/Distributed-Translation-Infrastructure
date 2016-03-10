@@ -1,0 +1,4 @@
+var structasio____1____1detail____1____1coro________entry________point__8js_8js =
+[
+    [ "structasio__1__1detail__1__1coro____entry____point_8js", "structasio____1____1detail____1____1coro________entry________point__8js_8js.html#afa01dd679cc03a9c35175b30b5c2fd6c", null ]
+];

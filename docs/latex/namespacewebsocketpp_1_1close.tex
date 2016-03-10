@@ -1,0 +1,88 @@
+\hypertarget{namespacewebsocketpp_1_1close}{}\section{websocketpp\+:\+:close Namespace Reference}
+\label{namespacewebsocketpp_1_1close}\index{websocketpp\+::close@{websocketpp\+::close}}
+
+
+A package of types and methods for manipulating Web\+Socket close codes.  
+
+
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacewebsocketpp_1_1close_1_1status}{status}
+\begin{DoxyCompactList}\small\item\em A package of types and methods for manipulating Web\+Socket close status\textquotesingle{}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+union \hyperlink{unionwebsocketpp_1_1close_1_1code__converter}{code\+\_\+converter}
+\begin{DoxyCompactList}\small\item\em Type used to convert close statuses between integer and wire representations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespacewebsocketpp_1_1close_1_1status_a8614a5c4733d708e2d2a32191c5bef84}{status\+::value} \hyperlink{namespacewebsocketpp_1_1close_aa47dacf7d2e13705d1f68d9ab5b9dad0}{extract\+\_\+code} (std\+::string const \&payload, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Extract a close code value from a close payload. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1close_a537f66833c7b6e745b3cf5dc0252c0ca}{extract\+\_\+reason} (std\+::string const \&payload, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Extract the reason string from a close payload. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A package of types and methods for manipulating Web\+Socket close codes. 
+
+\subsection{Function Documentation}
+\hypertarget{namespacewebsocketpp_1_1close_aa47dacf7d2e13705d1f68d9ab5b9dad0}{}\index{websocketpp\+::close@{websocketpp\+::close}!extract\+\_\+code@{extract\+\_\+code}}
+\index{extract\+\_\+code@{extract\+\_\+code}!websocketpp\+::close@{websocketpp\+::close}}
+\subsubsection[{extract\+\_\+code(std\+::string const \&payload, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf status\+::value} websocketpp\+::close\+::extract\+\_\+code (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{payload, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1close_aa47dacf7d2e13705d1f68d9ab5b9dad0}
+
+
+Extract a close code value from a close payload. 
+
+If there is no close value (ie string is empty) status\+::no\+\_\+status is returned. If a code couldn\textquotesingle{}t be extracted (usually do to a short or otherwise mangled payload) status\+::protocol\+\_\+error is returned and the ec value is flagged as an error. Note that this case is different than the case where protocol error is received over the wire.
+
+If the value is in an invalid or reserved range ec is set accordingly.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em payload} & Close frame payload value received over the wire. \\
+\hline
+\mbox{\tt out}  & {\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The extracted value 
+\end{DoxyReturn}
+
+
+Definition at line 283 of file close.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1close_a537f66833c7b6e745b3cf5dc0252c0ca}{}\index{websocketpp\+::close@{websocketpp\+::close}!extract\+\_\+reason@{extract\+\_\+reason}}
+\index{extract\+\_\+reason@{extract\+\_\+reason}!websocketpp\+::close@{websocketpp\+::close}}
+\subsubsection[{extract\+\_\+reason(std\+::string const \&payload, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::close\+::extract\+\_\+reason (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{payload, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespacewebsocketpp_1_1close_a537f66833c7b6e745b3cf5dc0252c0ca}
+
+
+Extract the reason string from a close payload. 
+
+The string should be a valid U\+T\+F8 message. \hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da942738932384d65a5156ca03863587e1}{error\+::invalid\+\_\+utf8} will be set if the function extracts a reason that is not valid U\+T\+F8.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em payload} & The payload string to extract a reason from. \\
+\hline
+\mbox{\tt out}  & {\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The reason string. 
+\end{DoxyReturn}
+
+
+Definition at line 322 of file close.\+hpp.
+

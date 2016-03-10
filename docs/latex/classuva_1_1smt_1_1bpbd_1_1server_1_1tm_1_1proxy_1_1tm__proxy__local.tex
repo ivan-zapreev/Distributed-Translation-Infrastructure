@@ -1,0 +1,161 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:tm\+:\+:proxy\+:\+:tm\+\_\+proxy\+\_\+local Class Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}}
+
+
+{\ttfamily \#include $<$tm\+\_\+proxy\+\_\+local.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:tm\+:\+:proxy\+:\+:tm\+\_\+proxy\+\_\+local\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_aa713e38d275c6d6c47e4e437f4c196d3}{tm\+\_\+proxy\+\_\+local} ()
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a1438086facfafb8ad22b381232e6e474}{$\sim$tm\+\_\+proxy\+\_\+local} ()
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a5d77b90071d5ea0c80072a4b14125edf}{connect} (const \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1tm__parameters}{tm\+\_\+parameters} \&params)
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a000e14c8242bbe551cdc074c79ef0b89}{disconnect} ()
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__query__proxy}{tm\+\_\+query\+\_\+proxy} \& \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a5d5b8fbfe884af27c390e38b065f399c}{allocate\+\_\+query\+\_\+proxy} ()
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_af91a15abfca464b58f7e752ebc258364}{dispose\+\_\+query\+\_\+proxy} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__query__proxy}{tm\+\_\+query\+\_\+proxy} \&query)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename tm\+\_\+builder\+\_\+type , typename file\+\_\+reader\+\_\+type $>$ }\\void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_ab55bb64bacfd5243dec3c683793cb7f7}{load\+\_\+model\+\_\+data} (char const $\ast$model\+\_\+name, const \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1tm__parameters}{tm\+\_\+parameters} \&params)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is the translation model proxy interface class it allows to interact with any sort of local and remote models in a uniform way. 
+
+Definition at line 61 of file tm\+\_\+proxy\+\_\+local.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_aa713e38d275c6d6c47e4e437f4c196d3}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}!tm\+\_\+proxy\+\_\+local@{tm\+\_\+proxy\+\_\+local}}
+\index{tm\+\_\+proxy\+\_\+local@{tm\+\_\+proxy\+\_\+local}!uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}}
+\subsubsection[{tm\+\_\+proxy\+\_\+local()}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local\+::tm\+\_\+proxy\+\_\+local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_aa713e38d275c6d6c47e4e437f4c196d3}
+The basic proxy constructor, currently does nothing except for default initialization 
+
+Definition at line 67 of file tm\+\_\+proxy\+\_\+local.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a1438086facfafb8ad22b381232e6e474}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}!````~tm\+\_\+proxy\+\_\+local@{$\sim$tm\+\_\+proxy\+\_\+local}}
+\index{````~tm\+\_\+proxy\+\_\+local@{$\sim$tm\+\_\+proxy\+\_\+local}!uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}}
+\subsubsection[{$\sim$tm\+\_\+proxy\+\_\+local()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local\+::$\sim$tm\+\_\+proxy\+\_\+local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a1438086facfafb8ad22b381232e6e474}
+The basic destructor 
+
+Definition at line 74 of file tm\+\_\+proxy\+\_\+local.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a5d5b8fbfe884af27c390e38b065f399c}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}!allocate\+\_\+query\+\_\+proxy@{allocate\+\_\+query\+\_\+proxy}}
+\index{allocate\+\_\+query\+\_\+proxy@{allocate\+\_\+query\+\_\+proxy}!uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}}
+\subsubsection[{allocate\+\_\+query\+\_\+proxy()}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf tm\+\_\+query\+\_\+proxy}\& uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local\+::allocate\+\_\+query\+\_\+proxy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a5d5b8fbfe884af27c390e38b065f399c}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy}{tm\+\_\+proxy} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy_ad038abb503116db63fe0ade0646a67fa}{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy}.
+
+
+
+Definition at line 98 of file tm\+\_\+proxy\+\_\+local.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a5d77b90071d5ea0c80072a4b14125edf}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}!connect@{connect}}
+\index{connect@{connect}!uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}}
+\subsubsection[{connect(const tm\+\_\+parameters \&params)}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local\+::connect (
+\begin{DoxyParamCaption}
+\item[{const {\bf tm\+\_\+parameters} \&}]{params}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a5d77b90071d5ea0c80072a4b14125edf}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy}{tm\+\_\+proxy} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy_a709c4823b451310b5e6559d37ec349c5}{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy}.
+
+
+
+Definition at line 82 of file tm\+\_\+proxy\+\_\+local.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a000e14c8242bbe551cdc074c79ef0b89}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}!disconnect@{disconnect}}
+\index{disconnect@{disconnect}!uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}}
+\subsubsection[{disconnect()}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local\+::disconnect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_a000e14c8242bbe551cdc074c79ef0b89}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy}{tm\+\_\+proxy} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy_af7c0b4637c6aaa4bac87f33fd034cff6}{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy}.
+
+
+
+Definition at line 91 of file tm\+\_\+proxy\+\_\+local.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_af91a15abfca464b58f7e752ebc258364}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}!dispose\+\_\+query\+\_\+proxy@{dispose\+\_\+query\+\_\+proxy}}
+\index{dispose\+\_\+query\+\_\+proxy@{dispose\+\_\+query\+\_\+proxy}!uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}}
+\subsubsection[{dispose\+\_\+query\+\_\+proxy(tm\+\_\+query\+\_\+proxy \&query)}]{\setlength{\rightskip}{0pt plus 5cm}virtual void uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local\+::dispose\+\_\+query\+\_\+proxy (
+\begin{DoxyParamCaption}
+\item[{{\bf tm\+\_\+query\+\_\+proxy} \&}]{query}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_af91a15abfca464b58f7e752ebc258364}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy}{tm\+\_\+proxy} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy_a5125504cef8c1843a65255dc6e846ae0}{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy}.
+
+
+
+Definition at line 106 of file tm\+\_\+proxy\+\_\+local.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_ab55bb64bacfd5243dec3c683793cb7f7}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}!load\+\_\+model\+\_\+data@{load\+\_\+model\+\_\+data}}
+\index{load\+\_\+model\+\_\+data@{load\+\_\+model\+\_\+data}!uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local}}
+\subsubsection[{load\+\_\+model\+\_\+data(char const $\ast$model\+\_\+name, const tm\+\_\+parameters \&params)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename tm\+\_\+builder\+\_\+type , typename file\+\_\+reader\+\_\+type $>$ void uva\+::smt\+::bpbd\+::server\+::tm\+::proxy\+::tm\+\_\+proxy\+\_\+local\+::load\+\_\+model\+\_\+data (
+\begin{DoxyParamCaption}
+\item[{char const $\ast$}]{model\+\_\+name, }
+\item[{const {\bf tm\+\_\+parameters} \&}]{params}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_ab55bb64bacfd5243dec3c683793cb7f7}
+Allows to load the model into the instance of the selected container class 
+\begin{DoxyParams}{Parameters}
+{\em the} & name of the model being loaded  params the model parameters \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 120 of file tm\+\_\+proxy\+\_\+local.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/tm/proxy/\hyperlink{tm__proxy__local_8hpp}{tm\+\_\+proxy\+\_\+local.\+hpp}\end{DoxyCompactItemize}

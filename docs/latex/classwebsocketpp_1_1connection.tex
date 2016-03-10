@@ -1,0 +1,2464 @@
+\hypertarget{classwebsocketpp_1_1connection}{}\section{websocketpp\+:\+:connection$<$ config $>$ Class Template Reference}
+\label{classwebsocketpp_1_1connection}\index{websocketpp\+::connection$<$ config $>$@{websocketpp\+::connection$<$ config $>$}}
+
+
+Represents an individual Web\+Socket connection.  
+
+
+
+
+{\ttfamily \#include $<$connection.\+hpp$>$}
+
+Inheritance diagram for websocketpp\+:\+:connection$<$ config $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classwebsocketpp_1_1connection}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1connection}{connection}$<$ config $>$ \hyperlink{classwebsocketpp_1_1connection_a6d09aefdf1e35c0169b26ab92a4dee34}{type}
+\begin{DoxyCompactList}\small\item\em Type of this connection. \end{DoxyCompactList}\item 
+typedef lib\+::shared\+\_\+ptr$<$ \hyperlink{classwebsocketpp_1_1connection_a6d09aefdf1e35c0169b26ab92a4dee34}{type} $>$ \hyperlink{classwebsocketpp_1_1connection_ab910d42e3bde91546183cc54642f32ab}{ptr}
+\begin{DoxyCompactList}\small\item\em Type of a shared pointer to this connection. \end{DoxyCompactList}\item 
+typedef lib\+::weak\+\_\+ptr$<$ \hyperlink{classwebsocketpp_1_1connection_a6d09aefdf1e35c0169b26ab92a4dee34}{type} $>$ \hyperlink{classwebsocketpp_1_1connection_ac2905dcf6418c52ec9685f9f59b86e3e}{weak\+\_\+ptr}
+\begin{DoxyCompactList}\small\item\em Type of a weak pointer to this connection. \end{DoxyCompactList}\item 
+typedef config\+::concurrency\+\_\+type \hyperlink{classwebsocketpp_1_1connection_a9db8af56881450fbba5c6ff1060c569a}{concurrency\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the concurrency component of this connection. \end{DoxyCompactList}\item 
+typedef config\+::alog\+\_\+type \hyperlink{classwebsocketpp_1_1connection_a2da7d18aecf9153429bab9fcd2bab7b8}{alog\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the access logging policy. \end{DoxyCompactList}\item 
+typedef config\+::elog\+\_\+type \hyperlink{classwebsocketpp_1_1connection_a80314ab2e4ddefdd4783fb1934fedee6}{elog\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the error logging policy. \end{DoxyCompactList}\item 
+typedef config\+::transport\+\_\+type\+::transport\+\_\+con\+\_\+type \hyperlink{classwebsocketpp_1_1connection_a1deb19aef8e7bde8f955ef5f952c9d19}{transport\+\_\+con\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the transport component of this connection. \end{DoxyCompactList}\item 
+typedef transport\+\_\+con\+\_\+type\+::ptr \hyperlink{classwebsocketpp_1_1connection_ad2fce7d1a535820336275ae116384738}{transport\+\_\+con\+\_\+ptr}
+\begin{DoxyCompactList}\small\item\em Type of a shared pointer to the transport component of this connection. \end{DoxyCompactList}\item 
+typedef lib\+::function$<$ void(\hyperlink{classwebsocketpp_1_1connection_ab910d42e3bde91546183cc54642f32ab}{ptr})$>$ \hyperlink{classwebsocketpp_1_1connection_a8da9613d1f13c9f4571ffb0810d43e63}{termination\+\_\+handler}
+\item 
+typedef concurrency\+\_\+type\+::scoped\+\_\+lock\+\_\+type \hyperlink{classwebsocketpp_1_1connection_a22ec65b3e3d5159ea61f885066e12caa}{scoped\+\_\+lock\+\_\+type}
+\item 
+typedef concurrency\+\_\+type\+::mutex\+\_\+type \hyperlink{classwebsocketpp_1_1connection_a837046a7435ad7d051ac6da827d78caa}{mutex\+\_\+type}
+\item 
+typedef config\+::request\+\_\+type \hyperlink{classwebsocketpp_1_1connection_ac4d9911b0954de83079ce6867a5cf57f}{request\+\_\+type}
+\item 
+typedef config\+::response\+\_\+type \hyperlink{classwebsocketpp_1_1connection_a0d2d5908eaaea749bcf8fd0939b05d3b}{response\+\_\+type}
+\item 
+typedef config\+::message\+\_\+type \hyperlink{classwebsocketpp_1_1connection_a26f1fe3979ff1d2dc5e1461e4f2bc621}{message\+\_\+type}
+\item 
+typedef message\+\_\+type\+::ptr \hyperlink{classwebsocketpp_1_1connection_a3b98c091caf54540024538d2394ffb57}{message\+\_\+ptr}
+\item 
+typedef config\+::con\+\_\+msg\+\_\+manager\+\_\+type \hyperlink{classwebsocketpp_1_1connection_aa3fe3ecba9c63a04771c2ae34dd8dd56}{con\+\_\+msg\+\_\+manager\+\_\+type}
+\item 
+typedef con\+\_\+msg\+\_\+manager\+\_\+type\+::ptr \hyperlink{classwebsocketpp_1_1connection_a7bcb608b3a2a645bda4e4c4998f754c7}{con\+\_\+msg\+\_\+manager\+\_\+ptr}
+\item 
+typedef config\+::rng\+\_\+type \hyperlink{classwebsocketpp_1_1connection_afc276f2f61d5b1acfadc64f91b3f89e5}{rng\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of R\+N\+G. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1processor_1_1processor}{processor\+::processor}$<$ config $>$ \hyperlink{classwebsocketpp_1_1connection_a77cd1bb26e05961a5fbc60708244d1fe}{processor\+\_\+type}
+\item 
+typedef lib\+::shared\+\_\+ptr$<$ \hyperlink{classwebsocketpp_1_1connection_a77cd1bb26e05961a5fbc60708244d1fe}{processor\+\_\+type} $>$ \hyperlink{classwebsocketpp_1_1connection_a7e955b2fc98102bb3776e993f95c9009}{processor\+\_\+ptr}
+\item 
+typedef lib\+::function$<$ void(\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl}, \hyperlink{classwebsocketpp_1_1connection_a3b98c091caf54540024538d2394ffb57}{message\+\_\+ptr})$>$ \hyperlink{classwebsocketpp_1_1connection_a0091551000546d5f5f427379d852cae9}{message\+\_\+handler}
+\item 
+typedef transport\+\_\+con\+\_\+type\+::timer\+\_\+ptr \hyperlink{classwebsocketpp_1_1connection_aa13510ba1841ded8492a0483a294feb0}{timer\+\_\+ptr}
+\begin{DoxyCompactList}\small\item\em Type of a pointer to a transport timer handle. \end{DoxyCompactList}\item 
+typedef \hyperlink{namespacewebsocketpp_1_1session_1_1internal__state_a981c3a4fb8962bad264d7efea05c508d}{session\+::internal\+\_\+state\+::value} \hyperlink{classwebsocketpp_1_1connection_ab22544fdc49d7f332cd1abba9fefd814}{istate\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classwebsocketpp_1_1connection_a525947d8d33ee1e410d02706246ffe94}{connection} (bool p\+\_\+is\+\_\+server, std\+::string const \&ua, \hyperlink{classwebsocketpp_1_1connection_a2da7d18aecf9153429bab9fcd2bab7b8}{alog\+\_\+type} \&alog, \hyperlink{classwebsocketpp_1_1connection_a80314ab2e4ddefdd4783fb1934fedee6}{elog\+\_\+type} \&elog, \hyperlink{classwebsocketpp_1_1connection_afc276f2f61d5b1acfadc64f91b3f89e5}{rng\+\_\+type} \&rng)
+\item 
+\hyperlink{classwebsocketpp_1_1connection_ab910d42e3bde91546183cc54642f32ab}{ptr} \hyperlink{classwebsocketpp_1_1connection_a01a5af7dc2f35ff8f15da8c2cf3a3b02}{get\+\_\+shared} ()
+\begin{DoxyCompactList}\small\item\em Get a shared pointer to this component. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_ab11271e7778fbfde3a1987fca729af6d}{set\+\_\+open\+\_\+handler} (\hyperlink{namespacewebsocketpp_a53c8b4ae59cf13b5f883b119bbd14d72}{open\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Set open handler. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a25fb7096431b1d7350c34035db7ed9a4}{set\+\_\+close\+\_\+handler} (\hyperlink{namespacewebsocketpp_a27acb39e01cbca06ccc4e4e8eb8f877d}{close\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Set close handler. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a8d2515bc6821f90c531efe77c8a32569}{set\+\_\+fail\+\_\+handler} (\hyperlink{namespacewebsocketpp_a5bb2e61cfe649b2e012f1a2c5693a4d5}{fail\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Set fail handler. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a6e21e63abbbba88f818742e9da25fa8b}{set\+\_\+ping\+\_\+handler} (\hyperlink{namespacewebsocketpp_a9dcaaa7370865f1bcacb55ae715793ef}{ping\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Set ping handler. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a298795eaa6d554ca5114ff23346d47a9}{set\+\_\+pong\+\_\+handler} (\hyperlink{namespacewebsocketpp_a1798d54e6d98a481cf870091af84bc1f}{pong\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Set pong handler. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a6baa576fffc7af7685cf75894d634fb7}{set\+\_\+pong\+\_\+timeout\+\_\+handler} (\hyperlink{namespacewebsocketpp_a2c5925a111b9e553efebea35d5ea155f}{pong\+\_\+timeout\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Set pong timeout handler. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_aa8edc6e8ea1b72f84973bed0a20ad365}{set\+\_\+interrupt\+\_\+handler} (\hyperlink{namespacewebsocketpp_a55f6947df7673a9de3c44b6bd5d4a82a}{interrupt\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Set interrupt handler. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a78c680623660b0442394af6b45c46c23}{set\+\_\+http\+\_\+handler} (\hyperlink{namespacewebsocketpp_a37bc4d5b3b21d3bb494d8a23236315d2}{http\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Set http handler. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_aa28096d051f5639d7b01954845fc054c}{set\+\_\+validate\+\_\+handler} (\hyperlink{namespacewebsocketpp_ae28f3fed86a59b1998746694f3d4edbd}{validate\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Set validate handler. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a107e754227c828582779b906654743fe}{set\+\_\+message\+\_\+handler} (\hyperlink{classwebsocketpp_1_1connection_a0091551000546d5f5f427379d852cae9}{message\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Set message handler. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_ad5a666fe1144dc68b1bae3bcc615e1ed}{set\+\_\+open\+\_\+handshake\+\_\+timeout} (long dur)
+\begin{DoxyCompactList}\small\item\em Set open handshake timeout. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a3bf932388a128a7b719c45b945bffaad}{set\+\_\+close\+\_\+handshake\+\_\+timeout} (long dur)
+\begin{DoxyCompactList}\small\item\em Set close handshake timeout. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_ab9a905ac6a4f0f8546011b8f8a531563}{set\+\_\+pong\+\_\+timeout} (long dur)
+\begin{DoxyCompactList}\small\item\em Set pong timeout. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1connection_ae2169d7637ad3d31d8c24c2c498b8db8}{get\+\_\+max\+\_\+message\+\_\+size} () const 
+\begin{DoxyCompactList}\small\item\em Get maximum message size. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a522286bf83373f87ddebf93b732abffc}{set\+\_\+max\+\_\+message\+\_\+size} (size\+\_\+t new\+\_\+value)
+\begin{DoxyCompactList}\small\item\em Set maximum message size. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1connection_a7b045ae56e2eb1f60a536af4818bbc0d}{get\+\_\+max\+\_\+http\+\_\+body\+\_\+size} () const 
+\begin{DoxyCompactList}\small\item\em Get maximum H\+T\+T\+P message body size. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_ad2a5b06ad88f5bcdd06fcabaae3323bc}{set\+\_\+max\+\_\+http\+\_\+body\+\_\+size} (size\+\_\+t new\+\_\+value)
+\begin{DoxyCompactList}\small\item\em Set maximum H\+T\+T\+P message body size. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1connection_a27f8c2f8d9d84aa68891593d48495bd2}{get\+\_\+buffered\+\_\+amount} () const 
+\begin{DoxyCompactList}\small\item\em Get the size of the outgoing write buffer (in payload bytes) \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1connection_acb2fc5317ce219d92425635c1b2bde53}{buffered\+\_\+amount} () const 
+\begin{DoxyCompactList}\small\item\em Get the size of the outgoing write buffer (in payload bytes) \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1connection_af3f96a962ed7a271a00e85ba4df2db45}{send} (std\+::string const \&payload, \hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5e}{frame\+::opcode\+::value} op=\hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5ea6b65f28626b19b2eef447744c564e727}{frame\+::opcode\+::text})
+\begin{DoxyCompactList}\small\item\em Create a message and then add it to the outgoing send queue. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1connection_a607fc1d40a2cf994ccc7173a94a2774d}{send} (void const $\ast$payload, size\+\_\+t len, \hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5e}{frame\+::opcode\+::value} op=\hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5eabe7c19fe7e9744d6a0f041e4c99f120f}{frame\+::opcode\+::binary})
+\begin{DoxyCompactList}\small\item\em Send a message (raw array overload) \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1connection_a29900da403dbafab8095c0989104be90}{send} (\hyperlink{classwebsocketpp_1_1connection_a3b98c091caf54540024538d2394ffb57}{message\+\_\+ptr} msg)
+\begin{DoxyCompactList}\small\item\em Add a message to the outgoing send queue. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1connection_a12bbbc93d414c65492ffb2c4a12f05a8}{interrupt} ()
+\begin{DoxyCompactList}\small\item\em Asyncronously invoke handler\+::on\+\_\+inturrupt. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a0b438ac986b73c99907515eeac6dc45f}{handle\+\_\+interrupt} ()
+\begin{DoxyCompactList}\small\item\em Transport inturrupt callback. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1connection_ad6a4a25a18ec61d2a36a149a3d92ab72}{pause\+\_\+reading} ()
+\begin{DoxyCompactList}\small\item\em Pause reading of new data. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a5887284ea346efd7b5cc43519bfd84d5}{handle\+\_\+pause\+\_\+reading} ()
+\begin{DoxyCompactList}\small\item\em Pause reading callback. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1connection_a355b5e155ba53071b06fa8a6dfab9be2}{resume\+\_\+reading} ()
+\begin{DoxyCompactList}\small\item\em Resume reading of new data. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_adb5b479b7d66eb289390b26d12332d84}{handle\+\_\+resume\+\_\+reading} ()
+\begin{DoxyCompactList}\small\item\em Resume reading callback. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a21c8dc6badfaff3aaee1434625c09b04}{ping} (std\+::string const \&payload)
+\begin{DoxyCompactList}\small\item\em Send a ping. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a6766e2f31adc6843a983551b21683b73}{ping} (std\+::string const \&payload, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em exception free variant of ping \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_af10cbbbfe16ef1cc6f45614582c9d28f}{handle\+\_\+pong\+\_\+timeout} (std\+::string payload, lib\+::error\+\_\+code const \&ec)
+\begin{DoxyCompactList}\small\item\em Utility method that gets called back when the ping timer expires. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_aa8684fcfd9a57466ae1b52e36b834408}{pong} (std\+::string const \&payload)
+\begin{DoxyCompactList}\small\item\em Send a pong. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a837dcb8f1214f08b92e7ae7489bfa180}{pong} (std\+::string const \&payload, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em exception free variant of pong \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_ae718e4fa8b2c37757d8abd71dae07dc9}{close} (\hyperlink{namespacewebsocketpp_1_1close_1_1status_a8614a5c4733d708e2d2a32191c5bef84}{close\+::status\+::value} const code, std\+::string const \&reason)
+\begin{DoxyCompactList}\small\item\em Close the connection. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a436058fe88b1ba31080cec2a464634ae}{close} (\hyperlink{namespacewebsocketpp_1_1close_1_1status_a8614a5c4733d708e2d2a32191c5bef84}{close\+::status\+::value} const code, std\+::string const \&reason, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em exception free variant of close \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1connection_a65514127120694d4c2a583b79bafe79e}{get\+\_\+secure} () const 
+\begin{DoxyCompactList}\small\item\em Returns the secure flag from the connection U\+R\+I. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1connection_a924fcd958acdb66e8b04234af73afaf3}{get\+\_\+host} () const 
+\begin{DoxyCompactList}\small\item\em Returns the host component of the connection U\+R\+I. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1connection_a02f604aa2a3401ff83c845d65ff06e9b}{get\+\_\+resource} () const 
+\begin{DoxyCompactList}\small\item\em Returns the resource component of the connection U\+R\+I. \end{DoxyCompactList}\item 
+uint16\+\_\+t \hyperlink{classwebsocketpp_1_1connection_a59fb24787c8ad9796ca447b98de3140b}{get\+\_\+port} () const 
+\begin{DoxyCompactList}\small\item\em Returns the port component of the connection U\+R\+I. \end{DoxyCompactList}\item 
+\hyperlink{namespacewebsocketpp_aae370ea5ac83a8ece7712cb39fc23f5b}{uri\+\_\+ptr} \hyperlink{classwebsocketpp_1_1connection_a424a90ec2f576fe288a712618e59fddd}{get\+\_\+uri} () const 
+\begin{DoxyCompactList}\small\item\em Gets the connection U\+R\+I. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_ac5c81acf3be998662a3500a9be2c4d38}{set\+\_\+uri} (\hyperlink{namespacewebsocketpp_aae370ea5ac83a8ece7712cb39fc23f5b}{uri\+\_\+ptr} \hyperlink{classwebsocketpp_1_1uri}{uri})
+\begin{DoxyCompactList}\small\item\em Sets the connection U\+R\+I. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1connection_adfdf4e89adc7ba3d1239b7e5ae66b818}{get\+\_\+subprotocol} () const 
+\begin{DoxyCompactList}\small\item\em Gets the negotated subprotocol. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ const \& \hyperlink{classwebsocketpp_1_1connection_aa5e8f75b832d166eab145b862fd5f637}{get\+\_\+requested\+\_\+subprotocols} () const 
+\begin{DoxyCompactList}\small\item\em Gets all of the subprotocols requested by the client. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a36462b406f973e16d3107e786c6b9172}{add\+\_\+subprotocol} (std\+::string const \&request, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Adds the given subprotocol string to the request list (exception free) \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a37a41672dd87714eb045fd989f98cd26}{add\+\_\+subprotocol} (std\+::string const \&request)
+\begin{DoxyCompactList}\small\item\em Adds the given subprotocol string to the request list. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a53e9587a711e543ed353e8ecec13d44c}{select\+\_\+subprotocol} (std\+::string const \&value, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Select a subprotocol to use (exception free) \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a96b37fbab88dfb78b1641c0c30710243}{select\+\_\+subprotocol} (std\+::string const \&value)
+\begin{DoxyCompactList}\small\item\em Select a subprotocol to use. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1connection_a3328d3f125c55c1d21034c701fabe04f}{get\+\_\+request\+\_\+header} (std\+::string const \&key) const 
+\begin{DoxyCompactList}\small\item\em Retrieve a request header. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1connection_ab50df430aa86417e50df8959d5e3e79d}{get\+\_\+request\+\_\+body} () const 
+\begin{DoxyCompactList}\small\item\em Retrieve a request body. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1connection_a1b6c2b2b36d1b8c6e59ef95474a381fe}{get\+\_\+response\+\_\+header} (std\+::string const \&key) const 
+\begin{DoxyCompactList}\small\item\em Retrieve a response header. \end{DoxyCompactList}\item 
+\hyperlink{namespacewebsocketpp_1_1http_1_1status__code_ae0d61c309e053ee5673517b54e2886c6}{http\+::status\+\_\+code\+::value} \hyperlink{classwebsocketpp_1_1connection_ac7b863cdabbea139117819e58e1fcf7a}{get\+\_\+response\+\_\+code} () const 
+\begin{DoxyCompactList}\small\item\em Get response H\+T\+T\+P status code. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1connection_ac80a14160257f7ad74bc6c30de0564c7}{get\+\_\+response\+\_\+msg} () const 
+\begin{DoxyCompactList}\small\item\em Get response H\+T\+T\+P status message. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a96d445ff0cc75b854c4500e93a054acb}{set\+\_\+status} (\hyperlink{namespacewebsocketpp_1_1http_1_1status__code_ae0d61c309e053ee5673517b54e2886c6}{http\+::status\+\_\+code\+::value} code)
+\begin{DoxyCompactList}\small\item\em Set response status code and message. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a97b4513339167df8653a11ef3ccc65b1}{set\+\_\+status} (\hyperlink{namespacewebsocketpp_1_1http_1_1status__code_ae0d61c309e053ee5673517b54e2886c6}{http\+::status\+\_\+code\+::value} code, std\+::string const \&msg)
+\begin{DoxyCompactList}\small\item\em Set response status code and message. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a40bb318c3b9294018d217d0271a7b3da}{set\+\_\+body} (std\+::string const \&value)
+\begin{DoxyCompactList}\small\item\em Set response body content. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_af8cb78acc61b8a3d59f6162cdba6318b}{append\+\_\+header} (std\+::string const \&key, std\+::string const \&val)
+\begin{DoxyCompactList}\small\item\em Append a header. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a96e4adcdb9b3473ca96e2aac27ff7147}{replace\+\_\+header} (std\+::string const \&key, std\+::string const \&val)
+\begin{DoxyCompactList}\small\item\em Replace a header. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a63094895d9dcfb4d10974ae97ea319a1}{remove\+\_\+header} (std\+::string const \&key)
+\begin{DoxyCompactList}\small\item\em Remove a header. \end{DoxyCompactList}\item 
+\hyperlink{classwebsocketpp_1_1connection_ac4d9911b0954de83079ce6867a5cf57f}{request\+\_\+type} const \& \hyperlink{classwebsocketpp_1_1connection_ae32374b27c479bec5a3965def867ee0a}{get\+\_\+request} () const 
+\begin{DoxyCompactList}\small\item\em Get request object. \end{DoxyCompactList}\item 
+\hyperlink{classwebsocketpp_1_1connection_a0d2d5908eaaea749bcf8fd0939b05d3b}{response\+\_\+type} const \& \hyperlink{classwebsocketpp_1_1connection_a7b754f108a5eb806abdf4ee6e96cae41}{get\+\_\+response} () const 
+\begin{DoxyCompactList}\small\item\em Get response object. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1connection_a32c3f964cef870faf0d8f23c5b7588bb}{defer\+\_\+http\+\_\+response} ()
+\begin{DoxyCompactList}\small\item\em Defer H\+T\+T\+P Response until later (Exception free) \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a6c192eb26aa8be9afed7ff9e85990ea8}{send\+\_\+http\+\_\+response} (lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Send deferred H\+T\+T\+P Response (exception free) \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_aabc8c4f01bb9fd6336e536d992ae1a4f}{send\+\_\+http\+\_\+response} ()
+\begin{DoxyCompactList}\small\item\em Send deferred H\+T\+T\+P Response. \end{DoxyCompactList}\item 
+\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} \hyperlink{classwebsocketpp_1_1connection_a1b4ff357aedf82b1bcca23e47a1f1da7}{get\+\_\+handle} () const 
+\begin{DoxyCompactList}\small\item\em Get Connection Handle. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1connection_aef37e8da78fb29b36397b522e7b59cca}{is\+\_\+server} () const 
+\begin{DoxyCompactList}\small\item\em Get whether or not this connection is part of a server or client. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1connection_afa729fb7e0b72b175bdfe5edf5d86037}{get\+\_\+origin} () const 
+\begin{DoxyCompactList}\small\item\em Return the same origin policy origin value from the opening request. \end{DoxyCompactList}\item 
+\hyperlink{namespacewebsocketpp_1_1session_1_1state_a12acca56cdb6c10f467dfb10fc763ca5}{session\+::state\+::value} \hyperlink{classwebsocketpp_1_1connection_a3ca5ebd3cdbe115032d15117d79c23ca}{get\+\_\+state} () const 
+\begin{DoxyCompactList}\small\item\em Return the connection state. \end{DoxyCompactList}\item 
+\hyperlink{namespacewebsocketpp_1_1close_1_1status_a8614a5c4733d708e2d2a32191c5bef84}{close\+::status\+::value} \hyperlink{classwebsocketpp_1_1connection_a5ec4357a56f7c4648ff01018eecf20ff}{get\+\_\+local\+\_\+close\+\_\+code} () const 
+\begin{DoxyCompactList}\small\item\em Get the Web\+Socket close code sent by this endpoint. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1connection_a091cd6ee2f87250a39a751a2c4454bb8}{get\+\_\+local\+\_\+close\+\_\+reason} () const 
+\begin{DoxyCompactList}\small\item\em Get the Web\+Socket close reason sent by this endpoint. \end{DoxyCompactList}\item 
+\hyperlink{namespacewebsocketpp_1_1close_1_1status_a8614a5c4733d708e2d2a32191c5bef84}{close\+::status\+::value} \hyperlink{classwebsocketpp_1_1connection_a51b293d37bbe93b42a4bd177f1c63c62}{get\+\_\+remote\+\_\+close\+\_\+code} () const 
+\begin{DoxyCompactList}\small\item\em Get the Web\+Socket close code sent by the remote endpoint. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1connection_a7addd86cf19f58f40e7b9c1d5fa6d449}{get\+\_\+remote\+\_\+close\+\_\+reason} () const 
+\begin{DoxyCompactList}\small\item\em Get the Web\+Socket close reason sent by the remote endpoint. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1connection_af8bd0b7a30137a43a98fa7f4719675bf}{get\+\_\+ec} () const 
+\begin{DoxyCompactList}\small\item\em Get the internal error code for a closed/failed connection. \end{DoxyCompactList}\item 
+\hyperlink{classwebsocketpp_1_1connection_a3b98c091caf54540024538d2394ffb57}{message\+\_\+ptr} \hyperlink{classwebsocketpp_1_1connection_a9f68a0bf3af6478f0f796ce748e35068}{get\+\_\+message} (\hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5e}{websocketpp\+::frame\+::opcode\+::value} op, size\+\_\+t size) const 
+\begin{DoxyCompactList}\small\item\em Get a message buffer. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a9e19e781b4abda3e4a39f4f25077a29c}{read\+\_\+handshake} (size\+\_\+t num\+\_\+bytes)
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_a9c7e83aae3418cdf71e6fcf1dce3a255}{handle\+\_\+read\+\_\+handshake} (lib\+::error\+\_\+code const \&ec, size\+\_\+t bytes\+\_\+transferred)
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_a261ca392f8b31cd0f5a1b2ccc11c3037}{handle\+\_\+read\+\_\+http\+\_\+response} (lib\+::error\+\_\+code const \&ec, size\+\_\+t bytes\+\_\+transferred)
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_a6f2451a76c49b4c2a88de4efd4f8bda6}{handle\+\_\+write\+\_\+http\+\_\+response} (lib\+::error\+\_\+code const \&ec)
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_af37addaf4d89de32d3d8f4da668313c5}{handle\+\_\+send\+\_\+http\+\_\+request} (lib\+::error\+\_\+code const \&ec)
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_aee1b6e47985b434303b8d6e5f27177a3}{handle\+\_\+open\+\_\+handshake\+\_\+timeout} (lib\+::error\+\_\+code const \&ec)
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_a129554b75156c82eb22b22e4409392c8}{handle\+\_\+close\+\_\+handshake\+\_\+timeout} (lib\+::error\+\_\+code const \&ec)
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_abd6866c41c2ae86c3372cf428392a190}{handle\+\_\+read\+\_\+frame} (lib\+::error\+\_\+code const \&ec, size\+\_\+t bytes\+\_\+transferred)
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_af54e9d7c8ef07349d28c3405182bb3c7}{read\+\_\+frame} ()
+\begin{DoxyCompactList}\small\item\em Issue a new transport read unless reading is paused. \end{DoxyCompactList}\item 
+std\+::vector$<$ int $>$ const \& \hyperlink{classwebsocketpp_1_1connection_ae6fe55e781b722c5a464f316c7bebd8e}{get\+\_\+supported\+\_\+versions} () const 
+\begin{DoxyCompactList}\small\item\em Get array of Web\+Socket protocol versions that this connection supports. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_ac72ff8473d0a49bb069825e99e99ca9d}{set\+\_\+termination\+\_\+handler} (\hyperlink{classwebsocketpp_1_1connection_a8da9613d1f13c9f4571ffb0810d43e63}{termination\+\_\+handler} new\+\_\+handler)
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_a7267aae677a77e5e9379ecb6db1789a3}{terminate} (lib\+::error\+\_\+code const \&ec)
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_a5012a184129c08ea3f6cfa377e1770c1}{handle\+\_\+terminate} (terminate\+\_\+status tstat, lib\+::error\+\_\+code const \&ec)
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_a8d26a29e90d4847f3882c280112c6b60}{write\+\_\+frame} ()
+\begin{DoxyCompactList}\small\item\em Checks if there are frames in the send queue and if there are sends one. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a867f94b82788e978ea116d50cf83d72e}{handle\+\_\+write\+\_\+frame} (lib\+::error\+\_\+code const \&ec)
+\begin{DoxyCompactList}\small\item\em Process the results of a frame write operation and start the next write. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_a152530ff43396025175f85748d8ee708}{start} ()
+\begin{DoxyCompactList}\small\item\em Start the connection state machine. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1connection_af07f4fac45e1b64de7e0d12ece0d23a8}{set\+\_\+handle} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl)
+\begin{DoxyCompactList}\small\item\em Set Connection Handle. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classwebsocketpp_1_1connection_ad42c5982a35b82c9009971722943b1e0}{handle\+\_\+transport\+\_\+init} (lib\+::error\+\_\+code const \&ec)
+\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1connection_ac1c576bd4dfebac977eade9ac637a432}{initialize\+\_\+processor} ()
+\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1connection_a569483c7dcf542f500f6e9f49d803010}{process\+\_\+handshake\+\_\+request} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename config$>$class websocketpp\+::connection$<$ config $>$}
+
+Represents an individual Web\+Socket connection. 
+
+Definition at line 235 of file connection.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classwebsocketpp_1_1connection_a2da7d18aecf9153429bab9fcd2bab7b8}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!alog\+\_\+type@{alog\+\_\+type}}
+\index{alog\+\_\+type@{alog\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{alog\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef config\+::alog\+\_\+type {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf alog\+\_\+type}}\label{classwebsocketpp_1_1connection_a2da7d18aecf9153429bab9fcd2bab7b8}
+
+
+Type of the access logging policy. 
+
+
+
+Definition at line 250 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a7bcb608b3a2a645bda4e4c4998f754c7}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!con\+\_\+msg\+\_\+manager\+\_\+ptr@{con\+\_\+msg\+\_\+manager\+\_\+ptr}}
+\index{con\+\_\+msg\+\_\+manager\+\_\+ptr@{con\+\_\+msg\+\_\+manager\+\_\+ptr}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{con\+\_\+msg\+\_\+manager\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef con\+\_\+msg\+\_\+manager\+\_\+type\+::ptr {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf con\+\_\+msg\+\_\+manager\+\_\+ptr}}\label{classwebsocketpp_1_1connection_a7bcb608b3a2a645bda4e4c4998f754c7}
+
+
+Definition at line 272 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_aa3fe3ecba9c63a04771c2ae34dd8dd56}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!con\+\_\+msg\+\_\+manager\+\_\+type@{con\+\_\+msg\+\_\+manager\+\_\+type}}
+\index{con\+\_\+msg\+\_\+manager\+\_\+type@{con\+\_\+msg\+\_\+manager\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{con\+\_\+msg\+\_\+manager\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef config\+::con\+\_\+msg\+\_\+manager\+\_\+type {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf con\+\_\+msg\+\_\+manager\+\_\+type}}\label{classwebsocketpp_1_1connection_aa3fe3ecba9c63a04771c2ae34dd8dd56}
+
+
+Definition at line 271 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a9db8af56881450fbba5c6ff1060c569a}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!concurrency\+\_\+type@{concurrency\+\_\+type}}
+\index{concurrency\+\_\+type@{concurrency\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{concurrency\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef config\+::concurrency\+\_\+type {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf concurrency\+\_\+type}}\label{classwebsocketpp_1_1connection_a9db8af56881450fbba5c6ff1060c569a}
+
+
+Type of the concurrency component of this connection. 
+
+
+
+Definition at line 248 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a80314ab2e4ddefdd4783fb1934fedee6}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!elog\+\_\+type@{elog\+\_\+type}}
+\index{elog\+\_\+type@{elog\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{elog\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef config\+::elog\+\_\+type {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf elog\+\_\+type}}\label{classwebsocketpp_1_1connection_a80314ab2e4ddefdd4783fb1934fedee6}
+
+
+Type of the error logging policy. 
+
+
+
+Definition at line 252 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ab22544fdc49d7f332cd1abba9fefd814}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!istate\+\_\+type@{istate\+\_\+type}}
+\index{istate\+\_\+type@{istate\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{istate\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef {\bf session\+::internal\+\_\+state\+::value} {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf istate\+\_\+type}}\label{classwebsocketpp_1_1connection_ab22544fdc49d7f332cd1abba9fefd814}
+
+
+Definition at line 287 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a0091551000546d5f5f427379d852cae9}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!message\+\_\+handler@{message\+\_\+handler}}
+\index{message\+\_\+handler@{message\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{message\+\_\+handler}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef lib\+::function$<$void({\bf connection\+\_\+hdl},{\bf message\+\_\+ptr})$>$ {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf message\+\_\+handler}}\label{classwebsocketpp_1_1connection_a0091551000546d5f5f427379d852cae9}
+
+
+Definition at line 281 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a3b98c091caf54540024538d2394ffb57}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!message\+\_\+ptr@{message\+\_\+ptr}}
+\index{message\+\_\+ptr@{message\+\_\+ptr}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{message\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef message\+\_\+type\+::ptr {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf message\+\_\+ptr}}\label{classwebsocketpp_1_1connection_a3b98c091caf54540024538d2394ffb57}
+
+
+Definition at line 269 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a26f1fe3979ff1d2dc5e1461e4f2bc621}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!message\+\_\+type@{message\+\_\+type}}
+\index{message\+\_\+type@{message\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{message\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef config\+::message\+\_\+type {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf message\+\_\+type}}\label{classwebsocketpp_1_1connection_a26f1fe3979ff1d2dc5e1461e4f2bc621}
+
+
+Definition at line 268 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a837046a7435ad7d051ac6da827d78caa}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!mutex\+\_\+type@{mutex\+\_\+type}}
+\index{mutex\+\_\+type@{mutex\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{mutex\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef concurrency\+\_\+type\+::mutex\+\_\+type {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf mutex\+\_\+type}}\label{classwebsocketpp_1_1connection_a837046a7435ad7d051ac6da827d78caa}
+
+
+Definition at line 263 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a7e955b2fc98102bb3776e993f95c9009}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!processor\+\_\+ptr@{processor\+\_\+ptr}}
+\index{processor\+\_\+ptr@{processor\+\_\+ptr}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{processor\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef lib\+::shared\+\_\+ptr$<${\bf processor\+\_\+type}$>$ {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf processor\+\_\+ptr}}\label{classwebsocketpp_1_1connection_a7e955b2fc98102bb3776e993f95c9009}
+
+
+Definition at line 278 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a77cd1bb26e05961a5fbc60708244d1fe}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!processor\+\_\+type@{processor\+\_\+type}}
+\index{processor\+\_\+type@{processor\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{processor\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef {\bf processor\+::processor}$<$config$>$ {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf processor\+\_\+type}}\label{classwebsocketpp_1_1connection_a77cd1bb26e05961a5fbc60708244d1fe}
+
+
+Definition at line 277 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ab910d42e3bde91546183cc54642f32ab}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!ptr@{ptr}}
+\index{ptr@{ptr}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef lib\+::shared\+\_\+ptr$<${\bf type}$>$ {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf ptr}}\label{classwebsocketpp_1_1connection_ab910d42e3bde91546183cc54642f32ab}
+
+
+Type of a shared pointer to this connection. 
+
+
+
+Definition at line 243 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ac4d9911b0954de83079ce6867a5cf57f}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!request\+\_\+type@{request\+\_\+type}}
+\index{request\+\_\+type@{request\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{request\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef config\+::request\+\_\+type {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf request\+\_\+type}}\label{classwebsocketpp_1_1connection_ac4d9911b0954de83079ce6867a5cf57f}
+
+
+Definition at line 265 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a0d2d5908eaaea749bcf8fd0939b05d3b}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!response\+\_\+type@{response\+\_\+type}}
+\index{response\+\_\+type@{response\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{response\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef config\+::response\+\_\+type {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf response\+\_\+type}}\label{classwebsocketpp_1_1connection_a0d2d5908eaaea749bcf8fd0939b05d3b}
+
+
+Definition at line 266 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_afc276f2f61d5b1acfadc64f91b3f89e5}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!rng\+\_\+type@{rng\+\_\+type}}
+\index{rng\+\_\+type@{rng\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{rng\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef config\+::rng\+\_\+type {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf rng\+\_\+type}}\label{classwebsocketpp_1_1connection_afc276f2f61d5b1acfadc64f91b3f89e5}
+
+
+Type of R\+N\+G. 
+
+
+
+Definition at line 275 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a22ec65b3e3d5159ea61f885066e12caa}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!scoped\+\_\+lock\+\_\+type@{scoped\+\_\+lock\+\_\+type}}
+\index{scoped\+\_\+lock\+\_\+type@{scoped\+\_\+lock\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{scoped\+\_\+lock\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef concurrency\+\_\+type\+::scoped\+\_\+lock\+\_\+type {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf scoped\+\_\+lock\+\_\+type}}\label{classwebsocketpp_1_1connection_a22ec65b3e3d5159ea61f885066e12caa}
+
+
+Definition at line 262 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a8da9613d1f13c9f4571ffb0810d43e63}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!termination\+\_\+handler@{termination\+\_\+handler}}
+\index{termination\+\_\+handler@{termination\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{termination\+\_\+handler}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef lib\+::function$<$void({\bf ptr})$>$ {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf termination\+\_\+handler}}\label{classwebsocketpp_1_1connection_a8da9613d1f13c9f4571ffb0810d43e63}
+
+
+Definition at line 260 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_aa13510ba1841ded8492a0483a294feb0}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!timer\+\_\+ptr@{timer\+\_\+ptr}}
+\index{timer\+\_\+ptr@{timer\+\_\+ptr}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{timer\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef transport\+\_\+con\+\_\+type\+::timer\+\_\+ptr {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf timer\+\_\+ptr}}\label{classwebsocketpp_1_1connection_aa13510ba1841ded8492a0483a294feb0}
+
+
+Type of a pointer to a transport timer handle. 
+
+
+
+Definition at line 284 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ad2fce7d1a535820336275ae116384738}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!transport\+\_\+con\+\_\+ptr@{transport\+\_\+con\+\_\+ptr}}
+\index{transport\+\_\+con\+\_\+ptr@{transport\+\_\+con\+\_\+ptr}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{transport\+\_\+con\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef transport\+\_\+con\+\_\+type\+::ptr {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf transport\+\_\+con\+\_\+ptr}}\label{classwebsocketpp_1_1connection_ad2fce7d1a535820336275ae116384738}
+
+
+Type of a shared pointer to the transport component of this connection. 
+
+
+
+Definition at line 258 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a1deb19aef8e7bde8f955ef5f952c9d19}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!transport\+\_\+con\+\_\+type@{transport\+\_\+con\+\_\+type}}
+\index{transport\+\_\+con\+\_\+type@{transport\+\_\+con\+\_\+type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{transport\+\_\+con\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef config\+::transport\+\_\+type\+::transport\+\_\+con\+\_\+type {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf transport\+\_\+con\+\_\+type}}\label{classwebsocketpp_1_1connection_a1deb19aef8e7bde8f955ef5f952c9d19}
+
+
+Type of the transport component of this connection. 
+
+
+
+Definition at line 256 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a6d09aefdf1e35c0169b26ab92a4dee34}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!type@{type}}
+\index{type@{type}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef {\bf connection}$<$config$>$ {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf type}}\label{classwebsocketpp_1_1connection_a6d09aefdf1e35c0169b26ab92a4dee34}
+
+
+Type of this connection. 
+
+
+
+Definition at line 241 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ac2905dcf6418c52ec9685f9f59b86e3e}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!weak\+\_\+ptr@{weak\+\_\+ptr}}
+\index{weak\+\_\+ptr@{weak\+\_\+ptr}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{weak\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ typedef lib\+::weak\+\_\+ptr$<${\bf type}$>$ {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf weak\+\_\+ptr}}\label{classwebsocketpp_1_1connection_ac2905dcf6418c52ec9685f9f59b86e3e}
+
+
+Type of a weak pointer to this connection. 
+
+
+
+Definition at line 245 of file connection.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classwebsocketpp_1_1connection_a525947d8d33ee1e410d02706246ffe94}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!connection@{connection}}
+\index{connection@{connection}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{connection(bool p\+\_\+is\+\_\+server, std\+::string const \&ua, alog\+\_\+type \&alog, elog\+\_\+type \&elog, rng\+\_\+type \&rng)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf websocketpp\+::connection}$<$ config $>$\+::{\bf connection} (
+\begin{DoxyParamCaption}
+\item[{bool}]{p\+\_\+is\+\_\+server, }
+\item[{std\+::string const \&}]{ua, }
+\item[{{\bf alog\+\_\+type} \&}]{alog, }
+\item[{{\bf elog\+\_\+type} \&}]{elog, }
+\item[{{\bf rng\+\_\+type} \&}]{rng}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classwebsocketpp_1_1connection_a525947d8d33ee1e410d02706246ffe94}
+
+
+Definition at line 297 of file connection.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classwebsocketpp_1_1connection_a36462b406f973e16d3107e786c6b9172}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!add\+\_\+subprotocol@{add\+\_\+subprotocol}}
+\index{add\+\_\+subprotocol@{add\+\_\+subprotocol}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{add\+\_\+subprotocol(std\+::string const \&request, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::add\+\_\+subprotocol (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{request, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a36462b406f973e16d3107e786c6b9172}
+
+
+Adds the given subprotocol string to the request list (exception free) 
+
+Adds a subprotocol to the list to send with the opening handshake. This may be called multiple times to request more than one. If the server supports one of these, it may choose one. If so, it will return it in it\textquotesingle{}s handshake reponse and the value will be available via \hyperlink{classwebsocketpp_1_1connection_adfdf4e89adc7ba3d1239b7e5ae66b818}{get\+\_\+subprotocol()}. Subprotocol requests should be added in order of preference.
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & The subprotocol to request \\
+\hline
+{\em ec} & A reference to an error code that will be filled in the case of errors \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 458 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a37a41672dd87714eb045fd989f98cd26}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!add\+\_\+subprotocol@{add\+\_\+subprotocol}}
+\index{add\+\_\+subprotocol@{add\+\_\+subprotocol}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{add\+\_\+subprotocol(std\+::string const \&request)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::add\+\_\+subprotocol (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{request}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a37a41672dd87714eb045fd989f98cd26}
+
+
+Adds the given subprotocol string to the request list. 
+
+Adds a subprotocol to the list to send with the opening handshake. This may be called multiple times to request more than one. If the server supports one of these, it may choose one. If so, it will return it in it\textquotesingle{}s handshake reponse and the value will be available via \hyperlink{classwebsocketpp_1_1connection_adfdf4e89adc7ba3d1239b7e5ae66b818}{get\+\_\+subprotocol()}. Subprotocol requests should be added in order of preference.
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & The subprotocol to request \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 478 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_af8cb78acc61b8a3d59f6162cdba6318b}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!append\+\_\+header@{append\+\_\+header}}
+\index{append\+\_\+header@{append\+\_\+header}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{append\+\_\+header(std\+::string const \&key, std\+::string const \&val)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::append\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{key, }
+\item[{std\+::string const \&}]{val}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_af8cb78acc61b8a3d59f6162cdba6318b}
+
+
+Append a header. 
+
+If a header with this name already exists the value will be appended to the existing header to form a comma separated list of values. Use {\ttfamily \hyperlink{classwebsocketpp_1_1connection_a96e4adcdb9b3473ca96e2aac27ff7147}{connection\+::replace\+\_\+header}} to overwrite existing values.
+
+This member function is valid only from the http() and \hyperlink{namespacewebsocketpp_1_1utf8__validator_ad088137c6f18e6844e20496d8782c835}{validate()} handler callbacks, or to a client connection before connect has been called.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & Name of the header to set \\
+\hline
+{\em val} & Value to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classwebsocketpp_1_1connection_a96e4adcdb9b3473ca96e2aac27ff7147}{replace\+\_\+header} 
+
+websocketpp\+::http\+::parser\+::append\+\_\+header 
+\end{DoxySeeAlso}
+
+
+Definition at line 580 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_acb2fc5317ce219d92425635c1b2bde53}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!buffered\+\_\+amount@{buffered\+\_\+amount}}
+\index{buffered\+\_\+amount@{buffered\+\_\+amount}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{buffered\+\_\+amount() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ size\+\_\+t {\bf websocketpp\+::connection}$<$ config $>$\+::buffered\+\_\+amount (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_acb2fc5317ce219d92425635c1b2bde53}
+
+
+Get the size of the outgoing write buffer (in payload bytes) 
+
+\begin{DoxyRefDesc}{Deprecated}
+\item[\hyperlink{deprecated__deprecated000001}{Deprecated}]use {\ttfamily get\+\_\+buffered\+\_\+amount} instead \end{DoxyRefDesc}
+
+
+Definition at line 635 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ae718e4fa8b2c37757d8abd71dae07dc9}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!close@{close}}
+\index{close@{close}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{close(close\+::status\+::value const code, std\+::string const \&reason)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::close (
+\begin{DoxyParamCaption}
+\item[{{\bf close\+::status\+::value} const}]{code, }
+\item[{std\+::string const \&}]{reason}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_ae718e4fa8b2c37757d8abd71dae07dc9}
+
+
+Close the connection. 
+
+Initiates the close handshake process.
+
+If close returns successfully the connection will be in the closing state and no additional messages may be sent. All messages sent prior to calling close will be written out before the connection is closed.
+
+If no reason is specified none will be sent. If no code is specified then no code will be sent.
+
+The handler\textquotesingle{}s on\+\_\+close callback will be called once the close handshake is complete.
+
+Reasons will be automatically truncated to the maximum length (123 bytes) if necessary.
+
+
+\begin{DoxyParams}{Parameters}
+{\em code} & The close code to send \\
+\hline
+{\em reason} & The close reason to send \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 326 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a436058fe88b1ba31080cec2a464634ae}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!close@{close}}
+\index{close@{close}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{close(close\+::status\+::value const code, std\+::string const \&reason, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::close (
+\begin{DoxyParamCaption}
+\item[{{\bf close\+::status\+::value} const}]{code, }
+\item[{std\+::string const \&}]{reason, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a436058fe88b1ba31080cec2a464634ae}
+
+
+exception free variant of close 
+
+
+
+Definition at line 304 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a32c3f964cef870faf0d8f23c5b7588bb}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!defer\+\_\+http\+\_\+response@{defer\+\_\+http\+\_\+response}}
+\index{defer\+\_\+http\+\_\+response@{defer\+\_\+http\+\_\+response}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{defer\+\_\+http\+\_\+response()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::connection}$<$ config $>$\+::defer\+\_\+http\+\_\+response (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a32c3f964cef870faf0d8f23c5b7588bb}
+
+
+Defer H\+T\+T\+P Response until later (Exception free) 
+
+Defer H\+T\+T\+P Response until later.
+
+Used in the http handler to defer the H\+T\+T\+P response for this connection until later. Handshake timers will be canceled and the connection will be left open until {\ttfamily send\+\_\+http\+\_\+response} or an equivalent is called.
+
+Warning\+: deferred connections won\textquotesingle{}t time out and as a result can tie up resources.
+
+\begin{DoxySince}{Since}
+0.\+6.\+0
+\end{DoxySince}
+\begin{DoxyReturn}{Returns}
+A status code, zero on success, non-\/zero otherwise
+\end{DoxyReturn}
+Used in the http handler to defer the H\+T\+T\+P response for this connection until later. Handshake timers will be canceled and the connection will be left open until {\ttfamily send\+\_\+http\+\_\+response} or an equivalent is called.
+
+Warning\+: deferred connections won\textquotesingle{}t time out and as a result can tie up resources.
+
+\begin{DoxyReturn}{Returns}
+A status code, zero on success, non-\/zero otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 661 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a27f8c2f8d9d84aa68891593d48495bd2}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+buffered\+\_\+amount@{get\+\_\+buffered\+\_\+amount}}
+\index{get\+\_\+buffered\+\_\+amount@{get\+\_\+buffered\+\_\+amount}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+buffered\+\_\+amount() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ size\+\_\+t {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+buffered\+\_\+amount (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_a27f8c2f8d9d84aa68891593d48495bd2}
+
+
+Get the size of the outgoing write buffer (in payload bytes) 
+
+Retrieves the number of bytes in the outgoing write buffer that have not already been dispatched to the transport layer. This represents the bytes that are presently cancelable without uncleanly ending the websocket connection
+
+This method invokes the m\+\_\+write\+\_\+lock mutex
+
+\begin{DoxyReturn}{Returns}
+The current number of bytes in the outgoing send buffer. 
+\end{DoxyReturn}
+
+
+Definition at line 71 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_af8bd0b7a30137a43a98fa7f4719675bf}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+ec@{get\+\_\+ec}}
+\index{get\+\_\+ec@{get\+\_\+ec}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+ec() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ lib\+::error\+\_\+code {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+ec (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_af8bd0b7a30137a43a98fa7f4719675bf}
+
+
+Get the internal error code for a closed/failed connection. 
+
+Retrieves a machine readable detailed error code indicating the reason that the connection was closed or failed. Valid only after the close or fail handler is called.
+
+\begin{DoxyReturn}{Returns}
+Error code indicating the reason the connection was closed or failed 
+\end{DoxyReturn}
+
+
+Definition at line 1254 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a1b4ff357aedf82b1bcca23e47a1f1da7}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+handle@{get\+\_\+handle}}
+\index{get\+\_\+handle@{get\+\_\+handle}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+handle() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf connection\+\_\+hdl} {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+handle (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a1b4ff357aedf82b1bcca23e47a1f1da7}
+
+
+Get Connection Handle. 
+
+The connection handle is a token that can be shared outside the Web\+Socket++ core for the purposes of identifying a connection and sending it messages.
+
+\begin{DoxyReturn}{Returns}
+A handle to the connection 
+\end{DoxyReturn}
+
+
+Definition at line 1183 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a924fcd958acdb66e8b04234af73afaf3}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+host@{get\+\_\+host}}
+\index{get\+\_\+host@{get\+\_\+host}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+host() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::string const \& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+host (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_a924fcd958acdb66e8b04234af73afaf3}
+
+
+Returns the host component of the connection U\+R\+I. 
+
+This value is available after the H\+T\+T\+P request has been fully read and may be called from any thread.
+
+\begin{DoxyReturn}{Returns}
+The host component of the connection U\+R\+I 
+\end{DoxyReturn}
+
+
+Definition at line 412 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a5ec4357a56f7c4648ff01018eecf20ff}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+local\+\_\+close\+\_\+code@{get\+\_\+local\+\_\+close\+\_\+code}}
+\index{get\+\_\+local\+\_\+close\+\_\+code@{get\+\_\+local\+\_\+close\+\_\+code}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+local\+\_\+close\+\_\+code() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf close\+::status\+::value} {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+local\+\_\+close\+\_\+code (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a5ec4357a56f7c4648ff01018eecf20ff}
+
+
+Get the Web\+Socket close code sent by this endpoint. 
+
+\begin{DoxyReturn}{Returns}
+The Web\+Socket close code sent by this endpoint. 
+\end{DoxyReturn}
+
+
+Definition at line 1217 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a091cd6ee2f87250a39a751a2c4454bb8}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+local\+\_\+close\+\_\+reason@{get\+\_\+local\+\_\+close\+\_\+reason}}
+\index{get\+\_\+local\+\_\+close\+\_\+reason@{get\+\_\+local\+\_\+close\+\_\+reason}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+local\+\_\+close\+\_\+reason() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ std\+::string const\& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+local\+\_\+close\+\_\+reason (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a091cd6ee2f87250a39a751a2c4454bb8}
+
+
+Get the Web\+Socket close reason sent by this endpoint. 
+
+\begin{DoxyReturn}{Returns}
+The Web\+Socket close reason sent by this endpoint. 
+\end{DoxyReturn}
+
+
+Definition at line 1225 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a7b045ae56e2eb1f60a536af4818bbc0d}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+max\+\_\+http\+\_\+body\+\_\+size@{get\+\_\+max\+\_\+http\+\_\+body\+\_\+size}}
+\index{get\+\_\+max\+\_\+http\+\_\+body\+\_\+size@{get\+\_\+max\+\_\+http\+\_\+body\+\_\+size}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+max\+\_\+http\+\_\+body\+\_\+size() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ size\+\_\+t {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+max\+\_\+http\+\_\+body\+\_\+size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a7b045ae56e2eb1f60a536af4818bbc0d}
+
+
+Get maximum H\+T\+T\+P message body size. 
+
+Get maximum H\+T\+T\+P message body size. Maximum message body size determines the point at which the connection will stop reading an H\+T\+T\+P request whose body is too large.
+
+The default is set by the endpoint that creates the connection.
+
+\begin{DoxySince}{Since}
+0.\+5.\+0
+\end{DoxySince}
+\begin{DoxyReturn}{Returns}
+The maximum H\+T\+T\+P message body size 
+\end{DoxyReturn}
+
+
+Definition at line 594 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ae2169d7637ad3d31d8c24c2c498b8db8}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+max\+\_\+message\+\_\+size@{get\+\_\+max\+\_\+message\+\_\+size}}
+\index{get\+\_\+max\+\_\+message\+\_\+size@{get\+\_\+max\+\_\+message\+\_\+size}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+max\+\_\+message\+\_\+size() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ size\+\_\+t {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+max\+\_\+message\+\_\+size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_ae2169d7637ad3d31d8c24c2c498b8db8}
+
+
+Get maximum message size. 
+
+Get maximum message size. Maximum message size determines the point at which the connection will fail with the message\+\_\+too\+\_\+big protocol error.
+
+The default is set by the endpoint that creates the connection.
+
+\begin{DoxySince}{Since}
+0.\+3.\+0 
+\end{DoxySince}
+
+
+Definition at line 559 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a9f68a0bf3af6478f0f796ce748e35068}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+message@{get\+\_\+message}}
+\index{get\+\_\+message@{get\+\_\+message}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+message(websocketpp\+::frame\+::opcode\+::value op, size\+\_\+t size) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf message\+\_\+ptr} {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+message (
+\begin{DoxyParamCaption}
+\item[{{\bf websocketpp\+::frame\+::opcode\+::value}}]{op, }
+\item[{size\+\_\+t}]{size}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a9f68a0bf3af6478f0f796ce748e35068}
+
+
+Get a message buffer. 
+
+Warning\+: The A\+P\+I related to directly sending message buffers may change before the 1.\+0 release. If you plan to use it, please keep an eye on any breaking changes notifications in future release notes. Also if you have any feedback about usage and capabilities now is a great time to provide it.
+
+Message buffers are used to store message payloads and other message metadata.
+
+The size parameter is a hint only. Your final payload does not need to match it. There may be some performance benefits if the initial size guess is equal to or slightly higher than the final payload size.
+
+
+\begin{DoxyParams}{Parameters}
+{\em op} & The opcode for the new message \\
+\hline
+{\em size} & A hint to optimize the initial allocation of payload space. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A new message buffer 
+\end{DoxyReturn}
+
+
+Definition at line 1277 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_afa729fb7e0b72b175bdfe5edf5d86037}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+origin@{get\+\_\+origin}}
+\index{get\+\_\+origin@{get\+\_\+origin}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+origin() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::string const \& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+origin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_afa729fb7e0b72b175bdfe5edf5d86037}
+
+
+Return the same origin policy origin value from the opening request. 
+
+This value is available after the H\+T\+T\+P request has been fully read and may be called from any thread.
+
+\begin{DoxyReturn}{Returns}
+The connection\textquotesingle{}s origin value from the opening handshake. 
+\end{DoxyReturn}
+
+
+Definition at line 65 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a59fb24787c8ad9796ca447b98de3140b}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+port@{get\+\_\+port}}
+\index{get\+\_\+port@{get\+\_\+port}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+port() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ uint16\+\_\+t {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+port (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_a59fb24787c8ad9796ca447b98de3140b}
+
+
+Returns the port component of the connection U\+R\+I. 
+
+This value is available after the H\+T\+T\+P request has been fully read and may be called from any thread.
+
+\begin{DoxyReturn}{Returns}
+The port component of the connection U\+R\+I 
+\end{DoxyReturn}
+
+
+Definition at line 424 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a51b293d37bbe93b42a4bd177f1c63c62}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+remote\+\_\+close\+\_\+code@{get\+\_\+remote\+\_\+close\+\_\+code}}
+\index{get\+\_\+remote\+\_\+close\+\_\+code@{get\+\_\+remote\+\_\+close\+\_\+code}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+remote\+\_\+close\+\_\+code() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf close\+::status\+::value} {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+remote\+\_\+close\+\_\+code (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a51b293d37bbe93b42a4bd177f1c63c62}
+
+
+Get the Web\+Socket close code sent by the remote endpoint. 
+
+\begin{DoxyReturn}{Returns}
+The Web\+Socket close code sent by the remote endpoint. 
+\end{DoxyReturn}
+
+
+Definition at line 1233 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a7addd86cf19f58f40e7b9c1d5fa6d449}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+remote\+\_\+close\+\_\+reason@{get\+\_\+remote\+\_\+close\+\_\+reason}}
+\index{get\+\_\+remote\+\_\+close\+\_\+reason@{get\+\_\+remote\+\_\+close\+\_\+reason}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+remote\+\_\+close\+\_\+reason() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ std\+::string const\& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+remote\+\_\+close\+\_\+reason (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a7addd86cf19f58f40e7b9c1d5fa6d449}
+
+
+Get the Web\+Socket close reason sent by the remote endpoint. 
+
+\begin{DoxyReturn}{Returns}
+The Web\+Socket close reason sent by the remote endpoint. 
+\end{DoxyReturn}
+
+
+Definition at line 1241 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ae32374b27c479bec5a3965def867ee0a}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+request@{get\+\_\+request}}
+\index{get\+\_\+request@{get\+\_\+request}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+request() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf request\+\_\+type} const\& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+request (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_ae32374b27c479bec5a3965def867ee0a}
+
+
+Get request object. 
+
+Direct access to request object. This can be used to call methods of the request object that are not part of the standard request A\+P\+I that connection wraps.
+
+Note use of this method involves using behavior specific to the configured H\+T\+T\+P policy. Such behavior may not work with alternate H\+T\+T\+P policies.
+
+\begin{DoxySince}{Since}
+0.\+3.\+0-\/alpha3
+\end{DoxySince}
+\begin{DoxyReturn}{Returns}
+A const reference to the raw request object 
+\end{DoxyReturn}
+
+
+Definition at line 1102 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ab50df430aa86417e50df8959d5e3e79d}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+request\+\_\+body@{get\+\_\+request\+\_\+body}}
+\index{get\+\_\+request\+\_\+body@{get\+\_\+request\+\_\+body}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+request\+\_\+body() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::string const \& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+request\+\_\+body (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_ab50df430aa86417e50df8959d5e3e79d}
+
+
+Retrieve a request body. 
+
+Retrieve the value of the request body. This value is typically used with P\+U\+T and P\+O\+S\+T requests to upload files or other data. Only H\+T\+T\+P connections will ever have bodies. Web\+Socket connection\textquotesingle{}s will always have blank bodies.
+
+\begin{DoxyReturn}{Returns}
+The value of the request body. 
+\end{DoxyReturn}
+
+
+Definition at line 533 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a3328d3f125c55c1d21034c701fabe04f}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+request\+\_\+header@{get\+\_\+request\+\_\+header}}
+\index{get\+\_\+request\+\_\+header@{get\+\_\+request\+\_\+header}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+request\+\_\+header(std\+::string const \&key) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::string const \& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+request\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{key}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_a3328d3f125c55c1d21034c701fabe04f}
+
+
+Retrieve a request header. 
+
+Retrieve the value of a header from the handshake H\+T\+T\+P request.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & Name of the header to get \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The value of the header 
+\end{DoxyReturn}
+
+
+Definition at line 527 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_aa5e8f75b832d166eab145b862fd5f637}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+requested\+\_\+subprotocols@{get\+\_\+requested\+\_\+subprotocols}}
+\index{get\+\_\+requested\+\_\+subprotocols@{get\+\_\+requested\+\_\+subprotocols}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+requested\+\_\+subprotocols() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::vector$<$ std\+::string $>$ const \& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+requested\+\_\+subprotocols (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_aa5e8f75b832d166eab145b862fd5f637}
+
+
+Gets all of the subprotocols requested by the client. 
+
+Retrieves the subprotocols that were requested during the handshake. This method is valid in the validate handler and later.
+
+\begin{DoxyReturn}{Returns}
+A vector of the requested subprotocol 
+\end{DoxyReturn}
+
+
+Definition at line 453 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a02f604aa2a3401ff83c845d65ff06e9b}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+resource@{get\+\_\+resource}}
+\index{get\+\_\+resource@{get\+\_\+resource}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+resource() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::string const \& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+resource (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_a02f604aa2a3401ff83c845d65ff06e9b}
+
+
+Returns the resource component of the connection U\+R\+I. 
+
+This value is available after the H\+T\+T\+P request has been fully read and may be called from any thread.
+
+\begin{DoxyReturn}{Returns}
+The resource component of the connection U\+R\+I 
+\end{DoxyReturn}
+
+
+Definition at line 418 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a7b754f108a5eb806abdf4ee6e96cae41}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+response@{get\+\_\+response}}
+\index{get\+\_\+response@{get\+\_\+response}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+response() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf response\+\_\+type} const\& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+response (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a7b754f108a5eb806abdf4ee6e96cae41}
+
+
+Get response object. 
+
+Direct access to the H\+T\+T\+P response sent or received as a part of the opening handshake. This can be used to call methods of the response object that are not part of the standard request A\+P\+I that connection wraps.
+
+Note use of this method involves using behavior specific to the configured H\+T\+T\+P policy. Such behavior may not work with alternate H\+T\+T\+P policies.
+
+\begin{DoxySince}{Since}
+0.\+7.\+0
+\end{DoxySince}
+\begin{DoxyReturn}{Returns}
+A const reference to the raw response object 
+\end{DoxyReturn}
+
+
+Definition at line 1121 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ac7b863cdabbea139117819e58e1fcf7a}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+response\+\_\+code@{get\+\_\+response\+\_\+code}}
+\index{get\+\_\+response\+\_\+code@{get\+\_\+response\+\_\+code}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+response\+\_\+code() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf http\+::status\+\_\+code\+::value} {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+response\+\_\+code (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_ac7b863cdabbea139117819e58e1fcf7a}
+
+
+Get response H\+T\+T\+P status code. 
+
+Gets the response status code
+
+\begin{DoxySince}{Since}
+0.\+7.\+0
+\end{DoxySince}
+\begin{DoxyReturn}{Returns}
+The response status code sent 
+\end{DoxyReturn}
+
+
+Definition at line 983 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a1b6c2b2b36d1b8c6e59ef95474a381fe}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+response\+\_\+header@{get\+\_\+response\+\_\+header}}
+\index{get\+\_\+response\+\_\+header@{get\+\_\+response\+\_\+header}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+response\+\_\+header(std\+::string const \&key) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::string const \& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+response\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{key}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_a1b6c2b2b36d1b8c6e59ef95474a381fe}
+
+
+Retrieve a response header. 
+
+Retrieve the value of a header from the handshake H\+T\+T\+P request.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & Name of the header to get \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The value of the header 
+\end{DoxyReturn}
+
+
+Definition at line 539 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ac80a14160257f7ad74bc6c30de0564c7}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+response\+\_\+msg@{get\+\_\+response\+\_\+msg}}
+\index{get\+\_\+response\+\_\+msg@{get\+\_\+response\+\_\+msg}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+response\+\_\+msg() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ std\+::string const\& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+response\+\_\+msg (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_ac80a14160257f7ad74bc6c30de0564c7}
+
+
+Get response H\+T\+T\+P status message. 
+
+Gets the response status message
+
+\begin{DoxySince}{Since}
+0.\+7.\+0
+\end{DoxySince}
+\begin{DoxyReturn}{Returns}
+The response status message sent 
+\end{DoxyReturn}
+
+
+Definition at line 995 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a65514127120694d4c2a583b79bafe79e}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+secure@{get\+\_\+secure}}
+\index{get\+\_\+secure@{get\+\_\+secure}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+secure() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ bool {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+secure (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_a65514127120694d4c2a583b79bafe79e}
+
+
+Returns the secure flag from the connection U\+R\+I. 
+
+This value is available after the H\+T\+T\+P request has been fully read and may be called from any thread.
+
+\begin{DoxyReturn}{Returns}
+Whether or not the connection U\+R\+I is flagged secure. 
+\end{DoxyReturn}
+
+
+Definition at line 406 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a01a5af7dc2f35ff8f15da8c2cf3a3b02}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+shared@{get\+\_\+shared}}
+\index{get\+\_\+shared@{get\+\_\+shared}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+shared()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ {\bf ptr} {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+shared (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a01a5af7dc2f35ff8f15da8c2cf3a3b02}
+
+
+Get a shared pointer to this component. 
+
+
+
+Definition at line 336 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a3ca5ebd3cdbe115032d15117d79c23ca}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+state@{get\+\_\+state}}
+\index{get\+\_\+state@{get\+\_\+state}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+state() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ {\bf session\+::state\+::value} {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+state (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_a3ca5ebd3cdbe115032d15117d79c23ca}
+
+
+Return the connection state. 
+
+Values can be connecting, open, closing, and closed
+
+\begin{DoxyReturn}{Returns}
+The connection\textquotesingle{}s current state. 
+\end{DoxyReturn}
+
+
+Definition at line 77 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_adfdf4e89adc7ba3d1239b7e5ae66b818}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+subprotocol@{get\+\_\+subprotocol}}
+\index{get\+\_\+subprotocol@{get\+\_\+subprotocol}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+subprotocol() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::string const \& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+subprotocol (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_adfdf4e89adc7ba3d1239b7e5ae66b818}
+
+
+Gets the negotated subprotocol. 
+
+Retrieves the subprotocol that was negotiated during the handshake. This method is valid in the open handler and later.
+
+\begin{DoxyReturn}{Returns}
+The negotiated subprotocol 
+\end{DoxyReturn}
+
+
+Definition at line 447 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ae6fe55e781b722c5a464f316c7bebd8e}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+supported\+\_\+versions@{get\+\_\+supported\+\_\+versions}}
+\index{get\+\_\+supported\+\_\+versions@{get\+\_\+supported\+\_\+versions}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+supported\+\_\+versions() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::vector$<$ int $>$ const \& {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+supported\+\_\+versions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_ae6fe55e781b722c5a464f316c7bebd8e}
+
+
+Get array of Web\+Socket protocol versions that this connection supports. 
+
+
+
+Definition at line 1928 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a424a90ec2f576fe288a712618e59fddd}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!get\+\_\+uri@{get\+\_\+uri}}
+\index{get\+\_\+uri@{get\+\_\+uri}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{get\+\_\+uri() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ {\bf uri\+\_\+ptr} {\bf websocketpp\+::connection}$<$ config $>$\+::get\+\_\+uri (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classwebsocketpp_1_1connection_a424a90ec2f576fe288a712618e59fddd}
+
+
+Gets the connection U\+R\+I. 
+
+This should really only be called by internal library methods unless you really know what you are doing.
+
+\begin{DoxyReturn}{Returns}
+A pointer to the connection\textquotesingle{}s U\+R\+I 
+\end{DoxyReturn}
+
+
+Definition at line 430 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a129554b75156c82eb22b22e4409392c8}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+close\+\_\+handshake\+\_\+timeout@{handle\+\_\+close\+\_\+handshake\+\_\+timeout}}
+\index{handle\+\_\+close\+\_\+handshake\+\_\+timeout@{handle\+\_\+close\+\_\+handshake\+\_\+timeout}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+close\+\_\+handshake\+\_\+timeout(lib\+::error\+\_\+code const \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+close\+\_\+handshake\+\_\+timeout (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code const \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a129554b75156c82eb22b22e4409392c8}
+
+
+Definition at line 1679 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a0b438ac986b73c99907515eeac6dc45f}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+interrupt@{handle\+\_\+interrupt}}
+\index{handle\+\_\+interrupt@{handle\+\_\+interrupt}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+interrupt()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+interrupt (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a0b438ac986b73c99907515eeac6dc45f}
+
+
+Transport inturrupt callback. 
+
+
+
+Definition at line 353 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_aee1b6e47985b434303b8d6e5f27177a3}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+open\+\_\+handshake\+\_\+timeout@{handle\+\_\+open\+\_\+handshake\+\_\+timeout}}
+\index{handle\+\_\+open\+\_\+handshake\+\_\+timeout@{handle\+\_\+open\+\_\+handshake\+\_\+timeout}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+open\+\_\+handshake\+\_\+timeout(lib\+::error\+\_\+code const \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+open\+\_\+handshake\+\_\+timeout (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code const \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_aee1b6e47985b434303b8d6e5f27177a3}
+
+
+Definition at line 1663 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a5887284ea346efd7b5cc43519bfd84d5}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+pause\+\_\+reading@{handle\+\_\+pause\+\_\+reading}}
+\index{handle\+\_\+pause\+\_\+reading@{handle\+\_\+pause\+\_\+reading}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+pause\+\_\+reading()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+pause\+\_\+reading (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a5887284ea346efd7b5cc43519bfd84d5}
+
+
+Pause reading callback. 
+
+Pause reading handler. Not safe to call directly. 
+
+Definition at line 372 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_af10cbbbfe16ef1cc6f45614582c9d28f}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+pong\+\_\+timeout@{handle\+\_\+pong\+\_\+timeout}}
+\index{handle\+\_\+pong\+\_\+timeout@{handle\+\_\+pong\+\_\+timeout}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+pong\+\_\+timeout(std\+::string payload, lib\+::error\+\_\+code const \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+pong\+\_\+timeout (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{payload, }
+\item[{lib\+::error\+\_\+code const \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_af10cbbbfe16ef1cc6f45614582c9d28f}
+
+
+Utility method that gets called back when the ping timer expires. 
+
+
+
+Definition at line 233 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_abd6866c41c2ae86c3372cf428392a190}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+read\+\_\+frame@{handle\+\_\+read\+\_\+frame}}
+\index{handle\+\_\+read\+\_\+frame@{handle\+\_\+read\+\_\+frame}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+read\+\_\+frame(lib\+::error\+\_\+code const \&ec, size\+\_\+t bytes\+\_\+transferred)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+read\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code const \&}]{ec, }
+\item[{size\+\_\+t}]{bytes\+\_\+transferred}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_abd6866c41c2ae86c3372cf428392a190}
+
+
+Definition at line 965 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a9c7e83aae3418cdf71e6fcf1dce3a255}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+read\+\_\+handshake@{handle\+\_\+read\+\_\+handshake}}
+\index{handle\+\_\+read\+\_\+handshake@{handle\+\_\+read\+\_\+handshake}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+read\+\_\+handshake(lib\+::error\+\_\+code const \&ec, size\+\_\+t bytes\+\_\+transferred)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+read\+\_\+handshake (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code const \&}]{ec, }
+\item[{size\+\_\+t}]{bytes\+\_\+transferred}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a9c7e83aae3418cdf71e6fcf1dce3a255}
+
+
+Definition at line 804 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a261ca392f8b31cd0f5a1b2ccc11c3037}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+read\+\_\+http\+\_\+response@{handle\+\_\+read\+\_\+http\+\_\+response}}
+\index{handle\+\_\+read\+\_\+http\+\_\+response@{handle\+\_\+read\+\_\+http\+\_\+response}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+read\+\_\+http\+\_\+response(lib\+::error\+\_\+code const \&ec, size\+\_\+t bytes\+\_\+transferred)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+read\+\_\+http\+\_\+response (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code const \&}]{ec, }
+\item[{size\+\_\+t}]{bytes\+\_\+transferred}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a261ca392f8b31cd0f5a1b2ccc11c3037}
+
+
+Definition at line 1543 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_adb5b479b7d66eb289390b26d12332d84}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+resume\+\_\+reading@{handle\+\_\+resume\+\_\+reading}}
+\index{handle\+\_\+resume\+\_\+reading@{handle\+\_\+resume\+\_\+reading}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+resume\+\_\+reading()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+resume\+\_\+reading (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_adb5b479b7d66eb289390b26d12332d84}
+
+
+Resume reading callback. 
+
+Resume reading helper method. Not safe to call directly. 
+
+Definition at line 390 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_af37addaf4d89de32d3d8f4da668313c5}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+send\+\_\+http\+\_\+request@{handle\+\_\+send\+\_\+http\+\_\+request}}
+\index{handle\+\_\+send\+\_\+http\+\_\+request@{handle\+\_\+send\+\_\+http\+\_\+request}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+send\+\_\+http\+\_\+request(lib\+::error\+\_\+code const \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+send\+\_\+http\+\_\+request (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code const \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_af37addaf4d89de32d3d8f4da668313c5}
+
+
+Definition at line 1490 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a5012a184129c08ea3f6cfa377e1770c1}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+terminate@{handle\+\_\+terminate}}
+\index{handle\+\_\+terminate@{handle\+\_\+terminate}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+terminate(terminate\+\_\+status tstat, lib\+::error\+\_\+code const \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+terminate (
+\begin{DoxyParamCaption}
+\item[{terminate\+\_\+status}]{tstat, }
+\item[{lib\+::error\+\_\+code const \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a5012a184129c08ea3f6cfa377e1770c1}
+
+
+Definition at line 1748 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ad42c5982a35b82c9009971722943b1e0}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+transport\+\_\+init@{handle\+\_\+transport\+\_\+init}}
+\index{handle\+\_\+transport\+\_\+init@{handle\+\_\+transport\+\_\+init}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+transport\+\_\+init(lib\+::error\+\_\+code const \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+transport\+\_\+init (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code const \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1connection_ad42c5982a35b82c9009971722943b1e0}
+
+
+Definition at line 740 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a867f94b82788e978ea116d50cf83d72e}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+write\+\_\+frame@{handle\+\_\+write\+\_\+frame}}
+\index{handle\+\_\+write\+\_\+frame@{handle\+\_\+write\+\_\+frame}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+write\+\_\+frame(lib\+::error\+\_\+code const \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+write\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code const \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a867f94b82788e978ea116d50cf83d72e}
+
+
+Process the results of a frame write operation and start the next write. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000005}{Todo}]unit tests\end{DoxyRefDesc}
+
+
+This method locks the m\+\_\+write\+\_\+lock mutex
+
+
+\begin{DoxyParams}{Parameters}
+{\em terminate} & Whether or not to terminate the connection upon completion of this write.\\
+\hline
+{\em ec} & A status code from the transport layer, zero on success, non-\/zero otherwise. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 1886 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a6f2451a76c49b4c2a88de4efd4f8bda6}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!handle\+\_\+write\+\_\+http\+\_\+response@{handle\+\_\+write\+\_\+http\+\_\+response}}
+\index{handle\+\_\+write\+\_\+http\+\_\+response@{handle\+\_\+write\+\_\+http\+\_\+response}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{handle\+\_\+write\+\_\+http\+\_\+response(lib\+::error\+\_\+code const \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::handle\+\_\+write\+\_\+http\+\_\+response (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code const \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a6f2451a76c49b4c2a88de4efd4f8bda6}
+
+
+Definition at line 1348 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ac1c576bd4dfebac977eade9ac637a432}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!initialize\+\_\+processor@{initialize\+\_\+processor}}
+\index{initialize\+\_\+processor@{initialize\+\_\+processor}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{initialize\+\_\+processor()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::connection}$<$ config $>$\+::initialize\+\_\+processor (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1connection_ac1c576bd4dfebac977eade9ac637a432}
+Set m\+\_\+processor based on information in m\+\_\+request. Set m\+\_\+response status and return an error code indicating status. 
+
+Definition at line 1134 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a12bbbc93d414c65492ffb2c4a12f05a8}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!interrupt@{interrupt}}
+\index{interrupt@{interrupt}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{interrupt()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::connection}$<$ config $>$\+::interrupt (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a12bbbc93d414c65492ffb2c4a12f05a8}
+
+
+Asyncronously invoke handler\+::on\+\_\+inturrupt. 
+
+Trigger the on\+\_\+interrupt handler.
+
+Signals to the connection to asyncronously invoke the on\+\_\+inturrupt callback for this connection\textquotesingle{}s handler once it is safe to do so.
+
+When the on\+\_\+inturrupt handler callback is called it will be from within the transport event loop with all the thread safety features guaranteed by the transport to regular handlers
+
+Multiple inturrupt signals can be active at once on the same connection
+
+\begin{DoxyReturn}{Returns}
+An error code
+\end{DoxyReturn}
+This is thread safe if the transport is thread safe 
+
+Definition at line 341 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_aef37e8da78fb29b36397b522e7b59cca}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!is\+\_\+server@{is\+\_\+server}}
+\index{is\+\_\+server@{is\+\_\+server}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{is\+\_\+server() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ bool {\bf websocketpp\+::connection}$<$ config $>$\+::is\+\_\+server (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_aef37e8da78fb29b36397b522e7b59cca}
+
+
+Get whether or not this connection is part of a server or client. 
+
+\begin{DoxyReturn}{Returns}
+whether or not the connection is attached to a server endpoint 
+\end{DoxyReturn}
+
+
+Definition at line 1191 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ad6a4a25a18ec61d2a36a149a3d92ab72}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!pause\+\_\+reading@{pause\+\_\+reading}}
+\index{pause\+\_\+reading@{pause\+\_\+reading}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{pause\+\_\+reading()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::connection}$<$ config $>$\+::pause\+\_\+reading (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_ad6a4a25a18ec61d2a36a149a3d92ab72}
+
+
+Pause reading of new data. 
+
+Signals to the connection to halt reading of new data. While reading is paused, the connection will stop reading from its associated socket. In turn this will result in T\+C\+P based flow control kicking in and slowing data flow from the remote endpoint.
+
+This is useful for applications that push new requests to a queue to be processed by another thread and need a way to signal when their request queue is full without blocking the network processing thread.
+
+Use {\ttfamily \hyperlink{classwebsocketpp_1_1connection_a355b5e155ba53071b06fa8a6dfab9be2}{resume\+\_\+reading()}} to resume.
+
+If supported by the transport this is done asynchronously. As such reading may not stop until the current read operation completes. Typically you can expect to receive no more bytes after initiating a read pause than the size of the read buffer.
+
+If reading is paused for this connection already nothing is changed. 
+
+Definition at line 360 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a21c8dc6badfaff3aaee1434625c09b04}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!ping@{ping}}
+\index{ping@{ping}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{ping(std\+::string const \&payload)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::ping (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{payload}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a21c8dc6badfaff3aaee1434625c09b04}
+
+
+Send a ping. 
+
+Initiates a ping with the given payload/
+
+There is no feedback directly from ping except in cases of immediately detectable errors. Feedback will be provided via on\+\_\+pong or on\+\_\+pong\+\_\+timeout callbacks.
+
+Ping locks the m\+\_\+write\+\_\+lock mutex
+
+
+\begin{DoxyParams}{Parameters}
+{\em payload} & Payload to be used for the ping \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 224 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a6766e2f31adc6843a983551b21683b73}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!ping@{ping}}
+\index{ping@{ping}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{ping(std\+::string const \&payload, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::ping (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{payload, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a6766e2f31adc6843a983551b21683b73}
+
+
+exception free variant of ping 
+
+
+
+Definition at line 155 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_aa8684fcfd9a57466ae1b52e36b834408}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!pong@{pong}}
+\index{pong@{pong}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{pong(std\+::string const \&payload)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::pong (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{payload}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_aa8684fcfd9a57466ae1b52e36b834408}
+
+
+Send a pong. 
+
+Initiates a pong with the given payload.
+
+There is no feedback from a pong once sent.
+
+Pong locks the m\+\_\+write\+\_\+lock mutex
+
+
+\begin{DoxyParams}{Parameters}
+{\em payload} & Payload to be used for the pong \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 295 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a837dcb8f1214f08b92e7ae7489bfa180}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!pong@{pong}}
+\index{pong@{pong}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{pong(std\+::string const \&payload, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::pong (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{payload, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a837dcb8f1214f08b92e7ae7489bfa180}
+
+
+exception free variant of pong 
+
+
+
+Definition at line 252 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a569483c7dcf542f500f6e9f49d803010}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!process\+\_\+handshake\+\_\+request@{process\+\_\+handshake\+\_\+request}}
+\index{process\+\_\+handshake\+\_\+request@{process\+\_\+handshake\+\_\+request}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{process\+\_\+handshake\+\_\+request()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::connection}$<$ config $>$\+::process\+\_\+handshake\+\_\+request (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1connection_a569483c7dcf542f500f6e9f49d803010}
+Perform Web\+Socket handshake validation of m\+\_\+request using m\+\_\+processor. set m\+\_\+response and return an error code indicating status. 
+
+Definition at line 1176 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_af54e9d7c8ef07349d28c3405182bb3c7}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!read\+\_\+frame@{read\+\_\+frame}}
+\index{read\+\_\+frame@{read\+\_\+frame}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{read\+\_\+frame()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::read\+\_\+frame (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_af54e9d7c8ef07349d28c3405182bb3c7}
+
+
+Issue a new transport read unless reading is paused. 
+
+
+
+Definition at line 1113 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a9e19e781b4abda3e4a39f4f25077a29c}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!read\+\_\+handshake@{read\+\_\+handshake}}
+\index{read\+\_\+handshake@{read\+\_\+handshake}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{read\+\_\+handshake(size\+\_\+t num\+\_\+bytes)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::read\+\_\+handshake (
+\begin{DoxyParamCaption}
+\item[{size\+\_\+t}]{num\+\_\+bytes}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a9e19e781b4abda3e4a39f4f25077a29c}
+
+
+Definition at line 774 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a63094895d9dcfb4d10974ae97ea319a1}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!remove\+\_\+header@{remove\+\_\+header}}
+\index{remove\+\_\+header@{remove\+\_\+header}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{remove\+\_\+header(std\+::string const \&key)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::remove\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{key}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a63094895d9dcfb4d10974ae97ea319a1}
+
+
+Remove a header. 
+
+Removes a header from the response.
+
+This member function is valid only from the http() and \hyperlink{namespacewebsocketpp_1_1utf8__validator_ad088137c6f18e6844e20496d8782c835}{validate()} handler callbacks, or to a client connection before connect has been called.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The name of the header to remove \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+websocketpp\+::http\+::parser\+::remove\+\_\+header 
+\end{DoxySeeAlso}
+
+
+Definition at line 628 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a96e4adcdb9b3473ca96e2aac27ff7147}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!replace\+\_\+header@{replace\+\_\+header}}
+\index{replace\+\_\+header@{replace\+\_\+header}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{replace\+\_\+header(std\+::string const \&key, std\+::string const \&val)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::replace\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{key, }
+\item[{std\+::string const \&}]{val}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a96e4adcdb9b3473ca96e2aac27ff7147}
+
+
+Replace a header. 
+
+If a header with this name already exists the old value will be replaced Use {\ttfamily \hyperlink{classwebsocketpp_1_1connection_af8cb78acc61b8a3d59f6162cdba6318b}{connection\+::append\+\_\+header}} to append to a list of existing values.
+
+This member function is valid only from the http() and \hyperlink{namespacewebsocketpp_1_1utf8__validator_ad088137c6f18e6844e20496d8782c835}{validate()} handler callbacks, or to a client connection before connect has been called.
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & Name of the header to set \\
+\hline
+{\em val} & Value to set \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classwebsocketpp_1_1connection_af8cb78acc61b8a3d59f6162cdba6318b}{append\+\_\+header} 
+
+websocketpp\+::http\+::parser\+::replace\+\_\+header 
+\end{DoxySeeAlso}
+
+
+Definition at line 604 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a355b5e155ba53071b06fa8a6dfab9be2}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!resume\+\_\+reading@{resume\+\_\+reading}}
+\index{resume\+\_\+reading@{resume\+\_\+reading}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{resume\+\_\+reading()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::connection}$<$ config $>$\+::resume\+\_\+reading (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a355b5e155ba53071b06fa8a6dfab9be2}
+
+
+Resume reading of new data. 
+
+Signals to the connection to resume reading of new data after it was paused by {\ttfamily \hyperlink{classwebsocketpp_1_1connection_ad6a4a25a18ec61d2a36a149a3d92ab72}{pause\+\_\+reading()}}.
+
+If reading is not paused for this connection already nothing is changed. 
+
+Definition at line 378 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a53e9587a711e543ed353e8ecec13d44c}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!select\+\_\+subprotocol@{select\+\_\+subprotocol}}
+\index{select\+\_\+subprotocol@{select\+\_\+subprotocol}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{select\+\_\+subprotocol(std\+::string const \&value, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::select\+\_\+subprotocol (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{value, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a53e9587a711e543ed353e8ecec13d44c}
+
+
+Select a subprotocol to use (exception free) 
+
+Indicates which subprotocol should be used for this connection. Valid only during the validate handler callback. Subprotocol selected must have been requested by the client. Consult \hyperlink{classwebsocketpp_1_1connection_aa5e8f75b832d166eab145b862fd5f637}{get\+\_\+requested\+\_\+subprotocols()} for a list of valid subprotocols.
+
+This member function is valid on server endpoints/connections only
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & The subprotocol to select \\
+\hline
+{\em ec} & A reference to an error code that will be filled in the case of errors \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 488 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a96b37fbab88dfb78b1641c0c30710243}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!select\+\_\+subprotocol@{select\+\_\+subprotocol}}
+\index{select\+\_\+subprotocol@{select\+\_\+subprotocol}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{select\+\_\+subprotocol(std\+::string const \&value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::select\+\_\+subprotocol (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{value}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a96b37fbab88dfb78b1641c0c30710243}
+
+
+Select a subprotocol to use. 
+
+Indicates which subprotocol should be used for this connection. Valid only during the validate handler callback. Subprotocol selected must have been requested by the client. Consult \hyperlink{classwebsocketpp_1_1connection_aa5e8f75b832d166eab145b862fd5f637}{get\+\_\+requested\+\_\+subprotocols()} for a list of valid subprotocols.
+
+This member function is valid on server endpoints/connections only
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & The subprotocol to select \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 516 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_af3f96a962ed7a271a00e85ba4df2db45}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!send@{send}}
+\index{send@{send}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{send(std\+::string const \&payload, frame\+::opcode\+::value op=frame\+::opcode\+::text)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::connection}$<$ config $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{payload, }
+\item[{{\bf frame\+::opcode\+::value}}]{op = {\ttfamily {\bf frame\+::opcode\+::text}}}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_af3f96a962ed7a271a00e85ba4df2db45}
+
+
+Create a message and then add it to the outgoing send queue. 
+
+Convenience method to send a message given a payload string and optionally an opcode. Default opcode is utf8 text.
+
+This method locks the m\+\_\+write\+\_\+lock mutex
+
+
+\begin{DoxyParams}{Parameters}
+{\em payload} & The payload string to generated the message with\\
+\hline
+{\em op} & The opcode to generated the message with. Default is \hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5ea6b65f28626b19b2eef447744c564e727}{frame\+::opcode\+::text} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 83 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a607fc1d40a2cf994ccc7173a94a2774d}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!send@{send}}
+\index{send@{send}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{send(void const $\ast$payload, size\+\_\+t len, frame\+::opcode\+::value op=frame\+::opcode\+::binary)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::connection}$<$ config $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{void const $\ast$}]{payload, }
+\item[{size\+\_\+t}]{len, }
+\item[{{\bf frame\+::opcode\+::value}}]{op = {\ttfamily {\bf frame\+::opcode\+::binary}}}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a607fc1d40a2cf994ccc7173a94a2774d}
+
+
+Send a message (raw array overload) 
+
+Convenience method to send a message given a raw array and optionally an opcode. Default opcode is binary.
+
+This method locks the m\+\_\+write\+\_\+lock mutex
+
+
+\begin{DoxyParams}{Parameters}
+{\em payload} & A pointer to the array containing the bytes to send.\\
+\hline
+{\em len} & Length of the array.\\
+\hline
+{\em op} & The opcode to generated the message with. Default is \hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5eabe7c19fe7e9744d6a0f041e4c99f120f}{frame\+::opcode\+::binary} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 94 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a29900da403dbafab8095c0989104be90}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!send@{send}}
+\index{send@{send}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{send(message\+\_\+ptr msg)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ lib\+::error\+\_\+code {\bf websocketpp\+::connection}$<$ config $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{{\bf message\+\_\+ptr}}]{msg}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a29900da403dbafab8095c0989104be90}
+
+
+Add a message to the outgoing send queue. 
+
+If presented with a prepared message it is added without validation or framing. If presented with an unprepared message it is validated, framed, and then added
+
+Errors are returned via an exception \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000003}{Todo}]make exception system\+\_\+error rather than error\+\_\+code\end{DoxyRefDesc}
+
+
+This method invokes the m\+\_\+write\+\_\+lock mutex
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & A message\+\_\+ptr to the message to send. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classwebsocketpp_1_1connection_a6c192eb26aa8be9afed7ff9e85990ea8}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!send\+\_\+http\+\_\+response@{send\+\_\+http\+\_\+response}}
+\index{send\+\_\+http\+\_\+response@{send\+\_\+http\+\_\+response}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{send\+\_\+http\+\_\+response(lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::send\+\_\+http\+\_\+response (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a6c192eb26aa8be9afed7ff9e85990ea8}
+
+
+Send deferred H\+T\+T\+P Response (exception free) 
+
+Sends an http response to an H\+T\+T\+P connection that was deferred. This will send a complete response including all headers, status line, and body text. The connection will be closed afterwards.
+
+\begin{DoxySince}{Since}
+0.\+6.\+0
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em ec} & A status code, zero on success, non-\/zero otherwise \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 686 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_aabc8c4f01bb9fd6336e536d992ae1a4f}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!send\+\_\+http\+\_\+response@{send\+\_\+http\+\_\+response}}
+\index{send\+\_\+http\+\_\+response@{send\+\_\+http\+\_\+response}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{send\+\_\+http\+\_\+response()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::send\+\_\+http\+\_\+response (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_aabc8c4f01bb9fd6336e536d992ae1a4f}
+
+
+Send deferred H\+T\+T\+P Response. 
+
+
+
+Definition at line 702 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a40bb318c3b9294018d217d0271a7b3da}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+body@{set\+\_\+body}}
+\index{set\+\_\+body@{set\+\_\+body}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+body(std\+::string const \&value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+body (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{value}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a40bb318c3b9294018d217d0271a7b3da}
+
+
+Set response body content. 
+
+Set the body content of the H\+T\+T\+P response to the parameter string. Note set\+\_\+body will also set the Content-\/\+Length H\+T\+T\+P header to the appropriate value. If you want the Content-\/\+Length header to be something else set it to something else after calling set\+\_\+body
+
+This member function is valid only from the http() and \hyperlink{namespacewebsocketpp_1_1utf8__validator_ad088137c6f18e6844e20496d8782c835}{validate()} handler callbacks.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & String data to include as the body content. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+websocketpp\+::http\+::response\+::set\+\_\+body 
+\end{DoxySeeAlso}
+
+
+Definition at line 569 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a25fb7096431b1d7350c34035db7ed9a4}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+close\+\_\+handler@{set\+\_\+close\+\_\+handler}}
+\index{set\+\_\+close\+\_\+handler@{set\+\_\+close\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+close\+\_\+handler(close\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+close\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf close\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a25fb7096431b1d7350c34035db7ed9a4}
+
+
+Set close handler. 
+
+The close handler is called immediately after the connection is closed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The new close\+\_\+handler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 361 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a3bf932388a128a7b719c45b945bffaad}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+close\+\_\+handshake\+\_\+timeout@{set\+\_\+close\+\_\+handshake\+\_\+timeout}}
+\index{set\+\_\+close\+\_\+handshake\+\_\+timeout@{set\+\_\+close\+\_\+handshake\+\_\+timeout}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+close\+\_\+handshake\+\_\+timeout(long dur)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+close\+\_\+handshake\+\_\+timeout (
+\begin{DoxyParamCaption}
+\item[{long}]{dur}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a3bf932388a128a7b719c45b945bffaad}
+
+
+Set close handshake timeout. 
+
+Sets the length of time the library will wait after a closing handshake has been initiated before cancelling it. This can be used to prevent excessive wait times for outgoing clients or excessive resource usage from broken clients or Do\+S attacks on servers.
+
+Connections that time out will have their close handlers called with the close\+\_\+handshake\+\_\+timeout error code.
+
+The default value is specified via the compile time config value \textquotesingle{}timeout\+\_\+close\+\_\+handshake\textquotesingle{}. The default value in the core config is 5000ms. A value of 0 will disable the timer entirely.
+
+To be effective, the transport you are using must support timers. See the documentation for your transport policy for details about its timer support.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dur} & The length of the close handshake timeout in ms \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 525 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a8d2515bc6821f90c531efe77c8a32569}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+fail\+\_\+handler@{set\+\_\+fail\+\_\+handler}}
+\index{set\+\_\+fail\+\_\+handler@{set\+\_\+fail\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+fail\+\_\+handler(fail\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+fail\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf fail\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a8d2515bc6821f90c531efe77c8a32569}
+
+
+Set fail handler. 
+
+The fail handler is called whenever the connection fails while the handshake is bring processed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The new fail\+\_\+handler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 372 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_af07f4fac45e1b64de7e0d12ece0d23a8}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+handle@{set\+\_\+handle}}
+\index{set\+\_\+handle@{set\+\_\+handle}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+handle(connection\+\_\+hdl hdl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+handle (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_af07f4fac45e1b64de7e0d12ece0d23a8}
+
+
+Set Connection Handle. 
+
+The connection handle is a token that can be shared outside the Web\+Socket++ core for the purposes of identifying a connection and sending it messages.
+
+
+\begin{DoxyParams}{Parameters}
+{\em hdl} & A connection\+\_\+hdl that the connection will use to refer to itself. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 1356 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a78c680623660b0442394af6b45c46c23}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+http\+\_\+handler@{set\+\_\+http\+\_\+handler}}
+\index{set\+\_\+http\+\_\+handler@{set\+\_\+http\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+http\+\_\+handler(http\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+http\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf http\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a78c680623660b0442394af6b45c46c23}
+
+
+Set http handler. 
+
+The http handler is called after an H\+T\+T\+P request other than a Web\+Socket upgrade request is received. It allows a Web\+Socket++ server to respond to regular H\+T\+T\+P requests on the same port as it processes Web\+Socket connections. This can be useful for hosting error messages, flash policy files, status pages, and other simple H\+T\+T\+P responses. It is not intended to be used as a primary web server.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The new http\+\_\+handler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 447 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_aa8edc6e8ea1b72f84973bed0a20ad365}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+interrupt\+\_\+handler@{set\+\_\+interrupt\+\_\+handler}}
+\index{set\+\_\+interrupt\+\_\+handler@{set\+\_\+interrupt\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+interrupt\+\_\+handler(interrupt\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+interrupt\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf interrupt\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_aa8edc6e8ea1b72f84973bed0a20ad365}
+
+
+Set interrupt handler. 
+
+The interrupt handler is called whenever the connection is manually interrupted by the application.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The new interrupt\+\_\+handler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 432 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ad2a5b06ad88f5bcdd06fcabaae3323bc}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+max\+\_\+http\+\_\+body\+\_\+size@{set\+\_\+max\+\_\+http\+\_\+body\+\_\+size}}
+\index{set\+\_\+max\+\_\+http\+\_\+body\+\_\+size@{set\+\_\+max\+\_\+http\+\_\+body\+\_\+size}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+max\+\_\+http\+\_\+body\+\_\+size(size\+\_\+t new\+\_\+value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+max\+\_\+http\+\_\+body\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{size\+\_\+t}]{new\+\_\+value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_ad2a5b06ad88f5bcdd06fcabaae3323bc}
+
+
+Set maximum H\+T\+T\+P message body size. 
+
+Set maximum H\+T\+T\+P message body size. Maximum message body size determines the point at which the connection will stop reading an H\+T\+T\+P request whose body is too large.
+
+The default is set by the endpoint that creates the connection.
+
+\begin{DoxySince}{Since}
+0.\+5.\+0
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+value} & The value to set as the maximum message size. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 610 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a522286bf83373f87ddebf93b732abffc}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+max\+\_\+message\+\_\+size@{set\+\_\+max\+\_\+message\+\_\+size}}
+\index{set\+\_\+max\+\_\+message\+\_\+size@{set\+\_\+max\+\_\+message\+\_\+size}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+max\+\_\+message\+\_\+size(size\+\_\+t new\+\_\+value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+max\+\_\+message\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{size\+\_\+t}]{new\+\_\+value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a522286bf83373f87ddebf93b732abffc}
+
+
+Set maximum message size. 
+
+Set maximum message size. Maximum message size determines the point at which the connection will fail with the message\+\_\+too\+\_\+big protocol error. This value may be changed during the connection.
+
+The default is set by the endpoint that creates the connection.
+
+\begin{DoxySince}{Since}
+0.\+3.\+0
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+value} & The value to set as the maximum message size. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 575 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a107e754227c828582779b906654743fe}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+message\+\_\+handler@{set\+\_\+message\+\_\+handler}}
+\index{set\+\_\+message\+\_\+handler@{set\+\_\+message\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+message\+\_\+handler(message\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+message\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf message\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a107e754227c828582779b906654743fe}
+
+
+Set message handler. 
+
+The message handler is called after a new message has been received.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The new message\+\_\+handler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 473 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ab11271e7778fbfde3a1987fca729af6d}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+open\+\_\+handler@{set\+\_\+open\+\_\+handler}}
+\index{set\+\_\+open\+\_\+handler@{set\+\_\+open\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+open\+\_\+handler(open\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+open\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf open\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_ab11271e7778fbfde3a1987fca729af6d}
+
+
+Set open handler. 
+
+The open handler is called after the Web\+Socket handshake is complete and the connection is considered O\+P\+E\+N.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The new open\+\_\+handler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 351 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ad5a666fe1144dc68b1bae3bcc615e1ed}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+open\+\_\+handshake\+\_\+timeout@{set\+\_\+open\+\_\+handshake\+\_\+timeout}}
+\index{set\+\_\+open\+\_\+handshake\+\_\+timeout@{set\+\_\+open\+\_\+handshake\+\_\+timeout}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+open\+\_\+handshake\+\_\+timeout(long dur)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+open\+\_\+handshake\+\_\+timeout (
+\begin{DoxyParamCaption}
+\item[{long}]{dur}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_ad5a666fe1144dc68b1bae3bcc615e1ed}
+
+
+Set open handshake timeout. 
+
+Sets the length of time the library will wait after an opening handshake has been initiated before cancelling it. This can be used to prevent excessive wait times for outgoing clients or excessive resource usage from broken clients or Do\+S attacks on servers.
+
+Connections that time out will have their fail handlers called with the open\+\_\+handshake\+\_\+timeout error code.
+
+The default value is specified via the compile time config value \textquotesingle{}timeout\+\_\+open\+\_\+handshake\textquotesingle{}. The default value in the core config is 5000ms. A value of 0 will disable the timer entirely.
+
+To be effective, the transport you are using must support timers. See the documentation for your transport policy for details about its timer support.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dur} & The length of the open handshake timeout in ms \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 501 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a6e21e63abbbba88f818742e9da25fa8b}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+ping\+\_\+handler@{set\+\_\+ping\+\_\+handler}}
+\index{set\+\_\+ping\+\_\+handler@{set\+\_\+ping\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+ping\+\_\+handler(ping\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+ping\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf ping\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a6e21e63abbbba88f818742e9da25fa8b}
+
+
+Set ping handler. 
+
+The ping handler is called whenever the connection receives a ping control frame. The ping payload is included.
+
+The ping handler\textquotesingle{}s return time controls whether or not a pong is sent in response to this ping. Returning false will suppress the return pong. If no ping handler is set a pong will be sent.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The new ping\+\_\+handler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 387 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a298795eaa6d554ca5114ff23346d47a9}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+pong\+\_\+handler@{set\+\_\+pong\+\_\+handler}}
+\index{set\+\_\+pong\+\_\+handler@{set\+\_\+pong\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+pong\+\_\+handler(pong\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+pong\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf pong\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a298795eaa6d554ca5114ff23346d47a9}
+
+
+Set pong handler. 
+
+The pong handler is called whenever the connection receives a pong control frame. The pong payload is included.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The new pong\+\_\+handler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 398 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ab9a905ac6a4f0f8546011b8f8a531563}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+pong\+\_\+timeout@{set\+\_\+pong\+\_\+timeout}}
+\index{set\+\_\+pong\+\_\+timeout@{set\+\_\+pong\+\_\+timeout}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+pong\+\_\+timeout(long dur)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+pong\+\_\+timeout (
+\begin{DoxyParamCaption}
+\item[{long}]{dur}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_ab9a905ac6a4f0f8546011b8f8a531563}
+
+
+Set pong timeout. 
+
+Sets the length of time the library will wait for a pong response to a ping. This can be used as a keepalive or to detect broken connections.
+
+Pong responses that time out will have the pong timeout handler called.
+
+The default value is specified via the compile time config value \textquotesingle{}timeout\+\_\+pong\textquotesingle{}. The default value in the core config is 5000ms. A value of 0 will disable the timer entirely.
+
+To be effective, the transport you are using must support timers. See the documentation for your transport policy for details about its timer support.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dur} & The length of the pong timeout in ms \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 546 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a6baa576fffc7af7685cf75894d634fb7}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+pong\+\_\+timeout\+\_\+handler@{set\+\_\+pong\+\_\+timeout\+\_\+handler}}
+\index{set\+\_\+pong\+\_\+timeout\+\_\+handler@{set\+\_\+pong\+\_\+timeout\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+pong\+\_\+timeout\+\_\+handler(pong\+\_\+timeout\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+pong\+\_\+timeout\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf pong\+\_\+timeout\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_a6baa576fffc7af7685cf75894d634fb7}
+
+
+Set pong timeout handler. 
+
+If the transport component being used supports timers, the pong timeout handler is called whenever a pong control frame is not received with the configured timeout period after the application sends a ping.
+
+The config setting {\ttfamily timeout\+\_\+pong} controls the length of the timeout period. It is specified in milliseconds.
+
+This can be used to probe the health of the remote endpoint\textquotesingle{}s Web\+Socket implementation. This does not guarantee that the remote application itself is still healthy but can be a useful diagnostic.
+
+Note\+: receipt of this callback doesn\textquotesingle{}t mean the pong will never come. This functionality will not suppress delivery of the pong in question should it arrive after the timeout.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The new pong\+\_\+timeout\+\_\+handler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 421 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a96d445ff0cc75b854c4500e93a054acb}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+status@{set\+\_\+status}}
+\index{set\+\_\+status@{set\+\_\+status}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+status(http\+::status\+\_\+code\+::value code)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+status (
+\begin{DoxyParamCaption}
+\item[{{\bf http\+::status\+\_\+code\+::value}}]{code}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a96d445ff0cc75b854c4500e93a054acb}
+
+
+Set response status code and message. 
+
+Sets the response status code to {\ttfamily code} and looks up the corresponding message for standard codes. Non-\/standard codes will be entered as Unknown use set\+\_\+status(status\+\_\+code\+::value,std\+::string) overload to set both values explicitly.
+
+This member function is valid only from the http() and \hyperlink{namespacewebsocketpp_1_1utf8__validator_ad088137c6f18e6844e20496d8782c835}{validate()} handler callbacks.
+
+
+\begin{DoxyParams}{Parameters}
+{\em code} & Code to set \\
+\hline
+{\em msg} & Message to set \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+websocketpp\+::http\+::response\+::set\+\_\+status 
+\end{DoxySeeAlso}
+
+
+Definition at line 545 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a97b4513339167df8653a11ef3ccc65b1}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+status@{set\+\_\+status}}
+\index{set\+\_\+status@{set\+\_\+status}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+status(http\+::status\+\_\+code\+::value code, std\+::string const \&msg)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+status (
+\begin{DoxyParamCaption}
+\item[{{\bf http\+::status\+\_\+code\+::value}}]{code, }
+\item[{std\+::string const \&}]{msg}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a97b4513339167df8653a11ef3ccc65b1}
+
+
+Set response status code and message. 
+
+Sets the response status code and message to independent custom values. use set\+\_\+status(status\+\_\+code\+::value) to set the code and have the standard message be automatically set.
+
+This member function is valid only from the http() and \hyperlink{namespacewebsocketpp_1_1utf8__validator_ad088137c6f18e6844e20496d8782c835}{validate()} handler callbacks.
+
+
+\begin{DoxyParams}{Parameters}
+{\em code} & Code to set \\
+\hline
+{\em msg} & Message to set \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+websocketpp\+::http\+::response\+::set\+\_\+status 
+\end{DoxySeeAlso}
+
+
+Definition at line 556 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ac72ff8473d0a49bb069825e99e99ca9d}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+termination\+\_\+handler@{set\+\_\+termination\+\_\+handler}}
+\index{set\+\_\+termination\+\_\+handler@{set\+\_\+termination\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+termination\+\_\+handler(termination\+\_\+handler new\+\_\+handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+termination\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf termination\+\_\+handler}}]{new\+\_\+handler}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_ac72ff8473d0a49bb069825e99e99ca9d}
+Sets the handler for a terminating connection. Should only be used internally by the endpoint class. 
+
+Definition at line 53 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_ac5c81acf3be998662a3500a9be2c4d38}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+uri@{set\+\_\+uri}}
+\index{set\+\_\+uri@{set\+\_\+uri}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+uri(uri\+\_\+ptr uri)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+uri (
+\begin{DoxyParamCaption}
+\item[{{\bf uri\+\_\+ptr}}]{uri}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_ac5c81acf3be998662a3500a9be2c4d38}
+
+
+Sets the connection U\+R\+I. 
+
+This should really only be called by internal library methods unless you really know what you are doing.
+
+
+\begin{DoxyParams}{Parameters}
+{\em uri} & The new U\+R\+I to set \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 436 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_aa28096d051f5639d7b01954845fc054c}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!set\+\_\+validate\+\_\+handler@{set\+\_\+validate\+\_\+handler}}
+\index{set\+\_\+validate\+\_\+handler@{set\+\_\+validate\+\_\+handler}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{set\+\_\+validate\+\_\+handler(validate\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config$>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::set\+\_\+validate\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf validate\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1connection_aa28096d051f5639d7b01954845fc054c}
+
+
+Set validate handler. 
+
+The validate handler is called after a Web\+Socket handshake has been parsed but before a response is returned. It provides the application a chance to examine the request and determine whether or not it wants to accept the connection.
+
+Returning false from the validate handler will reject the connection. If no validate handler is present, all connections will be allowed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The new validate\+\_\+handler \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 463 of file connection.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a152530ff43396025175f85748d8ee708}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!start@{start}}
+\index{start@{start}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{start()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a152530ff43396025175f85748d8ee708}
+
+
+Start the connection state machine. 
+
+
+
+Definition at line 716 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a7267aae677a77e5e9379ecb6db1789a3}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!terminate@{terminate}}
+\index{terminate@{terminate}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{terminate(lib\+::error\+\_\+code const \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::terminate (
+\begin{DoxyParamCaption}
+\item[{lib\+::error\+\_\+code const \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a7267aae677a77e5e9379ecb6db1789a3}
+
+
+Definition at line 1695 of file connection\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1connection_a8d26a29e90d4847f3882c280112c6b60}{}\index{websocketpp\+::connection@{websocketpp\+::connection}!write\+\_\+frame@{write\+\_\+frame}}
+\index{write\+\_\+frame@{write\+\_\+frame}!websocketpp\+::connection@{websocketpp\+::connection}}
+\subsubsection[{write\+\_\+frame()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::connection}$<$ config $>$\+::write\+\_\+frame (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1connection_a8d26a29e90d4847f3882c280112c6b60}
+
+
+Checks if there are frames in the send queue and if there are sends one. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000004}{Todo}]unit tests\end{DoxyRefDesc}
+
+
+This method locks the m\+\_\+write\+\_\+lock mutex 
+
+Definition at line 1790 of file connection\+\_\+impl.\+hpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/\hyperlink{connection_8hpp}{connection.\+hpp}\item 
+ext/websocketpp/impl/\hyperlink{connection__impl_8hpp}{connection\+\_\+impl.\+hpp}\end{DoxyCompactItemize}

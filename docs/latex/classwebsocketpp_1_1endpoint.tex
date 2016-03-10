@@ -1,0 +1,1345 @@
+\hypertarget{classwebsocketpp_1_1endpoint}{}\section{websocketpp\+:\+:endpoint$<$ connection, config $>$ Class Template Reference}
+\label{classwebsocketpp_1_1endpoint}\index{websocketpp\+::endpoint$<$ connection, config $>$@{websocketpp\+::endpoint$<$ connection, config $>$}}
+
+
+Creates and manages connections associated with a Web\+Socket endpoint.  
+
+
+
+
+{\ttfamily \#include $<$endpoint.\+hpp$>$}
+
+Inheritance diagram for websocketpp\+:\+:endpoint$<$ connection, config $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classwebsocketpp_1_1endpoint}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1endpoint}{endpoint}$<$ \hyperlink{classwebsocketpp_1_1connection}{connection}, config $>$ \hyperlink{classwebsocketpp_1_1endpoint_a3b2b343203819be45219dce781e8c55d}{type}
+\item 
+typedef config\+::transport\+\_\+type \hyperlink{classwebsocketpp_1_1endpoint_a8aa5190eb55c719559d2e6ea187a627b}{transport\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the transport component of this endpoint. \end{DoxyCompactList}\item 
+typedef config\+::concurrency\+\_\+type \hyperlink{classwebsocketpp_1_1endpoint_a16950dc8da6e73c4aeb47f7755b63101}{concurrency\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the concurrency component of this endpoint. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1connection}{connection} \hyperlink{classwebsocketpp_1_1endpoint_a7f5908ada1bc82cb3b519e672bccdaa9}{connection\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of the connections that this endpoint creates. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1connection_ab910d42e3bde91546183cc54642f32ab}{connection\+\_\+type\+::ptr} \hyperlink{classwebsocketpp_1_1endpoint_aa90d289d870c500be228ee1dea75b8b2}{connection\+\_\+ptr}
+\begin{DoxyCompactList}\small\item\em Shared pointer to connection\+\_\+type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1connection_ac2905dcf6418c52ec9685f9f59b86e3e}{connection\+\_\+type\+::weak\+\_\+ptr} \hyperlink{classwebsocketpp_1_1endpoint_afc1de254d2c4cf68ef29aae7189edb26}{connection\+\_\+weak\+\_\+ptr}
+\begin{DoxyCompactList}\small\item\em Weak pointer to connection type. \end{DoxyCompactList}\item 
+typedef transport\+\_\+type\+::transport\+\_\+con\+\_\+type \hyperlink{classwebsocketpp_1_1endpoint_aaec9d745cafcee505c63efff421e3dff}{transport\+\_\+con\+\_\+type}
+\item 
+typedef transport\+\_\+con\+\_\+type\+::ptr \hyperlink{classwebsocketpp_1_1endpoint_a22be3833280c548d724298eba0f00b2a}{transport\+\_\+con\+\_\+ptr}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1connection_a0091551000546d5f5f427379d852cae9}{connection\+\_\+type\+::message\+\_\+handler} \hyperlink{classwebsocketpp_1_1endpoint_afa2109f793a8d8d90599ea339bbcd8e5}{message\+\_\+handler}
+\begin{DoxyCompactList}\small\item\em Type of message\+\_\+handler. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1connection_a3b98c091caf54540024538d2394ffb57}{connection\+\_\+type\+::message\+\_\+ptr} \hyperlink{classwebsocketpp_1_1endpoint_a585ecbbfd9689d4e4229e4c8378bd672}{message\+\_\+ptr}
+\begin{DoxyCompactList}\small\item\em Type of message pointers that this endpoint uses. \end{DoxyCompactList}\item 
+typedef config\+::elog\+\_\+type \hyperlink{classwebsocketpp_1_1endpoint_a4ab98f4fed5b5b2740105eff732c7b1e}{elog\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of error logger. \end{DoxyCompactList}\item 
+typedef config\+::alog\+\_\+type \hyperlink{classwebsocketpp_1_1endpoint_a1ca2ad5bfdd241a031746c3f158f4003}{alog\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of access logger. \end{DoxyCompactList}\item 
+typedef concurrency\+\_\+type\+::scoped\+\_\+lock\+\_\+type \hyperlink{classwebsocketpp_1_1endpoint_ae16d71c671d97d4b29c5fd5806d45815}{scoped\+\_\+lock\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of our concurrency policy\textquotesingle{}s scoped lock object. \end{DoxyCompactList}\item 
+typedef concurrency\+\_\+type\+::mutex\+\_\+type \hyperlink{classwebsocketpp_1_1endpoint_ab4aa523f6e1fddb2e77cdf7b36771992}{mutex\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of our concurrency policy\textquotesingle{}s mutex object. \end{DoxyCompactList}\item 
+typedef config\+::rng\+\_\+type \hyperlink{classwebsocketpp_1_1endpoint_adbb0a9eea3ebbf5139966858bd0fa16d}{rng\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of R\+N\+G. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1connection_a8da9613d1f13c9f4571ffb0810d43e63}{connection\+\_\+type\+::termination\+\_\+handler} \hyperlink{classwebsocketpp_1_1endpoint_a24710dbab3b51673b5459b7b609d5d66}{termination\+\_\+handler}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classwebsocketpp_1_1endpoint_a12015b0910fe39d0cbbd7fc7ea5ffcfd}{endpoint} (bool p\+\_\+is\+\_\+server)
+\item 
+\hyperlink{classwebsocketpp_1_1endpoint_a4fea6c12eff3d5326d13731a08df2f9e}{$\sim$endpoint} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classwebsocketpp_1_1endpoint_a6791170d75bc673d07262207ed61493a}{get\+\_\+user\+\_\+agent} () const 
+\begin{DoxyCompactList}\small\item\em Returns the user agent string that this endpoint will use. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a06a703c52196d900d1e58b79d6657cc8}{set\+\_\+user\+\_\+agent} (std\+::string const \&ua)
+\begin{DoxyCompactList}\small\item\em Sets the user agent string that this endpoint will use. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1endpoint_a5fc8ad1f8314d2e15d97206052db0676}{is\+\_\+server} () const 
+\begin{DoxyCompactList}\small\item\em Returns whether or not this endpoint is a server. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a5d7da609ebd2f797e5e67b6d050ebc59}{set\+\_\+access\+\_\+channels} (\hyperlink{namespacewebsocketpp_1_1log_a12d4d17939f102db8c9183d400a41960}{log\+::level} channels)
+\begin{DoxyCompactList}\small\item\em Set Access logging channel. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a3fe357b3c6434273a9965eb52902575d}{clear\+\_\+access\+\_\+channels} (\hyperlink{namespacewebsocketpp_1_1log_a12d4d17939f102db8c9183d400a41960}{log\+::level} channels)
+\begin{DoxyCompactList}\small\item\em Clear Access logging channels. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a8292bcdca9344b57af1b0964ff7fc778}{set\+\_\+error\+\_\+channels} (\hyperlink{namespacewebsocketpp_1_1log_a12d4d17939f102db8c9183d400a41960}{log\+::level} channels)
+\begin{DoxyCompactList}\small\item\em Set Error logging channel. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a8cefa4fc37c0df4eb6ed0bcf04bb0da5}{clear\+\_\+error\+\_\+channels} (\hyperlink{namespacewebsocketpp_1_1log_a12d4d17939f102db8c9183d400a41960}{log\+::level} channels)
+\begin{DoxyCompactList}\small\item\em Clear Error logging channels. \end{DoxyCompactList}\item 
+\hyperlink{classwebsocketpp_1_1endpoint_a1ca2ad5bfdd241a031746c3f158f4003}{alog\+\_\+type} \& \hyperlink{classwebsocketpp_1_1endpoint_a1607d873b9e764c02563162f03171326}{get\+\_\+alog} ()
+\begin{DoxyCompactList}\small\item\em Get reference to access logger. \end{DoxyCompactList}\item 
+\hyperlink{classwebsocketpp_1_1endpoint_a4ab98f4fed5b5b2740105eff732c7b1e}{elog\+\_\+type} \& \hyperlink{classwebsocketpp_1_1endpoint_a63ed630042ce9549dfc7d9513cb19678}{get\+\_\+elog} ()
+\begin{DoxyCompactList}\small\item\em Get reference to error logger. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a5753d9848aefc04ee91da401c0cc65b8}{set\+\_\+open\+\_\+handler} (\hyperlink{namespacewebsocketpp_a53c8b4ae59cf13b5f883b119bbd14d72}{open\+\_\+handler} h)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a8d7d95bebc154879655211e2b0b5e069}{set\+\_\+close\+\_\+handler} (\hyperlink{namespacewebsocketpp_a27acb39e01cbca06ccc4e4e8eb8f877d}{close\+\_\+handler} h)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a073540365f5c810f5a45e5fc76f52f87}{set\+\_\+fail\+\_\+handler} (\hyperlink{namespacewebsocketpp_a5bb2e61cfe649b2e012f1a2c5693a4d5}{fail\+\_\+handler} h)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_adc6caf0164a0cd073f0535078ccac123}{set\+\_\+ping\+\_\+handler} (\hyperlink{namespacewebsocketpp_a9dcaaa7370865f1bcacb55ae715793ef}{ping\+\_\+handler} h)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a8ab51c3878bbbcfc92cf5ed6af65e8d7}{set\+\_\+pong\+\_\+handler} (\hyperlink{namespacewebsocketpp_a1798d54e6d98a481cf870091af84bc1f}{pong\+\_\+handler} h)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a02f6288d1e7c32de7a5940a337076917}{set\+\_\+pong\+\_\+timeout\+\_\+handler} (\hyperlink{namespacewebsocketpp_a2c5925a111b9e553efebea35d5ea155f}{pong\+\_\+timeout\+\_\+handler} h)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a026eb37f85cea8e79f1a007d12bb55dd}{set\+\_\+interrupt\+\_\+handler} (\hyperlink{namespacewebsocketpp_a55f6947df7673a9de3c44b6bd5d4a82a}{interrupt\+\_\+handler} h)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a511874384b71238b042968cf736bc510}{set\+\_\+http\+\_\+handler} (\hyperlink{namespacewebsocketpp_a37bc4d5b3b21d3bb494d8a23236315d2}{http\+\_\+handler} h)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_ac5d059736dd862ccfb3582ba310dfae7}{set\+\_\+validate\+\_\+handler} (\hyperlink{namespacewebsocketpp_ae28f3fed86a59b1998746694f3d4edbd}{validate\+\_\+handler} h)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a34a3a8351bff65ba878975be471cab85}{set\+\_\+message\+\_\+handler} (\hyperlink{classwebsocketpp_1_1endpoint_afa2109f793a8d8d90599ea339bbcd8e5}{message\+\_\+handler} h)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_adb8b3736e30bb8e5ee6add965a948102}{set\+\_\+open\+\_\+handshake\+\_\+timeout} (long dur)
+\begin{DoxyCompactList}\small\item\em Set open handshake timeout. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a54caf799e1cf531d26f67999068d483b}{set\+\_\+close\+\_\+handshake\+\_\+timeout} (long dur)
+\begin{DoxyCompactList}\small\item\em Set close handshake timeout. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_abcb25dde6f71933c3dbe517c45ebe5c6}{set\+\_\+pong\+\_\+timeout} (long dur)
+\begin{DoxyCompactList}\small\item\em Set pong timeout. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1endpoint_add48746fa48a371eed808dd743140c08}{get\+\_\+max\+\_\+message\+\_\+size} () const 
+\begin{DoxyCompactList}\small\item\em Get default maximum message size. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a6268a63c9ce030941fcfb32ddabf3090}{set\+\_\+max\+\_\+message\+\_\+size} (size\+\_\+t new\+\_\+value)
+\begin{DoxyCompactList}\small\item\em Set default maximum message size. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1endpoint_ae554bc4e2d2ef9be25165c223effd818}{get\+\_\+max\+\_\+http\+\_\+body\+\_\+size} () const 
+\begin{DoxyCompactList}\small\item\em Get maximum H\+T\+T\+P message body size. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a00be7e08ca5c567dd2a4989b8d41d26b}{set\+\_\+max\+\_\+http\+\_\+body\+\_\+size} (size\+\_\+t new\+\_\+value)
+\begin{DoxyCompactList}\small\item\em Set maximum H\+T\+T\+P message body size. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_ab6cd8d850c40f33f48d0afb4d7be094c}{interrupt} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, lib\+::error\+\_\+code \&ec)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_aa77facb47f09c143e5c22486f02bb455}{interrupt} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_aef7666b82bf98864b213c3df09298595}{pause\+\_\+reading} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Pause reading of new data (exception free) \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_af7ec27363d0fb1d657a264c4ad853b8e}{pause\+\_\+reading} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl)
+\begin{DoxyCompactList}\small\item\em Pause reading of new data. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a9753aaade09c9a7a0efd459861ba3b97}{resume\+\_\+reading} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Resume reading of new data (exception free) \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a4592d2270f56fce0f30a41cd17f77650}{resume\+\_\+reading} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl)
+\begin{DoxyCompactList}\small\item\em Resume reading of new data. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_ae78b1414f7e0cf71c9eab0a29efab8a1}{send\+\_\+http\+\_\+response} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Send deferred H\+T\+T\+P Response. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_af29ca34a6659beea0422a2f27718b9c2}{send\+\_\+http\+\_\+response} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl)
+\begin{DoxyCompactList}\small\item\em Send deferred H\+T\+T\+P Response (exception free) \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a5341f59de7ef1a565a2fd93daba212d5}{send} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, std\+::string const \&payload, \hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5e}{frame\+::opcode\+::value} op, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Create a message and add it to the outgoing send queue (exception free) \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a9eb8f9fd7fbb7d8374eb02e100430bcf}{send} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, std\+::string const \&payload, \hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5e}{frame\+::opcode\+::value} op)
+\begin{DoxyCompactList}\small\item\em Create a message and add it to the outgoing send queue. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a71e4454af8d8f133ca736e80c3adf268}{send} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, void const $\ast$payload, size\+\_\+t len, \hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5e}{frame\+::opcode\+::value} op, lib\+::error\+\_\+code \&ec)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_adc03a5bd5797a54fde64afd279032671}{send} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, void const $\ast$payload, size\+\_\+t len, \hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5e}{frame\+::opcode\+::value} op)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a5cad5b7944435e7eec248e98e7e7a912}{send} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, \hyperlink{classwebsocketpp_1_1endpoint_a585ecbbfd9689d4e4229e4c8378bd672}{message\+\_\+ptr} msg, lib\+::error\+\_\+code \&ec)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a702e7d609babdacb8ae772b82c3fa8d0}{send} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, \hyperlink{classwebsocketpp_1_1endpoint_a585ecbbfd9689d4e4229e4c8378bd672}{message\+\_\+ptr} msg)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_aa6b81c003dba27c6b30d62d5e79593a6}{close} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, \hyperlink{namespacewebsocketpp_1_1close_1_1status_a8614a5c4733d708e2d2a32191c5bef84}{close\+::status\+::value} const code, std\+::string const \&reason, lib\+::error\+\_\+code \&ec)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a7a4595364dc18d423ff5aa6eda41ecde}{close} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, \hyperlink{namespacewebsocketpp_1_1close_1_1status_a8614a5c4733d708e2d2a32191c5bef84}{close\+::status\+::value} const code, std\+::string const \&reason)
+\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a1d4bcbc3fcd87f48120fbb421467f414}{ping} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, std\+::string const \&payload, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Send a ping to a specific connection. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a35267939caf4b611b01701ba13cd0b33}{ping} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, std\+::string const \&payload)
+\begin{DoxyCompactList}\small\item\em Send a ping to a specific connection. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_a58a55e0288d4da518b2a806587df3809}{pong} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, std\+::string const \&payload, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Send a pong to a specific connection. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1endpoint_ab546cb4089f868a09c8d0694fb6f0be6}{pong} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, std\+::string const \&payload)
+\begin{DoxyCompactList}\small\item\em Send a pong to a specific connection. \end{DoxyCompactList}\item 
+\hyperlink{classwebsocketpp_1_1endpoint_aa90d289d870c500be228ee1dea75b8b2}{connection\+\_\+ptr} \hyperlink{classwebsocketpp_1_1endpoint_a0fe4457427d4124abe7ca022ba7afbb4}{get\+\_\+con\+\_\+from\+\_\+hdl} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Retrieves a connection\+\_\+ptr from a connection\+\_\+hdl (exception free) \end{DoxyCompactList}\item 
+\hyperlink{classwebsocketpp_1_1endpoint_aa90d289d870c500be228ee1dea75b8b2}{connection\+\_\+ptr} \hyperlink{classwebsocketpp_1_1endpoint_a7be6f2e7dc3901dd577eae33dfd2df24}{get\+\_\+con\+\_\+from\+\_\+hdl} (\hyperlink{namespacewebsocketpp_a6b3d26a10ee7229b84b776786332631d}{connection\+\_\+hdl} hdl)
+\begin{DoxyCompactList}\small\item\em Retrieves a connection\+\_\+ptr from a connection\+\_\+hdl (exception version) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classwebsocketpp_1_1endpoint_aa90d289d870c500be228ee1dea75b8b2}{connection\+\_\+ptr} \hyperlink{classwebsocketpp_1_1endpoint_abfbee4cb244700560ef80594a913cd95}{create\+\_\+connection} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classwebsocketpp_1_1endpoint_a1ca2ad5bfdd241a031746c3f158f4003}{alog\+\_\+type} \hyperlink{classwebsocketpp_1_1endpoint_ab77acb19adafe52f5c28aa387077cfbc}{m\+\_\+alog}
+\item 
+\hyperlink{classwebsocketpp_1_1endpoint_a4ab98f4fed5b5b2740105eff732c7b1e}{elog\+\_\+type} \hyperlink{classwebsocketpp_1_1endpoint_a46d6afb6f4f1541da167230c8c1e6f9a}{m\+\_\+elog}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename connection, typename config$>$class websocketpp\+::endpoint$<$ connection, config $>$}
+
+Creates and manages connections associated with a Web\+Socket endpoint. 
+
+Definition at line 42 of file endpoint.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classwebsocketpp_1_1endpoint_a1ca2ad5bfdd241a031746c3f158f4003}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!alog\+\_\+type@{alog\+\_\+type}}
+\index{alog\+\_\+type@{alog\+\_\+type}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{alog\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef config\+::alog\+\_\+type {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf alog\+\_\+type}}\label{classwebsocketpp_1_1endpoint_a1ca2ad5bfdd241a031746c3f158f4003}
+
+
+Type of access logger. 
+
+
+
+Definition at line 75 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a16950dc8da6e73c4aeb47f7755b63101}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!concurrency\+\_\+type@{concurrency\+\_\+type}}
+\index{concurrency\+\_\+type@{concurrency\+\_\+type}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{concurrency\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef config\+::concurrency\+\_\+type {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf concurrency\+\_\+type}}\label{classwebsocketpp_1_1endpoint_a16950dc8da6e73c4aeb47f7755b63101}
+
+
+Type of the concurrency component of this endpoint. 
+
+
+
+Definition at line 51 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_aa90d289d870c500be228ee1dea75b8b2}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!connection\+\_\+ptr@{connection\+\_\+ptr}}
+\index{connection\+\_\+ptr@{connection\+\_\+ptr}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{connection\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef {\bf connection\+\_\+type\+::ptr} {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf connection\+\_\+ptr}}\label{classwebsocketpp_1_1endpoint_aa90d289d870c500be228ee1dea75b8b2}
+
+
+Shared pointer to connection\+\_\+type. 
+
+
+
+Definition at line 56 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a7f5908ada1bc82cb3b519e672bccdaa9}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!connection\+\_\+type@{connection\+\_\+type}}
+\index{connection\+\_\+type@{connection\+\_\+type}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{connection\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef {\bf connection} {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf connection\+\_\+type}}\label{classwebsocketpp_1_1endpoint_a7f5908ada1bc82cb3b519e672bccdaa9}
+
+
+Type of the connections that this endpoint creates. 
+
+
+
+Definition at line 54 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_afc1de254d2c4cf68ef29aae7189edb26}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!connection\+\_\+weak\+\_\+ptr@{connection\+\_\+weak\+\_\+ptr}}
+\index{connection\+\_\+weak\+\_\+ptr@{connection\+\_\+weak\+\_\+ptr}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{connection\+\_\+weak\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef {\bf connection\+\_\+type\+::weak\+\_\+ptr} {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf connection\+\_\+weak\+\_\+ptr}}\label{classwebsocketpp_1_1endpoint_afc1de254d2c4cf68ef29aae7189edb26}
+
+
+Weak pointer to connection type. 
+
+
+
+Definition at line 58 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a4ab98f4fed5b5b2740105eff732c7b1e}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!elog\+\_\+type@{elog\+\_\+type}}
+\index{elog\+\_\+type@{elog\+\_\+type}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{elog\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef config\+::elog\+\_\+type {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf elog\+\_\+type}}\label{classwebsocketpp_1_1endpoint_a4ab98f4fed5b5b2740105eff732c7b1e}
+
+
+Type of error logger. 
+
+
+
+Definition at line 73 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_afa2109f793a8d8d90599ea339bbcd8e5}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!message\+\_\+handler@{message\+\_\+handler}}
+\index{message\+\_\+handler@{message\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{message\+\_\+handler}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef {\bf connection\+\_\+type\+::message\+\_\+handler} {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf message\+\_\+handler}}\label{classwebsocketpp_1_1endpoint_afa2109f793a8d8d90599ea339bbcd8e5}
+
+
+Type of message\+\_\+handler. 
+
+
+
+Definition at line 68 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a585ecbbfd9689d4e4229e4c8378bd672}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!message\+\_\+ptr@{message\+\_\+ptr}}
+\index{message\+\_\+ptr@{message\+\_\+ptr}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{message\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef {\bf connection\+\_\+type\+::message\+\_\+ptr} {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf message\+\_\+ptr}}\label{classwebsocketpp_1_1endpoint_a585ecbbfd9689d4e4229e4c8378bd672}
+
+
+Type of message pointers that this endpoint uses. 
+
+
+
+Definition at line 70 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_ab4aa523f6e1fddb2e77cdf7b36771992}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!mutex\+\_\+type@{mutex\+\_\+type}}
+\index{mutex\+\_\+type@{mutex\+\_\+type}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{mutex\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef concurrency\+\_\+type\+::mutex\+\_\+type {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf mutex\+\_\+type}}\label{classwebsocketpp_1_1endpoint_ab4aa523f6e1fddb2e77cdf7b36771992}
+
+
+Type of our concurrency policy\textquotesingle{}s mutex object. 
+
+
+
+Definition at line 80 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_adbb0a9eea3ebbf5139966858bd0fa16d}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!rng\+\_\+type@{rng\+\_\+type}}
+\index{rng\+\_\+type@{rng\+\_\+type}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{rng\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef config\+::rng\+\_\+type {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf rng\+\_\+type}}\label{classwebsocketpp_1_1endpoint_adbb0a9eea3ebbf5139966858bd0fa16d}
+
+
+Type of R\+N\+G. 
+
+
+
+Definition at line 83 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_ae16d71c671d97d4b29c5fd5806d45815}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!scoped\+\_\+lock\+\_\+type@{scoped\+\_\+lock\+\_\+type}}
+\index{scoped\+\_\+lock\+\_\+type@{scoped\+\_\+lock\+\_\+type}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{scoped\+\_\+lock\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef concurrency\+\_\+type\+::scoped\+\_\+lock\+\_\+type {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf scoped\+\_\+lock\+\_\+type}}\label{classwebsocketpp_1_1endpoint_ae16d71c671d97d4b29c5fd5806d45815}
+
+
+Type of our concurrency policy\textquotesingle{}s scoped lock object. 
+
+
+
+Definition at line 78 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a24710dbab3b51673b5459b7b609d5d66}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!termination\+\_\+handler@{termination\+\_\+handler}}
+\index{termination\+\_\+handler@{termination\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{termination\+\_\+handler}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef {\bf connection\+\_\+type\+::termination\+\_\+handler} {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf termination\+\_\+handler}}\label{classwebsocketpp_1_1endpoint_a24710dbab3b51673b5459b7b609d5d66}
+
+
+Definition at line 86 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a22be3833280c548d724298eba0f00b2a}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!transport\+\_\+con\+\_\+ptr@{transport\+\_\+con\+\_\+ptr}}
+\index{transport\+\_\+con\+\_\+ptr@{transport\+\_\+con\+\_\+ptr}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{transport\+\_\+con\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef transport\+\_\+con\+\_\+type\+::ptr {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf transport\+\_\+con\+\_\+ptr}}\label{classwebsocketpp_1_1endpoint_a22be3833280c548d724298eba0f00b2a}
+Type of a shared pointer to the transport component of the connections that this endpoint creates. 
+
+Definition at line 65 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_aaec9d745cafcee505c63efff421e3dff}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!transport\+\_\+con\+\_\+type@{transport\+\_\+con\+\_\+type}}
+\index{transport\+\_\+con\+\_\+type@{transport\+\_\+con\+\_\+type}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{transport\+\_\+con\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef transport\+\_\+type\+::transport\+\_\+con\+\_\+type {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf transport\+\_\+con\+\_\+type}}\label{classwebsocketpp_1_1endpoint_aaec9d745cafcee505c63efff421e3dff}
+Type of the transport component of the connections that this endpoint creates 
+
+Definition at line 62 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a8aa5190eb55c719559d2e6ea187a627b}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!transport\+\_\+type@{transport\+\_\+type}}
+\index{transport\+\_\+type@{transport\+\_\+type}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{transport\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef config\+::transport\+\_\+type {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf transport\+\_\+type}}\label{classwebsocketpp_1_1endpoint_a8aa5190eb55c719559d2e6ea187a627b}
+
+
+Type of the transport component of this endpoint. 
+
+
+
+Definition at line 49 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a3b2b343203819be45219dce781e8c55d}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!type@{type}}
+\index{type@{type}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ typedef {\bf endpoint}$<${\bf connection},config$>$ {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf type}}\label{classwebsocketpp_1_1endpoint_a3b2b343203819be45219dce781e8c55d}
+
+
+Definition at line 46 of file endpoint.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classwebsocketpp_1_1endpoint_a12015b0910fe39d0cbbd7fc7ea5ffcfd}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!endpoint@{endpoint}}
+\index{endpoint@{endpoint}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{endpoint(bool p\+\_\+is\+\_\+server)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::{\bf endpoint} (
+\begin{DoxyParamCaption}
+\item[{bool}]{p\+\_\+is\+\_\+server}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classwebsocketpp_1_1endpoint_a12015b0910fe39d0cbbd7fc7ea5ffcfd}
+
+
+Definition at line 91 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a4fea6c12eff3d5326d13731a08df2f9e}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!````~endpoint@{$\sim$endpoint}}
+\index{````~endpoint@{$\sim$endpoint}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{$\sim$endpoint()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::$\sim${\bf endpoint} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a4fea6c12eff3d5326d13731a08df2f9e}
+
+
+Destructor. 
+
+
+
+Definition at line 112 of file endpoint.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classwebsocketpp_1_1endpoint_a3fe357b3c6434273a9965eb52902575d}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!clear\+\_\+access\+\_\+channels@{clear\+\_\+access\+\_\+channels}}
+\index{clear\+\_\+access\+\_\+channels@{clear\+\_\+access\+\_\+channels}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{clear\+\_\+access\+\_\+channels(log\+::level channels)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::clear\+\_\+access\+\_\+channels (
+\begin{DoxyParamCaption}
+\item[{{\bf log\+::level}}]{channels}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a3fe357b3c6434273a9965eb52902575d}
+
+
+Clear Access logging channels. 
+
+Clear the access logger\textquotesingle{}s channel value. The value is a number whose interpretation depends on the logging policy in use.
+
+
+\begin{DoxyParams}{Parameters}
+{\em channels} & The channel value(s) to clear \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 231 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a8cefa4fc37c0df4eb6ed0bcf04bb0da5}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!clear\+\_\+error\+\_\+channels@{clear\+\_\+error\+\_\+channels}}
+\index{clear\+\_\+error\+\_\+channels@{clear\+\_\+error\+\_\+channels}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{clear\+\_\+error\+\_\+channels(log\+::level channels)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::clear\+\_\+error\+\_\+channels (
+\begin{DoxyParamCaption}
+\item[{{\bf log\+::level}}]{channels}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a8cefa4fc37c0df4eb6ed0bcf04bb0da5}
+
+
+Clear Error logging channels. 
+
+Clear the error logger\textquotesingle{}s channel value. The value is a number whose interpretation depends on the logging policy in use.
+
+
+\begin{DoxyParams}{Parameters}
+{\em channels} & The channel value(s) to clear \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 253 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_aa6b81c003dba27c6b30d62d5e79593a6}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!close@{close}}
+\index{close@{close}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{close(connection\+\_\+hdl hdl, close\+::status\+::value const code, std\+::string const \&reason, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::close (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{{\bf close\+::status\+::value} const}]{code, }
+\item[{std\+::string const \&}]{reason, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_aa6b81c003dba27c6b30d62d5e79593a6}
+
+
+Definition at line 215 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a7a4595364dc18d423ff5aa6eda41ecde}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!close@{close}}
+\index{close@{close}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{close(connection\+\_\+hdl hdl, close\+::status\+::value const code, std\+::string const \&reason)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::close (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{{\bf close\+::status\+::value} const}]{code, }
+\item[{std\+::string const \&}]{reason}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_a7a4595364dc18d423ff5aa6eda41ecde}
+
+
+Definition at line 225 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_abfbee4cb244700560ef80594a913cd95}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!create\+\_\+connection@{create\+\_\+connection}}
+\index{create\+\_\+connection@{create\+\_\+connection}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{create\+\_\+connection()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ {\bf endpoint}$<$ {\bf connection}, config $>$\+::{\bf connection\+\_\+ptr} {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::create\+\_\+connection (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1endpoint_abfbee4cb244700560ef80594a913cd95}
+
+
+Definition at line 37 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a1607d873b9e764c02563162f03171326}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!get\+\_\+alog@{get\+\_\+alog}}
+\index{get\+\_\+alog@{get\+\_\+alog}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{get\+\_\+alog()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ {\bf alog\+\_\+type}\& {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::get\+\_\+alog (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a1607d873b9e764c02563162f03171326}
+
+
+Get reference to access logger. 
+
+\begin{DoxyReturn}{Returns}
+A reference to the access logger 
+\end{DoxyReturn}
+
+
+Definition at line 261 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a0fe4457427d4124abe7ca022ba7afbb4}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!get\+\_\+con\+\_\+from\+\_\+hdl@{get\+\_\+con\+\_\+from\+\_\+hdl}}
+\index{get\+\_\+con\+\_\+from\+\_\+hdl@{get\+\_\+con\+\_\+from\+\_\+hdl}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{get\+\_\+con\+\_\+from\+\_\+hdl(connection\+\_\+hdl hdl, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ {\bf connection\+\_\+ptr} {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::get\+\_\+con\+\_\+from\+\_\+hdl (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a0fe4457427d4124abe7ca022ba7afbb4}
+
+
+Retrieves a connection\+\_\+ptr from a connection\+\_\+hdl (exception free) 
+
+Converting a weak pointer to shared\+\_\+ptr is not thread safe because the pointer could be deleted at any time.
+
+N\+O\+T\+E\+: This method may be called by handler to upgrade its handle to a full connection\+\_\+ptr. That full connection may then be used safely for the remainder of the handler body. get\+\_\+con\+\_\+from\+\_\+hdl and the resulting connection\+\_\+ptr are N\+O\+T safe to use outside the handler loop.
+
+
+\begin{DoxyParams}{Parameters}
+{\em hdl} & The connection handle to translate\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the connection\+\_\+ptr. May be N\+U\+L\+L if the handle was invalid. 
+\end{DoxyReturn}
+
+
+Definition at line 643 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a7be6f2e7dc3901dd577eae33dfd2df24}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!get\+\_\+con\+\_\+from\+\_\+hdl@{get\+\_\+con\+\_\+from\+\_\+hdl}}
+\index{get\+\_\+con\+\_\+from\+\_\+hdl@{get\+\_\+con\+\_\+from\+\_\+hdl}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{get\+\_\+con\+\_\+from\+\_\+hdl(connection\+\_\+hdl hdl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ {\bf connection\+\_\+ptr} {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::get\+\_\+con\+\_\+from\+\_\+hdl (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a7be6f2e7dc3901dd577eae33dfd2df24}
+
+
+Retrieves a connection\+\_\+ptr from a connection\+\_\+hdl (exception version) 
+
+
+
+Definition at line 653 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a63ed630042ce9549dfc7d9513cb19678}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!get\+\_\+elog@{get\+\_\+elog}}
+\index{get\+\_\+elog@{get\+\_\+elog}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{get\+\_\+elog()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ {\bf elog\+\_\+type}\& {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::get\+\_\+elog (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a63ed630042ce9549dfc7d9513cb19678}
+
+
+Get reference to error logger. 
+
+\begin{DoxyReturn}{Returns}
+A reference to the error logger 
+\end{DoxyReturn}
+
+
+Definition at line 269 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_ae554bc4e2d2ef9be25165c223effd818}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!get\+\_\+max\+\_\+http\+\_\+body\+\_\+size@{get\+\_\+max\+\_\+http\+\_\+body\+\_\+size}}
+\index{get\+\_\+max\+\_\+http\+\_\+body\+\_\+size@{get\+\_\+max\+\_\+http\+\_\+body\+\_\+size}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{get\+\_\+max\+\_\+http\+\_\+body\+\_\+size() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ size\+\_\+t {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::get\+\_\+max\+\_\+http\+\_\+body\+\_\+size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_ae554bc4e2d2ef9be25165c223effd818}
+
+
+Get maximum H\+T\+T\+P message body size. 
+
+Get maximum H\+T\+T\+P message body size. Maximum message body size determines the point at which the connection will stop reading an H\+T\+T\+P request whose body is too large.
+
+The default is set by the max\+\_\+http\+\_\+body\+\_\+size value from the template config
+
+\begin{DoxySince}{Since}
+0.\+5.\+0
+\end{DoxySince}
+\begin{DoxyReturn}{Returns}
+The maximum H\+T\+T\+P message body size 
+\end{DoxyReturn}
+
+
+Definition at line 449 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_add48746fa48a371eed808dd743140c08}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!get\+\_\+max\+\_\+message\+\_\+size@{get\+\_\+max\+\_\+message\+\_\+size}}
+\index{get\+\_\+max\+\_\+message\+\_\+size@{get\+\_\+max\+\_\+message\+\_\+size}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{get\+\_\+max\+\_\+message\+\_\+size() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ size\+\_\+t {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::get\+\_\+max\+\_\+message\+\_\+size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_add48746fa48a371eed808dd743140c08}
+
+
+Get default maximum message size. 
+
+Get the default maximum message size that will be used for new connections created by this endpoint. The maximum message size determines the point at which the connection will fail a connection with the message\+\_\+too\+\_\+big protocol error.
+
+The default is set by the max\+\_\+message\+\_\+size value from the template config
+
+\begin{DoxySince}{Since}
+0.\+3.\+0 
+\end{DoxySince}
+
+
+Definition at line 415 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a6791170d75bc673d07262207ed61493a}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!get\+\_\+user\+\_\+agent@{get\+\_\+user\+\_\+agent}}
+\index{get\+\_\+user\+\_\+agent@{get\+\_\+user\+\_\+agent}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{get\+\_\+user\+\_\+agent() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ std\+::string {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::get\+\_\+user\+\_\+agent (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a6791170d75bc673d07262207ed61493a}
+
+
+Returns the user agent string that this endpoint will use. 
+
+Returns the user agent string that this endpoint will use when creating new connections.
+
+The default value for this version is stored in websocketpp\+::user\+\_\+agent
+
+\begin{DoxyReturn}{Returns}
+The user agent string. 
+\end{DoxyReturn}
+
+
+Definition at line 169 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_ab6cd8d850c40f33f48d0afb4d7be094c}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!interrupt@{interrupt}}
+\index{interrupt@{interrupt}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{interrupt(connection\+\_\+hdl hdl, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::interrupt (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_ab6cd8d850c40f33f48d0afb4d7be094c}
+These functions act as adaptors to their counterparts in connection. They can produce one additional type of error, the bad\+\_\+connection error, that indicates that the conversion from connection\+\_\+hdl to connection\+\_\+ptr failed due to the connection not existing anymore. Each method has a default and an exception free varient. 
+
+Definition at line 96 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_aa77facb47f09c143e5c22486f02bb455}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!interrupt@{interrupt}}
+\index{interrupt@{interrupt}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{interrupt(connection\+\_\+hdl hdl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::interrupt (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_aa77facb47f09c143e5c22486f02bb455}
+
+
+Definition at line 107 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a5fc8ad1f8314d2e15d97206052db0676}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!is\+\_\+server@{is\+\_\+server}}
+\index{is\+\_\+server@{is\+\_\+server}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{is\+\_\+server() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ bool {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::is\+\_\+server (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a5fc8ad1f8314d2e15d97206052db0676}
+
+
+Returns whether or not this endpoint is a server. 
+
+\begin{DoxyReturn}{Returns}
+Whether or not this endpoint is a server 
+\end{DoxyReturn}
+
+
+Definition at line 205 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_aef7666b82bf98864b213c3df09298595}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!pause\+\_\+reading@{pause\+\_\+reading}}
+\index{pause\+\_\+reading@{pause\+\_\+reading}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{pause\+\_\+reading(connection\+\_\+hdl hdl, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::pause\+\_\+reading (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_aef7666b82bf98864b213c3df09298595}
+
+
+Pause reading of new data (exception free) 
+
+Signals to the connection to halt reading of new data. While reading is paused, the connection will stop reading from its associated socket. In turn this will result in T\+C\+P based flow control kicking in and slowing data flow from the remote endpoint.
+
+This is useful for applications that push new requests to a queue to be processed by another thread and need a way to signal when their request queue is full without blocking the network processing thread.
+
+Use {\ttfamily \hyperlink{classwebsocketpp_1_1endpoint_a9753aaade09c9a7a0efd459861ba3b97}{resume\+\_\+reading()}} to resume.
+
+If supported by the transport this is done asynchronously. As such reading may not stop until the current read operation completes. Typically you can expect to receive no more bytes after initiating a read pause than the size of the read buffer.
+
+If reading is paused for this connection already nothing is changed. 
+
+Definition at line 114 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_af7ec27363d0fb1d657a264c4ad853b8e}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!pause\+\_\+reading@{pause\+\_\+reading}}
+\index{pause\+\_\+reading@{pause\+\_\+reading}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{pause\+\_\+reading(connection\+\_\+hdl hdl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::pause\+\_\+reading (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_af7ec27363d0fb1d657a264c4ad853b8e}
+
+
+Pause reading of new data. 
+
+
+
+Definition at line 123 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a1d4bcbc3fcd87f48120fbb421467f414}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!ping@{ping}}
+\index{ping@{ping}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{ping(connection\+\_\+hdl hdl, std\+::string const \&payload, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::ping (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{std\+::string const \&}]{payload, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_a1d4bcbc3fcd87f48120fbb421467f414}
+
+
+Send a ping to a specific connection. 
+
+\begin{DoxySince}{Since}
+0.\+3.\+0-\/alpha3
+\end{DoxySince}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em hdl} & The connection\+\_\+hdl of the connection to send to. \\
+\hline
+\mbox{\tt in}  & {\em payload} & The payload string to send. \\
+\hline
+\mbox{\tt out}  & {\em ec} & A reference to an error code to fill in \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 234 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a35267939caf4b611b01701ba13cd0b33}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!ping@{ping}}
+\index{ping@{ping}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{ping(connection\+\_\+hdl hdl, std\+::string const \&payload)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::ping (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{std\+::string const \&}]{payload}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_a35267939caf4b611b01701ba13cd0b33}
+
+
+Send a ping to a specific connection. 
+
+Exception variant of {\ttfamily ping}
+
+\begin{DoxySince}{Since}
+0.\+3.\+0-\/alpha3
+\end{DoxySince}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em hdl} & The connection\+\_\+hdl of the connection to send to. \\
+\hline
+\mbox{\tt in}  & {\em payload} & The payload string to send. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 243 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a58a55e0288d4da518b2a806587df3809}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!pong@{pong}}
+\index{pong@{pong}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{pong(connection\+\_\+hdl hdl, std\+::string const \&payload, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::pong (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{std\+::string const \&}]{payload, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_a58a55e0288d4da518b2a806587df3809}
+
+
+Send a pong to a specific connection. 
+
+\begin{DoxySince}{Since}
+0.\+3.\+0-\/alpha3
+\end{DoxySince}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em hdl} & The connection\+\_\+hdl of the connection to send to. \\
+\hline
+\mbox{\tt in}  & {\em payload} & The payload string to send. \\
+\hline
+\mbox{\tt out}  & {\em ec} & A reference to an error code to fill in \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 251 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_ab546cb4089f868a09c8d0694fb6f0be6}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!pong@{pong}}
+\index{pong@{pong}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{pong(connection\+\_\+hdl hdl, std\+::string const \&payload)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::pong (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{std\+::string const \&}]{payload}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_ab546cb4089f868a09c8d0694fb6f0be6}
+
+
+Send a pong to a specific connection. 
+
+Exception variant of {\ttfamily pong}
+
+\begin{DoxySince}{Since}
+0.\+3.\+0-\/alpha3
+\end{DoxySince}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em hdl} & The connection\+\_\+hdl of the connection to send to. \\
+\hline
+\mbox{\tt in}  & {\em payload} & The payload string to send. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 260 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a9753aaade09c9a7a0efd459861ba3b97}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!resume\+\_\+reading@{resume\+\_\+reading}}
+\index{resume\+\_\+reading@{resume\+\_\+reading}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{resume\+\_\+reading(connection\+\_\+hdl hdl, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::resume\+\_\+reading (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_a9753aaade09c9a7a0efd459861ba3b97}
+
+
+Resume reading of new data (exception free) 
+
+Signals to the connection to resume reading of new data after it was paused by {\ttfamily \hyperlink{classwebsocketpp_1_1endpoint_aef7666b82bf98864b213c3df09298595}{pause\+\_\+reading()}}.
+
+If reading is not paused for this connection already nothing is changed. 
+
+Definition at line 130 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a4592d2270f56fce0f30a41cd17f77650}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!resume\+\_\+reading@{resume\+\_\+reading}}
+\index{resume\+\_\+reading@{resume\+\_\+reading}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{resume\+\_\+reading(connection\+\_\+hdl hdl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::resume\+\_\+reading (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_a4592d2270f56fce0f30a41cd17f77650}
+
+
+Resume reading of new data. 
+
+
+
+Definition at line 139 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a5341f59de7ef1a565a2fd93daba212d5}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!send@{send}}
+\index{send@{send}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{send(connection\+\_\+hdl hdl, std\+::string const \&payload, frame\+::opcode\+::value op, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{std\+::string const \&}]{payload, }
+\item[{{\bf frame\+::opcode\+::value}}]{op, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_a5341f59de7ef1a565a2fd93daba212d5}
+
+
+Create a message and add it to the outgoing send queue (exception free) 
+
+Convenience method to send a message given a payload string and an opcode
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em hdl} & The handle identifying the connection to send via. \\
+\hline
+\mbox{\tt in}  & {\em payload} & The payload string to generated the message with \\
+\hline
+\mbox{\tt in}  & {\em op} & The opcode to generated the message with. \\
+\hline
+\mbox{\tt out}  & {\em ec} & A code to fill in for errors \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 162 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a9eb8f9fd7fbb7d8374eb02e100430bcf}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!send@{send}}
+\index{send@{send}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{send(connection\+\_\+hdl hdl, std\+::string const \&payload, frame\+::opcode\+::value op)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{std\+::string const \&}]{payload, }
+\item[{{\bf frame\+::opcode\+::value}}]{op}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_a9eb8f9fd7fbb7d8374eb02e100430bcf}
+
+
+Create a message and add it to the outgoing send queue. 
+
+Convenience method to send a message given a payload string and an opcode
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em hdl} & The handle identifying the connection to send via. \\
+\hline
+\mbox{\tt in}  & {\em payload} & The payload string to generated the message with \\
+\hline
+\mbox{\tt in}  & {\em op} & The opcode to generated the message with. \\
+\hline
+\mbox{\tt out}  & {\em ec} & A code to fill in for errors \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 172 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a71e4454af8d8f133ca736e80c3adf268}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!send@{send}}
+\index{send@{send}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{send(connection\+\_\+hdl hdl, void const $\ast$payload, size\+\_\+t len, frame\+::opcode\+::value op, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{void const $\ast$}]{payload, }
+\item[{size\+\_\+t}]{len, }
+\item[{{\bf frame\+::opcode\+::value}}]{op, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_a71e4454af8d8f133ca736e80c3adf268}
+
+
+Definition at line 181 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_adc03a5bd5797a54fde64afd279032671}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!send@{send}}
+\index{send@{send}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{send(connection\+\_\+hdl hdl, void const $\ast$payload, size\+\_\+t len, frame\+::opcode\+::value op)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{void const $\ast$}]{payload, }
+\item[{size\+\_\+t}]{len, }
+\item[{{\bf frame\+::opcode\+::value}}]{op}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_adc03a5bd5797a54fde64afd279032671}
+
+
+Definition at line 190 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a5cad5b7944435e7eec248e98e7e7a912}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!send@{send}}
+\index{send@{send}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{send(connection\+\_\+hdl hdl, message\+\_\+ptr msg, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{{\bf message\+\_\+ptr}}]{msg, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_a5cad5b7944435e7eec248e98e7e7a912}
+
+
+Definition at line 199 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a702e7d609babdacb8ae772b82c3fa8d0}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!send@{send}}
+\index{send@{send}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{send(connection\+\_\+hdl hdl, message\+\_\+ptr msg)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::send (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{{\bf message\+\_\+ptr}}]{msg}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_a702e7d609babdacb8ae772b82c3fa8d0}
+
+
+Definition at line 208 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_ae78b1414f7e0cf71c9eab0a29efab8a1}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!send\+\_\+http\+\_\+response@{send\+\_\+http\+\_\+response}}
+\index{send\+\_\+http\+\_\+response@{send\+\_\+http\+\_\+response}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{send\+\_\+http\+\_\+response(connection\+\_\+hdl hdl, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::send\+\_\+http\+\_\+response (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_ae78b1414f7e0cf71c9eab0a29efab8a1}
+
+
+Send deferred H\+T\+T\+P Response. 
+
+Sends an http response to an H\+T\+T\+P connection that was deferred. This will send a complete response including all headers, status line, and body text. The connection will be closed afterwards.
+
+Exception free variant
+
+\begin{DoxySince}{Since}
+0.\+6.\+0
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em hdl} & The connection to send the response on \\
+\hline
+{\em ec} & A status code, zero on success, non-\/zero otherwise \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 146 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_af29ca34a6659beea0422a2f27718b9c2}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!send\+\_\+http\+\_\+response@{send\+\_\+http\+\_\+response}}
+\index{send\+\_\+http\+\_\+response@{send\+\_\+http\+\_\+response}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{send\+\_\+http\+\_\+response(connection\+\_\+hdl hdl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection , typename config $>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::send\+\_\+http\+\_\+response (
+\begin{DoxyParamCaption}
+\item[{{\bf connection\+\_\+hdl}}]{hdl}
+\end{DoxyParamCaption}
+)}\label{classwebsocketpp_1_1endpoint_af29ca34a6659beea0422a2f27718b9c2}
+
+
+Send deferred H\+T\+T\+P Response (exception free) 
+
+Sends an http response to an H\+T\+T\+P connection that was deferred. This will send a complete response including all headers, status line, and body text. The connection will be closed afterwards.
+
+Exception variant
+
+\begin{DoxySince}{Since}
+0.\+6.\+0
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em hdl} & The connection to send the response on \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 155 of file endpoint\+\_\+impl.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a5d7da609ebd2f797e5e67b6d050ebc59}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+access\+\_\+channels@{set\+\_\+access\+\_\+channels}}
+\index{set\+\_\+access\+\_\+channels@{set\+\_\+access\+\_\+channels}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+access\+\_\+channels(log\+::level channels)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+access\+\_\+channels (
+\begin{DoxyParamCaption}
+\item[{{\bf log\+::level}}]{channels}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a5d7da609ebd2f797e5e67b6d050ebc59}
+
+
+Set Access logging channel. 
+
+Set the access logger\textquotesingle{}s channel value. The value is a number whose interpretation depends on the logging policy in use.
+
+
+\begin{DoxyParams}{Parameters}
+{\em channels} & The channel value(s) to set \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 220 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a8d7d95bebc154879655211e2b0b5e069}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+close\+\_\+handler@{set\+\_\+close\+\_\+handler}}
+\index{set\+\_\+close\+\_\+handler@{set\+\_\+close\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+close\+\_\+handler(close\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+close\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf close\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a8d7d95bebc154879655211e2b0b5e069}
+
+
+Definition at line 282 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a54caf799e1cf531d26f67999068d483b}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+close\+\_\+handshake\+\_\+timeout@{set\+\_\+close\+\_\+handshake\+\_\+timeout}}
+\index{set\+\_\+close\+\_\+handshake\+\_\+timeout@{set\+\_\+close\+\_\+handshake\+\_\+timeout}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+close\+\_\+handshake\+\_\+timeout(long dur)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+close\+\_\+handshake\+\_\+timeout (
+\begin{DoxyParamCaption}
+\item[{long}]{dur}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a54caf799e1cf531d26f67999068d483b}
+
+
+Set close handshake timeout. 
+
+Sets the length of time the library will wait after a closing handshake has been initiated before cancelling it. This can be used to prevent excessive wait times for outgoing clients or excessive resource usage from broken clients or Do\+S attacks on servers.
+
+Connections that time out will have their close handlers called with the close\+\_\+handshake\+\_\+timeout error code.
+
+The default value is specified via the compile time config value \textquotesingle{}timeout\+\_\+close\+\_\+handshake\textquotesingle{}. The default value in the core config is 5000ms. A value of 0 will disable the timer entirely.
+
+To be effective, the transport you are using must support timers. See the documentation for your transport policy for details about its timer support.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dur} & The length of the close handshake timeout in ms \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 377 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a8292bcdca9344b57af1b0964ff7fc778}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+error\+\_\+channels@{set\+\_\+error\+\_\+channels}}
+\index{set\+\_\+error\+\_\+channels@{set\+\_\+error\+\_\+channels}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+error\+\_\+channels(log\+::level channels)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+error\+\_\+channels (
+\begin{DoxyParamCaption}
+\item[{{\bf log\+::level}}]{channels}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a8292bcdca9344b57af1b0964ff7fc778}
+
+
+Set Error logging channel. 
+
+Set the error logger\textquotesingle{}s channel value. The value is a number whose interpretation depends on the logging policy in use.
+
+
+\begin{DoxyParams}{Parameters}
+{\em channels} & The channel value(s) to set \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 242 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a073540365f5c810f5a45e5fc76f52f87}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+fail\+\_\+handler@{set\+\_\+fail\+\_\+handler}}
+\index{set\+\_\+fail\+\_\+handler@{set\+\_\+fail\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+fail\+\_\+handler(fail\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+fail\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf fail\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a073540365f5c810f5a45e5fc76f52f87}
+
+
+Definition at line 287 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a511874384b71238b042968cf736bc510}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+http\+\_\+handler@{set\+\_\+http\+\_\+handler}}
+\index{set\+\_\+http\+\_\+handler@{set\+\_\+http\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+http\+\_\+handler(http\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+http\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf http\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a511874384b71238b042968cf736bc510}
+
+
+Definition at line 312 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a026eb37f85cea8e79f1a007d12bb55dd}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+interrupt\+\_\+handler@{set\+\_\+interrupt\+\_\+handler}}
+\index{set\+\_\+interrupt\+\_\+handler@{set\+\_\+interrupt\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+interrupt\+\_\+handler(interrupt\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+interrupt\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf interrupt\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a026eb37f85cea8e79f1a007d12bb55dd}
+
+
+Definition at line 307 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a00be7e08ca5c567dd2a4989b8d41d26b}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+max\+\_\+http\+\_\+body\+\_\+size@{set\+\_\+max\+\_\+http\+\_\+body\+\_\+size}}
+\index{set\+\_\+max\+\_\+http\+\_\+body\+\_\+size@{set\+\_\+max\+\_\+http\+\_\+body\+\_\+size}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+max\+\_\+http\+\_\+body\+\_\+size(size\+\_\+t new\+\_\+value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+max\+\_\+http\+\_\+body\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{size\+\_\+t}]{new\+\_\+value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a00be7e08ca5c567dd2a4989b8d41d26b}
+
+
+Set maximum H\+T\+T\+P message body size. 
+
+Set maximum H\+T\+T\+P message body size. Maximum message body size determines the point at which the connection will stop reading an H\+T\+T\+P request whose body is too large.
+
+The default is set by the max\+\_\+http\+\_\+body\+\_\+size value from the template config
+
+\begin{DoxySince}{Since}
+0.\+5.\+1
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+value} & The value to set as the maximum message size. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 466 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a6268a63c9ce030941fcfb32ddabf3090}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+max\+\_\+message\+\_\+size@{set\+\_\+max\+\_\+message\+\_\+size}}
+\index{set\+\_\+max\+\_\+message\+\_\+size@{set\+\_\+max\+\_\+message\+\_\+size}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+max\+\_\+message\+\_\+size(size\+\_\+t new\+\_\+value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+max\+\_\+message\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{size\+\_\+t}]{new\+\_\+value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a6268a63c9ce030941fcfb32ddabf3090}
+
+
+Set default maximum message size. 
+
+Set the default maximum message size that will be used for new connections created by this endpoint. Maximum message size determines the point at which the connection will fail a connection with the message\+\_\+too\+\_\+big protocol error.
+
+The default is set by the max\+\_\+message\+\_\+size value from the template config
+
+\begin{DoxySince}{Since}
+0.\+3.\+0
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+value} & The value to set as the maximum message size. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 432 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a34a3a8351bff65ba878975be471cab85}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+message\+\_\+handler@{set\+\_\+message\+\_\+handler}}
+\index{set\+\_\+message\+\_\+handler@{set\+\_\+message\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+message\+\_\+handler(message\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+message\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf message\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a34a3a8351bff65ba878975be471cab85}
+
+
+Definition at line 322 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a5753d9848aefc04ee91da401c0cc65b8}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+open\+\_\+handler@{set\+\_\+open\+\_\+handler}}
+\index{set\+\_\+open\+\_\+handler@{set\+\_\+open\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+open\+\_\+handler(open\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+open\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf open\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a5753d9848aefc04ee91da401c0cc65b8}
+
+
+Definition at line 277 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_adb8b3736e30bb8e5ee6add965a948102}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+open\+\_\+handshake\+\_\+timeout@{set\+\_\+open\+\_\+handshake\+\_\+timeout}}
+\index{set\+\_\+open\+\_\+handshake\+\_\+timeout@{set\+\_\+open\+\_\+handshake\+\_\+timeout}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+open\+\_\+handshake\+\_\+timeout(long dur)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+open\+\_\+handshake\+\_\+timeout (
+\begin{DoxyParamCaption}
+\item[{long}]{dur}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_adb8b3736e30bb8e5ee6add965a948102}
+
+
+Set open handshake timeout. 
+
+Sets the length of time the library will wait after an opening handshake has been initiated before cancelling it. This can be used to prevent excessive wait times for outgoing clients or excessive resource usage from broken clients or Do\+S attacks on servers.
+
+Connections that time out will have their fail handlers called with the open\+\_\+handshake\+\_\+timeout error code.
+
+The default value is specified via the compile time config value \textquotesingle{}timeout\+\_\+open\+\_\+handshake\textquotesingle{}. The default value in the core config is 5000ms. A value of 0 will disable the timer entirely.
+
+To be effective, the transport you are using must support timers. See the documentation for your transport policy for details about its timer support.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dur} & The length of the open handshake timeout in ms \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 352 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_adc6caf0164a0cd073f0535078ccac123}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+ping\+\_\+handler@{set\+\_\+ping\+\_\+handler}}
+\index{set\+\_\+ping\+\_\+handler@{set\+\_\+ping\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+ping\+\_\+handler(ping\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+ping\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf ping\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_adc6caf0164a0cd073f0535078ccac123}
+
+
+Definition at line 292 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a8ab51c3878bbbcfc92cf5ed6af65e8d7}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+pong\+\_\+handler@{set\+\_\+pong\+\_\+handler}}
+\index{set\+\_\+pong\+\_\+handler@{set\+\_\+pong\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+pong\+\_\+handler(pong\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+pong\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf pong\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a8ab51c3878bbbcfc92cf5ed6af65e8d7}
+
+
+Definition at line 297 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_abcb25dde6f71933c3dbe517c45ebe5c6}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+pong\+\_\+timeout@{set\+\_\+pong\+\_\+timeout}}
+\index{set\+\_\+pong\+\_\+timeout@{set\+\_\+pong\+\_\+timeout}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+pong\+\_\+timeout(long dur)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+pong\+\_\+timeout (
+\begin{DoxyParamCaption}
+\item[{long}]{dur}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_abcb25dde6f71933c3dbe517c45ebe5c6}
+
+
+Set pong timeout. 
+
+Sets the length of time the library will wait for a pong response to a ping. This can be used as a keepalive or to detect broken connections.
+
+Pong responses that time out will have the pong timeout handler called.
+
+The default value is specified via the compile time config value \textquotesingle{}timeout\+\_\+pong\textquotesingle{}. The default value in the core config is 5000ms. A value of 0 will disable the timer entirely.
+
+To be effective, the transport you are using must support timers. See the documentation for your transport policy for details about its timer support.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dur} & The length of the pong timeout in ms \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 399 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a02f6288d1e7c32de7a5940a337076917}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+pong\+\_\+timeout\+\_\+handler@{set\+\_\+pong\+\_\+timeout\+\_\+handler}}
+\index{set\+\_\+pong\+\_\+timeout\+\_\+handler@{set\+\_\+pong\+\_\+timeout\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+pong\+\_\+timeout\+\_\+handler(pong\+\_\+timeout\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+pong\+\_\+timeout\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf pong\+\_\+timeout\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a02f6288d1e7c32de7a5940a337076917}
+
+
+Definition at line 302 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a06a703c52196d900d1e58b79d6657cc8}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+user\+\_\+agent@{set\+\_\+user\+\_\+agent}}
+\index{set\+\_\+user\+\_\+agent@{set\+\_\+user\+\_\+agent}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+user\+\_\+agent(std\+::string const \&ua)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+user\+\_\+agent (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{ua}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_a06a703c52196d900d1e58b79d6657cc8}
+
+
+Sets the user agent string that this endpoint will use. 
+
+Sets the identifier that this endpoint will use when creating new connections. Changing this value will only affect future connections. For client endpoints this will be sent as the \char`\"{}\+User-\/\+Agent\char`\"{} header in outgoing requests. For server endpoints this will be sent in the \char`\"{}\+Server\char`\"{} response header.
+
+Setting this value to the empty string will suppress the use of the Server and User-\/\+Agent headers. This is typically done to hide implementation details for security purposes.
+
+For best results set this before accepting or opening connections.
+
+The default value for this version is stored in websocketpp\+::user\+\_\+agent
+
+This can be overridden on an individual connection basis by setting a custom \char`\"{}\+Server\char`\"{} header during the validate handler or \char`\"{}\+User-\/\+Agent\char`\"{} header on a connection before calling \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{connect()}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ua} & The string to set the user agent to. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 196 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_ac5d059736dd862ccfb3582ba310dfae7}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!set\+\_\+validate\+\_\+handler@{set\+\_\+validate\+\_\+handler}}
+\index{set\+\_\+validate\+\_\+handler@{set\+\_\+validate\+\_\+handler}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{set\+\_\+validate\+\_\+handler(validate\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ void {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::set\+\_\+validate\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf validate\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1endpoint_ac5d059736dd862ccfb3582ba310dfae7}
+
+
+Definition at line 317 of file endpoint.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classwebsocketpp_1_1endpoint_ab77acb19adafe52f5c28aa387077cfbc}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!m\+\_\+alog@{m\+\_\+alog}}
+\index{m\+\_\+alog@{m\+\_\+alog}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{m\+\_\+alog}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ {\bf alog\+\_\+type} {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::m\+\_\+alog\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1endpoint_ab77acb19adafe52f5c28aa387077cfbc}
+
+
+Definition at line 664 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1endpoint_a46d6afb6f4f1541da167230c8c1e6f9a}{}\index{websocketpp\+::endpoint@{websocketpp\+::endpoint}!m\+\_\+elog@{m\+\_\+elog}}
+\index{m\+\_\+elog@{m\+\_\+elog}!websocketpp\+::endpoint@{websocketpp\+::endpoint}}
+\subsubsection[{m\+\_\+elog}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename connection, typename config$>$ {\bf elog\+\_\+type} {\bf websocketpp\+::endpoint}$<$ {\bf connection}, config $>$\+::m\+\_\+elog\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1endpoint_a46d6afb6f4f1541da167230c8c1e6f9a}
+
+
+Definition at line 665 of file endpoint.\+hpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/\hyperlink{websocketpp_2endpoint_8hpp}{endpoint.\+hpp}\item 
+ext/websocketpp/impl/\hyperlink{endpoint__impl_8hpp}{endpoint\+\_\+impl.\+hpp}\end{DoxyCompactItemize}

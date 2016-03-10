@@ -1,0 +1,64 @@
+\hypertarget{descriptor__ops_8hpp}{}\section{ext/asio/detail/descriptor\+\_\+ops.hpp File Reference}
+\label{descriptor__ops_8hpp}\index{ext/asio/detail/descriptor\+\_\+ops.\+hpp@{ext/asio/detail/descriptor\+\_\+ops.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$cstddef$>$}\\*
+{\ttfamily \#include \char`\"{}asio/error\+\_\+code.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/socket\+\_\+types.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1detail}{asio\+::detail}
+\item 
+ \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops}{asio\+::detail\+::descriptor\+\_\+ops}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef unsigned char \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}{asio\+::detail\+::descriptor\+\_\+ops\+::state\+\_\+type}
+\item 
+typedef iovec \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ad10e658a754ff775cdcc3b3decd3c8c9}{asio\+::detail\+::descriptor\+\_\+ops\+::buf}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3dabc2ae064c1ea10a1c92b27ad21098a6d}{asio\+::detail\+::descriptor\+\_\+ops\+::user\+\_\+set\+\_\+non\+\_\+blocking} = 1, 
+\hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3dae851554ee970db7e3e2aa8d5e257d78b}{asio\+::detail\+::descriptor\+\_\+ops\+::internal\+\_\+non\+\_\+blocking} = 2, 
+\hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3da9694dc69c579805472d9c180aa66cd15}{asio\+::detail\+::descriptor\+\_\+ops\+::non\+\_\+blocking} = user\+\_\+set\+\_\+non\+\_\+blocking $\vert$ internal\+\_\+non\+\_\+blocking, 
+\hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3daf5a58248660cca977665f283da5ed7a1}{asio\+::detail\+::descriptor\+\_\+ops\+::possible\+\_\+dup} = 4
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Return\+Type $>$ }\\Return\+Type \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ab71485e5ade2968303d4ace269d5d63e}{asio\+::detail\+::descriptor\+\_\+ops\+::error\+\_\+wrapper} (Return\+Type return\+\_\+value, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a8801efb10c431989bba3ded2e01adc52}{asio\+::detail\+::descriptor\+\_\+ops\+::open} (const char $\ast$path, int flags, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_adb08bf6a6ad29284d586da2720ba7053}{asio\+::detail\+::descriptor\+\_\+ops\+::close} (int d, state\+\_\+type \&state, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a45d5bc45c4575bb02d8aea7a2785e698}{asio\+::detail\+::descriptor\+\_\+ops\+::set\+\_\+user\+\_\+non\+\_\+blocking} (int d, state\+\_\+type \&state, bool value, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a9162476dcac561f880711939b461ccf7}{asio\+::detail\+::descriptor\+\_\+ops\+::set\+\_\+internal\+\_\+non\+\_\+blocking} (int d, state\+\_\+type \&state, bool value, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} std\+::size\+\_\+t \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ac2ccb11d1dc712151611a4fbe25aa5ac}{asio\+::detail\+::descriptor\+\_\+ops\+::sync\+\_\+read} (int d, state\+\_\+type state, buf $\ast$bufs, std\+::size\+\_\+t count, bool all\+\_\+empty, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a3b54b218ce98d1842878e7562b49537f}{asio\+::detail\+::descriptor\+\_\+ops\+::non\+\_\+blocking\+\_\+read} (int d, buf $\ast$bufs, std\+::size\+\_\+t count, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, std\+::size\+\_\+t \&bytes\+\_\+transferred)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} std\+::size\+\_\+t \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_adfa229766b01ecb438e199e3f69f386a}{asio\+::detail\+::descriptor\+\_\+ops\+::sync\+\_\+write} (int d, state\+\_\+type state, const buf $\ast$bufs, std\+::size\+\_\+t count, bool all\+\_\+empty, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_aad77004eb99a79b6cd448ce6d1482ad9}{asio\+::detail\+::descriptor\+\_\+ops\+::non\+\_\+blocking\+\_\+write} (int d, const buf $\ast$bufs, std\+::size\+\_\+t count, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, std\+::size\+\_\+t \&bytes\+\_\+transferred)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_afed8890fa05f9b932b50dcff81d5b659}{asio\+::detail\+::descriptor\+\_\+ops\+::ioctl} (int d, state\+\_\+type \&state, long cmd, ioctl\+\_\+arg\+\_\+type $\ast$arg, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a50ecc1bb18d53d214abfeca6ceb9bc4f}{asio\+::detail\+::descriptor\+\_\+ops\+::fcntl} (int d, int cmd, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a2db735e0f86e600494183bcabbc3d5b1}{asio\+::detail\+::descriptor\+\_\+ops\+::fcntl} (int d, int cmd, long arg, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a3df8d319a2df8be7039a62bfb59686db}{asio\+::detail\+::descriptor\+\_\+ops\+::poll\+\_\+read} (int d, state\+\_\+type state, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ab3ae5ba1bb1f565b3c62137fe56a3dbd}{asio\+::detail\+::descriptor\+\_\+ops\+::poll\+\_\+write} (int d, state\+\_\+type state, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\end{DoxyCompactItemize}

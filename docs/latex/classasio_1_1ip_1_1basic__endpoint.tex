@@ -1,0 +1,472 @@
+\hypertarget{classasio_1_1ip_1_1basic__endpoint}{}\section{asio\+:\+:ip\+:\+:basic\+\_\+endpoint$<$ Internet\+Protocol $>$ Class Template Reference}
+\label{classasio_1_1ip_1_1basic__endpoint}\index{asio\+::ip\+::basic\+\_\+endpoint$<$ Internet\+Protocol $>$@{asio\+::ip\+::basic\+\_\+endpoint$<$ Internet\+Protocol $>$}}
+
+
+Describes an endpoint for a version-\/independent I\+P socket.  
+
+
+
+
+{\ttfamily \#include $<$basic\+\_\+endpoint.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Internet\+Protocol \hyperlink{classasio_1_1ip_1_1basic__endpoint_a0a1e636ae6281b37349b7dbdb4791a09}{protocol\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The protocol type associated with the endpoint. \end{DoxyCompactList}\item 
+typedef \hyperlink{namespaceasio_1_1detail_a40a7b0385a38f87815ffbb8df5e34d05}{asio\+::detail\+::socket\+\_\+addr\+\_\+type} \hyperlink{classasio_1_1ip_1_1basic__endpoint_a080cc84bcb7c39ec426a3670b9456c44}{data\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1ip_1_1basic__endpoint_ac29fba86a79bc79f081d2115cd496a0c}{basic\+\_\+endpoint} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ip_1_1basic__endpoint_a43dd4a6acfd925ceeb1014e28ad7ba64}{basic\+\_\+endpoint} (const Internet\+Protocol \&internet\+\_\+protocol, unsigned short port\+\_\+num)
+\item 
+\hyperlink{classasio_1_1ip_1_1basic__endpoint_ae67c33179798a7c77d5043192ba2dca5}{basic\+\_\+endpoint} (const \hyperlink{classasio_1_1ip_1_1address}{asio\+::ip\+::address} \&addr, unsigned short port\+\_\+num)
+\item 
+\hyperlink{classasio_1_1ip_1_1basic__endpoint_a2dd2d6a411a9a4cd13d0879804bcca01}{basic\+\_\+endpoint} (const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint} \&other)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint} \& \hyperlink{classasio_1_1ip_1_1basic__endpoint_aff92c426a77118ddad284b898d6e420e}{operator=} (const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint} \&other)
+\begin{DoxyCompactList}\small\item\em Assign from another endpoint. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ip_1_1basic__endpoint_a0a1e636ae6281b37349b7dbdb4791a09}{protocol\+\_\+type} \hyperlink{classasio_1_1ip_1_1basic__endpoint_a5dd3cc452ad940d0bce8dd79bb0b58bc}{protocol} () const 
+\begin{DoxyCompactList}\small\item\em The protocol associated with the endpoint. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ip_1_1basic__endpoint_a080cc84bcb7c39ec426a3670b9456c44}{data\+\_\+type} $\ast$ \hyperlink{classasio_1_1ip_1_1basic__endpoint_a741c39458bf1bbfa8e2b32ba0bde9913}{data} ()
+\begin{DoxyCompactList}\small\item\em Get the underlying endpoint in the native type. \end{DoxyCompactList}\item 
+const \hyperlink{classasio_1_1ip_1_1basic__endpoint_a080cc84bcb7c39ec426a3670b9456c44}{data\+\_\+type} $\ast$ \hyperlink{classasio_1_1ip_1_1basic__endpoint_a203ce0918c0d58ebb3065996eff6ec11}{data} () const 
+\begin{DoxyCompactList}\small\item\em Get the underlying endpoint in the native type. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1ip_1_1basic__endpoint_a772068bdd2764c6381b9f8e4523c46b4}{size} () const 
+\begin{DoxyCompactList}\small\item\em Get the underlying size of the endpoint in the native type. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ip_1_1basic__endpoint_ac76d9673c36b0087b54ff1c86a642804}{resize} (std\+::size\+\_\+t new\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Set the underlying size of the endpoint in the native type. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1ip_1_1basic__endpoint_a04755c1a89e36963fcfd77cf15fa36ef}{capacity} () const 
+\begin{DoxyCompactList}\small\item\em Get the capacity of the endpoint in the native type. \end{DoxyCompactList}\item 
+unsigned short \hyperlink{classasio_1_1ip_1_1basic__endpoint_ac556e197049878b76e2d9ea8b6ec73eb}{port} () const 
+\item 
+void \hyperlink{classasio_1_1ip_1_1basic__endpoint_a17616cd43109956791766f1c3b7163ad}{port} (unsigned short port\+\_\+num)
+\item 
+\hyperlink{classasio_1_1ip_1_1address}{asio\+::ip\+::address} \hyperlink{classasio_1_1ip_1_1basic__endpoint_a2f99403f9814d69e1164784329083709}{address} () const 
+\begin{DoxyCompactList}\small\item\em Get the I\+P address associated with the endpoint. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ip_1_1basic__endpoint_a017a8b4674ec34904685fb198c3998bf}{address} (const \hyperlink{classasio_1_1ip_1_1address}{asio\+::ip\+::address} \&addr)
+\begin{DoxyCompactList}\small\item\em Set the I\+P address associated with the endpoint. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classasio_1_1ip_1_1basic__endpoint_ac1430c7f3347469bf9693d0ad95d3bef}{operator==} (const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e1, const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e2)
+\begin{DoxyCompactList}\small\item\em Compare two endpoints for equality. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1basic__endpoint_a5073cdcedcb2557a1c2cebba50672bb1}{operator!=} (const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e1, const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e2)
+\begin{DoxyCompactList}\small\item\em Compare two endpoints for inequality. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1basic__endpoint_a244f754ee6c5338902d0825785298cf9}{operator$<$} (const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e1, const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e2)
+\begin{DoxyCompactList}\small\item\em Compare endpoints for ordering. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1basic__endpoint_a4386f95d228ee98c40d8720288d1fa69}{operator$>$} (const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e1, const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e2)
+\begin{DoxyCompactList}\small\item\em Compare endpoints for ordering. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1basic__endpoint_ae35ea668781acbf1f5a77881ca8c8a55}{operator$<$=} (const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e1, const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e2)
+\begin{DoxyCompactList}\small\item\em Compare endpoints for ordering. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1basic__endpoint_a034a555a53986acfd0751252ad91e3d1}{operator$>$=} (const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e1, const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&e2)
+\begin{DoxyCompactList}\small\item\em Compare endpoints for ordering. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Related Functions}
+(Note that these are not member functions.) \begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Elem , typename Traits , typename Internet\+Protocol $>$ }\\std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \& \hyperlink{classasio_1_1ip_1_1basic__endpoint_ae0522a69d5ac30675902570994c3f029}{operator$<$$<$} (std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \&os, const \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&endpoint)
+\begin{DoxyCompactList}\small\item\em Output an endpoint as a string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Internet\+Protocol$>$class asio\+::ip\+::basic\+\_\+endpoint$<$ Internet\+Protocol $>$}
+
+Describes an endpoint for a version-\/independent I\+P socket. 
+
+The \hyperlink{classasio_1_1ip_1_1basic__endpoint}{asio\+::ip\+::basic\+\_\+endpoint} class template describes an endpoint that may be associated with a particular socket.
+
+\begin{DoxyParagraph}{Thread Safety}
+{\itshape Distinct} {\itshape objects\+:} Safe.~\newline
+{\itshape Shared} {\itshape objects\+:} Unsafe.
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Endpoint. 
+\end{DoxyParagraph}
+
+
+Definition at line 44 of file basic\+\_\+endpoint.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a080cc84bcb7c39ec426a3670b9456c44}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!data\+\_\+type@{data\+\_\+type}}
+\index{data\+\_\+type@{data\+\_\+type}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{data\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ typedef {\bf asio\+::detail\+::socket\+\_\+addr\+\_\+type} {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::{\bf data\+\_\+type}}\label{classasio_1_1ip_1_1basic__endpoint_a080cc84bcb7c39ec426a3670b9456c44}
+The type of the endpoint structure. This type is dependent on the underlying implementation of the socket layer. 
+
+Definition at line 55 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a0a1e636ae6281b37349b7dbdb4791a09}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!protocol\+\_\+type@{protocol\+\_\+type}}
+\index{protocol\+\_\+type@{protocol\+\_\+type}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{protocol\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ typedef Internet\+Protocol {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::{\bf protocol\+\_\+type}}\label{classasio_1_1ip_1_1basic__endpoint_a0a1e636ae6281b37349b7dbdb4791a09}
+
+
+The protocol type associated with the endpoint. 
+
+
+
+Definition at line 48 of file basic\+\_\+endpoint.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_ac29fba86a79bc79f081d2115cd496a0c}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!basic\+\_\+endpoint@{basic\+\_\+endpoint}}
+\index{basic\+\_\+endpoint@{basic\+\_\+endpoint}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{basic\+\_\+endpoint()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::{\bf basic\+\_\+endpoint} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_ac29fba86a79bc79f081d2115cd496a0c}
+
+
+Default constructor. 
+
+
+
+Definition at line 59 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a43dd4a6acfd925ceeb1014e28ad7ba64}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!basic\+\_\+endpoint@{basic\+\_\+endpoint}}
+\index{basic\+\_\+endpoint@{basic\+\_\+endpoint}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{basic\+\_\+endpoint(const Internet\+Protocol \&internet\+\_\+protocol, unsigned short port\+\_\+num)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::{\bf basic\+\_\+endpoint} (
+\begin{DoxyParamCaption}
+\item[{const Internet\+Protocol \&}]{internet\+\_\+protocol, }
+\item[{unsigned short}]{port\+\_\+num}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_a43dd4a6acfd925ceeb1014e28ad7ba64}
+Construct an endpoint using a port number, specified in the host\textquotesingle{}s byte order. The I\+P address will be the any address (i.\+e. I\+N\+A\+D\+D\+R\+\_\+\+A\+N\+Y or in6addr\+\_\+any). This constructor would typically be used for accepting new connections. \begin{DoxyParagraph}{Examples}
+To initialise an I\+Pv4 T\+C\+P endpoint for port 1234, use\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1ip_1_1basic__endpoint}{asio::ip::tcp::endpoint} ep(\hyperlink{classasio_1_1ip_1_1tcp_a5123c64b44b4c5fd3c016ce75cbf096d}{asio::ip::tcp::v4}(), 1234);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+To specify an I\+Pv6 U\+D\+P endpoint for port 9876, use\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1ip_1_1basic__endpoint}{asio::ip::udp::endpoint} ep(\hyperlink{classasio_1_1ip_1_1udp_ab5a9085001a291525f1fdd60a3ebef84}{asio::ip::udp::v6}(), 9876);
+\end{DoxyCode}
+ 
+
+Definition at line 80 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_ae67c33179798a7c77d5043192ba2dca5}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!basic\+\_\+endpoint@{basic\+\_\+endpoint}}
+\index{basic\+\_\+endpoint@{basic\+\_\+endpoint}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{basic\+\_\+endpoint(const asio\+::ip\+::address \&addr, unsigned short port\+\_\+num)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::{\bf basic\+\_\+endpoint} (
+\begin{DoxyParamCaption}
+\item[{const {\bf asio\+::ip\+::address} \&}]{addr, }
+\item[{unsigned short}]{port\+\_\+num}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_ae67c33179798a7c77d5043192ba2dca5}
+Construct an endpoint using a port number and an I\+P address. This constructor may be used for accepting connections on a specific interface or for making a connection to a remote endpoint. 
+
+Definition at line 89 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a2dd2d6a411a9a4cd13d0879804bcca01}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!basic\+\_\+endpoint@{basic\+\_\+endpoint}}
+\index{basic\+\_\+endpoint@{basic\+\_\+endpoint}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{basic\+\_\+endpoint(const basic\+\_\+endpoint \&other)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::{\bf basic\+\_\+endpoint} (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_a2dd2d6a411a9a4cd13d0879804bcca01}
+
+
+Copy constructor. 
+
+
+
+Definition at line 95 of file basic\+\_\+endpoint.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a2f99403f9814d69e1164784329083709}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!address@{address}}
+\index{address@{address}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{address() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf asio\+::ip\+::address} {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::{\bf address} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_a2f99403f9814d69e1164784329083709}
+
+
+Get the I\+P address associated with the endpoint. 
+
+
+
+Definition at line 177 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a017a8b4674ec34904685fb198c3998bf}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!address@{address}}
+\index{address@{address}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{address(const asio\+::ip\+::address \&addr)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ void {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::{\bf address} (
+\begin{DoxyParamCaption}
+\item[{const {\bf asio\+::ip\+::address} \&}]{addr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_a017a8b4674ec34904685fb198c3998bf}
+
+
+Set the I\+P address associated with the endpoint. 
+
+
+
+Definition at line 183 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a04755c1a89e36963fcfd77cf15fa36ef}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!capacity@{capacity}}
+\index{capacity@{capacity}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{capacity() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ std\+::size\+\_\+t {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::capacity (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_a04755c1a89e36963fcfd77cf15fa36ef}
+
+
+Get the capacity of the endpoint in the native type. 
+
+
+
+Definition at line 157 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a741c39458bf1bbfa8e2b32ba0bde9913}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!data@{data}}
+\index{data@{data}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{data()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf data\+\_\+type}$\ast$ {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_a741c39458bf1bbfa8e2b32ba0bde9913}
+
+
+Get the underlying endpoint in the native type. 
+
+
+
+Definition at line 133 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a203ce0918c0d58ebb3065996eff6ec11}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!data@{data}}
+\index{data@{data}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{data() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ const {\bf data\+\_\+type}$\ast$ {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_a203ce0918c0d58ebb3065996eff6ec11}
+
+
+Get the underlying endpoint in the native type. 
+
+
+
+Definition at line 139 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_aff92c426a77118ddad284b898d6e420e}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!operator=@{operator=}}
+\index{operator=@{operator=}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{operator=(const basic\+\_\+endpoint \&other)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf basic\+\_\+endpoint}\& {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_aff92c426a77118ddad284b898d6e420e}
+
+
+Assign from another endpoint. 
+
+
+
+Definition at line 109 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_ac556e197049878b76e2d9ea8b6ec73eb}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!port@{port}}
+\index{port@{port}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{port() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ unsigned short {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::port (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_ac556e197049878b76e2d9ea8b6ec73eb}
+Get the port associated with the endpoint. The port number is always in the host\textquotesingle{}s byte order. 
+
+Definition at line 164 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a17616cd43109956791766f1c3b7163ad}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!port@{port}}
+\index{port@{port}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{port(unsigned short port\+\_\+num)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ void {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::port (
+\begin{DoxyParamCaption}
+\item[{unsigned short}]{port\+\_\+num}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_a17616cd43109956791766f1c3b7163ad}
+Set the port associated with the endpoint. The port number is always in the host\textquotesingle{}s byte order. 
+
+Definition at line 171 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a5dd3cc452ad940d0bce8dd79bb0b58bc}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!protocol@{protocol}}
+\index{protocol@{protocol}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{protocol() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ {\bf protocol\+\_\+type} {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::protocol (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_a5dd3cc452ad940d0bce8dd79bb0b58bc}
+
+
+The protocol associated with the endpoint. 
+
+
+
+Definition at line 125 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_ac76d9673c36b0087b54ff1c86a642804}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!resize@{resize}}
+\index{resize@{resize}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{resize(std\+::size\+\_\+t new\+\_\+size)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ void {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::resize (
+\begin{DoxyParamCaption}
+\item[{std\+::size\+\_\+t}]{new\+\_\+size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_ac76d9673c36b0087b54ff1c86a642804}
+
+
+Set the underlying size of the endpoint in the native type. 
+
+
+
+Definition at line 151 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a772068bdd2764c6381b9f8e4523c46b4}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!size@{size}}
+\index{size@{size}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{size() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ std\+::size\+\_\+t {\bf asio\+::ip\+::basic\+\_\+endpoint}$<$ Internet\+Protocol $>$\+::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1basic__endpoint_a772068bdd2764c6381b9f8e4523c46b4}
+
+
+Get the underlying size of the endpoint in the native type. 
+
+
+
+Definition at line 145 of file basic\+\_\+endpoint.\+hpp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a5073cdcedcb2557a1c2cebba50672bb1}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{operator"!=}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ bool operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e1, }
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1basic__endpoint_a5073cdcedcb2557a1c2cebba50672bb1}
+
+
+Compare two endpoints for inequality. 
+
+
+
+Definition at line 196 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a244f754ee6c5338902d0825785298cf9}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{operator$<$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ bool operator$<$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e1, }
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1basic__endpoint_a244f754ee6c5338902d0825785298cf9}
+
+
+Compare endpoints for ordering. 
+
+
+
+Definition at line 203 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_ae0522a69d5ac30675902570994c3f029}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{operator$<$$<$(std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \&os, const basic\+\_\+endpoint$<$ Internet\+Protocol $>$ \&endpoint)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Elem , typename Traits , typename Internet\+Protocol $>$ std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \&}]{os, }
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{endpoint}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [related]}}\label{classasio_1_1ip_1_1basic__endpoint_ae0522a69d5ac30675902570994c3f029}
+
+
+Output an endpoint as a string. 
+
+Used to output a human-\/readable string for a specified endpoint.
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & The output stream to which the string will be written.\\
+\hline
+{\em endpoint} & The endpoint to be written.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The output stream. 
+\end{DoxyReturn}
+
+
+Definition at line 28 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_ae35ea668781acbf1f5a77881ca8c8a55}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!operator$<$=@{operator$<$=}}
+\index{operator$<$=@{operator$<$=}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{operator$<$=}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ bool operator$<$= (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e1, }
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1basic__endpoint_ae35ea668781acbf1f5a77881ca8c8a55}
+
+
+Compare endpoints for ordering. 
+
+
+
+Definition at line 217 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_ac1430c7f3347469bf9693d0ad95d3bef}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!operator==@{operator==}}
+\index{operator==@{operator==}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ bool operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e1, }
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1basic__endpoint_ac1430c7f3347469bf9693d0ad95d3bef}
+
+
+Compare two endpoints for equality. 
+
+
+
+Definition at line 189 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a4386f95d228ee98c40d8720288d1fa69}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!operator$>$@{operator$>$}}
+\index{operator$>$@{operator$>$}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{operator$>$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ bool operator$>$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e1, }
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1basic__endpoint_a4386f95d228ee98c40d8720288d1fa69}
+
+
+Compare endpoints for ordering. 
+
+
+
+Definition at line 210 of file basic\+\_\+endpoint.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1basic__endpoint_a034a555a53986acfd0751252ad91e3d1}{}\index{asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}!operator$>$=@{operator$>$=}}
+\index{operator$>$=@{operator$>$=}!asio\+::ip\+::basic\+\_\+endpoint@{asio\+::ip\+::basic\+\_\+endpoint}}
+\subsubsection[{operator$>$=}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol$>$ bool operator$>$= (
+\begin{DoxyParamCaption}
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e1, }
+\item[{const {\bf basic\+\_\+endpoint}$<$ Internet\+Protocol $>$ \&}]{e2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1basic__endpoint_a034a555a53986acfd0751252ad91e3d1}
+
+
+Compare endpoints for ordering. 
+
+
+
+Definition at line 224 of file basic\+\_\+endpoint.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ip/\hyperlink{ip_2basic__endpoint_8hpp}{basic\+\_\+endpoint.\+hpp}\end{DoxyCompactItemize}

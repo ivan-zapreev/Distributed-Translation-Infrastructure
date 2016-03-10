@@ -1,0 +1,29 @@
+\hypertarget{multicast_8hpp}{}\section{ext/asio/ip/multicast.hpp File Reference}
+\label{multicast_8hpp}\index{ext/asio/ip/multicast.\+hpp@{ext/asio/ip/multicast.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$cstddef$>$}\\*
+{\ttfamily \#include \char`\"{}asio/ip/detail/socket\+\_\+option.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1ip}{asio\+::ip}
+\item 
+ \hyperlink{namespaceasio_1_1ip_1_1multicast}{asio\+::ip\+::multicast}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classasio_1_1ip_1_1detail_1_1socket__option_1_1multicast__request}{asio\+::ip\+::detail\+::socket\+\_\+option\+::multicast\+\_\+request}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+\_\+\+A\+D\+D\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+V6\+\_\+\+J\+O\+I\+N\+\_\+\+G\+R\+O\+U\+P)$>$ \hyperlink{namespaceasio_1_1ip_1_1multicast_af1296ad63123b3adc414c0bbeb328db3}{asio\+::ip\+::multicast\+::join\+\_\+group}
+\begin{DoxyCompactList}\small\item\em Socket option to join a multicast group on a specified interface. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1ip_1_1detail_1_1socket__option_1_1multicast__request}{asio\+::ip\+::detail\+::socket\+\_\+option\+::multicast\+\_\+request}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+\_\+\+D\+R\+O\+P\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+V6\+\_\+\+L\+E\+A\+V\+E\+\_\+\+G\+R\+O\+U\+P)$>$ \hyperlink{namespaceasio_1_1ip_1_1multicast_ae0f41e19e723749f6373383e45020844}{asio\+::ip\+::multicast\+::leave\+\_\+group}
+\begin{DoxyCompactList}\small\item\em Socket option to leave a multicast group on a specified interface. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1ip_1_1detail_1_1socket__option_1_1network__interface}{asio\+::ip\+::detail\+::socket\+\_\+option\+::network\+\_\+interface}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F)$>$ \hyperlink{namespaceasio_1_1ip_1_1multicast_a0c7f18a8d8e3922c06d0d3894754b2f5}{asio\+::ip\+::multicast\+::outbound\+\_\+interface}
+\begin{DoxyCompactList}\small\item\em Socket option for local interface to use for outgoing multicast packets. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1ip_1_1detail_1_1socket__option_1_1multicast__hops}{asio\+::ip\+::detail\+::socket\+\_\+option\+::multicast\+\_\+hops}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+T\+T\+L), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S)$>$ \hyperlink{namespaceasio_1_1ip_1_1multicast_a9fb457c6f8978841b954fc752c04563f}{asio\+::ip\+::multicast\+::hops}
+\begin{DoxyCompactList}\small\item\em Socket option for time-\/to-\/live associated with outgoing multicast packets. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1ip_1_1detail_1_1socket__option_1_1multicast__enable__loopback}{asio\+::ip\+::detail\+::socket\+\_\+option\+::multicast\+\_\+enable\+\_\+loopback}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P)$>$ \hyperlink{namespaceasio_1_1ip_1_1multicast_a6a21cc875fbfac80d2049c95bc7dfe6b}{asio\+::ip\+::multicast\+::enable\+\_\+loopback}
+\end{DoxyCompactItemize}

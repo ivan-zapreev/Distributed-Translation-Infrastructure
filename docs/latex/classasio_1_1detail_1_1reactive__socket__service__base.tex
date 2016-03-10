@@ -1,0 +1,616 @@
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base}{}\section{asio\+:\+:detail\+:\+:reactive\+\_\+socket\+\_\+service\+\_\+base Class Reference}
+\label{classasio_1_1detail_1_1reactive__socket__service__base}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+
+
+{\ttfamily \#include $<$reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:detail\+:\+:reactive\+\_\+socket\+\_\+service\+\_\+base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classasio_1_1detail_1_1reactive__socket__service__base}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{namespaceasio_1_1detail_a6798c771dd84b79798b1a08150706ea9}{socket\+\_\+type} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a7838f400a17a0a3e0fd1c78040f4da53}{native\+\_\+handle\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_aac49e07e6f0b7d6ec3b9a1daf30dd1cd}{reactive\+\_\+socket\+\_\+service\+\_\+base} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service})
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a1f2bc705ded3da9151d9ad502830a6a3}{shutdown\+\_\+service} ()
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_ac075975564057051b4a06a980caac210}{construct} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a3769a25b50227339a8e78e42184ae4ea}{base\+\_\+move\+\_\+construct} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, \hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&other\+\_\+impl)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a0cd3af02197938f1df435c5a24b0cbf7}{base\+\_\+move\+\_\+assign} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base}{reactive\+\_\+socket\+\_\+service\+\_\+base} \&other\+\_\+service, \hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&other\+\_\+impl)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_af2bae08031d0eb279dd9dfcd037c2dd2}{destroy} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl)
+\item 
+bool \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a3bacc9bb408d59f2b8a53a2c727a3a21}{is\+\_\+open} (const \hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl) const 
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_af13091e137f3fbf653372d162916d28a}{close} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a7838f400a17a0a3e0fd1c78040f4da53}{native\+\_\+handle\+\_\+type} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a64c07944a73acadc4906d0ca6311bbc9}{native\+\_\+handle} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a77501913e875d9cdca20e44f7317c86f}{cancel} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+bool \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a3219949c6c15e260ccef10773143b0c3}{at\+\_\+mark} (const \hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_afc32bb4b58ce2c48b1c0a4feb47910b7}{available} (const \hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_aea818546babf22661b90c6a37985806c}{listen} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, int backlog, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename I\+O\+\_\+\+Control\+\_\+\+Command $>$ }\\\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a8427e535d4fece6a925d31c2df9f2ecb}{io\+\_\+control} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, I\+O\+\_\+\+Control\+\_\+\+Command \&command, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+bool \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_ae70479d67863203a37c0db50edc9eb6f}{non\+\_\+blocking} (const \hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl) const 
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a70d41eca908a74f66d846bc8411b95fb}{non\+\_\+blocking} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, bool mode, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+bool \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a40ec3c4df9ee2553e0103bc943562d82}{native\+\_\+non\+\_\+blocking} (const \hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl) const 
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_afb8a66f8718231b058cde4594fc1750e}{native\+\_\+non\+\_\+blocking} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, bool mode, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a4bc8a54b04e35fe393fba4c3ba46ae4e}{shutdown} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37}{socket\+\_\+base\+::shutdown\+\_\+type} what, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\size\+\_\+t \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a802d4d18c1e516d4f68e03a0acb3aa68}{send} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} flags, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+size\+\_\+t \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_aab5d919bb2f0a68c33a6ff71dbf74c07}{send} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1null__buffers}{null\+\_\+buffers} \&, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Handler $>$ }\\void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a0475de2224623da1c4666a79fddfa43c}{async\+\_\+send} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} flags, Handler \&handler)
+\item 
+{\footnotesize template$<$typename Handler $>$ }\\void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a304bda34f88f0854bef33b236fd38846}{async\+\_\+send} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1null__buffers}{null\+\_\+buffers} \&, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags}, Handler \&handler)
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\size\+\_\+t \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a5b023546d28a8b111a9661f7a2ab30c6}{receive} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} flags, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+size\+\_\+t \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_ad0803c43d3ce18ca81b3a4182f55f3e5}{receive} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1null__buffers}{null\+\_\+buffers} \&, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence , typename Handler $>$ }\\void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a9d94d609d54b90f323d744b6d0a185ad}{async\+\_\+receive} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} flags, Handler \&handler)
+\item 
+{\footnotesize template$<$typename Handler $>$ }\\void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a5140d8ba31369be14ca2f181163e3ba1}{async\+\_\+receive} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1null__buffers}{null\+\_\+buffers} \&, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} flags, Handler \&handler)
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\size\+\_\+t \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a9d7f34d86e6d80304a47a430dfdac1d4}{receive\+\_\+with\+\_\+flags} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} in\+\_\+flags, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \&out\+\_\+flags, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+size\+\_\+t \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a57f7a732b7faa0675ce3da604af82930}{receive\+\_\+with\+\_\+flags} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1null__buffers}{null\+\_\+buffers} \&, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \&out\+\_\+flags, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence , typename Handler $>$ }\\void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_aa39598456d55bcbd36c918f7165c29f3}{async\+\_\+receive\+\_\+with\+\_\+flags} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} in\+\_\+flags, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \&out\+\_\+flags, Handler \&handler)
+\item 
+{\footnotesize template$<$typename Handler $>$ }\\void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a5a58735866aad8df7365fced7e932af6}{async\+\_\+receive\+\_\+with\+\_\+flags} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1null__buffers}{null\+\_\+buffers} \&, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} in\+\_\+flags, \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{socket\+\_\+base\+::message\+\_\+flags} \&out\+\_\+flags, Handler \&handler)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a1ff70806e1ef6846c394883a65082bd0}{do\+\_\+open} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, int af, int type, int protocol, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a9e8bda510627062509d64814bd2af53b}{do\+\_\+assign} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, int type, const \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a7838f400a17a0a3e0fd1c78040f4da53}{native\+\_\+handle\+\_\+type} \&native\+\_\+socket, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a72db6e5cd07a17aed3d352f7c4852436}{start\+\_\+op} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, int op\+\_\+type, \hyperlink{classasio_1_1detail_1_1reactor__op}{reactor\+\_\+op} $\ast$op, bool is\+\_\+continuation, bool is\+\_\+non\+\_\+blocking, bool noop)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a6b9a76ac02e06ecc5dc2ec312e714191}{start\+\_\+accept\+\_\+op} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1detail_1_1reactor__op}{reactor\+\_\+op} $\ast$op, bool is\+\_\+continuation, bool peer\+\_\+is\+\_\+open)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} void \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_ae9fb4b74b8eca9392bc23fcd2df7f901}{start\+\_\+connect\+\_\+op} (\hyperlink{structasio_1_1detail_1_1reactive__socket__service__base_1_1base__implementation__type}{base\+\_\+implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1detail_1_1reactor__op}{reactor\+\_\+op} $\ast$op, bool is\+\_\+continuation, const \hyperlink{namespaceasio_1_1detail_a40a7b0385a38f87815ffbb8df5e34d05}{socket\+\_\+addr\+\_\+type} $\ast$addr, size\+\_\+t addrlen)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceasio_1_1detail_a84c582743740f1d6b19111c88e2922bd}{reactor} \& \hyperlink{classasio_1_1detail_1_1reactive__socket__service__base_a487bbc9ae7bffc0df3c2eb0cf9d09f60}{reactor\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 44 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a7838f400a17a0a3e0fd1c78040f4da53}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!native\+\_\+handle\+\_\+type@{native\+\_\+handle\+\_\+type}}
+\index{native\+\_\+handle\+\_\+type@{native\+\_\+handle\+\_\+type}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{native\+\_\+handle\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf socket\+\_\+type} {\bf asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::native\+\_\+handle\+\_\+type}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a7838f400a17a0a3e0fd1c78040f4da53}
+
+
+Definition at line 48 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_aac49e07e6f0b7d6ec3b9a1daf30dd1cd}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!reactive\+\_\+socket\+\_\+service\+\_\+base@{reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\index{reactive\+\_\+socket\+\_\+service\+\_\+base@{reactive\+\_\+socket\+\_\+service\+\_\+base}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{reactive\+\_\+socket\+\_\+service\+\_\+base(asio\+::io\+\_\+service \&io\+\_\+service)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::reactive\+\_\+socket\+\_\+service\+\_\+base (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1reactive__socket__service__base_aac49e07e6f0b7d6ec3b9a1daf30dd1cd}
+
+
+Definition at line 30 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a9d94d609d54b90f323d744b6d0a185ad}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!async\+\_\+receive@{async\+\_\+receive}}
+\index{async\+\_\+receive@{async\+\_\+receive}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{async\+\_\+receive(base\+\_\+implementation\+\_\+type \&impl, const Mutable\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags flags, Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Mutable\+Buffer\+Sequence , typename Handler $>$ void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::async\+\_\+receive (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags, }
+\item[{Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a9d94d609d54b90f323d744b6d0a185ad}
+
+
+Definition at line 270 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a5140d8ba31369be14ca2f181163e3ba1}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!async\+\_\+receive@{async\+\_\+receive}}
+\index{async\+\_\+receive@{async\+\_\+receive}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{async\+\_\+receive(base\+\_\+implementation\+\_\+type \&impl, const null\+\_\+buffers \&, socket\+\_\+base\+::message\+\_\+flags flags, Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::async\+\_\+receive (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf null\+\_\+buffers} \&}]{, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags, }
+\item[{Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a5140d8ba31369be14ca2f181163e3ba1}
+
+
+Definition at line 299 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_aa39598456d55bcbd36c918f7165c29f3}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!async\+\_\+receive\+\_\+with\+\_\+flags@{async\+\_\+receive\+\_\+with\+\_\+flags}}
+\index{async\+\_\+receive\+\_\+with\+\_\+flags@{async\+\_\+receive\+\_\+with\+\_\+flags}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{async\+\_\+receive\+\_\+with\+\_\+flags(base\+\_\+implementation\+\_\+type \&impl, const Mutable\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags in\+\_\+flags, socket\+\_\+base\+::message\+\_\+flags \&out\+\_\+flags, Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Mutable\+Buffer\+Sequence , typename Handler $>$ void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::async\+\_\+receive\+\_\+with\+\_\+flags (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{in\+\_\+flags, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags} \&}]{out\+\_\+flags, }
+\item[{Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_aa39598456d55bcbd36c918f7165c29f3}
+
+
+Definition at line 355 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a5a58735866aad8df7365fced7e932af6}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!async\+\_\+receive\+\_\+with\+\_\+flags@{async\+\_\+receive\+\_\+with\+\_\+flags}}
+\index{async\+\_\+receive\+\_\+with\+\_\+flags@{async\+\_\+receive\+\_\+with\+\_\+flags}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{async\+\_\+receive\+\_\+with\+\_\+flags(base\+\_\+implementation\+\_\+type \&impl, const null\+\_\+buffers \&, socket\+\_\+base\+::message\+\_\+flags in\+\_\+flags, socket\+\_\+base\+::message\+\_\+flags \&out\+\_\+flags, Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::async\+\_\+receive\+\_\+with\+\_\+flags (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf null\+\_\+buffers} \&}]{, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{in\+\_\+flags, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags} \&}]{out\+\_\+flags, }
+\item[{Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a5a58735866aad8df7365fced7e932af6}
+
+
+Definition at line 382 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a0475de2224623da1c4666a79fddfa43c}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!async\+\_\+send@{async\+\_\+send}}
+\index{async\+\_\+send@{async\+\_\+send}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{async\+\_\+send(base\+\_\+implementation\+\_\+type \&impl, const Const\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags flags, Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Const\+Buffer\+Sequence , typename Handler $>$ void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::async\+\_\+send (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags, }
+\item[{Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a0475de2224623da1c4666a79fddfa43c}
+
+
+Definition at line 199 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a304bda34f88f0854bef33b236fd38846}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!async\+\_\+send@{async\+\_\+send}}
+\index{async\+\_\+send@{async\+\_\+send}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{async\+\_\+send(base\+\_\+implementation\+\_\+type \&impl, const null\+\_\+buffers \&, socket\+\_\+base\+::message\+\_\+flags, Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::async\+\_\+send (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf null\+\_\+buffers} \&}]{, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{, }
+\item[{Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a304bda34f88f0854bef33b236fd38846}
+
+
+Definition at line 224 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a3219949c6c15e260ccef10773143b0c3}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!at\+\_\+mark@{at\+\_\+mark}}
+\index{at\+\_\+mark@{at\+\_\+mark}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{at\+\_\+mark(const base\+\_\+implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::at\+\_\+mark (
+\begin{DoxyParamCaption}
+\item[{const {\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a3219949c6c15e260ccef10773143b0c3}
+
+
+Definition at line 106 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_afc32bb4b58ce2c48b1c0a4feb47910b7}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!available@{available}}
+\index{available@{available}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{available(const base\+\_\+implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::size\+\_\+t asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::available (
+\begin{DoxyParamCaption}
+\item[{const {\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_afc32bb4b58ce2c48b1c0a4feb47910b7}
+
+
+Definition at line 113 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a0cd3af02197938f1df435c5a24b0cbf7}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!base\+\_\+move\+\_\+assign@{base\+\_\+move\+\_\+assign}}
+\index{base\+\_\+move\+\_\+assign@{base\+\_\+move\+\_\+assign}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{base\+\_\+move\+\_\+assign(base\+\_\+implementation\+\_\+type \&impl, reactive\+\_\+socket\+\_\+service\+\_\+base \&other\+\_\+service, base\+\_\+implementation\+\_\+type \&other\+\_\+impl)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+move\+\_\+assign (
+\begin{DoxyParamCaption}
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base} \&}]{other\+\_\+service, }
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{other\+\_\+impl}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1reactive__socket__service__base_a0cd3af02197938f1df435c5a24b0cbf7}
+
+
+Definition at line 62 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a3769a25b50227339a8e78e42184ae4ea}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!base\+\_\+move\+\_\+construct@{base\+\_\+move\+\_\+construct}}
+\index{base\+\_\+move\+\_\+construct@{base\+\_\+move\+\_\+construct}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{base\+\_\+move\+\_\+construct(base\+\_\+implementation\+\_\+type \&impl, base\+\_\+implementation\+\_\+type \&other\+\_\+impl)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+move\+\_\+construct (
+\begin{DoxyParamCaption}
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{other\+\_\+impl}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1reactive__socket__service__base_a3769a25b50227339a8e78e42184ae4ea}
+
+
+Definition at line 48 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a77501913e875d9cdca20e44f7317c86f}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!cancel@{cancel}}
+\index{cancel@{cancel}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{cancel(base\+\_\+implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::cancel (
+\begin{DoxyParamCaption}
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1reactive__socket__service__base_a77501913e875d9cdca20e44f7317c86f}
+
+
+Definition at line 121 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_af13091e137f3fbf653372d162916d28a}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!close@{close}}
+\index{close@{close}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{close(base\+\_\+implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::close (
+\begin{DoxyParamCaption}
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1reactive__socket__service__base_af13091e137f3fbf653372d162916d28a}
+
+
+Definition at line 94 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_ac075975564057051b4a06a980caac210}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!construct@{construct}}
+\index{construct@{construct}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{construct(base\+\_\+implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::construct (
+\begin{DoxyParamCaption}
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1reactive__socket__service__base_ac075975564057051b4a06a980caac210}
+
+
+Definition at line 41 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_af2bae08031d0eb279dd9dfcd037c2dd2}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!destroy@{destroy}}
+\index{destroy@{destroy}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{destroy(base\+\_\+implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::destroy (
+\begin{DoxyParamCaption}
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1reactive__socket__service__base_af2bae08031d0eb279dd9dfcd037c2dd2}
+
+
+Definition at line 79 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a9e8bda510627062509d64814bd2af53b}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!do\+\_\+assign@{do\+\_\+assign}}
+\index{do\+\_\+assign@{do\+\_\+assign}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{do\+\_\+assign(base\+\_\+implementation\+\_\+type \&impl, int type, const native\+\_\+handle\+\_\+type \&native\+\_\+socket, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::do\+\_\+assign (
+\begin{DoxyParamCaption}
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{int}]{type, }
+\item[{const {\bf native\+\_\+handle\+\_\+type} \&}]{native\+\_\+socket, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a9e8bda510627062509d64814bd2af53b}
+
+
+Definition at line 170 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a1ff70806e1ef6846c394883a65082bd0}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!do\+\_\+open@{do\+\_\+open}}
+\index{do\+\_\+open@{do\+\_\+open}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{do\+\_\+open(base\+\_\+implementation\+\_\+type \&impl, int af, int type, int protocol, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::do\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{int}]{af, }
+\item[{int}]{type, }
+\item[{int}]{protocol, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a1ff70806e1ef6846c394883a65082bd0}
+
+
+Definition at line 138 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a8427e535d4fece6a925d31c2df9f2ecb}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!io\+\_\+control@{io\+\_\+control}}
+\index{io\+\_\+control@{io\+\_\+control}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{io\+\_\+control(base\+\_\+implementation\+\_\+type \&impl, I\+O\+\_\+\+Control\+\_\+\+Command \&command, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename I\+O\+\_\+\+Control\+\_\+\+Command $>$ {\bf asio\+::error\+\_\+code} asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::io\+\_\+control (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{I\+O\+\_\+\+Control\+\_\+\+Command \&}]{command, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a8427e535d4fece6a925d31c2df9f2ecb}
+
+
+Definition at line 129 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a3bacc9bb408d59f2b8a53a2c727a3a21}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!is\+\_\+open@{is\+\_\+open}}
+\index{is\+\_\+open@{is\+\_\+open}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{is\+\_\+open(const base\+\_\+implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::is\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{const {\bf base\+\_\+implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a3bacc9bb408d59f2b8a53a2c727a3a21}
+
+
+Definition at line 86 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_aea818546babf22661b90c6a37985806c}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!listen@{listen}}
+\index{listen@{listen}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{listen(base\+\_\+implementation\+\_\+type \&impl, int backlog, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::listen (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{int}]{backlog, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_aea818546babf22661b90c6a37985806c}
+
+
+Definition at line 120 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a64c07944a73acadc4906d0ca6311bbc9}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!native\+\_\+handle@{native\+\_\+handle}}
+\index{native\+\_\+handle@{native\+\_\+handle}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{native\+\_\+handle(base\+\_\+implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf native\+\_\+handle\+\_\+type} asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::native\+\_\+handle (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a64c07944a73acadc4906d0ca6311bbc9}
+
+
+Definition at line 96 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a40ec3c4df9ee2553e0103bc943562d82}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}}
+\index{native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{native\+\_\+non\+\_\+blocking(const base\+\_\+implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::native\+\_\+non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{const {\bf base\+\_\+implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a40ec3c4df9ee2553e0103bc943562d82}
+
+
+Definition at line 152 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_afb8a66f8718231b058cde4594fc1750e}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}}
+\index{native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{native\+\_\+non\+\_\+blocking(base\+\_\+implementation\+\_\+type \&impl, bool mode, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::native\+\_\+non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{bool}]{mode, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_afb8a66f8718231b058cde4594fc1750e}
+
+
+Definition at line 158 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_ae70479d67863203a37c0db50edc9eb6f}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!non\+\_\+blocking@{non\+\_\+blocking}}
+\index{non\+\_\+blocking@{non\+\_\+blocking}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{non\+\_\+blocking(const base\+\_\+implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{const {\bf base\+\_\+implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_ae70479d67863203a37c0db50edc9eb6f}
+
+
+Definition at line 138 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a70d41eca908a74f66d846bc8411b95fb}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!non\+\_\+blocking@{non\+\_\+blocking}}
+\index{non\+\_\+blocking@{non\+\_\+blocking}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{non\+\_\+blocking(base\+\_\+implementation\+\_\+type \&impl, bool mode, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{bool}]{mode, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a70d41eca908a74f66d846bc8411b95fb}
+
+
+Definition at line 144 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a5b023546d28a8b111a9661f7a2ab30c6}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!receive@{receive}}
+\index{receive@{receive}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{receive(base\+\_\+implementation\+\_\+type \&impl, const Mutable\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Mutable\+Buffer\+Sequence $>$ size\+\_\+t asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::receive (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a5b023546d28a8b111a9661f7a2ab30c6}
+
+
+Definition at line 246 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_ad0803c43d3ce18ca81b3a4182f55f3e5}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!receive@{receive}}
+\index{receive@{receive}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{receive(base\+\_\+implementation\+\_\+type \&impl, const null\+\_\+buffers \&, socket\+\_\+base\+::message\+\_\+flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::receive (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf null\+\_\+buffers} \&}]{, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_ad0803c43d3ce18ca81b3a4182f55f3e5}
+
+
+Definition at line 258 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a9d7f34d86e6d80304a47a430dfdac1d4}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!receive\+\_\+with\+\_\+flags@{receive\+\_\+with\+\_\+flags}}
+\index{receive\+\_\+with\+\_\+flags@{receive\+\_\+with\+\_\+flags}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{receive\+\_\+with\+\_\+flags(base\+\_\+implementation\+\_\+type \&impl, const Mutable\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags in\+\_\+flags, socket\+\_\+base\+::message\+\_\+flags \&out\+\_\+flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Mutable\+Buffer\+Sequence $>$ size\+\_\+t asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::receive\+\_\+with\+\_\+flags (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{in\+\_\+flags, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags} \&}]{out\+\_\+flags, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a9d7f34d86e6d80304a47a430dfdac1d4}
+
+
+Definition at line 325 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a57f7a732b7faa0675ce3da604af82930}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!receive\+\_\+with\+\_\+flags@{receive\+\_\+with\+\_\+flags}}
+\index{receive\+\_\+with\+\_\+flags@{receive\+\_\+with\+\_\+flags}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{receive\+\_\+with\+\_\+flags(base\+\_\+implementation\+\_\+type \&impl, const null\+\_\+buffers \&, socket\+\_\+base\+::message\+\_\+flags, socket\+\_\+base\+::message\+\_\+flags \&out\+\_\+flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::receive\+\_\+with\+\_\+flags (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf null\+\_\+buffers} \&}]{, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags} \&}]{out\+\_\+flags, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a57f7a732b7faa0675ce3da604af82930}
+
+
+Definition at line 338 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a802d4d18c1e516d4f68e03a0acb3aa68}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!send@{send}}
+\index{send@{send}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{send(base\+\_\+implementation\+\_\+type \&impl, const Const\+Buffer\+Sequence \&buffers, socket\+\_\+base\+::message\+\_\+flags flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Const\+Buffer\+Sequence $>$ size\+\_\+t asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::send (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{flags, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a802d4d18c1e516d4f68e03a0acb3aa68}
+
+
+Definition at line 175 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_aab5d919bb2f0a68c33a6ff71dbf74c07}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!send@{send}}
+\index{send@{send}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{send(base\+\_\+implementation\+\_\+type \&impl, const null\+\_\+buffers \&, socket\+\_\+base\+::message\+\_\+flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::send (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf null\+\_\+buffers} \&}]{, }
+\item[{{\bf socket\+\_\+base\+::message\+\_\+flags}}]{, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_aab5d919bb2f0a68c33a6ff71dbf74c07}
+
+
+Definition at line 187 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a4bc8a54b04e35fe393fba4c3ba46ae4e}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{shutdown(base\+\_\+implementation\+\_\+type \&impl, socket\+\_\+base\+::shutdown\+\_\+type what, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::shutdown (
+\begin{DoxyParamCaption}
+\item[{{\bf base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf socket\+\_\+base\+::shutdown\+\_\+type}}]{what, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a4bc8a54b04e35fe393fba4c3ba46ae4e}
+
+
+Definition at line 166 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a1f2bc705ded3da9151d9ad502830a6a3}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!shutdown\+\_\+service@{shutdown\+\_\+service}}
+\index{shutdown\+\_\+service@{shutdown\+\_\+service}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{shutdown\+\_\+service()}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::shutdown\+\_\+service (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1detail_1_1reactive__socket__service__base_a1f2bc705ded3da9151d9ad502830a6a3}
+
+
+Definition at line 37 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a6b9a76ac02e06ecc5dc2ec312e714191}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!start\+\_\+accept\+\_\+op@{start\+\_\+accept\+\_\+op}}
+\index{start\+\_\+accept\+\_\+op@{start\+\_\+accept\+\_\+op}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{start\+\_\+accept\+\_\+op(base\+\_\+implementation\+\_\+type \&impl, reactor\+\_\+op $\ast$op, bool is\+\_\+continuation, bool peer\+\_\+is\+\_\+open)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::start\+\_\+accept\+\_\+op (
+\begin{DoxyParamCaption}
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf reactor\+\_\+op} $\ast$}]{op, }
+\item[{bool}]{is\+\_\+continuation, }
+\item[{bool}]{peer\+\_\+is\+\_\+open}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a6b9a76ac02e06ecc5dc2ec312e714191}
+
+
+Definition at line 221 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_ae9fb4b74b8eca9392bc23fcd2df7f901}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!start\+\_\+connect\+\_\+op@{start\+\_\+connect\+\_\+op}}
+\index{start\+\_\+connect\+\_\+op@{start\+\_\+connect\+\_\+op}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{start\+\_\+connect\+\_\+op(base\+\_\+implementation\+\_\+type \&impl, reactor\+\_\+op $\ast$op, bool is\+\_\+continuation, const socket\+\_\+addr\+\_\+type $\ast$addr, size\+\_\+t addrlen)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::start\+\_\+connect\+\_\+op (
+\begin{DoxyParamCaption}
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf reactor\+\_\+op} $\ast$}]{op, }
+\item[{bool}]{is\+\_\+continuation, }
+\item[{const {\bf socket\+\_\+addr\+\_\+type} $\ast$}]{addr, }
+\item[{size\+\_\+t}]{addrlen}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_ae9fb4b74b8eca9392bc23fcd2df7f901}
+
+
+Definition at line 234 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a72db6e5cd07a17aed3d352f7c4852436}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!start\+\_\+op@{start\+\_\+op}}
+\index{start\+\_\+op@{start\+\_\+op}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{start\+\_\+op(base\+\_\+implementation\+\_\+type \&impl, int op\+\_\+type, reactor\+\_\+op $\ast$op, bool is\+\_\+continuation, bool is\+\_\+non\+\_\+blocking, bool noop)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::start\+\_\+op (
+\begin{DoxyParamCaption}
+\item[{{\bf reactive\+\_\+socket\+\_\+service\+\_\+base\+::base\+\_\+implementation\+\_\+type} \&}]{impl, }
+\item[{int}]{op\+\_\+type, }
+\item[{{\bf reactor\+\_\+op} $\ast$}]{op, }
+\item[{bool}]{is\+\_\+continuation, }
+\item[{bool}]{is\+\_\+non\+\_\+blocking, }
+\item[{bool}]{noop}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a72db6e5cd07a17aed3d352f7c4852436}
+
+
+Definition at line 201 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classasio_1_1detail_1_1reactive__socket__service__base_a487bbc9ae7bffc0df3c2eb0cf9d09f60}{}\index{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}!reactor\+\_\+@{reactor\+\_\+}}
+\index{reactor\+\_\+@{reactor\+\_\+}!asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base@{asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base}}
+\subsubsection[{reactor\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}{\bf reactor}\& asio\+::detail\+::reactive\+\_\+socket\+\_\+service\+\_\+base\+::reactor\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}\label{classasio_1_1detail_1_1reactive__socket__service__base_a487bbc9ae7bffc0df3c2eb0cf9d09f60}
+
+
+Definition at line 435 of file reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/detail/\hyperlink{reactive__socket__service__base_8hpp}{reactive\+\_\+socket\+\_\+service\+\_\+base.\+hpp}\item 
+ext/asio/detail/impl/\hyperlink{reactive__socket__service__base_8ipp}{reactive\+\_\+socket\+\_\+service\+\_\+base.\+ipp}\end{DoxyCompactItemize}

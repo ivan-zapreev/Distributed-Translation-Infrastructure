@@ -1,0 +1,4 @@
+var classwebsocketpp____1____1transport____1____1debug____1____1connection__8js_8js =
+[
+    [ "classwebsocketpp__1__1transport__1__1debug__1__1connection_8js", "classwebsocketpp____1____1transport____1____1debug____1____1connection__8js_8js.html#a4eeea09737c12048e431a1e4665b64c1", null ]
+];

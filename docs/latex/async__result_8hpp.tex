@@ -1,0 +1,47 @@
+\hypertarget{async__result_8hpp}{}\section{ext/asio/async\+\_\+result.hpp File Reference}
+\label{async__result_8hpp}\index{ext/asio/async\+\_\+result.\+hpp@{ext/asio/async\+\_\+result.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/handler\+\_\+type.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1async__result}{asio\+::async\+\_\+result$<$ Handler $>$}
+\begin{DoxyCompactList}\small\item\em An interface for customising the behaviour of an initiating function. \end{DoxyCompactList}\item 
+struct \hyperlink{structasio_1_1detail_1_1async__result__init}{asio\+::detail\+::async\+\_\+result\+\_\+init$<$ Handler, Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1detail_1_1async__result__type__helper}{asio\+::detail\+::async\+\_\+result\+\_\+type\+\_\+helper$<$ Handler, Signature $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1detail}{asio\+::detail}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{async__result_8hpp_a07d559848c6609ce329712c168656133}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}(h,  sig)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{async__result_8hpp_a07d559848c6609ce329712c168656133}{}\index{async\+\_\+result.\+hpp@{async\+\_\+result.\+hpp}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!async\+\_\+result.\+hpp@{async\+\_\+result.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(
+\begin{DoxyParamCaption}
+\item[{}]{h, }
+\item[{}]{sig}
+\end{DoxyParamCaption}
+)}\label{async__result_8hpp_a07d559848c6609ce329712c168656133}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+typename ::asio::async\_result< \(\backslash\)
+    typename ::asio::handler\_type<h, sig>::type>::type
+\end{DoxyCode}
+
+
+Definition at line 89 of file async\+\_\+result.\+hpp.
+

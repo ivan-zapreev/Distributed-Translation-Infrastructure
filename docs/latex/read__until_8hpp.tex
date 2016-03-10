@@ -1,0 +1,52 @@
+\hypertarget{read__until_8hpp}{}\section{ext/asio/read\+\_\+until.hpp File Reference}
+\label{read__until_8hpp}\index{ext/asio/read\+\_\+until.\+hpp@{ext/asio/read\+\_\+until.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$cstddef$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include \char`\"{}asio/async\+\_\+result.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/basic\+\_\+streambuf.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/regex\+\_\+fwd.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/type\+\_\+traits.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/error.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/impl/read\+\_\+until.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structasio_1_1detail_1_1has__result__type}{asio\+::detail\+::has\+\_\+result\+\_\+type$<$ T $>$}
+\item 
+struct \hyperlink{structasio_1_1is__match__condition}{asio\+::is\+\_\+match\+\_\+condition$<$ T $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1detail}{asio\+::detail}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+char(\& \hyperlink{namespaceasio_1_1detail_ab7c825c67c9e62866d305af68bf0643c}{asio\+::detail\+::has\+\_\+result\+\_\+type\+\_\+helper} (...))\mbox{[}2\mbox{]}
+\item 
+{\footnotesize template$<$typename T $>$ }\\char \hyperlink{namespaceasio_1_1detail_a73ace2367ad6765599cc755cee7ca779}{asio\+::detail\+::has\+\_\+result\+\_\+type\+\_\+helper} (T $\ast$, typename T\+::result\+\_\+type $\ast$=0)
+\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_ga1aae2baa82596a6a9ad320e80b016006}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, char delim)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until it contains a specified delimiter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_gab9d265cc5b757caf9c9a602da2d6a3e5}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, char delim, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until it contains a specified delimiter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_ga6f38642ad22fcb7f72ddc9fd2b586541}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, const std\+::string \&delim)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until it contains a specified delimiter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_ga27386e9b95114d7def2feee77e2dfd93}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, const std\+::string \&delim, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until it contains a specified delimiter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator , typename Match\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_ga5aa4b441eca98c82a144cb9a3c625db4}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, Match\+Condition match\+\_\+condition, typename enable\+\_\+if$<$ is\+\_\+match\+\_\+condition$<$ Match\+Condition $>$\+::value $>$\+::type $\ast$=0)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until a function object indicates a match. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator , typename Match\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_gaacb23419d8878f33e469e3f743c738d6}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, Match\+Condition match\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, typename enable\+\_\+if$<$ is\+\_\+match\+\_\+condition$<$ Match\+Condition $>$\+::value $>$\+::type $\ast$=0)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until a function object indicates a match. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Async\+Read\+Stream , typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ }\\\hyperlink{group__async__read_ga3d4f5c52cc8c1c5d16fc7bf7e0f75c4b}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Read\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+read(Async\+Read\+Stream \&s
+\item 
+const Mutable\+Buffer\+Sequence Completion\+Condition \hyperlink{group__async__read_gac41f6414b06e189a76689422b8e2db35}{asio\+::\+A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Read\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Async\+Read\+Stream , typename Mutable\+Buffer\+Sequence , typename Completion\+Condition , typename Read\+Handler $>$ }\\\hyperlink{group__async__read_gab321259782b3683c80f33eb1050a3251}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Read\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+read(Async\+Read\+Stream \&s
+\end{DoxyCompactItemize}

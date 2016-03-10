@@ -1,0 +1,4 @@
+var structasio_1_1handler__type_3_01basic__yield__context_3_01_handler_01_4_00_01_01_01_01_01_01_01_d15b502de1534464d7abfd193f1b4967 =
+[
+    [ "type", "structasio_1_1handler__type_3_01basic__yield__context_3_01_handler_01_4_00_01_01_01_01_01_01_01_d15b502de1534464d7abfd193f1b4967.html#ac79206d3bc40e561474c164aa76250ec", null ]
+];

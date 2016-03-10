@@ -1,0 +1,100 @@
+\hypertarget{classwebsocketpp_1_1random_1_1random__device_1_1int__generator}{}\section{websocketpp\+:\+:random\+:\+:random\+\_\+device\+:\+:int\+\_\+generator$<$ int\+\_\+type, concurrency $>$ Class Template Reference}
+\label{classwebsocketpp_1_1random_1_1random__device_1_1int__generator}\index{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator$<$ int\+\_\+type, concurrency $>$@{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator$<$ int\+\_\+type, concurrency $>$}}
+
+
+Thread safe non-\/deterministic random integer generator.  
+
+
+
+
+{\ttfamily \#include $<$random\+\_\+device.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef concurrency\+::scoped\+\_\+lock\+\_\+type \hyperlink{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_a7702456f8c753025bb52db190bfa04b3}{scoped\+\_\+lock\+\_\+type}
+\item 
+typedef concurrency\+::mutex\+\_\+type \hyperlink{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_a76479f1088f245508e7efce66b3ab51c}{mutex\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_ac1752f1f3cb1c3cb6a98e252b6baac8a}{int\+\_\+generator} ()
+\begin{DoxyCompactList}\small\item\em constructor \end{DoxyCompactList}\item 
+int\+\_\+type \hyperlink{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_a6e4fea3c83b876cc364f9d9370b0c5a1}{operator()} ()
+\begin{DoxyCompactList}\small\item\em advances the engine\textquotesingle{}s state and returns the generated value \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename int\+\_\+type, typename concurrency$>$class websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator$<$ int\+\_\+type, concurrency $>$}
+
+Thread safe non-\/deterministic random integer generator. 
+
+This template class provides thread safe non-\/deterministic random integer generation. Numbers are produced in a uniformly distributed range from the smallest to largest value that int\+\_\+type can store.
+
+Thread-\/safety is provided via locking based on the concurrency template parameter.
+
+Non-\/deterministic R\+N\+G is provided via \hyperlink{namespacewebsocketpp_1_1lib}{websocketpp\+::lib} which uses either C++11 or Boost 1.\+47+\textquotesingle{}s \hyperlink{namespacewebsocketpp_1_1random_1_1random__device}{random\+\_\+device} class.
+
+Call operator() to generate the next number 
+
+Definition at line 53 of file random\+\_\+device.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_a76479f1088f245508e7efce66b3ab51c}{}\index{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator@{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}!mutex\+\_\+type@{mutex\+\_\+type}}
+\index{mutex\+\_\+type@{mutex\+\_\+type}!websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator@{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}}
+\subsubsection[{mutex\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename int\+\_\+type , typename concurrency $>$ typedef concurrency\+::mutex\+\_\+type {\bf websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}$<$ int\+\_\+type, concurrency $>$\+::{\bf mutex\+\_\+type}}\label{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_a76479f1088f245508e7efce66b3ab51c}
+
+
+Definition at line 56 of file random\+\_\+device.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_a7702456f8c753025bb52db190bfa04b3}{}\index{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator@{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}!scoped\+\_\+lock\+\_\+type@{scoped\+\_\+lock\+\_\+type}}
+\index{scoped\+\_\+lock\+\_\+type@{scoped\+\_\+lock\+\_\+type}!websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator@{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}}
+\subsubsection[{scoped\+\_\+lock\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename int\+\_\+type , typename concurrency $>$ typedef concurrency\+::scoped\+\_\+lock\+\_\+type {\bf websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}$<$ int\+\_\+type, concurrency $>$\+::{\bf scoped\+\_\+lock\+\_\+type}}\label{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_a7702456f8c753025bb52db190bfa04b3}
+
+
+Definition at line 55 of file random\+\_\+device.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_ac1752f1f3cb1c3cb6a98e252b6baac8a}{}\index{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator@{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}!int\+\_\+generator@{int\+\_\+generator}}
+\index{int\+\_\+generator@{int\+\_\+generator}!websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator@{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}}
+\subsubsection[{int\+\_\+generator()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename int\+\_\+type , typename concurrency $>$ {\bf websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}$<$ int\+\_\+type, concurrency $>$\+::{\bf int\+\_\+generator} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_ac1752f1f3cb1c3cb6a98e252b6baac8a}
+
+
+constructor 
+
+
+
+Definition at line 60 of file random\+\_\+device.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_a6e4fea3c83b876cc364f9d9370b0c5a1}{}\index{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator@{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}!operator()@{operator()}}
+\index{operator()@{operator()}!websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator@{websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}}
+\subsubsection[{operator()()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename int\+\_\+type , typename concurrency $>$ int\+\_\+type {\bf websocketpp\+::random\+::random\+\_\+device\+::int\+\_\+generator}$<$ int\+\_\+type, concurrency $>$\+::operator() (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1random_1_1random__device_1_1int__generator_a6e4fea3c83b876cc364f9d9370b0c5a1}
+
+
+advances the engine\textquotesingle{}s state and returns the generated value 
+
+
+
+Definition at line 63 of file random\+\_\+device.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/random/\hyperlink{random__device_8hpp}{random\+\_\+device.\+hpp}\end{DoxyCompactItemize}

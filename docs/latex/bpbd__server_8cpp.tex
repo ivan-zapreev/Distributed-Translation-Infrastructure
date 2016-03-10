@@ -1,0 +1,108 @@
+\hypertarget{bpbd__server_8cpp}{}\section{src/server/bpbd\+\_\+server.cpp File Reference}
+\label{bpbd__server_8cpp}\index{src/server/bpbd\+\_\+server.\+cpp@{src/server/bpbd\+\_\+server.\+cpp}}
+{\ttfamily \#include $<$cctype$>$}\\*
+{\ttfamily \#include $<$cstdlib$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$websocketpp/common/thread.\+hpp$>$}\\*
+{\ttfamily \#include $<$tclap/\+Cmd\+Line.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}main.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/server\+\_\+parameters.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/translation\+\_\+server.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/decoder/de\+\_\+configurator.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/lm\+\_\+configurator.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/tm/tm\+\_\+configurator.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/rm/rm\+\_\+configurator.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/cmd\+\_\+line\+\_\+handler.\+hpp\char`\"{}}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{bpbd__server_8cpp_a7b840156050051a42341fb349765bba9}{P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R}~\char`\"{}1.\+0\char`\"{}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{bpbd__server_8cpp_ae33bb4ba4438f5eb49aa5537fcd20bce}{create\+\_\+arguments\+\_\+parser} ()
+\item 
+void \hyperlink{bpbd__server_8cpp_a865eae59e487cdcab1b549cc29b01ae6}{destroy\+\_\+arguments\+\_\+parser} ()
+\item 
+void \hyperlink{bpbd__server_8cpp_ad55b87e27e35c4b1bded33708e3ec5c4}{connect\+\_\+to\+\_\+models} (const \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1server__parameters}{server\+\_\+parameters} \&params)
+\item 
+void \hyperlink{bpbd__server_8cpp_a9d741807b33e44c89ddbab6af03898e0}{disconnect\+\_\+from\+\_\+models} ()
+\item 
+int \hyperlink{bpbd__server_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{bpbd__server_8cpp_a7b840156050051a42341fb349765bba9}{}\index{bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}!P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R@{P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R}}
+\index{P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R@{P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R}!bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}}
+\subsubsection[{P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+R\+O\+G\+R\+A\+M\+\_\+\+V\+E\+R\+S\+I\+O\+N\+\_\+\+S\+T\+R~\char`\"{}1.\+0\char`\"{}}\label{bpbd__server_8cpp_a7b840156050051a42341fb349765bba9}
+
+
+Definition at line 62 of file bpbd\+\_\+server.\+cpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{bpbd__server_8cpp_ad55b87e27e35c4b1bded33708e3ec5c4}{}\index{bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}!connect\+\_\+to\+\_\+models@{connect\+\_\+to\+\_\+models}}
+\index{connect\+\_\+to\+\_\+models@{connect\+\_\+to\+\_\+models}!bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}}
+\subsubsection[{connect\+\_\+to\+\_\+models(const server\+\_\+parameters \&params)}]{\setlength{\rightskip}{0pt plus 5cm}void connect\+\_\+to\+\_\+models (
+\begin{DoxyParamCaption}
+\item[{const {\bf server\+\_\+parameters} \&}]{params}
+\end{DoxyParamCaption}
+)}\label{bpbd__server_8cpp_ad55b87e27e35c4b1bded33708e3ec5c4}
+Allows to establish connections to the models\+: language, translation, reordering 
+\begin{DoxyParams}{Parameters}
+{\em params} & the parameters needed to establish connections to the models \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 201 of file bpbd\+\_\+server.\+cpp.
+
+\hypertarget{bpbd__server_8cpp_ae33bb4ba4438f5eb49aa5537fcd20bce}{}\index{bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}!create\+\_\+arguments\+\_\+parser@{create\+\_\+arguments\+\_\+parser}}
+\index{create\+\_\+arguments\+\_\+parser@{create\+\_\+arguments\+\_\+parser}!bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}}
+\subsubsection[{create\+\_\+arguments\+\_\+parser()}]{\setlength{\rightskip}{0pt plus 5cm}void create\+\_\+arguments\+\_\+parser (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{bpbd__server_8cpp_ae33bb4ba4438f5eb49aa5537fcd20bce}
+Creates and sets up the command line parameters parser 
+
+Definition at line 81 of file bpbd\+\_\+server.\+cpp.
+
+\hypertarget{bpbd__server_8cpp_a865eae59e487cdcab1b549cc29b01ae6}{}\index{bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}!destroy\+\_\+arguments\+\_\+parser@{destroy\+\_\+arguments\+\_\+parser}}
+\index{destroy\+\_\+arguments\+\_\+parser@{destroy\+\_\+arguments\+\_\+parser}!bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}}
+\subsubsection[{destroy\+\_\+arguments\+\_\+parser()}]{\setlength{\rightskip}{0pt plus 5cm}void destroy\+\_\+arguments\+\_\+parser (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{bpbd__server_8cpp_a865eae59e487cdcab1b549cc29b01ae6}
+Allows to deallocate the parameters parser if it is needed 
+
+Definition at line 97 of file bpbd\+\_\+server.\+cpp.
+
+\hypertarget{bpbd__server_8cpp_a9d741807b33e44c89ddbab6af03898e0}{}\index{bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}!disconnect\+\_\+from\+\_\+models@{disconnect\+\_\+from\+\_\+models}}
+\index{disconnect\+\_\+from\+\_\+models@{disconnect\+\_\+from\+\_\+models}!bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}}
+\subsubsection[{disconnect\+\_\+from\+\_\+models()}]{\setlength{\rightskip}{0pt plus 5cm}void disconnect\+\_\+from\+\_\+models (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{bpbd__server_8cpp_a9d741807b33e44c89ddbab6af03898e0}
+Allows to disconnect from the models\+: language, translation, reordering 
+
+Definition at line 218 of file bpbd\+\_\+server.\+cpp.
+
+\hypertarget{bpbd__server_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{}\index{bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}!main@{main}}
+\index{main@{main}!bpbd\+\_\+server.\+cpp@{bpbd\+\_\+server.\+cpp}}
+\subsubsection[{main(int argc, char $\ast$$\ast$argv)}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$$\ast$}]{argv}
+\end{DoxyParamCaption}
+)}\label{bpbd__server_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}
+The main program entry point 
+
+Definition at line 235 of file bpbd\+\_\+server.\+cpp.
+

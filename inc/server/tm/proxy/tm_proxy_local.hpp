@@ -101,11 +101,10 @@ namespace uva {
                             }
 
                             /**
+                             * \todo In the future we should just use a number of stack allocated objects in order to reduce the new/delete overhead
                              * @see tm_proxy
                              */
                             virtual void dispose_query_proxy(tm_query_proxy & query) {
-                                //ToDo: In the future we should just use a number of stack
-                                //allocated objects in order to reduce the new/delete overhead
                                 delete &query;
                             }
 

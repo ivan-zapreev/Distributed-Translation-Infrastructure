@@ -1,0 +1,235 @@
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger}{}\section{uva\+:\+:utils\+:\+:logging\+:\+:Logger Class Reference}
+\label{classuva_1_1utils_1_1logging_1_1_logger}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+
+
+{\ttfamily \#include $<$logger.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_a0ff9f0d22e6914f8634e9339bab03c56}{$\sim$\+Logger} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_a480058c384ec3c8438b52b6ae8ce7608}{get\+\_\+reporting\+\_\+levels} (vector$<$ string $>$ $\ast$p\+\_\+reporting\+\_\+levels)
+\item 
+static void \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_ac115ef9f3ddf667e9f7d0c9c00fcd655}{set\+\_\+reporting\+\_\+level} (const string level)
+\item 
+static std\+::ostream \& \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_a508164fb7011996a73bec01ad30465ce}{get} (\hyperlink{namespaceuva_1_1utils_1_1logging_afe529dbf8d7fef2c75698798ec3e65e7}{Debug\+Levels\+Enum} level)
+\item 
+static std\+::ostream \& \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_aaeb7427ead2050328341260ef044fcf5}{get} (\hyperlink{namespaceuva_1_1utils_1_1logging_afe529dbf8d7fef2c75698798ec3e65e7}{Debug\+Levels\+Enum} level, const char $\ast$file, const char $\ast$func, const char $\ast$line)
+\item 
+static bool \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_aee3c68042685ec6d11f8ceac204aabb3}{is\+\_\+relevant\+\_\+level} (const \hyperlink{namespaceuva_1_1utils_1_1logging_afe529dbf8d7fef2c75698798ec3e65e7}{Debug\+Levels\+Enum} \&level)
+\item 
+static \hyperlink{namespaceuva_1_1utils_1_1logging_afe529dbf8d7fef2c75698798ec3e65e7}{Debug\+Levels\+Enum} \& \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_a79759a95b580c0e3673db54a345fccbb}{get\+\_\+reporting\+\_\+level} ()
+\item 
+static const string \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_a81a7f436b3b5141685baeebc6142c98c}{get\+\_\+curr\+\_\+level\+\_\+str} ()
+\item 
+static void \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_aa99de82f99b69d0fcc801e1cdd027cef}{start\+\_\+progress\+\_\+bar} (const string \&msg)
+\item 
+static void \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_a7fcd67ede67ecb486da76d3788f39388}{update\+\_\+progress\+\_\+bar} ()
+\item 
+static void \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_aee80ead21adb144d08addd017c09d674}{stop\+\_\+progress\+\_\+bar} ()
+\item 
+static bool \hyperlink{classuva_1_1utils_1_1logging_1_1_logger_ab7b30f96654aebda8fa046fc5a15c339}{is\+\_\+progress\+\_\+bar\+\_\+on} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is a trivial logging facility that exchibits a singleton behavior and does output to stderr and stdout. 
+
+Definition at line 147 of file logger.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_a0ff9f0d22e6914f8634e9339bab03c56}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!````~Logger@{$\sim$\+Logger}}
+\index{````~Logger@{$\sim$\+Logger}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{$\sim$\+Logger()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::utils\+::logging\+::\+Logger\+::$\sim$\+Logger (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1utils_1_1logging_1_1_logger_a0ff9f0d22e6914f8634e9339bab03c56}
+
+
+Definition at line 150 of file logger.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_a508164fb7011996a73bec01ad30465ce}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!get@{get}}
+\index{get@{get}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{get(\+Debug\+Levels\+Enum level)}]{\setlength{\rightskip}{0pt plus 5cm}static std\+::ostream\& uva\+::utils\+::logging\+::\+Logger\+::get (
+\begin{DoxyParamCaption}
+\item[{{\bf Debug\+Levels\+Enum}}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1utils_1_1logging_1_1_logger_a508164fb7011996a73bec01ad30465ce}
+This methods allows to get the output stream for the given log-\/level 
+\begin{DoxyParams}{Parameters}
+{\em level} & the log level for the messages to print \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the output stream object 
+\end{DoxyReturn}
+
+
+Definition at line 170 of file logger.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_aaeb7427ead2050328341260ef044fcf5}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!get@{get}}
+\index{get@{get}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{get(\+Debug\+Levels\+Enum level, const char $\ast$file, const char $\ast$func, const char $\ast$line)}]{\setlength{\rightskip}{0pt plus 5cm}static std\+::ostream\& uva\+::utils\+::logging\+::\+Logger\+::get (
+\begin{DoxyParamCaption}
+\item[{{\bf Debug\+Levels\+Enum}}]{level, }
+\item[{const char $\ast$}]{file, }
+\item[{const char $\ast$}]{func, }
+\item[{const char $\ast$}]{line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1utils_1_1logging_1_1_logger_aaeb7427ead2050328341260ef044fcf5}
+This methods allows to get the output stream for the given log-\/level 
+\begin{DoxyParams}{Parameters}
+{\em level} & the log level for the messages to print \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the output stream object 
+\end{DoxyReturn}
+
+
+Definition at line 179 of file logger.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_a81a7f436b3b5141685baeebc6142c98c}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!get\+\_\+curr\+\_\+level\+\_\+str@{get\+\_\+curr\+\_\+level\+\_\+str}}
+\index{get\+\_\+curr\+\_\+level\+\_\+str@{get\+\_\+curr\+\_\+level\+\_\+str}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{get\+\_\+curr\+\_\+level\+\_\+str()}]{\setlength{\rightskip}{0pt plus 5cm}static const string uva\+::utils\+::logging\+::\+Logger\+::get\+\_\+curr\+\_\+level\+\_\+str (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1utils_1_1logging_1_1_logger_a81a7f436b3b5141685baeebc6142c98c}
+Allows to obtain the current reporting level string \begin{DoxyReturn}{Returns}
+the current reporting level string 
+\end{DoxyReturn}
+
+
+Definition at line 205 of file logger.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_a79759a95b580c0e3673db54a345fccbb}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!get\+\_\+reporting\+\_\+level@{get\+\_\+reporting\+\_\+level}}
+\index{get\+\_\+reporting\+\_\+level@{get\+\_\+reporting\+\_\+level}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{get\+\_\+reporting\+\_\+level()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf Debug\+Levels\+Enum}\& uva\+::utils\+::logging\+::\+Logger\+::get\+\_\+reporting\+\_\+level (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1utils_1_1logging_1_1_logger_a79759a95b580c0e3673db54a345fccbb}
+Returns the reference to the internal log level variable \begin{DoxyReturn}{Returns}
+the reference to the internal log level variable 
+\end{DoxyReturn}
+
+
+Definition at line 197 of file logger.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_a480058c384ec3c8438b52b6ae8ce7608}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!get\+\_\+reporting\+\_\+levels@{get\+\_\+reporting\+\_\+levels}}
+\index{get\+\_\+reporting\+\_\+levels@{get\+\_\+reporting\+\_\+levels}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{get\+\_\+reporting\+\_\+levels(vector$<$ string $>$ $\ast$p\+\_\+reporting\+\_\+levels)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::utils\+::logging\+::\+Logger\+::get\+\_\+reporting\+\_\+levels (
+\begin{DoxyParamCaption}
+\item[{vector$<$ string $>$ $\ast$}]{p\+\_\+reporting\+\_\+levels}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1utils_1_1logging_1_1_logger_a480058c384ec3c8438b52b6ae8ce7608}
+Allows to retrieve the list of supporter logging levels 
+\begin{DoxyParams}{Parameters}
+{\em p\+\_\+reporting\+\_\+levels} & the pointer to the logging levels vector to be filled in \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 86 of file logger.\+cpp.
+
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_ab7b30f96654aebda8fa046fc5a15c339}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!is\+\_\+progress\+\_\+bar\+\_\+on@{is\+\_\+progress\+\_\+bar\+\_\+on}}
+\index{is\+\_\+progress\+\_\+bar\+\_\+on@{is\+\_\+progress\+\_\+bar\+\_\+on}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{is\+\_\+progress\+\_\+bar\+\_\+on()}]{\setlength{\rightskip}{0pt plus 5cm}static bool uva\+::utils\+::logging\+::\+Logger\+::is\+\_\+progress\+\_\+bar\+\_\+on (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1utils_1_1logging_1_1_logger_ab7b30f96654aebda8fa046fc5a15c339}
+The function allows to check if the progress bar is running or not \begin{DoxyReturn}{Returns}
+true if the progress bar is running, otherwise case; 
+\end{DoxyReturn}
+
+
+Definition at line 232 of file logger.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_aee3c68042685ec6d11f8ceac204aabb3}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!is\+\_\+relevant\+\_\+level@{is\+\_\+relevant\+\_\+level}}
+\index{is\+\_\+relevant\+\_\+level@{is\+\_\+relevant\+\_\+level}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{is\+\_\+relevant\+\_\+level(const Debug\+Levels\+Enum \&level)}]{\setlength{\rightskip}{0pt plus 5cm}static bool uva\+::utils\+::logging\+::\+Logger\+::is\+\_\+relevant\+\_\+level (
+\begin{DoxyParamCaption}
+\item[{const {\bf Debug\+Levels\+Enum} \&}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1utils_1_1logging_1_1_logger_aee3c68042685ec6d11f8ceac204aabb3}
+Checks if the current reporting level is higher or equal to the given \begin{DoxyReturn}{Returns}
+the reporting level to check 
+
+true if the given reporting level is smaller or equal to the current, otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 189 of file logger.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_ac115ef9f3ddf667e9f7d0c9c00fcd655}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!set\+\_\+reporting\+\_\+level@{set\+\_\+reporting\+\_\+level}}
+\index{set\+\_\+reporting\+\_\+level@{set\+\_\+reporting\+\_\+level}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{set\+\_\+reporting\+\_\+level(const string level)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::utils\+::logging\+::\+Logger\+::set\+\_\+reporting\+\_\+level (
+\begin{DoxyParamCaption}
+\item[{const string}]{level}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1utils_1_1logging_1_1_logger_ac115ef9f3ddf667e9f7d0c9c00fcd655}
+Allows to set the logging level from a string, if not recognized -\/ reports a warning! 
+\begin{DoxyParams}{Parameters}
+{\em level} & the string level to set \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 94 of file logger.\+cpp.
+
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_aa99de82f99b69d0fcc801e1cdd027cef}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!start\+\_\+progress\+\_\+bar@{start\+\_\+progress\+\_\+bar}}
+\index{start\+\_\+progress\+\_\+bar@{start\+\_\+progress\+\_\+bar}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{start\+\_\+progress\+\_\+bar(const string \&msg)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::utils\+::logging\+::\+Logger\+::start\+\_\+progress\+\_\+bar (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1utils_1_1logging_1_1_logger_aa99de82f99b69d0fcc801e1cdd027cef}
+The function that start progress bar Works if the current debug level is $<$= I\+N\+F\+O 
+\begin{DoxyParams}{Parameters}
+{\em msg} & the message to display \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 184 of file logger.\+cpp.
+
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_aee80ead21adb144d08addd017c09d674}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!stop\+\_\+progress\+\_\+bar@{stop\+\_\+progress\+\_\+bar}}
+\index{stop\+\_\+progress\+\_\+bar@{stop\+\_\+progress\+\_\+bar}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{stop\+\_\+progress\+\_\+bar()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::utils\+::logging\+::\+Logger\+::stop\+\_\+progress\+\_\+bar (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1utils_1_1logging_1_1_logger_aee80ead21adb144d08addd017c09d674}
+The function that stops progress bar Works if the current debug level is $<$= I\+N\+F\+O 
+
+Definition at line 225 of file logger.\+cpp.
+
+\hypertarget{classuva_1_1utils_1_1logging_1_1_logger_a7fcd67ede67ecb486da76d3788f39388}{}\index{uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}!update\+\_\+progress\+\_\+bar@{update\+\_\+progress\+\_\+bar}}
+\index{update\+\_\+progress\+\_\+bar@{update\+\_\+progress\+\_\+bar}!uva\+::utils\+::logging\+::\+Logger@{uva\+::utils\+::logging\+::\+Logger}}
+\subsubsection[{update\+\_\+progress\+\_\+bar()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::utils\+::logging\+::\+Logger\+::update\+\_\+progress\+\_\+bar (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1utils_1_1logging_1_1_logger_a7fcd67ede67ecb486da76d3788f39388}
+The function that updates progress bar Works if the current debug level is $<$= I\+N\+F\+O 
+
+Definition at line 208 of file logger.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/common/utils/logging/\hyperlink{logger_8hpp}{logger.\+hpp}\item 
+src/common/utils/logging/\hyperlink{logger_8cpp}{logger.\+cpp}\end{DoxyCompactItemize}

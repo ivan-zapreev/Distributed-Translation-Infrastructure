@@ -1,0 +1,4 @@
+var classuva____1____1smt____1____1bpbd____1____1server____1____1rm____1____1models____1____1rm________basic________model__8js_8js =
+[
+    [ "classuva__1__1smt__1__1bpbd__1__1server__1__1rm__1__1models__1__1rm____basic____model_8js", "classuva____1____1smt____1____1bpbd____1____1server____1____1rm____1____1models____1____1rm________basic________model__8js_8js.html#a01cd6902ccb72bf632753da7f9e7d21a", null ]
+];

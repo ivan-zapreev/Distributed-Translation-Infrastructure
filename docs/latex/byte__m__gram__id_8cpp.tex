@@ -1,0 +1,48 @@
+\hypertarget{byte__m__gram__id_8cpp}{}\section{src/server/lm/mgrams/byte\+\_\+m\+\_\+gram\+\_\+id.cpp File Reference}
+\label{byte__m__gram__id_8cpp}\index{src/server/lm/mgrams/byte\+\_\+m\+\_\+gram\+\_\+id.\+cpp@{src/server/lm/mgrams/byte\+\_\+m\+\_\+gram\+\_\+id.\+cpp}}
+{\ttfamily \#include \char`\"{}server/lm/mgrams/m\+\_\+gram\+\_\+id.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}server/lm/lm\+\_\+consts.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/lm\+\_\+configs.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/logging/logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/aword\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/file/text\+\_\+piece\+\_\+reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/hashing\+\_\+utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/math\+\_\+utils.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd}{uva\+::smt\+::bpbd}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server}{uva\+::smt\+::bpbd\+::server}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm}{uva\+::smt\+::bpbd\+::server\+::lm}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams}{uva\+::smt\+::bpbd\+::server\+::lm\+::m\+\_\+grams}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__id}{uva\+::smt\+::bpbd\+::server\+::lm\+::m\+\_\+grams\+::m\+\_\+gram\+\_\+id}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{byte__m__gram__id_8cpp_aa096ee43ab06a74c69e9e092077c1d6b}{M\+A\+X\+\_\+\+V\+A\+L\+U\+E\+\_\+\+I\+N\+\_\+\+B\+Y\+T\+E\+S}(N\+U\+M\+\_\+\+B\+Y\+T\+E\+S)~(const\+\_\+expr\+::power(2, \hyperlink{math__utils_8hpp_a1178e1e3118ed30f4ed917b18b1e0961}{B\+Y\+T\+E\+S\+\_\+\+T\+O\+\_\+\+B\+I\+T\+S}(N\+U\+M\+\_\+\+B\+Y\+T\+E\+S)) -\/ 1)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{byte__m__gram__id_8cpp_aa096ee43ab06a74c69e9e092077c1d6b}{}\index{byte\+\_\+m\+\_\+gram\+\_\+id.\+cpp@{byte\+\_\+m\+\_\+gram\+\_\+id.\+cpp}!M\+A\+X\+\_\+\+V\+A\+L\+U\+E\+\_\+\+I\+N\+\_\+\+B\+Y\+T\+E\+S@{M\+A\+X\+\_\+\+V\+A\+L\+U\+E\+\_\+\+I\+N\+\_\+\+B\+Y\+T\+E\+S}}
+\index{M\+A\+X\+\_\+\+V\+A\+L\+U\+E\+\_\+\+I\+N\+\_\+\+B\+Y\+T\+E\+S@{M\+A\+X\+\_\+\+V\+A\+L\+U\+E\+\_\+\+I\+N\+\_\+\+B\+Y\+T\+E\+S}!byte\+\_\+m\+\_\+gram\+\_\+id.\+cpp@{byte\+\_\+m\+\_\+gram\+\_\+id.\+cpp}}
+\subsubsection[{M\+A\+X\+\_\+\+V\+A\+L\+U\+E\+\_\+\+I\+N\+\_\+\+B\+Y\+T\+E\+S}]{\setlength{\rightskip}{0pt plus 5cm}\#define M\+A\+X\+\_\+\+V\+A\+L\+U\+E\+\_\+\+I\+N\+\_\+\+B\+Y\+T\+E\+S(
+\begin{DoxyParamCaption}
+\item[{}]{N\+U\+M\+\_\+\+B\+Y\+T\+E\+S}
+\end{DoxyParamCaption}
+)~(const\+\_\+expr\+::power(2, {\bf B\+Y\+T\+E\+S\+\_\+\+T\+O\+\_\+\+B\+I\+T\+S}(N\+U\+M\+\_\+\+B\+Y\+T\+E\+S)) -\/ 1)}\label{byte__m__gram__id_8cpp_aa096ee43ab06a74c69e9e092077c1d6b}
+
+
+Definition at line 59 of file byte\+\_\+m\+\_\+gram\+\_\+id.\+cpp.
+

@@ -1,0 +1,209 @@
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output}{}\section{T\+C\+L\+A\+P\+:\+:Zsh\+Completion\+Output Class Reference}
+\label{class_t_c_l_a_p_1_1_zsh_completion_output}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+
+
+{\ttfamily \#include $<$Zsh\+Completion\+Output.\+h$>$}
+
+Inheritance diagram for T\+C\+L\+A\+P\+:\+:Zsh\+Completion\+Output\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_t_c_l_a_p_1_1_zsh_completion_output}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_a3bf15bc96487b014092eb2bc97fdf1de}{Zsh\+Completion\+Output} ()
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_a3ea685b174fce7ddf2353129863b49d7}{usage} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&c)
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_a543e705918d769d3d6f4090c403ed0c9}{version} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&c)
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_abcd0ba63a2ac7675d085877fc4d3e8cf}{failure} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&c, \hyperlink{class_t_c_l_a_p_1_1_arg_exception}{Arg\+Exception} \&e)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_a3fff80665ab8d6161de6451924c2b954}{basename} (std\+::string \&s)
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_aacd678921212eb6654d7f704da360361}{quote\+Special\+Chars} (std\+::string \&s)
+\item 
+std\+::string \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_af3fceb65fc2c22ae8cc3c1df8a503184}{get\+Mutex\+List} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&\+\_\+cmd, \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$a)
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_a33903e3aef02f50799726eb7789fb4d4}{print\+Option} (\hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$it, std\+::string mutex)
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_a1d079ecf271977419432fb0caa72d035}{print\+Arg} (\hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$it)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ std\+::string, std\+::string $>$ \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_aaa1f1d51a31c32ca28df97c951aaad81}{common}
+\item 
+char \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_a170dd4ecb233984f3e2b6f853c82b1b0}{the\+Delimiter}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class that generates a Zsh completion function as output from the \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_a3ea685b174fce7ddf2353129863b49d7}{usage()} method for the given \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} and its Args. 
+
+Definition at line 43 of file Zsh\+Completion\+Output.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output_a3bf15bc96487b014092eb2bc97fdf1de}{}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}!Zsh\+Completion\+Output@{Zsh\+Completion\+Output}}
+\index{Zsh\+Completion\+Output@{Zsh\+Completion\+Output}!T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+\subsubsection[{Zsh\+Completion\+Output()}]{\setlength{\rightskip}{0pt plus 5cm}T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output\+::\+Zsh\+Completion\+Output (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_zsh_completion_output_a3bf15bc96487b014092eb2bc97fdf1de}
+
+
+Definition at line 86 of file Zsh\+Completion\+Output.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output_a3fff80665ab8d6161de6451924c2b954}{}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}!basename@{basename}}
+\index{basename@{basename}!T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+\subsubsection[{basename(std\+::string \&s)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output\+::basename (
+\begin{DoxyParamCaption}
+\item[{std\+::string \&}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_zsh_completion_output_a3fff80665ab8d6161de6451924c2b954}
+
+
+Definition at line 155 of file Zsh\+Completion\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output_abcd0ba63a2ac7675d085877fc4d3e8cf}{}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}!failure@{failure}}
+\index{failure@{failure}!T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+\subsubsection[{failure(\+Cmd\+Line\+Interface \&c, Arg\+Exception \&e)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output\+::failure (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} \&}]{c, }
+\item[{{\bf Arg\+Exception} \&}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_zsh_completion_output_abcd0ba63a2ac7675d085877fc4d3e8cf}
+Prints (to stderr) an error message, short usage Can be overridden to produce alternative behavior. 
+\begin{DoxyParams}{Parameters}
+{\em c} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} object the output is generated for. \\
+\hline
+{\em e} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_arg_exception}{Arg\+Exception} that caused the failure. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output_ad23a57ac3d8d957a4328fc78aec94e16}{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}.
+
+
+
+Definition at line 129 of file Zsh\+Completion\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output_af3fceb65fc2c22ae8cc3c1df8a503184}{}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}!get\+Mutex\+List@{get\+Mutex\+List}}
+\index{get\+Mutex\+List@{get\+Mutex\+List}!T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+\subsubsection[{get\+Mutex\+List(\+Cmd\+Line\+Interface \&\+\_\+cmd, Arg $\ast$a)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output\+::get\+Mutex\+List (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} \&}]{\+\_\+cmd, }
+\item[{{\bf Arg} $\ast$}]{a}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_zsh_completion_output_af3fceb65fc2c22ae8cc3c1df8a503184}
+
+
+Definition at line 271 of file Zsh\+Completion\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output_a1d079ecf271977419432fb0caa72d035}{}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}!print\+Arg@{print\+Arg}}
+\index{print\+Arg@{print\+Arg}!T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+\subsubsection[{print\+Arg(\+Arg $\ast$it)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output\+::print\+Arg (
+\begin{DoxyParamCaption}
+\item[{{\bf Arg} $\ast$}]{it}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_zsh_completion_output_a1d079ecf271977419432fb0caa72d035}
+
+
+Definition at line 164 of file Zsh\+Completion\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output_a33903e3aef02f50799726eb7789fb4d4}{}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}!print\+Option@{print\+Option}}
+\index{print\+Option@{print\+Option}!T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+\subsubsection[{print\+Option(\+Arg $\ast$it, std\+::string mutex)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output\+::print\+Option (
+\begin{DoxyParamCaption}
+\item[{{\bf Arg} $\ast$}]{it, }
+\item[{std\+::string}]{mutex}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_zsh_completion_output_a33903e3aef02f50799726eb7789fb4d4}
+
+
+Definition at line 190 of file Zsh\+Completion\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output_aacd678921212eb6654d7f704da360361}{}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}!quote\+Special\+Chars@{quote\+Special\+Chars}}
+\index{quote\+Special\+Chars@{quote\+Special\+Chars}!T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+\subsubsection[{quote\+Special\+Chars(std\+::string \&s)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output\+::quote\+Special\+Chars (
+\begin{DoxyParamCaption}
+\item[{std\+::string \&}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_zsh_completion_output_aacd678921212eb6654d7f704da360361}
+
+
+Definition at line 136 of file Zsh\+Completion\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output_a3ea685b174fce7ddf2353129863b49d7}{}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}!usage@{usage}}
+\index{usage@{usage}!T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+\subsubsection[{usage(\+Cmd\+Line\+Interface \&c)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output\+::usage (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} \&}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_zsh_completion_output_a3ea685b174fce7ddf2353129863b49d7}
+Prints the usage to stdout. Can be overridden to produce alternative behavior. 
+\begin{DoxyParams}{Parameters}
+{\em c} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} object the output is generated for. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output_a685b13db5bf6bbe5159e49169cd96bbe}{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}.
+
+
+
+Definition at line 106 of file Zsh\+Completion\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output_a543e705918d769d3d6f4090c403ed0c9}{}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}!version@{version}}
+\index{version@{version}!T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+\subsubsection[{version(\+Cmd\+Line\+Interface \&c)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output\+::version (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} \&}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_zsh_completion_output_a543e705918d769d3d6f4090c403ed0c9}
+Prints the version to stdout. Can be overridden to produce alternative behavior. 
+\begin{DoxyParams}{Parameters}
+{\em c} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} object the output is generated for. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output_ae052fea473132482296de55edb3dd480}{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}.
+
+
+
+Definition at line 101 of file Zsh\+Completion\+Output.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output_aaa1f1d51a31c32ca28df97c951aaad81}{}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}!common@{common}}
+\index{common@{common}!T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+\subsubsection[{common}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<$std\+::string, std\+::string$>$ T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output\+::common\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_zsh_completion_output_aaa1f1d51a31c32ca28df97c951aaad81}
+
+
+Definition at line 82 of file Zsh\+Completion\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_zsh_completion_output_a170dd4ecb233984f3e2b6f853c82b1b0}{}\index{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}!the\+Delimiter@{the\+Delimiter}}
+\index{the\+Delimiter@{the\+Delimiter}!T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output@{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}}
+\subsubsection[{the\+Delimiter}]{\setlength{\rightskip}{0pt plus 5cm}char T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output\+::the\+Delimiter\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_zsh_completion_output_a170dd4ecb233984f3e2b6f853c82b1b0}
+
+
+Definition at line 83 of file Zsh\+Completion\+Output.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/tclap/\hyperlink{_zsh_completion_output_8h}{Zsh\+Completion\+Output.\+h}\end{DoxyCompactItemize}

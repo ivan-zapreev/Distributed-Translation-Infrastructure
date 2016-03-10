@@ -1,0 +1,72 @@
+\hypertarget{namespaceuva_1_1utils_1_1file}{}\section{uva\+:\+:utils\+:\+:file Namespace Reference}
+\label{namespaceuva_1_1utils_1_1file}\index{uva\+::utils\+::file@{uva\+::utils\+::file}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classuva_1_1utils_1_1file_1_1_a_file_reader}{A\+File\+Reader}
+\item 
+class \hyperlink{classuva_1_1utils_1_1file_1_1_c_style_file_reader}{C\+Style\+File\+Reader}
+\item 
+class \hyperlink{classuva_1_1utils_1_1file_1_1_file_stream_reader}{File\+Stream\+Reader}
+\item 
+class \hyperlink{classuva_1_1utils_1_1file_1_1_memory_mapped_file_reader}{Memory\+Mapped\+File\+Reader}
+\item 
+class \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+ostream \& \hyperlink{namespaceuva_1_1utils_1_1file_ab3202195b5a00d0457ce1667f7b14e56}{operator$<$$<$} (ostream \&output, const \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&val)
+\item 
+{\footnotesize template$<$size\+\_\+t N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S$>$ }\\string \hyperlink{namespaceuva_1_1utils_1_1file_a6296460461767b4d12de496503a4136d}{tokens\+\_\+to\+\_\+string} (const \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} tokens\mbox{[}N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\mbox{]}, const size\+\_\+t begin\+\_\+idx, const size\+\_\+t end\+\_\+idx)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{namespaceuva_1_1utils_1_1file_ab3202195b5a00d0457ce1667f7b14e56}{}\index{uva\+::utils\+::file@{uva\+::utils\+::file}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!uva\+::utils\+::file@{uva\+::utils\+::file}}
+\subsubsection[{operator$<$$<$(ostream \&output, const Text\+Piece\+Reader \&val)}]{\setlength{\rightskip}{0pt plus 5cm}ostream\& uva\+::utils\+::file\+::operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{output, }
+\item[{const {\bf Text\+Piece\+Reader} \&}]{val}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1utils_1_1file_ab3202195b5a00d0457ce1667f7b14e56}
+Overloading the output operator for the ostream 
+\begin{DoxyParams}{Parameters}
+{\em output} & the stream to print to \\
+\hline
+{\em val} & the value to print \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the output stream 
+\end{DoxyReturn}
+
+
+Definition at line 561 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{namespaceuva_1_1utils_1_1file_a6296460461767b4d12de496503a4136d}{}\index{uva\+::utils\+::file@{uva\+::utils\+::file}!tokens\+\_\+to\+\_\+string@{tokens\+\_\+to\+\_\+string}}
+\index{tokens\+\_\+to\+\_\+string@{tokens\+\_\+to\+\_\+string}!uva\+::utils\+::file@{uva\+::utils\+::file}}
+\subsubsection[{tokens\+\_\+to\+\_\+string(const Text\+Piece\+Reader tokens[N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S], const size\+\_\+t begin\+\_\+idx, const size\+\_\+t end\+\_\+idx)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$size\+\_\+t N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S$>$ string uva\+::utils\+::file\+::tokens\+\_\+to\+\_\+string (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader}}]{tokens\mbox{[}\+N\+U\+M\+\_\+\+T\+O\+K\+E\+N\+S\mbox{]}, }
+\item[{const size\+\_\+t}]{begin\+\_\+idx, }
+\item[{const size\+\_\+t}]{end\+\_\+idx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1utils_1_1file_a6296460461767b4d12de496503a4136d}
+This function allows to convert the Basic\+Text\+File\+Reader elements tokens into a array string representation. 
+\begin{DoxyParams}{Parameters}
+{\em tokens} & the tokens to print \\
+\hline
+{\em from\+\_\+idx} & the from index \\
+\hline
+{\em to\+\_\+idx} & the to index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting string 
+\end{DoxyReturn}
+
+
+Definition at line 573 of file text\+\_\+piece\+\_\+reader.\+hpp.
+

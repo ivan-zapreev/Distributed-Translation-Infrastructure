@@ -1,0 +1,129 @@
+\hypertarget{class_converters}{}\section{Converters Class Reference}
+\label{class_converters}\index{Converters@{Converters}}
+
+
+Simple converter using templates and streams to effectively required for the flexibility of handling native types.  
+
+
+
+
+{\ttfamily \#include $<$I\+N\+I.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{_i_n_i_8h_a38d09ae9d340b15b8580649e578974db}{fini\+\_\+string\+\_\+t} \hyperlink{class_converters_a8b7ab4d162cc0cc1ea82608fe298659e}{Convert} (\hyperlink{_i_n_i_8h_a38d09ae9d340b15b8580649e578974db}{fini\+\_\+string\+\_\+t} value)
+\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{_i_n_i_8h_a38d09ae9d340b15b8580649e578974db}{fini\+\_\+string\+\_\+t} \hyperlink{class_converters_a559c3ed23aa7990e81304b9ec770d44d}{Convert} (const \hyperlink{_i_n_i_8h_a03d482c4c241009c15ce537c9df118df}{fini\+\_\+char\+\_\+t} $\ast$value)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T , typename U $>$ }\\static T \hyperlink{class_converters_a66daa93046e9633f8f123653255f9928}{Convert} (U value)
+\begin{DoxyCompactList}\small\item\em Definitions. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\static void \hyperlink{class_converters_a72160aa1d47892662d96f0046a46e01b}{Get\+Line} (\hyperlink{_i_n_i_8h_aff9f2d01dce7b38dcb4838bd5d1f84ed}{fini\+\_\+sstream\+\_\+t} \&out, T \&value)
+\item 
+static void \hyperlink{class_converters_ace1583e591c370bd2098ef172aaf9acb}{Get\+Line} (\hyperlink{_i_n_i_8h_aff9f2d01dce7b38dcb4838bd5d1f84ed}{fini\+\_\+sstream\+\_\+t} \&out, \hyperlink{_i_n_i_8h_a38d09ae9d340b15b8580649e578974db}{fini\+\_\+string\+\_\+t} \&value)
+\item 
+{\footnotesize template$<$typename T $>$ }\\static size\+\_\+t \hyperlink{class_converters_af9e5688c203b87ca43965f0f305e8b1d}{Get\+Data\+Size} (T \&value)
+\item 
+static size\+\_\+t \hyperlink{class_converters_a5219ad5e1e88370928402b149a55f19d}{Get\+Data\+Size} (\hyperlink{_i_n_i_8h_a38d09ae9d340b15b8580649e578974db}{fini\+\_\+string\+\_\+t} value)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Simple converter using templates and streams to effectively required for the flexibility of handling native types. 
+
+Definition at line 76 of file I\+N\+I.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_converters_a66daa93046e9633f8f123653255f9928}{}\index{Converters@{Converters}!Convert@{Convert}}
+\index{Convert@{Convert}!Converters@{Converters}}
+\subsubsection[{Convert(\+U value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T , typename U $>$ T Converters\+::\+Convert (
+\begin{DoxyParamCaption}
+\item[{U}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{class_converters_a66daa93046e9633f8f123653255f9928}
+
+
+Definitions. 
+
+
+
+Definition at line 584 of file I\+N\+I.\+h.
+
+\hypertarget{class_converters_a8b7ab4d162cc0cc1ea82608fe298659e}{}\index{Converters@{Converters}!Convert@{Convert}}
+\index{Convert@{Convert}!Converters@{Converters}}
+\subsubsection[{Convert(fini\+\_\+string\+\_\+t value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ {\bf fini\+\_\+string\+\_\+t} Converters\+::\+Convert (
+\begin{DoxyParamCaption}
+\item[{{\bf fini\+\_\+string\+\_\+t}}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_converters_a8b7ab4d162cc0cc1ea82608fe298659e}
+
+
+Definition at line 597 of file I\+N\+I.\+h.
+
+\hypertarget{class_converters_a559c3ed23aa7990e81304b9ec770d44d}{}\index{Converters@{Converters}!Convert@{Convert}}
+\index{Convert@{Convert}!Converters@{Converters}}
+\subsubsection[{Convert(const fini\+\_\+char\+\_\+t $\ast$value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ {\bf fini\+\_\+string\+\_\+t} Converters\+::\+Convert (
+\begin{DoxyParamCaption}
+\item[{const {\bf fini\+\_\+char\+\_\+t} $\ast$}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_converters_a559c3ed23aa7990e81304b9ec770d44d}
+
+
+Definition at line 602 of file I\+N\+I.\+h.
+
+\hypertarget{class_converters_af9e5688c203b87ca43965f0f305e8b1d}{}\index{Converters@{Converters}!Get\+Data\+Size@{Get\+Data\+Size}}
+\index{Get\+Data\+Size@{Get\+Data\+Size}!Converters@{Converters}}
+\subsubsection[{Get\+Data\+Size(\+T \&value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ size\+\_\+t Converters\+::\+Get\+Data\+Size (
+\begin{DoxyParamCaption}
+\item[{T \&}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{class_converters_af9e5688c203b87ca43965f0f305e8b1d}
+
+
+Definition at line 616 of file I\+N\+I.\+h.
+
+\hypertarget{class_converters_a5219ad5e1e88370928402b149a55f19d}{}\index{Converters@{Converters}!Get\+Data\+Size@{Get\+Data\+Size}}
+\index{Get\+Data\+Size@{Get\+Data\+Size}!Converters@{Converters}}
+\subsubsection[{Get\+Data\+Size(fini\+\_\+string\+\_\+t value)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t Converters\+::\+Get\+Data\+Size (
+\begin{DoxyParamCaption}
+\item[{{\bf fini\+\_\+string\+\_\+t}}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{class_converters_a5219ad5e1e88370928402b149a55f19d}
+
+
+Definition at line 620 of file I\+N\+I.\+h.
+
+\hypertarget{class_converters_a72160aa1d47892662d96f0046a46e01b}{}\index{Converters@{Converters}!Get\+Line@{Get\+Line}}
+\index{Get\+Line@{Get\+Line}!Converters@{Converters}}
+\subsubsection[{Get\+Line(fini\+\_\+sstream\+\_\+t \&out, T \&value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ void Converters\+::\+Get\+Line (
+\begin{DoxyParamCaption}
+\item[{{\bf fini\+\_\+sstream\+\_\+t} \&}]{out, }
+\item[{T \&}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{class_converters_a72160aa1d47892662d96f0046a46e01b}
+
+
+Definition at line 607 of file I\+N\+I.\+h.
+
+\hypertarget{class_converters_ace1583e591c370bd2098ef172aaf9acb}{}\index{Converters@{Converters}!Get\+Line@{Get\+Line}}
+\index{Get\+Line@{Get\+Line}!Converters@{Converters}}
+\subsubsection[{Get\+Line(fini\+\_\+sstream\+\_\+t \&out, fini\+\_\+string\+\_\+t \&value)}]{\setlength{\rightskip}{0pt plus 5cm}void Converters\+::\+Get\+Line (
+\begin{DoxyParamCaption}
+\item[{{\bf fini\+\_\+sstream\+\_\+t} \&}]{out, }
+\item[{{\bf fini\+\_\+string\+\_\+t} \&}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{class_converters_ace1583e591c370bd2098ef172aaf9acb}
+
+
+Definition at line 611 of file I\+N\+I.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/\hyperlink{_i_n_i_8h}{I\+N\+I.\+h}\end{DoxyCompactItemize}

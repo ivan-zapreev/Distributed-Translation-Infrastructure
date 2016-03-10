@@ -1,0 +1,49 @@
+\hypertarget{impl_2buffered__write__stream_8hpp}{}\section{ext/asio/impl/buffered\+\_\+write\+\_\+stream.hpp File Reference}
+\label{impl_2buffered__write__stream_8hpp}\index{ext/asio/impl/buffered\+\_\+write\+\_\+stream.\+hpp@{ext/asio/impl/buffered\+\_\+write\+\_\+stream.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/handler\+\_\+alloc\+\_\+helpers.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/handler\+\_\+cont\+\_\+helpers.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/handler\+\_\+invoke\+\_\+helpers.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/handler\+\_\+type\+\_\+requirements.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1detail_1_1buffered__flush__handler}{asio\+::detail\+::buffered\+\_\+flush\+\_\+handler$<$ Write\+Handler $>$}
+\item 
+class \hyperlink{classasio_1_1detail_1_1buffered__write__some__handler}{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler$<$ Const\+Buffer\+Sequence, Write\+Handler $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1detail}{asio\+::detail}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Write\+Handler $>$ }\\void $\ast$ \hyperlink{namespaceasio_1_1detail_afd7522834322aa05c109d9dead6e83f3}{asio\+::detail\+::asio\+\_\+handler\+\_\+allocate} (std\+::size\+\_\+t size, buffered\+\_\+flush\+\_\+handler$<$ Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_aa278da4ab23cc9fc4a0ad33cb8948622}{asio\+::detail\+::asio\+\_\+handler\+\_\+deallocate} (void $\ast$pointer, std\+::size\+\_\+t size, buffered\+\_\+flush\+\_\+handler$<$ Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Write\+Handler $>$ }\\bool \hyperlink{namespaceasio_1_1detail_af993f54edccc86bd268a98400160032e}{asio\+::detail\+::asio\+\_\+handler\+\_\+is\+\_\+continuation} (buffered\+\_\+flush\+\_\+handler$<$ Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Function , typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_a80d92ac88bbf7f8ae832b2556357bb5f}{asio\+::detail\+::asio\+\_\+handler\+\_\+invoke} (Function \&function, buffered\+\_\+flush\+\_\+handler$<$ Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Function , typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_a061e00d6f94d8e26e4089a7daf1d4566}{asio\+::detail\+::asio\+\_\+handler\+\_\+invoke} (const Function \&function, buffered\+\_\+flush\+\_\+handler$<$ Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Write\+Handler $>$ }\\\hyperlink{namespaceasio_a83cc551c7151133f0292ec21e4d08647}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) buffered\+\_\+write\+\_\+stream$<$ Stream $>$
+\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\void $\ast$ \hyperlink{namespaceasio_1_1detail_a3517079a3f96f3cb4dba972349b0e56b}{asio\+::detail\+::asio\+\_\+handler\+\_\+allocate} (std\+::size\+\_\+t size, buffered\+\_\+write\+\_\+some\+\_\+handler$<$ Const\+Buffer\+Sequence, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_a3968daf77de6ccae85c5408acd3339a8}{asio\+::detail\+::asio\+\_\+handler\+\_\+deallocate} (void $\ast$pointer, std\+::size\+\_\+t size, buffered\+\_\+write\+\_\+some\+\_\+handler$<$ Const\+Buffer\+Sequence, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\bool \hyperlink{namespaceasio_1_1detail_ac24bfca72812c7ee8c4a90b3003033c7}{asio\+::detail\+::asio\+\_\+handler\+\_\+is\+\_\+continuation} (buffered\+\_\+write\+\_\+some\+\_\+handler$<$ Const\+Buffer\+Sequence, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Function , typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_af24360431b6bb5408e71b8752de50148}{asio\+::detail\+::asio\+\_\+handler\+\_\+invoke} (Function \&function, buffered\+\_\+write\+\_\+some\+\_\+handler$<$ Const\+Buffer\+Sequence, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Function , typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_a89620b2bb73d8e51008e662385aca80d}{asio\+::detail\+::asio\+\_\+handler\+\_\+invoke} (const Function \&function, buffered\+\_\+write\+\_\+some\+\_\+handler$<$ Const\+Buffer\+Sequence, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\\hyperlink{namespaceasio_aae155d327b1f08e08ca04fad48cf39b9}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) buffered\+\_\+write\+\_\+stream$<$ Stream $>$
+\end{DoxyCompactItemize}

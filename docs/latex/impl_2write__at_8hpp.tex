@@ -1,0 +1,85 @@
+\hypertarget{impl_2write__at_8hpp}{}\section{ext/asio/impl/write\+\_\+at.hpp File Reference}
+\label{impl_2write__at_8hpp}\index{ext/asio/impl/write\+\_\+at.\+hpp@{ext/asio/impl/write\+\_\+at.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/buffer.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/completion\+\_\+condition.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/array\+\_\+fwd.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/base\+\_\+from\+\_\+completion\+\_\+cond.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/bind\+\_\+handler.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/consuming\+\_\+buffers.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/dependent\+\_\+type.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/handler\+\_\+alloc\+\_\+helpers.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/handler\+\_\+cont\+\_\+helpers.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/handler\+\_\+invoke\+\_\+helpers.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/handler\+\_\+type\+\_\+requirements.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/throw\+\_\+error.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1detail_1_1write__at__op}{asio\+::detail\+::write\+\_\+at\+\_\+op$<$ Async\+Random\+Access\+Write\+Device, Const\+Buffer\+Sequence, Completion\+Condition, Write\+Handler $>$}
+\item 
+class \hyperlink{classasio_1_1detail_1_1write__at__op_3_01_async_random_access_write_device_00_01_01_01_01_01_01_9c63ca7e3422e806874cb49cd5be5156}{asio\+::detail\+::write\+\_\+at\+\_\+op$<$ Async\+Random\+Access\+Write\+Device,                           asio\+::mutable\+\_\+buffers\+\_\+1, Completion\+Condition, Write\+Handler $>$}
+\item 
+class \hyperlink{classasio_1_1detail_1_1write__at__op_3_01_async_random_access_write_device_00_01asio_1_1const__bfac42b27d8d08bd8bf66a7fd473767cd}{asio\+::detail\+::write\+\_\+at\+\_\+op$<$ Async\+Random\+Access\+Write\+Device, asio\+::const\+\_\+buffers\+\_\+1,                           Completion\+Condition, Write\+Handler $>$}
+\item 
+class \hyperlink{classasio_1_1detail_1_1write__at__op_3_01_async_random_access_write_device_00_01boost_1_1array_3e439bc739a816bec12c3cd7d54fe10a0}{asio\+::detail\+::write\+\_\+at\+\_\+op$<$ Async\+Random\+Access\+Write\+Device, boost\+::array$<$ Elem, 2 $>$,                           Completion\+Condition, Write\+Handler $>$}
+\item 
+class \hyperlink{classasio_1_1detail_1_1write__at__streambuf__op}{asio\+::detail\+::write\+\_\+at\+\_\+streambuf\+\_\+op$<$ Allocator, Write\+Handler $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1detail}{asio\+::detail}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Write\+Device , typename Const\+Buffer\+Sequence , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write__at_ga51133c1e260b8abeeed55646e765fdd6}{asio\+::write\+\_\+at} (Sync\+Random\+Access\+Write\+Device \&d, uint64\+\_\+t offset, const Const\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data at a specified offset before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Write\+Device , typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{group__write__at_gadd67a05a29d183782491d14aceec7d41}{asio\+::write\+\_\+at} (Sync\+Random\+Access\+Write\+Device \&d, uint64\+\_\+t offset, const Const\+Buffer\+Sequence \&buffers)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data at the specified offset before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Write\+Device , typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{group__write__at_ga8c1abcb5870505ea2a0c524a59638da0}{asio\+::write\+\_\+at} (Sync\+Random\+Access\+Write\+Device \&d, uint64\+\_\+t offset, const Const\+Buffer\+Sequence \&buffers, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data at the specified offset before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Write\+Device , typename Const\+Buffer\+Sequence , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write__at_ga3e6b2f5dd13f4273695fbf0cdec0314a}{asio\+::write\+\_\+at} (Sync\+Random\+Access\+Write\+Device \&d, uint64\+\_\+t offset, const Const\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data at a specified offset before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Write\+Device , typename Allocator , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write__at_ga431966af634f0701ceac7f54fc1b0371}{asio\+::write\+\_\+at} (Sync\+Random\+Access\+Write\+Device \&d, uint64\+\_\+t offset, basic\+\_\+streambuf$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data at a specified offset before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Write\+Device , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__write__at_ga1db1f75a907c17918092b41f2f242104}{asio\+::write\+\_\+at} (Sync\+Random\+Access\+Write\+Device \&d, uint64\+\_\+t offset, basic\+\_\+streambuf$<$ Allocator $>$ \&b)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data at the specified offset before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Write\+Device , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__write__at_gaa6f42435acf937c35ee4c81af44ee6ce}{asio\+::write\+\_\+at} (Sync\+Random\+Access\+Write\+Device \&d, uint64\+\_\+t offset, basic\+\_\+streambuf$<$ Allocator $>$ \&b, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data at the specified offset before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Random\+Access\+Write\+Device , typename Allocator , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write__at_ga2e23f5418309ba130d75f6757b7b8e15}{asio\+::write\+\_\+at} (Sync\+Random\+Access\+Write\+Device \&d, uint64\+\_\+t offset, basic\+\_\+streambuf$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data at a specified offset before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Async\+Random\+Access\+Write\+Device , typename Const\+Buffer\+Sequence , typename Completion\+Condition , typename Write\+Handler $>$ }\\void $\ast$ \hyperlink{namespaceasio_1_1detail_a3cacdf04fd012dd08b71c0588b4acb06}{asio\+::detail\+::asio\+\_\+handler\+\_\+allocate} (std\+::size\+\_\+t size, write\+\_\+at\+\_\+op$<$ Async\+Random\+Access\+Write\+Device, Const\+Buffer\+Sequence, Completion\+Condition, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Async\+Random\+Access\+Write\+Device , typename Const\+Buffer\+Sequence , typename Completion\+Condition , typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_ab48869c3cfb3c8d6a2c132988531c068}{asio\+::detail\+::asio\+\_\+handler\+\_\+deallocate} (void $\ast$pointer, std\+::size\+\_\+t size, write\+\_\+at\+\_\+op$<$ Async\+Random\+Access\+Write\+Device, Const\+Buffer\+Sequence, Completion\+Condition, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Async\+Random\+Access\+Write\+Device , typename Const\+Buffer\+Sequence , typename Completion\+Condition , typename Write\+Handler $>$ }\\bool \hyperlink{namespaceasio_1_1detail_a698d3201d106b0c7cbadd686f3947e6d}{asio\+::detail\+::asio\+\_\+handler\+\_\+is\+\_\+continuation} (write\+\_\+at\+\_\+op$<$ Async\+Random\+Access\+Write\+Device, Const\+Buffer\+Sequence, Completion\+Condition, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Function , typename Async\+Random\+Access\+Write\+Device , typename Const\+Buffer\+Sequence , typename Completion\+Condition , typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_a7ef3a54f296787f468eae523de570086}{asio\+::detail\+::asio\+\_\+handler\+\_\+invoke} (Function \&function, write\+\_\+at\+\_\+op$<$ Async\+Random\+Access\+Write\+Device, Const\+Buffer\+Sequence, Completion\+Condition, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Function , typename Async\+Random\+Access\+Write\+Device , typename Const\+Buffer\+Sequence , typename Completion\+Condition , typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_a909d6a323fc08e7f5e0c040f2bd536e4}{asio\+::detail\+::asio\+\_\+handler\+\_\+invoke} (const Function \&function, write\+\_\+at\+\_\+op$<$ Async\+Random\+Access\+Write\+Device, Const\+Buffer\+Sequence, Completion\+Condition, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Async\+Random\+Access\+Write\+Device , typename Const\+Buffer\+Sequence , typename Completion\+Condition , typename Write\+Handler $>$ }\\write\+\_\+at\+\_\+op$<$ Async\+Random\+Access\+Write\+Device, Const\+Buffer\+Sequence, Completion\+Condition, Write\+Handler $>$ \hyperlink{namespaceasio_1_1detail_a9d5ae48a50ca4890f63f61245acadadc}{asio\+::detail\+::make\+\_\+write\+\_\+at\+\_\+op} (Async\+Random\+Access\+Write\+Device \&d, uint64\+\_\+t offset, const Const\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition, Write\+Handler handler)
+\item 
+{\footnotesize template$<$typename Async\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Completion\+Condition , typename Write\+Handler $>$ }\\\hyperlink{group__async__write_ga5a1e5b963aeb45f6fc692c4e1a07ed04}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+write(Async\+Write\+Stream \&s
+\item 
+const Const\+Buffer\+Sequence Completion\+Condition \hyperlink{group__async__write_ga9600cc9bb72a930568b318a8d6f79afa}{asio\+::\+A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Write\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Async\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\\hyperlink{group__async__write_ga7b61e40209cec169c7de5fafc16a6f9c}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+write(Async\+Write\+Stream \&s
+\item 
+{\footnotesize template$<$typename Allocator , typename Write\+Handler $>$ }\\void $\ast$ \hyperlink{namespaceasio_1_1detail_aef89c386ee5f7685676e478b7ea1dc6e}{asio\+::detail\+::asio\+\_\+handler\+\_\+allocate} (std\+::size\+\_\+t size, write\+\_\+at\+\_\+streambuf\+\_\+op$<$ Allocator, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Allocator , typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_af12434662b32e386fdec0c188249a649}{asio\+::detail\+::asio\+\_\+handler\+\_\+deallocate} (void $\ast$pointer, std\+::size\+\_\+t size, write\+\_\+at\+\_\+streambuf\+\_\+op$<$ Allocator, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Allocator , typename Write\+Handler $>$ }\\bool \hyperlink{namespaceasio_1_1detail_af1b5d2ccef55e8281824dc5b4ffeab72}{asio\+::detail\+::asio\+\_\+handler\+\_\+is\+\_\+continuation} (write\+\_\+at\+\_\+streambuf\+\_\+op$<$ Allocator, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Function , typename Allocator , typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_af422012b4f59fcac7c621c8cfff65d2f}{asio\+::detail\+::asio\+\_\+handler\+\_\+invoke} (Function \&function, write\+\_\+at\+\_\+streambuf\+\_\+op$<$ Allocator, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Function , typename Allocator , typename Write\+Handler $>$ }\\void \hyperlink{namespaceasio_1_1detail_ac6e55b5a1a22cec838222623adbe70b5}{asio\+::detail\+::asio\+\_\+handler\+\_\+invoke} (const Function \&function, write\+\_\+at\+\_\+streambuf\+\_\+op$<$ Allocator, Write\+Handler $>$ $\ast$this\+\_\+handler)
+\item 
+{\footnotesize template$<$typename Allocator , typename Write\+Handler $>$ }\\write\+\_\+at\+\_\+streambuf\+\_\+op$<$ Allocator, Write\+Handler $>$ \hyperlink{namespaceasio_1_1detail_a18b35c1789218775d2ebd8a0ec642f5a}{asio\+::detail\+::make\+\_\+write\+\_\+at\+\_\+streambuf\+\_\+op} (\hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, Write\+Handler handler)
+\end{DoxyCompactItemize}

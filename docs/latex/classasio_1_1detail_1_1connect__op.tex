@@ -1,0 +1,117 @@
+\hypertarget{classasio_1_1detail_1_1connect__op}{}\section{asio\+:\+:detail\+:\+:connect\+\_\+op$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$ Class Template Reference}
+\label{classasio_1_1detail_1_1connect__op}\index{asio\+::detail\+::connect\+\_\+op$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$@{asio\+::detail\+::connect\+\_\+op$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$}}
+
+
+{\ttfamily \#include $<$connect.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:detail\+:\+:connect\+\_\+op$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.774960cm]{classasio_1_1detail_1_1connect__op}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1detail_1_1connect__op_a457fd005df6d071fd4961facdc6ce8f8}{connect\+\_\+op} (\hyperlink{classasio_1_1basic__socket}{basic\+\_\+socket}$<$ Protocol, Socket\+Service $>$ \&sock, const Iterator \&\hyperlink{group__async__connect_ga7055bca9225050c030c19c7dc926fa53}{begin}, const Iterator \&\hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{end}, const Connect\+Condition \&\hyperlink{group__async__connect_ga47e3dda205dfba3553f4c7e005897687}{connect\+\_\+condition}, Composed\+Connect\+Handler \&handler)
+\item 
+void \hyperlink{classasio_1_1detail_1_1connect__op_a10b7cf4ce856a75ebf1ad080551b3517}{operator()} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} ec, int start=0)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1basic__socket}{basic\+\_\+socket}$<$ Protocol, Socket\+Service $>$ \& \hyperlink{classasio_1_1detail_1_1connect__op_a38289f9267dfa7a99f664446e8c12d4a}{socket\+\_\+}
+\item 
+Iterator \hyperlink{classasio_1_1detail_1_1connect__op_a4a8d375fb61d65920b8e380fac9b2d1c}{iter\+\_\+}
+\item 
+Iterator \hyperlink{classasio_1_1detail_1_1connect__op_a54be3d73b550302179f26367a00e869c}{end\+\_\+}
+\item 
+int \hyperlink{classasio_1_1detail_1_1connect__op_ae6621575bc6e65a13db6d377201d7bac}{start\+\_\+}
+\item 
+Composed\+Connect\+Handler \hyperlink{classasio_1_1detail_1_1connect__op_a8d277d2fde22cf3c2d3e8085e3e46103}{handler\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Protocol, typename Socket\+Service, typename Iterator, typename Connect\+Condition, typename Composed\+Connect\+Handler$>$class asio\+::detail\+::connect\+\_\+op$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$}
+
+
+
+Definition at line 176 of file connect.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1connect__op_a457fd005df6d071fd4961facdc6ce8f8}{}\index{asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}!connect\+\_\+op@{connect\+\_\+op}}
+\index{connect\+\_\+op@{connect\+\_\+op}!asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}}
+\subsubsection[{connect\+\_\+op(basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&sock, const Iterator \&begin, const Iterator \&end, const Connect\+Condition \&connect\+\_\+condition, Composed\+Connect\+Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition , typename Composed\+Connect\+Handler $>$ {\bf asio\+::detail\+::connect\+\_\+op}$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$\+::{\bf connect\+\_\+op} (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+socket}$<$ Protocol, Socket\+Service $>$ \&}]{sock, }
+\item[{const Iterator \&}]{begin, }
+\item[{const Iterator \&}]{end, }
+\item[{const Connect\+Condition \&}]{connect\+\_\+condition, }
+\item[{Composed\+Connect\+Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1connect__op_a457fd005df6d071fd4961facdc6ce8f8}
+
+
+Definition at line 179 of file connect.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1connect__op_a10b7cf4ce856a75ebf1ad080551b3517}{}\index{asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}!operator()@{operator()}}
+\index{operator()@{operator()}!asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}}
+\subsubsection[{operator()(asio\+::error\+\_\+code ec, int start=0)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition , typename Composed\+Connect\+Handler $>$ void {\bf asio\+::detail\+::connect\+\_\+op}$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$\+::operator() (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code}}]{ec, }
+\item[{int}]{start = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1connect__op_a10b7cf4ce856a75ebf1ad080551b3517}
+
+
+Definition at line 214 of file connect.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classasio_1_1detail_1_1connect__op_a54be3d73b550302179f26367a00e869c}{}\index{asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}!end\+\_\+@{end\+\_\+}}
+\index{end\+\_\+@{end\+\_\+}!asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}}
+\subsubsection[{end\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition , typename Composed\+Connect\+Handler $>$ Iterator {\bf asio\+::detail\+::connect\+\_\+op}$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$\+::end\+\_\+}\label{classasio_1_1detail_1_1connect__op_a54be3d73b550302179f26367a00e869c}
+
+
+Definition at line 263 of file connect.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1connect__op_a8d277d2fde22cf3c2d3e8085e3e46103}{}\index{asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}!handler\+\_\+@{handler\+\_\+}}
+\index{handler\+\_\+@{handler\+\_\+}!asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}}
+\subsubsection[{handler\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition , typename Composed\+Connect\+Handler $>$ Composed\+Connect\+Handler {\bf asio\+::detail\+::connect\+\_\+op}$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$\+::handler\+\_\+}\label{classasio_1_1detail_1_1connect__op_a8d277d2fde22cf3c2d3e8085e3e46103}
+
+
+Definition at line 265 of file connect.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1connect__op_a4a8d375fb61d65920b8e380fac9b2d1c}{}\index{asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}!iter\+\_\+@{iter\+\_\+}}
+\index{iter\+\_\+@{iter\+\_\+}!asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}}
+\subsubsection[{iter\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition , typename Composed\+Connect\+Handler $>$ Iterator {\bf asio\+::detail\+::connect\+\_\+op}$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$\+::iter\+\_\+}\label{classasio_1_1detail_1_1connect__op_a4a8d375fb61d65920b8e380fac9b2d1c}
+
+
+Definition at line 262 of file connect.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1connect__op_a38289f9267dfa7a99f664446e8c12d4a}{}\index{asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}!socket\+\_\+@{socket\+\_\+}}
+\index{socket\+\_\+@{socket\+\_\+}!asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}}
+\subsubsection[{socket\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition , typename Composed\+Connect\+Handler $>$ {\bf basic\+\_\+socket}$<$Protocol, Socket\+Service$>$\& {\bf asio\+::detail\+::connect\+\_\+op}$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$\+::socket\+\_\+}\label{classasio_1_1detail_1_1connect__op_a38289f9267dfa7a99f664446e8c12d4a}
+
+
+Definition at line 261 of file connect.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1connect__op_ae6621575bc6e65a13db6d377201d7bac}{}\index{asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}!start\+\_\+@{start\+\_\+}}
+\index{start\+\_\+@{start\+\_\+}!asio\+::detail\+::connect\+\_\+op@{asio\+::detail\+::connect\+\_\+op}}
+\subsubsection[{start\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition , typename Composed\+Connect\+Handler $>$ int {\bf asio\+::detail\+::connect\+\_\+op}$<$ Protocol, Socket\+Service, Iterator, Connect\+Condition, Composed\+Connect\+Handler $>$\+::start\+\_\+}\label{classasio_1_1detail_1_1connect__op_ae6621575bc6e65a13db6d377201d7bac}
+
+
+Definition at line 264 of file connect.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/impl/\hyperlink{impl_2connect_8hpp}{connect.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,194 @@
+\hypertarget{class_t_c_l_a_p_1_1_doc_book_output}{}\section{T\+C\+L\+A\+P\+:\+:Doc\+Book\+Output Class Reference}
+\label{class_t_c_l_a_p_1_1_doc_book_output}\index{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}}
+
+
+{\ttfamily \#include $<$Doc\+Book\+Output.\+h$>$}
+
+Inheritance diagram for T\+C\+L\+A\+P\+:\+:Doc\+Book\+Output\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_t_c_l_a_p_1_1_doc_book_output}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_adc1ec93f3f7e5e912690be01c5e7d6e2}{usage} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&c)
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_a3ccf7671dcae82aba5f0e91850ae25a4}{version} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&c)
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_a5e97f659fa1ab3b060a31e8bd7a0a40e}{failure} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&c, \hyperlink{class_t_c_l_a_p_1_1_arg_exception}{Arg\+Exception} \&e)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_a7546eaf3a0effeea1030afb27b4c698f}{substitute\+Special\+Chars} (std\+::string \&s, char r, std\+::string \&x)
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_abc059536cb97c49da4e6c5b4a22c6cef}{remove\+Char} (std\+::string \&s, char r)
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_a82d49ab25845c7d191863be9c482409e}{basename} (std\+::string \&s)
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_a980ecacfcda0186a76bb6c37a9c33726}{print\+Short\+Arg} (\hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$it)
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_a891cf5ef71592b5261691575c2adad1d}{print\+Long\+Arg} (\hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$it)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+char \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_a081a02a93ce13f694d078c79fe42a7c8}{the\+Delimiter}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class that generates Doc\+Book output for \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_adc1ec93f3f7e5e912690be01c5e7d6e2}{usage()} method for the given \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} and its Args. 
+
+Definition at line 43 of file Doc\+Book\+Output.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_doc_book_output_a82d49ab25845c7d191863be9c482409e}{}\index{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}!basename@{basename}}
+\index{basename@{basename}!T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}}
+\subsubsection[{basename(std\+::string \&s)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Doc\+Book\+Output\+::basename (
+\begin{DoxyParamCaption}
+\item[{std\+::string \&}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_doc_book_output_a82d49ab25845c7d191863be9c482409e}
+
+
+Definition at line 203 of file Doc\+Book\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_doc_book_output_a5e97f659fa1ab3b060a31e8bd7a0a40e}{}\index{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}!failure@{failure}}
+\index{failure@{failure}!T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}}
+\subsubsection[{failure(\+Cmd\+Line\+Interface \&c, Arg\+Exception \&e)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Doc\+Book\+Output\+::failure (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} \&}]{c, }
+\item[{{\bf Arg\+Exception} \&}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_doc_book_output_a5e97f659fa1ab3b060a31e8bd7a0a40e}
+Prints (to stderr) an error message, short usage Can be overridden to produce alternative behavior. 
+\begin{DoxyParams}{Parameters}
+{\em c} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} object the output is generated for. \\
+\hline
+{\em e} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_arg_exception}{Arg\+Exception} that caused the failure. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output_ad23a57ac3d8d957a4328fc78aec94e16}{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}.
+
+
+
+Definition at line 174 of file Doc\+Book\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_doc_book_output_a891cf5ef71592b5261691575c2adad1d}{}\index{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}!print\+Long\+Arg@{print\+Long\+Arg}}
+\index{print\+Long\+Arg@{print\+Long\+Arg}!T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}}
+\subsubsection[{print\+Long\+Arg(\+Arg $\ast$it)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Doc\+Book\+Output\+::print\+Long\+Arg (
+\begin{DoxyParamCaption}
+\item[{{\bf Arg} $\ast$}]{it}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_doc_book_output_a891cf5ef71592b5261691575c2adad1d}
+
+
+Definition at line 252 of file Doc\+Book\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_doc_book_output_a980ecacfcda0186a76bb6c37a9c33726}{}\index{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}!print\+Short\+Arg@{print\+Short\+Arg}}
+\index{print\+Short\+Arg@{print\+Short\+Arg}!T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}}
+\subsubsection[{print\+Short\+Arg(\+Arg $\ast$it)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Doc\+Book\+Output\+::print\+Short\+Arg (
+\begin{DoxyParamCaption}
+\item[{{\bf Arg} $\ast$}]{it}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_doc_book_output_a980ecacfcda0186a76bb6c37a9c33726}
+
+
+Definition at line 212 of file Doc\+Book\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_doc_book_output_abc059536cb97c49da4e6c5b4a22c6cef}{}\index{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}!remove\+Char@{remove\+Char}}
+\index{remove\+Char@{remove\+Char}!T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}}
+\subsubsection[{remove\+Char(std\+::string \&s, char r)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Doc\+Book\+Output\+::remove\+Char (
+\begin{DoxyParamCaption}
+\item[{std\+::string \&}]{s, }
+\item[{char}]{r}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_doc_book_output_abc059536cb97c49da4e6c5b4a22c6cef}
+
+
+Definition at line 194 of file Doc\+Book\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_doc_book_output_a7546eaf3a0effeea1030afb27b4c698f}{}\index{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}!substitute\+Special\+Chars@{substitute\+Special\+Chars}}
+\index{substitute\+Special\+Chars@{substitute\+Special\+Chars}!T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}}
+\subsubsection[{substitute\+Special\+Chars(std\+::string \&s, char r, std\+::string \&x)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Doc\+Book\+Output\+::substitute\+Special\+Chars (
+\begin{DoxyParamCaption}
+\item[{std\+::string \&}]{s, }
+\item[{char}]{r, }
+\item[{std\+::string \&}]{x}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_doc_book_output_a7546eaf3a0effeea1030afb27b4c698f}
+Substitutes the char r for string x in string s. 
+\begin{DoxyParams}{Parameters}
+{\em s} & -\/ The string to operate on. \\
+\hline
+{\em r} & -\/ The char to replace. \\
+\hline
+{\em x} & -\/ What to replace r with. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 182 of file Doc\+Book\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_doc_book_output_adc1ec93f3f7e5e912690be01c5e7d6e2}{}\index{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}!usage@{usage}}
+\index{usage@{usage}!T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}}
+\subsubsection[{usage(\+Cmd\+Line\+Interface \&c)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Doc\+Book\+Output\+::usage (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} \&}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_doc_book_output_adc1ec93f3f7e5e912690be01c5e7d6e2}
+Prints the usage to stdout. Can be overridden to produce alternative behavior. 
+\begin{DoxyParams}{Parameters}
+{\em c} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} object the output is generated for. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output_a685b13db5bf6bbe5159e49169cd96bbe}{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}.
+
+
+
+Definition at line 95 of file Doc\+Book\+Output.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_doc_book_output_a3ccf7671dcae82aba5f0e91850ae25a4}{}\index{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}!version@{version}}
+\index{version@{version}!T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}}
+\subsubsection[{version(\+Cmd\+Line\+Interface \&c)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Doc\+Book\+Output\+::version (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} \&}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_doc_book_output_a3ccf7671dcae82aba5f0e91850ae25a4}
+Prints the version to stdout. Can be overridden to produce alternative behavior. 
+\begin{DoxyParams}{Parameters}
+{\em c} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} object the output is generated for. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output_ae052fea473132482296de55edb3dd480}{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}.
+
+
+
+Definition at line 90 of file Doc\+Book\+Output.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_doc_book_output_a081a02a93ce13f694d078c79fe42a7c8}{}\index{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}!the\+Delimiter@{the\+Delimiter}}
+\index{the\+Delimiter@{the\+Delimiter}!T\+C\+L\+A\+P\+::\+Doc\+Book\+Output@{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}}
+\subsubsection[{the\+Delimiter}]{\setlength{\rightskip}{0pt plus 5cm}char T\+C\+L\+A\+P\+::\+Doc\+Book\+Output\+::the\+Delimiter\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_doc_book_output_a081a02a93ce13f694d078c79fe42a7c8}
+
+
+Definition at line 86 of file Doc\+Book\+Output.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/tclap/\hyperlink{_doc_book_output_8h}{Doc\+Book\+Output.\+h}\end{DoxyCompactItemize}

@@ -1,0 +1,59 @@
+\hypertarget{handler__type_8hpp}{}\section{ext/asio/handler\+\_\+type.hpp File Reference}
+\label{handler__type_8hpp}\index{ext/asio/handler\+\_\+type.\+hpp@{ext/asio/handler\+\_\+type.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structasio_1_1handler__type}{asio\+::handler\+\_\+type$<$ Handler, Signature $>$}
+\begin{DoxyCompactList}\small\item\em Default handler type traits provided for all handlers. \end{DoxyCompactList}\item 
+struct \hyperlink{structasio_1_1handler__type_3_01const_01_handler_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ const Handler, Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01volatile_01_handler_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ volatile Handler, Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01const_01volatile_01_handler_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ const volatile Handler, Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01const_01_handler_01_6_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ const Handler \&, Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01volatile_01_handler_01_6_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ volatile Handler \&, Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01const_01volatile_01_handler_01_6_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ const volatile Handler \&, Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01_handler_01_6_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ Handler \&, Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01_return_type_07_arg1_08_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ Return\+Type(\+Arg1), Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01_return_type_07_arg1_00_01_arg2_08_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ Return\+Type(\+Arg1, Arg2), Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01_return_type_07_arg1_00_01_arg2_00_01_arg3_08_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ Return\+Type(\+Arg1, Arg2, Arg3), Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01_return_type_07_arg1_00_01_arg2_00_01_arg3_00_01_arg4_08_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ Return\+Type(\+Arg1, Arg2, Arg3, Arg4), Signature $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01_return_type_07_arg1_00_01_arg2_00_01_arg3_00_01_arg4_00_01_arg5_08_00_01_signature_01_4}{asio\+::handler\+\_\+type$<$ Return\+Type(\+Arg1, Arg2, Arg3, Arg4, Arg5), Signature $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{handler__type_8hpp_a3e8a48d0097c0be0da56b81efe2c183e}{A\+S\+I\+O\+\_\+\+H\+A\+N\+D\+L\+E\+R\+\_\+\+T\+Y\+P\+E}(h,  sig)~typename handler\+\_\+type$<$h, sig$>$\+::type
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{handler__type_8hpp_a3e8a48d0097c0be0da56b81efe2c183e}{}\index{handler\+\_\+type.\+hpp@{handler\+\_\+type.\+hpp}!A\+S\+I\+O\+\_\+\+H\+A\+N\+D\+L\+E\+R\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+H\+A\+N\+D\+L\+E\+R\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+H\+A\+N\+D\+L\+E\+R\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+H\+A\+N\+D\+L\+E\+R\+\_\+\+T\+Y\+P\+E}!handler\+\_\+type.\+hpp@{handler\+\_\+type.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+H\+A\+N\+D\+L\+E\+R\+\_\+\+T\+Y\+P\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+H\+A\+N\+D\+L\+E\+R\+\_\+\+T\+Y\+P\+E(
+\begin{DoxyParamCaption}
+\item[{}]{h, }
+\item[{}]{sig}
+\end{DoxyParamCaption}
+)~typename handler\+\_\+type$<$h, sig$>$\+::type}\label{handler__type_8hpp_a3e8a48d0097c0be0da56b81efe2c183e}
+
+
+Definition at line 109 of file handler\+\_\+type.\+hpp.
+

@@ -1,0 +1,47 @@
+var processors_2base_8hpp =
+[
+    [ "processor_category", "classwebsocketpp_1_1processor_1_1error_1_1processor__category.html", "classwebsocketpp_1_1processor_1_1error_1_1processor__category" ],
+    [ "is_error_code_enum< websocketpp::processor::error::processor_errors >", "structis__error__code__enum_3_01websocketpp_1_1processor_1_1error_1_1processor__errors_01_4.html", null ],
+    [ "processor_errors", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5", [
+      [ "general", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5ab126d99835105428d617892fe121706a", null ],
+      [ "bad_request", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a8b5aac9eab9bc13da3a7fc1cff7d4e39", null ],
+      [ "protocol_violation", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a494d908b8b13ce4ed5f0488b1bc5c946", null ],
+      [ "message_too_big", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5ad151bfb0d6cd320ae85831715a15f1e2", null ],
+      [ "invalid_payload", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5aa221afa85916caeaac59c6a73e59168e", null ],
+      [ "invalid_arguments", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5ad78ff630d081b41ce9027d4f361df5da", null ],
+      [ "invalid_opcode", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a68515957c61c729f4cce0e60ec90ddbc", null ],
+      [ "control_too_big", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a10635788a8dffa63bbdfd89b2263be71", null ],
+      [ "invalid_rsv_bit", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a2858ee3d29c64d8a8c7a7d9bcfd165a1", null ],
+      [ "fragmented_control", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5ade117cb717f8722d226a2f7d4ad4d633", null ],
+      [ "invalid_continuation", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5ad848839b79789b2d50e8d3cac7839658", null ],
+      [ "masking_required", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a3846b5f6faad1b747b0ed8fd17ba2001", null ],
+      [ "masking_forbidden", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a5bdeb11b8137ed6865c188f563afc335", null ],
+      [ "non_minimal_encoding", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5adde28e6715219b68cd21b262d6bbacdf", null ],
+      [ "requires_64bit", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a812035a236affc596d41288c8f664ee5", null ],
+      [ "invalid_utf8", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a9439e7491cbd3acf23f6c5bdc2d3b79a", null ],
+      [ "not_implemented", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a66849c4de83ac635e63771c1dddc24fc", null ],
+      [ "invalid_http_method", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a2490b8f8de563854741a3475c2eaee40", null ],
+      [ "invalid_http_version", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5ac1a30a2007cfa754da78a486e2a22103", null ],
+      [ "invalid_http_status", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a97235028937f2e70216b725b8c265a64", null ],
+      [ "missing_required_header", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a06199459b5805bf545a7a8b265933d2d", null ],
+      [ "sha1_library", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a6ce4d7db199baa7989d3ce21bb6faa69", null ],
+      [ "no_protocol_support", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5ad6f8f6c052ec862243054e8985d13348", null ],
+      [ "reserved_close_code", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a57b405ca9c92135c21f4507722503b16", null ],
+      [ "invalid_close_code", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a3837b50a5121318129a6d1049196ab33", null ],
+      [ "reason_requires_code", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a2ebe84ac88fa4a93dd142d2e1ee2bbee", null ],
+      [ "subprotocol_parse_error", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a826cd67f60ca8687720833cea17777ac", null ],
+      [ "extension_parse_error", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a595ba53f29be3b66c51ad41bd94ee29c", null ],
+      [ "extensions_disabled", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a529dc9b46308d321bd52d8ced4e566e1", null ],
+      [ "short_key3", "processors_2base_8hpp.html#ae6510ada6a25dcd7af258b6e374e3ca5a9d6c89dd84bccda8e31363fceae6a3c9", null ]
+    ] ],
+    [ "value", "processors_2base_8hpp.html#ae83487c9a0c1462b790898dfcb4b174e", [
+      [ "BAD_REQUEST", "processors_2base_8hpp.html#ae83487c9a0c1462b790898dfcb4b174eac0697fdb05431e5c4521e56923722bef", null ],
+      [ "INTERNAL_ERROR", "processors_2base_8hpp.html#ae83487c9a0c1462b790898dfcb4b174ea56a41bab646bdc8740ac51e800001e48", null ],
+      [ "PROTOCOL_VIOLATION", "processors_2base_8hpp.html#ae83487c9a0c1462b790898dfcb4b174ea1a3d790446746332fa75c52739ab005a", null ],
+      [ "MESSAGE_TOO_BIG", "processors_2base_8hpp.html#ae83487c9a0c1462b790898dfcb4b174ea0a6c802c67bb7e8d93f8d06cb7c5fe7b", null ],
+      [ "PAYLOAD_VIOLATION", "processors_2base_8hpp.html#ae83487c9a0c1462b790898dfcb4b174ea7bb0c4de0970cfe712b999c4e7291429", null ]
+    ] ],
+    [ "get_processor_category", "processors_2base_8hpp.html#ae06f6461fb27d8c8e0358c413e1d32b4", null ],
+    [ "make_error_code", "processors_2base_8hpp.html#afc5fc4548656f87cfee89994c95bec9c", null ],
+    [ "to_ws", "processors_2base_8hpp.html#a30c8a38f28c65b3398f88ad989186111", null ]
+];

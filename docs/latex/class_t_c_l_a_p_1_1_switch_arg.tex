@@ -1,0 +1,197 @@
+\hypertarget{class_t_c_l_a_p_1_1_switch_arg}{}\section{T\+C\+L\+A\+P\+:\+:Switch\+Arg Class Reference}
+\label{class_t_c_l_a_p_1_1_switch_arg}\index{T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}}
+
+
+{\ttfamily \#include $<$Switch\+Arg.\+h$>$}
+
+Inheritance diagram for T\+C\+L\+A\+P\+:\+:Switch\+Arg\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_t_c_l_a_p_1_1_switch_arg}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_switch_arg_a3895b036fa2d36e4fcfa41dfcdb298c1}{Switch\+Arg} (const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, bool def=false, \hyperlink{class_t_c_l_a_p_1_1_visitor}{Visitor} $\ast$v=N\+U\+L\+L)
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_switch_arg_af7e9628155772af0686f6a2114dfe78b}{Switch\+Arg} (const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&parser, bool def=false, \hyperlink{class_t_c_l_a_p_1_1_visitor}{Visitor} $\ast$v=N\+U\+L\+L)
+\item 
+virtual bool \hyperlink{class_t_c_l_a_p_1_1_switch_arg_a624f98df6c4907efec95ffc353e9d08c}{process\+Arg} (int $\ast$i, std\+::vector$<$ std\+::string $>$ \&args)
+\item 
+bool \hyperlink{class_t_c_l_a_p_1_1_switch_arg_af5fbd44d462539941b09e960034d692c}{combined\+Switches\+Match} (std\+::string \&combined)
+\item 
+bool \hyperlink{class_t_c_l_a_p_1_1_switch_arg_aed1bc8a81a9bda4013cfcf407ccc7716}{get\+Value} ()
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_switch_arg_af8561d903ec3c11f5f2175e6db179d9c}{reset} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{class_t_c_l_a_p_1_1_switch_arg_a0389ecebecc504d9756703d46e8cf3ca}{\+\_\+value}
+\item 
+bool \hyperlink{class_t_c_l_a_p_1_1_switch_arg_ae25a99eb06fc2ee75a3b98edba1d5d8d}{\+\_\+default}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+A simple switch argument. If the switch is set on the command line, then the get\+Value method will return the opposite of the default value for the switch. 
+
+Definition at line 39 of file Switch\+Arg.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_switch_arg_a3895b036fa2d36e4fcfa41dfcdb298c1}{}\index{T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}!Switch\+Arg@{Switch\+Arg}}
+\index{Switch\+Arg@{Switch\+Arg}!T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}}
+\subsubsection[{Switch\+Arg(const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, bool def=false, Visitor $\ast$v=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}T\+C\+L\+A\+P\+::\+Switch\+Arg\+::\+Switch\+Arg (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{flag, }
+\item[{const std\+::string \&}]{name, }
+\item[{const std\+::string \&}]{desc, }
+\item[{bool}]{def = {\ttfamily false}, }
+\item[{{\bf Visitor} $\ast$}]{v = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_switch_arg_a3895b036fa2d36e4fcfa41dfcdb298c1}
+\hyperlink{class_t_c_l_a_p_1_1_switch_arg}{Switch\+Arg} constructor. 
+\begin{DoxyParams}{Parameters}
+{\em flag} & -\/ The one character flag that identifies this argument on the command line. \\
+\hline
+{\em name} & -\/ A one word name for the argument. Can be used as a long flag on the command line. \\
+\hline
+{\em desc} & -\/ A description of what the argument is for or does. \\
+\hline
+{\em def} & -\/ The default value for this Switch. \\
+\hline
+{\em v} & -\/ An optional visitor. You probably should not use this unless you have a very good reason. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 135 of file Switch\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_switch_arg_af7e9628155772af0686f6a2114dfe78b}{}\index{T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}!Switch\+Arg@{Switch\+Arg}}
+\index{Switch\+Arg@{Switch\+Arg}!T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}}
+\subsubsection[{Switch\+Arg(const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, Cmd\+Line\+Interface \&parser, bool def=false, Visitor $\ast$v=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}T\+C\+L\+A\+P\+::\+Switch\+Arg\+::\+Switch\+Arg (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{flag, }
+\item[{const std\+::string \&}]{name, }
+\item[{const std\+::string \&}]{desc, }
+\item[{{\bf Cmd\+Line\+Interface} \&}]{parser, }
+\item[{bool}]{def = {\ttfamily false}, }
+\item[{{\bf Visitor} $\ast$}]{v = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_switch_arg_af7e9628155772af0686f6a2114dfe78b}
+\hyperlink{class_t_c_l_a_p_1_1_switch_arg}{Switch\+Arg} constructor. 
+\begin{DoxyParams}{Parameters}
+{\em flag} & -\/ The one character flag that identifies this argument on the command line. \\
+\hline
+{\em name} & -\/ A one word name for the argument. Can be used as a long flag on the command line. \\
+\hline
+{\em desc} & -\/ A description of what the argument is for or does. \\
+\hline
+{\em parser} & -\/ A \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} parser object to add this \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} to \\
+\hline
+{\em def} & -\/ The default value for this Switch. \\
+\hline
+{\em v} & -\/ An optional visitor. You probably should not use this unless you have a very good reason. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 145 of file Switch\+Arg.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_switch_arg_af5fbd44d462539941b09e960034d692c}{}\index{T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}!combined\+Switches\+Match@{combined\+Switches\+Match}}
+\index{combined\+Switches\+Match@{combined\+Switches\+Match}!T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}}
+\subsubsection[{combined\+Switches\+Match(std\+::string \&combined)}]{\setlength{\rightskip}{0pt plus 5cm}bool T\+C\+L\+A\+P\+::\+Switch\+Arg\+::combined\+Switches\+Match (
+\begin{DoxyParamCaption}
+\item[{std\+::string \&}]{combined}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_switch_arg_af5fbd44d462539941b09e960034d692c}
+Checks a string to see if any of the chars in the string match the flag for this Switch. 
+
+Definition at line 169 of file Switch\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_switch_arg_aed1bc8a81a9bda4013cfcf407ccc7716}{}\index{T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}!get\+Value@{get\+Value}}
+\index{get\+Value@{get\+Value}!T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}}
+\subsubsection[{get\+Value()}]{\setlength{\rightskip}{0pt plus 5cm}bool T\+C\+L\+A\+P\+::\+Switch\+Arg\+::get\+Value (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_switch_arg_aed1bc8a81a9bda4013cfcf407ccc7716}
+Returns bool, whether or not the switch has been set. 
+
+Definition at line 158 of file Switch\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_switch_arg_a624f98df6c4907efec95ffc353e9d08c}{}\index{T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}!process\+Arg@{process\+Arg}}
+\index{process\+Arg@{process\+Arg}!T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}}
+\subsubsection[{process\+Arg(int $\ast$i, std\+::vector$<$ std\+::string $>$ \&args)}]{\setlength{\rightskip}{0pt plus 5cm}bool T\+C\+L\+A\+P\+::\+Switch\+Arg\+::process\+Arg (
+\begin{DoxyParamCaption}
+\item[{int $\ast$}]{i, }
+\item[{std\+::vector$<$ std\+::string $>$ \&}]{args}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_switch_arg_a624f98df6c4907efec95ffc353e9d08c}
+Handles the processing of the argument. This re-\/implements the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} version of this method to set the \+\_\+value of the argument appropriately. 
+\begin{DoxyParams}{Parameters}
+{\em i} & -\/ Pointer the the current argument in the list. \\
+\hline
+{\em args} & -\/ Mutable list of strings. Passed in from \hyperlink{_c_make_c_compiler_id_8c_a0ddf1224851353fc92bfbff6f499fa97}{main()}. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_t_c_l_a_p_1_1_arg_a61ffe2f660a76111d256f7b22a686146}{T\+C\+L\+A\+P\+::\+Arg}.
+
+
+
+Reimplemented in \hyperlink{class_t_c_l_a_p_1_1_multi_switch_arg_a91c3d349570f21d8af6dc90767d747a2}{T\+C\+L\+A\+P\+::\+Multi\+Switch\+Arg}.
+
+
+
+Definition at line 223 of file Switch\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_switch_arg_af8561d903ec3c11f5f2175e6db179d9c}{}\index{T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}!reset@{reset}}
+\index{reset@{reset}!T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}}
+\subsubsection[{reset()}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Switch\+Arg\+::reset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_switch_arg_af8561d903ec3c11f5f2175e6db179d9c}
+Clears the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} object and allows it to be reused by new command lines. 
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_arg_ab5b5dc9a9b0381561f0684523f943a2c}{T\+C\+L\+A\+P\+::\+Arg}.
+
+
+
+Reimplemented in \hyperlink{class_t_c_l_a_p_1_1_multi_switch_arg_ac320530811dbca7fdcb2a41ab252fce4}{T\+C\+L\+A\+P\+::\+Multi\+Switch\+Arg}.
+
+
+
+Definition at line 255 of file Switch\+Arg.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_switch_arg_ae25a99eb06fc2ee75a3b98edba1d5d8d}{}\index{T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}!\+\_\+default@{\+\_\+default}}
+\index{\+\_\+default@{\+\_\+default}!T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}}
+\subsubsection[{\+\_\+default}]{\setlength{\rightskip}{0pt plus 5cm}bool T\+C\+L\+A\+P\+::\+Switch\+Arg\+::\+\_\+default\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_switch_arg_ae25a99eb06fc2ee75a3b98edba1d5d8d}
+Used to support the \hyperlink{class_t_c_l_a_p_1_1_switch_arg_af8561d903ec3c11f5f2175e6db179d9c}{reset()} method so that \hyperlink{class_t_c_l_a_p_1_1_value_arg}{Value\+Arg} can be reset to their constructed value. 
+
+Definition at line 52 of file Switch\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_switch_arg_a0389ecebecc504d9756703d46e8cf3ca}{}\index{T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}!\+\_\+value@{\+\_\+value}}
+\index{\+\_\+value@{\+\_\+value}!T\+C\+L\+A\+P\+::\+Switch\+Arg@{T\+C\+L\+A\+P\+::\+Switch\+Arg}}
+\subsubsection[{\+\_\+value}]{\setlength{\rightskip}{0pt plus 5cm}bool T\+C\+L\+A\+P\+::\+Switch\+Arg\+::\+\_\+value\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_switch_arg_a0389ecebecc504d9756703d46e8cf3ca}
+The value of the switch. 
+
+Definition at line 46 of file Switch\+Arg.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/tclap/\hyperlink{_switch_arg_8h}{Switch\+Arg.\+h}\end{DoxyCompactItemize}

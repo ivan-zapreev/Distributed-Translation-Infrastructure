@@ -1,0 +1,286 @@
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops}{}\section{asio\+:\+:detail\+:\+:descriptor\+\_\+ops Namespace Reference}
+\label{namespaceasio_1_1detail_1_1descriptor__ops}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef unsigned char \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}{state\+\_\+type}
+\item 
+typedef iovec \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ad10e658a754ff775cdcc3b3decd3c8c9}{buf}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3dabc2ae064c1ea10a1c92b27ad21098a6d}{user\+\_\+set\+\_\+non\+\_\+blocking} = 1, 
+\hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3dae851554ee970db7e3e2aa8d5e257d78b}{internal\+\_\+non\+\_\+blocking} = 2, 
+\hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3da9694dc69c579805472d9c180aa66cd15}{non\+\_\+blocking} = user\+\_\+set\+\_\+non\+\_\+blocking $\vert$ internal\+\_\+non\+\_\+blocking, 
+\hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3daf5a58248660cca977665f283da5ed7a1}{possible\+\_\+dup} = 4
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Return\+Type $>$ }\\Return\+Type \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ab71485e5ade2968303d4ace269d5d63e}{error\+\_\+wrapper} (Return\+Type return\+\_\+value, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a8801efb10c431989bba3ded2e01adc52}{open} (const char $\ast$path, int flags, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_adb08bf6a6ad29284d586da2720ba7053}{close} (int d, \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}{state\+\_\+type} \&state, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a45d5bc45c4575bb02d8aea7a2785e698}{set\+\_\+user\+\_\+non\+\_\+blocking} (int d, \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}{state\+\_\+type} \&state, bool value, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a9162476dcac561f880711939b461ccf7}{set\+\_\+internal\+\_\+non\+\_\+blocking} (int d, \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}{state\+\_\+type} \&state, bool value, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} std\+::size\+\_\+t \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ac2ccb11d1dc712151611a4fbe25aa5ac}{sync\+\_\+read} (int d, \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}{state\+\_\+type} state, \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ad10e658a754ff775cdcc3b3decd3c8c9}{buf} $\ast$bufs, std\+::size\+\_\+t count, bool all\+\_\+empty, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a3b54b218ce98d1842878e7562b49537f}{non\+\_\+blocking\+\_\+read} (int d, \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ad10e658a754ff775cdcc3b3decd3c8c9}{buf} $\ast$bufs, std\+::size\+\_\+t count, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, std\+::size\+\_\+t \&bytes\+\_\+transferred)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} std\+::size\+\_\+t \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_adfa229766b01ecb438e199e3f69f386a}{sync\+\_\+write} (int d, \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}{state\+\_\+type} state, const \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ad10e658a754ff775cdcc3b3decd3c8c9}{buf} $\ast$bufs, std\+::size\+\_\+t count, bool all\+\_\+empty, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_aad77004eb99a79b6cd448ce6d1482ad9}{non\+\_\+blocking\+\_\+write} (int d, const \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ad10e658a754ff775cdcc3b3decd3c8c9}{buf} $\ast$bufs, std\+::size\+\_\+t count, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, std\+::size\+\_\+t \&bytes\+\_\+transferred)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_afed8890fa05f9b932b50dcff81d5b659}{ioctl} (int d, \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}{state\+\_\+type} \&state, long cmd, \hyperlink{namespaceasio_1_1detail_a27f72e1b8b785eaaa59ddc6b41751106}{ioctl\+\_\+arg\+\_\+type} $\ast$arg, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a50ecc1bb18d53d214abfeca6ceb9bc4f}{fcntl} (int d, int cmd, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a2db735e0f86e600494183bcabbc3d5b1}{fcntl} (int d, int cmd, long arg, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a3df8d319a2df8be7039a62bfb59686db}{poll\+\_\+read} (int d, \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}{state\+\_\+type} state, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} int \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_ab3ae5ba1bb1f565b3c62137fe56a3dbd}{poll\+\_\+write} (int d, \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}{state\+\_\+type} state, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_ad10e658a754ff775cdcc3b3decd3c8c9}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!buf@{buf}}
+\index{buf@{buf}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{buf}]{\setlength{\rightskip}{0pt plus 5cm}typedef iovec {\bf asio\+::detail\+::descriptor\+\_\+ops\+::buf}}\label{namespaceasio_1_1detail_1_1descriptor__ops_ad10e658a754ff775cdcc3b3decd3c8c9}
+
+
+Definition at line 73 of file descriptor\+\_\+ops.\+hpp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!state\+\_\+type@{state\+\_\+type}}
+\index{state\+\_\+type@{state\+\_\+type}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{state\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned char {\bf asio\+::detail\+::descriptor\+\_\+ops\+::state\+\_\+type}}\label{namespaceasio_1_1detail_1_1descriptor__ops_a773b997617ef697b51ff3f91f6e48764}
+
+
+Definition at line 50 of file descriptor\+\_\+ops.\+hpp.
+
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3d}{}\subsubsection[{anonymous enum}]{\setlength{\rightskip}{0pt plus 5cm}anonymous enum}\label{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3d}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{user\+\_\+set\+\_\+non\+\_\+blocking@{user\+\_\+set\+\_\+non\+\_\+blocking}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!user\+\_\+set\+\_\+non\+\_\+blocking@{user\+\_\+set\+\_\+non\+\_\+blocking}}\item[{\em 
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3dabc2ae064c1ea10a1c92b27ad21098a6d}{}user\+\_\+set\+\_\+non\+\_\+blocking\label{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3dabc2ae064c1ea10a1c92b27ad21098a6d}
+}]\index{internal\+\_\+non\+\_\+blocking@{internal\+\_\+non\+\_\+blocking}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!internal\+\_\+non\+\_\+blocking@{internal\+\_\+non\+\_\+blocking}}\item[{\em 
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3dae851554ee970db7e3e2aa8d5e257d78b}{}internal\+\_\+non\+\_\+blocking\label{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3dae851554ee970db7e3e2aa8d5e257d78b}
+}]\index{non\+\_\+blocking@{non\+\_\+blocking}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!non\+\_\+blocking@{non\+\_\+blocking}}\item[{\em 
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3da9694dc69c579805472d9c180aa66cd15}{}non\+\_\+blocking\label{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3da9694dc69c579805472d9c180aa66cd15}
+}]\index{possible\+\_\+dup@{possible\+\_\+dup}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!possible\+\_\+dup@{possible\+\_\+dup}}\item[{\em 
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3daf5a58248660cca977665f283da5ed7a1}{}possible\+\_\+dup\label{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3daf5a58248660cca977665f283da5ed7a1}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line 35 of file descriptor\+\_\+ops.\+hpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_adb08bf6a6ad29284d586da2720ba7053}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!close@{close}}
+\index{close@{close}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{close(int d, state\+\_\+type \&state, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::detail\+::descriptor\+\_\+ops\+::close (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{{\bf state\+\_\+type} \&}]{state, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_adb08bf6a6ad29284d586da2720ba7053}
+
+
+Definition at line 42 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_ab71485e5ade2968303d4ace269d5d63e}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!error\+\_\+wrapper@{error\+\_\+wrapper}}
+\index{error\+\_\+wrapper@{error\+\_\+wrapper}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{error\+\_\+wrapper(\+Return\+Type return\+\_\+value, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Return\+Type $>$ Return\+Type asio\+::detail\+::descriptor\+\_\+ops\+::error\+\_\+wrapper (
+\begin{DoxyParamCaption}
+\item[{Return\+Type}]{return\+\_\+value, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceasio_1_1detail_1_1descriptor__ops_ab71485e5ade2968303d4ace269d5d63e}
+
+
+Definition at line 53 of file descriptor\+\_\+ops.\+hpp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_a50ecc1bb18d53d214abfeca6ceb9bc4f}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!fcntl@{fcntl}}
+\index{fcntl@{fcntl}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{fcntl(int d, int cmd, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::detail\+::descriptor\+\_\+ops\+::fcntl (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{int}]{cmd, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_a50ecc1bb18d53d214abfeca6ceb9bc4f}
+
+
+Definition at line 365 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_a2db735e0f86e600494183bcabbc3d5b1}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!fcntl@{fcntl}}
+\index{fcntl@{fcntl}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{fcntl(int d, int cmd, long arg, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::detail\+::descriptor\+\_\+ops\+::fcntl (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{int}]{cmd, }
+\item[{long}]{arg, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_a2db735e0f86e600494183bcabbc3d5b1}
+
+
+Definition at line 380 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_afed8890fa05f9b932b50dcff81d5b659}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!ioctl@{ioctl}}
+\index{ioctl@{ioctl}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{ioctl(int d, state\+\_\+type \&state, long cmd, ioctl\+\_\+arg\+\_\+type $\ast$arg, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::detail\+::descriptor\+\_\+ops\+::ioctl (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{{\bf state\+\_\+type} \&}]{state, }
+\item[{long}]{cmd, }
+\item[{{\bf ioctl\+\_\+arg\+\_\+type} $\ast$}]{arg, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_afed8890fa05f9b932b50dcff81d5b659}
+
+
+Definition at line 324 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_a3b54b218ce98d1842878e7562b49537f}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!non\+\_\+blocking\+\_\+read@{non\+\_\+blocking\+\_\+read}}
+\index{non\+\_\+blocking\+\_\+read@{non\+\_\+blocking\+\_\+read}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{non\+\_\+blocking\+\_\+read(int d, buf $\ast$bufs, std\+::size\+\_\+t count, asio\+::error\+\_\+code \&ec, std\+::size\+\_\+t \&bytes\+\_\+transferred)}]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::detail\+::descriptor\+\_\+ops\+::non\+\_\+blocking\+\_\+read (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{{\bf buf} $\ast$}]{bufs, }
+\item[{std\+::size\+\_\+t}]{count, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec, }
+\item[{std\+::size\+\_\+t \&}]{bytes\+\_\+transferred}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_a3b54b218ce98d1842878e7562b49537f}
+
+
+Definition at line 213 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_aad77004eb99a79b6cd448ce6d1482ad9}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!non\+\_\+blocking\+\_\+write@{non\+\_\+blocking\+\_\+write}}
+\index{non\+\_\+blocking\+\_\+write@{non\+\_\+blocking\+\_\+write}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{non\+\_\+blocking\+\_\+write(int d, const buf $\ast$bufs, std\+::size\+\_\+t count, asio\+::error\+\_\+code \&ec, std\+::size\+\_\+t \&bytes\+\_\+transferred)}]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::detail\+::descriptor\+\_\+ops\+::non\+\_\+blocking\+\_\+write (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{const {\bf buf} $\ast$}]{bufs, }
+\item[{std\+::size\+\_\+t}]{count, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec, }
+\item[{std\+::size\+\_\+t \&}]{bytes\+\_\+transferred}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_aad77004eb99a79b6cd448ce6d1482ad9}
+
+
+Definition at line 292 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_a8801efb10c431989bba3ded2e01adc52}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!open@{open}}
+\index{open@{open}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{open(const char $\ast$path, int flags, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::detail\+::descriptor\+\_\+ops\+::open (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{path, }
+\item[{int}]{flags, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_a8801efb10c431989bba3ded2e01adc52}
+
+
+Definition at line 33 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_a3df8d319a2df8be7039a62bfb59686db}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!poll\+\_\+read@{poll\+\_\+read}}
+\index{poll\+\_\+read@{poll\+\_\+read}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{poll\+\_\+read(int d, state\+\_\+type state, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::detail\+::descriptor\+\_\+ops\+::poll\+\_\+read (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{{\bf state\+\_\+type}}]{state, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_a3df8d319a2df8be7039a62bfb59686db}
+
+
+Definition at line 395 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_ab3ae5ba1bb1f565b3c62137fe56a3dbd}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!poll\+\_\+write@{poll\+\_\+write}}
+\index{poll\+\_\+write@{poll\+\_\+write}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{poll\+\_\+write(int d, state\+\_\+type state, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::detail\+::descriptor\+\_\+ops\+::poll\+\_\+write (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{{\bf state\+\_\+type}}]{state, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_ab3ae5ba1bb1f565b3c62137fe56a3dbd}
+
+
+Definition at line 418 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_a9162476dcac561f880711939b461ccf7}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!set\+\_\+internal\+\_\+non\+\_\+blocking@{set\+\_\+internal\+\_\+non\+\_\+blocking}}
+\index{set\+\_\+internal\+\_\+non\+\_\+blocking@{set\+\_\+internal\+\_\+non\+\_\+blocking}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{set\+\_\+internal\+\_\+non\+\_\+blocking(int d, state\+\_\+type \&state, bool value, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::detail\+::descriptor\+\_\+ops\+::set\+\_\+internal\+\_\+non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{{\bf state\+\_\+type} \&}]{state, }
+\item[{bool}]{value, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_a9162476dcac561f880711939b461ccf7}
+
+
+Definition at line 121 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_a45d5bc45c4575bb02d8aea7a2785e698}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!set\+\_\+user\+\_\+non\+\_\+blocking@{set\+\_\+user\+\_\+non\+\_\+blocking}}
+\index{set\+\_\+user\+\_\+non\+\_\+blocking@{set\+\_\+user\+\_\+non\+\_\+blocking}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{set\+\_\+user\+\_\+non\+\_\+blocking(int d, state\+\_\+type \&state, bool value, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::detail\+::descriptor\+\_\+ops\+::set\+\_\+user\+\_\+non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{{\bf state\+\_\+type} \&}]{state, }
+\item[{bool}]{value, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_a45d5bc45c4575bb02d8aea7a2785e698}
+
+
+Definition at line 80 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_ac2ccb11d1dc712151611a4fbe25aa5ac}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!sync\+\_\+read@{sync\+\_\+read}}
+\index{sync\+\_\+read@{sync\+\_\+read}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{sync\+\_\+read(int d, state\+\_\+type state, buf $\ast$bufs, std\+::size\+\_\+t count, bool all\+\_\+empty, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::size\+\_\+t asio\+::detail\+::descriptor\+\_\+ops\+::sync\+\_\+read (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{{\bf state\+\_\+type}}]{state, }
+\item[{{\bf buf} $\ast$}]{bufs, }
+\item[{std\+::size\+\_\+t}]{count, }
+\item[{bool}]{all\+\_\+empty, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_ac2ccb11d1dc712151611a4fbe25aa5ac}
+
+
+Definition at line 166 of file descriptor\+\_\+ops.\+ipp.
+
+\hypertarget{namespaceasio_1_1detail_1_1descriptor__ops_adfa229766b01ecb438e199e3f69f386a}{}\index{asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}!sync\+\_\+write@{sync\+\_\+write}}
+\index{sync\+\_\+write@{sync\+\_\+write}!asio\+::detail\+::descriptor\+\_\+ops@{asio\+::detail\+::descriptor\+\_\+ops}}
+\subsubsection[{sync\+\_\+write(int d, state\+\_\+type state, const buf $\ast$bufs, std\+::size\+\_\+t count, bool all\+\_\+empty, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}std\+::size\+\_\+t asio\+::detail\+::descriptor\+\_\+ops\+::sync\+\_\+write (
+\begin{DoxyParamCaption}
+\item[{int}]{d, }
+\item[{{\bf state\+\_\+type}}]{state, }
+\item[{const {\bf buf} $\ast$}]{bufs, }
+\item[{std\+::size\+\_\+t}]{count, }
+\item[{bool}]{all\+\_\+empty, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{namespaceasio_1_1detail_1_1descriptor__ops_adfa229766b01ecb438e199e3f69f386a}
+
+
+Definition at line 252 of file descriptor\+\_\+ops.\+ipp.
+

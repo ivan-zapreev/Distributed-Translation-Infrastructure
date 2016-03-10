@@ -1,0 +1,249 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:tm\+:\+:builders\+:\+:tm\+\_\+basic\+\_\+builder$<$ model\+\_\+type, reader\+\_\+type $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder$<$ model\+\_\+type, reader\+\_\+type $>$@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder$<$ model\+\_\+type, reader\+\_\+type $>$}}
+
+
+{\ttfamily \#include $<$tm\+\_\+basic\+\_\+builder.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a3acde5a466b7d9e97e4cf7ffdc72dd87}{tm\+\_\+basic\+\_\+builder} (const \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1tm__parameters}{tm\+\_\+parameters} \&params, model\+\_\+type \&model, reader\+\_\+type \&reader)
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_aaf4afc4e2bbb2a675a64603ceecdc8e9}{$\sim$tm\+\_\+basic\+\_\+builder} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a07847280269c80b4e7d622da3e654c8e}{build} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a55ed944c97e2e9896b6ada55899b9828}{post\+\_\+process\+\_\+feature} (const float feature, const float lambda)
+\item 
+{\footnotesize template$<$bool is\+\_\+get\+\_\+weights$>$ }\\bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a4c6287cfd6d5a415f326445825fadc86}{process\+\_\+features} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} weights, size\+\_\+t \&num\+\_\+features, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} $\ast$storage)
+\item 
+bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_aef8c8ab701465ff1c201a7e7f75a8cf6}{is\+\_\+good\+\_\+features} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} rest, size\+\_\+t \&tmp\+\_\+features\+\_\+size, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} $\ast$tmp\+\_\+features)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a97dc0781341ddaa5aa30812b7aa00552}{process\+\_\+target\+\_\+entry} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__source__entry}{tm\+\_\+source\+\_\+entry} $\ast$source\+\_\+entry, \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&rest, size\+\_\+t \&count\+\_\+ref, size\+\_\+t \&tmp\+\_\+features\+\_\+size, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} $\ast$tmp\+\_\+features)
+\item 
+{\footnotesize template$<$bool count\+\_\+or\+\_\+build$>$ }\\void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_ae343a8c5d672c4c530f11eee3c19d3ee}{parse\+\_\+tm\+\_\+file} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a3a746c653bfdbc8d5e8ad1b8393ba578}{count\+\_\+source\+\_\+phrases} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_ab815d0b80278bea0ab5fdc9a527fa6f2}{process\+\_\+source\+\_\+entries} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a3990eaf128683fa52c8a43a1498bbf6c}{add\+\_\+unk\+\_\+translation} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename model\+\_\+type, typename reader\+\_\+type$>$class uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder$<$ model\+\_\+type, reader\+\_\+type $>$}
+
+This class represents a basic reader of the translation model. It allows to read a text-\/formatted translation model and to put it into the given instance of the model class. It assumes the simple text model format as used by Oyster or Moses. See \href{http://www.statmt.org/moses/?n=Moses.Tutorial}{\tt http\+://www.\+statmt.\+org/moses/?n=\+Moses.\+Tutorial} for some info. The translation model is also commonly known as a phrase table. 
+
+Definition at line 84 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a3acde5a466b7d9e97e4cf7ffdc72dd87}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}!tm\+\_\+basic\+\_\+builder@{tm\+\_\+basic\+\_\+builder}}
+\index{tm\+\_\+basic\+\_\+builder@{tm\+\_\+basic\+\_\+builder}!uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}}
+\subsubsection[{tm\+\_\+basic\+\_\+builder(const tm\+\_\+parameters \&params, model\+\_\+type \&model, reader\+\_\+type \&reader)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ {\bf uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::{\bf tm\+\_\+basic\+\_\+builder} (
+\begin{DoxyParamCaption}
+\item[{const {\bf tm\+\_\+parameters} \&}]{params, }
+\item[{model\+\_\+type \&}]{model, }
+\item[{reader\+\_\+type \&}]{reader}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a3acde5a466b7d9e97e4cf7ffdc72dd87}
+The basic constructor of the builder object  params the model parameters 
+\begin{DoxyParams}{Parameters}
+{\em model} & the model to put the data into \\
+\hline
+{\em reader} & the reader to read the data from \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 93 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_aaf4afc4e2bbb2a675a64603ceecdc8e9}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}!````~tm\+\_\+basic\+\_\+builder@{$\sim$tm\+\_\+basic\+\_\+builder}}
+\index{````~tm\+\_\+basic\+\_\+builder@{$\sim$tm\+\_\+basic\+\_\+builder}!uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}}
+\subsubsection[{$\sim$tm\+\_\+basic\+\_\+builder()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ {\bf uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::$\sim${\bf tm\+\_\+basic\+\_\+builder} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_aaf4afc4e2bbb2a675a64603ceecdc8e9}
+The basic destructor 
+
+Definition at line 103 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a3990eaf128683fa52c8a43a1498bbf6c}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}!add\+\_\+unk\+\_\+translation@{add\+\_\+unk\+\_\+translation}}
+\index{add\+\_\+unk\+\_\+translation@{add\+\_\+unk\+\_\+translation}!uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}}
+\subsubsection[{add\+\_\+unk\+\_\+translation()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::add\+\_\+unk\+\_\+translation (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a3990eaf128683fa52c8a43a1498bbf6c}
+Allows to add an unk entry to the model 
+
+Definition at line 447 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a07847280269c80b4e7d622da3e654c8e}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}!build@{build}}
+\index{build@{build}!uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}}
+\subsubsection[{build()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::build (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a07847280269c80b4e7d622da3e654c8e}
+Allows to build the model by reading from the reader object. This is a two step process as first we need the number of distinct source phrases. 
+
+Definition at line 113 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a3a746c653bfdbc8d5e8ad1b8393ba578}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}!count\+\_\+source\+\_\+phrases@{count\+\_\+source\+\_\+phrases}}
+\index{count\+\_\+source\+\_\+phrases@{count\+\_\+source\+\_\+phrases}!uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}}
+\subsubsection[{count\+\_\+source\+\_\+phrases()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::count\+\_\+source\+\_\+phrases (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a3a746c653bfdbc8d5e8ad1b8393ba578}
+Allows to count and set the number of source phrases 
+
+Definition at line 413 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_aef8c8ab701465ff1c201a7e7f75a8cf6}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}!is\+\_\+good\+\_\+features@{is\+\_\+good\+\_\+features}}
+\index{is\+\_\+good\+\_\+features@{is\+\_\+good\+\_\+features}!uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}}
+\subsubsection[{is\+\_\+good\+\_\+features(\+Text\+Piece\+Reader rest, size\+\_\+t \&tmp\+\_\+features\+\_\+size, prob\+\_\+weight $\ast$tmp\+\_\+features)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ bool {\bf uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::is\+\_\+good\+\_\+features (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader}}]{rest, }
+\item[{size\+\_\+t \&}]{tmp\+\_\+features\+\_\+size, }
+\item[{{\bf prob\+\_\+weight} $\ast$}]{tmp\+\_\+features}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_aef8c8ab701465ff1c201a7e7f75a8cf6}
+Allows to check if whether the probability weights satisfy the filtering thresholds. 
+\begin{DoxyParams}{Parameters}
+{\em rest} & the part of the source entry containing the target and the weights \\
+\hline
+{\em tmp\+\_\+features} & the temporary weights storage \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the conditions are satisfied, otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 207 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_ae343a8c5d672c4c530f11eee3c19d3ee}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}!parse\+\_\+tm\+\_\+file@{parse\+\_\+tm\+\_\+file}}
+\index{parse\+\_\+tm\+\_\+file@{parse\+\_\+tm\+\_\+file}!uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}}
+\subsubsection[{parse\+\_\+tm\+\_\+file()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ template$<$bool count\+\_\+or\+\_\+build$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::parse\+\_\+tm\+\_\+file (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_ae343a8c5d672c4c530f11eee3c19d3ee}
+Allows to parse the T\+M model file and do two things depending on the value of the template parameter\+:
+\begin{DoxyEnumerate}
+\item Count the number of valid entries
+\item Build the T\+M model N\+O\+T\+E\+: This two pass parsing is not optimal but we have to do it as we need to know the number of valid entries beforehand, an optimization might be needed! 
+\begin{DoxyParams}{Parameters}
+{\em count\+\_\+or\+\_\+build} & if true then count if false then build \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyEnumerate}
+
+Definition at line 291 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a55ed944c97e2e9896b6ada55899b9828}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}!post\+\_\+process\+\_\+feature@{post\+\_\+process\+\_\+feature}}
+\index{post\+\_\+process\+\_\+feature@{post\+\_\+process\+\_\+feature}!uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}}
+\subsubsection[{post\+\_\+process\+\_\+feature(const float feature, const float lambda)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ float {\bf uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::post\+\_\+process\+\_\+feature (
+\begin{DoxyParamCaption}
+\item[{const float}]{feature, }
+\item[{const float}]{lambda}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a55ed944c97e2e9896b6ada55899b9828}
+Allows to post-\/process a single feature, i.\+e. do\+: log10(feature)$\ast$lambda 
+\begin{DoxyParams}{Parameters}
+{\em feature} & the feature to post-\/process \\
+\hline
+{\em lambda} & the lambda weight to multiply the log10 feature with \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the post-\/processed feature 
+\end{DoxyReturn}
+
+
+Definition at line 135 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a4c6287cfd6d5a415f326445825fadc86}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}!process\+\_\+features@{process\+\_\+features}}
+\index{process\+\_\+features@{process\+\_\+features}!uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}}
+\subsubsection[{process\+\_\+features(\+Text\+Piece\+Reader weights, size\+\_\+t \&num\+\_\+features, prob\+\_\+weight $\ast$storage)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ template$<$bool is\+\_\+get\+\_\+weights$>$ bool {\bf uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::process\+\_\+features (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader}}]{weights, }
+\item[{size\+\_\+t \&}]{num\+\_\+features, }
+\item[{{\bf prob\+\_\+weight} $\ast$}]{storage}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a4c6287cfd6d5a415f326445825fadc86}
+Allows to extract the features from the text piece and to check that they are valid with respect to the option bound If needed the weights will be converted to log scale and multiplied with the lambda factors 
+\begin{DoxyParams}{Parameters}
+{\em is\+\_\+get\+\_\+weights} & if the weights are to be retrieved or just checked \\
+\hline
+{\em weights} & \mbox{[}in\mbox{]} the text piece with weights, that starts with a space! \\
+\hline
+{\em num\+\_\+features} & \mbox{[}out\mbox{]} the number of read features if they satisfy on the constraints \\
+\hline
+{\em storage} & \mbox{[}out\mbox{]} the read and post-\/processed features features if they satisfy on the constraints \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the features satisfy the constraints, otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 154 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_ab815d0b80278bea0ab5fdc9a527fa6f2}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}!process\+\_\+source\+\_\+entries@{process\+\_\+source\+\_\+entries}}
+\index{process\+\_\+source\+\_\+entries@{process\+\_\+source\+\_\+entries}!uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}}
+\subsubsection[{process\+\_\+source\+\_\+entries()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::process\+\_\+source\+\_\+entries (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_ab815d0b80278bea0ab5fdc9a527fa6f2}
+Allows to process translations. 
+
+Definition at line 434 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a97dc0781341ddaa5aa30812b7aa00552}{}\index{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}!process\+\_\+target\+\_\+entry@{process\+\_\+target\+\_\+entry}}
+\index{process\+\_\+target\+\_\+entry@{process\+\_\+target\+\_\+entry}!uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}}
+\subsubsection[{process\+\_\+target\+\_\+entry(tm\+\_\+source\+\_\+entry $\ast$source\+\_\+entry, Text\+Piece\+Reader \&rest, size\+\_\+t \&count\+\_\+ref, size\+\_\+t \&tmp\+\_\+features\+\_\+size, prob\+\_\+weight $\ast$tmp\+\_\+features)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::tm\+::builders\+::tm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::process\+\_\+target\+\_\+entry (
+\begin{DoxyParamCaption}
+\item[{{\bf tm\+\_\+source\+\_\+entry} $\ast$}]{source\+\_\+entry, }
+\item[{{\bf Text\+Piece\+Reader} \&}]{rest, }
+\item[{size\+\_\+t \&}]{count\+\_\+ref, }
+\item[{size\+\_\+t \&}]{tmp\+\_\+features\+\_\+size, }
+\item[{{\bf prob\+\_\+weight} $\ast$}]{tmp\+\_\+features}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_a97dc0781341ddaa5aa30812b7aa00552}
+The line format assumes source to target and then at least four weights as given by\+: \href{http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases}{\tt http\+://www.\+statmt.\+org/moses/?n=\+Factored\+Training.\+Score\+Phrases} Currently, four different phrase translation scores are computed\+: inverse phrase translation probability φ(f$\vert$e) inverse lexical weighting lex(f$\vert$e) direct phrase translation probability φ(e$\vert$f) direct lexical weighting lex(e$\vert$f) Previously, there was another score\+: phrase penalty (always exp(1) = 2.\+718) The latter is considered optional, all the other elements followed on the translation line are now skipped. 
+\begin{DoxyParams}{Parameters}
+{\em source\+\_\+entry} & the pointer to the source entry for which this translation is \\
+\hline
+{\em rest} & stores the line to be parsed into a translation entry \\
+\hline
+{\em count\+\_\+ref} & \mbox{[}in/out\mbox{]} the number of remaining entries \\
+\hline
+{\em tmp\+\_\+features\+\_\+size} & \mbox{[}out\mbox{]} the number of read features \\
+\hline
+{\em tmp\+\_\+features} & the temporary feature storage \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 235 of file tm\+\_\+basic\+\_\+builder.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/tm/builders/\hyperlink{tm__basic__builder_8hpp}{tm\+\_\+basic\+\_\+builder.\+hpp}\end{DoxyCompactItemize}

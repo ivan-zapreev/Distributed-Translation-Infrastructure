@@ -1,0 +1,138 @@
+\hypertarget{classasio_1_1ssl_1_1detail_1_1io__op}{}\section{asio\+:\+:ssl\+:\+:detail\+:\+:io\+\_\+op$<$ Stream, Operation, Handler $>$ Class Template Reference}
+\label{classasio_1_1ssl_1_1detail_1_1io__op}\index{asio\+::ssl\+::detail\+::io\+\_\+op$<$ Stream, Operation, Handler $>$@{asio\+::ssl\+::detail\+::io\+\_\+op$<$ Stream, Operation, Handler $>$}}
+
+
+{\ttfamily \#include $<$io.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1ssl_1_1detail_1_1io__op_a6265a418e64a89feeb031b0eec0c66f7}{io\+\_\+op} (Stream \&next\+\_\+layer, \hyperlink{structasio_1_1ssl_1_1detail_1_1stream__core}{stream\+\_\+core} \&core, const Operation \&op, Handler \&handler)
+\item 
+void \hyperlink{classasio_1_1ssl_1_1detail_1_1io__op_a23b5b98bcadd08853ff37bfcac72ea35}{operator()} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} ec, std\+::size\+\_\+t bytes\+\_\+transferred=$\sim$std\+::size\+\_\+t(0), int start=0)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Stream \& \hyperlink{classasio_1_1ssl_1_1detail_1_1io__op_ac9a971480ecb8df84bedc0d891172c63}{next\+\_\+layer\+\_\+}
+\item 
+\hyperlink{structasio_1_1ssl_1_1detail_1_1stream__core}{stream\+\_\+core} \& \hyperlink{classasio_1_1ssl_1_1detail_1_1io__op_a8cfc4ec7786e88fb893239e3afa0d73a}{core\+\_\+}
+\item 
+Operation \hyperlink{classasio_1_1ssl_1_1detail_1_1io__op_aa3fa2b3e3ad0ee8aa4724a9f1dc9a307}{op\+\_\+}
+\item 
+int \hyperlink{classasio_1_1ssl_1_1detail_1_1io__op_a447be685fcda22c40259253c5c276543}{start\+\_\+}
+\item 
+\hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915}{engine\+::want} \hyperlink{classasio_1_1ssl_1_1detail_1_1io__op_a8046c9964a8fd25d82af1c7008c10aed}{want\+\_\+}
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1detail_1_1io__op_a3b6a192d0f0e5e3af719212a21f0d221}{ec\+\_\+}
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1ssl_1_1detail_1_1io__op_a6ae68a9ff5e4002202fcffa1feca8f46}{bytes\+\_\+transferred\+\_\+}
+\item 
+Handler \hyperlink{classasio_1_1ssl_1_1detail_1_1io__op_a554b84344ad9c6b4d15ac03cc296a2d9}{handler\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Stream, typename Operation, typename Handler$>$class asio\+::ssl\+::detail\+::io\+\_\+op$<$ Stream, Operation, Handler $>$}
+
+
+
+Definition at line 90 of file io.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1ssl_1_1detail_1_1io__op_a6265a418e64a89feeb031b0eec0c66f7}{}\index{asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}!io\+\_\+op@{io\+\_\+op}}
+\index{io\+\_\+op@{io\+\_\+op}!asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}}
+\subsubsection[{io\+\_\+op(\+Stream \&next\+\_\+layer, stream\+\_\+core \&core, const Operation \&op, Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream, typename Operation, typename Handler$>$ {\bf asio\+::ssl\+::detail\+::io\+\_\+op}$<$ Stream, Operation, Handler $>$\+::{\bf io\+\_\+op} (
+\begin{DoxyParamCaption}
+\item[{Stream \&}]{next\+\_\+layer, }
+\item[{{\bf stream\+\_\+core} \&}]{core, }
+\item[{const Operation \&}]{op, }
+\item[{Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1detail_1_1io__op_a6265a418e64a89feeb031b0eec0c66f7}
+
+
+Definition at line 93 of file io.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ssl_1_1detail_1_1io__op_a23b5b98bcadd08853ff37bfcac72ea35}{}\index{asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}!operator()@{operator()}}
+\index{operator()@{operator()}!asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}}
+\subsubsection[{operator()(asio\+::error\+\_\+code ec, std\+::size\+\_\+t bytes\+\_\+transferred=$\sim$std\+::size\+\_\+t(0), int start=0)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream, typename Operation, typename Handler$>$ void {\bf asio\+::ssl\+::detail\+::io\+\_\+op}$<$ Stream, Operation, Handler $>$\+::operator() (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code}}]{ec, }
+\item[{std\+::size\+\_\+t}]{bytes\+\_\+transferred = {\ttfamily $\sim$std\+:\+:size\+\_\+t(0)}, }
+\item[{int}]{start = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1detail_1_1io__op_a23b5b98bcadd08853ff37bfcac72ea35}
+
+
+Definition at line 131 of file io.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classasio_1_1ssl_1_1detail_1_1io__op_a6ae68a9ff5e4002202fcffa1feca8f46}{}\index{asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}!bytes\+\_\+transferred\+\_\+@{bytes\+\_\+transferred\+\_\+}}
+\index{bytes\+\_\+transferred\+\_\+@{bytes\+\_\+transferred\+\_\+}!asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}}
+\subsubsection[{bytes\+\_\+transferred\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream, typename Operation, typename Handler$>$ std\+::size\+\_\+t {\bf asio\+::ssl\+::detail\+::io\+\_\+op}$<$ Stream, Operation, Handler $>$\+::bytes\+\_\+transferred\+\_\+}\label{classasio_1_1ssl_1_1detail_1_1io__op_a6ae68a9ff5e4002202fcffa1feca8f46}
+
+
+Definition at line 286 of file io.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1io__op_a8cfc4ec7786e88fb893239e3afa0d73a}{}\index{asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}!core\+\_\+@{core\+\_\+}}
+\index{core\+\_\+@{core\+\_\+}!asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}}
+\subsubsection[{core\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream, typename Operation, typename Handler$>$ {\bf stream\+\_\+core}\& {\bf asio\+::ssl\+::detail\+::io\+\_\+op}$<$ Stream, Operation, Handler $>$\+::core\+\_\+}\label{classasio_1_1ssl_1_1detail_1_1io__op_a8cfc4ec7786e88fb893239e3afa0d73a}
+
+
+Definition at line 281 of file io.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1io__op_a3b6a192d0f0e5e3af719212a21f0d221}{}\index{asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}!ec\+\_\+@{ec\+\_\+}}
+\index{ec\+\_\+@{ec\+\_\+}!asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}}
+\subsubsection[{ec\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream, typename Operation, typename Handler$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::detail\+::io\+\_\+op}$<$ Stream, Operation, Handler $>$\+::ec\+\_\+}\label{classasio_1_1ssl_1_1detail_1_1io__op_a3b6a192d0f0e5e3af719212a21f0d221}
+
+
+Definition at line 285 of file io.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1io__op_a554b84344ad9c6b4d15ac03cc296a2d9}{}\index{asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}!handler\+\_\+@{handler\+\_\+}}
+\index{handler\+\_\+@{handler\+\_\+}!asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}}
+\subsubsection[{handler\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream, typename Operation, typename Handler$>$ Handler {\bf asio\+::ssl\+::detail\+::io\+\_\+op}$<$ Stream, Operation, Handler $>$\+::handler\+\_\+}\label{classasio_1_1ssl_1_1detail_1_1io__op_a554b84344ad9c6b4d15ac03cc296a2d9}
+
+
+Definition at line 287 of file io.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1io__op_ac9a971480ecb8df84bedc0d891172c63}{}\index{asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}!next\+\_\+layer\+\_\+@{next\+\_\+layer\+\_\+}}
+\index{next\+\_\+layer\+\_\+@{next\+\_\+layer\+\_\+}!asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}}
+\subsubsection[{next\+\_\+layer\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream, typename Operation, typename Handler$>$ Stream\& {\bf asio\+::ssl\+::detail\+::io\+\_\+op}$<$ Stream, Operation, Handler $>$\+::next\+\_\+layer\+\_\+}\label{classasio_1_1ssl_1_1detail_1_1io__op_ac9a971480ecb8df84bedc0d891172c63}
+
+
+Definition at line 280 of file io.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1io__op_aa3fa2b3e3ad0ee8aa4724a9f1dc9a307}{}\index{asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}!op\+\_\+@{op\+\_\+}}
+\index{op\+\_\+@{op\+\_\+}!asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}}
+\subsubsection[{op\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream, typename Operation, typename Handler$>$ Operation {\bf asio\+::ssl\+::detail\+::io\+\_\+op}$<$ Stream, Operation, Handler $>$\+::op\+\_\+}\label{classasio_1_1ssl_1_1detail_1_1io__op_aa3fa2b3e3ad0ee8aa4724a9f1dc9a307}
+
+
+Definition at line 282 of file io.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1io__op_a447be685fcda22c40259253c5c276543}{}\index{asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}!start\+\_\+@{start\+\_\+}}
+\index{start\+\_\+@{start\+\_\+}!asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}}
+\subsubsection[{start\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream, typename Operation, typename Handler$>$ int {\bf asio\+::ssl\+::detail\+::io\+\_\+op}$<$ Stream, Operation, Handler $>$\+::start\+\_\+}\label{classasio_1_1ssl_1_1detail_1_1io__op_a447be685fcda22c40259253c5c276543}
+
+
+Definition at line 283 of file io.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1io__op_a8046c9964a8fd25d82af1c7008c10aed}{}\index{asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}!want\+\_\+@{want\+\_\+}}
+\index{want\+\_\+@{want\+\_\+}!asio\+::ssl\+::detail\+::io\+\_\+op@{asio\+::ssl\+::detail\+::io\+\_\+op}}
+\subsubsection[{want\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream, typename Operation, typename Handler$>$ {\bf engine\+::want} {\bf asio\+::ssl\+::detail\+::io\+\_\+op}$<$ Stream, Operation, Handler $>$\+::want\+\_\+}\label{classasio_1_1ssl_1_1detail_1_1io__op_a8046c9964a8fd25d82af1c7008c10aed}
+
+
+Definition at line 284 of file io.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ssl/detail/\hyperlink{io_8hpp}{io.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,709 @@
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context}{}\section{asio\+:\+:ssl\+:\+:old\+:\+:basic\+\_\+context$<$ Service $>$ Class Template Reference}
+\label{classasio_1_1ssl_1_1old_1_1basic__context}\index{asio\+::ssl\+::old\+::basic\+\_\+context$<$ Service $>$@{asio\+::ssl\+::old\+::basic\+\_\+context$<$ Service $>$}}
+
+
+S\+S\+L context.  
+
+
+
+
+{\ttfamily \#include $<$basic\+\_\+context.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:ssl\+:\+:old\+:\+:basic\+\_\+context$<$ Service $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classasio_1_1ssl_1_1old_1_1basic__context}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Service \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a8e7a844e318b8d53600febd3953b03f0}{service\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type of the service that will be used to provide context operations. \end{DoxyCompactList}\item 
+typedef service\+\_\+type\+::impl\+\_\+type \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a0ab28e5a1f4db7dbf190e6bb8931031a}{impl\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The native implementation type of the S\+S\+L context. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a9e68bd4adbed02486d36846b1f7884ea}{basic\+\_\+context} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service}, \hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525}{method} m)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_ab4cb84b3b0a110ea034584c64d2fc40a}{$\sim$basic\+\_\+context} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a0ab28e5a1f4db7dbf190e6bb8931031a}{impl\+\_\+type} \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a2c5a23f2187a45c7250f7b9fc6c6da5f}{impl} ()
+\begin{DoxyCompactList}\small\item\em Get the underlying implementation in the native type. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a450fd71b35addd8b5d445cce85485c66}{set\+\_\+options} (\hyperlink{classasio_1_1ssl_1_1context__base_a12d5d28abeb47c91311bf13740dec514}{options} o)
+\begin{DoxyCompactList}\small\item\em Set options on the context. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_ab337a0a558db0823301a22dc166ec463}{set\+\_\+options} (\hyperlink{classasio_1_1ssl_1_1context__base_a12d5d28abeb47c91311bf13740dec514}{options} o, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Set options on the context. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a40a0d646fdba4f375136fe55dad4bd77}{set\+\_\+verify\+\_\+mode} (\hyperlink{classasio_1_1ssl_1_1context__base_aa9ef38ba747dd4e8ecb1f9a279a67d6b}{verify\+\_\+mode} v)
+\begin{DoxyCompactList}\small\item\em Set the peer verification mode. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a68197e690fa1135840dcf705007766e7}{set\+\_\+verify\+\_\+mode} (\hyperlink{classasio_1_1ssl_1_1context__base_aa9ef38ba747dd4e8ecb1f9a279a67d6b}{verify\+\_\+mode} v, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Set the peer verification mode. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a3b476dac460f54c332545d5b2d8ec9b8}{load\+\_\+verify\+\_\+file} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Load a certification authority file for performing verification. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_accf7e4584fd31547a99b62c119eb1335}{load\+\_\+verify\+\_\+file} (const std\+::string \&filename, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Load a certification authority file for performing verification. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_ac5e3fd95d188e164d348e6a2cc4a6d78}{add\+\_\+verify\+\_\+path} (const std\+::string \&path)
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a5a6166781d31668abdefd088a2c4e31e}{add\+\_\+verify\+\_\+path} (const std\+::string \&path, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+void \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a3775df7a83e057032c98942bb2a38d39}{use\+\_\+certificate\+\_\+file} (const std\+::string \&filename, \hyperlink{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fb}{file\+\_\+format} format)
+\begin{DoxyCompactList}\small\item\em Use a certificate from a file. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a4ef1780be8167a99c67b891549724667}{use\+\_\+certificate\+\_\+file} (const std\+::string \&filename, \hyperlink{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fb}{file\+\_\+format} format, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Use a certificate from a file. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a86400401e8cff30ac4a76c027cc419eb}{use\+\_\+certificate\+\_\+chain\+\_\+file} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Use a certificate chain from a file. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_afe343f3341422d978a59bc3564d41035}{use\+\_\+certificate\+\_\+chain\+\_\+file} (const std\+::string \&filename, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Use a certificate chain from a file. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a88aa0b862bf2bcd4c714ec5335c4232d}{use\+\_\+private\+\_\+key\+\_\+file} (const std\+::string \&filename, \hyperlink{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fb}{file\+\_\+format} format)
+\begin{DoxyCompactList}\small\item\em Use a private key from a file. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a200c534538a776d07d4183d1b7ba86c6}{use\+\_\+private\+\_\+key\+\_\+file} (const std\+::string \&filename, \hyperlink{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fb}{file\+\_\+format} format, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Use a private key from a file. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a7357b04bf3378b150fb237b91d99d414}{use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file} (const std\+::string \&filename, \hyperlink{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fb}{file\+\_\+format} format)
+\begin{DoxyCompactList}\small\item\em Use an R\+S\+A private key from a file. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a370c2be3ef66c7bc0edad184e252b610}{use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file} (const std\+::string \&filename, \hyperlink{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fb}{file\+\_\+format} format, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Use an R\+S\+A private key from a file. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a08bad4b2b690d97188a5fe1184bd9913}{use\+\_\+tmp\+\_\+dh\+\_\+file} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em Use the specified file to obtain the temporary Diffie-\/\+Hellman parameters. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a4b20c09d1c8c16e8722ad1d267509b22}{use\+\_\+tmp\+\_\+dh\+\_\+file} (const std\+::string \&filename, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Use the specified file to obtain the temporary Diffie-\/\+Hellman parameters. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Password\+Callback $>$ }\\void \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_ac00aca94f19f86adc11bdb32a7732680}{set\+\_\+password\+\_\+callback} (Password\+Callback callback)
+\begin{DoxyCompactList}\small\item\em Set the password callback. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Password\+Callback $>$ }\\\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context_a39c12b35626e5ad52b82a51c3074b181}{set\+\_\+password\+\_\+callback} (Password\+Callback callback, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Set the password callback. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Service$>$class asio\+::ssl\+::old\+::basic\+\_\+context$<$ Service $>$}
+
+S\+S\+L context. 
+
+Definition at line 35 of file basic\+\_\+context.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a0ab28e5a1f4db7dbf190e6bb8931031a}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!impl\+\_\+type@{impl\+\_\+type}}
+\index{impl\+\_\+type@{impl\+\_\+type}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{impl\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ typedef service\+\_\+type\+::impl\+\_\+type {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::{\bf impl\+\_\+type}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a0ab28e5a1f4db7dbf190e6bb8931031a}
+
+
+The native implementation type of the S\+S\+L context. 
+
+
+
+Definition at line 44 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a8e7a844e318b8d53600febd3953b03f0}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!service\+\_\+type@{service\+\_\+type}}
+\index{service\+\_\+type@{service\+\_\+type}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{service\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ typedef Service {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::{\bf service\+\_\+type}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a8e7a844e318b8d53600febd3953b03f0}
+
+
+The type of the service that will be used to provide context operations. 
+
+
+
+Definition at line 41 of file basic\+\_\+context.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a9e68bd4adbed02486d36846b1f7884ea}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!basic\+\_\+context@{basic\+\_\+context}}
+\index{basic\+\_\+context@{basic\+\_\+context}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{basic\+\_\+context(asio\+::io\+\_\+service \&io\+\_\+service, method m)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::{\bf basic\+\_\+context} (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service, }
+\item[{{\bf method}}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a9e68bd4adbed02486d36846b1f7884ea}
+
+
+Constructor. 
+
+
+
+Definition at line 47 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_ab4cb84b3b0a110ea034584c64d2fc40a}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!````~basic\+\_\+context@{$\sim$basic\+\_\+context}}
+\index{````~basic\+\_\+context@{$\sim$basic\+\_\+context}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{$\sim$basic\+\_\+context()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::$\sim${\bf basic\+\_\+context} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_ab4cb84b3b0a110ea034584c64d2fc40a}
+
+
+Destructor. 
+
+
+
+Definition at line 55 of file basic\+\_\+context.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_ac5e3fd95d188e164d348e6a2cc4a6d78}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!add\+\_\+verify\+\_\+path@{add\+\_\+verify\+\_\+path}}
+\index{add\+\_\+verify\+\_\+path@{add\+\_\+verify\+\_\+path}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{add\+\_\+verify\+\_\+path(const std\+::string \&path)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ void {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::add\+\_\+verify\+\_\+path (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{path}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_ac5e3fd95d188e164d348e6a2cc4a6d78}
+Add a directory containing certificate authority files to be used for performing verification. This function is used to specify the name of a directory containing certification authority certificates. Each file in the directory must contain a single certificate. The files must be named using the subject name\textquotesingle{}s hash and an extension of \char`\"{}.\+0\char`\"{}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & The name of a directory containing the certificates.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 182 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a5a6166781d31668abdefd088a2c4e31e}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!add\+\_\+verify\+\_\+path@{add\+\_\+verify\+\_\+path}}
+\index{add\+\_\+verify\+\_\+path@{add\+\_\+verify\+\_\+path}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{add\+\_\+verify\+\_\+path(const std\+::string \&path, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::add\+\_\+verify\+\_\+path (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{path, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a5a6166781d31668abdefd088a2c4e31e}
+Add a directory containing certificate authority files to be used for performing verification. This function is used to specify the name of a directory containing certification authority certificates. Each file in the directory must contain a single certificate. The files must be named using the subject name\textquotesingle{}s hash and an extension of \char`\"{}.\+0\char`\"{}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & The name of a directory containing the certificates.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 201 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a2c5a23f2187a45c7250f7b9fc6c6da5f}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!impl@{impl}}
+\index{impl@{impl}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{impl()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf impl\+\_\+type} {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::impl (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a2c5a23f2187a45c7250f7b9fc6c6da5f}
+
+
+Get the underlying implementation in the native type. 
+
+This function may be used to obtain the underlying implementation of the context. This is intended to allow access to context functionality that is not otherwise provided. 
+
+Definition at line 66 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a3b476dac460f54c332545d5b2d8ec9b8}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!load\+\_\+verify\+\_\+file@{load\+\_\+verify\+\_\+file}}
+\index{load\+\_\+verify\+\_\+file@{load\+\_\+verify\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{load\+\_\+verify\+\_\+file(const std\+::string \&filename)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ void {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::load\+\_\+verify\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a3b476dac460f54c332545d5b2d8ec9b8}
+
+
+Load a certification authority file for performing verification. 
+
+This function is used to load one or more trusted certification authorities from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of a file containing certification authority certificates in P\+E\+M format.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 147 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_accf7e4584fd31547a99b62c119eb1335}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!load\+\_\+verify\+\_\+file@{load\+\_\+verify\+\_\+file}}
+\index{load\+\_\+verify\+\_\+file@{load\+\_\+verify\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{load\+\_\+verify\+\_\+file(const std\+::string \&filename, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::load\+\_\+verify\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_accf7e4584fd31547a99b62c119eb1335}
+
+
+Load a certification authority file for performing verification. 
+
+This function is used to load the certificates for one or more trusted certification authorities from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of a file containing certification authority certificates in P\+E\+M format.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 164 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a450fd71b35addd8b5d445cce85485c66}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!set\+\_\+options@{set\+\_\+options}}
+\index{set\+\_\+options@{set\+\_\+options}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{set\+\_\+options(options o)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ void {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::set\+\_\+options (
+\begin{DoxyParamCaption}
+\item[{{\bf options}}]{o}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a450fd71b35addd8b5d445cce85485c66}
+
+
+Set options on the context. 
+
+This function may be used to configure the S\+S\+L options used by the context.
+
+
+\begin{DoxyParams}{Parameters}
+{\em o} & A bitmask of options. The available option values are defined in the \hyperlink{classasio_1_1ssl_1_1context__base}{context\+\_\+base} class. The options are bitwise-\/ored with any existing value for the options.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 81 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_ab337a0a558db0823301a22dc166ec463}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!set\+\_\+options@{set\+\_\+options}}
+\index{set\+\_\+options@{set\+\_\+options}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{set\+\_\+options(options o, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::set\+\_\+options (
+\begin{DoxyParamCaption}
+\item[{{\bf options}}]{o, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_ab337a0a558db0823301a22dc166ec463}
+
+
+Set options on the context. 
+
+This function may be used to configure the S\+S\+L options used by the context.
+
+
+\begin{DoxyParams}{Parameters}
+{\em o} & A bitmask of options. The available option values are defined in the \hyperlink{classasio_1_1ssl_1_1context__base}{context\+\_\+base} class. The options are bitwise-\/ored with any existing value for the options.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 98 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_ac00aca94f19f86adc11bdb32a7732680}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!set\+\_\+password\+\_\+callback@{set\+\_\+password\+\_\+callback}}
+\index{set\+\_\+password\+\_\+callback@{set\+\_\+password\+\_\+callback}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{set\+\_\+password\+\_\+callback(\+Password\+Callback callback)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ template$<$typename Password\+Callback $>$ void {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::set\+\_\+password\+\_\+callback (
+\begin{DoxyParamCaption}
+\item[{Password\+Callback}]{callback}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_ac00aca94f19f86adc11bdb32a7732680}
+
+
+Set the password callback. 
+
+This function is used to specify a callback function to obtain password information about an encrypted key in P\+E\+M format.
+
+
+\begin{DoxyParams}{Parameters}
+{\em callback} & The function object to be used for obtaining the password. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ std::string password\_callback(
+  std::size\_t max\_length,  \textcolor{comment}{// The maximum size for a password.}
+  \hyperlink{classasio_1_1ssl_1_1context__base_a0e5aec1cd0f3db28becde1dca686c855}{password\_purpose} purpose \textcolor{comment}{// Whether password is for reading or writing.}
+); 
+\end{DoxyCode}
+ The return value of the callback is a string containing the password.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 391 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a39c12b35626e5ad52b82a51c3074b181}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!set\+\_\+password\+\_\+callback@{set\+\_\+password\+\_\+callback}}
+\index{set\+\_\+password\+\_\+callback@{set\+\_\+password\+\_\+callback}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{set\+\_\+password\+\_\+callback(\+Password\+Callback callback, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ template$<$typename Password\+Callback $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::set\+\_\+password\+\_\+callback (
+\begin{DoxyParamCaption}
+\item[{Password\+Callback}]{callback, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a39c12b35626e5ad52b82a51c3074b181}
+
+
+Set the password callback. 
+
+This function is used to specify a callback function to obtain password information about an encrypted key in P\+E\+M format.
+
+
+\begin{DoxyParams}{Parameters}
+{\em callback} & The function object to be used for obtaining the password. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+ std::string password\_callback(
+  std::size\_t max\_length,  \textcolor{comment}{// The maximum size for a password.}
+  \hyperlink{classasio_1_1ssl_1_1context__base_a0e5aec1cd0f3db28becde1dca686c855}{password\_purpose} purpose \textcolor{comment}{// Whether password is for reading or writing.}
+); 
+\end{DoxyCode}
+ The return value of the callback is a string containing the password.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 414 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a40a0d646fdba4f375136fe55dad4bd77}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!set\+\_\+verify\+\_\+mode@{set\+\_\+verify\+\_\+mode}}
+\index{set\+\_\+verify\+\_\+mode@{set\+\_\+verify\+\_\+mode}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{set\+\_\+verify\+\_\+mode(verify\+\_\+mode v)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ void {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::set\+\_\+verify\+\_\+mode (
+\begin{DoxyParamCaption}
+\item[{{\bf verify\+\_\+mode}}]{v}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a40a0d646fdba4f375136fe55dad4bd77}
+
+
+Set the peer verification mode. 
+
+This function may be used to configure the peer verification mode used by the context.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & A bitmask of peer verification modes. The available verify\+\_\+mode values are defined in the \hyperlink{classasio_1_1ssl_1_1context__base}{context\+\_\+base} class.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 114 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a68197e690fa1135840dcf705007766e7}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!set\+\_\+verify\+\_\+mode@{set\+\_\+verify\+\_\+mode}}
+\index{set\+\_\+verify\+\_\+mode@{set\+\_\+verify\+\_\+mode}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{set\+\_\+verify\+\_\+mode(verify\+\_\+mode v, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::set\+\_\+verify\+\_\+mode (
+\begin{DoxyParamCaption}
+\item[{{\bf verify\+\_\+mode}}]{v, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a68197e690fa1135840dcf705007766e7}
+
+
+Set the peer verification mode. 
+
+This function may be used to configure the peer verification mode used by the context.
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & A bitmask of peer verification modes. The available verify\+\_\+mode values are defined in the \hyperlink{classasio_1_1ssl_1_1context__base}{context\+\_\+base} class.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 131 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a86400401e8cff30ac4a76c027cc419eb}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!use\+\_\+certificate\+\_\+chain\+\_\+file@{use\+\_\+certificate\+\_\+chain\+\_\+file}}
+\index{use\+\_\+certificate\+\_\+chain\+\_\+file@{use\+\_\+certificate\+\_\+chain\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{use\+\_\+certificate\+\_\+chain\+\_\+file(const std\+::string \&filename)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ void {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::use\+\_\+certificate\+\_\+chain\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a86400401e8cff30ac4a76c027cc419eb}
+
+
+Use a certificate chain from a file. 
+
+This function is used to load a certificate chain into the context from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the file containing the certificate. The file must use the P\+E\+M format.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 250 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_afe343f3341422d978a59bc3564d41035}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!use\+\_\+certificate\+\_\+chain\+\_\+file@{use\+\_\+certificate\+\_\+chain\+\_\+file}}
+\index{use\+\_\+certificate\+\_\+chain\+\_\+file@{use\+\_\+certificate\+\_\+chain\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{use\+\_\+certificate\+\_\+chain\+\_\+file(const std\+::string \&filename, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::use\+\_\+certificate\+\_\+chain\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_afe343f3341422d978a59bc3564d41035}
+
+
+Use a certificate chain from a file. 
+
+This function is used to load a certificate chain into the context from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the file containing the certificate. The file must use the P\+E\+M format.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 267 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a3775df7a83e057032c98942bb2a38d39}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!use\+\_\+certificate\+\_\+file@{use\+\_\+certificate\+\_\+file}}
+\index{use\+\_\+certificate\+\_\+file@{use\+\_\+certificate\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{use\+\_\+certificate\+\_\+file(const std\+::string \&filename, file\+\_\+format format)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ void {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::use\+\_\+certificate\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename, }
+\item[{{\bf file\+\_\+format}}]{format}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a3775df7a83e057032c98942bb2a38d39}
+
+
+Use a certificate from a file. 
+
+This function is used to load a certificate into the context from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the file containing the certificate.\\
+\hline
+{\em format} & The file format (A\+S\+N.\+1 or P\+E\+M).\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 217 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a4ef1780be8167a99c67b891549724667}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!use\+\_\+certificate\+\_\+file@{use\+\_\+certificate\+\_\+file}}
+\index{use\+\_\+certificate\+\_\+file@{use\+\_\+certificate\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{use\+\_\+certificate\+\_\+file(const std\+::string \&filename, file\+\_\+format format, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::use\+\_\+certificate\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename, }
+\item[{{\bf file\+\_\+format}}]{format, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a4ef1780be8167a99c67b891549724667}
+
+
+Use a certificate from a file. 
+
+This function is used to load a certificate into the context from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the file containing the certificate.\\
+\hline
+{\em format} & The file format (A\+S\+N.\+1 or P\+E\+M).\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 234 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a88aa0b862bf2bcd4c714ec5335c4232d}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!use\+\_\+private\+\_\+key\+\_\+file@{use\+\_\+private\+\_\+key\+\_\+file}}
+\index{use\+\_\+private\+\_\+key\+\_\+file@{use\+\_\+private\+\_\+key\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{use\+\_\+private\+\_\+key\+\_\+file(const std\+::string \&filename, file\+\_\+format format)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ void {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::use\+\_\+private\+\_\+key\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename, }
+\item[{{\bf file\+\_\+format}}]{format}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a88aa0b862bf2bcd4c714ec5335c4232d}
+
+
+Use a private key from a file. 
+
+This function is used to load a private key into the context from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the file containing the private key.\\
+\hline
+{\em format} & The file format (A\+S\+N.\+1 or P\+E\+M).\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 283 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a200c534538a776d07d4183d1b7ba86c6}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!use\+\_\+private\+\_\+key\+\_\+file@{use\+\_\+private\+\_\+key\+\_\+file}}
+\index{use\+\_\+private\+\_\+key\+\_\+file@{use\+\_\+private\+\_\+key\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{use\+\_\+private\+\_\+key\+\_\+file(const std\+::string \&filename, file\+\_\+format format, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::use\+\_\+private\+\_\+key\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename, }
+\item[{{\bf file\+\_\+format}}]{format, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a200c534538a776d07d4183d1b7ba86c6}
+
+
+Use a private key from a file. 
+
+This function is used to load a private key into the context from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the file containing the private key.\\
+\hline
+{\em format} & The file format (A\+S\+N.\+1 or P\+E\+M).\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 300 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a7357b04bf3378b150fb237b91d99d414}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file@{use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file}}
+\index{use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file@{use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file(const std\+::string \&filename, file\+\_\+format format)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ void {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename, }
+\item[{{\bf file\+\_\+format}}]{format}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a7357b04bf3378b150fb237b91d99d414}
+
+
+Use an R\+S\+A private key from a file. 
+
+This function is used to load an R\+S\+A private key into the context from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the file containing the R\+S\+A private key.\\
+\hline
+{\em format} & The file format (A\+S\+N.\+1 or P\+E\+M).\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 317 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a370c2be3ef66c7bc0edad184e252b610}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file@{use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file}}
+\index{use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file@{use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file(const std\+::string \&filename, file\+\_\+format format, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::use\+\_\+rsa\+\_\+private\+\_\+key\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename, }
+\item[{{\bf file\+\_\+format}}]{format, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a370c2be3ef66c7bc0edad184e252b610}
+
+
+Use an R\+S\+A private key from a file. 
+
+This function is used to load an R\+S\+A private key into the context from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the file containing the R\+S\+A private key.\\
+\hline
+{\em format} & The file format (A\+S\+N.\+1 or P\+E\+M).\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 335 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a08bad4b2b690d97188a5fe1184bd9913}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!use\+\_\+tmp\+\_\+dh\+\_\+file@{use\+\_\+tmp\+\_\+dh\+\_\+file}}
+\index{use\+\_\+tmp\+\_\+dh\+\_\+file@{use\+\_\+tmp\+\_\+dh\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{use\+\_\+tmp\+\_\+dh\+\_\+file(const std\+::string \&filename)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ void {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::use\+\_\+tmp\+\_\+dh\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a08bad4b2b690d97188a5fe1184bd9913}
+
+
+Use the specified file to obtain the temporary Diffie-\/\+Hellman parameters. 
+
+This function is used to load Diffie-\/\+Hellman parameters into the context from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the file containing the Diffie-\/\+Hellman parameters. The file must use the P\+E\+M format.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 352 of file basic\+\_\+context.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1basic__context_a4b20c09d1c8c16e8722ad1d267509b22}{}\index{asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}!use\+\_\+tmp\+\_\+dh\+\_\+file@{use\+\_\+tmp\+\_\+dh\+\_\+file}}
+\index{use\+\_\+tmp\+\_\+dh\+\_\+file@{use\+\_\+tmp\+\_\+dh\+\_\+file}!asio\+::ssl\+::old\+::basic\+\_\+context@{asio\+::ssl\+::old\+::basic\+\_\+context}}
+\subsubsection[{use\+\_\+tmp\+\_\+dh\+\_\+file(const std\+::string \&filename, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Service$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::basic\+\_\+context}$<$ Service $>$\+::use\+\_\+tmp\+\_\+dh\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1basic__context_a4b20c09d1c8c16e8722ad1d267509b22}
+
+
+Use the specified file to obtain the temporary Diffie-\/\+Hellman parameters. 
+
+This function is used to load Diffie-\/\+Hellman parameters into the context from a file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the file containing the Diffie-\/\+Hellman parameters. The file must use the P\+E\+M format.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 369 of file basic\+\_\+context.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ssl/old/\hyperlink{old_2basic__context_8hpp}{basic\+\_\+context.\+hpp}\end{DoxyCompactItemize}

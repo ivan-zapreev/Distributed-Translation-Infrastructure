@@ -1,0 +1,79 @@
+\hypertarget{basic__socket__iostream_8hpp}{}\section{ext/asio/basic\+\_\+socket\+\_\+iostream.hpp File Reference}
+\label{basic__socket__iostream_8hpp}\index{ext/asio/basic\+\_\+socket\+\_\+iostream.\+hpp@{ext/asio/basic\+\_\+socket\+\_\+iostream.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$istream$>$}\\*
+{\ttfamily \#include $<$ostream$>$}\\*
+{\ttfamily \#include \char`\"{}asio/basic\+\_\+socket\+\_\+streambuf.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/stream\+\_\+socket\+\_\+service.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/variadic\+\_\+templates.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1detail_1_1socket__iostream__base}{asio\+::detail\+::socket\+\_\+iostream\+\_\+base$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$}
+\item 
+class \hyperlink{classasio_1_1basic__socket__iostream}{asio\+::basic\+\_\+socket\+\_\+iostream$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$}
+\begin{DoxyCompactList}\small\item\em Iostream interface for a socket. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1detail}{asio\+::detail}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{basic__socket__iostream_8hpp_ab185dc4ee9258167329b330f58fdc1ca}{A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+T\+R\+\_\+\+D\+E\+F}(n)
+\item 
+\#define \hyperlink{basic__socket__iostream_8hpp_aaf5982e633f842733d79b0f21a9d5764}{A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+D\+E\+F}(n)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{basic__socket__iostream_8hpp_aaf5982e633f842733d79b0f21a9d5764}{}\index{basic\+\_\+socket\+\_\+iostream.\+hpp@{basic\+\_\+socket\+\_\+iostream.\+hpp}!A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+D\+E\+F@{A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+D\+E\+F}}
+\index{A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+D\+E\+F@{A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+D\+E\+F}!basic\+\_\+socket\+\_\+iostream.\+hpp@{basic\+\_\+socket\+\_\+iostream.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+D\+E\+F}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+O\+N\+N\+E\+C\+T\+\_\+\+D\+E\+F(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)}\label{basic__socket__iostream_8hpp_aaf5982e633f842733d79b0f21a9d5764}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keyword}{template} <ASIO\_VARIADIC\_TPARAMS(n)> \(\backslash\)
+  void \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{connect}(\hyperlink{variadic__templates_8hpp_aeb5acd9bc981777dd2a0890d0a25c59c}{ASIO\_VARIADIC\_PARAMS}(n)) \(\backslash\)
+  \{ \(\backslash\)
+    if (rdbuf()->\hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{connect}(\hyperlink{variadic__templates_8hpp_a3a092a0dc36dc54e8fcc6496da0e0ed5}{ASIO\_VARIADIC\_ARGS}(n)) == 0) \(\backslash\)
+      this->setstate(std::ios\_base::failbit); \(\backslash\)
+  \} \(\backslash\)
+\end{DoxyCode}
+
+
+Definition at line 67 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+\hypertarget{basic__socket__iostream_8hpp_ab185dc4ee9258167329b330f58fdc1ca}{}\index{basic\+\_\+socket\+\_\+iostream.\+hpp@{basic\+\_\+socket\+\_\+iostream.\+hpp}!A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+T\+R\+\_\+\+D\+E\+F@{A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+T\+R\+\_\+\+D\+E\+F}}
+\index{A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+T\+R\+\_\+\+D\+E\+F@{A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+T\+R\+\_\+\+D\+E\+F}!basic\+\_\+socket\+\_\+iostream.\+hpp@{basic\+\_\+socket\+\_\+iostream.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+T\+R\+\_\+\+D\+E\+F}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+P\+R\+I\+V\+A\+T\+E\+\_\+\+C\+T\+R\+\_\+\+D\+E\+F(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)}\label{basic__socket__iostream_8hpp_ab185dc4ee9258167329b330f58fdc1ca}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keyword}{template} <ASIO\_VARIADIC\_TPARAMS(n)> \(\backslash\)
+  explicit basic\_socket\_iostream(\hyperlink{variadic__templates_8hpp_aeb5acd9bc981777dd2a0890d0a25c59c}{ASIO\_VARIADIC\_PARAMS}(n)) \(\backslash\)
+    : std::basic\_iostream<char>( \(\backslash\)
+        &this->detail::socket\_iostream\_base< \(\backslash\)
+          Protocol, StreamSocketService, Time, \(\backslash\)
+          TimeTraits, TimerService>::streambuf\_) \(\backslash\)
+  \{ \(\backslash\)
+    this->setf(std::ios\_base::unitbuf); \(\backslash\)
+    if (rdbuf()->\hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{connect}(\hyperlink{variadic__templates_8hpp_a3a092a0dc36dc54e8fcc6496da0e0ed5}{ASIO\_VARIADIC\_ARGS}(n)) == 0) \(\backslash\)
+      this->setstate(std::ios\_base::failbit); \(\backslash\)
+  \} \(\backslash\)
+\end{DoxyCode}
+
+
+Definition at line 44 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+

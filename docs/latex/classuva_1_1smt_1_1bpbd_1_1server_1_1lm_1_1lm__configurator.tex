@@ -1,0 +1,124 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:lm\+\_\+configurator Class Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}}
+
+
+{\ttfamily \#include $<$lm\+\_\+configurator.\+hpp$>$}
+
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a3e5a23be42479262dafafcd723f740f3}{connect} (const \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__parameters}{lm\+\_\+parameters} \&params)
+\item 
+static void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a980b322d56a0610388ca5a1ec12b98c4}{disconnect} ()
+\item 
+static \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy}{lm\+\_\+slow\+\_\+query\+\_\+proxy} \& \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a953ecb5d930125f6ca28f104f8921f69}{allocate\+\_\+slow\+\_\+query\+\_\+proxy} ()
+\item 
+static void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_ab4a93e6db74a28801aa7268cdfc47163}{dispose\+\_\+slow\+\_\+query\+\_\+proxy} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy}{lm\+\_\+slow\+\_\+query\+\_\+proxy} \&query)
+\item 
+static \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy}{lm\+\_\+fast\+\_\+query\+\_\+proxy} \& \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a2335406b3c20748f4fe89f0ed5056287}{allocate\+\_\+fast\+\_\+query\+\_\+proxy} ()
+\item 
+static void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a982d011a50fe31a2b984a139f13c1e1d}{dispose\+\_\+fast\+\_\+query\+\_\+proxy} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy}{lm\+\_\+fast\+\_\+query\+\_\+proxy} \&query)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class represents a singleton that allows to configure the language model and then issues. query proxy objects for performing the queries against the internally encapsulated language model(s). 
+
+Definition at line 55 of file lm\+\_\+configurator.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a2335406b3c20748f4fe89f0ed5056287}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}!allocate\+\_\+fast\+\_\+query\+\_\+proxy@{allocate\+\_\+fast\+\_\+query\+\_\+proxy}}
+\index{allocate\+\_\+fast\+\_\+query\+\_\+proxy@{allocate\+\_\+fast\+\_\+query\+\_\+proxy}!uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}}
+\subsubsection[{allocate\+\_\+fast\+\_\+query\+\_\+proxy()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf lm\+\_\+fast\+\_\+query\+\_\+proxy}\& uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator\+::allocate\+\_\+fast\+\_\+query\+\_\+proxy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a2335406b3c20748f4fe89f0ed5056287}
+Allows to return an instance of the query executor, is to be returned by calling the dispose method. \begin{DoxyReturn}{Returns}
+an instance of the query executor. 
+\end{DoxyReturn}
+
+
+Definition at line 114 of file lm\+\_\+configurator.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a953ecb5d930125f6ca28f104f8921f69}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}!allocate\+\_\+slow\+\_\+query\+\_\+proxy@{allocate\+\_\+slow\+\_\+query\+\_\+proxy}}
+\index{allocate\+\_\+slow\+\_\+query\+\_\+proxy@{allocate\+\_\+slow\+\_\+query\+\_\+proxy}!uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}}
+\subsubsection[{allocate\+\_\+slow\+\_\+query\+\_\+proxy()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf lm\+\_\+slow\+\_\+query\+\_\+proxy}\& uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator\+::allocate\+\_\+slow\+\_\+query\+\_\+proxy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a953ecb5d930125f6ca28f104f8921f69}
+Allows to return an instance of the query executor, is to be returned by calling the dispose method. \begin{DoxyReturn}{Returns}
+an instance of the query executor. 
+\end{DoxyReturn}
+
+
+Definition at line 94 of file lm\+\_\+configurator.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a3e5a23be42479262dafafcd723f740f3}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}!connect@{connect}}
+\index{connect@{connect}!uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}}
+\subsubsection[{connect(const lm\+\_\+parameters \&params)}]{\setlength{\rightskip}{0pt plus 5cm}static void uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator\+::connect (
+\begin{DoxyParamCaption}
+\item[{const {\bf lm\+\_\+parameters} \&}]{params}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a3e5a23be42479262dafafcd723f740f3}
+This method allows to set the configuration parameters for the word index trie etc. This method is to be called only once! The latter is not checked but is a must. 
+\begin{DoxyParams}{Parameters}
+{\em params} & the language model parameters to be set, this class only stores the referent to the parameters. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 65 of file lm\+\_\+configurator.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a980b322d56a0610388ca5a1ec12b98c4}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}!disconnect@{disconnect}}
+\index{disconnect@{disconnect}!uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}}
+\subsubsection[{disconnect()}]{\setlength{\rightskip}{0pt plus 5cm}static void uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator\+::disconnect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a980b322d56a0610388ca5a1ec12b98c4}
+Allows to disconnect from the language model. 
+
+Definition at line 79 of file lm\+\_\+configurator.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a982d011a50fe31a2b984a139f13c1e1d}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}!dispose\+\_\+fast\+\_\+query\+\_\+proxy@{dispose\+\_\+fast\+\_\+query\+\_\+proxy}}
+\index{dispose\+\_\+fast\+\_\+query\+\_\+proxy@{dispose\+\_\+fast\+\_\+query\+\_\+proxy}!uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}}
+\subsubsection[{dispose\+\_\+fast\+\_\+query\+\_\+proxy(lm\+\_\+fast\+\_\+query\+\_\+proxy \&query)}]{\setlength{\rightskip}{0pt plus 5cm}static void uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator\+::dispose\+\_\+fast\+\_\+query\+\_\+proxy (
+\begin{DoxyParamCaption}
+\item[{{\bf lm\+\_\+fast\+\_\+query\+\_\+proxy} \&}]{query}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_a982d011a50fe31a2b984a139f13c1e1d}
+Dispose the previously allocated query object 
+\begin{DoxyParams}{Parameters}
+{\em query} & the query to dispose \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 125 of file lm\+\_\+configurator.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_ab4a93e6db74a28801aa7268cdfc47163}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}!dispose\+\_\+slow\+\_\+query\+\_\+proxy@{dispose\+\_\+slow\+\_\+query\+\_\+proxy}}
+\index{dispose\+\_\+slow\+\_\+query\+\_\+proxy@{dispose\+\_\+slow\+\_\+query\+\_\+proxy}!uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator}}
+\subsubsection[{dispose\+\_\+slow\+\_\+query\+\_\+proxy(lm\+\_\+slow\+\_\+query\+\_\+proxy \&query)}]{\setlength{\rightskip}{0pt plus 5cm}static void uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+configurator\+::dispose\+\_\+slow\+\_\+query\+\_\+proxy (
+\begin{DoxyParamCaption}
+\item[{{\bf lm\+\_\+slow\+\_\+query\+\_\+proxy} \&}]{query}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1lm__configurator_ab4a93e6db74a28801aa7268cdfc47163}
+Dispose the previously allocated query object 
+\begin{DoxyParams}{Parameters}
+{\em query} & the query to dispose \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 105 of file lm\+\_\+configurator.\+hpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/lm/\hyperlink{lm__configurator_8hpp}{lm\+\_\+configurator.\+hpp}\item 
+src/server/lm/\hyperlink{lm__configurator_8cpp}{lm\+\_\+configurator.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,80 @@
+\hypertarget{websocketpp_2error_8hpp}{}\section{ext/websocketpp/error.hpp File Reference}
+\label{websocketpp_2error_8hpp}\index{ext/websocketpp/error.\+hpp@{ext/websocketpp/error.\+hpp}}
+{\ttfamily \#include $<$exception$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$utility$>$}\\*
+{\ttfamily \#include $<$websocketpp/common/cpp11.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/common/system\+\_\+error.\+hpp$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classwebsocketpp_1_1error_1_1category}{websocketpp\+::error\+::category}
+\item 
+struct \hyperlink{structis__error__code__enum_3_01websocketpp_1_1error_1_1value_01_4}{is\+\_\+error\+\_\+code\+\_\+enum$<$ websocketpp\+::error\+::value $>$}
+\item 
+class \hyperlink{classwebsocketpp_1_1exception}{websocketpp\+::exception}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacewebsocketpp}{websocketpp}
+\begin{DoxyCompactList}\small\item\em Namespace for the Web\+Socket++ project. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1error}{websocketpp\+::error}
+\begin{DoxyCompactList}\small\item\em Library level error codes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::pair$<$ lib\+::error\+\_\+code, std\+::string $>$ \hyperlink{namespacewebsocketpp_abecf95d53c9387716b157daae84441f3}{websocketpp\+::err\+\_\+str\+\_\+pair}
+\begin{DoxyCompactList}\small\item\em Combination error code / string type for returning two values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68d}{websocketpp\+::error\+::value} \{ \\*
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da0cd3808919f43e5fbeee42fbcb808d66}{websocketpp\+::error\+::general} = 1, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68daebde17ef225c3b7e9638fbd40b13ce91}{websocketpp\+::error\+::send\+\_\+queue\+\_\+full}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68daa2abe6fda013270792213b0f0ff8eaaf}{websocketpp\+::error\+::payload\+\_\+violation}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68dab60d2206b38a89602d316dd029c33c1b}{websocketpp\+::error\+::endpoint\+\_\+not\+\_\+secure}, 
+\\*
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da472f65367504b2e11e63682cca469be4}{websocketpp\+::error\+::endpoint\+\_\+unavailable}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68daf80643edf3b27c30fc83be7b489a418c}{websocketpp\+::error\+::invalid\+\_\+uri}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da55cc9da6c40e8dc3f8df1e9e3f7b989f}{websocketpp\+::error\+::no\+\_\+outgoing\+\_\+buffers}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da6081f5914dabed34d55d3e12325f329d}{websocketpp\+::error\+::no\+\_\+incoming\+\_\+buffers}, 
+\\*
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da7566c083efb2833cbe99e6f4bda75882}{websocketpp\+::error\+::invalid\+\_\+state}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68dad002d8a5b5667c6b117805b368cd7853}{websocketpp\+::error\+::bad\+\_\+close\+\_\+code}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da58cb6e9202b34339bf0602c997de4f4c}{websocketpp\+::error\+::reserved\+\_\+close\+\_\+code}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68daa864a4ce65c5f0fe910567fe33a984c0}{websocketpp\+::error\+::invalid\+\_\+close\+\_\+code}, 
+\\*
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da942738932384d65a5156ca03863587e1}{websocketpp\+::error\+::invalid\+\_\+utf8}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68dabdba1165334e583188795c7fda926dc3}{websocketpp\+::error\+::invalid\+\_\+subprotocol}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da9d05e6c7355920beb025ef1034941841}{websocketpp\+::error\+::bad\+\_\+connection}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68daee5b74d2be31ca48e104578d6c2b7425}{websocketpp\+::error\+::test}, 
+\\*
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da5e907c1c8fb01b9122f590513916c1e8}{websocketpp\+::error\+::con\+\_\+creation\+\_\+failed}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da1c2d766aa9dc1b43d4af8dac9d7de2e0}{websocketpp\+::error\+::unrequested\+\_\+subprotocol}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da34e082b99518716e9755d3ac0436ccf3}{websocketpp\+::error\+::client\+\_\+only}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68daab6790e91c53a767498f7939e8fc734e}{websocketpp\+::error\+::server\+\_\+only}, 
+\\*
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da378e4b84397008e32d03d0fea4f15326}{websocketpp\+::error\+::http\+\_\+connection\+\_\+ended}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68dad2d508dc214d70b4bd6249a85987bfd6}{websocketpp\+::error\+::open\+\_\+handshake\+\_\+timeout}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68dabd195839148da73c7dbef46688635f77}{websocketpp\+::error\+::close\+\_\+handshake\+\_\+timeout}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da1eec17fbd4329fad248a4688ce736c40}{websocketpp\+::error\+::invalid\+\_\+port}, 
+\\*
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da3a15d734910438b77e8f1919e6dac9e6}{websocketpp\+::error\+::async\+\_\+accept\+\_\+not\+\_\+listening}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da3b58b6bfba3dcc3dbdf828c07bb040f4}{websocketpp\+::error\+::operation\+\_\+canceled}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da84dc4660cd164a5e27d8c2f816f3593b}{websocketpp\+::error\+::rejected}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68dad50a56da7a0355b9075f98c7567523a5}{websocketpp\+::error\+::upgrade\+\_\+required}, 
+\\*
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68daddbb433d0d194d25e7bc72a7611a9e47}{websocketpp\+::error\+::invalid\+\_\+version}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da93459fd7c7609d8ebf110bb0f6754073}{websocketpp\+::error\+::unsupported\+\_\+version}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da589164fe7382c7355310fc92ff0d53d7}{websocketpp\+::error\+::http\+\_\+parse\+\_\+error}, 
+\hyperlink{namespacewebsocketpp_1_1error_a0558d884e44e79146ad4947aea63f68da7ab039563d30f7760c3cd34f1fd680b1}{websocketpp\+::error\+::extension\+\_\+neg\+\_\+failed}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const lib\+::error\+\_\+category \& \hyperlink{namespacewebsocketpp_1_1error_aff1f9bd9984308ee5631761b89cf706f}{websocketpp\+::error\+::get\+\_\+category} ()
+\item 
+lib\+::error\+\_\+code \hyperlink{namespacewebsocketpp_1_1error_a3344622df8c36e8ae03c59164e7b5e89}{websocketpp\+::error\+::make\+\_\+error\+\_\+code} (error\+::value e)
+\end{DoxyCompactItemize}

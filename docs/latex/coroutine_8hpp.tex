@@ -1,0 +1,121 @@
+\hypertarget{coroutine_8hpp}{}\section{ext/asio/coroutine.hpp File Reference}
+\label{coroutine_8hpp}\index{ext/asio/coroutine.\+hpp@{ext/asio/coroutine.\+hpp}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1coroutine}{asio\+::coroutine}
+\begin{DoxyCompactList}\small\item\em Provides support for implementing stackless coroutines. \end{DoxyCompactList}\item 
+class \hyperlink{classasio_1_1detail_1_1coroutine__ref}{asio\+::detail\+::coroutine\+\_\+ref}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1detail}{asio\+::detail}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{coroutine_8hpp_afe63cbfd4f9f5e5716809ad90fe04e1d}{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+R\+E\+E\+N\+T\+E\+R}(c)
+\item 
+\#define \hyperlink{coroutine_8hpp_a9a8832b532b34dfa149543a5838e3209}{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D\+\_\+\+I\+M\+P\+L}(n)
+\item 
+\#define \hyperlink{coroutine_8hpp_a0c82acd8d04dcaa443b536cda91495d4}{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K\+\_\+\+I\+M\+P\+L}(n)
+\item 
+\#define \hyperlink{coroutine_8hpp_a7d1723321c54643cae216d9be94808fa}{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D}~\hyperlink{coroutine_8hpp_a9a8832b532b34dfa149543a5838e3209}{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D\+\_\+\+I\+M\+P\+L}(\+\_\+\+\_\+\+L\+I\+N\+E\+\_\+\+\_\+)
+\item 
+\#define \hyperlink{coroutine_8hpp_abc12e1cd82767ca89eb3a1abb9359931}{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K}~\hyperlink{coroutine_8hpp_a0c82acd8d04dcaa443b536cda91495d4}{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K\+\_\+\+I\+M\+P\+L}(\+\_\+\+\_\+\+L\+I\+N\+E\+\_\+\+\_\+)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{coroutine_8hpp_abc12e1cd82767ca89eb3a1abb9359931}{}\index{coroutine.\+hpp@{coroutine.\+hpp}!A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K@{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K}}
+\index{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K@{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K}!coroutine.\+hpp@{coroutine.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K~{\bf A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K\+\_\+\+I\+M\+P\+L}(\+\_\+\+\_\+\+L\+I\+N\+E\+\_\+\+\_\+)}\label{coroutine_8hpp_abc12e1cd82767ca89eb3a1abb9359931}
+
+
+Definition at line 325 of file coroutine.\+hpp.
+
+\hypertarget{coroutine_8hpp_a0c82acd8d04dcaa443b536cda91495d4}{}\index{coroutine.\+hpp@{coroutine.\+hpp}!A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K\+\_\+\+I\+M\+P\+L@{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K\+\_\+\+I\+M\+P\+L}}
+\index{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K\+\_\+\+I\+M\+P\+L@{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K\+\_\+\+I\+M\+P\+L}!coroutine.\+hpp@{coroutine.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K\+\_\+\+I\+M\+P\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+F\+O\+R\+K\+\_\+\+I\+M\+P\+L(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)}\label{coroutine_8hpp_a0c82acd8d04dcaa443b536cda91495d4}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{for} (\_coro\_value = -(n);; \_coro\_value = (n)) \(\backslash\)
+    if (\_coro\_value == (n)) \(\backslash\)
+    \{ \(\backslash\)
+      case -(n): ; \(\backslash\)
+      break; \(\backslash\)
+    \} \(\backslash\)
+    else
+\end{DoxyCode}
+
+
+Definition at line 311 of file coroutine.\+hpp.
+
+\hypertarget{coroutine_8hpp_afe63cbfd4f9f5e5716809ad90fe04e1d}{}\index{coroutine.\+hpp@{coroutine.\+hpp}!A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+R\+E\+E\+N\+T\+E\+R@{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+R\+E\+E\+N\+T\+E\+R}}
+\index{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+R\+E\+E\+N\+T\+E\+R@{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+R\+E\+E\+N\+T\+E\+R}!coroutine.\+hpp@{coroutine.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+R\+E\+E\+N\+T\+E\+R}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+R\+E\+E\+N\+T\+E\+R(
+\begin{DoxyParamCaption}
+\item[{}]{c}
+\end{DoxyParamCaption}
+)}\label{coroutine_8hpp_afe63cbfd4f9f5e5716809ad90fe04e1d}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{switch} (::\hyperlink{classasio_1_1detail_1_1coroutine__ref}{asio::detail::coroutine\_ref} \_coro\_value = c) \(\backslash\)
+    case -1: \textcolor{keywordflow}{if} (\_coro\_value) \(\backslash\)
+    \{ \(\backslash\)
+      goto terminate\_coroutine; \(\backslash\)
+      terminate\_coroutine: \(\backslash\)
+      \_coro\_value = -1; \(\backslash\)
+      goto bail\_out\_of\_coroutine; \(\backslash\)
+      bail\_out\_of\_coroutine: \(\backslash\)
+      break; \(\backslash\)
+    \} \(\backslash\)
+    else \textcolor{keywordflow}{case} 0:
+\end{DoxyCode}
+
+
+Definition at line 281 of file coroutine.\+hpp.
+
+\hypertarget{coroutine_8hpp_a7d1723321c54643cae216d9be94808fa}{}\index{coroutine.\+hpp@{coroutine.\+hpp}!A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D@{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D}}
+\index{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D@{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D}!coroutine.\+hpp@{coroutine.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D~{\bf A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D\+\_\+\+I\+M\+P\+L}(\+\_\+\+\_\+\+L\+I\+N\+E\+\_\+\+\_\+)}\label{coroutine_8hpp_a7d1723321c54643cae216d9be94808fa}
+
+
+Definition at line 324 of file coroutine.\+hpp.
+
+\hypertarget{coroutine_8hpp_a9a8832b532b34dfa149543a5838e3209}{}\index{coroutine.\+hpp@{coroutine.\+hpp}!A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D\+\_\+\+I\+M\+P\+L@{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D\+\_\+\+I\+M\+P\+L}}
+\index{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D\+\_\+\+I\+M\+P\+L@{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D\+\_\+\+I\+M\+P\+L}!coroutine.\+hpp@{coroutine.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D\+\_\+\+I\+M\+P\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+C\+O\+R\+O\+\_\+\+Y\+I\+E\+L\+D\+\_\+\+I\+M\+P\+L(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)}\label{coroutine_8hpp_a9a8832b532b34dfa149543a5838e3209}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{for} (\_coro\_value = (n);;) \(\backslash\)
+    \textcolor{keywordflow}{if} (\_coro\_value == 0) \(\backslash\)
+    \{ \(\backslash\)
+      case (n): ; \(\backslash\)
+      break; \(\backslash\)
+    \} \(\backslash\)
+    else \(\backslash\)
+      switch (\_coro\_value ? 0 : 1) \(\backslash\)
+        for (;;) \(\backslash\)
+          \textcolor{keywordflow}{case} -1: \textcolor{keywordflow}{if} (\_coro\_value) \(\backslash\)
+            goto terminate\_coroutine; \(\backslash\)
+          else \textcolor{keywordflow}{for} (;;) \(\backslash\)
+            \textcolor{keywordflow}{case} 1: \textcolor{keywordflow}{if} (\_coro\_value) \(\backslash\)
+              goto bail\_out\_of\_coroutine; \(\backslash\)
+            else \textcolor{keywordflow}{case} 0:
+\end{DoxyCode}
+
+
+Definition at line 294 of file coroutine.\+hpp.
+

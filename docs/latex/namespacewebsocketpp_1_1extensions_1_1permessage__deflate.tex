@@ -1,0 +1,59 @@
+\hypertarget{namespacewebsocketpp_1_1extensions_1_1permessage__deflate}{}\section{websocketpp\+:\+:extensions\+:\+:permessage\+\_\+deflate Namespace Reference}
+\label{namespacewebsocketpp_1_1extensions_1_1permessage__deflate}\index{websocketpp\+::extensions\+::permessage\+\_\+deflate@{websocketpp\+::extensions\+::permessage\+\_\+deflate}}
+
+
+Implementation of the draft permessage-\/deflate Web\+Socket extension.  
+
+
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacewebsocketpp_1_1extensions_1_1permessage__deflate_1_1error}{error}
+\begin{DoxyCompactList}\small\item\em Permessage deflate error values. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1extensions_1_1permessage__deflate_1_1mode}{mode}
+\end{DoxyCompactItemize}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled}{disabled}
+\begin{DoxyCompactList}\small\item\em Stub class for use when disabling \hyperlink{namespacewebsocketpp_1_1extensions_1_1permessage__deflate}{permessage\+\_\+deflate} extension. \end{DoxyCompactList}\item 
+class \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1enabled}{enabled}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Implementation of the draft permessage-\/deflate Web\+Socket extension. 
+
+\paragraph*{permessage-\/deflate interface}
+
+{\bfseries init}~\newline
+{\ttfamily lib\+::error\+\_\+code init(bool is\+\_\+server)}~\newline
+Performs initialization
+
+{\bfseries is\+\_\+implimented}~\newline
+{\ttfamily bool is\+\_\+implimented()}~\newline
+Returns whether or not the object impliments the extension or not
+
+{\bfseries is\+\_\+enabled}~\newline
+{\ttfamily bool is\+\_\+enabled()}~\newline
+Returns whether or not the extension was negotiated for the current connection
+
+{\bfseries generate\+\_\+offer}~\newline
+{\ttfamily std\+::string generate\+\_\+offer() const}~\newline
+Create an extension offer string based on local policy
+
+{\bfseries validate\+\_\+response}~\newline
+{\ttfamily lib\+::error\+\_\+code validate\+\_\+response(http\+::attribute\+\_\+list const \& response)}~\newline
+Negotiate the parameters of extension use
+
+{\bfseries negotiate}~\newline
+{\ttfamily err\+\_\+str\+\_\+pair negotiate(http\+::attribute\+\_\+list const \& attributes)}~\newline
+Negotiate the parameters of extension use
+
+{\bfseries compress}~\newline
+{\ttfamily lib\+::error\+\_\+code compress(std\+::string const \& in, std\+::string \& out)}~\newline
+Compress the bytes in {\ttfamily in} and append them to {\ttfamily out}
+
+{\bfseries decompress}~\newline
+{\ttfamily lib\+::error\+\_\+code decompress(uint8\+\_\+t const $\ast$ buf, size\+\_\+t len, std\+::string \& out)}~\newline
+Decompress {\ttfamily len} bytes from {\ttfamily buf} and append them to string {\ttfamily out} 

@@ -1,0 +1,4 @@
+var classuva__1__1smt__1__1bpbd__1__1server__1__1lm__1__1dictionary__1__1optimizing____word____index_8js =
+[
+    [ "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1optimizing__word__index", "classuva__1__1smt__1__1bpbd__1__1server__1__1lm__1__1dictionary__1__1optimizing____word____index_8js.html#acf3f59b8ae9fa931d451e4ae167e3a3e", null ]
+];

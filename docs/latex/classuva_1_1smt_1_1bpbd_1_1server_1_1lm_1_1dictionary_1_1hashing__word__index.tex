@@ -1,0 +1,198 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:dictionary\+:\+:hashing\+\_\+word\+\_\+index Class Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}}
+
+
+{\ttfamily \#include $<$hashing\+\_\+word\+\_\+index.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:dictionary\+:\+:hashing\+\_\+word\+\_\+index\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a9e8eaf9a1c9ad275054e08123077c0e3}{hashing\+\_\+word\+\_\+index} (const float memory\+\_\+factor)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ad6c3355af70f7fe393d550ba1ef80eaf}{reserve} (const size\+\_\+t num\+\_\+words)
+\item 
+size\+\_\+t \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ad90a3b5d230d14369f1e9caeb0daceb3}{get\+\_\+number\+\_\+of\+\_\+words} (const size\+\_\+t num\+\_\+words) const 
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ade75899cedae8daf46bcbf3ff8e86fdb}{get\+\_\+word\+\_\+id} (const \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token) const 
+\item 
+bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a494bd9b1e49904deee1f8234e83cc481}{is\+\_\+word\+\_\+registering\+\_\+needed} () const 
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a6bfe45ba344d65a7fdd7d26156328ddc}{word\+\_\+uid} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a63bc9c672ca8d76f77ad7080b4b396ce}{register\+\_\+word} (const \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&token)
+\item 
+bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ab8f071a53701f66b24cb9ea1e835cc66}{is\+\_\+word\+\_\+counts\+\_\+needed} () const 
+\item 
+bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a06f3b8b334fd66631778e4db24d001d1}{is\+\_\+post\+\_\+actions\+\_\+needed} () const 
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a9d0f52f1beec29b30d4d24d5d30118ad}{$\sim$hashing\+\_\+word\+\_\+index} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a9aad9c40f7f96795328e89485c9d035f}{is\+\_\+word\+\_\+index\+\_\+continuous} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is a hashing word index, it is trivial -\/ each word gets an id which is its hash value. This also means that any word is considered to be a known word. Therefore, in the Tries if the word id has no associated payload then an unknown word payload is to be used. Still the unknown and undefined word ids are reserved nd should not be issued. 
+
+Definition at line 58 of file hashing\+\_\+word\+\_\+index.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a9e8eaf9a1c9ad275054e08123077c0e3}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}!hashing\+\_\+word\+\_\+index@{hashing\+\_\+word\+\_\+index}}
+\index{hashing\+\_\+word\+\_\+index@{hashing\+\_\+word\+\_\+index}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}}
+\subsubsection[{hashing\+\_\+word\+\_\+index(const float memory\+\_\+factor)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index\+::hashing\+\_\+word\+\_\+index (
+\begin{DoxyParamCaption}
+\item[{const float}]{memory\+\_\+factor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a9e8eaf9a1c9ad275054e08123077c0e3}
+The basic constructor 
+\begin{DoxyParams}{Parameters}
+{\em memory\+\_\+factor} & is not used, is here only for interface compliancy \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 65 of file hashing\+\_\+word\+\_\+index.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a9d0f52f1beec29b30d4d24d5d30118ad}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}!````~hashing\+\_\+word\+\_\+index@{$\sim$hashing\+\_\+word\+\_\+index}}
+\index{````~hashing\+\_\+word\+\_\+index@{$\sim$hashing\+\_\+word\+\_\+index}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}}
+\subsubsection[{$\sim$hashing\+\_\+word\+\_\+index()}]{\setlength{\rightskip}{0pt plus 5cm}virtual uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index\+::$\sim$hashing\+\_\+word\+\_\+index (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a9d0f52f1beec29b30d4d24d5d30118ad}
+The basic destructor 
+
+Definition at line 140 of file hashing\+\_\+word\+\_\+index.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ad90a3b5d230d14369f1e9caeb0daceb3}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}!get\+\_\+number\+\_\+of\+\_\+words@{get\+\_\+number\+\_\+of\+\_\+words}}
+\index{get\+\_\+number\+\_\+of\+\_\+words@{get\+\_\+number\+\_\+of\+\_\+words}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}}
+\subsubsection[{get\+\_\+number\+\_\+of\+\_\+words(const size\+\_\+t num\+\_\+words) const }]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index\+::get\+\_\+number\+\_\+of\+\_\+words (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{num\+\_\+words}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ad90a3b5d230d14369f1e9caeb0daceb3}
+\begin{DoxySeeAlso}{See also}
+A\+Word\+Index 
+\end{DoxySeeAlso}
+
+
+Definition at line 80 of file hashing\+\_\+word\+\_\+index.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ade75899cedae8daf46bcbf3ff8e86fdb}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}!get\+\_\+word\+\_\+id@{get\+\_\+word\+\_\+id}}
+\index{get\+\_\+word\+\_\+id@{get\+\_\+word\+\_\+id}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}}
+\subsubsection[{get\+\_\+word\+\_\+id(const Text\+Piece\+Reader \&token) const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf word\+\_\+uid} uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index\+::get\+\_\+word\+\_\+id (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ade75899cedae8daf46bcbf3ff8e86fdb}
+Does not detect unknown words. The returned word id is $>$= M\+I\+N\+\_\+\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D \begin{DoxySeeAlso}{See also}
+A\+Word\+Index 
+\end{DoxySeeAlso}
+
+
+Definition at line 89 of file hashing\+\_\+word\+\_\+index.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a06f3b8b334fd66631778e4db24d001d1}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}!is\+\_\+post\+\_\+actions\+\_\+needed@{is\+\_\+post\+\_\+actions\+\_\+needed}}
+\index{is\+\_\+post\+\_\+actions\+\_\+needed@{is\+\_\+post\+\_\+actions\+\_\+needed}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}}
+\subsubsection[{is\+\_\+post\+\_\+actions\+\_\+needed() const }]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index\+::is\+\_\+post\+\_\+actions\+\_\+needed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a06f3b8b334fd66631778e4db24d001d1}
+\begin{DoxySeeAlso}{See also}
+A\+Word\+Index 
+\end{DoxySeeAlso}
+
+
+Definition at line 125 of file hashing\+\_\+word\+\_\+index.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ab8f071a53701f66b24cb9ea1e835cc66}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}!is\+\_\+word\+\_\+counts\+\_\+needed@{is\+\_\+word\+\_\+counts\+\_\+needed}}
+\index{is\+\_\+word\+\_\+counts\+\_\+needed@{is\+\_\+word\+\_\+counts\+\_\+needed}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}}
+\subsubsection[{is\+\_\+word\+\_\+counts\+\_\+needed() const }]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index\+::is\+\_\+word\+\_\+counts\+\_\+needed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ab8f071a53701f66b24cb9ea1e835cc66}
+\begin{DoxySeeAlso}{See also}
+A\+Word\+Index 
+\end{DoxySeeAlso}
+
+
+Definition at line 118 of file hashing\+\_\+word\+\_\+index.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a9aad9c40f7f96795328e89485c9d035f}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}!is\+\_\+word\+\_\+index\+\_\+continuous@{is\+\_\+word\+\_\+index\+\_\+continuous}}
+\index{is\+\_\+word\+\_\+index\+\_\+continuous@{is\+\_\+word\+\_\+index\+\_\+continuous}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}}
+\subsubsection[{is\+\_\+word\+\_\+index\+\_\+continuous()}]{\setlength{\rightskip}{0pt plus 5cm}static constexpr bool uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index\+::is\+\_\+word\+\_\+index\+\_\+continuous (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a9aad9c40f7f96795328e89485c9d035f}
+\begin{DoxySeeAlso}{See also}
+A\+Word\+Index 
+\end{DoxySeeAlso}
+\begin{DoxyReturn}{Returns}
+false -\/ this word index is not continuous. 
+\end{DoxyReturn}
+
+
+Definition at line 133 of file hashing\+\_\+word\+\_\+index.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a494bd9b1e49904deee1f8234e83cc481}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}!is\+\_\+word\+\_\+registering\+\_\+needed@{is\+\_\+word\+\_\+registering\+\_\+needed}}
+\index{is\+\_\+word\+\_\+registering\+\_\+needed@{is\+\_\+word\+\_\+registering\+\_\+needed}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}}
+\subsubsection[{is\+\_\+word\+\_\+registering\+\_\+needed() const }]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index\+::is\+\_\+word\+\_\+registering\+\_\+needed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a494bd9b1e49904deee1f8234e83cc481}
+The returned word id is $>$= M\+I\+N\+\_\+\+K\+N\+O\+W\+N\+\_\+\+W\+O\+R\+D\+\_\+\+I\+D \begin{DoxySeeAlso}{See also}
+A\+Word\+Index 
+\end{DoxySeeAlso}
+
+
+Definition at line 103 of file hashing\+\_\+word\+\_\+index.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a63bc9c672ca8d76f77ad7080b4b396ce}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}!register\+\_\+word@{register\+\_\+word}}
+\index{register\+\_\+word@{register\+\_\+word}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}}
+\subsubsection[{register\+\_\+word(const Text\+Piece\+Reader \&token)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf word\+\_\+uid} uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index\+::register\+\_\+word (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{token}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_a63bc9c672ca8d76f77ad7080b4b396ce}
+The word registration is not needed, for this word index. \begin{DoxySeeAlso}{See also}
+A\+Word\+Index 
+\end{DoxySeeAlso}
+
+
+Definition at line 111 of file hashing\+\_\+word\+\_\+index.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ad6c3355af70f7fe393d550ba1ef80eaf}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}!reserve@{reserve}}
+\index{reserve@{reserve}!uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index@{uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index}}
+\subsubsection[{reserve(const size\+\_\+t num\+\_\+words)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::lm\+::dictionary\+::hashing\+\_\+word\+\_\+index\+::reserve (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{num\+\_\+words}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index_ad6c3355af70f7fe393d550ba1ef80eaf}
+\begin{DoxySeeAlso}{See also}
+A\+Word\+Index 
+\end{DoxySeeAlso}
+
+
+Definition at line 73 of file hashing\+\_\+word\+\_\+index.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/lm/dictionaries/\hyperlink{hashing__word__index_8hpp}{hashing\+\_\+word\+\_\+index.\+hpp}\end{DoxyCompactItemize}

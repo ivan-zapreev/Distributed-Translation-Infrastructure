@@ -1,0 +1,26 @@
+var classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index =
+[
+    [ "TWordIndexAllocator", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a056edf8ef4a61b1cfde2f2269437f6d5", null ],
+    [ "TWordIndexEntry", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a61bd773bb1c79c5be7679fc557f27747", null ],
+    [ "TWordIndexMap", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#ab58bffa80202cb71ba13ba19814b622c", null ],
+    [ "TWordIndexMapConstIter", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#ac35f9263ddd75993ac68944b4521ec38", null ],
+    [ "basic_word_index", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#aadbe4d52e8364df91f242e6f9fd86234", null ],
+    [ "~basic_word_index", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a285da0c7ded7f8cf4b1b9a9caf454b7f", null ],
+    [ "basic_word_index", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a04b0528afc961cff02f6d0e335ebd1f9", null ],
+    [ "begin", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#ac15584ac8f61497eedc4de6cb1619e5d", null ],
+    [ "count_word", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a50ebfbe44aac2c6f0fba345309a1fc7a", null ],
+    [ "do_post_actions", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a6be17e94509d14ece2816c262a1b5e9c", null ],
+    [ "do_post_word_count", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#acf79abcb2e0fe7cf8f2b620c07d92e71", null ],
+    [ "end", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a7736fedb999ac6754a335feddf24b363", null ],
+    [ "get_number_of_words", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a2e6562b6e3c323bc626d9301cf196cf7", null ],
+    [ "get_word_id", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#acffe24fc47da578fa203fa649a1dce8a", null ],
+    [ "is_post_actions_needed", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a110c800325226169f3d4ab1e66972534", null ],
+    [ "is_word_counts_needed", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a4f13e6413dd71a283d391a98a6949c55", null ],
+    [ "is_word_registering_needed", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a60b55124e8f0fea219dff9ca76fdf51a", null ],
+    [ "register_word", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a365ee49bb8d0685f47eec8be4149611a", null ],
+    [ "reserve", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a277ab4195560f7760caba857109d64a5", null ],
+    [ "m_next_new_word_id", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#a9ca20f562bff53f7596e15d0f884e0c8", null ],
+    [ "m_word_index_alloc_ptr", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#acbd75f75b5ba0115573b24273e901e03", null ],
+    [ "m_word_index_map_ptr", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#afc879e3d774df5b009385c5e6f466438", null ],
+    [ "m_word_index_mem_factor", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index.html#aa1c113ede28b36600842da1f8a4652f5", null ]
+];

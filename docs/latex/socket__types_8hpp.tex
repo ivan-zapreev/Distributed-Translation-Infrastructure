@@ -1,0 +1,595 @@
+\hypertarget{socket__types_8hpp}{}\section{ext/asio/detail/socket\+\_\+types.hpp File Reference}
+\label{socket__types_8hpp}\index{ext/asio/detail/socket\+\_\+types.\+hpp@{ext/asio/detail/socket\+\_\+types.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\\*
+{\ttfamily \#include $<$sys/poll.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$sys/stat.\+h$>$}\\*
+{\ttfamily \#include $<$fcntl.\+h$>$}\\*
+{\ttfamily \#include $<$sys/select.\+h$>$}\\*
+{\ttfamily \#include $<$sys/socket.\+h$>$}\\*
+{\ttfamily \#include $<$sys/uio.\+h$>$}\\*
+{\ttfamily \#include $<$sys/un.\+h$>$}\\*
+{\ttfamily \#include $<$netinet/in.\+h$>$}\\*
+{\ttfamily \#include $<$netinet/tcp.\+h$>$}\\*
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\\*
+{\ttfamily \#include $<$netdb.\+h$>$}\\*
+{\ttfamily \#include $<$net/if.\+h$>$}\\*
+{\ttfamily \#include $<$limits.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1detail}{asio\+::detail}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(c)~A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\#\#c
+\item 
+\#define \hyperlink{socket__types_8hpp_a8b81e3beeeffb3679af605d1a844a649}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+U\+N\+S\+P\+E\+C}~A\+F\+\_\+\+U\+N\+S\+P\+E\+C
+\item 
+\#define \hyperlink{socket__types_8hpp_ac2da582f42b844b122ef0ef77c5e0bdb}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T}~A\+F\+\_\+\+I\+N\+E\+T
+\item 
+\#define \hyperlink{socket__types_8hpp_a0da120da1321141c1de12ab579ec1d57}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T6}~A\+F\+\_\+\+I\+N\+E\+T6
+\item 
+\#define \hyperlink{socket__types_8hpp_aff8e71a748e392a4de71270d65a61079}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+T\+R\+E\+A\+M}~S\+O\+C\+K\+\_\+\+S\+T\+R\+E\+A\+M
+\item 
+\#define \hyperlink{socket__types_8hpp_a0cd46aac9c7958000d66617b50b4fe3d}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+D\+G\+R\+A\+M}~S\+O\+C\+K\+\_\+\+D\+G\+R\+A\+M
+\item 
+\#define \hyperlink{socket__types_8hpp_af2499e660e3749215ffe110d8becc51d}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+R\+A\+W}~S\+O\+C\+K\+\_\+\+R\+A\+W
+\item 
+\#define \hyperlink{socket__types_8hpp_ac698fa1403fcfa13e3b8b9578cf0cab8}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+E\+Q\+P\+A\+C\+K\+E\+T}~S\+O\+C\+K\+\_\+\+S\+E\+Q\+P\+A\+C\+K\+E\+T
+\item 
+\#define \hyperlink{socket__types_8hpp_addf2082086ba32f42fdca6c044a41f75}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P}~I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P
+\item 
+\#define \hyperlink{socket__types_8hpp_ab130a882a793403447a5aef4e521e31f}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6}~I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6
+\item 
+\#define \hyperlink{socket__types_8hpp_acba19a6cfdfa0b7abf458b78b53beca8}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P}~I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P
+\item 
+\#define \hyperlink{socket__types_8hpp_aa4a16a11bb18acbea25db85743e7b37b}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+U\+D\+P}~I\+P\+P\+R\+O\+T\+O\+\_\+\+U\+D\+P
+\item 
+\#define \hyperlink{socket__types_8hpp_aba9c0157b2149b580032c05460039b9e}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P}~I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P
+\item 
+\#define \hyperlink{socket__types_8hpp_ae2c0009f456cba044f8c4500a12e3a87}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P\+V6}~I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P\+V6
+\item 
+\#define \hyperlink{socket__types_8hpp_a32c342540cdfa21b22d9c01525eb446a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+B\+I\+O}~F\+I\+O\+N\+B\+I\+O
+\item 
+\#define \hyperlink{socket__types_8hpp_aed54293b2b4f48640f986f59018e641d}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+R\+E\+A\+D}~F\+I\+O\+N\+R\+E\+A\+D
+\item 
+\#define \hyperlink{socket__types_8hpp_aff3ff8353c402a71bd3ccdf7d8e04a47}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+N\+A\+D\+D\+R\+\_\+\+A\+N\+Y}~I\+N\+A\+D\+D\+R\+\_\+\+A\+N\+Y
+\item 
+\#define \hyperlink{socket__types_8hpp_abb5eb7a2864386e574e572c15404df85}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+O\+O\+B}~M\+S\+G\+\_\+\+O\+O\+B
+\item 
+\#define \hyperlink{socket__types_8hpp_ab6da5cffb8fe5abd6acc376ccce2b634}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+P\+E\+E\+K}~M\+S\+G\+\_\+\+P\+E\+E\+K
+\item 
+\#define \hyperlink{socket__types_8hpp_af6dbd52d963d5504cc541c4b8c2a075d}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E}~M\+S\+G\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E
+\item 
+\#define \hyperlink{socket__types_8hpp_a3220596290e26567671ce9e4a143d488}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+E\+O\+R}~M\+S\+G\+\_\+\+E\+O\+R
+\item 
+\#define \hyperlink{socket__types_8hpp_a51e4d7d571c3c4f4f877723c9f5652fc}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D}~S\+H\+U\+T\+\_\+\+R\+D
+\item 
+\#define \hyperlink{socket__types_8hpp_ae08db019a99fe502e13cd3fffd9b7eb9}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+W\+R}~S\+H\+U\+T\+\_\+\+W\+R
+\item 
+\#define \hyperlink{socket__types_8hpp_a68ae7f9b98b36bf3e800a2d1460f4f7f}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D\+W\+R}~S\+H\+U\+T\+\_\+\+R\+D\+W\+R
+\item 
+\#define \hyperlink{socket__types_8hpp_a88cc55a7c88fc18a87db177a70e3541b}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+M\+A\+X\+C\+O\+N\+N}~S\+O\+M\+A\+X\+C\+O\+N\+N
+\item 
+\#define \hyperlink{socket__types_8hpp_a35fcb7ce487b13704ecabbb53f785b2c}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T}~S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T
+\item 
+\#define \hyperlink{socket__types_8hpp_ad2ae8eba83fb5e481cb9428d40598393}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T}~S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T
+\item 
+\#define \hyperlink{socket__types_8hpp_abd0317c6c12eeb96c84fdbb4f3ebe806}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+E\+B\+U\+G}~S\+O\+\_\+\+D\+E\+B\+U\+G
+\item 
+\#define \hyperlink{socket__types_8hpp_a05a3a5d48549859ac67da3ef239002d3}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E}~S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E
+\item 
+\#define \hyperlink{socket__types_8hpp_a0cadf533d6720487309b4065cd6b6951}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E}~S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E
+\item 
+\#define \hyperlink{socket__types_8hpp_a4c78e8558bb9ec4200d31de8a7665342}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+L\+I\+N\+G\+E\+R}~S\+O\+\_\+\+L\+I\+N\+G\+E\+R
+\item 
+\#define \hyperlink{socket__types_8hpp_a580d064519c17ed75d2ad4442b114303}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+B\+U\+F}~S\+O\+\_\+\+S\+N\+D\+B\+U\+F
+\item 
+\#define \hyperlink{socket__types_8hpp_a8917557adb5755135e82f0d402361020}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+B\+U\+F}~S\+O\+\_\+\+R\+C\+V\+B\+U\+F
+\item 
+\#define \hyperlink{socket__types_8hpp_a1ff268b018124a484aef90b86598467d}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T}~S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T
+\item 
+\#define \hyperlink{socket__types_8hpp_a192da1406ae71c483d579f126d165589}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T}~S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T
+\item 
+\#define \hyperlink{socket__types_8hpp_a1250a6730c5621fa00c1ff0d2f2edefe}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R}~S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R
+\item 
+\#define \hyperlink{socket__types_8hpp_a44b972a3149c0e8bbcd4484380eb364f}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y}~T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y
+\item 
+\#define \hyperlink{socket__types_8hpp_a6dddcdb013a99bae7902735644b65e7f}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F}~I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F
+\item 
+\#define \hyperlink{socket__types_8hpp_ae729abaf4bcb825c2a8c356283d6192b}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+T\+T\+L}~I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+T\+T\+L
+\item 
+\#define \hyperlink{socket__types_8hpp_a5ed21faf66621a1ad2241d7ebdc81ca8}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P}~I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P
+\item 
+\#define \hyperlink{socket__types_8hpp_a4b8515dbae0c260da33c595f6e4c6bc3}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+A\+D\+D\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P}~I\+P\+\_\+\+A\+D\+D\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P
+\item 
+\#define \hyperlink{socket__types_8hpp_a953d114545275ed9a82e1f33f001bf39}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+D\+R\+O\+P\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P}~I\+P\+\_\+\+D\+R\+O\+P\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P
+\item 
+\#define \hyperlink{socket__types_8hpp_a64c3476f6922cde20d7a945f9cba1fbd}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+T\+T\+L}~I\+P\+\_\+\+T\+T\+L
+\item 
+\#define \hyperlink{socket__types_8hpp_afeeff70d87205fae2b36232ee9c03248}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S}~I\+P\+V6\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S
+\item 
+\#define \hyperlink{socket__types_8hpp_aaafdf42cfc23ae78a408234009aa665f}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F}~I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F
+\item 
+\#define \hyperlink{socket__types_8hpp_a56b11ecbf91dfbce735d1743c0f49b80}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S}~I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S
+\item 
+\#define \hyperlink{socket__types_8hpp_a94a30547769eaf797732b0333a17f6b2}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P}~I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P
+\item 
+\#define \hyperlink{socket__types_8hpp_acdf24a6b9044b37ee013a20f35097ba6}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+J\+O\+I\+N\+\_\+\+G\+R\+O\+U\+P}~I\+P\+V6\+\_\+\+J\+O\+I\+N\+\_\+\+G\+R\+O\+U\+P
+\item 
+\#define \hyperlink{socket__types_8hpp_ac39e7357b6929493c2a136e0f8cd1595}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+L\+E\+A\+V\+E\+\_\+\+G\+R\+O\+U\+P}~I\+P\+V6\+\_\+\+L\+E\+A\+V\+E\+\_\+\+G\+R\+O\+U\+P
+\item 
+\#define \hyperlink{socket__types_8hpp_aa4c0e4f4fd36b880b001d533afc13516}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+C\+A\+N\+O\+N\+N\+A\+M\+E}~A\+I\+\_\+\+C\+A\+N\+O\+N\+N\+A\+M\+E
+\item 
+\#define \hyperlink{socket__types_8hpp_a587c6882e197201e3c9dadceb2e6e15d}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+P\+A\+S\+S\+I\+V\+E}~A\+I\+\_\+\+P\+A\+S\+S\+I\+V\+E
+\item 
+\#define \hyperlink{socket__types_8hpp_a6f88cda649ea6ef8e7ef6e08659d25fd}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+H\+O\+S\+T}~A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+H\+O\+S\+T
+\item 
+\#define \hyperlink{socket__types_8hpp_a35515ebea91d9ef91e81eaf37369da30}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+S\+E\+R\+V}~0
+\item 
+\#define \hyperlink{socket__types_8hpp_aae137bb7413ddc0e044762c883d7b2fb}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+V4\+M\+A\+P\+P\+E\+D}~0
+\item 
+\#define \hyperlink{socket__types_8hpp_a2ab90b5f255139a154ab4b428d16da8a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+L\+L}~0
+\item 
+\#define \hyperlink{socket__types_8hpp_ac1bb6c994aaf0a933329eb3d833b0c1a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+D\+D\+R\+C\+O\+N\+F\+I\+G}~0
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef int \hyperlink{namespaceasio_1_1detail_a6798c771dd84b79798b1a08150706ea9}{asio\+::detail\+::socket\+\_\+type}
+\item 
+typedef sockaddr \hyperlink{namespaceasio_1_1detail_a40a7b0385a38f87815ffbb8df5e34d05}{asio\+::detail\+::socket\+\_\+addr\+\_\+type}
+\item 
+typedef in\+\_\+addr \hyperlink{namespaceasio_1_1detail_a8e45a79a5ed322972acbf5c93782cef8}{asio\+::detail\+::in4\+\_\+addr\+\_\+type}
+\item 
+typedef ip\+\_\+mreq \hyperlink{namespaceasio_1_1detail_abe51233cc09e73aeac58af43675ad976}{asio\+::detail\+::in4\+\_\+mreq\+\_\+type}
+\item 
+typedef sockaddr\+\_\+in \hyperlink{namespaceasio_1_1detail_a80851db41f97eb12822e2f409d444aa6}{asio\+::detail\+::sockaddr\+\_\+in4\+\_\+type}
+\item 
+typedef in6\+\_\+addr \hyperlink{namespaceasio_1_1detail_a6fbf4772e59936aa45276af1dc653ab4}{asio\+::detail\+::in6\+\_\+addr\+\_\+type}
+\item 
+typedef ipv6\+\_\+mreq \hyperlink{namespaceasio_1_1detail_acbb283b0a4fe49399a5c10a0ffa73972}{asio\+::detail\+::in6\+\_\+mreq\+\_\+type}
+\item 
+typedef sockaddr\+\_\+in6 \hyperlink{namespaceasio_1_1detail_a57768e6ae10076201e58c76fe4e8495d}{asio\+::detail\+::sockaddr\+\_\+in6\+\_\+type}
+\item 
+typedef sockaddr\+\_\+storage \hyperlink{namespaceasio_1_1detail_a5b5da7704fe08eec4df1fb52b6d1bf98}{asio\+::detail\+::sockaddr\+\_\+storage\+\_\+type}
+\item 
+typedef sockaddr\+\_\+un \hyperlink{namespaceasio_1_1detail_ab1311931a71e98cfaf6b81fe317e534d}{asio\+::detail\+::sockaddr\+\_\+un\+\_\+type}
+\item 
+typedef addrinfo \hyperlink{namespaceasio_1_1detail_ad8df56a17e3aa9ce2ad251fb76426e67}{asio\+::detail\+::addrinfo\+\_\+type}
+\item 
+typedef \+::linger \hyperlink{namespaceasio_1_1detail_a417cb909eef0654a2e53adc1f4dd2dc1}{asio\+::detail\+::linger\+\_\+type}
+\item 
+typedef int \hyperlink{namespaceasio_1_1detail_a27f72e1b8b785eaaa59ddc6b41751106}{asio\+::detail\+::ioctl\+\_\+arg\+\_\+type}
+\item 
+typedef uint32\+\_\+t \hyperlink{namespaceasio_1_1detail_a875fc877056700355cc63b79b29687bc}{asio\+::detail\+::u\+\_\+long\+\_\+type}
+\item 
+typedef uint16\+\_\+t \hyperlink{namespaceasio_1_1detail_a06a0b3d4e1daccdccf9ebc949c7d29c0}{asio\+::detail\+::u\+\_\+short\+\_\+type}
+\item 
+typedef int \hyperlink{namespaceasio_1_1detail_a0912273eb9e5fcdaef1b12e9b77e9f07}{asio\+::detail\+::signed\+\_\+size\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const int \hyperlink{namespaceasio_1_1detail_acb107bcaaeb6ee70f25604a6da8fd0b3}{asio\+::detail\+::invalid\+\_\+socket} = -\/1
+\item 
+const int \hyperlink{namespaceasio_1_1detail_a8dfb40730cf1169dd3fa94e43a7abf89}{asio\+::detail\+::socket\+\_\+error\+\_\+retval} = -\/1
+\item 
+const int \hyperlink{namespaceasio_1_1detail_a286f3216bbf2141a8cf666a7506ee6f0}{asio\+::detail\+::max\+\_\+addr\+\_\+v4\+\_\+str\+\_\+len} = I\+N\+E\+T\+\_\+\+A\+D\+D\+R\+S\+T\+R\+L\+E\+N
+\item 
+const int \hyperlink{namespaceasio_1_1detail_aa1c15a2c48591aee5952bc2f2124424d}{asio\+::detail\+::max\+\_\+addr\+\_\+v6\+\_\+str\+\_\+len} = 256
+\item 
+const int \hyperlink{namespaceasio_1_1detail_aa32324a2be9dbcadc7f55700d8d31df9}{asio\+::detail\+::max\+\_\+iov\+\_\+len} = 16
+\item 
+const int \hyperlink{namespaceasio_1_1detail_ac87c0ec12e7071c1f18513b04a627a24}{asio\+::detail\+::custom\+\_\+socket\+\_\+option\+\_\+level} = 0x\+A5100000
+\item 
+const int \hyperlink{namespaceasio_1_1detail_a4d541df87cf6415ae4d57937476bb361}{asio\+::detail\+::enable\+\_\+connection\+\_\+aborted\+\_\+option} = 1
+\item 
+const int \hyperlink{namespaceasio_1_1detail_a9a0de25b02f8e9540fe34ccad54988a3}{asio\+::detail\+::always\+\_\+fail\+\_\+option} = 2
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F(
+\begin{DoxyParamCaption}
+\item[{}]{c}
+\end{DoxyParamCaption}
+)~A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\#\#c}\label{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}
+
+
+Definition at line 314 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_ac2da582f42b844b122ef0ef77c5e0bdb}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T~A\+F\+\_\+\+I\+N\+E\+T}\label{socket__types_8hpp_ac2da582f42b844b122ef0ef77c5e0bdb}
+
+
+Definition at line 316 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a0da120da1321141c1de12ab579ec1d57}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T6@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T6}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T6@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T6}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T6}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+I\+N\+E\+T6~A\+F\+\_\+\+I\+N\+E\+T6}\label{socket__types_8hpp_a0da120da1321141c1de12ab579ec1d57}
+
+
+Definition at line 317 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a8b81e3beeeffb3679af605d1a844a649}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+U\+N\+S\+P\+E\+C@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+U\+N\+S\+P\+E\+C}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+U\+N\+S\+P\+E\+C@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+U\+N\+S\+P\+E\+C}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+U\+N\+S\+P\+E\+C}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+F\+\_\+\+U\+N\+S\+P\+E\+C~A\+F\+\_\+\+U\+N\+S\+P\+E\+C}\label{socket__types_8hpp_a8b81e3beeeffb3679af605d1a844a649}
+
+
+Definition at line 315 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_ac1bb6c994aaf0a933329eb3d833b0c1a}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+D\+D\+R\+C\+O\+N\+F\+I\+G@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+D\+D\+R\+C\+O\+N\+F\+I\+G}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+D\+D\+R\+C\+O\+N\+F\+I\+G@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+D\+D\+R\+C\+O\+N\+F\+I\+G}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+D\+D\+R\+C\+O\+N\+F\+I\+G}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+D\+D\+R\+C\+O\+N\+F\+I\+G~0}\label{socket__types_8hpp_ac1bb6c994aaf0a933329eb3d833b0c1a}
+
+
+Definition at line 386 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a2ab90b5f255139a154ab4b428d16da8a}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+L\+L@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+L\+L}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+L\+L@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+L\+L}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+L\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+A\+L\+L~0}\label{socket__types_8hpp_a2ab90b5f255139a154ab4b428d16da8a}
+
+
+Definition at line 381 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_aa4c0e4f4fd36b880b001d533afc13516}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+C\+A\+N\+O\+N\+N\+A\+M\+E@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+C\+A\+N\+O\+N\+N\+A\+M\+E}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+C\+A\+N\+O\+N\+N\+A\+M\+E@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+C\+A\+N\+O\+N\+N\+A\+M\+E}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+C\+A\+N\+O\+N\+N\+A\+M\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+C\+A\+N\+O\+N\+N\+A\+M\+E~A\+I\+\_\+\+C\+A\+N\+O\+N\+N\+A\+M\+E}\label{socket__types_8hpp_aa4c0e4f4fd36b880b001d533afc13516}
+
+
+Definition at line 363 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a6f88cda649ea6ef8e7ef6e08659d25fd}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+H\+O\+S\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+H\+O\+S\+T}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+H\+O\+S\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+H\+O\+S\+T}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+H\+O\+S\+T}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+H\+O\+S\+T~A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+H\+O\+S\+T}\label{socket__types_8hpp_a6f88cda649ea6ef8e7ef6e08659d25fd}
+
+
+Definition at line 365 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a35515ebea91d9ef91e81eaf37369da30}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+S\+E\+R\+V@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+S\+E\+R\+V}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+S\+E\+R\+V@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+S\+E\+R\+V}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+S\+E\+R\+V}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+N\+U\+M\+E\+R\+I\+C\+S\+E\+R\+V~0}\label{socket__types_8hpp_a35515ebea91d9ef91e81eaf37369da30}
+
+
+Definition at line 369 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a587c6882e197201e3c9dadceb2e6e15d}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+P\+A\+S\+S\+I\+V\+E@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+P\+A\+S\+S\+I\+V\+E}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+P\+A\+S\+S\+I\+V\+E@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+P\+A\+S\+S\+I\+V\+E}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+P\+A\+S\+S\+I\+V\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+P\+A\+S\+S\+I\+V\+E~A\+I\+\_\+\+P\+A\+S\+S\+I\+V\+E}\label{socket__types_8hpp_a587c6882e197201e3c9dadceb2e6e15d}
+
+
+Definition at line 364 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_aae137bb7413ddc0e044762c883d7b2fb}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+V4\+M\+A\+P\+P\+E\+D@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+V4\+M\+A\+P\+P\+E\+D}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+V4\+M\+A\+P\+P\+E\+D@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+V4\+M\+A\+P\+P\+E\+D}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+V4\+M\+A\+P\+P\+E\+D}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+A\+I\+\_\+\+V4\+M\+A\+P\+P\+E\+D~0}\label{socket__types_8hpp_aae137bb7413ddc0e044762c883d7b2fb}
+
+
+Definition at line 376 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a32c342540cdfa21b22d9c01525eb446a}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+B\+I\+O@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+B\+I\+O}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+B\+I\+O@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+B\+I\+O}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+B\+I\+O}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+B\+I\+O~F\+I\+O\+N\+B\+I\+O}\label{socket__types_8hpp_a32c342540cdfa21b22d9c01525eb446a}
+
+
+Definition at line 328 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_aed54293b2b4f48640f986f59018e641d}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+R\+E\+A\+D@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+R\+E\+A\+D}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+R\+E\+A\+D@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+R\+E\+A\+D}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+R\+E\+A\+D}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+F\+I\+O\+N\+R\+E\+A\+D~F\+I\+O\+N\+R\+E\+A\+D}\label{socket__types_8hpp_aed54293b2b4f48640f986f59018e641d}
+
+
+Definition at line 329 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_aff3ff8353c402a71bd3ccdf7d8e04a47}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+N\+A\+D\+D\+R\+\_\+\+A\+N\+Y@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+N\+A\+D\+D\+R\+\_\+\+A\+N\+Y}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+N\+A\+D\+D\+R\+\_\+\+A\+N\+Y@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+N\+A\+D\+D\+R\+\_\+\+A\+N\+Y}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+N\+A\+D\+D\+R\+\_\+\+A\+N\+Y}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+N\+A\+D\+D\+R\+\_\+\+A\+N\+Y~I\+N\+A\+D\+D\+R\+\_\+\+A\+N\+Y}\label{socket__types_8hpp_aff3ff8353c402a71bd3ccdf7d8e04a47}
+
+
+Definition at line 330 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a4b8515dbae0c260da33c595f6e4c6bc3}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+A\+D\+D\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+A\+D\+D\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+A\+D\+D\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+A\+D\+D\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+A\+D\+D\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+A\+D\+D\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P~I\+P\+\_\+\+A\+D\+D\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P}\label{socket__types_8hpp_a4b8515dbae0c260da33c595f6e4c6bc3}
+
+
+Definition at line 354 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a953d114545275ed9a82e1f33f001bf39}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+D\+R\+O\+P\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+D\+R\+O\+P\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+D\+R\+O\+P\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+D\+R\+O\+P\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+D\+R\+O\+P\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+D\+R\+O\+P\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P~I\+P\+\_\+\+D\+R\+O\+P\+\_\+\+M\+E\+M\+B\+E\+R\+S\+H\+I\+P}\label{socket__types_8hpp_a953d114545275ed9a82e1f33f001bf39}
+
+
+Definition at line 355 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a6dddcdb013a99bae7902735644b65e7f}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F~I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F}\label{socket__types_8hpp_a6dddcdb013a99bae7902735644b65e7f}
+
+
+Definition at line 351 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a5ed21faf66621a1ad2241d7ebdc81ca8}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P~I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P}\label{socket__types_8hpp_a5ed21faf66621a1ad2241d7ebdc81ca8}
+
+
+Definition at line 353 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_ae729abaf4bcb825c2a8c356283d6192b}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+T\+T\+L@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+T\+T\+L}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+T\+T\+L@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+T\+T\+L}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+T\+T\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+T\+T\+L~I\+P\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+T\+T\+L}\label{socket__types_8hpp_ae729abaf4bcb825c2a8c356283d6192b}
+
+
+Definition at line 352 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a64c3476f6922cde20d7a945f9cba1fbd}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+T\+T\+L@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+T\+T\+L}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+T\+T\+L@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+T\+T\+L}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+T\+T\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+\_\+\+T\+T\+L~I\+P\+\_\+\+T\+T\+L}\label{socket__types_8hpp_a64c3476f6922cde20d7a945f9cba1fbd}
+
+
+Definition at line 356 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_aba9c0157b2149b580032c05460039b9e}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P~I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P}\label{socket__types_8hpp_aba9c0157b2149b580032c05460039b9e}
+
+
+Definition at line 326 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_ae2c0009f456cba044f8c4500a12e3a87}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P\+V6@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P\+V6}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P\+V6@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P\+V6}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P\+V6}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P\+V6~I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+C\+M\+P\+V6}\label{socket__types_8hpp_ae2c0009f456cba044f8c4500a12e3a87}
+
+
+Definition at line 327 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_addf2082086ba32f42fdca6c044a41f75}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P~I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P}\label{socket__types_8hpp_addf2082086ba32f42fdca6c044a41f75}
+
+
+Definition at line 322 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_ab130a882a793403447a5aef4e521e31f}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6~I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6}\label{socket__types_8hpp_ab130a882a793403447a5aef4e521e31f}
+
+
+Definition at line 323 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_acba19a6cfdfa0b7abf458b78b53beca8}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P~I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P}\label{socket__types_8hpp_acba19a6cfdfa0b7abf458b78b53beca8}
+
+
+Definition at line 324 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_aa4a16a11bb18acbea25db85743e7b37b}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+U\+D\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+U\+D\+P}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+U\+D\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+U\+D\+P}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+U\+D\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+P\+R\+O\+T\+O\+\_\+\+U\+D\+P~I\+P\+P\+R\+O\+T\+O\+\_\+\+U\+D\+P}\label{socket__types_8hpp_aa4a16a11bb18acbea25db85743e7b37b}
+
+
+Definition at line 325 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_acdf24a6b9044b37ee013a20f35097ba6}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+J\+O\+I\+N\+\_\+\+G\+R\+O\+U\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+J\+O\+I\+N\+\_\+\+G\+R\+O\+U\+P}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+J\+O\+I\+N\+\_\+\+G\+R\+O\+U\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+J\+O\+I\+N\+\_\+\+G\+R\+O\+U\+P}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+J\+O\+I\+N\+\_\+\+G\+R\+O\+U\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+J\+O\+I\+N\+\_\+\+G\+R\+O\+U\+P~I\+P\+V6\+\_\+\+J\+O\+I\+N\+\_\+\+G\+R\+O\+U\+P}\label{socket__types_8hpp_acdf24a6b9044b37ee013a20f35097ba6}
+
+
+Definition at line 361 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_ac39e7357b6929493c2a136e0f8cd1595}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+L\+E\+A\+V\+E\+\_\+\+G\+R\+O\+U\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+L\+E\+A\+V\+E\+\_\+\+G\+R\+O\+U\+P}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+L\+E\+A\+V\+E\+\_\+\+G\+R\+O\+U\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+L\+E\+A\+V\+E\+\_\+\+G\+R\+O\+U\+P}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+L\+E\+A\+V\+E\+\_\+\+G\+R\+O\+U\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+L\+E\+A\+V\+E\+\_\+\+G\+R\+O\+U\+P~I\+P\+V6\+\_\+\+L\+E\+A\+V\+E\+\_\+\+G\+R\+O\+U\+P}\label{socket__types_8hpp_ac39e7357b6929493c2a136e0f8cd1595}
+
+
+Definition at line 362 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a56b11ecbf91dfbce735d1743c0f49b80}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S~I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S}\label{socket__types_8hpp_a56b11ecbf91dfbce735d1743c0f49b80}
+
+
+Definition at line 359 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_aaafdf42cfc23ae78a408234009aa665f}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F~I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+I\+F}\label{socket__types_8hpp_aaafdf42cfc23ae78a408234009aa665f}
+
+
+Definition at line 358 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a94a30547769eaf797732b0333a17f6b2}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P~I\+P\+V6\+\_\+\+M\+U\+L\+T\+I\+C\+A\+S\+T\+\_\+\+L\+O\+O\+P}\label{socket__types_8hpp_a94a30547769eaf797732b0333a17f6b2}
+
+
+Definition at line 360 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_afeeff70d87205fae2b36232ee9c03248}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+I\+P\+V6\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S~I\+P\+V6\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S}\label{socket__types_8hpp_afeeff70d87205fae2b36232ee9c03248}
+
+
+Definition at line 357 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_af6dbd52d963d5504cc541c4b8c2a075d}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E~M\+S\+G\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E}\label{socket__types_8hpp_af6dbd52d963d5504cc541c4b8c2a075d}
+
+
+Definition at line 333 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a3220596290e26567671ce9e4a143d488}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+E\+O\+R@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+E\+O\+R}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+E\+O\+R@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+E\+O\+R}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+E\+O\+R}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+E\+O\+R~M\+S\+G\+\_\+\+E\+O\+R}\label{socket__types_8hpp_a3220596290e26567671ce9e4a143d488}
+
+
+Definition at line 334 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_abb5eb7a2864386e574e572c15404df85}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+O\+O\+B@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+O\+O\+B}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+O\+O\+B@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+O\+O\+B}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+O\+O\+B}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+O\+O\+B~M\+S\+G\+\_\+\+O\+O\+B}\label{socket__types_8hpp_abb5eb7a2864386e574e572c15404df85}
+
+
+Definition at line 331 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_ab6da5cffb8fe5abd6acc376ccce2b634}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+P\+E\+E\+K@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+P\+E\+E\+K}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+P\+E\+E\+K@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+P\+E\+E\+K}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+P\+E\+E\+K}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+M\+S\+G\+\_\+\+P\+E\+E\+K~M\+S\+G\+\_\+\+P\+E\+E\+K}\label{socket__types_8hpp_ab6da5cffb8fe5abd6acc376ccce2b634}
+
+
+Definition at line 332 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a51e4d7d571c3c4f4f877723c9f5652fc}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D~S\+H\+U\+T\+\_\+\+R\+D}\label{socket__types_8hpp_a51e4d7d571c3c4f4f877723c9f5652fc}
+
+
+Definition at line 335 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a68ae7f9b98b36bf3e800a2d1460f4f7f}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D\+W\+R@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D\+W\+R}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D\+W\+R@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D\+W\+R}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D\+W\+R}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+R\+D\+W\+R~S\+H\+U\+T\+\_\+\+R\+D\+W\+R}\label{socket__types_8hpp_a68ae7f9b98b36bf3e800a2d1460f4f7f}
+
+
+Definition at line 337 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_ae08db019a99fe502e13cd3fffd9b7eb9}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+W\+R@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+W\+R}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+W\+R@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+W\+R}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+W\+R}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+H\+U\+T\+\_\+\+W\+R~S\+H\+U\+T\+\_\+\+W\+R}\label{socket__types_8hpp_ae08db019a99fe502e13cd3fffd9b7eb9}
+
+
+Definition at line 336 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_ad2ae8eba83fb5e481cb9428d40598393}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T~S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T}\label{socket__types_8hpp_ad2ae8eba83fb5e481cb9428d40598393}
+
+
+Definition at line 340 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_abd0317c6c12eeb96c84fdbb4f3ebe806}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+E\+B\+U\+G@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+E\+B\+U\+G}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+E\+B\+U\+G@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+E\+B\+U\+G}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+E\+B\+U\+G}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+E\+B\+U\+G~S\+O\+\_\+\+D\+E\+B\+U\+G}\label{socket__types_8hpp_abd0317c6c12eeb96c84fdbb4f3ebe806}
+
+
+Definition at line 341 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a05a3a5d48549859ac67da3ef239002d3}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E~S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E}\label{socket__types_8hpp_a05a3a5d48549859ac67da3ef239002d3}
+
+
+Definition at line 342 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a0cadf533d6720487309b4065cd6b6951}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E~S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E}\label{socket__types_8hpp_a0cadf533d6720487309b4065cd6b6951}
+
+
+Definition at line 343 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a4c78e8558bb9ec4200d31de8a7665342}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+L\+I\+N\+G\+E\+R@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+L\+I\+N\+G\+E\+R}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+L\+I\+N\+G\+E\+R@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+L\+I\+N\+G\+E\+R}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+L\+I\+N\+G\+E\+R}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+L\+I\+N\+G\+E\+R~S\+O\+\_\+\+L\+I\+N\+G\+E\+R}\label{socket__types_8hpp_a4c78e8558bb9ec4200d31de8a7665342}
+
+
+Definition at line 344 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a8917557adb5755135e82f0d402361020}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+B\+U\+F@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+B\+U\+F}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+B\+U\+F@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+B\+U\+F}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+B\+U\+F}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+B\+U\+F~S\+O\+\_\+\+R\+C\+V\+B\+U\+F}\label{socket__types_8hpp_a8917557adb5755135e82f0d402361020}
+
+
+Definition at line 346 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a192da1406ae71c483d579f126d165589}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T~S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T}\label{socket__types_8hpp_a192da1406ae71c483d579f126d165589}
+
+
+Definition at line 348 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a1250a6730c5621fa00c1ff0d2f2edefe}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R~S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R}\label{socket__types_8hpp_a1250a6730c5621fa00c1ff0d2f2edefe}
+
+
+Definition at line 349 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a580d064519c17ed75d2ad4442b114303}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+B\+U\+F@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+B\+U\+F}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+B\+U\+F@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+B\+U\+F}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+B\+U\+F}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+B\+U\+F~S\+O\+\_\+\+S\+N\+D\+B\+U\+F}\label{socket__types_8hpp_a580d064519c17ed75d2ad4442b114303}
+
+
+Definition at line 345 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a1ff268b018124a484aef90b86598467d}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T~S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T}\label{socket__types_8hpp_a1ff268b018124a484aef90b86598467d}
+
+
+Definition at line 347 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a0cd46aac9c7958000d66617b50b4fe3d}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+D\+G\+R\+A\+M@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+D\+G\+R\+A\+M}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+D\+G\+R\+A\+M@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+D\+G\+R\+A\+M}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+D\+G\+R\+A\+M}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+D\+G\+R\+A\+M~S\+O\+C\+K\+\_\+\+D\+G\+R\+A\+M}\label{socket__types_8hpp_a0cd46aac9c7958000d66617b50b4fe3d}
+
+
+Definition at line 319 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_af2499e660e3749215ffe110d8becc51d}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+R\+A\+W@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+R\+A\+W}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+R\+A\+W@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+R\+A\+W}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+R\+A\+W}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+R\+A\+W~S\+O\+C\+K\+\_\+\+R\+A\+W}\label{socket__types_8hpp_af2499e660e3749215ffe110d8becc51d}
+
+
+Definition at line 320 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_ac698fa1403fcfa13e3b8b9578cf0cab8}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+E\+Q\+P\+A\+C\+K\+E\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+E\+Q\+P\+A\+C\+K\+E\+T}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+E\+Q\+P\+A\+C\+K\+E\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+E\+Q\+P\+A\+C\+K\+E\+T}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+E\+Q\+P\+A\+C\+K\+E\+T}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+E\+Q\+P\+A\+C\+K\+E\+T~S\+O\+C\+K\+\_\+\+S\+E\+Q\+P\+A\+C\+K\+E\+T}\label{socket__types_8hpp_ac698fa1403fcfa13e3b8b9578cf0cab8}
+
+
+Definition at line 321 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_aff8e71a748e392a4de71270d65a61079}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+T\+R\+E\+A\+M@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+T\+R\+E\+A\+M}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+T\+R\+E\+A\+M@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+T\+R\+E\+A\+M}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+T\+R\+E\+A\+M}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+C\+K\+\_\+\+S\+T\+R\+E\+A\+M~S\+O\+C\+K\+\_\+\+S\+T\+R\+E\+A\+M}\label{socket__types_8hpp_aff8e71a748e392a4de71270d65a61079}
+
+
+Definition at line 318 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a35fcb7ce487b13704ecabbb53f785b2c}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T~S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T}\label{socket__types_8hpp_a35fcb7ce487b13704ecabbb53f785b2c}
+
+
+Definition at line 339 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a88cc55a7c88fc18a87db177a70e3541b}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+M\+A\+X\+C\+O\+N\+N@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+M\+A\+X\+C\+O\+N\+N}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+M\+A\+X\+C\+O\+N\+N@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+M\+A\+X\+C\+O\+N\+N}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+M\+A\+X\+C\+O\+N\+N}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+S\+O\+M\+A\+X\+C\+O\+N\+N~S\+O\+M\+A\+X\+C\+O\+N\+N}\label{socket__types_8hpp_a88cc55a7c88fc18a87db177a70e3541b}
+
+
+Definition at line 338 of file socket\+\_\+types.\+hpp.
+
+\hypertarget{socket__types_8hpp_a44b972a3149c0e8bbcd4484380eb364f}{}\index{socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}!A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y}}
+\index{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y@{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y}!socket\+\_\+types.\+hpp@{socket\+\_\+types.\+hpp}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y}]{\setlength{\rightskip}{0pt plus 5cm}\#define A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F\+\_\+\+T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y~T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y}\label{socket__types_8hpp_a44b972a3149c0e8bbcd4484380eb364f}
+
+
+Definition at line 350 of file socket\+\_\+types.\+hpp.
+

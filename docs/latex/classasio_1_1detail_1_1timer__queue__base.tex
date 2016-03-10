@@ -1,0 +1,139 @@
+\hypertarget{classasio_1_1detail_1_1timer__queue__base}{}\section{asio\+:\+:detail\+:\+:timer\+\_\+queue\+\_\+base Class Reference}
+\label{classasio_1_1detail_1_1timer__queue__base}\index{asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}}
+
+
+{\ttfamily \#include $<$timer\+\_\+queue\+\_\+base.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:detail\+:\+:timer\+\_\+queue\+\_\+base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.926605cm]{classasio_1_1detail_1_1timer__queue__base}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1detail_1_1timer__queue__base_abda2c964f09d1f40bbd7a47c2de84d84}{timer\+\_\+queue\+\_\+base} ()
+\item 
+virtual \hyperlink{classasio_1_1detail_1_1timer__queue__base_a502786b2df15d059d7e7cfdb32b1e0fc}{$\sim$timer\+\_\+queue\+\_\+base} ()
+\item 
+virtual bool \hyperlink{classasio_1_1detail_1_1timer__queue__base_a48dca28c569456158fc7b911bfc73fd9}{empty} () const  =0
+\item 
+virtual long \hyperlink{classasio_1_1detail_1_1timer__queue__base_addbb860de0d5e7dab3d7c874bced11dc}{wait\+\_\+duration\+\_\+msec} (long max\+\_\+duration) const  =0
+\item 
+virtual long \hyperlink{classasio_1_1detail_1_1timer__queue__base_a0ede8e7cf51da9a53ffc4b76e4ddeb9f}{wait\+\_\+duration\+\_\+usec} (long max\+\_\+duration) const  =0
+\item 
+virtual void \hyperlink{classasio_1_1detail_1_1timer__queue__base_aae31209e8eeb64d903fc6254df30ce85}{get\+\_\+ready\+\_\+timers} (\hyperlink{classasio_1_1detail_1_1op__queue}{op\+\_\+queue}$<$ \hyperlink{namespaceasio_1_1detail_a338968609bec20e37145309f8f9ec936}{operation} $>$ \&ops)=0
+\item 
+virtual void \hyperlink{classasio_1_1detail_1_1timer__queue__base_a7dfa566766b88bc5143d42f79b1883a6}{get\+\_\+all\+\_\+timers} (\hyperlink{classasio_1_1detail_1_1op__queue}{op\+\_\+queue}$<$ \hyperlink{namespaceasio_1_1detail_a338968609bec20e37145309f8f9ec936}{operation} $>$ \&ops)=0
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1detail_1_1timer__queue__base_aade26321e998ee881a530538ff540119}{timer\+\_\+queue\+\_\+set}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 28 of file timer\+\_\+queue\+\_\+base.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1timer__queue__base_abda2c964f09d1f40bbd7a47c2de84d84}{}\index{asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}!timer\+\_\+queue\+\_\+base@{timer\+\_\+queue\+\_\+base}}
+\index{timer\+\_\+queue\+\_\+base@{timer\+\_\+queue\+\_\+base}!asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}}
+\subsubsection[{timer\+\_\+queue\+\_\+base()}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::detail\+::timer\+\_\+queue\+\_\+base\+::timer\+\_\+queue\+\_\+base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1timer__queue__base_abda2c964f09d1f40bbd7a47c2de84d84}
+
+
+Definition at line 33 of file timer\+\_\+queue\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1timer__queue__base_a502786b2df15d059d7e7cfdb32b1e0fc}{}\index{asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}!````~timer\+\_\+queue\+\_\+base@{$\sim$timer\+\_\+queue\+\_\+base}}
+\index{````~timer\+\_\+queue\+\_\+base@{$\sim$timer\+\_\+queue\+\_\+base}!asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}}
+\subsubsection[{$\sim$timer\+\_\+queue\+\_\+base()}]{\setlength{\rightskip}{0pt plus 5cm}virtual asio\+::detail\+::timer\+\_\+queue\+\_\+base\+::$\sim$timer\+\_\+queue\+\_\+base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classasio_1_1detail_1_1timer__queue__base_a502786b2df15d059d7e7cfdb32b1e0fc}
+
+
+Definition at line 36 of file timer\+\_\+queue\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1timer__queue__base_a48dca28c569456158fc7b911bfc73fd9}{}\index{asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}!empty@{empty}}
+\index{empty@{empty}!asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}}
+\subsubsection[{empty() const  =0}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool asio\+::detail\+::timer\+\_\+queue\+\_\+base\+::empty (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classasio_1_1detail_1_1timer__queue__base_a48dca28c569456158fc7b911bfc73fd9}
+
+
+Implemented in \hyperlink{classasio_1_1detail_1_1timer__queue_a0310af5fdd02b43eaccdab1f8c84ed29}{asio\+::detail\+::timer\+\_\+queue$<$ Time\+\_\+\+Traits $>$}, and \hyperlink{classasio_1_1detail_1_1timer__queue_a0310af5fdd02b43eaccdab1f8c84ed29}{asio\+::detail\+::timer\+\_\+queue$<$ detail\+::chrono\+\_\+time\+\_\+traits$<$ Clock, Wait\+Traits $>$ $>$}.
+
+\hypertarget{classasio_1_1detail_1_1timer__queue__base_a7dfa566766b88bc5143d42f79b1883a6}{}\index{asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}!get\+\_\+all\+\_\+timers@{get\+\_\+all\+\_\+timers}}
+\index{get\+\_\+all\+\_\+timers@{get\+\_\+all\+\_\+timers}!asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}}
+\subsubsection[{get\+\_\+all\+\_\+timers(op\+\_\+queue$<$ operation $>$ \&ops)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void asio\+::detail\+::timer\+\_\+queue\+\_\+base\+::get\+\_\+all\+\_\+timers (
+\begin{DoxyParamCaption}
+\item[{{\bf op\+\_\+queue}$<$ {\bf operation} $>$ \&}]{ops}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classasio_1_1detail_1_1timer__queue__base_a7dfa566766b88bc5143d42f79b1883a6}
+
+
+Implemented in \hyperlink{classasio_1_1detail_1_1timer__queue_a98df8b86b9c56b226e9e434b5cd32af8}{asio\+::detail\+::timer\+\_\+queue$<$ Time\+\_\+\+Traits $>$}, and \hyperlink{classasio_1_1detail_1_1timer__queue_a98df8b86b9c56b226e9e434b5cd32af8}{asio\+::detail\+::timer\+\_\+queue$<$ detail\+::chrono\+\_\+time\+\_\+traits$<$ Clock, Wait\+Traits $>$ $>$}.
+
+\hypertarget{classasio_1_1detail_1_1timer__queue__base_aae31209e8eeb64d903fc6254df30ce85}{}\index{asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}!get\+\_\+ready\+\_\+timers@{get\+\_\+ready\+\_\+timers}}
+\index{get\+\_\+ready\+\_\+timers@{get\+\_\+ready\+\_\+timers}!asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}}
+\subsubsection[{get\+\_\+ready\+\_\+timers(op\+\_\+queue$<$ operation $>$ \&ops)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void asio\+::detail\+::timer\+\_\+queue\+\_\+base\+::get\+\_\+ready\+\_\+timers (
+\begin{DoxyParamCaption}
+\item[{{\bf op\+\_\+queue}$<$ {\bf operation} $>$ \&}]{ops}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classasio_1_1detail_1_1timer__queue__base_aae31209e8eeb64d903fc6254df30ce85}
+
+
+Implemented in \hyperlink{classasio_1_1detail_1_1timer__queue_aa179e47a3b43c05ad4f54e34936908d9}{asio\+::detail\+::timer\+\_\+queue$<$ Time\+\_\+\+Traits $>$}, and \hyperlink{classasio_1_1detail_1_1timer__queue_aa179e47a3b43c05ad4f54e34936908d9}{asio\+::detail\+::timer\+\_\+queue$<$ detail\+::chrono\+\_\+time\+\_\+traits$<$ Clock, Wait\+Traits $>$ $>$}.
+
+\hypertarget{classasio_1_1detail_1_1timer__queue__base_addbb860de0d5e7dab3d7c874bced11dc}{}\index{asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}!wait\+\_\+duration\+\_\+msec@{wait\+\_\+duration\+\_\+msec}}
+\index{wait\+\_\+duration\+\_\+msec@{wait\+\_\+duration\+\_\+msec}!asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}}
+\subsubsection[{wait\+\_\+duration\+\_\+msec(long max\+\_\+duration) const  =0}]{\setlength{\rightskip}{0pt plus 5cm}virtual long asio\+::detail\+::timer\+\_\+queue\+\_\+base\+::wait\+\_\+duration\+\_\+msec (
+\begin{DoxyParamCaption}
+\item[{long}]{max\+\_\+duration}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classasio_1_1detail_1_1timer__queue__base_addbb860de0d5e7dab3d7c874bced11dc}
+
+
+Implemented in \hyperlink{classasio_1_1detail_1_1timer__queue_a458b0fbc6d9d308d44b9c88b0d799f2e}{asio\+::detail\+::timer\+\_\+queue$<$ Time\+\_\+\+Traits $>$}, and \hyperlink{classasio_1_1detail_1_1timer__queue_a458b0fbc6d9d308d44b9c88b0d799f2e}{asio\+::detail\+::timer\+\_\+queue$<$ detail\+::chrono\+\_\+time\+\_\+traits$<$ Clock, Wait\+Traits $>$ $>$}.
+
+\hypertarget{classasio_1_1detail_1_1timer__queue__base_a0ede8e7cf51da9a53ffc4b76e4ddeb9f}{}\index{asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}!wait\+\_\+duration\+\_\+usec@{wait\+\_\+duration\+\_\+usec}}
+\index{wait\+\_\+duration\+\_\+usec@{wait\+\_\+duration\+\_\+usec}!asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}}
+\subsubsection[{wait\+\_\+duration\+\_\+usec(long max\+\_\+duration) const  =0}]{\setlength{\rightskip}{0pt plus 5cm}virtual long asio\+::detail\+::timer\+\_\+queue\+\_\+base\+::wait\+\_\+duration\+\_\+usec (
+\begin{DoxyParamCaption}
+\item[{long}]{max\+\_\+duration}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{classasio_1_1detail_1_1timer__queue__base_a0ede8e7cf51da9a53ffc4b76e4ddeb9f}
+
+
+Implemented in \hyperlink{classasio_1_1detail_1_1timer__queue_a07a7fa16514869c7959d16de73fb7b28}{asio\+::detail\+::timer\+\_\+queue$<$ Time\+\_\+\+Traits $>$}, and \hyperlink{classasio_1_1detail_1_1timer__queue_a07a7fa16514869c7959d16de73fb7b28}{asio\+::detail\+::timer\+\_\+queue$<$ detail\+::chrono\+\_\+time\+\_\+traits$<$ Clock, Wait\+Traits $>$ $>$}.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classasio_1_1detail_1_1timer__queue__base_aade26321e998ee881a530538ff540119}{}\index{asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}!timer\+\_\+queue\+\_\+set@{timer\+\_\+queue\+\_\+set}}
+\index{timer\+\_\+queue\+\_\+set@{timer\+\_\+queue\+\_\+set}!asio\+::detail\+::timer\+\_\+queue\+\_\+base@{asio\+::detail\+::timer\+\_\+queue\+\_\+base}}
+\subsubsection[{timer\+\_\+queue\+\_\+set}]{\setlength{\rightskip}{0pt plus 5cm}friend class {\bf timer\+\_\+queue\+\_\+set}\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1detail_1_1timer__queue__base_aade26321e998ee881a530538ff540119}
+
+
+Definition at line 54 of file timer\+\_\+queue\+\_\+base.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/detail/\hyperlink{timer__queue__base_8hpp}{timer\+\_\+queue\+\_\+base.\+hpp}\end{DoxyCompactItemize}

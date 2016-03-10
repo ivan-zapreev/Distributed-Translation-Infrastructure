@@ -1,0 +1,364 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:Generic\+Trie\+Base$<$ Trie\+Type, Word\+Index\+Type, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base$<$ Trie\+Type, Word\+Index\+Type, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base$<$ Trie\+Type, Word\+Index\+Type, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$}}
+
+
+{\ttfamily \#include $<$generic\+\_\+trie\+\_\+base.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:Generic\+Trie\+Base$<$ Trie\+Type, Word\+Index\+Type, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.389758cm]{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base}{Word\+Index\+Trie\+Base}$<$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base_a77ee32bf3a9f8a89558bda4f2031200c}{Word\+Index\+Type} $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a134996f2451e9c4f0891991da4eb749d}{B\+A\+S\+E}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_adf06ef5575344e94da478f4853b238fe}{Generic\+Trie\+Base} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base_a77ee32bf3a9f8a89558bda4f2031200c}{Word\+Index\+Type} \&word\+\_\+index)
+\item 
+float \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a0bdaacfd1b26db77a9ea90979c4c1951}{get\+\_\+unk\+\_\+word\+\_\+prob} () const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a6b5be31d67fe3400098e9386092be510}{pre\+\_\+allocate} (const size\+\_\+t counts\mbox{[}L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X\mbox{]})
+\item 
+{\footnotesize template$<$phrase\+\_\+length C\+U\+R\+R\+\_\+\+L\+E\+V\+E\+L$>$ }\\void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a4d9302ce1f939d0e5158c558ea0aeb97}{add\+\_\+m\+\_\+gram} (const \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram}{model\+\_\+m\+\_\+gram} \&gram)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a45edc769e6f32db6029f1e9d7be55e80}{log\+\_\+model\+\_\+type\+\_\+info} () const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_ad7a268fae8ff84e61d5c424be86dc42d}{is\+\_\+m\+\_\+gram\+\_\+potentially\+\_\+present} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__gram__query}{m\+\_\+gram\+\_\+query} \&query, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796a}{M\+Gram\+Status\+Enum} \&status) const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_af019cd6303beb29b79fe4f0fde5f4cb6}{execute} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__gram__query}{m\+\_\+gram\+\_\+query} \&query) const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aaba824101a7ca20885ebb9d847d3fc67}{get\+\_\+unigram\+\_\+payload} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__gram__query}{m\+\_\+gram\+\_\+query} \&query, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796a}{M\+Gram\+Status\+Enum} \&status) const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_acd1e30f2b0743a71fb5bd652c997be5d}{get\+\_\+m\+\_\+gram\+\_\+payload} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__gram__query}{m\+\_\+gram\+\_\+query} \&query, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796a}{M\+Gram\+Status\+Enum} \&status) const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aa915d6e3e059972fbecbe0af7769a78d}{get\+\_\+n\+\_\+gram\+\_\+payload} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__gram__query}{m\+\_\+gram\+\_\+query} \&query, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796a}{M\+Gram\+Status\+Enum} \&status) const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_acb48e357c779bd62ffd9a45613c46463}{register\+\_\+m\+\_\+gram\+\_\+cache} (const \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram}{model\+\_\+m\+\_\+gram} \&gram)
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a2fe36e7ea7ae3376d87065bce4ab0c30}{$\sim$\+Generic\+Trie\+Base} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a7a1f0129818a340baf6d82e49dea5e06}{is\+\_\+context\+\_\+needed} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a2b5781fbca37e23d15d0bfda78084984}{N\+E\+E\+D\+S\+\_\+\+B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E} = (B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$ 1)
+\item 
+static const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a39479f9edbb672ffdc4f52b0dcdc20f2}{M\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+O\+F\+F\+S\+E\+T} = 2
+\item 
+static const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aafc76eab16ca2e35293bcd0e1764394a}{N\+U\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S} = L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X -\/ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a39479f9edbb672ffdc4f52b0dcdc20f2}{M\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+O\+F\+F\+S\+E\+T}
+\item 
+static const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aa7a196dfb7719aa3b1a85f0502f2a34e}{N\+U\+M\+\_\+\+M\+\_\+\+N\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S} = L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X -\/ 1
+\item 
+static const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_ad192aaf1ab4773262ccd985a65c69a6d}{N\+\_\+\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+I\+N\+\_\+\+M\+\_\+\+N\+\_\+\+A\+R\+R} = L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X -\/ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a39479f9edbb672ffdc4f52b0dcdc20f2}{M\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+O\+F\+F\+S\+E\+T}
+\item 
+static const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a33043a191e9a637dea742a89d23c8bdc}{T\+Short\+Id} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a6fd6f53c986a715dbf7520d84c0f0f20}{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+A\+R\+R\+\_\+\+I\+D\+X} = 0
+\item 
+static const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a33043a191e9a637dea742a89d23c8bdc}{T\+Short\+Id} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a6876a5cd50fce0cbb8066a420a42d6c0}{F\+I\+R\+S\+T\+\_\+\+V\+A\+L\+I\+D\+\_\+\+C\+T\+X\+\_\+\+I\+D} = \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a6fd6f53c986a715dbf7520d84c0f0f20}{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+A\+R\+R\+\_\+\+I\+D\+X} + 1
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$class uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base$<$ Trie\+Type, Word\+Index\+Type, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$}
+
+This class defined the trie interface and functionality that is expected by the Trie\+Driver class 
+
+Definition at line 99 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a134996f2451e9c4f0891991da4eb749d}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!B\+A\+S\+E@{B\+A\+S\+E}}
+\index{B\+A\+S\+E@{B\+A\+S\+E}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{B\+A\+S\+E}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ typedef {\bf Word\+Index\+Trie\+Base}$<${\bf Word\+Index\+Type}$>$ {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::{\bf B\+A\+S\+E}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a134996f2451e9c4f0891991da4eb749d}
+
+
+Definition at line 102 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_adf06ef5575344e94da478f4853b238fe}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!Generic\+Trie\+Base@{Generic\+Trie\+Base}}
+\index{Generic\+Trie\+Base@{Generic\+Trie\+Base}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{Generic\+Trie\+Base(\+Word\+Index\+Type \&word\+\_\+index)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::{\bf Generic\+Trie\+Base} (
+\begin{DoxyParamCaption}
+\item[{{\bf Word\+Index\+Type} \&}]{word\+\_\+index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_adf06ef5575344e94da478f4853b238fe}
+The basic constructor 
+\begin{DoxyParams}{Parameters}
+{\em word\+\_\+index} & the word index to be used \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 129 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a2fe36e7ea7ae3376d87065bce4ab0c30}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!````~Generic\+Trie\+Base@{$\sim$\+Generic\+Trie\+Base}}
+\index{````~Generic\+Trie\+Base@{$\sim$\+Generic\+Trie\+Base}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{$\sim$\+Generic\+Trie\+Base()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ virtual {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::$\sim${\bf Generic\+Trie\+Base} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a2fe36e7ea7ae3376d87065bce4ab0c30}
+The basic class destructor 
+
+Definition at line 346 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a4d9302ce1f939d0e5158c558ea0aeb97}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!add\+\_\+m\+\_\+gram@{add\+\_\+m\+\_\+gram}}
+\index{add\+\_\+m\+\_\+gram@{add\+\_\+m\+\_\+gram}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{add\+\_\+m\+\_\+gram(const model\+\_\+m\+\_\+gram \&gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ template$<$phrase\+\_\+length C\+U\+R\+R\+\_\+\+L\+E\+V\+E\+L$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::add\+\_\+m\+\_\+gram (
+\begin{DoxyParamCaption}
+\item[{const {\bf model\+\_\+m\+\_\+gram} \&}]{gram}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a4d9302ce1f939d0e5158c558ea0aeb97}
+This method adds a M-\/\+Gram (word) to the trie where 1 $<$ M $<$ N 
+\begin{DoxyParams}{Parameters}
+{\em gram} & the M-\/\+Gram data \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & if the level of this M-\/gram is not such that 1 $<$ M $<$ N \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 175 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_af019cd6303beb29b79fe4f0fde5f4cb6}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!execute@{execute}}
+\index{execute@{execute}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{execute(m\+\_\+gram\+\_\+query \&query) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::execute (
+\begin{DoxyParamCaption}
+\item[{{\bf m\+\_\+gram\+\_\+query} \&}]{query}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_af019cd6303beb29b79fe4f0fde5f4cb6}
+This method allows to get the payloads and compute the (joint) m-\/gram probabilities. 
+\begin{DoxyParams}{Parameters}
+{\em min\+\_\+level} & the minimum m-\/gram level to begin with \\
+\hline
+{\em query} & the query execution data for storing the query, and retrieved payloads, and resulting probabilities, and etc. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 240 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_acd1e30f2b0743a71fb5bd652c997be5d}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!get\+\_\+m\+\_\+gram\+\_\+payload@{get\+\_\+m\+\_\+gram\+\_\+payload}}
+\index{get\+\_\+m\+\_\+gram\+\_\+payload@{get\+\_\+m\+\_\+gram\+\_\+payload}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{get\+\_\+m\+\_\+gram\+\_\+payload(m\+\_\+gram\+\_\+query \&query, M\+Gram\+Status\+Enum \&status) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::get\+\_\+m\+\_\+gram\+\_\+payload (
+\begin{DoxyParamCaption}
+\item[{{\bf m\+\_\+gram\+\_\+query} \&}]{query, }
+\item[{{\bf M\+Gram\+Status\+Enum} \&}]{status}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_acd1e30f2b0743a71fb5bd652c997be5d}
+Allows to attempt the sub-\/m-\/gram payload retrieval for 1$<$m$<$n 
+\begin{DoxyParams}{Parameters}
+{\em query} & the query containing the actual query data \\
+\hline
+{\em status} & the resulting status of the operation \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 313 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aa915d6e3e059972fbecbe0af7769a78d}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!get\+\_\+n\+\_\+gram\+\_\+payload@{get\+\_\+n\+\_\+gram\+\_\+payload}}
+\index{get\+\_\+n\+\_\+gram\+\_\+payload@{get\+\_\+n\+\_\+gram\+\_\+payload}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{get\+\_\+n\+\_\+gram\+\_\+payload(m\+\_\+gram\+\_\+query \&query, M\+Gram\+Status\+Enum \&status) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::get\+\_\+n\+\_\+gram\+\_\+payload (
+\begin{DoxyParamCaption}
+\item[{{\bf m\+\_\+gram\+\_\+query} \&}]{query, }
+\item[{{\bf M\+Gram\+Status\+Enum} \&}]{status}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aa915d6e3e059972fbecbe0af7769a78d}
+Allows to attempt the sub-\/m-\/gram payload retrieval for m==n 
+\begin{DoxyParams}{Parameters}
+{\em query} & the query containing the actual query data \\
+\hline
+{\em status} & the resulting status of the operation \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 322 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aaba824101a7ca20885ebb9d847d3fc67}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!get\+\_\+unigram\+\_\+payload@{get\+\_\+unigram\+\_\+payload}}
+\index{get\+\_\+unigram\+\_\+payload@{get\+\_\+unigram\+\_\+payload}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{get\+\_\+unigram\+\_\+payload(m\+\_\+gram\+\_\+query \&query, M\+Gram\+Status\+Enum \&status) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::get\+\_\+unigram\+\_\+payload (
+\begin{DoxyParamCaption}
+\item[{{\bf m\+\_\+gram\+\_\+query} \&}]{query, }
+\item[{{\bf M\+Gram\+Status\+Enum} \&}]{status}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aaba824101a7ca20885ebb9d847d3fc67}
+Allows to attempt the sub-\/m-\/gram payload retrieval for m==1. The retrieval of a uni-\/gram data is always a success. 
+\begin{DoxyParams}{Parameters}
+{\em query} & the query containing the actual query data \\
+\hline
+{\em status} & the resulting status of the operation \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 304 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a0bdaacfd1b26db77a9ea90979c4c1951}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!get\+\_\+unk\+\_\+word\+\_\+prob@{get\+\_\+unk\+\_\+word\+\_\+prob}}
+\index{get\+\_\+unk\+\_\+word\+\_\+prob@{get\+\_\+unk\+\_\+word\+\_\+prob}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{get\+\_\+unk\+\_\+word\+\_\+prob() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ float {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::get\+\_\+unk\+\_\+word\+\_\+prob (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a0bdaacfd1b26db77a9ea90979c4c1951}
+Allows to retrieve the unknown target word log probability penalty \begin{DoxyReturn}{Returns}
+the target source word log probability penalty 
+\end{DoxyReturn}
+
+
+Definition at line 142 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a7a1f0129818a340baf6d82e49dea5e06}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!is\+\_\+context\+\_\+needed@{is\+\_\+context\+\_\+needed}}
+\index{is\+\_\+context\+\_\+needed@{is\+\_\+context\+\_\+needed}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{is\+\_\+context\+\_\+needed()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ static constexpr bool {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::is\+\_\+context\+\_\+needed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a7a1f0129818a340baf6d82e49dea5e06}
+Allows to indicate whether the context id of an m-\/gram is to be computed while retrieving payloads \begin{DoxyReturn}{Returns}
+returns false, by default all generic tries need N\+O context ids when searching for data 
+\end{DoxyReturn}
+
+
+Definition at line 150 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_ad7a268fae8ff84e61d5c424be86dc42d}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!is\+\_\+m\+\_\+gram\+\_\+potentially\+\_\+present@{is\+\_\+m\+\_\+gram\+\_\+potentially\+\_\+present}}
+\index{is\+\_\+m\+\_\+gram\+\_\+potentially\+\_\+present@{is\+\_\+m\+\_\+gram\+\_\+potentially\+\_\+present}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{is\+\_\+m\+\_\+gram\+\_\+potentially\+\_\+present(m\+\_\+gram\+\_\+query \&query, M\+Gram\+Status\+Enum \&status) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::is\+\_\+m\+\_\+gram\+\_\+potentially\+\_\+present (
+\begin{DoxyParamCaption}
+\item[{{\bf m\+\_\+gram\+\_\+query} \&}]{query, }
+\item[{{\bf M\+Gram\+Status\+Enum} \&}]{status}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_ad7a268fae8ff84e61d5c424be86dc42d}
+Allows to check if the given sub-\/m-\/gram, defined by the begin\+\_\+word\+\_\+idx and end\+\_\+word\+\_\+idx parameters, is potentially present in the trie. T\+His method must not be called for uni-\/grams, those always have a payload! 
+\begin{DoxyParams}{Parameters}
+{\em query} & the m-\/gram query data \\
+\hline
+{\em status} & \mbox{[}out\mbox{]} the resulting status of the operation \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 193 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a45edc769e6f32db6029f1e9d7be55e80}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!log\+\_\+model\+\_\+type\+\_\+info@{log\+\_\+model\+\_\+type\+\_\+info}}
+\index{log\+\_\+model\+\_\+type\+\_\+info@{log\+\_\+model\+\_\+type\+\_\+info}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{log\+\_\+model\+\_\+type\+\_\+info() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::log\+\_\+model\+\_\+type\+\_\+info (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a45edc769e6f32db6029f1e9d7be55e80}
+Allows to log the information about the instantiated trie type 
+
+Definition at line 182 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a6b5be31d67fe3400098e9386092be510}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!pre\+\_\+allocate@{pre\+\_\+allocate}}
+\index{pre\+\_\+allocate@{pre\+\_\+allocate}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{pre\+\_\+allocate(const size\+\_\+t counts[L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X])}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::pre\+\_\+allocate (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{counts\mbox{[}\+L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a6b5be31d67fe3400098e9386092be510}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base}{Word\+Index\+Trie\+Base} 
+\end{DoxySeeAlso}
+
+
+Definition at line 157 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_acb48e357c779bd62ffd9a45613c46463}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!register\+\_\+m\+\_\+gram\+\_\+cache@{register\+\_\+m\+\_\+gram\+\_\+cache}}
+\index{register\+\_\+m\+\_\+gram\+\_\+cache@{register\+\_\+m\+\_\+gram\+\_\+cache}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{register\+\_\+m\+\_\+gram\+\_\+cache(const model\+\_\+m\+\_\+gram \&gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::register\+\_\+m\+\_\+gram\+\_\+cache (
+\begin{DoxyParamCaption}
+\item[{const {\bf model\+\_\+m\+\_\+gram} \&}]{gram}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_acb48e357c779bd62ffd9a45613c46463}
+Is to be used from the sub-\/classes from the add\+\_\+\+X\+\_\+gram methods. This method allows to register the given M-\/gram in internal high level caches if present.
+
+W\+A\+R\+N\+I\+N\+G\+: Is not to be used on uni-\/grams!!!
+
+
+\begin{DoxyParams}{Parameters}
+{\em gram} & the M-\/gram to cache \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 335 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a6876a5cd50fce0cbb8066a420a42d6c0}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!F\+I\+R\+S\+T\+\_\+\+V\+A\+L\+I\+D\+\_\+\+C\+T\+X\+\_\+\+I\+D@{F\+I\+R\+S\+T\+\_\+\+V\+A\+L\+I\+D\+\_\+\+C\+T\+X\+\_\+\+I\+D}}
+\index{F\+I\+R\+S\+T\+\_\+\+V\+A\+L\+I\+D\+\_\+\+C\+T\+X\+\_\+\+I\+D@{F\+I\+R\+S\+T\+\_\+\+V\+A\+L\+I\+D\+\_\+\+C\+T\+X\+\_\+\+I\+D}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{F\+I\+R\+S\+T\+\_\+\+V\+A\+L\+I\+D\+\_\+\+C\+T\+X\+\_\+\+I\+D}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ const {\bf T\+Short\+Id} {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::F\+I\+R\+S\+T\+\_\+\+V\+A\+L\+I\+D\+\_\+\+C\+T\+X\+\_\+\+I\+D = {\bf U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+A\+R\+R\+\_\+\+I\+D\+X} + 1\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a6876a5cd50fce0cbb8066a420a42d6c0}
+
+
+Definition at line 123 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a39479f9edbb672ffdc4f52b0dcdc20f2}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!M\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+O\+F\+F\+S\+E\+T@{M\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+O\+F\+F\+S\+E\+T}}
+\index{M\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+O\+F\+F\+S\+E\+T@{M\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+O\+F\+F\+S\+E\+T}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{M\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+O\+F\+F\+S\+E\+T}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ const {\bf phrase\+\_\+length} {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::M\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+O\+F\+F\+S\+E\+T = 2\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a39479f9edbb672ffdc4f52b0dcdc20f2}
+
+
+Definition at line 108 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_ad192aaf1ab4773262ccd985a65c69a6d}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!N\+\_\+\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+I\+N\+\_\+\+M\+\_\+\+N\+\_\+\+A\+R\+R@{N\+\_\+\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+I\+N\+\_\+\+M\+\_\+\+N\+\_\+\+A\+R\+R}}
+\index{N\+\_\+\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+I\+N\+\_\+\+M\+\_\+\+N\+\_\+\+A\+R\+R@{N\+\_\+\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+I\+N\+\_\+\+M\+\_\+\+N\+\_\+\+A\+R\+R}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{N\+\_\+\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+I\+N\+\_\+\+M\+\_\+\+N\+\_\+\+A\+R\+R}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ const {\bf phrase\+\_\+length} {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::N\+\_\+\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+I\+N\+\_\+\+M\+\_\+\+N\+\_\+\+A\+R\+R = L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X -\/ {\bf M\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+O\+F\+F\+S\+E\+T}\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_ad192aaf1ab4773262ccd985a65c69a6d}
+
+
+Definition at line 117 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a2b5781fbca37e23d15d0bfda78084984}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!N\+E\+E\+D\+S\+\_\+\+B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E@{N\+E\+E\+D\+S\+\_\+\+B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E}}
+\index{N\+E\+E\+D\+S\+\_\+\+B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E@{N\+E\+E\+D\+S\+\_\+\+B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{N\+E\+E\+D\+S\+\_\+\+B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ const bool {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::N\+E\+E\+D\+S\+\_\+\+B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E = (B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$ 1)\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a2b5781fbca37e23d15d0bfda78084984}
+
+
+Definition at line 105 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aafc76eab16ca2e35293bcd0e1764394a}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!N\+U\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S@{N\+U\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S}}
+\index{N\+U\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S@{N\+U\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{N\+U\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ const {\bf phrase\+\_\+length} {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::N\+U\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S = L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X -\/ {\bf M\+G\+R\+A\+M\+\_\+\+I\+D\+X\+\_\+\+O\+F\+F\+S\+E\+T}\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aafc76eab16ca2e35293bcd0e1764394a}
+
+
+Definition at line 111 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aa7a196dfb7719aa3b1a85f0502f2a34e}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!N\+U\+M\+\_\+\+M\+\_\+\+N\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S@{N\+U\+M\+\_\+\+M\+\_\+\+N\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S}}
+\index{N\+U\+M\+\_\+\+M\+\_\+\+N\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S@{N\+U\+M\+\_\+\+M\+\_\+\+N\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{N\+U\+M\+\_\+\+M\+\_\+\+N\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ const {\bf phrase\+\_\+length} {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::N\+U\+M\+\_\+\+M\+\_\+\+N\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+S = L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X -\/ 1\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_aa7a196dfb7719aa3b1a85f0502f2a34e}
+
+
+Definition at line 114 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a6fd6f53c986a715dbf7520d84c0f0f20}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}!U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+A\+R\+R\+\_\+\+I\+D\+X@{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+A\+R\+R\+\_\+\+I\+D\+X}}
+\index{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+A\+R\+R\+\_\+\+I\+D\+X@{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+A\+R\+R\+\_\+\+I\+D\+X}!uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base@{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}}
+\subsubsection[{U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+A\+R\+R\+\_\+\+I\+D\+X}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Trie\+Type, typename Word\+Index\+Type, uint8\+\_\+t B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ const {\bf T\+Short\+Id} {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base}$<$ Trie\+Type, {\bf Word\+Index\+Type}, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$\+::U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+A\+R\+R\+\_\+\+I\+D\+X = 0\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base_a6fd6f53c986a715dbf7520d84c0f0f20}
+
+
+Definition at line 120 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/lm/models/\hyperlink{generic__trie__base_8hpp}{generic\+\_\+trie\+\_\+base.\+hpp}\end{DoxyCompactItemize}

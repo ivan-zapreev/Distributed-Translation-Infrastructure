@@ -1,0 +1,41 @@
+\hypertarget{openssl__operation_8hpp}{}\section{ext/asio/ssl/old/detail/openssl\+\_\+operation.hpp File Reference}
+\label{openssl__operation_8hpp}\index{ext/asio/ssl/old/detail/openssl\+\_\+operation.\+hpp@{ext/asio/ssl/old/detail/openssl\+\_\+operation.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$boost/function.\+hpp$>$}\\*
+{\ttfamily \#include $<$boost/bind.\+hpp$>$}\\*
+{\ttfamily \#include \char`\"{}asio/buffer.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/assert.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/socket\+\_\+ops.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/placeholders.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/ssl/detail/openssl\+\_\+types.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/ssl/error.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/strand.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/system\+\_\+error.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/write.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1ssl_1_1old_1_1detail_1_1net__buffer}{asio\+::ssl\+::old\+::detail\+::net\+\_\+buffer}
+\item 
+class \hyperlink{classasio_1_1ssl_1_1old_1_1detail_1_1openssl__operation}{asio\+::ssl\+::old\+::detail\+::openssl\+\_\+operation$<$ Stream $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1ssl}{asio\+::ssl}
+\item 
+ \hyperlink{namespaceasio_1_1ssl_1_1old}{asio\+::ssl\+::old}
+\item 
+ \hyperlink{namespaceasio_1_1ssl_1_1old_1_1detail}{asio\+::ssl\+::old\+::detail}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef boost\+::function$<$ int(\+::S\+S\+L $\ast$)$>$ \hyperlink{namespaceasio_1_1ssl_1_1old_1_1detail_ac338e0197f7b92011daad86db7d838ba}{asio\+::ssl\+::old\+::detail\+::ssl\+\_\+primitive\+\_\+func}
+\item 
+typedef boost\+::function$<$ void(const \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&, int)$>$ \hyperlink{namespaceasio_1_1ssl_1_1old_1_1detail_adb21335c4883c670ec54bece575120eb}{asio\+::ssl\+::old\+::detail\+::user\+\_\+handler\+\_\+func}
+\end{DoxyCompactItemize}

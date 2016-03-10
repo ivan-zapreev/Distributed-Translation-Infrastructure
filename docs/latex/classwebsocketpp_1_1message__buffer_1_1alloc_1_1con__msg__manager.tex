@@ -1,0 +1,229 @@
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager}{}\section{websocketpp\+:\+:message\+\_\+buffer\+:\+:alloc\+:\+:con\+\_\+msg\+\_\+manager$<$ message $>$ Class Template Reference}
+\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager$<$ message $>$@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager$<$ message $>$}}
+
+
+{\ttfamily \#include $<$alloc.\+hpp$>$}
+
+Inheritance diagram for websocketpp\+:\+:message\+\_\+buffer\+:\+:alloc\+:\+:con\+\_\+msg\+\_\+manager$<$ message $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager}{con\+\_\+msg\+\_\+manager}$<$ \hyperlink{classwebsocketpp_1_1message__buffer_1_1message}{message} $>$ \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a840b8d39b51cf58fb454ecf45927cb43}{type}
+\item 
+typedef lib\+::shared\+\_\+ptr$<$ \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager}{con\+\_\+msg\+\_\+manager} $>$ \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab4a21eb77cea439747f0b988e643e940}{ptr}
+\item 
+typedef lib\+::weak\+\_\+ptr$<$ \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager}{con\+\_\+msg\+\_\+manager} $>$ \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_add831fd5b6298dbcfdc5372ebc857553}{weak\+\_\+ptr}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1message__buffer_1_1message_adb52b5feb820ec7bc6140cc8be9edd57}{message\+::ptr} \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a2b7d97fc21ff99e307ec20fe0369f294}{message\+\_\+ptr}
+\item 
+typedef lib\+::shared\+\_\+ptr$<$ \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager}{con\+\_\+msg\+\_\+manager} $>$ \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab4a21eb77cea439747f0b988e643e940}{ptr}
+\item 
+typedef lib\+::weak\+\_\+ptr$<$ \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager}{con\+\_\+msg\+\_\+manager} $>$ \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_add831fd5b6298dbcfdc5372ebc857553}{weak\+\_\+ptr}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1message__buffer_1_1message_adb52b5feb820ec7bc6140cc8be9edd57}{message\+::ptr} \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a2b7d97fc21ff99e307ec20fe0369f294}{message\+\_\+ptr}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a2b7d97fc21ff99e307ec20fe0369f294}{message\+\_\+ptr} \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab37990d12c3d54f6963df6b0ddadcf28}{get\+\_\+message} ()
+\begin{DoxyCompactList}\small\item\em Get an empty message buffer. \end{DoxyCompactList}\item 
+\hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a2b7d97fc21ff99e307ec20fe0369f294}{message\+\_\+ptr} \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab2163fa7f202ebcbad8e77a6b63d8f17}{get\+\_\+message} (\hyperlink{namespacewebsocketpp_1_1frame_1_1opcode_ae68711643096dfc4af6d66ade3f9fd5e}{frame\+::opcode\+::value} op, size\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Get a message buffer with specified size and opcode. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a6373a7891e108a232a2a62a5696295e8}{recycle} (\hyperlink{classwebsocketpp_1_1message__buffer_1_1message}{message} $\ast$)
+\begin{DoxyCompactList}\small\item\em Recycle a message. \end{DoxyCompactList}\item 
+\hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a2b7d97fc21ff99e307ec20fe0369f294}{message\+\_\+ptr} \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a9f78f82fbf7f2d253cd94161f0ebc700}{get\+\_\+message} (size\+\_\+t size) const 
+\begin{DoxyCompactList}\small\item\em Get a message buffer with specified size. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a4e1013bc89944fbfd222b9ab6ad76712}{recycle} (\hyperlink{classwebsocketpp_1_1message__buffer_1_1message}{message} $\ast$msg)
+\begin{DoxyCompactList}\small\item\em Recycle a message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename message$>$class websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager$<$ message $>$}
+
+A connection message manager that allocates a new message for each request. 
+
+Definition at line 41 of file alloc.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a2b7d97fc21ff99e307ec20fe0369f294}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!message\+\_\+ptr@{message\+\_\+ptr}}
+\index{message\+\_\+ptr@{message\+\_\+ptr}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{message\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ typedef {\bf message\+::ptr} {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::{\bf message\+\_\+ptr}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a2b7d97fc21ff99e307ec20fe0369f294}
+
+
+Definition at line 49 of file alloc.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a2b7d97fc21ff99e307ec20fe0369f294}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!message\+\_\+ptr@{message\+\_\+ptr}}
+\index{message\+\_\+ptr@{message\+\_\+ptr}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{message\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ typedef {\bf message\+::ptr} {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::{\bf message\+\_\+ptr}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a2b7d97fc21ff99e307ec20fe0369f294}
+
+
+Definition at line 165 of file pool.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab4a21eb77cea439747f0b988e643e940}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!ptr@{ptr}}
+\index{ptr@{ptr}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ typedef lib\+::shared\+\_\+ptr$<${\bf con\+\_\+msg\+\_\+manager}$>$ {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::{\bf ptr}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab4a21eb77cea439747f0b988e643e940}
+
+
+Definition at line 46 of file alloc.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab4a21eb77cea439747f0b988e643e940}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!ptr@{ptr}}
+\index{ptr@{ptr}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ typedef lib\+::shared\+\_\+ptr$<${\bf con\+\_\+msg\+\_\+manager}$>$ {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::{\bf ptr}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab4a21eb77cea439747f0b988e643e940}
+
+
+Definition at line 162 of file pool.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a840b8d39b51cf58fb454ecf45927cb43}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!type@{type}}
+\index{type@{type}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ typedef {\bf con\+\_\+msg\+\_\+manager}$<${\bf message}$>$ {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::{\bf type}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a840b8d39b51cf58fb454ecf45927cb43}
+
+
+Definition at line 45 of file alloc.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_add831fd5b6298dbcfdc5372ebc857553}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!weak\+\_\+ptr@{weak\+\_\+ptr}}
+\index{weak\+\_\+ptr@{weak\+\_\+ptr}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{weak\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ typedef lib\+::weak\+\_\+ptr$<${\bf con\+\_\+msg\+\_\+manager}$>$ {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::{\bf weak\+\_\+ptr}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_add831fd5b6298dbcfdc5372ebc857553}
+
+
+Definition at line 47 of file alloc.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_add831fd5b6298dbcfdc5372ebc857553}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!weak\+\_\+ptr@{weak\+\_\+ptr}}
+\index{weak\+\_\+ptr@{weak\+\_\+ptr}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{weak\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ typedef lib\+::weak\+\_\+ptr$<${\bf con\+\_\+msg\+\_\+manager}$>$ {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::{\bf weak\+\_\+ptr}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_add831fd5b6298dbcfdc5372ebc857553}
+
+
+Definition at line 163 of file pool.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab37990d12c3d54f6963df6b0ddadcf28}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!get\+\_\+message@{get\+\_\+message}}
+\index{get\+\_\+message@{get\+\_\+message}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{get\+\_\+message()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ {\bf message\+\_\+ptr} {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::get\+\_\+message (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab37990d12c3d54f6963df6b0ddadcf28}
+
+
+Get an empty message buffer. 
+
+\begin{DoxyReturn}{Returns}
+A shared pointer to an empty new message 
+\end{DoxyReturn}
+
+
+Definition at line 55 of file alloc.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab2163fa7f202ebcbad8e77a6b63d8f17}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!get\+\_\+message@{get\+\_\+message}}
+\index{get\+\_\+message@{get\+\_\+message}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{get\+\_\+message(frame\+::opcode\+::value op, size\+\_\+t size)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ {\bf message\+\_\+ptr} {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::get\+\_\+message (
+\begin{DoxyParamCaption}
+\item[{{\bf frame\+::opcode\+::value}}]{op, }
+\item[{size\+\_\+t}]{size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_ab2163fa7f202ebcbad8e77a6b63d8f17}
+
+
+Get a message buffer with specified size and opcode. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em op} & The opcode to use \\
+\hline
+{\em size} & Minimum size in bytes to request for the message payload.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A shared pointer to a new message with specified size. 
+\end{DoxyReturn}
+
+
+Definition at line 66 of file alloc.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a9f78f82fbf7f2d253cd94161f0ebc700}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!get\+\_\+message@{get\+\_\+message}}
+\index{get\+\_\+message@{get\+\_\+message}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{get\+\_\+message(size\+\_\+t size) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ {\bf message\+\_\+ptr} {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::get\+\_\+message (
+\begin{DoxyParamCaption}
+\item[{size\+\_\+t}]{size}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a9f78f82fbf7f2d253cd94161f0ebc700}
+
+
+Get a message buffer with specified size. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & Minimum size in bytes to request for the message payload.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A shared pointer to a new message with specified size. 
+\end{DoxyReturn}
+
+
+Definition at line 173 of file pool.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a6373a7891e108a232a2a62a5696295e8}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!recycle@{recycle}}
+\index{recycle@{recycle}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{recycle(message $\ast$)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ bool {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::recycle (
+\begin{DoxyParamCaption}
+\item[{{\bf message} $\ast$}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a6373a7891e108a232a2a62a5696295e8}
+
+
+Recycle a message. 
+
+This method shouldn\textquotesingle{}t be called. If it is, return false to indicate an error. The rest of the method recycle chain should notice this and free the memory.
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & The message to be recycled.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the message was successfully recycled, false otherwse. 
+\end{DoxyReturn}
+
+
+Definition at line 80 of file alloc.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a4e1013bc89944fbfd222b9ab6ad76712}{}\index{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}!recycle@{recycle}}
+\index{recycle@{recycle}!websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager@{websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}}
+\subsubsection[{recycle(message $\ast$msg)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename message $>$ bool {\bf websocketpp\+::message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ {\bf message} $>$\+::recycle (
+\begin{DoxyParamCaption}
+\item[{{\bf message} $\ast$}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager_a4e1013bc89944fbfd222b9ab6ad76712}
+
+
+Recycle a message. 
+
+This method shouldn\textquotesingle{}t be called. If it is, return false to indicate an error. The rest of the method recycle chain should notice this and free the memory.
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & The message to be recycled.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the message was successfully recycled, false otherwse. 
+\end{DoxyReturn}
+
+
+Definition at line 187 of file pool.\+hpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/message\+\_\+buffer/\hyperlink{alloc_8hpp}{alloc.\+hpp}\item 
+ext/websocketpp/message\+\_\+buffer/\hyperlink{pool_8hpp}{pool.\+hpp}\end{DoxyCompactItemize}

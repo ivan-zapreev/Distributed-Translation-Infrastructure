@@ -1,0 +1,587 @@
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00}{}\section{websocketpp\+:\+:processor\+:\+:hybi00$<$ config $>$ Class Template Reference}
+\label{classwebsocketpp_1_1processor_1_1hybi00}\index{websocketpp\+::processor\+::hybi00$<$ config $>$@{websocketpp\+::processor\+::hybi00$<$ config $>$}}
+
+
+Processor for Hybi Draft version 00.  
+
+
+
+
+{\ttfamily \#include $<$hybi00.\+hpp$>$}
+
+Inheritance diagram for websocketpp\+:\+:processor\+:\+:hybi00$<$ config $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classwebsocketpp_1_1processor_1_1hybi00}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1processor_1_1processor}{processor}$<$ config $>$ \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_ae8842975f6937e834d7df16ecf5b756f}{base}
+\item 
+typedef config\+::request\+\_\+type \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a9992ac4efa9cc4d46ee0e9e1060cf860}{request\+\_\+type}
+\item 
+typedef config\+::response\+\_\+type \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_abef7fc8290a6d30e086c639d5e0b393d}{response\+\_\+type}
+\item 
+typedef config\+::message\+\_\+type \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a68b8a926b9fc5fcd296cb698920280ab}{message\+\_\+type}
+\item 
+typedef message\+\_\+type\+::ptr \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a300a0810d09570108e3dd747d97a8257}{message\+\_\+ptr}
+\item 
+typedef config\+::con\+\_\+msg\+\_\+manager\+\_\+type\+::ptr \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_aa33fb6bfdb3c905f267ba7d0c48b192e}{msg\+\_\+manager\+\_\+ptr}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_ac9e56c69bfab35accfa60867d49c90f5}{hybi00} (bool secure, bool p\+\_\+is\+\_\+server, \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_aa33fb6bfdb3c905f267ba7d0c48b192e}{msg\+\_\+manager\+\_\+ptr} manager)
+\item 
+int \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_aac99978196c2e70ccfcef9cd7edaa60f}{get\+\_\+version} () const 
+\begin{DoxyCompactList}\small\item\em Get the protocol version of this processor. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a9189f5d21e698ce02019413f9a9d20b8}{validate\+\_\+handshake} (\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a9992ac4efa9cc4d46ee0e9e1060cf860}{request\+\_\+type} const \&r) const 
+\begin{DoxyCompactList}\small\item\em validate a Web\+Socket handshake request for this version \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a5a2dfb089c6f83037070d08c652cc87f}{process\+\_\+handshake} (\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a9992ac4efa9cc4d46ee0e9e1060cf860}{request\+\_\+type} const \&req, std\+::string const \&subprotocol, \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_abef7fc8290a6d30e086c639d5e0b393d}{response\+\_\+type} \&res) const 
+\begin{DoxyCompactList}\small\item\em Calculate the appropriate response for this websocket request. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_ae75afb2f8989e33c8f79e3223febf4a0}{client\+\_\+handshake\+\_\+request} (\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a9992ac4efa9cc4d46ee0e9e1060cf860}{request\+\_\+type} \&, \hyperlink{namespacewebsocketpp_aae370ea5ac83a8ece7712cb39fc23f5b}{uri\+\_\+ptr}, std\+::vector$<$ std\+::string $>$ const \&) const 
+\begin{DoxyCompactList}\small\item\em Fill in a set of request headers for a client connection request. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_ac348d8e987ed762492ebb9df24766a51}{validate\+\_\+server\+\_\+handshake\+\_\+response} (\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a9992ac4efa9cc4d46ee0e9e1060cf860}{request\+\_\+type} const \&, \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_abef7fc8290a6d30e086c639d5e0b393d}{response\+\_\+type} \&) const 
+\begin{DoxyCompactList}\small\item\em Validate the server\textquotesingle{}s response to an outgoing handshake request. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a8cfa137562040da67240b0e72c44e3eb}{get\+\_\+raw} (\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_abef7fc8290a6d30e086c639d5e0b393d}{response\+\_\+type} const \&res) const 
+\begin{DoxyCompactList}\small\item\em Given a completed response, get the raw bytes to put on the wire. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_aed848bc2fced3017e177a261f8a1b83f}{get\+\_\+origin} (\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a9992ac4efa9cc4d46ee0e9e1060cf860}{request\+\_\+type} const \&r) const 
+\begin{DoxyCompactList}\small\item\em Return the value of the header containing the C\+O\+R\+S origin. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_ab7b5ff7d3a174454404fe97314ed4717}{extract\+\_\+subprotocols} (\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a9992ac4efa9cc4d46ee0e9e1060cf860}{request\+\_\+type} const \&req, std\+::vector$<$ std\+::string $>$ \&subprotocol\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Extracts requested subprotocols from a handshake request. \end{DoxyCompactList}\item 
+\hyperlink{namespacewebsocketpp_aae370ea5ac83a8ece7712cb39fc23f5b}{uri\+\_\+ptr} \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a10d804be20e3e5fb04fea7b7ea259758}{get\+\_\+uri} (\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a9992ac4efa9cc4d46ee0e9e1060cf860}{request\+\_\+type} const \&request) const 
+\begin{DoxyCompactList}\small\item\em Extracts client uri from a handshake request. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a8fd85b472ff816d0b7c54759abeff640}{get\+\_\+key3} () const 
+\begin{DoxyCompactList}\small\item\em Get \hyperlink{classwebsocketpp_1_1processor_1_1hybi00}{hybi00} handshake key3. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a8065338a7a9c760a92ce24d736a3dff2}{consume} (uint8\+\_\+t $\ast$buf, size\+\_\+t len, lib\+::error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Process new websocket connection bytes. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_abc60cb8570c5adfa9913de7b91126f8a}{ready} () const 
+\begin{DoxyCompactList}\small\item\em Checks if there is a message ready. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_ae9d812c2b37b596b687ecd4415a8f4d9}{get\+\_\+error} () const 
+\begin{DoxyCompactList}\small\item\em Tests whether the processor is in a fatal error state. \end{DoxyCompactList}\item 
+\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a300a0810d09570108e3dd747d97a8257}{message\+\_\+ptr} \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_af5f3b4bec38c586e31c0574b6c3f56b8}{get\+\_\+message} ()
+\begin{DoxyCompactList}\small\item\em Retrieves the most recently processed message. \end{DoxyCompactList}\item 
+virtual lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a919aaed345cab679875be1d95c7302ec}{prepare\+\_\+data\+\_\+frame} (\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a300a0810d09570108e3dd747d97a8257}{message\+\_\+ptr} in, \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a300a0810d09570108e3dd747d97a8257}{message\+\_\+ptr} out)
+\begin{DoxyCompactList}\small\item\em Prepare a message for writing. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a8ed04552fd29c7767622d3dfb58150f5}{prepare\+\_\+ping} (std\+::string const \&, \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a300a0810d09570108e3dd747d97a8257}{message\+\_\+ptr}) const 
+\begin{DoxyCompactList}\small\item\em Prepare a ping frame. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a88ff1e32dec69f5830ca22cf6118682d}{prepare\+\_\+pong} (std\+::string const \&, \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a300a0810d09570108e3dd747d97a8257}{message\+\_\+ptr}) const 
+\begin{DoxyCompactList}\small\item\em Prepare a pong frame. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a2fe66914c00d52a99b46e2e3841a9134}{prepare\+\_\+close} (\hyperlink{namespacewebsocketpp_1_1close_1_1status_a8614a5c4733d708e2d2a32191c5bef84}{close\+::status\+::value}, std\+::string const \&, \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_a300a0810d09570108e3dd747d97a8257}{message\+\_\+ptr} out) const 
+\begin{DoxyCompactList}\small\item\em Prepare a close frame. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename config$>$class websocketpp\+::processor\+::hybi00$<$ config $>$}
+
+Processor for Hybi Draft version 00. 
+
+There are many differences between Hybi 00 and Hybi 13 
+
+Definition at line 54 of file hybi00.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_ae8842975f6937e834d7df16ecf5b756f}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!base@{base}}
+\index{base@{base}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{base}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef {\bf processor}$<$config$>$ {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::{\bf base}}\label{classwebsocketpp_1_1processor_1_1hybi00_ae8842975f6937e834d7df16ecf5b756f}
+
+
+Definition at line 56 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a300a0810d09570108e3dd747d97a8257}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!message\+\_\+ptr@{message\+\_\+ptr}}
+\index{message\+\_\+ptr@{message\+\_\+ptr}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{message\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef message\+\_\+type\+::ptr {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::{\bf message\+\_\+ptr}}\label{classwebsocketpp_1_1processor_1_1hybi00_a300a0810d09570108e3dd747d97a8257}
+
+
+Definition at line 62 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a68b8a926b9fc5fcd296cb698920280ab}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!message\+\_\+type@{message\+\_\+type}}
+\index{message\+\_\+type@{message\+\_\+type}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{message\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef config\+::message\+\_\+type {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::{\bf message\+\_\+type}}\label{classwebsocketpp_1_1processor_1_1hybi00_a68b8a926b9fc5fcd296cb698920280ab}
+
+
+Definition at line 61 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_aa33fb6bfdb3c905f267ba7d0c48b192e}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!msg\+\_\+manager\+\_\+ptr@{msg\+\_\+manager\+\_\+ptr}}
+\index{msg\+\_\+manager\+\_\+ptr@{msg\+\_\+manager\+\_\+ptr}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{msg\+\_\+manager\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef config\+::con\+\_\+msg\+\_\+manager\+\_\+type\+::ptr {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::{\bf msg\+\_\+manager\+\_\+ptr}}\label{classwebsocketpp_1_1processor_1_1hybi00_aa33fb6bfdb3c905f267ba7d0c48b192e}
+
+
+Definition at line 64 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a9992ac4efa9cc4d46ee0e9e1060cf860}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!request\+\_\+type@{request\+\_\+type}}
+\index{request\+\_\+type@{request\+\_\+type}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{request\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef config\+::request\+\_\+type {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::{\bf request\+\_\+type}}\label{classwebsocketpp_1_1processor_1_1hybi00_a9992ac4efa9cc4d46ee0e9e1060cf860}
+
+
+Definition at line 58 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_abef7fc8290a6d30e086c639d5e0b393d}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!response\+\_\+type@{response\+\_\+type}}
+\index{response\+\_\+type@{response\+\_\+type}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{response\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef config\+::response\+\_\+type {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::{\bf response\+\_\+type}}\label{classwebsocketpp_1_1processor_1_1hybi00_abef7fc8290a6d30e086c639d5e0b393d}
+
+
+Definition at line 59 of file hybi00.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_ac9e56c69bfab35accfa60867d49c90f5}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!hybi00@{hybi00}}
+\index{hybi00@{hybi00}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{hybi00(bool secure, bool p\+\_\+is\+\_\+server, msg\+\_\+manager\+\_\+ptr manager)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::{\bf hybi00} (
+\begin{DoxyParamCaption}
+\item[{bool}]{secure, }
+\item[{bool}]{p\+\_\+is\+\_\+server, }
+\item[{{\bf msg\+\_\+manager\+\_\+ptr}}]{manager}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classwebsocketpp_1_1processor_1_1hybi00_ac9e56c69bfab35accfa60867d49c90f5}
+
+
+Definition at line 66 of file hybi00.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_ae75afb2f8989e33c8f79e3223febf4a0}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!client\+\_\+handshake\+\_\+request@{client\+\_\+handshake\+\_\+request}}
+\index{client\+\_\+handshake\+\_\+request@{client\+\_\+handshake\+\_\+request}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{client\+\_\+handshake\+\_\+request(request\+\_\+type \&, uri\+\_\+ptr, std\+::vector$<$ std\+::string $>$ const \&) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::client\+\_\+handshake\+\_\+request (
+\begin{DoxyParamCaption}
+\item[{{\bf request\+\_\+type} \&}]{, }
+\item[{{\bf uri\+\_\+ptr}}]{, }
+\item[{std\+::vector$<$ std\+::string $>$ const \&}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_ae75afb2f8989e33c8f79e3223febf4a0}
+
+
+Fill in a set of request headers for a client connection request. 
+
+The Hybi 00 processor only implements incoming connections so this will always return an error.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em req} & Set of headers to fill in \\
+\hline
+\mbox{\tt in}  & {\em uri} & The uri being connected to \\
+\hline
+\mbox{\tt in}  & {\em subprotocols} & The list of subprotocols to request \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_a8894173870b34eb8a6dc7b997cc7f79c}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 158 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a8065338a7a9c760a92ce24d736a3dff2}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!consume@{consume}}
+\index{consume@{consume}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{consume(uint8\+\_\+t $\ast$buf, size\+\_\+t len, lib\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ size\+\_\+t {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::consume (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{buf, }
+\item[{size\+\_\+t}]{len, }
+\item[{lib\+::error\+\_\+code \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_a8065338a7a9c760a92ce24d736a3dff2}
+
+
+Process new websocket connection bytes. 
+
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_a14cb7ee9cd5fa60353ba198f1d3d06c5}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 252 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_ab7b5ff7d3a174454404fe97314ed4717}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!extract\+\_\+subprotocols@{extract\+\_\+subprotocols}}
+\index{extract\+\_\+subprotocols@{extract\+\_\+subprotocols}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{extract\+\_\+subprotocols(request\+\_\+type const \&req, std\+::vector$<$ std\+::string $>$ \&subprotocol\+\_\+list)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::extract\+\_\+subprotocols (
+\begin{DoxyParamCaption}
+\item[{{\bf request\+\_\+type} const \&}]{req, }
+\item[{std\+::vector$<$ std\+::string $>$ \&}]{subprotocol\+\_\+list}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1processor_1_1hybi00_ab7b5ff7d3a174454404fe97314ed4717}
+
+
+Extracts requested subprotocols from a handshake request. 
+
+\hyperlink{classwebsocketpp_1_1processor_1_1hybi00}{hybi00} does support subprotocols \href{https://tools.ietf.org/html/draft-ietf-hybi-thewebsocketprotocol-00#section-1.9}{\tt https\+://tools.\+ietf.\+org/html/draft-\/ietf-\/hybi-\/thewebsocketprotocol-\/00\#section-\/1.\+9}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em req} & The request to extract from \\
+\hline
+\mbox{\tt out}  & {\em subprotocol\+\_\+list} & A reference to a vector of strings to store the results in. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 198 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_ae9d812c2b37b596b687ecd4415a8f4d9}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!get\+\_\+error@{get\+\_\+error}}
+\index{get\+\_\+error@{get\+\_\+error}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{get\+\_\+error() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ bool {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::get\+\_\+error (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_ae9d812c2b37b596b687ecd4415a8f4d9}
+
+
+Tests whether the processor is in a fatal error state. 
+
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_aae7dfad8679fd11823954b38b9d1dc3f}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 313 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a8fd85b472ff816d0b7c54759abeff640}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!get\+\_\+key3@{get\+\_\+key3}}
+\index{get\+\_\+key3@{get\+\_\+key3}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{get\+\_\+key3() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::string {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::get\+\_\+key3 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1processor_1_1hybi00_a8fd85b472ff816d0b7c54759abeff640}
+
+
+Get \hyperlink{classwebsocketpp_1_1processor_1_1hybi00}{hybi00} handshake key3. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000019}{Todo}]This doesn\textquotesingle{}t appear to be used anymore. It might be able to be removed \end{DoxyRefDesc}
+
+
+Definition at line 247 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_af5f3b4bec38c586e31c0574b6c3f56b8}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!get\+\_\+message@{get\+\_\+message}}
+\index{get\+\_\+message@{get\+\_\+message}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{get\+\_\+message()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ {\bf message\+\_\+ptr} {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::get\+\_\+message (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_af5f3b4bec38c586e31c0574b6c3f56b8}
+
+
+Retrieves the most recently processed message. 
+
+Retrieves a shared pointer to the recently completed message if there is one. If \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_abc60cb8570c5adfa9913de7b91126f8a}{ready()} returns true then there is a message available. Retrieving the message with get\+\_\+message will reset the state of ready. As such, each new message may be retrieved only once. Calling get\+\_\+message when there is no message available will result in a null pointer being returned.
+
+\begin{DoxyReturn}{Returns}
+A pointer to the most recently processed message or a null shared pointer. 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_afb9477aa9e49a7dca59d684277b66932}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 317 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_aed848bc2fced3017e177a261f8a1b83f}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!get\+\_\+origin@{get\+\_\+origin}}
+\index{get\+\_\+origin@{get\+\_\+origin}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{get\+\_\+origin(request\+\_\+type const \&r) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::string const\& {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::get\+\_\+origin (
+\begin{DoxyParamCaption}
+\item[{{\bf request\+\_\+type} const \&}]{request}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_aed848bc2fced3017e177a261f8a1b83f}
+
+
+Return the value of the header containing the C\+O\+R\+S origin. 
+
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_ac62df5d61e89b5ad150c1ce31f77a07c}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 185 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a8cfa137562040da67240b0e72c44e3eb}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!get\+\_\+raw@{get\+\_\+raw}}
+\index{get\+\_\+raw@{get\+\_\+raw}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{get\+\_\+raw(response\+\_\+type const \&res) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::string {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::get\+\_\+raw (
+\begin{DoxyParamCaption}
+\item[{{\bf response\+\_\+type} const \&}]{request}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_a8cfa137562040da67240b0e72c44e3eb}
+
+
+Given a completed response, get the raw bytes to put on the wire. 
+
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_a81d3854b9afaeb9111679361ad2571f8}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 179 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a10d804be20e3e5fb04fea7b7ea259758}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!get\+\_\+uri@{get\+\_\+uri}}
+\index{get\+\_\+uri@{get\+\_\+uri}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{get\+\_\+uri(request\+\_\+type const \&request) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ {\bf uri\+\_\+ptr} {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::get\+\_\+uri (
+\begin{DoxyParamCaption}
+\item[{{\bf request\+\_\+type} const \&}]{request}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_a10d804be20e3e5fb04fea7b7ea259758}
+
+
+Extracts client uri from a handshake request. 
+
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_acf6b1685e707b06f213b6321a3645095}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 217 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_aac99978196c2e70ccfcef9cd7edaa60f}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!get\+\_\+version@{get\+\_\+version}}
+\index{get\+\_\+version@{get\+\_\+version}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{get\+\_\+version() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ int {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::get\+\_\+version (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_aac99978196c2e70ccfcef9cd7edaa60f}
+
+
+Get the protocol version of this processor. 
+
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_af415ca67d51a90339ce57763b497f834}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 73 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a2fe66914c00d52a99b46e2e3841a9134}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!prepare\+\_\+close@{prepare\+\_\+close}}
+\index{prepare\+\_\+close@{prepare\+\_\+close}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{prepare\+\_\+close(close\+::status\+::value, std\+::string const \&, message\+\_\+ptr out) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::prepare\+\_\+close (
+\begin{DoxyParamCaption}
+\item[{{\bf close\+::status\+::value}}]{, }
+\item[{std\+::string const \&}]{, }
+\item[{{\bf message\+\_\+ptr}}]{out}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1processor_1_1hybi00_a2fe66914c00d52a99b46e2e3841a9134}
+
+
+Prepare a close frame. 
+
+Hybi 00 doesn\textquotesingle{}t support the close code or reason so these parameters are ignored.
+
+
+\begin{DoxyParams}{Parameters}
+{\em code} & The close code to send \\
+\hline
+{\em reason} & The reason string to send \\
+\hline
+{\em out} & The message buffer to prepare the fame in \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code, zero on success, non-\/zero on failure 
+\end{DoxyReturn}
+
+
+Definition at line 401 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a919aaed345cab679875be1d95c7302ec}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!prepare\+\_\+data\+\_\+frame@{prepare\+\_\+data\+\_\+frame}}
+\index{prepare\+\_\+data\+\_\+frame@{prepare\+\_\+data\+\_\+frame}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{prepare\+\_\+data\+\_\+frame(message\+\_\+ptr in, message\+\_\+ptr out)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ virtual lib\+::error\+\_\+code {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::prepare\+\_\+data\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{{\bf message\+\_\+ptr}}]{in, }
+\item[{{\bf message\+\_\+ptr}}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_a919aaed345cab679875be1d95c7302ec}
+
+
+Prepare a message for writing. 
+
+Performs validation, masking, compression, etc. will return an error if there was an error, otherwise msg will be ready to be written 
+
+Definition at line 329 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a8ed04552fd29c7767622d3dfb58150f5}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!prepare\+\_\+ping@{prepare\+\_\+ping}}
+\index{prepare\+\_\+ping@{prepare\+\_\+ping}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{prepare\+\_\+ping(std\+::string const \&, message\+\_\+ptr) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::prepare\+\_\+ping (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{, }
+\item[{{\bf message\+\_\+ptr}}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1processor_1_1hybi00_a8ed04552fd29c7767622d3dfb58150f5}
+
+
+Prepare a ping frame. 
+
+Hybi 00 doesn\textquotesingle{}t support pings so this will always return an error
+
+
+\begin{DoxyParams}{Parameters}
+{\em in} & The string to use for the ping payload \\
+\hline
+{\em out} & The message buffer to prepare the ping in. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code, zero on success, non-\/zero on failure 
+\end{DoxyReturn}
+
+
+Definition at line 373 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a88ff1e32dec69f5830ca22cf6118682d}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!prepare\+\_\+pong@{prepare\+\_\+pong}}
+\index{prepare\+\_\+pong@{prepare\+\_\+pong}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{prepare\+\_\+pong(std\+::string const \&, message\+\_\+ptr) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::prepare\+\_\+pong (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{, }
+\item[{{\bf message\+\_\+ptr}}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1processor_1_1hybi00_a88ff1e32dec69f5830ca22cf6118682d}
+
+
+Prepare a pong frame. 
+
+Hybi 00 doesn\textquotesingle{}t support pongs so this will always return an error
+
+
+\begin{DoxyParams}{Parameters}
+{\em in} & The string to use for the pong payload \\
+\hline
+{\em out} & The message buffer to prepare the pong in. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code, zero on success, non-\/zero on failure 
+\end{DoxyReturn}
+
+
+Definition at line 386 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a5a2dfb089c6f83037070d08c652cc87f}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!process\+\_\+handshake@{process\+\_\+handshake}}
+\index{process\+\_\+handshake@{process\+\_\+handshake}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{process\+\_\+handshake(request\+\_\+type const \&req, std\+::string const \&subprotocol, response\+\_\+type \&res) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::process\+\_\+handshake (
+\begin{DoxyParamCaption}
+\item[{{\bf request\+\_\+type} const \&}]{req, }
+\item[{std\+::string const \&}]{subprotocol, }
+\item[{{\bf response\+\_\+type} \&}]{res}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_a5a2dfb089c6f83037070d08c652cc87f}
+
+
+Calculate the appropriate response for this websocket request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & The request to process\\
+\hline
+{\em subprotocol} & The subprotocol in use\\
+\hline
+{\em res} & The response to store the processed response in\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An error code, 0 on success, non-\/zero for other errors 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_abb424e391f3fc71e2972d8e86ca38c10}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 100 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_abc60cb8570c5adfa9913de7b91126f8a}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!ready@{ready}}
+\index{ready@{ready}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{ready() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ bool {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::ready (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_abc60cb8570c5adfa9913de7b91126f8a}
+
+
+Checks if there is a message ready. 
+
+Checks if the most recent consume operation processed enough bytes to complete a new Web\+Socket message. The message can be retrieved by calling \hyperlink{classwebsocketpp_1_1processor_1_1hybi00_af5f3b4bec38c586e31c0574b6c3f56b8}{get\+\_\+message()} which will reset the internal state to not-\/ready and allow consume to read more bytes.
+
+\begin{DoxyReturn}{Returns}
+Whether or not a message is ready. 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_ab8dbbb4975f2a0f52efc6281954052b6}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 309 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_a9189f5d21e698ce02019413f9a9d20b8}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!validate\+\_\+handshake@{validate\+\_\+handshake}}
+\index{validate\+\_\+handshake@{validate\+\_\+handshake}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{validate\+\_\+handshake(request\+\_\+type const \&r) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::validate\+\_\+handshake (
+\begin{DoxyParamCaption}
+\item[{{\bf request\+\_\+type} const \&}]{request}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_a9189f5d21e698ce02019413f9a9d20b8}
+
+
+validate a Web\+Socket handshake request for this version 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & The Web\+Socket handshake request to validate. is\+\_\+websocket\+\_\+handshake(request) must be true and get\+\_\+websocket\+\_\+version(request) must equal this-\/$>$\hyperlink{classwebsocketpp_1_1processor_1_1hybi00_aac99978196c2e70ccfcef9cd7edaa60f}{get\+\_\+version()}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A status code, 0 on success, non-\/zero for specific sorts of failure 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_a627ee42d97f2810e3e17c79586748930}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 77 of file hybi00.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1processor_1_1hybi00_ac348d8e987ed762492ebb9df24766a51}{}\index{websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}!validate\+\_\+server\+\_\+handshake\+\_\+response@{validate\+\_\+server\+\_\+handshake\+\_\+response}}
+\index{validate\+\_\+server\+\_\+handshake\+\_\+response@{validate\+\_\+server\+\_\+handshake\+\_\+response}!websocketpp\+::processor\+::hybi00@{websocketpp\+::processor\+::hybi00}}
+\subsubsection[{validate\+\_\+server\+\_\+handshake\+\_\+response(request\+\_\+type const \&, response\+\_\+type \&) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::processor\+::hybi00}$<$ config $>$\+::validate\+\_\+server\+\_\+handshake\+\_\+response (
+\begin{DoxyParamCaption}
+\item[{{\bf request\+\_\+type} const \&}]{, }
+\item[{{\bf response\+\_\+type} \&}]{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classwebsocketpp_1_1processor_1_1hybi00_ac348d8e987ed762492ebb9df24766a51}
+
+
+Validate the server\textquotesingle{}s response to an outgoing handshake request. 
+
+The Hybi 00 processor only implements incoming connections so this will always return an error.
+
+
+\begin{DoxyParams}{Parameters}
+{\em req} & The original request sent \\
+\hline
+{\em res} & The reponse to generate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An error code, 0 on success, non-\/zero for other errors 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classwebsocketpp_1_1processor_1_1processor_a2567795de600f5e19cb8f5c205c32bac}{websocketpp\+::processor\+::processor$<$ config $>$}.
+
+
+
+Definition at line 173 of file hybi00.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/processors/\hyperlink{hybi00_8hpp}{hybi00.\+hpp}\end{DoxyCompactItemize}

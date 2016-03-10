@@ -1,0 +1,4 @@
+var classuva____1____1smt____1____1bpbd____1____1client____1____1translation________client__8js_8js =
+[
+    [ "classuva__1__1smt__1__1bpbd__1__1client__1__1translation____client_8js", "classuva____1____1smt____1____1bpbd____1____1client____1____1translation________client__8js_8js.html#aefa9f421ef8306c0b0a77418f7833578", null ]
+];

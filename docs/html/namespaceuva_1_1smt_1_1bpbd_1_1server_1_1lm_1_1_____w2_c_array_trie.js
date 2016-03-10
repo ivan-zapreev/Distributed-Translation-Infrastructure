@@ -1,0 +1,4 @@
+var namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____w2_c_array_trie =
+[
+    [ "S_M_GramData", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____w2_c_array_trie_1_1_s___m___gram_data.html", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____w2_c_array_trie_1_1_s___m___gram_data" ]
+];

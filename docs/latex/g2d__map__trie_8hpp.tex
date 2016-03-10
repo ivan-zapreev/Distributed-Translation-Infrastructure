@@ -1,0 +1,50 @@
+\hypertarget{g2d__map__trie_8hpp}{}\section{inc/server/lm/models/g2d\+\_\+map\+\_\+trie.hpp File Reference}
+\label{g2d__map__trie_8hpp}\index{inc/server/lm/models/g2d\+\_\+map\+\_\+trie.\+hpp@{inc/server/lm/models/g2d\+\_\+map\+\_\+trie.\+hpp}}
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include \char`\"{}server/lm/lm\+\_\+consts.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/logging/logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/aword\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/hashing\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/mgrams/model\+\_\+m\+\_\+gram.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/mgrams/m\+\_\+gram\+\_\+id.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/file/text\+\_\+piece\+\_\+reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/containers/array\+\_\+utils.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/containers/fixed\+\_\+size\+\_\+hashmap.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}generic\+\_\+trie\+\_\+base.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}w2c\+\_\+array\+\_\+trie.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____g2_d_map_trie_1_1_s___m___gram_data}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+G2\+D\+Map\+Trie\+::\+S\+\_\+\+M\+\_\+\+Gram\+Data$<$ T\+Payload\+Type, T\+Word\+Id\+Type $>$}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_g2_d_map_trie}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+G2\+D\+Map\+Trie$<$ Word\+Index\+Type $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd}{uva\+::smt\+::bpbd}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server}{uva\+::smt\+::bpbd\+::server}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm}{uva\+::smt\+::bpbd\+::server\+::lm}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____g2_d_map_trie}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+G2\+D\+Map\+Trie}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_g2_d_map_trie}{G2\+D\+Map\+Trie}$<$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index}{basic\+\_\+word\+\_\+index} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a0e8dd69db16d3a91b8f4fce171f626b4}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+G2\+D\+Map\+Trie\+Basic}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_g2_d_map_trie}{G2\+D\+Map\+Trie}$<$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1counting__word__index}{counting\+\_\+word\+\_\+index} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a7bd0f965d2b4e0b52b6986b4209dc3b8}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+G2\+D\+Map\+Trie\+Count}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_g2_d_map_trie}{G2\+D\+Map\+Trie}$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_a3001583c904eec702b4a4125082a7ecd}{basic\+\_\+optimizing\+\_\+word\+\_\+index} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a7e7e59c4bbfb156cb0d74a38a0cd7acf}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+G2\+D\+Map\+Trie\+Opt\+Basic}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_g2_d_map_trie}{G2\+D\+Map\+Trie}$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_a61cbd647b15de785ccf4cdd26661c366}{counting\+\_\+optimizing\+\_\+word\+\_\+index} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a4bb2485b784ec0eeb9700beaacee3b67}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+G2\+D\+Map\+Trie\+Opt\+Count}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_g2_d_map_trie}{G2\+D\+Map\+Trie}$<$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index}{hashing\+\_\+word\+\_\+index} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a3b5d2fae05ef641d6c84be4ca79062eb}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+G2\+D\+Map\+Trie\+Hashing}
+\end{DoxyCompactItemize}

@@ -1,0 +1,366 @@
+\hypertarget{classasio_1_1basic__socket__streambuf}{}\section{asio\+:\+:basic\+\_\+socket\+\_\+streambuf$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$ Class Template Reference}
+\label{classasio_1_1basic__socket__streambuf}\index{asio\+::basic\+\_\+socket\+\_\+streambuf$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$@{asio\+::basic\+\_\+socket\+\_\+streambuf$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$}}
+
+
+Iostream streambuf for a socket.  
+
+
+
+
+{\ttfamily \#include $<$basic\+\_\+socket\+\_\+streambuf.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:basic\+\_\+socket\+\_\+streambuf$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.736842cm]{classasio_1_1basic__socket__streambuf}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Protocol\+::endpoint \hyperlink{classasio_1_1basic__socket__streambuf_a89b46b0c3c210f854b355799821fd5db}{endpoint\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The endpoint type. \end{DoxyCompactList}\item 
+typedef \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}{traits\+\_\+helper\+::time\+\_\+type} \hyperlink{classasio_1_1basic__socket__streambuf_ac26395546c2d9decf0bcbc40b8f78adc}{time\+\_\+type}
+\item 
+typedef \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a7f122a7cb603e7516bb6595016960775}{traits\+\_\+helper\+::duration\+\_\+type} \hyperlink{classasio_1_1basic__socket__streambuf_a9205273677adfb1e713637662efa6e12}{duration\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1basic__socket__streambuf_a8b6bcf4f53efd55ce5d89cefcdc85673}{basic\+\_\+socket\+\_\+streambuf} ()
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{classasio_1_1basic__socket__streambuf}{basic\+\_\+socket\+\_\+streambuf} without establishing a connection. \end{DoxyCompactList}\item 
+virtual \hyperlink{classasio_1_1basic__socket__streambuf_af54bd614b6e93484977d0d66122c84f2}{$\sim$basic\+\_\+socket\+\_\+streambuf} ()
+\begin{DoxyCompactList}\small\item\em Destructor flushes buffered data. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__socket__streambuf}{basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$ $\ast$ \hyperlink{classasio_1_1basic__socket__streambuf_a8fdf31f6ba721f53a4cb9dce3632a421}{connect} (const \hyperlink{classasio_1_1basic__socket__streambuf_a89b46b0c3c210f854b355799821fd5db}{endpoint\+\_\+type} \&endpoint)
+\begin{DoxyCompactList}\small\item\em Establish a connection. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__socket__streambuf}{basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$ $\ast$ \hyperlink{classasio_1_1basic__socket__streambuf_aea77d2c5dae49855e68fa527408d6296}{close} ()
+\begin{DoxyCompactList}\small\item\em Close the connection. \end{DoxyCompactList}\item 
+const \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \& \hyperlink{classasio_1_1basic__socket__streambuf_a226ba99670e19a831d0fc93672a9bca4}{puberror} () const 
+\begin{DoxyCompactList}\small\item\em Get the last error associated with the stream buffer. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__socket__streambuf_ac26395546c2d9decf0bcbc40b8f78adc}{time\+\_\+type} \hyperlink{classasio_1_1basic__socket__streambuf_a8e9940459f1640e1d18bae7d9adaae80}{expires\+\_\+at} () const 
+\begin{DoxyCompactList}\small\item\em Get the stream buffer\textquotesingle{}s expiry time as an absolute time. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1basic__socket__streambuf_aa123dfd841e9c6772a1c43f3b5b1ae5b}{expires\+\_\+at} (const \hyperlink{classasio_1_1basic__socket__streambuf_ac26395546c2d9decf0bcbc40b8f78adc}{time\+\_\+type} \&expiry\+\_\+time)
+\begin{DoxyCompactList}\small\item\em Set the stream buffer\textquotesingle{}s expiry time as an absolute time. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__socket__streambuf_a9205273677adfb1e713637662efa6e12}{duration\+\_\+type} \hyperlink{classasio_1_1basic__socket__streambuf_a4db03e0ed3fb810e83bf48c003ace27b}{expires\+\_\+from\+\_\+now} () const 
+\begin{DoxyCompactList}\small\item\em Get the stream buffer\textquotesingle{}s expiry time relative to now. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1basic__socket__streambuf_a44f4e6a5bd34905761c0ab1d41990b78}{expires\+\_\+from\+\_\+now} (const \hyperlink{classasio_1_1basic__socket__streambuf_a9205273677adfb1e713637662efa6e12}{duration\+\_\+type} \&expiry\+\_\+time)
+\begin{DoxyCompactList}\small\item\em Set the stream buffer\textquotesingle{}s expiry time relative to now. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int\+\_\+type \hyperlink{classasio_1_1basic__socket__streambuf_af21c3dcbf5e848a9a76e81bf6d0345a1}{underflow} ()
+\item 
+int\+\_\+type \hyperlink{classasio_1_1basic__socket__streambuf_a057b5e8b943d8110947f3a956f6d278c}{overflow} (int\+\_\+type c)
+\item 
+int \hyperlink{classasio_1_1basic__socket__streambuf_a9381fb6bfc2d23f84eda0cca1108c31c}{sync} ()
+\item 
+std\+::streambuf $\ast$ \hyperlink{classasio_1_1basic__socket__streambuf_aa9e8c6458a18ca91a010dd26e3bc7317}{setbuf} (char\+\_\+type $\ast$\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, std\+::streamsize n)
+\item 
+virtual const \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \& \hyperlink{classasio_1_1basic__socket__streambuf_a2b6c64566f37b58fc6535505ab0215c0}{error} () const 
+\begin{DoxyCompactList}\small\item\em Get the last error associated with the stream buffer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{classasio_1_1basic__socket__streambuf_a4fdedeb697c55e609e40a2a45ac6d5d2}{io\+\_\+handler}
+\item 
+struct \hyperlink{classasio_1_1basic__socket__streambuf_aa9ecc4ed02f4f2038c1d97ab84a62aa1}{timer\+\_\+handler}
+\begin{DoxyCompactList}\small\item\em The type and signature of the callback passed to the read method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Protocol, typename Stream\+Socket\+Service = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service = steady\+\_\+timer\+::service\+\_\+type$>$class asio\+::basic\+\_\+socket\+\_\+streambuf$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$}
+
+Iostream streambuf for a socket. 
+
+Definition at line 101 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1basic__socket__streambuf_a9205273677adfb1e713637662efa6e12}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!duration\+\_\+type@{duration\+\_\+type}}
+\index{duration\+\_\+type@{duration\+\_\+type}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{duration\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ typedef {\bf traits\+\_\+helper\+::duration\+\_\+type} {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::{\bf duration\+\_\+type}}\label{classasio_1_1basic__socket__streambuf_a9205273677adfb1e713637662efa6e12}
+
+
+Definition at line 127 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_a89b46b0c3c210f854b355799821fd5db}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!endpoint\+\_\+type@{endpoint\+\_\+type}}
+\index{endpoint\+\_\+type@{endpoint\+\_\+type}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{endpoint\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ typedef Protocol\+::endpoint {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::{\bf endpoint\+\_\+type}}\label{classasio_1_1basic__socket__streambuf_a89b46b0c3c210f854b355799821fd5db}
+
+
+The endpoint type. 
+
+
+
+Definition at line 117 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_ac26395546c2d9decf0bcbc40b8f78adc}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!time\+\_\+type@{time\+\_\+type}}
+\index{time\+\_\+type@{time\+\_\+type}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{time\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ typedef {\bf traits\+\_\+helper\+::time\+\_\+type} {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::{\bf time\+\_\+type}}\label{classasio_1_1basic__socket__streambuf_ac26395546c2d9decf0bcbc40b8f78adc}
+
+
+Definition at line 126 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1basic__socket__streambuf_a8b6bcf4f53efd55ce5d89cefcdc85673}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!basic\+\_\+socket\+\_\+streambuf@{basic\+\_\+socket\+\_\+streambuf}}
+\index{basic\+\_\+socket\+\_\+streambuf@{basic\+\_\+socket\+\_\+streambuf}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{basic\+\_\+socket\+\_\+streambuf()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::{\bf basic\+\_\+socket\+\_\+streambuf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__streambuf_a8b6bcf4f53efd55ce5d89cefcdc85673}
+
+
+Construct a \hyperlink{classasio_1_1basic__socket__streambuf}{basic\+\_\+socket\+\_\+streambuf} without establishing a connection. 
+
+
+
+Definition at line 131 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_af54bd614b6e93484977d0d66122c84f2}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!````~basic\+\_\+socket\+\_\+streambuf@{$\sim$basic\+\_\+socket\+\_\+streambuf}}
+\index{````~basic\+\_\+socket\+\_\+streambuf@{$\sim$basic\+\_\+socket\+\_\+streambuf}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{$\sim$basic\+\_\+socket\+\_\+streambuf()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ virtual {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::$\sim${\bf basic\+\_\+socket\+\_\+streambuf} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classasio_1_1basic__socket__streambuf_af54bd614b6e93484977d0d66122c84f2}
+
+
+Destructor flushes buffered data. 
+
+
+
+Definition at line 142 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1basic__socket__streambuf_aea77d2c5dae49855e68fa527408d6296}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!close@{close}}
+\index{close@{close}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{close()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ {\bf basic\+\_\+socket\+\_\+streambuf}$<$Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service$>$$\ast$ {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::close (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__streambuf_aea77d2c5dae49855e68fa527408d6296}
+
+
+Close the connection. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily this} if a connection was successfully established, a null pointer otherwise. 
+\end{DoxyReturn}
+
+
+Definition at line 219 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_a8fdf31f6ba721f53a4cb9dce3632a421}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!connect@{connect}}
+\index{connect@{connect}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{connect(const endpoint\+\_\+type \&endpoint)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ {\bf basic\+\_\+socket\+\_\+streambuf}$<$Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service$>$$\ast$ {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::connect (
+\begin{DoxyParamCaption}
+\item[{const {\bf endpoint\+\_\+type} \&}]{endpoint}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__streambuf_a8fdf31f6ba721f53a4cb9dce3632a421}
+
+
+Establish a connection. 
+
+This function establishes a connection to the specified endpoint.
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily this} if a connection was successfully established, a null pointer otherwise. 
+\end{DoxyReturn}
+
+
+Definition at line 158 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_a2b6c64566f37b58fc6535505ab0215c0}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!error@{error}}
+\index{error@{error}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{error() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ virtual const {\bf asio\+::error\+\_\+code}\& {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::error (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classasio_1_1basic__socket__streambuf_a2b6c64566f37b58fc6535505ab0215c0}
+
+
+Get the last error associated with the stream buffer. 
+
+\begin{DoxyReturn}{Returns}
+An {\ttfamily \hyperlink{classasio_1_1error__code}{error\+\_\+code}} corresponding to the last error from the stream buffer. 
+\end{DoxyReturn}
+
+
+Definition at line 426 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_a8e9940459f1640e1d18bae7d9adaae80}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!expires\+\_\+at@{expires\+\_\+at}}
+\index{expires\+\_\+at@{expires\+\_\+at}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{expires\+\_\+at() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ {\bf time\+\_\+type} {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::expires\+\_\+at (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__streambuf_a8e9940459f1640e1d18bae7d9adaae80}
+
+
+Get the stream buffer\textquotesingle{}s expiry time as an absolute time. 
+
+\begin{DoxyReturn}{Returns}
+An absolute time value representing the stream buffer\textquotesingle{}s expiry time. 
+\end{DoxyReturn}
+
+
+Definition at line 243 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_aa123dfd841e9c6772a1c43f3b5b1ae5b}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!expires\+\_\+at@{expires\+\_\+at}}
+\index{expires\+\_\+at@{expires\+\_\+at}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{expires\+\_\+at(const time\+\_\+type \&expiry\+\_\+time)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ void {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::expires\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{const {\bf time\+\_\+type} \&}]{expiry\+\_\+time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__streambuf_aa123dfd841e9c6772a1c43f3b5b1ae5b}
+
+
+Set the stream buffer\textquotesingle{}s expiry time as an absolute time. 
+
+This function sets the expiry time associated with the stream. Stream operations performed after this time (where the operations cannot be completed using the internal buffers) will fail with the error \hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dacde6760763051561f6c2ffc4ddf2be1b}{asio\+::error\+::operation\+\_\+aborted}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em expiry\+\_\+time} & The expiry time to be used for the stream. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 259 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_a4db03e0ed3fb810e83bf48c003ace27b}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}}
+\index{expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{expires\+\_\+from\+\_\+now() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ {\bf duration\+\_\+type} {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::expires\+\_\+from\+\_\+now (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__streambuf_a4db03e0ed3fb810e83bf48c003ace27b}
+
+
+Get the stream buffer\textquotesingle{}s expiry time relative to now. 
+
+\begin{DoxyReturn}{Returns}
+A relative time value representing the stream buffer\textquotesingle{}s expiry time. 
+\end{DoxyReturn}
+
+
+Definition at line 274 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_a44f4e6a5bd34905761c0ab1d41990b78}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}}
+\index{expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{expires\+\_\+from\+\_\+now(const duration\+\_\+type \&expiry\+\_\+time)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ void {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::expires\+\_\+from\+\_\+now (
+\begin{DoxyParamCaption}
+\item[{const {\bf duration\+\_\+type} \&}]{expiry\+\_\+time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__streambuf_a44f4e6a5bd34905761c0ab1d41990b78}
+
+
+Set the stream buffer\textquotesingle{}s expiry time relative to now. 
+
+This function sets the expiry time associated with the stream. Stream operations performed after this time (where the operations cannot be completed using the internal buffers) will fail with the error \hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dacde6760763051561f6c2ffc4ddf2be1b}{asio\+::error\+::operation\+\_\+aborted}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em expiry\+\_\+time} & The expiry time to be used for the timer. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 288 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_a057b5e8b943d8110947f3a956f6d278c}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!overflow@{overflow}}
+\index{overflow@{overflow}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{overflow(int\+\_\+type c)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ int\+\_\+type {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::overflow (
+\begin{DoxyParamCaption}
+\item[{int\+\_\+type}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classasio_1_1basic__socket__streambuf_a057b5e8b943d8110947f3a956f6d278c}
+
+
+Definition at line 332 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_a226ba99670e19a831d0fc93672a9bca4}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!puberror@{puberror}}
+\index{puberror@{puberror}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{puberror() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ const {\bf asio\+::error\+\_\+code}\& {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::puberror (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__streambuf_a226ba99670e19a831d0fc93672a9bca4}
+
+
+Get the last error associated with the stream buffer. 
+
+\begin{DoxyReturn}{Returns}
+An {\ttfamily \hyperlink{classasio_1_1error__code}{error\+\_\+code}} corresponding to the last error from the stream buffer. 
+\end{DoxyReturn}
+
+
+Definition at line 233 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_aa9e8c6458a18ca91a010dd26e3bc7317}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!setbuf@{setbuf}}
+\index{setbuf@{setbuf}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{setbuf(char\+\_\+type $\ast$s, std\+::streamsize n)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ std\+::streambuf$\ast$ {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::setbuf (
+\begin{DoxyParamCaption}
+\item[{char\+\_\+type $\ast$}]{s, }
+\item[{std\+::streamsize}]{n}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classasio_1_1basic__socket__streambuf_aa9e8c6458a18ca91a010dd26e3bc7317}
+
+
+Definition at line 409 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_a9381fb6bfc2d23f84eda0cca1108c31c}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!sync@{sync}}
+\index{sync@{sync}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{sync()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ int {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::sync (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classasio_1_1basic__socket__streambuf_a9381fb6bfc2d23f84eda0cca1108c31c}
+
+
+Definition at line 404 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_af21c3dcbf5e848a9a76e81bf6d0345a1}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!underflow@{underflow}}
+\index{underflow@{underflow}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{underflow()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ int\+\_\+type {\bf asio\+::basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::underflow (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classasio_1_1basic__socket__streambuf_af21c3dcbf5e848a9a76e81bf6d0345a1}
+
+
+Definition at line 300 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classasio_1_1basic__socket__streambuf_a4fdedeb697c55e609e40a2a45ac6d5d2}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!io\+\_\+handler@{io\+\_\+handler}}
+\index{io\+\_\+handler@{io\+\_\+handler}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{io\+\_\+handler}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ friend struct io\+\_\+handler\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1basic__socket__streambuf_a4fdedeb697c55e609e40a2a45ac6d5d2}
+
+
+Definition at line 478 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__streambuf_aa9ecc4ed02f4f2038c1d97ab84a62aa1}{}\index{asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}!timer\+\_\+handler@{timer\+\_\+handler}}
+\index{timer\+\_\+handler@{timer\+\_\+handler}!asio\+::basic\+\_\+socket\+\_\+streambuf@{asio\+::basic\+\_\+socket\+\_\+streambuf}}
+\subsubsection[{timer\+\_\+handler}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ friend struct timer\+\_\+handler\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1basic__socket__streambuf_aa9ecc4ed02f4f2038c1d97ab84a62aa1}
+
+
+The type and signature of the callback passed to the read method. 
+
+
+
+Definition at line 492 of file basic\+\_\+socket\+\_\+streambuf.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{basic__socket__streambuf_8hpp}{basic\+\_\+socket\+\_\+streambuf.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,203 @@
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage}{}\section{uva\+:\+:utils\+:\+:containers\+:\+:Greedy\+Memory\+Storage Class Reference}
+\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+
+
+{\ttfamily \#include $<$greedy\+\_\+memory\+\_\+storage.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef uint8\+\_\+t \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a95e609975aae9cc91eab204b5d1d2b2b}{T\+Storage\+Data}
+\item 
+typedef std\+::size\+\_\+t \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a750d36c7e6c18135ccc45bf105f860e5}{size\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a0985c36ece59f76a31e787d0e9da6f89}{Greedy\+Memory\+Storage} ()
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a095471179cc14c9ed7cec893e51e5161}{Greedy\+Memory\+Storage} (\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a750d36c7e6c18135ccc45bf105f860e5}{size\+\_\+type} num\+Bytes)
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a344f413a965d6c9ec0863b3a55a6bbc5}{Greedy\+Memory\+Storage} (const \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage}{Greedy\+Memory\+Storage} \&source)
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_ab1e6ca470c3552106c01569c08a4d32c}{$\sim$\+Greedy\+Memory\+Storage} ()
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a750d36c7e6c18135ccc45bf105f860e5}{size\+\_\+type} \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_abc629a3a1b93fbca4bfadcef7687b847}{get\+Buffer\+Size\+Bytes} () const 
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a750d36c7e6c18135ccc45bf105f860e5}{size\+\_\+type} \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a10915a9890898e7245fd3f434102153f}{get\+Available\+Bytes} () const 
+\item 
+void $\ast$ \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_abdc13691eaca2fcb70d7398c1dcd6c05}{allocate} (\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a750d36c7e6c18135ccc45bf105f860e5}{size\+\_\+type} num)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_ae42e0aec39c716fabdd42e0b6a623c75}{\+\_\+p\+Buffer}
+\item 
+vector$<$ void $\ast$ $>$ \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_aaf3a9ba5446c99d9351354232690a449}{\+\_\+memory\+Buffers}
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a750d36c7e6c18135ccc45bf105f860e5}{size\+\_\+type} \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a235c1f54d73f7c62eeaf06d7b0709812}{\+\_\+num\+Bytes}
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a750d36c7e6c18135ccc45bf105f860e5}{size\+\_\+type} \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_ab281fe8e8cf3f042a3796de1ad55adc6}{\+\_\+alloc\+Bytes}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is the greedy memory storage class that in the first place allocates some storage and then only grows it if more space is needed! 
+
+Definition at line 49 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a750d36c7e6c18135ccc45bf105f860e5}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!size\+\_\+type@{size\+\_\+type}}
+\index{size\+\_\+type@{size\+\_\+type}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{size\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::size\+\_\+t {\bf uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::size\+\_\+type}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a750d36c7e6c18135ccc45bf105f860e5}
+
+
+Definition at line 56 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a95e609975aae9cc91eab204b5d1d2b2b}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!T\+Storage\+Data@{T\+Storage\+Data}}
+\index{T\+Storage\+Data@{T\+Storage\+Data}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{T\+Storage\+Data}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint8\+\_\+t {\bf uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::\+T\+Storage\+Data}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a95e609975aae9cc91eab204b5d1d2b2b}
+
+
+Definition at line 53 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a0985c36ece59f76a31e787d0e9da6f89}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!Greedy\+Memory\+Storage@{Greedy\+Memory\+Storage}}
+\index{Greedy\+Memory\+Storage@{Greedy\+Memory\+Storage}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{Greedy\+Memory\+Storage()}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::\+Greedy\+Memory\+Storage (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a0985c36ece59f76a31e787d0e9da6f89}
+The basic constructor 
+
+Definition at line 61 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a095471179cc14c9ed7cec893e51e5161}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!Greedy\+Memory\+Storage@{Greedy\+Memory\+Storage}}
+\index{Greedy\+Memory\+Storage@{Greedy\+Memory\+Storage}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{Greedy\+Memory\+Storage(size\+\_\+type num\+Bytes)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::\+Greedy\+Memory\+Storage (
+\begin{DoxyParamCaption}
+\item[{{\bf size\+\_\+type}}]{num\+Bytes}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a095471179cc14c9ed7cec893e51e5161}
+The basic constructor of the greedy storage. 
+\begin{DoxyParams}{Parameters}
+{\em num\+Bytes} & the number of bytes to pre-\/allocate the buffer for -\/ the initial buffer capacity \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 68 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a344f413a965d6c9ec0863b3a55a6bbc5}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!Greedy\+Memory\+Storage@{Greedy\+Memory\+Storage}}
+\index{Greedy\+Memory\+Storage@{Greedy\+Memory\+Storage}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{Greedy\+Memory\+Storage(const Greedy\+Memory\+Storage \&source)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::\+Greedy\+Memory\+Storage (
+\begin{DoxyParamCaption}
+\item[{const {\bf Greedy\+Memory\+Storage} \&}]{source}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a344f413a965d6c9ec0863b3a55a6bbc5}
+The copy constructor 
+
+Definition at line 85 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_ab1e6ca470c3552106c01569c08a4d32c}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!````~Greedy\+Memory\+Storage@{$\sim$\+Greedy\+Memory\+Storage}}
+\index{````~Greedy\+Memory\+Storage@{$\sim$\+Greedy\+Memory\+Storage}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{$\sim$\+Greedy\+Memory\+Storage()}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::$\sim$\+Greedy\+Memory\+Storage (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_ab1e6ca470c3552106c01569c08a4d32c}
+The basic destructor. 
+
+Definition at line 95 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_abdc13691eaca2fcb70d7398c1dcd6c05}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!allocate@{allocate}}
+\index{allocate@{allocate}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{allocate(size\+\_\+type num)}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::allocate (
+\begin{DoxyParamCaption}
+\item[{{\bf size\+\_\+type}}]{num}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_abdc13691eaca2fcb70d7398c1dcd6c05}
+Allocates the memory of required size,if there is no enough space in the buffer, then reallocates! 
+\begin{DoxyParams}{Parameters}
+{\em num} & the number of bytes to allocate in the buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the pointer to the beginning of the allocated memory block 
+\end{DoxyReturn}
+
+
+Definition at line 123 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a10915a9890898e7245fd3f434102153f}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!get\+Available\+Bytes@{get\+Available\+Bytes}}
+\index{get\+Available\+Bytes@{get\+Available\+Bytes}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{get\+Available\+Bytes() const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf size\+\_\+type} uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::get\+Available\+Bytes (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a10915a9890898e7245fd3f434102153f}
+Returns the number of free bytes remaining \begin{DoxyReturn}{Returns}
+the number of free bytes remaining 
+\end{DoxyReturn}
+
+
+Definition at line 114 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_abc629a3a1b93fbca4bfadcef7687b847}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!get\+Buffer\+Size\+Bytes@{get\+Buffer\+Size\+Bytes}}
+\index{get\+Buffer\+Size\+Bytes@{get\+Buffer\+Size\+Bytes}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{get\+Buffer\+Size\+Bytes() const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf size\+\_\+type} uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::get\+Buffer\+Size\+Bytes (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_abc629a3a1b93fbca4bfadcef7687b847}
+Returns the current buffer size \begin{DoxyReturn}{Returns}
+the current buffer size 
+\end{DoxyReturn}
+
+
+Definition at line 106 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_ab281fe8e8cf3f042a3796de1ad55adc6}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!\+\_\+alloc\+Bytes@{\+\_\+alloc\+Bytes}}
+\index{\+\_\+alloc\+Bytes@{\+\_\+alloc\+Bytes}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{\+\_\+alloc\+Bytes}]{\setlength{\rightskip}{0pt plus 5cm}{\bf size\+\_\+type} uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::\+\_\+alloc\+Bytes\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_ab281fe8e8cf3f042a3796de1ad55adc6}
+
+
+Definition at line 152 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_aaf3a9ba5446c99d9351354232690a449}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!\+\_\+memory\+Buffers@{\+\_\+memory\+Buffers}}
+\index{\+\_\+memory\+Buffers@{\+\_\+memory\+Buffers}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{\+\_\+memory\+Buffers}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$void$\ast$$>$ uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::\+\_\+memory\+Buffers\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_aaf3a9ba5446c99d9351354232690a449}
+
+
+Definition at line 146 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a235c1f54d73f7c62eeaf06d7b0709812}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!\+\_\+num\+Bytes@{\+\_\+num\+Bytes}}
+\index{\+\_\+num\+Bytes@{\+\_\+num\+Bytes}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{\+\_\+num\+Bytes}]{\setlength{\rightskip}{0pt plus 5cm}{\bf size\+\_\+type} uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::\+\_\+num\+Bytes\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a235c1f54d73f7c62eeaf06d7b0709812}
+
+
+Definition at line 149 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_ae42e0aec39c716fabdd42e0b6a623c75}{}\index{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}!\+\_\+p\+Buffer@{\+\_\+p\+Buffer}}
+\index{\+\_\+p\+Buffer@{\+\_\+p\+Buffer}!uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage@{uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage}}
+\subsubsection[{\+\_\+p\+Buffer}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ uva\+::utils\+::containers\+::\+Greedy\+Memory\+Storage\+::\+\_\+p\+Buffer\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_ae42e0aec39c716fabdd42e0b6a623c75}
+
+
+Definition at line 143 of file greedy\+\_\+memory\+\_\+storage.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/common/utils/containers/\hyperlink{greedy__memory__storage_8hpp}{greedy\+\_\+memory\+\_\+storage.\+hpp}\end{DoxyCompactItemize}

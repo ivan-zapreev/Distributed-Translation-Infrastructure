@@ -1,0 +1,81 @@
+\hypertarget{layered__trie__base_8hpp}{}\section{inc/server/lm/models/layered\+\_\+trie\+\_\+base.hpp File Reference}
+\label{layered__trie__base_8hpp}\index{inc/server/lm/models/layered\+\_\+trie\+\_\+base.\+hpp@{inc/server/lm/models/layered\+\_\+trie\+\_\+base.\+hpp}}
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$cstring$>$}\\*
+{\ttfamily \#include \char`\"{}server/lm/lm\+\_\+consts.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/logging/logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/file/text\+\_\+piece\+\_\+reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/basic\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/counting\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/optimizing\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/models/generic\+\_\+trie\+\_\+base.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_layered_trie_base}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Layered\+Trie\+Base$<$ Trie\+Type, Word\+Index\+Type, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd}{uva\+::smt\+::bpbd}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server}{uva\+::smt\+::bpbd\+::server}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm}{uva\+::smt\+::bpbd\+::server\+::lm}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____layered_trie_base}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+Layered\+Trie\+Base}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{layered__trie__base_8hpp_a8a4dc17a56ef024e2d26bb521eaa14b2}{L\+A\+Y\+E\+R\+E\+D\+\_\+\+B\+A\+S\+E\+\_\+\+E\+N\+S\+U\+R\+E\+\_\+\+C\+O\+N\+T\+E\+X\+T}(query,  status)
+\item 
+\#define \hyperlink{layered__trie__base_8hpp_a4f172714336173e782ce15a85a6f5b08}{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+L\+A\+Y\+E\+R\+E\+D\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+S\+\_\+\+N\+A\+M\+E\+\_\+\+T\+Y\+P\+E}(C\+L\+A\+S\+S\+\_\+\+N\+A\+M\+E,  W\+O\+R\+D\+\_\+\+I\+D\+X\+\_\+\+T\+Y\+P\+E)~template class C\+L\+A\+S\+S\+\_\+\+N\+A\+M\+E$<$W\+O\+R\+D\+\_\+\+I\+D\+X\+\_\+\+T\+Y\+P\+E $>$;
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Trie\+Type , phrase\+\_\+length C\+U\+R\+R\+\_\+\+L\+E\+V\+E\+L, bool G\+E\+T\+\_\+\+B\+A\+C\+K\+\_\+\+O\+F\+F\+\_\+\+C\+T\+X\+\_\+\+I\+D, Debug\+Levels\+Enum L\+O\+G\+\_\+\+L\+E\+V\+E\+L = Debug\+Levels\+Enum\+::\+D\+E\+B\+U\+G1$>$ }\\phrase\+\_\+length \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____layered_trie_base_aaee3fee0143880fcd495224ba8957c09}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+Layered\+Trie\+Base\+::search\+\_\+m\+\_\+gram\+\_\+ctx\+\_\+id} (const Trie\+Type \&trie, const word\+\_\+uid $\ast$const word\+\_\+ids, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a6841847096e455ad3c38689bc548b3b0}{T\+Long\+Id} \&prev\+\_\+ctx\+\_\+id, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a6841847096e455ad3c38689bc548b3b0}{T\+Long\+Id} \&ctx\+\_\+id)
+\item 
+{\footnotesize template$<$typename Trie\+Type , phrase\+\_\+length C\+U\+R\+R\+\_\+\+L\+E\+V\+E\+L, Debug\+Levels\+Enum L\+O\+G\+\_\+\+L\+E\+V\+E\+L$>$ }\\void \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____layered_trie_base_a0619b1b508acf2188d98b3d2f32142bc}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+Layered\+Trie\+Base\+::get\+\_\+context\+\_\+id} (Trie\+Type \&trie, const \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram}{model\+\_\+m\+\_\+gram} \&gram, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a6841847096e455ad3c38689bc548b3b0}{T\+Long\+Id} \&ctx\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{layered__trie__base_8hpp_a4f172714336173e782ce15a85a6f5b08}{}\index{layered\+\_\+trie\+\_\+base.\+hpp@{layered\+\_\+trie\+\_\+base.\+hpp}!I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+L\+A\+Y\+E\+R\+E\+D\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+S\+\_\+\+N\+A\+M\+E\+\_\+\+T\+Y\+P\+E@{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+L\+A\+Y\+E\+R\+E\+D\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+S\+\_\+\+N\+A\+M\+E\+\_\+\+T\+Y\+P\+E}}
+\index{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+L\+A\+Y\+E\+R\+E\+D\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+S\+\_\+\+N\+A\+M\+E\+\_\+\+T\+Y\+P\+E@{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+L\+A\+Y\+E\+R\+E\+D\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+S\+\_\+\+N\+A\+M\+E\+\_\+\+T\+Y\+P\+E}!layered\+\_\+trie\+\_\+base.\+hpp@{layered\+\_\+trie\+\_\+base.\+hpp}}
+\subsubsection[{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+L\+A\+Y\+E\+R\+E\+D\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+S\+\_\+\+N\+A\+M\+E\+\_\+\+T\+Y\+P\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+L\+A\+Y\+E\+R\+E\+D\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+S\+\_\+\+N\+A\+M\+E\+\_\+\+T\+Y\+P\+E(
+\begin{DoxyParamCaption}
+\item[{}]{C\+L\+A\+S\+S\+\_\+\+N\+A\+M\+E, }
+\item[{}]{W\+O\+R\+D\+\_\+\+I\+D\+X\+\_\+\+T\+Y\+P\+E}
+\end{DoxyParamCaption}
+)~template class C\+L\+A\+S\+S\+\_\+\+N\+A\+M\+E$<$W\+O\+R\+D\+\_\+\+I\+D\+X\+\_\+\+T\+Y\+P\+E $>$;}\label{layered__trie__base_8hpp_a4f172714336173e782ce15a85a6f5b08}
+
+
+Definition at line 315 of file layered\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{layered__trie__base_8hpp_a8a4dc17a56ef024e2d26bb521eaa14b2}{}\index{layered\+\_\+trie\+\_\+base.\+hpp@{layered\+\_\+trie\+\_\+base.\+hpp}!L\+A\+Y\+E\+R\+E\+D\+\_\+\+B\+A\+S\+E\+\_\+\+E\+N\+S\+U\+R\+E\+\_\+\+C\+O\+N\+T\+E\+X\+T@{L\+A\+Y\+E\+R\+E\+D\+\_\+\+B\+A\+S\+E\+\_\+\+E\+N\+S\+U\+R\+E\+\_\+\+C\+O\+N\+T\+E\+X\+T}}
+\index{L\+A\+Y\+E\+R\+E\+D\+\_\+\+B\+A\+S\+E\+\_\+\+E\+N\+S\+U\+R\+E\+\_\+\+C\+O\+N\+T\+E\+X\+T@{L\+A\+Y\+E\+R\+E\+D\+\_\+\+B\+A\+S\+E\+\_\+\+E\+N\+S\+U\+R\+E\+\_\+\+C\+O\+N\+T\+E\+X\+T}!layered\+\_\+trie\+\_\+base.\+hpp@{layered\+\_\+trie\+\_\+base.\+hpp}}
+\subsubsection[{L\+A\+Y\+E\+R\+E\+D\+\_\+\+B\+A\+S\+E\+\_\+\+E\+N\+S\+U\+R\+E\+\_\+\+C\+O\+N\+T\+E\+X\+T}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\+A\+Y\+E\+R\+E\+D\+\_\+\+B\+A\+S\+E\+\_\+\+E\+N\+S\+U\+R\+E\+\_\+\+C\+O\+N\+T\+E\+X\+T(
+\begin{DoxyParamCaption}
+\item[{}]{query, }
+\item[{}]{status}
+\end{DoxyParamCaption}
+)}\label{layered__trie__base_8hpp_a8a4dc17a56ef024e2d26bb521eaa14b2}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if} (query.get\_curr\_ctx\_ref() == UNDEFINED\_WORD\_ID) \{ \(\backslash\)
+                BASE::ensure\_context(query, status); \(\backslash\)
+            \} \textcolor{keywordflow}{else} \{ \(\backslash\)
+                status = \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796aa4682346ec5c105689f1d0bc41af318a9}{MGramStatusEnum::GOOD\_PRESENT\_MGS}; \(\backslash\)
+            \}
+\end{DoxyCode}
+
+
+Definition at line 142 of file layered\+\_\+trie\+\_\+base.\+hpp.
+

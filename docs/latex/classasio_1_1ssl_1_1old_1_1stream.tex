@@ -1,0 +1,762 @@
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream}{}\section{asio\+:\+:ssl\+:\+:old\+:\+:stream$<$ Stream, Service $>$ Class Template Reference}
+\label{classasio_1_1ssl_1_1old_1_1stream}\index{asio\+::ssl\+::old\+::stream$<$ Stream, Service $>$@{asio\+::ssl\+::old\+::stream$<$ Stream, Service $>$}}
+
+
+Provides stream-\/oriented functionality using S\+S\+L.  
+
+
+
+
+{\ttfamily \#include $<$stream.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:ssl\+:\+:old\+:\+:stream$<$ Stream, Service $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classasio_1_1ssl_1_1old_1_1stream}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef remove\+\_\+reference$<$ Stream $>$\+::type \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a71ae7adcbd44cae6750157541c2ddf8e}{next\+\_\+layer\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type of the next layer. \end{DoxyCompactList}\item 
+typedef next\+\_\+layer\+\_\+type\+::lowest\+\_\+layer\+\_\+type \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a6b664149066b698269db4e2f4e846ca2}{lowest\+\_\+layer\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type of the lowest layer. \end{DoxyCompactList}\item 
+typedef Service \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a2e027ffad5f6a2acd99689211e717ac5}{service\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type of the service that will be used to provide stream operations. \end{DoxyCompactList}\item 
+typedef service\+\_\+type\+::impl\+\_\+type \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a965fd8deeebbf308d18fbac925009d8d}{impl\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The native implementation type of the stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Arg , typename Context\+\_\+\+Service $>$ }\\\hyperlink{classasio_1_1ssl_1_1old_1_1stream_a9dba46a8e681a91084c5b38734fc380f}{stream} (Arg \&arg, \hyperlink{classasio_1_1ssl_1_1old_1_1basic__context}{basic\+\_\+context}$<$ Context\+\_\+\+Service $>$ \&\hyperlink{classasio_1_1ssl_1_1context}{context})
+\begin{DoxyCompactList}\small\item\em Construct a stream. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ssl_1_1old_1_1stream_ab930e318ba05be52b65007769a9e2409}{$\sim$stream} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \& \hyperlink{classasio_1_1ssl_1_1old_1_1stream_ad5f0be52be35bcef5ac6ae3d42f0f592}{get\+\_\+io\+\_\+service} ()
+\begin{DoxyCompactList}\small\item\em Get the \hyperlink{classasio_1_1io__service}{io\+\_\+service} associated with the object. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ssl_1_1old_1_1stream_a71ae7adcbd44cae6750157541c2ddf8e}{next\+\_\+layer\+\_\+type} \& \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a32040331ac2eb6aa5098aa02316bb9d8}{next\+\_\+layer} ()
+\begin{DoxyCompactList}\small\item\em Get a reference to the next layer. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ssl_1_1old_1_1stream_a6b664149066b698269db4e2f4e846ca2}{lowest\+\_\+layer\+\_\+type} \& \hyperlink{classasio_1_1ssl_1_1old_1_1stream_ac48e43adf4001a1a318d76213fd7186d}{lowest\+\_\+layer} ()
+\begin{DoxyCompactList}\small\item\em Get a reference to the lowest layer. \end{DoxyCompactList}\item 
+const \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a6b664149066b698269db4e2f4e846ca2}{lowest\+\_\+layer\+\_\+type} \& \hyperlink{classasio_1_1ssl_1_1old_1_1stream_ab029c9d927db0140d70c6730226aad03}{lowest\+\_\+layer} () const 
+\begin{DoxyCompactList}\small\item\em Get a const reference to the lowest layer. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ssl_1_1old_1_1stream_a965fd8deeebbf308d18fbac925009d8d}{impl\+\_\+type} \hyperlink{classasio_1_1ssl_1_1old_1_1stream_ac8d24d7329411233167125d82b6d38bf}{impl} ()
+\begin{DoxyCompactList}\small\item\em Get the underlying implementation in the native type. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a326a75224a55b43ac12d2676d465958c}{handshake} (\hyperlink{classasio_1_1ssl_1_1stream__base_a2f18813d3860bc8aee99249834d7c320}{handshake\+\_\+type} type)
+\begin{DoxyCompactList}\small\item\em Perform S\+S\+L handshaking. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1stream_ad4d612fa88c243e25dad7e1db1428973}{handshake} (\hyperlink{classasio_1_1ssl_1_1stream__base_a2f18813d3860bc8aee99249834d7c320}{handshake\+\_\+type} type, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Perform S\+S\+L handshaking. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Handshake\+Handler $>$ }\\void \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a0d27ecfa0483d789afcf60638db66d76}{async\+\_\+handshake} (\hyperlink{classasio_1_1ssl_1_1stream__base_a2f18813d3860bc8aee99249834d7c320}{handshake\+\_\+type} type, Handshake\+Handler handler)
+\begin{DoxyCompactList}\small\item\em Start an asynchronous S\+S\+L handshake. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a6067ec453251827936bcc62058a6c592}{shutdown} ()
+\begin{DoxyCompactList}\small\item\em Shut down S\+S\+L on the stream. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1old_1_1stream_ac72e660505e1880675fe99d6c7dc5b9c}{shutdown} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Shut down S\+S\+L on the stream. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Shutdown\+Handler $>$ }\\void \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a523d381e2548587dc0ac216292572f11}{async\+\_\+shutdown} (Shutdown\+Handler handler)
+\begin{DoxyCompactList}\small\item\em Asynchronously shut down S\+S\+L on the stream. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a5c46226ee7670e8b246045d7083f3dc3}{write\+\_\+some} (const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers})
+\begin{DoxyCompactList}\small\item\em Write some data to the stream. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a8e60094fcd1c78f221157b2d1e7ecaa9}{write\+\_\+some} (const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write some data to the stream. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\void \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a92ca80ae61f3a80ef7fdc5eca375f85e}{async\+\_\+write\+\_\+some} (const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, Write\+Handler handler)
+\begin{DoxyCompactList}\small\item\em Start an asynchronous write. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a0af187c4f0f580a4941538d9c9c43ef5}{read\+\_\+some} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers})
+\begin{DoxyCompactList}\small\item\em Read some data from the stream. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a8cbd732b0ea3986dd05e76aa493e5b65}{read\+\_\+some} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Read some data from the stream. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ }\\void \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a1826635812b110e43aab623bc4c884b7}{async\+\_\+read\+\_\+some} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, Read\+Handler handler)
+\begin{DoxyCompactList}\small\item\em Start an asynchronous read. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a5a04711b312236f6e3d07c2b9717fefc}{peek} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers})
+\begin{DoxyCompactList}\small\item\em Peek at the incoming data on the stream. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a60f1136af69b6f6d4c4eb5ae9824343b}{peek} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Peek at the incoming data on the stream. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1ssl_1_1old_1_1stream_a0a7146a346f17d1411adca213934632a}{in\+\_\+avail} ()
+\begin{DoxyCompactList}\small\item\em Determine the amount of data that may be read without blocking. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1ssl_1_1old_1_1stream_ae1de782526b419d58092c1a5d69bb0e5}{in\+\_\+avail} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Determine the amount of data that may be read without blocking. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Stream, typename Service = old\+::stream\+\_\+service$>$class asio\+::ssl\+::old\+::stream$<$ Stream, Service $>$}
+
+Provides stream-\/oriented functionality using S\+S\+L. 
+
+The stream class template provides asynchronous and blocking stream-\/oriented functionality using S\+S\+L.
+
+\begin{DoxyParagraph}{Thread Safety}
+{\itshape Distinct} {\itshape objects\+:} Safe.~\newline
+{\itshape Shared} {\itshape objects\+:} Unsafe.
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Example}
+To use the S\+S\+L stream template with an \hyperlink{classasio_1_1ip_1_1tcp_a6f5bf95251747bb81d75784387938d6a}{ip\+::tcp\+::socket}, you would write\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1io__service}{asio::io\_service} io\_service;
+\hyperlink{classasio_1_1ssl_1_1context}{asio::ssl::context} context(io\_service, 
+      \hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ae478c3ede58b50c99d6c6ff9ed7c0124}{asio::ssl::context::sslv23});
+\hyperlink{classasio_1_1ssl_1_1stream}{asio::ssl::stream<asio::ip::tcp::socket>} sock(io\_service, context);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Async\+Read\+Stream, Async\+Write\+Stream, Stream, Sync\+Read\+\_\+\+Stream, Sync\+Write\+Stream. 
+\end{DoxyParagraph}
+
+
+Definition at line 56 of file stream.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a965fd8deeebbf308d18fbac925009d8d}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!impl\+\_\+type@{impl\+\_\+type}}
+\index{impl\+\_\+type@{impl\+\_\+type}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{impl\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ typedef service\+\_\+type\+::impl\+\_\+type {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::{\bf impl\+\_\+type}}\label{classasio_1_1ssl_1_1old_1_1stream_a965fd8deeebbf308d18fbac925009d8d}
+
+
+The native implementation type of the stream. 
+
+
+
+Definition at line 71 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a6b664149066b698269db4e2f4e846ca2}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!lowest\+\_\+layer\+\_\+type@{lowest\+\_\+layer\+\_\+type}}
+\index{lowest\+\_\+layer\+\_\+type@{lowest\+\_\+layer\+\_\+type}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{lowest\+\_\+layer\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ typedef next\+\_\+layer\+\_\+type\+::lowest\+\_\+layer\+\_\+type {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::{\bf lowest\+\_\+layer\+\_\+type}}\label{classasio_1_1ssl_1_1old_1_1stream_a6b664149066b698269db4e2f4e846ca2}
+
+
+The type of the lowest layer. 
+
+
+
+Definition at line 65 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a71ae7adcbd44cae6750157541c2ddf8e}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!next\+\_\+layer\+\_\+type@{next\+\_\+layer\+\_\+type}}
+\index{next\+\_\+layer\+\_\+type@{next\+\_\+layer\+\_\+type}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{next\+\_\+layer\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ typedef remove\+\_\+reference$<$Stream$>$\+::type {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::{\bf next\+\_\+layer\+\_\+type}}\label{classasio_1_1ssl_1_1old_1_1stream_a71ae7adcbd44cae6750157541c2ddf8e}
+
+
+The type of the next layer. 
+
+
+
+Definition at line 62 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a2e027ffad5f6a2acd99689211e717ac5}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!service\+\_\+type@{service\+\_\+type}}
+\index{service\+\_\+type@{service\+\_\+type}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{service\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ typedef Service {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::{\bf service\+\_\+type}}\label{classasio_1_1ssl_1_1old_1_1stream_a2e027ffad5f6a2acd99689211e717ac5}
+
+
+The type of the service that will be used to provide stream operations. 
+
+
+
+Definition at line 68 of file stream.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a9dba46a8e681a91084c5b38734fc380f}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!stream@{stream}}
+\index{stream@{stream}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{stream(\+Arg \&arg, basic\+\_\+context$<$ Context\+\_\+\+Service $>$ \&context)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ template$<$typename Arg , typename Context\+\_\+\+Service $>$ {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::{\bf stream} (
+\begin{DoxyParamCaption}
+\item[{Arg \&}]{arg, }
+\item[{{\bf basic\+\_\+context}$<$ Context\+\_\+\+Service $>$ \&}]{context}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1ssl_1_1old_1_1stream_a9dba46a8e681a91084c5b38734fc380f}
+
+
+Construct a stream. 
+
+This constructor creates a stream and initialises the underlying stream object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & The argument to be passed to initialise the underlying stream.\\
+\hline
+{\em context} & The S\+S\+L context to be used for the stream. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 83 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_ab930e318ba05be52b65007769a9e2409}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!````~stream@{$\sim$stream}}
+\index{````~stream@{$\sim$stream}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{$\sim$stream()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::$\sim${\bf stream} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_ab930e318ba05be52b65007769a9e2409}
+
+
+Destructor. 
+
+
+
+Definition at line 92 of file stream.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a0d27ecfa0483d789afcf60638db66d76}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!async\+\_\+handshake@{async\+\_\+handshake}}
+\index{async\+\_\+handshake@{async\+\_\+handshake}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{async\+\_\+handshake(handshake\+\_\+type type, Handshake\+Handler handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ template$<$typename Handshake\+Handler $>$ void {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::async\+\_\+handshake (
+\begin{DoxyParamCaption}
+\item[{{\bf handshake\+\_\+type}}]{type, }
+\item[{Handshake\+Handler}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a0d27ecfa0483d789afcf60638db66d76}
+
+
+Start an asynchronous S\+S\+L handshake. 
+
+This function is used to asynchronously perform an S\+S\+L handshake on the stream. This function call always returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The type of handshaking to be performed, i.\+e. as a client or as a server.\\
+\hline
+{\em handler} & The handler to be called when the handshake operation completes. Copies will be made of the handler as required. The equivalent function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error \textcolor{comment}{// Result of operation.}
+); 
+\end{DoxyCode}
+ \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 209 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a1826635812b110e43aab623bc4c884b7}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!async\+\_\+read\+\_\+some@{async\+\_\+read\+\_\+some}}
+\index{async\+\_\+read\+\_\+some@{async\+\_\+read\+\_\+some}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{async\+\_\+read\+\_\+some(const Mutable\+Buffer\+Sequence \&buffers, Read\+Handler handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ void {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::async\+\_\+read\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{Read\+Handler}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a1826635812b110e43aab623bc4c884b7}
+
+
+Start an asynchronous read. 
+
+This function is used to asynchronously read one or more bytes of data from the stream. The function call always returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & The buffers into which the data will be read. Although the buffers object may be copied as necessary, ownership of the underlying buffers is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em handler} & The handler to be called when the read operation completes. Copies will be made of the handler as required. The equivalent function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes read.}
+); 
+\end{DoxyCode}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The async\+\_\+read\+\_\+some operation may not read all of the requested number of bytes. Consider using the \hyperlink{group__async__read}{asio\+::async\+\_\+read} function if you need to ensure that the requested amount of data is read before the asynchronous operation completes. 
+\end{DoxyNote}
+
+
+Definition at line 407 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a523d381e2548587dc0ac216292572f11}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!async\+\_\+shutdown@{async\+\_\+shutdown}}
+\index{async\+\_\+shutdown@{async\+\_\+shutdown}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{async\+\_\+shutdown(\+Shutdown\+Handler handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ template$<$typename Shutdown\+Handler $>$ void {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::async\+\_\+shutdown (
+\begin{DoxyParamCaption}
+\item[{Shutdown\+Handler}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a523d381e2548587dc0ac216292572f11}
+
+
+Asynchronously shut down S\+S\+L on the stream. 
+
+This function is used to asynchronously shut down S\+S\+L on the stream. This function call always returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em handler} & The handler to be called when the handshake operation completes. Copies will be made of the handler as required. The equivalent function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error \textcolor{comment}{// Result of operation.}
+); 
+\end{DoxyCode}
+ \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 253 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a92ca80ae61f3a80ef7fdc5eca375f85e}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!async\+\_\+write\+\_\+some@{async\+\_\+write\+\_\+some}}
+\index{async\+\_\+write\+\_\+some@{async\+\_\+write\+\_\+some}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{async\+\_\+write\+\_\+some(const Const\+Buffer\+Sequence \&buffers, Write\+Handler handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ void {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::async\+\_\+write\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{Write\+Handler}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a92ca80ae61f3a80ef7fdc5eca375f85e}
+
+
+Start an asynchronous write. 
+
+This function is used to asynchronously write one or more bytes of data to the stream. The function call always returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & The data to be written to the stream. Although the buffers object may be copied as necessary, ownership of the underlying buffers is retained by the caller, which must guarantee that they remain valid until the handler is called.\\
+\hline
+{\em handler} & The handler to be called when the write operation completes. Copies will be made of the handler as required. The equivalent function signature of the handler must be\+: 
+\begin{DoxyCode}
+ \textcolor{keywordtype}{void} handler(
+  \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& error, \textcolor{comment}{// Result of operation.}
+  std::size\_t bytes\_transferred           \textcolor{comment}{// Number of bytes written.}
+); 
+\end{DoxyCode}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The async\+\_\+write\+\_\+some operation may not transmit all of the data to the peer. Consider using the \hyperlink{group__async__write}{asio\+::async\+\_\+write} function if you need to ensure that all data is written before the blocking operation completes. 
+\end{DoxyNote}
+
+
+Definition at line 329 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_ad5f0be52be35bcef5ac6ae3d42f0f592}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!get\+\_\+io\+\_\+service@{get\+\_\+io\+\_\+service}}
+\index{get\+\_\+io\+\_\+service@{get\+\_\+io\+\_\+service}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{get\+\_\+io\+\_\+service()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ {\bf asio\+::io\+\_\+service}\& {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::get\+\_\+io\+\_\+service (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_ad5f0be52be35bcef5ac6ae3d42f0f592}
+
+
+Get the \hyperlink{classasio_1_1io__service}{io\+\_\+service} associated with the object. 
+
+This function may be used to obtain the \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that the stream uses to dispatch handlers for asynchronous operations.
+
+\begin{DoxyReturn}{Returns}
+A reference to the \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that stream will use to dispatch handlers. Ownership is not transferred to the caller. 
+\end{DoxyReturn}
+
+
+Definition at line 105 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a326a75224a55b43ac12d2676d465958c}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!handshake@{handshake}}
+\index{handshake@{handshake}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{handshake(handshake\+\_\+type type)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ void {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::handshake (
+\begin{DoxyParamCaption}
+\item[{{\bf handshake\+\_\+type}}]{type}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a326a75224a55b43ac12d2676d465958c}
+
+
+Perform S\+S\+L handshaking. 
+
+This function is used to perform S\+S\+L handshaking on the stream. The function call will block until handshaking is complete or an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The type of handshaking to be performed, i.\+e. as a client or as a server.\\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 170 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_ad4d612fa88c243e25dad7e1db1428973}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!handshake@{handshake}}
+\index{handshake@{handshake}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{handshake(handshake\+\_\+type type, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::handshake (
+\begin{DoxyParamCaption}
+\item[{{\bf handshake\+\_\+type}}]{type, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_ad4d612fa88c243e25dad7e1db1428973}
+
+
+Perform S\+S\+L handshaking. 
+
+This function is used to perform S\+S\+L handshaking on the stream. The function call will block until handshaking is complete or an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The type of handshaking to be performed, i.\+e. as a client or as a server.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 187 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_ac8d24d7329411233167125d82b6d38bf}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!impl@{impl}}
+\index{impl@{impl}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{impl()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ {\bf impl\+\_\+type} {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::impl (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_ac8d24d7329411233167125d82b6d38bf}
+
+
+Get the underlying implementation in the native type. 
+
+This function may be used to obtain the underlying implementation of the context. This is intended to allow access to stream functionality that is not otherwise provided. 
+
+Definition at line 155 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a0a7146a346f17d1411adca213934632a}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!in\+\_\+avail@{in\+\_\+avail}}
+\index{in\+\_\+avail@{in\+\_\+avail}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{in\+\_\+avail()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ std\+::size\+\_\+t {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::in\+\_\+avail (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a0a7146a346f17d1411adca213934632a}
+
+
+Determine the amount of data that may be read without blocking. 
+
+This function is used to determine the amount of data, in bytes, that may be read from the stream without blocking.
+
+\begin{DoxyReturn}{Returns}
+The number of bytes of data that can be read without blocking.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 462 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_ae1de782526b419d58092c1a5d69bb0e5}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!in\+\_\+avail@{in\+\_\+avail}}
+\index{in\+\_\+avail@{in\+\_\+avail}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{in\+\_\+avail(asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ std\+::size\+\_\+t {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::in\+\_\+avail (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_ae1de782526b419d58092c1a5d69bb0e5}
+
+
+Determine the amount of data that may be read without blocking. 
+
+This function is used to determine the amount of data, in bytes, that may be read from the stream without blocking.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes of data that can be read without blocking. 
+\end{DoxyReturn}
+
+
+Definition at line 479 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_ac48e43adf4001a1a318d76213fd7186d}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!lowest\+\_\+layer@{lowest\+\_\+layer}}
+\index{lowest\+\_\+layer@{lowest\+\_\+layer}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{lowest\+\_\+layer()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ {\bf lowest\+\_\+layer\+\_\+type}\& {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::lowest\+\_\+layer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_ac48e43adf4001a1a318d76213fd7186d}
+
+
+Get a reference to the lowest layer. 
+
+This function returns a reference to the lowest layer in a stack of stream layers.
+
+\begin{DoxyReturn}{Returns}
+A reference to the lowest layer in the stack of stream layers. Ownership is not transferred to the caller. 
+\end{DoxyReturn}
+
+
+Definition at line 131 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_ab029c9d927db0140d70c6730226aad03}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!lowest\+\_\+layer@{lowest\+\_\+layer}}
+\index{lowest\+\_\+layer@{lowest\+\_\+layer}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{lowest\+\_\+layer() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ const {\bf lowest\+\_\+layer\+\_\+type}\& {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::lowest\+\_\+layer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_ab029c9d927db0140d70c6730226aad03}
+
+
+Get a const reference to the lowest layer. 
+
+This function returns a const reference to the lowest layer in a stack of stream layers.
+
+\begin{DoxyReturn}{Returns}
+A const reference to the lowest layer in the stack of stream layers. Ownership is not transferred to the caller. 
+\end{DoxyReturn}
+
+
+Definition at line 144 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a32040331ac2eb6aa5098aa02316bb9d8}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!next\+\_\+layer@{next\+\_\+layer}}
+\index{next\+\_\+layer@{next\+\_\+layer}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{next\+\_\+layer()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ {\bf next\+\_\+layer\+\_\+type}\& {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::next\+\_\+layer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a32040331ac2eb6aa5098aa02316bb9d8}
+
+
+Get a reference to the next layer. 
+
+This function returns a reference to the next layer in a stack of stream layers.
+
+\begin{DoxyReturn}{Returns}
+A reference to the next layer in the stack of stream layers. Ownership is not transferred to the caller. 
+\end{DoxyReturn}
+
+
+Definition at line 118 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a5a04711b312236f6e3d07c2b9717fefc}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!peek@{peek}}
+\index{peek@{peek}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{peek(const Mutable\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::peek (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a5a04711b312236f6e3d07c2b9717fefc}
+
+
+Peek at the incoming data on the stream. 
+
+This function is used to peek at the incoming data on the stream, without removing it from the input queue. The function call will block until data has been read successfully or an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & The buffers into which the data will be read.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes read.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 426 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a60f1136af69b6f6d4c4eb5ae9824343b}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!peek@{peek}}
+\index{peek@{peek}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{peek(const Mutable\+Buffer\+Sequence \&buffers, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::peek (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a60f1136af69b6f6d4c4eb5ae9824343b}
+
+
+Peek at the incoming data on the stream. 
+
+This function is used to peek at the incoming data on the stream, withoutxi removing it from the input queue. The function call will block until data has been read successfully or an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & The buffers into which the data will be read.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes read. Returns 0 if an error occurred. 
+\end{DoxyReturn}
+
+
+Definition at line 447 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a0af187c4f0f580a4941538d9c9c43ef5}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!read\+\_\+some@{read\+\_\+some}}
+\index{read\+\_\+some@{read\+\_\+some}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{read\+\_\+some(const Mutable\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::read\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a0af187c4f0f580a4941538d9c9c43ef5}
+
+
+Read some data from the stream. 
+
+This function is used to read data from the stream. The function call will block until one or more bytes of data has been read successfully, or until an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & The buffers into which the data will be read.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes read.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The read\+\_\+some operation may not read all of the requested number of bytes. Consider using the \hyperlink{group__read}{asio\+::read} function if you need to ensure that the requested amount of data is read before the blocking operation completes. 
+\end{DoxyNote}
+
+
+Definition at line 352 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a8cbd732b0ea3986dd05e76aa493e5b65}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!read\+\_\+some@{read\+\_\+some}}
+\index{read\+\_\+some@{read\+\_\+some}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{read\+\_\+some(const Mutable\+Buffer\+Sequence \&buffers, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::read\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a8cbd732b0ea3986dd05e76aa493e5b65}
+
+
+Read some data from the stream. 
+
+This function is used to read data from the stream. The function call will block until one or more bytes of data has been read successfully, or until an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & The buffers into which the data will be read.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes read. Returns 0 if an error occurred.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The read\+\_\+some operation may not read all of the requested number of bytes. Consider using the \hyperlink{group__read}{asio\+::read} function if you need to ensure that the requested amount of data is read before the blocking operation completes. 
+\end{DoxyNote}
+
+
+Definition at line 377 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a6067ec453251827936bcc62058a6c592}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{shutdown()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ void {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::shutdown (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a6067ec453251827936bcc62058a6c592}
+
+
+Shut down S\+S\+L on the stream. 
+
+This function is used to shut down S\+S\+L on the stream. The function call will block until S\+S\+L has been shut down or an error occurs.
+
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 221 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_ac72e660505e1880675fe99d6c7dc5b9c}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{shutdown(asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::shutdown (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_ac72e660505e1880675fe99d6c7dc5b9c}
+
+
+Shut down S\+S\+L on the stream. 
+
+This function is used to shut down S\+S\+L on the stream. The function call will block until S\+S\+L has been shut down or an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ec} & Set to indicate what error occurred, if any. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 235 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a5c46226ee7670e8b246045d7083f3dc3}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!write\+\_\+some@{write\+\_\+some}}
+\index{write\+\_\+some@{write\+\_\+some}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{write\+\_\+some(const Const\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ template$<$typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::write\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Const\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a5c46226ee7670e8b246045d7083f3dc3}
+
+
+Write some data to the stream. 
+
+This function is used to write data on the stream. The function call will block until one or more bytes of data has been written successfully, or until an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & The data to be written.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes written.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+The write\+\_\+some operation may not transmit all of the data to the peer. Consider using the \hyperlink{group__write}{asio\+::write} function if you need to ensure that all data is written before the blocking operation completes. 
+\end{DoxyNote}
+
+
+Definition at line 275 of file stream.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1old_1_1stream_a8e60094fcd1c78f221157b2d1e7ecaa9}{}\index{asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}!write\+\_\+some@{write\+\_\+some}}
+\index{write\+\_\+some@{write\+\_\+some}!asio\+::ssl\+::old\+::stream@{asio\+::ssl\+::old\+::stream}}
+\subsubsection[{write\+\_\+some(const Const\+Buffer\+Sequence \&buffers, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream , typename Service  = old\+::stream\+\_\+service$>$ template$<$typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::ssl\+::old\+::stream}$<$ Stream, Service $>$\+::write\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ssl_1_1old_1_1stream_a8e60094fcd1c78f221157b2d1e7ecaa9}
+
+
+Write some data to the stream. 
+
+This function is used to write data on the stream. The function call will block until one or more bytes of data has been written successfully, or until an error occurs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffers} & The data to be written to the stream.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes written. Returns 0 if an error occurred.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The write\+\_\+some operation may not transmit all of the data to the peer. Consider using the \hyperlink{group__write}{asio\+::write} function if you need to ensure that all data is written before the blocking operation completes. 
+\end{DoxyNote}
+
+
+Definition at line 300 of file stream.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ssl/old/\hyperlink{old_2stream_8hpp}{stream.\+hpp}\end{DoxyCompactItemize}

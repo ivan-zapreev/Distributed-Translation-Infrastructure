@@ -1,0 +1,4 @@
+var classasio____1____1detail____1____1resolver________service________base__8js_8js =
+[
+    [ "classasio__1__1detail__1__1resolver____service____base_8js", "classasio____1____1detail____1____1resolver________service________base__8js_8js.html#a7563edc30d38cd5336e3a68b352b1cd0", null ]
+];

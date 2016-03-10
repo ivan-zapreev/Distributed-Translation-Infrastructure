@@ -1,0 +1,627 @@
+\hypertarget{classasio_1_1socket__base}{}\section{asio\+:\+:socket\+\_\+base Class Reference}
+\label{classasio_1_1socket__base}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+
+
+{\ttfamily \#include $<$socket\+\_\+base.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:socket\+\_\+base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.368421cm]{classasio_1_1socket__base}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37}{shutdown\+\_\+type} \{ \hyperlink{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37acbfe078d69142138f3162984ba6a1b9b}{shutdown\+\_\+receive} = A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F(S\+H\+U\+T\+\_\+\+R\+D), 
+\hyperlink{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37a042d0121d26acaa45a86e0db3cb8aa62}{shutdown\+\_\+send} = A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F(S\+H\+U\+T\+\_\+\+W\+R), 
+\hyperlink{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37a66b86f5f0b2524bc7652dc9c7c82c0fd}{shutdown\+\_\+both} = A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F(S\+H\+U\+T\+\_\+\+R\+D\+W\+R)
+ \}\begin{DoxyCompactList}\small\item\em Different ways a socket may be shutdown. \end{DoxyCompactList}
+\item 
+typedef int \hyperlink{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{message\+\_\+flags}
+\begin{DoxyCompactList}\small\item\em Bitmask type for flags that can be passed to send and receive operations. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1boolean}{asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T)$>$ \hyperlink{classasio_1_1socket__base_adb7828bb32a8912680906a66a6551ec3}{broadcast}
+\begin{DoxyCompactList}\small\item\em Socket option to permit sending of broadcast messages. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1boolean}{asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+D\+E\+B\+U\+G)$>$ \hyperlink{classasio_1_1socket__base_a90b6054fb9139cda8b29a79d67ebe313}{debug}
+\begin{DoxyCompactList}\small\item\em Socket option to enable socket-\/level debugging. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1boolean}{asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E)$>$ \hyperlink{classasio_1_1socket__base_ab7b1853c3ab069c31202a5ea11deb882}{do\+\_\+not\+\_\+route}
+\begin{DoxyCompactList}\small\item\em Socket option to prevent routing, use local interfaces only. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1boolean}{asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E)$>$ \hyperlink{classasio_1_1socket__base_a18672db1f78d0e0e58899e90100bf688}{keep\+\_\+alive}
+\begin{DoxyCompactList}\small\item\em Socket option to send keep-\/alives. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1integer}{asio\+::detail\+::socket\+\_\+option\+::integer}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+S\+N\+D\+B\+U\+F)$>$ \hyperlink{classasio_1_1socket__base_a0d4a964ee76ec66ae251e903bff872e5}{send\+\_\+buffer\+\_\+size}
+\begin{DoxyCompactList}\small\item\em Socket option for the send buffer size of a socket. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1integer}{asio\+::detail\+::socket\+\_\+option\+::integer}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T)$>$ \hyperlink{classasio_1_1socket__base_ac6dce7c293671df85757eeed300d4209}{send\+\_\+low\+\_\+watermark}
+\begin{DoxyCompactList}\small\item\em Socket option for the send low watermark. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1integer}{asio\+::detail\+::socket\+\_\+option\+::integer}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+R\+C\+V\+B\+U\+F)$>$ \hyperlink{classasio_1_1socket__base_a7d102a034ff7e2a71dfe6434c6ba0525}{receive\+\_\+buffer\+\_\+size}
+\begin{DoxyCompactList}\small\item\em Socket option for the receive buffer size of a socket. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1integer}{asio\+::detail\+::socket\+\_\+option\+::integer}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T)$>$ \hyperlink{classasio_1_1socket__base_acc8a5f622e3b8345e5aa2c4c733bd0fa}{receive\+\_\+low\+\_\+watermark}
+\begin{DoxyCompactList}\small\item\em Socket option for the receive low watermark. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1boolean}{asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R)$>$ \hyperlink{classasio_1_1socket__base_a67c5df52b56da13637929727916e4a0a}{reuse\+\_\+address}
+\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1linger}{asio\+::detail\+::socket\+\_\+option\+::linger}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+L\+I\+N\+G\+E\+R)$>$ \hyperlink{classasio_1_1socket__base_a0c1a9362331c7574dbf3ec48d2491c34}{linger}
+\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1boolean}{asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ \hyperlink{namespaceasio_1_1detail_ac87c0ec12e7071c1f18513b04a627a24}{asio\+::detail\+::custom\+\_\+socket\+\_\+option\+\_\+level}, \hyperlink{namespaceasio_1_1detail_a4d541df87cf6415ae4d57937476bb361}{asio\+::detail\+::enable\+\_\+connection\+\_\+aborted\+\_\+option} $>$ \hyperlink{classasio_1_1socket__base_a9787312b9387d5bdc761f6b6d4530830}{enable\+\_\+connection\+\_\+aborted}
+\begin{DoxyCompactList}\small\item\em Socket option to report aborted connections on accept. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1io__control_1_1non__blocking__io}{asio\+::detail\+::io\+\_\+control\+::non\+\_\+blocking\+\_\+io} \hyperlink{classasio_1_1socket__base_ab4de0f3662c5f485d867da65d30e7e8b}{non\+\_\+blocking\+\_\+io}
+\item 
+typedef \hyperlink{classasio_1_1detail_1_1io__control_1_1bytes__readable}{asio\+::detail\+::io\+\_\+control\+::bytes\+\_\+readable} \hyperlink{classasio_1_1socket__base_acf399372b78fa9a6ad04a297202c2fac}{bytes\+\_\+readable}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1socket__base_a22a2b836c3cd24eacb58c46c6e2524dc}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (int, message\+\_\+peek=\hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(M\+S\+G\+\_\+\+P\+E\+E\+K))
+\item 
+\hyperlink{classasio_1_1socket__base_ac7943cf04e37e42fffc501b8f5bcf473}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (int, message\+\_\+out\+\_\+of\+\_\+band=\hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(M\+S\+G\+\_\+\+O\+O\+B))
+\item 
+\hyperlink{classasio_1_1socket__base_a6fa891138f1218c50aa4f879861574fd}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (int, message\+\_\+do\+\_\+not\+\_\+route=\hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(M\+S\+G\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E))
+\item 
+\hyperlink{classasio_1_1socket__base_a0d8414096718a77c1e5cad2d75d0e07f}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (int, message\+\_\+end\+\_\+of\+\_\+record=\hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(M\+S\+G\+\_\+\+E\+O\+R))
+\item 
+\hyperlink{classasio_1_1socket__base_a774d6c355ca125c3ba3f8c268ab5dede}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (int, max\+\_\+connections=\hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+M\+A\+X\+C\+O\+N\+N))
+\begin{DoxyCompactList}\small\item\em The maximum length of the queue of pending incoming connections. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1socket__base_ad581462742d6f53451251c97610c57c9}{$\sim$socket\+\_\+base} ()
+\begin{DoxyCompactList}\small\item\em Protected destructor to prevent deletion through this type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classasio_1_1socket__base}{socket\+\_\+base} class is used as a base for the \hyperlink{classasio_1_1basic__stream__socket}{basic\+\_\+stream\+\_\+socket} and \hyperlink{classasio_1_1basic__datagram__socket}{basic\+\_\+datagram\+\_\+socket} class templates so that we have a common place to define the shutdown\+\_\+type and enum. 
+
+Definition at line 30 of file socket\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1socket__base_adb7828bb32a8912680906a66a6551ec3}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!broadcast@{broadcast}}
+\index{broadcast@{broadcast}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{broadcast}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T)$>$ {\bf asio\+::socket\+\_\+base\+::broadcast}}\label{classasio_1_1socket__base_adb7828bb32a8912680906a66a6551ec3}
+
+
+Socket option to permit sending of broadcast messages. 
+
+Implements the S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T/\+S\+O\+\_\+\+B\+R\+O\+A\+D\+C\+A\+S\+T socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__datagram__socket}{asio::ip::udp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::broadcast option(\textcolor{keyword}{true});
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__datagram__socket}{asio::ip::udp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::broadcast option;
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.get\_option(option);
+\textcolor{keywordtype}{bool} is\_set = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Boolean\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 109 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_acf399372b78fa9a6ad04a297202c2fac}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!bytes\+\_\+readable@{bytes\+\_\+readable}}
+\index{bytes\+\_\+readable@{bytes\+\_\+readable}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{bytes\+\_\+readable}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::io\+\_\+control\+::bytes\+\_\+readable} {\bf asio\+::socket\+\_\+base\+::bytes\+\_\+readable}}\label{classasio_1_1socket__base_acf399372b78fa9a6ad04a297202c2fac}
+I\+O control command to get the amount of data that can be read without blocking. Implements the F\+I\+O\+N\+R\+E\+A\+D I\+O control command.
+
+\begin{DoxyParagraph}{Example}
+
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::bytes\_readable command(\textcolor{keyword}{true});
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.io\_control(command);
+std::size\_t bytes\_readable = command.get();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+I\+O\+\_\+\+Control\+\_\+\+Command, Size\+\_\+\+I\+O\+\_\+\+Control\+\_\+\+Command. 
+\end{DoxyParagraph}
+
+
+Definition at line 498 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_a90b6054fb9139cda8b29a79d67ebe313}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!debug@{debug}}
+\index{debug@{debug}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{debug}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+D\+E\+B\+U\+G)$>$ {\bf asio\+::socket\+\_\+base\+::debug}}\label{classasio_1_1socket__base_a90b6054fb9139cda8b29a79d67ebe313}
+
+
+Socket option to enable socket-\/level debugging. 
+
+Implements the S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T/\+S\+O\+\_\+\+D\+E\+B\+U\+G socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::debug option(\textcolor{keyword}{true});
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::debug option;
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.get\_option(option);
+\textcolor{keywordtype}{bool} is\_set = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Boolean\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 142 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_ab7b1853c3ab069c31202a5ea11deb882}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!do\+\_\+not\+\_\+route@{do\+\_\+not\+\_\+route}}
+\index{do\+\_\+not\+\_\+route@{do\+\_\+not\+\_\+route}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{do\+\_\+not\+\_\+route}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E)$>$ {\bf asio\+::socket\+\_\+base\+::do\+\_\+not\+\_\+route}}\label{classasio_1_1socket__base_ab7b1853c3ab069c31202a5ea11deb882}
+
+
+Socket option to prevent routing, use local interfaces only. 
+
+Implements the S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T/\+S\+O\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__datagram__socket}{asio::ip::udp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::do\_not\_route option(\textcolor{keyword}{true});
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__datagram__socket}{asio::ip::udp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::do\_not\_route option;
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.get\_option(option);
+\textcolor{keywordtype}{bool} is\_set = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Boolean\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 176 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_a9787312b9387d5bdc761f6b6d4530830}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!enable\+\_\+connection\+\_\+aborted@{enable\+\_\+connection\+\_\+aborted}}
+\index{enable\+\_\+connection\+\_\+aborted@{enable\+\_\+connection\+\_\+aborted}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{enable\+\_\+connection\+\_\+aborted}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ {\bf asio\+::detail\+::custom\+\_\+socket\+\_\+option\+\_\+level}, {\bf asio\+::detail\+::enable\+\_\+connection\+\_\+aborted\+\_\+option}$>$ {\bf asio\+::socket\+\_\+base\+::enable\+\_\+connection\+\_\+aborted}}\label{classasio_1_1socket__base_a9787312b9387d5bdc761f6b6d4530830}
+
+
+Socket option to report aborted connections on accept. 
+
+Implements a custom socket option that determines whether or not an accept operation is permitted to fail with \hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90da58e2f13d5e22e6a6381c7e96883b76e1}{asio\+::error\+::connection\+\_\+aborted}. By default the option is false.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__socket__acceptor}{asio::ip::tcp::acceptor} acceptor(io\_service); 
+...
+asio::socket\_base::enable\_connection\_aborted option(\textcolor{keyword}{true});
+acceptor.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__socket__acceptor}{asio::ip::tcp::acceptor} acceptor(io\_service); 
+...
+asio::socket\_base::enable\_connection\_aborted option;
+acceptor.get\_option(option);
+\textcolor{keywordtype}{bool} is\_set = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Boolean\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 453 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_a18672db1f78d0e0e58899e90100bf688}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!keep\+\_\+alive@{keep\+\_\+alive}}
+\index{keep\+\_\+alive@{keep\+\_\+alive}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{keep\+\_\+alive}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E)$>$ {\bf asio\+::socket\+\_\+base\+::keep\+\_\+alive}}\label{classasio_1_1socket__base_a18672db1f78d0e0e58899e90100bf688}
+
+
+Socket option to send keep-\/alives. 
+
+Implements the S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T/\+S\+O\+\_\+\+K\+E\+E\+P\+A\+L\+I\+V\+E socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::keep\_alive option(\textcolor{keyword}{true});
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::keep\_alive option;
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.get\_option(option);
+\textcolor{keywordtype}{bool} is\_set = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Boolean\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 209 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_a0c1a9362331c7574dbf3ec48d2491c34}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!linger@{linger}}
+\index{linger@{linger}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{linger}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::linger}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+L\+I\+N\+G\+E\+R)$>$ {\bf asio\+::socket\+\_\+base\+::linger}}\label{classasio_1_1socket__base_a0c1a9362331c7574dbf3ec48d2491c34}
+Socket option to specify whether the socket lingers on close if unsent data is present. Implements the S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T/\+S\+O\+\_\+\+L\+I\+N\+G\+E\+R socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::linger option(\textcolor{keyword}{true}, 30);
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::linger option;
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.get\_option(option);
+\textcolor{keywordtype}{bool} is\_set = option.enabled();
+\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{short} timeout = option.timeout();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Linger\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 416 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!message\+\_\+flags@{message\+\_\+flags}}
+\index{message\+\_\+flags@{message\+\_\+flags}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{message\+\_\+flags}]{\setlength{\rightskip}{0pt plus 5cm}typedef int {\bf asio\+::socket\+\_\+base\+::message\+\_\+flags}}\label{classasio_1_1socket__base_ac3cf77465dfedfe1979b5415cf32cc94}
+
+
+Bitmask type for flags that can be passed to send and receive operations. 
+
+
+
+Definition at line 53 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_ab4de0f3662c5f485d867da65d30e7e8b}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!non\+\_\+blocking\+\_\+io@{non\+\_\+blocking\+\_\+io}}
+\index{non\+\_\+blocking\+\_\+io@{non\+\_\+blocking\+\_\+io}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{non\+\_\+blocking\+\_\+io}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::io\+\_\+control\+::non\+\_\+blocking\+\_\+io} {\bf asio\+::socket\+\_\+base\+::non\+\_\+blocking\+\_\+io}}\label{classasio_1_1socket__base_ab4de0f3662c5f485d867da65d30e7e8b}
+(Deprecated\+: Use \hyperlink{namespaceasio_1_1detail_1_1descriptor__ops_abc164de9d9f17c5082e27e043bd4bb3da9694dc69c579805472d9c180aa66cd15}{non\+\_\+blocking()}.) I\+O control command to set the blocking mode of the socket. Implements the F\+I\+O\+N\+B\+I\+O I\+O control command.
+
+\begin{DoxyParagraph}{Example}
+
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::non\_blocking\_io command(\textcolor{keyword}{true});
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.io\_control(command);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+I\+O\+\_\+\+Control\+\_\+\+Command, Boolean\+\_\+\+I\+O\+\_\+\+Control\+\_\+\+Command. 
+\end{DoxyParagraph}
+
+
+Definition at line 475 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_a7d102a034ff7e2a71dfe6434c6ba0525}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!receive\+\_\+buffer\+\_\+size@{receive\+\_\+buffer\+\_\+size}}
+\index{receive\+\_\+buffer\+\_\+size@{receive\+\_\+buffer\+\_\+size}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{receive\+\_\+buffer\+\_\+size}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::integer}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+R\+C\+V\+B\+U\+F)$>$ {\bf asio\+::socket\+\_\+base\+::receive\+\_\+buffer\+\_\+size}}\label{classasio_1_1socket__base_a7d102a034ff7e2a71dfe6434c6ba0525}
+
+
+Socket option for the receive buffer size of a socket. 
+
+Implements the S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T/\+S\+O\+\_\+\+R\+C\+V\+B\+U\+F socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::receive\_buffer\_size option(8192);
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::receive\_buffer\_size option;
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.get\_option(option);
+\textcolor{keywordtype}{int} size = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Integer\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 311 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_acc8a5f622e3b8345e5aa2c4c733bd0fa}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!receive\+\_\+low\+\_\+watermark@{receive\+\_\+low\+\_\+watermark}}
+\index{receive\+\_\+low\+\_\+watermark@{receive\+\_\+low\+\_\+watermark}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{receive\+\_\+low\+\_\+watermark}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::integer}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T)$>$ {\bf asio\+::socket\+\_\+base\+::receive\+\_\+low\+\_\+watermark}}\label{classasio_1_1socket__base_acc8a5f622e3b8345e5aa2c4c733bd0fa}
+
+
+Socket option for the receive low watermark. 
+
+Implements the S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T/\+S\+O\+\_\+\+R\+C\+V\+L\+O\+W\+A\+T socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::receive\_low\_watermark option(1024);
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::receive\_low\_watermark option;
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.get\_option(option);
+\textcolor{keywordtype}{int} size = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Integer\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 345 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_a67c5df52b56da13637929727916e4a0a}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!reuse\+\_\+address@{reuse\+\_\+address}}
+\index{reuse\+\_\+address@{reuse\+\_\+address}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{reuse\+\_\+address}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R)$>$ {\bf asio\+::socket\+\_\+base\+::reuse\+\_\+address}}\label{classasio_1_1socket__base_a67c5df52b56da13637929727916e4a0a}
+Socket option to allow the socket to be bound to an address that is already in use. Implements the S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T/\+S\+O\+\_\+\+R\+E\+U\+S\+E\+A\+D\+D\+R socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__socket__acceptor}{asio::ip::tcp::acceptor} acceptor(io\_service); 
+...
+asio::socket\_base::reuse\_address option(\textcolor{keyword}{true});
+acceptor.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__socket__acceptor}{asio::ip::tcp::acceptor} acceptor(io\_service); 
+...
+asio::socket\_base::reuse\_address option;
+acceptor.get\_option(option);
+\textcolor{keywordtype}{bool} is\_set = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Boolean\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 380 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_a0d4a964ee76ec66ae251e903bff872e5}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!send\+\_\+buffer\+\_\+size@{send\+\_\+buffer\+\_\+size}}
+\index{send\+\_\+buffer\+\_\+size@{send\+\_\+buffer\+\_\+size}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{send\+\_\+buffer\+\_\+size}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::integer}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+S\+N\+D\+B\+U\+F)$>$ {\bf asio\+::socket\+\_\+base\+::send\+\_\+buffer\+\_\+size}}\label{classasio_1_1socket__base_a0d4a964ee76ec66ae251e903bff872e5}
+
+
+Socket option for the send buffer size of a socket. 
+
+Implements the S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T/\+S\+O\+\_\+\+S\+N\+D\+B\+U\+F socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::send\_buffer\_size option(8192);
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::send\_buffer\_size option;
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.get\_option(option);
+\textcolor{keywordtype}{int} size = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Integer\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 243 of file socket\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1socket__base_ac6dce7c293671df85757eeed300d4209}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!send\+\_\+low\+\_\+watermark@{send\+\_\+low\+\_\+watermark}}
+\index{send\+\_\+low\+\_\+watermark@{send\+\_\+low\+\_\+watermark}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{send\+\_\+low\+\_\+watermark}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::integer}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T)$>$ {\bf asio\+::socket\+\_\+base\+::send\+\_\+low\+\_\+watermark}}\label{classasio_1_1socket__base_ac6dce7c293671df85757eeed300d4209}
+
+
+Socket option for the send low watermark. 
+
+Implements the S\+O\+L\+\_\+\+S\+O\+C\+K\+E\+T/\+S\+O\+\_\+\+S\+N\+D\+L\+O\+W\+A\+T socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::send\_low\_watermark option(1024);
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::socket\_base::send\_low\_watermark option;
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.get\_option(option);
+\textcolor{keywordtype}{int} size = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Integer\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 277 of file socket\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!shutdown\+\_\+type@{shutdown\+\_\+type}}
+\index{shutdown\+\_\+type@{shutdown\+\_\+type}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{shutdown\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf asio\+::socket\+\_\+base\+::shutdown\+\_\+type}}\label{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37}
+
+
+Different ways a socket may be shutdown. 
+
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{shutdown\+\_\+receive@{shutdown\+\_\+receive}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!shutdown\+\_\+receive@{shutdown\+\_\+receive}}\item[{\em 
+\hypertarget{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37acbfe078d69142138f3162984ba6a1b9b}{}shutdown\+\_\+receive\label{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37acbfe078d69142138f3162984ba6a1b9b}
+}]\index{shutdown\+\_\+send@{shutdown\+\_\+send}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!shutdown\+\_\+send@{shutdown\+\_\+send}}\item[{\em 
+\hypertarget{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37a042d0121d26acaa45a86e0db3cb8aa62}{}shutdown\+\_\+send\label{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37a042d0121d26acaa45a86e0db3cb8aa62}
+}]\index{shutdown\+\_\+both@{shutdown\+\_\+both}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!shutdown\+\_\+both@{shutdown\+\_\+both}}\item[{\em 
+\hypertarget{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37a66b86f5f0b2524bc7652dc9c7c82c0fd}{}shutdown\+\_\+both\label{classasio_1_1socket__base_a915e52ff147efd296350bba81f795c37a66b86f5f0b2524bc7652dc9c7c82c0fd}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line 34 of file socket\+\_\+base.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1socket__base_ad581462742d6f53451251c97610c57c9}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!````~socket\+\_\+base@{$\sim$socket\+\_\+base}}
+\index{````~socket\+\_\+base@{$\sim$socket\+\_\+base}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{$\sim$socket\+\_\+base()}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::socket\+\_\+base\+::$\sim$socket\+\_\+base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classasio_1_1socket__base_ad581462742d6f53451251c97610c57c9}
+
+
+Protected destructor to prevent deletion through this type. 
+
+
+
+Definition at line 511 of file socket\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1socket__base_a22a2b836c3cd24eacb58c46c6e2524dc}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(int, message\+\_\+peek=\+A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F(\+M\+S\+G\+\_\+\+P\+E\+E\+K))}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::socket\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{message\+\_\+peek}]{ = {\ttfamily {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(MSG\+\_\+PEEK)}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1socket__base_a22a2b836c3cd24eacb58c46c6e2524dc}
+\hypertarget{classasio_1_1socket__base_ac7943cf04e37e42fffc501b8f5bcf473}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(int, message\+\_\+out\+\_\+of\+\_\+band=\+A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F(\+M\+S\+G\+\_\+\+O\+O\+B))}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::socket\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{message\+\_\+out\+\_\+of\+\_\+band}]{ = {\ttfamily {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(MSG\+\_\+OOB)}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1socket__base_ac7943cf04e37e42fffc501b8f5bcf473}
+\hypertarget{classasio_1_1socket__base_a6fa891138f1218c50aa4f879861574fd}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(int, message\+\_\+do\+\_\+not\+\_\+route=\+A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F(\+M\+S\+G\+\_\+\+D\+O\+N\+T\+R\+O\+U\+T\+E))}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::socket\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{message\+\_\+do\+\_\+not\+\_\+route}]{ = {\ttfamily {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(MSG\+\_\+DONTROUTE)}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1socket__base_a6fa891138f1218c50aa4f879861574fd}
+\hypertarget{classasio_1_1socket__base_a0d8414096718a77c1e5cad2d75d0e07f}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(int, message\+\_\+end\+\_\+of\+\_\+record=\+A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F(\+M\+S\+G\+\_\+\+E\+O\+R))}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::socket\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{message\+\_\+end\+\_\+of\+\_\+record}]{ = {\ttfamily {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(MSG\+\_\+EOR)}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1socket__base_a0d8414096718a77c1e5cad2d75d0e07f}
+\hypertarget{classasio_1_1socket__base_a774d6c355ca125c3ba3f8c268ab5dede}{}\index{asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::socket\+\_\+base@{asio\+::socket\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(int, max\+\_\+connections=\+A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F(\+S\+O\+M\+A\+X\+C\+O\+N\+N))}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::socket\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{max\+\_\+connections}]{ = {\ttfamily {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(SOMAXCONN)}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1socket__base_a774d6c355ca125c3ba3f8c268ab5dede}
+
+
+The maximum length of the queue of pending incoming connections. 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{socket__base_8hpp}{socket\+\_\+base.\+hpp}\end{DoxyCompactItemize}

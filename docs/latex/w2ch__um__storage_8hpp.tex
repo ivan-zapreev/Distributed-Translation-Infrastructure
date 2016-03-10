@@ -1,0 +1,41 @@
+\hypertarget{w2ch__um__storage_8hpp}{}\section{inc/server/lm/models/w2ch\+\_\+um\+\_\+storage.hpp File Reference}
+\label{w2ch__um__storage_8hpp}\index{inc/server/lm/models/w2ch\+\_\+um\+\_\+storage.\+hpp@{inc/server/lm/models/w2ch\+\_\+um\+\_\+storage.\+hpp}}
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+{\ttfamily \#include $<$utility$>$}\\*
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\\*
+{\ttfamily \#include $<$map$>$}\\*
+{\ttfamily \#include \char`\"{}server/lm/lm\+\_\+consts.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/logging/logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/aword\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/containers/greedy\+\_\+memory\+\_\+allocator.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_h___u_m___storage}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_h___u_m___storage_factory}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory$<$ N $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd}{uva\+::smt\+::bpbd}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server}{uva\+::smt\+::bpbd\+::server}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm}{uva\+::smt\+::bpbd\+::server\+::lm}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef pair$<$ const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a33043a191e9a637dea742a89d23c8bdc}{T\+Short\+Id}, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a33043a191e9a637dea742a89d23c8bdc}{T\+Short\+Id} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_af9753207e699d2eca15673a50653797e}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+Storage\+Map\+Entry}
+\item 
+typedef \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator}{Greedy\+Memory\+Allocator}$<$ T\+Storage\+Map\+Entry $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab3c8b0f5a97fd6cd90d9fdb8bb2335c1}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+Storage\+Map\+Allocator}
+\item 
+typedef unordered\+\_\+map$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a33043a191e9a637dea742a89d23c8bdc}{T\+Short\+Id}, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a33043a191e9a637dea742a89d23c8bdc}{T\+Short\+Id}, std\+::hash$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a33043a191e9a637dea742a89d23c8bdc}{T\+Short\+Id} $>$, std\+::equal\+\_\+to$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a33043a191e9a637dea742a89d23c8bdc}{T\+Short\+Id} $>$, T\+Storage\+Map\+Allocator $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a26bc64a9a6f92c48c443c82b33035e60}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+Storage\+Unsigned\+Map}
+\item 
+typedef map$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a33043a191e9a637dea742a89d23c8bdc}{T\+Short\+Id}, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a33043a191e9a637dea742a89d23c8bdc}{T\+Short\+Id} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a848930f30620014225832ed8d3e6a93e}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+Storage\+Map}
+\end{DoxyCompactItemize}

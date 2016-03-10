@@ -1,0 +1,91 @@
+\hypertarget{classasio_1_1detail_1_1buffered__write__some__handler}{}\section{asio\+:\+:detail\+:\+:buffered\+\_\+write\+\_\+some\+\_\+handler$<$ Const\+Buffer\+Sequence, Write\+Handler $>$ Class Template Reference}
+\label{classasio_1_1detail_1_1buffered__write__some__handler}\index{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler$<$ Const\+Buffer\+Sequence, Write\+Handler $>$@{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler$<$ Const\+Buffer\+Sequence, Write\+Handler $>$}}
+
+
+{\ttfamily \#include $<$buffered\+\_\+write\+\_\+stream.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1detail_1_1buffered__write__some__handler_af2784930fb8df930dfad9cc378b54c23}{buffered\+\_\+write\+\_\+some\+\_\+handler} (\hyperlink{classasio_1_1detail_1_1buffered__stream__storage}{detail\+::buffered\+\_\+stream\+\_\+storage} \&storage, const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, Write\+Handler \&handler)
+\item 
+void \hyperlink{classasio_1_1detail_1_1buffered__write__some__handler_a006c777b1316275f13d32a3a37be6447}{operator()} (const \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, std\+::size\+\_\+t)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1detail_1_1buffered__stream__storage}{detail\+::buffered\+\_\+stream\+\_\+storage} \& \hyperlink{classasio_1_1detail_1_1buffered__write__some__handler_a26506a056c3ed5dc287fa2183b4e2174}{storage\+\_\+}
+\item 
+Const\+Buffer\+Sequence \hyperlink{classasio_1_1detail_1_1buffered__write__some__handler_a3c09e3a75a53b491cbdcaa3c3fe3f4b5}{buffers\+\_\+}
+\item 
+Write\+Handler \hyperlink{classasio_1_1detail_1_1buffered__write__some__handler_a8a01d41c2ea0751dd1ef511c4ceb17e6}{handler\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Const\+Buffer\+Sequence, typename Write\+Handler$>$class asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler$<$ Const\+Buffer\+Sequence, Write\+Handler $>$}
+
+
+
+Definition at line 182 of file buffered\+\_\+write\+\_\+stream.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1buffered__write__some__handler_af2784930fb8df930dfad9cc378b54c23}{}\index{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler@{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}!buffered\+\_\+write\+\_\+some\+\_\+handler@{buffered\+\_\+write\+\_\+some\+\_\+handler}}
+\index{buffered\+\_\+write\+\_\+some\+\_\+handler@{buffered\+\_\+write\+\_\+some\+\_\+handler}!asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler@{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}}
+\subsubsection[{buffered\+\_\+write\+\_\+some\+\_\+handler(detail\+::buffered\+\_\+stream\+\_\+storage \&storage, const Const\+Buffer\+Sequence \&buffers, Write\+Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ {\bf asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}$<$ Const\+Buffer\+Sequence, Write\+Handler $>$\+::{\bf buffered\+\_\+write\+\_\+some\+\_\+handler} (
+\begin{DoxyParamCaption}
+\item[{{\bf detail\+::buffered\+\_\+stream\+\_\+storage} \&}]{storage, }
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{Write\+Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1buffered__write__some__handler_af2784930fb8df930dfad9cc378b54c23}
+
+
+Definition at line 185 of file buffered\+\_\+write\+\_\+stream.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1buffered__write__some__handler_a006c777b1316275f13d32a3a37be6447}{}\index{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler@{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}!operator()@{operator()}}
+\index{operator()@{operator()}!asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler@{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}}
+\subsubsection[{operator()(const asio\+::error\+\_\+code \&ec, std\+::size\+\_\+t)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ void {\bf asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}$<$ Const\+Buffer\+Sequence, Write\+Handler $>$\+::operator() (
+\begin{DoxyParamCaption}
+\item[{const {\bf asio\+::error\+\_\+code} \&}]{ec, }
+\item[{std\+::size\+\_\+t}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1buffered__write__some__handler_a006c777b1316275f13d32a3a37be6447}
+
+
+Definition at line 209 of file buffered\+\_\+write\+\_\+stream.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classasio_1_1detail_1_1buffered__write__some__handler_a3c09e3a75a53b491cbdcaa3c3fe3f4b5}{}\index{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler@{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}!buffers\+\_\+@{buffers\+\_\+}}
+\index{buffers\+\_\+@{buffers\+\_\+}!asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler@{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}}
+\subsubsection[{buffers\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ Const\+Buffer\+Sequence {\bf asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}$<$ Const\+Buffer\+Sequence, Write\+Handler $>$\+::buffers\+\_\+}\label{classasio_1_1detail_1_1buffered__write__some__handler_a3c09e3a75a53b491cbdcaa3c3fe3f4b5}
+
+
+Definition at line 232 of file buffered\+\_\+write\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffered__write__some__handler_a8a01d41c2ea0751dd1ef511c4ceb17e6}{}\index{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler@{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}!handler\+\_\+@{handler\+\_\+}}
+\index{handler\+\_\+@{handler\+\_\+}!asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler@{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}}
+\subsubsection[{handler\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ Write\+Handler {\bf asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}$<$ Const\+Buffer\+Sequence, Write\+Handler $>$\+::handler\+\_\+}\label{classasio_1_1detail_1_1buffered__write__some__handler_a8a01d41c2ea0751dd1ef511c4ceb17e6}
+
+
+Definition at line 233 of file buffered\+\_\+write\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffered__write__some__handler_a26506a056c3ed5dc287fa2183b4e2174}{}\index{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler@{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}!storage\+\_\+@{storage\+\_\+}}
+\index{storage\+\_\+@{storage\+\_\+}!asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler@{asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}}
+\subsubsection[{storage\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ {\bf detail\+::buffered\+\_\+stream\+\_\+storage}\& {\bf asio\+::detail\+::buffered\+\_\+write\+\_\+some\+\_\+handler}$<$ Const\+Buffer\+Sequence, Write\+Handler $>$\+::storage\+\_\+}\label{classasio_1_1detail_1_1buffered__write__some__handler_a26506a056c3ed5dc287fa2183b4e2174}
+
+
+Definition at line 231 of file buffered\+\_\+write\+\_\+stream.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/impl/\hyperlink{impl_2buffered__write__stream_8hpp}{buffered\+\_\+write\+\_\+stream.\+hpp}\end{DoxyCompactItemize}

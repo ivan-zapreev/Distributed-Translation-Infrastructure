@@ -1,0 +1,194 @@
+\hypertarget{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled}{}\section{websocketpp\+:\+:extensions\+:\+:permessage\+\_\+deflate\+:\+:disabled$<$ config $>$ Class Template Reference}
+\label{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled}\index{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled$<$ config $>$@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled$<$ config $>$}}
+
+
+Stub class for use when disabling \hyperlink{namespacewebsocketpp_1_1extensions_1_1permessage__deflate}{permessage\+\_\+deflate} extension.  
+
+
+
+
+{\ttfamily \#include $<$disabled.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+err\+\_\+str\+\_\+pair \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a3de3aad5ffeef60e3713cc29dec7b140}{negotiate} (\hyperlink{namespacewebsocketpp_1_1http_a9744f4104772b987aa9e86c35ce1357b}{http\+::attribute\+\_\+list} const \&)
+\begin{DoxyCompactList}\small\item\em Negotiate extension. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_afe11662b31612191d72558fa7db5c114}{init} (bool)
+\begin{DoxyCompactList}\small\item\em Initialize state. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_ac69a4d4c4caafc58c5a1099329680185}{is\+\_\+implemented} () const 
+\item 
+bool \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a73952093f84aa662b1a84d42ae87b9fb}{is\+\_\+enabled} () const 
+\item 
+std\+::string \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a5e718e8e4a6f2917446791e5e2fe448f}{generate\+\_\+offer} () const 
+\begin{DoxyCompactList}\small\item\em Generate extension offer. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a3ef2c3020ea3b8d531d3cee03bf8eadf}{compress} (std\+::string const \&, std\+::string \&)
+\begin{DoxyCompactList}\small\item\em Compress bytes. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_ad72b694d8ce4c7e39c055ee2008810b6}{decompress} (uint8\+\_\+t const $\ast$, size\+\_\+t, std\+::string \&)
+\begin{DoxyCompactList}\small\item\em Decompress bytes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename config$>$class websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled$<$ config $>$}
+
+Stub class for use when disabling \hyperlink{namespacewebsocketpp_1_1extensions_1_1permessage__deflate}{permessage\+\_\+deflate} extension. 
+
+This class is a stub that implements the \hyperlink{namespacewebsocketpp_1_1extensions_1_1permessage__deflate}{permessage\+\_\+deflate} interface with minimal dependencies. It is used to disable \hyperlink{namespacewebsocketpp_1_1extensions_1_1permessage__deflate}{permessage\+\_\+deflate} functionality at compile time without loading any unnecessary code. 
+
+Definition at line 52 of file disabled.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a3ef2c3020ea3b8d531d3cee03bf8eadf}{}\index{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}!compress@{compress}}
+\index{compress@{compress}!websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}}
+\subsubsection[{compress(std\+::string const \&, std\+::string \&)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}$<$ config $>$\+::compress (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{, }
+\item[{std\+::string \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a3ef2c3020ea3b8d531d3cee03bf8eadf}
+
+
+Compress bytes. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em in} & String to compress \\
+\hline
+\mbox{\tt out}  & {\em out} & String to append compressed bytes to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error or status code 
+\end{DoxyReturn}
+
+
+Definition at line 108 of file disabled.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_ad72b694d8ce4c7e39c055ee2008810b6}{}\index{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}!decompress@{decompress}}
+\index{decompress@{decompress}!websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}}
+\subsubsection[{decompress(uint8\+\_\+t const $\ast$, size\+\_\+t, std\+::string \&)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}$<$ config $>$\+::decompress (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t const $\ast$}]{, }
+\item[{size\+\_\+t}]{, }
+\item[{std\+::string \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_ad72b694d8ce4c7e39c055ee2008810b6}
+
+
+Decompress bytes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & Byte buffer to decompress \\
+\hline
+{\em len} & Length of buf \\
+\hline
+{\em out} & String to append decompressed bytes to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error or status code 
+\end{DoxyReturn}
+
+
+Definition at line 119 of file disabled.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a5e718e8e4a6f2917446791e5e2fe448f}{}\index{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}!generate\+\_\+offer@{generate\+\_\+offer}}
+\index{generate\+\_\+offer@{generate\+\_\+offer}!websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}}
+\subsubsection[{generate\+\_\+offer() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ std\+::string {\bf websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}$<$ config $>$\+::generate\+\_\+offer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a5e718e8e4a6f2917446791e5e2fe448f}
+
+
+Generate extension offer. 
+
+Creates an offer string to include in the Sec-\/\+Web\+Socket-\/\+Extensions header of outgoing client requests.
+
+\begin{DoxyReturn}{Returns}
+A Web\+Socket extension offer string for this extension 
+\end{DoxyReturn}
+
+
+Definition at line 98 of file disabled.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_afe11662b31612191d72558fa7db5c114}{}\index{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}!init@{init}}
+\index{init@{init}!websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}}
+\subsubsection[{init(bool)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}$<$ config $>$\+::init (
+\begin{DoxyParamCaption}
+\item[{bool}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_afe11662b31612191d72558fa7db5c114}
+
+
+Initialize state. 
+
+For the disabled extension state initialization is a no-\/op.
+
+
+\begin{DoxyParams}{Parameters}
+{\em is\+\_\+server} & True to initialize as a server, false for a client. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A code representing the error that occurred, if any 
+\end{DoxyReturn}
+
+
+Definition at line 75 of file disabled.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a73952093f84aa662b1a84d42ae87b9fb}{}\index{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}!is\+\_\+enabled@{is\+\_\+enabled}}
+\index{is\+\_\+enabled@{is\+\_\+enabled}!websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}}
+\subsubsection[{is\+\_\+enabled() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ bool {\bf websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}$<$ config $>$\+::is\+\_\+enabled (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a73952093f84aa662b1a84d42ae87b9fb}
+Returns true if \hyperlink{namespacewebsocketpp_1_1extensions_1_1permessage__deflate}{permessage\+\_\+deflate} functionality is active for this connection 
+
+Definition at line 87 of file disabled.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_ac69a4d4c4caafc58c5a1099329680185}{}\index{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}!is\+\_\+implemented@{is\+\_\+implemented}}
+\index{is\+\_\+implemented@{is\+\_\+implemented}!websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}}
+\subsubsection[{is\+\_\+implemented() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ bool {\bf websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}$<$ config $>$\+::is\+\_\+implemented (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_ac69a4d4c4caafc58c5a1099329680185}
+Returns true if the extension is capable of providing \hyperlink{namespacewebsocketpp_1_1extensions_1_1permessage__deflate}{permessage\+\_\+deflate} functionality 
+
+Definition at line 81 of file disabled.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a3de3aad5ffeef60e3713cc29dec7b140}{}\index{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}!negotiate@{negotiate}}
+\index{negotiate@{negotiate}!websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled@{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}}
+\subsubsection[{negotiate(http\+::attribute\+\_\+list const \&)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ err\+\_\+str\+\_\+pair {\bf websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}$<$ config $>$\+::negotiate (
+\begin{DoxyParamCaption}
+\item[{{\bf http\+::attribute\+\_\+list} const \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled_a3de3aad5ffeef60e3713cc29dec7b140}
+
+
+Negotiate extension. 
+
+The disabled extension always fails the negotiation with a disabled error.
+
+
+\begin{DoxyParams}{Parameters}
+{\em offer} & Attribute from client\textquotesingle{}s offer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code and value to return to remote endpoint 
+\end{DoxyReturn}
+
+
+Definition at line 64 of file disabled.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/extensions/permessage\+\_\+deflate/\hyperlink{disabled_8hpp}{disabled.\+hpp}\end{DoxyCompactItemize}

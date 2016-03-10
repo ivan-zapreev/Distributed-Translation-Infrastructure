@@ -1,0 +1,103 @@
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_output}{}\section{T\+C\+L\+A\+P\+:\+:Cmd\+Line\+Output Class Reference}
+\label{class_t_c_l_a_p_1_1_cmd_line_output}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}}
+
+
+{\ttfamily \#include $<$Cmd\+Line\+Output.\+h$>$}
+
+Inheritance diagram for T\+C\+L\+A\+P\+:\+:Cmd\+Line\+Output\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.996435cm]{class_t_c_l_a_p_1_1_cmd_line_output}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output_afdf4435a2619076d9798a0a950ed405b}{$\sim$\+Cmd\+Line\+Output} ()
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output_a685b13db5bf6bbe5159e49169cd96bbe}{usage} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&c)=0
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output_ae052fea473132482296de55edb3dd480}{version} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&c)=0
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output_ad23a57ac3d8d957a4328fc78aec94e16}{failure} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&c, \hyperlink{class_t_c_l_a_p_1_1_arg_exception}{Arg\+Exception} \&e)=0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The interface that any output object must implement. 
+
+Definition at line 41 of file Cmd\+Line\+Output.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_output_afdf4435a2619076d9798a0a950ed405b}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}!````~Cmd\+Line\+Output@{$\sim$\+Cmd\+Line\+Output}}
+\index{````~Cmd\+Line\+Output@{$\sim$\+Cmd\+Line\+Output}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}}
+\subsubsection[{$\sim$\+Cmd\+Line\+Output()}]{\setlength{\rightskip}{0pt plus 5cm}virtual T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output\+::$\sim$\+Cmd\+Line\+Output (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_output_afdf4435a2619076d9798a0a950ed405b}
+Virtual destructor. 
+
+Definition at line 49 of file Cmd\+Line\+Output.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_output_ad23a57ac3d8d957a4328fc78aec94e16}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}!failure@{failure}}
+\index{failure@{failure}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}}
+\subsubsection[{failure(\+Cmd\+Line\+Interface \&c, Arg\+Exception \&e)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output\+::failure (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} \&}]{c, }
+\item[{{\bf Arg\+Exception} \&}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_output_ad23a57ac3d8d957a4328fc78aec94e16}
+Generates some sort of output for a failure. 
+\begin{DoxyParams}{Parameters}
+{\em c} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} object the output is generated for. \\
+\hline
+{\em e} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_arg_exception}{Arg\+Exception} that caused the failure. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_abcd0ba63a2ac7675d085877fc4d3e8cf}{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}, \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_a5e97f659fa1ab3b060a31e8bd7a0a40e}{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}, and \hyperlink{class_t_c_l_a_p_1_1_std_output_a9afc267e012c3ac42c8b1afe01f98556}{T\+C\+L\+A\+P\+::\+Std\+Output}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_output_a685b13db5bf6bbe5159e49169cd96bbe}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}!usage@{usage}}
+\index{usage@{usage}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}}
+\subsubsection[{usage(\+Cmd\+Line\+Interface \&c)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output\+::usage (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} \&}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_output_a685b13db5bf6bbe5159e49169cd96bbe}
+Generates some sort of output for the U\+S\+A\+G\+E. 
+\begin{DoxyParams}{Parameters}
+{\em c} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} object the output is generated for. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_a3ea685b174fce7ddf2353129863b49d7}{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}, \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_adc1ec93f3f7e5e912690be01c5e7d6e2}{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}, and \hyperlink{class_t_c_l_a_p_1_1_std_output_aeb10eb400e0ee45f2cde689bef606b49}{T\+C\+L\+A\+P\+::\+Std\+Output}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_output_ae052fea473132482296de55edb3dd480}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}!version@{version}}
+\index{version@{version}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output}}
+\subsubsection[{version(\+Cmd\+Line\+Interface \&c)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void T\+C\+L\+A\+P\+::\+Cmd\+Line\+Output\+::version (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Interface} \&}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_output_ae052fea473132482296de55edb3dd480}
+Generates some sort of output for the version. 
+\begin{DoxyParams}{Parameters}
+{\em c} & -\/ The \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} object the output is generated for. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_zsh_completion_output_a543e705918d769d3d6f4090c403ed0c9}{T\+C\+L\+A\+P\+::\+Zsh\+Completion\+Output}, \hyperlink{class_t_c_l_a_p_1_1_doc_book_output_a3ccf7671dcae82aba5f0e91850ae25a4}{T\+C\+L\+A\+P\+::\+Doc\+Book\+Output}, and \hyperlink{class_t_c_l_a_p_1_1_std_output_a768111a59af4753ac6e5ace3ec99482e}{T\+C\+L\+A\+P\+::\+Std\+Output}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/tclap/\hyperlink{_cmd_line_output_8h}{Cmd\+Line\+Output.\+h}\end{DoxyCompactItemize}

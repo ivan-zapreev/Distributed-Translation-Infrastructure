@@ -1,0 +1,199 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:proxy\+:\+:lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local$<$ trie\+\_\+type $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local$<$ trie\+\_\+type $>$@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local$<$ trie\+\_\+type $>$}}
+
+
+{\ttfamily \#include $<$lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:proxy\+:\+:lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local$<$ trie\+\_\+type $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef trie\+\_\+type\+::\+Word\+Index\+Type \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a9c369473af9995e492a2101b03bfe5fe}{word\+\_\+index\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a89e685540326c3dd02974505a372b8ee}{lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local} (const trie\+\_\+type \&trie)
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a12094e9ebe7122ca9924eb67a93ed576}{$\sim$lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local} ()
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a4f99e9494c15f2b30ee1837a887dfd0c}{execute} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&line)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_ad94e55d741055b8545aa02354718a01e}{get\+\_\+report\+\_\+interm\+\_\+results} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} begin\+\_\+word\+\_\+idx, const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} first\+\_\+end\+\_\+word\+\_\+idx, const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} last\+\_\+end\+\_\+word\+\_\+idx)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_ab320656eb37e9057c42a259b7289f800}{report\+\_\+final\+\_\+result} ()
+\item 
+string \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_af7e8073bec1f9ab4364cd14b85055d94}{get\+\_\+m\+\_\+gram\+\_\+str} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} begin\+\_\+word\+\_\+idx, const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} end\+\_\+word\+\_\+idx) const 
+\item 
+string \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a0b7439f8f17bda502a37a9932918eeee}{get\+\_\+query\+\_\+str} () const 
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_aea40010ea82118a9b86e3c2dea16cead}{set\+\_\+tokens\+\_\+and\+\_\+word\+\_\+ids} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} phrase)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename trie\+\_\+type$>$class uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local$<$ trie\+\_\+type $>$}
+
+This is a local implementation of the language model query This implementation works with the local trie 
+
+Definition at line 51 of file lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a9c369473af9995e492a2101b03bfe5fe}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}!word\+\_\+index\+\_\+type@{word\+\_\+index\+\_\+type}}
+\index{word\+\_\+index\+\_\+type@{word\+\_\+index\+\_\+type}!uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}}
+\subsubsection[{word\+\_\+index\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename trie\+\_\+type $>$ typedef trie\+\_\+type\+::\+Word\+Index\+Type {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}$<$ trie\+\_\+type $>$\+::{\bf word\+\_\+index\+\_\+type}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a9c369473af9995e492a2101b03bfe5fe}
+
+
+Definition at line 54 of file lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a89e685540326c3dd02974505a372b8ee}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}!lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}}
+\index{lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}!uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}}
+\subsubsection[{lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local(const trie\+\_\+type \&trie)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename trie\+\_\+type $>$ {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}$<$ trie\+\_\+type $>$\+::{\bf lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local} (
+\begin{DoxyParamCaption}
+\item[{const trie\+\_\+type \&}]{trie}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a89e685540326c3dd02974505a372b8ee}
+The basic constructor that accepts the trie reference to query to 
+\begin{DoxyParams}{Parameters}
+{\em trie} & the trie to query \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 60 of file lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a12094e9ebe7122ca9924eb67a93ed576}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}!````~lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{$\sim$lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}}
+\index{````~lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{$\sim$lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}!uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}}
+\subsubsection[{$\sim$lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename trie\+\_\+type $>$ virtual {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}$<$ trie\+\_\+type $>$\+::$\sim${\bf lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a12094e9ebe7122ca9924eb67a93ed576}
+\begin{DoxySeeAlso}{See also}
+lm\+\_\+query\+\_\+proxy 
+\end{DoxySeeAlso}
+
+
+Definition at line 68 of file lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a4f99e9494c15f2b30ee1837a887dfd0c}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}!execute@{execute}}
+\index{execute@{execute}!uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}}
+\subsubsection[{execute(\+Text\+Piece\+Reader \&line)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename trie\+\_\+type $>$ virtual void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}$<$ trie\+\_\+type $>$\+::execute (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader} \&}]{line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a4f99e9494c15f2b30ee1837a887dfd0c}
+Allows to execute m-\/gram the query. The query starts with the m-\/gram size given by min\+\_\+level and then grows until the maximum of L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X. After that m-\/grams of the L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X are computed via a sliding window\+: Let\+: \char`\"{}min\+\_\+level == 2\char`\"{}, \char`\"{}\+L\+M\+\_\+\+M\+A\+X\+\_\+\+Q\+U\+E\+R\+Y\+\_\+\+L\+E\+N = 4\char`\"{}, \char`\"{}num\+\_\+word\+\_\+ids == 6\char`\"{} and \char`\"{}word\+\_\+ids == w1w2w3w4w5w6\char`\"{} Then this method will compute the sum\+: P(w2$\vert$w1) + P(w3$\vert$w1w2) + P(w4$\vert$w1w2w3) + P(w5$\vert$w2w3w4) + P(w6$\vert$w3w4w5) 
+\begin{DoxyParams}{Parameters}
+{\em line} & the text piece reader storing the m-\/gram query line \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy_ade0cbec90ca87db911c1efc7efc57ee7}{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy}.
+
+
+
+Definition at line 83 of file lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_af7e8073bec1f9ab4364cd14b85055d94}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}!get\+\_\+m\+\_\+gram\+\_\+str@{get\+\_\+m\+\_\+gram\+\_\+str}}
+\index{get\+\_\+m\+\_\+gram\+\_\+str@{get\+\_\+m\+\_\+gram\+\_\+str}!uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}}
+\subsubsection[{get\+\_\+m\+\_\+gram\+\_\+str(const phrase\+\_\+length begin\+\_\+word\+\_\+idx, const phrase\+\_\+length end\+\_\+word\+\_\+idx) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename trie\+\_\+type $>$ string {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}$<$ trie\+\_\+type $>$\+::get\+\_\+m\+\_\+gram\+\_\+str (
+\begin{DoxyParamCaption}
+\item[{const {\bf phrase\+\_\+length}}]{begin\+\_\+word\+\_\+idx, }
+\item[{const {\bf phrase\+\_\+length}}]{end\+\_\+word\+\_\+idx}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_af7e8073bec1f9ab4364cd14b85055d94}
+For the given N-\/gram, for some level M $<$=N , this method allows to give the string of the object for which the probability is computed, e.\+g.\+: N-\/gram = \char`\"{}word1\char`\"{} -\/$>$ result = \char`\"{}word1\char`\"{} N-\/gram = \char`\"{}word1 word2 word3\char`\"{} -\/$>$ result = \char`\"{}word3 $\vert$ word1  word2\char`\"{} for the first M tokens of the N-\/gram 
+\begin{DoxyParams}{Parameters}
+{\em begin\+\_\+word\+\_\+idx} & the m-\/gram\textquotesingle{}s begin word index \\
+\hline
+{\em end\+\_\+word\+\_\+idx} & the m-\/gram\textquotesingle{}s begin word index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the resulting string 
+\end{DoxyReturn}
+
+
+Definition at line 191 of file lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a0b7439f8f17bda502a37a9932918eeee}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}!get\+\_\+query\+\_\+str@{get\+\_\+query\+\_\+str}}
+\index{get\+\_\+query\+\_\+str@{get\+\_\+query\+\_\+str}!uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}}
+\subsubsection[{get\+\_\+query\+\_\+str() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename trie\+\_\+type $>$ string {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}$<$ trie\+\_\+type $>$\+::get\+\_\+query\+\_\+str (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_a0b7439f8f17bda502a37a9932918eeee}
+For the given N-\/gram, this method allows to give the string of the object for which the probability is computed, e.\+g.\+: N-\/gram = \char`\"{}word1\char`\"{} -\/$>$ result = \char`\"{}word1\char`\"{} N-\/gram = \char`\"{}word1 word2 word3\char`\"{} -\/$>$ result = \char`\"{}word1 word2 word3\char`\"{} \begin{DoxyReturn}{Returns}
+the resulting string 
+\end{DoxyReturn}
+
+
+Definition at line 215 of file lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_ad94e55d741055b8545aa02354718a01e}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}!get\+\_\+report\+\_\+interm\+\_\+results@{get\+\_\+report\+\_\+interm\+\_\+results}}
+\index{get\+\_\+report\+\_\+interm\+\_\+results@{get\+\_\+report\+\_\+interm\+\_\+results}!uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}}
+\subsubsection[{get\+\_\+report\+\_\+interm\+\_\+results(const phrase\+\_\+length begin\+\_\+word\+\_\+idx, const phrase\+\_\+length first\+\_\+end\+\_\+word\+\_\+idx, const phrase\+\_\+length last\+\_\+end\+\_\+word\+\_\+idx)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename trie\+\_\+type $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}$<$ trie\+\_\+type $>$\+::get\+\_\+report\+\_\+interm\+\_\+results (
+\begin{DoxyParamCaption}
+\item[{const {\bf phrase\+\_\+length}}]{begin\+\_\+word\+\_\+idx, }
+\item[{const {\bf phrase\+\_\+length}}]{first\+\_\+end\+\_\+word\+\_\+idx, }
+\item[{const {\bf phrase\+\_\+length}}]{last\+\_\+end\+\_\+word\+\_\+idx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_ad94e55d741055b8545aa02354718a01e}
+Allows report the intermediate results of the loose sub-\/sub queries defined by the arguments 
+\begin{DoxyParams}{Parameters}
+{\em begin\+\_\+word\+\_\+idx} & the sub query begin word index \\
+\hline
+{\em first\+\_\+end\+\_\+word\+\_\+idx} & the first sub-\/sub query end word index \\
+\hline
+{\em last\+\_\+end\+\_\+word\+\_\+idx} & the last sub-\/sub query end word index \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 148 of file lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_ab320656eb37e9057c42a259b7289f800}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}!report\+\_\+final\+\_\+result@{report\+\_\+final\+\_\+result}}
+\index{report\+\_\+final\+\_\+result@{report\+\_\+final\+\_\+result}!uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}}
+\subsubsection[{report\+\_\+final\+\_\+result()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename trie\+\_\+type $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}$<$ trie\+\_\+type $>$\+::report\+\_\+final\+\_\+result (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_ab320656eb37e9057c42a259b7289f800}
+Allows to report the total joint probability of the query 
+
+Definition at line 170 of file lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_aea40010ea82118a9b86e3c2dea16cead}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}!set\+\_\+tokens\+\_\+and\+\_\+word\+\_\+ids@{set\+\_\+tokens\+\_\+and\+\_\+word\+\_\+ids}}
+\index{set\+\_\+tokens\+\_\+and\+\_\+word\+\_\+ids@{set\+\_\+tokens\+\_\+and\+\_\+word\+\_\+ids}!uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local@{uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}}
+\subsubsection[{set\+\_\+tokens\+\_\+and\+\_\+word\+\_\+ids(\+Text\+Piece\+Reader phrase)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename trie\+\_\+type $>$ virtual void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::proxy\+::lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local}$<$ trie\+\_\+type $>$\+::set\+\_\+tokens\+\_\+and\+\_\+word\+\_\+ids (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader}}]{phrase}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy__local_aea40010ea82118a9b86e3c2dea16cead}
+Allows to parse the m-\/gram into the tokens and get the word ids 
+
+Definition at line 235 of file lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/lm/proxy/\hyperlink{lm__slow__query__proxy__local_8hpp}{lm\+\_\+slow\+\_\+query\+\_\+proxy\+\_\+local.\+hpp}\end{DoxyCompactItemize}

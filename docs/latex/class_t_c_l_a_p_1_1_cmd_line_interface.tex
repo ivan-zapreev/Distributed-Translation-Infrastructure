@@ -1,0 +1,291 @@
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface}{}\section{T\+C\+L\+A\+P\+:\+:Cmd\+Line\+Interface Class Reference}
+\label{class_t_c_l_a_p_1_1_cmd_line_interface}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+
+
+{\ttfamily \#include $<$Cmd\+Line\+Interface.\+h$>$}
+
+Inheritance diagram for T\+C\+L\+A\+P\+:\+:Cmd\+Line\+Interface\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_t_c_l_a_p_1_1_cmd_line_interface}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a8c7faeca5a25a96e18312da9485a94e9}{$\sim$\+Cmd\+Line\+Interface} ()
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a13b29ab754c030185e58f779dc355631}{add} (\hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} \&a)=0
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a7c6a097c0f2a09dd1987e9da1af8b457}{add} (\hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$a)=0
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a69859e3713623eb06c9c335248d9c83f}{xor\+Add} (\hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} \&a, \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} \&b)=0
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a6a94140e522bcf6104928fcf0c434ab8}{xor\+Add} (std\+::vector$<$ \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$ $>$ \&xors)=0
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a6649336bddfc8421148718a691fd89b4}{parse} (int argc, const char $\ast$const $\ast$argv)=0
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a1b1a0cb973206a11c22003c245a4f7ed}{parse} (std\+::vector$<$ std\+::string $>$ \&args)
+\item 
+virtual \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output}{Cmd\+Line\+Output} $\ast$ \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_aebc72daedeaeb03e06bb2e6e0f00363d}{get\+Output} ()=0
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_ab208b32bd9489781509d7ecddf8a92a0}{set\+Output} (\hyperlink{class_t_c_l_a_p_1_1_cmd_line_output}{Cmd\+Line\+Output} $\ast$co)=0
+\item 
+virtual std\+::string \& \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a0a552fa57212800dfb8aec84fb07b8bb}{get\+Version} ()=0
+\item 
+virtual std\+::string \& \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a1a5672df72a6b5021cd70b37c4dbd0a7}{get\+Program\+Name} ()=0
+\item 
+virtual std\+::list$<$ \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} $\ast$ $>$ \& \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a4de8d988f5a6f3007c4dfb0fc9dad476}{get\+Arg\+List} ()=0
+\item 
+virtual \hyperlink{class_t_c_l_a_p_1_1_xor_handler}{Xor\+Handler} \& \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a11ce9c77a1111960741f05e343849e4e}{get\+Xor\+Handler} ()=0
+\item 
+virtual char \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a7d6a64cff6b3a30e2cf1e81d7b1d4521}{get\+Delimiter} ()=0
+\item 
+virtual std\+::string \& \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a30175a2567f7ab78a2c6bbea9269a2fa}{get\+Message} ()=0
+\item 
+virtual bool \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a441b06b764836a62083b163508210905}{has\+Help\+And\+Version} ()=0
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface_a6b1fac8a9948ba7e28bc7844a18f39e4}{reset} ()=0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The base class that manages the command line definition and passes along the parsing to the appropriate \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} classes. 
+
+Definition at line 43 of file Cmd\+Line\+Interface.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a8c7faeca5a25a96e18312da9485a94e9}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!````~Cmd\+Line\+Interface@{$\sim$\+Cmd\+Line\+Interface}}
+\index{````~Cmd\+Line\+Interface@{$\sim$\+Cmd\+Line\+Interface}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{$\sim$\+Cmd\+Line\+Interface()}]{\setlength{\rightskip}{0pt plus 5cm}virtual T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::$\sim$\+Cmd\+Line\+Interface (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a8c7faeca5a25a96e18312da9485a94e9}
+Destructor 
+
+Definition at line 50 of file Cmd\+Line\+Interface.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a13b29ab754c030185e58f779dc355631}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!add@{add}}
+\index{add@{add}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{add(\+Arg \&a)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::add (
+\begin{DoxyParamCaption}
+\item[{{\bf Arg} \&}]{a}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a13b29ab754c030185e58f779dc355631}
+Adds an argument to the list of arguments to be parsed. 
+\begin{DoxyParams}{Parameters}
+{\em a} & -\/ Argument to be added. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_a94c511d4735ad9b8c97edaa3827f8bbf}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a7c6a097c0f2a09dd1987e9da1af8b457}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!add@{add}}
+\index{add@{add}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{add(\+Arg $\ast$a)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::add (
+\begin{DoxyParamCaption}
+\item[{{\bf Arg} $\ast$}]{a}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a7c6a097c0f2a09dd1987e9da1af8b457}
+An alternative add. Functionally identical. 
+\begin{DoxyParams}{Parameters}
+{\em a} & -\/ Argument to be added. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_ab8a08e8f4d3ca7709c85416f76e805a3}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a4de8d988f5a6f3007c4dfb0fc9dad476}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!get\+Arg\+List@{get\+Arg\+List}}
+\index{get\+Arg\+List@{get\+Arg\+List}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{get\+Arg\+List()=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\+::list$<${\bf Arg}$\ast$$>$\& T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::get\+Arg\+List (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a4de8d988f5a6f3007c4dfb0fc9dad476}
+Returns the arg\+List. 
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_a3c281da929a281fb883ea47632b7ad38}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a7d6a64cff6b3a30e2cf1e81d7b1d4521}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!get\+Delimiter@{get\+Delimiter}}
+\index{get\+Delimiter@{get\+Delimiter}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{get\+Delimiter()=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual char T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::get\+Delimiter (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a7d6a64cff6b3a30e2cf1e81d7b1d4521}
+Returns the delimiter string. 
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_a3e9f0ac2c1e97d1f8527da713ddd5a8f}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a30175a2567f7ab78a2c6bbea9269a2fa}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!get\+Message@{get\+Message}}
+\index{get\+Message@{get\+Message}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{get\+Message()=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\+::string\& T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::get\+Message (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a30175a2567f7ab78a2c6bbea9269a2fa}
+Returns the message string. 
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_a8f61a8c201e31ada985fa998180fd40f}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_aebc72daedeaeb03e06bb2e6e0f00363d}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!get\+Output@{get\+Output}}
+\index{get\+Output@{get\+Output}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{get\+Output()=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Cmd\+Line\+Output}$\ast$ T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::get\+Output (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_aebc72daedeaeb03e06bb2e6e0f00363d}
+Returns the \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output}{Cmd\+Line\+Output} object. 
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_ad8aea2617edf53bbc20c8964ee5476e6}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a1a5672df72a6b5021cd70b37c4dbd0a7}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!get\+Program\+Name@{get\+Program\+Name}}
+\index{get\+Program\+Name@{get\+Program\+Name}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{get\+Program\+Name()=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\+::string\& T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::get\+Program\+Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a1a5672df72a6b5021cd70b37c4dbd0a7}
+Returns the program name string. 
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_a47a6d496980ee11ffc42e27144a61797}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a0a552fa57212800dfb8aec84fb07b8bb}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!get\+Version@{get\+Version}}
+\index{get\+Version@{get\+Version}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{get\+Version()=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\+::string\& T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::get\+Version (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a0a552fa57212800dfb8aec84fb07b8bb}
+Returns the version string. 
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_a85b5653d1a5b48fe6accead64615cf33}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a11ce9c77a1111960741f05e343849e4e}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!get\+Xor\+Handler@{get\+Xor\+Handler}}
+\index{get\+Xor\+Handler@{get\+Xor\+Handler}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{get\+Xor\+Handler()=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Xor\+Handler}\& T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::get\+Xor\+Handler (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a11ce9c77a1111960741f05e343849e4e}
+Returns the \hyperlink{class_t_c_l_a_p_1_1_xor_handler}{Xor\+Handler}. 
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_a805433b7718d1bc5bc9317bbd061449b}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a441b06b764836a62083b163508210905}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!has\+Help\+And\+Version@{has\+Help\+And\+Version}}
+\index{has\+Help\+And\+Version@{has\+Help\+And\+Version}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{has\+Help\+And\+Version()=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::has\+Help\+And\+Version (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a441b06b764836a62083b163508210905}
+Indicates whether or not the help and version switches were created automatically. 
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_a5b23895feae4f4110b77dae372226475}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a6649336bddfc8421148718a691fd89b4}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!parse@{parse}}
+\index{parse@{parse}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{parse(int argc, const char $\ast$const $\ast$argv)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::parse (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{const char $\ast$const $\ast$}]{argv}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a6649336bddfc8421148718a691fd89b4}
+Parses the command line. 
+\begin{DoxyParams}{Parameters}
+{\em argc} & -\/ Number of arguments. \\
+\hline
+{\em argv} & -\/ Array of arguments. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_acb07daf5a1370c176a7b4a6e4119fe6e}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a1b1a0cb973206a11c22003c245a4f7ed}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!parse@{parse}}
+\index{parse@{parse}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{parse(std\+::vector$<$ std\+::string $>$ \&args)}]{\setlength{\rightskip}{0pt plus 5cm}void T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::parse (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ std\+::string $>$ \&}]{args}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a1b1a0cb973206a11c22003c245a4f7ed}
+Parses the command line. 
+\begin{DoxyParams}{Parameters}
+{\em args} & -\/ A vector of strings representing the args. args\mbox{[}0\mbox{]} is still the program name. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a6b1fac8a9948ba7e28bc7844a18f39e4}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!reset@{reset}}
+\index{reset@{reset}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{reset()=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::reset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a6b1fac8a9948ba7e28bc7844a18f39e4}
+Resets the instance as if it had just been constructed so that the instance can be reused. 
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_a1721ec47c9d9f5ea2eca2f385fcfd2da}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_ab208b32bd9489781509d7ecddf8a92a0}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!set\+Output@{set\+Output}}
+\index{set\+Output@{set\+Output}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{set\+Output(\+Cmd\+Line\+Output $\ast$co)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::set\+Output (
+\begin{DoxyParamCaption}
+\item[{{\bf Cmd\+Line\+Output} $\ast$}]{co}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_ab208b32bd9489781509d7ecddf8a92a0}
+
+\begin{DoxyParams}{Parameters}
+{\em co} & -\/ \hyperlink{class_t_c_l_a_p_1_1_cmd_line_output}{Cmd\+Line\+Output} object that we want to use instead. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_a4506e305cd10437c7ce5a5ba34cfed0f}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a69859e3713623eb06c9c335248d9c83f}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!xor\+Add@{xor\+Add}}
+\index{xor\+Add@{xor\+Add}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{xor\+Add(\+Arg \&a, Arg \&b)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::xor\+Add (
+\begin{DoxyParamCaption}
+\item[{{\bf Arg} \&}]{a, }
+\item[{{\bf Arg} \&}]{b}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a69859e3713623eb06c9c335248d9c83f}
+Add two Args that will be xor\textquotesingle{}d. If this method is used, add does not need to be called. 
+\begin{DoxyParams}{Parameters}
+{\em a} & -\/ Argument to be added and xor\textquotesingle{}d. \\
+\hline
+{\em b} & -\/ Argument to be added and xor\textquotesingle{}d. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_afbaa2071d0c3276b383089acabdc0dd2}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+\hypertarget{class_t_c_l_a_p_1_1_cmd_line_interface_a6a94140e522bcf6104928fcf0c434ab8}{}\index{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}!xor\+Add@{xor\+Add}}
+\index{xor\+Add@{xor\+Add}!T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface@{T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface}}
+\subsubsection[{xor\+Add(std\+::vector$<$ Arg $\ast$ $>$ \&xors)=0}]{\setlength{\rightskip}{0pt plus 5cm}virtual void T\+C\+L\+A\+P\+::\+Cmd\+Line\+Interface\+::xor\+Add (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Arg} $\ast$ $>$ \&}]{xors}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\label{class_t_c_l_a_p_1_1_cmd_line_interface_a6a94140e522bcf6104928fcf0c434ab8}
+Add a list of Args that will be xor\textquotesingle{}d. If this method is used, add does not need to be called. 
+\begin{DoxyParams}{Parameters}
+{\em xors} & -\/ List of Args to be added and xor\textquotesingle{}d. \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_t_c_l_a_p_1_1_cmd_line_ac7f2d7ee32a5157f625ad9833ab148cf}{T\+C\+L\+A\+P\+::\+Cmd\+Line}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/tclap/\hyperlink{_cmd_line_interface_8h}{Cmd\+Line\+Interface.\+h}\end{DoxyCompactItemize}

@@ -1,0 +1,17 @@
+\hypertarget{namespacewebsocketpp_1_1extensions}{}\section{websocketpp\+:\+:extensions Namespace Reference}
+\label{namespacewebsocketpp_1_1extensions}\index{websocketpp\+::extensions@{websocketpp\+::extensions}}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacewebsocketpp_1_1extensions_1_1error}{error}
+\item 
+ \hyperlink{namespacewebsocketpp_1_1extensions_1_1permessage__deflate}{permessage\+\_\+deflate}
+\begin{DoxyCompactList}\small\item\em Implementation of the draft permessage-\/deflate Web\+Socket extension. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Some generic information about extensions
+
+Each extension object has an implemented flag. It can be retrieved by calling is\+\_\+implemented(). This compile time flag indicates whether or not the object in question actually implements the extension or if it is a placeholder stub
+
+Each extension object also has an enabled flag. It can be retrieved by calling is\+\_\+enabled(). This runtime flag indicates whether or not the extension has been negotiated for this connection. 

@@ -1,0 +1,10 @@
+var classasio_1_1detail_1_1read__op_3_01_async_read_stream_00_01asio_1_1mutable__buffers__1_00_01_018ff00a3c2aa5481d9cf38a1ea7821a38 =
+[
+    [ "read_op", "classasio_1_1detail_1_1read__op_3_01_async_read_stream_00_01asio_1_1mutable__buffers__1_00_01_018ff00a3c2aa5481d9cf38a1ea7821a38.html#afa1f376bf655b4dea2d4a5022f74724b", null ],
+    [ "operator()", "classasio_1_1detail_1_1read__op_3_01_async_read_stream_00_01asio_1_1mutable__buffers__1_00_01_018ff00a3c2aa5481d9cf38a1ea7821a38.html#acc7bc80ea6c7bfabeaa25b137fc744a2", null ],
+    [ "buffer_", "classasio_1_1detail_1_1read__op_3_01_async_read_stream_00_01asio_1_1mutable__buffers__1_00_01_018ff00a3c2aa5481d9cf38a1ea7821a38.html#a8f3f75c1022ad67fe098a70c807d316e", null ],
+    [ "handler_", "classasio_1_1detail_1_1read__op_3_01_async_read_stream_00_01asio_1_1mutable__buffers__1_00_01_018ff00a3c2aa5481d9cf38a1ea7821a38.html#ade92732080a200e0a0b16893e6d7c218", null ],
+    [ "start_", "classasio_1_1detail_1_1read__op_3_01_async_read_stream_00_01asio_1_1mutable__buffers__1_00_01_018ff00a3c2aa5481d9cf38a1ea7821a38.html#a77d6cc18b93a59e2513beab2d67fafc3", null ],
+    [ "stream_", "classasio_1_1detail_1_1read__op_3_01_async_read_stream_00_01asio_1_1mutable__buffers__1_00_01_018ff00a3c2aa5481d9cf38a1ea7821a38.html#acd644587f4903cc3030564bb089d630a", null ],
+    [ "total_transferred_", "classasio_1_1detail_1_1read__op_3_01_async_read_stream_00_01asio_1_1mutable__buffers__1_00_01_018ff00a3c2aa5481d9cf38a1ea7821a38.html#a65cce25829008bd8f8c5d0271018c5da", null ]
+];

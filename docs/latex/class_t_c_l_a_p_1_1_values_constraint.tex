@@ -1,0 +1,146 @@
+\hypertarget{class_t_c_l_a_p_1_1_values_constraint}{}\section{T\+C\+L\+A\+P\+:\+:Values\+Constraint$<$ T $>$ Class Template Reference}
+\label{class_t_c_l_a_p_1_1_values_constraint}\index{T\+C\+L\+A\+P\+::\+Values\+Constraint$<$ T $>$@{T\+C\+L\+A\+P\+::\+Values\+Constraint$<$ T $>$}}
+
+
+{\ttfamily \#include $<$Values\+Constraint.\+h$>$}
+
+Inheritance diagram for T\+C\+L\+A\+P\+:\+:Values\+Constraint$<$ T $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_t_c_l_a_p_1_1_values_constraint}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_values_constraint_a8ab127461012bb1dcfac159e17105db9}{Values\+Constraint} (std\+::vector$<$ T $>$ \&allowed)
+\item 
+virtual \hyperlink{class_t_c_l_a_p_1_1_values_constraint_a9b0c218300a9e0937386f2e566ba21bd}{$\sim$\+Values\+Constraint} ()
+\item 
+virtual std\+::string \hyperlink{class_t_c_l_a_p_1_1_values_constraint_a07b08c05a7bfcbe5815895353ffef1d5}{description} () const 
+\item 
+virtual std\+::string \hyperlink{class_t_c_l_a_p_1_1_values_constraint_a1bbe12afcb1f185ee7ac808d69e2d345}{short\+I\+D} () const 
+\item 
+virtual bool \hyperlink{class_t_c_l_a_p_1_1_values_constraint_ae132b185413cf5dea5cc040f60e7ede6}{check} (const T \&value) const 
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ T $>$ \hyperlink{class_t_c_l_a_p_1_1_values_constraint_ac43fa83688358c0ad06157053cce347a}{\+\_\+allowed}
+\item 
+std\+::string \hyperlink{class_t_c_l_a_p_1_1_values_constraint_a6ebc63fa5eea116a50aa5f76aee56fd6}{\+\_\+type\+Desc}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T$>$class T\+C\+L\+A\+P\+::\+Values\+Constraint$<$ T $>$}
+
+A \hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint} that constrains the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} to only those values specified in the constraint. 
+
+Definition at line 51 of file Values\+Constraint.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_values_constraint_a8ab127461012bb1dcfac159e17105db9}{}\index{T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}!Values\+Constraint@{Values\+Constraint}}
+\index{Values\+Constraint@{Values\+Constraint}!T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}}
+\subsubsection[{Values\+Constraint(std\+::vector$<$ T $>$ \&allowed)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf T\+C\+L\+A\+P\+::\+Values\+Constraint}$<$ T $>$\+::{\bf Values\+Constraint} (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ T $>$ \&}]{allowed}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_values_constraint_a8ab127461012bb1dcfac159e17105db9}
+Constructor. 
+\begin{DoxyParams}{Parameters}
+{\em allowed} & -\/ vector of allowed values. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 99 of file Values\+Constraint.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_values_constraint_a9b0c218300a9e0937386f2e566ba21bd}{}\index{T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}!````~Values\+Constraint@{$\sim$\+Values\+Constraint}}
+\index{````~Values\+Constraint@{$\sim$\+Values\+Constraint}!T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}}
+\subsubsection[{$\sim$\+Values\+Constraint()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ virtual {\bf T\+C\+L\+A\+P\+::\+Values\+Constraint}$<$ T $>$\+::$\sim${\bf Values\+Constraint} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_values_constraint_a9b0c218300a9e0937386f2e566ba21bd}
+Virtual destructor. 
+
+Definition at line 65 of file Values\+Constraint.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_values_constraint_ae132b185413cf5dea5cc040f60e7ede6}{}\index{T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}!check@{check}}
+\index{check@{check}!T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}}
+\subsubsection[{check(const T \&value) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ bool {\bf T\+C\+L\+A\+P\+::\+Values\+Constraint}$<$ T $>$\+::check (
+\begin{DoxyParamCaption}
+\item[{const T \&}]{value}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_values_constraint_ae132b185413cf5dea5cc040f60e7ede6}
+The method used to verify that the value parsed from the command line meets the constraint. 
+\begin{DoxyParams}{Parameters}
+{\em value} & -\/ The value that will be checked. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_t_c_l_a_p_1_1_constraint_ac6f2532fdfb962949fa5d509d42eaec8}{T\+C\+L\+A\+P\+::\+Constraint$<$ T $>$}.
+
+
+
+Definition at line 125 of file Values\+Constraint.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_values_constraint_a07b08c05a7bfcbe5815895353ffef1d5}{}\index{T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}!description@{description}}
+\index{description@{description}!T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}}
+\subsubsection[{description() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ std\+::string {\bf T\+C\+L\+A\+P\+::\+Values\+Constraint}$<$ T $>$\+::description (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_values_constraint_a07b08c05a7bfcbe5815895353ffef1d5}
+Returns a description of the \hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint}. 
+
+Implements \hyperlink{class_t_c_l_a_p_1_1_constraint_a77a9676c8deb6714e14d593705ec9a5b}{T\+C\+L\+A\+P\+::\+Constraint$<$ T $>$}.
+
+
+
+Definition at line 140 of file Values\+Constraint.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_values_constraint_a1bbe12afcb1f185ee7ac808d69e2d345}{}\index{T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}!short\+I\+D@{short\+I\+D}}
+\index{short\+I\+D@{short\+I\+D}!T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}}
+\subsubsection[{short\+I\+D() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ std\+::string {\bf T\+C\+L\+A\+P\+::\+Values\+Constraint}$<$ T $>$\+::short\+I\+D (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_values_constraint_a1bbe12afcb1f185ee7ac808d69e2d345}
+Returns the short I\+D for the \hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint}. 
+
+Implements \hyperlink{class_t_c_l_a_p_1_1_constraint_a1a08f9b01dfdcceef61015c64b1e9187}{T\+C\+L\+A\+P\+::\+Constraint$<$ T $>$}.
+
+
+
+Definition at line 134 of file Values\+Constraint.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_values_constraint_ac43fa83688358c0ad06157053cce347a}{}\index{T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}!\+\_\+allowed@{\+\_\+allowed}}
+\index{\+\_\+allowed@{\+\_\+allowed}!T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}}
+\subsubsection[{\+\_\+allowed}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ std\+::vector$<$T$>$ {\bf T\+C\+L\+A\+P\+::\+Values\+Constraint}$<$ T $>$\+::\+\_\+allowed\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_values_constraint_ac43fa83688358c0ad06157053cce347a}
+The list of valid values. 
+
+Definition at line 89 of file Values\+Constraint.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_values_constraint_a6ebc63fa5eea116a50aa5f76aee56fd6}{}\index{T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}!\+\_\+type\+Desc@{\+\_\+type\+Desc}}
+\index{\+\_\+type\+Desc@{\+\_\+type\+Desc}!T\+C\+L\+A\+P\+::\+Values\+Constraint@{T\+C\+L\+A\+P\+::\+Values\+Constraint}}
+\subsubsection[{\+\_\+type\+Desc}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ std\+::string {\bf T\+C\+L\+A\+P\+::\+Values\+Constraint}$<$ T $>$\+::\+\_\+type\+Desc\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_values_constraint_a6ebc63fa5eea116a50aa5f76aee56fd6}
+The string used to describe the allowed values of this constraint. 
+
+Definition at line 94 of file Values\+Constraint.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/tclap/\hyperlink{_values_constraint_8h}{Values\+Constraint.\+h}\end{DoxyCompactItemize}

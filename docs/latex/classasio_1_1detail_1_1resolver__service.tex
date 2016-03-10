@@ -1,0 +1,151 @@
+\hypertarget{classasio_1_1detail_1_1resolver__service}{}\section{asio\+:\+:detail\+:\+:resolver\+\_\+service$<$ Protocol $>$ Class Template Reference}
+\label{classasio_1_1detail_1_1resolver__service}\index{asio\+::detail\+::resolver\+\_\+service$<$ Protocol $>$@{asio\+::detail\+::resolver\+\_\+service$<$ Protocol $>$}}
+
+
+{\ttfamily \#include $<$resolver\+\_\+service.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:detail\+:\+:resolver\+\_\+service$<$ Protocol $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classasio_1_1detail_1_1resolver__service}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{namespaceasio_1_1detail_1_1socket__ops_a6f7dec33c65c050a3ee96d6b17dafc9c}{socket\+\_\+ops\+::shared\+\_\+cancel\+\_\+token\+\_\+type} \hyperlink{classasio_1_1detail_1_1resolver__service_a9b39aff4ee39b0f45731ec01d9f5fd74}{implementation\+\_\+type}
+\item 
+typedef Protocol\+::endpoint \hyperlink{classasio_1_1detail_1_1resolver__service_a4c9bdef1b2990355b5e02df3056554df}{endpoint\+\_\+type}
+\item 
+typedef \hyperlink{classasio_1_1ip_1_1basic__resolver__query}{asio\+::ip\+::basic\+\_\+resolver\+\_\+query}$<$ Protocol $>$ \hyperlink{classasio_1_1detail_1_1resolver__service_a3200fbe0279811d68ebacc1bd28d4418}{query\+\_\+type}
+\item 
+typedef \hyperlink{classasio_1_1ip_1_1basic__resolver__iterator}{asio\+::ip\+::basic\+\_\+resolver\+\_\+iterator}$<$ Protocol $>$ \hyperlink{classasio_1_1detail_1_1resolver__service_ab9c188c775855b13d06f6682014cbf55}{iterator\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1detail_1_1resolver__service_aef337d9c98b3ad63e5c292b00ab3d84e}{resolver\+\_\+service} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service})
+\item 
+\hyperlink{classasio_1_1detail_1_1resolver__service_ab9c188c775855b13d06f6682014cbf55}{iterator\+\_\+type} \hyperlink{classasio_1_1detail_1_1resolver__service_a197fe2a6278cd25cc8a7f2a0f0163e5e}{resolve} (\hyperlink{classasio_1_1detail_1_1resolver__service_a9b39aff4ee39b0f45731ec01d9f5fd74}{implementation\+\_\+type} \&, const \hyperlink{classasio_1_1detail_1_1resolver__service_a3200fbe0279811d68ebacc1bd28d4418}{query\+\_\+type} \&query, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Handler $>$ }\\void \hyperlink{classasio_1_1detail_1_1resolver__service_af612b0840b67b8be0e2cbbc96ba31033}{async\+\_\+resolve} (\hyperlink{classasio_1_1detail_1_1resolver__service_a9b39aff4ee39b0f45731ec01d9f5fd74}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1detail_1_1resolver__service_a3200fbe0279811d68ebacc1bd28d4418}{query\+\_\+type} \&query, Handler \&handler)
+\item 
+\hyperlink{classasio_1_1detail_1_1resolver__service_ab9c188c775855b13d06f6682014cbf55}{iterator\+\_\+type} \hyperlink{classasio_1_1detail_1_1resolver__service_a6f842d114dbda4ee9ec0f199290b9b88}{resolve} (\hyperlink{classasio_1_1detail_1_1resolver__service_a9b39aff4ee39b0f45731ec01d9f5fd74}{implementation\+\_\+type} \&, const \hyperlink{classasio_1_1detail_1_1resolver__service_a4c9bdef1b2990355b5e02df3056554df}{endpoint\+\_\+type} \&endpoint, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Handler $>$ }\\void \hyperlink{classasio_1_1detail_1_1resolver__service_a0fa26edd737c7f42801631d69bc07acb}{async\+\_\+resolve} (\hyperlink{classasio_1_1detail_1_1resolver__service_a9b39aff4ee39b0f45731ec01d9f5fd74}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1detail_1_1resolver__service_a4c9bdef1b2990355b5e02df3056554df}{endpoint\+\_\+type} \&endpoint, Handler \&handler)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Protocol$>$class asio\+::detail\+::resolver\+\_\+service$<$ Protocol $>$}
+
+
+
+Definition at line 35 of file resolver\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1detail_1_1resolver__service_a4c9bdef1b2990355b5e02df3056554df}{}\index{asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}!endpoint\+\_\+type@{endpoint\+\_\+type}}
+\index{endpoint\+\_\+type@{endpoint\+\_\+type}!asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}}
+\subsubsection[{endpoint\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol$>$ typedef Protocol\+::endpoint {\bf asio\+::detail\+::resolver\+\_\+service}$<$ Protocol $>$\+::{\bf endpoint\+\_\+type}}\label{classasio_1_1detail_1_1resolver__service_a4c9bdef1b2990355b5e02df3056554df}
+
+
+Definition at line 43 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1resolver__service_a9b39aff4ee39b0f45731ec01d9f5fd74}{}\index{asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}!implementation\+\_\+type@{implementation\+\_\+type}}
+\index{implementation\+\_\+type@{implementation\+\_\+type}!asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}}
+\subsubsection[{implementation\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol$>$ typedef {\bf socket\+\_\+ops\+::shared\+\_\+cancel\+\_\+token\+\_\+type} {\bf asio\+::detail\+::resolver\+\_\+service}$<$ Protocol $>$\+::{\bf implementation\+\_\+type}}\label{classasio_1_1detail_1_1resolver__service_a9b39aff4ee39b0f45731ec01d9f5fd74}
+
+
+Definition at line 40 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1resolver__service_ab9c188c775855b13d06f6682014cbf55}{}\index{asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}!iterator\+\_\+type@{iterator\+\_\+type}}
+\index{iterator\+\_\+type@{iterator\+\_\+type}!asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}}
+\subsubsection[{iterator\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol$>$ typedef {\bf asio\+::ip\+::basic\+\_\+resolver\+\_\+iterator}$<$Protocol$>$ {\bf asio\+::detail\+::resolver\+\_\+service}$<$ Protocol $>$\+::{\bf iterator\+\_\+type}}\label{classasio_1_1detail_1_1resolver__service_ab9c188c775855b13d06f6682014cbf55}
+
+
+Definition at line 49 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1resolver__service_a3200fbe0279811d68ebacc1bd28d4418}{}\index{asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}!query\+\_\+type@{query\+\_\+type}}
+\index{query\+\_\+type@{query\+\_\+type}!asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}}
+\subsubsection[{query\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol$>$ typedef {\bf asio\+::ip\+::basic\+\_\+resolver\+\_\+query}$<$Protocol$>$ {\bf asio\+::detail\+::resolver\+\_\+service}$<$ Protocol $>$\+::{\bf query\+\_\+type}}\label{classasio_1_1detail_1_1resolver__service_a3200fbe0279811d68ebacc1bd28d4418}
+
+
+Definition at line 46 of file resolver\+\_\+service.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1resolver__service_aef337d9c98b3ad63e5c292b00ab3d84e}{}\index{asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}!resolver\+\_\+service@{resolver\+\_\+service}}
+\index{resolver\+\_\+service@{resolver\+\_\+service}!asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}}
+\subsubsection[{resolver\+\_\+service(asio\+::io\+\_\+service \&io\+\_\+service)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol$>$ {\bf asio\+::detail\+::resolver\+\_\+service}$<$ Protocol $>$\+::{\bf resolver\+\_\+service} (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1resolver__service_aef337d9c98b3ad63e5c292b00ab3d84e}
+
+
+Definition at line 52 of file resolver\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1resolver__service_af612b0840b67b8be0e2cbbc96ba31033}{}\index{asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}!async\+\_\+resolve@{async\+\_\+resolve}}
+\index{async\+\_\+resolve@{async\+\_\+resolve}!asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}}
+\subsubsection[{async\+\_\+resolve(implementation\+\_\+type \&impl, const query\+\_\+type \&query, Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol$>$ template$<$typename Handler $>$ void {\bf asio\+::detail\+::resolver\+\_\+service}$<$ Protocol $>$\+::async\+\_\+resolve (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf query\+\_\+type} \&}]{query, }
+\item[{Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1resolver__service_af612b0840b67b8be0e2cbbc96ba31033}
+
+
+Definition at line 73 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1resolver__service_a0fa26edd737c7f42801631d69bc07acb}{}\index{asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}!async\+\_\+resolve@{async\+\_\+resolve}}
+\index{async\+\_\+resolve@{async\+\_\+resolve}!asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}}
+\subsubsection[{async\+\_\+resolve(implementation\+\_\+type \&impl, const endpoint\+\_\+type \&endpoint, Handler \&handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol$>$ template$<$typename Handler $>$ void {\bf asio\+::detail\+::resolver\+\_\+service}$<$ Protocol $>$\+::async\+\_\+resolve (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf endpoint\+\_\+type} \&}]{endpoint, }
+\item[{Handler \&}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1resolver__service_a0fa26edd737c7f42801631d69bc07acb}
+
+
+Definition at line 105 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1resolver__service_a197fe2a6278cd25cc8a7f2a0f0163e5e}{}\index{asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}!resolve@{resolve}}
+\index{resolve@{resolve}!asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}}
+\subsubsection[{resolve(implementation\+\_\+type \&, const query\+\_\+type \&query, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol$>$ {\bf iterator\+\_\+type} {\bf asio\+::detail\+::resolver\+\_\+service}$<$ Protocol $>$\+::resolve (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{, }
+\item[{const {\bf query\+\_\+type} \&}]{query, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1resolver__service_a197fe2a6278cd25cc8a7f2a0f0163e5e}
+
+
+Definition at line 58 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1resolver__service_a6f842d114dbda4ee9ec0f199290b9b88}{}\index{asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}!resolve@{resolve}}
+\index{resolve@{resolve}!asio\+::detail\+::resolver\+\_\+service@{asio\+::detail\+::resolver\+\_\+service}}
+\subsubsection[{resolve(implementation\+\_\+type \&, const endpoint\+\_\+type \&endpoint, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol$>$ {\bf iterator\+\_\+type} {\bf asio\+::detail\+::resolver\+\_\+service}$<$ Protocol $>$\+::resolve (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{, }
+\item[{const {\bf endpoint\+\_\+type} \&}]{endpoint, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1resolver__service_a6f842d114dbda4ee9ec0f199290b9b88}
+
+
+Definition at line 90 of file resolver\+\_\+service.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/detail/\hyperlink{detail_2resolver__service_8hpp}{resolver\+\_\+service.\+hpp}\end{DoxyCompactItemize}

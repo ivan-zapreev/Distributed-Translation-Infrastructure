@@ -1,0 +1,239 @@
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request}{}\section{websocketpp\+:\+:http\+:\+:parser\+:\+:request Class Reference}
+\label{classwebsocketpp_1_1http_1_1parser_1_1request}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+
+
+Stores, parses, and manipulates H\+T\+T\+P requests.  
+
+
+
+
+{\ttfamily \#include $<$request.\+hpp$>$}
+
+Inheritance diagram for websocketpp\+:\+:http\+:\+:parser\+:\+:request\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classwebsocketpp_1_1http_1_1parser_1_1request}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request}{request} \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_a456cf14e4c5fd1dab94910580042de6b}{type}
+\item 
+typedef lib\+::shared\+\_\+ptr$<$ \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_a456cf14e4c5fd1dab94910580042de6b}{type} $>$ \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_aa9284144353524d93cedf6c053ac07cf}{ptr}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_a006c941a421dd855b7ae6b40ca855e97}{request} ()
+\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_abd9cae6f44634d62253d806d982ab1d6}{consume} (char const $\ast$buf, size\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Process bytes in the input buffer. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_a5981112a0693ab505c1f1cb457debffe}{ready} () const 
+\begin{DoxyCompactList}\small\item\em Returns whether or not the request is ready for reading. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_adf8887f6b5fb53a650185cd2589be0e8}{raw} () const 
+\begin{DoxyCompactList}\small\item\em Returns the full raw request (including the body) \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_a06b5abf41d4591fbe746867b12abe5e4}{raw\+\_\+head} () const 
+\begin{DoxyCompactList}\small\item\em Returns the raw request headers only (similar to an H\+T\+T\+P H\+E\+A\+D request) \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_af1f0c6944c6cbbaf6db20e5830333eaf}{set\+\_\+method} (std\+::string const \&method)
+\begin{DoxyCompactList}\small\item\em Set the H\+T\+T\+P method. Must be a valid H\+T\+T\+P token. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_a82932eb70c5fa7a7b63c08cf7d86ae84}{get\+\_\+method} () const 
+\begin{DoxyCompactList}\small\item\em Return the request method. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_ac4dcfa00f2112ee33b571f1754f9d893}{set\+\_\+uri} (std\+::string const \&\hyperlink{classwebsocketpp_1_1uri}{uri})
+\begin{DoxyCompactList}\small\item\em Set the H\+T\+T\+P uri. Must be a valid H\+T\+T\+P uri. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request_a24e528a52652b610e82b6e4cb921f52a}{get\+\_\+uri} () const 
+\begin{DoxyCompactList}\small\item\em Return the requested U\+R\+I. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Stores, parses, and manipulates H\+T\+T\+P requests. 
+
+\href{http::request}{\tt http\+::request} provides the following functionality for working with H\+T\+T\+P requests.
+
+
+\begin{DoxyItemize}
+\item Initialize request via manually setting each element
+\item Initialize request via reading raw bytes and parsing
+\item Once initialized, access individual parsed elements
+\item Once initialized, read entire request as raw bytes 
+\end{DoxyItemize}
+
+Definition at line 50 of file request.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request_aa9284144353524d93cedf6c053ac07cf}{}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}!ptr@{ptr}}
+\index{ptr@{ptr}!websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+\subsubsection[{ptr}]{\setlength{\rightskip}{0pt plus 5cm}typedef lib\+::shared\+\_\+ptr$<${\bf type}$>$ {\bf websocketpp\+::http\+::parser\+::request\+::ptr}}\label{classwebsocketpp_1_1http_1_1parser_1_1request_aa9284144353524d93cedf6c053ac07cf}
+
+
+Definition at line 53 of file request.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request_a456cf14e4c5fd1dab94910580042de6b}{}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}!type@{type}}
+\index{type@{type}!websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+\subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf request} {\bf websocketpp\+::http\+::parser\+::request\+::type}}\label{classwebsocketpp_1_1http_1_1parser_1_1request_a456cf14e4c5fd1dab94910580042de6b}
+
+
+Definition at line 52 of file request.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request_a006c941a421dd855b7ae6b40ca855e97}{}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}!request@{request}}
+\index{request@{request}!websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+\subsubsection[{request()}]{\setlength{\rightskip}{0pt plus 5cm}websocketpp\+::http\+::parser\+::request\+::request (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1request_a006c941a421dd855b7ae6b40ca855e97}
+
+
+Definition at line 55 of file request.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request_abd9cae6f44634d62253d806d982ab1d6}{}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}!consume@{consume}}
+\index{consume@{consume}!websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+\subsubsection[{consume(char const $\ast$buf, size\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::http\+::parser\+::request\+::consume (
+\begin{DoxyParamCaption}
+\item[{char const $\ast$}]{buf, }
+\item[{size\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1request_abd9cae6f44634d62253d806d982ab1d6}
+
+
+Process bytes in the input buffer. 
+
+Process up to len bytes from input buffer buf. Returns the number of bytes processed. Bytes left unprocessed means bytes left over after the final header delimiters.
+
+Consume is a streaming processor. It may be called multiple times on one request and the full headers need not be available before processing can begin. If the end of the request was reached during this call to consume the ready flag will be set. Further calls to consume once ready will be ignored.
+
+Consume will throw an \href{http::exception}{\tt http\+::exception} in the case of an error. Typical error reasons include malformed requests, incomplete requests, and max header size being reached.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & Pointer to byte buffer \\
+\hline
+{\em len} & Size of byte buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of bytes processed. 
+\end{DoxyReturn}
+
+
+Definition at line 41 of file request.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request_a82932eb70c5fa7a7b63c08cf7d86ae84}{}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}!get\+\_\+method@{get\+\_\+method}}
+\index{get\+\_\+method@{get\+\_\+method}!websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+\subsubsection[{get\+\_\+method() const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::string const\& websocketpp\+::http\+::parser\+::request\+::get\+\_\+method (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1request_a82932eb70c5fa7a7b63c08cf7d86ae84}
+
+
+Return the request method. 
+
+
+
+Definition at line 96 of file request.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request_a24e528a52652b610e82b6e4cb921f52a}{}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}!get\+\_\+uri@{get\+\_\+uri}}
+\index{get\+\_\+uri@{get\+\_\+uri}!websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+\subsubsection[{get\+\_\+uri() const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::string const\& websocketpp\+::http\+::parser\+::request\+::get\+\_\+uri (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1request_a24e528a52652b610e82b6e4cb921f52a}
+
+
+Return the requested U\+R\+I. 
+
+
+
+Definition at line 104 of file request.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request_adf8887f6b5fb53a650185cd2589be0e8}{}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}!raw@{raw}}
+\index{raw@{raw}!websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+\subsubsection[{raw() const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::http\+::parser\+::request\+::raw (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1request_adf8887f6b5fb53a650185cd2589be0e8}
+
+
+Returns the full raw request (including the body) 
+
+
+
+Definition at line 131 of file request.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request_a06b5abf41d4591fbe746867b12abe5e4}{}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}!raw\+\_\+head@{raw\+\_\+head}}
+\index{raw\+\_\+head@{raw\+\_\+head}!websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+\subsubsection[{raw\+\_\+head() const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::http\+::parser\+::request\+::raw\+\_\+head (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1request_a06b5abf41d4591fbe746867b12abe5e4}
+
+
+Returns the raw request headers only (similar to an H\+T\+T\+P H\+E\+A\+D request) 
+
+
+
+Definition at line 141 of file request.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request_a5981112a0693ab505c1f1cb457debffe}{}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}!ready@{ready}}
+\index{ready@{ready}!websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+\subsubsection[{ready() const }]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::http\+::parser\+::request\+::ready (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1request_a5981112a0693ab505c1f1cb457debffe}
+
+
+Returns whether or not the request is ready for reading. 
+
+
+
+Definition at line 82 of file request.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request_af1f0c6944c6cbbaf6db20e5830333eaf}{}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}!set\+\_\+method@{set\+\_\+method}}
+\index{set\+\_\+method@{set\+\_\+method}!websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+\subsubsection[{set\+\_\+method(std\+::string const \&method)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::http\+::parser\+::request\+::set\+\_\+method (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{method}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1request_af1f0c6944c6cbbaf6db20e5830333eaf}
+
+
+Set the H\+T\+T\+P method. Must be a valid H\+T\+T\+P token. 
+
+
+
+Definition at line 151 of file request.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1request_ac4dcfa00f2112ee33b571f1754f9d893}{}\index{websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}!set\+\_\+uri@{set\+\_\+uri}}
+\index{set\+\_\+uri@{set\+\_\+uri}!websocketpp\+::http\+::parser\+::request@{websocketpp\+::http\+::parser\+::request}}
+\subsubsection[{set\+\_\+uri(std\+::string const \&uri)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::http\+::parser\+::request\+::set\+\_\+uri (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{uri}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1request_ac4dcfa00f2112ee33b571f1754f9d893}
+
+
+Set the H\+T\+T\+P uri. Must be a valid H\+T\+T\+P uri. 
+
+
+
+Definition at line 159 of file request.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/http/\hyperlink{request_8hpp}{request.\+hpp}\end{DoxyCompactItemize}

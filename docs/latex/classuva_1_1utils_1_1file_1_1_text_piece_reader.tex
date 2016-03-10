@@ -1,0 +1,520 @@
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader}{}\section{uva\+:\+:utils\+:\+:file\+:\+:Text\+Piece\+Reader Class Reference}
+\label{classuva_1_1utils_1_1file_1_1_text_piece_reader}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+
+
+{\ttfamily \#include $<$text\+\_\+piece\+\_\+reader.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:utils\+:\+:file\+:\+:Text\+Piece\+Reader\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.222222cm]{classuva_1_1utils_1_1file_1_1_text_piece_reader}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a7fa12f7f7fa645492cb6215d1f910b58}{Text\+Piece\+Reader} ()
+\item 
+\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a81987774ebeb36071db9023f0b51695b}{Text\+Piece\+Reader} (const void $\ast$begin\+\_\+ptr, const size\+\_\+t len)
+\item 
+\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a55ea3fb57f40425f8f5b211a11eb6e69}{Text\+Piece\+Reader} (const \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&other)
+\item 
+void \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a2064d95bd4a748fcb902e499867b1bb4}{set} (const void $\ast$begin\+\_\+ptr, const size\+\_\+t len)
+\item 
+const char $\ast$ \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a9e0eace0d2f16e5379f1afe1f9ec4ad1}{get\+\_\+begin\+\_\+c\+\_\+str} () const 
+\item 
+const char $\ast$ \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_ab6d3ca8247786e8a53a16c1ee16335c9}{get\+\_\+rest\+\_\+c\+\_\+str} () const 
+\item 
+string \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_ae7f43dc78e668e24f02d78dbe493e60d}{get\+\_\+rest\+\_\+str} () const 
+\item 
+const void $\ast$ \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a03c6d5f47640b1231ebcc4ea0c0a6b20}{get\+\_\+begin\+\_\+ptr} () const 
+\item 
+size\+\_\+t \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a0836ba85b84be3b65bff4d7edaf782a5}{length} () const 
+\item 
+{\footnotesize template$<$const size\+\_\+t L\+E\+N\+\_\+\+L\+I\+M\+I\+T$>$ }\\void \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_ac09b0d1598eed173f2060fd8e6db42ae}{copy\+\_\+string} (const \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&other)
+\item 
+{\footnotesize template$<$const char delim, const uint8\+\_\+t delim\+\_\+len = 1$>$ }\\bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a0326d558a7af2378d113f1bed5444802}{get\+\_\+first} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&out)
+\item 
+{\footnotesize template$<$const char delim, const uint8\+\_\+t delim\+\_\+card = 1$>$ }\\bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_ab30c25f0057833d23030c78f2ce0ec80}{get\+\_\+last} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&out)
+\item 
+bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_acbfcd8655c76ebe29dc327e7900ad66b}{has\+\_\+more} ()
+\item 
+bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a064ee10fd3a6b4aef4ab49ccbf0ef870}{get\+\_\+first\+\_\+line} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&out)
+\item 
+bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a0eab2126dd42b02e7058b16dcc4d15f2}{get\+\_\+first\+\_\+space} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&out)
+\item 
+bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a9fc9c2712ada9dbcad8e0da50adc1ee9}{get\+\_\+last\+\_\+space} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&out)
+\item 
+bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_abeab8e826f363763ee7edc862afd87d3}{get\+\_\+first\+\_\+tab} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&out)
+\item 
+char \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_acd977f4d1477765989d052e2449de8dc}{operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t idx)
+\item 
+bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a83db33c4fa7d0f5979b7c46d9b638ea4}{operator==} (const \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&other) const 
+\item 
+bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a20a4b17d066fa6f7e03d75f2c13162f6}{operator!=} (const \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&other) const 
+\item 
+bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a6211ab7b92424aa8822116ce7956d4e5}{operator==} (const char $\ast$other) const 
+\item 
+bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_ada266cac82f40ee7b0c3d551bcf2ef79}{operator!=} (const char $\ast$other) const 
+\item 
+bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_aa87727eed46a4ce83dc038c28089002e}{operator==} (const string \&other) const 
+\item 
+bool \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a4f103ea6b27bfcb9ec4c4d7a89330f97}{operator!=} (const string \&other) const 
+\item 
+const string \& \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_ab51338c463917c61ebce4cd1d308f551}{str} () const 
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$const char delim, const uint8\+\_\+t delim\+\_\+len$>$ }\\const char $\ast$ \hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader_a1f4129a4f870c636665e9223fc491ac9}{find\+\_\+first\+\_\+subseq} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This basic storage class that stores the pointer to pre-\/allocated memory plus the length of this piece. This class can be used to represent a piece of text, a line or a word or any arbitrary piece of memory. Note that, the string here is not necessarily \textbackslash{}0 terminated and the text memory can be Gb large! Also the memory is not managed by the class. 
+
+Definition at line 61 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a7fa12f7f7fa645492cb6215d1f910b58}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!Text\+Piece\+Reader@{Text\+Piece\+Reader}}
+\index{Text\+Piece\+Reader@{Text\+Piece\+Reader}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{Text\+Piece\+Reader()}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::\+Text\+Piece\+Reader (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a7fa12f7f7fa645492cb6215d1f910b58}
+The basic constructor initializes empty text 
+
+Definition at line 84 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a81987774ebeb36071db9023f0b51695b}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!Text\+Piece\+Reader@{Text\+Piece\+Reader}}
+\index{Text\+Piece\+Reader@{Text\+Piece\+Reader}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{Text\+Piece\+Reader(const void $\ast$begin\+\_\+ptr, const size\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::\+Text\+Piece\+Reader (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{begin\+\_\+ptr, }
+\item[{const size\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a81987774ebeb36071db9023f0b51695b}
+The constructor. 
+\begin{DoxyParams}{Parameters}
+{\em begin\+Ptr} & the pointer to the begin of the text \\
+\hline
+{\em len} & the length of the text \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 93 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a55ea3fb57f40425f8f5b211a11eb6e69}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!Text\+Piece\+Reader@{Text\+Piece\+Reader}}
+\index{Text\+Piece\+Reader@{Text\+Piece\+Reader}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{Text\+Piece\+Reader(const Text\+Piece\+Reader \&other)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::\+Text\+Piece\+Reader (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a55ea3fb57f40425f8f5b211a11eb6e69}
+The copy constructor. 
+\begin{DoxyParams}{Parameters}
+{\em other} & the const reference to the object to copy from \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 102 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_ac09b0d1598eed173f2060fd8e6db42ae}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!copy\+\_\+string@{copy\+\_\+string}}
+\index{copy\+\_\+string@{copy\+\_\+string}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{copy\+\_\+string(const Text\+Piece\+Reader \&other)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const size\+\_\+t L\+E\+N\+\_\+\+L\+I\+M\+I\+T$>$ void uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::copy\+\_\+string (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_ac09b0d1598eed173f2060fd8e6db42ae}
+This method allows to copy the string of one text piece into another. The copying process re-\/sets the internal cursor and remaining length to read. 
+\begin{DoxyParams}{Parameters}
+{\em other} & the element to copy from \\
+\hline
+{\em limit} & the maximum length allowed to be copied from the source (other) if the source length is larger -\/ an exception will be raised! \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 185 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a1f4129a4f870c636665e9223fc491ac9}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!find\+\_\+first\+\_\+subseq@{find\+\_\+first\+\_\+subseq}}
+\index{find\+\_\+first\+\_\+subseq@{find\+\_\+first\+\_\+subseq}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{find\+\_\+first\+\_\+subseq()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const char delim, const uint8\+\_\+t delim\+\_\+len$>$ const char$\ast$ uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::find\+\_\+first\+\_\+subseq (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a1f4129a4f870c636665e9223fc491ac9}
+Allows to find a sub-\/sequence of characters in the forward manner \begin{DoxyReturn}{Returns}
+the pointer to the last character in the subsequence or N\+U\+L\+L if nothing is found 
+\end{DoxyReturn}
+
+
+Definition at line 512 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a9e0eace0d2f16e5379f1afe1f9ec4ad1}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!get\+\_\+begin\+\_\+c\+\_\+str@{get\+\_\+begin\+\_\+c\+\_\+str}}
+\index{get\+\_\+begin\+\_\+c\+\_\+str@{get\+\_\+begin\+\_\+c\+\_\+str}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{get\+\_\+begin\+\_\+c\+\_\+str() const }]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::get\+\_\+begin\+\_\+c\+\_\+str (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a9e0eace0d2f16e5379f1afe1f9ec4ad1}
+Allows to get the pointer to the beginning of the text This is a C string that is returned B\+U\+T there is no \textbackslash{}0 termination and it can be Gb long! \begin{DoxyReturn}{Returns}
+the pointer to the beginning of the text 
+\end{DoxyReturn}
+
+
+Definition at line 137 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a03c6d5f47640b1231ebcc4ea0c0a6b20}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!get\+\_\+begin\+\_\+ptr@{get\+\_\+begin\+\_\+ptr}}
+\index{get\+\_\+begin\+\_\+ptr@{get\+\_\+begin\+\_\+ptr}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{get\+\_\+begin\+\_\+ptr() const }]{\setlength{\rightskip}{0pt plus 5cm}const void$\ast$ uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::get\+\_\+begin\+\_\+ptr (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a03c6d5f47640b1231ebcc4ea0c0a6b20}
+Allows to get the pointer to the beginning of the text \begin{DoxyReturn}{Returns}
+the pointer to the beginning of the text 
+\end{DoxyReturn}
+
+
+Definition at line 165 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a0326d558a7af2378d113f1bed5444802}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!get\+\_\+first@{get\+\_\+first}}
+\index{get\+\_\+first@{get\+\_\+first}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{get\+\_\+first(\+Text\+Piece\+Reader \&out)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const char delim, const uint8\+\_\+t delim\+\_\+len = 1$>$ bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::get\+\_\+first (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader} \&}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a0326d558a7af2378d113f1bed5444802}
+This function searches forward for the first occurrence of the argument delimiter symbol. 
+\begin{DoxyParams}{Parameters}
+{\em delim} & the delimiter we are looking for \\
+\hline
+{\em delim\+\_\+len} & the number of times in a row the delimiter shall occur, default is 1 \\
+\hline
+{\em out} & the out parameter -\/ the substring until the first next found delimiter or the entire string if the delimiter was not found \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a text piece was read, otherwise false (end of file) 
+\end{DoxyReturn}
+
+
+Definition at line 211 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a064ee10fd3a6b4aef4ab49ccbf0ef870}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!get\+\_\+first\+\_\+line@{get\+\_\+first\+\_\+line}}
+\index{get\+\_\+first\+\_\+line@{get\+\_\+first\+\_\+line}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{get\+\_\+first\+\_\+line(\+Text\+Piece\+Reader \&out)}]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::get\+\_\+first\+\_\+line (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader} \&}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a064ee10fd3a6b4aef4ab49ccbf0ef870}
+This function, searches forward for the first end of line char or until the end of the text and then sets the data about the found region into the provided output parameter. 
+\begin{DoxyParams}{Parameters}
+{\em out} & the out parameter -\/ the read line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if data was read, otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 353 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a0eab2126dd42b02e7058b16dcc4d15f2}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!get\+\_\+first\+\_\+space@{get\+\_\+first\+\_\+space}}
+\index{get\+\_\+first\+\_\+space@{get\+\_\+first\+\_\+space}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{get\+\_\+first\+\_\+space(\+Text\+Piece\+Reader \&out)}]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::get\+\_\+first\+\_\+space (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader} \&}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a0eab2126dd42b02e7058b16dcc4d15f2}
+This function, searches forward for the first space char or until the end of the text and then sets the data about the found region into the provided output parameter. 
+\begin{DoxyParams}{Parameters}
+{\em out} & the out parameter -\/ the read line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if data was read, otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 366 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_abeab8e826f363763ee7edc862afd87d3}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!get\+\_\+first\+\_\+tab@{get\+\_\+first\+\_\+tab}}
+\index{get\+\_\+first\+\_\+tab@{get\+\_\+first\+\_\+tab}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{get\+\_\+first\+\_\+tab(\+Text\+Piece\+Reader \&out)}]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::get\+\_\+first\+\_\+tab (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader} \&}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_abeab8e826f363763ee7edc862afd87d3}
+This function, searches forward for the first end of tab char or until the end of the text and then sets the data about the found region into the provided output parameter. 
+\begin{DoxyParams}{Parameters}
+{\em out} & the out parameter -\/ the read line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if data was read, otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 393 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_ab30c25f0057833d23030c78f2ce0ec80}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!get\+\_\+last@{get\+\_\+last}}
+\index{get\+\_\+last@{get\+\_\+last}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{get\+\_\+last(\+Text\+Piece\+Reader \&out)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const char delim, const uint8\+\_\+t delim\+\_\+card = 1$>$ bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::get\+\_\+last (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader} \&}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_ab30c25f0057833d23030c78f2ce0ec80}
+This function searches backwards for the first occurrence of the argument delimiter symbol. 
+\begin{DoxyParams}{Parameters}
+{\em delim} & the delimiter we are looking for \\
+\hline
+{\em delim\+\_\+card} & the number of times in a row the delimiter shall occur, default is 1 \\
+\hline
+{\em out} & the out parameter -\/ the substring from the first next found delimiter till the end of the string or the entire string if the delimiter was not found \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if a line was read, otherwise false (end of file) 
+\end{DoxyReturn}
+
+
+Definition at line 287 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a9fc9c2712ada9dbcad8e0da50adc1ee9}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!get\+\_\+last\+\_\+space@{get\+\_\+last\+\_\+space}}
+\index{get\+\_\+last\+\_\+space@{get\+\_\+last\+\_\+space}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{get\+\_\+last\+\_\+space(\+Text\+Piece\+Reader \&out)}]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::get\+\_\+last\+\_\+space (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader} \&}]{out}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a9fc9c2712ada9dbcad8e0da50adc1ee9}
+This function, from the end position, searches for the space char or until the beginning of the text and then sets the data about the found region into the provided output parameter. I.\+e. we get a sub-\/string\+: \mbox{[}begin\+\_\+index, last\+\_\+space\+\_\+idx) 
+\begin{DoxyParams}{Parameters}
+{\em out} & the out parameter -\/ the read line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if data was read, otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 380 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_ab6d3ca8247786e8a53a16c1ee16335c9}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!get\+\_\+rest\+\_\+c\+\_\+str@{get\+\_\+rest\+\_\+c\+\_\+str}}
+\index{get\+\_\+rest\+\_\+c\+\_\+str@{get\+\_\+rest\+\_\+c\+\_\+str}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{get\+\_\+rest\+\_\+c\+\_\+str() const }]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::get\+\_\+rest\+\_\+c\+\_\+str (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_ab6d3ca8247786e8a53a16c1ee16335c9}
+Allows to get the pointer to the remainder of the text This is a C string that is returned B\+U\+T there is no \textbackslash{}0 termination and it can be Gb long! \begin{DoxyReturn}{Returns}
+the pointer to the remainder of the text 
+\end{DoxyReturn}
+
+
+Definition at line 147 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_ae7f43dc78e668e24f02d78dbe493e60d}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!get\+\_\+rest\+\_\+str@{get\+\_\+rest\+\_\+str}}
+\index{get\+\_\+rest\+\_\+str@{get\+\_\+rest\+\_\+str}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{get\+\_\+rest\+\_\+str() const }]{\setlength{\rightskip}{0pt plus 5cm}string uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::get\+\_\+rest\+\_\+str (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_ae7f43dc78e668e24f02d78dbe493e60d}
+Allows to get the pointer to the remainder of the text This is a C string that is returned B\+U\+T there is no \textbackslash{}0 termination and it can be Gb long! \begin{DoxyReturn}{Returns}
+the pointer to the remainder of the text 
+\end{DoxyReturn}
+
+
+Definition at line 157 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_acbfcd8655c76ebe29dc327e7900ad66b}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!has\+\_\+more@{has\+\_\+more}}
+\index{has\+\_\+more@{has\+\_\+more}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{has\+\_\+more()}]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::has\+\_\+more (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_acbfcd8655c76ebe29dc327e7900ad66b}
+Allows to check if there is something left to read \begin{DoxyReturn}{Returns}
+true if there is yet something to read, otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 342 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a0836ba85b84be3b65bff4d7edaf782a5}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!length@{length}}
+\index{length@{length}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{length() const }]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::length (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a0836ba85b84be3b65bff4d7edaf782a5}
+Allows to get the length of the text \begin{DoxyReturn}{Returns}
+the length of the text 
+\end{DoxyReturn}
+
+
+Definition at line 173 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a20a4b17d066fa6f7e03d75f2c13162f6}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{operator"!=(const Text\+Piece\+Reader \&other) const }]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{other}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a20a4b17d066fa6f7e03d75f2c13162f6}
+The comparison operator implementation 
+\begin{DoxyParams}{Parameters}
+{\em other} & text piece to compare with \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 434 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_ada266cac82f40ee7b0c3d551bcf2ef79}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{operator"!=(const char $\ast$other) const }]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::operator!= (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{other}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_ada266cac82f40ee7b0c3d551bcf2ef79}
+The comparison operator implementation 
+\begin{DoxyParams}{Parameters}
+{\em other} & a c\+\_\+string to compare with \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 457 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a4f103ea6b27bfcb9ec4c4d7a89330f97}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{operator"!=(const string \&other) const }]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::operator!= (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{other}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a4f103ea6b27bfcb9ec4c4d7a89330f97}
+The comparison operator implementation 
+\begin{DoxyParams}{Parameters}
+{\em other} & a c\+\_\+string to compare with \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 475 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a83db33c4fa7d0f5979b7c46d9b638ea4}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!operator==@{operator==}}
+\index{operator==@{operator==}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{operator==(const Text\+Piece\+Reader \&other) const }]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf Text\+Piece\+Reader} \&}]{other}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a83db33c4fa7d0f5979b7c46d9b638ea4}
+The comparison operator implementation 
+\begin{DoxyParams}{Parameters}
+{\em other} & text piece to compare with \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 421 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a6211ab7b92424aa8822116ce7956d4e5}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!operator==@{operator==}}
+\index{operator==@{operator==}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{operator==(const char $\ast$other) const }]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::operator== (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{other}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a6211ab7b92424aa8822116ce7956d4e5}
+The comparison operator implementation 
+\begin{DoxyParams}{Parameters}
+{\em other} & a c\+\_\+string to compare with \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 443 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_aa87727eed46a4ce83dc038c28089002e}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!operator==@{operator==}}
+\index{operator==@{operator==}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{operator==(const string \&other) const }]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::operator== (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{other}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_aa87727eed46a4ce83dc038c28089002e}
+The comparison operator implementation 
+\begin{DoxyParams}{Parameters}
+{\em other} & a c\+\_\+string to compare with \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 466 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_acd977f4d1477765989d052e2449de8dc}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{operator[](size\+\_\+t idx)}]{\setlength{\rightskip}{0pt plus 5cm}char uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{size\+\_\+t}]{idx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_acd977f4d1477765989d052e2449de8dc}
+Allows to get the character at the given index, if the index stays within the text length bounds. 
+\begin{DoxyParams}{Parameters}
+{\em idx} & the character index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 405 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_a2064d95bd4a748fcb902e499867b1bb4}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!set@{set}}
+\index{set@{set}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{set(const void $\ast$begin\+\_\+ptr, const size\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::set (
+\begin{DoxyParamCaption}
+\item[{const void $\ast$}]{begin\+\_\+ptr, }
+\item[{const size\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_a2064d95bd4a748fcb902e499867b1bb4}
+Allows to set the text 
+\begin{DoxyParams}{Parameters}
+{\em begin\+Ptr} & the pointer to the beginning of the text \\
+\hline
+{\em len} & the length of the text \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 116 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1file_1_1_text_piece_reader_ab51338c463917c61ebce4cd1d308f551}{}\index{uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}!str@{str}}
+\index{str@{str}!uva\+::utils\+::file\+::\+Text\+Piece\+Reader@{uva\+::utils\+::file\+::\+Text\+Piece\+Reader}}
+\subsubsection[{str() const }]{\setlength{\rightskip}{0pt plus 5cm}const string\& uva\+::utils\+::file\+::\+Text\+Piece\+Reader\+::str (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1file_1_1_text_piece_reader_ab51338c463917c61ebce4cd1d308f551}
+Allows to convert the line to string object \begin{DoxyReturn}{Returns}
+the resulting line 
+\end{DoxyReturn}
+
+
+Definition at line 484 of file text\+\_\+piece\+\_\+reader.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/common/utils/file/\hyperlink{text__piece__reader_8hpp}{text\+\_\+piece\+\_\+reader.\+hpp}\end{DoxyCompactItemize}

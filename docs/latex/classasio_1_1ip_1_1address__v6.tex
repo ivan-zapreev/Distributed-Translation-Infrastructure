@@ -1,0 +1,726 @@
+\hypertarget{classasio_1_1ip_1_1address__v6}{}\section{asio\+:\+:ip\+:\+:address\+\_\+v6 Class Reference}
+\label{classasio_1_1ip_1_1address__v6}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+
+
+Implements I\+P version 6 style addresses.  
+
+
+
+
+{\ttfamily \#include $<$address\+\_\+v6.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classboost_1_1array}{asio\+::detail\+::array}$<$ unsigned char, 16 $>$ \hyperlink{classasio_1_1ip_1_1address__v6_a8a3e5d2312af4134087ad3ebdaad7881}{bytes\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type used to represent an address as an array of bytes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6_af96a3d69983966b78d966cd8704289e3}{address\+\_\+v6} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6_add49510a1a03329e08a8efb59aceb721}{address\+\_\+v6} (const \hyperlink{classasio_1_1ip_1_1address__v6_a8a3e5d2312af4134087ad3ebdaad7881}{bytes\+\_\+type} \&bytes, unsigned long \hyperlink{classasio_1_1ip_1_1address__v6_a04157f659b190f74732c6437b0fd20b7}{scope\+\_\+id}=0)
+\begin{DoxyCompactList}\small\item\em Construct an address from raw bytes and scope I\+D. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6_a8bac642d7879b6f396843216ddd6dfd3}{address\+\_\+v6} (const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&other)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \& \hyperlink{classasio_1_1ip_1_1address__v6_aea98a1e110197aa0652aa86a232a912e}{operator=} (const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&other)
+\begin{DoxyCompactList}\small\item\em Assign from another address. \end{DoxyCompactList}\item 
+unsigned long \hyperlink{classasio_1_1ip_1_1address__v6_a04157f659b190f74732c6437b0fd20b7}{scope\+\_\+id} () const 
+\begin{DoxyCompactList}\small\item\em The scope I\+D of the address. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ip_1_1address__v6_a0c2e1d04b56cea467db07f11a314df37}{scope\+\_\+id} (unsigned long id)
+\begin{DoxyCompactList}\small\item\em The scope I\+D of the address. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6_a8a3e5d2312af4134087ad3ebdaad7881}{bytes\+\_\+type} \hyperlink{classasio_1_1ip_1_1address__v6_a49e8ec4d5ae970d954ed37f7096faa94}{to\+\_\+bytes} () const 
+\begin{DoxyCompactList}\small\item\em Get the address in bytes, in network byte order. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} std\+::string \hyperlink{classasio_1_1ip_1_1address__v6_a014497b783c150f6d2ed0172223bf9f8}{to\+\_\+string} () const 
+\begin{DoxyCompactList}\small\item\em Get the address as a string. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} std\+::string \hyperlink{classasio_1_1ip_1_1address__v6_a8ff8a33c7fcae04b80a9a31dad409b28}{to\+\_\+string} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\begin{DoxyCompactList}\small\item\em Get the address as a string. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v4}{address\+\_\+v4} \hyperlink{classasio_1_1ip_1_1address__v6_a59f236962c5936cfeeadddd8e5950fc9}{to\+\_\+v4} () const 
+\begin{DoxyCompactList}\small\item\em Converts an I\+Pv4-\/mapped or I\+Pv4-\/compatible address to an I\+Pv4 address. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_a36f3bc1edcefbd0d1e30900589ff1f01}{is\+\_\+loopback} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is a loopback address. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_abc235501a0d803a7443f50c373306b31}{is\+\_\+unspecified} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is unspecified. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_ab97ace43f3b44a70cbe60ff3e90fb5a8}{is\+\_\+link\+\_\+local} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is link local. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_a443b4a3488a39f66f202db1f86ee6d73}{is\+\_\+site\+\_\+local} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is site local. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_abe353cbf9be56c252b20383a26bae077}{is\+\_\+v4\+\_\+mapped} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is a mapped I\+Pv4 address. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_a50ea028885a0e4dec1ef57beaa10ae96}{is\+\_\+v4\+\_\+compatible} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is an I\+Pv4-\/compatible address. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_ab81065a9f7db47136efbb0f3cb65de7c}{is\+\_\+multicast} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is a multicast address. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_ad84b79a007ca9445aad74bc1b3ca734c}{is\+\_\+multicast\+\_\+global} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is a global multicast address. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_aaaddcfa9dbcbcdc88ddd2980d7716f56}{is\+\_\+multicast\+\_\+link\+\_\+local} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is a link-\/local multicast address. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_a1c431315ca91554d3b2c154db1cbf472}{is\+\_\+multicast\+\_\+node\+\_\+local} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is a node-\/local multicast address. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_a00f0ca605a7481ebb2614a2ef86e7c27}{is\+\_\+multicast\+\_\+org\+\_\+local} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is a org-\/local multicast address. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} bool \hyperlink{classasio_1_1ip_1_1address__v6_a276460ff1de2ce87931dade528876c8c}{is\+\_\+multicast\+\_\+site\+\_\+local} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the address is a site-\/local multicast address. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \hyperlink{classasio_1_1ip_1_1address__v6_ab6283a74324595420e2da9b960870027}{from\+\_\+string} (const char $\ast$str)
+\begin{DoxyCompactList}\small\item\em Create an address from an I\+P address string. \end{DoxyCompactList}\item 
+static \hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \hyperlink{classasio_1_1ip_1_1address__v6_af796de33a41f8c519389732a4dcda54e}{from\+\_\+string} (const char $\ast$str, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Create an address from an I\+P address string. \end{DoxyCompactList}\item 
+static \hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \hyperlink{classasio_1_1ip_1_1address__v6_a1e23ceec8a07dd080ee5b57724f9a8c1}{from\+\_\+string} (const std\+::string \&str)
+\begin{DoxyCompactList}\small\item\em Create an address from an I\+P address string. \end{DoxyCompactList}\item 
+static \hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \hyperlink{classasio_1_1ip_1_1address__v6_a47d5801977b3dcb405fef63e2a62873e}{from\+\_\+string} (const std\+::string \&str, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Create an address from an I\+P address string. \end{DoxyCompactList}\item 
+static \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \hyperlink{classasio_1_1ip_1_1address__v6_a55546d4c11dbfaf1de3295f263c56f9b}{any} ()
+\begin{DoxyCompactList}\small\item\em Obtain an address object that represents any address. \end{DoxyCompactList}\item 
+static \hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \hyperlink{classasio_1_1ip_1_1address__v6_a0417d64a299da6f83902e3bdcd6542f2}{loopback} ()
+\begin{DoxyCompactList}\small\item\em Obtain an address object that represents the loopback address. \end{DoxyCompactList}\item 
+static \hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \hyperlink{classasio_1_1ip_1_1address__v6_af28a5bb3d9eac817cca2b05c790c8270}{v4\+\_\+mapped} (const \hyperlink{classasio_1_1ip_1_1address__v4}{address\+\_\+v4} \&addr)
+\begin{DoxyCompactList}\small\item\em Create an I\+Pv4-\/mapped I\+Pv6 address. \end{DoxyCompactList}\item 
+static \hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \hyperlink{classasio_1_1ip_1_1address__v6_a3a07f9322cfcabd981f87bdc27237428}{v4\+\_\+compatible} (const \hyperlink{classasio_1_1ip_1_1address__v4}{address\+\_\+v4} \&addr)
+\begin{DoxyCompactList}\small\item\em Create an I\+Pv4-\/compatible I\+Pv6 address. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} friend bool \hyperlink{classasio_1_1ip_1_1address__v6_a897294ec4e42e93e13d5d565015bce44}{operator==} (const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a1, const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a2)
+\begin{DoxyCompactList}\small\item\em Compare two addresses for equality. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1address__v6_a885fecdb8d4e9609ab8d4c2defa69acf}{operator!=} (const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a1, const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a2)
+\begin{DoxyCompactList}\small\item\em Compare two addresses for inequality. \end{DoxyCompactList}\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} friend bool \hyperlink{classasio_1_1ip_1_1address__v6_a944d80cea6e71a4849f9da8d240de215}{operator$<$} (const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a1, const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a2)
+\begin{DoxyCompactList}\small\item\em Compare addresses for ordering. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1address__v6_aef4f2f72bd266f305d6a9dd83724f0fa}{operator$>$} (const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a1, const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a2)
+\begin{DoxyCompactList}\small\item\em Compare addresses for ordering. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1address__v6_a16f2c75d00f8782ed0e4f9e6a1e06abe}{operator$<$=} (const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a1, const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a2)
+\begin{DoxyCompactList}\small\item\em Compare addresses for ordering. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1address__v6_a2fdf50e143636dcd0eb92b0a5f65f14a}{operator$>$=} (const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a1, const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&a2)
+\begin{DoxyCompactList}\small\item\em Compare addresses for ordering. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Related Functions}
+(Note that these are not member functions.) \begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Elem , typename Traits $>$ }\\std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \& \hyperlink{classasio_1_1ip_1_1address__v6_a23ae588a2556b860773f8f6edc7a2889}{operator$<$$<$} (std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \&os, const \hyperlink{classasio_1_1ip_1_1address__v6}{address\+\_\+v6} \&addr)
+\begin{DoxyCompactList}\small\item\em Output an address as a string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Implements I\+P version 6 style addresses. 
+
+The \hyperlink{classasio_1_1ip_1_1address__v6}{asio\+::ip\+::address\+\_\+v6} class provides the ability to use and manipulate I\+P version 6 addresses.
+
+\begin{DoxyParagraph}{Thread Safety}
+{\itshape Distinct} {\itshape objects\+:} Safe.~\newline
+{\itshape Shared} {\itshape objects\+:} Unsafe. 
+\end{DoxyParagraph}
+
+
+Definition at line 44 of file address\+\_\+v6.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1ip_1_1address__v6_a8a3e5d2312af4134087ad3ebdaad7881}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!bytes\+\_\+type@{bytes\+\_\+type}}
+\index{bytes\+\_\+type@{bytes\+\_\+type}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{bytes\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::array}$<$unsigned char, 16$>$ {\bf asio\+::ip\+::address\+\_\+v6\+::bytes\+\_\+type}}\label{classasio_1_1ip_1_1address__v6_a8a3e5d2312af4134087ad3ebdaad7881}
+
+
+The type used to represent an address as an array of bytes. 
+
+\begin{DoxyNote}{Note}
+This type is defined in terms of the C++0x template {\ttfamily std\+::array} when it is available. Otherwise, it uses {\ttfamily boost\+:array}. 
+\end{DoxyNote}
+
+
+Definition at line 55 of file address\+\_\+v6.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1ip_1_1address__v6_af96a3d69983966b78d966cd8704289e3}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!address\+\_\+v6@{address\+\_\+v6}}
+\index{address\+\_\+v6@{address\+\_\+v6}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{address\+\_\+v6()}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ip\+::address\+\_\+v6\+::address\+\_\+v6 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ip_1_1address__v6_af96a3d69983966b78d966cd8704289e3}
+
+
+Default constructor. 
+
+
+
+Definition at line 33 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_add49510a1a03329e08a8efb59aceb721}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!address\+\_\+v6@{address\+\_\+v6}}
+\index{address\+\_\+v6@{address\+\_\+v6}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{address\+\_\+v6(const bytes\+\_\+type \&bytes, unsigned long scope\+\_\+id=0)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ip\+::address\+\_\+v6\+::address\+\_\+v6 (
+\begin{DoxyParamCaption}
+\item[{const {\bf bytes\+\_\+type} \&}]{bytes, }
+\item[{unsigned long}]{scope\+\_\+id = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [explicit]}}\label{classasio_1_1ip_1_1address__v6_add49510a1a03329e08a8efb59aceb721}
+
+
+Construct an address from raw bytes and scope I\+D. 
+
+
+
+Definition at line 39 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a8bac642d7879b6f396843216ddd6dfd3}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!address\+\_\+v6@{address\+\_\+v6}}
+\index{address\+\_\+v6@{address\+\_\+v6}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{address\+\_\+v6(const address\+\_\+v6 \&other)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ip\+::address\+\_\+v6\+::address\+\_\+v6 (
+\begin{DoxyParamCaption}
+\item[{const {\bf address\+\_\+v6} \&}]{other}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ip_1_1address__v6_a8bac642d7879b6f396843216ddd6dfd3}
+
+
+Copy constructor. 
+
+
+
+Definition at line 58 of file address\+\_\+v6.\+ipp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ip_1_1address__v6_a55546d4c11dbfaf1de3295f263c56f9b}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!any@{any}}
+\index{any@{any}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{any()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf address\+\_\+v6} asio\+::ip\+::address\+\_\+v6\+::any (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classasio_1_1ip_1_1address__v6_a55546d4c11dbfaf1de3295f263c56f9b}
+
+
+Obtain an address object that represents any address. 
+
+
+
+Definition at line 194 of file address\+\_\+v6.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_ab6283a74324595420e2da9b960870027}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!from\+\_\+string@{from\+\_\+string}}
+\index{from\+\_\+string@{from\+\_\+string}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{from\+\_\+string(const char $\ast$str)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf address\+\_\+v6} asio\+::ip\+::address\+\_\+v6\+::from\+\_\+string (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classasio_1_1ip_1_1address__v6_ab6283a74324595420e2da9b960870027}
+
+
+Create an address from an I\+P address string. 
+
+
+
+Definition at line 120 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_af796de33a41f8c519389732a4dcda54e}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!from\+\_\+string@{from\+\_\+string}}
+\index{from\+\_\+string@{from\+\_\+string}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{from\+\_\+string(const char $\ast$str, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf address\+\_\+v6} asio\+::ip\+::address\+\_\+v6\+::from\+\_\+string (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{str, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classasio_1_1ip_1_1address__v6_af796de33a41f8c519389732a4dcda54e}
+
+
+Create an address from an I\+P address string. 
+
+
+
+Definition at line 128 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a1e23ceec8a07dd080ee5b57724f9a8c1}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!from\+\_\+string@{from\+\_\+string}}
+\index{from\+\_\+string@{from\+\_\+string}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{from\+\_\+string(const std\+::string \&str)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf address\+\_\+v6} asio\+::ip\+::address\+\_\+v6\+::from\+\_\+string (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classasio_1_1ip_1_1address__v6_a1e23ceec8a07dd080ee5b57724f9a8c1}
+
+
+Create an address from an I\+P address string. 
+
+
+
+Definition at line 138 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a47d5801977b3dcb405fef63e2a62873e}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!from\+\_\+string@{from\+\_\+string}}
+\index{from\+\_\+string@{from\+\_\+string}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{from\+\_\+string(const std\+::string \&str, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf address\+\_\+v6} asio\+::ip\+::address\+\_\+v6\+::from\+\_\+string (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{str, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classasio_1_1ip_1_1address__v6_a47d5801977b3dcb405fef63e2a62873e}
+
+
+Create an address from an I\+P address string. 
+
+
+
+Definition at line 143 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_ab97ace43f3b44a70cbe60ff3e90fb5a8}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+link\+\_\+local@{is\+\_\+link\+\_\+local}}
+\index{is\+\_\+link\+\_\+local@{is\+\_\+link\+\_\+local}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+link\+\_\+local() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+link\+\_\+local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_ab97ace43f3b44a70cbe60ff3e90fb5a8}
+
+
+Determine whether the address is link local. 
+
+
+
+Definition at line 186 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a36f3bc1edcefbd0d1e30900589ff1f01}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+loopback@{is\+\_\+loopback}}
+\index{is\+\_\+loopback@{is\+\_\+loopback}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+loopback() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+loopback (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_a36f3bc1edcefbd0d1e30900589ff1f01}
+
+
+Determine whether the address is a loopback address. 
+
+
+
+Definition at line 162 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_ab81065a9f7db47136efbb0f3cb65de7c}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+multicast@{is\+\_\+multicast}}
+\index{is\+\_\+multicast@{is\+\_\+multicast}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+multicast() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+multicast (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_ab81065a9f7db47136efbb0f3cb65de7c}
+
+
+Determine whether the address is a multicast address. 
+
+
+
+Definition at line 220 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_ad84b79a007ca9445aad74bc1b3ca734c}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+multicast\+\_\+global@{is\+\_\+multicast\+\_\+global}}
+\index{is\+\_\+multicast\+\_\+global@{is\+\_\+multicast\+\_\+global}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+multicast\+\_\+global() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+multicast\+\_\+global (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_ad84b79a007ca9445aad74bc1b3ca734c}
+
+
+Determine whether the address is a global multicast address. 
+
+
+
+Definition at line 225 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_aaaddcfa9dbcbcdc88ddd2980d7716f56}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+multicast\+\_\+link\+\_\+local@{is\+\_\+multicast\+\_\+link\+\_\+local}}
+\index{is\+\_\+multicast\+\_\+link\+\_\+local@{is\+\_\+multicast\+\_\+link\+\_\+local}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+multicast\+\_\+link\+\_\+local() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+multicast\+\_\+link\+\_\+local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_aaaddcfa9dbcbcdc88ddd2980d7716f56}
+
+
+Determine whether the address is a link-\/local multicast address. 
+
+
+
+Definition at line 230 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a1c431315ca91554d3b2c154db1cbf472}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+multicast\+\_\+node\+\_\+local@{is\+\_\+multicast\+\_\+node\+\_\+local}}
+\index{is\+\_\+multicast\+\_\+node\+\_\+local@{is\+\_\+multicast\+\_\+node\+\_\+local}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+multicast\+\_\+node\+\_\+local() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+multicast\+\_\+node\+\_\+local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_a1c431315ca91554d3b2c154db1cbf472}
+
+
+Determine whether the address is a node-\/local multicast address. 
+
+
+
+Definition at line 235 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a00f0ca605a7481ebb2614a2ef86e7c27}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+multicast\+\_\+org\+\_\+local@{is\+\_\+multicast\+\_\+org\+\_\+local}}
+\index{is\+\_\+multicast\+\_\+org\+\_\+local@{is\+\_\+multicast\+\_\+org\+\_\+local}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+multicast\+\_\+org\+\_\+local() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+multicast\+\_\+org\+\_\+local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_a00f0ca605a7481ebb2614a2ef86e7c27}
+
+
+Determine whether the address is a org-\/local multicast address. 
+
+
+
+Definition at line 240 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a276460ff1de2ce87931dade528876c8c}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+multicast\+\_\+site\+\_\+local@{is\+\_\+multicast\+\_\+site\+\_\+local}}
+\index{is\+\_\+multicast\+\_\+site\+\_\+local@{is\+\_\+multicast\+\_\+site\+\_\+local}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+multicast\+\_\+site\+\_\+local() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+multicast\+\_\+site\+\_\+local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_a276460ff1de2ce87931dade528876c8c}
+
+
+Determine whether the address is a site-\/local multicast address. 
+
+
+
+Definition at line 245 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a443b4a3488a39f66f202db1f86ee6d73}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+site\+\_\+local@{is\+\_\+site\+\_\+local}}
+\index{is\+\_\+site\+\_\+local@{is\+\_\+site\+\_\+local}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+site\+\_\+local() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+site\+\_\+local (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_a443b4a3488a39f66f202db1f86ee6d73}
+
+
+Determine whether the address is site local. 
+
+
+
+Definition at line 191 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_abc235501a0d803a7443f50c373306b31}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+unspecified@{is\+\_\+unspecified}}
+\index{is\+\_\+unspecified@{is\+\_\+unspecified}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+unspecified() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+unspecified (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_abc235501a0d803a7443f50c373306b31}
+
+
+Determine whether the address is unspecified. 
+
+
+
+Definition at line 174 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a50ea028885a0e4dec1ef57beaa10ae96}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+v4\+\_\+compatible@{is\+\_\+v4\+\_\+compatible}}
+\index{is\+\_\+v4\+\_\+compatible@{is\+\_\+v4\+\_\+compatible}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+v4\+\_\+compatible() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+v4\+\_\+compatible (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_a50ea028885a0e4dec1ef57beaa10ae96}
+
+
+Determine whether the address is an I\+Pv4-\/compatible address. 
+
+
+
+Definition at line 206 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_abe353cbf9be56c252b20383a26bae077}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!is\+\_\+v4\+\_\+mapped@{is\+\_\+v4\+\_\+mapped}}
+\index{is\+\_\+v4\+\_\+mapped@{is\+\_\+v4\+\_\+mapped}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{is\+\_\+v4\+\_\+mapped() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::ip\+::address\+\_\+v6\+::is\+\_\+v4\+\_\+mapped (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_abe353cbf9be56c252b20383a26bae077}
+
+
+Determine whether the address is a mapped I\+Pv4 address. 
+
+
+
+Definition at line 196 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a0417d64a299da6f83902e3bdcd6542f2}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!loopback@{loopback}}
+\index{loopback@{loopback}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{loopback()}]{\setlength{\rightskip}{0pt plus 5cm}{\bf address\+\_\+v6} asio\+::ip\+::address\+\_\+v6\+::loopback (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classasio_1_1ip_1_1address__v6_a0417d64a299da6f83902e3bdcd6542f2}
+
+
+Obtain an address object that represents the loopback address. 
+
+
+
+Definition at line 270 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_aea98a1e110197aa0652aa86a232a912e}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!operator=@{operator=}}
+\index{operator=@{operator=}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{operator=(const address\+\_\+v6 \&other)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf address\+\_\+v6} \& asio\+::ip\+::address\+\_\+v6\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf address\+\_\+v6} \&}]{other}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ip_1_1address__v6_aea98a1e110197aa0652aa86a232a912e}
+
+
+Assign from another address. 
+
+
+
+Definition at line 72 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a04157f659b190f74732c6437b0fd20b7}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!scope\+\_\+id@{scope\+\_\+id}}
+\index{scope\+\_\+id@{scope\+\_\+id}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{scope\+\_\+id() const }]{\setlength{\rightskip}{0pt plus 5cm}unsigned long asio\+::ip\+::address\+\_\+v6\+::scope\+\_\+id (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1address__v6_a04157f659b190f74732c6437b0fd20b7}
+
+
+The scope I\+D of the address. 
+
+Returns the scope I\+D associated with the I\+Pv6 address. 
+
+Definition at line 85 of file address\+\_\+v6.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a0c2e1d04b56cea467db07f11a314df37}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!scope\+\_\+id@{scope\+\_\+id}}
+\index{scope\+\_\+id@{scope\+\_\+id}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{scope\+\_\+id(unsigned long id)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::ip\+::address\+\_\+v6\+::scope\+\_\+id (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1address__v6_a0c2e1d04b56cea467db07f11a314df37}
+
+
+The scope I\+D of the address. 
+
+Modifies the scope I\+D associated with the I\+Pv6 address. 
+
+Definition at line 94 of file address\+\_\+v6.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a49e8ec4d5ae970d954ed37f7096faa94}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!to\+\_\+bytes@{to\+\_\+bytes}}
+\index{to\+\_\+bytes@{to\+\_\+bytes}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{to\+\_\+bytes() const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf address\+\_\+v6\+::bytes\+\_\+type} asio\+::ip\+::address\+\_\+v6\+::to\+\_\+bytes (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_a49e8ec4d5ae970d954ed37f7096faa94}
+
+
+Get the address in bytes, in network byte order. 
+
+
+
+Definition at line 88 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a014497b783c150f6d2ed0172223bf9f8}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!to\+\_\+string@{to\+\_\+string}}
+\index{to\+\_\+string@{to\+\_\+string}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{to\+\_\+string() const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::string asio\+::ip\+::address\+\_\+v6\+::to\+\_\+string (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_a014497b783c150f6d2ed0172223bf9f8}
+
+
+Get the address as a string. 
+
+
+
+Definition at line 100 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a8ff8a33c7fcae04b80a9a31dad409b28}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!to\+\_\+string@{to\+\_\+string}}
+\index{to\+\_\+string@{to\+\_\+string}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{to\+\_\+string(asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::string asio\+::ip\+::address\+\_\+v6\+::to\+\_\+string (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_a8ff8a33c7fcae04b80a9a31dad409b28}
+
+
+Get the address as a string. 
+
+
+
+Definition at line 108 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a59f236962c5936cfeeadddd8e5950fc9}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!to\+\_\+v4@{to\+\_\+v4}}
+\index{to\+\_\+v4@{to\+\_\+v4}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{to\+\_\+v4() const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf address\+\_\+v4} asio\+::ip\+::address\+\_\+v6\+::to\+\_\+v4 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ip_1_1address__v6_a59f236962c5936cfeeadddd8e5950fc9}
+
+
+Converts an I\+Pv4-\/mapped or I\+Pv4-\/compatible address to an I\+Pv4 address. 
+
+
+
+Definition at line 149 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a3a07f9322cfcabd981f87bdc27237428}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!v4\+\_\+compatible@{v4\+\_\+compatible}}
+\index{v4\+\_\+compatible@{v4\+\_\+compatible}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{v4\+\_\+compatible(const address\+\_\+v4 \&addr)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf address\+\_\+v6} asio\+::ip\+::address\+\_\+v6\+::v4\+\_\+compatible (
+\begin{DoxyParamCaption}
+\item[{const {\bf address\+\_\+v4} \&}]{addr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classasio_1_1ip_1_1address__v6_a3a07f9322cfcabd981f87bdc27237428}
+
+
+Create an I\+Pv4-\/compatible I\+Pv6 address. 
+
+
+
+Definition at line 285 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_af28a5bb3d9eac817cca2b05c790c8270}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!v4\+\_\+mapped@{v4\+\_\+mapped}}
+\index{v4\+\_\+mapped@{v4\+\_\+mapped}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{v4\+\_\+mapped(const address\+\_\+v4 \&addr)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf address\+\_\+v6} asio\+::ip\+::address\+\_\+v6\+::v4\+\_\+mapped (
+\begin{DoxyParamCaption}
+\item[{const {\bf address\+\_\+v4} \&}]{addr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{classasio_1_1ip_1_1address__v6_af28a5bb3d9eac817cca2b05c790c8270}
+
+
+Create an I\+Pv4-\/mapped I\+Pv6 address. 
+
+
+
+Definition at line 277 of file address\+\_\+v6.\+ipp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classasio_1_1ip_1_1address__v6_a885fecdb8d4e9609ab8d4c2defa69acf}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{operator"!=}]{\setlength{\rightskip}{0pt plus 5cm}bool operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf address\+\_\+v6} \&}]{a1, }
+\item[{const {\bf address\+\_\+v6} \&}]{a2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1address__v6_a885fecdb8d4e9609ab8d4c2defa69acf}
+
+
+Compare two addresses for inequality. 
+
+
+
+Definition at line 166 of file address\+\_\+v6.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a944d80cea6e71a4849f9da8d240de215}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{operator$<$}]{\setlength{\rightskip}{0pt plus 5cm}{\bf A\+S\+I\+O\+\_\+\+D\+E\+C\+L} friend bool operator$<$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf address\+\_\+v6} \&}]{a1, }
+\item[{const {\bf address\+\_\+v6} \&}]{a2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1address__v6_a944d80cea6e71a4849f9da8d240de215}
+
+
+Compare addresses for ordering. 
+
+
+
+Definition at line 258 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a23ae588a2556b860773f8f6edc7a2889}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{operator$<$$<$(std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \&os, const address\+\_\+v6 \&addr)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Elem , typename Traits $>$ std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \&}]{os, }
+\item[{const {\bf address\+\_\+v6} \&}]{addr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [related]}}\label{classasio_1_1ip_1_1address__v6_a23ae588a2556b860773f8f6edc7a2889}
+
+
+Output an address as a string. 
+
+Used to output a human-\/readable string for a specified address.
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & The output stream to which the string will be written.\\
+\hline
+{\em addr} & The address to be written.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The output stream. 
+\end{DoxyReturn}
+
+
+Definition at line 28 of file address\+\_\+v6.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a16f2c75d00f8782ed0e4f9e6a1e06abe}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!operator$<$=@{operator$<$=}}
+\index{operator$<$=@{operator$<$=}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{operator$<$=}]{\setlength{\rightskip}{0pt plus 5cm}bool operator$<$= (
+\begin{DoxyParamCaption}
+\item[{const {\bf address\+\_\+v6} \&}]{a1, }
+\item[{const {\bf address\+\_\+v6} \&}]{a2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1address__v6_a16f2c75d00f8782ed0e4f9e6a1e06abe}
+
+
+Compare addresses for ordering. 
+
+
+
+Definition at line 182 of file address\+\_\+v6.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a897294ec4e42e93e13d5d565015bce44}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!operator==@{operator==}}
+\index{operator==@{operator==}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}{\bf A\+S\+I\+O\+\_\+\+D\+E\+C\+L} friend bool operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf address\+\_\+v6} \&}]{a1, }
+\item[{const {\bf address\+\_\+v6} \&}]{a2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1address__v6_a897294ec4e42e93e13d5d565015bce44}
+
+
+Compare two addresses for equality. 
+
+
+
+Definition at line 250 of file address\+\_\+v6.\+ipp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_aef4f2f72bd266f305d6a9dd83724f0fa}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!operator$>$@{operator$>$}}
+\index{operator$>$@{operator$>$}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{operator$>$}]{\setlength{\rightskip}{0pt plus 5cm}bool operator$>$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf address\+\_\+v6} \&}]{a1, }
+\item[{const {\bf address\+\_\+v6} \&}]{a2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1address__v6_aef4f2f72bd266f305d6a9dd83724f0fa}
+
+
+Compare addresses for ordering. 
+
+
+
+Definition at line 176 of file address\+\_\+v6.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1address__v6_a2fdf50e143636dcd0eb92b0a5f65f14a}{}\index{asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}!operator$>$=@{operator$>$=}}
+\index{operator$>$=@{operator$>$=}!asio\+::ip\+::address\+\_\+v6@{asio\+::ip\+::address\+\_\+v6}}
+\subsubsection[{operator$>$=}]{\setlength{\rightskip}{0pt plus 5cm}bool operator$>$= (
+\begin{DoxyParamCaption}
+\item[{const {\bf address\+\_\+v6} \&}]{a1, }
+\item[{const {\bf address\+\_\+v6} \&}]{a2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1address__v6_a2fdf50e143636dcd0eb92b0a5f65f14a}
+
+
+Compare addresses for ordering. 
+
+
+
+Definition at line 188 of file address\+\_\+v6.\+hpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ip/\hyperlink{address__v6_8hpp}{address\+\_\+v6.\+hpp}\item 
+ext/asio/ip/impl/\hyperlink{address__v6_8ipp}{address\+\_\+v6.\+ipp}\end{DoxyCompactItemize}

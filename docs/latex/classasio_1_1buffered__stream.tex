@@ -1,0 +1,470 @@
+\hypertarget{classasio_1_1buffered__stream}{}\section{asio\+:\+:buffered\+\_\+stream$<$ Stream $>$ Class Template Reference}
+\label{classasio_1_1buffered__stream}\index{asio\+::buffered\+\_\+stream$<$ Stream $>$@{asio\+::buffered\+\_\+stream$<$ Stream $>$}}
+
+
+Adds buffering to the read-\/ and write-\/related operations of a stream.  
+
+
+
+
+{\ttfamily \#include $<$buffered\+\_\+stream.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:buffered\+\_\+stream$<$ Stream $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classasio_1_1buffered__stream}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef remove\+\_\+reference$<$ Stream $>$\+::type \hyperlink{classasio_1_1buffered__stream_acde0aacfaa4ec31697fe87ae83704af1}{next\+\_\+layer\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type of the next layer. \end{DoxyCompactList}\item 
+typedef next\+\_\+layer\+\_\+type\+::lowest\+\_\+layer\+\_\+type \hyperlink{classasio_1_1buffered__stream_aed77dcc210c8f8bc905715340a498bc2}{lowest\+\_\+layer\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type of the lowest layer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Arg $>$ }\\\hyperlink{classasio_1_1buffered__stream_a1f70394aed9738ce24f7e434b4953060}{buffered\+\_\+stream} (Arg \&a)
+\begin{DoxyCompactList}\small\item\em Construct, passing the specified argument to initialise the next layer. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Arg $>$ }\\\hyperlink{classasio_1_1buffered__stream_aee66056c709179fb7320c27c62f0af59}{buffered\+\_\+stream} (Arg \&a, std\+::size\+\_\+t read\+\_\+buffer\+\_\+size, std\+::size\+\_\+t write\+\_\+buffer\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Construct, passing the specified argument to initialise the next layer. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1buffered__stream_acde0aacfaa4ec31697fe87ae83704af1}{next\+\_\+layer\+\_\+type} \& \hyperlink{classasio_1_1buffered__stream_a3972cdb3cbe1e0b2219c9ac82fbf370b}{next\+\_\+layer} ()
+\begin{DoxyCompactList}\small\item\em Get a reference to the next layer. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1buffered__stream_aed77dcc210c8f8bc905715340a498bc2}{lowest\+\_\+layer\+\_\+type} \& \hyperlink{classasio_1_1buffered__stream_a6b4b6adeaeabd2e2b97d4fd99c12a4d6}{lowest\+\_\+layer} ()
+\begin{DoxyCompactList}\small\item\em Get a reference to the lowest layer. \end{DoxyCompactList}\item 
+const \hyperlink{classasio_1_1buffered__stream_aed77dcc210c8f8bc905715340a498bc2}{lowest\+\_\+layer\+\_\+type} \& \hyperlink{classasio_1_1buffered__stream_a18b1c4e897b84218ee2e50544303646e}{lowest\+\_\+layer} () const 
+\begin{DoxyCompactList}\small\item\em Get a const reference to the lowest layer. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \& \hyperlink{classasio_1_1buffered__stream_ad090d38bcdd2f795d4be30ae9280ce99}{get\+\_\+io\+\_\+service} ()
+\begin{DoxyCompactList}\small\item\em Get the \hyperlink{classasio_1_1io__service}{io\+\_\+service} associated with the object. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1buffered__stream_a6369d423aa650a4d68b853c193ffc7cf}{close} ()
+\begin{DoxyCompactList}\small\item\em Close the stream. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1buffered__stream_aca80445f4cfe7f2896b51946d20c16a9}{close} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Close the stream. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_ae7cf9a72a757e954ae218cad504ccc31}{flush} ()
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_aa78485b8dffa53f18b591c066d6c3021}{flush} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Write\+Handler $>$ }\\\hyperlink{classasio_1_1buffered__stream_a25113d83af5e2ba0c57c1b467df58372}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+flush(\hyperlink{classasio_1_1buffered__stream_a5bcc9cc7a14cb42d13454faee7828a4c}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}(Write\+Handler) handler)
+\begin{DoxyCompactList}\small\item\em Start an asynchronous flush. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_a6911582c6e829ac7bebc1d6dc6b81065}{write\+\_\+some} (const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers})
+\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_afb094ba3b59bcb93ed0de25a11e53c98}{write\+\_\+some} (const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\\hyperlink{classasio_1_1buffered__stream_a557349498deecd3e1aafb09f7935100c}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+write\+\_\+some(const Const\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}
+\item 
+\hyperlink{classasio_1_1buffered__stream_a5bcc9cc7a14cb42d13454faee7828a4c}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Write\+Handler) handler)
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_a10eb359709c514c845fdf7b20c153e2c}{fill} ()
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_a26778eb43d9c6a0eba7a4219187b923a}{fill} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Read\+Handler $>$ }\\\hyperlink{classasio_1_1buffered__stream_a06fb259d957d62b5960dc7fd4b2198a0}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Read\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+fill(\hyperlink{classasio_1_1buffered__stream_a5bcc9cc7a14cb42d13454faee7828a4c}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}(Read\+Handler) handler)
+\begin{DoxyCompactList}\small\item\em Start an asynchronous fill. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_a539ef9d94a42e0c30f47112ecee65b45}{read\+\_\+some} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers})
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_aea1fbe0c4cbe3c0cd2430912aa826e6b}{read\+\_\+some} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ }\\\hyperlink{classasio_1_1buffered__stream_af02e973b4f249f038403a070cc328a3e}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Read\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+read\+\_\+some(const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}
+\item 
+\hyperlink{classasio_1_1buffered__stream_a494f281948c9debf6920697ff0ca0529}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Read\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_ade4c2160be727497e32963322ef96252}{peek} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers})
+\item 
+{\footnotesize template$<$typename Mutable\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_a1d0067787b90bd34842710be194e32a1}{peek} (const Mutable\+Buffer\+Sequence \&\hyperlink{group__async__read_ga54dede45c3175148a77fe6635222c47d}{buffers}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_a7e720406a8679da92e77e6f563705fad}{in\+\_\+avail} ()
+\begin{DoxyCompactList}\small\item\em Determine the amount of data that may be read without blocking. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1buffered__stream_abebca47727263e90d857cb83427f96e3}{in\+\_\+avail} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Determine the amount of data that may be read without blocking. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Stream$>$class asio\+::buffered\+\_\+stream$<$ Stream $>$}
+
+Adds buffering to the read-\/ and write-\/related operations of a stream. 
+
+The \hyperlink{classasio_1_1buffered__stream}{buffered\+\_\+stream} class template can be used to add buffering to the synchronous and asynchronous read and write operations of a stream.
+
+\begin{DoxyParagraph}{Thread Safety}
+{\itshape Distinct} {\itshape objects\+:} Safe.~\newline
+{\itshape Shared} {\itshape objects\+:} Unsafe.
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Async\+Read\+Stream, Async\+Write\+Stream, Stream, Sync\+Read\+Stream, Sync\+Write\+Stream. 
+\end{DoxyParagraph}
+
+
+Definition at line 45 of file buffered\+\_\+stream.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1buffered__stream_aed77dcc210c8f8bc905715340a498bc2}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!lowest\+\_\+layer\+\_\+type@{lowest\+\_\+layer\+\_\+type}}
+\index{lowest\+\_\+layer\+\_\+type@{lowest\+\_\+layer\+\_\+type}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{lowest\+\_\+layer\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ typedef next\+\_\+layer\+\_\+type\+::lowest\+\_\+layer\+\_\+type {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::{\bf lowest\+\_\+layer\+\_\+type}}\label{classasio_1_1buffered__stream_aed77dcc210c8f8bc905715340a498bc2}
+
+
+The type of the lowest layer. 
+
+
+
+Definition at line 53 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_acde0aacfaa4ec31697fe87ae83704af1}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!next\+\_\+layer\+\_\+type@{next\+\_\+layer\+\_\+type}}
+\index{next\+\_\+layer\+\_\+type@{next\+\_\+layer\+\_\+type}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{next\+\_\+layer\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ typedef remove\+\_\+reference$<$Stream$>$\+::type {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::{\bf next\+\_\+layer\+\_\+type}}\label{classasio_1_1buffered__stream_acde0aacfaa4ec31697fe87ae83704af1}
+
+
+The type of the next layer. 
+
+
+
+Definition at line 50 of file buffered\+\_\+stream.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1buffered__stream_a1f70394aed9738ce24f7e434b4953060}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!buffered\+\_\+stream@{buffered\+\_\+stream}}
+\index{buffered\+\_\+stream@{buffered\+\_\+stream}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{buffered\+\_\+stream(\+Arg \&a)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Arg $>$ {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::{\bf buffered\+\_\+stream} (
+\begin{DoxyParamCaption}
+\item[{Arg \&}]{a}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1buffered__stream_a1f70394aed9738ce24f7e434b4953060}
+
+
+Construct, passing the specified argument to initialise the next layer. 
+
+
+
+Definition at line 57 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_aee66056c709179fb7320c27c62f0af59}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!buffered\+\_\+stream@{buffered\+\_\+stream}}
+\index{buffered\+\_\+stream@{buffered\+\_\+stream}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{buffered\+\_\+stream(\+Arg \&a, std\+::size\+\_\+t read\+\_\+buffer\+\_\+size, std\+::size\+\_\+t write\+\_\+buffer\+\_\+size)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Arg $>$ {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::{\bf buffered\+\_\+stream} (
+\begin{DoxyParamCaption}
+\item[{Arg \&}]{a, }
+\item[{std\+::size\+\_\+t}]{read\+\_\+buffer\+\_\+size, }
+\item[{std\+::size\+\_\+t}]{write\+\_\+buffer\+\_\+size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1buffered__stream_aee66056c709179fb7320c27c62f0af59}
+
+
+Construct, passing the specified argument to initialise the next layer. 
+
+
+
+Definition at line 65 of file buffered\+\_\+stream.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1buffered__stream_a25113d83af5e2ba0c57c1b467df58372}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Write\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+flush(\+A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Write\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Write\+Handler $>$ {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a25113d83af5e2ba0c57c1b467df58372}
+
+
+Start an asynchronous flush. 
+
+
+
+Definition at line 126 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a557349498deecd3e1aafb09f7935100c}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Write\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+write\+\_\+some(const Const\+Buffer\+Sequence \&buffers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1buffered__stream_a557349498deecd3e1aafb09f7935100c}
+Start an asynchronous write. The data being written must be valid for the lifetime of the asynchronous operation. \hypertarget{classasio_1_1buffered__stream_a06fb259d957d62b5960dc7fd4b2198a0}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Read\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+fill(\+A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Read\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Read\+Handler $>$ {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a06fb259d957d62b5960dc7fd4b2198a0}
+
+
+Start an asynchronous fill. 
+
+
+
+Definition at line 179 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_af02e973b4f249f038403a070cc328a3e}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Read\+Handler, void(asio\+::error\+\_\+code, std\+::size\+\_\+t)) async\+\_\+read\+\_\+some(const Mutable\+Buffer\+Sequence \&buffers}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Mutable\+Buffer\+Sequence , typename Read\+Handler $>$ {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, std\+::size\+\_\+t)}]{}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1buffered__stream_af02e973b4f249f038403a070cc328a3e}
+Start an asynchronous read. The buffer into which the data will be read must be valid for the lifetime of the asynchronous operation. \hypertarget{classasio_1_1buffered__stream_a5bcc9cc7a14cb42d13454faee7828a4c}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Write\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Write\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a5bcc9cc7a14cb42d13454faee7828a4c}
+
+
+Definition at line 157 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a494f281948c9debf6920697ff0ca0529}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Read\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Read\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a494f281948c9debf6920697ff0ca0529}
+
+
+Definition at line 209 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a6369d423aa650a4d68b853c193ffc7cf}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!close@{close}}
+\index{close@{close}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{close()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ void {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::close (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a6369d423aa650a4d68b853c193ffc7cf}
+
+
+Close the stream. 
+
+
+
+Definition at line 97 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_aca80445f4cfe7f2896b51946d20c16a9}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!close@{close}}
+\index{close@{close}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{close(asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::close (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_aca80445f4cfe7f2896b51946d20c16a9}
+
+
+Close the stream. 
+
+
+
+Definition at line 103 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a10eb359709c514c845fdf7b20c153e2c}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!fill@{fill}}
+\index{fill@{fill}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{fill()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::fill (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a10eb359709c514c845fdf7b20c153e2c}
+Fill the buffer with some data. Returns the number of bytes placed in the buffer as a result of the operation. Throws an exception on failure. 
+
+Definition at line 165 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a26778eb43d9c6a0eba7a4219187b923a}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!fill@{fill}}
+\index{fill@{fill}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{fill(asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::fill (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a26778eb43d9c6a0eba7a4219187b923a}
+Fill the buffer with some data. Returns the number of bytes placed in the buffer as a result of the operation, or 0 if an error occurred. 
+
+Definition at line 172 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_ae7cf9a72a757e954ae218cad504ccc31}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!flush@{flush}}
+\index{flush@{flush}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{flush()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::flush (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_ae7cf9a72a757e954ae218cad504ccc31}
+Flush all data from the buffer to the next layer. Returns the number of bytes written to the next layer on the last write operation. Throws an exception on failure. 
+
+Definition at line 111 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_aa78485b8dffa53f18b591c066d6c3021}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!flush@{flush}}
+\index{flush@{flush}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{flush(asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::flush (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_aa78485b8dffa53f18b591c066d6c3021}
+Flush all data from the buffer to the next layer. Returns the number of bytes written to the next layer on the last write operation, or 0 if an error occurred. 
+
+Definition at line 119 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_ad090d38bcdd2f795d4be30ae9280ce99}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!get\+\_\+io\+\_\+service@{get\+\_\+io\+\_\+service}}
+\index{get\+\_\+io\+\_\+service@{get\+\_\+io\+\_\+service}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{get\+\_\+io\+\_\+service()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ {\bf asio\+::io\+\_\+service}\& {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::get\+\_\+io\+\_\+service (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_ad090d38bcdd2f795d4be30ae9280ce99}
+
+
+Get the \hyperlink{classasio_1_1io__service}{io\+\_\+service} associated with the object. 
+
+
+
+Definition at line 91 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a7e720406a8679da92e77e6f563705fad}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!in\+\_\+avail@{in\+\_\+avail}}
+\index{in\+\_\+avail@{in\+\_\+avail}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{in\+\_\+avail()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::in\+\_\+avail (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a7e720406a8679da92e77e6f563705fad}
+
+
+Determine the amount of data that may be read without blocking. 
+
+
+
+Definition at line 233 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_abebca47727263e90d857cb83427f96e3}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!in\+\_\+avail@{in\+\_\+avail}}
+\index{in\+\_\+avail@{in\+\_\+avail}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{in\+\_\+avail(asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::in\+\_\+avail (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_abebca47727263e90d857cb83427f96e3}
+
+
+Determine the amount of data that may be read without blocking. 
+
+
+
+Definition at line 239 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a6b4b6adeaeabd2e2b97d4fd99c12a4d6}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!lowest\+\_\+layer@{lowest\+\_\+layer}}
+\index{lowest\+\_\+layer@{lowest\+\_\+layer}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{lowest\+\_\+layer()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ {\bf lowest\+\_\+layer\+\_\+type}\& {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::lowest\+\_\+layer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a6b4b6adeaeabd2e2b97d4fd99c12a4d6}
+
+
+Get a reference to the lowest layer. 
+
+
+
+Definition at line 79 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a18b1c4e897b84218ee2e50544303646e}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!lowest\+\_\+layer@{lowest\+\_\+layer}}
+\index{lowest\+\_\+layer@{lowest\+\_\+layer}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{lowest\+\_\+layer() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ const {\bf lowest\+\_\+layer\+\_\+type}\& {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::lowest\+\_\+layer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a18b1c4e897b84218ee2e50544303646e}
+
+
+Get a const reference to the lowest layer. 
+
+
+
+Definition at line 85 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a3972cdb3cbe1e0b2219c9ac82fbf370b}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!next\+\_\+layer@{next\+\_\+layer}}
+\index{next\+\_\+layer@{next\+\_\+layer}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{next\+\_\+layer()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ {\bf next\+\_\+layer\+\_\+type}\& {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::next\+\_\+layer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a3972cdb3cbe1e0b2219c9ac82fbf370b}
+
+
+Get a reference to the next layer. 
+
+
+
+Definition at line 73 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_ade4c2160be727497e32963322ef96252}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!peek@{peek}}
+\index{peek@{peek}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{peek(const Mutable\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::peek (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_ade4c2160be727497e32963322ef96252}
+Peek at the incoming data on the stream. Returns the number of bytes read. Throws an exception on failure. 
+
+Definition at line 218 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a1d0067787b90bd34842710be194e32a1}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!peek@{peek}}
+\index{peek@{peek}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{peek(const Mutable\+Buffer\+Sequence \&buffers, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::peek (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a1d0067787b90bd34842710be194e32a1}
+Peek at the incoming data on the stream. Returns the number of bytes read, or 0 if an error occurred. 
+
+Definition at line 226 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a539ef9d94a42e0c30f47112ecee65b45}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!read\+\_\+some@{read\+\_\+some}}
+\index{read\+\_\+some@{read\+\_\+some}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{read\+\_\+some(const Mutable\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::read\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a539ef9d94a42e0c30f47112ecee65b45}
+Read some data from the stream. Returns the number of bytes read. Throws an exception on failure. 
+
+Definition at line 189 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_aea1fbe0c4cbe3c0cd2430912aa826e6b}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!read\+\_\+some@{read\+\_\+some}}
+\index{read\+\_\+some@{read\+\_\+some}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{read\+\_\+some(const Mutable\+Buffer\+Sequence \&buffers, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Mutable\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::read\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Mutable\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_aea1fbe0c4cbe3c0cd2430912aa826e6b}
+Read some data from the stream. Returns the number of bytes read or 0 if an error occurred. 
+
+Definition at line 197 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_a6911582c6e829ac7bebc1d6dc6b81065}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!write\+\_\+some@{write\+\_\+some}}
+\index{write\+\_\+some@{write\+\_\+some}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{write\+\_\+some(const Const\+Buffer\+Sequence \&buffers)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::write\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Const\+Buffer\+Sequence \&}]{buffers}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_a6911582c6e829ac7bebc1d6dc6b81065}
+Write the given data to the stream. Returns the number of bytes written. Throws an exception on failure. 
+
+Definition at line 137 of file buffered\+\_\+stream.\+hpp.
+
+\hypertarget{classasio_1_1buffered__stream_afb094ba3b59bcb93ed0de25a11e53c98}{}\index{asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}!write\+\_\+some@{write\+\_\+some}}
+\index{write\+\_\+some@{write\+\_\+some}!asio\+::buffered\+\_\+stream@{asio\+::buffered\+\_\+stream}}
+\subsubsection[{write\+\_\+some(const Const\+Buffer\+Sequence \&buffers, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Stream $>$ template$<$typename Const\+Buffer\+Sequence $>$ std\+::size\+\_\+t {\bf asio\+::buffered\+\_\+stream}$<$ Stream $>$\+::write\+\_\+some (
+\begin{DoxyParamCaption}
+\item[{const Const\+Buffer\+Sequence \&}]{buffers, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1buffered__stream_afb094ba3b59bcb93ed0de25a11e53c98}
+Write the given data to the stream. Returns the number of bytes written, or 0 if an error occurred. 
+
+Definition at line 145 of file buffered\+\_\+stream.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{buffered__stream_8hpp}{buffered\+\_\+stream.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,413 @@
+\hypertarget{group__read__until}{}\section{asio\+:\+:read\+\_\+until}
+\label{group__read__until}\index{asio\+::read\+\_\+until@{asio\+::read\+\_\+until}}
+
+
+Read data into a streambuf until it contains a delimiter, matches a regular expression, or a function object indicates a match.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_ga1aae2baa82596a6a9ad320e80b016006}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, char delim)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until it contains a specified delimiter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_gab9d265cc5b757caf9c9a602da2d6a3e5}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, char delim, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until it contains a specified delimiter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_ga6f38642ad22fcb7f72ddc9fd2b586541}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, const std\+::string \&delim)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until it contains a specified delimiter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_ga27386e9b95114d7def2feee77e2dfd93}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, const std\+::string \&delim, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until it contains a specified delimiter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator , typename Match\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_ga5aa4b441eca98c82a144cb9a3c625db4}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, Match\+Condition match\+\_\+condition, typename enable\+\_\+if$<$ is\+\_\+match\+\_\+condition$<$ Match\+Condition $>$\+::value $>$\+::type $\ast$=0)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until a function object indicates a match. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Read\+Stream , typename Allocator , typename Match\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__read__until_gaacb23419d8878f33e469e3f743c738d6}{asio\+::read\+\_\+until} (Sync\+Read\+Stream \&s, \hyperlink{classasio_1_1basic__streambuf}{asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&b, Match\+Condition match\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, typename enable\+\_\+if$<$ is\+\_\+match\+\_\+condition$<$ Match\+Condition $>$\+::value $>$\+::type $\ast$=0)
+\begin{DoxyCompactList}\small\item\em Read data into a streambuf until a function object indicates a match. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Read data into a streambuf until it contains a delimiter, matches a regular expression, or a function object indicates a match. 
+
+
+
+\subsection{Function Documentation}
+\hypertarget{group__read__until_ga1aae2baa82596a6a9ad320e80b016006}{}\index{asio\+::read\+\_\+until@{asio\+::read\+\_\+until}!read\+\_\+until@{read\+\_\+until}}
+\index{read\+\_\+until@{read\+\_\+until}!asio\+::read\+\_\+until@{asio\+::read\+\_\+until}}
+\subsubsection[{read\+\_\+until(\+Sync\+Read\+Stream \&s, asio\+::basic\+\_\+streambuf$<$ Allocator $>$ \&b, char delim)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Read\+Stream , typename Allocator $>$ std\+::size\+\_\+t asio\+::read\+\_\+until (
+\begin{DoxyParamCaption}
+\item[{Sync\+Read\+Stream \&}]{s, }
+\item[{{\bf asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{char}]{delim}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__read__until_ga1aae2baa82596a6a9ad320e80b016006}
+
+
+Read data into a streambuf until it contains a specified delimiter. 
+
+This function is used to read data into the specified streambuf until the streambuf\textquotesingle{}s get area contains the specified delimiter. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The get area of the streambuf contains the specified delimiter.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s read\+\_\+some function. If the streambuf\textquotesingle{}s get area already contains the delimiter, the function returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream from which the data is to be read. The type must support the Sync\+Read\+Stream concept.\\
+\hline
+{\em b} & A streambuf object into which the data will be read.\\
+\hline
+{\em delim} & The delimiter character.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes in the streambuf\textquotesingle{}s get area up to and including the delimiter.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+After a successful read\+\_\+until operation, the streambuf may contain additional data beyond the delimiter. An application will typically leave that data in the streambuf for a subsequent read\+\_\+until operation to examine.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To read data into a streambuf until a newline is encountered\+: 
+\begin{DoxyCode}
+ \hyperlink{classasio_1_1basic__streambuf}{asio::streambuf} \hyperlink{group__async__read_ga945a5c18fa77a9e2eba420f8f44b2a4f}{b};
+\hyperlink{group__read__until_ga1aae2baa82596a6a9ad320e80b016006}{asio::read\_until}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, b, \textcolor{charliteral}{'\(\backslash\)n'});
+std::istream is(&b);
+std::string line;
+std::getline(is, line); 
+\end{DoxyCode}
+ After the {\ttfamily read\+\_\+until} operation completes successfully, the buffer {\ttfamily b} contains the delimiter\+: 
+\begin{DoxyCode}
+\{ \textcolor{charliteral}{'a'}, \textcolor{charliteral}{'b'}, ..., \textcolor{charliteral}{'c'}, \textcolor{charliteral}{'\(\backslash\)n'}, \textcolor{charliteral}{'d'}, \textcolor{charliteral}{'e'}, ... \} 
+\end{DoxyCode}
+ The call to {\ttfamily std\+::getline} then extracts the data up to and including the delimiter, so that the string {\ttfamily line} contains\+: 
+\begin{DoxyCode}
+\{ \textcolor{charliteral}{'a'}, \textcolor{charliteral}{'b'}, ..., \textcolor{charliteral}{'c'}, \textcolor{charliteral}{'\(\backslash\)n'} \} 
+\end{DoxyCode}
+ The remaining data is left in the buffer {\ttfamily b} as follows\+: 
+\begin{DoxyCode}
+\{ \textcolor{charliteral}{'d'}, \textcolor{charliteral}{'e'}, ... \} 
+\end{DoxyCode}
+ This data may be the start of a new line, to be extracted by a subsequent {\ttfamily read\+\_\+until} operation. 
+\end{DoxyParagraph}
+
+
+Definition at line 37 of file read\+\_\+until.\+hpp.
+
+\hypertarget{group__read__until_gab9d265cc5b757caf9c9a602da2d6a3e5}{}\index{asio\+::read\+\_\+until@{asio\+::read\+\_\+until}!read\+\_\+until@{read\+\_\+until}}
+\index{read\+\_\+until@{read\+\_\+until}!asio\+::read\+\_\+until@{asio\+::read\+\_\+until}}
+\subsubsection[{read\+\_\+until(\+Sync\+Read\+Stream \&s, asio\+::basic\+\_\+streambuf$<$ Allocator $>$ \&b, char delim, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Read\+Stream , typename Allocator $>$ std\+::size\+\_\+t asio\+::read\+\_\+until (
+\begin{DoxyParamCaption}
+\item[{Sync\+Read\+Stream \&}]{s, }
+\item[{{\bf asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{char}]{delim, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{group__read__until_gab9d265cc5b757caf9c9a602da2d6a3e5}
+
+
+Read data into a streambuf until it contains a specified delimiter. 
+
+This function is used to read data into the specified streambuf until the streambuf\textquotesingle{}s get area contains the specified delimiter. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The get area of the streambuf contains the specified delimiter.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s read\+\_\+some function. If the streambuf\textquotesingle{}s get area already contains the delimiter, the function returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream from which the data is to be read. The type must support the Sync\+Read\+Stream concept.\\
+\hline
+{\em b} & A streambuf object into which the data will be read.\\
+\hline
+{\em delim} & The delimiter character.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes in the streambuf\textquotesingle{}s get area up to and including the delimiter. Returns 0 if an error occurred.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+After a successful read\+\_\+until operation, the streambuf may contain additional data beyond the delimiter. An application will typically leave that data in the streambuf for a subsequent read\+\_\+until operation to examine. 
+\end{DoxyNote}
+
+
+Definition at line 47 of file read\+\_\+until.\+hpp.
+
+\hypertarget{group__read__until_ga6f38642ad22fcb7f72ddc9fd2b586541}{}\index{asio\+::read\+\_\+until@{asio\+::read\+\_\+until}!read\+\_\+until@{read\+\_\+until}}
+\index{read\+\_\+until@{read\+\_\+until}!asio\+::read\+\_\+until@{asio\+::read\+\_\+until}}
+\subsubsection[{read\+\_\+until(\+Sync\+Read\+Stream \&s, asio\+::basic\+\_\+streambuf$<$ Allocator $>$ \&b, const std\+::string \&delim)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Read\+Stream , typename Allocator $>$ std\+::size\+\_\+t asio\+::read\+\_\+until (
+\begin{DoxyParamCaption}
+\item[{Sync\+Read\+Stream \&}]{s, }
+\item[{{\bf asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{const std\+::string \&}]{delim}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__read__until_ga6f38642ad22fcb7f72ddc9fd2b586541}
+
+
+Read data into a streambuf until it contains a specified delimiter. 
+
+This function is used to read data into the specified streambuf until the streambuf\textquotesingle{}s get area contains the specified delimiter. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The get area of the streambuf contains the specified delimiter.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s read\+\_\+some function. If the streambuf\textquotesingle{}s get area already contains the delimiter, the function returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream from which the data is to be read. The type must support the Sync\+Read\+Stream concept.\\
+\hline
+{\em b} & A streambuf object into which the data will be read.\\
+\hline
+{\em delim} & The delimiter string.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes in the streambuf\textquotesingle{}s get area up to and including the delimiter.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+After a successful read\+\_\+until operation, the streambuf may contain additional data beyond the delimiter. An application will typically leave that data in the streambuf for a subsequent read\+\_\+until operation to examine.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+To read data into a streambuf until a newline is encountered\+: 
+\begin{DoxyCode}
+ \hyperlink{classasio_1_1basic__streambuf}{asio::streambuf} \hyperlink{group__async__read_ga945a5c18fa77a9e2eba420f8f44b2a4f}{b};
+\hyperlink{group__read__until_ga1aae2baa82596a6a9ad320e80b016006}{asio::read\_until}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, b, \textcolor{stringliteral}{"\(\backslash\)r\(\backslash\)n"});
+std::istream is(&b);
+std::string line;
+std::getline(is, line); 
+\end{DoxyCode}
+ After the {\ttfamily read\+\_\+until} operation completes successfully, the buffer {\ttfamily b} contains the delimiter\+: 
+\begin{DoxyCode}
+\{ \textcolor{charliteral}{'a'}, \textcolor{charliteral}{'b'}, ..., \textcolor{charliteral}{'c'}, \textcolor{charliteral}{'\(\backslash\)r'}, \textcolor{charliteral}{'\(\backslash\)n'}, \textcolor{charliteral}{'d'}, \textcolor{charliteral}{'e'}, ... \} 
+\end{DoxyCode}
+ The call to {\ttfamily std\+::getline} then extracts the data up to and including the delimiter, so that the string {\ttfamily line} contains\+: 
+\begin{DoxyCode}
+\{ \textcolor{charliteral}{'a'}, \textcolor{charliteral}{'b'}, ..., \textcolor{charliteral}{'c'}, \textcolor{charliteral}{'\(\backslash\)r'}, \textcolor{charliteral}{'\(\backslash\)n'} \} 
+\end{DoxyCode}
+ The remaining data is left in the buffer {\ttfamily b} as follows\+: 
+\begin{DoxyCode}
+\{ \textcolor{charliteral}{'d'}, \textcolor{charliteral}{'e'}, ... \} 
+\end{DoxyCode}
+ This data may be the start of a new line, to be extracted by a subsequent {\ttfamily read\+\_\+until} operation. 
+\end{DoxyParagraph}
+
+
+Definition at line 93 of file read\+\_\+until.\+hpp.
+
+\hypertarget{group__read__until_ga27386e9b95114d7def2feee77e2dfd93}{}\index{asio\+::read\+\_\+until@{asio\+::read\+\_\+until}!read\+\_\+until@{read\+\_\+until}}
+\index{read\+\_\+until@{read\+\_\+until}!asio\+::read\+\_\+until@{asio\+::read\+\_\+until}}
+\subsubsection[{read\+\_\+until(\+Sync\+Read\+Stream \&s, asio\+::basic\+\_\+streambuf$<$ Allocator $>$ \&b, const std\+::string \&delim, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Read\+Stream , typename Allocator $>$ std\+::size\+\_\+t asio\+::read\+\_\+until (
+\begin{DoxyParamCaption}
+\item[{Sync\+Read\+Stream \&}]{s, }
+\item[{{\bf asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{const std\+::string \&}]{delim, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{group__read__until_ga27386e9b95114d7def2feee77e2dfd93}
+
+
+Read data into a streambuf until it contains a specified delimiter. 
+
+This function is used to read data into the specified streambuf until the streambuf\textquotesingle{}s get area contains the specified delimiter. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The get area of the streambuf contains the specified delimiter.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s read\+\_\+some function. If the streambuf\textquotesingle{}s get area already contains the delimiter, the function returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream from which the data is to be read. The type must support the Sync\+Read\+Stream concept.\\
+\hline
+{\em b} & A streambuf object into which the data will be read.\\
+\hline
+{\em delim} & The delimiter string.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes in the streambuf\textquotesingle{}s get area up to and including the delimiter. Returns 0 if an error occurred.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+After a successful read\+\_\+until operation, the streambuf may contain additional data beyond the delimiter. An application will typically leave that data in the streambuf for a subsequent read\+\_\+until operation to examine. 
+\end{DoxyNote}
+
+
+Definition at line 138 of file read\+\_\+until.\+hpp.
+
+\hypertarget{group__read__until_gaacb23419d8878f33e469e3f743c738d6}{}\index{asio\+::read\+\_\+until@{asio\+::read\+\_\+until}!read\+\_\+until@{read\+\_\+until}}
+\index{read\+\_\+until@{read\+\_\+until}!asio\+::read\+\_\+until@{asio\+::read\+\_\+until}}
+\subsubsection[{read\+\_\+until(\+Sync\+Read\+Stream \&s, asio\+::basic\+\_\+streambuf$<$ Allocator $>$ \&b, Match\+Condition match\+\_\+condition, asio\+::error\+\_\+code \&ec, typename enable\+\_\+if$<$ is\+\_\+match\+\_\+condition$<$ Match\+Condition $>$\+::value $>$\+::type $\ast$=0)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Read\+Stream , typename Allocator , typename Match\+Condition $>$ std\+::size\+\_\+t asio\+::read\+\_\+until (
+\begin{DoxyParamCaption}
+\item[{Sync\+Read\+Stream \&}]{s, }
+\item[{{\bf asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{Match\+Condition}]{match\+\_\+condition, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec, }
+\item[{typename {\bf enable\+\_\+if}$<$ {\bf is\+\_\+match\+\_\+condition}$<$ Match\+Condition $>$\+::value $>$\+::type $\ast$}]{ = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}\label{group__read__until_gaacb23419d8878f33e469e3f743c738d6}
+
+
+Read data into a streambuf until a function object indicates a match. 
+
+This function is used to read data into the specified streambuf until a user-\/defined match condition function object, when applied to the data contained in the streambuf, indicates a successful match. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The match condition function object returns a std\+::pair where the second element evaluates to true.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s read\+\_\+some function. If the match condition function object already indicates a match, the function returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream from which the data is to be read. The type must support the Sync\+Read\+Stream concept.\\
+\hline
+{\em b} & A streambuf object into which the data will be read.\\
+\hline
+{\em match\+\_\+condition} & The function object to be called to determine whether a match exists. The signature of the function object must be\+: 
+\begin{DoxyCode}
+pair<iterator, bool> \hyperlink{group__async__read__until_ga950b81fb954e4a0f01e13a57e15721b4}{match\_condition}(iterator begin, iterator end);
+\end{DoxyCode}
+ where {\ttfamily iterator} represents the type\+: 
+\begin{DoxyCode}
+buffers\_iterator<basic\_streambuf<Allocator>::const\_buffers\_type>
+\end{DoxyCode}
+ The iterator parameters {\ttfamily begin} and {\ttfamily end} define the range of bytes to be scanned to determine whether there is a match. The {\ttfamily first} member of the return value is an iterator marking one-\/past-\/the-\/end of the bytes that have been consumed by the match function. This iterator is used to calculate the {\ttfamily begin} parameter for any subsequent invocation of the match condition. The {\ttfamily second} member of the return value is true if a match has been found, false otherwise.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes in the streambuf\textquotesingle{}s get area that have been fully consumed by the match function. Returns 0 if an error occurred.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+After a successful read\+\_\+until operation, the streambuf may contain additional data beyond that which matched the function object. An application will typically leave that data in the streambuf for a subsequent
+
+The default implementation of the {\ttfamily \hyperlink{structasio_1_1is__match__condition}{is\+\_\+match\+\_\+condition}} type trait evaluates to true for function pointers and function objects with a {\ttfamily result\+\_\+type} typedef. It must be specialised for other user-\/defined function objects. 
+\end{DoxyNote}
+
+
+Definition at line 264 of file read\+\_\+until.\+hpp.
+
+\hypertarget{group__read__until_ga5aa4b441eca98c82a144cb9a3c625db4}{}\index{asio\+::read\+\_\+until@{asio\+::read\+\_\+until}!read\+\_\+until@{read\+\_\+until}}
+\index{read\+\_\+until@{read\+\_\+until}!asio\+::read\+\_\+until@{asio\+::read\+\_\+until}}
+\subsubsection[{read\+\_\+until(\+Sync\+Read\+Stream \&s, asio\+::basic\+\_\+streambuf$<$ Allocator $>$ \&b, Match\+Condition match\+\_\+condition, typename enable\+\_\+if$<$ is\+\_\+match\+\_\+condition$<$ Match\+Condition $>$\+::value $>$\+::type $\ast$=0)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Sync\+Read\+Stream , typename Allocator , typename Match\+Condition $>$ std\+::size\+\_\+t asio\+::read\+\_\+until (
+\begin{DoxyParamCaption}
+\item[{Sync\+Read\+Stream \&}]{s, }
+\item[{{\bf asio\+::basic\+\_\+streambuf}$<$ Allocator $>$ \&}]{b, }
+\item[{Match\+Condition}]{match\+\_\+condition, }
+\item[{typename {\bf enable\+\_\+if}$<$ {\bf is\+\_\+match\+\_\+condition}$<$ Match\+Condition $>$\+::value $>$\+::type $\ast$}]{ = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__read__until_ga5aa4b441eca98c82a144cb9a3c625db4}
+
+
+Read data into a streambuf until a function object indicates a match. 
+
+This function is used to read data into the specified streambuf until a user-\/defined match condition function object, when applied to the data contained in the streambuf, indicates a successful match. The call will block until one of the following conditions is true\+:
+
+\begin{DoxyItemize}
+\item The match condition function object returns a std\+::pair where the second element evaluates to true.\end{DoxyItemize}
+\begin{DoxyItemize}
+\item An error occurred.\end{DoxyItemize}
+This operation is implemented in terms of zero or more calls to the stream\textquotesingle{}s read\+\_\+some function. If the match condition function object already indicates a match, the function returns immediately.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The stream from which the data is to be read. The type must support the Sync\+Read\+Stream concept.\\
+\hline
+{\em b} & A streambuf object into which the data will be read.\\
+\hline
+{\em match\+\_\+condition} & The function object to be called to determine whether a match exists. The signature of the function object must be\+: 
+\begin{DoxyCode}
+pair<iterator, bool> \hyperlink{group__async__read__until_ga950b81fb954e4a0f01e13a57e15721b4}{match\_condition}(iterator begin, iterator end);
+\end{DoxyCode}
+ where {\ttfamily iterator} represents the type\+: 
+\begin{DoxyCode}
+buffers\_iterator<basic\_streambuf<Allocator>::const\_buffers\_type>
+\end{DoxyCode}
+ The iterator parameters {\ttfamily begin} and {\ttfamily end} define the range of bytes to be scanned to determine whether there is a match. The {\ttfamily first} member of the return value is an iterator marking one-\/past-\/the-\/end of the bytes that have been consumed by the match function. This iterator is used to calculate the {\ttfamily begin} parameter for any subsequent invocation of the match condition. The {\ttfamily second} member of the return value is true if a match has been found, false otherwise.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes in the streambuf\textquotesingle{}s get area that have been fully consumed by the match function.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+After a successful read\+\_\+until operation, the streambuf may contain additional data beyond that which matched the function object. An application will typically leave that data in the streambuf for a subsequent
+
+The default implementation of the {\ttfamily \hyperlink{structasio_1_1is__match__condition}{is\+\_\+match\+\_\+condition}} type trait evaluates to true for function pointers and function objects with a {\ttfamily result\+\_\+type} typedef. It must be specialised for other user-\/defined function objects.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Examples}
+To read data into a streambuf until whitespace is encountered\+: 
+\begin{DoxyCode}
+ \textcolor{keyword}{typedef} \hyperlink{classasio_1_1buffers__iterator}{asio::buffers\_iterator}<
+    \hyperlink{classasio_1_1const__buffers__1}{asio::streambuf::const\_buffers\_type}> iterator;
+
+std::pair<iterator, bool>
+match\_whitespace(iterator begin, iterator end)
+\{
+  iterator i = \hyperlink{group__async__connect_ga7055bca9225050c030c19c7dc926fa53}{begin};
+  \textcolor{keywordflow}{while} (i != end)
+    \textcolor{keywordflow}{if} (std::isspace(*i++))
+      \textcolor{keywordflow}{return} std::make\_pair(i, \textcolor{keyword}{true});
+  \textcolor{keywordflow}{return} std::make\_pair(i, \textcolor{keyword}{false});
+\}
+...
+asio::streambuf \hyperlink{group__async__read_ga945a5c18fa77a9e2eba420f8f44b2a4f}{b};
+\hyperlink{group__read__until_ga1aae2baa82596a6a9ad320e80b016006}{asio::read\_until}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, b, match\_whitespace);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+To read data into a streambuf until a matching character is found\+: 
+\begin{DoxyCode}
+ \textcolor{keyword}{class }match\_char
+\{
+\textcolor{keyword}{public}:
+  \textcolor{keyword}{explicit} match\_char(\textcolor{keywordtype}{char} c) : c\_(c) \{\}
+
+  \textcolor{keyword}{template} <\textcolor{keyword}{typename} Iterator>
+  std::pair<Iterator, bool> operator()(
+      Iterator begin, Iterator end)\textcolor{keyword}{ const}
+\textcolor{keyword}{  }\{
+    Iterator i = \hyperlink{group__async__connect_ga7055bca9225050c030c19c7dc926fa53}{begin};
+    \textcolor{keywordflow}{while} (i != end)
+      \textcolor{keywordflow}{if} (c\_ == *i++)
+        \textcolor{keywordflow}{return} std::make\_pair(i, \textcolor{keyword}{true});
+    \textcolor{keywordflow}{return} std::make\_pair(i, \textcolor{keyword}{false});
+  \}
+
+\textcolor{keyword}{private}:
+  \textcolor{keywordtype}{char} c\_;
+\};
+
+\textcolor{keyword}{namespace }\hyperlink{namespaceasio}{asio} \{
+  \textcolor{keyword}{template} <> \textcolor{keyword}{struct }is\_match\_condition<match\_char>
+    : \textcolor{keyword}{public} boost::true\_type \{\};
+\} \textcolor{comment}{// namespace asio}
+...
+asio::streambuf \hyperlink{group__async__read_ga945a5c18fa77a9e2eba420f8f44b2a4f}{b};
+\hyperlink{group__read__until_ga1aae2baa82596a6a9ad320e80b016006}{asio::read\_until}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, b, match\_char(\textcolor{charliteral}{'a'}));
+\end{DoxyCode}
+ 
+
+Definition at line 316 of file read\+\_\+until.\+hpp.
+

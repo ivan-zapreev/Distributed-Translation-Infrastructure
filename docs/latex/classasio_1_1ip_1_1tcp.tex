@@ -1,0 +1,280 @@
+\hypertarget{classasio_1_1ip_1_1tcp}{}\section{asio\+:\+:ip\+:\+:tcp Class Reference}
+\label{classasio_1_1ip_1_1tcp}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+
+
+Encapsulates the flags needed for T\+C\+P.  
+
+
+
+
+{\ttfamily \#include $<$tcp.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classasio_1_1ip_1_1basic__endpoint}{basic\+\_\+endpoint}$<$ \hyperlink{classasio_1_1ip_1_1tcp}{tcp} $>$ \hyperlink{classasio_1_1ip_1_1tcp_ad8c036bc6e1ae9b77b3beca871933de2}{endpoint}
+\begin{DoxyCompactList}\small\item\em The type of a T\+C\+P endpoint. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1basic__stream__socket}{basic\+\_\+stream\+\_\+socket}$<$ \hyperlink{classasio_1_1ip_1_1tcp}{tcp} $>$ \hyperlink{classasio_1_1ip_1_1tcp_a6f5bf95251747bb81d75784387938d6a}{socket}
+\begin{DoxyCompactList}\small\item\em The T\+C\+P socket type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1basic__socket__acceptor}{basic\+\_\+socket\+\_\+acceptor}$<$ \hyperlink{classasio_1_1ip_1_1tcp}{tcp} $>$ \hyperlink{classasio_1_1ip_1_1tcp_a09a6c28b61af7d9d7680c03ba5062f67}{acceptor}
+\begin{DoxyCompactList}\small\item\em The T\+C\+P acceptor type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1ip_1_1basic__resolver}{basic\+\_\+resolver}$<$ \hyperlink{classasio_1_1ip_1_1tcp}{tcp} $>$ \hyperlink{classasio_1_1ip_1_1tcp_a5e41beb40a92f3bde7563645c2fe5f6c}{resolver}
+\begin{DoxyCompactList}\small\item\em The T\+C\+P resolver type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1basic__socket__iostream}{basic\+\_\+socket\+\_\+iostream}$<$ \hyperlink{classasio_1_1ip_1_1tcp}{tcp} $>$ \hyperlink{classasio_1_1ip_1_1tcp_a80eba1234024033d7a8bc5c6eee35a1b}{iostream}
+\begin{DoxyCompactList}\small\item\em The T\+C\+P iostream type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1socket__option_1_1boolean}{asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y)$>$ \hyperlink{classasio_1_1ip_1_1tcp_a9a35d1c7bb67c0ec1481336cfa826c2e}{no\+\_\+delay}
+\begin{DoxyCompactList}\small\item\em Socket option for disabling the Nagle algorithm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classasio_1_1ip_1_1tcp_a5a1f1ad2e781535a274a49016342d184}{type} () const 
+\begin{DoxyCompactList}\small\item\em Obtain an identifier for the type of the protocol. \end{DoxyCompactList}\item 
+int \hyperlink{classasio_1_1ip_1_1tcp_abe12331d556fe17eaa40f1f458133496}{protocol} () const 
+\begin{DoxyCompactList}\small\item\em Obtain an identifier for the protocol. \end{DoxyCompactList}\item 
+int \hyperlink{classasio_1_1ip_1_1tcp_aa6dda317994dc01071da5f2412ef60de}{family} () const 
+\begin{DoxyCompactList}\small\item\em Obtain an identifier for the protocol family. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classasio_1_1ip_1_1tcp}{tcp} \hyperlink{classasio_1_1ip_1_1tcp_a5123c64b44b4c5fd3c016ce75cbf096d}{v4} ()
+\begin{DoxyCompactList}\small\item\em Construct to represent the I\+Pv4 T\+C\+P protocol. \end{DoxyCompactList}\item 
+static \hyperlink{classasio_1_1ip_1_1tcp}{tcp} \hyperlink{classasio_1_1ip_1_1tcp_ac85324024f1399482b517e05e37f4404}{v6} ()
+\begin{DoxyCompactList}\small\item\em Construct to represent the I\+Pv6 T\+C\+P protocol. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classasio_1_1ip_1_1tcp_a234d1b29328e04ab7b47cca4c597aced}{operator==} (const \hyperlink{classasio_1_1ip_1_1tcp}{tcp} \&p1, const \hyperlink{classasio_1_1ip_1_1tcp}{tcp} \&p2)
+\begin{DoxyCompactList}\small\item\em Compare two protocols for equality. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1ip_1_1tcp_a77ddd41600cc857e90f01a6aa0413519}{operator!=} (const \hyperlink{classasio_1_1ip_1_1tcp}{tcp} \&p1, const \hyperlink{classasio_1_1ip_1_1tcp}{tcp} \&p2)
+\begin{DoxyCompactList}\small\item\em Compare two protocols for inequality. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Encapsulates the flags needed for T\+C\+P. 
+
+The \hyperlink{classasio_1_1ip_1_1tcp}{asio\+::ip\+::tcp} class contains flags necessary for T\+C\+P sockets.
+
+\begin{DoxyParagraph}{Thread Safety}
+{\itshape Distinct} {\itshape objects\+:} Safe.~\newline
+{\itshape Shared} {\itshape objects\+:} Safe.
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Protocol, Internet\+Protocol. 
+\end{DoxyParagraph}
+
+
+Definition at line 45 of file tcp.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1ip_1_1tcp_a09a6c28b61af7d9d7680c03ba5062f67}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!acceptor@{acceptor}}
+\index{acceptor@{acceptor}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{acceptor}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf basic\+\_\+socket\+\_\+acceptor}$<${\bf tcp}$>$ {\bf asio\+::ip\+::tcp\+::acceptor}}\label{classasio_1_1ip_1_1tcp_a09a6c28b61af7d9d7680c03ba5062f67}
+
+
+The T\+C\+P acceptor type. 
+
+
+
+Definition at line 85 of file tcp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1tcp_ad8c036bc6e1ae9b77b3beca871933de2}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!endpoint@{endpoint}}
+\index{endpoint@{endpoint}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{endpoint}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf basic\+\_\+endpoint}$<${\bf tcp}$>$ {\bf asio\+::ip\+::tcp\+::endpoint}}\label{classasio_1_1ip_1_1tcp_ad8c036bc6e1ae9b77b3beca871933de2}
+
+
+The type of a T\+C\+P endpoint. 
+
+
+
+Definition at line 49 of file tcp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1tcp_a80eba1234024033d7a8bc5c6eee35a1b}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!iostream@{iostream}}
+\index{iostream@{iostream}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{iostream}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf basic\+\_\+socket\+\_\+iostream}$<${\bf tcp}$>$ {\bf asio\+::ip\+::tcp\+::iostream}}\label{classasio_1_1ip_1_1tcp_a80eba1234024033d7a8bc5c6eee35a1b}
+
+
+The T\+C\+P iostream type. 
+
+
+
+Definition at line 92 of file tcp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1tcp_a9a35d1c7bb67c0ec1481336cfa826c2e}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!no\+\_\+delay@{no\+\_\+delay}}
+\index{no\+\_\+delay@{no\+\_\+delay}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{no\+\_\+delay}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::detail\+::socket\+\_\+option\+::boolean}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y)$>$ {\bf asio\+::ip\+::tcp\+::no\+\_\+delay}}\label{classasio_1_1ip_1_1tcp_a9a35d1c7bb67c0ec1481336cfa826c2e}
+
+
+Socket option for disabling the Nagle algorithm. 
+
+Implements the I\+P\+P\+R\+O\+T\+O\+\_\+\+T\+C\+P/\+T\+C\+P\+\_\+\+N\+O\+D\+E\+L\+A\+Y socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{classasio_1_1ip_1_1tcp_a6f5bf95251747bb81d75784387938d6a}{socket}(io\_service); 
+...
+asio::ip::tcp::no\_delay option(\textcolor{keyword}{true});
+\hyperlink{classasio_1_1ip_1_1tcp_a6f5bf95251747bb81d75784387938d6a}{socket}.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__stream__socket}{asio::ip::tcp::socket} \hyperlink{classasio_1_1ip_1_1tcp_a6f5bf95251747bb81d75784387938d6a}{socket}(io\_service); 
+...
+asio::ip::tcp::no\_delay option;
+\hyperlink{classasio_1_1ip_1_1tcp_a6f5bf95251747bb81d75784387938d6a}{socket}.get\_option(option);
+\textcolor{keywordtype}{bool} is\_set = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Socket\+\_\+\+Option, Boolean\+\_\+\+Socket\+\_\+\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 125 of file tcp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1tcp_a5e41beb40a92f3bde7563645c2fe5f6c}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!resolver@{resolver}}
+\index{resolver@{resolver}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{resolver}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf basic\+\_\+resolver}$<${\bf tcp}$>$ {\bf asio\+::ip\+::tcp\+::resolver}}\label{classasio_1_1ip_1_1tcp_a5e41beb40a92f3bde7563645c2fe5f6c}
+
+
+The T\+C\+P resolver type. 
+
+
+
+Definition at line 88 of file tcp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1tcp_a6f5bf95251747bb81d75784387938d6a}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!socket@{socket}}
+\index{socket@{socket}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{socket}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf basic\+\_\+stream\+\_\+socket}$<${\bf tcp}$>$ {\bf asio\+::ip\+::tcp\+::socket}}\label{classasio_1_1ip_1_1tcp_a6f5bf95251747bb81d75784387938d6a}
+
+
+The T\+C\+P socket type. 
+
+
+
+Definition at line 82 of file tcp.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ip_1_1tcp_aa6dda317994dc01071da5f2412ef60de}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!family@{family}}
+\index{family@{family}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{family() const }]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::ip\+::tcp\+::family (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1tcp_aa6dda317994dc01071da5f2412ef60de}
+
+
+Obtain an identifier for the protocol family. 
+
+
+
+Definition at line 76 of file tcp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1tcp_abe12331d556fe17eaa40f1f458133496}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!protocol@{protocol}}
+\index{protocol@{protocol}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{protocol() const }]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::ip\+::tcp\+::protocol (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1tcp_abe12331d556fe17eaa40f1f458133496}
+
+
+Obtain an identifier for the protocol. 
+
+
+
+Definition at line 70 of file tcp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1tcp_a5a1f1ad2e781535a274a49016342d184}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!type@{type}}
+\index{type@{type}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{type() const }]{\setlength{\rightskip}{0pt plus 5cm}int asio\+::ip\+::tcp\+::type (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1tcp_a5a1f1ad2e781535a274a49016342d184}
+
+
+Obtain an identifier for the type of the protocol. 
+
+
+
+Definition at line 64 of file tcp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1tcp_a5123c64b44b4c5fd3c016ce75cbf096d}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!v4@{v4}}
+\index{v4@{v4}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{v4()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf tcp} asio\+::ip\+::tcp\+::v4 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classasio_1_1ip_1_1tcp_a5123c64b44b4c5fd3c016ce75cbf096d}
+
+
+Construct to represent the I\+Pv4 T\+C\+P protocol. 
+
+
+
+Definition at line 52 of file tcp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1tcp_ac85324024f1399482b517e05e37f4404}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!v6@{v6}}
+\index{v6@{v6}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{v6()}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf tcp} asio\+::ip\+::tcp\+::v6 (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classasio_1_1ip_1_1tcp_ac85324024f1399482b517e05e37f4404}
+
+
+Construct to represent the I\+Pv6 T\+C\+P protocol. 
+
+
+
+Definition at line 58 of file tcp.\+hpp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classasio_1_1ip_1_1tcp_a77ddd41600cc857e90f01a6aa0413519}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{operator"!=}]{\setlength{\rightskip}{0pt plus 5cm}bool operator!= (
+\begin{DoxyParamCaption}
+\item[{const {\bf tcp} \&}]{p1, }
+\item[{const {\bf tcp} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1tcp_a77ddd41600cc857e90f01a6aa0413519}
+
+
+Compare two protocols for inequality. 
+
+
+
+Definition at line 135 of file tcp.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1tcp_a234d1b29328e04ab7b47cca4c597aced}{}\index{asio\+::ip\+::tcp@{asio\+::ip\+::tcp}!operator==@{operator==}}
+\index{operator==@{operator==}!asio\+::ip\+::tcp@{asio\+::ip\+::tcp}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}bool operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf tcp} \&}]{p1, }
+\item[{const {\bf tcp} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1ip_1_1tcp_a234d1b29328e04ab7b47cca4c597aced}
+
+
+Compare two protocols for equality. 
+
+
+
+Definition at line 129 of file tcp.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ip/\hyperlink{tcp_8hpp}{tcp.\+hpp}\end{DoxyCompactItemize}

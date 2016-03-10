@@ -1,0 +1,264 @@
+\hypertarget{classasio_1_1io__service_1_1strand}{}\section{asio\+:\+:io\+\_\+service\+:\+:strand Class Reference}
+\label{classasio_1_1io__service_1_1strand}\index{asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}}
+
+
+Provides serialised handler execution.  
+
+
+
+
+{\ttfamily \#include $<$strand.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1io__service_1_1strand_a8f06eed4e6699a26bfcfdbd2feb1b7ff}{strand} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1io__service_1_1strand_a798ddf5fc35c7ca14ff3d2be0bf8dfee}{$\sim$strand} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \& \hyperlink{classasio_1_1io__service_1_1strand_a8fd9a2fd5a257cb39e60532d0fc42405}{get\+\_\+io\+\_\+service} ()
+\begin{DoxyCompactList}\small\item\em Get the \hyperlink{classasio_1_1io__service}{io\+\_\+service} associated with the strand. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Completion\+Handler $>$ }\\\hyperlink{classasio_1_1io__service_1_1strand_a4191e0faa4dc731cda5a68cdd0a236e6}{dispatch} (\hyperlink{group__async__read_ga6d72a97784dde9476c6d93b8904a4967}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}(Completion\+Handler) handler)
+\begin{DoxyCompactList}\small\item\em Request the strand to invoke the given handler. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Completion\+Handler $>$ }\\\hyperlink{classasio_1_1io__service_1_1strand_a2fe06e22a81ff3e60829b9bc904bd598}{post} (\hyperlink{group__async__read_ga6d72a97784dde9476c6d93b8904a4967}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}(Completion\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Handler $>$ }\\\hyperlink{classasio_1_1detail_1_1wrapped__handler}{detail\+::wrapped\+\_\+handler}$<$ \hyperlink{classasio_1_1io__service_1_1strand}{strand}, Handler, \hyperlink{structasio_1_1detail_1_1is__continuation__if__running}{detail\+::is\+\_\+continuation\+\_\+if\+\_\+running} $>$ \hyperlink{classasio_1_1io__service_1_1strand_a7b2fe933bbae0d485f26804e26261f87}{wrap} (Handler handler)
+\item 
+bool \hyperlink{classasio_1_1io__service_1_1strand_ab03b1b47f66c80ca7f8589060f55ec4a}{running\+\_\+in\+\_\+this\+\_\+thread} () const 
+\begin{DoxyCompactList}\small\item\em Determine whether the strand is running in the current thread. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Provides serialised handler execution. 
+
+The \hyperlink{classasio_1_1io__service_1_1strand}{io\+\_\+service\+::strand} class provides the ability to post and dispatch handlers with the guarantee that none of those handlers will execute concurrently.
+
+\begin{DoxyParagraph}{Order of handler invocation}
+Given\+:
+\end{DoxyParagraph}
+\begin{DoxyItemize}
+\item a strand object {\ttfamily s} \end{DoxyItemize}
+\begin{DoxyItemize}
+\item an object {\ttfamily a} meeting completion handler requirements\end{DoxyItemize}
+\begin{DoxyItemize}
+\item an object {\ttfamily a1} which is an arbitrary copy of {\ttfamily a} made by the implementation\end{DoxyItemize}
+\begin{DoxyItemize}
+\item an object {\ttfamily b} meeting completion handler requirements\end{DoxyItemize}
+\begin{DoxyItemize}
+\item an object {\ttfamily b1} which is an arbitrary copy of {\ttfamily b} made by the implementation\end{DoxyItemize}
+if any of the following conditions are true\+:
+
+\begin{DoxyItemize}
+\item {\ttfamily s.\+post(a)} happens-\/before {\ttfamily s.\+post(b)} \end{DoxyItemize}
+\begin{DoxyItemize}
+\item {\ttfamily s.\+post(a)} happens-\/before {\ttfamily s.\+dispatch(b)}, where the latter is performed outside the strand\end{DoxyItemize}
+\begin{DoxyItemize}
+\item {\ttfamily s.\+dispatch(a)} happens-\/before {\ttfamily s.\+post(b)}, where the former is performed outside the strand\end{DoxyItemize}
+\begin{DoxyItemize}
+\item {\ttfamily s.\+dispatch(a)} happens-\/before {\ttfamily s.\+dispatch(b)}, where both are performed outside the strand\end{DoxyItemize}
+then {\ttfamily asio\+\_\+handler\+\_\+invoke(a1, \&a1)} happens-\/before {\ttfamily asio\+\_\+handler\+\_\+invoke(b1, \&b1)}.
+
+Note that in the following case\+: 
+\begin{DoxyCode}
+ async\_op\_1(..., s.wrap(a));
+async\_op\_2(..., s.wrap(b)); 
+\end{DoxyCode}
+ the completion of the first async operation will perform {\ttfamily s.\+dispatch(a)}, and the second will perform {\ttfamily s.\+dispatch(b)}, but the order in which those are performed is unspecified. That is, you cannot state whether one happens-\/before the other. Therefore none of the above conditions are met and no ordering guarantee is made.
+
+\begin{DoxyNote}{Note}
+The implementation makes no guarantee that handlers posted or dispatched through different {\ttfamily strand} objects will be invoked concurrently.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Thread Safety}
+{\itshape Distinct} {\itshape objects\+:} Safe.~\newline
+{\itshape Shared} {\itshape objects\+:} Safe.
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Dispatcher. 
+\end{DoxyParagraph}
+
+
+Definition at line 85 of file strand.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1io__service_1_1strand_a8f06eed4e6699a26bfcfdbd2feb1b7ff}{}\index{asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}!strand@{strand}}
+\index{strand@{strand}!asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}}
+\subsubsection[{strand(asio\+::io\+\_\+service \&io\+\_\+service)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::io\+\_\+service\+::strand\+::strand (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1io__service_1_1strand_a8f06eed4e6699a26bfcfdbd2feb1b7ff}
+
+
+Constructor. 
+
+Constructs the strand.
+
+
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{classasio_1_1io__service}{io\+\_\+service}} & The \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that the strand will use to dispatch handlers that are ready to be run. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 95 of file strand.\+hpp.
+
+\hypertarget{classasio_1_1io__service_1_1strand_a798ddf5fc35c7ca14ff3d2be0bf8dfee}{}\index{asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}!````~strand@{$\sim$strand}}
+\index{````~strand@{$\sim$strand}!asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}}
+\subsubsection[{$\sim$strand()}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::io\+\_\+service\+::strand\+::$\sim$strand (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1io__service_1_1strand_a798ddf5fc35c7ca14ff3d2be0bf8dfee}
+
+
+Destructor. 
+
+Destroys a strand.
+
+Handlers posted through the strand that have not yet been invoked will still be dispatched in a way that meets the guarantee of non-\/concurrency. 
+
+Definition at line 109 of file strand.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1io__service_1_1strand_a4191e0faa4dc731cda5a68cdd0a236e6}{}\index{asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}!dispatch@{dispatch}}
+\index{dispatch@{dispatch}!asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}}
+\subsubsection[{dispatch(\+A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Completion\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Completion\+Handler $>$ asio\+::io\+\_\+service\+::strand\+::dispatch (
+\begin{DoxyParamCaption}
+\item[{{\bf A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}(Completion\+Handler)}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1io__service_1_1strand_a4191e0faa4dc731cda5a68cdd0a236e6}
+
+
+Request the strand to invoke the given handler. 
+
+This function is used to ask the strand to execute the given handler.
+
+The strand object guarantees that handlers posted or dispatched through the strand will not be executed concurrently. The handler may be executed inside this function if the guarantee can be met. If this function is called from within a handler that was posted or dispatched through the same strand, then the new handler will be executed immediately.
+
+The strand\textquotesingle{}s guarantee is in addition to the guarantee provided by the underlying \hyperlink{classasio_1_1io__service}{io\+\_\+service}. The \hyperlink{classasio_1_1io__service}{io\+\_\+service} guarantees that the handler will only be called in a thread in which the \hyperlink{classasio_1_1io__service}{io\+\_\+service}\textquotesingle{}s run member function is currently being invoked.
+
+
+\begin{DoxyParams}{Parameters}
+{\em handler} & The handler to be called. The strand will make a copy of the handler object as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+\textcolor{keywordtype}{void} handler(); 
+\end{DoxyCode}
+ \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 147 of file strand.\+hpp.
+
+\hypertarget{classasio_1_1io__service_1_1strand_a8fd9a2fd5a257cb39e60532d0fc42405}{}\index{asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}!get\+\_\+io\+\_\+service@{get\+\_\+io\+\_\+service}}
+\index{get\+\_\+io\+\_\+service@{get\+\_\+io\+\_\+service}!asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}}
+\subsubsection[{get\+\_\+io\+\_\+service()}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::io\+\_\+service}\& asio\+::io\+\_\+service\+::strand\+::get\+\_\+io\+\_\+service (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1io__service_1_1strand_a8fd9a2fd5a257cb39e60532d0fc42405}
+
+
+Get the \hyperlink{classasio_1_1io__service}{io\+\_\+service} associated with the strand. 
+
+This function may be used to obtain the \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that the strand uses to dispatch handlers for asynchronous operations.
+
+\begin{DoxyReturn}{Returns}
+A reference to the \hyperlink{classasio_1_1io__service}{io\+\_\+service} object that the strand will use to dispatch handlers. Ownership is not transferred to the caller. 
+\end{DoxyReturn}
+
+
+Definition at line 121 of file strand.\+hpp.
+
+\hypertarget{classasio_1_1io__service_1_1strand_a2fe06e22a81ff3e60829b9bc904bd598}{}\index{asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}!post@{post}}
+\index{post@{post}!asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}}
+\subsubsection[{post(\+A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Completion\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Completion\+Handler $>$ asio\+::io\+\_\+service\+::strand\+::post (
+\begin{DoxyParamCaption}
+\item[{{\bf A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}(Completion\+Handler)}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1io__service_1_1strand_a2fe06e22a81ff3e60829b9bc904bd598}
+Request the strand to invoke the given handler and return immediately. This function is used to ask the strand to execute the given handler, but without allowing the strand to call the handler from inside this function.
+
+The strand object guarantees that handlers posted or dispatched through the strand will not be executed concurrently. The strand\textquotesingle{}s guarantee is in addition to the guarantee provided by the underlying \hyperlink{classasio_1_1io__service}{io\+\_\+service}. The \hyperlink{classasio_1_1io__service}{io\+\_\+service} guarantees that the handler will only be called in a thread in which the \hyperlink{classasio_1_1io__service}{io\+\_\+service}\textquotesingle{}s run member function is currently being invoked.
+
+
+\begin{DoxyParams}{Parameters}
+{\em handler} & The handler to be called. The strand will make a copy of the handler object as required. The function signature of the handler must be\+: 
+\begin{DoxyCode}
+\textcolor{keywordtype}{void} handler(); 
+\end{DoxyCode}
+ \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 180 of file strand.\+hpp.
+
+\hypertarget{classasio_1_1io__service_1_1strand_ab03b1b47f66c80ca7f8589060f55ec4a}{}\index{asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}!running\+\_\+in\+\_\+this\+\_\+thread@{running\+\_\+in\+\_\+this\+\_\+thread}}
+\index{running\+\_\+in\+\_\+this\+\_\+thread@{running\+\_\+in\+\_\+this\+\_\+thread}!asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}}
+\subsubsection[{running\+\_\+in\+\_\+this\+\_\+thread() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::io\+\_\+service\+::strand\+::running\+\_\+in\+\_\+this\+\_\+thread (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1io__service_1_1strand_ab03b1b47f66c80ca7f8589060f55ec4a}
+
+
+Determine whether the strand is running in the current thread. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the current thread is executing a handler that was submitted to the strand using \hyperlink{classasio_1_1io__service_1_1strand_a2fe06e22a81ff3e60829b9bc904bd598}{post()}, \hyperlink{classasio_1_1io__service_1_1strand_a4191e0faa4dc731cda5a68cdd0a236e6}{dispatch()} or \hyperlink{classasio_1_1io__service_1_1strand_a7b2fe933bbae0d485f26804e26261f87}{wrap()}. Otherwise returns {\ttfamily false}. 
+\end{DoxyReturn}
+
+
+Definition at line 234 of file strand.\+hpp.
+
+\hypertarget{classasio_1_1io__service_1_1strand_a7b2fe933bbae0d485f26804e26261f87}{}\index{asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}!wrap@{wrap}}
+\index{wrap@{wrap}!asio\+::io\+\_\+service\+::strand@{asio\+::io\+\_\+service\+::strand}}
+\subsubsection[{wrap(\+Handler handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ {\bf detail\+::wrapped\+\_\+handler}$<${\bf strand}, Handler, {\bf detail\+::is\+\_\+continuation\+\_\+if\+\_\+running}$>$ asio\+::io\+\_\+service\+::strand\+::wrap (
+\begin{DoxyParamCaption}
+\item[{Handler}]{handler}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1io__service_1_1strand_a7b2fe933bbae0d485f26804e26261f87}
+Create a new handler that automatically dispatches the wrapped handler on the strand. This function is used to create a new handler function object that, when invoked, will automatically pass the wrapped handler to the strand\textquotesingle{}s dispatch function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em handler} & The handler to be wrapped. The strand will make a copy of the handler object as required. The function signature of the handler must be\+:
+\begin{DoxyCode}
+\textcolor{keywordtype}{void} handler(A1 a1, ... An an); 
+\end{DoxyCode}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A function object that, when invoked, passes the wrapped handler to the strand\textquotesingle{}s dispatch function. Given a function object with the signature\+: 
+\begin{DoxyCode}
+R f(A1 a1, ... An an); 
+\end{DoxyCode}
+ If this function object is passed to the wrap function like so\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1io__service_1_1strand_a8f06eed4e6699a26bfcfdbd2feb1b7ff}{strand}.wrap(f); 
+\end{DoxyCode}
+ then the return value is a function object with the signature 
+\begin{DoxyCode}
+\textcolor{keywordtype}{void} g(A1 a1, ... An an); 
+\end{DoxyCode}
+ that, when invoked, executes code equivalent to\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1io__service_1_1strand_a8f06eed4e6699a26bfcfdbd2feb1b7ff}{strand}.dispatch(\hyperlink{namespaceasio_1_1detail_1_1socket__ops_a86014a1273549d66157c6e4dd9532f86}{boost::bind}(f, a1, ... an)); 
+\end{DoxyCode}
+ 
+\end{DoxyReturn}
+
+
+Definition at line 222 of file strand.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{strand_8hpp}{strand.\+hpp}\end{DoxyCompactItemize}

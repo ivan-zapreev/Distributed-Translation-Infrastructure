@@ -1,0 +1,29 @@
+\hypertarget{error__code_8hpp}{}\section{ext/asio/error\+\_\+code.hpp File Reference}
+\label{error__code_8hpp}\index{ext/asio/error\+\_\+code.\+hpp@{ext/asio/error\+\_\+code.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include \char`\"{}asio/detail/noncopyable.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$iosfwd$>$}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1error__category}{asio\+::error\+\_\+category}
+\begin{DoxyCompactList}\small\item\em Base class for all error categories. \end{DoxyCompactList}\item 
+class \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}
+\begin{DoxyCompactList}\small\item\em Class to represent an error code value. \end{DoxyCompactList}\item 
+struct \hyperlink{structasio_1_1error__code_1_1unspecified__bool__type__t}{asio\+::error\+\_\+code\+::unspecified\+\_\+bool\+\_\+type\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} const error\+\_\+category \& \hyperlink{namespaceasio_a1776aa9a745f4da041978ce17abc44ff}{asio\+::system\+\_\+category} ()
+\begin{DoxyCompactList}\small\item\em Returns the error category used for the system errors produced by asio. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Elem , typename Traits $>$ }\\std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \& \hyperlink{namespaceasio_a951615f7e517dd14f0a1c3ceaa538145}{asio\+::operator$<$$<$} (std\+::basic\+\_\+ostream$<$ Elem, Traits $>$ \&os, const error\+\_\+code \&ec)
+\begin{DoxyCompactList}\small\item\em Output an error code. \end{DoxyCompactList}\end{DoxyCompactItemize}

@@ -1,0 +1,225 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:rm\+:\+:models\+:\+:rm\+\_\+entry\+\_\+temp$<$ num\+\_\+features $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp$<$ num\+\_\+features $>$@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp$<$ num\+\_\+features $>$}}
+
+
+{\ttfamily \#include $<$rm\+\_\+entry.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a6884470729968c0a97cb9a96b2741938}{rm\+\_\+entry\+\_\+temp} ()
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a33240bd873249585c99f705f0bbba127}{$\sim$rm\+\_\+entry\+\_\+temp} ()
+\item 
+const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} $\ast$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_aed3eecb82e2aafd4ca18a31651a3fa9b}{get\+\_\+weights} () const 
+\item 
+{\footnotesize template$<$bool is\+\_\+from$>$ }\\const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_ac908fa992731bb32de497094477cef9e}{get\+\_\+weight} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_ad5c3e828e24fc03450e32df9c511e1ef}{reordering\+\_\+orientation} orient) const 
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} \& \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_ac47f1c9f47d71d6861b69af6aa2eafe8}{operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t idx)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a6a60605bda4d714ea8a5c2d209b71016}{set\+\_\+entry\+\_\+uid} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_ad18d4cdf5504e76c22b0c124ff60b44f}{phrase\+\_\+uid} \&uid)
+\item 
+bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a067a585a9fcb90df1d4d68d147c29705}{operator==} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_ad18d4cdf5504e76c22b0c124ff60b44f}{phrase\+\_\+uid} \&uid) const 
+\item 
+bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a979947e1de8331632555fdac5377a8db}{operator==} (const \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp}{rm\+\_\+entry\+\_\+temp} \&other) const 
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr uint8\+\_\+t \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_abdb659b8543d65e61d77ce4f6a7590d1}{N\+U\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} = num\+\_\+features
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$uint8\+\_\+t num\+\_\+weights$>$ }\\ostream \& \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_adf90c7755a71fef5bd55fb6c1caad51a}{operator$<$$<$} (ostream \&stream, const \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp}{rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+weights $>$ \&entry)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$uint8\+\_\+t num\+\_\+features$>$class uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp$<$ num\+\_\+features $>$}
+
+This is the reordering entry class it stores the reordering penalties for one source to target phrase. 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+features} & is the number of reordering weights \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 68 of file rm\+\_\+entry.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a6884470729968c0a97cb9a96b2741938}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}!rm\+\_\+entry\+\_\+temp@{rm\+\_\+entry\+\_\+temp}}
+\index{rm\+\_\+entry\+\_\+temp@{rm\+\_\+entry\+\_\+temp}!uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}}
+\subsubsection[{rm\+\_\+entry\+\_\+temp()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t num\+\_\+features$>$ {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+features $>$\+::{\bf rm\+\_\+entry\+\_\+temp} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a6884470729968c0a97cb9a96b2741938}
+The basic constructor 
+
+Definition at line 76 of file rm\+\_\+entry.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a33240bd873249585c99f705f0bbba127}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}!````~rm\+\_\+entry\+\_\+temp@{$\sim$rm\+\_\+entry\+\_\+temp}}
+\index{````~rm\+\_\+entry\+\_\+temp@{$\sim$rm\+\_\+entry\+\_\+temp}!uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}}
+\subsubsection[{$\sim$rm\+\_\+entry\+\_\+temp()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t num\+\_\+features$>$ {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+features $>$\+::$\sim${\bf rm\+\_\+entry\+\_\+temp} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a33240bd873249585c99f705f0bbba127}
+The basic destructor 
+
+Definition at line 83 of file rm\+\_\+entry.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_ac908fa992731bb32de497094477cef9e}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}!get\+\_\+weight@{get\+\_\+weight}}
+\index{get\+\_\+weight@{get\+\_\+weight}!uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}}
+\subsubsection[{get\+\_\+weight(const reordering\+\_\+orientation orient) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t num\+\_\+features$>$ template$<$bool is\+\_\+from$>$ const {\bf prob\+\_\+weight} {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+features $>$\+::get\+\_\+weight (
+\begin{DoxyParamCaption}
+\item[{const {\bf reordering\+\_\+orientation}}]{orient}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_ac908fa992731bb32de497094477cef9e}
+Allows to get the weight for the given distortion value 
+\begin{DoxyParams}{Parameters}
+{\em is\+\_\+from} & the flag allowing to distinguish between the from and to case if true then we get the value from the from source phrase case if false then we get the value for the to source phrase case \\
+\hline
+{\em orient} & the reordering orientation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the weight for the given distortion value 
+\end{DoxyReturn}
+
+
+Definition at line 103 of file rm\+\_\+entry.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_aed3eecb82e2aafd4ca18a31651a3fa9b}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}!get\+\_\+weights@{get\+\_\+weights}}
+\index{get\+\_\+weights@{get\+\_\+weights}!uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}}
+\subsubsection[{get\+\_\+weights() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t num\+\_\+features$>$ const {\bf prob\+\_\+weight}$\ast$ {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+features $>$\+::get\+\_\+weights (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_aed3eecb82e2aafd4ca18a31651a3fa9b}
+Allows to get the entry weights array \begin{DoxyReturn}{Returns}
+the entry weights array 
+\end{DoxyReturn}
+
+
+Definition at line 90 of file rm\+\_\+entry.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a067a585a9fcb90df1d4d68d147c29705}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}!operator==@{operator==}}
+\index{operator==@{operator==}!uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}}
+\subsubsection[{operator==(const phrase\+\_\+uid \&uid) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t num\+\_\+features$>$ bool {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+features $>$\+::operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf phrase\+\_\+uid} \&}]{uid}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a067a585a9fcb90df1d4d68d147c29705}
+The comparison operator, allows to compare entries 
+\begin{DoxyParams}{Parameters}
+{\em phrase\+\_\+uid} & the unique identifier of the source/target phrase pair entry to compare with \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the provided uid is equal to the uid of this entry, otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 161 of file rm\+\_\+entry.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a979947e1de8331632555fdac5377a8db}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}!operator==@{operator==}}
+\index{operator==@{operator==}!uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}}
+\subsubsection[{operator==(const rm\+\_\+entry\+\_\+temp \&other) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t num\+\_\+features$>$ bool {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+features $>$\+::operator== (
+\begin{DoxyParamCaption}
+\item[{const {\bf rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+features $>$ \&}]{other}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a979947e1de8331632555fdac5377a8db}
+The comparison operator, allows to compare entries 
+\begin{DoxyParams}{Parameters}
+{\em other} & the other entry to compare with \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the provided entry has the same uid as this one, otherwise false 
+\end{DoxyReturn}
+
+
+Definition at line 170 of file rm\+\_\+entry.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_ac47f1c9f47d71d6861b69af6aa2eafe8}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}}
+\subsubsection[{operator[](size\+\_\+t idx)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t num\+\_\+features$>$ {\bf prob\+\_\+weight}\& {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+features $>$\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{size\+\_\+t}]{idx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_ac47f1c9f47d71d6861b69af6aa2eafe8}
+This operator allows to work with the given reordering entry weights in an array fashion 
+\begin{DoxyParams}{Parameters}
+{\em idx} & the index of the feature \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the feature value 
+\end{DoxyReturn}
+
+
+Definition at line 139 of file rm\+\_\+entry.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a6a60605bda4d714ea8a5c2d209b71016}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}!set\+\_\+entry\+\_\+uid@{set\+\_\+entry\+\_\+uid}}
+\index{set\+\_\+entry\+\_\+uid@{set\+\_\+entry\+\_\+uid}!uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}}
+\subsubsection[{set\+\_\+entry\+\_\+uid(const phrase\+\_\+uid \&uid)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t num\+\_\+features$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+features $>$\+::set\+\_\+entry\+\_\+uid (
+\begin{DoxyParamCaption}
+\item[{const {\bf phrase\+\_\+uid} \&}]{uid}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_a6a60605bda4d714ea8a5c2d209b71016}
+Allows to set the unique source target entry identifier 
+\begin{DoxyParams}{Parameters}
+{\em uid} & the unique identifier of the source/target entry \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 152 of file rm\+\_\+entry.\+hpp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_adf90c7755a71fef5bd55fb6c1caad51a}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t num\+\_\+features$>$ template$<$uint8\+\_\+t num\+\_\+weights$>$ ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{ostream \&}]{stream, }
+\item[{const {\bf rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+weights $>$ \&}]{entry}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_adf90c7755a71fef5bd55fb6c1caad51a}
+This operator allows to stream the reordering entry to the output stream 
+\begin{DoxyParams}{Parameters}
+{\em stream} & the stream to send the data into \\
+\hline
+{\em entry} & the entry to stream \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the reference to the same stream is returned 
+\end{DoxyReturn}
+
+
+Definition at line 198 of file rm\+\_\+entry.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_abdb659b8543d65e61d77ce4f6a7590d1}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}!N\+U\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S@{N\+U\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S}}
+\index{N\+U\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S@{N\+U\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S}!uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp@{uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}}
+\subsubsection[{N\+U\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S}]{\setlength{\rightskip}{0pt plus 5cm}template$<$uint8\+\_\+t num\+\_\+features$>$ constexpr uint8\+\_\+t {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::models\+::rm\+\_\+entry\+\_\+temp}$<$ num\+\_\+features $>$\+::N\+U\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S = num\+\_\+features\hspace{0.3cm}{\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__entry__temp_abdb659b8543d65e61d77ce4f6a7590d1}
+
+
+Definition at line 71 of file rm\+\_\+entry.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/rm/models/\hyperlink{rm__entry_8hpp}{rm\+\_\+entry.\+hpp}\end{DoxyCompactItemize}

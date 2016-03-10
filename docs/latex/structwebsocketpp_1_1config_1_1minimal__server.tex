@@ -1,0 +1,396 @@
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server}{}\section{websocketpp\+:\+:config\+:\+:minimal\+\_\+server Struct Reference}
+\label{structwebsocketpp_1_1config_1_1minimal__server}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+
+
+Server config with minimal dependencies.  
+
+
+
+
+{\ttfamily \#include $<$minimal\+\_\+server.\+hpp$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config}{permessage\+\_\+deflate\+\_\+config}
+\begin{DoxyCompactList}\small\item\em Extension specific settings\+: \end{DoxyCompactList}\item 
+struct \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_1_1transport__config}{transport\+\_\+config}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{structwebsocketpp_1_1config_1_1minimal__server}{minimal\+\_\+server} \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a2b417043c646c203ae97af495f5bc3b4}{type}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1concurrency_1_1none}{websocketpp\+::concurrency\+::none} \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a54e2bde35814bd82607f618aacd3ec88}{concurrency\+\_\+type}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1request}{http\+::parser\+::request} \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a7b07ee40c2b25c39fb8e333f969df8e3}{request\+\_\+type}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1response}{http\+::parser\+::response} \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a19b0c06176d183a59e47bfe065b132ff}{response\+\_\+type}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1message__buffer_1_1message}{message\+\_\+buffer\+::message}$<$ \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager}{message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager} $>$ \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_aecd1340269c1429fe37f042ec4b3cfac}{message\+\_\+type}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager}{message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<$ \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_aecd1340269c1429fe37f042ec4b3cfac}{message\+\_\+type} $>$ \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a005ebd181cca0e5adb553146733870b5}{con\+\_\+msg\+\_\+manager\+\_\+type}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1message__buffer_1_1alloc_1_1endpoint__msg__manager}{message\+\_\+buffer\+::alloc\+::endpoint\+\_\+msg\+\_\+manager}$<$ \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a005ebd181cca0e5adb553146733870b5}{con\+\_\+msg\+\_\+manager\+\_\+type} $>$ \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_aeb6079297c7d7ceb1742178e00d11b34}{endpoint\+\_\+msg\+\_\+manager\+\_\+type}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1log_1_1stub}{websocketpp\+::log\+::stub} \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_ab8a516661fb2ddd3a3c377823b623c1a}{elog\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Logging policies. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1log_1_1stub}{websocketpp\+::log\+::stub} \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a9296068cfeabe4786e08691cd755f9b3}{alog\+\_\+type}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1random_1_1none_1_1int__generator}{websocketpp\+::random\+::none\+::int\+\_\+generator}$<$ uint32\+\_\+t $>$ \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a7f3520a016124fc86f907bcf934f74f2}{rng\+\_\+type}
+\begin{DoxyCompactList}\small\item\em R\+N\+G policies. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1transport_1_1stub_1_1endpoint}{websocketpp\+::transport\+::stub\+::endpoint}$<$ \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_1_1transport__config}{transport\+\_\+config} $>$ \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a6e5badb1b21e44416a801ed216a3c72e}{transport\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Transport Endpoint Component. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1endpoint__base}{websocketpp\+::endpoint\+\_\+base} \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_ab656b89b039b38b52d0587acda673e0a}{endpoint\+\_\+base}
+\begin{DoxyCompactList}\small\item\em User overridable Endpoint base class. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1connection__base}{websocketpp\+::connection\+\_\+base} \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_ab58e7a2f5284bef92d724fa607515f2b}{connection\+\_\+base}
+\begin{DoxyCompactList}\small\item\em User overridable Connection base class. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1disabled}{websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}$<$ \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_1_1permessage__deflate__config}{permessage\+\_\+deflate\+\_\+config} $>$ \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_acd4073d1c0f2da6a4b0080978117437a}{permessage\+\_\+deflate\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static bool const \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a671a693af60cb11d9526d58aedce515c}{enable\+\_\+multithreading} = true
+\item 
+static const long \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a5ea3c55d3cd784ef8cfb8c371a7ec209}{timeout\+\_\+open\+\_\+handshake} = 5000
+\begin{DoxyCompactList}\small\item\em Default timer values (in ms) \end{DoxyCompactList}\item 
+static const long \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_aaad75d432962b0a059f2ae7a6378b4e2}{timeout\+\_\+close\+\_\+handshake} = 5000
+\begin{DoxyCompactList}\small\item\em Length of time before a closing handshake is aborted. \end{DoxyCompactList}\item 
+static const long \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_ad1b8ef6ef509976f2d5e05840d641626}{timeout\+\_\+pong} = 5000
+\begin{DoxyCompactList}\small\item\em Length of time to wait for a pong after a ping. \end{DoxyCompactList}\item 
+static const int \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a186c68735f459a3242d68821c82551bc}{client\+\_\+version} = 13
+\begin{DoxyCompactList}\small\item\em Web\+Socket Protocol version to use as a client. \end{DoxyCompactList}\item 
+static const \hyperlink{namespacewebsocketpp_1_1log_a12d4d17939f102db8c9183d400a41960}{websocketpp\+::log\+::level} \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a3682c9c0dc879a125eff396be7babf4e}{elog\+\_\+level}
+\begin{DoxyCompactList}\small\item\em Default static error logging channels. \end{DoxyCompactList}\item 
+static const \hyperlink{namespacewebsocketpp_1_1log_a12d4d17939f102db8c9183d400a41960}{websocketpp\+::log\+::level} \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_ae71d1728a8d49acd97ec29a6fdfd440c}{alog\+\_\+level}
+\begin{DoxyCompactList}\small\item\em Default static access logging channels. \end{DoxyCompactList}\item 
+static const size\+\_\+t \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a8fe8ba843966319a144337f8620648f3}{connection\+\_\+read\+\_\+buffer\+\_\+size} = 16384
+\item 
+static const bool \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_aab09bf45ad78310426a04636ad64c2bd}{drop\+\_\+on\+\_\+protocol\+\_\+error} = false
+\begin{DoxyCompactList}\small\item\em Drop connections immediately on protocol error. \end{DoxyCompactList}\item 
+static const bool \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a2628ceea7ff3671afac22317f979e9c1}{silent\+\_\+close} = false
+\begin{DoxyCompactList}\small\item\em Suppresses the return of detailed connection close information. \end{DoxyCompactList}\item 
+static const size\+\_\+t \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_adfad5099419b8e2090c3667d17e10008}{max\+\_\+message\+\_\+size} = 32000000
+\begin{DoxyCompactList}\small\item\em Default maximum message size. \end{DoxyCompactList}\item 
+static const size\+\_\+t \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_a56756239e0904949156e630c1f48d95e}{max\+\_\+http\+\_\+body\+\_\+size} = 32000000
+\begin{DoxyCompactList}\small\item\em Default maximum http body size. \end{DoxyCompactList}\item 
+static const bool \hyperlink{structwebsocketpp_1_1config_1_1minimal__server_ae25bd7e239136a81b9756d6be0818466}{enable\+\_\+extensions} = true
+\begin{DoxyCompactList}\small\item\em Global flag for enabling/disabling extensions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Server config with minimal dependencies. 
+
+This config strips out as many dependencies as possible. It is suitable for use as a base class for custom configs that want to implement or choose their own policies for components that even the core config includes.
+
+N\+O\+T\+E\+: this config stubs out enough that it cannot be used directly. You must supply at least a transport policy for a config based on {\ttfamily \hyperlink{structwebsocketpp_1_1config_1_1minimal__server}{minimal\+\_\+server}} to do anything useful.
+
+Present dependency list for \hyperlink{structwebsocketpp_1_1config_1_1minimal__server}{minimal\+\_\+server} config\+:
+
+C++98 S\+T\+L\+: $<$algorithm$>$ $<$map$>$ $<$sstream$>$ $<$string$>$ $<$vector$>$
+
+C++11 S\+T\+L or Boost $<$memory$>$ $<$functional$>$ $<$system\+\_\+error$>$
+
+Operating System\+: $<$stdint.\+h$>$ or $<$boost/cstdint.\+hpp$>$ $<$netinet/in.\+h$>$ or $<$winsock2.\+h$>$ (for ntohl.. could potentially bundle this)
+
+\begin{DoxySince}{Since}
+0.\+4.\+0-\/dev 
+\end{DoxySince}
+
+
+Definition at line 96 of file minimal\+\_\+server.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a9296068cfeabe4786e08691cd755f9b3}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!alog\+\_\+type@{alog\+\_\+type}}
+\index{alog\+\_\+type@{alog\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{alog\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf websocketpp\+::log\+::stub} {\bf websocketpp\+::config\+::minimal\+\_\+server\+::alog\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_a9296068cfeabe4786e08691cd755f9b3}
+
+
+Definition at line 116 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a005ebd181cca0e5adb553146733870b5}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!con\+\_\+msg\+\_\+manager\+\_\+type@{con\+\_\+msg\+\_\+manager\+\_\+type}}
+\index{con\+\_\+msg\+\_\+manager\+\_\+type@{con\+\_\+msg\+\_\+manager\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{con\+\_\+msg\+\_\+manager\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$<${\bf message\+\_\+type}$>$ {\bf websocketpp\+::config\+::minimal\+\_\+server\+::con\+\_\+msg\+\_\+manager\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_a005ebd181cca0e5adb553146733870b5}
+
+
+Definition at line 110 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a54e2bde35814bd82607f618aacd3ec88}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!concurrency\+\_\+type@{concurrency\+\_\+type}}
+\index{concurrency\+\_\+type@{concurrency\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{concurrency\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf websocketpp\+::concurrency\+::none} {\bf websocketpp\+::config\+::minimal\+\_\+server\+::concurrency\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_a54e2bde35814bd82607f618aacd3ec88}
+
+
+Definition at line 100 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_ab58e7a2f5284bef92d724fa607515f2b}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!connection\+\_\+base@{connection\+\_\+base}}
+\index{connection\+\_\+base@{connection\+\_\+base}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{connection\+\_\+base}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf websocketpp\+::connection\+\_\+base} {\bf websocketpp\+::config\+::minimal\+\_\+server\+::connection\+\_\+base}}\label{structwebsocketpp_1_1config_1_1minimal__server_ab58e7a2f5284bef92d724fa607515f2b}
+
+
+User overridable Connection base class. 
+
+
+
+Definition at line 173 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_ab8a516661fb2ddd3a3c377823b623c1a}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!elog\+\_\+type@{elog\+\_\+type}}
+\index{elog\+\_\+type@{elog\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{elog\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf websocketpp\+::log\+::stub} {\bf websocketpp\+::config\+::minimal\+\_\+server\+::elog\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_ab8a516661fb2ddd3a3c377823b623c1a}
+
+
+Logging policies. 
+
+
+
+Definition at line 115 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_ab656b89b039b38b52d0587acda673e0a}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!endpoint\+\_\+base@{endpoint\+\_\+base}}
+\index{endpoint\+\_\+base@{endpoint\+\_\+base}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{endpoint\+\_\+base}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf websocketpp\+::endpoint\+\_\+base} {\bf websocketpp\+::config\+::minimal\+\_\+server\+::endpoint\+\_\+base}}\label{structwebsocketpp_1_1config_1_1minimal__server_ab656b89b039b38b52d0587acda673e0a}
+
+
+User overridable Endpoint base class. 
+
+
+
+Definition at line 171 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_aeb6079297c7d7ceb1742178e00d11b34}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!endpoint\+\_\+msg\+\_\+manager\+\_\+type@{endpoint\+\_\+msg\+\_\+manager\+\_\+type}}
+\index{endpoint\+\_\+msg\+\_\+manager\+\_\+type@{endpoint\+\_\+msg\+\_\+manager\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{endpoint\+\_\+msg\+\_\+manager\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf message\+\_\+buffer\+::alloc\+::endpoint\+\_\+msg\+\_\+manager}$<${\bf con\+\_\+msg\+\_\+manager\+\_\+type}$>$ {\bf websocketpp\+::config\+::minimal\+\_\+server\+::endpoint\+\_\+msg\+\_\+manager\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_aeb6079297c7d7ceb1742178e00d11b34}
+
+
+Definition at line 112 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_aecd1340269c1429fe37f042ec4b3cfac}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!message\+\_\+type@{message\+\_\+type}}
+\index{message\+\_\+type@{message\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{message\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf message\+\_\+buffer\+::message}$<${\bf message\+\_\+buffer\+::alloc\+::con\+\_\+msg\+\_\+manager}$>$ {\bf websocketpp\+::config\+::minimal\+\_\+server\+::message\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_aecd1340269c1429fe37f042ec4b3cfac}
+
+
+Definition at line 108 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_acd4073d1c0f2da6a4b0080978117437a}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!permessage\+\_\+deflate\+\_\+type@{permessage\+\_\+deflate\+\_\+type}}
+\index{permessage\+\_\+deflate\+\_\+type@{permessage\+\_\+deflate\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{permessage\+\_\+deflate\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf websocketpp\+::extensions\+::permessage\+\_\+deflate\+::disabled}$<${\bf permessage\+\_\+deflate\+\_\+config}$>$ {\bf websocketpp\+::config\+::minimal\+\_\+server\+::permessage\+\_\+deflate\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_acd4073d1c0f2da6a4b0080978117437a}
+
+
+Definition at line 291 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a7b07ee40c2b25c39fb8e333f969df8e3}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!request\+\_\+type@{request\+\_\+type}}
+\index{request\+\_\+type@{request\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{request\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf http\+::parser\+::request} {\bf websocketpp\+::config\+::minimal\+\_\+server\+::request\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_a7b07ee40c2b25c39fb8e333f969df8e3}
+
+
+Definition at line 103 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a19b0c06176d183a59e47bfe065b132ff}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!response\+\_\+type@{response\+\_\+type}}
+\index{response\+\_\+type@{response\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{response\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf http\+::parser\+::response} {\bf websocketpp\+::config\+::minimal\+\_\+server\+::response\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_a19b0c06176d183a59e47bfe065b132ff}
+
+
+Definition at line 104 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a7f3520a016124fc86f907bcf934f74f2}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!rng\+\_\+type@{rng\+\_\+type}}
+\index{rng\+\_\+type@{rng\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{rng\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf websocketpp\+::random\+::none\+::int\+\_\+generator}$<$uint32\+\_\+t$>$ {\bf websocketpp\+::config\+::minimal\+\_\+server\+::rng\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_a7f3520a016124fc86f907bcf934f74f2}
+
+
+R\+N\+G policies. 
+
+
+
+Definition at line 119 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a6e5badb1b21e44416a801ed216a3c72e}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!transport\+\_\+type@{transport\+\_\+type}}
+\index{transport\+\_\+type@{transport\+\_\+type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{transport\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf websocketpp\+::transport\+::stub\+::endpoint}$<${\bf transport\+\_\+config}$>$ {\bf websocketpp\+::config\+::minimal\+\_\+server\+::transport\+\_\+type}}\label{structwebsocketpp_1_1config_1_1minimal__server_a6e5badb1b21e44416a801ed216a3c72e}
+
+
+Transport Endpoint Component. 
+
+
+
+Definition at line 168 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a2b417043c646c203ae97af495f5bc3b4}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!type@{type}}
+\index{type@{type}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf minimal\+\_\+server} {\bf websocketpp\+::config\+::minimal\+\_\+server\+::type}}\label{structwebsocketpp_1_1config_1_1minimal__server_a2b417043c646c203ae97af495f5bc3b4}
+
+
+Definition at line 97 of file minimal\+\_\+server.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_ae71d1728a8d49acd97ec29a6fdfd440c}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!alog\+\_\+level@{alog\+\_\+level}}
+\index{alog\+\_\+level@{alog\+\_\+level}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{alog\+\_\+level}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf websocketpp\+::log\+::level} websocketpp\+::config\+::minimal\+\_\+server\+::alog\+\_\+level\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_ae71d1728a8d49acd97ec29a6fdfd440c}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+        \hyperlink{structwebsocketpp_1_1log_1_1alevel_a4cf0520816094999975fe73081cf30f2}{websocketpp::log::alevel::none}
+\end{DoxyCode}
+
+
+Default static access logging channels. 
+
+Which access logging channels to enable at compile time. Channels not enabled here will be unable to be selected by programs using the library. This option gives an optimizing compiler the ability to remove entirely code to test whether or not to print out log messages on a certain channel
+
+Default is all except for development/debug level access messages 
+
+Definition at line 215 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a186c68735f459a3242d68821c82551bc}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!client\+\_\+version@{client\+\_\+version}}
+\index{client\+\_\+version@{client\+\_\+version}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{client\+\_\+version}]{\setlength{\rightskip}{0pt plus 5cm}const int websocketpp\+::config\+::minimal\+\_\+server\+::client\+\_\+version = 13\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_a186c68735f459a3242d68821c82551bc}
+
+
+Web\+Socket Protocol version to use as a client. 
+
+What version of the Web\+Socket Protocol to use for outgoing client connections. Setting this to a value other than 13 (R\+F\+C6455) is not recommended. 
+
+Definition at line 190 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a8fe8ba843966319a144337f8620648f3}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!connection\+\_\+read\+\_\+buffer\+\_\+size@{connection\+\_\+read\+\_\+buffer\+\_\+size}}
+\index{connection\+\_\+read\+\_\+buffer\+\_\+size@{connection\+\_\+read\+\_\+buffer\+\_\+size}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{connection\+\_\+read\+\_\+buffer\+\_\+size}]{\setlength{\rightskip}{0pt plus 5cm}const size\+\_\+t websocketpp\+::config\+::minimal\+\_\+server\+::connection\+\_\+read\+\_\+buffer\+\_\+size = 16384\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_a8fe8ba843966319a144337f8620648f3}
+
+
+Definition at line 219 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_aab09bf45ad78310426a04636ad64c2bd}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!drop\+\_\+on\+\_\+protocol\+\_\+error@{drop\+\_\+on\+\_\+protocol\+\_\+error}}
+\index{drop\+\_\+on\+\_\+protocol\+\_\+error@{drop\+\_\+on\+\_\+protocol\+\_\+error}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{drop\+\_\+on\+\_\+protocol\+\_\+error}]{\setlength{\rightskip}{0pt plus 5cm}const bool websocketpp\+::config\+::minimal\+\_\+server\+::drop\+\_\+on\+\_\+protocol\+\_\+error = false\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_aab09bf45ad78310426a04636ad64c2bd}
+
+
+Drop connections immediately on protocol error. 
+
+Drop connections on protocol error rather than sending a close frame. Off by default. This may result in legit messages near the error being dropped as well. It may free up resources otherwise spent dealing with misbehaving clients. 
+
+Definition at line 228 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a3682c9c0dc879a125eff396be7babf4e}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!elog\+\_\+level@{elog\+\_\+level}}
+\index{elog\+\_\+level@{elog\+\_\+level}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{elog\+\_\+level}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf websocketpp\+::log\+::level} websocketpp\+::config\+::minimal\+\_\+server\+::elog\+\_\+level\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_a3682c9c0dc879a125eff396be7babf4e}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+        \hyperlink{structwebsocketpp_1_1log_1_1elevel_ae86395aa26ec2089e07fd63b62a549fa}{websocketpp::log::elevel::none}
+\end{DoxyCode}
+
+
+Default static error logging channels. 
+
+Which error logging channels to enable at compile time. Channels not enabled here will be unable to be selected by programs using the library. This option gives an optimizing compiler the ability to remove entirely code to test whether or not to print out log messages on a certain channel
+
+Default is all except for development/debug level errors 
+
+Definition at line 202 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_ae25bd7e239136a81b9756d6be0818466}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!enable\+\_\+extensions@{enable\+\_\+extensions}}
+\index{enable\+\_\+extensions@{enable\+\_\+extensions}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{enable\+\_\+extensions}]{\setlength{\rightskip}{0pt plus 5cm}const bool websocketpp\+::config\+::minimal\+\_\+server\+::enable\+\_\+extensions = true\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_ae25bd7e239136a81b9756d6be0818466}
+
+
+Global flag for enabling/disabling extensions. 
+
+
+
+Definition at line 270 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a671a693af60cb11d9526d58aedce515c}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!enable\+\_\+multithreading@{enable\+\_\+multithreading}}
+\index{enable\+\_\+multithreading@{enable\+\_\+multithreading}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{enable\+\_\+multithreading}]{\setlength{\rightskip}{0pt plus 5cm}bool const websocketpp\+::config\+::minimal\+\_\+server\+::enable\+\_\+multithreading = true\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_a671a693af60cb11d9526d58aedce515c}
+Controls compile time enabling/disabling of thread syncronization code Disabling can provide a minor performance improvement to single threaded applications 
+
+Definition at line 124 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a56756239e0904949156e630c1f48d95e}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!max\+\_\+http\+\_\+body\+\_\+size@{max\+\_\+http\+\_\+body\+\_\+size}}
+\index{max\+\_\+http\+\_\+body\+\_\+size@{max\+\_\+http\+\_\+body\+\_\+size}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{max\+\_\+http\+\_\+body\+\_\+size}]{\setlength{\rightskip}{0pt plus 5cm}const size\+\_\+t websocketpp\+::config\+::minimal\+\_\+server\+::max\+\_\+http\+\_\+body\+\_\+size = 32000000\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_a56756239e0904949156e630c1f48d95e}
+
+
+Default maximum http body size. 
+
+Default value for the http parser\textquotesingle{}s maximum body size. Maximum body size determines the point at which the library will abort reading an H\+T\+T\+P connection with the 413/request entity too large error.
+
+The default is 32\+M\+B
+
+\begin{DoxySince}{Since}
+0.\+5.\+0 
+\end{DoxySince}
+
+
+Definition at line 267 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_adfad5099419b8e2090c3667d17e10008}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!max\+\_\+message\+\_\+size@{max\+\_\+message\+\_\+size}}
+\index{max\+\_\+message\+\_\+size@{max\+\_\+message\+\_\+size}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{max\+\_\+message\+\_\+size}]{\setlength{\rightskip}{0pt plus 5cm}const size\+\_\+t websocketpp\+::config\+::minimal\+\_\+server\+::max\+\_\+message\+\_\+size = 32000000\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_adfad5099419b8e2090c3667d17e10008}
+
+
+Default maximum message size. 
+
+Default value for the processor\textquotesingle{}s maximum message size. Maximum message size determines the point at which the library will fail a connection with the message\+\_\+too\+\_\+big protocol error.
+
+The default is 32\+M\+B
+
+\begin{DoxySince}{Since}
+0.\+4.\+0-\/alpha1 
+\end{DoxySince}
+
+
+Definition at line 255 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a2628ceea7ff3671afac22317f979e9c1}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!silent\+\_\+close@{silent\+\_\+close}}
+\index{silent\+\_\+close@{silent\+\_\+close}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{silent\+\_\+close}]{\setlength{\rightskip}{0pt plus 5cm}const bool websocketpp\+::config\+::minimal\+\_\+server\+::silent\+\_\+close = false\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_a2628ceea7ff3671afac22317f979e9c1}
+
+
+Suppresses the return of detailed connection close information. 
+
+Silence close suppresses the return of detailed connection close information during the closing handshake. This information is useful for debugging and presenting useful errors to end users but may be undesirable for security reasons in some production environments. Close reasons could be used by an attacker to confirm that the endpoint is out of resources or be used to identify the Web\+Socket implementation in use.
+
+Note\+: this will suppress {\itshape all} close codes, including those explicitly sent by local applications. 
+
+Definition at line 243 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_aaad75d432962b0a059f2ae7a6378b4e2}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!timeout\+\_\+close\+\_\+handshake@{timeout\+\_\+close\+\_\+handshake}}
+\index{timeout\+\_\+close\+\_\+handshake@{timeout\+\_\+close\+\_\+handshake}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{timeout\+\_\+close\+\_\+handshake}]{\setlength{\rightskip}{0pt plus 5cm}const long websocketpp\+::config\+::minimal\+\_\+server\+::timeout\+\_\+close\+\_\+handshake = 5000\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_aaad75d432962b0a059f2ae7a6378b4e2}
+
+
+Length of time before a closing handshake is aborted. 
+
+
+
+Definition at line 180 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_a5ea3c55d3cd784ef8cfb8c371a7ec209}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!timeout\+\_\+open\+\_\+handshake@{timeout\+\_\+open\+\_\+handshake}}
+\index{timeout\+\_\+open\+\_\+handshake@{timeout\+\_\+open\+\_\+handshake}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{timeout\+\_\+open\+\_\+handshake}]{\setlength{\rightskip}{0pt plus 5cm}const long websocketpp\+::config\+::minimal\+\_\+server\+::timeout\+\_\+open\+\_\+handshake = 5000\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_a5ea3c55d3cd784ef8cfb8c371a7ec209}
+
+
+Default timer values (in ms) 
+
+Length of time before an opening handshake is aborted 
+
+Definition at line 178 of file minimal\+\_\+server.\+hpp.
+
+\hypertarget{structwebsocketpp_1_1config_1_1minimal__server_ad1b8ef6ef509976f2d5e05840d641626}{}\index{websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}!timeout\+\_\+pong@{timeout\+\_\+pong}}
+\index{timeout\+\_\+pong@{timeout\+\_\+pong}!websocketpp\+::config\+::minimal\+\_\+server@{websocketpp\+::config\+::minimal\+\_\+server}}
+\subsubsection[{timeout\+\_\+pong}]{\setlength{\rightskip}{0pt plus 5cm}const long websocketpp\+::config\+::minimal\+\_\+server\+::timeout\+\_\+pong = 5000\hspace{0.3cm}{\ttfamily [static]}}\label{structwebsocketpp_1_1config_1_1minimal__server_ad1b8ef6ef509976f2d5e05840d641626}
+
+
+Length of time to wait for a pong after a ping. 
+
+
+
+Definition at line 182 of file minimal\+\_\+server.\+hpp.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/config/\hyperlink{minimal__server_8hpp}{minimal\+\_\+server.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,351 @@
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint}{}\section{websocketpp\+:\+:transport\+:\+:iostream\+:\+:endpoint$<$ config $>$ Class Template Reference}
+\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint}\index{websocketpp\+::transport\+::iostream\+::endpoint$<$ config $>$@{websocketpp\+::transport\+::iostream\+::endpoint$<$ config $>$}}
+
+
+{\ttfamily \#include $<$endpoint.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint}{endpoint} \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_abc21958efa2ee99de526036fb21f5320}{type}
+\begin{DoxyCompactList}\small\item\em Type of this endpoint transport component. \end{DoxyCompactList}\item 
+typedef lib\+::shared\+\_\+ptr$<$ \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_abc21958efa2ee99de526036fb21f5320}{type} $>$ \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a508eb595a20c2b0a15a27d68a7c0bd93}{ptr}
+\begin{DoxyCompactList}\small\item\em Type of a pointer to this endpoint transport component. \end{DoxyCompactList}\item 
+typedef config\+::concurrency\+\_\+type \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_ad7787af753771da00bf8e6477e52b615}{concurrency\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of this endpoint\textquotesingle{}s concurrency policy. \end{DoxyCompactList}\item 
+typedef config\+::elog\+\_\+type \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a0aafebd80866c13bef4caa45e48a8ede}{elog\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of this endpoint\textquotesingle{}s error logging policy. \end{DoxyCompactList}\item 
+typedef config\+::alog\+\_\+type \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_af176dc3a44caefab71de271c27873c81}{alog\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Type of this endpoint\textquotesingle{}s access logging policy. \end{DoxyCompactList}\item 
+typedef \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1connection}{iostream\+::connection}$<$ config $>$ \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a01827f94c5d01289975146f0438ee79b}{transport\+\_\+con\+\_\+type}
+\item 
+typedef \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1connection_a054436e87f6dc4404b13f6131707d2ab}{transport\+\_\+con\+\_\+type\+::ptr} \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a709bba4a4e1e2b7829abe4aa55de8078}{transport\+\_\+con\+\_\+ptr}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a411c3b6ac387cef649e0925a7747c9d3}{endpoint} ()
+\item 
+void \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_ad6db3b10406e568befba8e00ae8b6ac4}{register\+\_\+ostream} (std\+::ostream $\ast$o)
+\begin{DoxyCompactList}\small\item\em Register a default output stream. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_ae6488ca0ead1ce09a60e16a896162ad5}{set\+\_\+secure} (bool value)
+\begin{DoxyCompactList}\small\item\em Set whether or not endpoint can create secure connections. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a9011b0a3f9d551304afa75e3b1e944c2}{is\+\_\+secure} () const 
+\begin{DoxyCompactList}\small\item\em Tests whether or not the underlying transport is secure. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a1db266dab8c73f4aa2e8a3bdb95ec5a3}{set\+\_\+write\+\_\+handler} (\hyperlink{namespacewebsocketpp_1_1transport_1_1iostream_abc22b834c2d0c698d6c87e51d5bfad2c}{write\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Sets the write handler. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a2ba3290fe7688190c2e85143f52d88cc}{set\+\_\+shutdown\+\_\+handler} (\hyperlink{namespacewebsocketpp_1_1transport_1_1iostream_a3563ce2cca06b1466f7d76ecb8eb4a0b}{shutdown\+\_\+handler} h)
+\begin{DoxyCompactList}\small\item\em Sets the shutdown handler. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a0c3fbf85313521d6d3a9a53faa2084ae}{init\+\_\+logging} (\hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_af176dc3a44caefab71de271c27873c81}{alog\+\_\+type} $\ast$a, \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a0aafebd80866c13bef4caa45e48a8ede}{elog\+\_\+type} $\ast$e)
+\begin{DoxyCompactList}\small\item\em Initialize logging. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a72e24fecb98d0445eb7df64d6b94a6a8}{async\+\_\+connect} (\hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a709bba4a4e1e2b7829abe4aa55de8078}{transport\+\_\+con\+\_\+ptr}, \hyperlink{namespacewebsocketpp_aae370ea5ac83a8ece7712cb39fc23f5b}{uri\+\_\+ptr}, \hyperlink{namespacewebsocketpp_1_1transport_ac392fca34e946b48414278c0c3addfa5}{connect\+\_\+handler} cb)
+\begin{DoxyCompactList}\small\item\em Initiate a new connection. \end{DoxyCompactList}\item 
+lib\+::error\+\_\+code \hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a9e169a6551db86bd1147b314924bd353}{init} (\hyperlink{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a709bba4a4e1e2b7829abe4aa55de8078}{transport\+\_\+con\+\_\+ptr} tcon)
+\begin{DoxyCompactList}\small\item\em Initialize a connection. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename config$>$class websocketpp\+::transport\+::iostream\+::endpoint$<$ config $>$}
+
+
+
+Definition at line 46 of file endpoint.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_af176dc3a44caefab71de271c27873c81}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!alog\+\_\+type@{alog\+\_\+type}}
+\index{alog\+\_\+type@{alog\+\_\+type}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{alog\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef config\+::alog\+\_\+type {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::{\bf alog\+\_\+type}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_af176dc3a44caefab71de271c27873c81}
+
+
+Type of this endpoint\textquotesingle{}s access logging policy. 
+
+
+
+Definition at line 58 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_ad7787af753771da00bf8e6477e52b615}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!concurrency\+\_\+type@{concurrency\+\_\+type}}
+\index{concurrency\+\_\+type@{concurrency\+\_\+type}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{concurrency\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef config\+::concurrency\+\_\+type {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::{\bf concurrency\+\_\+type}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_ad7787af753771da00bf8e6477e52b615}
+
+
+Type of this endpoint\textquotesingle{}s concurrency policy. 
+
+
+
+Definition at line 54 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a0aafebd80866c13bef4caa45e48a8ede}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!elog\+\_\+type@{elog\+\_\+type}}
+\index{elog\+\_\+type@{elog\+\_\+type}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{elog\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef config\+::elog\+\_\+type {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::{\bf elog\+\_\+type}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a0aafebd80866c13bef4caa45e48a8ede}
+
+
+Type of this endpoint\textquotesingle{}s error logging policy. 
+
+
+
+Definition at line 56 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a508eb595a20c2b0a15a27d68a7c0bd93}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!ptr@{ptr}}
+\index{ptr@{ptr}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef lib\+::shared\+\_\+ptr$<${\bf type}$>$ {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::{\bf ptr}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a508eb595a20c2b0a15a27d68a7c0bd93}
+
+
+Type of a pointer to this endpoint transport component. 
+
+
+
+Definition at line 51 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a709bba4a4e1e2b7829abe4aa55de8078}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!transport\+\_\+con\+\_\+ptr@{transport\+\_\+con\+\_\+ptr}}
+\index{transport\+\_\+con\+\_\+ptr@{transport\+\_\+con\+\_\+ptr}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{transport\+\_\+con\+\_\+ptr}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef {\bf transport\+\_\+con\+\_\+type\+::ptr} {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::{\bf transport\+\_\+con\+\_\+ptr}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a709bba4a4e1e2b7829abe4aa55de8078}
+Type of a shared pointer to this endpoint transport component\textquotesingle{}s associated connection transport component 
+
+Definition at line 65 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a01827f94c5d01289975146f0438ee79b}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!transport\+\_\+con\+\_\+type@{transport\+\_\+con\+\_\+type}}
+\index{transport\+\_\+con\+\_\+type@{transport\+\_\+con\+\_\+type}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{transport\+\_\+con\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef {\bf iostream\+::connection}$<$config$>$ {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::{\bf transport\+\_\+con\+\_\+type}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a01827f94c5d01289975146f0438ee79b}
+Type of this endpoint transport component\textquotesingle{}s associated connection transport component. 
+
+Definition at line 62 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_abc21958efa2ee99de526036fb21f5320}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!type@{type}}
+\index{type@{type}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ typedef {\bf endpoint} {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::{\bf type}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_abc21958efa2ee99de526036fb21f5320}
+
+
+Type of this endpoint transport component. 
+
+
+
+Definition at line 49 of file endpoint.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a411c3b6ac387cef649e0925a7747c9d3}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!endpoint@{endpoint}}
+\index{endpoint@{endpoint}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{endpoint()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::{\bf endpoint} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a411c3b6ac387cef649e0925a7747c9d3}
+
+
+Definition at line 68 of file endpoint.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a72e24fecb98d0445eb7df64d6b94a6a8}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!async\+\_\+connect@{async\+\_\+connect}}
+\index{async\+\_\+connect@{async\+\_\+connect}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{async\+\_\+connect(transport\+\_\+con\+\_\+ptr, uri\+\_\+ptr, connect\+\_\+handler cb)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::async\+\_\+connect (
+\begin{DoxyParamCaption}
+\item[{{\bf transport\+\_\+con\+\_\+ptr}}]{, }
+\item[{{\bf uri\+\_\+ptr}}]{, }
+\item[{{\bf connect\+\_\+handler}}]{cb}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a72e24fecb98d0445eb7df64d6b94a6a8}
+
+
+Initiate a new connection. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tcon} & A pointer to the transport connection component of the connection to connect. \\
+\hline
+{\em u} & A U\+R\+I pointer to the U\+R\+I to connect to. \\
+\hline
+{\em cb} & The function to call back with the results when complete. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 183 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a9e169a6551db86bd1147b314924bd353}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!init@{init}}
+\index{init@{init}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{init(transport\+\_\+con\+\_\+ptr tcon)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ lib\+::error\+\_\+code {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::init (
+\begin{DoxyParamCaption}
+\item[{{\bf transport\+\_\+con\+\_\+ptr}}]{tcon}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a9e169a6551db86bd1147b314924bd353}
+
+
+Initialize a connection. 
+
+Init is called by an endpoint once for each newly created connection. It\textquotesingle{}s purpose is to give the transport policy the chance to perform any transport specific initialization that couldn\textquotesingle{}t be done via the default constructor.
+
+
+\begin{DoxyParams}{Parameters}
+{\em tcon} & A pointer to the transport portion of the connection. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A status code indicating the success or failure of the operation 
+\end{DoxyReturn}
+
+
+Definition at line 197 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a0c3fbf85313521d6d3a9a53faa2084ae}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!init\+\_\+logging@{init\+\_\+logging}}
+\index{init\+\_\+logging@{init\+\_\+logging}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{init\+\_\+logging(alog\+\_\+type $\ast$a, elog\+\_\+type $\ast$e)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::init\+\_\+logging (
+\begin{DoxyParamCaption}
+\item[{{\bf alog\+\_\+type} $\ast$}]{a, }
+\item[{{\bf elog\+\_\+type} $\ast$}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a0c3fbf85313521d6d3a9a53faa2084ae}
+
+
+Initialize logging. 
+
+The loggers are located in the main endpoint class. As such, the transport doesn\textquotesingle{}t have direct access to them. This method is called by the endpoint constructor to allow shared logging from the transport component. These are raw pointers to member variables of the endpoint. In particular, they cannot be used in the transport constructor as they haven\textquotesingle{}t been constructed yet, and cannot be used in the transport destructor as they will have been destroyed by then.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & A pointer to the access logger to use. \\
+\hline
+{\em e} & A pointer to the error logger to use. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 171 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a9011b0a3f9d551304afa75e3b1e944c2}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!is\+\_\+secure@{is\+\_\+secure}}
+\index{is\+\_\+secure@{is\+\_\+secure}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{is\+\_\+secure() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ bool {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::is\+\_\+secure (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a9011b0a3f9d551304afa75e3b1e944c2}
+
+
+Tests whether or not the underlying transport is secure. 
+
+iostream transport will return false by default because it has no information about the ultimate remote endpoint. This may or may not be accurate depending on the real source of bytes being input. {\ttfamily set\+\_\+secure} may be used by a wrapper A\+P\+I to correct the return value in the case that secure connections are in fact possible.
+
+\begin{DoxyReturn}{Returns}
+Whether or not the underlying transport is secure 
+\end{DoxyReturn}
+
+
+Definition at line 116 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_ad6db3b10406e568befba8e00ae8b6ac4}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!register\+\_\+ostream@{register\+\_\+ostream}}
+\index{register\+\_\+ostream@{register\+\_\+ostream}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{register\+\_\+ostream(std\+::ostream $\ast$o)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::register\+\_\+ostream (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream $\ast$}]{o}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_ad6db3b10406e568befba8e00ae8b6ac4}
+
+
+Register a default output stream. 
+
+The specified output stream will be assigned to future connections as the default output stream.
+
+
+\begin{DoxyParams}{Parameters}
+{\em o} & The ostream to use as the default output stream. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 80 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_ae6488ca0ead1ce09a60e16a896162ad5}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!set\+\_\+secure@{set\+\_\+secure}}
+\index{set\+\_\+secure@{set\+\_\+secure}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{set\+\_\+secure(bool value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::set\+\_\+secure (
+\begin{DoxyParamCaption}
+\item[{bool}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_ae6488ca0ead1ce09a60e16a896162ad5}
+
+
+Set whether or not endpoint can create secure connections. 
+
+The iostream transport does not provide any security features. As such it defaults to returning false when {\ttfamily is\+\_\+secure} is called. However, the iostream transport may be used to wrap an external socket A\+P\+I that may provide secure transport. This method allows that external A\+P\+I to flag whether or not it can create secure connections so that users of the Web\+Socket++ A\+P\+I will get more accurate information.
+
+Setting this value only indicates whether or not the endpoint is capable of producing and managing secure connections. Connections produced by this endpoint must also be individually flagged as secure if they are.
+
+\begin{DoxySince}{Since}
+0.\+3.\+0-\/alpha4
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em value} & Whether or not the endpoint can create secure connections. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 102 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a2ba3290fe7688190c2e85143f52d88cc}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!set\+\_\+shutdown\+\_\+handler@{set\+\_\+shutdown\+\_\+handler}}
+\index{set\+\_\+shutdown\+\_\+handler@{set\+\_\+shutdown\+\_\+handler}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{set\+\_\+shutdown\+\_\+handler(shutdown\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::set\+\_\+shutdown\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf shutdown\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a2ba3290fe7688190c2e85143f52d88cc}
+
+
+Sets the shutdown handler. 
+
+The shutdown handler is called when the iostream transport receives a notification from the core library that it is finished with all read and write operations and that the underlying transport can be cleaned up.
+
+If you are using iostream transport with another socket library, this is a good time to close/shutdown the socket for this connection.
+
+The signature of the handler is lib\+::error\+\_\+code (connection\+\_\+hdl). The code returned will be reported and logged by the core library.
+
+\begin{DoxySince}{Since}
+0.\+5.\+0
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The handler to call on connection shutdown. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 154 of file endpoint.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a1db266dab8c73f4aa2e8a3bdb95ec5a3}{}\index{websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}!set\+\_\+write\+\_\+handler@{set\+\_\+write\+\_\+handler}}
+\index{set\+\_\+write\+\_\+handler@{set\+\_\+write\+\_\+handler}!websocketpp\+::transport\+::iostream\+::endpoint@{websocketpp\+::transport\+::iostream\+::endpoint}}
+\subsubsection[{set\+\_\+write\+\_\+handler(write\+\_\+handler h)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename config $>$ void {\bf websocketpp\+::transport\+::iostream\+::endpoint}$<$ config $>$\+::set\+\_\+write\+\_\+handler (
+\begin{DoxyParamCaption}
+\item[{{\bf write\+\_\+handler}}]{h}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1transport_1_1iostream_1_1endpoint_a1db266dab8c73f4aa2e8a3bdb95ec5a3}
+
+
+Sets the write handler. 
+
+The write handler is called when the iostream transport receives data that needs to be written to the appropriate output location. This handler can be used in place of registering an ostream for output.
+
+The signature of the handler is {\ttfamily lib\+::error\+\_\+code (connection\+\_\+hdl, char const $\ast$, size\+\_\+t)} The code returned will be reported and logged by the core library.
+
+\begin{DoxySince}{Since}
+0.\+5.\+0
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em h} & The handler to call on connection shutdown. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 134 of file endpoint.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/transport/iostream/\hyperlink{websocketpp_2transport_2iostream_2endpoint_8hpp}{endpoint.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,50 @@
+\hypertarget{connect_8hpp}{}\section{ext/asio/connect.hpp File Reference}
+\label{connect_8hpp}\index{ext/asio/connect.\+hpp@{ext/asio/connect.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/async\+\_\+result.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/basic\+\_\+socket.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/error.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/impl/connect.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ }\\Iterator \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ }\\Iterator \hyperlink{group__connect_ga1bb975e78fb1233032ba2b13a229cc8e}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ }\\Iterator \hyperlink{group__connect_ga8617a800bbe4f0e99be3826d8e48e60e}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ }\\Iterator \hyperlink{group__connect_ga6cc8005658c5ece3566508bc108d4c83}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ }\\Iterator \hyperlink{group__connect_ga9a192c653d045eaa7c8c7817316a52b5}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Connect\+Condition connect\+\_\+condition)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ }\\Iterator \hyperlink{group__connect_gab16905fe7662fdaa7410ea98e4a5d38a}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Connect\+Condition connect\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ }\\Iterator \hyperlink{group__connect_ga85284052d2233e8ea3993625e9f28184}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end, Connect\+Condition connect\+\_\+condition)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ }\\Iterator \hyperlink{group__connect_ga309aa819fa86c14156c10c5374eb0d24}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end, Connect\+Condition connect\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Composed\+Connect\+Handler $>$ }\\\hyperlink{group__async__connect_ga7b8de8138419acd99224c0a7071a99a0}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Composed\+Connect\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, Iterator)) async\+\_\+connect(basic\+\_\+socket$<$ Protocol
+\item 
+Socket\+Service Iterator \hyperlink{group__async__connect_ga62bf3d82e9459cfd1fc6f51024aceb25}{asio\+::\+A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Composed\+Connect\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition , typename Composed\+Connect\+Handler $>$ }\\\hyperlink{group__async__connect_ga97861978f077050db440c518ba215350}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Composed\+Connect\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, Iterator)) async\+\_\+connect(basic\+\_\+socket$<$ Protocol
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Socket\+Service \& \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{asio\+::s}
+\item 
+Socket\+Service Iterator \hyperlink{group__async__connect_ga7055bca9225050c030c19c7dc926fa53}{asio\+::begin}
+\item 
+Socket\+Service Iterator Iterator \hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{asio\+::end}
+\item 
+Socket\+Service Iterator Connect\+Condition \hyperlink{group__async__connect_ga47e3dda205dfba3553f4c7e005897687}{asio\+::connect\+\_\+condition}
+\end{DoxyCompactItemize}

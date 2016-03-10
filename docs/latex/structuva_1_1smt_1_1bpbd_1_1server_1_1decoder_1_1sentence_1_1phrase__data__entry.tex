@@ -1,0 +1,101 @@
+\hypertarget{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:decoder\+:\+:sentence\+:\+:phrase\+\_\+data\+\_\+entry Struct Reference}
+\label{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}}
+
+
+{\ttfamily \#include $<$sentence\+\_\+data\+\_\+map.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a74c15d9fa0aa346bf817ac57d7dca8cb}{phrase\+\_\+data\+\_\+entry} ()
+\item 
+\hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a2be902b91181b797fc8bda46f0b6ffdb}{$\sim$phrase\+\_\+data\+\_\+entry} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_af1dcb3cbf1a48848495b72ba5e2229cd}{m\+\_\+begin\+\_\+ch\+\_\+idx}
+\item 
+uint32\+\_\+t \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_aa83a98923844d4a3a618fefbf6bf815f}{m\+\_\+end\+\_\+ch\+\_\+idx}
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_ad18d4cdf5504e76c22b0c124ff60b44f}{phrase\+\_\+uid} \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_abfdf7904b3f26622c2ac3701e6e08669}{m\+\_\+phrase\+\_\+uid}
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_a841bb11e4e9f70fbde7a8ca1ae533681}{tm\+\_\+const\+\_\+source\+\_\+entry\+\_\+ptr} \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a4ae9bf3a78f729718c5b2d992060b092}{m\+\_\+source\+\_\+entry}
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a4f8a9d2d6cd52387658a318682e0c596}{future\+\_\+cost}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This structure stores the source phrase information data. This data is the begin and end character position of the phrase in the original sentence, also the first and the last word indexes, the phrase id and the available translation, i.\+e. source entry. 
+
+Definition at line 67 of file sentence\+\_\+data\+\_\+map.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a74c15d9fa0aa346bf817ac57d7dca8cb}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}!phrase\+\_\+data\+\_\+entry@{phrase\+\_\+data\+\_\+entry}}
+\index{phrase\+\_\+data\+\_\+entry@{phrase\+\_\+data\+\_\+entry}!uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}}
+\subsubsection[{phrase\+\_\+data\+\_\+entry()}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry\+::phrase\+\_\+data\+\_\+entry (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a74c15d9fa0aa346bf817ac57d7dca8cb}
+The basic constructor, does default initialization of the structure fields 
+
+Definition at line 72 of file sentence\+\_\+data\+\_\+map.\+hpp.
+
+\hypertarget{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a2be902b91181b797fc8bda46f0b6ffdb}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}!````~phrase\+\_\+data\+\_\+entry@{$\sim$phrase\+\_\+data\+\_\+entry}}
+\index{````~phrase\+\_\+data\+\_\+entry@{$\sim$phrase\+\_\+data\+\_\+entry}!uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}}
+\subsubsection[{$\sim$phrase\+\_\+data\+\_\+entry()}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry\+::$\sim$phrase\+\_\+data\+\_\+entry (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a2be902b91181b797fc8bda46f0b6ffdb}
+The basic destructor 
+
+Definition at line 80 of file sentence\+\_\+data\+\_\+map.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a4f8a9d2d6cd52387658a318682e0c596}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}!future\+\_\+cost@{future\+\_\+cost}}
+\index{future\+\_\+cost@{future\+\_\+cost}!uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}}
+\subsubsection[{future\+\_\+cost}]{\setlength{\rightskip}{0pt plus 5cm}{\bf prob\+\_\+weight} uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry\+::future\+\_\+cost}\label{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a4f8a9d2d6cd52387658a318682e0c596}
+
+
+Definition at line 95 of file sentence\+\_\+data\+\_\+map.\+hpp.
+
+\hypertarget{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_af1dcb3cbf1a48848495b72ba5e2229cd}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}!m\+\_\+begin\+\_\+ch\+\_\+idx@{m\+\_\+begin\+\_\+ch\+\_\+idx}}
+\index{m\+\_\+begin\+\_\+ch\+\_\+idx@{m\+\_\+begin\+\_\+ch\+\_\+idx}!uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}}
+\subsubsection[{m\+\_\+begin\+\_\+ch\+\_\+idx}]{\setlength{\rightskip}{0pt plus 5cm}uint32\+\_\+t uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry\+::m\+\_\+begin\+\_\+ch\+\_\+idx}\label{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_af1dcb3cbf1a48848495b72ba5e2229cd}
+
+
+Definition at line 84 of file sentence\+\_\+data\+\_\+map.\+hpp.
+
+\hypertarget{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_aa83a98923844d4a3a618fefbf6bf815f}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}!m\+\_\+end\+\_\+ch\+\_\+idx@{m\+\_\+end\+\_\+ch\+\_\+idx}}
+\index{m\+\_\+end\+\_\+ch\+\_\+idx@{m\+\_\+end\+\_\+ch\+\_\+idx}!uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}}
+\subsubsection[{m\+\_\+end\+\_\+ch\+\_\+idx}]{\setlength{\rightskip}{0pt plus 5cm}uint32\+\_\+t uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry\+::m\+\_\+end\+\_\+ch\+\_\+idx}\label{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_aa83a98923844d4a3a618fefbf6bf815f}
+
+
+Definition at line 86 of file sentence\+\_\+data\+\_\+map.\+hpp.
+
+\hypertarget{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_abfdf7904b3f26622c2ac3701e6e08669}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}!m\+\_\+phrase\+\_\+uid@{m\+\_\+phrase\+\_\+uid}}
+\index{m\+\_\+phrase\+\_\+uid@{m\+\_\+phrase\+\_\+uid}!uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}}
+\subsubsection[{m\+\_\+phrase\+\_\+uid}]{\setlength{\rightskip}{0pt plus 5cm}{\bf phrase\+\_\+uid} uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry\+::m\+\_\+phrase\+\_\+uid}\label{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_abfdf7904b3f26622c2ac3701e6e08669}
+
+
+Definition at line 89 of file sentence\+\_\+data\+\_\+map.\+hpp.
+
+\hypertarget{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a4ae9bf3a78f729718c5b2d992060b092}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}!m\+\_\+source\+\_\+entry@{m\+\_\+source\+\_\+entry}}
+\index{m\+\_\+source\+\_\+entry@{m\+\_\+source\+\_\+entry}!uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry@{uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry}}
+\subsubsection[{m\+\_\+source\+\_\+entry}]{\setlength{\rightskip}{0pt plus 5cm}{\bf tm\+\_\+const\+\_\+source\+\_\+entry\+\_\+ptr} uva\+::smt\+::bpbd\+::server\+::decoder\+::sentence\+::phrase\+\_\+data\+\_\+entry\+::m\+\_\+source\+\_\+entry}\label{structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1phrase__data__entry_a4ae9bf3a78f729718c5b2d992060b092}
+
+
+Definition at line 92 of file sentence\+\_\+data\+\_\+map.\+hpp.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/decoder/sentence/\hyperlink{sentence__data__map_8hpp}{sentence\+\_\+data\+\_\+map.\+hpp}\end{DoxyCompactItemize}

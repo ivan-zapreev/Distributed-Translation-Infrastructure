@@ -1,0 +1,124 @@
+\hypertarget{namespacewebsocketpp_1_1processor}{}\section{websocketpp\+:\+:processor Namespace Reference}
+\label{namespacewebsocketpp_1_1processor}\index{websocketpp\+::processor@{websocketpp\+::processor}}
+
+
+Processors encapsulate the protocol rules specific to each Web\+Socket version.  
+
+
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacewebsocketpp_1_1processor_1_1constants}{constants}
+\begin{DoxyCompactList}\small\item\em Constants related to processing Web\+Socket connections. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1processor_1_1error}{error}
+\begin{DoxyCompactList}\small\item\em Error code category and codes used by all processor types. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1processor_1_1error__cat}{error\+\_\+cat}
+\begin{DoxyCompactList}\small\item\em Processor class related error codes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classwebsocketpp_1_1processor_1_1hybi00}{hybi00}
+\begin{DoxyCompactList}\small\item\em Processor for Hybi Draft version 00. \end{DoxyCompactList}\item 
+class \hyperlink{classwebsocketpp_1_1processor_1_1hybi07}{hybi07}
+\begin{DoxyCompactList}\small\item\em Processor for Hybi Draft version 07. \end{DoxyCompactList}\item 
+class \hyperlink{classwebsocketpp_1_1processor_1_1hybi08}{hybi08}
+\begin{DoxyCompactList}\small\item\em Processor for Hybi Draft version 08. \end{DoxyCompactList}\item 
+class \hyperlink{classwebsocketpp_1_1processor_1_1hybi13}{hybi13}
+\begin{DoxyCompactList}\small\item\em Processor for Hybi version 13 (R\+F\+C6455) \end{DoxyCompactList}\item 
+class \hyperlink{classwebsocketpp_1_1processor_1_1processor}{processor}
+\begin{DoxyCompactList}\small\item\em Web\+Socket protocol processor abstract base class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename request\+\_\+type $>$ }\\bool \hyperlink{namespacewebsocketpp_1_1processor_a9ff3159b48cf4be2e7cb79c81b155d53}{is\+\_\+websocket\+\_\+handshake} (request\+\_\+type \&r)
+\begin{DoxyCompactList}\small\item\em Determine whether or not a generic H\+T\+T\+P request is a Web\+Socket handshake. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename request\+\_\+type $>$ }\\int \hyperlink{namespacewebsocketpp_1_1processor_a1a0e5e7b10b24ff5ab836dc543826934}{get\+\_\+websocket\+\_\+version} (request\+\_\+type \&r)
+\begin{DoxyCompactList}\small\item\em Extract the version from a Web\+Socket handshake request. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename request\+\_\+type $>$ }\\\hyperlink{namespacewebsocketpp_aae370ea5ac83a8ece7712cb39fc23f5b}{uri\+\_\+ptr} \hyperlink{namespacewebsocketpp_1_1processor_a5fa80687521dc24678e773fc3e71e0ce}{get\+\_\+uri\+\_\+from\+\_\+host} (request\+\_\+type \&request, std\+::string scheme)
+\begin{DoxyCompactList}\small\item\em Extract a U\+R\+I ptr from the host header of the request. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Processors encapsulate the protocol rules specific to each Web\+Socket version. 
+
+The processors namespace includes a number of free functions that operate on various Web\+Socket related data structures and perform processing that is not related to specific versions of the protocol.
+
+It also includes the abstract interface for the protocol specific processing engines. These engines wrap all of the logic necessary for parsing and validating Web\+Socket handshakes and messages of specific protocol version and set of allowed extensions.
+
+An instance of a processor represents the state of a single Web\+Socket connection of the associated version. One processor instance is needed per logical Web\+Socket connection. 
+
+\subsection{Function Documentation}
+\hypertarget{namespacewebsocketpp_1_1processor_a5fa80687521dc24678e773fc3e71e0ce}{}\index{websocketpp\+::processor@{websocketpp\+::processor}!get\+\_\+uri\+\_\+from\+\_\+host@{get\+\_\+uri\+\_\+from\+\_\+host}}
+\index{get\+\_\+uri\+\_\+from\+\_\+host@{get\+\_\+uri\+\_\+from\+\_\+host}!websocketpp\+::processor@{websocketpp\+::processor}}
+\subsubsection[{get\+\_\+uri\+\_\+from\+\_\+host(request\+\_\+type \&request, std\+::string scheme)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename request\+\_\+type $>$ {\bf uri\+\_\+ptr} websocketpp\+::processor\+::get\+\_\+uri\+\_\+from\+\_\+host (
+\begin{DoxyParamCaption}
+\item[{request\+\_\+type \&}]{request, }
+\item[{std\+::string}]{scheme}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1processor_a5fa80687521dc24678e773fc3e71e0ce}
+
+
+Extract a U\+R\+I ptr from the host header of the request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & The request to extract the Host header from.\\
+\hline
+{\em scheme} & The scheme under which this request was received (ws, wss, http, https, etc)\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A uri\+\_\+pointer that encodes the value of the host header. 
+\end{DoxyReturn}
+
+
+Definition at line 136 of file processor.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1processor_a1a0e5e7b10b24ff5ab836dc543826934}{}\index{websocketpp\+::processor@{websocketpp\+::processor}!get\+\_\+websocket\+\_\+version@{get\+\_\+websocket\+\_\+version}}
+\index{get\+\_\+websocket\+\_\+version@{get\+\_\+websocket\+\_\+version}!websocketpp\+::processor@{websocketpp\+::processor}}
+\subsubsection[{get\+\_\+websocket\+\_\+version(request\+\_\+type \&r)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename request\+\_\+type $>$ int websocketpp\+::processor\+::get\+\_\+websocket\+\_\+version (
+\begin{DoxyParamCaption}
+\item[{request\+\_\+type \&}]{r}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1processor_a1a0e5e7b10b24ff5ab836dc543826934}
+
+
+Extract the version from a Web\+Socket handshake request. 
+
+A blank version header indicates a spec before versions were introduced. The only such versions in shipping products are Hixie Draft 75 and Hixie Draft 76. Draft 75 is present in Chrome 4-\/5 and Safari 5.\+0.\+0, Draft 76 (also known as hybi 00 is present in Chrome 6-\/13 and Safari 5.\+0.\+1+. As differentiating between these two sets of browsers is very difficult and Safari 5.\+0.\+1+ accounts for the vast majority of cases in the wild this function assumes that all handshakes without a valid version header are Hybi 00.
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & The Web\+Socket handshake request to read.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The Web\+Socket handshake version or -\/1 if there was an extraction error. 
+\end{DoxyReturn}
+
+
+Definition at line 107 of file processor.\+hpp.
+
+\hypertarget{namespacewebsocketpp_1_1processor_a9ff3159b48cf4be2e7cb79c81b155d53}{}\index{websocketpp\+::processor@{websocketpp\+::processor}!is\+\_\+websocket\+\_\+handshake@{is\+\_\+websocket\+\_\+handshake}}
+\index{is\+\_\+websocket\+\_\+handshake@{is\+\_\+websocket\+\_\+handshake}!websocketpp\+::processor@{websocketpp\+::processor}}
+\subsubsection[{is\+\_\+websocket\+\_\+handshake(request\+\_\+type \&r)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename request\+\_\+type $>$ bool websocketpp\+::processor\+::is\+\_\+websocket\+\_\+handshake (
+\begin{DoxyParamCaption}
+\item[{request\+\_\+type \&}]{r}
+\end{DoxyParamCaption}
+)}\label{namespacewebsocketpp_1_1processor_a9ff3159b48cf4be2e7cb79c81b155d53}
+
+
+Determine whether or not a generic H\+T\+T\+P request is a Web\+Socket handshake. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & The H\+T\+T\+P request to read.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the request is a Web\+Socket handshake, false otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 68 of file processor.\+hpp.
+

@@ -1,0 +1,329 @@
+\hypertarget{classasio_1_1ssl_1_1context__base}{}\section{asio\+:\+:ssl\+:\+:context\+\_\+base Class Reference}
+\label{classasio_1_1ssl_1_1context__base}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+
+
+{\ttfamily \#include $<$context\+\_\+base.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:ssl\+:\+:context\+\_\+base\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classasio_1_1ssl_1_1context__base}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525}{method} \{ \\*
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a0065d61b473b52c2ef6a8eb245888d51}{sslv2}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ac8bca1626e580d1cc6f73413da073187}{sslv2\+\_\+client}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a1ad9ad3baee05255aceac90501afbcca}{sslv2\+\_\+server}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ac6c5843bc9de8dc32328a090a22c7160}{sslv3}, 
+\\*
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525aebd5b44d8157b22115340159a4a519b0}{sslv3\+\_\+client}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a441d4ca9b9ea7629362c0d2222b0bb5b}{sslv3\+\_\+server}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a00b6edaf9021c06a9e116079a19cab41}{tlsv1}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a4c6826762f1d7495117b0e09e93a6902}{tlsv1\+\_\+client}, 
+\\*
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a57d26e3e5b732e161757de3b65f0cdf3}{tlsv1\+\_\+server}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ae478c3ede58b50c99d6c6ff9ed7c0124}{sslv23}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a0f5a9a259fa6d7fb1f10928b4cd3082e}{sslv23\+\_\+client}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a38535ad99aa309f7a02dc2120dfbe1f5}{sslv23\+\_\+server}, 
+\\*
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a8f1d7749b86e8ad66445bab86482aed3}{tlsv11}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a68d5f4a5b14719757788e8c1fcf15bb0}{tlsv11\+\_\+client}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a53b7d512bbb199877dd0f2fd534cc366}{tlsv11\+\_\+server}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525aca26f9b3efb8a7c8c64d8f147d0c4e7c}{tlsv12}, 
+\\*
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ae3a06b9301c367af76d1041e87e78a41}{tlsv12\+\_\+client}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a5385a7af0a52e2fec3aaa0640d8433b0}{tlsv12\+\_\+server}
+ \}\begin{DoxyCompactList}\small\item\em Different methods supported by a context. \end{DoxyCompactList}
+\item 
+enum \hyperlink{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fb}{file\+\_\+format} \{ \hyperlink{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fbaf660a6f4377540bad243a61b2a38bb32}{asn1}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fba2818111664c05c1582efc20e4cf82673}{pem}
+ \}\begin{DoxyCompactList}\small\item\em File format types. \end{DoxyCompactList}
+\item 
+enum \hyperlink{classasio_1_1ssl_1_1context__base_a0e5aec1cd0f3db28becde1dca686c855}{password\+\_\+purpose} \{ \hyperlink{classasio_1_1ssl_1_1context__base_a0e5aec1cd0f3db28becde1dca686c855a7cc8a1fb57a6dd490a8c27df90b7bd2d}{for\+\_\+reading}, 
+\hyperlink{classasio_1_1ssl_1_1context__base_a0e5aec1cd0f3db28becde1dca686c855a2aeb8ea67ad30131e6592a3605b2cb11}{for\+\_\+writing}
+ \}\begin{DoxyCompactList}\small\item\em Purpose of P\+E\+M password. \end{DoxyCompactList}
+\item 
+typedef long \hyperlink{classasio_1_1ssl_1_1context__base_a12d5d28abeb47c91311bf13740dec514}{options}
+\begin{DoxyCompactList}\small\item\em Bitmask type for S\+S\+L options. \end{DoxyCompactList}\item 
+typedef int \hyperlink{classasio_1_1ssl_1_1context__base_aa9ef38ba747dd4e8ecb1f9a279a67d6b}{verify\+\_\+mode}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_a1cf38340aceb9f6b87937117628139e8}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (long, default\+\_\+workarounds=S\+S\+L\+\_\+\+O\+P\+\_\+\+A\+L\+L)
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_a57673d9d613730c2ca29720922c47925}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (long, single\+\_\+dh\+\_\+use=S\+S\+L\+\_\+\+O\+P\+\_\+\+S\+I\+N\+G\+L\+E\+\_\+\+D\+H\+\_\+\+U\+S\+E)
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_a3ce9ae7ac2488c04d55e8bd686261b13}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (long, no\+\_\+sslv2=S\+S\+L\+\_\+\+O\+P\+\_\+\+N\+O\+\_\+\+S\+S\+Lv2)
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_a176c285e905b2eed6adcac708d72513d}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (long, no\+\_\+sslv3=S\+S\+L\+\_\+\+O\+P\+\_\+\+N\+O\+\_\+\+S\+S\+Lv3)
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_a1727888d0005af81060fd3093975518a}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (long, no\+\_\+tlsv1=S\+S\+L\+\_\+\+O\+P\+\_\+\+N\+O\+\_\+\+T\+L\+Sv1)
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_a4ea78671a3d9afdbe550a3bb2cbd4492}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (long, no\+\_\+tlsv1\+\_\+1=0x10000000\+L)
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_a374ebcdb768437dfeecfc1b06f97b3be}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (long, no\+\_\+tlsv1\+\_\+2=0x08000000\+L)
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_a1bd0fe429c81e6513ae9f31b711fcfc1}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (long, no\+\_\+compression=0x20000\+L)
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_aed4dd4c8088b79bb94945ce81a9eb9a6}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (int, \hyperlink{namespaceasio_1_1ssl_a4b2056fdb330248b703c81a5458053cd}{verify\+\_\+none}=S\+S\+L\+\_\+\+V\+E\+R\+I\+F\+Y\+\_\+\+N\+O\+N\+E)
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_af743b6d02febac7773d28d9e10921525}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (int, \hyperlink{namespaceasio_1_1ssl_ae71141f1eff86b35a2a2491501d55926}{verify\+\_\+peer}=S\+S\+L\+\_\+\+V\+E\+R\+I\+F\+Y\+\_\+\+P\+E\+E\+R)
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_a59f3c5f613efbe169ee8027dcd3060b8}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (int, \hyperlink{namespaceasio_1_1ssl_a7f69308747090e59be95a6c9b2497eb5}{verify\+\_\+fail\+\_\+if\+\_\+no\+\_\+peer\+\_\+cert}=S\+S\+L\+\_\+\+V\+E\+R\+I\+F\+Y\+\_\+\+F\+A\+I\+L\+\_\+\+I\+F\+\_\+\+N\+O\+\_\+\+P\+E\+E\+R\+\_\+\+C\+E\+R\+T)
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_a61efdf9307d469644f4fdf5a931cdd39}{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T} (int, \hyperlink{namespaceasio_1_1ssl_af9dfada7a85d6a5bfb257eb5ad280ce7}{verify\+\_\+client\+\_\+once}=S\+S\+L\+\_\+\+V\+E\+R\+I\+F\+Y\+\_\+\+C\+L\+I\+E\+N\+T\+\_\+\+O\+N\+C\+E)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1ssl_1_1context__base_acac5be86a997ae43dfd1e78ad966cb61}{$\sim$context\+\_\+base} ()
+\begin{DoxyCompactList}\small\item\em Protected destructor to prevent deletion through this type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{classasio_1_1ssl_1_1context__base}{context\+\_\+base} class is used as a base for the basic\+\_\+context class template so that we have a common place to define various enums. 
+
+Definition at line 28 of file context\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1ssl_1_1context__base_a12d5d28abeb47c91311bf13740dec514}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!options@{options}}
+\index{options@{options}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{options}]{\setlength{\rightskip}{0pt plus 5cm}typedef long {\bf asio\+::ssl\+::context\+\_\+base\+::options}}\label{classasio_1_1ssl_1_1context__base_a12d5d28abeb47c91311bf13740dec514}
+
+
+Bitmask type for S\+S\+L options. 
+
+
+
+Definition at line 90 of file context\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1context__base_aa9ef38ba747dd4e8ecb1f9a279a67d6b}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!verify\+\_\+mode@{verify\+\_\+mode}}
+\index{verify\+\_\+mode@{verify\+\_\+mode}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{verify\+\_\+mode}]{\setlength{\rightskip}{0pt plus 5cm}typedef int {\bf asio\+::ssl\+::context\+\_\+base\+::verify\+\_\+mode}}\label{classasio_1_1ssl_1_1context__base_aa9ef38ba747dd4e8ecb1f9a279a67d6b}
+
+
+Definition at line 153 of file context\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fb}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!file\+\_\+format@{file\+\_\+format}}
+\index{file\+\_\+format@{file\+\_\+format}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{file\+\_\+format}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf asio\+::ssl\+::context\+\_\+base\+::file\+\_\+format}}\label{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fb}
+
+
+File format types. 
+
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{asn1@{asn1}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!asn1@{asn1}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fbaf660a6f4377540bad243a61b2a38bb32}{}asn1\label{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fbaf660a6f4377540bad243a61b2a38bb32}
+}]A\+S\+N.\+1 file. \index{pem@{pem}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!pem@{pem}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fba2818111664c05c1582efc20e4cf82673}{}pem\label{classasio_1_1ssl_1_1context__base_acc846aa73fffcab1fecad36dcf2be1fba2818111664c05c1582efc20e4cf82673}
+}]P\+E\+M file. \end{description}
+\end{Desc}
+
+
+Definition at line 140 of file context\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!method@{method}}
+\index{method@{method}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{method}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf asio\+::ssl\+::context\+\_\+base\+::method}}\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525}
+
+
+Different methods supported by a context. 
+
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{sslv2@{sslv2}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!sslv2@{sslv2}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a0065d61b473b52c2ef6a8eb245888d51}{}sslv2\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a0065d61b473b52c2ef6a8eb245888d51}
+}]Generic S\+S\+L version 2. \index{sslv2\+\_\+client@{sslv2\+\_\+client}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!sslv2\+\_\+client@{sslv2\+\_\+client}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ac8bca1626e580d1cc6f73413da073187}{}sslv2\+\_\+client\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ac8bca1626e580d1cc6f73413da073187}
+}]S\+S\+L version 2 client. \index{sslv2\+\_\+server@{sslv2\+\_\+server}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!sslv2\+\_\+server@{sslv2\+\_\+server}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a1ad9ad3baee05255aceac90501afbcca}{}sslv2\+\_\+server\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a1ad9ad3baee05255aceac90501afbcca}
+}]S\+S\+L version 2 server. \index{sslv3@{sslv3}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!sslv3@{sslv3}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ac6c5843bc9de8dc32328a090a22c7160}{}sslv3\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ac6c5843bc9de8dc32328a090a22c7160}
+}]Generic S\+S\+L version 3. \index{sslv3\+\_\+client@{sslv3\+\_\+client}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!sslv3\+\_\+client@{sslv3\+\_\+client}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525aebd5b44d8157b22115340159a4a519b0}{}sslv3\+\_\+client\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525aebd5b44d8157b22115340159a4a519b0}
+}]S\+S\+L version 3 client. \index{sslv3\+\_\+server@{sslv3\+\_\+server}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!sslv3\+\_\+server@{sslv3\+\_\+server}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a441d4ca9b9ea7629362c0d2222b0bb5b}{}sslv3\+\_\+server\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a441d4ca9b9ea7629362c0d2222b0bb5b}
+}]S\+S\+L version 3 server. \index{tlsv1@{tlsv1}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!tlsv1@{tlsv1}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a00b6edaf9021c06a9e116079a19cab41}{}tlsv1\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a00b6edaf9021c06a9e116079a19cab41}
+}]Generic T\+L\+S version 1. \index{tlsv1\+\_\+client@{tlsv1\+\_\+client}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!tlsv1\+\_\+client@{tlsv1\+\_\+client}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a4c6826762f1d7495117b0e09e93a6902}{}tlsv1\+\_\+client\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a4c6826762f1d7495117b0e09e93a6902}
+}]T\+L\+S version 1 client. \index{tlsv1\+\_\+server@{tlsv1\+\_\+server}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!tlsv1\+\_\+server@{tlsv1\+\_\+server}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a57d26e3e5b732e161757de3b65f0cdf3}{}tlsv1\+\_\+server\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a57d26e3e5b732e161757de3b65f0cdf3}
+}]T\+L\+S version 1 server. \index{sslv23@{sslv23}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!sslv23@{sslv23}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ae478c3ede58b50c99d6c6ff9ed7c0124}{}sslv23\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ae478c3ede58b50c99d6c6ff9ed7c0124}
+}]Generic S\+S\+L/\+T\+L\+S. \index{sslv23\+\_\+client@{sslv23\+\_\+client}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!sslv23\+\_\+client@{sslv23\+\_\+client}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a0f5a9a259fa6d7fb1f10928b4cd3082e}{}sslv23\+\_\+client\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a0f5a9a259fa6d7fb1f10928b4cd3082e}
+}]S\+S\+L/\+T\+L\+S client. \index{sslv23\+\_\+server@{sslv23\+\_\+server}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!sslv23\+\_\+server@{sslv23\+\_\+server}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a38535ad99aa309f7a02dc2120dfbe1f5}{}sslv23\+\_\+server\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a38535ad99aa309f7a02dc2120dfbe1f5}
+}]S\+S\+L/\+T\+L\+S server. \index{tlsv11@{tlsv11}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!tlsv11@{tlsv11}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a8f1d7749b86e8ad66445bab86482aed3}{}tlsv11\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a8f1d7749b86e8ad66445bab86482aed3}
+}]Generic T\+L\+S version 1.\+1. \index{tlsv11\+\_\+client@{tlsv11\+\_\+client}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!tlsv11\+\_\+client@{tlsv11\+\_\+client}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a68d5f4a5b14719757788e8c1fcf15bb0}{}tlsv11\+\_\+client\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a68d5f4a5b14719757788e8c1fcf15bb0}
+}]T\+L\+S version 1.\+1 client. \index{tlsv11\+\_\+server@{tlsv11\+\_\+server}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!tlsv11\+\_\+server@{tlsv11\+\_\+server}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a53b7d512bbb199877dd0f2fd534cc366}{}tlsv11\+\_\+server\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a53b7d512bbb199877dd0f2fd534cc366}
+}]T\+L\+S version 1.\+1 server. \index{tlsv12@{tlsv12}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!tlsv12@{tlsv12}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525aca26f9b3efb8a7c8c64d8f147d0c4e7c}{}tlsv12\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525aca26f9b3efb8a7c8c64d8f147d0c4e7c}
+}]Generic T\+L\+S version 1.\+2. \index{tlsv12\+\_\+client@{tlsv12\+\_\+client}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!tlsv12\+\_\+client@{tlsv12\+\_\+client}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ae3a06b9301c367af76d1041e87e78a41}{}tlsv12\+\_\+client\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525ae3a06b9301c367af76d1041e87e78a41}
+}]T\+L\+S version 1.\+2 client. \index{tlsv12\+\_\+server@{tlsv12\+\_\+server}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!tlsv12\+\_\+server@{tlsv12\+\_\+server}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a5385a7af0a52e2fec3aaa0640d8433b0}{}tlsv12\+\_\+server\label{classasio_1_1ssl_1_1context__base_ac37d498266e3b13607f011ace6417525a5385a7af0a52e2fec3aaa0640d8433b0}
+}]T\+L\+S version 1.\+2 server. \end{description}
+\end{Desc}
+
+
+Definition at line 32 of file context\+\_\+base.\+hpp.
+
+\hypertarget{classasio_1_1ssl_1_1context__base_a0e5aec1cd0f3db28becde1dca686c855}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!password\+\_\+purpose@{password\+\_\+purpose}}
+\index{password\+\_\+purpose@{password\+\_\+purpose}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{password\+\_\+purpose}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf asio\+::ssl\+::context\+\_\+base\+::password\+\_\+purpose}}\label{classasio_1_1ssl_1_1context__base_a0e5aec1cd0f3db28becde1dca686c855}
+
+
+Purpose of P\+E\+M password. 
+
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{for\+\_\+reading@{for\+\_\+reading}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!for\+\_\+reading@{for\+\_\+reading}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_a0e5aec1cd0f3db28becde1dca686c855a7cc8a1fb57a6dd490a8c27df90b7bd2d}{}for\+\_\+reading\label{classasio_1_1ssl_1_1context__base_a0e5aec1cd0f3db28becde1dca686c855a7cc8a1fb57a6dd490a8c27df90b7bd2d}
+}]The password is needed for reading/decryption. \index{for\+\_\+writing@{for\+\_\+writing}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!for\+\_\+writing@{for\+\_\+writing}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1context__base_a0e5aec1cd0f3db28becde1dca686c855a2aeb8ea67ad30131e6592a3605b2cb11}{}for\+\_\+writing\label{classasio_1_1ssl_1_1context__base_a0e5aec1cd0f3db28becde1dca686c855a2aeb8ea67ad30131e6592a3605b2cb11}
+}]The password is needed for writing/encryption. \end{description}
+\end{Desc}
+
+
+Definition at line 162 of file context\+\_\+base.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1ssl_1_1context__base_acac5be86a997ae43dfd1e78ad966cb61}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!````~context\+\_\+base@{$\sim$context\+\_\+base}}
+\index{````~context\+\_\+base@{$\sim$context\+\_\+base}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{$\sim$context\+\_\+base()}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::$\sim$context\+\_\+base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classasio_1_1ssl_1_1context__base_acac5be86a997ae43dfd1e78ad966cb61}
+
+
+Protected destructor to prevent deletion through this type. 
+
+
+
+Definition at line 173 of file context\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ssl_1_1context__base_a1cf38340aceb9f6b87937117628139e8}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(long, default\+\_\+workarounds=\+S\+S\+L\+\_\+\+O\+P\+\_\+\+A\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{long}]{, }
+\item[{default\+\_\+workarounds}]{ = {\ttfamily SSL\+\_\+OP\+\_\+ALL}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_a1cf38340aceb9f6b87937117628139e8}
+\hypertarget{classasio_1_1ssl_1_1context__base_a57673d9d613730c2ca29720922c47925}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(long, single\+\_\+dh\+\_\+use=\+S\+S\+L\+\_\+\+O\+P\+\_\+\+S\+I\+N\+G\+L\+E\+\_\+\+D\+H\+\_\+\+U\+S\+E)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{long}]{, }
+\item[{single\+\_\+dh\+\_\+use}]{ = {\ttfamily SSL\+\_\+OP\+\_\+SINGLE\+\_\+DH\+\_\+USE}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_a57673d9d613730c2ca29720922c47925}
+\hypertarget{classasio_1_1ssl_1_1context__base_a3ce9ae7ac2488c04d55e8bd686261b13}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(long, no\+\_\+sslv2=\+S\+S\+L\+\_\+\+O\+P\+\_\+\+N\+O\+\_\+\+S\+S\+Lv2)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{long}]{, }
+\item[{no\+\_\+sslv2}]{ = {\ttfamily SSL\+\_\+OP\+\_\+NO\+\_\+SSLv2}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_a3ce9ae7ac2488c04d55e8bd686261b13}
+\hypertarget{classasio_1_1ssl_1_1context__base_a176c285e905b2eed6adcac708d72513d}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(long, no\+\_\+sslv3=\+S\+S\+L\+\_\+\+O\+P\+\_\+\+N\+O\+\_\+\+S\+S\+Lv3)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{long}]{, }
+\item[{no\+\_\+sslv3}]{ = {\ttfamily SSL\+\_\+OP\+\_\+NO\+\_\+SSLv3}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_a176c285e905b2eed6adcac708d72513d}
+\hypertarget{classasio_1_1ssl_1_1context__base_a1727888d0005af81060fd3093975518a}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(long, no\+\_\+tlsv1=\+S\+S\+L\+\_\+\+O\+P\+\_\+\+N\+O\+\_\+\+T\+L\+Sv1)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{long}]{, }
+\item[{no\+\_\+tlsv1}]{ = {\ttfamily SSL\+\_\+OP\+\_\+NO\+\_\+TLSv1}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_a1727888d0005af81060fd3093975518a}
+\hypertarget{classasio_1_1ssl_1_1context__base_a4ea78671a3d9afdbe550a3bb2cbd4492}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(long, no\+\_\+tlsv1\+\_\+1=0x10000000\+L)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{long}]{, }
+\item[{no\+\_\+tlsv1\+\_\+1}]{ = {\ttfamily 0x10000000L}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_a4ea78671a3d9afdbe550a3bb2cbd4492}
+\hypertarget{classasio_1_1ssl_1_1context__base_a374ebcdb768437dfeecfc1b06f97b3be}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(long, no\+\_\+tlsv1\+\_\+2=0x08000000\+L)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{long}]{, }
+\item[{no\+\_\+tlsv1\+\_\+2}]{ = {\ttfamily 0x08000000L}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_a374ebcdb768437dfeecfc1b06f97b3be}
+\hypertarget{classasio_1_1ssl_1_1context__base_a1bd0fe429c81e6513ae9f31b711fcfc1}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(long, no\+\_\+compression=0x20000\+L)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{long}]{, }
+\item[{no\+\_\+compression}]{ = {\ttfamily 0x20000L}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_a1bd0fe429c81e6513ae9f31b711fcfc1}
+\hypertarget{classasio_1_1ssl_1_1context__base_aed4dd4c8088b79bb94945ce81a9eb9a6}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(int, verify\+\_\+none=\+S\+S\+L\+\_\+\+V\+E\+R\+I\+F\+Y\+\_\+\+N\+O\+N\+E)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{{\bf verify\+\_\+none}}]{ = {\ttfamily SSL\+\_\+VERIFY\+\_\+NONE}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_aed4dd4c8088b79bb94945ce81a9eb9a6}
+\hypertarget{classasio_1_1ssl_1_1context__base_af743b6d02febac7773d28d9e10921525}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(int, verify\+\_\+peer=\+S\+S\+L\+\_\+\+V\+E\+R\+I\+F\+Y\+\_\+\+P\+E\+E\+R)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{{\bf verify\+\_\+peer}}]{ = {\ttfamily SSL\+\_\+VERIFY\+\_\+PEER}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_af743b6d02febac7773d28d9e10921525}
+\hypertarget{classasio_1_1ssl_1_1context__base_a59f3c5f613efbe169ee8027dcd3060b8}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(int, verify\+\_\+fail\+\_\+if\+\_\+no\+\_\+peer\+\_\+cert=\+S\+S\+L\+\_\+\+V\+E\+R\+I\+F\+Y\+\_\+\+F\+A\+I\+L\+\_\+\+I\+F\+\_\+\+N\+O\+\_\+\+P\+E\+E\+R\+\_\+\+C\+E\+R\+T)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{{\bf verify\+\_\+fail\+\_\+if\+\_\+no\+\_\+peer\+\_\+cert}}]{ = {\ttfamily SSL\+\_\+VERIFY\+\_\+FAIL\+\_\+IF\+\_\+NO\+\_\+PEER\+\_\+CERT}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_a59f3c5f613efbe169ee8027dcd3060b8}
+\hypertarget{classasio_1_1ssl_1_1context__base_a61efdf9307d469644f4fdf5a931cdd39}{}\index{asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}!A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}}
+\index{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T@{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T}!asio\+::ssl\+::context\+\_\+base@{asio\+::ssl\+::context\+\_\+base}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T(int, verify\+\_\+client\+\_\+once=\+S\+S\+L\+\_\+\+V\+E\+R\+I\+F\+Y\+\_\+\+C\+L\+I\+E\+N\+T\+\_\+\+O\+N\+C\+E)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::context\+\_\+base\+::\+A\+S\+I\+O\+\_\+\+S\+T\+A\+T\+I\+C\+\_\+\+C\+O\+N\+S\+T\+A\+N\+T (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{{\bf verify\+\_\+client\+\_\+once}}]{ = {\ttfamily SSL\+\_\+VERIFY\+\_\+CLIENT\+\_\+ONCE}}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1context__base_a61efdf9307d469644f4fdf5a931cdd39}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ssl/\hyperlink{context__base_8hpp}{context\+\_\+base.\+hpp}\end{DoxyCompactItemize}

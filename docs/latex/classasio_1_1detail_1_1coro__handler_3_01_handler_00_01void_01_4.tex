@@ -1,0 +1,119 @@
+\hypertarget{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4}{}\section{asio\+:\+:detail\+:\+:coro\+\_\+handler$<$ Handler, void $>$ Class Template Reference}
+\label{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4}\index{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}}
+
+
+{\ttfamily \#include $<$spawn.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_abdb7f805c9b67da6800c0a1a0673bec8}{coro\+\_\+handler} (\hyperlink{classasio_1_1basic__yield__context}{basic\+\_\+yield\+\_\+context}$<$ Handler $>$ ctx)
+\item 
+void \hyperlink{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_a7b5f6c3ee42d1596e93577617a85dce7}{operator()} ()
+\item 
+void \hyperlink{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_ae71e62635d638e9a3b4340943b33d62c}{operator()} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} ec)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+shared\+\_\+ptr$<$ typename \hyperlink{classasio_1_1basic__yield__context}{basic\+\_\+yield\+\_\+context}$<$ Handler $>$\+::callee\+\_\+type $>$ \hyperlink{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_ae5a8d2fe419cec49add65b2f41764d50}{coro\+\_\+}
+\item 
+\hyperlink{classasio_1_1basic__yield__context}{basic\+\_\+yield\+\_\+context}$<$ Handler $>$\+::caller\+\_\+type \& \hyperlink{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_ab55025d81a89f6d47e5ed21a1df6db03}{ca\+\_\+}
+\item 
+Handler \& \hyperlink{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_a207d28691946bae82598c715e8aa907c}{handler\+\_\+}
+\item 
+\hyperlink{namespaceasio_1_1detail_a75f94bf579dec2f59a0c4af6c4c3606e}{atomic\+\_\+count} $\ast$ \hyperlink{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_aa491514a709f2438ba2994b0fb4304ad}{ready\+\_\+}
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} $\ast$ \hyperlink{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_a44744027260f8715b6f2e02a573b70dd}{ec\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Handler$>$class asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}
+
+
+
+Definition at line 73 of file spawn.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_abdb7f805c9b67da6800c0a1a0673bec8}{}\index{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}!coro\+\_\+handler@{coro\+\_\+handler}}
+\index{coro\+\_\+handler@{coro\+\_\+handler}!asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}}
+\subsubsection[{coro\+\_\+handler(basic\+\_\+yield\+\_\+context$<$ Handler $>$ ctx)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ {\bf asio\+::detail\+::coro\+\_\+handler}$<$ Handler, void $>$\+::{\bf coro\+\_\+handler} (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+yield\+\_\+context}$<$ Handler $>$}]{ctx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_abdb7f805c9b67da6800c0a1a0673bec8}
+
+
+Definition at line 76 of file spawn.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_a7b5f6c3ee42d1596e93577617a85dce7}{}\index{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}}
+\subsubsection[{operator()()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ void {\bf asio\+::detail\+::coro\+\_\+handler}$<$ Handler, void $>$\+::operator() (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_a7b5f6c3ee42d1596e93577617a85dce7}
+
+
+Definition at line 85 of file spawn.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_ae71e62635d638e9a3b4340943b33d62c}{}\index{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}}
+\subsubsection[{operator()(asio\+::error\+\_\+code ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ void {\bf asio\+::detail\+::coro\+\_\+handler}$<$ Handler, void $>$\+::operator() (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code}}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_ae71e62635d638e9a3b4340943b33d62c}
+
+
+Definition at line 92 of file spawn.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_ab55025d81a89f6d47e5ed21a1df6db03}{}\index{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}!ca\+\_\+@{ca\+\_\+}}
+\index{ca\+\_\+@{ca\+\_\+}!asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}}
+\subsubsection[{ca\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ {\bf basic\+\_\+yield\+\_\+context}$<$Handler$>$\+::caller\+\_\+type\& {\bf asio\+::detail\+::coro\+\_\+handler}$<$ Handler, void $>$\+::ca\+\_\+}\label{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_ab55025d81a89f6d47e5ed21a1df6db03}
+
+
+Definition at line 101 of file spawn.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_ae5a8d2fe419cec49add65b2f41764d50}{}\index{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}!coro\+\_\+@{coro\+\_\+}}
+\index{coro\+\_\+@{coro\+\_\+}!asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}}
+\subsubsection[{coro\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ shared\+\_\+ptr$<$typename {\bf basic\+\_\+yield\+\_\+context}$<$Handler$>$\+::callee\+\_\+type$>$ {\bf asio\+::detail\+::coro\+\_\+handler}$<$ Handler, void $>$\+::coro\+\_\+}\label{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_ae5a8d2fe419cec49add65b2f41764d50}
+
+
+Definition at line 100 of file spawn.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_a44744027260f8715b6f2e02a573b70dd}{}\index{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}!ec\+\_\+@{ec\+\_\+}}
+\index{ec\+\_\+@{ec\+\_\+}!asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}}
+\subsubsection[{ec\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ {\bf asio\+::error\+\_\+code}$\ast$ {\bf asio\+::detail\+::coro\+\_\+handler}$<$ Handler, void $>$\+::ec\+\_\+}\label{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_a44744027260f8715b6f2e02a573b70dd}
+
+
+Definition at line 104 of file spawn.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_a207d28691946bae82598c715e8aa907c}{}\index{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}!handler\+\_\+@{handler\+\_\+}}
+\index{handler\+\_\+@{handler\+\_\+}!asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}}
+\subsubsection[{handler\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ Handler\& {\bf asio\+::detail\+::coro\+\_\+handler}$<$ Handler, void $>$\+::handler\+\_\+}\label{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_a207d28691946bae82598c715e8aa907c}
+
+
+Definition at line 102 of file spawn.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_aa491514a709f2438ba2994b0fb4304ad}{}\index{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}!ready\+\_\+@{ready\+\_\+}}
+\index{ready\+\_\+@{ready\+\_\+}!asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$@{asio\+::detail\+::coro\+\_\+handler$<$ Handler, void $>$}}
+\subsubsection[{ready\+\_\+}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Handler $>$ {\bf atomic\+\_\+count}$\ast$ {\bf asio\+::detail\+::coro\+\_\+handler}$<$ Handler, void $>$\+::ready\+\_\+}\label{classasio_1_1detail_1_1coro__handler_3_01_handler_00_01void_01_4_aa491514a709f2438ba2994b0fb4304ad}
+
+
+Definition at line 103 of file spawn.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/impl/\hyperlink{impl_2spawn_8hpp}{spawn.\+hpp}\end{DoxyCompactItemize}

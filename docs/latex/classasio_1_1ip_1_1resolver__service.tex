@@ -1,0 +1,296 @@
+\hypertarget{classasio_1_1ip_1_1resolver__service}{}\section{asio\+:\+:ip\+:\+:resolver\+\_\+service$<$ Internet\+Protocol $>$ Class Template Reference}
+\label{classasio_1_1ip_1_1resolver__service}\index{asio\+::ip\+::resolver\+\_\+service$<$ Internet\+Protocol $>$@{asio\+::ip\+::resolver\+\_\+service$<$ Internet\+Protocol $>$}}
+
+
+Default service implementation for a resolver.  
+
+
+
+
+{\ttfamily \#include $<$resolver\+\_\+service.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:ip\+:\+:resolver\+\_\+service$<$ Internet\+Protocol $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classasio_1_1ip_1_1resolver__service}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Internet\+Protocol \hyperlink{classasio_1_1ip_1_1resolver__service_a69654a63222789b8c363f3054ff01fa6}{protocol\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The protocol type. \end{DoxyCompactList}\item 
+typedef Internet\+Protocol\+::endpoint \hyperlink{classasio_1_1ip_1_1resolver__service_aa51d73a98d9f6a1df7ca69a419fa7bc3}{endpoint\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The endpoint type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1ip_1_1basic__resolver__query}{basic\+\_\+resolver\+\_\+query}$<$ Internet\+Protocol $>$ \hyperlink{classasio_1_1ip_1_1resolver__service_a60008f0c960687605c978dff14011145}{query\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The query type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1ip_1_1basic__resolver__iterator}{basic\+\_\+resolver\+\_\+iterator}$<$ Internet\+Protocol $>$ \hyperlink{classasio_1_1ip_1_1resolver__service_a7b71bd80a7d9296ac334251bed0e2b4c}{iterator\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The iterator type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1resolver__service_a9b39aff4ee39b0f45731ec01d9f5fd74}{service\+\_\+impl\+\_\+type\+::implementation\+\_\+type} \hyperlink{classasio_1_1ip_1_1resolver__service_aa686664be9b5626ca662d4603ae3459b}{implementation\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The type of a resolver implementation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1ip_1_1resolver__service_a61456218a5d45785201a1384ee1874c9}{resolver\+\_\+service} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service})
+\begin{DoxyCompactList}\small\item\em Construct a new resolver service for the specified \hyperlink{classasio_1_1io__service}{io\+\_\+service}. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ip_1_1resolver__service_acb1057e716bdb48f7e35e8ab75bdeae0}{construct} (\hyperlink{classasio_1_1ip_1_1resolver__service_aa686664be9b5626ca662d4603ae3459b}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em Construct a new resolver implementation. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ip_1_1resolver__service_a90296ea004dbf1aae155b540cb5e7478}{destroy} (\hyperlink{classasio_1_1ip_1_1resolver__service_aa686664be9b5626ca662d4603ae3459b}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em Destroy a resolver implementation. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1ip_1_1resolver__service_ad7b39f4e58e2a559c118a6cf35bcc5ce}{cancel} (\hyperlink{classasio_1_1ip_1_1resolver__service_aa686664be9b5626ca662d4603ae3459b}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em Cancel pending asynchronous operations. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1ip_1_1resolver__service_a7b71bd80a7d9296ac334251bed0e2b4c}{iterator\+\_\+type} \hyperlink{classasio_1_1ip_1_1resolver__service_abfe2929f227383458f58754b7ad5a0ea}{resolve} (\hyperlink{classasio_1_1ip_1_1resolver__service_aa686664be9b5626ca662d4603ae3459b}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1ip_1_1resolver__service_a60008f0c960687605c978dff14011145}{query\+\_\+type} \&\hyperlink{classasio_1_1ip_1_1resolver__service_a150f786d8c12263e29e85662f4f8ed34}{query}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Resolve a query to a list of entries. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Resolve\+Handler $>$ }\\\hyperlink{classasio_1_1ip_1_1resolver__service_a5deb51214b82e88c2d509bffea5bcd85}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Resolve\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, \hyperlink{classasio_1_1ip_1_1resolver__service_a7b71bd80a7d9296ac334251bed0e2b4c}{iterator\+\_\+type})) async\+\_\+resolve(\hyperlink{classasio_1_1ip_1_1resolver__service_aa686664be9b5626ca662d4603ae3459b}{implementation\+\_\+type} \&impl
+\begin{DoxyCompactList}\small\item\em Asynchronously resolve a query to a list of entries. \end{DoxyCompactList}\item 
+const \hyperlink{classasio_1_1ip_1_1resolver__service_a60008f0c960687605c978dff14011145}{query\+\_\+type} \hyperlink{classasio_1_1ip_1_1resolver__service_a507fca5ddbd2b81a5a52da889f8da172}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Resolve\+Handler) handler)
+\item 
+\hyperlink{classasio_1_1ip_1_1resolver__service_a7b71bd80a7d9296ac334251bed0e2b4c}{iterator\+\_\+type} \hyperlink{classasio_1_1ip_1_1resolver__service_a5db6e4df1a36cc3773c1ac331eea1eab}{resolve} (\hyperlink{classasio_1_1ip_1_1resolver__service_aa686664be9b5626ca662d4603ae3459b}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1ip_1_1resolver__service_aa51d73a98d9f6a1df7ca69a419fa7bc3}{endpoint\+\_\+type} \&\hyperlink{classasio_1_1ip_1_1resolver__service_a14162d17bcfa5a3e87b455caca632986}{endpoint}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Resolve an endpoint to a list of entries. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Resolve\+Handler $>$ }\\\hyperlink{classasio_1_1ip_1_1resolver__service_a5deb51214b82e88c2d509bffea5bcd85}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Resolve\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, \hyperlink{classasio_1_1ip_1_1resolver__service_a7b71bd80a7d9296ac334251bed0e2b4c}{iterator\+\_\+type})) async\+\_\+resolve(\hyperlink{classasio_1_1ip_1_1resolver__service_aa686664be9b5626ca662d4603ae3459b}{implementation\+\_\+type} \&impl
+\begin{DoxyCompactList}\small\item\em Asynchronously resolve an endpoint to a list of entries. \end{DoxyCompactList}\item 
+const \hyperlink{classasio_1_1ip_1_1resolver__service_aa51d73a98d9f6a1df7ca69a419fa7bc3}{endpoint\+\_\+type} \hyperlink{classasio_1_1ip_1_1resolver__service_a7ba3865b619154601b6dd28e1ba336ed}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Resolve\+Handler) handler)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classasio_1_1ip_1_1resolver__service_a60008f0c960687605c978dff14011145}{query\+\_\+type} \& \hyperlink{classasio_1_1ip_1_1resolver__service_a150f786d8c12263e29e85662f4f8ed34}{query}
+\item 
+const \hyperlink{classasio_1_1ip_1_1resolver__service_aa51d73a98d9f6a1df7ca69a419fa7bc3}{endpoint\+\_\+type} \& \hyperlink{classasio_1_1ip_1_1resolver__service_a14162d17bcfa5a3e87b455caca632986}{endpoint}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Internet\+Protocol$>$class asio\+::ip\+::resolver\+\_\+service$<$ Internet\+Protocol $>$}
+
+Default service implementation for a resolver. 
+
+Definition at line 38 of file resolver\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1ip_1_1resolver__service_aa51d73a98d9f6a1df7ca69a419fa7bc3}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!endpoint\+\_\+type@{endpoint\+\_\+type}}
+\index{endpoint\+\_\+type@{endpoint\+\_\+type}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{endpoint\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ typedef Internet\+Protocol\+::endpoint {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::{\bf endpoint\+\_\+type}}\label{classasio_1_1ip_1_1resolver__service_aa51d73a98d9f6a1df7ca69a419fa7bc3}
+
+
+The endpoint type. 
+
+
+
+Definition at line 56 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_aa686664be9b5626ca662d4603ae3459b}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!implementation\+\_\+type@{implementation\+\_\+type}}
+\index{implementation\+\_\+type@{implementation\+\_\+type}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{implementation\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ typedef {\bf service\+\_\+impl\+\_\+type\+::implementation\+\_\+type} {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::{\bf implementation\+\_\+type}}\label{classasio_1_1ip_1_1resolver__service_aa686664be9b5626ca662d4603ae3459b}
+
+
+The type of a resolver implementation. 
+
+
+
+Definition at line 79 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_a7b71bd80a7d9296ac334251bed0e2b4c}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!iterator\+\_\+type@{iterator\+\_\+type}}
+\index{iterator\+\_\+type@{iterator\+\_\+type}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{iterator\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ typedef {\bf basic\+\_\+resolver\+\_\+iterator}$<$Internet\+Protocol$>$ {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::{\bf iterator\+\_\+type}}\label{classasio_1_1ip_1_1resolver__service_a7b71bd80a7d9296ac334251bed0e2b4c}
+
+
+The iterator type. 
+
+
+
+Definition at line 62 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_a69654a63222789b8c363f3054ff01fa6}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!protocol\+\_\+type@{protocol\+\_\+type}}
+\index{protocol\+\_\+type@{protocol\+\_\+type}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{protocol\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ typedef Internet\+Protocol {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::{\bf protocol\+\_\+type}}\label{classasio_1_1ip_1_1resolver__service_a69654a63222789b8c363f3054ff01fa6}
+
+
+The protocol type. 
+
+
+
+Definition at line 53 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_a60008f0c960687605c978dff14011145}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!query\+\_\+type@{query\+\_\+type}}
+\index{query\+\_\+type@{query\+\_\+type}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{query\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ typedef {\bf basic\+\_\+resolver\+\_\+query}$<$Internet\+Protocol$>$ {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::{\bf query\+\_\+type}}\label{classasio_1_1ip_1_1resolver__service_a60008f0c960687605c978dff14011145}
+
+
+The query type. 
+
+
+
+Definition at line 59 of file resolver\+\_\+service.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1ip_1_1resolver__service_a61456218a5d45785201a1384ee1874c9}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!resolver\+\_\+service@{resolver\+\_\+service}}
+\index{resolver\+\_\+service@{resolver\+\_\+service}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{resolver\+\_\+service(asio\+::io\+\_\+service \&io\+\_\+service)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::{\bf resolver\+\_\+service} (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1ip_1_1resolver__service_a61456218a5d45785201a1384ee1874c9}
+
+
+Construct a new resolver service for the specified \hyperlink{classasio_1_1io__service}{io\+\_\+service}. 
+
+
+
+Definition at line 83 of file resolver\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ip_1_1resolver__service_a5deb51214b82e88c2d509bffea5bcd85}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Resolve\+Handler, void(asio\+::error\+\_\+code, iterator\+\_\+type)) async\+\_\+resolve(implementation\+\_\+type \&impl}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ template$<$typename Resolve\+Handler $>$ {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Resolve\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, {\bf iterator\+\_\+type})}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ip_1_1resolver__service_a5deb51214b82e88c2d509bffea5bcd85}
+
+
+Asynchronously resolve a query to a list of entries. 
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_a5deb51214b82e88c2d509bffea5bcd85}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Resolve\+Handler, void(asio\+::error\+\_\+code, iterator\+\_\+type)) async\+\_\+resolve(implementation\+\_\+type \&impl}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ template$<$typename Resolve\+Handler $>$ {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Resolve\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code}, {\bf iterator\+\_\+type})}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ip_1_1resolver__service_a5deb51214b82e88c2d509bffea5bcd85}
+
+
+Asynchronously resolve an endpoint to a list of entries. 
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_a507fca5ddbd2b81a5a52da889f8da172}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Resolve\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ const {\bf query\+\_\+type} {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Resolve\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1resolver__service_a507fca5ddbd2b81a5a52da889f8da172}
+
+
+Definition at line 120 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_a7ba3865b619154601b6dd28e1ba336ed}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Resolve\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ const {\bf endpoint\+\_\+type} {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Resolve\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1resolver__service_a7ba3865b619154601b6dd28e1ba336ed}
+
+
+Definition at line 143 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_ad7b39f4e58e2a559c118a6cf35bcc5ce}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!cancel@{cancel}}
+\index{cancel@{cancel}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{cancel(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ void {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::cancel (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1resolver__service_ad7b39f4e58e2a559c118a6cf35bcc5ce}
+
+
+Cancel pending asynchronous operations. 
+
+
+
+Definition at line 103 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_acb1057e716bdb48f7e35e8ab75bdeae0}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!construct@{construct}}
+\index{construct@{construct}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{construct(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ void {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::construct (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1resolver__service_acb1057e716bdb48f7e35e8ab75bdeae0}
+
+
+Construct a new resolver implementation. 
+
+
+
+Definition at line 91 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_a90296ea004dbf1aae155b540cb5e7478}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!destroy@{destroy}}
+\index{destroy@{destroy}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{destroy(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ void {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::destroy (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1resolver__service_a90296ea004dbf1aae155b540cb5e7478}
+
+
+Destroy a resolver implementation. 
+
+
+
+Definition at line 97 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_abfe2929f227383458f58754b7ad5a0ea}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!resolve@{resolve}}
+\index{resolve@{resolve}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{resolve(implementation\+\_\+type \&impl, const query\+\_\+type \&query, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ {\bf iterator\+\_\+type} {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::resolve (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf query\+\_\+type} \&}]{query, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1resolver__service_abfe2929f227383458f58754b7ad5a0ea}
+
+
+Resolve a query to a list of entries. 
+
+
+
+Definition at line 109 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_a5db6e4df1a36cc3773c1ac331eea1eab}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!resolve@{resolve}}
+\index{resolve@{resolve}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{resolve(implementation\+\_\+type \&impl, const endpoint\+\_\+type \&endpoint, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ {\bf iterator\+\_\+type} {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::resolve (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf endpoint\+\_\+type} \&}]{endpoint, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1ip_1_1resolver__service_a5db6e4df1a36cc3773c1ac331eea1eab}
+
+
+Resolve an endpoint to a list of entries. 
+
+
+
+Definition at line 132 of file resolver\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classasio_1_1ip_1_1resolver__service_a14162d17bcfa5a3e87b455caca632986}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!endpoint@{endpoint}}
+\index{endpoint@{endpoint}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{endpoint}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ const {\bf endpoint\+\_\+type}\& {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::endpoint}\label{classasio_1_1ip_1_1resolver__service_a14162d17bcfa5a3e87b455caca632986}
+
+
+Definition at line 142 of file resolver\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1ip_1_1resolver__service_a150f786d8c12263e29e85662f4f8ed34}{}\index{asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}!query@{query}}
+\index{query@{query}!asio\+::ip\+::resolver\+\_\+service@{asio\+::ip\+::resolver\+\_\+service}}
+\subsubsection[{query}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Internet\+Protocol $>$ const {\bf query\+\_\+type}\& {\bf asio\+::ip\+::resolver\+\_\+service}$<$ Internet\+Protocol $>$\+::query}\label{classasio_1_1ip_1_1resolver__service_a150f786d8c12263e29e85662f4f8ed34}
+
+
+Definition at line 119 of file resolver\+\_\+service.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ip/\hyperlink{ip_2resolver__service_8hpp}{resolver\+\_\+service.\+hpp}\end{DoxyCompactItemize}

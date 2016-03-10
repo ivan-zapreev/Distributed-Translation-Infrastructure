@@ -1,0 +1,27 @@
+var classasio_1_1detail_1_1task__io__service =
+[
+    [ "task_cleanup", "structasio_1_1detail_1_1task__io__service_1_1task__cleanup.html", "structasio_1_1detail_1_1task__io__service_1_1task__cleanup" ],
+    [ "work_cleanup", "structasio_1_1detail_1_1task__io__service_1_1work__cleanup.html", "structasio_1_1detail_1_1task__io__service_1_1work__cleanup" ],
+    [ "operation", "classasio_1_1detail_1_1task__io__service.html#abb8a2a1b24b3cbf9afd8d19bf4bd6929", null ],
+    [ "task_io_service", "classasio_1_1detail_1_1task__io__service.html#a881516d09c324a0bcbbc75d9c076e3f7", null ],
+    [ "abandon_operations", "classasio_1_1detail_1_1task__io__service.html#aba439509604dc30565d4a059bd9310b3", null ],
+    [ "can_dispatch", "classasio_1_1detail_1_1task__io__service.html#aa6c35cf775e3b2cfa27f41de6939ece9", null ],
+    [ "dispatch", "classasio_1_1detail_1_1task__io__service.html#a235acc38631029c8d2f63024c3236af6", null ],
+    [ "init_task", "classasio_1_1detail_1_1task__io__service.html#a68bc68b32eca978202005e48d2831722", null ],
+    [ "poll", "classasio_1_1detail_1_1task__io__service.html#aaf23f2e2d036f6e352aebcacb9f6cec4", null ],
+    [ "poll_one", "classasio_1_1detail_1_1task__io__service.html#a87ca412a09bc0b4631dbd5fc19c23cf9", null ],
+    [ "post", "classasio_1_1detail_1_1task__io__service.html#ae36df3acc067c7181927ac125fb615ef", null ],
+    [ "post_deferred_completion", "classasio_1_1detail_1_1task__io__service.html#ab2d10a452969b826c725913d582b7603", null ],
+    [ "post_deferred_completions", "classasio_1_1detail_1_1task__io__service.html#a371b4e1a6f3a20777a0857332f38d869", null ],
+    [ "post_immediate_completion", "classasio_1_1detail_1_1task__io__service.html#a702211c6c77ac1343d33ae7874605645", null ],
+    [ "reset", "classasio_1_1detail_1_1task__io__service.html#a4682169fee932755fac3bef2215b5062", null ],
+    [ "run", "classasio_1_1detail_1_1task__io__service.html#a4eba17975ee01ee1ea8a46f0a5bdfa43", null ],
+    [ "run_one", "classasio_1_1detail_1_1task__io__service.html#aac7a06b63848276fee7aa18ebfa70594", null ],
+    [ "shutdown_service", "classasio_1_1detail_1_1task__io__service.html#a38bd515b55fdaebdf7b20cb5e161b174", null ],
+    [ "stop", "classasio_1_1detail_1_1task__io__service.html#a4dd3dd048d2ea638639b97bebc535993", null ],
+    [ "stopped", "classasio_1_1detail_1_1task__io__service.html#a495af480280c9ec23371a96ec688e2dc", null ],
+    [ "work_finished", "classasio_1_1detail_1_1task__io__service.html#a39e0635c3435891f399103fea79651ea", null ],
+    [ "work_started", "classasio_1_1detail_1_1task__io__service.html#a4d0f616df81276a3e694579a490950c4", null ],
+    [ "task_cleanup", "classasio_1_1detail_1_1task__io__service.html#a4da41e8803e9cdda504ad01b308155af", null ],
+    [ "work_cleanup", "classasio_1_1detail_1_1task__io__service.html#a9e2a288602d993c85a8fd5bc70de607e", null ]
+];

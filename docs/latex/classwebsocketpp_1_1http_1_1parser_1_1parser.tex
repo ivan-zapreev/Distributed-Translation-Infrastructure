@@ -1,0 +1,598 @@
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser}{}\section{websocketpp\+:\+:http\+:\+:parser\+:\+:parser Class Reference}
+\label{classwebsocketpp_1_1http_1_1parser_1_1parser}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+
+
+Base H\+T\+T\+P parser.  
+
+
+
+
+{\ttfamily \#include $<$parser.\+hpp$>$}
+
+Inheritance diagram for websocketpp\+:\+:http\+:\+:parser\+:\+:parser\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classwebsocketpp_1_1http_1_1parser_1_1parser}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a11bc97bfd504dd56ad7b8262a940a9c5}{parser} ()
+\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a382bce24a437c9cf07485a34dd0489b0}{get\+\_\+version} () const 
+\begin{DoxyCompactList}\small\item\em Get the H\+T\+T\+P version string. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a5c2e0e2bc0b2769db5a785b7d47a66ee}{set\+\_\+version} (std\+::string const \&version)
+\begin{DoxyCompactList}\small\item\em Set H\+T\+T\+P parser Version. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a6a2a10752449789e6a2af06972c53d94}{get\+\_\+header} (std\+::string const \&key) const 
+\begin{DoxyCompactList}\small\item\em Get the value of an H\+T\+T\+P header. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a0904316d798a3d74efcffa803ce08610}{get\+\_\+header\+\_\+as\+\_\+plist} (std\+::string const \&key, \hyperlink{namespacewebsocketpp_1_1http_a2c285bc959df5a63bf962bed842fccfb}{parameter\+\_\+list} \&out) const 
+\begin{DoxyCompactList}\small\item\em Extract an H\+T\+T\+P parameter list from a parser header. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_abd39762de5ec467a29a537d79602b603}{append\+\_\+header} (std\+::string const \&key, std\+::string const \&val)
+\begin{DoxyCompactList}\small\item\em Append a value to an existing H\+T\+T\+P header. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_aba2991b2aa41ca60d9427950502b0b93}{replace\+\_\+header} (std\+::string const \&key, std\+::string const \&val)
+\begin{DoxyCompactList}\small\item\em Set a value for an H\+T\+T\+P header, replacing an existing value. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a64ff49a6a1ddbf70b9767874ffdd513e}{remove\+\_\+header} (std\+::string const \&key)
+\begin{DoxyCompactList}\small\item\em Remove a header from the parser. \end{DoxyCompactList}\item 
+std\+::string const \& \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_ad408fca545841a0bb5d4ad0a88fe0c72}{get\+\_\+body} () const 
+\begin{DoxyCompactList}\small\item\em Get H\+T\+T\+P body. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a71a4989eaa0ca802cf77678d0ca2d70d}{set\+\_\+body} (std\+::string const \&value)
+\begin{DoxyCompactList}\small\item\em Set body content. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a8d3023125bdc97911f6c471070aee5b5}{get\+\_\+max\+\_\+body\+\_\+size} () const 
+\begin{DoxyCompactList}\small\item\em Get body size limit. \end{DoxyCompactList}\item 
+void \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_ab6583e865254d1608732498d839d8385}{set\+\_\+max\+\_\+body\+\_\+size} (size\+\_\+t value)
+\begin{DoxyCompactList}\small\item\em Set body size limit. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_ab006d1cca50947f396a2d7ec9511c8ef}{parse\+\_\+parameter\+\_\+list} (std\+::string const \&in, \hyperlink{namespacewebsocketpp_1_1http_a2c285bc959df5a63bf962bed842fccfb}{parameter\+\_\+list} \&out) const 
+\begin{DoxyCompactList}\small\item\em Extract an H\+T\+T\+P parameter list from a string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a4dbb443fd916f8b4306e7afdb2e8ff45}{process\+\_\+header} (std\+::string\+::iterator begin, std\+::string\+::iterator end)
+\begin{DoxyCompactList}\small\item\em Process a header line. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_aabf5f8c33cad9202520337f8e2ed7aa5}{prepare\+\_\+body} ()
+\begin{DoxyCompactList}\small\item\em Prepare the parser to begin parsing body data. \end{DoxyCompactList}\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a3dc340d076f732092aed32c42d277503}{process\+\_\+body} (char const $\ast$buf, size\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Process body data. \end{DoxyCompactList}\item 
+bool \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a0ef44170d582ad2b7a99472d5269b2f8}{body\+\_\+ready} () const 
+\begin{DoxyCompactList}\small\item\em Check if the parser is done parsing the body. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_ac9a2caf768b90315ae256aa0a8505f94}{raw\+\_\+headers} () const 
+\begin{DoxyCompactList}\small\item\em Generate and return the H\+T\+T\+P headers as a string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a3e8026fc40c96ca8bfa46a533e00d6a6}{m\+\_\+version}
+\item 
+\hyperlink{namespacewebsocketpp_1_1http_1_1parser_a4bb5b2821dab6a182bfe4c5415229e6e}{header\+\_\+list} \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_ae75e1e6acd17cc5a5543f818a5355a50}{m\+\_\+headers}
+\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_ae82ee117b729da521de60401cd17f8d4}{m\+\_\+header\+\_\+bytes}
+\item 
+std\+::string \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a2a552a4581ae26674fd6d566e5b332ee}{m\+\_\+body}
+\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a89e6a7583bee97f30c60dc88b4cd29dd}{m\+\_\+body\+\_\+bytes\+\_\+needed}
+\item 
+size\+\_\+t \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a85613c9d20e308ff343449852b7e769f}{m\+\_\+body\+\_\+bytes\+\_\+max}
+\item 
+\hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1body__encoding_a489de0413246f2f6d2d6a6605af16653}{body\+\_\+encoding\+::value} \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a286e19d30028f6dbc295ad578e8e50d3}{m\+\_\+body\+\_\+encoding}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Base H\+T\+T\+P parser. 
+
+Includes methods and data elements common to all types of H\+T\+T\+P messages such as headers, versions, bodies, etc. 
+
+Definition at line 398 of file parser.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a11bc97bfd504dd56ad7b8262a940a9c5}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!parser@{parser}}
+\index{parser@{parser}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{parser()}]{\setlength{\rightskip}{0pt plus 5cm}websocketpp\+::http\+::parser\+::parser\+::parser (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a11bc97bfd504dd56ad7b8262a940a9c5}
+
+
+Definition at line 400 of file parser.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_abd39762de5ec467a29a537d79602b603}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!append\+\_\+header@{append\+\_\+header}}
+\index{append\+\_\+header@{append\+\_\+header}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{append\+\_\+header(std\+::string const \&key, std\+::string const \&val)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::http\+::parser\+::parser\+::append\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{key, }
+\item[{std\+::string const \&}]{val}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_abd39762de5ec467a29a537d79602b603}
+
+
+Append a value to an existing H\+T\+T\+P header. 
+
+This method will set the value of the H\+T\+T\+P header {\ttfamily key} with the indicated value. If a header with the name {\ttfamily key} already exists, {\ttfamily val} will be appended to the existing value.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000015}{Todo}]Make this method case insensitive. 
+
+Should there be any restrictions on which keys are allowed? 
+
+Exception free varient\end{DoxyRefDesc}
+
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_aba2991b2aa41ca60d9427950502b0b93}{replace\+\_\+header}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em key} & The name/key of the header to append to. \\
+\hline
+\mbox{\tt in}  & {\em val} & The value to append. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 67 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a0ef44170d582ad2b7a99472d5269b2f8}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!body\+\_\+ready@{body\+\_\+ready}}
+\index{body\+\_\+ready@{body\+\_\+ready}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{body\+\_\+ready() const }]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::http\+::parser\+::parser\+::body\+\_\+ready (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a0ef44170d582ad2b7a99472d5269b2f8}
+
+
+Check if the parser is done parsing the body. 
+
+Behavior before a call to {\ttfamily prepare\+\_\+body} is undefined.
+
+\begin{DoxySince}{Since}
+0.\+5.\+0
+\end{DoxySince}
+\begin{DoxyReturn}{Returns}
+True if the message body has been completed loaded. 
+\end{DoxyReturn}
+
+
+Definition at line 589 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_ad408fca545841a0bb5d4ad0a88fe0c72}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!get\+\_\+body@{get\+\_\+body}}
+\index{get\+\_\+body@{get\+\_\+body}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{get\+\_\+body() const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::string const\& websocketpp\+::http\+::parser\+::parser\+::get\+\_\+body (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_ad408fca545841a0bb5d4ad0a88fe0c72}
+
+
+Get H\+T\+T\+P body. 
+
+Gets the body of the H\+T\+T\+P object
+
+\begin{DoxyReturn}{Returns}
+The body of the H\+T\+T\+P message. 
+\end{DoxyReturn}
+
+
+Definition at line 495 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a6a2a10752449789e6a2af06972c53d94}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!get\+\_\+header@{get\+\_\+header}}
+\index{get\+\_\+header@{get\+\_\+header}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{get\+\_\+header(std\+::string const \&key) const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::string const \& websocketpp\+::http\+::parser\+::parser\+::get\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{key}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a6a2a10752449789e6a2af06972c53d94}
+
+
+Get the value of an H\+T\+T\+P header. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000014}{Todo}]Make this method case insensitive.\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em key} & The name/key of the header to get. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The value associated with the given H\+T\+T\+P header key. 
+\end{DoxyReturn}
+
+
+Definition at line 45 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a0904316d798a3d74efcffa803ce08610}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!get\+\_\+header\+\_\+as\+\_\+plist@{get\+\_\+header\+\_\+as\+\_\+plist}}
+\index{get\+\_\+header\+\_\+as\+\_\+plist@{get\+\_\+header\+\_\+as\+\_\+plist}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{get\+\_\+header\+\_\+as\+\_\+plist(std\+::string const \&key, parameter\+\_\+list \&out) const }]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::http\+::parser\+::parser\+::get\+\_\+header\+\_\+as\+\_\+plist (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{key, }
+\item[{{\bf parameter\+\_\+list} \&}]{out}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a0904316d798a3d74efcffa803ce08610}
+
+
+Extract an H\+T\+T\+P parameter list from a parser header. 
+
+If the header requested doesn\textquotesingle{}t exist or exists and is empty the parameter list is valid (but empty).
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em key} & The name/key of the H\+T\+T\+P header to use as input. \\
+\hline
+\mbox{\tt out}  & {\em out} & The parameter list to store extracted parameters in. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Whether or not the input was a valid parameter list. 
+\end{DoxyReturn}
+
+
+Definition at line 55 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a8d3023125bdc97911f6c471070aee5b5}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!get\+\_\+max\+\_\+body\+\_\+size@{get\+\_\+max\+\_\+body\+\_\+size}}
+\index{get\+\_\+max\+\_\+body\+\_\+size@{get\+\_\+max\+\_\+body\+\_\+size}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{get\+\_\+max\+\_\+body\+\_\+size() const }]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::http\+::parser\+::parser\+::get\+\_\+max\+\_\+body\+\_\+size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a8d3023125bdc97911f6c471070aee5b5}
+
+
+Get body size limit. 
+
+Retrieves the maximum number of bytes to parse \& buffer before canceling a request.
+
+\begin{DoxySince}{Since}
+0.\+5.\+0
+\end{DoxySince}
+\begin{DoxyReturn}{Returns}
+The maximum length of a message body. 
+\end{DoxyReturn}
+
+
+Definition at line 519 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a382bce24a437c9cf07485a34dd0489b0}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!get\+\_\+version@{get\+\_\+version}}
+\index{get\+\_\+version@{get\+\_\+version}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{get\+\_\+version() const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::string const\& websocketpp\+::http\+::parser\+::parser\+::get\+\_\+version (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a382bce24a437c9cf07485a34dd0489b0}
+
+
+Get the H\+T\+T\+P version string. 
+
+\begin{DoxyReturn}{Returns}
+The version string for this parser 
+\end{DoxyReturn}
+
+
+Definition at line 410 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_ab006d1cca50947f396a2d7ec9511c8ef}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!parse\+\_\+parameter\+\_\+list@{parse\+\_\+parameter\+\_\+list}}
+\index{parse\+\_\+parameter\+\_\+list@{parse\+\_\+parameter\+\_\+list}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{parse\+\_\+parameter\+\_\+list(std\+::string const \&in, parameter\+\_\+list \&out) const }]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::http\+::parser\+::parser\+::parse\+\_\+parameter\+\_\+list (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{in, }
+\item[{{\bf parameter\+\_\+list} \&}]{out}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_ab006d1cca50947f396a2d7ec9511c8ef}
+
+
+Extract an H\+T\+T\+P parameter list from a string. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em in} & The input string. \\
+\hline
+\mbox{\tt out}  & {\em out} & The parameter list to store extracted parameters in. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Whether or not the input was a valid parameter list. 
+\end{DoxyReturn}
+
+
+Definition at line 107 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_aabf5f8c33cad9202520337f8e2ed7aa5}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!prepare\+\_\+body@{prepare\+\_\+body}}
+\index{prepare\+\_\+body@{prepare\+\_\+body}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{prepare\+\_\+body()}]{\setlength{\rightskip}{0pt plus 5cm}bool websocketpp\+::http\+::parser\+::parser\+::prepare\+\_\+body (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_aabf5f8c33cad9202520337f8e2ed7aa5}
+
+
+Prepare the parser to begin parsing body data. 
+
+Inspects headers to determine if the message has a body that needs to be read. If so, sets up the necessary state, otherwise returns false. If this method returns true and loading the message body is desired call {\ttfamily process\+\_\+body} until it returns zero bytes or an error.
+
+Must not be called until after all headers have been processed.
+
+\begin{DoxySince}{Since}
+0.\+5.\+0
+\end{DoxySince}
+\begin{DoxyReturn}{Returns}
+True if more bytes are needed to load the body, false otherwise. 
+\end{DoxyReturn}
+
+
+Definition at line 119 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a3dc340d076f732092aed32c42d277503}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!process\+\_\+body@{process\+\_\+body}}
+\index{process\+\_\+body@{process\+\_\+body}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{process\+\_\+body(char const $\ast$buf, size\+\_\+t len)}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::http\+::parser\+::parser\+::process\+\_\+body (
+\begin{DoxyParamCaption}
+\item[{char const $\ast$}]{buf, }
+\item[{size\+\_\+t}]{len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a3dc340d076f732092aed32c42d277503}
+
+
+Process body data. 
+
+Parses body data.
+
+\begin{DoxySince}{Since}
+0.\+5.\+0
+\end{DoxySince}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em begin} & An iterator to the beginning of the sequence. \\
+\hline
+\mbox{\tt in}  & {\em end} & An iterator to the end of the sequence. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The number of bytes processed 
+\end{DoxyReturn}
+
+
+Definition at line 145 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a4dbb443fd916f8b4306e7afdb2e8ff45}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!process\+\_\+header@{process\+\_\+header}}
+\index{process\+\_\+header@{process\+\_\+header}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{process\+\_\+header(std\+::string\+::iterator begin, std\+::string\+::iterator end)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::http\+::parser\+::parser\+::process\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{std\+::string\+::iterator}]{begin, }
+\item[{std\+::string\+::iterator}]{end}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a4dbb443fd916f8b4306e7afdb2e8ff45}
+
+
+Process a header line. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000018}{Todo}]Update this method to be exception free.\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em begin} & An iterator to the beginning of the sequence. \\
+\hline
+\mbox{\tt in}  & {\em end} & An iterator to the end of the sequence. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 161 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_ac9a2caf768b90315ae256aa0a8505f94}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!raw\+\_\+headers@{raw\+\_\+headers}}
+\index{raw\+\_\+headers@{raw\+\_\+headers}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{raw\+\_\+headers() const }]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::http\+::parser\+::parser\+::raw\+\_\+headers (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_ac9a2caf768b90315ae256aa0a8505f94}
+
+
+Generate and return the H\+T\+T\+P headers as a string. 
+
+Each headers will be followed by the ~\newline
+ sequence including the last one. A second ~\newline
+ sequence (blank header) is not appended by this method
+
+\begin{DoxyReturn}{Returns}
+The H\+T\+T\+P headers as a string. 
+\end{DoxyReturn}
+
+
+Definition at line 179 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a64ff49a6a1ddbf70b9767874ffdd513e}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!remove\+\_\+header@{remove\+\_\+header}}
+\index{remove\+\_\+header@{remove\+\_\+header}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{remove\+\_\+header(std\+::string const \&key)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::http\+::parser\+::parser\+::remove\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a64ff49a6a1ddbf70b9767874ffdd513e}
+
+
+Remove a header from the parser. 
+
+Removes the header entirely from the parser. This is different than setting the value of the header to blank.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000017}{Todo}]Make this method case insensitive.\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em key} & The name/key of the header to remove. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 87 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_aba2991b2aa41ca60d9427950502b0b93}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!replace\+\_\+header@{replace\+\_\+header}}
+\index{replace\+\_\+header@{replace\+\_\+header}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{replace\+\_\+header(std\+::string const \&key, std\+::string const \&val)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::http\+::parser\+::parser\+::replace\+\_\+header (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{key, }
+\item[{std\+::string const \&}]{val}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_aba2991b2aa41ca60d9427950502b0b93}
+
+
+Set a value for an H\+T\+T\+P header, replacing an existing value. 
+
+This method will set the value of the H\+T\+T\+P header {\ttfamily key} with the indicated value. If a header with the name {\ttfamily key} already exists, {\ttfamily val} will replace the existing value.
+
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000016}{Todo}]Make this method case insensitive. 
+
+Should there be any restrictions on which keys are allowed? 
+
+Exception free varient\end{DoxyRefDesc}
+
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_abd39762de5ec467a29a537d79602b603}{append\+\_\+header}
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em key} & The name/key of the header to append to. \\
+\hline
+\mbox{\tt in}  & {\em val} & The value to append. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 81 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a71a4989eaa0ca802cf77678d0ca2d70d}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!set\+\_\+body@{set\+\_\+body}}
+\index{set\+\_\+body@{set\+\_\+body}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{set\+\_\+body(std\+::string const \&value)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::http\+::parser\+::parser\+::set\+\_\+body (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a71a4989eaa0ca802cf77678d0ca2d70d}
+
+
+Set body content. 
+
+Set the body content of the H\+T\+T\+P response to the parameter string. Note set\+\_\+body will also set the Content-\/\+Length H\+T\+T\+P header to the appropriate value. If you want the Content-\/\+Length header to be something else, do so via replace\+\_\+header(\char`\"{}\+Content-\/\+Length\char`\"{}) after calling \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser_a71a4989eaa0ca802cf77678d0ca2d70d}{set\+\_\+body()}
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & String data to include as the body content. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 91 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_ab6583e865254d1608732498d839d8385}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!set\+\_\+max\+\_\+body\+\_\+size@{set\+\_\+max\+\_\+body\+\_\+size}}
+\index{set\+\_\+max\+\_\+body\+\_\+size@{set\+\_\+max\+\_\+body\+\_\+size}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{set\+\_\+max\+\_\+body\+\_\+size(size\+\_\+t value)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::http\+::parser\+::parser\+::set\+\_\+max\+\_\+body\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{size\+\_\+t}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_ab6583e865254d1608732498d839d8385}
+
+
+Set body size limit. 
+
+Set the maximum number of bytes to parse and buffer before canceling a request.
+
+\begin{DoxySince}{Since}
+0.\+5.\+0
+\end{DoxySince}
+
+\begin{DoxyParams}{Parameters}
+{\em value} & The size to set the max body length to. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 532 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a5c2e0e2bc0b2769db5a785b7d47a66ee}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!set\+\_\+version@{set\+\_\+version}}
+\index{set\+\_\+version@{set\+\_\+version}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{set\+\_\+version(std\+::string const \&version)}]{\setlength{\rightskip}{0pt plus 5cm}void websocketpp\+::http\+::parser\+::parser\+::set\+\_\+version (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{version}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a5c2e0e2bc0b2769db5a785b7d47a66ee}
+
+
+Set H\+T\+T\+P parser Version. 
+
+Input should be in format\+: H\+T\+T\+P/x.\+y where x and y are positive integers. \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000013}{Todo}]Does this method need any validation?\end{DoxyRefDesc}
+
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em version} & The value to set the H\+T\+T\+P version to. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 41 of file parser.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a2a552a4581ae26674fd6d566e5b332ee}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!m\+\_\+body@{m\+\_\+body}}
+\index{m\+\_\+body@{m\+\_\+body}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{m\+\_\+body}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::http\+::parser\+::parser\+::m\+\_\+body\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a2a552a4581ae26674fd6d566e5b332ee}
+
+
+Definition at line 607 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a85613c9d20e308ff343449852b7e769f}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!m\+\_\+body\+\_\+bytes\+\_\+max@{m\+\_\+body\+\_\+bytes\+\_\+max}}
+\index{m\+\_\+body\+\_\+bytes\+\_\+max@{m\+\_\+body\+\_\+bytes\+\_\+max}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{m\+\_\+body\+\_\+bytes\+\_\+max}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::http\+::parser\+::parser\+::m\+\_\+body\+\_\+bytes\+\_\+max\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a85613c9d20e308ff343449852b7e769f}
+
+
+Definition at line 609 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a89e6a7583bee97f30c60dc88b4cd29dd}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!m\+\_\+body\+\_\+bytes\+\_\+needed@{m\+\_\+body\+\_\+bytes\+\_\+needed}}
+\index{m\+\_\+body\+\_\+bytes\+\_\+needed@{m\+\_\+body\+\_\+bytes\+\_\+needed}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{m\+\_\+body\+\_\+bytes\+\_\+needed}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::http\+::parser\+::parser\+::m\+\_\+body\+\_\+bytes\+\_\+needed\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a89e6a7583bee97f30c60dc88b4cd29dd}
+
+
+Definition at line 608 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a286e19d30028f6dbc295ad578e8e50d3}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!m\+\_\+body\+\_\+encoding@{m\+\_\+body\+\_\+encoding}}
+\index{m\+\_\+body\+\_\+encoding@{m\+\_\+body\+\_\+encoding}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{m\+\_\+body\+\_\+encoding}]{\setlength{\rightskip}{0pt plus 5cm}{\bf body\+\_\+encoding\+::value} websocketpp\+::http\+::parser\+::parser\+::m\+\_\+body\+\_\+encoding\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a286e19d30028f6dbc295ad578e8e50d3}
+
+
+Definition at line 610 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_ae82ee117b729da521de60401cd17f8d4}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!m\+\_\+header\+\_\+bytes@{m\+\_\+header\+\_\+bytes}}
+\index{m\+\_\+header\+\_\+bytes@{m\+\_\+header\+\_\+bytes}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{m\+\_\+header\+\_\+bytes}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t websocketpp\+::http\+::parser\+::parser\+::m\+\_\+header\+\_\+bytes\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_ae82ee117b729da521de60401cd17f8d4}
+
+
+Definition at line 605 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_ae75e1e6acd17cc5a5543f818a5355a50}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!m\+\_\+headers@{m\+\_\+headers}}
+\index{m\+\_\+headers@{m\+\_\+headers}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{m\+\_\+headers}]{\setlength{\rightskip}{0pt plus 5cm}{\bf header\+\_\+list} websocketpp\+::http\+::parser\+::parser\+::m\+\_\+headers\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_ae75e1e6acd17cc5a5543f818a5355a50}
+
+
+Definition at line 603 of file parser.\+hpp.
+
+\hypertarget{classwebsocketpp_1_1http_1_1parser_1_1parser_a3e8026fc40c96ca8bfa46a533e00d6a6}{}\index{websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}!m\+\_\+version@{m\+\_\+version}}
+\index{m\+\_\+version@{m\+\_\+version}!websocketpp\+::http\+::parser\+::parser@{websocketpp\+::http\+::parser\+::parser}}
+\subsubsection[{m\+\_\+version}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string websocketpp\+::http\+::parser\+::parser\+::m\+\_\+version\hspace{0.3cm}{\ttfamily [protected]}}\label{classwebsocketpp_1_1http_1_1parser_1_1parser_a3e8026fc40c96ca8bfa46a533e00d6a6}
+
+
+Definition at line 602 of file parser.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/websocketpp/http/\hyperlink{parser_8hpp}{parser.\+hpp}\end{DoxyCompactItemize}

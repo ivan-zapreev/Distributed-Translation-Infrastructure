@@ -1,0 +1,150 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:rm\+:\+:builders\+:\+:rm\+\_\+basic\+\_\+builder$<$ model\+\_\+type, reader\+\_\+type $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder$<$ model\+\_\+type, reader\+\_\+type $>$@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder$<$ model\+\_\+type, reader\+\_\+type $>$}}
+
+
+{\ttfamily \#include $<$rm\+\_\+basic\+\_\+builder.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a290adecc76ea9e111568158a63b17b33}{rm\+\_\+basic\+\_\+builder} (const \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1rm__parameters}{rm\+\_\+parameters} \&params, model\+\_\+type \&model, reader\+\_\+type \&reader)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_aac1dee2dc58cf5f80f1e32bd5c2f66a9}{build} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a4a9b39452bee7c7579fcf7e2ee9a026f}{process\+\_\+entry\+\_\+weights} (\hyperlink{classuva_1_1utils_1_1file_1_1_text_piece_reader}{Text\+Piece\+Reader} \&rest, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_a67353bb21590b2a2adf05500899439ed}{rm\+\_\+entry} \&entry)
+\item 
+{\footnotesize template$<$bool count\+\_\+or\+\_\+build$>$ }\\void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a3e60b55d0c927ae6a777642ea726b435}{parse\+\_\+rm\+\_\+file} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__query__proxy}{tm\+\_\+query\+\_\+proxy} \&query)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a6712388503beebcac2f202470ca6c77d}{count\+\_\+source\+\_\+target\+\_\+phrases} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__query__proxy}{tm\+\_\+query\+\_\+proxy} \&query)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a038e003cf4641e6f0a90a708176cf0d9}{process\+\_\+source\+\_\+entries} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__query__proxy}{tm\+\_\+query\+\_\+proxy} \&query)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename model\+\_\+type, typename reader\+\_\+type$>$class uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder$<$ model\+\_\+type, reader\+\_\+type $>$}
+
+This class represents a basic reader of the reordering model. It allows to read a text-\/formatted reordering model and to put it into the given instance of the model class. It assumes the simple text model format as used by Oyster or Moses. See \href{http://www.statmt.org/moses/?n=Moses.Tutorial}{\tt http\+://www.\+statmt.\+org/moses/?n=\+Moses.\+Tutorial} for some info. The reordering model is also commonly known as a phrase table. 
+
+Definition at line 75 of file rm\+\_\+basic\+\_\+builder.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a290adecc76ea9e111568158a63b17b33}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}!rm\+\_\+basic\+\_\+builder@{rm\+\_\+basic\+\_\+builder}}
+\index{rm\+\_\+basic\+\_\+builder@{rm\+\_\+basic\+\_\+builder}!uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}}
+\subsubsection[{rm\+\_\+basic\+\_\+builder(const rm\+\_\+parameters \&params, model\+\_\+type \&model, reader\+\_\+type \&reader)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::{\bf rm\+\_\+basic\+\_\+builder} (
+\begin{DoxyParamCaption}
+\item[{const {\bf rm\+\_\+parameters} \&}]{params, }
+\item[{model\+\_\+type \&}]{model, }
+\item[{reader\+\_\+type \&}]{reader}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a290adecc76ea9e111568158a63b17b33}
+The basic constructor of the builder object  params the model parameters 
+\begin{DoxyParams}{Parameters}
+{\em model} & the model to put the data into \\
+\hline
+{\em reader} & the reader to read the data from \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 84 of file rm\+\_\+basic\+\_\+builder.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_aac1dee2dc58cf5f80f1e32bd5c2f66a9}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}!build@{build}}
+\index{build@{build}!uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}}
+\subsubsection[{build()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::build (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_aac1dee2dc58cf5f80f1e32bd5c2f66a9}
+Allows to build the model by reading from the reader object. This is a two step process as first we need the number of distinct source phrases. 
+
+Definition at line 93 of file rm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a6712388503beebcac2f202470ca6c77d}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}!count\+\_\+source\+\_\+target\+\_\+phrases@{count\+\_\+source\+\_\+target\+\_\+phrases}}
+\index{count\+\_\+source\+\_\+target\+\_\+phrases@{count\+\_\+source\+\_\+target\+\_\+phrases}!uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}}
+\subsubsection[{count\+\_\+source\+\_\+target\+\_\+phrases(tm\+\_\+query\+\_\+proxy \&query)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::count\+\_\+source\+\_\+target\+\_\+phrases (
+\begin{DoxyParamCaption}
+\item[{{\bf tm\+\_\+query\+\_\+proxy} \&}]{query}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a6712388503beebcac2f202470ca6c77d}
+Allows to count and set the number of source phrases 
+\begin{DoxyParams}{Parameters}
+{\em count\+\_\+or\+\_\+build} & if true then we do count entries if false then we do build be model \\
+\hline
+{\em query} & the translation model query object to query the translation model for present entries \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 232 of file rm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a3e60b55d0c927ae6a777642ea726b435}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}!parse\+\_\+rm\+\_\+file@{parse\+\_\+rm\+\_\+file}}
+\index{parse\+\_\+rm\+\_\+file@{parse\+\_\+rm\+\_\+file}!uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}}
+\subsubsection[{parse\+\_\+rm\+\_\+file(tm\+\_\+query\+\_\+proxy \&query)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ template$<$bool count\+\_\+or\+\_\+build$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::parse\+\_\+rm\+\_\+file (
+\begin{DoxyParamCaption}
+\item[{{\bf tm\+\_\+query\+\_\+proxy} \&}]{query}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a3e60b55d0c927ae6a777642ea726b435}
+Allows to parse the R\+M model file and do two things depending on the value of the template parameter\+:
+\begin{DoxyEnumerate}
+\item Count the number of valid entries
+\item Build the R\+M model N\+O\+T\+E\+: This two pass parsing is not optimal but we have to do it as we need to know the number of valid entries beforehand, an optimization might be needed! 
+\begin{DoxyParams}{Parameters}
+{\em count\+\_\+or\+\_\+build} & if true then count if false then build \\
+\hline
+{\em query} & the T\+M query to check if the source/taret are known \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyEnumerate}
+
+Definition at line 146 of file rm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a4a9b39452bee7c7579fcf7e2ee9a026f}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}!process\+\_\+entry\+\_\+weights@{process\+\_\+entry\+\_\+weights}}
+\index{process\+\_\+entry\+\_\+weights@{process\+\_\+entry\+\_\+weights}!uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}}
+\subsubsection[{process\+\_\+entry\+\_\+weights(\+Text\+Piece\+Reader \&rest, rm\+\_\+entry \&entry)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::process\+\_\+entry\+\_\+weights (
+\begin{DoxyParamCaption}
+\item[{{\bf Text\+Piece\+Reader} \&}]{rest, }
+\item[{{\bf rm\+\_\+entry} \&}]{entry}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a4a9b39452bee7c7579fcf7e2ee9a026f}
+Allows to parse the reordering weights and set them into the reordering entry 
+\begin{DoxyParams}{Parameters}
+{\em rest} & the line to be parsed, starts with a space \\
+\hline
+{\em entry} & the entry to put the values into \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 116 of file rm\+\_\+basic\+\_\+builder.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a038e003cf4641e6f0a90a708176cf0d9}{}\index{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}!process\+\_\+source\+\_\+entries@{process\+\_\+source\+\_\+entries}}
+\index{process\+\_\+source\+\_\+entries@{process\+\_\+source\+\_\+entries}!uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder@{uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}}
+\subsubsection[{process\+\_\+source\+\_\+entries(tm\+\_\+query\+\_\+proxy \&query)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename model\+\_\+type , typename reader\+\_\+type $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::rm\+::builders\+::rm\+\_\+basic\+\_\+builder}$<$ model\+\_\+type, reader\+\_\+type $>$\+::process\+\_\+source\+\_\+entries (
+\begin{DoxyParamCaption}
+\item[{{\bf tm\+\_\+query\+\_\+proxy} \&}]{query}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1builders_1_1rm__basic__builder_a038e003cf4641e6f0a90a708176cf0d9}
+Allows to process translations. 
+\begin{DoxyParams}{Parameters}
+{\em query} & the translation model query object to query the translation model for present entries \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 255 of file rm\+\_\+basic\+\_\+builder.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/rm/builders/\hyperlink{rm__basic__builder_8hpp}{rm\+\_\+basic\+\_\+builder.\+hpp}\end{DoxyCompactItemize}

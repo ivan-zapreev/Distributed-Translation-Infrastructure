@@ -1,0 +1,119 @@
+\hypertarget{generic__trie__base_8hpp}{}\section{inc/server/lm/models/generic\+\_\+trie\+\_\+base.hpp File Reference}
+\label{generic__trie__base_8hpp}\index{inc/server/lm/models/generic\+\_\+trie\+\_\+base.\+hpp@{inc/server/lm/models/generic\+\_\+trie\+\_\+base.\+hpp}}
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include \char`\"{}server/lm/lm\+\_\+consts.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/logging/logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/mgrams/model\+\_\+m\+\_\+gram.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/mgrams/query\+\_\+m\+\_\+gram.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/file/text\+\_\+piece\+\_\+reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/basic\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/counting\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/optimizing\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/hashing\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/models/m\+\_\+gram\+\_\+query.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/models/word\+\_\+index\+\_\+trie\+\_\+base.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/models/bitmap\+\_\+hash\+\_\+cache.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+Generic\+Trie\+Base$<$ Trie\+Type, Word\+Index\+Type, B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd}{uva\+::smt\+::bpbd}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server}{uva\+::smt\+::bpbd\+::server}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm}{uva\+::smt\+::bpbd\+::server\+::lm}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{generic__trie__base_8hpp_aff304331a07b4be71f28da2444145026}{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}(gram,  word\+\_\+id,  context\+Id,  prev\+Prob,  prev\+Back\+Off,  new\+Prob,  new\+Back\+Off)  
+\item 
+\#define \hyperlink{generic__trie__base_8hpp_a48cbc63327221ef60d3cbe084d7432ce}{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+F\+U\+N\+C\+S\+\_\+\+L\+E\+V\+E\+L}(L\+E\+V\+E\+L,  T\+R\+I\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+N\+A\+M\+E, ...)~template void T\+R\+I\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+N\+A\+M\+E$<$\+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+$>$\+::add\+\_\+m\+\_\+gram$<$L\+E\+V\+E\+L$>$(const \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram}{model\+\_\+m\+\_\+gram} \& gram);
+\item 
+\#define \hyperlink{generic__trie__base_8hpp_a2765078929a27130518e2390a12923b9}{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E}(T\+R\+I\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+N\+A\+M\+E, ...)
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796a}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+M\+Gram\+Status\+Enum} \{ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796aa9019f6deb96568ca044e6c1849e446cb}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+U\+N\+D\+E\+F\+I\+N\+E\+D\+\_\+\+M\+G\+S} = 0, 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796aab88dace63609938caf3106666433cd1c}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+B\+A\+D\+\_\+\+E\+N\+D\+\_\+\+W\+O\+R\+D\+\_\+\+U\+N\+K\+N\+O\+W\+N\+\_\+\+M\+G\+S} = 1, 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796aaf10f109b34b87eedfb0ec95d81bfa931}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+B\+A\+D\+\_\+\+N\+O\+\_\+\+P\+A\+Y\+L\+O\+A\+D\+\_\+\+M\+G\+S} = 2, 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796aa4682346ec5c105689f1d0bc41af318a9}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+G\+O\+O\+D\+\_\+\+P\+R\+E\+S\+E\+N\+T\+\_\+\+M\+G\+S} = 3
+ \}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{generic__trie__base_8hpp_a48cbc63327221ef60d3cbe084d7432ce}{}\index{generic\+\_\+trie\+\_\+base.\+hpp@{generic\+\_\+trie\+\_\+base.\+hpp}!I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+F\+U\+N\+C\+S\+\_\+\+L\+E\+V\+E\+L@{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+F\+U\+N\+C\+S\+\_\+\+L\+E\+V\+E\+L}}
+\index{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+F\+U\+N\+C\+S\+\_\+\+L\+E\+V\+E\+L@{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+F\+U\+N\+C\+S\+\_\+\+L\+E\+V\+E\+L}!generic\+\_\+trie\+\_\+base.\+hpp@{generic\+\_\+trie\+\_\+base.\+hpp}}
+\subsubsection[{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+F\+U\+N\+C\+S\+\_\+\+L\+E\+V\+E\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+F\+U\+N\+C\+S\+\_\+\+L\+E\+V\+E\+L(
+\begin{DoxyParamCaption}
+\item[{}]{L\+E\+V\+E\+L, }
+\item[{}]{T\+R\+I\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+N\+A\+M\+E, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)~template void T\+R\+I\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+N\+A\+M\+E$<$\+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+$>$\+::add\+\_\+m\+\_\+gram$<$L\+E\+V\+E\+L$>$(const {\bf model\+\_\+m\+\_\+gram} \& gram);}\label{generic__trie__base_8hpp_a48cbc63327221ef60d3cbe084d7432ce}
+
+
+Definition at line 504 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{generic__trie__base_8hpp_a2765078929a27130518e2390a12923b9}{}\index{generic\+\_\+trie\+\_\+base.\+hpp@{generic\+\_\+trie\+\_\+base.\+hpp}!I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E@{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E}}
+\index{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E@{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E}!generic\+\_\+trie\+\_\+base.\+hpp@{generic\+\_\+trie\+\_\+base.\+hpp}}
+\subsubsection[{I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E(
+\begin{DoxyParamCaption}
+\item[{}]{T\+R\+I\+E\+\_\+\+T\+Y\+P\+E\+\_\+\+N\+A\+M\+E, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}\label{generic__trie__base_8hpp_a2765078929a27130518e2390a12923b9}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keyword}{template} \textcolor{keyword}{class }TRIE\_TYPE\_NAME<\_\_VA\_ARGS\_\_>; \(\backslash\)
+            INSTANTIATE\_TRIE\_FUNCS\_LEVEL(M\_GRAM\_LEVEL\_1, TRIE\_TYPE\_NAME, \_\_VA\_ARGS\_\_); \(\backslash\)
+            INSTANTIATE\_TRIE\_FUNCS\_LEVEL(M\_GRAM\_LEVEL\_2, TRIE\_TYPE\_NAME, \_\_VA\_ARGS\_\_); \(\backslash\)
+            INSTANTIATE\_TRIE\_FUNCS\_LEVEL(M\_GRAM\_LEVEL\_3, TRIE\_TYPE\_NAME, \_\_VA\_ARGS\_\_); \(\backslash\)
+            INSTANTIATE\_TRIE\_FUNCS\_LEVEL(M\_GRAM\_LEVEL\_4, TRIE\_TYPE\_NAME, \_\_VA\_ARGS\_\_); \(\backslash\)
+            INSTANTIATE\_TRIE\_FUNCS\_LEVEL(M\_GRAM\_LEVEL\_5, TRIE\_TYPE\_NAME, \_\_VA\_ARGS\_\_); \(\backslash\)
+            INSTANTIATE\_TRIE\_FUNCS\_LEVEL(M\_GRAM\_LEVEL\_6, TRIE\_TYPE\_NAME, \_\_VA\_ARGS\_\_); \(\backslash\)
+            INSTANTIATE\_TRIE\_FUNCS\_LEVEL(M\_GRAM\_LEVEL\_7, TRIE\_TYPE\_NAME, \_\_VA\_ARGS\_\_);
+\end{DoxyCode}
+
+
+Definition at line 507 of file generic\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{generic__trie__base_8hpp_aff304331a07b4be71f28da2444145026}{}\index{generic\+\_\+trie\+\_\+base.\+hpp@{generic\+\_\+trie\+\_\+base.\+hpp}!R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G@{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}}
+\index{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G@{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}!generic\+\_\+trie\+\_\+base.\+hpp@{generic\+\_\+trie\+\_\+base.\+hpp}}
+\subsubsection[{R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\+E\+P\+O\+R\+T\+\_\+\+C\+O\+L\+L\+I\+S\+I\+O\+N\+\_\+\+W\+A\+R\+N\+I\+N\+G(
+\begin{DoxyParamCaption}
+\item[{}]{gram, }
+\item[{}]{word\+\_\+id, }
+\item[{}]{context\+Id, }
+\item[{}]{prev\+Prob, }
+\item[{}]{prev\+Back\+Off, }
+\item[{}]{new\+Prob, }
+\item[{}]{new\+Back\+Off}
+\end{DoxyParamCaption}
+)}\label{generic__trie__base_8hpp_aff304331a07b4be71f28da2444145026}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\hyperlink{logger_8hpp_adf4476a6a4ea6c74231c826e899d7189}{LOG\_WARNING} << \textcolor{stringliteral}{"The "} << gram.get\_m\_gram\_level() << \textcolor{stringliteral}{"-Gram : "} << (string) gram              \(\backslash\)
+                        << \textcolor{stringliteral}{" has been already seen! Word Id: "} << \hyperlink{logger_8hpp_a0d2f37137ee1fd6ff4a0ef803849dd63}{SSTR}(word\_id)                        
+        \(\backslash\)
+                        << \textcolor{stringliteral}{", context Id: "} << \hyperlink{logger_8hpp_a0d2f37137ee1fd6ff4a0ef803849dd63}{SSTR}(contextId) << \textcolor{stringliteral}{". "}                                 
+        \(\backslash\)
+                        << \textcolor{stringliteral}{"Changing the (prob,back-off) data from ("}                                    \(\backslash\)
+                        << prevProb << \textcolor{stringliteral}{","} << prevBackOff << \textcolor{stringliteral}{") to ("}                                    \(\backslash\)
+                        << newProb << \textcolor{stringliteral}{","} << newBackOff << \textcolor{stringliteral}{")"} << \hyperlink{logger_8hpp_a80f2223fb302398deb65324a1543b8db}{END\_LOG};
+\end{DoxyCode}
+
+
+Definition at line 64 of file generic\+\_\+trie\+\_\+base.\+hpp.
+

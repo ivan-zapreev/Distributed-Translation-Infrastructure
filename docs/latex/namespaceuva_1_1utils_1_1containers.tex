@@ -1,0 +1,137 @@
+\hypertarget{namespaceuva_1_1utils_1_1containers}{}\section{uva\+:\+:utils\+:\+:containers Namespace Reference}
+\label{namespaceuva_1_1utils_1_1containers}\index{uva\+::utils\+::containers@{uva\+::utils\+::containers}}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva_1_1utils_1_1containers_1_1alloc}{alloc}
+\item 
+ \hyperlink{namespaceuva_1_1utils_1_1containers_1_1utils}{utils}
+\end{DoxyCompactItemize}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classuva_1_1utils_1_1containers_1_1circular__queue}{circular\+\_\+queue}
+\item 
+class \hyperlink{classuva_1_1utils_1_1containers_1_1_dynamic_stack_array}{Dynamic\+Stack\+Array}
+\item 
+struct \hyperlink{structuva_1_1utils_1_1containers_1_1_e_l_e_m_e_n_t___d_e_a_l_l_o_c___f_u_n_c}{E\+L\+E\+M\+E\+N\+T\+\_\+\+D\+E\+A\+L\+L\+O\+C\+\_\+\+F\+U\+N\+C}
+\item 
+class \hyperlink{classuva_1_1utils_1_1containers_1_1fixed__size__hashmap}{fixed\+\_\+size\+\_\+hashmap}
+\item 
+class \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage}{Greedy\+Memory\+Storage}
+\item 
+class \hyperlink{classuva_1_1utils_1_1containers_1_1_mem_increase_strategy}{Mem\+Increase\+Strategy}
+\item 
+class \hyperlink{classuva_1_1utils_1_1containers_1_1upp__diag__matrix}{upp\+\_\+diag\+\_\+matrix}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::function$<$ size\+\_\+t(const size\+\_\+t) $>$ \hyperlink{namespaceuva_1_1utils_1_1containers_ab6acd1b6093503e17f6d8b942e9fccf1}{T\+Capacity\+Inc\+Funct}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6}{Mem\+Inc\+Types\+Enum} \{ \\*
+\hyperlink{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a378c848dc111a9fb0be352f3e73caaf5}{U\+N\+D\+E\+F\+I\+N\+E\+D} = 0, 
+\hyperlink{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a2e97241bf53f5da01ef85f408863370d}{C\+O\+N\+S\+T\+A\+N\+T} = U\+N\+D\+E\+F\+I\+N\+E\+D + 1, 
+\hyperlink{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6aef7537589dc0f411a7215b5904b21073}{L\+I\+N\+E\+A\+R} = C\+O\+N\+S\+T\+A\+N\+T + 1, 
+\hyperlink{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a8ca02671080014d040d3d1c7db41b447}{L\+O\+G\+\_\+2} = L\+I\+N\+E\+A\+R + 1, 
+\\*
+\hyperlink{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6aa0517306d9991f24d02b23c2df9ac368}{L\+O\+G\+\_\+10} = L\+O\+G\+\_\+2 + 1, 
+\hyperlink{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a0be5bdf7cf8c7c58d0bc5678caa07791}{size} = L\+O\+G\+\_\+10 + 1
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1_mem_increase_strategy}{Mem\+Increase\+Strategy} \hyperlink{namespaceuva_1_1utils_1_1containers_af28472cb52d5ebfb2006a085f3da586e}{get\+\_\+mem\+\_\+incr\+\_\+strat} (const \hyperlink{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6}{Mem\+Inc\+Types\+Enum} stype, const size\+\_\+t min\+\_\+mem\+\_\+inc, const size\+\_\+t mem\+\_\+inc\+\_\+factor)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const char $\ast$const \hyperlink{namespaceuva_1_1utils_1_1containers_a3564ed64f86d53a5879c1ec2e49908f9}{\+\_\+mem\+Inc\+Types\+Enum\+Str} \mbox{[}Mem\+Inc\+Types\+Enum\+::size\mbox{]} = \{\char`\"{}C\+O\+N\+S\+T\+A\+N\+T\char`\"{}, \char`\"{}\hyperlink{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6aef7537589dc0f411a7215b5904b21073}{L\+I\+N\+E\+A\+R}\char`\"{}, \char`\"{}\hyperlink{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a8ca02671080014d040d3d1c7db41b447}{L\+O\+G\+\_\+2}\char`\"{}, \char`\"{}\hyperlink{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6aa0517306d9991f24d02b23c2df9ac368}{L\+O\+G\+\_\+10}\char`\"{}\}
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{namespaceuva_1_1utils_1_1containers_ab6acd1b6093503e17f6d8b942e9fccf1}{}\index{uva\+::utils\+::containers@{uva\+::utils\+::containers}!T\+Capacity\+Inc\+Funct@{T\+Capacity\+Inc\+Funct}}
+\index{T\+Capacity\+Inc\+Funct@{T\+Capacity\+Inc\+Funct}!uva\+::utils\+::containers@{uva\+::utils\+::containers}}
+\subsubsection[{T\+Capacity\+Inc\+Funct}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::function$<$size\+\_\+t(const size\+\_\+t) $>$ {\bf uva\+::utils\+::containers\+::\+T\+Capacity\+Inc\+Funct}}\label{namespaceuva_1_1utils_1_1containers_ab6acd1b6093503e17f6d8b942e9fccf1}
+This is a function type for the function that should compute the capacity increase 
+\begin{DoxyParams}{Parameters}
+{\em the} & first argument is the current capacity as float \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the capacity increase 
+\end{DoxyReturn}
+
+
+Definition at line 63 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6}{}\index{uva\+::utils\+::containers@{uva\+::utils\+::containers}!Mem\+Inc\+Types\+Enum@{Mem\+Inc\+Types\+Enum}}
+\index{Mem\+Inc\+Types\+Enum@{Mem\+Inc\+Types\+Enum}!uva\+::utils\+::containers@{uva\+::utils\+::containers}}
+\subsubsection[{Mem\+Inc\+Types\+Enum}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf uva\+::utils\+::containers\+::\+Mem\+Inc\+Types\+Enum}}\label{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6}
+Stores the possible memory increase types \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{U\+N\+D\+E\+F\+I\+N\+E\+D@{U\+N\+D\+E\+F\+I\+N\+E\+D}!uva\+::utils\+::containers@{uva\+::utils\+::containers}}\index{uva\+::utils\+::containers@{uva\+::utils\+::containers}!U\+N\+D\+E\+F\+I\+N\+E\+D@{U\+N\+D\+E\+F\+I\+N\+E\+D}}\item[{\em 
+\hypertarget{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a378c848dc111a9fb0be352f3e73caaf5}{}U\+N\+D\+E\+F\+I\+N\+E\+D\label{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a378c848dc111a9fb0be352f3e73caaf5}
+}]\index{C\+O\+N\+S\+T\+A\+N\+T@{C\+O\+N\+S\+T\+A\+N\+T}!uva\+::utils\+::containers@{uva\+::utils\+::containers}}\index{uva\+::utils\+::containers@{uva\+::utils\+::containers}!C\+O\+N\+S\+T\+A\+N\+T@{C\+O\+N\+S\+T\+A\+N\+T}}\item[{\em 
+\hypertarget{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a2e97241bf53f5da01ef85f408863370d}{}C\+O\+N\+S\+T\+A\+N\+T\label{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a2e97241bf53f5da01ef85f408863370d}
+}]\index{L\+I\+N\+E\+A\+R@{L\+I\+N\+E\+A\+R}!uva\+::utils\+::containers@{uva\+::utils\+::containers}}\index{uva\+::utils\+::containers@{uva\+::utils\+::containers}!L\+I\+N\+E\+A\+R@{L\+I\+N\+E\+A\+R}}\item[{\em 
+\hypertarget{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6aef7537589dc0f411a7215b5904b21073}{}L\+I\+N\+E\+A\+R\label{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6aef7537589dc0f411a7215b5904b21073}
+}]\index{L\+O\+G\+\_\+2@{L\+O\+G\+\_\+2}!uva\+::utils\+::containers@{uva\+::utils\+::containers}}\index{uva\+::utils\+::containers@{uva\+::utils\+::containers}!L\+O\+G\+\_\+2@{L\+O\+G\+\_\+2}}\item[{\em 
+\hypertarget{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a8ca02671080014d040d3d1c7db41b447}{}L\+O\+G\+\_\+2\label{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a8ca02671080014d040d3d1c7db41b447}
+}]\index{L\+O\+G\+\_\+10@{L\+O\+G\+\_\+10}!uva\+::utils\+::containers@{uva\+::utils\+::containers}}\index{uva\+::utils\+::containers@{uva\+::utils\+::containers}!L\+O\+G\+\_\+10@{L\+O\+G\+\_\+10}}\item[{\em 
+\hypertarget{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6aa0517306d9991f24d02b23c2df9ac368}{}L\+O\+G\+\_\+10\label{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6aa0517306d9991f24d02b23c2df9ac368}
+}]\index{size@{size}!uva\+::utils\+::containers@{uva\+::utils\+::containers}}\index{uva\+::utils\+::containers@{uva\+::utils\+::containers}!size@{size}}\item[{\em 
+\hypertarget{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a0be5bdf7cf8c7c58d0bc5678caa07791}{}size\label{namespaceuva_1_1utils_1_1containers_aea6a0a858974dd7edb4227dcbcbc1eb6a0be5bdf7cf8c7c58d0bc5678caa07791}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line 49 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{namespaceuva_1_1utils_1_1containers_af28472cb52d5ebfb2006a085f3da586e}{}\index{uva\+::utils\+::containers@{uva\+::utils\+::containers}!get\+\_\+mem\+\_\+incr\+\_\+strat@{get\+\_\+mem\+\_\+incr\+\_\+strat}}
+\index{get\+\_\+mem\+\_\+incr\+\_\+strat@{get\+\_\+mem\+\_\+incr\+\_\+strat}!uva\+::utils\+::containers@{uva\+::utils\+::containers}}
+\subsubsection[{get\+\_\+mem\+\_\+incr\+\_\+strat(const Mem\+Inc\+Types\+Enum stype, const size\+\_\+t min\+\_\+mem\+\_\+inc, const size\+\_\+t mem\+\_\+inc\+\_\+factor)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mem\+Increase\+Strategy} uva\+::utils\+::containers\+::get\+\_\+mem\+\_\+incr\+\_\+strat (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mem\+Inc\+Types\+Enum}}]{stype, }
+\item[{const size\+\_\+t}]{min\+\_\+mem\+\_\+inc, }
+\item[{const size\+\_\+t}]{mem\+\_\+inc\+\_\+factor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{namespaceuva_1_1utils_1_1containers_af28472cb52d5ebfb2006a085f3da586e}
+This is a factory function allowing to ge the strategy object for the given parameters 
+\begin{DoxyParams}{Parameters}
+{\em stype} & the strategy type \\
+\hline
+{\em min\+\_\+mem\+\_\+inc} & the minimum memory increment in number of elements \\
+\hline
+{\em mem\+\_\+inc\+\_\+factor} & the memory increment factor, the number we will multiply by the computed increment \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the pointer to a newly allocated strategy object 
+\end{DoxyReturn}
+
+
+Definition at line 146 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{namespaceuva_1_1utils_1_1containers_a3564ed64f86d53a5879c1ec2e49908f9}{}\index{uva\+::utils\+::containers@{uva\+::utils\+::containers}!\+\_\+mem\+Inc\+Types\+Enum\+Str@{\+\_\+mem\+Inc\+Types\+Enum\+Str}}
+\index{\+\_\+mem\+Inc\+Types\+Enum\+Str@{\+\_\+mem\+Inc\+Types\+Enum\+Str}!uva\+::utils\+::containers@{uva\+::utils\+::containers}}
+\subsubsection[{\+\_\+mem\+Inc\+Types\+Enum\+Str}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ const uva\+::utils\+::containers\+::\+\_\+mem\+Inc\+Types\+Enum\+Str\mbox{[}Mem\+Inc\+Types\+Enum\+::size\mbox{]} = \{\char`\"{}C\+O\+N\+S\+T\+A\+N\+T\char`\"{}, \char`\"{}{\bf L\+I\+N\+E\+A\+R}\char`\"{}, \char`\"{}{\bf L\+O\+G\+\_\+2}\char`\"{}, \char`\"{}{\bf L\+O\+G\+\_\+10}\char`\"{}\}}\label{namespaceuva_1_1utils_1_1containers_a3564ed64f86d53a5879c1ec2e49908f9}
+Stores the string names of the memory increase strategies, should correspond with the enum Mem\+Inc\+Types\+Enum indexes! 
+
+Definition at line 69 of file dynamic\+\_\+memory\+\_\+arrays.\+hpp.
+

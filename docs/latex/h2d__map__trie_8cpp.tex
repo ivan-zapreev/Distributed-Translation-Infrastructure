@@ -1,0 +1,37 @@
+\hypertarget{h2d__map__trie_8cpp}{}\section{src/server/lm/models/h2d\+\_\+map\+\_\+trie.cpp File Reference}
+\label{h2d__map__trie_8cpp}\index{src/server/lm/models/h2d\+\_\+map\+\_\+trie.\+cpp@{src/server/lm/models/h2d\+\_\+map\+\_\+trie.\+cpp}}
+{\ttfamily \#include \char`\"{}server/lm/models/h2d\+\_\+map\+\_\+trie.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include \char`\"{}server/lm/lm\+\_\+consts.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/logging/logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/exceptions.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/basic\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/counting\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/optimizing\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd}{uva\+::smt\+::bpbd}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server}{uva\+::smt\+::bpbd\+::server}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm}{uva\+::smt\+::bpbd\+::server\+::lm}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a1660db0237ec2c65c548a1281894470e}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_h2_d_map_trie}{H2\+D\+Map\+Trie}, \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index}{basic\+\_\+word\+\_\+index})
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_aabcf800ebcfa9f9c158ab34f747629f0}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_h2_d_map_trie}{H2\+D\+Map\+Trie}, \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1counting__word__index}{counting\+\_\+word\+\_\+index})
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_af1c9b75363629a30248f5e1da9fb699f}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_h2_d_map_trie}{H2\+D\+Map\+Trie}, \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index}{hashing\+\_\+word\+\_\+index})
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ae32f3a93102b1ae573071c68e76e92e3}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_h2_d_map_trie}{H2\+D\+Map\+Trie}, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_a3001583c904eec702b4a4125082a7ecd}{basic\+\_\+optimizing\+\_\+word\+\_\+index})
+\item 
+\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a43e6ab8cf14ee66dd013f7f86934be7d}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+I\+N\+S\+T\+A\+N\+T\+I\+A\+T\+E\+\_\+\+T\+R\+I\+E\+\_\+\+T\+E\+M\+P\+L\+A\+T\+E\+\_\+\+T\+Y\+P\+E} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_h2_d_map_trie}{H2\+D\+Map\+Trie}, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_a61cbd647b15de785ccf4cdd26661c366}{counting\+\_\+optimizing\+\_\+word\+\_\+index})
+\end{DoxyCompactItemize}

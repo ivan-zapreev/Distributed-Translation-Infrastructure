@@ -1,0 +1,49 @@
+\hypertarget{structuva_1_1utils_1_1logging_1_1logging__synch}{}\section{uva\+:\+:utils\+:\+:logging\+:\+:logging\+\_\+synch Struct Reference}
+\label{structuva_1_1utils_1_1logging_1_1logging__synch}\index{uva\+::utils\+::logging\+::logging\+\_\+synch@{uva\+::utils\+::logging\+::logging\+\_\+synch}}
+
+
+{\ttfamily \#include $<$logger.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef lock\+\_\+guard$<$ recursive\+\_\+mutex $>$ \hyperlink{structuva_1_1utils_1_1logging_1_1logging__synch_afaab265627f1f072fbfd927b6d2b6cb6}{rec\+\_\+scoped\+\_\+lock}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static recursive\+\_\+mutex \hyperlink{structuva_1_1utils_1_1logging_1_1logging__synch_a85128bbf4931fcdd13b8b804e1789580}{mv}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This structures stores the recursive synchronization mutex for logging. The mutex is to be recursive as functions called when logging can do the own logging. 
+
+Definition at line 65 of file logger.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{structuva_1_1utils_1_1logging_1_1logging__synch_afaab265627f1f072fbfd927b6d2b6cb6}{}\index{uva\+::utils\+::logging\+::logging\+\_\+synch@{uva\+::utils\+::logging\+::logging\+\_\+synch}!rec\+\_\+scoped\+\_\+lock@{rec\+\_\+scoped\+\_\+lock}}
+\index{rec\+\_\+scoped\+\_\+lock@{rec\+\_\+scoped\+\_\+lock}!uva\+::utils\+::logging\+::logging\+\_\+synch@{uva\+::utils\+::logging\+::logging\+\_\+synch}}
+\subsubsection[{rec\+\_\+scoped\+\_\+lock}]{\setlength{\rightskip}{0pt plus 5cm}typedef lock\+\_\+guard$<$recursive\+\_\+mutex$>$ {\bf uva\+::utils\+::logging\+::logging\+\_\+synch\+::rec\+\_\+scoped\+\_\+lock}}\label{structuva_1_1utils_1_1logging_1_1logging__synch_afaab265627f1f072fbfd927b6d2b6cb6}
+
+
+Definition at line 67 of file logger.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{structuva_1_1utils_1_1logging_1_1logging__synch_a85128bbf4931fcdd13b8b804e1789580}{}\index{uva\+::utils\+::logging\+::logging\+\_\+synch@{uva\+::utils\+::logging\+::logging\+\_\+synch}!mv@{mv}}
+\index{mv@{mv}!uva\+::utils\+::logging\+::logging\+\_\+synch@{uva\+::utils\+::logging\+::logging\+\_\+synch}}
+\subsubsection[{mv}]{\setlength{\rightskip}{0pt plus 5cm}recursive\+\_\+mutex uva\+::utils\+::logging\+::logging\+\_\+synch\+::mv\hspace{0.3cm}{\ttfamily [static]}}\label{structuva_1_1utils_1_1logging_1_1logging__synch_a85128bbf4931fcdd13b8b804e1789580}
+
+
+Definition at line 69 of file logger.\+hpp.
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/common/utils/logging/\hyperlink{logger_8hpp}{logger.\+hpp}\item 
+src/common/utils/logging/\hyperlink{logger_8cpp}{logger.\+cpp}\end{DoxyCompactItemize}

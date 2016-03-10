@@ -1,0 +1,68 @@
+var asio_2error_8hpp =
+[
+    [ "ASIO_GETADDRINFO_ERROR", "asio_2error_8hpp.html#ac3c96deb8b14ceb0c1cf6d2a3e7d223c", null ],
+    [ "ASIO_NATIVE_ERROR", "asio_2error_8hpp.html#aeffc1e3917b938ea9a62563d727eead7", null ],
+    [ "ASIO_NETDB_ERROR", "asio_2error_8hpp.html#aed4136104ebb51a91d783ddac7e813d5", null ],
+    [ "ASIO_SOCKET_ERROR", "asio_2error_8hpp.html#ad953f7cdd0c379d53c03d5f905e43672", null ],
+    [ "ASIO_WIN_OR_POSIX", "asio_2error_8hpp.html#ae67aa4fe23997eebf4983bb9b4851715", null ],
+    [ "addrinfo_errors", "asio_2error_8hpp.html#aad09966951a812a25f9cd9e7d92c2764", [
+      [ "service_not_found", "asio_2error_8hpp.html#aad09966951a812a25f9cd9e7d92c2764a18af5b8ae0eb91b5f3538fa36f1d398d", null ],
+      [ "socket_type_not_supported", "asio_2error_8hpp.html#aad09966951a812a25f9cd9e7d92c2764a781d78de28182df7809b8e3b4e1d53ec", null ]
+    ] ],
+    [ "basic_errors", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90d", [
+      [ "access_denied", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90daff52a0e33360fd2af12f8cbcced29247", null ],
+      [ "address_family_not_supported", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90dae50b6748a38ea794dcc8d172aff0c31a", null ],
+      [ "address_in_use", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da85d50d863456785ea46ec276c044f876", null ],
+      [ "already_connected", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90daeb9468dc8a5b947cc74adda5619cb494", null ],
+      [ "already_started", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da84dcfe868a614e09f2eeffae31078e46", null ],
+      [ "broken_pipe", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da06e55f0a216fd830948aa8aa92a06cca", null ],
+      [ "connection_aborted", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da58e2f13d5e22e6a6381c7e96883b76e1", null ],
+      [ "connection_refused", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da0f6eb257eb70230bc0d78dbdef37637e", null ],
+      [ "connection_reset", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da44621d10f46e44b4cd2ba59a1bbf1f8f", null ],
+      [ "bad_descriptor", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da7ab2640546f08e87ee9677b4889d6119", null ],
+      [ "fault", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da9663d9d0d0a50bc3248a8da0f43622b4", null ],
+      [ "host_unreachable", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90dade0dcf9202df4c7c674367074005a289", null ],
+      [ "in_progress", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90dafbf7e6bc4a0ef286836138b007b6586e", null ],
+      [ "interrupted", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da949a87be73ee9cdca623f92fb27cd45c", null ],
+      [ "invalid_argument", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da30cedfce8621ca9c21dddce0ac27cd09", null ],
+      [ "message_size", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90dac13764309c06848d37acba7081e54af6", null ],
+      [ "name_too_long", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da4759d10e19aa58de1c636175d5ac77f0", null ],
+      [ "network_down", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da2c214899927a2593a88a2baa6f791ee4", null ],
+      [ "network_reset", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da10b2bf637fbe6dee178553b586bd3ad6", null ],
+      [ "network_unreachable", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90dad3ebbc3bb7f0c7b30a90b583427fff4c", null ],
+      [ "no_descriptors", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90dae1cd6701ac2cd5983907ea532fea4925", null ],
+      [ "no_buffer_space", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da6eec2fc53ea8d7d0f456d4cc5860f982", null ],
+      [ "no_memory", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da5ff2b1be4d644488e318e560abf332ba", null ],
+      [ "no_permission", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da4678f6b77de9be74f9960be0be6a8e63", null ],
+      [ "no_protocol_option", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da373626f3af78333e06e3deee103cc381", null ],
+      [ "no_such_device", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90dadbfca1e8f4058cf94eedb651bd430c3b", null ],
+      [ "not_connected", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90dab8142fa300f28366f3849a545f1569ff", null ],
+      [ "not_socket", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da0ef41be507a73436fca5dad4310e0262", null ],
+      [ "operation_aborted", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90dacde6760763051561f6c2ffc4ddf2be1b", null ],
+      [ "operation_not_supported", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90daf5c69ee1029871764a105a18648aec91", null ],
+      [ "shut_down", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90daf8a9d86b159145b2b422afad2230b197", null ],
+      [ "timed_out", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90dac59a687090ae7b5505d4f64b0c9d59c4", null ],
+      [ "try_again", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da6e9965827dc7afaba3b2b90a02b19058", null ],
+      [ "would_block", "asio_2error_8hpp.html#a2a69445eee784059ac2f4a6c4f5fe90da8e8ff1984495eb85ec17c37e3e5a89e5", null ]
+    ] ],
+    [ "misc_errors", "asio_2error_8hpp.html#ade61a402d1dfb10b1c223906f5ea7847", [
+      [ "already_open", "asio_2error_8hpp.html#ade61a402d1dfb10b1c223906f5ea7847ab57843ad5fc4f314afebfa76cedff29e", null ],
+      [ "eof", "asio_2error_8hpp.html#ade61a402d1dfb10b1c223906f5ea7847abb0b3b47deff67dd67b180d9d1e34154", null ],
+      [ "not_found", "asio_2error_8hpp.html#ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb", null ],
+      [ "fd_set_failure", "asio_2error_8hpp.html#ade61a402d1dfb10b1c223906f5ea7847a75104dfe4e0804fdee643db012130ca0", null ]
+    ] ],
+    [ "netdb_errors", "asio_2error_8hpp.html#aca1d28016f48d8f815c602788bc466de", [
+      [ "host_not_found", "asio_2error_8hpp.html#aca1d28016f48d8f815c602788bc466deaf64fcddcd2e17022dfffe63ff8b34824", null ],
+      [ "host_not_found_try_again", "asio_2error_8hpp.html#aca1d28016f48d8f815c602788bc466dea2b2d611b78f72788d95f0c7cb1e112c2", null ],
+      [ "no_data", "asio_2error_8hpp.html#aca1d28016f48d8f815c602788bc466dea762dc635009aaa1c6d7da916fc98d36d", null ],
+      [ "no_recovery", "asio_2error_8hpp.html#aca1d28016f48d8f815c602788bc466deabcd387d106312eb39ae9265ad6d0bde9", null ]
+    ] ],
+    [ "get_addrinfo_category", "asio_2error_8hpp.html#a371cb8e6425ed58337e192fe35b4afe9", null ],
+    [ "get_misc_category", "asio_2error_8hpp.html#a57ab0c3eda415bc1d2c58f93875ff60f", null ],
+    [ "get_netdb_category", "asio_2error_8hpp.html#a1ac89eaed3a7078406f329068a71b8ba", null ],
+    [ "get_system_category", "asio_2error_8hpp.html#ab830b9c09076398a1b0e72f619eb0204", null ],
+    [ "make_error_code", "asio_2error_8hpp.html#a4073e7c990fd629754e5a3c1cfc6078a", null ],
+    [ "make_error_code", "asio_2error_8hpp.html#ae490df1c16abd8fd4d414a36b8f9df3e", null ],
+    [ "make_error_code", "asio_2error_8hpp.html#a983d74ed795fee93a3633b26d8180215", null ],
+    [ "make_error_code", "asio_2error_8hpp.html#a88c08b7aff0b95d1a9fa9b2fb89189c7", null ]
+];

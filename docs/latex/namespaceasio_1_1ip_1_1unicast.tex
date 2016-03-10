@@ -1,0 +1,47 @@
+\hypertarget{namespaceasio_1_1ip_1_1unicast}{}\section{asio\+:\+:ip\+:\+:unicast Namespace Reference}
+\label{namespaceasio_1_1ip_1_1unicast}\index{asio\+::ip\+::unicast@{asio\+::ip\+::unicast}}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classasio_1_1ip_1_1detail_1_1socket__option_1_1unicast__hops}{asio\+::ip\+::detail\+::socket\+\_\+option\+::unicast\+\_\+hops}$<$ \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+\_\+\+T\+T\+L), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6), \hyperlink{socket__types_8hpp_a26e0208fa086ac48cf5af1b2a521c74a}{A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+V6\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S)$>$ \hyperlink{namespaceasio_1_1ip_1_1unicast_a7ff48db5dc080e4267aef160fb680641}{hops}
+\begin{DoxyCompactList}\small\item\em Socket option for time-\/to-\/live associated with outgoing unicast packets. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{namespaceasio_1_1ip_1_1unicast_a7ff48db5dc080e4267aef160fb680641}{}\index{asio\+::ip\+::unicast@{asio\+::ip\+::unicast}!hops@{hops}}
+\index{hops@{hops}!asio\+::ip\+::unicast@{asio\+::ip\+::unicast}}
+\subsubsection[{hops}]{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf asio\+::ip\+::detail\+::socket\+\_\+option\+::unicast\+\_\+hops}$<$ {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+\_\+\+T\+T\+L), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P\+V6), {\bf A\+S\+I\+O\+\_\+\+O\+S\+\_\+\+D\+E\+F}(I\+P\+V6\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+H\+O\+P\+S)$>$ {\bf asio\+::ip\+::unicast\+::hops}}\label{namespaceasio_1_1ip_1_1unicast_a7ff48db5dc080e4267aef160fb680641}
+
+
+Socket option for time-\/to-\/live associated with outgoing unicast packets. 
+
+Implements the I\+P\+P\+R\+O\+T\+O\+\_\+\+I\+P/\+I\+P\+\_\+\+U\+N\+I\+C\+A\+S\+T\+\_\+\+T\+T\+L socket option.
+
+\begin{DoxyParagraph}{Examples}
+Setting the option\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__datagram__socket}{asio::ip::udp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::ip::unicast::hops option(4);
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.set\_option(option);
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{}
+Getting the current option value\+: 
+\begin{DoxyCode}
+\hyperlink{classasio_1_1basic__datagram__socket}{asio::ip::udp::socket} \hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}(io\_service); 
+...
+asio::ip::unicast::hops option;
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{socket}.get\_option(option);
+\textcolor{keywordtype}{int} ttl = option.value();
+\end{DoxyCode}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Concepts\+:}
+Gettable\+Socket\+Option, Settable\+Socket\+Option. 
+\end{DoxyParagraph}
+
+
+Definition at line 61 of file unicast.\+hpp.
+

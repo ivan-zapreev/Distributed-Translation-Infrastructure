@@ -1,0 +1,237 @@
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine}{}\section{asio\+:\+:ssl\+:\+:detail\+:\+:engine Class Reference}
+\label{classasio_1_1ssl_1_1detail_1_1engine}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+
+
+{\ttfamily \#include $<$engine.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915}{want} \{ \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915a4ed0c40b89cc4244f27cf4fa0462dc98}{want\+\_\+input\+\_\+and\+\_\+retry} = -\/2, 
+\hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915ae945ff629b4b3fb8f8e4424eea2941b1}{want\+\_\+output\+\_\+and\+\_\+retry} = -\/1, 
+\hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915a1b2c9a51b5a4f1cb75ef746e8c11faa8}{want\+\_\+nothing} = 0, 
+\hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915ac4b31f22eb4446bfc12d48198ff1438d}{want\+\_\+output} = 1
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ab6da5aa61c3e6c3477addf2cc00ecdbd}{engine} (S\+S\+L\+\_\+\+C\+T\+X $\ast$\hyperlink{classasio_1_1ssl_1_1context}{context})
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_aa5661a6092bf529b6acbcf8d20c6ad14}{$\sim$engine} ()
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} S\+S\+L $\ast$ \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_a67b96b4ee4bdc3b0b789730af1f68f84}{native\+\_\+handle} ()
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_a6242fc54e94b692d29f7b7534b3643cc}{set\+\_\+verify\+\_\+mode} (\hyperlink{namespaceasio_1_1ssl_aa6497e51bc608f2397a731a14f80b563}{verify\+\_\+mode} v, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_a8bd3ece8dd2b1a1c06f3df5a72969c3c}{set\+\_\+verify\+\_\+depth} (int depth, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_a7b375f00550e82dd6e379d8ebd2e8db5}{set\+\_\+verify\+\_\+callback} (\hyperlink{classasio_1_1ssl_1_1detail_1_1verify__callback__base}{verify\+\_\+callback\+\_\+base} $\ast$callback, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915}{want} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ac31b70e92ff614d173c7c9111dcc1d8c}{handshake} (\hyperlink{classasio_1_1ssl_1_1stream__base_a2f18813d3860bc8aee99249834d7c320}{stream\+\_\+base\+::handshake\+\_\+type} type, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915}{want} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_a88355d3a8bd01482396ad694a47a0bc0}{shutdown} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915}{want} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_af0ca957749e26f97ff2549c1705e57e2}{write} (const \hyperlink{classasio_1_1const__buffer}{asio\+::const\+\_\+buffer} \&data, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, std\+::size\+\_\+t \&bytes\+\_\+transferred)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915}{want} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_acc66da794ee5d719b71889f08e3788e7}{read} (const \hyperlink{classasio_1_1mutable__buffer}{asio\+::mutable\+\_\+buffer} \&data, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, std\+::size\+\_\+t \&bytes\+\_\+transferred)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1mutable__buffers__1}{asio\+::mutable\+\_\+buffers\+\_\+1} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_aca20901157aad8e5094900afe94c7770}{get\+\_\+output} (const \hyperlink{classasio_1_1mutable__buffer}{asio\+::mutable\+\_\+buffer} \&data)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} \hyperlink{classasio_1_1const__buffer}{asio\+::const\+\_\+buffer} \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_ad5f8dbd3628857f365cb8713e9a12eae}{put\+\_\+input} (const \hyperlink{classasio_1_1const__buffer}{asio\+::const\+\_\+buffer} \&data)
+\item 
+\hyperlink{config_8hpp_ab54d01ea04afeb9a8b39cfac467656b7}{A\+S\+I\+O\+\_\+\+D\+E\+C\+L} const \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \& \hyperlink{classasio_1_1ssl_1_1detail_1_1engine_acce75a8569a269e71e6067b991cce22b}{map\+\_\+error\+\_\+code} (\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 37 of file engine.\+hpp.
+
+
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!want@{want}}
+\index{want@{want}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{want}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf asio\+::ssl\+::detail\+::engine\+::want}}\label{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{want\+\_\+input\+\_\+and\+\_\+retry@{want\+\_\+input\+\_\+and\+\_\+retry}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!want\+\_\+input\+\_\+and\+\_\+retry@{want\+\_\+input\+\_\+and\+\_\+retry}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915a4ed0c40b89cc4244f27cf4fa0462dc98}{}want\+\_\+input\+\_\+and\+\_\+retry\label{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915a4ed0c40b89cc4244f27cf4fa0462dc98}
+}]\index{want\+\_\+output\+\_\+and\+\_\+retry@{want\+\_\+output\+\_\+and\+\_\+retry}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!want\+\_\+output\+\_\+and\+\_\+retry@{want\+\_\+output\+\_\+and\+\_\+retry}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915ae945ff629b4b3fb8f8e4424eea2941b1}{}want\+\_\+output\+\_\+and\+\_\+retry\label{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915ae945ff629b4b3fb8f8e4424eea2941b1}
+}]\index{want\+\_\+nothing@{want\+\_\+nothing}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!want\+\_\+nothing@{want\+\_\+nothing}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915a1b2c9a51b5a4f1cb75ef746e8c11faa8}{}want\+\_\+nothing\label{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915a1b2c9a51b5a4f1cb75ef746e8c11faa8}
+}]\index{want\+\_\+output@{want\+\_\+output}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!want\+\_\+output@{want\+\_\+output}}\item[{\em 
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915ac4b31f22eb4446bfc12d48198ff1438d}{}want\+\_\+output\label{classasio_1_1ssl_1_1detail_1_1engine_ab9812153941a6a93c9095f4e5ca8f915ac4b31f22eb4446bfc12d48198ff1438d}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line 40 of file engine.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_ab6da5aa61c3e6c3477addf2cc00ecdbd}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!engine@{engine}}
+\index{engine@{engine}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{engine(\+S\+S\+L\+\_\+\+C\+T\+X $\ast$context)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::detail\+::engine\+::engine (
+\begin{DoxyParamCaption}
+\item[{S\+S\+L\+\_\+\+C\+T\+X $\ast$}]{context}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [explicit]}}\label{classasio_1_1ssl_1_1detail_1_1engine_ab6da5aa61c3e6c3477addf2cc00ecdbd}
+
+
+Definition at line 36 of file engine.\+ipp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_aa5661a6092bf529b6acbcf8d20c6ad14}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!````~engine@{$\sim$engine}}
+\index{````~engine@{$\sim$engine}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{$\sim$engine()}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::ssl\+::detail\+::engine\+::$\sim$engine (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1detail_1_1engine_aa5661a6092bf529b6acbcf8d20c6ad14}
+
+
+Definition at line 60 of file engine.\+ipp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_aca20901157aad8e5094900afe94c7770}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!get\+\_\+output@{get\+\_\+output}}
+\index{get\+\_\+output@{get\+\_\+output}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{get\+\_\+output(const asio\+::mutable\+\_\+buffer \&data)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::mutable\+\_\+buffers\+\_\+1} asio\+::ssl\+::detail\+::engine\+::get\+\_\+output (
+\begin{DoxyParamCaption}
+\item[{const {\bf asio\+::mutable\+\_\+buffer} \&}]{data}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1detail_1_1engine_aca20901157aad8e5094900afe94c7770}
+
+
+Definition at line 173 of file engine.\+ipp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_ac31b70e92ff614d173c7c9111dcc1d8c}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!handshake@{handshake}}
+\index{handshake@{handshake}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{handshake(stream\+\_\+base\+::handshake\+\_\+type type, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf engine\+::want} asio\+::ssl\+::detail\+::engine\+::handshake (
+\begin{DoxyParamCaption}
+\item[{{\bf stream\+\_\+base\+::handshake\+\_\+type}}]{type, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1detail_1_1engine_ac31b70e92ff614d173c7c9111dcc1d8c}
+
+
+Definition at line 133 of file engine.\+ipp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_acce75a8569a269e71e6067b991cce22b}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!map\+\_\+error\+\_\+code@{map\+\_\+error\+\_\+code}}
+\index{map\+\_\+error\+\_\+code@{map\+\_\+error\+\_\+code}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{map\+\_\+error\+\_\+code(asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}const {\bf asio\+::error\+\_\+code} \& asio\+::ssl\+::detail\+::engine\+::map\+\_\+error\+\_\+code (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const}\label{classasio_1_1ssl_1_1detail_1_1engine_acce75a8569a269e71e6067b991cce22b}
+
+
+Definition at line 195 of file engine.\+ipp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_a67b96b4ee4bdc3b0b789730af1f68f84}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!native\+\_\+handle@{native\+\_\+handle}}
+\index{native\+\_\+handle@{native\+\_\+handle}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{native\+\_\+handle()}]{\setlength{\rightskip}{0pt plus 5cm}S\+S\+L $\ast$ asio\+::ssl\+::detail\+::engine\+::native\+\_\+handle (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1detail_1_1engine_a67b96b4ee4bdc3b0b789730af1f68f84}
+
+
+Definition at line 72 of file engine.\+ipp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_ad5f8dbd3628857f365cb8713e9a12eae}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!put\+\_\+input@{put\+\_\+input}}
+\index{put\+\_\+input@{put\+\_\+input}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{put\+\_\+input(const asio\+::const\+\_\+buffer \&data)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::const\+\_\+buffer} asio\+::ssl\+::detail\+::engine\+::put\+\_\+input (
+\begin{DoxyParamCaption}
+\item[{const {\bf asio\+::const\+\_\+buffer} \&}]{data}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1detail_1_1engine_ad5f8dbd3628857f365cb8713e9a12eae}
+
+
+Definition at line 184 of file engine.\+ipp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_acc66da794ee5d719b71889f08e3788e7}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!read@{read}}
+\index{read@{read}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{read(const asio\+::mutable\+\_\+buffer \&data, asio\+::error\+\_\+code \&ec, std\+::size\+\_\+t \&bytes\+\_\+transferred)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf engine\+::want} asio\+::ssl\+::detail\+::engine\+::read (
+\begin{DoxyParamCaption}
+\item[{const {\bf asio\+::mutable\+\_\+buffer} \&}]{data, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec, }
+\item[{std\+::size\+\_\+t \&}]{bytes\+\_\+transferred}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1detail_1_1engine_acc66da794ee5d719b71889f08e3788e7}
+
+
+Definition at line 159 of file engine.\+ipp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_a7b375f00550e82dd6e379d8ebd2e8db5}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!set\+\_\+verify\+\_\+callback@{set\+\_\+verify\+\_\+callback}}
+\index{set\+\_\+verify\+\_\+callback@{set\+\_\+verify\+\_\+callback}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{set\+\_\+verify\+\_\+callback(verify\+\_\+callback\+\_\+base $\ast$callback, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::ssl\+::detail\+::engine\+::set\+\_\+verify\+\_\+callback (
+\begin{DoxyParamCaption}
+\item[{{\bf verify\+\_\+callback\+\_\+base} $\ast$}]{callback, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1detail_1_1engine_a7b375f00550e82dd6e379d8ebd2e8db5}
+
+
+Definition at line 95 of file engine.\+ipp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_a8bd3ece8dd2b1a1c06f3df5a72969c3c}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!set\+\_\+verify\+\_\+depth@{set\+\_\+verify\+\_\+depth}}
+\index{set\+\_\+verify\+\_\+depth@{set\+\_\+verify\+\_\+depth}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{set\+\_\+verify\+\_\+depth(int depth, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::ssl\+::detail\+::engine\+::set\+\_\+verify\+\_\+depth (
+\begin{DoxyParamCaption}
+\item[{int}]{depth, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1detail_1_1engine_a8bd3ece8dd2b1a1c06f3df5a72969c3c}
+
+
+Definition at line 86 of file engine.\+ipp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_a6242fc54e94b692d29f7b7534b3643cc}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!set\+\_\+verify\+\_\+mode@{set\+\_\+verify\+\_\+mode}}
+\index{set\+\_\+verify\+\_\+mode@{set\+\_\+verify\+\_\+mode}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{set\+\_\+verify\+\_\+mode(verify\+\_\+mode v, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf asio\+::error\+\_\+code} asio\+::ssl\+::detail\+::engine\+::set\+\_\+verify\+\_\+mode (
+\begin{DoxyParamCaption}
+\item[{{\bf verify\+\_\+mode}}]{v, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1detail_1_1engine_a6242fc54e94b692d29f7b7534b3643cc}
+
+
+Definition at line 77 of file engine.\+ipp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_a88355d3a8bd01482396ad694a47a0bc0}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{shutdown(asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf engine\+::want} asio\+::ssl\+::detail\+::engine\+::shutdown (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1detail_1_1engine_a88355d3a8bd01482396ad694a47a0bc0}
+
+
+Definition at line 140 of file engine.\+ipp.
+
+\hypertarget{classasio_1_1ssl_1_1detail_1_1engine_af0ca957749e26f97ff2549c1705e57e2}{}\index{asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}!write@{write}}
+\index{write@{write}!asio\+::ssl\+::detail\+::engine@{asio\+::ssl\+::detail\+::engine}}
+\subsubsection[{write(const asio\+::const\+\_\+buffer \&data, asio\+::error\+\_\+code \&ec, std\+::size\+\_\+t \&bytes\+\_\+transferred)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf engine\+::want} asio\+::ssl\+::detail\+::engine\+::write (
+\begin{DoxyParamCaption}
+\item[{const {\bf asio\+::const\+\_\+buffer} \&}]{data, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec, }
+\item[{std\+::size\+\_\+t \&}]{bytes\+\_\+transferred}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1ssl_1_1detail_1_1engine_af0ca957749e26f97ff2549c1705e57e2}
+
+
+Definition at line 145 of file engine.\+ipp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/ssl/detail/\hyperlink{engine_8hpp}{engine.\+hpp}\item 
+ext/asio/ssl/detail/impl/\hyperlink{engine_8ipp}{engine.\+ipp}\end{DoxyCompactItemize}

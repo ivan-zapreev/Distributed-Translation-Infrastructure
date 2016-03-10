@@ -1,0 +1,150 @@
+\hypertarget{classasio_1_1mutable__buffer}{}\section{asio\+:\+:mutable\+\_\+buffer Class Reference}
+\label{classasio_1_1mutable__buffer}\index{asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}}
+
+
+Holds a buffer that can be modified.  
+
+
+
+
+{\ttfamily \#include $<$buffer.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:mutable\+\_\+buffer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classasio_1_1mutable__buffer}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1mutable__buffer_aee716832cf56a039b5aeb057aeb8bfec}{mutable\+\_\+buffer} ()
+\begin{DoxyCompactList}\small\item\em Construct an empty buffer. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1mutable__buffer_ac2102b19275bd6af5bd22eef5599de5b}{mutable\+\_\+buffer} (void $\ast$data, std\+::size\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Construct a buffer to represent a given memory range. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{classasio_1_1mutable__buffer_a8ef94376754bcdbb4e9ec8a372b3e26e}{asio\+::detail\+::buffer\+\_\+cast\+\_\+helper} (const \hyperlink{classasio_1_1mutable__buffer}{mutable\+\_\+buffer} \&\hyperlink{group__async__read_ga945a5c18fa77a9e2eba420f8f44b2a4f}{b})
+\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1mutable__buffer_adf2d9d6967b90d825474bea8fcc2acd4}{asio\+::detail\+::buffer\+\_\+size\+\_\+helper} (const \hyperlink{classasio_1_1mutable__buffer}{mutable\+\_\+buffer} \&\hyperlink{group__async__read_ga945a5c18fa77a9e2eba420f8f44b2a4f}{b})
+\end{DoxyCompactItemize}
+\subsection*{Related Functions}
+(Note that these are not member functions.) \begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1mutable__buffer}{mutable\+\_\+buffer} \hyperlink{classasio_1_1mutable__buffer_a4950f4389232461552edf52410d4216f}{operator+} (const \hyperlink{classasio_1_1mutable__buffer}{mutable\+\_\+buffer} \&\hyperlink{group__async__read_ga945a5c18fa77a9e2eba420f8f44b2a4f}{b}, std\+::size\+\_\+t start)
+\begin{DoxyCompactList}\small\item\em Create a new modifiable buffer that is offset from the start of another. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1mutable__buffer}{mutable\+\_\+buffer} \hyperlink{classasio_1_1mutable__buffer_a33017b213bb2f2263540eb32fcac3bfb}{operator+} (std\+::size\+\_\+t start, const \hyperlink{classasio_1_1mutable__buffer}{mutable\+\_\+buffer} \&\hyperlink{group__async__read_ga945a5c18fa77a9e2eba420f8f44b2a4f}{b})
+\begin{DoxyCompactList}\small\item\em Create a new modifiable buffer that is offset from the start of another. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Holds a buffer that can be modified. 
+
+The \hyperlink{classasio_1_1mutable__buffer}{mutable\+\_\+buffer} class provides a safe representation of a buffer that can be modified. It does not own the underlying data, and so is cheap to copy or assign.
+
+\begin{DoxyParagraph}{Accessing Buffer Contents}
+
+\end{DoxyParagraph}
+The contents of a buffer may be accessed using the \hyperlink{group__buffer__size}{asio\+::buffer\+\_\+size} and \hyperlink{group__buffer__cast}{asio\+::buffer\+\_\+cast} functions\+:
+
+
+\begin{DoxyCode}
+ \hyperlink{classasio_1_1mutable__buffer}{asio::mutable\_buffer} b1 = ...;
+std::size\_t s1 = \hyperlink{group__buffer__size_gabe8b5f116fbb66004b6d0ba8ee39c3d5}{asio::buffer\_size}(b1);
+\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}* p1 = \hyperlink{group__buffer__cast_ga6faa5f9daa2512cc9c3cefa8b5ab0704}{asio::buffer\_cast}<\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{char}*>(b1);
+\end{DoxyCode}
+
+
+The \hyperlink{group__buffer__cast_ga6faa5f9daa2512cc9c3cefa8b5ab0704}{asio\+::buffer\+\_\+cast} function permits violations of type safety, so uses of it in application code should be carefully considered. 
+
+Definition at line 91 of file buffer.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1mutable__buffer_aee716832cf56a039b5aeb057aeb8bfec}{}\index{asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}!mutable\+\_\+buffer@{mutable\+\_\+buffer}}
+\index{mutable\+\_\+buffer@{mutable\+\_\+buffer}!asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}}
+\subsubsection[{mutable\+\_\+buffer()}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::mutable\+\_\+buffer\+::mutable\+\_\+buffer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1mutable__buffer_aee716832cf56a039b5aeb057aeb8bfec}
+
+
+Construct an empty buffer. 
+
+
+
+Definition at line 95 of file buffer.\+hpp.
+
+\hypertarget{classasio_1_1mutable__buffer_ac2102b19275bd6af5bd22eef5599de5b}{}\index{asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}!mutable\+\_\+buffer@{mutable\+\_\+buffer}}
+\index{mutable\+\_\+buffer@{mutable\+\_\+buffer}!asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}}
+\subsubsection[{mutable\+\_\+buffer(void $\ast$data, std\+::size\+\_\+t size)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::mutable\+\_\+buffer\+::mutable\+\_\+buffer (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{data, }
+\item[{std\+::size\+\_\+t}]{size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1mutable__buffer_ac2102b19275bd6af5bd22eef5599de5b}
+
+
+Construct a buffer to represent a given memory range. 
+
+
+
+Definition at line 102 of file buffer.\+hpp.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classasio_1_1mutable__buffer_a8ef94376754bcdbb4e9ec8a372b3e26e}{}\index{asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}!asio\+::detail\+::buffer\+\_\+cast\+\_\+helper@{asio\+::detail\+::buffer\+\_\+cast\+\_\+helper}}
+\index{asio\+::detail\+::buffer\+\_\+cast\+\_\+helper@{asio\+::detail\+::buffer\+\_\+cast\+\_\+helper}!asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}}
+\subsubsection[{asio\+::detail\+::buffer\+\_\+cast\+\_\+helper}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf asio\+::detail\+::buffer\+\_\+cast\+\_\+helper} (
+\begin{DoxyParamCaption}
+\item[{const {\bf mutable\+\_\+buffer} \&}]{b}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1mutable__buffer_a8ef94376754bcdbb4e9ec8a372b3e26e}
+\hypertarget{classasio_1_1mutable__buffer_adf2d9d6967b90d825474bea8fcc2acd4}{}\index{asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}!asio\+::detail\+::buffer\+\_\+size\+\_\+helper@{asio\+::detail\+::buffer\+\_\+size\+\_\+helper}}
+\index{asio\+::detail\+::buffer\+\_\+size\+\_\+helper@{asio\+::detail\+::buffer\+\_\+size\+\_\+helper}!asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}}
+\subsubsection[{asio\+::detail\+::buffer\+\_\+size\+\_\+helper}]{\setlength{\rightskip}{0pt plus 5cm}std\+::size\+\_\+t {\bf asio\+::detail\+::buffer\+\_\+size\+\_\+helper} (
+\begin{DoxyParamCaption}
+\item[{const {\bf mutable\+\_\+buffer} \&}]{b}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classasio_1_1mutable__buffer_adf2d9d6967b90d825474bea8fcc2acd4}
+\hypertarget{classasio_1_1mutable__buffer_a4950f4389232461552edf52410d4216f}{}\index{asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}!operator+@{operator+}}
+\index{operator+@{operator+}!asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}}
+\subsubsection[{operator+(const mutable\+\_\+buffer \&b, std\+::size\+\_\+t start)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf mutable\+\_\+buffer} operator+ (
+\begin{DoxyParamCaption}
+\item[{const {\bf mutable\+\_\+buffer} \&}]{b, }
+\item[{std\+::size\+\_\+t}]{start}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [related]}}\label{classasio_1_1mutable__buffer_a4950f4389232461552edf52410d4216f}
+
+
+Create a new modifiable buffer that is offset from the start of another. 
+
+
+
+Definition at line 442 of file buffer.\+hpp.
+
+\hypertarget{classasio_1_1mutable__buffer_a33017b213bb2f2263540eb32fcac3bfb}{}\index{asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}!operator+@{operator+}}
+\index{operator+@{operator+}!asio\+::mutable\+\_\+buffer@{asio\+::mutable\+\_\+buffer}}
+\subsubsection[{operator+(std\+::size\+\_\+t start, const mutable\+\_\+buffer \&b)}]{\setlength{\rightskip}{0pt plus 5cm}{\bf mutable\+\_\+buffer} operator+ (
+\begin{DoxyParamCaption}
+\item[{std\+::size\+\_\+t}]{start, }
+\item[{const {\bf mutable\+\_\+buffer} \&}]{b}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [related]}}\label{classasio_1_1mutable__buffer_a33017b213bb2f2263540eb32fcac3bfb}
+
+
+Create a new modifiable buffer that is offset from the start of another. 
+
+
+
+Definition at line 459 of file buffer.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{buffer_8hpp}{buffer.\+hpp}\end{DoxyCompactItemize}

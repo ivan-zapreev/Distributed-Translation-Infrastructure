@@ -1,0 +1,40 @@
+\hypertarget{lm__configs_8hpp}{}\section{inc/server/lm/lm\+\_\+configs.hpp File Reference}
+\label{lm__configs_8hpp}\index{inc/server/lm/lm\+\_\+configs.\+hpp@{inc/server/lm/lm\+\_\+configs.\+hpp}}
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include \char`\"{}server/server\+\_\+configs.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/file/cstyle\+\_\+file\+\_\+reader.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/basic\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/counting\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/optimizing\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/hashing\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/builders/lm\+\_\+basic\+\_\+builder.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/models/c2d\+\_\+hybrid\+\_\+trie.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/models/c2d\+\_\+map\+\_\+trie.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/models/c2w\+\_\+array\+\_\+trie.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/models/g2d\+\_\+map\+\_\+trie.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/models/h2d\+\_\+map\+\_\+trie.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/models/w2c\+\_\+array\+\_\+trie.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/models/w2c\+\_\+hybrid\+\_\+trie.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd}{uva\+::smt\+::bpbd}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server}{uva\+::smt\+::bpbd\+::server}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm}{uva\+::smt\+::bpbd\+::server\+::lm}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index}{hashing\+\_\+word\+\_\+index} \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a023e38a6fe02511f8c3c806784c2a5f2}{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+word\+\_\+index}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_h2_d_map_trie}{H2\+D\+Map\+Trie}$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a023e38a6fe02511f8c3c806784c2a5f2}{lm\+\_\+word\+\_\+index} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a1d312807a76856e10bfbed1cae210b0d}{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+model\+\_\+type}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1arpa_1_1lm__basic__builder}{lm\+\_\+basic\+\_\+builder}$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a1d312807a76856e10bfbed1cae210b0d}{lm\+\_\+model\+\_\+type}, \hyperlink{classuva_1_1utils_1_1file_1_1_c_style_file_reader}{C\+Style\+File\+Reader} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ace2f660bee1117b5b98b58eb5c8e853a}{uva\+::smt\+::bpbd\+::server\+::lm\+::lm\+\_\+builder\+\_\+type}
+\end{DoxyCompactItemize}

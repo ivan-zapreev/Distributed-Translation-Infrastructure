@@ -1,0 +1,247 @@
+\hypertarget{classasio_1_1basic__socket__iostream}{}\section{asio\+:\+:basic\+\_\+socket\+\_\+iostream$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$ Class Template Reference}
+\label{classasio_1_1basic__socket__iostream}\index{asio\+::basic\+\_\+socket\+\_\+iostream$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$@{asio\+::basic\+\_\+socket\+\_\+iostream$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$}}
+
+
+Iostream interface for a socket.  
+
+
+
+
+{\ttfamily \#include $<$basic\+\_\+socket\+\_\+iostream.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:basic\+\_\+socket\+\_\+iostream$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.941176cm]{classasio_1_1basic__socket__iostream}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Protocol\+::endpoint \hyperlink{classasio_1_1basic__socket__iostream_a7c5f21f11ac0d35b00935ba750b8ed4d}{endpoint\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The endpoint type. \end{DoxyCompactList}\item 
+typedef \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}{traits\+\_\+helper\+::time\+\_\+type} \hyperlink{classasio_1_1basic__socket__iostream_a1f1cbdf5a23170d9d7b4a03f4dcf1a03}{time\+\_\+type}
+\item 
+typedef \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a7f122a7cb603e7516bb6595016960775}{traits\+\_\+helper\+::duration\+\_\+type} \hyperlink{classasio_1_1basic__socket__iostream_af9d3e684e0709c574a1d92f7013e1b36}{duration\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1basic__socket__iostream_a3208646eabb1520430abcbaa8930e1d0}{basic\+\_\+socket\+\_\+iostream} ()
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{classasio_1_1basic__socket__iostream}{basic\+\_\+socket\+\_\+iostream} without establishing a connection. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1basic__socket__iostream_a64a63cc863cfb727a2d92744c2474d65}{close} ()
+\begin{DoxyCompactList}\small\item\em Close the connection. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__socket__streambuf}{basic\+\_\+socket\+\_\+streambuf}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$ $\ast$ \hyperlink{classasio_1_1basic__socket__iostream_ad8158862edcecfc312c0229631e1d0d6}{rdbuf} () const 
+\begin{DoxyCompactList}\small\item\em Return a pointer to the underlying streambuf. \end{DoxyCompactList}\item 
+const \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \& \hyperlink{classasio_1_1basic__socket__iostream_ac097d22cda9278971de01f140c98fbbf}{error} () const 
+\begin{DoxyCompactList}\small\item\em Get the last error associated with the stream. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__socket__iostream_a1f1cbdf5a23170d9d7b4a03f4dcf1a03}{time\+\_\+type} \hyperlink{classasio_1_1basic__socket__iostream_ac60151b0770ae0285a3d61d170626353}{expires\+\_\+at} () const 
+\begin{DoxyCompactList}\small\item\em Get the stream\textquotesingle{}s expiry time as an absolute time. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1basic__socket__iostream_ae2eb6f8084ea7d562e24befd4b7ba656}{expires\+\_\+at} (const \hyperlink{classasio_1_1basic__socket__iostream_a1f1cbdf5a23170d9d7b4a03f4dcf1a03}{time\+\_\+type} \&expiry\+\_\+time)
+\begin{DoxyCompactList}\small\item\em Set the stream\textquotesingle{}s expiry time as an absolute time. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__socket__iostream_af9d3e684e0709c574a1d92f7013e1b36}{duration\+\_\+type} \hyperlink{classasio_1_1basic__socket__iostream_ad78a7d7a6b6b51418334ba935cd03424}{expires\+\_\+from\+\_\+now} () const 
+\begin{DoxyCompactList}\small\item\em Get the timer\textquotesingle{}s expiry time relative to now. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1basic__socket__iostream_af22475f50cdfceeb61856fcfd9324d20}{expires\+\_\+from\+\_\+now} (const \hyperlink{classasio_1_1basic__socket__iostream_af9d3e684e0709c574a1d92f7013e1b36}{duration\+\_\+type} \&expiry\+\_\+time)
+\begin{DoxyCompactList}\small\item\em Set the stream\textquotesingle{}s expiry time relative to now. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Protocol, typename Stream\+Socket\+Service = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service = steady\+\_\+timer\+::service\+\_\+type$>$class asio\+::basic\+\_\+socket\+\_\+iostream$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$}
+
+Iostream interface for a socket. 
+
+Definition at line 109 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1basic__socket__iostream_af9d3e684e0709c574a1d92f7013e1b36}{}\index{asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}!duration\+\_\+type@{duration\+\_\+type}}
+\index{duration\+\_\+type@{duration\+\_\+type}!asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}}
+\subsubsection[{duration\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ typedef {\bf traits\+\_\+helper\+::duration\+\_\+type} {\bf asio\+::basic\+\_\+socket\+\_\+iostream}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::{\bf duration\+\_\+type}}\label{classasio_1_1basic__socket__iostream_af9d3e684e0709c574a1d92f7013e1b36}
+
+
+Definition at line 135 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__iostream_a7c5f21f11ac0d35b00935ba750b8ed4d}{}\index{asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}!endpoint\+\_\+type@{endpoint\+\_\+type}}
+\index{endpoint\+\_\+type@{endpoint\+\_\+type}!asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}}
+\subsubsection[{endpoint\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ typedef Protocol\+::endpoint {\bf asio\+::basic\+\_\+socket\+\_\+iostream}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::{\bf endpoint\+\_\+type}}\label{classasio_1_1basic__socket__iostream_a7c5f21f11ac0d35b00935ba750b8ed4d}
+
+
+The endpoint type. 
+
+
+
+Definition at line 125 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__iostream_a1f1cbdf5a23170d9d7b4a03f4dcf1a03}{}\index{asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}!time\+\_\+type@{time\+\_\+type}}
+\index{time\+\_\+type@{time\+\_\+type}!asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}}
+\subsubsection[{time\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ typedef {\bf traits\+\_\+helper\+::time\+\_\+type} {\bf asio\+::basic\+\_\+socket\+\_\+iostream}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::{\bf time\+\_\+type}}\label{classasio_1_1basic__socket__iostream_a1f1cbdf5a23170d9d7b4a03f4dcf1a03}
+
+
+Definition at line 134 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1basic__socket__iostream_a3208646eabb1520430abcbaa8930e1d0}{}\index{asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}!basic\+\_\+socket\+\_\+iostream@{basic\+\_\+socket\+\_\+iostream}}
+\index{basic\+\_\+socket\+\_\+iostream@{basic\+\_\+socket\+\_\+iostream}!asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}}
+\subsubsection[{basic\+\_\+socket\+\_\+iostream()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ {\bf asio\+::basic\+\_\+socket\+\_\+iostream}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::{\bf basic\+\_\+socket\+\_\+iostream} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__iostream_a3208646eabb1520430abcbaa8930e1d0}
+
+
+Construct a \hyperlink{classasio_1_1basic__socket__iostream}{basic\+\_\+socket\+\_\+iostream} without establishing a connection. 
+
+
+
+Definition at line 139 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1basic__socket__iostream_a64a63cc863cfb727a2d92744c2474d65}{}\index{asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}!close@{close}}
+\index{close@{close}!asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}}
+\subsubsection[{close()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ void {\bf asio\+::basic\+\_\+socket\+\_\+iostream}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::close (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__iostream_a64a63cc863cfb727a2d92744c2474d65}
+
+
+Close the connection. 
+
+
+
+Definition at line 194 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__iostream_ac097d22cda9278971de01f140c98fbbf}{}\index{asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}!error@{error}}
+\index{error@{error}!asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}}
+\subsubsection[{error() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ const {\bf asio\+::error\+\_\+code}\& {\bf asio\+::basic\+\_\+socket\+\_\+iostream}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::error (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__iostream_ac097d22cda9278971de01f140c98fbbf}
+
+
+Get the last error associated with the stream. 
+
+\begin{DoxyReturn}{Returns}
+An {\ttfamily \hyperlink{classasio_1_1error__code}{error\+\_\+code}} corresponding to the last error from the stream.
+\end{DoxyReturn}
+\begin{DoxyParagraph}{Example}
+To print the error associated with a failure to establish a connection\+: 
+\begin{DoxyCode}
+ tcp::iostream \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}(\textcolor{stringliteral}{"www.boost.org"}, \textcolor{stringliteral}{"http"});
+\textcolor{keywordflow}{if} (!\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s})
+\{
+  std::cout << \textcolor{stringliteral}{"Error: "} << \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}.error().message() << std::endl;
+\} 
+\end{DoxyCode}
+ 
+\end{DoxyParagraph}
+
+
+Definition at line 223 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__iostream_ac60151b0770ae0285a3d61d170626353}{}\index{asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}!expires\+\_\+at@{expires\+\_\+at}}
+\index{expires\+\_\+at@{expires\+\_\+at}!asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}}
+\subsubsection[{expires\+\_\+at() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ {\bf time\+\_\+type} {\bf asio\+::basic\+\_\+socket\+\_\+iostream}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::expires\+\_\+at (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__iostream_ac60151b0770ae0285a3d61d170626353}
+
+
+Get the stream\textquotesingle{}s expiry time as an absolute time. 
+
+\begin{DoxyReturn}{Returns}
+An absolute time value representing the stream\textquotesingle{}s expiry time. 
+\end{DoxyReturn}
+
+
+Definition at line 232 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__iostream_ae2eb6f8084ea7d562e24befd4b7ba656}{}\index{asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}!expires\+\_\+at@{expires\+\_\+at}}
+\index{expires\+\_\+at@{expires\+\_\+at}!asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}}
+\subsubsection[{expires\+\_\+at(const time\+\_\+type \&expiry\+\_\+time)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ void {\bf asio\+::basic\+\_\+socket\+\_\+iostream}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::expires\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{const {\bf time\+\_\+type} \&}]{expiry\+\_\+time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__iostream_ae2eb6f8084ea7d562e24befd4b7ba656}
+
+
+Set the stream\textquotesingle{}s expiry time as an absolute time. 
+
+This function sets the expiry time associated with the stream. Stream operations performed after this time (where the operations cannot be completed using the internal buffers) will fail with the error \hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dacde6760763051561f6c2ffc4ddf2be1b}{asio\+::error\+::operation\+\_\+aborted}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em expiry\+\_\+time} & The expiry time to be used for the stream. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 246 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__iostream_ad78a7d7a6b6b51418334ba935cd03424}{}\index{asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}!expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}}
+\index{expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}!asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}}
+\subsubsection[{expires\+\_\+from\+\_\+now() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ {\bf duration\+\_\+type} {\bf asio\+::basic\+\_\+socket\+\_\+iostream}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::expires\+\_\+from\+\_\+now (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__iostream_ad78a7d7a6b6b51418334ba935cd03424}
+
+
+Get the timer\textquotesingle{}s expiry time relative to now. 
+
+\begin{DoxyReturn}{Returns}
+A relative time value representing the stream\textquotesingle{}s expiry time. 
+\end{DoxyReturn}
+
+
+Definition at line 255 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__iostream_af22475f50cdfceeb61856fcfd9324d20}{}\index{asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}!expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}}
+\index{expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}!asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}}
+\subsubsection[{expires\+\_\+from\+\_\+now(const duration\+\_\+type \&expiry\+\_\+time)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ void {\bf asio\+::basic\+\_\+socket\+\_\+iostream}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::expires\+\_\+from\+\_\+now (
+\begin{DoxyParamCaption}
+\item[{const {\bf duration\+\_\+type} \&}]{expiry\+\_\+time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__iostream_af22475f50cdfceeb61856fcfd9324d20}
+
+
+Set the stream\textquotesingle{}s expiry time relative to now. 
+
+This function sets the expiry time associated with the stream. Stream operations performed after this time (where the operations cannot be completed using the internal buffers) will fail with the error \hyperlink{namespaceasio_1_1error_a2a69445eee784059ac2f4a6c4f5fe90dacde6760763051561f6c2ffc4ddf2be1b}{asio\+::error\+::operation\+\_\+aborted}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em expiry\+\_\+time} & The expiry time to be used for the timer. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 269 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+\hypertarget{classasio_1_1basic__socket__iostream_ad8158862edcecfc312c0229631e1d0d6}{}\index{asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}!rdbuf@{rdbuf}}
+\index{rdbuf@{rdbuf}!asio\+::basic\+\_\+socket\+\_\+iostream@{asio\+::basic\+\_\+socket\+\_\+iostream}}
+\subsubsection[{rdbuf() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Stream\+Socket\+Service  = stream\+\_\+socket\+\_\+service$<$\+Protocol$>$, typename Time  = steady\+\_\+timer\+::clock\+\_\+type, typename Time\+Traits  = steady\+\_\+timer\+::traits\+\_\+type, typename Timer\+Service  = steady\+\_\+timer\+::service\+\_\+type$>$ {\bf basic\+\_\+socket\+\_\+streambuf}$<$Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service$>$$\ast$ {\bf asio\+::basic\+\_\+socket\+\_\+iostream}$<$ Protocol, Stream\+Socket\+Service, Time, Time\+Traits, Timer\+Service $>$\+::rdbuf (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1basic__socket__iostream_ad8158862edcecfc312c0229631e1d0d6}
+
+
+Return a pointer to the underlying streambuf. 
+
+
+
+Definition at line 202 of file basic\+\_\+socket\+\_\+iostream.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{basic__socket__iostream_8hpp}{basic\+\_\+socket\+\_\+iostream.\+hpp}\end{DoxyCompactItemize}

@@ -1,0 +1,61 @@
+\hypertarget{c2w__array__trie_8hpp}{}\section{inc/server/lm/models/c2w\+\_\+array\+\_\+trie.hpp File Reference}
+\label{c2w__array__trie_8hpp}\index{inc/server/lm/models/c2w\+\_\+array\+\_\+trie.\+hpp@{inc/server/lm/models/c2w\+\_\+array\+\_\+trie.\+hpp}}
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include \char`\"{}server/lm/lm\+\_\+consts.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/logging/logger.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}layered\+\_\+trie\+\_\+base.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/aword\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}server/lm/dictionaries/hashing\+\_\+word\+\_\+index.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common/utils/containers/array\+\_\+utils.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_1_1_t_word_id_p_b_data}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+C2\+W\+Array\+Trie\+::\+T\+Word\+Id\+P\+B\+Data}
+\item 
+struct \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_1_1_t_ctx_id_prob_data}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+C2\+W\+Array\+Trie\+::\+T\+Ctx\+Id\+Prob\+Data}
+\item 
+class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_w_array_trie}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+C2\+W\+Array\+Trie$<$ Word\+Index\+Type $>$}
+\item 
+struct \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_w_array_trie_1_1_t_sub_arr_reference}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+C2\+W\+Array\+Trie$<$ Word\+Index\+Type $>$\+::\+T\+Sub\+Arr\+Reference}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceuva}{uva}
+\item 
+ \hyperlink{namespaceuva_1_1smt}{uva\+::smt}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd}{uva\+::smt\+::bpbd}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server}{uva\+::smt\+::bpbd\+::server}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm}{uva\+::smt\+::bpbd\+::server\+::lm}
+\item 
+ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+C2\+W\+Array\+Trie}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_w_array_trie}{C2\+W\+Array\+Trie}$<$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1basic__word__index}{basic\+\_\+word\+\_\+index} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a454a32eb35e3a62f7c0e1f223955e241}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+C2\+W\+Array\+Trie\+Basic}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_w_array_trie}{C2\+W\+Array\+Trie}$<$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1counting__word__index}{counting\+\_\+word\+\_\+index} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a6332586fdb6537c927babe65eea4c5dc}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+C2\+W\+Array\+Trie\+Count}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_w_array_trie}{C2\+W\+Array\+Trie}$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_a3001583c904eec702b4a4125082a7ecd}{basic\+\_\+optimizing\+\_\+word\+\_\+index} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a4e48b9bf4c470f14f3598b0cc8b85bed}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+C2\+W\+Array\+Trie\+Opt\+Basic}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_w_array_trie}{C2\+W\+Array\+Trie}$<$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_a61cbd647b15de785ccf4cdd26661c366}{counting\+\_\+optimizing\+\_\+word\+\_\+index} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ac63a349121a4e9b501809e94b6c9b1c4}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+C2\+W\+Array\+Trie\+Opt\+Count}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_w_array_trie}{C2\+W\+Array\+Trie}$<$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1hashing__word__index}{hashing\+\_\+word\+\_\+index} $>$ \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_a1be2bc079ca976ffd330763977d42672}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+T\+C2\+W\+Array\+Trie\+Hashing}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_adb90cfa23dc758f324dc21c5f7ee1307}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+C2\+W\+Array\+Trie\+::operator$<$} (const T\+Word\+Id\+P\+B\+Data \&one, const T\+Word\+Id\+P\+B\+Data \&two)
+\item 
+int8\+\_\+t \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_a513652b265146140d708ab51fe228c8c}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+C2\+W\+Array\+Trie\+::compare} (const T\+Ctx\+Id\+Prob\+Data \&one, const T\+Ctx\+Id\+Prob\+Data \&two)
+\item 
+bool \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_aa66ad35cb3a0b2e806a1add9315697fe}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+C2\+W\+Array\+Trie\+::operator$<$} (const T\+Ctx\+Id\+Prob\+Data \&one, const T\+Ctx\+Id\+Prob\+Data \&two)
+\item 
+bool \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_ae42b69355b336c9bd2639f0ed2316173}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+C2\+W\+Array\+Trie\+::operator$>$} (const T\+Ctx\+Id\+Prob\+Data \&one, const T\+Ctx\+Id\+Prob\+Data \&two)
+\item 
+bool \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_a042b571ef861faf12071f1fda94134a2}{uva\+::smt\+::bpbd\+::server\+::lm\+::\+\_\+\+\_\+\+C2\+W\+Array\+Trie\+::operator==} (const T\+Ctx\+Id\+Prob\+Data \&one, const T\+Ctx\+Id\+Prob\+Data \&two)
+\end{DoxyCompactItemize}

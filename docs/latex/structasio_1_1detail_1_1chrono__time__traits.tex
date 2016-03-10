@@ -1,0 +1,141 @@
+\hypertarget{structasio_1_1detail_1_1chrono__time__traits}{}\section{asio\+:\+:detail\+:\+:chrono\+\_\+time\+\_\+traits$<$ Clock, Wait\+Traits $>$ Struct Template Reference}
+\label{structasio_1_1detail_1_1chrono__time__traits}\index{asio\+::detail\+::chrono\+\_\+time\+\_\+traits$<$ Clock, Wait\+Traits $>$@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits$<$ Clock, Wait\+Traits $>$}}
+
+
+{\ttfamily \#include $<$chrono\+\_\+time\+\_\+traits.\+hpp$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1detail_1_1chrono__time__traits_1_1posix__time__duration}{posix\+\_\+time\+\_\+duration}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Clock \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a0043b268ffdb59f6b880a96512ab5453}{clock\+\_\+type}
+\item 
+typedef clock\+\_\+type\+::duration \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a7f122a7cb603e7516bb6595016960775}{duration\+\_\+type}
+\item 
+typedef clock\+\_\+type\+::time\+\_\+point \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}{time\+\_\+type}
+\item 
+typedef duration\+\_\+type\+::period \hyperlink{structasio_1_1detail_1_1chrono__time__traits_aebb85fcb3beb946b4ea037a411b6d931}{period\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}{time\+\_\+type} \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a338cedf2fb1814b9e1fa6f841d643945}{now} ()
+\item 
+static \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}{time\+\_\+type} \hyperlink{structasio_1_1detail_1_1chrono__time__traits_acd393376947e8f72bda0defba4e35929}{add} (const \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}{time\+\_\+type} \&t, const \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a7f122a7cb603e7516bb6595016960775}{duration\+\_\+type} \&d)
+\item 
+static \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a7f122a7cb603e7516bb6595016960775}{duration\+\_\+type} \hyperlink{structasio_1_1detail_1_1chrono__time__traits_acdcf3583f2ab08dcfe3af9c4455f85ae}{subtract} (const \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}{time\+\_\+type} \&t1, const \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}{time\+\_\+type} \&t2)
+\item 
+static bool \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a12702d45a542fac5c4558be6784f6de1}{less\+\_\+than} (const \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}{time\+\_\+type} \&t1, const \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}{time\+\_\+type} \&t2)
+\item 
+static \hyperlink{classasio_1_1detail_1_1chrono__time__traits_1_1posix__time__duration}{posix\+\_\+time\+\_\+duration} \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a892a428f4ba5ee4ef390838ad440784c}{to\+\_\+posix\+\_\+duration} (const \hyperlink{structasio_1_1detail_1_1chrono__time__traits_a7f122a7cb603e7516bb6595016960775}{duration\+\_\+type} \&d)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Clock, typename Wait\+Traits$>$struct asio\+::detail\+::chrono\+\_\+time\+\_\+traits$<$ Clock, Wait\+Traits $>$}
+
+
+
+Definition at line 34 of file chrono\+\_\+time\+\_\+traits.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{structasio_1_1detail_1_1chrono__time__traits_a0043b268ffdb59f6b880a96512ab5453}{}\index{asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}!clock\+\_\+type@{clock\+\_\+type}}
+\index{clock\+\_\+type@{clock\+\_\+type}!asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}}
+\subsubsection[{clock\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock, typename Wait\+Traits$>$ typedef Clock {\bf asio\+::detail\+::chrono\+\_\+time\+\_\+traits}$<$ Clock, Wait\+Traits $>$\+::{\bf clock\+\_\+type}}\label{structasio_1_1detail_1_1chrono__time__traits_a0043b268ffdb59f6b880a96512ab5453}
+
+
+Definition at line 37 of file chrono\+\_\+time\+\_\+traits.\+hpp.
+
+\hypertarget{structasio_1_1detail_1_1chrono__time__traits_a7f122a7cb603e7516bb6595016960775}{}\index{asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}!duration\+\_\+type@{duration\+\_\+type}}
+\index{duration\+\_\+type@{duration\+\_\+type}!asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}}
+\subsubsection[{duration\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock, typename Wait\+Traits$>$ typedef clock\+\_\+type\+::duration {\bf asio\+::detail\+::chrono\+\_\+time\+\_\+traits}$<$ Clock, Wait\+Traits $>$\+::{\bf duration\+\_\+type}}\label{structasio_1_1detail_1_1chrono__time__traits_a7f122a7cb603e7516bb6595016960775}
+
+
+Definition at line 40 of file chrono\+\_\+time\+\_\+traits.\+hpp.
+
+\hypertarget{structasio_1_1detail_1_1chrono__time__traits_aebb85fcb3beb946b4ea037a411b6d931}{}\index{asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}!period\+\_\+type@{period\+\_\+type}}
+\index{period\+\_\+type@{period\+\_\+type}!asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}}
+\subsubsection[{period\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock, typename Wait\+Traits$>$ typedef duration\+\_\+type\+::period {\bf asio\+::detail\+::chrono\+\_\+time\+\_\+traits}$<$ Clock, Wait\+Traits $>$\+::{\bf period\+\_\+type}}\label{structasio_1_1detail_1_1chrono__time__traits_aebb85fcb3beb946b4ea037a411b6d931}
+
+
+Definition at line 46 of file chrono\+\_\+time\+\_\+traits.\+hpp.
+
+\hypertarget{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}{}\index{asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}!time\+\_\+type@{time\+\_\+type}}
+\index{time\+\_\+type@{time\+\_\+type}!asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}}
+\subsubsection[{time\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock, typename Wait\+Traits$>$ typedef clock\+\_\+type\+::time\+\_\+point {\bf asio\+::detail\+::chrono\+\_\+time\+\_\+traits}$<$ Clock, Wait\+Traits $>$\+::{\bf time\+\_\+type}}\label{structasio_1_1detail_1_1chrono__time__traits_a19c14f4d45a8b164d2ea4590eebc1c10}
+
+
+Definition at line 43 of file chrono\+\_\+time\+\_\+traits.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{structasio_1_1detail_1_1chrono__time__traits_acd393376947e8f72bda0defba4e35929}{}\index{asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}!add@{add}}
+\index{add@{add}!asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}}
+\subsubsection[{add(const time\+\_\+type \&t, const duration\+\_\+type \&d)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock, typename Wait\+Traits$>$ static {\bf time\+\_\+type} {\bf asio\+::detail\+::chrono\+\_\+time\+\_\+traits}$<$ Clock, Wait\+Traits $>$\+::add (
+\begin{DoxyParamCaption}
+\item[{const {\bf time\+\_\+type} \&}]{t, }
+\item[{const {\bf duration\+\_\+type} \&}]{d}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{structasio_1_1detail_1_1chrono__time__traits_acd393376947e8f72bda0defba4e35929}
+
+
+Definition at line 55 of file chrono\+\_\+time\+\_\+traits.\+hpp.
+
+\hypertarget{structasio_1_1detail_1_1chrono__time__traits_a12702d45a542fac5c4558be6784f6de1}{}\index{asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}!less\+\_\+than@{less\+\_\+than}}
+\index{less\+\_\+than@{less\+\_\+than}!asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}}
+\subsubsection[{less\+\_\+than(const time\+\_\+type \&t1, const time\+\_\+type \&t2)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock, typename Wait\+Traits$>$ static bool {\bf asio\+::detail\+::chrono\+\_\+time\+\_\+traits}$<$ Clock, Wait\+Traits $>$\+::less\+\_\+than (
+\begin{DoxyParamCaption}
+\item[{const {\bf time\+\_\+type} \&}]{t1, }
+\item[{const {\bf time\+\_\+type} \&}]{t2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{structasio_1_1detail_1_1chrono__time__traits_a12702d45a542fac5c4558be6784f6de1}
+
+
+Definition at line 117 of file chrono\+\_\+time\+\_\+traits.\+hpp.
+
+\hypertarget{structasio_1_1detail_1_1chrono__time__traits_a338cedf2fb1814b9e1fa6f841d643945}{}\index{asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}!now@{now}}
+\index{now@{now}!asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}}
+\subsubsection[{now()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock, typename Wait\+Traits$>$ static {\bf time\+\_\+type} {\bf asio\+::detail\+::chrono\+\_\+time\+\_\+traits}$<$ Clock, Wait\+Traits $>$\+::now (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{structasio_1_1detail_1_1chrono__time__traits_a338cedf2fb1814b9e1fa6f841d643945}
+
+
+Definition at line 49 of file chrono\+\_\+time\+\_\+traits.\+hpp.
+
+\hypertarget{structasio_1_1detail_1_1chrono__time__traits_acdcf3583f2ab08dcfe3af9c4455f85ae}{}\index{asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}!subtract@{subtract}}
+\index{subtract@{subtract}!asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}}
+\subsubsection[{subtract(const time\+\_\+type \&t1, const time\+\_\+type \&t2)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock, typename Wait\+Traits$>$ static {\bf duration\+\_\+type} {\bf asio\+::detail\+::chrono\+\_\+time\+\_\+traits}$<$ Clock, Wait\+Traits $>$\+::subtract (
+\begin{DoxyParamCaption}
+\item[{const {\bf time\+\_\+type} \&}]{t1, }
+\item[{const {\bf time\+\_\+type} \&}]{t2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{structasio_1_1detail_1_1chrono__time__traits_acdcf3583f2ab08dcfe3af9c4455f85ae}
+
+
+Definition at line 73 of file chrono\+\_\+time\+\_\+traits.\+hpp.
+
+\hypertarget{structasio_1_1detail_1_1chrono__time__traits_a892a428f4ba5ee4ef390838ad440784c}{}\index{asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}!to\+\_\+posix\+\_\+duration@{to\+\_\+posix\+\_\+duration}}
+\index{to\+\_\+posix\+\_\+duration@{to\+\_\+posix\+\_\+duration}!asio\+::detail\+::chrono\+\_\+time\+\_\+traits@{asio\+::detail\+::chrono\+\_\+time\+\_\+traits}}
+\subsubsection[{to\+\_\+posix\+\_\+duration(const duration\+\_\+type \&d)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock, typename Wait\+Traits$>$ static {\bf posix\+\_\+time\+\_\+duration} {\bf asio\+::detail\+::chrono\+\_\+time\+\_\+traits}$<$ Clock, Wait\+Traits $>$\+::to\+\_\+posix\+\_\+duration (
+\begin{DoxyParamCaption}
+\item[{const {\bf duration\+\_\+type} \&}]{d}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{structasio_1_1detail_1_1chrono__time__traits_a892a428f4ba5ee4ef390838ad440784c}
+
+
+Definition at line 179 of file chrono\+\_\+time\+\_\+traits.\+hpp.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/detail/\hyperlink{chrono__time__traits_8hpp}{chrono\+\_\+time\+\_\+traits.\+hpp}\end{DoxyCompactItemize}

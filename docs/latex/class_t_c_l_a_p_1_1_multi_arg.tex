@@ -1,0 +1,441 @@
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg}{}\section{T\+C\+L\+A\+P\+:\+:Multi\+Arg$<$ T $>$ Class Template Reference}
+\label{class_t_c_l_a_p_1_1_multi_arg}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg$<$ T $>$@{T\+C\+L\+A\+P\+::\+Multi\+Arg$<$ T $>$}}
+
+
+{\ttfamily \#include $<$Multi\+Arg.\+h$>$}
+
+Inheritance diagram for T\+C\+L\+A\+P\+:\+:Multi\+Arg$<$ T $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_t_c_l_a_p_1_1_multi_arg}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::vector$<$ T $>$ \hyperlink{class_t_c_l_a_p_1_1_multi_arg_adae435f03fdde769bca57327487aab78}{container\+\_\+type}
+\item 
+typedef container\+\_\+type\+::iterator \hyperlink{class_t_c_l_a_p_1_1_multi_arg_a34196784baca2bd5aa079d639d49a7ca}{iterator}
+\item 
+typedef container\+\_\+type\+::const\+\_\+iterator \hyperlink{class_t_c_l_a_p_1_1_multi_arg_a3f8e9e8f5dcc7d3e6a518f42134cf64f}{const\+\_\+iterator}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_multi_arg_a49b5437c7f06cd6864c07dc59814a953}{Multi\+Arg} (const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, bool req, const std\+::string \&type\+Desc, \hyperlink{class_t_c_l_a_p_1_1_visitor}{Visitor} $\ast$v=N\+U\+L\+L)
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_multi_arg_a48c90a873389280f72fb5d6ef707b400}{Multi\+Arg} (const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, bool req, const std\+::string \&type\+Desc, \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&parser, \hyperlink{class_t_c_l_a_p_1_1_visitor}{Visitor} $\ast$v=N\+U\+L\+L)
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_multi_arg_a38b1e32a8189356bd1e5ec7c2d43c1a3}{Multi\+Arg} (const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, bool req, \hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint}$<$ T $>$ $\ast$constraint, \hyperlink{class_t_c_l_a_p_1_1_visitor}{Visitor} $\ast$v=N\+U\+L\+L)
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_multi_arg_ad4fcd892de2f1ef275c30dc499215208}{Multi\+Arg} (const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, bool req, \hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint}$<$ T $>$ $\ast$constraint, \hyperlink{class_t_c_l_a_p_1_1_cmd_line_interface}{Cmd\+Line\+Interface} \&parser, \hyperlink{class_t_c_l_a_p_1_1_visitor}{Visitor} $\ast$v=N\+U\+L\+L)
+\item 
+virtual bool \hyperlink{class_t_c_l_a_p_1_1_multi_arg_a344d3cf2128c510f92825e421ea667c7}{process\+Arg} (int $\ast$i, std\+::vector$<$ std\+::string $>$ \&args)
+\item 
+const std\+::vector$<$ T $>$ \& \hyperlink{class_t_c_l_a_p_1_1_multi_arg_aff4ff7f8d854dd668aaaf80511d8002b}{get\+Value} ()
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_multi_arg_a3f8e9e8f5dcc7d3e6a518f42134cf64f}{const\+\_\+iterator} \hyperlink{class_t_c_l_a_p_1_1_multi_arg_a48058500cdc9ef8b9c2c9e6394ab499d}{begin} () const 
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_multi_arg_a3f8e9e8f5dcc7d3e6a518f42134cf64f}{const\+\_\+iterator} \hyperlink{class_t_c_l_a_p_1_1_multi_arg_ac30e414b799158ff6710fb1e7ce83aee}{end} () const 
+\item 
+virtual std\+::string \hyperlink{class_t_c_l_a_p_1_1_multi_arg_ac2c962112704b899f4c8b8565f2c4bb3}{short\+I\+D} (const std\+::string \&val=\char`\"{}val\char`\"{}) const 
+\item 
+virtual std\+::string \hyperlink{class_t_c_l_a_p_1_1_multi_arg_a16c00fbce6876bceabb3dab4723f7e79}{long\+I\+D} (const std\+::string \&val=\char`\"{}val\char`\"{}) const 
+\item 
+virtual bool \hyperlink{class_t_c_l_a_p_1_1_multi_arg_a3cb7fec92f3d70e0e455c6bc33fbebab}{is\+Required} () const 
+\item 
+virtual bool \hyperlink{class_t_c_l_a_p_1_1_multi_arg_ab05097627c81cd65975fa1b99fae9bd0}{allow\+More} ()
+\item 
+virtual void \hyperlink{class_t_c_l_a_p_1_1_multi_arg_ab21f01f22978a1c0eea716399e9ff89b}{reset} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_t_c_l_a_p_1_1_multi_arg_a26cbf5e86ac66d876f9285f1fda22470}{\+\_\+extract\+Value} (const std\+::string \&val)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ T $>$ \hyperlink{class_t_c_l_a_p_1_1_multi_arg_aabcab153e09608343713a6ffef431783}{\+\_\+values}
+\item 
+std\+::string \hyperlink{class_t_c_l_a_p_1_1_multi_arg_a0f6a2b04fe15d1ede95165fc6e1949e8}{\+\_\+type\+Desc}
+\item 
+\hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint}$<$ T $>$ $\ast$ \hyperlink{class_t_c_l_a_p_1_1_multi_arg_afc754048b66bc3a251268947273ea906}{\+\_\+constraint}
+\item 
+bool \hyperlink{class_t_c_l_a_p_1_1_multi_arg_a93a3ef586f763d46839c0e737689b85f}{\+\_\+allow\+More}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T$>$class T\+C\+L\+A\+P\+::\+Multi\+Arg$<$ T $>$}
+
+An argument that allows multiple values of type T to be specified. Very similar to a \hyperlink{class_t_c_l_a_p_1_1_value_arg}{Value\+Arg}, except a vector of values will be returned instead of just one. 
+
+Definition at line 39 of file Multi\+Arg.\+h.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a3f8e9e8f5dcc7d3e6a518f42134cf64f}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!const\+\_\+iterator@{const\+\_\+iterator}}
+\index{const\+\_\+iterator@{const\+\_\+iterator}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{const\+\_\+iterator}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ typedef container\+\_\+type\+::const\+\_\+iterator {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::{\bf const\+\_\+iterator}}\label{class_t_c_l_a_p_1_1_multi_arg_a3f8e9e8f5dcc7d3e6a518f42134cf64f}
+
+
+Definition at line 44 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_adae435f03fdde769bca57327487aab78}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!container\+\_\+type@{container\+\_\+type}}
+\index{container\+\_\+type@{container\+\_\+type}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{container\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ typedef std\+::vector$<$T$>$ {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::{\bf container\+\_\+type}}\label{class_t_c_l_a_p_1_1_multi_arg_adae435f03fdde769bca57327487aab78}
+
+
+Definition at line 42 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a34196784baca2bd5aa079d639d49a7ca}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!iterator@{iterator}}
+\index{iterator@{iterator}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{iterator}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ typedef container\+\_\+type\+::iterator {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::{\bf iterator}}\label{class_t_c_l_a_p_1_1_multi_arg_a34196784baca2bd5aa079d639d49a7ca}
+
+
+Definition at line 43 of file Multi\+Arg.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a49b5437c7f06cd6864c07dc59814a953}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!Multi\+Arg@{Multi\+Arg}}
+\index{Multi\+Arg@{Multi\+Arg}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{Multi\+Arg(const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, bool req, const std\+::string \&type\+Desc, Visitor $\ast$v=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::{\bf Multi\+Arg} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{flag, }
+\item[{const std\+::string \&}]{name, }
+\item[{const std\+::string \&}]{desc, }
+\item[{bool}]{req, }
+\item[{const std\+::string \&}]{type\+Desc, }
+\item[{{\bf Visitor} $\ast$}]{v = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_multi_arg_a49b5437c7f06cd6864c07dc59814a953}
+Constructor. 
+\begin{DoxyParams}{Parameters}
+{\em flag} & -\/ The one character flag that identifies this argument on the command line. \\
+\hline
+{\em name} & -\/ A one word name for the argument. Can be used as a long flag on the command line. \\
+\hline
+{\em desc} & -\/ A description of what the argument is for or does. \\
+\hline
+{\em req} & -\/ Whether the argument is required on the command line. \\
+\hline
+{\em type\+Desc} & -\/ A short, human readable description of the type that this object expects. This is used in the generation of the U\+S\+A\+G\+E statement. The goal is to be helpful to the end user of the program. \\
+\hline
+{\em v} & -\/ An optional visitor. You probably should not use this unless you have a very good reason. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 234 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a48c90a873389280f72fb5d6ef707b400}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!Multi\+Arg@{Multi\+Arg}}
+\index{Multi\+Arg@{Multi\+Arg}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{Multi\+Arg(const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, bool req, const std\+::string \&type\+Desc, Cmd\+Line\+Interface \&parser, Visitor $\ast$v=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::{\bf Multi\+Arg} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{flag, }
+\item[{const std\+::string \&}]{name, }
+\item[{const std\+::string \&}]{desc, }
+\item[{bool}]{req, }
+\item[{const std\+::string \&}]{type\+Desc, }
+\item[{{\bf Cmd\+Line\+Interface} \&}]{parser, }
+\item[{{\bf Visitor} $\ast$}]{v = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_multi_arg_a48c90a873389280f72fb5d6ef707b400}
+Constructor. 
+\begin{DoxyParams}{Parameters}
+{\em flag} & -\/ The one character flag that identifies this argument on the command line. \\
+\hline
+{\em name} & -\/ A one word name for the argument. Can be used as a long flag on the command line. \\
+\hline
+{\em desc} & -\/ A description of what the argument is for or does. \\
+\hline
+{\em req} & -\/ Whether the argument is required on the command line. \\
+\hline
+{\em type\+Desc} & -\/ A short, human readable description of the type that this object expects. This is used in the generation of the U\+S\+A\+G\+E statement. The goal is to be helpful to the end user of the program. \\
+\hline
+{\em parser} & -\/ A \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} parser object to add this \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} to \\
+\hline
+{\em v} & -\/ An optional visitor. You probably should not use this unless you have a very good reason. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 250 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a38b1e32a8189356bd1e5ec7c2d43c1a3}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!Multi\+Arg@{Multi\+Arg}}
+\index{Multi\+Arg@{Multi\+Arg}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{Multi\+Arg(const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, bool req, Constraint$<$ T $>$ $\ast$constraint, Visitor $\ast$v=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::{\bf Multi\+Arg} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{flag, }
+\item[{const std\+::string \&}]{name, }
+\item[{const std\+::string \&}]{desc, }
+\item[{bool}]{req, }
+\item[{{\bf Constraint}$<$ T $>$ $\ast$}]{constraint, }
+\item[{{\bf Visitor} $\ast$}]{v = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_multi_arg_a38b1e32a8189356bd1e5ec7c2d43c1a3}
+Constructor. 
+\begin{DoxyParams}{Parameters}
+{\em flag} & -\/ The one character flag that identifies this argument on the command line. \\
+\hline
+{\em name} & -\/ A one word name for the argument. Can be used as a long flag on the command line. \\
+\hline
+{\em desc} & -\/ A description of what the argument is for or does. \\
+\hline
+{\em req} & -\/ Whether the argument is required on the command line. \\
+\hline
+{\em constraint} & -\/ A pointer to a \hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint} object used to constrain this \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}. \\
+\hline
+{\em v} & -\/ An optional visitor. You probably should not use this unless you have a very good reason. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 271 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_ad4fcd892de2f1ef275c30dc499215208}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!Multi\+Arg@{Multi\+Arg}}
+\index{Multi\+Arg@{Multi\+Arg}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{Multi\+Arg(const std\+::string \&flag, const std\+::string \&name, const std\+::string \&desc, bool req, Constraint$<$ T $>$ $\ast$constraint, Cmd\+Line\+Interface \&parser, Visitor $\ast$v=\+N\+U\+L\+L)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::{\bf Multi\+Arg} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{flag, }
+\item[{const std\+::string \&}]{name, }
+\item[{const std\+::string \&}]{desc, }
+\item[{bool}]{req, }
+\item[{{\bf Constraint}$<$ T $>$ $\ast$}]{constraint, }
+\item[{{\bf Cmd\+Line\+Interface} \&}]{parser, }
+\item[{{\bf Visitor} $\ast$}]{v = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_multi_arg_ad4fcd892de2f1ef275c30dc499215208}
+Constructor. 
+\begin{DoxyParams}{Parameters}
+{\em flag} & -\/ The one character flag that identifies this argument on the command line. \\
+\hline
+{\em name} & -\/ A one word name for the argument. Can be used as a long flag on the command line. \\
+\hline
+{\em desc} & -\/ A description of what the argument is for or does. \\
+\hline
+{\em req} & -\/ Whether the argument is required on the command line. \\
+\hline
+{\em constraint} & -\/ A pointer to a \hyperlink{class_t_c_l_a_p_1_1_constraint}{Constraint} object used to constrain this \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}. \\
+\hline
+{\em parser} & -\/ A \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line} parser object to add this \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} to \\
+\hline
+{\em v} & -\/ An optional visitor. You probably should not use this unless you have a very good reason. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 287 of file Multi\+Arg.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a26cbf5e86ac66d876f9285f1fda22470}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!\+\_\+extract\+Value@{\+\_\+extract\+Value}}
+\index{\+\_\+extract\+Value@{\+\_\+extract\+Value}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{\+\_\+extract\+Value(const std\+::string \&val)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::\+\_\+extract\+Value (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{val}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_multi_arg_a26cbf5e86ac66d876f9285f1fda22470}
+Extracts the value from the string. Attempts to parse string as type T, if this fails an exception is thrown. 
+\begin{DoxyParams}{Parameters}
+{\em val} & -\/ The string to be read. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 398 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_ab05097627c81cd65975fa1b99fae9bd0}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!allow\+More@{allow\+More}}
+\index{allow\+More@{allow\+More}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{allow\+More()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ bool {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::allow\+More (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_multi_arg_ab05097627c81cd65975fa1b99fae9bd0}
+Used for Multi\+Args and \hyperlink{class_t_c_l_a_p_1_1_xor_handler}{Xor\+Handler} to determine whether args can still be set. 
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_arg_a9aef735d37ef95ca1b7dc7a07850b984}{T\+C\+L\+A\+P\+::\+Arg}.
+
+
+
+Definition at line 417 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a48058500cdc9ef8b9c2c9e6394ab499d}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!begin@{begin}}
+\index{begin@{begin}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{begin() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf const\+\_\+iterator} {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::begin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_multi_arg_a48058500cdc9ef8b9c2c9e6394ab499d}
+Returns an iterator over the values parsed from the command line. 
+
+Definition at line 194 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_ac30e414b799158ff6710fb1e7ce83aee}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!end@{end}}
+\index{end@{end}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{end() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf const\+\_\+iterator} {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::end (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{class_t_c_l_a_p_1_1_multi_arg_ac30e414b799158ff6710fb1e7ce83aee}
+Returns the end of the values parsed from the command line. 
+
+Definition at line 200 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_aff4ff7f8d854dd668aaaf80511d8002b}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!get\+Value@{get\+Value}}
+\index{get\+Value@{get\+Value}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{get\+Value()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ const std\+::vector$<$ T $>$ \& {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::get\+Value (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_t_c_l_a_p_1_1_multi_arg_aff4ff7f8d854dd668aaaf80511d8002b}
+Returns a vector of type T containing the values parsed from the command line. 
+
+Definition at line 305 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a3cb7fec92f3d70e0e455c6bc33fbebab}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!is\+Required@{is\+Required}}
+\index{is\+Required@{is\+Required}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{is\+Required() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ bool {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::is\+Required (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_multi_arg_a3cb7fec92f3d70e0e455c6bc33fbebab}
+Once we\textquotesingle{}ve matched the first value, then the arg is no longer required. 
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_arg_a00a3cfdb2b6e9a111ad39cbd4978b96c}{T\+C\+L\+A\+P\+::\+Arg}.
+
+
+
+Definition at line 383 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a16c00fbce6876bceabb3dab4723f7e79}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!long\+I\+D@{long\+I\+D}}
+\index{long\+I\+D@{long\+I\+D}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{long\+I\+D(const std\+::string \&val=""val"") const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ std\+::string {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::long\+I\+D (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{val = {\ttfamily \char`\"{}val\char`\"{}}}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_multi_arg_a16c00fbce6876bceabb3dab4723f7e79}
+Returns the a long id string. Used in the usage. 
+\begin{DoxyParams}{Parameters}
+{\em val} & -\/ value to be used. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_arg_aad93aff46e1fc67e3853765f565bfa96}{T\+C\+L\+A\+P\+::\+Arg}.
+
+
+
+Reimplemented in \hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a1e7262967b850fb30e1003890a45f1ca}{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg$<$ T $>$}.
+
+
+
+Definition at line 372 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a344d3cf2128c510f92825e421ea667c7}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!process\+Arg@{process\+Arg}}
+\index{process\+Arg@{process\+Arg}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{process\+Arg(int $\ast$i, std\+::vector$<$ std\+::string $>$ \&args)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ bool {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::process\+Arg (
+\begin{DoxyParamCaption}
+\item[{int $\ast$}]{i, }
+\item[{std\+::vector$<$ std\+::string $>$ \&}]{args}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_multi_arg_a344d3cf2128c510f92825e421ea667c7}
+Handles the processing of the argument. This re-\/implements the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} version of this method to set the \+\_\+value of the argument appropriately. It knows the difference between labeled and unlabeled. 
+\begin{DoxyParams}{Parameters}
+{\em i} & -\/ Pointer the the current argument in the list. \\
+\hline
+{\em args} & -\/ Mutable list of strings. Passed from \hyperlink{_c_make_c_compiler_id_8c_a0ddf1224851353fc92bfbff6f499fa97}{main()}. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_t_c_l_a_p_1_1_arg_a61ffe2f660a76111d256f7b22a686146}{T\+C\+L\+A\+P\+::\+Arg}.
+
+
+
+Reimplemented in \hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_aa5a35665519518dcb60e53d3a4858802}{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg$<$ T $>$}.
+
+
+
+Definition at line 308 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_ab21f01f22978a1c0eea716399e9ff89b}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!reset@{reset}}
+\index{reset@{reset}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{reset()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::reset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_multi_arg_ab21f01f22978a1c0eea716399e9ff89b}
+Clears the \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg} object and allows it to be reused by new command lines. 
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_arg_ab5b5dc9a9b0381561f0684523f943a2c}{T\+C\+L\+A\+P\+::\+Arg}.
+
+
+
+Definition at line 425 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_ac2c962112704b899f4c8b8565f2c4bb3}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!short\+I\+D@{short\+I\+D}}
+\index{short\+I\+D@{short\+I\+D}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{short\+I\+D(const std\+::string \&val=""val"") const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ std\+::string {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::short\+I\+D (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{val = {\ttfamily \char`\"{}val\char`\"{}}}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\label{class_t_c_l_a_p_1_1_multi_arg_ac2c962112704b899f4c8b8565f2c4bb3}
+Returns the a short id string. Used in the usage. 
+\begin{DoxyParams}{Parameters}
+{\em val} & -\/ value to be used. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_t_c_l_a_p_1_1_arg_aef8efaf3811162b2b2b2a84c6db280fa}{T\+C\+L\+A\+P\+::\+Arg}.
+
+
+
+Reimplemented in \hyperlink{class_t_c_l_a_p_1_1_unlabeled_multi_arg_a5971af8f29fa4d798ffde3293504c15b}{T\+C\+L\+A\+P\+::\+Unlabeled\+Multi\+Arg$<$ T $>$}.
+
+
+
+Definition at line 362 of file Multi\+Arg.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a93a3ef586f763d46839c0e737689b85f}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!\+\_\+allow\+More@{\+\_\+allow\+More}}
+\index{\+\_\+allow\+More@{\+\_\+allow\+More}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{\+\_\+allow\+More}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ bool {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::\+\_\+allow\+More\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_multi_arg_a93a3ef586f763d46839c0e737689b85f}
+Used by \hyperlink{class_t_c_l_a_p_1_1_xor_handler}{Xor\+Handler} to decide whether to keep parsing for this arg. 
+
+Definition at line 74 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_afc754048b66bc3a251268947273ea906}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!\+\_\+constraint@{\+\_\+constraint}}
+\index{\+\_\+constraint@{\+\_\+constraint}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{\+\_\+constraint}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ {\bf Constraint}$<$T$>$$\ast$ {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::\+\_\+constraint\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_multi_arg_afc754048b66bc3a251268947273ea906}
+A list of constraint on this \hyperlink{class_t_c_l_a_p_1_1_arg}{Arg}. 
+
+Definition at line 61 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_a0f6a2b04fe15d1ede95165fc6e1949e8}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!\+\_\+type\+Desc@{\+\_\+type\+Desc}}
+\index{\+\_\+type\+Desc@{\+\_\+type\+Desc}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{\+\_\+type\+Desc}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ std\+::string {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::\+\_\+type\+Desc\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_multi_arg_a0f6a2b04fe15d1ede95165fc6e1949e8}
+The description of type T to be used in the usage. 
+
+Definition at line 56 of file Multi\+Arg.\+h.
+
+\hypertarget{class_t_c_l_a_p_1_1_multi_arg_aabcab153e09608343713a6ffef431783}{}\index{T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}!\+\_\+values@{\+\_\+values}}
+\index{\+\_\+values@{\+\_\+values}!T\+C\+L\+A\+P\+::\+Multi\+Arg@{T\+C\+L\+A\+P\+::\+Multi\+Arg}}
+\subsubsection[{\+\_\+values}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ std\+::vector$<$T$>$ {\bf T\+C\+L\+A\+P\+::\+Multi\+Arg}$<$ T $>$\+::\+\_\+values\hspace{0.3cm}{\ttfamily [protected]}}\label{class_t_c_l_a_p_1_1_multi_arg_aabcab153e09608343713a6ffef431783}
+The list of values parsed from the \hyperlink{class_t_c_l_a_p_1_1_cmd_line}{Cmd\+Line}. 
+
+Definition at line 51 of file Multi\+Arg.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/tclap/\hyperlink{_multi_arg_8h}{Multi\+Arg.\+h}\end{DoxyCompactItemize}

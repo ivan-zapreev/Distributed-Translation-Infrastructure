@@ -1,0 +1,526 @@
+\hypertarget{group__connect}{}\section{asio\+:\+:connect}
+\label{group__connect}\index{asio\+::connect@{asio\+::connect}}
+
+
+Establishes a socket connection by trying each endpoint in a sequence.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ }\\Iterator \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ }\\Iterator \hyperlink{group__connect_ga1bb975e78fb1233032ba2b13a229cc8e}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ }\\Iterator \hyperlink{group__connect_ga8617a800bbe4f0e99be3826d8e48e60e}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ }\\Iterator \hyperlink{group__connect_ga6cc8005658c5ece3566508bc108d4c83}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ }\\Iterator \hyperlink{group__connect_ga9a192c653d045eaa7c8c7817316a52b5}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Connect\+Condition connect\+\_\+condition)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ }\\Iterator \hyperlink{group__connect_gab16905fe7662fdaa7410ea98e4a5d38a}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Connect\+Condition connect\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ }\\Iterator \hyperlink{group__connect_ga85284052d2233e8ea3993625e9f28184}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end, Connect\+Condition connect\+\_\+condition)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ }\\Iterator \hyperlink{group__connect_ga309aa819fa86c14156c10c5374eb0d24}{asio\+::connect} (basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end, Connect\+Condition connect\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Establishes a socket connection by trying each endpoint in a sequence. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Establishes a socket connection by trying each endpoint in a sequence. 
+
+
+
+\subsection{Function Documentation}
+\hypertarget{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{}\index{asio\+::connect@{asio\+::connect}!connect@{connect}}
+\index{connect@{connect}!asio\+::connect@{asio\+::connect}}
+\subsubsection[{connect(basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ Iterator asio\+::connect (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+socket}$<$ Protocol, Socket\+Service $>$ \&}]{s, }
+\item[{Iterator}]{begin}
+\end{DoxyParamCaption}
+)}\label{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}
+
+
+Establishes a socket connection by trying each endpoint in a sequence. 
+
+This function attempts to connect a socket to one of a sequence of endpoints. It does this by repeated calls to the socket\textquotesingle{}s {\ttfamily connect} member function, once for each endpoint in the sequence, until a connection is successfully established.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The socket to be connected. If the socket is already open, it will be closed.\\
+\hline
+{\em begin} & An iterator pointing to the start of a sequence of endpoints.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, an iterator denoting the successfully connected endpoint. Otherwise, the end iterator.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. If the sequence is empty, the associated {\ttfamily \hyperlink{classasio_1_1error__code}{error\+\_\+code}} is \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb}{asio\+::error\+::not\+\_\+found}. Otherwise, contains the error from the last connection attempt.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+This overload assumes that a default constructed object of type {\ttfamily Iterator} represents the end of the sequence. This is a valid assumption for iterator types such as {\ttfamily \hyperlink{classasio_1_1ip_1_1basic__resolver_ad1cc50a31ba4971329a34eb01ef5a21c}{asio\+::ip\+::tcp\+::resolver\+::iterator}}.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+
+\begin{DoxyCode}
+ tcp::resolver r(io\_service);
+tcp::resolver::query q(\textcolor{stringliteral}{"host"}, \textcolor{stringliteral}{"service"});
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{tcp::socket} \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}(io\_service);
+\hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio::connect}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, r.resolve(q)); 
+\end{DoxyCode}
+ 
+\end{DoxyParagraph}
+
+
+Definition at line 44 of file connect.\+hpp.
+
+\hypertarget{group__connect_ga1bb975e78fb1233032ba2b13a229cc8e}{}\index{asio\+::connect@{asio\+::connect}!connect@{connect}}
+\index{connect@{connect}!asio\+::connect@{asio\+::connect}}
+\subsubsection[{connect(basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ Iterator asio\+::connect (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+socket}$<$ Protocol, Socket\+Service $>$ \&}]{s, }
+\item[{Iterator}]{begin, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__connect_ga1bb975e78fb1233032ba2b13a229cc8e}
+
+
+Establishes a socket connection by trying each endpoint in a sequence. 
+
+This function attempts to connect a socket to one of a sequence of endpoints. It does this by repeated calls to the socket\textquotesingle{}s {\ttfamily connect} member function, once for each endpoint in the sequence, until a connection is successfully established.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The socket to be connected. If the socket is already open, it will be closed.\\
+\hline
+{\em begin} & An iterator pointing to the start of a sequence of endpoints.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. If the sequence is empty, set to \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb}{asio\+::error\+::not\+\_\+found}. Otherwise, contains the error from the last connection attempt.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, an iterator denoting the successfully connected endpoint. Otherwise, the end iterator.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This overload assumes that a default constructed object of type {\ttfamily Iterator} represents the end of the sequence. This is a valid assumption for iterator types such as {\ttfamily \hyperlink{classasio_1_1ip_1_1basic__resolver_ad1cc50a31ba4971329a34eb01ef5a21c}{asio\+::ip\+::tcp\+::resolver\+::iterator}}.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+
+\begin{DoxyCode}
+ tcp::resolver r(io\_service);
+tcp::resolver::query q(\textcolor{stringliteral}{"host"}, \textcolor{stringliteral}{"service"});
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{tcp::socket} \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}(io\_service);
+\hyperlink{classasio_1_1error__code}{asio::error\_code} ec;
+\hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio::connect}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, r.resolve(q), ec);
+\textcolor{keywordflow}{if} (ec)
+\{
+  \textcolor{comment}{// An error occurred.}
+\} 
+\end{DoxyCode}
+ 
+\end{DoxyParagraph}
+
+
+Definition at line 53 of file connect.\+hpp.
+
+\hypertarget{group__connect_ga8617a800bbe4f0e99be3826d8e48e60e}{}\index{asio\+::connect@{asio\+::connect}!connect@{connect}}
+\index{connect@{connect}!asio\+::connect@{asio\+::connect}}
+\subsubsection[{connect(basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ Iterator asio\+::connect (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+socket}$<$ Protocol, Socket\+Service $>$ \&}]{s, }
+\item[{Iterator}]{begin, }
+\item[{Iterator}]{end}
+\end{DoxyParamCaption}
+)}\label{group__connect_ga8617a800bbe4f0e99be3826d8e48e60e}
+
+
+Establishes a socket connection by trying each endpoint in a sequence. 
+
+This function attempts to connect a socket to one of a sequence of endpoints. It does this by repeated calls to the socket\textquotesingle{}s {\ttfamily connect} member function, once for each endpoint in the sequence, until a connection is successfully established.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The socket to be connected. If the socket is already open, it will be closed.\\
+\hline
+{\em begin} & An iterator pointing to the start of a sequence of endpoints.\\
+\hline
+{\em end} & An iterator pointing to the end of a sequence of endpoints.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, an iterator denoting the successfully connected endpoint. Otherwise, the end iterator.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. If the sequence is empty, the associated {\ttfamily \hyperlink{classasio_1_1error__code}{error\+\_\+code}} is \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb}{asio\+::error\+::not\+\_\+found}. Otherwise, contains the error from the last connection attempt.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyParagraph}{Example}
+
+\begin{DoxyCode}
+ tcp::resolver r(io\_service);
+tcp::resolver::query q(\textcolor{stringliteral}{"host"}, \textcolor{stringliteral}{"service"});
+tcp::resolver::iterator i = r.resolve(q), \hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{end};
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{tcp::socket} \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}(io\_service);
+\hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio::connect}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, i, \hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{end}); 
+\end{DoxyCode}
+ 
+\end{DoxyParagraph}
+
+
+Definition at line 60 of file connect.\+hpp.
+
+\hypertarget{group__connect_ga6cc8005658c5ece3566508bc108d4c83}{}\index{asio\+::connect@{asio\+::connect}!connect@{connect}}
+\index{connect@{connect}!asio\+::connect@{asio\+::connect}}
+\subsubsection[{connect(basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator $>$ Iterator asio\+::connect (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+socket}$<$ Protocol, Socket\+Service $>$ \&}]{s, }
+\item[{Iterator}]{begin, }
+\item[{Iterator}]{end, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__connect_ga6cc8005658c5ece3566508bc108d4c83}
+
+
+Establishes a socket connection by trying each endpoint in a sequence. 
+
+This function attempts to connect a socket to one of a sequence of endpoints. It does this by repeated calls to the socket\textquotesingle{}s {\ttfamily connect} member function, once for each endpoint in the sequence, until a connection is successfully established.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The socket to be connected. If the socket is already open, it will be closed.\\
+\hline
+{\em begin} & An iterator pointing to the start of a sequence of endpoints.\\
+\hline
+{\em end} & An iterator pointing to the end of a sequence of endpoints.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. If the sequence is empty, set to \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb}{asio\+::error\+::not\+\_\+found}. Otherwise, contains the error from the last connection attempt.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, an iterator denoting the successfully connected endpoint. Otherwise, the end iterator.
+\end{DoxyReturn}
+\begin{DoxyParagraph}{Example}
+
+\begin{DoxyCode}
+ tcp::resolver r(io\_service);
+tcp::resolver::query q(\textcolor{stringliteral}{"host"}, \textcolor{stringliteral}{"service"});
+tcp::resolver::iterator i = r.resolve(q), \hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{end};
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{tcp::socket} \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}(io\_service);
+\hyperlink{classasio_1_1error__code}{asio::error\_code} ec;
+\hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio::connect}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, i, \hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{end}, ec);
+\textcolor{keywordflow}{if} (ec)
+\{
+  \textcolor{comment}{// An error occurred.}
+\} 
+\end{DoxyCode}
+ 
+\end{DoxyParagraph}
+
+
+Definition at line 70 of file connect.\+hpp.
+
+\hypertarget{group__connect_ga9a192c653d045eaa7c8c7817316a52b5}{}\index{asio\+::connect@{asio\+::connect}!connect@{connect}}
+\index{connect@{connect}!asio\+::connect@{asio\+::connect}}
+\subsubsection[{connect(basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Connect\+Condition connect\+\_\+condition)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ Iterator asio\+::connect (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+socket}$<$ Protocol, Socket\+Service $>$ \&}]{s, }
+\item[{Iterator}]{begin, }
+\item[{Connect\+Condition}]{connect\+\_\+condition}
+\end{DoxyParamCaption}
+)}\label{group__connect_ga9a192c653d045eaa7c8c7817316a52b5}
+
+
+Establishes a socket connection by trying each endpoint in a sequence. 
+
+This function attempts to connect a socket to one of a sequence of endpoints. It does this by repeated calls to the socket\textquotesingle{}s {\ttfamily connect} member function, once for each endpoint in the sequence, until a connection is successfully established.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The socket to be connected. If the socket is already open, it will be closed.\\
+\hline
+{\em begin} & An iterator pointing to the start of a sequence of endpoints.\\
+\hline
+{\em connect\+\_\+condition} & A function object that is called prior to each connection attempt. The signature of the function object must be\+: 
+\begin{DoxyCode}
+Iterator \hyperlink{group__async__connect_ga47e3dda205dfba3553f4c7e005897687}{connect\_condition}(
+   \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& ec,
+   Iterator next); 
+\end{DoxyCode}
+ The {\ttfamily ec} parameter contains the result from the most recent connect operation. Before the first connection attempt, {\ttfamily ec} is always set to indicate success. The {\ttfamily next} parameter is an iterator pointing to the next endpoint to be tried. The function object should return the next iterator, but is permitted to return a different iterator so that endpoints may be skipped. The implementation guarantees that the function object will never be called with the end iterator.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, an iterator denoting the successfully connected endpoint. Otherwise, the end iterator.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. If the sequence is empty, the associated {\ttfamily \hyperlink{classasio_1_1error__code}{error\+\_\+code}} is \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb}{asio\+::error\+::not\+\_\+found}. Otherwise, contains the error from the last connection attempt.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyNote}{Note}
+This overload assumes that a default constructed object of type {\ttfamily Iterator} represents the end of the sequence. This is a valid assumption for iterator types such as {\ttfamily \hyperlink{classasio_1_1ip_1_1basic__resolver_ad1cc50a31ba4971329a34eb01ef5a21c}{asio\+::ip\+::tcp\+::resolver\+::iterator}}.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+The following connect condition function object can be used to output information about the individual connection attempts\+: 
+\begin{DoxyCode}
+ \textcolor{keyword}{struct }my\_connect\_condition
+\{
+  \textcolor{keyword}{template} <\textcolor{keyword}{typename} Iterator>
+  Iterator operator()(
+      \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& ec,
+      Iterator next)
+  \{
+    \textcolor{keywordflow}{if} (ec) std::cout << \textcolor{stringliteral}{"Error: "} << ec.\hyperlink{classasio_1_1error__code_a9e15b346b9ec23275530835d9c150711}{message}() << std::endl;
+    std::cout << \textcolor{stringliteral}{"Trying: "} << next->endpoint() << std::endl;
+    \textcolor{keywordflow}{return} next;
+  \}
+\}; 
+\end{DoxyCode}
+ It would be used with the \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio\+::connect} function as follows\+: 
+\begin{DoxyCode}
+ tcp::resolver r(io\_service);
+tcp::resolver::query q(\textcolor{stringliteral}{"host"}, \textcolor{stringliteral}{"service"});
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{tcp::socket} \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}(io\_service);
+tcp::resolver::iterator i = \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio::connect}(
+    \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, r.resolve(q), my\_connect\_condition());
+std::cout << \textcolor{stringliteral}{"Connected to: "} << i->endpoint() << std::endl; 
+\end{DoxyCode}
+ 
+\end{DoxyParagraph}
+
+
+Definition at line 78 of file connect.\+hpp.
+
+\hypertarget{group__connect_gab16905fe7662fdaa7410ea98e4a5d38a}{}\index{asio\+::connect@{asio\+::connect}!connect@{connect}}
+\index{connect@{connect}!asio\+::connect@{asio\+::connect}}
+\subsubsection[{connect(basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Connect\+Condition connect\+\_\+condition, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ Iterator asio\+::connect (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+socket}$<$ Protocol, Socket\+Service $>$ \&}]{s, }
+\item[{Iterator}]{begin, }
+\item[{Connect\+Condition}]{connect\+\_\+condition, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{group__connect_gab16905fe7662fdaa7410ea98e4a5d38a}
+
+
+Establishes a socket connection by trying each endpoint in a sequence. 
+
+This function attempts to connect a socket to one of a sequence of endpoints. It does this by repeated calls to the socket\textquotesingle{}s {\ttfamily connect} member function, once for each endpoint in the sequence, until a connection is successfully established.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The socket to be connected. If the socket is already open, it will be closed.\\
+\hline
+{\em begin} & An iterator pointing to the start of a sequence of endpoints.\\
+\hline
+{\em connect\+\_\+condition} & A function object that is called prior to each connection attempt. The signature of the function object must be\+: 
+\begin{DoxyCode}
+Iterator \hyperlink{group__async__connect_ga47e3dda205dfba3553f4c7e005897687}{connect\_condition}(
+   \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& ec,
+   Iterator next); 
+\end{DoxyCode}
+ The {\ttfamily ec} parameter contains the result from the most recent connect operation. Before the first connection attempt, {\ttfamily ec} is always set to indicate success. The {\ttfamily next} parameter is an iterator pointing to the next endpoint to be tried. The function object should return the next iterator, but is permitted to return a different iterator so that endpoints may be skipped. The implementation guarantees that the function object will never be called with the end iterator.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. If the sequence is empty, set to \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb}{asio\+::error\+::not\+\_\+found}. Otherwise, contains the error from the last connection attempt.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, an iterator denoting the successfully connected endpoint. Otherwise, the end iterator.
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+This overload assumes that a default constructed object of type {\ttfamily Iterator} represents the end of the sequence. This is a valid assumption for iterator types such as {\ttfamily \hyperlink{classasio_1_1ip_1_1basic__resolver_ad1cc50a31ba4971329a34eb01ef5a21c}{asio\+::ip\+::tcp\+::resolver\+::iterator}}.
+\end{DoxyNote}
+\begin{DoxyParagraph}{Example}
+The following connect condition function object can be used to output information about the individual connection attempts\+: 
+\begin{DoxyCode}
+ \textcolor{keyword}{struct }my\_connect\_condition
+\{
+  \textcolor{keyword}{template} <\textcolor{keyword}{typename} Iterator>
+  Iterator operator()(
+      \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& ec,
+      Iterator next)
+  \{
+    \textcolor{keywordflow}{if} (ec) std::cout << \textcolor{stringliteral}{"Error: "} << ec.\hyperlink{classasio_1_1error__code_a9e15b346b9ec23275530835d9c150711}{message}() << std::endl;
+    std::cout << \textcolor{stringliteral}{"Trying: "} << next->endpoint() << std::endl;
+    \textcolor{keywordflow}{return} next;
+  \}
+\}; 
+\end{DoxyCode}
+ It would be used with the \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio\+::connect} function as follows\+: 
+\begin{DoxyCode}
+ tcp::resolver r(io\_service);
+tcp::resolver::query q(\textcolor{stringliteral}{"host"}, \textcolor{stringliteral}{"service"});
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{tcp::socket} \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}(io\_service);
+\hyperlink{classasio_1_1error__code}{asio::error\_code} ec;
+tcp::resolver::iterator i = \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio::connect}(
+    \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, r.resolve(q), my\_connect\_condition(), ec);
+\textcolor{keywordflow}{if} (ec)
+\{
+  \textcolor{comment}{// An error occurred.}
+\}
+\textcolor{keywordflow}{else}
+\{
+  std::cout << \textcolor{stringliteral}{"Connected to: "} << i->endpoint() << std::endl;
+\} 
+\end{DoxyCode}
+ 
+\end{DoxyParagraph}
+
+
+Definition at line 89 of file connect.\+hpp.
+
+\hypertarget{group__connect_ga85284052d2233e8ea3993625e9f28184}{}\index{asio\+::connect@{asio\+::connect}!connect@{connect}}
+\index{connect@{connect}!asio\+::connect@{asio\+::connect}}
+\subsubsection[{connect(basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end, Connect\+Condition connect\+\_\+condition)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ Iterator asio\+::connect (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+socket}$<$ Protocol, Socket\+Service $>$ \&}]{s, }
+\item[{Iterator}]{begin, }
+\item[{Iterator}]{end, }
+\item[{Connect\+Condition}]{connect\+\_\+condition}
+\end{DoxyParamCaption}
+)}\label{group__connect_ga85284052d2233e8ea3993625e9f28184}
+
+
+Establishes a socket connection by trying each endpoint in a sequence. 
+
+This function attempts to connect a socket to one of a sequence of endpoints. It does this by repeated calls to the socket\textquotesingle{}s {\ttfamily connect} member function, once for each endpoint in the sequence, until a connection is successfully established.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The socket to be connected. If the socket is already open, it will be closed.\\
+\hline
+{\em begin} & An iterator pointing to the start of a sequence of endpoints.\\
+\hline
+{\em end} & An iterator pointing to the end of a sequence of endpoints.\\
+\hline
+{\em connect\+\_\+condition} & A function object that is called prior to each connection attempt. The signature of the function object must be\+: 
+\begin{DoxyCode}
+Iterator \hyperlink{group__async__connect_ga47e3dda205dfba3553f4c7e005897687}{connect\_condition}(
+   \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& ec,
+   Iterator next); 
+\end{DoxyCode}
+ The {\ttfamily ec} parameter contains the result from the most recent connect operation. Before the first connection attempt, {\ttfamily ec} is always set to indicate success. The {\ttfamily next} parameter is an iterator pointing to the next endpoint to be tried. The function object should return the next iterator, but is permitted to return a different iterator so that endpoints may be skipped. The implementation guarantees that the function object will never be called with the end iterator.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, an iterator denoting the successfully connected endpoint. Otherwise, the end iterator.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classasio_1_1system__error}{asio\+::system\+\_\+error}} & Thrown on failure. If the sequence is empty, the associated {\ttfamily \hyperlink{classasio_1_1error__code}{error\+\_\+code}} is \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb}{asio\+::error\+::not\+\_\+found}. Otherwise, contains the error from the last connection attempt.\\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyParagraph}{Example}
+The following connect condition function object can be used to output information about the individual connection attempts\+: 
+\begin{DoxyCode}
+ \textcolor{keyword}{struct }my\_connect\_condition
+\{
+  \textcolor{keyword}{template} <\textcolor{keyword}{typename} Iterator>
+  Iterator operator()(
+      \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& ec,
+      Iterator next)
+  \{
+    \textcolor{keywordflow}{if} (ec) std::cout << \textcolor{stringliteral}{"Error: "} << ec.\hyperlink{classasio_1_1error__code_a9e15b346b9ec23275530835d9c150711}{message}() << std::endl;
+    std::cout << \textcolor{stringliteral}{"Trying: "} << next->endpoint() << std::endl;
+    \textcolor{keywordflow}{return} next;
+  \}
+\}; 
+\end{DoxyCode}
+ It would be used with the \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio\+::connect} function as follows\+: 
+\begin{DoxyCode}
+ tcp::resolver r(io\_service);
+tcp::resolver::query q(\textcolor{stringliteral}{"host"}, \textcolor{stringliteral}{"service"});
+tcp::resolver::iterator i = r.resolve(q), \hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{end};
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{tcp::socket} \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}(io\_service);
+i = \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio::connect}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, i, \hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{end}, my\_connect\_condition());
+std::cout << \textcolor{stringliteral}{"Connected to: "} << i->endpoint() << std::endl; 
+\end{DoxyCode}
+ 
+\end{DoxyParagraph}
+
+
+Definition at line 98 of file connect.\+hpp.
+
+\hypertarget{group__connect_ga309aa819fa86c14156c10c5374eb0d24}{}\index{asio\+::connect@{asio\+::connect}!connect@{connect}}
+\index{connect@{connect}!asio\+::connect@{asio\+::connect}}
+\subsubsection[{connect(basic\+\_\+socket$<$ Protocol, Socket\+Service $>$ \&s, Iterator begin, Iterator end, Connect\+Condition connect\+\_\+condition, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol , typename Socket\+Service , typename Iterator , typename Connect\+Condition $>$ Iterator asio\+::connect (
+\begin{DoxyParamCaption}
+\item[{{\bf basic\+\_\+socket}$<$ Protocol, Socket\+Service $>$ \&}]{s, }
+\item[{Iterator}]{begin, }
+\item[{Iterator}]{end, }
+\item[{Connect\+Condition}]{connect\+\_\+condition, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)}\label{group__connect_ga309aa819fa86c14156c10c5374eb0d24}
+
+
+Establishes a socket connection by trying each endpoint in a sequence. 
+
+This function attempts to connect a socket to one of a sequence of endpoints. It does this by repeated calls to the socket\textquotesingle{}s {\ttfamily connect} member function, once for each endpoint in the sequence, until a connection is successfully established.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The socket to be connected. If the socket is already open, it will be closed.\\
+\hline
+{\em begin} & An iterator pointing to the start of a sequence of endpoints.\\
+\hline
+{\em end} & An iterator pointing to the end of a sequence of endpoints.\\
+\hline
+{\em connect\+\_\+condition} & A function object that is called prior to each connection attempt. The signature of the function object must be\+: 
+\begin{DoxyCode}
+Iterator \hyperlink{group__async__connect_ga47e3dda205dfba3553f4c7e005897687}{connect\_condition}(
+   \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& ec,
+   Iterator next); 
+\end{DoxyCode}
+ The {\ttfamily ec} parameter contains the result from the most recent connect operation. Before the first connection attempt, {\ttfamily ec} is always set to indicate success. The {\ttfamily next} parameter is an iterator pointing to the next endpoint to be tried. The function object should return the next iterator, but is permitted to return a different iterator so that endpoints may be skipped. The implementation guarantees that the function object will never be called with the end iterator.\\
+\hline
+{\em ec} & Set to indicate what error occurred, if any. If the sequence is empty, set to \hyperlink{namespaceasio_1_1error_ade61a402d1dfb10b1c223906f5ea7847a6cfdfb1e108e927e2bfc847850ba0dcb}{asio\+::error\+::not\+\_\+found}. Otherwise, contains the error from the last connection attempt.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On success, an iterator denoting the successfully connected endpoint. Otherwise, the end iterator.
+\end{DoxyReturn}
+\begin{DoxyParagraph}{Example}
+The following connect condition function object can be used to output information about the individual connection attempts\+: 
+\begin{DoxyCode}
+ \textcolor{keyword}{struct }my\_connect\_condition
+\{
+  \textcolor{keyword}{template} <\textcolor{keyword}{typename} Iterator>
+  Iterator operator()(
+      \textcolor{keyword}{const} \hyperlink{classasio_1_1error__code}{asio::error\_code}& ec,
+      Iterator next)
+  \{
+    \textcolor{keywordflow}{if} (ec) std::cout << \textcolor{stringliteral}{"Error: "} << ec.\hyperlink{classasio_1_1error__code_a9e15b346b9ec23275530835d9c150711}{message}() << std::endl;
+    std::cout << \textcolor{stringliteral}{"Trying: "} << next->endpoint() << std::endl;
+    \textcolor{keywordflow}{return} next;
+  \}
+\}; 
+\end{DoxyCode}
+ It would be used with the \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio\+::connect} function as follows\+: 
+\begin{DoxyCode}
+ tcp::resolver r(io\_service);
+tcp::resolver::query q(\textcolor{stringliteral}{"host"}, \textcolor{stringliteral}{"service"});
+tcp::resolver::iterator i = r.resolve(q), \hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{end};
+\hyperlink{namespacewebsocketpp_1_1transport_1_1asio_1_1socket_1_1error_a828ddaa5ed63a761e1b557465a35f05aa0c31b356014843e1d09514e794a539a7}{tcp::socket} \hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}(io\_service);
+\hyperlink{classasio_1_1error__code}{asio::error\_code} ec;
+i = \hyperlink{group__connect_ga29acd61d7a875cef7dbd1f892be2906c}{asio::connect}(\hyperlink{group__async__connect_ga31ab74b9ea6c77932dddd016cfc7920a}{s}, i, \hyperlink{group__async__connect_gadb6ad0193229ae84828688e812cd325c}{end}, my\_connect\_condition(), ec);
+\textcolor{keywordflow}{if} (ec)
+\{
+  \textcolor{comment}{// An error occurred.}
+\}
+\textcolor{keywordflow}{else}
+\{
+  std::cout << \textcolor{stringliteral}{"Connected to: "} << i->endpoint() << std::endl;
+\} 
+\end{DoxyCode}
+ 
+\end{DoxyParagraph}
+
+
+Definition at line 109 of file connect.\+hpp.
+

@@ -1,0 +1,381 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%Title: ClassName
+%%Creator: Doxygen
+%%CreationDate: Time
+%%For: 
+%Magnification: 1.00
+%%Orientation: Portrait
+%%BoundingBox: 0 0 500 947.368421
+%%Pages: 0
+%%BeginSetup
+%%EndSetup
+%%EndComments
+
+% ----- variables -----
+
+/boxwidth 0 def
+/boxheight 40 def
+/fontheight 24 def
+/marginwidth 10 def
+/distx 20 def
+/disty 40 def
+/boundaspect 0.527778 def  % aspect ratio of the BoundingBox (width/height)
+/boundx 500 def
+/boundy boundx boundaspect div def
+/xspacing 0 def
+/yspacing 0 def
+/rows 45 def
+/cols 2 def
+/scalefactor 0 def
+/boxfont /Times-Roman findfont fontheight scalefont def
+
+% ----- procedures -----
+
+/dotted { [1 4] 0 setdash } def
+/dashed { [5] 0 setdash } def
+/solid  { [] 0 setdash } def
+
+/max % result = MAX(arg1,arg2)
+{
+  /a exch def
+  /b exch def
+  a b gt {a} {b} ifelse
+} def
+
+/xoffset % result = MAX(0,(scalefactor-(boxwidth*cols+distx*(cols-1)))/2)
+{
+  0 scalefactor boxwidth cols mul distx cols 1 sub mul add sub 2 div max
+} def
+
+/cw % boxwidth = MAX(boxwidth, stringwidth(arg1))
+{
+  /str exch def
+  /boxwidth boxwidth str stringwidth pop max def
+} def
+
+/box % draws a box with text `arg1' at grid pos (arg2,arg3)
+{ gsave
+  2 setlinewidth
+  newpath
+  exch xspacing mul xoffset add
+  exch yspacing mul
+  moveto
+  boxwidth 0 rlineto 
+  0 boxheight rlineto 
+  boxwidth neg 0 rlineto 
+  0 boxheight neg rlineto 
+  closepath
+  dup stringwidth pop neg boxwidth add 2 div
+  boxheight fontheight 2 div sub 2 div
+  rmoveto show stroke
+  grestore
+} def  
+
+/mark
+{ newpath
+  exch xspacing mul xoffset add boxwidth add
+  exch yspacing mul
+  moveto
+  0 boxheight 4 div rlineto
+  boxheight neg 4 div boxheight neg 4 div rlineto
+  closepath
+  eofill
+  stroke
+} def
+
+/arrow
+{ newpath
+  moveto
+  3 -8 rlineto
+  -6 0 rlineto
+  3 8 rlineto
+  closepath
+  eofill
+  stroke
+} def
+
+/out % draws an output connector for the block at (arg1,arg2)
+{
+  newpath
+  exch xspacing mul xoffset add boxwidth 2 div add
+  exch yspacing mul boxheight add
+  /y exch def
+  /x exch def
+  x y moveto
+  0 disty 2 div rlineto 
+  stroke
+  1 eq { x y disty 2 div add arrow } if
+} def
+
+/in % draws an input connector for the block at (arg1,arg2)
+{
+  newpath
+  exch xspacing mul xoffset add boxwidth 2 div add
+  exch yspacing mul disty 2 div sub
+  /y exch def
+  /x exch def
+  x y moveto
+  0 disty 2 div rlineto
+  stroke
+  1 eq { x y disty 2 div add arrow } if
+} def
+
+/hedge
+{
+  exch xspacing mul xoffset add boxwidth 2 div add
+  exch yspacing mul boxheight 2 div sub
+  /y exch def
+  /x exch def
+  newpath
+  x y moveto
+  boxwidth 2 div distx add 0 rlineto
+  stroke
+  1 eq
+  { newpath x boxwidth 2 div distx add add y moveto
+    -8 3 rlineto
+    0 -6 rlineto
+    8 3 rlineto
+    closepath
+    eofill
+    stroke
+  } if
+} def
+
+/vedge
+{
+  /ye exch def
+  /ys exch def
+  /xs exch def
+  newpath
+  xs xspacing mul xoffset add boxwidth 2 div add dup
+  ys yspacing mul boxheight 2 div sub
+  moveto
+  ye yspacing mul boxheight 2 div sub
+  lineto
+  stroke
+} def
+
+/conn % connections the blocks from col `arg1' to `arg2' of row `arg3'
+{
+  /ys exch def
+  /xe exch def
+  /xs exch def
+  newpath
+  xs xspacing mul xoffset add boxwidth 2 div add
+  ys yspacing mul disty 2 div sub
+  moveto
+  xspacing xe xs sub mul 0
+  rlineto
+  stroke
+} def
+
+% ----- main ------
+
+boxfont setfont
+1 boundaspect scale
+(asio::detail::noncopyable) cw
+(asio::basic_streambuf< Allocator >) cw
+(asio::buffered_read_stream< Stream >) cw
+(asio::buffered_stream< Stream >) cw
+(asio::buffered_write_stream< Stream >) cw
+(asio::detail::call_stack< Key, Value >::context) cw
+(asio::detail::deadline_timer_service< Time_Traits >::implementation_type) cw
+(asio::detail::hash_map< K, V >) cw
+(asio::detail::null_event) cw
+(asio::detail::null_fenced_block) cw
+(asio::detail::null_mutex) cw
+(asio::detail::null_signal_blocker) cw
+(asio::detail::null_thread) cw
+(asio::detail::null_tss_ptr< T >) cw
+(asio::detail::object_pool< Object >) cw
+(asio::detail::op_queue< Operation >) cw
+(asio::detail::posix_fd_set_adapter) cw
+(asio::detail::reactive_descriptor_service::implementation_type) cw
+(asio::detail::reactor_op_queue< Descriptor >) cw
+(asio::detail::resolver_service_base::auto_addrinfo) cw
+(asio::detail::scoped_lock< Mutex >) cw
+(asio::detail::service_registry) cw
+(asio::detail::socket_holder) cw
+(asio::detail::spawn_data< Handler, Function >) cw
+(asio::detail::thread_info_base) cw
+(asio::detail::timer_queue_base) cw
+(asio::error_category) cw
+(asio::io_service) cw
+(asio::io_service::id) cw
+(asio::io_service::service) cw
+(asio::ssl::context) cw
+(asio::ssl::detail::openssl_init_base) cw
+(asio::ssl::stream< Stream >) cw
+(asio::ssl::verify_context) cw
+(asio::thread) cw
+(asio::buffered_read_stream< write_stream_type & >) cw
+(asio::detail::hash_map< key_type, asio::detail::reactor_op_queue::mapped_type >) cw
+(asio::detail::null_tss_ptr< asio::detail::call_stack::context >) cw
+(asio::detail::null_tss_ptr< void >) cw
+(asio::detail::op_queue< asio::detail::signal_op >) cw
+(asio::detail::op_queue< asio::detail::wait_op >) cw
+(asio::detail::op_queue< operation >) cw
+(asio::detail::op_queue< reactor_op >) cw
+(asio::detail::op_queue< task_io_service_operation >) cw
+(asio::detail::reactor_op_queue< socket_type >) cw
+/boxwidth boxwidth marginwidth 2 mul add def
+/xspacing boxwidth distx add def
+/yspacing boxheight disty add def
+/scalefactor 
+  boxwidth cols mul distx cols 1 sub mul add
+  boxheight rows mul disty rows 1 sub mul add boundaspect mul 
+  max def
+boundx scalefactor div boundy scalefactor div scale
+
+% ----- classes -----
+
+ (asio::detail::noncopyable) 0.000000 44.000000 box
+ (asio::basic_streambuf< Allocator >) 1.000000 43.000000 box
+ (asio::buffered_read_stream< Stream >) 1.000000 42.000000 box
+ (asio::buffered_stream< Stream >) 1.000000 41.000000 box
+ (asio::buffered_write_stream< Stream >) 1.000000 40.000000 box
+ (asio::detail::call_stack< Key, Value >::context) 1.000000 39.000000 box
+ (asio::detail::deadline_timer_service< Time_Traits >::implementation_type) 1.000000 38.000000 box
+ (asio::detail::hash_map< K, V >) 1.000000 37.000000 box
+ (asio::detail::null_event) 1.000000 36.000000 box
+ (asio::detail::null_fenced_block) 1.000000 35.000000 box
+ (asio::detail::null_mutex) 1.000000 34.000000 box
+ (asio::detail::null_signal_blocker) 1.000000 33.000000 box
+ (asio::detail::null_thread) 1.000000 32.000000 box
+ (asio::detail::null_tss_ptr< T >) 1.000000 31.000000 box
+1.000000 31.000000 mark
+ (asio::detail::object_pool< Object >) 1.000000 30.000000 box
+ (asio::detail::op_queue< Operation >) 1.000000 29.000000 box
+ (asio::detail::posix_fd_set_adapter) 1.000000 28.000000 box
+ (asio::detail::reactive_descriptor_service::implementation_type) 1.000000 27.000000 box
+ (asio::detail::reactor_op_queue< Descriptor >) 1.000000 26.000000 box
+ (asio::detail::resolver_service_base::auto_addrinfo) 1.000000 25.000000 box
+ (asio::detail::scoped_lock< Mutex >) 1.000000 24.000000 box
+ (asio::detail::service_registry) 1.000000 23.000000 box
+ (asio::detail::socket_holder) 1.000000 22.000000 box
+ (asio::detail::spawn_data< Handler, Function >) 1.000000 21.000000 box
+ (asio::detail::thread_info_base) 1.000000 20.000000 box
+1.000000 20.000000 mark
+ (asio::detail::timer_queue_base) 1.000000 19.000000 box
+1.000000 19.000000 mark
+ (asio::error_category) 1.000000 18.000000 box
+1.000000 18.000000 mark
+ (asio::io_service) 1.000000 17.000000 box
+ (asio::io_service::id) 1.000000 16.000000 box
+1.000000 16.000000 mark
+ (asio::io_service::service) 1.000000 15.000000 box
+1.000000 15.000000 mark
+ (asio::ssl::context) 1.000000 14.000000 box
+ (asio::ssl::detail::openssl_init_base) 1.000000 13.000000 box
+1.000000 13.000000 mark
+ (asio::ssl::stream< Stream >) 1.000000 12.000000 box
+ (asio::ssl::verify_context) 1.000000 11.000000 box
+ (asio::thread) 1.000000 10.000000 box
+ (asio::buffered_read_stream< write_stream_type & >) 1.000000 9.000000 box
+ (asio::detail::hash_map< key_type, asio::detail::reactor_op_queue::mapped_type >) 1.000000 8.000000 box
+ (asio::detail::null_tss_ptr< asio::detail::call_stack::context >) 1.000000 7.000000 box
+1.000000 7.000000 mark
+ (asio::detail::null_tss_ptr< void >) 1.000000 6.000000 box
+1.000000 6.000000 mark
+ (asio::detail::op_queue< asio::detail::signal_op >) 1.000000 5.000000 box
+ (asio::detail::op_queue< asio::detail::wait_op >) 1.000000 4.000000 box
+ (asio::detail::op_queue< operation >) 1.000000 3.000000 box
+ (asio::detail::op_queue< reactor_op >) 1.000000 2.000000 box
+1.000000 2.000000 mark
+ (asio::detail::op_queue< task_io_service_operation >) 1.000000 1.000000 box
+ (asio::detail::reactor_op_queue< socket_type >) 1.000000 0.000000 box
+
+% ----- relations -----
+
+dotted
+1 0.000000 43.250000 out
+dotted
+0 0.000000 43.500000 hedge
+dotted
+0 0.000000 42.500000 hedge
+dotted
+0 0.000000 41.500000 hedge
+dotted
+0 0.000000 40.500000 hedge
+dotted
+0 0.000000 39.500000 hedge
+dotted
+0 0.000000 38.500000 hedge
+dotted
+0 0.000000 37.500000 hedge
+dotted
+0 0.000000 36.500000 hedge
+dotted
+0 0.000000 35.500000 hedge
+dotted
+0 0.000000 34.500000 hedge
+dotted
+0 0.000000 33.500000 hedge
+dotted
+0 0.000000 32.500000 hedge
+dotted
+0 0.000000 31.500000 hedge
+dotted
+0 0.000000 30.500000 hedge
+dotted
+0 0.000000 29.500000 hedge
+dotted
+0 0.000000 28.500000 hedge
+dotted
+0 0.000000 27.500000 hedge
+dotted
+0 0.000000 26.500000 hedge
+dotted
+0 0.000000 25.500000 hedge
+dotted
+0 0.000000 24.500000 hedge
+dotted
+0 0.000000 23.500000 hedge
+dotted
+0 0.000000 22.500000 hedge
+dotted
+0 0.000000 21.500000 hedge
+dotted
+0 0.000000 20.500000 hedge
+dotted
+0 0.000000 19.500000 hedge
+dotted
+0 0.000000 18.500000 hedge
+dotted
+0 0.000000 17.500000 hedge
+dotted
+0 0.000000 16.500000 hedge
+dotted
+0 0.000000 15.500000 hedge
+dotted
+0 0.000000 14.500000 hedge
+dotted
+0 0.000000 13.500000 hedge
+dotted
+0 0.000000 12.500000 hedge
+dotted
+0 0.000000 11.500000 hedge
+dotted
+0 0.000000 10.500000 hedge
+dotted
+0 0.000000 9.500000 hedge
+dotted
+0 0.000000 8.500000 hedge
+dotted
+0 0.000000 7.500000 hedge
+dotted
+0 0.000000 6.500000 hedge
+dotted
+0 0.000000 5.500000 hedge
+dotted
+0 0.000000 4.500000 hedge
+dotted
+0 0.000000 3.500000 hedge
+dotted
+0 0.000000 2.500000 hedge
+dotted
+0 0.000000 1.500000 hedge
+dotted
+0 0.000000 0.500000 hedge
+dotted
+0.000000 44.000000 0.500000 vedge

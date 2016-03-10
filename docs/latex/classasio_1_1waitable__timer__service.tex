@@ -1,0 +1,308 @@
+\hypertarget{classasio_1_1waitable__timer__service}{}\section{asio\+:\+:waitable\+\_\+timer\+\_\+service$<$ Clock, Wait\+Traits $>$ Class Template Reference}
+\label{classasio_1_1waitable__timer__service}\index{asio\+::waitable\+\_\+timer\+\_\+service$<$ Clock, Wait\+Traits $>$@{asio\+::waitable\+\_\+timer\+\_\+service$<$ Clock, Wait\+Traits $>$}}
+
+
+Default service implementation for a timer.  
+
+
+
+
+{\ttfamily \#include $<$waitable\+\_\+timer\+\_\+service.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:waitable\+\_\+timer\+\_\+service$<$ Clock, Wait\+Traits $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classasio_1_1waitable__timer__service}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Clock \hyperlink{classasio_1_1waitable__timer__service_a39c2c82bad766b47c23abf56738392e7}{clock\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The clock type. \end{DoxyCompactList}\item 
+typedef clock\+\_\+type\+::duration \hyperlink{classasio_1_1waitable__timer__service_a5ac45e701365614edd95291c94729ce4}{duration}
+\begin{DoxyCompactList}\small\item\em The duration type of the clock. \end{DoxyCompactList}\item 
+typedef clock\+\_\+type\+::time\+\_\+point \hyperlink{classasio_1_1waitable__timer__service_ae2aa2b85484d98323747703cb9e104df}{time\+\_\+point}
+\begin{DoxyCompactList}\small\item\em The time point type of the clock. \end{DoxyCompactList}\item 
+typedef Wait\+Traits \hyperlink{classasio_1_1waitable__timer__service_a38e8edeb0413eba7779f2bb97e87aa43}{traits\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The wait traits type. \end{DoxyCompactList}\item 
+typedef service\+\_\+impl\+\_\+type\+::implementation\+\_\+type \hyperlink{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{implementation\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The implementation type of the waitable timer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1waitable__timer__service_a9ca255ce40df3dab3047eaff2df3b487}{waitable\+\_\+timer\+\_\+service} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service})
+\begin{DoxyCompactList}\small\item\em Construct a new timer service for the specified \hyperlink{classasio_1_1io__service}{io\+\_\+service}. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1waitable__timer__service_a3a7855c8eb1ddb9426e01a9c28b1737a}{construct} (\hyperlink{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em Construct a new timer implementation. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1waitable__timer__service_a3e09576969dc6a4512d19f536df92fc8}{destroy} (\hyperlink{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em Destroy a timer implementation. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1waitable__timer__service_a90a777e6ee642bff470cf798755248af}{cancel} (\hyperlink{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Cancel any asynchronous wait operations associated with the timer. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1waitable__timer__service_a5373a94d126d2337485a1e09717a7b51}{cancel\+\_\+one} (\hyperlink{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Cancels one asynchronous wait operation associated with the timer. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1waitable__timer__service_ae2aa2b85484d98323747703cb9e104df}{time\+\_\+point} \hyperlink{classasio_1_1waitable__timer__service_af369248a0a3dab5f46168a780176ba25}{expires\+\_\+at} (const \hyperlink{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{implementation\+\_\+type} \&impl) const 
+\begin{DoxyCompactList}\small\item\em Get the expiry time for the timer as an absolute time. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1waitable__timer__service_a81514e94b12354e0fd2a0af363a352c7}{expires\+\_\+at} (\hyperlink{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1waitable__timer__service_ae2aa2b85484d98323747703cb9e104df}{time\+\_\+point} \&expiry\+\_\+time, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Set the expiry time for the timer as an absolute time. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1waitable__timer__service_a5ac45e701365614edd95291c94729ce4}{duration} \hyperlink{classasio_1_1waitable__timer__service_ae180692878e4dc1239c70e10f2181da7}{expires\+\_\+from\+\_\+now} (const \hyperlink{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{implementation\+\_\+type} \&impl) const 
+\begin{DoxyCompactList}\small\item\em Get the expiry time for the timer relative to now. \end{DoxyCompactList}\item 
+std\+::size\+\_\+t \hyperlink{classasio_1_1waitable__timer__service_a49dcf91e8be2e8b02835a239649824a7}{expires\+\_\+from\+\_\+now} (\hyperlink{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1waitable__timer__service_a5ac45e701365614edd95291c94729ce4}{duration} \&expiry\+\_\+time, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Set the expiry time for the timer relative to now. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1waitable__timer__service_a0c8d92e4c7e0d7183c66fb82fac34e36}{wait} (\hyperlink{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+{\footnotesize template$<$typename Wait\+Handler $>$ }\\\hyperlink{classasio_1_1waitable__timer__service_a217ffb36215d01913041ea0cdbcbd679}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Wait\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code})) async\+\_\+wait(\hyperlink{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{implementation\+\_\+type} \&impl
+\item 
+\hyperlink{classasio_1_1waitable__timer__service_ad22f2af0648da8f77e45534ba9260090}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Wait\+Handler) handler)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Clock, typename Wait\+Traits = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$class asio\+::waitable\+\_\+timer\+\_\+service$<$ Clock, Wait\+Traits $>$}
+
+Default service implementation for a timer. 
+
+Definition at line 33 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1waitable__timer__service_a39c2c82bad766b47c23abf56738392e7}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!clock\+\_\+type@{clock\+\_\+type}}
+\index{clock\+\_\+type@{clock\+\_\+type}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{clock\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ typedef Clock {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::{\bf clock\+\_\+type}}\label{classasio_1_1waitable__timer__service_a39c2c82bad766b47c23abf56738392e7}
+
+
+The clock type. 
+
+
+
+Definition at line 48 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_a5ac45e701365614edd95291c94729ce4}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!duration@{duration}}
+\index{duration@{duration}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{duration}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ typedef clock\+\_\+type\+::duration {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::{\bf duration}}\label{classasio_1_1waitable__timer__service_a5ac45e701365614edd95291c94729ce4}
+
+
+The duration type of the clock. 
+
+
+
+Definition at line 51 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!implementation\+\_\+type@{implementation\+\_\+type}}
+\index{implementation\+\_\+type@{implementation\+\_\+type}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{implementation\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ typedef service\+\_\+impl\+\_\+type\+::implementation\+\_\+type {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::{\bf implementation\+\_\+type}}\label{classasio_1_1waitable__timer__service_a397aa07a3c8f707a307b83a9616ed44e}
+
+
+The implementation type of the waitable timer. 
+
+
+
+Definition at line 69 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_ae2aa2b85484d98323747703cb9e104df}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!time\+\_\+point@{time\+\_\+point}}
+\index{time\+\_\+point@{time\+\_\+point}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{time\+\_\+point}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ typedef clock\+\_\+type\+::time\+\_\+point {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::{\bf time\+\_\+point}}\label{classasio_1_1waitable__timer__service_ae2aa2b85484d98323747703cb9e104df}
+
+
+The time point type of the clock. 
+
+
+
+Definition at line 54 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_a38e8edeb0413eba7779f2bb97e87aa43}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!traits\+\_\+type@{traits\+\_\+type}}
+\index{traits\+\_\+type@{traits\+\_\+type}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{traits\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ typedef Wait\+Traits {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::{\bf traits\+\_\+type}}\label{classasio_1_1waitable__timer__service_a38e8edeb0413eba7779f2bb97e87aa43}
+
+
+The wait traits type. 
+
+
+
+Definition at line 57 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1waitable__timer__service_a9ca255ce40df3dab3047eaff2df3b487}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!waitable\+\_\+timer\+\_\+service@{waitable\+\_\+timer\+\_\+service}}
+\index{waitable\+\_\+timer\+\_\+service@{waitable\+\_\+timer\+\_\+service}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{waitable\+\_\+timer\+\_\+service(asio\+::io\+\_\+service \&io\+\_\+service)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::{\bf waitable\+\_\+timer\+\_\+service} (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1waitable__timer__service_a9ca255ce40df3dab3047eaff2df3b487}
+
+
+Construct a new timer service for the specified \hyperlink{classasio_1_1io__service}{io\+\_\+service}. 
+
+
+
+Definition at line 73 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1waitable__timer__service_a217ffb36215d01913041ea0cdbcbd679}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Wait\+Handler, void(asio\+::error\+\_\+code)) async\+\_\+wait(implementation\+\_\+type \&impl}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ template$<$typename Wait\+Handler $>$ {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Wait\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code})}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1waitable__timer__service_a217ffb36215d01913041ea0cdbcbd679}
+\hypertarget{classasio_1_1waitable__timer__service_ad22f2af0648da8f77e45534ba9260090}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Wait\+Handler) handler)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Wait\+Handler}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1waitable__timer__service_ad22f2af0648da8f77e45534ba9260090}
+
+
+Definition at line 142 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_a90a777e6ee642bff470cf798755248af}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!cancel@{cancel}}
+\index{cancel@{cancel}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{cancel(implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ std\+::size\+\_\+t {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::cancel (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1waitable__timer__service_a90a777e6ee642bff470cf798755248af}
+
+
+Cancel any asynchronous wait operations associated with the timer. 
+
+
+
+Definition at line 93 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_a5373a94d126d2337485a1e09717a7b51}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!cancel\+\_\+one@{cancel\+\_\+one}}
+\index{cancel\+\_\+one@{cancel\+\_\+one}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{cancel\+\_\+one(implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ std\+::size\+\_\+t {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::cancel\+\_\+one (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1waitable__timer__service_a5373a94d126d2337485a1e09717a7b51}
+
+
+Cancels one asynchronous wait operation associated with the timer. 
+
+
+
+Definition at line 99 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_a3a7855c8eb1ddb9426e01a9c28b1737a}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!construct@{construct}}
+\index{construct@{construct}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{construct(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ void {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::construct (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1waitable__timer__service_a3a7855c8eb1ddb9426e01a9c28b1737a}
+
+
+Construct a new timer implementation. 
+
+
+
+Definition at line 81 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_a3e09576969dc6a4512d19f536df92fc8}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!destroy@{destroy}}
+\index{destroy@{destroy}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{destroy(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ void {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::destroy (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1waitable__timer__service_a3e09576969dc6a4512d19f536df92fc8}
+
+
+Destroy a timer implementation. 
+
+
+
+Definition at line 87 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_af369248a0a3dab5f46168a780176ba25}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!expires\+\_\+at@{expires\+\_\+at}}
+\index{expires\+\_\+at@{expires\+\_\+at}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{expires\+\_\+at(const implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ {\bf time\+\_\+point} {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::expires\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1waitable__timer__service_af369248a0a3dab5f46168a780176ba25}
+
+
+Get the expiry time for the timer as an absolute time. 
+
+
+
+Definition at line 106 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_a81514e94b12354e0fd2a0af363a352c7}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!expires\+\_\+at@{expires\+\_\+at}}
+\index{expires\+\_\+at@{expires\+\_\+at}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{expires\+\_\+at(implementation\+\_\+type \&impl, const time\+\_\+point \&expiry\+\_\+time, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ std\+::size\+\_\+t {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::expires\+\_\+at (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf time\+\_\+point} \&}]{expiry\+\_\+time, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1waitable__timer__service_a81514e94b12354e0fd2a0af363a352c7}
+
+
+Set the expiry time for the timer as an absolute time. 
+
+
+
+Definition at line 112 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_ae180692878e4dc1239c70e10f2181da7}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}}
+\index{expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{expires\+\_\+from\+\_\+now(const implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ {\bf duration} {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::expires\+\_\+from\+\_\+now (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1waitable__timer__service_ae180692878e4dc1239c70e10f2181da7}
+
+
+Get the expiry time for the timer relative to now. 
+
+
+
+Definition at line 119 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_a49dcf91e8be2e8b02835a239649824a7}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}}
+\index{expires\+\_\+from\+\_\+now@{expires\+\_\+from\+\_\+now}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{expires\+\_\+from\+\_\+now(implementation\+\_\+type \&impl, const duration \&expiry\+\_\+time, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ std\+::size\+\_\+t {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::expires\+\_\+from\+\_\+now (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf duration} \&}]{expiry\+\_\+time, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1waitable__timer__service_a49dcf91e8be2e8b02835a239649824a7}
+
+
+Set the expiry time for the timer relative to now. 
+
+
+
+Definition at line 125 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1waitable__timer__service_a0c8d92e4c7e0d7183c66fb82fac34e36}{}\index{asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}!wait@{wait}}
+\index{wait@{wait}!asio\+::waitable\+\_\+timer\+\_\+service@{asio\+::waitable\+\_\+timer\+\_\+service}}
+\subsubsection[{wait(implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Clock , typename Wait\+Traits  = asio\+::wait\+\_\+traits$<$\+Clock$>$$>$ void {\bf asio\+::waitable\+\_\+timer\+\_\+service}$<$ Clock, Wait\+Traits $>$\+::wait (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1waitable__timer__service_a0c8d92e4c7e0d7183c66fb82fac34e36}
+
+
+Definition at line 132 of file waitable\+\_\+timer\+\_\+service.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{waitable__timer__service_8hpp}{waitable\+\_\+timer\+\_\+service.\+hpp}\end{DoxyCompactItemize}

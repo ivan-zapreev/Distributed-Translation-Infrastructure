@@ -1,0 +1,40 @@
+\hypertarget{write_8hpp}{}\section{ext/asio/write.hpp File Reference}
+\label{write_8hpp}\index{ext/asio/write.\+hpp@{ext/asio/write.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$cstddef$>$}\\*
+{\ttfamily \#include \char`\"{}asio/async\+\_\+result.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/basic\+\_\+streambuf\+\_\+fwd.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/error.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/impl/write.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_gab293266ad69e271fdda0ff6f8086fb5c}{asio\+::write} (Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_gacfe88679a7a77cbb22870cafa20414cb}{asio\+::write} (Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_ga646f54905cf959c2c16f221a2e1c1ce7}{asio\+::write} (Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_gaf53a6638aac728c8bf61621b12fa8fce}{asio\+::write} (Sync\+Write\+Stream \&s, const Const\+Buffer\+Sequence \&buffers, Completion\+Condition completion\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_ga85807d13da87adf48b62979f65f41152}{asio\+::write} (Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Allocator $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_gaf72f7eddd7d4629ea2e2b7f5b7f355bc}{asio\+::write} (Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write all of the supplied data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Allocator , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_gaa80988391fb309ee53cc557d0065550a}{asio\+::write} (Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Sync\+Write\+Stream , typename Allocator , typename Completion\+Condition $>$ }\\std\+::size\+\_\+t \hyperlink{group__write_ga393e12e427f89cb932c6a2bd800236fb}{asio\+::write} (Sync\+Write\+Stream \&s, basic\+\_\+streambuf$<$ Allocator $>$ \&b, Completion\+Condition completion\+\_\+condition, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Write a certain amount of data to a stream before returning. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Async\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Write\+Handler $>$ }\\\hyperlink{group__async__write_ga7b61e40209cec169c7de5fafc16a6f9c}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+write(Async\+Write\+Stream \&s
+\item 
+const Const\+Buffer\+Sequence Completion\+Condition \hyperlink{group__async__write_ga9600cc9bb72a930568b318a8d6f79afa}{asio\+::\+A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Write\+Handler) handler)
+\item 
+{\footnotesize template$<$typename Async\+Write\+Stream , typename Const\+Buffer\+Sequence , typename Completion\+Condition , typename Write\+Handler $>$ }\\\hyperlink{group__async__write_ga5a1e5b963aeb45f6fc692c4e1a07ed04}{asio\+::\+A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Write\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code}, std\+::size\+\_\+t)) async\+\_\+write(Async\+Write\+Stream \&s
+\end{DoxyCompactItemize}

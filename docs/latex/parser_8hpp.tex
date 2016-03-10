@@ -1,0 +1,63 @@
+\hypertarget{parser_8hpp}{}\section{ext/websocketpp/http/parser.hpp File Reference}
+\label{parser_8hpp}\index{ext/websocketpp/http/parser.\+hpp@{ext/websocketpp/http/parser.\+hpp}}
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include $<$map$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$utility$>$}\\*
+{\ttfamily \#include $<$websocketpp/utilities.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/http/constants.\+hpp$>$}\\*
+{\ttfamily \#include $<$websocketpp/http/impl/parser.\+hpp$>$}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classwebsocketpp_1_1http_1_1parser_1_1parser}{websocketpp\+::http\+::parser\+::parser}
+\begin{DoxyCompactList}\small\item\em Base H\+T\+T\+P parser. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacewebsocketpp}{websocketpp}
+\begin{DoxyCompactList}\small\item\em Namespace for the Web\+Socket++ project. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1http}{websocketpp\+::http}
+\begin{DoxyCompactList}\small\item\em H\+T\+T\+P handling support. \end{DoxyCompactList}\item 
+ \hyperlink{namespacewebsocketpp_1_1http_1_1parser}{websocketpp\+::http\+::parser}
+\item 
+ \hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1state}{websocketpp\+::http\+::parser\+::state}
+\item 
+ \hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1body__encoding}{websocketpp\+::http\+::parser\+::body\+\_\+encoding}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::map$<$ std\+::string, std\+::string, utility\+::ci\+\_\+less $>$ \hyperlink{namespacewebsocketpp_1_1http_1_1parser_a4bb5b2821dab6a182bfe4c5415229e6e}{websocketpp\+::http\+::parser\+::header\+\_\+list}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1state_a12f378e0c6dbf373781e7988ee4a0853}{websocketpp\+::http\+::parser\+::state\+::value} \{ \hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1state_a12f378e0c6dbf373781e7988ee4a0853a808f25179e5ccace33050c0f65571dee}{websocketpp\+::http\+::parser\+::state\+::method}, 
+\hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1state_a12f378e0c6dbf373781e7988ee4a0853a2d924502c35c713b76e006eed381b5f9}{websocketpp\+::http\+::parser\+::state\+::resource}, 
+\hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1state_a12f378e0c6dbf373781e7988ee4a0853a08c88a938bc459c7997b48f74248752f}{websocketpp\+::http\+::parser\+::state\+::version}, 
+\hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1state_a12f378e0c6dbf373781e7988ee4a0853aedc0802bf79725cb1bface3aabff7296}{websocketpp\+::http\+::parser\+::state\+::headers}
+ \}
+\item 
+enum \hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1body__encoding_a489de0413246f2f6d2d6a6605af16653}{websocketpp\+::http\+::parser\+::body\+\_\+encoding\+::value} \{ \hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1body__encoding_a489de0413246f2f6d2d6a6605af16653ac8ecc94a1f7b48372ee0e3b1d4f56aee}{websocketpp\+::http\+::parser\+::body\+\_\+encoding\+::unknown}, 
+\hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1body__encoding_a489de0413246f2f6d2d6a6605af16653a4944f60330d88e9721ffff0aa499e243}{websocketpp\+::http\+::parser\+::body\+\_\+encoding\+::plain}, 
+\hyperlink{namespacewebsocketpp_1_1http_1_1parser_1_1body__encoding_a489de0413246f2f6d2d6a6605af16653a2a886acf8fdd62685b0e6f9ab43c7381}{websocketpp\+::http\+::parser\+::body\+\_\+encoding\+::chunked}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Input\+Iterator $>$ }\\std\+::pair$<$ std\+::string, Input\+Iterator $>$ \hyperlink{namespacewebsocketpp_1_1http_1_1parser_af1d77875407d0c9fe69a3b66cc806f06}{websocketpp\+::http\+::parser\+::extract\+\_\+token} (Input\+Iterator begin, Input\+Iterator end)
+\begin{DoxyCompactList}\small\item\em Read and return the next token in the stream. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Input\+Iterator $>$ }\\std\+::pair$<$ std\+::string, Input\+Iterator $>$ \hyperlink{namespacewebsocketpp_1_1http_1_1parser_a7d623c6b891254ad33901ebb6879c81a}{websocketpp\+::http\+::parser\+::extract\+\_\+quoted\+\_\+string} (Input\+Iterator begin, Input\+Iterator end)
+\begin{DoxyCompactList}\small\item\em Read and return the next quoted string in the stream. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Input\+Iterator $>$ }\\Input\+Iterator \hyperlink{namespacewebsocketpp_1_1http_1_1parser_a1dacef9abccd8e5b6c572447d9f5a3ab}{websocketpp\+::http\+::parser\+::extract\+\_\+lws} (Input\+Iterator begin, Input\+Iterator end)
+\begin{DoxyCompactList}\small\item\em Read and discard one unit of linear whitespace. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Input\+Iterator $>$ }\\Input\+Iterator \hyperlink{namespacewebsocketpp_1_1http_1_1parser_a263c7c466bbed56948d5877b9c33c354}{websocketpp\+::http\+::parser\+::extract\+\_\+all\+\_\+lws} (Input\+Iterator begin, Input\+Iterator end)
+\begin{DoxyCompactList}\small\item\em Read and discard linear whitespace. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Input\+Iterator $>$ }\\Input\+Iterator \hyperlink{namespacewebsocketpp_1_1http_1_1parser_ac13fb3aca2101c9e6d2ee14039f1a758}{websocketpp\+::http\+::parser\+::extract\+\_\+attributes} (Input\+Iterator begin, Input\+Iterator end, attribute\+\_\+list \&attributes)
+\begin{DoxyCompactList}\small\item\em Extract H\+T\+T\+P attributes. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Input\+Iterator $>$ }\\Input\+Iterator \hyperlink{namespacewebsocketpp_1_1http_1_1parser_adabfd491d364be43bee4c7cad63e7e08}{websocketpp\+::http\+::parser\+::extract\+\_\+parameters} (Input\+Iterator begin, Input\+Iterator end, parameter\+\_\+list \&parameters)
+\begin{DoxyCompactList}\small\item\em Extract H\+T\+T\+P parameters. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{namespacewebsocketpp_1_1http_1_1parser_ae656f7130716b25fb2a34cee77a0444e}{websocketpp\+::http\+::parser\+::strip\+\_\+lws} (std\+::string const \&input)
+\end{DoxyCompactItemize}

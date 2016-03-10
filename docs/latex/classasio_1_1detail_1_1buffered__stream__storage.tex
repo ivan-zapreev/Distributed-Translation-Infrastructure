@@ -1,0 +1,172 @@
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage}{}\section{asio\+:\+:detail\+:\+:buffered\+\_\+stream\+\_\+storage Class Reference}
+\label{classasio_1_1detail_1_1buffered__stream__storage}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+
+
+{\ttfamily \#include $<$buffered\+\_\+stream\+\_\+storage.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef unsigned char \hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a8c60fd3097ec6de528a228a91d671f9d}{byte\+\_\+type}
+\item 
+typedef std\+::size\+\_\+t \hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a1307072f53f7298ff9ce12e1d1f483cf}{size\+\_\+type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a8cfe52167d4f4ec4585f7e88debed158}{buffered\+\_\+stream\+\_\+storage} (std\+::size\+\_\+t buffer\+\_\+capacity)
+\item 
+void \hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a5acab63f1e2af9413551a10674c68bae}{clear} ()
+\begin{DoxyCompactList}\small\item\em Clear the buffer. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1mutable__buffer}{mutable\+\_\+buffer} \hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a1a65a8411a4efc293849a9bce337127c}{data} ()
+\item 
+\hyperlink{classasio_1_1const__buffer}{const\+\_\+buffer} \hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a9c56437a1a82f28986d7d39825d5f6b5}{data} () const 
+\item 
+bool \hyperlink{classasio_1_1detail_1_1buffered__stream__storage_ac69c8f2b10a085344a7101aff6d8ef9a}{empty} () const 
+\item 
+\hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a1307072f53f7298ff9ce12e1d1f483cf}{size\+\_\+type} \hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a7632d7344ae7a0a2dc623dc94c927bab}{size} () const 
+\item 
+void \hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a7bf6aa249bd3aa1fbfec6804b07da9f3}{resize} (\hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a1307072f53f7298ff9ce12e1d1f483cf}{size\+\_\+type} length)
+\item 
+\hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a1307072f53f7298ff9ce12e1d1f483cf}{size\+\_\+type} \hyperlink{classasio_1_1detail_1_1buffered__stream__storage_abad838c1691005dcf8cfe0cd9134ee9c}{capacity} () const 
+\item 
+void \hyperlink{classasio_1_1detail_1_1buffered__stream__storage_ae7a23fe65eec4997f3366300a9b46303}{consume} (\hyperlink{classasio_1_1detail_1_1buffered__stream__storage_a1307072f53f7298ff9ce12e1d1f483cf}{size\+\_\+type} count)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 30 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage_a8c60fd3097ec6de528a228a91d671f9d}{}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}!byte\+\_\+type@{byte\+\_\+type}}
+\index{byte\+\_\+type@{byte\+\_\+type}!asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+\subsubsection[{byte\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef unsigned char {\bf asio\+::detail\+::buffered\+\_\+stream\+\_\+storage\+::byte\+\_\+type}}\label{classasio_1_1detail_1_1buffered__stream__storage_a8c60fd3097ec6de528a228a91d671f9d}
+
+
+Definition at line 34 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage_a1307072f53f7298ff9ce12e1d1f483cf}{}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}!size\+\_\+type@{size\+\_\+type}}
+\index{size\+\_\+type@{size\+\_\+type}!asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+\subsubsection[{size\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::size\+\_\+t {\bf asio\+::detail\+::buffered\+\_\+stream\+\_\+storage\+::size\+\_\+type}}\label{classasio_1_1detail_1_1buffered__stream__storage_a1307072f53f7298ff9ce12e1d1f483cf}
+
+
+Definition at line 37 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage_a8cfe52167d4f4ec4585f7e88debed158}{}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}!buffered\+\_\+stream\+\_\+storage@{buffered\+\_\+stream\+\_\+storage}}
+\index{buffered\+\_\+stream\+\_\+storage@{buffered\+\_\+stream\+\_\+storage}!asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+\subsubsection[{buffered\+\_\+stream\+\_\+storage(std\+::size\+\_\+t buffer\+\_\+capacity)}]{\setlength{\rightskip}{0pt plus 5cm}asio\+::detail\+::buffered\+\_\+stream\+\_\+storage\+::buffered\+\_\+stream\+\_\+storage (
+\begin{DoxyParamCaption}
+\item[{std\+::size\+\_\+t}]{buffer\+\_\+capacity}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1detail_1_1buffered__stream__storage_a8cfe52167d4f4ec4585f7e88debed158}
+
+
+Definition at line 40 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage_abad838c1691005dcf8cfe0cd9134ee9c}{}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}!capacity@{capacity}}
+\index{capacity@{capacity}!asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+\subsubsection[{capacity() const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf size\+\_\+type} asio\+::detail\+::buffered\+\_\+stream\+\_\+storage\+::capacity (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1buffered__stream__storage_abad838c1691005dcf8cfe0cd9134ee9c}
+
+
+Definition at line 96 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage_a5acab63f1e2af9413551a10674c68bae}{}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}!clear@{clear}}
+\index{clear@{clear}!asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+\subsubsection[{clear()}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::buffered\+\_\+stream\+\_\+storage\+::clear (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1buffered__stream__storage_a5acab63f1e2af9413551a10674c68bae}
+
+
+Clear the buffer. 
+
+
+
+Definition at line 48 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage_ae7a23fe65eec4997f3366300a9b46303}{}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}!consume@{consume}}
+\index{consume@{consume}!asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+\subsubsection[{consume(size\+\_\+type count)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::buffered\+\_\+stream\+\_\+storage\+::consume (
+\begin{DoxyParamCaption}
+\item[{{\bf size\+\_\+type}}]{count}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1buffered__stream__storage_ae7a23fe65eec4997f3366300a9b46303}
+
+
+Definition at line 102 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage_a1a65a8411a4efc293849a9bce337127c}{}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}!data@{data}}
+\index{data@{data}!asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+\subsubsection[{data()}]{\setlength{\rightskip}{0pt plus 5cm}{\bf mutable\+\_\+buffer} asio\+::detail\+::buffered\+\_\+stream\+\_\+storage\+::data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1buffered__stream__storage_a1a65a8411a4efc293849a9bce337127c}
+
+
+Definition at line 55 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage_a9c56437a1a82f28986d7d39825d5f6b5}{}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}!data@{data}}
+\index{data@{data}!asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+\subsubsection[{data() const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf const\+\_\+buffer} asio\+::detail\+::buffered\+\_\+stream\+\_\+storage\+::data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1buffered__stream__storage_a9c56437a1a82f28986d7d39825d5f6b5}
+
+
+Definition at line 61 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage_ac69c8f2b10a085344a7101aff6d8ef9a}{}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}!empty@{empty}}
+\index{empty@{empty}!asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+\subsubsection[{empty() const }]{\setlength{\rightskip}{0pt plus 5cm}bool asio\+::detail\+::buffered\+\_\+stream\+\_\+storage\+::empty (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1buffered__stream__storage_ac69c8f2b10a085344a7101aff6d8ef9a}
+
+
+Definition at line 67 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage_a7bf6aa249bd3aa1fbfec6804b07da9f3}{}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}!resize@{resize}}
+\index{resize@{resize}!asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+\subsubsection[{resize(size\+\_\+type length)}]{\setlength{\rightskip}{0pt plus 5cm}void asio\+::detail\+::buffered\+\_\+stream\+\_\+storage\+::resize (
+\begin{DoxyParamCaption}
+\item[{{\bf size\+\_\+type}}]{length}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1buffered__stream__storage_a7bf6aa249bd3aa1fbfec6804b07da9f3}
+
+
+Definition at line 79 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+\hypertarget{classasio_1_1detail_1_1buffered__stream__storage_a7632d7344ae7a0a2dc623dc94c927bab}{}\index{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}!size@{size}}
+\index{size@{size}!asio\+::detail\+::buffered\+\_\+stream\+\_\+storage@{asio\+::detail\+::buffered\+\_\+stream\+\_\+storage}}
+\subsubsection[{size() const }]{\setlength{\rightskip}{0pt plus 5cm}{\bf size\+\_\+type} asio\+::detail\+::buffered\+\_\+stream\+\_\+storage\+::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1detail_1_1buffered__stream__storage_a7632d7344ae7a0a2dc623dc94c927bab}
+
+
+Definition at line 73 of file buffered\+\_\+stream\+\_\+storage.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/detail/\hyperlink{buffered__stream__storage_8hpp}{buffered\+\_\+stream\+\_\+storage.\+hpp}\end{DoxyCompactItemize}

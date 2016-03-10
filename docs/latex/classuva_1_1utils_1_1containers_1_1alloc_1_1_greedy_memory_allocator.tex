@@ -1,0 +1,349 @@
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator}{}\section{uva\+:\+:utils\+:\+:containers\+:\+:alloc\+:\+:Greedy\+Memory\+Allocator$<$ T $>$ Class Template Reference}
+\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator$<$ T $>$@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator$<$ T $>$}}
+
+
+{\ttfamily \#include $<$greedy\+\_\+memory\+\_\+allocator.\+hpp$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_1_1rebind}{rebind}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef T \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a8542d3bc26951148b64d3a978e5d213c}{value\+\_\+type}
+\item 
+typedef \hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage_a750d36c7e6c18135ccc45bf105f860e5}{Greedy\+Memory\+Storage\+::size\+\_\+type} \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a645a2906fb2579230ee5f98e98161c11}{size\+\_\+type}
+\item 
+typedef std\+::ptrdiff\+\_\+t \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a98bc6b16e7d75b7a2e13ddfba36c846d}{difference\+\_\+type}
+\item 
+typedef T $\ast$ \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a91591d8ee983d330817127d4acaeea27}{pointer}
+\item 
+typedef const T $\ast$ \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a206c9d79b70e9935b7de841ceb45ab7f}{const\+\_\+pointer}
+\item 
+typedef T \& \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac2a2c7238fc7d9727230c23bd3cc8743}{reference}
+\item 
+typedef const T \& \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a7911b8e1f044aab418c3b46d6df2f92a}{const\+\_\+reference}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ad094b548cabac6751c63cef8e0c8f65b}{Greedy\+Memory\+Allocator} (\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a645a2906fb2579230ee5f98e98161c11}{size\+\_\+type} num\+Elems)  throw ()
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac58acaa1c86e62992d2e2025d54e496b}{Greedy\+Memory\+Allocator} (const \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator}{Greedy\+Memory\+Allocator} \&other)  throw ()
+\item 
+{\footnotesize template$<$typename U $>$ }\\\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a38f0a71883a432fbc03ecad16dfcbc9f}{Greedy\+Memory\+Allocator} (const \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator}{Greedy\+Memory\+Allocator}$<$ U $>$ \&other)  throw ()
+\item 
+virtual \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a7f111264b144a1685ac693e7deb34845}{$\sim$\+Greedy\+Memory\+Allocator} ()  throw ()
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a91591d8ee983d330817127d4acaeea27}{pointer} \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a2f43e63d33167b3ed546365336f5e9b2}{address} (\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac2a2c7238fc7d9727230c23bd3cc8743}{reference} obj) const 
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a206c9d79b70e9935b7de841ceb45ab7f}{const\+\_\+pointer} \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a659b7b193b340ba0d4efe5d3b167f89f}{address} (\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a7911b8e1f044aab418c3b46d6df2f92a}{const\+\_\+reference} obj) const 
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a91591d8ee983d330817127d4acaeea27}{pointer} \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ab73b9ce4c6e83972804a277cef2b8103}{allocate} (\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a645a2906fb2579230ee5f98e98161c11}{size\+\_\+type} num, \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a206c9d79b70e9935b7de841ceb45ab7f}{const\+\_\+pointer} cp=0)
+\item 
+void \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ab388761ca0f4feac1de733e1960da176}{deallocate} (\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a91591d8ee983d330817127d4acaeea27}{pointer} ptr, \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a645a2906fb2579230ee5f98e98161c11}{size\+\_\+type} num)
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a645a2906fb2579230ee5f98e98161c11}{size\+\_\+type} \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_aba05e3906dc36d9af8a4e2212a950221}{available} () const   throw ()
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a645a2906fb2579230ee5f98e98161c11}{size\+\_\+type} \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ab333c1ae856f3c221fbdd7ed59fd9909}{max\+\_\+size} () const   throw ()
+\item 
+void \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a1c9742b6ec509aa8c17cd7613fc85dbc}{construct} (\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a91591d8ee983d330817127d4acaeea27}{pointer} ptr, const \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a8542d3bc26951148b64d3a978e5d213c}{value\+\_\+type} \&value)
+\item 
+void \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac6c86262b34512927ad9b92db31c0bef}{destroy} (\hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a91591d8ee983d330817127d4acaeea27}{pointer} ptr)
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage}{Greedy\+Memory\+Storage} \& \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a2a730c8669c0bff03b5512314e00d827}{get\+Storage\+Ref} () const 
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1utils_1_1containers_1_1_greedy_memory_storage}{Greedy\+Memory\+Storage} \& \hyperlink{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac765b72f3f5b1a0365668698f5689e7c}{\+\_\+manager}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$class uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator$<$ T $>$}
+
+This is the fixed memory allocator class for using in the tries. Here we pre-\/allocate some fixed size memory and then just give it out when needed. Since the Trie is build once and then is not changed, we do no do any memory deallocation here! 
+
+Definition at line 133 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a206c9d79b70e9935b7de841ceb45ab7f}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!const\+\_\+pointer@{const\+\_\+pointer}}
+\index{const\+\_\+pointer@{const\+\_\+pointer}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{const\+\_\+pointer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ typedef const T$\ast$ {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::{\bf const\+\_\+pointer}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a206c9d79b70e9935b7de841ceb45ab7f}
+
+
+Definition at line 139 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a7911b8e1f044aab418c3b46d6df2f92a}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!const\+\_\+reference@{const\+\_\+reference}}
+\index{const\+\_\+reference@{const\+\_\+reference}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{const\+\_\+reference}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ typedef const T\& {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::{\bf const\+\_\+reference}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a7911b8e1f044aab418c3b46d6df2f92a}
+
+
+Definition at line 141 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a98bc6b16e7d75b7a2e13ddfba36c846d}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!difference\+\_\+type@{difference\+\_\+type}}
+\index{difference\+\_\+type@{difference\+\_\+type}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{difference\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ typedef std\+::ptrdiff\+\_\+t {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::{\bf difference\+\_\+type}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a98bc6b16e7d75b7a2e13ddfba36c846d}
+
+
+Definition at line 137 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a91591d8ee983d330817127d4acaeea27}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!pointer@{pointer}}
+\index{pointer@{pointer}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{pointer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ typedef T$\ast$ {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::{\bf pointer}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a91591d8ee983d330817127d4acaeea27}
+
+
+Definition at line 138 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac2a2c7238fc7d9727230c23bd3cc8743}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!reference@{reference}}
+\index{reference@{reference}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{reference}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ typedef T\& {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::{\bf reference}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac2a2c7238fc7d9727230c23bd3cc8743}
+
+
+Definition at line 140 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a645a2906fb2579230ee5f98e98161c11}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!size\+\_\+type@{size\+\_\+type}}
+\index{size\+\_\+type@{size\+\_\+type}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{size\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ typedef {\bf Greedy\+Memory\+Storage\+::size\+\_\+type} {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::{\bf size\+\_\+type}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a645a2906fb2579230ee5f98e98161c11}
+
+
+Definition at line 136 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a8542d3bc26951148b64d3a978e5d213c}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!value\+\_\+type@{value\+\_\+type}}
+\index{value\+\_\+type@{value\+\_\+type}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{value\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ typedef T {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::{\bf value\+\_\+type}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a8542d3bc26951148b64d3a978e5d213c}
+
+
+Definition at line 135 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ad094b548cabac6751c63cef8e0c8f65b}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!Greedy\+Memory\+Allocator@{Greedy\+Memory\+Allocator}}
+\index{Greedy\+Memory\+Allocator@{Greedy\+Memory\+Allocator}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{Greedy\+Memory\+Allocator(size\+\_\+type num\+Elems)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::{\bf Greedy\+Memory\+Allocator} (
+\begin{DoxyParamCaption}
+\item[{{\bf size\+\_\+type}}]{num\+Elems}
+\end{DoxyParamCaption}
+) throw  ) \hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ad094b548cabac6751c63cef8e0c8f65b}
+The basic constructor. 
+\begin{DoxyParams}{Parameters}
+{\em num\+Elems} & the number of elements of template type T to pre-\/allocate memory for. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 152 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac58acaa1c86e62992d2e2025d54e496b}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!Greedy\+Memory\+Allocator@{Greedy\+Memory\+Allocator}}
+\index{Greedy\+Memory\+Allocator@{Greedy\+Memory\+Allocator}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{Greedy\+Memory\+Allocator(const Greedy\+Memory\+Allocator \&other)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::{\bf Greedy\+Memory\+Allocator} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Greedy\+Memory\+Allocator}$<$ T $>$ \&}]{other}
+\end{DoxyParamCaption}
+) throw  ) \hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac58acaa1c86e62992d2e2025d54e496b}
+The basic copy constructor. 
+
+Definition at line 163 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a38f0a71883a432fbc03ecad16dfcbc9f}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!Greedy\+Memory\+Allocator@{Greedy\+Memory\+Allocator}}
+\index{Greedy\+Memory\+Allocator@{Greedy\+Memory\+Allocator}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{Greedy\+Memory\+Allocator(const Greedy\+Memory\+Allocator$<$ U $>$ \&other)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ template$<$typename U $>$ {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::{\bf Greedy\+Memory\+Allocator} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Greedy\+Memory\+Allocator}$<$ U $>$ \&}]{other}
+\end{DoxyParamCaption}
+) throw  ) \hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a38f0a71883a432fbc03ecad16dfcbc9f}
+The basic re-\/bind constructor. It is used internally by the container in case it needs to allocate other sort data than the stored container elements. 
+
+Definition at line 174 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a7f111264b144a1685ac693e7deb34845}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!````~Greedy\+Memory\+Allocator@{$\sim$\+Greedy\+Memory\+Allocator}}
+\index{````~Greedy\+Memory\+Allocator@{$\sim$\+Greedy\+Memory\+Allocator}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{$\sim$\+Greedy\+Memory\+Allocator()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ virtual {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::$\sim${\bf Greedy\+Memory\+Allocator} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) throw  ) \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a7f111264b144a1685ac693e7deb34845}
+The standard destructor 
+
+Definition at line 182 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a2f43e63d33167b3ed546365336f5e9b2}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!address@{address}}
+\index{address@{address}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{address(reference obj) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf pointer} {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::address (
+\begin{DoxyParamCaption}
+\item[{{\bf reference}}]{obj}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a2f43e63d33167b3ed546365336f5e9b2}
+Computes the address of the given object 
+\begin{DoxyParams}{Parameters}
+{\em obj} & the object to compute the pointer of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the computed pointer 
+\end{DoxyReturn}
+
+
+Definition at line 192 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a659b7b193b340ba0d4efe5d3b167f89f}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!address@{address}}
+\index{address@{address}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{address(const\+\_\+reference obj) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf const\+\_\+pointer} {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::address (
+\begin{DoxyParamCaption}
+\item[{{\bf const\+\_\+reference}}]{obj}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a659b7b193b340ba0d4efe5d3b167f89f}
+Computes the address of the given object 
+\begin{DoxyParams}{Parameters}
+{\em obj} & the object to compute the pointer of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the computed pointer 
+\end{DoxyReturn}
+
+
+Definition at line 202 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ab73b9ce4c6e83972804a277cef2b8103}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!allocate@{allocate}}
+\index{allocate@{allocate}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{allocate(size\+\_\+type num, const\+\_\+pointer cp=0)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf pointer} {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::allocate (
+\begin{DoxyParamCaption}
+\item[{{\bf size\+\_\+type}}]{num, }
+\item[{{\bf const\+\_\+pointer}}]{cp = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ab73b9ce4c6e83972804a277cef2b8103}
+Allocates memory for the given number of objects 
+\begin{DoxyParams}{Parameters}
+{\em num} & the number of objects to allocate \\
+\hline
+{\em cp} & N\+O\+T U\+S\+E\+D \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the pointer to the first allocated object 
+\end{DoxyReturn}
+
+
+Definition at line 213 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_aba05e3906dc36d9af8a4e2212a950221}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!available@{available}}
+\index{available@{available}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{available() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf size\+\_\+type} {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::available (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_aba05e3906dc36d9af8a4e2212a950221}
+Returns the available number of free elements we can store \begin{DoxyReturn}{Returns}
+the available number of free elements we can store 
+\end{DoxyReturn}
+
+
+Definition at line 241 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a1c9742b6ec509aa8c17cd7613fc85dbc}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!construct@{construct}}
+\index{construct@{construct}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{construct(pointer ptr, const value\+\_\+type \&value)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::construct (
+\begin{DoxyParamCaption}
+\item[{{\bf pointer}}]{ptr, }
+\item[{const {\bf value\+\_\+type} \&}]{value}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a1c9742b6ec509aa8c17cd7613fc85dbc}
+Calling the constructor on the given pointer 
+\begin{DoxyParams}{Parameters}
+{\em ptr} & the pointer to work with \\
+\hline
+{\em value} & the type value to work with \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 258 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ab388761ca0f4feac1de733e1960da176}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!deallocate@{deallocate}}
+\index{deallocate@{deallocate}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{deallocate(pointer ptr, size\+\_\+type num)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::deallocate (
+\begin{DoxyParamCaption}
+\item[{{\bf pointer}}]{ptr, }
+\item[{{\bf size\+\_\+type}}]{num}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ab388761ca0f4feac1de733e1960da176}
+This function is supposed to deallocate the memory. We do not do that as this is fixed memory allocator 
+\begin{DoxyParams}{Parameters}
+{\em ptr} & the pointer to free memory from \\
+\hline
+{\em num} & the number of objects to deallocate \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 232 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac6c86262b34512927ad9b92db31c0bef}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!destroy@{destroy}}
+\index{destroy@{destroy}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{destroy(pointer ptr)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::destroy (
+\begin{DoxyParamCaption}
+\item[{{\bf pointer}}]{ptr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac6c86262b34512927ad9b92db31c0bef}
+Calling the destructor on the given pointer 
+\begin{DoxyParams}{Parameters}
+{\em ptr} & the pointer to work with \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 267 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a2a730c8669c0bff03b5512314e00d827}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!get\+Storage\+Ref@{get\+Storage\+Ref}}
+\index{get\+Storage\+Ref@{get\+Storage\+Ref}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{get\+Storage\+Ref() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Greedy\+Memory\+Storage}\& {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::get\+Storage\+Ref (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_a2a730c8669c0bff03b5512314e00d827}
+Returns the reference to the buffer manager \begin{DoxyReturn}{Returns}
+the reference to the buffer manager 
+\end{DoxyReturn}
+
+
+Definition at line 276 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ab333c1ae856f3c221fbdd7ed59fd9909}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!max\+\_\+size@{max\+\_\+size}}
+\index{max\+\_\+size@{max\+\_\+size}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{max\+\_\+size() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf size\+\_\+type} {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::max\+\_\+size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ab333c1ae856f3c221fbdd7ed59fd9909}
+Returns the maximum number of elements we can store \begin{DoxyReturn}{Returns}
+the maximum number of elements we can store 
+\end{DoxyReturn}
+
+
+Definition at line 249 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac765b72f3f5b1a0365668698f5689e7c}{}\index{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}!\+\_\+manager@{\+\_\+manager}}
+\index{\+\_\+manager@{\+\_\+manager}!uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator@{uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}}
+\subsubsection[{\+\_\+manager}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Greedy\+Memory\+Storage}\& {\bf uva\+::utils\+::containers\+::alloc\+::\+Greedy\+Memory\+Allocator}$<$ T $>$\+::\+\_\+manager\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1utils_1_1containers_1_1alloc_1_1_greedy_memory_allocator_ac765b72f3f5b1a0365668698f5689e7c}
+
+
+Definition at line 282 of file greedy\+\_\+memory\+\_\+allocator.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/common/utils/containers/\hyperlink{greedy__memory__allocator_8hpp}{greedy\+\_\+memory\+\_\+allocator.\+hpp}\end{DoxyCompactItemize}

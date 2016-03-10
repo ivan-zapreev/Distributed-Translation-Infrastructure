@@ -1,0 +1,4 @@
+var classwebsocketpp____1____1extensions____1____1permessage________deflate____1____1error____1____1category__8js_8js =
+[
+    [ "classwebsocketpp__1__1extensions__1__1permessage____deflate__1__1error__1__1category_8js", "classwebsocketpp____1____1extensions____1____1permessage________deflate____1____1error____1____1category__8js_8js.html#a294baac04f9f05d9b4cd2efa41e11d93", null ]
+];

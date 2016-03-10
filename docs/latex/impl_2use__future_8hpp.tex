@@ -1,0 +1,37 @@
+\hypertarget{impl_2use__future_8hpp}{}\section{ext/asio/impl/use\+\_\+future.hpp File Reference}
+\label{impl_2use__future_8hpp}\index{ext/asio/impl/use\+\_\+future.\+hpp@{ext/asio/impl/use\+\_\+future.\+hpp}}
+{\ttfamily \#include \char`\"{}asio/detail/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$future$>$}\\*
+{\ttfamily \#include \char`\"{}asio/async\+\_\+result.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/error\+\_\+code.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/handler\+\_\+type.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/system\+\_\+error.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/push\+\_\+options.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}asio/detail/pop\+\_\+options.\+hpp\char`\"{}}\\*
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classasio_1_1detail_1_1promise__handler}{asio\+::detail\+::promise\+\_\+handler$<$ T $>$}
+\item 
+class \hyperlink{classasio_1_1detail_1_1promise__handler_3_01void_01_4}{asio\+::detail\+::promise\+\_\+handler$<$ void $>$}
+\item 
+class \hyperlink{classasio_1_1async__result_3_01detail_1_1promise__handler_3_01_t_01_4_01_4}{asio\+::async\+\_\+result$<$ detail\+::promise\+\_\+handler$<$ T $>$ $>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01use__future__t_3_01_allocator_01_4_00_01_return_type_07_arg1_08_4}{asio\+::handler\+\_\+type$<$ use\+\_\+future\+\_\+t$<$ Allocator $>$, Return\+Type(\+Arg1)$>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01use__future__t_3_01_allocator_01_4_00_01_01_01_01_01_01_01_01_01e03a2a25b6ea2f5e6fbc374eca266e19}{asio\+::handler\+\_\+type$<$ use\+\_\+future\+\_\+t$<$ Allocator $>$,           Return\+Type(asio\+::error\+\_\+code)$>$}
+\item 
+struct \hyperlink{structasio_1_1handler__type_3_01use__future__t_3_01_allocator_01_4_00_01_01_01_01_01_01_01_01_01912bb47ba4497b53d32e350e5bfa0a51}{asio\+::handler\+\_\+type$<$ use\+\_\+future\+\_\+t$<$ Allocator $>$,           Return\+Type(asio\+::error\+\_\+code, Arg2)$>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceasio}{asio}
+\item 
+ \hyperlink{namespaceasio_1_1detail}{asio\+::detail}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Function , typename T $>$ }\\void \hyperlink{namespaceasio_1_1detail_a4af2e428680aed7df4d64d8d4eb54cbf}{asio\+::detail\+::asio\+\_\+handler\+\_\+invoke} (Function f, promise\+\_\+handler$<$ T $>$ $\ast$h)
+\end{DoxyCompactItemize}

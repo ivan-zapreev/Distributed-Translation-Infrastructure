@@ -1,0 +1,333 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:decoder\+:\+:stack\+:\+:stack\+\_\+level Class Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+
+
+{\ttfamily \#include $<$stack\+\_\+level.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0b4a0804fe2e2ff95adcea7524bde943}{stack\+\_\+level} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_aaf4d5faf3a48156401c854d163d4b848}{de\+\_\+parameters} \&params, \hyperlink{namespaceuva_1_1utils_1_1threads_a1c174d3a90b2b056554d897188ad2c74}{acr\+\_\+bool\+\_\+flag} is\+\_\+stop)
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0c3e904bae304d82a82512b930512119}{$\sim$stack\+\_\+level} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a7bf7e806780c481ad3e1107c240b76da}{add\+\_\+state} (\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} new\+\_\+state)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a69347391556956dd6307a7e964d2847c}{expand} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_af9b62b70fda5f4d743e86a6a65a95071}{get\+\_\+best\+\_\+trans} (string \&target\+\_\+sent) const 
+\item 
+size\+\_\+t \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_aef60eb980e7e283c59a5b0a1db12c42b}{get\+\_\+size} () const 
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_add73733b755d8835ca3b5c2339736451}{find\+\_\+recombine} (\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} \&curr\+\_\+state, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_a30416dfcace69691af43f9f44a076f7e}{stack\+\_\+state} \&new\+\_\+state)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a4a33e33ce484e82bae8315e8d3b25308}{add\+\_\+last} (\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} new\+\_\+state)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a552d8f4cfe4ff1680623bf747e578b73}{add\+\_\+before} (\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} curr\+\_\+state, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} new\+\_\+state)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_abbaa5c1fade73f6643f6d31795a0fc2e}{remember\+\_\+best\+\_\+score} ()
+\item 
+bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0a550b351762d3d456535f33df7b9fd5}{is\+\_\+space\+\_\+left} () const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a1312ea6fdd24e8d91c81564525e7edaf}{prune\+\_\+states} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_ac487fa956e94d7840ac4190137502d51}{insert\+\_\+as\+\_\+first} (\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} state)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a65a44b9204f548253eae6b3816a39af7}{insert\+\_\+as\+\_\+last} (\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} state)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0055e713c18c42277d21b34d214a5ff0}{insert\+\_\+between} (\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} prev, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} next, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} state)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a34db813fc46305cf50e782f700f6b71b}{insert\+\_\+before} (\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} curr\+\_\+state, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} new\+\_\+state)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a07981c21a1c88317159af94b53177fdc}{remove\+\_\+from\+\_\+level} (\hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_ab08047a5fae45b1c4311bd5d5aa2c4fc}{stack\+\_\+state\+\_\+ptr} state)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Represents the multi-\/stack level 
+
+Definition at line 45 of file stack\+\_\+level.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0b4a0804fe2e2ff95adcea7524bde943}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!stack\+\_\+level@{stack\+\_\+level}}
+\index{stack\+\_\+level@{stack\+\_\+level}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{stack\+\_\+level(const de\+\_\+parameters \&params, acr\+\_\+bool\+\_\+flag is\+\_\+stop)}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::stack\+\_\+level (
+\begin{DoxyParamCaption}
+\item[{const {\bf de\+\_\+parameters} \&}]{params, }
+\item[{{\bf acr\+\_\+bool\+\_\+flag}}]{is\+\_\+stop}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0b4a0804fe2e2ff95adcea7524bde943}
+The basic constructor 
+\begin{DoxyParams}{Parameters}
+{\em params} & the decoder parameters, stores the reference to it \\
+\hline
+{\em is\+\_\+stop} & the stop flag \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 53 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0c3e904bae304d82a82512b930512119}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!````~stack\+\_\+level@{$\sim$stack\+\_\+level}}
+\index{````~stack\+\_\+level@{$\sim$stack\+\_\+level}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{$\sim$stack\+\_\+level()}]{\setlength{\rightskip}{0pt plus 5cm}uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::$\sim$stack\+\_\+level (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0c3e904bae304d82a82512b930512119}
+The basic destructor, this implementation is iterative. 
+
+Definition at line 62 of file stack\+\_\+level.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a552d8f4cfe4ff1680623bf747e578b73}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!add\+\_\+before@{add\+\_\+before}}
+\index{add\+\_\+before@{add\+\_\+before}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{add\+\_\+before(stack\+\_\+state\+\_\+ptr curr\+\_\+state, stack\+\_\+state\+\_\+ptr new\+\_\+state)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::add\+\_\+before (
+\begin{DoxyParamCaption}
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{curr\+\_\+state, }
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{new\+\_\+state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a552d8f4cfe4ff1680623bf747e578b73}
+Allows to add a new state to the level before some existing state. The new state is to have a bigger weight that the provided current state and is to be non equal (recombinable) to any other state before. This method makes sure that any state after the new one will be checked for a possible recombination to the new one, if yes the recombination will be done. Pruning is performed unconditionally. We known that the state satisfies the total weight threshold. 
+\begin{DoxyParams}{Parameters}
+{\em curr\+\_\+state} & the pointer to the state, not N\+U\+L\+L, we need to add the new state prior to. \\
+\hline
+{\em new\+\_\+state} & the pointer to the new state, not N\+U\+L\+L \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 252 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a4a33e33ce484e82bae8315e8d3b25308}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!add\+\_\+last@{add\+\_\+last}}
+\index{add\+\_\+last@{add\+\_\+last}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{add\+\_\+last(stack\+\_\+state\+\_\+ptr new\+\_\+state)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::add\+\_\+last (
+\begin{DoxyParamCaption}
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{new\+\_\+state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a4a33e33ce484e82bae8315e8d3b25308}
+Allows to add the new state as the last one to the level. This new state is to have the smallest weight that all the other states in the level and is not to be equal (recombinable) to any other state to the level. Note that we know that the new state cost is within the current threshold bound. 
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+state} & the new state to add as the last one, if satisfies the pruning thresholds. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 222 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a7bf7e806780c481ad3e1107c240b76da}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!add\+\_\+state@{add\+\_\+state}}
+\index{add\+\_\+state@{add\+\_\+state}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{add\+\_\+state(stack\+\_\+state\+\_\+ptr new\+\_\+state)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::add\+\_\+state (
+\begin{DoxyParamCaption}
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{new\+\_\+state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a7bf7e806780c481ad3e1107c240b76da}
+Allows to add a new state into the level 
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+state} & the new state to add \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 82 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a69347391556956dd6307a7e964d2847c}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!expand@{expand}}
+\index{expand@{expand}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{expand()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::expand (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a69347391556956dd6307a7e964d2847c}
+Allows to expand the stack elements, to do that this method just goes through all the stack elements one by one and expands them. We could have done this recursively but this way we avoid stack allocations so we might be just faster. 
+
+Definition at line 134 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_add73733b755d8835ca3b5c2339736451}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!find\+\_\+recombine@{find\+\_\+recombine}}
+\index{find\+\_\+recombine@{find\+\_\+recombine}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{find\+\_\+recombine(stack\+\_\+state\+\_\+ptr \&curr\+\_\+state, stack\+\_\+state \&new\+\_\+state)}]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::find\+\_\+recombine (
+\begin{DoxyParamCaption}
+\item[{{\bf stack\+\_\+state\+\_\+ptr} \&}]{curr\+\_\+state, }
+\item[{{\bf stack\+\_\+state} \&}]{new\+\_\+state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_add73733b755d8835ca3b5c2339736451}
+This method allows to search for a position to insert the new state into. We known that the state satisfies the total weight threshold. 
+\begin{DoxyParams}{Parameters}
+{\em curr\+\_\+state} & \mbox{[}out\mbox{]} \\
+\hline
+{\em new\+\_\+state} & \mbox{[}in\mbox{]} the new state to be inserted into the list \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the new state was recombined into an existing one, otherwise false. 
+\end{DoxyReturn}
+
+
+Definition at line 186 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_af9b62b70fda5f4d743e86a6a65a95071}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!get\+\_\+best\+\_\+trans@{get\+\_\+best\+\_\+trans}}
+\index{get\+\_\+best\+\_\+trans@{get\+\_\+best\+\_\+trans}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{get\+\_\+best\+\_\+trans(string \&target\+\_\+sent) const }]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::get\+\_\+best\+\_\+trans (
+\begin{DoxyParamCaption}
+\item[{string \&}]{target\+\_\+sent}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_af9b62b70fda5f4d743e86a6a65a95071}
+Allows to get the best translation target string for this stack. To do that, it takes the first element/state in the level\textquotesingle{}s ordered by costs stack and asks it to unroll itself to give its translation. 
+\begin{DoxyParams}{Parameters}
+{\em target\+\_\+sent} & \mbox{[}out\mbox{]} the variable to store the translation \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 158 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_aef60eb980e7e283c59a5b0a1db12c42b}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!get\+\_\+size@{get\+\_\+size}}
+\index{get\+\_\+size@{get\+\_\+size}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{get\+\_\+size() const }]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::get\+\_\+size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_aef60eb980e7e283c59a5b0a1db12c42b}
+This method allows to retrieve the number of stack level elements \begin{DoxyReturn}{Returns}
+the number of stack level elements. 
+\end{DoxyReturn}
+
+
+Definition at line 173 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_ac487fa956e94d7840ac4190137502d51}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!insert\+\_\+as\+\_\+first@{insert\+\_\+as\+\_\+first}}
+\index{insert\+\_\+as\+\_\+first@{insert\+\_\+as\+\_\+first}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{insert\+\_\+as\+\_\+first(stack\+\_\+state\+\_\+ptr state)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::insert\+\_\+as\+\_\+first (
+\begin{DoxyParamCaption}
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_ac487fa956e94d7840ac4190137502d51}
+Allows to insert the stack state as the first one in the level This method increments the level size counter. Updates the best score! 
+\begin{DoxyParams}{Parameters}
+{\em state} & the state to insert \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 359 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a65a44b9204f548253eae6b3816a39af7}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!insert\+\_\+as\+\_\+last@{insert\+\_\+as\+\_\+last}}
+\index{insert\+\_\+as\+\_\+last@{insert\+\_\+as\+\_\+last}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{insert\+\_\+as\+\_\+last(stack\+\_\+state\+\_\+ptr state)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::insert\+\_\+as\+\_\+last (
+\begin{DoxyParamCaption}
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a65a44b9204f548253eae6b3816a39af7}
+Allows to insert the stack state as the last one in the level This method increments the level size counter. Updates the best score! 
+\begin{DoxyParams}{Parameters}
+{\em state} & the state to insert \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 394 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a34db813fc46305cf50e782f700f6b71b}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!insert\+\_\+before@{insert\+\_\+before}}
+\index{insert\+\_\+before@{insert\+\_\+before}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{insert\+\_\+before(stack\+\_\+state\+\_\+ptr curr\+\_\+state, stack\+\_\+state\+\_\+ptr new\+\_\+state)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::insert\+\_\+before (
+\begin{DoxyParamCaption}
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{curr\+\_\+state, }
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{new\+\_\+state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a34db813fc46305cf50e782f700f6b71b}
+Allows to insert a new element before the given stack element in the level list This method increments the level size counter. Updates the best score! 
+\begin{DoxyParams}{Parameters}
+{\em curr\+\_\+state} & the state before which the new state is to be inserted, not N\+U\+L\+L \\
+\hline
+{\em new\+\_\+state} & the state to be inserted, N\+O\+T N\+U\+L\+L \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 460 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0055e713c18c42277d21b34d214a5ff0}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!insert\+\_\+between@{insert\+\_\+between}}
+\index{insert\+\_\+between@{insert\+\_\+between}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{insert\+\_\+between(stack\+\_\+state\+\_\+ptr prev, stack\+\_\+state\+\_\+ptr next, stack\+\_\+state\+\_\+ptr state)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::insert\+\_\+between (
+\begin{DoxyParamCaption}
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{prev, }
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{next, }
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0055e713c18c42277d21b34d214a5ff0}
+Allows to insert the stack state in between the given two elements Note that the next and previous states are to be different! This method increments the level size counter. 
+\begin{DoxyParams}{Parameters}
+{\em prev} & the pointer reference to the prev state, N\+O\+T N\+U\+L\+L \\
+\hline
+{\em next} & the pointer reference to the next state, N\+O\+T N\+U\+L\+L \\
+\hline
+{\em state} & the state to insert, N\+U\+L N\+U\+L\+L \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 428 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0a550b351762d3d456535f33df7b9fd5}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!is\+\_\+space\+\_\+left@{is\+\_\+space\+\_\+left}}
+\index{is\+\_\+space\+\_\+left@{is\+\_\+space\+\_\+left}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{is\+\_\+space\+\_\+left() const }]{\setlength{\rightskip}{0pt plus 5cm}bool uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::is\+\_\+space\+\_\+left (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a0a550b351762d3d456535f33df7b9fd5}
+Allows to check if there is still space left for adding states into the level If there is no space left then we can still add states but we shall do histogram pruning afterwards in order to keep the stack size within the capacity limits. \begin{DoxyReturn}{Returns}
+true if there is empty space left for adding states 
+\end{DoxyReturn}
+
+
+Definition at line 315 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a1312ea6fdd24e8d91c81564525e7edaf}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!prune\+\_\+states@{prune\+\_\+states}}
+\index{prune\+\_\+states@{prune\+\_\+states}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{prune\+\_\+states()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::prune\+\_\+states (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a1312ea6fdd24e8d91c81564525e7edaf}
+This method makes sure there is not too many elements in the stack, the last ones are removed. This method decrements the level size counter. 
+
+Definition at line 326 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_abbaa5c1fade73f6643f6d31795a0fc2e}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!remember\+\_\+best\+\_\+score@{remember\+\_\+best\+\_\+score}}
+\index{remember\+\_\+best\+\_\+score@{remember\+\_\+best\+\_\+score}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{remember\+\_\+best\+\_\+score()}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::remember\+\_\+best\+\_\+score (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_abbaa5c1fade73f6643f6d31795a0fc2e}
+Allows to update the best score, or rather threshold for threshold pruning. 
+
+Definition at line 297 of file stack\+\_\+level.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a07981c21a1c88317159af94b53177fdc}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}!remove\+\_\+from\+\_\+level@{remove\+\_\+from\+\_\+level}}
+\index{remove\+\_\+from\+\_\+level@{remove\+\_\+from\+\_\+level}!uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level@{uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level}}
+\subsubsection[{remove\+\_\+from\+\_\+level(stack\+\_\+state\+\_\+ptr state)}]{\setlength{\rightskip}{0pt plus 5cm}void uva\+::smt\+::bpbd\+::server\+::decoder\+::stack\+::stack\+\_\+level\+::remove\+\_\+from\+\_\+level (
+\begin{DoxyParamCaption}
+\item[{{\bf stack\+\_\+state\+\_\+ptr}}]{state}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level_a07981c21a1c88317159af94b53177fdc}
+Allows to remove the given state from the level. The state is not destroyed, its memory is not deleted. This method decrements the level size counter. The given state must be within the level list of states! 
+\begin{DoxyParams}{Parameters}
+{\em state} & the state to be destroyed \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 480 of file stack\+\_\+level.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/decoder/stack/\hyperlink{stack__level_8hpp}{stack\+\_\+level.\+hpp}\end{DoxyCompactItemize}

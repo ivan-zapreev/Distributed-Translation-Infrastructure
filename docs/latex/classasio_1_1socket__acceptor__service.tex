@@ -1,0 +1,538 @@
+\hypertarget{classasio_1_1socket__acceptor__service}{}\section{asio\+:\+:socket\+\_\+acceptor\+\_\+service$<$ Protocol $>$ Class Template Reference}
+\label{classasio_1_1socket__acceptor__service}\index{asio\+::socket\+\_\+acceptor\+\_\+service$<$ Protocol $>$@{asio\+::socket\+\_\+acceptor\+\_\+service$<$ Protocol $>$}}
+
+
+Default service implementation for a socket acceptor.  
+
+
+
+
+{\ttfamily \#include $<$socket\+\_\+acceptor\+\_\+service.\+hpp$>$}
+
+Inheritance diagram for asio\+:\+:socket\+\_\+acceptor\+\_\+service$<$ Protocol $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classasio_1_1socket__acceptor__service}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Protocol \hyperlink{classasio_1_1socket__acceptor__service_a2622e1b415ef0257f92e1d586cc25641}{protocol\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The protocol type. \end{DoxyCompactList}\item 
+typedef protocol\+\_\+type\+::endpoint \hyperlink{classasio_1_1socket__acceptor__service_a2e266541d8da5db4af397b4a62bc3923}{endpoint\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The endpoint type. \end{DoxyCompactList}\item 
+typedef \hyperlink{structasio_1_1detail_1_1reactive__socket__service_1_1implementation__type}{service\+\_\+impl\+\_\+type\+::implementation\+\_\+type} \hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The native type of the socket acceptor. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1reactive__socket__service_a2fc869359f3eb7b6f25925f10e594e1d}{service\+\_\+impl\+\_\+type\+::native\+\_\+handle\+\_\+type} \hyperlink{classasio_1_1socket__acceptor__service_a26cf6dae27417c057eca8c60a65950ed}{native\+\_\+type}
+\begin{DoxyCompactList}\small\item\em (Deprecated\+: Use native\+\_\+handle\+\_\+type.) The native acceptor type. \end{DoxyCompactList}\item 
+typedef \hyperlink{classasio_1_1detail_1_1reactive__socket__service_a2fc869359f3eb7b6f25925f10e594e1d}{service\+\_\+impl\+\_\+type\+::native\+\_\+handle\+\_\+type} \hyperlink{classasio_1_1socket__acceptor__service_a48826fea49fd08ba8d3ee51697f1a092}{native\+\_\+handle\+\_\+type}
+\begin{DoxyCompactList}\small\item\em The native acceptor type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1socket__acceptor__service_a9de4194ef8c45834615c972c89981375}{socket\+\_\+acceptor\+\_\+service} (\hyperlink{classasio_1_1io__service}{asio\+::io\+\_\+service} \&\hyperlink{classasio_1_1io__service}{io\+\_\+service})
+\begin{DoxyCompactList}\small\item\em Construct a new socket acceptor service for the specified \hyperlink{classasio_1_1io__service}{io\+\_\+service}. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1socket__acceptor__service_ad7b7e65bf63ec344fddb1ab9a59b154b}{construct} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em Construct a new socket acceptor implementation. \end{DoxyCompactList}\item 
+void \hyperlink{classasio_1_1socket__acceptor__service_a3b2c2805f76d1f055596012093e545f2}{destroy} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em Destroy a socket acceptor implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_a73a33df8aa20b50834834e6387b079c9}{open} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1socket__acceptor__service_a2622e1b415ef0257f92e1d586cc25641}{protocol\+\_\+type} \&protocol, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Open a new socket acceptor implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_abf3215370cf9133cdc0a3b7a59535acf}{assign} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1socket__acceptor__service_a2622e1b415ef0257f92e1d586cc25641}{protocol\+\_\+type} \&protocol, const \hyperlink{classasio_1_1socket__acceptor__service_a48826fea49fd08ba8d3ee51697f1a092}{native\+\_\+handle\+\_\+type} \&native\+\_\+acceptor, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Assign an existing native acceptor to a socket acceptor. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1socket__acceptor__service_a95fc7e13258e56dc058dbde04998d0a4}{is\+\_\+open} (const \hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl) const 
+\begin{DoxyCompactList}\small\item\em Determine whether the acceptor is open. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_a9bf1511bc47356299ae87361b0bdc40f}{cancel} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Cancel all asynchronous operations associated with the acceptor. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_a2a0f10879dbee26a2ad837ff5979867c}{bind} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, const \hyperlink{classasio_1_1socket__acceptor__service_a2e266541d8da5db4af397b4a62bc3923}{endpoint\+\_\+type} \&endpoint, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Bind the socket acceptor to the specified local endpoint. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_a343dbdb79d603e81b821c27ffff5518b}{listen} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, int backlog, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_a7cd21d9c2d9a465207f3ea79056c3ca7}{close} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Close a socket acceptor implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1socket__acceptor__service_a26cf6dae27417c057eca8c60a65950ed}{native\+\_\+type} \hyperlink{classasio_1_1socket__acceptor__service_abc227683740cdb6e3017641dba236fac}{native} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em (Deprecated\+: Use \hyperlink{classasio_1_1socket__acceptor__service_a328de9eeff0180706b8dced3b7893afd}{native\+\_\+handle()}.) Get the native acceptor implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1socket__acceptor__service_a48826fea49fd08ba8d3ee51697f1a092}{native\+\_\+handle\+\_\+type} \hyperlink{classasio_1_1socket__acceptor__service_a328de9eeff0180706b8dced3b7893afd}{native\+\_\+handle} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl)
+\begin{DoxyCompactList}\small\item\em Get the native acceptor implementation. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Settable\+Socket\+Option $>$ }\\\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_a4b2f07815e07ca17bbc88a6fb6b49383}{set\+\_\+option} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, const Settable\+Socket\+Option \&option, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Set a socket option. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Gettable\+Socket\+Option $>$ }\\\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_a8646863fe555770c5d3a295d6263bf95}{get\+\_\+option} (const \hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, Gettable\+Socket\+Option \&option, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\begin{DoxyCompactList}\small\item\em Get a socket option. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Io\+Control\+Command $>$ }\\\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_a31ffba8fdfb6ffa47530088e52ce1147}{io\+\_\+control} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, Io\+Control\+Command \&command, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Perform an I\+O control command on the socket. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1socket__acceptor__service_a86ba38fd2ff9247f3bb390c5252f7ab3}{non\+\_\+blocking} (const \hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl) const 
+\begin{DoxyCompactList}\small\item\em Gets the non-\/blocking mode of the acceptor. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_ac9ca84496355fe613017a9ecb03be5d9}{non\+\_\+blocking} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, bool mode, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Sets the non-\/blocking mode of the acceptor. \end{DoxyCompactList}\item 
+bool \hyperlink{classasio_1_1socket__acceptor__service_a3e3e6cb2438e24cec4f39347ce2d6310}{native\+\_\+non\+\_\+blocking} (const \hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl) const 
+\begin{DoxyCompactList}\small\item\em Gets the non-\/blocking mode of the native acceptor implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_afb63c7dc48b737504e4474917a310d62}{native\+\_\+non\+\_\+blocking} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, bool mode, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec)
+\begin{DoxyCompactList}\small\item\em Sets the non-\/blocking mode of the native acceptor implementation. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1socket__acceptor__service_a2e266541d8da5db4af397b4a62bc3923}{endpoint\+\_\+type} \hyperlink{classasio_1_1socket__acceptor__service_af8d65c7d64cdddade3733497bf4d6932}{local\+\_\+endpoint} (const \hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec) const 
+\begin{DoxyCompactList}\small\item\em Get the local endpoint. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol1 , typename Socket\+Service $>$ }\\\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \hyperlink{classasio_1_1socket__acceptor__service_a6b9393c9a3efe8b45f7ededb5cb52b51}{accept} (\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl, \hyperlink{classasio_1_1basic__socket}{basic\+\_\+socket}$<$ Protocol1, Socket\+Service $>$ \&\hyperlink{classasio_1_1socket__acceptor__service_aca6046131e63a54ab7c85cea721d4c53}{peer}, \hyperlink{classasio_1_1socket__acceptor__service_a2e266541d8da5db4af397b4a62bc3923}{endpoint\+\_\+type} $\ast$\hyperlink{classasio_1_1socket__acceptor__service_a680888264a952847bd9942de4444e183}{peer\+\_\+endpoint}, \hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code} \&ec, typename \hyperlink{structasio_1_1enable__if}{enable\+\_\+if}$<$ is\+\_\+convertible$<$ Protocol, Protocol1 $>$\+::value $>$\+::type $\ast$=0)
+\begin{DoxyCompactList}\small\item\em Accept a new connection. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Protocol1 , typename Socket\+Service , typename Accept\+Handler $>$ }\\\hyperlink{classasio_1_1socket__acceptor__service_a9e27322c968018def35fb0f400340681}{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E} (Accept\+Handler, void(\hyperlink{classasio_1_1error__code}{asio\+::error\+\_\+code})) async\+\_\+accept(\hyperlink{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{implementation\+\_\+type} \&impl
+\begin{DoxyCompactList}\small\item\em Start an asynchronous accept. \end{DoxyCompactList}\item 
+\hyperlink{classasio_1_1basic__socket}{basic\+\_\+socket}$<$ Protocol1, Socket\+Service $>$ \hyperlink{classasio_1_1socket__acceptor__service_a2e266541d8da5db4af397b4a62bc3923}{endpoint\+\_\+type} \hyperlink{classasio_1_1socket__acceptor__service_ac5bfb0ba6c4b557d403bb6627e9642c4}{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G} (Accept\+Handler) handler
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classasio_1_1basic__socket}{basic\+\_\+socket}$<$ Protocol1, Socket\+Service $>$ \& \hyperlink{classasio_1_1socket__acceptor__service_aca6046131e63a54ab7c85cea721d4c53}{peer}
+\item 
+\hyperlink{classasio_1_1basic__socket}{basic\+\_\+socket}$<$ Protocol1, Socket\+Service $>$ \hyperlink{classasio_1_1socket__acceptor__service_a2e266541d8da5db4af397b4a62bc3923}{endpoint\+\_\+type} $\ast$ \hyperlink{classasio_1_1socket__acceptor__service_a680888264a952847bd9942de4444e183}{peer\+\_\+endpoint}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Protocol$>$class asio\+::socket\+\_\+acceptor\+\_\+service$<$ Protocol $>$}
+
+Default service implementation for a socket acceptor. 
+
+Definition at line 38 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classasio_1_1socket__acceptor__service_a2e266541d8da5db4af397b4a62bc3923}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!endpoint\+\_\+type@{endpoint\+\_\+type}}
+\index{endpoint\+\_\+type@{endpoint\+\_\+type}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{endpoint\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ typedef protocol\+\_\+type\+::endpoint {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::{\bf endpoint\+\_\+type}}\label{classasio_1_1socket__acceptor__service_a2e266541d8da5db4af397b4a62bc3923}
+
+
+The endpoint type. 
+
+
+
+Definition at line 55 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!implementation\+\_\+type@{implementation\+\_\+type}}
+\index{implementation\+\_\+type@{implementation\+\_\+type}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{implementation\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ typedef {\bf service\+\_\+impl\+\_\+type\+::implementation\+\_\+type} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::{\bf implementation\+\_\+type}}\label{classasio_1_1socket__acceptor__service_ae91b355a38c59424f68df71fcd9fffb8}
+
+
+The native type of the socket acceptor. 
+
+
+
+Definition at line 72 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a48826fea49fd08ba8d3ee51697f1a092}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!native\+\_\+handle\+\_\+type@{native\+\_\+handle\+\_\+type}}
+\index{native\+\_\+handle\+\_\+type@{native\+\_\+handle\+\_\+type}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{native\+\_\+handle\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ typedef {\bf service\+\_\+impl\+\_\+type\+::native\+\_\+handle\+\_\+type} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::{\bf native\+\_\+handle\+\_\+type}}\label{classasio_1_1socket__acceptor__service_a48826fea49fd08ba8d3ee51697f1a092}
+
+
+The native acceptor type. 
+
+
+
+Definition at line 86 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a26cf6dae27417c057eca8c60a65950ed}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!native\+\_\+type@{native\+\_\+type}}
+\index{native\+\_\+type@{native\+\_\+type}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{native\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ typedef {\bf service\+\_\+impl\+\_\+type\+::native\+\_\+handle\+\_\+type} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::{\bf native\+\_\+type}}\label{classasio_1_1socket__acceptor__service_a26cf6dae27417c057eca8c60a65950ed}
+
+
+(Deprecated\+: Use native\+\_\+handle\+\_\+type.) The native acceptor type. 
+
+
+
+Definition at line 79 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a2622e1b415ef0257f92e1d586cc25641}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!protocol\+\_\+type@{protocol\+\_\+type}}
+\index{protocol\+\_\+type@{protocol\+\_\+type}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{protocol\+\_\+type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ typedef Protocol {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::{\bf protocol\+\_\+type}}\label{classasio_1_1socket__acceptor__service_a2622e1b415ef0257f92e1d586cc25641}
+
+
+The protocol type. 
+
+
+
+Definition at line 52 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classasio_1_1socket__acceptor__service_a9de4194ef8c45834615c972c89981375}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!socket\+\_\+acceptor\+\_\+service@{socket\+\_\+acceptor\+\_\+service}}
+\index{socket\+\_\+acceptor\+\_\+service@{socket\+\_\+acceptor\+\_\+service}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{socket\+\_\+acceptor\+\_\+service(asio\+::io\+\_\+service \&io\+\_\+service)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::{\bf socket\+\_\+acceptor\+\_\+service} (
+\begin{DoxyParamCaption}
+\item[{{\bf asio\+::io\+\_\+service} \&}]{io\+\_\+service}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classasio_1_1socket__acceptor__service_a9de4194ef8c45834615c972c89981375}
+
+
+Construct a new socket acceptor service for the specified \hyperlink{classasio_1_1io__service}{io\+\_\+service}. 
+
+
+
+Definition at line 90 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classasio_1_1socket__acceptor__service_a6b9393c9a3efe8b45f7ededb5cb52b51}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!accept@{accept}}
+\index{accept@{accept}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{accept(implementation\+\_\+type \&impl, basic\+\_\+socket$<$ Protocol1, Socket\+Service $>$ \&peer, endpoint\+\_\+type $\ast$peer\+\_\+endpoint, asio\+::error\+\_\+code \&ec, typename enable\+\_\+if$<$ is\+\_\+convertible$<$ Protocol, Protocol1 $>$\+::value $>$\+::type $\ast$=0)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Protocol1 , typename Socket\+Service $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::accept (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf basic\+\_\+socket}$<$ Protocol1, Socket\+Service $>$ \&}]{peer, }
+\item[{{\bf endpoint\+\_\+type} $\ast$}]{peer\+\_\+endpoint, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec, }
+\item[{typename {\bf enable\+\_\+if}$<$ is\+\_\+convertible$<$ Protocol, Protocol1 $>$\+::value $>$\+::type $\ast$}]{ = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a6b9393c9a3efe8b45f7ededb5cb52b51}
+
+
+Accept a new connection. 
+
+
+
+Definition at line 260 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a9e27322c968018def35fb0f400340681}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}}
+\index{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E@{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E(\+Accept\+Handler, void(asio\+::error\+\_\+code)) async\+\_\+accept(implementation\+\_\+type \&impl}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Protocol1 , typename Socket\+Service , typename Accept\+Handler $>$ {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+I\+N\+I\+T\+F\+N\+\_\+\+R\+E\+S\+U\+L\+T\+\_\+\+T\+Y\+P\+E (
+\begin{DoxyParamCaption}
+\item[{Accept\+Handler}]{, }
+\item[{void({\bf asio\+::error\+\_\+code})}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1socket__acceptor__service_a9e27322c968018def35fb0f400340681}
+
+
+Start an asynchronous accept. 
+
+\hypertarget{classasio_1_1socket__acceptor__service_ac5bfb0ba6c4b557d403bb6627e9642c4}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}}
+\index{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G@{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G(\+Accept\+Handler) handler}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf basic\+\_\+socket}$<$Protocol1, Socket\+Service$>$ {\bf endpoint\+\_\+type} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::A\+S\+I\+O\+\_\+\+M\+O\+V\+E\+\_\+\+A\+R\+G (
+\begin{DoxyParamCaption}
+\item[{Accept\+Handler}]{}
+\end{DoxyParamCaption}
+)}\label{classasio_1_1socket__acceptor__service_ac5bfb0ba6c4b557d403bb6627e9642c4}
+\hypertarget{classasio_1_1socket__acceptor__service_abf3215370cf9133cdc0a3b7a59535acf}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!assign@{assign}}
+\index{assign@{assign}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{assign(implementation\+\_\+type \&impl, const protocol\+\_\+type \&protocol, const native\+\_\+handle\+\_\+type \&native\+\_\+acceptor, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::assign (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf protocol\+\_\+type} \&}]{protocol, }
+\item[{const {\bf native\+\_\+handle\+\_\+type} \&}]{native\+\_\+acceptor, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_abf3215370cf9133cdc0a3b7a59535acf}
+
+
+Assign an existing native acceptor to a socket acceptor. 
+
+
+
+Definition at line 147 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a2a0f10879dbee26a2ad837ff5979867c}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!bind@{bind}}
+\index{bind@{bind}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{bind(implementation\+\_\+type \&impl, const endpoint\+\_\+type \&endpoint, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::bind (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf endpoint\+\_\+type} \&}]{endpoint, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a2a0f10879dbee26a2ad837ff5979867c}
+
+
+Bind the socket acceptor to the specified local endpoint. 
+
+
+
+Definition at line 168 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a9bf1511bc47356299ae87361b0bdc40f}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!cancel@{cancel}}
+\index{cancel@{cancel}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{cancel(implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::cancel (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a9bf1511bc47356299ae87361b0bdc40f}
+
+
+Cancel all asynchronous operations associated with the acceptor. 
+
+
+
+Definition at line 161 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a7cd21d9c2d9a465207f3ea79056c3ca7}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!close@{close}}
+\index{close@{close}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{close(implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::close (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a7cd21d9c2d9a465207f3ea79056c3ca7}
+
+
+Close a socket acceptor implementation. 
+
+
+
+Definition at line 183 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_ad7b7e65bf63ec344fddb1ab9a59b154b}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!construct@{construct}}
+\index{construct@{construct}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{construct(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ void {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::construct (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_ad7b7e65bf63ec344fddb1ab9a59b154b}
+
+
+Construct a new socket acceptor implementation. 
+
+
+
+Definition at line 98 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a3b2c2805f76d1f055596012093e545f2}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!destroy@{destroy}}
+\index{destroy@{destroy}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{destroy(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ void {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::destroy (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a3b2c2805f76d1f055596012093e545f2}
+
+
+Destroy a socket acceptor implementation. 
+
+
+
+Definition at line 134 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a8646863fe555770c5d3a295d6263bf95}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!get\+\_\+option@{get\+\_\+option}}
+\index{get\+\_\+option@{get\+\_\+option}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{get\+\_\+option(const implementation\+\_\+type \&impl, Gettable\+Socket\+Option \&option, asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Gettable\+Socket\+Option $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::get\+\_\+option (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl, }
+\item[{Gettable\+Socket\+Option \&}]{option, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a8646863fe555770c5d3a295d6263bf95}
+
+
+Get a socket option. 
+
+
+
+Definition at line 211 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a31ffba8fdfb6ffa47530088e52ce1147}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!io\+\_\+control@{io\+\_\+control}}
+\index{io\+\_\+control@{io\+\_\+control}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{io\+\_\+control(implementation\+\_\+type \&impl, Io\+Control\+Command \&command, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Io\+Control\+Command $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::io\+\_\+control (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{Io\+Control\+Command \&}]{command, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a31ffba8fdfb6ffa47530088e52ce1147}
+
+
+Perform an I\+O control command on the socket. 
+
+
+
+Definition at line 219 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a95fc7e13258e56dc058dbde04998d0a4}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!is\+\_\+open@{is\+\_\+open}}
+\index{is\+\_\+open@{is\+\_\+open}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{is\+\_\+open(const implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ bool {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::is\+\_\+open (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a95fc7e13258e56dc058dbde04998d0a4}
+
+
+Determine whether the acceptor is open. 
+
+
+
+Definition at line 155 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a343dbdb79d603e81b821c27ffff5518b}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!listen@{listen}}
+\index{listen@{listen}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{listen(implementation\+\_\+type \&impl, int backlog, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::listen (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{int}]{backlog, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a343dbdb79d603e81b821c27ffff5518b}
+Place the socket acceptor into the state where it will listen for new connections. 
+
+Definition at line 176 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_af8d65c7d64cdddade3733497bf4d6932}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!local\+\_\+endpoint@{local\+\_\+endpoint}}
+\index{local\+\_\+endpoint@{local\+\_\+endpoint}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{local\+\_\+endpoint(const implementation\+\_\+type \&impl, asio\+::error\+\_\+code \&ec) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf endpoint\+\_\+type} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::local\+\_\+endpoint (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_af8d65c7d64cdddade3733497bf4d6932}
+
+
+Get the local endpoint. 
+
+
+
+Definition at line 252 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_abc227683740cdb6e3017641dba236fac}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!native@{native}}
+\index{native@{native}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{native(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf native\+\_\+type} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::native (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_abc227683740cdb6e3017641dba236fac}
+
+
+(Deprecated\+: Use \hyperlink{classasio_1_1socket__acceptor__service_a328de9eeff0180706b8dced3b7893afd}{native\+\_\+handle()}.) Get the native acceptor implementation. 
+
+
+
+Definition at line 190 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a328de9eeff0180706b8dced3b7893afd}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!native\+\_\+handle@{native\+\_\+handle}}
+\index{native\+\_\+handle@{native\+\_\+handle}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{native\+\_\+handle(implementation\+\_\+type \&impl)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf native\+\_\+handle\+\_\+type} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::native\+\_\+handle (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a328de9eeff0180706b8dced3b7893afd}
+
+
+Get the native acceptor implementation. 
+
+
+
+Definition at line 196 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a3e3e6cb2438e24cec4f39347ce2d6310}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}}
+\index{native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{native\+\_\+non\+\_\+blocking(const implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ bool {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::native\+\_\+non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a3e3e6cb2438e24cec4f39347ce2d6310}
+
+
+Gets the non-\/blocking mode of the native acceptor implementation. 
+
+
+
+Definition at line 239 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_afb63c7dc48b737504e4474917a310d62}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}}
+\index{native\+\_\+non\+\_\+blocking@{native\+\_\+non\+\_\+blocking}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{native\+\_\+non\+\_\+blocking(implementation\+\_\+type \&impl, bool mode, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::native\+\_\+non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{bool}]{mode, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_afb63c7dc48b737504e4474917a310d62}
+
+
+Sets the non-\/blocking mode of the native acceptor implementation. 
+
+
+
+Definition at line 245 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a86ba38fd2ff9247f3bb390c5252f7ab3}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!non\+\_\+blocking@{non\+\_\+blocking}}
+\index{non\+\_\+blocking@{non\+\_\+blocking}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{non\+\_\+blocking(const implementation\+\_\+type \&impl) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ bool {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{const {\bf implementation\+\_\+type} \&}]{impl}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a86ba38fd2ff9247f3bb390c5252f7ab3}
+
+
+Gets the non-\/blocking mode of the acceptor. 
+
+
+
+Definition at line 226 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_ac9ca84496355fe613017a9ecb03be5d9}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!non\+\_\+blocking@{non\+\_\+blocking}}
+\index{non\+\_\+blocking@{non\+\_\+blocking}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{non\+\_\+blocking(implementation\+\_\+type \&impl, bool mode, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::non\+\_\+blocking (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{bool}]{mode, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_ac9ca84496355fe613017a9ecb03be5d9}
+
+
+Sets the non-\/blocking mode of the acceptor. 
+
+
+
+Definition at line 232 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a73a33df8aa20b50834834e6387b079c9}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!open@{open}}
+\index{open@{open}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{open(implementation\+\_\+type \&impl, const protocol\+\_\+type \&protocol, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::open (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const {\bf protocol\+\_\+type} \&}]{protocol, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a73a33df8aa20b50834834e6387b079c9}
+
+
+Open a new socket acceptor implementation. 
+
+
+
+Definition at line 140 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a4b2f07815e07ca17bbc88a6fb6b49383}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!set\+\_\+option@{set\+\_\+option}}
+\index{set\+\_\+option@{set\+\_\+option}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{set\+\_\+option(implementation\+\_\+type \&impl, const Settable\+Socket\+Option \&option, asio\+::error\+\_\+code \&ec)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ template$<$typename Settable\+Socket\+Option $>$ {\bf asio\+::error\+\_\+code} {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::set\+\_\+option (
+\begin{DoxyParamCaption}
+\item[{{\bf implementation\+\_\+type} \&}]{impl, }
+\item[{const Settable\+Socket\+Option \&}]{option, }
+\item[{{\bf asio\+::error\+\_\+code} \&}]{ec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classasio_1_1socket__acceptor__service_a4b2f07815e07ca17bbc88a6fb6b49383}
+
+
+Set a socket option. 
+
+
+
+Definition at line 203 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classasio_1_1socket__acceptor__service_aca6046131e63a54ab7c85cea721d4c53}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!peer@{peer}}
+\index{peer@{peer}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{peer}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf basic\+\_\+socket}$<$Protocol1, Socket\+Service$>$\& {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::peer}\label{classasio_1_1socket__acceptor__service_aca6046131e63a54ab7c85cea721d4c53}
+
+
+Definition at line 273 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+\hypertarget{classasio_1_1socket__acceptor__service_a680888264a952847bd9942de4444e183}{}\index{asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}!peer\+\_\+endpoint@{peer\+\_\+endpoint}}
+\index{peer\+\_\+endpoint@{peer\+\_\+endpoint}!asio\+::socket\+\_\+acceptor\+\_\+service@{asio\+::socket\+\_\+acceptor\+\_\+service}}
+\subsubsection[{peer\+\_\+endpoint}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Protocol $>$ {\bf basic\+\_\+socket}$<$Protocol1, Socket\+Service$>$ {\bf endpoint\+\_\+type}$\ast$ {\bf asio\+::socket\+\_\+acceptor\+\_\+service}$<$ Protocol $>$\+::peer\+\_\+endpoint}\label{classasio_1_1socket__acceptor__service_a680888264a952847bd9942de4444e183}
+
+
+Definition at line 273 of file socket\+\_\+acceptor\+\_\+service.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+ext/asio/\hyperlink{socket__acceptor__service_8hpp}{socket\+\_\+acceptor\+\_\+service.\+hpp}\end{DoxyCompactItemize}
