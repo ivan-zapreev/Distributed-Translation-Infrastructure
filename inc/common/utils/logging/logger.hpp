@@ -53,7 +53,7 @@ namespace uva {
             };
 
             //Defines the maximum logging level
-            static constexpr DebugLevelsEnum LOGER_M_GRAM_LEVEL_MAX = DEBUG4;
+            static constexpr DebugLevelsEnum LOGER_M_GRAM_LEVEL_MAX = INFO3;
 
             //Defines the log level from which the detailed timing info is available
             static constexpr DebugLevelsEnum PROGRESS_ACTIVE_LEVEL = INFO2;
