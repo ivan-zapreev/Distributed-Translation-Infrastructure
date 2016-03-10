@@ -60,10 +60,12 @@ namespace uva {
                         atomic<bool> m_is_dist;
 
                         //The extra left distortion limit to use; <unsigned integer>
-                        //The the number of words to the left of the last translated phrase
-                        //begin word to consider in case that the regular distortion limit
-                        //does not allow to jump left to the last translated phrase 
-                        atomic<int32_t> m_ext_dist_left;
+                        //The the number of non covered words to the left of the last
+                        //translated phrase begin word to consider in case that the
+                        //regular distortion limit does not allow to jump left to
+                        //the last translated phrase. Only works if m_is_dist is true
+                        //i.e. the distortion limit has a positive value.
+                        atomic<uint32_t> m_ext_dist_left;
 
                         //The maximum number of words to consider when making phrases
                         phrase_length m_max_s_phrase_len;
@@ -131,13 +133,13 @@ namespace uva {
                          * Allows to verify the parameters to be correct.
                          */
                         void finalize() {
-                            ASSERT_CONDITION_THROW((m_ext_dist_left < 0),
-                                    string("The ext_dist_left must not be >= 0!"));
-
                             ASSERT_CONDITION_THROW((m_distortion == 0),
                                     string("The m_distortion must not be 0!"));
                             //We are to use the distortion limit if the distortion is positive
                             m_is_dist = (m_distortion > 0);
+
+                            ASSERT_CONDITION_THROW((m_ext_dist_left < 0),
+                                    string("The ext_dist_left must not be >= 0!"));
 
                             ASSERT_CONDITION_THROW((m_max_s_phrase_len == 0),
                                     string("The max_source_phrase_len must not be 0!"));
@@ -183,9 +185,9 @@ namespace uva {
                         //Log the distortion parameters
                         if (params.m_is_dist) {
                             stream << "distortion = " << params.m_distortion;
-                            stream << ", extra left distortion = " << params.m_ext_dist_left;
+                            stream << ", ext_dist_left = " << params.m_ext_dist_left;
                         } else {
-                            stream << "is_distortion = false (set d)";
+                            stream << "distortion_limit = false (set d)";
                         }
 
                         //Log the recombination parameters

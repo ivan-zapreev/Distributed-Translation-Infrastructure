@@ -507,27 +507,50 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to expand the lengths if not the word given
+                             * by the current position is not covered.
+                             * @param curr_pos the reference to the current position,
+                             * will be decremented by the method by one
+                             * @param num_exp the reference to the number of positions
+                             * we could expand from will be incremented by this method
+                             * by one if an expansion is possible.
+                             */
+                            inline void expand_length_if_not_covered(int32_t & curr_pos, size_t & num_exp) {
+                                LOG_DEBUG << "Checking the coverage vector @ position " << curr_pos << END_LOG;
+
+                                //If the next position is not covered then expand the lengths
+                                if (!m_state_data.m_covered[curr_pos]) {
+                                    //Expand the lengths
+                                    expand_length(curr_pos);
+
+                                    //Count the expansion
+                                    ++num_exp;
+                                }
+
+                                //Decrement the start position
+                                curr_pos--;
+                            }
+
+                            /**
                              * Expand to the left of the last phrase, for all the possible of start positions
                              */
                             inline void expand_left() {
                                 LOG_DEBUG1 << ">>>>> expand left from [" << m_state_data.m_s_begin_word_idx
                                         << "," << m_state_data.m_s_end_word_idx << "]" << END_LOG;
 
+                                //Store the shorthand to the minimum possible word index
+                                const int32_t & MIN_WORD_IDX = m_state_data.m_stack_data.m_sent_data.m_min_idx;
+
                                 //Compute the minimum position to consider, based on distortion
                                 int32_t min_pos;
                                 if (m_state_data.m_stack_data.m_params.m_is_dist) {
                                     //Compute the normal minimum position for distortion
                                     min_pos = (m_state_data.m_s_end_word_idx - m_state_data.m_stack_data.m_params.m_distortion);
-                                    //If the minimum position is then within the last translated
-                                    //phrase take into account the extra left distortion
-                                    if (min_pos >= m_state_data.m_s_begin_word_idx) {
-                                        min_pos = (m_state_data.m_s_begin_word_idx - m_state_data.m_stack_data.m_params.m_ext_dist_left);
-                                    }
                                     //Bound the position by the minimum word index
-                                    min_pos = max(min_pos, m_state_data.m_stack_data.m_sent_data.m_min_idx);
+                                    min_pos = max(min_pos, MIN_WORD_IDX);
                                 } else {
                                     //There is no distortion limit
-                                    min_pos = m_state_data.m_stack_data.m_sent_data.m_min_idx;
+                                    min_pos = MIN_WORD_IDX;
                                 }
 
                                 //We shall start expanding from the first word before
@@ -536,19 +559,29 @@ namespace uva {
 
                                 LOG_DEBUG << "start pos = " << curr_pos << ", min pos = " << min_pos << END_LOG;
 
+                                //Store the number of left expansions made
+                                size_t num_exp = 0;
+
                                 //Iterate to the left of the last begin positions until the
                                 //position is valid and the distortion is within the limits
                                 while (curr_pos >= min_pos) {
-                                    LOG_DEBUG << "Checking the coverage vector @ position " << curr_pos << END_LOG;
+                                    //Expand the state to the words of the last phrase if not covered
+                                    expand_length_if_not_covered(curr_pos, num_exp);
+                                }
 
-                                    //If the next position is not covered then expand the lengths
-                                    if (!m_state_data.m_covered[curr_pos]) {
-                                        //Expand the lengths
-                                        expand_length(curr_pos);
+                                LOG_DEBUG << "Number of regular left expansion position: " << num_exp << END_LOG;
+
+                                //If we could not expand to the left at all then use the
+                                //extra distortion limit. At this point there is no need
+                                //to check for whether the distortion is on, if it is not
+                                //then we have already gone past the MIN_WORD_IDX.
+                                if (num_exp == 0) {
+                                    while ((curr_pos >= MIN_WORD_IDX) &&
+                                            (num_exp < m_state_data.m_stack_data.m_params.m_ext_dist_left)) {
+                                        //Expand the state to the words of the last phrase if not covered
+                                        expand_length_if_not_covered(curr_pos, num_exp);
                                     }
-
-                                    //Decrement the start position
-                                    curr_pos--;
+                                    LOG_DEBUG << "Number of extra left expansion position: " << num_exp << END_LOG;
                                 }
 
                                 LOG_DEBUG1 << "<<<<< expand left" << END_LOG;
