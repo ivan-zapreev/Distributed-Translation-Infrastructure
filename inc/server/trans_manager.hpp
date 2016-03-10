@@ -98,7 +98,10 @@ namespace uva {
                     }
                     
                     /**
-                     * Allows to set the new number of worker threads
+                     * Allows to set the new number of worker threads.
+                     * This operation should be safe as the new threads
+                     * are just added to the list and the deleted ones
+                     * are let to finish their translation task execution. 
                      * @param num_threads the new number of worker threads
                      */
                     void set_num_threads(const size_t num_threads) {
