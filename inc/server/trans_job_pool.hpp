@@ -156,8 +156,8 @@ namespace uva {
                         {
                             recursive_guard guard_all_jobs(m_all_jobs_lock);
 
-                            LOG_USAGE << "#sessions: " << m_sessions_map.size()
-                                    << ", #jobs: " << m_job_count << END_LOG;
+                            LOG_USAGE << "#open sessions: " << m_sessions_map.size()
+                                    << ", #scheduled jobs: " << m_job_count << END_LOG;
                         }
 
                         //Report data from the tasks pool

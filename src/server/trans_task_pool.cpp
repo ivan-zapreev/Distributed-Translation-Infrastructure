@@ -65,25 +65,42 @@ namespace uva {
                     } else {
                         if (new_num_threads < curr_num_threads) {
                             //The number of workers to delete
-                            const int32_t num_to_delete = (curr_num_threads - new_num_threads);
+                            const size_t num_to_delete = (curr_num_threads - new_num_threads);
 
                             LOG_WARNING << num_to_delete << " worker threads are about to be deleted, please wait!" << END_LOG;
 
-                            //Iterate until there is no workers or
-                            for (int32_t count = 0; count < num_to_delete; ++count) {
-                                //Ask the worker to stop
-                                m_workers[count]->stop();
-                                //Wake up all sleeping threads as the notify one might
-                                //wake up some other thread than the stopped one
-                                m_condition.notify_all();
-                                //Wait until the thread is finished
-                                m_threads[count].join();
-                                //Delete the worker
-                                delete m_workers[count];
+                            //Delete the requested number of workers
+                            size_t count = 0;
+                            int32_t idx = 0;
+                            while (count < num_to_delete) {
+                                LOG_DEBUG1 << "Checking worker " << idx << "/" << m_workers.size() << END_LOG;
+
+                                //If the worker is not busy, try to delete it
+                                if (!m_workers[idx]->is_busy()) {
+                                    LOG_DEBUG1 << "The worker " << idx << " is free!" << END_LOG;
+
+                                    //Ask the worker to stop
+                                    m_workers[idx]->stop();
+                                    //Wake up all sleeping threads as the notify one might
+                                    //wake up some other thread than the stopped one
+                                    m_condition.notify_all();
+                                    //Wait until the thread is finished
+                                    m_threads[idx].join();
+
+                                    //Delete the worker
+                                    delete m_workers[idx];
+
+                                    //Erase the worker and its thread
+                                    m_workers.erase(m_workers.begin() + idx);
+                                    m_threads.erase(m_threads.begin() + idx);
+
+                                    //Increment the deleted workers count
+                                    ++count;
+                                }
+
+                                //Move on through the workers
+                                idx = (idx + 1) % m_workers.size();
                             }
-                            //Erase the workers and threads
-                            m_workers.erase(m_workers.begin(), m_workers.begin() + num_to_delete);
-                            m_threads.erase(m_threads.begin(), m_threads.begin() + num_to_delete);
                         }
                     }
                 }

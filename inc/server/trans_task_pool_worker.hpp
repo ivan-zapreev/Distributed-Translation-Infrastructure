@@ -54,13 +54,14 @@ namespace uva {
                      * This is a basic constructor that needs the thread pool reference as an argument.
                      * @param pool the task pool reference
                      */
-                    trans_task_pool_worker(trans_task_pool & pool) : m_worker_is_on(true), m_pool(pool) {
+                    trans_task_pool_worker(trans_task_pool & pool)
+                    : m_is_on(true), m_is_busy(false), m_pool(pool) {
                     }
-                    
+
                     /**
                      * The basic destructor
                      */
-                    virtual ~trans_task_pool_worker(){
+                    virtual ~trans_task_pool_worker() {
                         //Nothing to be done, the thread is destroyed, no resources to free
                     }
 
@@ -68,19 +69,29 @@ namespace uva {
                      * Forces the given worker to stop
                      */
                     void stop() {
-                        m_worker_is_on = false;
+                        m_is_on = false;
                     }
-                    
+
+                    /**
+                     * Returns the reference to the worker's is_busy flag
+                     * @return the worker's is busy flag reference to see if the worker is busy or not.
+                     */
+                    atomic<bool> & is_busy() {
+                        return m_is_busy;
+                    }
+
                     /**
                      * This operator will be called to run the thread, its implementation
                      * will run the tasks scheduled in the thread pool.
                      */
                     void operator()();
-                    
+
                 protected:
                 private:
-                    //Stores the local run flag used for stopping this specific worker
-                    atomic<bool> m_worker_is_on;
+                    //Stores the flag indicating if this worker is on duty or not.
+                    atomic<bool> m_is_on;
+                    //Stores the flag indicating if this worker is busy working or not.
+                    atomic<bool> m_is_busy;
                     //Keeps the reference to the pool
                     trans_task_pool & m_pool;
                 };

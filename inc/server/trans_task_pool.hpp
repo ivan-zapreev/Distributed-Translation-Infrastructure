@@ -63,8 +63,17 @@ namespace uva {
                         {
                             unique_guard guard(m_queue_mutex);
 
-                            LOG_USAGE << "#taks: " << m_tasks.size()
-                                    << ", #workers: " << m_threads.size() << END_LOG;
+                            //Count the active workers
+                            size_t count = 0;
+                            for (size_t idx = 0; idx < m_workers.size(); ++idx) {
+                                if (m_workers[idx]->is_busy()) {
+                                    ++count;
+                                }
+                            }
+
+                            LOG_USAGE << "#pending tasks: " << m_tasks.size()
+                                    << ", #active threads: " << count
+                                    << "/" << m_threads.size() << END_LOG;
                         }
                     }
 
