@@ -95,6 +95,14 @@ namespace uva {
                     }
                     
                     /**
+                     * Allows to set the new number of worker threads
+                     * @param num_threads the new number of worker threads
+                     */
+                    void set_num_threads(const size_t num_threads) {
+                        m_manager.set_num_threads(num_threads);
+                    }
+                    
+                    /**
                      * Allows to report the runtime information about the server.
                      */
                     void report_run_time_info() {

@@ -136,6 +136,14 @@ namespace uva {
                                     << m_job_count << " running jobs left!" << END_LOG;
                         }
                     }
+                    
+                    /**
+                     * Allows to set the new number of worker threads
+                     * @param num_threads the new number of worker threads
+                     */
+                    void set_num_threads(const size_t num_threads) {
+                        m_tasks_pool.set_num_threads(num_threads);
+                    }
 
                     /**
                      * Allows to report the runtime information.

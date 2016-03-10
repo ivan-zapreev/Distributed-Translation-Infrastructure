@@ -26,7 +26,6 @@
 #include <functional>
 
 #include "server/trans_task_pool.hpp"
-#include "server/trans_task_pool_worker.hpp"
 
 using namespace std;
 using namespace std::placeholders;
@@ -39,9 +38,55 @@ namespace uva {
                 trans_task_pool::trans_task_pool(const size_t num_threads)
                 : m_stop(false) {
                     for (size_t i = 0; i < num_threads; ++i) {
-                        m_workers.push_back(thread(trans_task_pool_worker(*this)));
+                        //Add the new worker
+                        m_workers.emplace_back(new trans_task_pool_worker(*this));
+                        //Add the worker thread
+                        m_threads.emplace_back(thread(&trans_task_pool_worker::operator(), m_workers.back()));
                     }
                 };
+
+                /**
+                 * Allows to set the new number of worker threads
+                 * @param new_num_threads the new number of worker threads
+                 */
+                void trans_task_pool::set_num_threads(const size_t new_num_threads) {
+                    ASSERT_CONDITION_THROW((new_num_threads == 0),
+                            string("The new number of threads is 0, must be > 0!"));
+
+                    const size_t curr_num_threads = m_threads.size();
+                    if (new_num_threads > curr_num_threads) {
+                        //We are to add more worker threads
+                        for (size_t count = curr_num_threads; count < new_num_threads; ++count) {
+                            //Add the new worker
+                            m_workers.emplace_back(new trans_task_pool_worker(*this));
+                            //Add the worker thread
+                            m_threads.emplace_back(thread(&trans_task_pool_worker::operator(), m_workers.back()));
+                        }
+                    } else {
+                        if (new_num_threads < curr_num_threads) {
+                            //The number of workers to delete
+                            const int32_t num_to_delete = (curr_num_threads - new_num_threads);
+
+                            LOG_WARNING << num_to_delete << " worker threads are about to be deleted, please wait!" << END_LOG;
+
+                            //Iterate until there is no workers or
+                            for (int32_t count = 0; count < num_to_delete; ++count) {
+                                //Ask the worker to stop
+                                m_workers[count]->stop();
+                                //Wake up all sleeping threads as the notify one might
+                                //wake up some other thread than the stopped one
+                                m_condition.notify_all();
+                                //Wait until the thread is finished
+                                m_threads[count].join();
+                                //Delete the worker
+                                delete m_workers[count];
+                            }
+                            //Erase the workers and threads
+                            m_workers.erase(m_workers.begin(), m_workers.begin() + num_to_delete);
+                            m_threads.erase(m_threads.begin(), m_threads.begin() + num_to_delete);
+                        }
+                    }
+                }
 
                 trans_task_pool::~trans_task_pool() {
                     //Set the stopping flag
@@ -49,8 +94,11 @@ namespace uva {
                     //Notify all the sleeping threads
                     m_condition.notify_all();
                     //Iterate through all the workers and wait until they exit
-                    for (size_t i = 0; i < m_workers.size(); ++i) {
-                        m_workers[i].join();
+                    for (size_t i = 0; i < m_threads.size(); ++i) {
+                        //Wait until the thread is finished
+                        m_threads[i].join();
+                        //Delete the worker
+                        delete m_workers[i];
                     }
                 };
 

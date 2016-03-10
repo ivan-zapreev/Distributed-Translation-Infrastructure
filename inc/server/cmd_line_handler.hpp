@@ -32,7 +32,9 @@ namespace uva {
                 static const string PROGRAM_PARAMS_CMD = "p";
                 //Declare the program nothing command
                 static const string PROGRAM_NOTHING_CMD = "";
-                //The log level setting commands
+                //The number of threads setting command
+                static const string PROGRAM_SET_NT_CMD = "set nt ";
+                //The log level setting command
                 static const string PROGRAM_SET_LL_CMD = "set ll ";
                 //Declare the program "set" commands, NOTE the end spaces are needed!
                 static const string PROGRAM_SET_NBT_CMD = "set nbt ";
@@ -76,6 +78,7 @@ namespace uva {
                     LOG_USAGE << "\t'" << PROGRAM_RUNTIME_CMD << " & <enter>'  -run-time statistics." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_PARAMS_CMD << " & <enter>'  - print server parameters." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_LL_CMD << "<level> & <enter>'  - set log level." << END_LOG;
+                    LOG_USAGE << "\t'" << PROGRAM_SET_NT_CMD << " <positive integer> & <enter>'  - set the number of worker threads." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_NBT_CMD << "<unsigned integer> & <enter>'  - set the number of best translations." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_D_CMD << "<integer> & <enter>'  - set the distortion limit." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_EDL_CMD << "<unsigned integer> & <enter>'  - set the extra left distortion." << END_LOG;
@@ -115,7 +118,16 @@ namespace uva {
                  * @return the parsed value
                  */
                 inline int32_t get_int_value(const string & str, const string & prefix) {
-                    return stoi(get_string_value(str, prefix));
+                    //Get the string value to be parsed
+                    string str_val = get_string_value(str, prefix);
+                    try {
+                        return stoi(str_val);
+                    } catch (std::invalid_argument & ex1) {
+                    } catch (std::out_of_range & ex2) {
+                    }
+
+                    //Throw an exception
+                    THROW_EXCEPTION(string("Could not parse: ") + str_val);
                 }
 
                 /**
@@ -125,7 +137,16 @@ namespace uva {
                  * @return the parsed value
                  */
                 inline float get_float_value(const string & str, const string & prefix) {
-                    return stof(get_string_value(str, prefix));
+                    //Get the string value to be parsed
+                    string str_val = get_string_value(str, prefix);
+                    try {
+                        return stof(str_val);
+                    } catch (std::invalid_argument & ex1) {
+                    } catch (std::out_of_range & ex2) {
+                    }
+
+                    //Throw an exception
+                    THROW_EXCEPTION(string("Could not parse: ") + str_val);
                 }
 
                 /**
@@ -134,6 +155,36 @@ namespace uva {
                  */
                 inline void set_log_level(const string & cmd, const string & prefix) {
                     Logger::set_reporting_level(get_string_value(cmd, prefix));
+                }
+
+                /**
+                 * Allows to set the number of worker threads
+                 * @param params the server parameters
+                 * @param server the translation server
+                 * @param cmd the input command 
+                 * @param prefix the command prefix
+                 */
+                inline void set_num_threads(server_parameters & params,
+                        translation_server &server,
+                        const string & cmd, const string & prefix) {
+                    try {
+                        //Get the specified number of threads
+                        int32_t num_threads = get_int_value(cmd, prefix);
+                        ASSERT_CONDITION_THROW((num_threads <= 0),
+                                "The number of worker threads is to be > 0!");
+
+                        if (((size_t) num_threads) != params.m_num_threads) {
+                            //Set the number of threads
+                            server.set_num_threads(num_threads);
+                            //Remember the new number of threads
+                            params.m_num_threads = num_threads;
+                        } else {
+                            LOG_WARNING << "The number of worker threads is already: "
+                                    << num_threads << "!" << END_LOG;
+                        }
+                    } catch (Exception &ex) {
+                        LOG_ERROR << ex.get_message() << "\nEnter '" << PROGRAM_INFO_CMD << "' for help!" << END_LOG;
+                    }
                 }
 
                 /**
@@ -235,6 +286,12 @@ namespace uva {
                     //Set the debug level
                     if (begins_with(cmd, PROGRAM_SET_LL_CMD)) {
                         set_log_level(cmd, PROGRAM_SET_LL_CMD);
+                        return false;
+                    }
+
+                    //Set the number of threads
+                    if (begins_with(cmd, PROGRAM_SET_NT_CMD)) {
+                        set_num_threads(params, server, cmd, PROGRAM_SET_LL_CMD);
                         return false;
                     }
 

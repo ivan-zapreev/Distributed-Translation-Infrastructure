@@ -35,18 +35,18 @@ namespace uva {
                     trans_task_ptr task;
 
                     //Run the thread as long as it is not stopped
-                    while (!m_pool.m_stop) {
+                    while (!m_pool.m_stop && m_worker_is_on) {
                         //Lock the critical waiting section
                         {
                             unique_guard guard(m_pool.m_queue_mutex);
 
                             //Wait for the new task is scheduled or we need to stop
-                            while (!m_pool.m_stop && m_pool.m_tasks.empty()) {
+                            while (!m_pool.m_stop && m_worker_is_on && m_pool.m_tasks.empty()) {
                                 m_pool.m_condition.wait(guard);
                             }
 
                             //Check on the situation we are in
-                            if (m_pool.m_stop) {
+                            if (m_pool.m_stop || !m_worker_is_on) {
                                 //If we need to stop then return - finish the thread
                                 return;
                             } else {

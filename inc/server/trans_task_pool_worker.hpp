@@ -54,7 +54,7 @@ namespace uva {
                      * This is a basic constructor that needs the thread pool reference as an argument.
                      * @param pool the task pool reference
                      */
-                    trans_task_pool_worker(trans_task_pool & pool) : m_pool(pool) {
+                    trans_task_pool_worker(trans_task_pool & pool) : m_worker_is_on(true), m_pool(pool) {
                     }
                     
                     /**
@@ -65,6 +65,13 @@ namespace uva {
                     }
 
                     /**
+                     * Forces the given worker to stop
+                     */
+                    void stop() {
+                        m_worker_is_on = false;
+                    }
+                    
+                    /**
                      * This operator will be called to run the thread, its implementation
                      * will run the tasks scheduled in the thread pool.
                      */
@@ -72,6 +79,9 @@ namespace uva {
                     
                 protected:
                 private:
+                    //Stores the local run flag used for stopping this specific worker
+                    atomic<bool> m_worker_is_on;
+                    //Keeps the reference to the pool
                     trans_task_pool & m_pool;
                 };
             }

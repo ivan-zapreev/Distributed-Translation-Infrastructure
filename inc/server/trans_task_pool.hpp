@@ -14,6 +14,8 @@
 #include "trans_task.hpp"
 #include "common/utils/threads.hpp"
 
+#include "server/trans_task_pool_worker.hpp"
+
 using namespace std;
 using namespace uva::utils::threads;
 
@@ -36,12 +38,19 @@ namespace uva {
 
                     //Define the thread list type
                     typedef vector<thread> threads_list_type;
-
+                    //Define the workers list type
+                    typedef vector<trans_task_pool_worker *> workers_list_type;
                     /**
                      * This is a basic constructor accepting the number of threads parameter.
                      * @param num_threads the number of threads to be run by this task pool.
                      */
                     trans_task_pool(const size_t num_threads);
+
+                    /**
+                     * Allows to set the new number of worker threads
+                     * @param num_threads the new number of worker threads
+                     */
+                    void set_num_threads(const size_t num_threads);
 
                     /**
                      * Allows to report the runtime information.
@@ -52,7 +61,7 @@ namespace uva {
                             unique_guard guard(m_queue_mutex);
 
                             LOG_USAGE << "#taks: " << m_tasks.size()
-                                    << ", #workers: " << m_workers.size() << END_LOG;
+                                    << ", #workers: " << m_threads.size() << END_LOG;
                         }
                     }
 
@@ -89,7 +98,10 @@ namespace uva {
                 private:
 
                     //Stores the worker threads
-                    threads_list_type m_workers;
+                    threads_list_type m_threads;
+
+                    //Stores the workers
+                    workers_list_type m_workers;
                 };
 
             }
