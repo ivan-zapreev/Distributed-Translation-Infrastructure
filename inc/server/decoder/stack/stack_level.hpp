@@ -93,10 +93,13 @@ namespace uva {
                                 } else {
                                     //Do not even consider the new state unless it is above the threshold
                                     if (new_state->is_above_threshold(m_score_bound)) {
-                                        //find the position the new state is to be inserted into
-                                        //or possibly recombine it with the existing state.
+                                        //Declare the state pointer that shall point to the
+                                        //position prior to which the new state is to be added.
                                         stack_state_ptr curr_state = NULL;
-                                        if (find_recombine(curr_state, *new_state)) {
+
+                                        //Find the position the new state is to be inserted into
+                                        //or possibly recombine, if needed, with an existing state.
+                                        if (m_params.m_is_recombine && find_recombine(curr_state, *new_state)) {
                                             //The new state was recombined into an existing one, no need to proceed.
                                             return;
                                         }
@@ -257,26 +260,30 @@ namespace uva {
                                 LOG_DEBUG1 << "Checking for states equivalent to " << new_state
                                         << " starting from " << curr_state << END_LOG;
 
-                                //Search further from the curr_state, including curr_state,
-                                //For a state that could be recombined into the newly added
-                                //one. There can not be more than one of such states due to
-                                //incremental nature of building up the stack level.
-                                while ((curr_state != NULL) && (*new_state != *curr_state)) {
-                                    LOG_DEBUG << "Moving from " << curr_state << " to " << curr_state->m_next << END_LOG;
-                                    //Move further to the next state
-                                    curr_state = curr_state->m_next;
-                                }
+                                //If needed, search further from the curr_state, including 
+                                //curr_state, for a state that could be recombined into the 
+                                //newly added one. There can not be more than one of such 
+                                //states due to incremental nature of the stack building.
+                                if (m_params.m_is_recombine) {
+                                    
+                                    //Search for the state to be recombined into this one
+                                    while ((curr_state != NULL) && (*new_state != *curr_state)) {
+                                        LOG_DEBUG << "Moving from " << curr_state << " to " << curr_state->m_next << END_LOG;
+                                        //Move further to the next state
+                                        curr_state = curr_state->m_next;
+                                    }
 
-                                //We found a state that is to be recombined into the new one.
-                                if (curr_state != NULL) {
-                                    LOG_DEBUG << "Found an equivalent state " << curr_state
-                                            << " == " << new_state << " !" << END_LOG;
+                                    //We found a state that is to be recombined into the new one.
+                                    if (curr_state != NULL) {
+                                        LOG_DEBUG << "Found an equivalent state " << curr_state
+                                                << " == " << new_state << " !" << END_LOG;
 
-                                    //Remove the current state from the level
-                                    remove_from_level(curr_state);
+                                        //Remove the current state from the level
+                                        remove_from_level(curr_state);
 
-                                    //Recombine the current state state into the new one
-                                    new_state->recombine_from(curr_state);
+                                        //Recombine the current state state into the new one
+                                        new_state->recombine_from(curr_state);
+                                    }
                                 }
 
                                 //Perform pruning techniques, we might not have added a new

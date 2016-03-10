@@ -309,6 +309,9 @@ namespace uva {
                                 LOG_DEBUG2 << "====================================================================" << END_LOG;
                                 LOG_DEBUG1 << "Recombining " << other_state << " into " << this << END_LOG;
 
+                                ASSERT_SANITY_THROW((!m_state_data.m_stack_data.m_params.m_is_recombine),
+                                        "Recombination is switched off but we are trying to recombine!");
+
                                 //Combine the new state with its recombined from states
                                 const stack_state_ptr recomb_from = other_state;
                                 const size_t recomb_from_count = 1 + other_state->m_recomb_from_count;
