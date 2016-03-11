@@ -23,13 +23,32 @@
  * Created on February 23, 2016, 5:09 PM
  */
 
+#include <string>
+
 #ifndef SERVER_CONSTANTS_HPP
 #define SERVER_CONSTANTS_HPP
+
+using namespace std;
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace server {
+
+                //This typedef if used for the translation model level
+                typedef uint16_t phrase_length;
+
+                //The type used for storing log probabilities, back-off, and feature values
+                typedef float prob_weight;
+
+                //Declare the phrase unique identifier type
+                typedef uint64_t phrase_uid;
+
+                //Declare the word unique identifier type
+                typedef uint64_t word_uid;
+
+                //The base of the logarithm for stored probabilities/back-off weights
+                static constexpr prob_weight LOG_PROB_WEIGHT_BASE = 10.0;
 
                 //Stores the word hash for an undefined phrase, is 0
                 //WARNING! MUST BE 0 as this is the value of a default initialized integer!
@@ -65,6 +84,55 @@ namespace uva {
                 const static phrase_length M_GRAM_LEVEL_10 = 10u;
                 const static phrase_length M_GRAM_LEVEL_11 = 11u;
                 const static phrase_length M_GRAM_LEVEL_12 = 12u;
+
+                namespace tm {
+                    //Define the feature weights delimiter string for the config file
+                    static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = u8"|";
+                    
+                    //Stores the different values of TM features
+                    static constexpr size_t ONE_TM_FEATURES = 4u;
+                    static constexpr size_t TWO_TM_FEATURES = 4u;
+                    static constexpr size_t THREE_TM_FEATURES = 4u;
+                    static constexpr size_t FOUR_TM_FEATURES = 4u;
+
+                    //Stores the unknown source phrase string, should be configurable
+                    static const string TM_UNKNOWN_SOURCE_STR = u8"UNK";
+                    //Stores the unknown target phrase string, should be configurable
+                    static const string TM_UNKNOWN_TARGET_STR = u8"<unk>";
+                }
+
+                namespace lm {
+                    //Define the feature weights delimiter string for the config file
+                    static const string LM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
+
+                    //Stores the different values of RM features                    
+                    static constexpr size_t ONE_LM_FEATURE = 1u;
+
+                    //Stores the unknown word string, should be configurable
+                    static const string UNKNOWN_WORD_STR = u8"<unk>";
+
+                    //Stores the start of the sentence symbol
+                    static const string BEGIN_SENTENCE_TAG_STR = u8"<s>";
+                    //Stores the end of the sentence symbol
+                    static const string END_SENTENCE_TAG_STR = u8"</s>";
+                }
+
+                namespace rm {
+                    //Define the feature weights delimiter string for the config file
+                    static const string RM_FEATURE_WEIGHTS_DELIMITER_STR = u8"|";
+
+                    //Stores the unknown source phrase string, should be configurable
+                    static const string RM_UNK_SOURCE_PHRASE = u8"UNK";
+                    //Stores the unknown target phrase string, should be configurable
+                    static const string RM_UNK_TARGET_PHRASE = u8"UNK";
+
+                    //Stores the different values of RM features  
+                    static constexpr size_t TWO_RM_FEATURES = 2u;
+                    static constexpr size_t FOUR_RM_FEATURES = 4u;
+                    static constexpr size_t SIX_RM_FEATURES = 6u;
+                    static constexpr size_t EIGHT_RM_FEATURES = 8u;
+                }
+                
             }
         }
     }

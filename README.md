@@ -1,4 +1,4 @@
-**The Basic Phrase-Based Statistical Machine Translation Tool**
+#**The Basic Phrase-Based Statistical Machine Translation Tool**
 
 **Author:** [Dr. Ivan S. Zapreev](https://nl.linkedin.com/in/zapreevis)
 
@@ -48,7 +48,7 @@ The rest of the document is organized as follows:
 This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is as follows:
 
 * **`[Project-Folder]`**/
-    * **doc/** - contains the project-related documents including the Doxygen-generated code documentation
+    * **doc/** - contains the project-related documents including the Doxygen-generated code documentation and images
     * **ext/** - stores the external header only libraries used in the project
     * **inc/** - stores the C++ header files of the implementation
     * **src/** - stores the C++ source files of the implementation
@@ -83,23 +83,50 @@ Building this project requires **gcc** version >= *4.9.1* and **cmake** version 
     - `cd [Project-Folder]`
     - `mkdir build`
     - `cd build`
-    - `cmake -DCMAKE_BUILD_TYPE=Release ..` OR `cmake -DCMAKE_BUILD_TYPE=DEBUG ..`
+    - `cmake -DCMAKE_BUILD_TYPE=Release ..` OR `cmake -DCMAKE_BUILD_TYPE=Debug ..`
     - `make -j [NUMBER-OF-THREADS]` add `VERBOSE=1` to make the compile-time options visible
 
-The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run `make clean`.
+The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run `make clean`. Cleaning from Netbeans is as simple calling the `Clean and Build` from the `Run` menu.
 
 ###Project compile-time parameters
-_ToDo: make up to date_
+There is a number of project parameters that at this moment are to be chosen only once before the project is compiled. These are otherwise called the compile-time parameters. Further we consider the most important of them and indicate where all of them are to be found.
 
-####General
-One can limit the debug-level printing of the code by changing the value of the *LOGER_MAX_LEVEL* constant in the *./inc/Configuration.hpp*. The possible range of values, with increasing logging level is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.
+**Loggin level:** Logging is important when debugging software or providing an additional used information during the program's runtime. Yet additional output actions come at a prise and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project's logging levels, listed incrementally is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at runtime by setting the `LOGER_M_GRAM_LEVEL_MAX` constaint value in the `./inc/common/utils/logging/logger.hpp` header file.
 
-####bpbd-client
-_ToDo: Add text_
-####bpbd-server
-_ToDo: Add text_
-####lm-query
-_ToDo: Add text_
+**Sanity checks:** When program is not running as expected, it could be caused by the internal software errors that are not detectable runtime. It is therefore possible to enable/disable software internal sanity checks by setting the `DO_SANITY_CHECKS` constand in the `./inc/common/utils/exceptions.hpp` header file. Note that enabling the sanity checks does not guarantee that the internal error will be found and will have a negative effect on the program's performance. Yet, it might help to identify errors with e.g. input file formats and alike.
+
+**Server configs:** There is a number of translation server common parameters used in decoding, translation, reordering anb language models. Those are to be found in the `./inc/server/server_configs.hpp`. Please be carefull changing them:
+
+* `UNKNOWN_LOG_PROB_WEIGHT` - The value used for the unknown probability weight _(log10 scale)_
+* `ZERO_LOG_PROB_WEIGHT` - The value used for the 'zero' probability weight _(log10 scale)_
+* `tm::NUM_TM_FEATURES` - The number of the translation model features, defines the number of features read per entry in from the translation model input file.
+* `tm::TM_MAX_TARGET_PHRASE_LEN` - The maximum length of the target phrase to be considered, this defines the maximum number of tokens to be stored per translation entry
+* `lm::NUM_LM_FEATURES` - The number of languahe model features, the program currenly supports only one value: `1`
+* `lm::LM_M_GRAM_LEVEL_MAX` - The languahe model maximum level, the maximum number of words in the language model phrase
+* `lm::LM_HISTORY_LEN_MAX` - **DO NOT CHANGE**
+* `lm::LM_MAX_QUERY_LEN` - **DO NOT CHANGE**
+* `lm::DEF_UNK_WORD_LOG_PROB_WEIGHT` - The default unknown word probability weight, for the case the `<unk>` entry is not present in the language model file _(log10 scale)_
+* `rm::NUM_RM_FEATURES` - The maximum number of reordering model features, the only two currently supported values are: `6` and `8`. 
+
+**Decoder configs:** There is a number of decoder-specific parameters that can be configured runtime. These are located in `./inc/server/decoder/de_configs.hpp`, please be careful changing them:
+
+* `MAX_WORDS_PER_SENTENCE` - 
+
+**LM configs:** There is a number of Language-model-specific parameters that can be configured runtime. These are located in `./inc/server/lm/lm_configs.hpp`, please be careful changing them:
+
+* `lm_word_index` - 
+* `lm_model_type` - 
+* `lm_builder_type` - 
+
+**TM configs:** There is a number of Translation-model-specific parameters that can be configured runtime. These are located in `./inc/server/tm/tm_configs.hpp`, please be careful changing them:
+
+* `tm_model_type` - 
+* `tm_builder_type` - 
+
+**RM configs:** There is a number of Reordering-model-specific parameters that can be configured runtime. These are located in `./inc/server/rm/rm_configs.hpp`, please be careful changing them:
+
+* `rm_model_type` - 
+* `rm_builder_type` - 
 
 ##Using software
 
