@@ -1,0 +1,237 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:w2c\+\_\+hybrid\+\_\+trie$<$ Word\+Index\+Type, Storage\+Factory, Storage\+Container $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie$<$ Word\+Index\+Type, Storage\+Factory, Storage\+Container $>$@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie$<$ Word\+Index\+Type, Storage\+Factory, Storage\+Container $>$}}
+
+
+{\ttfamily \#include $<$w2c\+\_\+hybrid\+\_\+trie.\+hpp$>$}
+
+Inheritance diagram for uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:w2c\+\_\+hybrid\+\_\+trie$<$ Word\+Index\+Type, Storage\+Factory, Storage\+Container $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.909633cm]{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1layered__trie__base}{layered\+\_\+trie\+\_\+base}$<$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie}{w2c\+\_\+hybrid\+\_\+trie}$<$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a64279b5b94c421b25aedaa72e73d013c}{Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$, \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a64279b5b94c421b25aedaa72e73d013c}{Word\+Index\+Type}, \+\_\+\+\_\+\+W2\+C\+Hybrid\+Trie\+::\+B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R $>$ \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_af338d2a485c15b92846dc6123fa0a305}{B\+A\+S\+E}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_af7088cdf8ac483798132145ee7b4e18b}{w2c\+\_\+hybrid\+\_\+trie} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a64279b5b94c421b25aedaa72e73d013c}{Word\+Index\+Type} \&word\+\_\+index)
+\item 
+float \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_a1bab17298e1d7b76f1dd27461a890912}{get\+\_\+unk\+\_\+word\+\_\+prob} () const 
+\item 
+bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ad39f7abe99e50415083a94417f7f71b1}{get\+\_\+ctx\+\_\+id} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_af068a19c2e03116caf3e3827a3e40e35}{phrase\+\_\+length} level\+\_\+idx, const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a33043a191e9a637dea742a89d23c8bdc}{T\+Short\+Id} word\+\_\+id, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers_a6841847096e455ad3c38689bc548b3b0}{T\+Long\+Id} \&ctx\+\_\+id) const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_a39ef157122a1c643bb47cbe9a049b9d8}{log\+\_\+model\+\_\+type\+\_\+info} () const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_acf87032dc4244e9404378ae4e614bbf5}{set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} prob)
+\item 
+virtual void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ad24feeb24ce1770641b4b42ad40970da}{pre\+\_\+allocate} (const size\+\_\+t counts\mbox{[}L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X\mbox{]})
+\item 
+{\footnotesize template$<$phrase\+\_\+length C\+U\+R\+R\+\_\+\+L\+E\+V\+E\+L$>$ }\\void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ad192b8a3eda2fbd3907001b4b4dedbd1}{add\+\_\+m\+\_\+gram} (const \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1model__m__gram}{model\+\_\+m\+\_\+gram} \&gram)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_a9c30afb583955b74bdf1049d901092a9}{get\+\_\+unigram\+\_\+payload} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__gram__query}{m\+\_\+gram\+\_\+query} \&query) const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_accbe7643d9f29204489dc69ed1ed09c5}{get\+\_\+m\+\_\+gram\+\_\+payload} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__gram__query}{m\+\_\+gram\+\_\+query} \&query, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796a}{M\+Gram\+Status\+Enum} \&status) const 
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ae4350f8e61339d35598fa5187707dbd2}{get\+\_\+n\+\_\+gram\+\_\+payload} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__gram__query}{m\+\_\+gram\+\_\+query} \&query, \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_ab9b3e7382b561dcb8abcd6b55e9b796a}{M\+Gram\+Status\+Enum} \&status) const 
+\item 
+virtual \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_af02ea437528f86ec07b01cb55ec26bb0}{$\sim$w2c\+\_\+hybrid\+\_\+trie} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Word\+Index\+Type, template$<$ phrase\+\_\+length $>$ class Storage\+Factory = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory, class Storage\+Container = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage$>$class uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie$<$ Word\+Index\+Type, Storage\+Factory, Storage\+Container $>$}
+
+This is the hybrid memory trie implementation class. It has three template parameters. 
+\begin{DoxyParams}{Parameters}
+{\em M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X} & the maximum number of levelns in the trie. \\
+\hline
+{\em Storage\+Factory} & the factory to create storage containers \\
+\hline
+{\em Storage\+Container} & the storage container type that is created by the factory \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 56 of file w2c\+\_\+hybrid\+\_\+trie.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_af338d2a485c15b92846dc6123fa0a305}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!B\+A\+S\+E@{B\+A\+S\+E}}
+\index{B\+A\+S\+E@{B\+A\+S\+E}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{B\+A\+S\+E}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory, class Storage\+Container  = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage$>$ typedef {\bf layered\+\_\+trie\+\_\+base}$<${\bf w2c\+\_\+hybrid\+\_\+trie}$<${\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container$>$, {\bf Word\+Index\+Type}, \+\_\+\+\_\+\+W2\+C\+Hybrid\+Trie\+::\+B\+I\+T\+M\+A\+P\+\_\+\+H\+A\+S\+H\+\_\+\+C\+A\+C\+H\+E\+\_\+\+B\+U\+C\+K\+E\+T\+S\+\_\+\+F\+A\+C\+T\+O\+R$>$ {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::{\bf B\+A\+S\+E}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_af338d2a485c15b92846dc6123fa0a305}
+
+
+Definition at line 58 of file w2c\+\_\+hybrid\+\_\+trie.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_af7088cdf8ac483798132145ee7b4e18b}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!w2c\+\_\+hybrid\+\_\+trie@{w2c\+\_\+hybrid\+\_\+trie}}
+\index{w2c\+\_\+hybrid\+\_\+trie@{w2c\+\_\+hybrid\+\_\+trie}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{w2c\+\_\+hybrid\+\_\+trie(\+Word\+Index\+Type \&word\+\_\+index)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory, class Storage\+Container $>$ {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::{\bf w2c\+\_\+hybrid\+\_\+trie} (
+\begin{DoxyParamCaption}
+\item[{{\bf Word\+Index\+Type} \&}]{word\+\_\+index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [explicit]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_af7088cdf8ac483798132145ee7b4e18b}
+The basic constructor 
+\begin{DoxyParams}{Parameters}
+{\em p\+\_\+word\+\_\+index} & the word index (dictionary) container \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 47 of file w2c\+\_\+hybrid\+\_\+trie.\+cpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_af02ea437528f86ec07b01cb55ec26bb0}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!````~w2c\+\_\+hybrid\+\_\+trie@{$\sim$w2c\+\_\+hybrid\+\_\+trie}}
+\index{````~w2c\+\_\+hybrid\+\_\+trie@{$\sim$w2c\+\_\+hybrid\+\_\+trie}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{$\sim$w2c\+\_\+hybrid\+\_\+trie()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory, class Storage\+Container $>$ {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::$\sim${\bf w2c\+\_\+hybrid\+\_\+trie} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_af02ea437528f86ec07b01cb55ec26bb0}
+The basic destructor 
+
+Definition at line 116 of file w2c\+\_\+hybrid\+\_\+trie.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ad192b8a3eda2fbd3907001b4b4dedbd1}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!add\+\_\+m\+\_\+gram@{add\+\_\+m\+\_\+gram}}
+\index{add\+\_\+m\+\_\+gram@{add\+\_\+m\+\_\+gram}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{add\+\_\+m\+\_\+gram(const model\+\_\+m\+\_\+gram \&gram)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory, class Storage\+Container  = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage$>$ template$<$phrase\+\_\+length C\+U\+R\+R\+\_\+\+L\+E\+V\+E\+L$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::add\+\_\+m\+\_\+gram (
+\begin{DoxyParamCaption}
+\item[{const {\bf model\+\_\+m\+\_\+gram} \&}]{gram}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ad192b8a3eda2fbd3907001b4b4dedbd1}
+Allows to retrieve the data storage structure for the M gram with the given M-\/gram level Id. M-\/gram context and last word Id. If the storage structure does not exist, return a new one. For more details \begin{DoxySeeAlso}{See also}
+Layered\+Trie\+Base 
+\end{DoxySeeAlso}
+
+
+Definition at line 135 of file w2c\+\_\+hybrid\+\_\+trie.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ad39f7abe99e50415083a94417f7f71b1}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!get\+\_\+ctx\+\_\+id@{get\+\_\+ctx\+\_\+id}}
+\index{get\+\_\+ctx\+\_\+id@{get\+\_\+ctx\+\_\+id}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{get\+\_\+ctx\+\_\+id(const phrase\+\_\+length level\+\_\+idx, const T\+Short\+Id word\+\_\+id, T\+Long\+Id \&ctx\+\_\+id) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory, class Storage\+Container  = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage$>$ bool {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+ctx\+\_\+id (
+\begin{DoxyParamCaption}
+\item[{const {\bf phrase\+\_\+length}}]{level\+\_\+idx, }
+\item[{const {\bf T\+Short\+Id}}]{word\+\_\+id, }
+\item[{{\bf T\+Long\+Id} \&}]{ctx\+\_\+id}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ad39f7abe99e50415083a94417f7f71b1}
+Computes the M-\/\+Gram context using the previous context and the current word id \begin{DoxySeeAlso}{See also}
+Layered\+Trie\+Bese 
+\end{DoxySeeAlso}
+
+
+Definition at line 78 of file w2c\+\_\+hybrid\+\_\+trie.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_accbe7643d9f29204489dc69ed1ed09c5}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!get\+\_\+m\+\_\+gram\+\_\+payload@{get\+\_\+m\+\_\+gram\+\_\+payload}}
+\index{get\+\_\+m\+\_\+gram\+\_\+payload@{get\+\_\+m\+\_\+gram\+\_\+payload}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{get\+\_\+m\+\_\+gram\+\_\+payload(m\+\_\+gram\+\_\+query \&query, M\+Gram\+Status\+Enum \&status) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory, class Storage\+Container  = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+m\+\_\+gram\+\_\+payload (
+\begin{DoxyParamCaption}
+\item[{{\bf m\+\_\+gram\+\_\+query} \&}]{query, }
+\item[{{\bf M\+Gram\+Status\+Enum} \&}]{status}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_accbe7643d9f29204489dc69ed1ed09c5}
+Allows to retrieve the payload for the M-\/gram defined by the end word\+\_\+id and ctx\+\_\+id. For more details \begin{DoxySeeAlso}{See also}
+Layered\+Trie\+Base 
+\end{DoxySeeAlso}
+
+
+Definition at line 203 of file w2c\+\_\+hybrid\+\_\+trie.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ae4350f8e61339d35598fa5187707dbd2}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!get\+\_\+n\+\_\+gram\+\_\+payload@{get\+\_\+n\+\_\+gram\+\_\+payload}}
+\index{get\+\_\+n\+\_\+gram\+\_\+payload@{get\+\_\+n\+\_\+gram\+\_\+payload}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{get\+\_\+n\+\_\+gram\+\_\+payload(m\+\_\+gram\+\_\+query \&query, M\+Gram\+Status\+Enum \&status) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory, class Storage\+Container  = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+n\+\_\+gram\+\_\+payload (
+\begin{DoxyParamCaption}
+\item[{{\bf m\+\_\+gram\+\_\+query} \&}]{query, }
+\item[{{\bf M\+Gram\+Status\+Enum} \&}]{status}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ae4350f8e61339d35598fa5187707dbd2}
+Allows to attempt the sub-\/m-\/gram payload retrieval for m==n \begin{DoxySeeAlso}{See also}
+Generic\+Trie\+Base 
+\end{DoxySeeAlso}
+
+
+Definition at line 241 of file w2c\+\_\+hybrid\+\_\+trie.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_a9c30afb583955b74bdf1049d901092a9}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!get\+\_\+unigram\+\_\+payload@{get\+\_\+unigram\+\_\+payload}}
+\index{get\+\_\+unigram\+\_\+payload@{get\+\_\+unigram\+\_\+payload}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{get\+\_\+unigram\+\_\+payload(m\+\_\+gram\+\_\+query \&query) const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory, class Storage\+Container  = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+unigram\+\_\+payload (
+\begin{DoxyParamCaption}
+\item[{{\bf m\+\_\+gram\+\_\+query} \&}]{query}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_a9c30afb583955b74bdf1049d901092a9}
+Allows to attempt the sub-\/m-\/gram payload retrieval for m==1. The retrieval of a uni-\/gram data is always a success \begin{DoxySeeAlso}{See also}
+Generic\+Trie\+Base 
+\end{DoxySeeAlso}
+
+
+Definition at line 188 of file w2c\+\_\+hybrid\+\_\+trie.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_a1bab17298e1d7b76f1dd27461a890912}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!get\+\_\+unk\+\_\+word\+\_\+prob@{get\+\_\+unk\+\_\+word\+\_\+prob}}
+\index{get\+\_\+unk\+\_\+word\+\_\+prob@{get\+\_\+unk\+\_\+word\+\_\+prob}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{get\+\_\+unk\+\_\+word\+\_\+prob() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory, class Storage\+Container  = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage$>$ float {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::get\+\_\+unk\+\_\+word\+\_\+prob (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_a1bab17298e1d7b76f1dd27461a890912}
+Allows to retrieve the unknown target word log probability penalty \begin{DoxyReturn}{Returns}
+the target source word log probability penalty 
+\end{DoxyReturn}
+
+
+Definition at line 70 of file w2c\+\_\+hybrid\+\_\+trie.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_a39ef157122a1c643bb47cbe9a049b9d8}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!log\+\_\+model\+\_\+type\+\_\+info@{log\+\_\+model\+\_\+type\+\_\+info}}
+\index{log\+\_\+model\+\_\+type\+\_\+info@{log\+\_\+model\+\_\+type\+\_\+info}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{log\+\_\+model\+\_\+type\+\_\+info() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage\+Factory, class Storage\+Container  = W2\+C\+H\+\_\+\+U\+M\+\_\+\+Storage$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::log\+\_\+model\+\_\+type\+\_\+info (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_a39ef157122a1c643bb47cbe9a049b9d8}
+Allows to log the information about the instantiated trie type 
+
+Definition at line 112 of file w2c\+\_\+hybrid\+\_\+trie.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ad24feeb24ce1770641b4b42ad40970da}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!pre\+\_\+allocate@{pre\+\_\+allocate}}
+\index{pre\+\_\+allocate@{pre\+\_\+allocate}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{pre\+\_\+allocate(const size\+\_\+t counts[L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X])}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory, class Storage\+Container $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::pre\+\_\+allocate (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{counts\mbox{[}\+L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_ad24feeb24ce1770641b4b42ad40970da}
+This method can be used to provide the N-\/gram count information That should allow for pre-\/allocation of the memory For more details \begin{DoxySeeAlso}{See also}
+Layered\+Trie\+Base 
+\end{DoxySeeAlso}
+
+
+Definition at line 72 of file w2c\+\_\+hybrid\+\_\+trie.\+cpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_acf87032dc4244e9404378ae4e614bbf5}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}!set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob@{set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob}}
+\index{set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob@{set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob}!uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie@{uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}}
+\subsubsection[{set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob(const prob\+\_\+weight prob)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index\+Type , template$<$ phrase\+\_\+length $>$ class Storage\+Factory, class Storage\+Container $>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::w2c\+\_\+hybrid\+\_\+trie}$<$ {\bf Word\+Index\+Type}, Storage\+Factory, Storage\+Container $>$\+::set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob (
+\begin{DoxyParamCaption}
+\item[{const {\bf prob\+\_\+weight}}]{prob}
+\end{DoxyParamCaption}
+)}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie_acf87032dc4244e9404378ae4e614bbf5}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base}{word\+\_\+index\+\_\+trie\+\_\+base} 
+\end{DoxySeeAlso}
+
+
+Definition at line 107 of file w2c\+\_\+hybrid\+\_\+trie.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/lm/models/\hyperlink{w2c__hybrid__trie_8hpp}{w2c\+\_\+hybrid\+\_\+trie.\+hpp}\item 
+src/server/lm/models/\hyperlink{w2c__hybrid__trie_8cpp}{w2c\+\_\+hybrid\+\_\+trie.\+cpp}\end{DoxyCompactItemize}

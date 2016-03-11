@@ -29,7 +29,6 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/monitore/statistics_monitore.hpp"
-#include "common/utils/file/cstyle_file_reader.hpp"
 
 #include "server/server_configs.hpp"
 
@@ -89,7 +88,7 @@ namespace uva {
                             virtual void connect(const lm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the language model into the memory.
-                                load_model_data<lm_builder_type, cstyle_file_reader>("Language Model", params);
+                                load_model_data<lm_builder_type, lm_model_reader>("Language Model", params);
 
                                 //Retrieve the unknown word probability
                                 get_unk_word_prob();

@@ -109,14 +109,14 @@ $(document).ready(function(){initNavTree('server__configs_8hpp.html','');});
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">server_configs.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;string&gt;</code><br />
-<code>#include &quot;<a class="el" href="server__consts_8hpp_source.html">server/server_consts.hpp</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="server__consts_8hpp_source.html">server_consts.hpp</a>&quot;</code><br />
+<code>#include &lt;string&gt;</code><br />
 </div>
 <p><a href="server__configs_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -139,22 +139,31 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceuva_1_1smt_1_1bpbd_1_1server_1_1rm"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1rm.html">uva::smt::bpbd::server::rm</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:af068a19c2e03116caf3e3827a3e40e35"><td class="memItemLeft" align="right" valign="top">typedef uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#af068a19c2e03116caf3e3827a3e40e35">uva::smt::bpbd::server::phrase_length</a></td></tr>
-<tr class="separator:af068a19c2e03116caf3e3827a3e40e35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01e9ea4de9c226f4464862e84ff0bbcc"><td class="memItemLeft" align="right" valign="top">typedef float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">uva::smt::bpbd::server::prob_weight</a></td></tr>
-<tr class="separator:a01e9ea4de9c226f4464862e84ff0bbcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad18d4cdf5504e76c22b0c124ff60b44f"><td class="memItemLeft" align="right" valign="top">typedef uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#ad18d4cdf5504e76c22b0c124ff60b44f">uva::smt::bpbd::server::phrase_uid</a></td></tr>
-<tr class="separator:ad18d4cdf5504e76c22b0c124ff60b44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bfe45ba344d65a7fdd7d26156328ddc"><td class="memItemLeft" align="right" valign="top">typedef uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">uva::smt::bpbd::server::word_uid</a></td></tr>
-<tr class="separator:a6bfe45ba344d65a7fdd7d26156328ddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a6ce346c569794c49433bb8b1c0b38f16"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="server__configs_8hpp.html#a6ce346c569794c49433bb8b1c0b38f16">SERVER_CONFIGS_HPP</a></td></tr>
+<tr class="separator:a6ce346c569794c49433bb8b1c0b38f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a6de1c7e176aa41057187126069624cf7"><td class="memItemLeft" align="right" valign="top">const prob_weight&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm.html#a6de1c7e176aa41057187126069624cf7">uva::smt::bpbd::server::lm::DEF_UNK_WORD_LOG_PROB_WEIGHT</a> = -10.0f</td></tr>
 <tr class="separator:a6de1c7e176aa41057187126069624cf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="a6ce346c569794c49433bb8b1c0b38f16"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SERVER_CONFIGS_HPP</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="server__configs_8hpp_source.html#l00029">29</a> of file <a class="el" href="server__configs_8hpp_source.html">server_configs.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

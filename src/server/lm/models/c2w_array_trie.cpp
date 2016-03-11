@@ -43,8 +43,8 @@ namespace uva {
                 namespace lm {
 
                     template<typename WordIndexType>
-                    C2WArrayTrie<WordIndexType>::C2WArrayTrie(WordIndexType & word_index)
-                    : LayeredTrieBase<C2WArrayTrie<WordIndexType>, WordIndexType, __C2WArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
+                    c2w_array_trie<WordIndexType>::c2w_array_trie(WordIndexType & word_index)
+                    : layered_trie_base<c2w_array_trie<WordIndexType>, WordIndexType, __C2WArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
                     m_unk_data(NULL), m_1_gram_data(NULL), m_n_gram_data(NULL), m_one_gram_arr_size(0) {
 
                         //Perform an error check! This container has bounds on the supported trie level
@@ -62,7 +62,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    void C2WArrayTrie<WordIndexType>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                    void c2w_array_trie<WordIndexType>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //01) Pre-allocate the word index super class call
                         BASE::pre_allocate(counts);
 
@@ -115,7 +115,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    void C2WArrayTrie<WordIndexType>::set_def_unk_word_prob(const prob_weight prob) {
+                    void c2w_array_trie<WordIndexType>::set_def_unk_word_prob(const prob_weight prob) {
                         //Insert the unknown word data into the allocated array
                         m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
                         m_unk_data->m_prob = prob;
@@ -123,7 +123,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    C2WArrayTrie<WordIndexType>::~C2WArrayTrie() {
+                    c2w_array_trie<WordIndexType>::~c2w_array_trie() {
                         //Check that the one grams were allocated, if yes then the rest must have been either
                         if (m_1_gram_data != NULL) {
                             delete[] m_1_gram_data;
@@ -136,11 +136,11 @@ namespace uva {
                     }
 
                     //Make sure that there will be templates instantiated, at least for the given parameter values
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2WArrayTrie, basic_word_index);
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2WArrayTrie, counting_word_index);
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2WArrayTrie, hashing_word_index);
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2WArrayTrie, basic_optimizing_word_index);
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2WArrayTrie, counting_optimizing_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(c2w_array_trie, basic_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(c2w_array_trie, counting_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(c2w_array_trie, hashing_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(c2w_array_trie, basic_optimizing_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(c2w_array_trie, counting_optimizing_word_index);
                 }
             }
         }

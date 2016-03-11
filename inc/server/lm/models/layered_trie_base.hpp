@@ -150,17 +150,17 @@ namespace uva {
                      * This class defined the trie interface and functionality that is expected by the TrieDriver class
                      */
                     template<typename TrieType, typename WordIndexType, uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR>
-                    class LayeredTrieBase : public GenericTrieBase<TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
+                    class layered_trie_base : public generic_trie_base<TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
                         //Typedef the base class
-                        typedef GenericTrieBase<TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
+                        typedef generic_trie_base<TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
 
                         /**
                          * The basic constructor
                          * @param word_index the word index to be used
                          */
-                        explicit LayeredTrieBase(WordIndexType & word_index)
-                        : GenericTrieBase<TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> (word_index),
+                        explicit layered_trie_base(WordIndexType & word_index)
+                        : generic_trie_base<TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR> (word_index),
                         m_nothing_payload(0.0, 0.0) {
                             //Clean the cache memory
                             memset(m_cached_ctx, 0, LM_M_GRAM_LEVEL_MAX * sizeof (TContextCacheEntry));

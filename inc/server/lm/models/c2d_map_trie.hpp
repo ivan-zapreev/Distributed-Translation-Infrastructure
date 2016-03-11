@@ -82,9 +82,9 @@ namespace uva {
                      * 
                      */
                     template<typename WordIndexType>
-                    class C2DMapTrie : public LayeredTrieBase<C2DMapTrie<WordIndexType>, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
+                    class c2d_map_trie : public layered_trie_base<c2d_map_trie<WordIndexType>, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
-                        typedef LayeredTrieBase<C2DMapTrie<WordIndexType>, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
+                        typedef layered_trie_base<c2d_map_trie<WordIndexType>, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
 
                         /**
                          * The basic class constructor, accepts memory factors that are the
@@ -111,7 +111,7 @@ namespace uva {
                          * @param ngram_mem_factor The N-Gram memory factor needed for
                          * the greedy allocator for the unordered_map
                          */
-                        explicit C2DMapTrie(WordIndexType & word_index,
+                        explicit c2d_map_trie(WordIndexType & word_index,
                                 const float mgram_mem_factor = __C2DMapTrie::UM_M_GRAM_MEMORY_FACTOR,
                                 const float ngram_mem_factor = __C2DMapTrie::UM_N_GRAM_MEMORY_FACTOR);
 
@@ -167,7 +167,7 @@ namespace uva {
                                 //Define the context id variable
                                 TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
-                                __LayeredTrieBase::get_context_id<C2DMapTrie<WordIndexType>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
+                                __LayeredTrieBase::get_context_id<c2d_map_trie<WordIndexType>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Obtain this m-gram id
                                 (void) get_ctx_id(CURR_LEVEL - BASE::MGRAM_IDX_OFFSET, word_id, ctx_id);
@@ -291,7 +291,7 @@ namespace uva {
                         /**
                          * The basic destructor
                          */
-                        virtual ~C2DMapTrie();
+                        virtual ~c2d_map_trie();
 
                     private:
                         //Stores the pointer to the UNK word payload
@@ -352,11 +352,11 @@ namespace uva {
                         void pre_allocate_n_grams(const size_t counts[LM_M_GRAM_LEVEL_MAX]);
                     };
 
-                    typedef C2DMapTrie<basic_word_index > TC2DMapTrieBasic;
-                    typedef C2DMapTrie<counting_word_index > TC2DMapTrieCount;
-                    typedef C2DMapTrie<hashing_word_index > TC2DMapTrieHashing;
-                    typedef C2DMapTrie<basic_optimizing_word_index > TC2DMapTrieOptBasic;
-                    typedef C2DMapTrie<counting_optimizing_word_index > TC2DMapTrieOptCount;
+                    typedef c2d_map_trie<basic_word_index > TC2DMapTrieBasic;
+                    typedef c2d_map_trie<counting_word_index > TC2DMapTrieCount;
+                    typedef c2d_map_trie<hashing_word_index > TC2DMapTrieHashing;
+                    typedef c2d_map_trie<basic_optimizing_word_index > TC2DMapTrieOptBasic;
+                    typedef c2d_map_trie<counting_optimizing_word_index > TC2DMapTrieOptCount;
                 }
             }
         }

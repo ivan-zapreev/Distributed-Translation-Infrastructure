@@ -1,9 +1,9 @@
 var c2d__hybrid__trie_8hpp =
 [
-    [ "C2DHybridTrie", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_d_hybrid_trie.html", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_d_hybrid_trie" ],
-    [ "TC2DHybridTrieBasic", "c2d__hybrid__trie_8hpp.html#a96890f7df15f6df7def061b4cebb16bb", null ],
-    [ "TC2DHybridTrieCount", "c2d__hybrid__trie_8hpp.html#a8e12ef7ca924b2c5fd7f20236fe08dc5", null ],
-    [ "TC2DHybridTrieHashing", "c2d__hybrid__trie_8hpp.html#ac2bdab4ce215be43afe07de8390077e3", null ],
-    [ "TC2DHybridTrieOptBasic", "c2d__hybrid__trie_8hpp.html#a3f81cdde0dc5ee7b07e41261e55d72de", null ],
-    [ "TC2DHybridTrieOptCount", "c2d__hybrid__trie_8hpp.html#a4bdbd74a65273103a73e6d6ffca9cc17", null ]
+    [ "c2d_hybrid_trie", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1c2d__hybrid__trie.html", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1c2d__hybrid__trie" ],
+    [ "TC2DHybridTrieBasic", "c2d__hybrid__trie_8hpp.html#aa8635ba03284cbec1c3c4624be585843", null ],
+    [ "TC2DHybridTrieCount", "c2d__hybrid__trie_8hpp.html#a3ec9e9d13b9d4113be8a17daff17f9fe", null ],
+    [ "TC2DHybridTrieHashing", "c2d__hybrid__trie_8hpp.html#af93f666e7d0833493d6cb5993a58247d", null ],
+    [ "TC2DHybridTrieOptBasic", "c2d__hybrid__trie_8hpp.html#abffc9eb1eef6c2764ec48dc9044f2519", null ],
+    [ "TC2DHybridTrieOptCount", "c2d__hybrid__trie_8hpp.html#ad6272a176cac7528701a115cc68a485c", null ]
 ];

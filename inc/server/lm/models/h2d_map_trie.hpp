@@ -110,9 +110,9 @@ namespace uva {
                      * @param M_GRAM_LEVEL_MAX - the maximum level of the considered N-gram, i.e. the N value
                      */
                     template<typename WordIndexType>
-                    class H2DMapTrie : public GenericTrieBase<H2DMapTrie<WordIndexType>, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
+                    class h2d_map_trie : public generic_trie_base<h2d_map_trie<WordIndexType>, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
-                        typedef GenericTrieBase<H2DMapTrie<WordIndexType>, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
+                        typedef generic_trie_base<h2d_map_trie<WordIndexType>, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
                         typedef __H2DMapTrie::S_M_GramData<m_gram_payload> T_M_Gram_PB_Entry;
                         typedef __H2DMapTrie::S_M_GramData<prob_weight> T_M_Gram_Prob_Entry;
 
@@ -120,7 +120,7 @@ namespace uva {
                          * The basic constructor
                          * @param _wordIndex the word index to be used
                          */
-                        explicit H2DMapTrie(WordIndexType & word_index);
+                        explicit h2d_map_trie(WordIndexType & word_index);
 
                         /**
                          * Allows to retrieve the unknown target word log probability penalty 
@@ -242,7 +242,7 @@ namespace uva {
                         /**
                          * The basic class destructor
                          */
-                        virtual ~H2DMapTrie();
+                        virtual ~h2d_map_trie();
 
                     private:
                         //Stores the unknown word payload data
@@ -297,11 +297,11 @@ namespace uva {
                         }
                     };
 
-                    typedef H2DMapTrie<basic_word_index > TH2DMapTrieBasic;
-                    typedef H2DMapTrie<counting_word_index > TH2DMapTrieCount;
-                    typedef H2DMapTrie<basic_optimizing_word_index > TH2DMapTrieOptBasic;
-                    typedef H2DMapTrie<counting_optimizing_word_index > TH2DMapTrieOptCount;
-                    typedef H2DMapTrie<hashing_word_index > TH2DMapTrieHashing;
+                    typedef h2d_map_trie<basic_word_index > TH2DMapTrieBasic;
+                    typedef h2d_map_trie<counting_word_index > TH2DMapTrieCount;
+                    typedef h2d_map_trie<basic_optimizing_word_index > TH2DMapTrieOptBasic;
+                    typedef h2d_map_trie<counting_optimizing_word_index > TH2DMapTrieOptCount;
+                    typedef h2d_map_trie<hashing_word_index > TH2DMapTrieHashing;
                 }
             }
         }

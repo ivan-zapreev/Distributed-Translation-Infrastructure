@@ -142,48 +142,57 @@ $(document).ready(function(){initNavTree('tm__configs_8hpp_source.html','');});
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="server__configs_8hpp.html">server/server_configs.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="cstyle__file__reader_8hpp.html">common/utils/file/cstyle_file_reader.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tm__basic__model_8hpp.html">server/tm/models/tm_basic_model.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tm__basic__builder_8hpp.html">server/tm/builders/tm_basic_builder.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd.html">std</a>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="file__stream__reader_8hpp.html">common/utils/file/file_stream_reader.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="memory__mapped__file__reader_8hpp.html">common/utils/file/memory_mapped_file_reader.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tm__basic__model_8hpp.html">server/tm/models/tm_basic_model.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tm__basic__builder_8hpp.html">server/tm/builders/tm_basic_builder.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespaceuva_1_1utils_1_1file.html">uva::utils::file</a>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd.html">std</a>;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html">uva::smt::bpbd::server::tm</a>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders.html">uva::smt::bpbd::server::tm::builders</a>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceuva.html">uva</a> {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">namespace </span>smt {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keyword">namespace </span>bpbd {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keyword">namespace </span>server {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <span class="keyword">namespace </span>tm {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                    <span class="comment">//Define the default model type to be used</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a2f41d3b9fcee3dddc005fd7e7deae402">   49</a></span>&#160;                    <span class="keyword">typedef</span> <a class="code" href="classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__basic__model.html">tm_basic_model</a> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a2f41d3b9fcee3dddc005fd7e7deae402">tm_model_type</a>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                    <span class="comment">//Define the builder type </span></div>
-<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a8217600aaa61d65d5e569fec3b50828b">   52</a></span>&#160;                    <span class="keyword">typedef</span> <a class="code" href="classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder.html">tm_basic_builder&lt;tm_model_type, cstyle_file_reader&gt;</a> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a8217600aaa61d65d5e569fec3b50828b">tm_builder_type</a>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TM_CONFIGS_HPP */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespaceuva_1_1utils_1_1file.html">uva::utils::file</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html">uva::smt::bpbd::server::tm</a>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders.html">uva::smt::bpbd::server::tm::builders</a>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceuva.html">uva</a> {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">namespace </span>smt {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">namespace </span>bpbd {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keyword">namespace </span>server {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <span class="keyword">namespace </span>tm {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    <span class="comment">//Define the default model type to be used</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a2f41d3b9fcee3dddc005fd7e7deae402">   51</a></span>&#160;                    <span class="keyword">typedef</span> <a class="code" href="classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__basic__model.html">tm_basic_model</a> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a2f41d3b9fcee3dddc005fd7e7deae402">tm_model_type</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                    <span class="comment">//Here we have a default model file reader type</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a252830a0bbad1555180821ed6ffce83f">   54</a></span>&#160;                    <span class="keyword">typedef</span> <a class="code" href="classuva_1_1utils_1_1file_1_1cstyle__file__reader.html">cstyle_file_reader</a> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a252830a0bbad1555180821ed6ffce83f">tm_model_reader</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                    <span class="comment">//Define the builder type </span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a29c513cbd5b9a3c3838ad34e5103776f">   57</a></span>&#160;                    <span class="keyword">typedef</span> <a class="code" href="classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder.html">tm_basic_builder&lt;tm_model_type, tm_model_reader&gt;</a> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a29c513cbd5b9a3c3838ad34e5103776f">tm_builder_type</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TM_CONFIGS_HPP */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
 <div class="ttc" id="cstyle__file__reader_8hpp_html"><div class="ttname"><a href="cstyle__file__reader_8hpp.html">cstyle_file_reader.hpp</a></div></div>
-<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_html_a2f41d3b9fcee3dddc005fd7e7deae402"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a2f41d3b9fcee3dddc005fd7e7deae402">uva::smt::bpbd::server::tm::tm_model_type</a></div><div class="ttdeci">tm_basic_model tm_model_type</div><div class="ttdef"><b>Definition:</b> <a href="tm__configs_8hpp_source.html#l00049">tm_configs.hpp:49</a></div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_html_a252830a0bbad1555180821ed6ffce83f"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a252830a0bbad1555180821ed6ffce83f">uva::smt::bpbd::server::tm::tm_model_reader</a></div><div class="ttdeci">cstyle_file_reader tm_model_reader</div><div class="ttdef"><b>Definition:</b> <a href="tm__configs_8hpp_source.html#l00054">tm_configs.hpp:54</a></div></div>
+<div class="ttc" id="memory__mapped__file__reader_8hpp_html"><div class="ttname"><a href="memory__mapped__file__reader_8hpp.html">memory_mapped_file_reader.hpp</a></div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_html_a2f41d3b9fcee3dddc005fd7e7deae402"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a2f41d3b9fcee3dddc005fd7e7deae402">uva::smt::bpbd::server::tm::tm_model_type</a></div><div class="ttdeci">tm_basic_model tm_model_type</div><div class="ttdef"><b>Definition:</b> <a href="tm__configs_8hpp_source.html#l00051">tm_configs.hpp:51</a></div></div>
 <div class="ttc" id="server__configs_8hpp_html"><div class="ttname"><a href="server__configs_8hpp.html">server_configs.hpp</a></div></div>
-<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_html_a8217600aaa61d65d5e569fec3b50828b"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a8217600aaa61d65d5e569fec3b50828b">uva::smt::bpbd::server::tm::tm_builder_type</a></div><div class="ttdeci">tm_basic_builder&lt; tm_model_type, cstyle_file_reader &gt; tm_builder_type</div><div class="ttdef"><b>Definition:</b> <a href="tm__configs_8hpp_source.html#l00052">tm_configs.hpp:52</a></div></div>
 <div class="ttc" id="classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder_html"><div class="ttname"><a href="classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_1_1tm__basic__builder.html">uva::smt::bpbd::server::tm::builders::tm_basic_builder</a></div><div class="ttdef"><b>Definition:</b> <a href="tm__basic__builder_8hpp_source.html#l00084">tm_basic_builder.hpp:84</a></div></div>
 <div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_html_a29c513cbd5b9a3c3838ad34e5103776f"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html#a29c513cbd5b9a3c3838ad34e5103776f">uva::smt::bpbd::server::tm::tm_builder_type</a></div><div class="ttdeci">tm_basic_builder&lt; tm_model_type, tm_model_reader &gt; tm_builder_type</div><div class="ttdef"><b>Definition:</b> <a href="tm__configs_8hpp_source.html#l00057">tm_configs.hpp:57</a></div></div>
 <div class="ttc" id="classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__basic__model_html"><div class="ttname"><a href="classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__basic__model.html">uva::smt::bpbd::server::tm::models::tm_basic_model</a></div><div class="ttdef"><b>Definition:</b> <a href="tm__basic__model_8hpp_source.html#l00065">tm_basic_model.hpp:65</a></div></div>
 <div class="ttc" id="namespaceuva_1_1utils_1_1file_html"><div class="ttname"><a href="namespaceuva_1_1utils_1_1file.html">uva::utils::file</a></div><div class="ttdef"><b>Definition:</b> <a href="afile__reader_8hpp_source.html#l00039">afile_reader.hpp:39</a></div></div>
 <div class="ttc" id="tm__basic__builder_8hpp_html"><div class="ttname"><a href="tm__basic__builder_8hpp.html">tm_basic_builder.hpp</a></div></div>
 <div class="ttc" id="tm__basic__model_8hpp_html"><div class="ttname"><a href="tm__basic__model_8hpp.html">tm_basic_model.hpp</a></div></div>
 <div class="ttc" id="namespaceuva_html"><div class="ttname"><a href="namespaceuva.html">uva</a></div><div class="ttdef"><b>Definition:</b> <a href="client__config_8hpp_source.html#l00029">client_config.hpp:29</a></div></div>
+<div class="ttc" id="classuva_1_1utils_1_1file_1_1cstyle__file__reader_html"><div class="ttname"><a href="classuva_1_1utils_1_1file_1_1cstyle__file__reader.html">uva::utils::file::cstyle_file_reader</a></div><div class="ttdef"><b>Definition:</b> <a href="cstyle__file__reader_8hpp_source.html#l00051">cstyle_file_reader.hpp:51</a></div></div>
 <div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders_html"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1builders.html">uva::smt::bpbd::server::tm::builders</a></div><div class="ttdef"><b>Definition:</b> <a href="tm__basic__builder_8hpp_source.html#l00065">tm_basic_builder.hpp:65</a></div></div>
-<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_html"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html">uva::smt::bpbd::server::tm</a></div><div class="ttdef"><b>Definition:</b> <a href="server__configs_8hpp_source.html#l00060">server_configs.hpp:60</a></div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_html"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html">uva::smt::bpbd::server::tm</a></div><div class="ttdef"><b>Definition:</b> <a href="server__configs_8hpp_source.html#l00048">server_configs.hpp:48</a></div></div>
+<div class="ttc" id="file__stream__reader_8hpp_html"><div class="ttname"><a href="file__stream__reader_8hpp.html">file_stream_reader.hpp</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

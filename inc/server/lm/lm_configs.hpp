@@ -32,6 +32,8 @@
 #include "server/server_configs.hpp"
 
 #include "common/utils/file/cstyle_file_reader.hpp"
+#include "common/utils/file/file_stream_reader.hpp"
+#include "common/utils/file/memory_mapped_file_reader.hpp"
 
 #include "server/lm/dictionaries/basic_word_index.hpp"
 #include "server/lm/dictionaries/counting_word_index.hpp"
@@ -67,10 +69,13 @@ namespace uva {
                     typedef hashing_word_index lm_word_index;
 
                     //Here we have a default trie type
-                    typedef H2DMapTrie<lm_word_index> lm_model_type;
+                    typedef h2d_map_trie<lm_word_index> lm_model_type;
 
+                    //Here we have a default model file reader type
+                    typedef cstyle_file_reader lm_model_reader;
+                    
                     //Define the builder type 
-                    typedef lm_basic_builder<lm_model_type, cstyle_file_reader> lm_builder_type;
+                    typedef lm_basic_builder<lm_model_type, lm_model_reader> lm_builder_type;
                 }
             }
         }

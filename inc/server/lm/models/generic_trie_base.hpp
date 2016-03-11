@@ -96,10 +96,10 @@ namespace uva {
                      * This class defined the trie interface and functionality that is expected by the TrieDriver class
                      */
                     template<typename TrieType, typename WordIndexType, uint8_t BITMAP_HASH_CACHE_BUCKETS_FACTOR>
-                    class GenericTrieBase : public WordIndexTrieBase<WordIndexType> {
+                    class generic_trie_base : public word_index_trie_base<WordIndexType> {
                     public:
                         //Typedef the base class
-                        typedef WordIndexTrieBase<WordIndexType> BASE;
+                        typedef word_index_trie_base<WordIndexType> BASE;
 
                         //The flag indicating if the bitmap hash caching is needed
                         const static bool NEEDS_BITMAP_HASH_CACHE = (BITMAP_HASH_CACHE_BUCKETS_FACTOR > 1);
@@ -126,8 +126,8 @@ namespace uva {
                          * The basic constructor
                          * @param word_index the word index to be used
                          */
-                        explicit GenericTrieBase(WordIndexType & word_index)
-                        : WordIndexTrieBase<WordIndexType> (word_index) {
+                        explicit generic_trie_base(WordIndexType & word_index)
+                        : word_index_trie_base<WordIndexType> (word_index) {
                             ASSERT_CONDITION_THROW((LM_MAX_QUERY_LEN > MAX_SUPP_GRAM_LEVEL),
                                     string("Unsupported m-gram query level: ") +
                                     std::to_string(LM_MAX_QUERY_LEN) +
@@ -343,7 +343,7 @@ namespace uva {
                         /**
                          * The basic class destructor
                          */
-                        virtual ~GenericTrieBase() {
+                        virtual ~generic_trie_base() {
                         }
 
                     private:

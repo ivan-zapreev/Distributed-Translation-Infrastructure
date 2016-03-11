@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <div class="title">README </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><b>The Basic Phrase-Based Statistical Machine Translation Tool</b></p>
+<div class="textblock"><p>#**The Basic Phrase-Based Statistical Machine Translation Tool**</p>
 <p><b>Author:</b> <a href="https://nl.linkedin.com/in/zapreevis">Dr. Ivan S. Zapreev</a></p>
 <p><b>Project pages:</b> <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT">Git-Hub-Project</a></p>
 <h2>Introduction</h2>
@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 </ul>
 <p>To keep a clear view of the used terminology further we will privide some details on the phrase based statistical machine translation as given on the picture below.</p>
 <div class="image">
-<img src="https://github.com/ivan-zapreev/Basic-Phrase-Based-Decoding/blob/master/docs/images/smt/smt.jpg"  alt="Statistical Machine Translation Approach Image" title="Statistical Machine Translation Approach"/>
+<img src="./docs/images/smt/smt.jpg"  alt="Statistical Machine Translation Approach Image" title="Statistical Machine Translation Approach"/>
 </div>
 <p>The entire phrase-based statistical machine translation is based on learned statistical correlations between words and phrases of an example translation text, also called parallel corpus or corpora. Clearly, if the training corpora is large enough then it allows to cover most source/target language words and phrases and shall have enough information for approximating a translation of an arbitrary text. However, before this information can be extracted, the parallel corpora undergoes the process called <em>word alignment</em> which is aimed at estimating which words/phrases in the source language correspond to which words/phrases in the target language. As a result, we obtain two statistical models:</p>
 <ol type="1">
@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <p>This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is as follows:</p>
 <ul>
 <li>**<code>[Project-Folder]</code>**/<ul>
-<li><b>doc/</b> - contains the project-related documents including the Doxygen-generated code documentation</li>
+<li><b>doc/</b> - contains the project-related documents including the Doxygen-generated code documentation and images</li>
 <li><b>ext/</b> - stores the external header only libraries used in the project</li>
 <li><b>inc/</b> - stores the C++ header files of the implementation</li>
 <li><b>src/</b> - stores the C++ source files of the implementation</li>
@@ -190,23 +190,78 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <li><code>cd [Project-Folder]</code></li>
 <li><code>mkdir build</code></li>
 <li><code>cd build</code></li>
-<li><code>cmake -DCMAKE_BUILD_TYPE=Release ..</code> OR <code>cmake -DCMAKE_BUILD_TYPE=DEBUG ..</code></li>
+<li><code>cmake -DCMAKE_BUILD_TYPE=Release ..</code> OR <code>cmake -DCMAKE_BUILD_TYPE=Debug ..</code></li>
 <li><code>make -j [NUMBER-OF-THREADS]</code> add <code>VERBOSE=1</code> to make the compile-time options visible</li>
 </ul>
 </li>
 </ul>
-<p>The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run <code>make clean</code>.</p>
+<p>The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run <code>make clean</code>. Cleaning from Netbeans is as simple calling the <code>Clean and Build</code> from the <code>Run</code> menu.</p>
 <h3>Project compile-time parameters</h3>
-<p><em>ToDo: make up to date</em></p>
-<h4>General</h4>
-<p>One can limit the debug-level printing of the code by changing the value of the <em>LOGER_MAX_LEVEL</em> constant in the *./inc/Configuration.hpp*. The possible range of values, with increasing logging level is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.</p>
-<h4>bpbd-client</h4>
-<p><em>ToDo: Add text</em> </p><h4>bpbd-server</h4>
-<p><em>ToDo: Add text</em> </p><h4>lm-query</h4>
-<p><em>ToDo: Add text</em></p>
+<p>There is a number of project parameters that at this moment are to be chosen only once before the project is compiled. These are otherwise called the compile-time parameters. Further we consider the most important of them and indicate where all of them are to be found.</p>
+<p><b>Loggin level:</b> Logging is important when debugging software or providing an additional used information during the program's runtime. Yet additional output actions come at a prise and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project's logging levels, listed incrementally is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at runtime by setting the <code>LOGER_M_GRAM_LEVEL_MAX</code> constaint value in the <code>./inc/common/utils/logging/logger.hpp</code> header file.</p>
+<p><b>Sanity checks:</b> When program is not running as expected, it could be caused by the internal software errors that are not detectable runtime. It is therefore possible to enable/disable software internal sanity checks by setting the <code>DO_SANITY_CHECKS</code> constand in the <code>./inc/common/utils/exceptions.hpp</code> header file. Note that enabling the sanity checks does not guarantee that the internal error will be found and will have a negative effect on the program's performance. Yet, it might help to identify errors with e.g. input file formats and alike.</p>
+<p><b>Server configs:</b> There is a number of translation server common parameters used in decoding, translation, reordering anb language models. Those are to be found in the <code>./inc/server/server_configs.hpp</code>. Please be carefull changing them:</p>
+<ul>
+<li><code>UNKNOWN_LOG_PROB_WEIGHT</code> - The value used for the unknown probability weight _(log10 scale)_</li>
+<li><code>ZERO_LOG_PROB_WEIGHT</code> - The value used for the 'zero' probability weight _(log10 scale)_</li>
+<li><code>tm::NUM_TM_FEATURES</code> - The number of the translation model features, defines the number of features read per entry in from the translation model input file.</li>
+<li><code>tm::TM_MAX_TARGET_PHRASE_LEN</code> - The maximum length of the target phrase to be considered, this defines the maximum number of tokens to be stored per translation entry</li>
+<li><code>lm::NUM_LM_FEATURES</code> - The number of languahe model features, the program currenly supports only one value: <code>1</code></li>
+<li><code>lm::LM_M_GRAM_LEVEL_MAX</code> - The languahe model maximum level, the maximum number of words in the language model phrase</li>
+<li><code>lm::LM_HISTORY_LEN_MAX</code> - <b>do not change</b> this parameter</li>
+<li><code>lm::LM_MAX_QUERY_LEN</code> - <b>do not change</b> this parameter</li>
+<li><code>lm::DEF_UNK_WORD_LOG_PROB_WEIGHT</code> - The default unknown word probability weight, for the case the <code>&lt;unk&gt;</code> entry is not present in the language model file _(log10 scale)_</li>
+<li><code>rm::NUM_RM_FEATURES</code> - The maximum number of reordering model features, the only two currently supported values are: <code>6</code> and <code>8</code>.</li>
+</ul>
+<p><b>Decoder configs:</b> There is a number of decoder-specific parameters that can be configured runtime. These are located in <code>./inc/server/decoder/de_configs.hpp</code>, please be careful changing them:</p>
+<ul>
+<li><code>MAX_WORDS_PER_SENTENCE</code> - The maximum allowed number of words/tokens per sentence to translate.</li>
+</ul>
+<p><b>LM configs:</b> There is a number of Language-model-specific parameters that can be configured runtime. These are located in <code>./inc/server/lm/lm_configs.hpp</code>, please be careful changing them:</p>
+<ul>
+<li><code>lm_word_index</code> - the word index type to be used, the possible values are:<ul>
+<li><code>basic_word_index</code> - <em>ToDo: Fill In</em></li>
+<li><code>counting_word_index</code> - <em>ToDo: Fill In</em></li>
+<li><code>optimizing_word_index&lt;basic_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
+<li><code>optimizing_word_index&lt;counting_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
+<li><code>hashing_word_index</code> -</li>
+</ul>
+</li>
+<li><code>lm_model_type</code> - the model type to be used, the possible values (trie types) are:<ul>
+<li><code>c2d_hybrid_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
+<li><code>c2d_map_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
+<li><code>c2w_array_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
+<li><code>g2d_map_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
+<li><code>h2d_map_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
+<li><code>w2c_array_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
+<li><code>w2c_hybrid_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
+</ul>
+</li>
+<li><code>lm_model_reader</code> - the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with <code>cstyle_file_reader</code> being the default:<ul>
+<li><code>file_stream_reader</code> - uses the C++ streams to read from files, the slowest</li>
+<li><code>cstyle_file_reader</code> - uses C-style file reading functions, faster than <code>file_stream_reader</code></li>
+<li><code>memory_mapped_file_reader</code> - uses memory-mapped files which, faster than <code>cstyle_file_reader</code>, consumes twise the file size memory (virtual RAM).</li>
+</ul>
+</li>
+<li><code>lm_builder_type</code> - currently there is just one builder type available: <code>lm_basic_builder&lt;lm_model_reader&gt;</code>.</li>
+</ul>
+<p>Note that not all of the combinations of the <code>lm_word_index</code> and <code>lm_model_type</code> can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the <code>./inc/server/lm/lm_consts.hpp</code> header file comments. The default and the most optimal performance/memory ratio configuration is <code>lm_word_index</code> being set to <code>hashing_word_index</code> and <code>lm_model_type</code> begin set to <code>h2d_map_trie&lt;lm_word_index&gt;</code>.</p>
+<p><b>TM configs:</b> There is a number of Translation-model-specific parameters that can be configured runtime. These are located in <code>./inc/server/tm/tm_configs.hpp</code>, please be careful changing them:</p>
+<ul>
+<li><code>tm_model_type</code> - currently there is just one model type available: <code>tm_basic_model</code>.</li>
+<li><code>tm_model_reader</code> - the same as <code>lm_model_reader</code> for _"LM configs"_ above.</li>
+<li><code>tm_builder_type</code> - currently there is just one builder byte available: <code>tm_basic_builder&lt;tm_model_reader&gt;</code>.</li>
+</ul>
+<p><b>RM configs:</b> There is a number of Reordering-model-specific parameters that can be configured runtime. These are located in <code>./inc/server/rm/rm_configs.hpp</code>, please be careful changing them:</p>
+<ul>
+<li><code>rm_model_type</code> - currently there is just one model type available: <code>rm_basic_model</code>.</li>
+<li><code>rm_model_reader</code> - the same as <code>lm_model_reader</code> for _"LM configs"_ above.</li>
+<li><code>rm_builder_type</code> - currently there is just one builder byte available: <code>rm_basic_builder&lt;rm_model_reader&gt;</code>.</li>
+</ul>
 <h2>Using software</h2>
 <h3>_bpbd-server_ - translation server</h3>
-<h3>_bpbd-client_ - translation client</h3>
+<p><em>ToDo: server console</em></p>
+<p><em>ToDo: Configuration file</em> </p><h3>_bpbd-client_ - translation client</h3>
 <h3>_lm-query_ - language model query tool</h3>
 <p>In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:</p>
 <p>``` vpn-stud-146-50-150-5:build zapreevis$ lm-query USAGE: ---------------------------------------------------------------&mdash; USAGE: | Back Off Language Model(s) for SMT :)___/(: | USAGE: | Software version 1.1 {(@)v(@)} | USAGE: | The Owl release. {|~- -~|} | USAGE: | Copyright (C) Dr. Ivan S Zapreev, 2015-2016 {/^'^'^ </p>

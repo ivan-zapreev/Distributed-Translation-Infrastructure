@@ -65,9 +65,9 @@ namespace uva {
                      * the lookup is O(log(n)), as we need to use binary searches there.
                      */
                     template<typename WordIndexType>
-                    class C2DHybridTrie : public LayeredTrieBase<C2DHybridTrie<WordIndexType>, WordIndexType, __C2DHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
+                    class c2d_hybrid_trie : public layered_trie_base<c2d_hybrid_trie<WordIndexType>, WordIndexType, __C2DHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
-                        typedef LayeredTrieBase<C2DHybridTrie<WordIndexType>, WordIndexType, __C2DHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
+                        typedef layered_trie_base<c2d_hybrid_trie<WordIndexType>, WordIndexType, __C2DHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
 
                         /**
                          * The basic class constructor, accepts memory factors that are the
@@ -96,7 +96,7 @@ namespace uva {
                          * @param _nGramMemFactor The N-Gram memory factor needed for
                          * the greedy allocator for the unordered_map
                          */
-                        explicit C2DHybridTrie(WordIndexType & word_index,
+                        explicit c2d_hybrid_trie(WordIndexType & word_index,
                                 const float mram_mem_factor = __C2DHybridTrie::UM_M_GRAM_MEMORY_FACTOR,
                                 const float ngram_mem_factor = __C2DHybridTrie::UM_N_GRAM_MEMORY_FACTOR);
 
@@ -161,7 +161,7 @@ namespace uva {
                                 //Define the context id variable
                                 TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
-                                __LayeredTrieBase::get_context_id<C2DHybridTrie<WordIndexType>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
+                                __LayeredTrieBase::get_context_id<c2d_hybrid_trie<WordIndexType>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Obtain the context key and then create a new mapping
                                 const TLongId key = put_32_32_in_64(ctx_id, word_id);
@@ -276,7 +276,7 @@ namespace uva {
                         /**
                          * The basic destructor
                          */
-                        virtual ~C2DHybridTrie();
+                        virtual ~c2d_hybrid_trie();
 
                     private:
                         //Stores the pointer to the UNK word payload
@@ -343,11 +343,11 @@ namespace uva {
 
                     };
 
-                    typedef C2DHybridTrie< basic_word_index > TC2DHybridTrieBasic;
-                    typedef C2DHybridTrie< counting_word_index > TC2DHybridTrieCount;
-                    typedef C2DHybridTrie< basic_optimizing_word_index > TC2DHybridTrieOptBasic;
-                    typedef C2DHybridTrie< counting_optimizing_word_index > TC2DHybridTrieOptCount;
-                    typedef C2DHybridTrie< hashing_word_index > TC2DHybridTrieHashing;
+                    typedef c2d_hybrid_trie< basic_word_index > TC2DHybridTrieBasic;
+                    typedef c2d_hybrid_trie< counting_word_index > TC2DHybridTrieCount;
+                    typedef c2d_hybrid_trie< basic_optimizing_word_index > TC2DHybridTrieOptBasic;
+                    typedef c2d_hybrid_trie< counting_optimizing_word_index > TC2DHybridTrieOptCount;
+                    typedef c2d_hybrid_trie< hashing_word_index > TC2DHybridTrieHashing;
                 }
             }
         }

@@ -12,7 +12,7 @@ var searchData=
   ['find_5frecombine',['find_recombine',['../classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level.html#add73733b755d8835ca3b5c2339736451',1,'uva::smt::bpbd::server::decoder::stack::stack_level']]],
   ['find_5funk_5fentry',['find_unk_entry',['../classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models_1_1rm__basic__model.html#accf977e9288a3a4a99aca62b84ace304',1,'uva::smt::bpbd::server::rm::models::rm_basic_model']]],
   ['finished_5fjob_5fnotifier',['finished_job_notifier',['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool.html#a6a18b765d5a321e2bcc7e3be3213c06e',1,'uva::smt::bpbd::server::trans_job_pool']]],
-  ['first_5fvalid_5fctx_5fid',['FIRST_VALID_CTX_ID',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html#a6876a5cd50fce0cbb8066a420a42d6c0',1,'uva::smt::bpbd::server::lm::GenericTrieBase']]],
+  ['first_5fvalid_5fctx_5fid',['FIRST_VALID_CTX_ID',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html#a54abc3730778b6237fe456b1a6cf8dad',1,'uva::smt::bpbd::server::lm::generic_trie_base']]],
   ['fixed_5fsize_5fhashmap',['fixed_size_hashmap',['../classuva_1_1utils_1_1containers_1_1fixed__size__hashmap.html#a34c969d7b8f39ca6ce90278c784229f4',1,'uva::utils::containers::fixed_size_hashmap']]],
   ['fixed_5fsize_5fhashmap',['fixed_size_hashmap',['../classuva_1_1utils_1_1containers_1_1fixed__size__hashmap.html',1,'uva::utils::containers']]],
   ['fixed_5fsize_5fhashmap_2ehpp',['fixed_size_hashmap.hpp',['../fixed__size__hashmap_8hpp.html',1,'']]],

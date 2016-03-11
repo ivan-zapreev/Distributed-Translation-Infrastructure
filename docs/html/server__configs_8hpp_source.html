@@ -136,121 +136,70 @@ $(document).ready(function(){initNavTree('server__configs_8hpp_source.html','');
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment"> * Created on February 23, 2016, 4:52 PM</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifndef SERVER_CONFIGS_HPP</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define SERVER_CONFIGS_HPP</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="server__consts_8hpp.html">server_consts.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef SERVER_CONFIGS_HPP</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="server__configs_8hpp.html#a6ce346c569794c49433bb8b1c0b38f16">   29</a></span>&#160;<span class="preprocessor">#define SERVER_CONFIGS_HPP</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd.html">std</a>;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceuva.html">uva</a> {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">namespace </span>smt {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keyword">namespace </span>bpbd {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keyword">namespace </span>server {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                <span class="comment">//This typedef if used for the translation model level</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#af068a19c2e03116caf3e3827a3e40e35">   39</a></span>&#160;                <span class="keyword">typedef</span> uint16_t <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#af068a19c2e03116caf3e3827a3e40e35">phrase_length</a>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <span class="comment">//The type used for storing log probabilities, back-off, and feature values</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">   42</a></span>&#160;                <span class="keyword">typedef</span> <span class="keywordtype">float</span> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">prob_weight</a>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="comment">//Declare the phrase unique identifier type</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#ad18d4cdf5504e76c22b0c124ff60b44f">   45</a></span>&#160;                <span class="keyword">typedef</span> uint64_t <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#ad18d4cdf5504e76c22b0c124ff60b44f">phrase_uid</a>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <span class="comment">//Declare the word unique identifier type</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">   48</a></span>&#160;                <span class="keyword">typedef</span> uint64_t <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">word_uid</a>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <span class="comment">//The base of the logarithm for stored probabilities/back-off weights</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                <span class="keyword">static</span> constexpr prob_weight LOG_PROB_WEIGHT_BASE = 10.0;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="comment">//Stores the zero log probability for the partial score or future cost</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <span class="keyword">static</span> constexpr prob_weight UNKNOWN_LOG_PROB_WEIGHT = -1000.0;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <span class="comment">//The zero like value for log probability weight</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <span class="keyword">static</span> constexpr prob_weight ZERO_LOG_PROB_WEIGHT = -100.0f;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keyword">namespace </span>decoder {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                }</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacestd.html">std</a>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceuva.html">uva</a> {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">namespace </span>smt {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">namespace </span>bpbd {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keyword">namespace </span>server {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                <span class="comment">//Stores the zero log probability for the partial score or future cost</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <span class="keyword">static</span> constexpr <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">prob_weight</a> UNKNOWN_LOG_PROB_WEIGHT = -1000.0;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <span class="comment">//The zero like value for log probability weight</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keyword">static</span> constexpr <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">prob_weight</a> ZERO_LOG_PROB_WEIGHT = -100.0f;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="keyword">namespace </span>decoder {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html">   48</a></span>&#160;                <span class="keyword">namespace </span>tm {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                    <span class="comment">//Stores the number of the translation model features</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> NUM_TM_FEATURES = FOUR_TM_FEATURES;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                    <span class="comment">//The considered maximum length of the target phrase</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                    <span class="keyword">static</span> constexpr uint16_t TM_MAX_TARGET_PHRASE_LEN = 7u;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="keyword">namespace </span>lm {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                    <span class="comment">//Stores the number of the language model features</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> NUM_LM_FEATURES = ONE_LM_FEATURE;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html">   60</a></span>&#160;                <span class="keyword">namespace </span>tm {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                    <span class="comment">//Define the feature weights delimiter string for the config file</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> TM_FEATURE_WEIGHTS_DELIMITER_STR = u8<span class="stringliteral">&quot;|&quot;</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    <span class="comment">//Stores the different values of TM features                    </span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> FOUR_TM_FEATURES = 4u;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    <span class="comment">//Stores the number of the translation model features</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> NUM_TM_FEATURES = FOUR_TM_FEATURES;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                    <span class="comment">//The considered maximum length of the target phrase</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                    <span class="keyword">static</span> constexpr uint16_t TM_MAX_TARGET_PHRASE_LEN = 7u;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                    <span class="comment">//Stores the unknown source phrase string, should be configurable</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> TM_UNKNOWN_SOURCE_STR = u8<span class="stringliteral">&quot;UNK&quot;</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                    <span class="comment">//Stores the unknown target phrase string, should be configurable</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> TM_UNKNOWN_TARGET_STR = u8<span class="stringliteral">&quot;&lt;unk&gt;&quot;</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                <span class="keyword">namespace </span>lm {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                    <span class="comment">//Define the feature weights delimiter string for the config file</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> LM_FEATURE_WEIGHTS_DELIMITER_STR = <span class="stringliteral">&quot;|&quot;</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                    <span class="comment">//Stores the different values of RM features                    </span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> ONE_LM_FEATURE = 1u;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                    <span class="comment">//Stores the number of the language model features</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> NUM_LM_FEATURES = ONE_LM_FEATURE;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                    <span class="comment">//The considered maximum length of the N-gram </span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                    <span class="keyword">static</span> constexpr uint16_t LM_M_GRAM_LEVEL_MAX = 5u;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    <span class="comment">//The maximum considered length of the m-gram history</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    <span class="keyword">static</span> constexpr uint16_t LM_HISTORY_LEN_MAX = LM_M_GRAM_LEVEL_MAX - 1;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                    <span class="comment">//The considered maximum length of the N-gram query</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                    <span class="keyword">static</span> constexpr uint16_t LM_MAX_QUERY_LEN = tm::TM_MAX_TARGET_PHRASE_LEN + LM_HISTORY_LEN_MAX;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                    <span class="comment">//Stores the unknown word string, should be configurable</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> UNKNOWN_WORD_STR = u8<span class="stringliteral">&quot;&lt;unk&gt;&quot;</span>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    <span class="comment">//Stores the start of the sentence symbol</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> BEGIN_SENTENCE_TAG_STR = u8<span class="stringliteral">&quot;&lt;s&gt;&quot;</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                    <span class="comment">//Stores the end of the sentence symbol</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> END_SENTENCE_TAG_STR = u8<span class="stringliteral">&quot;&lt;/s&gt;&quot;</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                    <span class="comment">//The default value of the unknown word probability weight</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm.html#a6de1c7e176aa41057187126069624cf7">  103</a></span>&#160;                    <span class="keyword">const</span> prob_weight <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm.html#a6de1c7e176aa41057187126069624cf7">DEF_UNK_WORD_LOG_PROB_WEIGHT</a> = -10.0f;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                }</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <span class="keyword">namespace </span>rm {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    <span class="comment">//Define the feature weights delimiter string for the config file</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> RM_FEATURE_WEIGHTS_DELIMITER_STR = u8<span class="stringliteral">&quot;|&quot;</span>;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                    <span class="comment">//Stores the different values of RM features  </span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> TWO_RM_FEATURES = 2u;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> FOUR_RM_FEATURES = 4u;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> SIX_RM_FEATURES = 6u;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> EIGHT_RM_FEATURES = 8u;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                    <span class="comment">//Stores the number of the reordering model features</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> NUM_RM_FEATURES = SIX_RM_FEATURES;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                    <span class="comment">//Stores the unknown source phrase string, should be configurable</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> RM_UNK_SOURCE_PHRASE = u8<span class="stringliteral">&quot;UNK&quot;</span>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                    <span class="comment">//Stores the unknown target phrase string, should be configurable</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">string</span> RM_UNK_TARGET_PHRASE = u8<span class="stringliteral">&quot;UNK&quot;</span>;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                }</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            }</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        }</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    }</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">//INclude server constants as they depend on server configs</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="server__consts_8hpp.html">server/server_consts.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SERVER_CONFIGS_HPP */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_html_a6bfe45ba344d65a7fdd7d26156328ddc"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a6bfe45ba344d65a7fdd7d26156328ddc">uva::smt::bpbd::server::word_uid</a></div><div class="ttdeci">uint64_t word_uid</div><div class="ttdef"><b>Definition:</b> <a href="server__configs_8hpp_source.html#l00048">server_configs.hpp:48</a></div></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                    <span class="comment">//The considered maximum length of the N-gram </span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                    <span class="keyword">static</span> constexpr uint16_t LM_M_GRAM_LEVEL_MAX = 5u;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    <span class="comment">//The maximum considered length of the m-gram history</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                    <span class="keyword">static</span> constexpr uint16_t LM_HISTORY_LEN_MAX = LM_M_GRAM_LEVEL_MAX - 1;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    <span class="comment">//The considered maximum length of the N-gram query</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                    <span class="keyword">static</span> constexpr uint16_t LM_MAX_QUERY_LEN = tm::TM_MAX_TARGET_PHRASE_LEN + LM_HISTORY_LEN_MAX;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    <span class="comment">//The default value of the unknown word probability weight</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm.html#a6de1c7e176aa41057187126069624cf7">   68</a></span>&#160;                    <span class="keyword">const</span> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">prob_weight</a> <a class="code" href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm.html#a6de1c7e176aa41057187126069624cf7">DEF_UNK_WORD_LOG_PROB_WEIGHT</a> = -10.0f;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                <span class="keyword">namespace </span>rm {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                    <span class="comment">//Stores the number of the reordering model features</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                    <span class="keyword">static</span> constexpr <span class="keywordtype">size_t</span> NUM_RM_FEATURES = SIX_RM_FEATURES;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">//INclude server constants as they depend on server configs</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="server__consts_8hpp.html">server/server_consts.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SERVER_CONFIGS_HPP */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
 <div class="ttc" id="namespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div></div>
-<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_html_a01e9ea4de9c226f4464862e84ff0bbcc"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">uva::smt::bpbd::server::prob_weight</a></div><div class="ttdeci">float prob_weight</div><div class="ttdef"><b>Definition:</b> <a href="server__configs_8hpp_source.html#l00042">server_configs.hpp:42</a></div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_html_a01e9ea4de9c226f4464862e84ff0bbcc"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#a01e9ea4de9c226f4464862e84ff0bbcc">uva::smt::bpbd::server::prob_weight</a></div><div class="ttdeci">float prob_weight</div><div class="ttdef"><b>Definition:</b> <a href="server__consts_8hpp_source.html#l00042">server_consts.hpp:42</a></div></div>
 <div class="ttc" id="server__consts_8hpp_html"><div class="ttname"><a href="server__consts_8hpp.html">server_consts.hpp</a></div></div>
-<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_html_af068a19c2e03116caf3e3827a3e40e35"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#af068a19c2e03116caf3e3827a3e40e35">uva::smt::bpbd::server::phrase_length</a></div><div class="ttdeci">uint16_t phrase_length</div><div class="ttdef"><b>Definition:</b> <a href="server__configs_8hpp_source.html#l00039">server_configs.hpp:39</a></div></div>
 <div class="ttc" id="namespaceuva_html"><div class="ttname"><a href="namespaceuva.html">uva</a></div><div class="ttdef"><b>Definition:</b> <a href="client__config_8hpp_source.html#l00029">client_config.hpp:29</a></div></div>
-<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_html_a6de1c7e176aa41057187126069624cf7"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm.html#a6de1c7e176aa41057187126069624cf7">uva::smt::bpbd::server::lm::DEF_UNK_WORD_LOG_PROB_WEIGHT</a></div><div class="ttdeci">const prob_weight DEF_UNK_WORD_LOG_PROB_WEIGHT</div><div class="ttdef"><b>Definition:</b> <a href="server__configs_8hpp_source.html#l00103">server_configs.hpp:103</a></div></div>
-<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_html_ad18d4cdf5504e76c22b0c124ff60b44f"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server.html#ad18d4cdf5504e76c22b0c124ff60b44f">uva::smt::bpbd::server::phrase_uid</a></div><div class="ttdeci">uint64_t phrase_uid</div><div class="ttdef"><b>Definition:</b> <a href="server__configs_8hpp_source.html#l00045">server_configs.hpp:45</a></div></div>
+<div class="ttc" id="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_html_a6de1c7e176aa41057187126069624cf7"><div class="ttname"><a href="namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm.html#a6de1c7e176aa41057187126069624cf7">uva::smt::bpbd::server::lm::DEF_UNK_WORD_LOG_PROB_WEIGHT</a></div><div class="ttdeci">const prob_weight DEF_UNK_WORD_LOG_PROB_WEIGHT</div><div class="ttdef"><b>Definition:</b> <a href="server__configs_8hpp_source.html#l00068">server_configs.hpp:68</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

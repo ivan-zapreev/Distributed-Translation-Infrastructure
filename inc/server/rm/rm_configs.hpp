@@ -29,6 +29,8 @@
 #include "server/server_configs.hpp"
 
 #include "common/utils/file/cstyle_file_reader.hpp"
+#include "common/utils/file/file_stream_reader.hpp"
+#include "common/utils/file/memory_mapped_file_reader.hpp"
 
 #include "server/rm/models/rm_basic_model.hpp"
 #include "server/rm/builders/rm_basic_builder.hpp"
@@ -48,8 +50,11 @@ namespace uva {
                     //Define the default model type to be used
                     typedef rm_basic_model rm_model_type;
 
+                    //Here we have a default model file reader type
+                    typedef cstyle_file_reader rm_model_reader;
+
                     //Define the builder type 
-                    typedef rm_basic_builder<rm_model_type, cstyle_file_reader> rm_builder_type;
+                    typedef rm_basic_builder<rm_model_type, rm_model_reader> rm_builder_type;
                 }
             }
         }

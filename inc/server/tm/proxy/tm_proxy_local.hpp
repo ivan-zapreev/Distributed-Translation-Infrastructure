@@ -29,7 +29,6 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/monitore/statistics_monitore.hpp"
-#include "common/utils/file/cstyle_file_reader.hpp"
 
 #include "server/tm/tm_configs.hpp"
 #include "server/tm/proxy/tm_query_proxy.hpp"
@@ -82,7 +81,7 @@ namespace uva {
                             virtual void connect(const tm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the translation model into the memory.
-                                load_model_data<tm_builder_type, cstyle_file_reader>("Translation Model", params);
+                                load_model_data<tm_builder_type, tm_model_reader>("Translation Model", params);
                             }
 
                             /**

@@ -103,34 +103,57 @@ There is a number of project parameters that at this moment are to be chosen onl
 * `tm::TM_MAX_TARGET_PHRASE_LEN` - The maximum length of the target phrase to be considered, this defines the maximum number of tokens to be stored per translation entry
 * `lm::NUM_LM_FEATURES` - The number of languahe model features, the program currenly supports only one value: `1`
 * `lm::LM_M_GRAM_LEVEL_MAX` - The languahe model maximum level, the maximum number of words in the language model phrase
-* `lm::LM_HISTORY_LEN_MAX` - **DO NOT CHANGE**
-* `lm::LM_MAX_QUERY_LEN` - **DO NOT CHANGE**
+* `lm::LM_HISTORY_LEN_MAX` - **do not change** this parameter 
+* `lm::LM_MAX_QUERY_LEN` - **do not change** this parameter 
 * `lm::DEF_UNK_WORD_LOG_PROB_WEIGHT` - The default unknown word probability weight, for the case the `<unk>` entry is not present in the language model file _(log10 scale)_
 * `rm::NUM_RM_FEATURES` - The maximum number of reordering model features, the only two currently supported values are: `6` and `8`. 
 
 **Decoder configs:** There is a number of decoder-specific parameters that can be configured runtime. These are located in `./inc/server/decoder/de_configs.hpp`, please be careful changing them:
 
-* `MAX_WORDS_PER_SENTENCE` - 
+* `MAX_WORDS_PER_SENTENCE` - The maximum allowed number of words/tokens per sentence to translate.
 
 **LM configs:** There is a number of Language-model-specific parameters that can be configured runtime. These are located in `./inc/server/lm/lm_configs.hpp`, please be careful changing them:
 
-* `lm_word_index` - 
-* `lm_model_type` - 
-* `lm_builder_type` - 
+* `lm_word_index` - the word index type to be used, the possible values are:
+     * `basic_word_index` - _ToDo: Fill In_
+     * `counting_word_index` - _ToDo: Fill In_
+     * `optimizing_word_index<basic_word_index>` - _ToDo: Fill In_
+     * `optimizing_word_index<counting_word_index>` - _ToDo: Fill In_
+     * `hashing_word_index` - 
+* `lm_model_type` - the model type to be used, the possible values (trie types) are:
+     * `c2d_hybrid_trie<lm_word_index>` - _ToDo: Fill In_
+     * `c2d_map_trie<lm_word_index>` - _ToDo: Fill In_
+     * `c2w_array_trie<lm_word_index>` - _ToDo: Fill In_
+     * `g2d_map_trie<lm_word_index>` - _ToDo: Fill In_
+     * `h2d_map_trie<lm_word_index>` - _ToDo: Fill In_
+     * `w2c_array_trie<lm_word_index>` - _ToDo: Fill In_
+     * `w2c_hybrid_trie<lm_word_index>` - _ToDo: Fill In_
+* `lm_model_reader` - the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with `cstyle_file_reader` being the default:
+     * `file_stream_reader` - uses the C++ streams to read from files, the slowest
+     * `cstyle_file_reader` - uses C-style file reading functions, faster than `file_stream_reader`
+     * `memory_mapped_file_reader` - uses memory-mapped files which, faster than `cstyle_file_reader`, consumes twise the file size memory (virtual RAM).
+* `lm_builder_type` - currently there is just one builder type available: `lm_basic_builder<lm_model_reader>`.
+
+Note that not all of the combinations of the `lm_word_index` and `lm_model_type` can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the `./inc/server/lm/lm_consts.hpp` header file comments. The default and the most optimal performance/memory ratio configuration is `lm_word_index` being set to `hashing_word_index` and `lm_model_type` begin set to `h2d_map_trie<lm_word_index>`.
 
 **TM configs:** There is a number of Translation-model-specific parameters that can be configured runtime. These are located in `./inc/server/tm/tm_configs.hpp`, please be careful changing them:
 
-* `tm_model_type` - 
-* `tm_builder_type` - 
+* `tm_model_type` - currently there is just one model type available: `tm_basic_model`.
+* `tm_model_reader` - the same as `lm_model_reader` for _"LM configs"_ above.
+* `tm_builder_type` - currently there is just one builder byte available: `tm_basic_builder<tm_model_reader>`.
 
 **RM configs:** There is a number of Reordering-model-specific parameters that can be configured runtime. These are located in `./inc/server/rm/rm_configs.hpp`, please be careful changing them:
 
-* `rm_model_type` - 
-* `rm_builder_type` - 
+* `rm_model_type` - currently there is just one model type available: `rm_basic_model`.
+* `rm_model_reader` - the same as `lm_model_reader` for _"LM configs"_ above.
+* `rm_builder_type` - currently there is just one builder byte available: `rm_basic_builder<rm_model_reader>`.
 
 ##Using software
 
 ###_bpbd-server_ - translation server
+_ToDo: server console_
+
+_ToDo: Configuration file_
 ###_bpbd-client_ - translation client
 ###_lm-query_ - language model query tool
 In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:

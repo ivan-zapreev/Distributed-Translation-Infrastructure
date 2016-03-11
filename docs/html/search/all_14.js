@@ -58,7 +58,7 @@ var searchData=
   ['threads',['threads',['../namespaceuva_1_1utils_1_1threads.html',1,'uva::utils']]],
   ['tm',['tm',['../namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm.html',1,'uva::smt::bpbd::server']]],
   ['undefined',['UNDEFINED',['../namespaceuva_1_1utils_1_1containers.html#a2dfd5027e0c656e7b8433760967da62da378c848dc111a9fb0be352f3e73caaf5',1,'uva::utils::containers']]],
-  ['undefined_5farr_5fidx',['UNDEFINED_ARR_IDX',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html#a6fd6f53c986a715dbf7520d84c0f0f20',1,'uva::smt::bpbd::server::lm::GenericTrieBase']]],
+  ['undefined_5farr_5fidx',['UNDEFINED_ARR_IDX',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html#a3e961dc1d0e7bd38134573227f818b8b',1,'uva::smt::bpbd::server::lm::generic_trie_base']]],
   ['undefined_5fmgs',['UNDEFINED_MGS',['../namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm.html#ab9b3e7382b561dcb8abcd6b55e9b796aa9019f6deb96568ca044e6c1849e446cb',1,'uva::smt::bpbd::server::lm']]],
   ['undefined_5fword_5fidx',['UNDEFINED_WORD_IDX',['../structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1state__data__templ.html#ad6a5d72a6d836d5f9db1ea53c1067bad',1,'uva::smt::bpbd::server::decoder::stack::state_data_templ']]],
   ['unigram_5fto_5fprob',['unigram_to_prob',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1arpa_1_1lm__gram__builder.html#a7aac83f48d04e9d890f9ca7a03b5121d',1,'uva::smt::bpbd::server::lm::arpa::lm_gram_builder']]],

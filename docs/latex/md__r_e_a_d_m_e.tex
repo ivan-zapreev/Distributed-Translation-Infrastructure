@@ -1,4 +1,4 @@
-{\bfseries The Basic Phrase-\/\+Based Statistical Machine Translation Tool}
+\#$\ast$$\ast$\+The Basic Phrase-\/\+Based Statistical Machine Translation Tool$\ast$$\ast$
 
 {\bfseries Author\+:} \href{https://nl.linkedin.com/in/zapreevis}{\tt Dr. Ivan S. Zapreev}
 
@@ -63,7 +63,7 @@ This is a Netbeans 8.\+0.\+2 project, based on cmake, and its top-\/level struct
 \begin{DoxyItemize}
 \item $\ast$$\ast${\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}}$\ast$$\ast$/
 \begin{DoxyItemize}
-\item {\bfseries doc/} -\/ contains the project-\/related documents including the Doxygen-\/generated code documentation
+\item {\bfseries doc/} -\/ contains the project-\/related documents including the Doxygen-\/generated code documentation and images
 \item {\bfseries ext/} -\/ stores the external header only libraries used in the project
 \item {\bfseries inc/} -\/ stores the C++ header files of the implementation
 \item {\bfseries src/} -\/ stores the C++ source files of the implementation
@@ -113,34 +113,102 @@ Building this project requires {\bfseries gcc} version $>$= {\itshape 4.\+9.\+1}
 \item {\ttfamily cd \mbox{[}Project-\/\+Folder\mbox{]}}
 \item {\ttfamily mkdir build}
 \item {\ttfamily cd build}
-\item {\ttfamily cmake -\/\+D\+C\+M\+A\+K\+E\+\_\+\+B\+U\+I\+L\+D\+\_\+\+T\+Y\+P\+E=Release ..} O\+R {\ttfamily cmake -\/\+D\+C\+M\+A\+K\+E\+\_\+\+B\+U\+I\+L\+D\+\_\+\+T\+Y\+P\+E=D\+E\+B\+U\+G ..}
+\item {\ttfamily cmake -\/\+D\+C\+M\+A\+K\+E\+\_\+\+B\+U\+I\+L\+D\+\_\+\+T\+Y\+P\+E=Release ..} O\+R {\ttfamily cmake -\/\+D\+C\+M\+A\+K\+E\+\_\+\+B\+U\+I\+L\+D\+\_\+\+T\+Y\+P\+E=Debug ..}
 \item {\ttfamily make -\/j \mbox{[}N\+U\+M\+B\+E\+R-\/\+O\+F-\/\+T\+H\+R\+E\+A\+D\+S\mbox{]}} add {\ttfamily V\+E\+R\+B\+O\+S\+E=1} to make the compile-\/time options visible
 \end{DoxyItemize}
 \end{DoxyItemize}
 
-The binaries will be generated and placed into $\ast$./build/$\ast$ folder. In order to clean the project from the command line run {\ttfamily make clean}.
+The binaries will be generated and placed into $\ast$./build/$\ast$ folder. In order to clean the project from the command line run {\ttfamily make clean}. Cleaning from Netbeans is as simple calling the {\ttfamily Clean and Build} from the {\ttfamily Run} menu.
 
 \subsubsection*{Project compile-\/time parameters}
 
-{\itshape To\+Do\+: make up to date}
+There is a number of project parameters that at this moment are to be chosen only once before the project is compiled. These are otherwise called the compile-\/time parameters. Further we consider the most important of them and indicate where all of them are to be found.
 
-\paragraph*{General}
+{\bfseries Loggin level\+:} Logging is important when debugging software or providing an additional used information during the program\textquotesingle{}s runtime. Yet additional output actions come at a prise and can negatively influence the program\textquotesingle{}s performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project\textquotesingle{}s logging levels, listed incrementally is\+: E\+R\+R\+O\+R, W\+A\+R\+N\+I\+N\+G, U\+S\+A\+G\+E, R\+E\+S\+U\+L\+T, I\+N\+F\+O, I\+N\+F\+O1, I\+N\+F\+O2, I\+N\+F\+O3, D\+E\+B\+U\+G, D\+E\+B\+U\+G1, D\+E\+B\+U\+G2, D\+E\+B\+U\+G3, D\+E\+B\+U\+G4. One can limit the logging level range available at runtime by setting the {\ttfamily L\+O\+G\+E\+R\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X} constaint value in the {\ttfamily ./inc/common/utils/logging/logger.hpp} header file.
 
-One can limit the debug-\/level printing of the code by changing the value of the {\itshape L\+O\+G\+E\+R\+\_\+\+M\+A\+X\+\_\+\+L\+E\+V\+E\+L} constant in the $\ast$./inc/\+Configuration.hpp$\ast$. The possible range of values, with increasing logging level is\+: E\+R\+R\+O\+R, W\+A\+R\+N\+I\+N\+G, U\+S\+A\+G\+E, R\+E\+S\+U\+L\+T, I\+N\+F\+O, I\+N\+F\+O1, I\+N\+F\+O2, I\+N\+F\+O3, D\+E\+B\+U\+G, D\+E\+B\+U\+G1, D\+E\+B\+U\+G2, D\+E\+B\+U\+G3, D\+E\+B\+U\+G4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.
+{\bfseries Sanity checks\+:} When program is not running as expected, it could be caused by the internal software errors that are not detectable runtime. It is therefore possible to enable/disable software internal sanity checks by setting the {\ttfamily D\+O\+\_\+\+S\+A\+N\+I\+T\+Y\+\_\+\+C\+H\+E\+C\+K\+S} constand in the {\ttfamily ./inc/common/utils/exceptions.hpp} header file. Note that enabling the sanity checks does not guarantee that the internal error will be found and will have a negative effect on the program\textquotesingle{}s performance. Yet, it might help to identify errors with e.\+g. input file formats and alike.
 
-\paragraph*{bpbd-\/client}
+{\bfseries Server configs\+:} There is a number of translation server common parameters used in decoding, translation, reordering anb language models. Those are to be found in the {\ttfamily ./inc/server/server\+\_\+configs.hpp}. Please be carefull changing them\+:
 
-{\itshape To\+Do\+: Add text} \paragraph*{bpbd-\/server}
 
-{\itshape To\+Do\+: Add text} \paragraph*{lm-\/query}
+\begin{DoxyItemize}
+\item {\ttfamily U\+N\+K\+N\+O\+W\+N\+\_\+\+L\+O\+G\+\_\+\+P\+R\+O\+B\+\_\+\+W\+E\+I\+G\+H\+T} -\/ The value used for the unknown probability weight \+\_\+(log10 scale)\+\_\+
+\item {\ttfamily Z\+E\+R\+O\+\_\+\+L\+O\+G\+\_\+\+P\+R\+O\+B\+\_\+\+W\+E\+I\+G\+H\+T} -\/ The value used for the \textquotesingle{}zero\textquotesingle{} probability weight \+\_\+(log10 scale)\+\_\+
+\item {\ttfamily tm\+::\+N\+U\+M\+\_\+\+T\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} -\/ The number of the translation model features, defines the number of features read per entry in from the translation model input file.
+\item {\ttfamily tm\+::\+T\+M\+\_\+\+M\+A\+X\+\_\+\+T\+A\+R\+G\+E\+T\+\_\+\+P\+H\+R\+A\+S\+E\+\_\+\+L\+E\+N} -\/ The maximum length of the target phrase to be considered, this defines the maximum number of tokens to be stored per translation entry
+\item {\ttfamily lm\+::\+N\+U\+M\+\_\+\+L\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} -\/ The number of languahe model features, the program currenly supports only one value\+: {\ttfamily 1}
+\item {\ttfamily lm\+::\+L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X} -\/ The languahe model maximum level, the maximum number of words in the language model phrase
+\item {\ttfamily lm\+::\+L\+M\+\_\+\+H\+I\+S\+T\+O\+R\+Y\+\_\+\+L\+E\+N\+\_\+\+M\+A\+X} -\/ {\bfseries do not change} this parameter
+\item {\ttfamily lm\+::\+L\+M\+\_\+\+M\+A\+X\+\_\+\+Q\+U\+E\+R\+Y\+\_\+\+L\+E\+N} -\/ {\bfseries do not change} this parameter
+\item {\ttfamily lm\+::\+D\+E\+F\+\_\+\+U\+N\+K\+\_\+\+W\+O\+R\+D\+\_\+\+L\+O\+G\+\_\+\+P\+R\+O\+B\+\_\+\+W\+E\+I\+G\+H\+T} -\/ The default unknown word probability weight, for the case the {\ttfamily $<$unk$>$} entry is not present in the language model file \+\_\+(log10 scale)\+\_\+
+\item {\ttfamily rm\+::\+N\+U\+M\+\_\+\+R\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} -\/ The maximum number of reordering model features, the only two currently supported values are\+: {\ttfamily 6} and {\ttfamily 8}.
+\end{DoxyItemize}
 
-{\itshape To\+Do\+: Add text}
+{\bfseries Decoder configs\+:} There is a number of decoder-\/specific parameters that can be configured runtime. These are located in {\ttfamily ./inc/server/decoder/de\+\_\+configs.hpp}, please be careful changing them\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily M\+A\+X\+\_\+\+W\+O\+R\+D\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+N\+T\+E\+N\+C\+E} -\/ The maximum allowed number of words/tokens per sentence to translate.
+\end{DoxyItemize}
+
+{\bfseries L\+M configs\+:} There is a number of Language-\/model-\/specific parameters that can be configured runtime. These are located in {\ttfamily ./inc/server/lm/lm\+\_\+configs.hpp}, please be careful changing them\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily lm\+\_\+word\+\_\+index} -\/ the word index type to be used, the possible values are\+:
+\begin{DoxyItemize}
+\item {\ttfamily basic\+\_\+word\+\_\+index} -\/ {\itshape To\+Do\+: Fill In}
+\item {\ttfamily counting\+\_\+word\+\_\+index} -\/ {\itshape To\+Do\+: Fill In}
+\item {\ttfamily optimizing\+\_\+word\+\_\+index$<$basic\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
+\item {\ttfamily optimizing\+\_\+word\+\_\+index$<$counting\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
+\item {\ttfamily hashing\+\_\+word\+\_\+index} -\/
+\end{DoxyItemize}
+\item {\ttfamily lm\+\_\+model\+\_\+type} -\/ the model type to be used, the possible values (trie types) are\+:
+\begin{DoxyItemize}
+\item {\ttfamily c2d\+\_\+hybrid\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
+\item {\ttfamily c2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
+\item {\ttfamily c2w\+\_\+array\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
+\item {\ttfamily g2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
+\item {\ttfamily h2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
+\item {\ttfamily w2c\+\_\+array\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
+\item {\ttfamily w2c\+\_\+hybrid\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
+\end{DoxyItemize}
+\item {\ttfamily lm\+\_\+model\+\_\+reader} -\/ the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with {\ttfamily cstyle\+\_\+file\+\_\+reader} being the default\+:
+\begin{DoxyItemize}
+\item {\ttfamily file\+\_\+stream\+\_\+reader} -\/ uses the C++ streams to read from files, the slowest
+\item {\ttfamily cstyle\+\_\+file\+\_\+reader} -\/ uses C-\/style file reading functions, faster than {\ttfamily file\+\_\+stream\+\_\+reader}
+\item {\ttfamily memory\+\_\+mapped\+\_\+file\+\_\+reader} -\/ uses memory-\/mapped files which, faster than {\ttfamily cstyle\+\_\+file\+\_\+reader}, consumes twise the file size memory (virtual R\+A\+M).
+\end{DoxyItemize}
+\item {\ttfamily lm\+\_\+builder\+\_\+type} -\/ currently there is just one builder type available\+: {\ttfamily lm\+\_\+basic\+\_\+builder$<$lm\+\_\+model\+\_\+reader$>$}.
+\end{DoxyItemize}
+
+Note that not all of the combinations of the {\ttfamily lm\+\_\+word\+\_\+index} and {\ttfamily lm\+\_\+model\+\_\+type} can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the {\ttfamily ./inc/server/lm/lm\+\_\+consts.hpp} header file comments. The default and the most optimal performance/memory ratio configuration is {\ttfamily lm\+\_\+word\+\_\+index} being set to {\ttfamily hashing\+\_\+word\+\_\+index} and {\ttfamily lm\+\_\+model\+\_\+type} begin set to {\ttfamily h2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$}.
+
+{\bfseries T\+M configs\+:} There is a number of Translation-\/model-\/specific parameters that can be configured runtime. These are located in {\ttfamily ./inc/server/tm/tm\+\_\+configs.hpp}, please be careful changing them\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily tm\+\_\+model\+\_\+type} -\/ currently there is just one model type available\+: {\ttfamily tm\+\_\+basic\+\_\+model}.
+\item {\ttfamily tm\+\_\+model\+\_\+reader} -\/ the same as {\ttfamily lm\+\_\+model\+\_\+reader} for \+\_\+\char`\"{}\+L\+M configs\char`\"{}\+\_\+ above.
+\item {\ttfamily tm\+\_\+builder\+\_\+type} -\/ currently there is just one builder byte available\+: {\ttfamily tm\+\_\+basic\+\_\+builder$<$tm\+\_\+model\+\_\+reader$>$}.
+\end{DoxyItemize}
+
+{\bfseries R\+M configs\+:} There is a number of Reordering-\/model-\/specific parameters that can be configured runtime. These are located in {\ttfamily ./inc/server/rm/rm\+\_\+configs.hpp}, please be careful changing them\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily rm\+\_\+model\+\_\+type} -\/ currently there is just one model type available\+: {\ttfamily rm\+\_\+basic\+\_\+model}.
+\item {\ttfamily rm\+\_\+model\+\_\+reader} -\/ the same as {\ttfamily lm\+\_\+model\+\_\+reader} for \+\_\+\char`\"{}\+L\+M configs\char`\"{}\+\_\+ above.
+\item {\ttfamily rm\+\_\+builder\+\_\+type} -\/ currently there is just one builder byte available\+: {\ttfamily rm\+\_\+basic\+\_\+builder$<$rm\+\_\+model\+\_\+reader$>$}.
+\end{DoxyItemize}
 
 \subsection*{Using software}
 
 \subsubsection*{\+\_\+bpbd-\/server\+\_\+ -\/ translation server}
 
-\subsubsection*{\+\_\+bpbd-\/client\+\_\+ -\/ translation client}
+{\itshape To\+Do\+: server console}
+
+{\itshape To\+Do\+: Configuration file} \subsubsection*{\+\_\+bpbd-\/client\+\_\+ -\/ translation client}
 
 \subsubsection*{\+\_\+lm-\/query\+\_\+ -\/ language model query tool}
 

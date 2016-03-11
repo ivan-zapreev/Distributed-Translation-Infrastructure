@@ -16,8 +16,8 @@ var searchData=
   ['tm_5fquery_5fproxy_5flocal',['tm_query_proxy_local',['../classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__query__proxy__local.html',1,'uva::smt::bpbd::server::tm::proxy']]],
   ['tm_5fsource_5fentry',['tm_source_entry',['../classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__source__entry.html',1,'uva::smt::bpbd::server::tm::models']]],
   ['tm_5ftarget_5fentry_5ftemp',['tm_target_entry_temp',['../classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__target__entry__temp.html',1,'uva::smt::bpbd::server::tm::models']]],
-  ['trans_5fjob',['trans_job',['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job.html',1,'uva::smt::bpbd::server']]],
   ['trans_5fjob',['trans_job',['../structuva_1_1smt_1_1bpbd_1_1client_1_1trans__job.html',1,'uva::smt::bpbd::client']]],
+  ['trans_5fjob',['trans_job',['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job.html',1,'uva::smt::bpbd::server']]],
   ['trans_5fjob_5fcode',['trans_job_code',['../classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1trans__job__code.html',1,'uva::smt::bpbd::common::messaging']]],
   ['trans_5fjob_5fpool',['trans_job_pool',['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool.html',1,'uva::smt::bpbd::server']]],
   ['trans_5fjob_5frequest',['trans_job_request',['../classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1trans__job__request.html',1,'uva::smt::bpbd::common::messaging']]],
@@ -30,7 +30,7 @@ var searchData=
   ['trans_5ftask_5fpool_5fworker',['trans_task_pool_worker',['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker.html',1,'uva::smt::bpbd::server']]],
   ['translation_5fclient',['translation_client',['../classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client.html',1,'uva::smt::bpbd::client']]],
   ['translation_5fserver',['translation_server',['../classuva_1_1smt_1_1bpbd_1_1server_1_1translation__server.html',1,'uva::smt::bpbd::server']]],
-  ['tsubarrreference',['TSubArrReference',['../structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_w_array_trie_1_1_t_sub_arr_reference.html',1,'uva::smt::bpbd::server::lm::C2WArrayTrie']]],
+  ['tsubarrreference',['TSubArrReference',['../structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1c2w__array__trie_1_1_t_sub_arr_reference.html',1,'uva::smt::bpbd::server::lm::c2w_array_trie']]],
   ['twordidpbdata',['TWordIdPBData',['../structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_1_1_t_word_id_p_b_data.html',1,'uva::smt::bpbd::server::lm::__C2WArrayTrie']]],
   ['twordinfo',['TWordInfo',['../structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____counting__word__index_1_1_t_word_info.html',1,'uva::smt::bpbd::server::lm::dictionary::__counting_word_index']]]
 ];

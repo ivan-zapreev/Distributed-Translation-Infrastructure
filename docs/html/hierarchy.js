@@ -15,7 +15,7 @@ var hierarchy =
     [ "uva::smt::bpbd::server::decoder::de_parameters_struct", "structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1de__parameters__struct.html", null ],
     [ "uva::utils::containers::dynamic_stack_array< ELEMENT_TYPE, IDX_DATA_TYPE, INITIAL_CAPACITY, DESTRUCTOR >", "classuva_1_1utils_1_1containers_1_1dynamic__stack__array.html", null ],
     [ "uva::utils::containers::dynamic_stack_array< ARRAY_ELEM_TYPE, uint32_t >", "classuva_1_1utils_1_1containers_1_1dynamic__stack__array.html", [
-      [ "uva::smt::bpbd::server::lm::W2CArrayTrie< WordIndexType >::WordDataEntry< ARRAY_ELEM_TYPE >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_array_trie_1_1_word_data_entry.html", null ]
+      [ "uva::smt::bpbd::server::lm::w2c_array_trie< WordIndexType >::WordDataEntry< ARRAY_ELEM_TYPE >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__array__trie_1_1_word_data_entry.html", null ]
     ] ],
     [ "uva::utils::containers::ELEMENT_DEALLOC_FUNC< ELEM_TYPE >", "structuva_1_1utils_1_1containers_1_1_e_l_e_m_e_n_t___d_e_a_l_l_o_c___f_u_n_c.html", null ],
     [ "exception", null, [
@@ -105,8 +105,8 @@ var hierarchy =
     ] ],
     [ "uva::smt::bpbd::server::tm::models::tm_source_entry", "classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__source__entry.html", null ],
     [ "uva::smt::bpbd::server::tm::models::tm_target_entry_temp< max_num_features >", "classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__target__entry__temp.html", null ],
-    [ "uva::smt::bpbd::server::trans_job", "classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job.html", null ],
     [ "uva::smt::bpbd::client::trans_job", "structuva_1_1smt_1_1bpbd_1_1client_1_1trans__job.html", null ],
+    [ "uva::smt::bpbd::server::trans_job", "classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job.html", null ],
     [ "uva::smt::bpbd::common::messaging::trans_job_code", "classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1trans__job__code.html", null ],
     [ "uva::smt::bpbd::server::trans_job_pool", "classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool.html", null ],
     [ "uva::smt::bpbd::common::messaging::trans_job_request", "classuva_1_1smt_1_1bpbd_1_1common_1_1messaging_1_1trans__job__request.html", null ],
@@ -119,7 +119,7 @@ var hierarchy =
     [ "uva::smt::bpbd::server::trans_task_pool_worker", "classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool__worker.html", null ],
     [ "uva::smt::bpbd::client::translation_client", "classuva_1_1smt_1_1bpbd_1_1client_1_1translation__client.html", null ],
     [ "uva::smt::bpbd::server::translation_server", "classuva_1_1smt_1_1bpbd_1_1server_1_1translation__server.html", null ],
-    [ "uva::smt::bpbd::server::lm::C2WArrayTrie< WordIndexType >::TSubArrReference", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_w_array_trie_1_1_t_sub_arr_reference.html", null ],
+    [ "uva::smt::bpbd::server::lm::c2w_array_trie< WordIndexType >::TSubArrReference", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1c2w__array__trie_1_1_t_sub_arr_reference.html", null ],
     [ "uva::smt::bpbd::server::lm::__C2WArrayTrie::TWordIdPBData", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_____c2_w_array_trie_1_1_t_word_id_p_b_data.html", null ],
     [ "uva::smt::bpbd::server::lm::dictionary::__counting_word_index::TWordInfo", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____counting__word__index_1_1_t_word_info.html", null ],
     [ "uva::utils::containers::upp_diag_matrix< element_type >", "classuva_1_1utils_1_1containers_1_1upp__diag__matrix.html", null ],
@@ -127,46 +127,46 @@ var hierarchy =
     [ "uva::smt::bpbd::server::lm::W2CH_UM_Storage", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_h___u_m___storage.html", null ],
     [ "uva::smt::bpbd::server::lm::W2CH_UM_StorageFactory< N >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_h___u_m___storage_factory.html", null ],
     [ "uva::smt::bpbd::server::lm::dictionary::__optimizing_word_index::word_index_bucket_entry< word_id_type >", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____optimizing__word__index_1_1word__index__bucket__entry.html", null ],
-    [ "uva::smt::bpbd::server::lm::WordIndexTrieBase< WordIndex >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base.html", null ],
-    [ "uva::smt::bpbd::server::lm::WordIndexTrieBase< lm_word_index >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base.html", [
-      [ "uva::smt::bpbd::server::lm::GenericTrieBase< H2DMapTrie< lm_word_index >, lm_word_index, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html", [
-        [ "uva::smt::bpbd::server::lm::H2DMapTrie< lm_word_index >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_h2_d_map_trie.html", null ]
+    [ "uva::smt::bpbd::server::lm::word_index_trie_base< WordIndex >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base.html", null ],
+    [ "uva::smt::bpbd::server::lm::word_index_trie_base< lm_word_index >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base.html", [
+      [ "uva::smt::bpbd::server::lm::generic_trie_base< h2d_map_trie< lm_word_index >, lm_word_index, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html", [
+        [ "uva::smt::bpbd::server::lm::h2d_map_trie< lm_word_index >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1h2d__map__trie.html", null ]
       ] ]
     ] ],
-    [ "uva::smt::bpbd::server::lm::WordIndexTrieBase< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base.html", [
-      [ "uva::smt::bpbd::server::lm::GenericTrieBase< C2DHybridTrie< WordIndexType >, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html", [
-        [ "uva::smt::bpbd::server::lm::LayeredTrieBase< C2DHybridTrie< WordIndexType >, WordIndexType, __C2DHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_layered_trie_base.html", [
-          [ "uva::smt::bpbd::server::lm::C2DHybridTrie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_d_hybrid_trie.html", null ]
+    [ "uva::smt::bpbd::server::lm::word_index_trie_base< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base.html", [
+      [ "uva::smt::bpbd::server::lm::generic_trie_base< c2d_hybrid_trie< WordIndexType >, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html", [
+        [ "uva::smt::bpbd::server::lm::layered_trie_base< c2d_hybrid_trie< WordIndexType >, WordIndexType, __C2DHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1layered__trie__base.html", [
+          [ "uva::smt::bpbd::server::lm::c2d_hybrid_trie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1c2d__hybrid__trie.html", null ]
         ] ]
       ] ],
-      [ "uva::smt::bpbd::server::lm::GenericTrieBase< C2DMapTrie< WordIndexType >, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html", [
-        [ "uva::smt::bpbd::server::lm::LayeredTrieBase< C2DMapTrie< WordIndexType >, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_layered_trie_base.html", [
-          [ "uva::smt::bpbd::server::lm::C2DMapTrie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_d_map_trie.html", null ]
+      [ "uva::smt::bpbd::server::lm::generic_trie_base< c2d_map_trie< WordIndexType >, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html", [
+        [ "uva::smt::bpbd::server::lm::layered_trie_base< c2d_map_trie< WordIndexType >, WordIndexType, __C2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1layered__trie__base.html", [
+          [ "uva::smt::bpbd::server::lm::c2d_map_trie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1c2d__map__trie.html", null ]
         ] ]
       ] ],
-      [ "uva::smt::bpbd::server::lm::GenericTrieBase< C2WArrayTrie< WordIndexType >, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html", [
-        [ "uva::smt::bpbd::server::lm::LayeredTrieBase< C2WArrayTrie< WordIndexType >, WordIndexType, __C2WArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_layered_trie_base.html", [
-          [ "uva::smt::bpbd::server::lm::C2WArrayTrie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_w_array_trie.html", null ]
+      [ "uva::smt::bpbd::server::lm::generic_trie_base< c2w_array_trie< WordIndexType >, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html", [
+        [ "uva::smt::bpbd::server::lm::layered_trie_base< c2w_array_trie< WordIndexType >, WordIndexType, __C2WArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1layered__trie__base.html", [
+          [ "uva::smt::bpbd::server::lm::c2w_array_trie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1c2w__array__trie.html", null ]
         ] ]
       ] ],
-      [ "uva::smt::bpbd::server::lm::GenericTrieBase< G2DMapTrie< WordIndexType >, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html", [
-        [ "uva::smt::bpbd::server::lm::G2DMapTrie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_g2_d_map_trie.html", null ]
+      [ "uva::smt::bpbd::server::lm::generic_trie_base< g2d_map_trie< WordIndexType >, WordIndexType, __G2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html", [
+        [ "uva::smt::bpbd::server::lm::g2d_map_trie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1g2d__map__trie.html", null ]
       ] ],
-      [ "uva::smt::bpbd::server::lm::GenericTrieBase< H2DMapTrie< WordIndexType >, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html", [
-        [ "uva::smt::bpbd::server::lm::H2DMapTrie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_h2_d_map_trie.html", null ]
+      [ "uva::smt::bpbd::server::lm::generic_trie_base< h2d_map_trie< WordIndexType >, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html", [
+        [ "uva::smt::bpbd::server::lm::h2d_map_trie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1h2d__map__trie.html", null ]
       ] ],
-      [ "uva::smt::bpbd::server::lm::GenericTrieBase< W2CArrayTrie< WordIndexType >, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html", [
-        [ "uva::smt::bpbd::server::lm::LayeredTrieBase< W2CArrayTrie< WordIndexType >, WordIndexType, __W2CArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_layered_trie_base.html", [
-          [ "uva::smt::bpbd::server::lm::W2CArrayTrie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_array_trie.html", null ]
+      [ "uva::smt::bpbd::server::lm::generic_trie_base< w2c_array_trie< WordIndexType >, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html", [
+        [ "uva::smt::bpbd::server::lm::layered_trie_base< w2c_array_trie< WordIndexType >, WordIndexType, __W2CArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1layered__trie__base.html", [
+          [ "uva::smt::bpbd::server::lm::w2c_array_trie< WordIndexType >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__array__trie.html", null ]
         ] ]
       ] ],
-      [ "uva::smt::bpbd::server::lm::GenericTrieBase< W2CHybridTrie< WordIndexType, StorageFactory, StorageContainer >, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html", [
-        [ "uva::smt::bpbd::server::lm::LayeredTrieBase< W2CHybridTrie< WordIndexType, StorageFactory, StorageContainer >, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_layered_trie_base.html", [
-          [ "uva::smt::bpbd::server::lm::W2CHybridTrie< WordIndexType, StorageFactory, StorageContainer >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_hybrid_trie.html", null ]
+      [ "uva::smt::bpbd::server::lm::generic_trie_base< w2c_hybrid_trie< WordIndexType, StorageFactory, StorageContainer >, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html", [
+        [ "uva::smt::bpbd::server::lm::layered_trie_base< w2c_hybrid_trie< WordIndexType, StorageFactory, StorageContainer >, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1layered__trie__base.html", [
+          [ "uva::smt::bpbd::server::lm::w2c_hybrid_trie< WordIndexType, StorageFactory, StorageContainer >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1w2c__hybrid__trie.html", null ]
         ] ]
       ] ],
-      [ "uva::smt::bpbd::server::lm::GenericTrieBase< TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html", [
-        [ "uva::smt::bpbd::server::lm::LayeredTrieBase< TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_layered_trie_base.html", null ]
+      [ "uva::smt::bpbd::server::lm::generic_trie_base< TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html", [
+        [ "uva::smt::bpbd::server::lm::layered_trie_base< TrieType, WordIndexType, BITMAP_HASH_CACHE_BUCKETS_FACTOR >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1layered__trie__base.html", null ]
       ] ]
     ] ]
 ];

@@ -104,15 +104,15 @@ namespace uva {
                      * @param M_GRAM_LEVEL_MAX the maximum number of levels in the trie.
                      */
                     template<typename WordIndexType>
-                    class W2CArrayTrie : public LayeredTrieBase<W2CArrayTrie<WordIndexType>, WordIndexType, __W2CArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
+                    class w2c_array_trie : public layered_trie_base<w2c_array_trie<WordIndexType>, WordIndexType, __W2CArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
-                        typedef LayeredTrieBase<W2CArrayTrie<WordIndexType>, WordIndexType, __W2CArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
+                        typedef layered_trie_base<w2c_array_trie<WordIndexType>, WordIndexType, __W2CArrayTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
 
                         /**
                          * The basic constructor
                          * @param p_word_index the word index (dictionary) container
                          */
-                        explicit W2CArrayTrie(WordIndexType & word_index);
+                        explicit w2c_array_trie(WordIndexType & word_index);
 
                         /**
                          * Allows to retrieve the unknown target word log probability penalty 
@@ -250,7 +250,7 @@ namespace uva {
                                 //Define the context id variable
                                 TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
-                                __LayeredTrieBase::get_context_id<W2CArrayTrie<WordIndexType>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
+                                __LayeredTrieBase::get_context_id<w2c_array_trie<WordIndexType>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Store the payload
                                 if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
@@ -358,7 +358,7 @@ namespace uva {
                         /**
                          * The basic destructor
                          */
-                        virtual ~W2CArrayTrie();
+                        virtual ~w2c_array_trie();
 
                     protected:
 
@@ -567,11 +567,11 @@ namespace uva {
                         }
                     };
 
-                    typedef W2CArrayTrie<basic_word_index > TW2CArrayTrieBasic;
-                    typedef W2CArrayTrie<counting_word_index > TW2CArrayTrieCount;
-                    typedef W2CArrayTrie<basic_optimizing_word_index > TW2CArrayTrieOptBasic;
-                    typedef W2CArrayTrie<counting_optimizing_word_index > TW2CArrayTrieOptCount;
-                    typedef W2CArrayTrie<hashing_word_index > TW2CArrayTrieHashing;
+                    typedef w2c_array_trie<basic_word_index > TW2CArrayTrieBasic;
+                    typedef w2c_array_trie<counting_word_index > TW2CArrayTrieCount;
+                    typedef w2c_array_trie<basic_optimizing_word_index > TW2CArrayTrieOptBasic;
+                    typedef w2c_array_trie<counting_optimizing_word_index > TW2CArrayTrieOptCount;
+                    typedef w2c_array_trie<hashing_word_index > TW2CArrayTrieHashing;
                 }
             }
         }

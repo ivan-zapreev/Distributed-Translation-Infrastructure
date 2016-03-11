@@ -79,7 +79,7 @@ namespace uva {
                             virtual void connect(const rm_parameters & params) {
                                 //The whole purpose of this method connect here is
                                 //just to load the reordering model into the memory.
-                                load_model_data<rm_builder_type, cstyle_file_reader>("Reordering Model", params);
+                                load_model_data<rm_builder_type, rm_model_reader>("Reordering Model", params);
 
                                 //Get the pointers to the begin and end tag reordering entries
                                 m_begin_tag_entry = m_model.get_begin_tag_entry();

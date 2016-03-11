@@ -7,7 +7,7 @@ var dir_358deac9c3d733b51d9a9e5a2c363846 =
     [ "tm", "dir_73f85d04f47fec289ac005a5c780084d.html", "dir_73f85d04f47fec289ac005a5c780084d" ],
     [ "cmd_line_handler.hpp", "cmd__line__handler_8hpp.html", "cmd__line__handler_8hpp" ],
     [ "server_configs.hpp", "server__configs_8hpp.html", "server__configs_8hpp" ],
-    [ "server_consts.hpp", "server__consts_8hpp.html", null ],
+    [ "server_consts.hpp", "server__consts_8hpp.html", "server__consts_8hpp" ],
     [ "server_parameters.hpp", "server__parameters_8hpp.html", "server__parameters_8hpp" ],
     [ "trans_job.hpp", "server_2trans__job_8hpp.html", "server_2trans__job_8hpp" ],
     [ "trans_job_pool.hpp", "trans__job__pool_8hpp.html", "trans__job__pool_8hpp" ],

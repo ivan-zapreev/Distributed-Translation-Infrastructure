@@ -56,7 +56,7 @@ namespace uva {
                      * The purpose of having this as a template class is performance optimization.
                      */
                     template<typename WordIndex>
-                    class WordIndexTrieBase {
+                    class word_index_trie_base {
                     public:
                         typedef WordIndex WordIndexType;
 
@@ -64,7 +64,7 @@ namespace uva {
                          * The basic constructor
                          * @param word_index the word index to be used
                          */
-                        explicit WordIndexTrieBase(WordIndexType & word_index)
+                        explicit word_index_trie_base(WordIndexType & word_index)
                         : m_word_index(word_index) {
                         }
 
@@ -119,10 +119,10 @@ namespace uva {
                     };
 
                     //Make sure that there will be templates instantiated, at least for the given parameter values
-                    template class WordIndexTrieBase<basic_word_index >;
-                    template class WordIndexTrieBase<counting_word_index>;
-                    template class WordIndexTrieBase<optimizing_word_index<basic_word_index> >;
-                    template class WordIndexTrieBase<optimizing_word_index<counting_word_index> >;
+                    template class word_index_trie_base<basic_word_index >;
+                    template class word_index_trie_base<counting_word_index>;
+                    template class word_index_trie_base<optimizing_word_index<basic_word_index> >;
+                    template class word_index_trie_base<optimizing_word_index<counting_word_index> >;
                 }
             }
         }

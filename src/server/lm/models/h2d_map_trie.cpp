@@ -45,8 +45,8 @@ namespace uva {
                 namespace lm {
 
                     template<typename WordIndexType>
-                    H2DMapTrie<WordIndexType>::H2DMapTrie(WordIndexType & word_index)
-                    : GenericTrieBase<H2DMapTrie<WordIndexType>, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
+                    h2d_map_trie<WordIndexType>::h2d_map_trie(WordIndexType & word_index)
+                    : generic_trie_base<h2d_map_trie<WordIndexType>, WordIndexType, __H2DMapTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
                     m_n_gram_data(NULL) {
                         //Perform an error check! This container has bounds on the supported trie level
                         ASSERT_CONDITION_THROW((LM_M_GRAM_LEVEL_MAX > M_GRAM_LEVEL_6), string("The maximum supported trie level is") + std::to_string(M_GRAM_LEVEL_6));
@@ -64,7 +64,7 @@ namespace uva {
                     };
 
                     template<typename WordIndexType>
-                    void H2DMapTrie<WordIndexType>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                    void h2d_map_trie<WordIndexType>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Call the base-class
                         BASE::pre_allocate(counts);
 
@@ -78,14 +78,14 @@ namespace uva {
                     };
 
                     template<typename WordIndexType>
-                    void H2DMapTrie<WordIndexType>::set_def_unk_word_prob(const prob_weight prob) {
+                    void h2d_map_trie<WordIndexType>::set_def_unk_word_prob(const prob_weight prob) {
                         //Default initialize the unknown word payload data
                         m_unk_data.m_prob = prob;
                         m_unk_data.m_back = 0.0;
                     }
 
                     template<typename WordIndexType>
-                    H2DMapTrie<WordIndexType>::~H2DMapTrie() {
+                    h2d_map_trie<WordIndexType>::~h2d_map_trie() {
                         //De-allocate M-Grams
                         for (phrase_length idx = 0; idx < NUM_M_GRAM_LEVELS; idx++) {
                             delete m_m_gram_data[idx];
@@ -94,11 +94,11 @@ namespace uva {
                         delete m_n_gram_data;
                     };
 
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, basic_word_index);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, counting_word_index);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, hashing_word_index);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, basic_optimizing_word_index);
-                    INSTANTIATE_TRIE_TEMPLATE_TYPE(H2DMapTrie, counting_optimizing_word_index);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(h2d_map_trie, basic_word_index);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(h2d_map_trie, counting_word_index);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(h2d_map_trie, hashing_word_index);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(h2d_map_trie, basic_optimizing_word_index);
+                    INSTANTIATE_TRIE_TEMPLATE_TYPE(h2d_map_trie, counting_optimizing_word_index);
                 }
             }
         }

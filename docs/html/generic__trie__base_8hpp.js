@@ -1,6 +1,6 @@
 var generic__trie__base_8hpp =
 [
-    [ "GenericTrieBase", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base.html", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_generic_trie_base" ],
+    [ "generic_trie_base", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base.html", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1generic__trie__base" ],
     [ "INSTANTIATE_TRIE_FUNCS_LEVEL", "generic__trie__base_8hpp.html#a48cbc63327221ef60d3cbe084d7432ce", null ],
     [ "INSTANTIATE_TRIE_TEMPLATE_TYPE", "generic__trie__base_8hpp.html#a2765078929a27130518e2390a12923b9", null ],
     [ "REPORT_COLLISION_WARNING", "generic__trie__base_8hpp.html#aff304331a07b4be71f28da2444145026", null ],

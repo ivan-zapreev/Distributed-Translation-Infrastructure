@@ -45,10 +45,10 @@ namespace uva {
                 namespace lm {
 
                     template<typename WordIndexType>
-                    C2DHybridTrie<WordIndexType>::C2DHybridTrie(WordIndexType & word_index,
+                    c2d_hybrid_trie<WordIndexType>::c2d_hybrid_trie(WordIndexType & word_index,
                             const float mram_mem_factor,
                             const float ngram_mem_factor)
-                    : LayeredTrieBase<C2DHybridTrie<WordIndexType>, WordIndexType, __C2DHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
+                    : layered_trie_base<c2d_hybrid_trie<WordIndexType>, WordIndexType, __C2DHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR>(word_index),
                     m_unk_data(NULL), m_mgram_mem_factor(mram_mem_factor), m_ngram_mem_factor(ngram_mem_factor), m_1_gram_data(NULL) {
 
                         //Perform an error check! This container has bounds on the supported trie level
@@ -71,7 +71,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    void C2DHybridTrie<WordIndexType>::preAllocateOGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                    void c2d_hybrid_trie<WordIndexType>::preAllocateOGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Compute the number of words to be stored
                         const size_t num_word_ids = BASE::get_word_index().get_number_of_words(counts[0]);
 
@@ -81,7 +81,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    void C2DHybridTrie<WordIndexType>::set_def_unk_word_prob(const prob_weight prob) {
+                    void c2d_hybrid_trie<WordIndexType>::set_def_unk_word_prob(const prob_weight prob) {
                         //Record the dummy probability and back-off values for the unknown word
                         m_unk_data = &m_1_gram_data[UNKNOWN_WORD_ID];
                         m_unk_data->m_prob = prob;
@@ -89,7 +89,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    void C2DHybridTrie<WordIndexType>::preAllocateMGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                    void c2d_hybrid_trie<WordIndexType>::preAllocateMGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Pre-allocate for the M-grams with 1 < M < N
                         for (int idx = 0; idx < BASE::NUM_M_GRAM_LEVELS; idx++) {
                             //Get the number of elements to pre-allocate
@@ -109,7 +109,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    void C2DHybridTrie<WordIndexType>::preAllocateNGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                    void c2d_hybrid_trie<WordIndexType>::preAllocateNGrams(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Get the number of elements to pre-allocate
 
                         const size_t numEntries = counts[LM_M_GRAM_LEVEL_MAX - 1];
@@ -119,7 +119,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    void C2DHybridTrie<WordIndexType>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
+                    void c2d_hybrid_trie<WordIndexType>::pre_allocate(const size_t counts[LM_M_GRAM_LEVEL_MAX]) {
                         //Call the super class pre-allocator!
                         BASE::pre_allocate(counts);
 
@@ -143,7 +143,7 @@ namespace uva {
                     }
 
                     template<typename WordIndexType>
-                    C2DHybridTrie<WordIndexType>::~C2DHybridTrie() {
+                    c2d_hybrid_trie<WordIndexType>::~c2d_hybrid_trie() {
                         //Deallocate One-Grams
                         if (m_1_gram_data != NULL) {
                             delete[] m_1_gram_data;
@@ -160,11 +160,11 @@ namespace uva {
                     }
 
                     //Make sure that there will be templates instantiated, at least for the given parameter values
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DHybridTrie, basic_word_index);
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DHybridTrie, counting_word_index);
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DHybridTrie, hashing_word_index);
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DHybridTrie, basic_optimizing_word_index);
-                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(C2DHybridTrie, counting_optimizing_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(c2d_hybrid_trie, basic_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(c2d_hybrid_trie, counting_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(c2d_hybrid_trie, hashing_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(c2d_hybrid_trie, basic_optimizing_word_index);
+                    INSTANTIATE_LAYERED_TRIE_TEMPLATES_NAME_TYPE(c2d_hybrid_trie, counting_optimizing_word_index);
                 }
             }
         }

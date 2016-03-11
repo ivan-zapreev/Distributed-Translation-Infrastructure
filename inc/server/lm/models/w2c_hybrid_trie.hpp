@@ -53,15 +53,15 @@ namespace uva {
                      * @param StorageContainer the storage container type that is created by the factory
                      */
                     template<typename WordIndexType, template<phrase_length > class StorageFactory = W2CH_UM_StorageFactory, class StorageContainer = W2CH_UM_Storage>
-                    class W2CHybridTrie : public LayeredTrieBase<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
+                    class w2c_hybrid_trie : public layered_trie_base<w2c_hybrid_trie<WordIndexType, StorageFactory, StorageContainer>, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> {
                     public:
-                        typedef LayeredTrieBase<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
+                        typedef layered_trie_base<w2c_hybrid_trie<WordIndexType, StorageFactory, StorageContainer>, WordIndexType, __W2CHybridTrie::BITMAP_HASH_CACHE_BUCKETS_FACTOR> BASE;
 
                         /**
                          * The basic constructor
                          * @param p_word_index the word index (dictionary) container
                          */
-                        explicit W2CHybridTrie(WordIndexType & word_index);
+                        explicit w2c_hybrid_trie(WordIndexType & word_index);
 
                         /**
                          * Allows to retrieve the unknown target word log probability penalty 
@@ -144,7 +144,7 @@ namespace uva {
                                 //Define the context id variable
                                 TLongId ctx_id = UNKNOWN_WORD_ID;
                                 //Obtain the m-gram context id
-                                __LayeredTrieBase::get_context_id<W2CHybridTrie<WordIndexType, StorageFactory, StorageContainer>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
+                                __LayeredTrieBase::get_context_id<w2c_hybrid_trie<WordIndexType, StorageFactory, StorageContainer>, CURR_LEVEL, debug_levels_enum::DEBUG2>(*this, gram, ctx_id);
 
                                 //Store the payload
                                 if (CURR_LEVEL == LM_M_GRAM_LEVEL_MAX) {
@@ -274,7 +274,7 @@ namespace uva {
                         /**
                          * The basic destructor
                          */
-                        virtual ~W2CHybridTrie();
+                        virtual ~w2c_hybrid_trie();
 
                     private:
                         //Stores the pointer to the UNK word payload
@@ -320,11 +320,11 @@ namespace uva {
                         TShortId next_ctx_id[NUM_IDX_COUNTERS];
                     };
 
-                    typedef W2CHybridTrie<basic_word_index> TW2CHybridTrieBasic;
-                    typedef W2CHybridTrie<counting_word_index> TW2CHybridTrieCount;
-                    typedef W2CHybridTrie<basic_optimizing_word_index> TW2CHybridTrieOptBasic;
-                    typedef W2CHybridTrie<counting_optimizing_word_index> TW2CHybridTrieOptCount;
-                    typedef W2CHybridTrie<hashing_word_index> TW2CHybridTrieHashing;
+                    typedef w2c_hybrid_trie<basic_word_index> TW2CHybridTrieBasic;
+                    typedef w2c_hybrid_trie<counting_word_index> TW2CHybridTrieCount;
+                    typedef w2c_hybrid_trie<basic_optimizing_word_index> TW2CHybridTrieOptBasic;
+                    typedef w2c_hybrid_trie<counting_optimizing_word_index> TW2CHybridTrieOptCount;
+                    typedef w2c_hybrid_trie<hashing_word_index> TW2CHybridTrieHashing;
                 }
             }
         }

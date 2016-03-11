@@ -75,7 +75,7 @@ namespace uva {
                     LOG_USAGE << "Available server commands: " << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_EXIT_CMD << " & <enter>'  - to exit." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_INFO_CMD << " & <enter>'  - print info." << END_LOG;
-                    LOG_USAGE << "\t'" << PROGRAM_RUNTIME_CMD << " & <enter>'  -run-time statistics." << END_LOG;
+                    LOG_USAGE << "\t'" << PROGRAM_RUNTIME_CMD << " & <enter>'  - run-time statistics." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_PARAMS_CMD << " & <enter>'  - print server parameters." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_LL_CMD << "<level> & <enter>'  - set log level." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_NT_CMD << " <positive integer> & <enter>'  - set the number of worker threads." << END_LOG;

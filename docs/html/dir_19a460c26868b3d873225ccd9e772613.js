@@ -17,6 +17,6 @@ var dir_19a460c26868b3d873225ccd9e772613 =
     [ "w2c_hybrid_trie.hpp", "w2c__hybrid__trie_8hpp.html", "w2c__hybrid__trie_8hpp" ],
     [ "w2ch_um_storage.hpp", "w2ch__um__storage_8hpp.html", "w2ch__um__storage_8hpp" ],
     [ "word_index_trie_base.hpp", "word__index__trie__base_8hpp.html", [
-      [ "WordIndexTrieBase", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base.html", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_word_index_trie_base" ]
+      [ "word_index_trie_base", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base.html", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base" ]
     ] ]
 ];

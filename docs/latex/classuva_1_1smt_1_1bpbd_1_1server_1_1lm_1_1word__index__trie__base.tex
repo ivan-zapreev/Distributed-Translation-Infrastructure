@@ -1,0 +1,165 @@
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base}{}\section{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:word\+\_\+index\+\_\+trie\+\_\+base$<$ Word\+Index $>$ Class Template Reference}
+\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base$<$ Word\+Index $>$@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base$<$ Word\+Index $>$}}
+
+
+{\ttfamily \#include $<$word\+\_\+index\+\_\+trie\+\_\+base.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Word\+Index \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a64279b5b94c421b25aedaa72e73d013c}{Word\+Index\+Type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a7b7f68670ef02b7359b6a1a68ed6b437}{word\+\_\+index\+\_\+trie\+\_\+base} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a64279b5b94c421b25aedaa72e73d013c}{Word\+Index\+Type} \&word\+\_\+index)
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a89b512858b316ca97e6d6e8a8a20e66c}{pre\+\_\+allocate} (const size\+\_\+t counts\mbox{[}L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X\mbox{]})
+\item 
+{\footnotesize template$<$phrase\+\_\+length level$>$ }\\bool \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a22422f99173ffc55dd4783f93e4a1947}{is\+\_\+post\+\_\+grams} () const 
+\item 
+{\footnotesize template$<$phrase\+\_\+length level$>$ }\\void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_aecd81ef42eac4dd636d1dcbec2d25799}{post\+\_\+grams} ()
+\item 
+void \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_aff0ddb33d597ce59392cc93bf267c34a}{set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob} (const \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_a01e9ea4de9c226f4464862e84ff0bbcc}{prob\+\_\+weight} prob)
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a64279b5b94c421b25aedaa72e73d013c}{Word\+Index\+Type} \& \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a3b62d7a65ce987fa1ba6dd493ffb06e7}{get\+\_\+word\+\_\+index} () const 
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a64279b5b94c421b25aedaa72e73d013c}{Word\+Index\+Type} \& \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a14800ace951997474c3a562405b9482e}{m\+\_\+word\+\_\+index}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Word\+Index$>$class uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base$<$ Word\+Index $>$}
+
+This is a common base class for all Trie implementations. The purpose of having this as a template class is performance optimization. 
+
+Definition at line 59 of file word\+\_\+index\+\_\+trie\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Typedef Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a64279b5b94c421b25aedaa72e73d013c}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}!Word\+Index\+Type@{Word\+Index\+Type}}
+\index{Word\+Index\+Type@{Word\+Index\+Type}!uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}}
+\subsubsection[{Word\+Index\+Type}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index$>$ typedef Word\+Index {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}$<$ Word\+Index $>$\+::{\bf Word\+Index\+Type}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a64279b5b94c421b25aedaa72e73d013c}
+
+
+Definition at line 61 of file word\+\_\+index\+\_\+trie\+\_\+base.\+hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a7b7f68670ef02b7359b6a1a68ed6b437}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}!word\+\_\+index\+\_\+trie\+\_\+base@{word\+\_\+index\+\_\+trie\+\_\+base}}
+\index{word\+\_\+index\+\_\+trie\+\_\+base@{word\+\_\+index\+\_\+trie\+\_\+base}!uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}}
+\subsubsection[{word\+\_\+index\+\_\+trie\+\_\+base(\+Word\+Index\+Type \&word\+\_\+index)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index$>$ {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}$<$ Word\+Index $>$\+::{\bf word\+\_\+index\+\_\+trie\+\_\+base} (
+\begin{DoxyParamCaption}
+\item[{{\bf Word\+Index\+Type} \&}]{word\+\_\+index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a7b7f68670ef02b7359b6a1a68ed6b437}
+The basic constructor 
+\begin{DoxyParams}{Parameters}
+{\em word\+\_\+index} & the word index to be used \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 67 of file word\+\_\+index\+\_\+trie\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a3b62d7a65ce987fa1ba6dd493ffb06e7}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}!get\+\_\+word\+\_\+index@{get\+\_\+word\+\_\+index}}
+\index{get\+\_\+word\+\_\+index@{get\+\_\+word\+\_\+index}!uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}}
+\subsubsection[{get\+\_\+word\+\_\+index() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index$>$ {\bf Word\+Index\+Type}\& {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}$<$ Word\+Index $>$\+::get\+\_\+word\+\_\+index (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a3b62d7a65ce987fa1ba6dd493ffb06e7}
+Allows to retrieve the stored word index, if any \begin{DoxyReturn}{Returns}
+the pointer to the stored word index or N\+U\+L\+L if none 
+\end{DoxyReturn}
+
+
+Definition at line 112 of file word\+\_\+index\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a22422f99173ffc55dd4783f93e4a1947}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}!is\+\_\+post\+\_\+grams@{is\+\_\+post\+\_\+grams}}
+\index{is\+\_\+post\+\_\+grams@{is\+\_\+post\+\_\+grams}!uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}}
+\subsubsection[{is\+\_\+post\+\_\+grams() const }]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index$>$ template$<$phrase\+\_\+length level$>$ bool {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}$<$ Word\+Index $>$\+::is\+\_\+post\+\_\+grams (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a22422f99173ffc55dd4783f93e4a1947}
+This method allows to check if post processing should be called after all the X level grams are read. This method is virtual. 
+\begin{DoxyParams}{Parameters}
+{\em level} & the level of the X-\/grams that were finished to be read \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 87 of file word\+\_\+index\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_aecd81ef42eac4dd636d1dcbec2d25799}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}!post\+\_\+grams@{post\+\_\+grams}}
+\index{post\+\_\+grams@{post\+\_\+grams}!uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}}
+\subsubsection[{post\+\_\+grams()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index$>$ template$<$phrase\+\_\+length level$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}$<$ Word\+Index $>$\+::post\+\_\+grams (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_aecd81ef42eac4dd636d1dcbec2d25799}
+This method should be called after all the X level grams are read. 
+\begin{DoxyParams}{Parameters}
+{\em level} & the level of the X-\/grams that were finished to be read \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 96 of file word\+\_\+index\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a89b512858b316ca97e6d6e8a8a20e66c}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}!pre\+\_\+allocate@{pre\+\_\+allocate}}
+\index{pre\+\_\+allocate@{pre\+\_\+allocate}!uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}}
+\subsubsection[{pre\+\_\+allocate(const size\+\_\+t counts[L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X])}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}$<$ Word\+Index $>$\+::pre\+\_\+allocate (
+\begin{DoxyParamCaption}
+\item[{const size\+\_\+t}]{counts\mbox{[}\+L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a89b512858b316ca97e6d6e8a8a20e66c}
+This method can be used to provide the N-\/gram count information That should allow for pre-\/allocation of the memory 
+\begin{DoxyParams}{Parameters}
+{\em counts} & the array of N-\/\+Gram counts counts\mbox{[}0\mbox{]} is for 1-\/\+Gram \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 76 of file word\+\_\+index\+\_\+trie\+\_\+base.\+hpp.
+
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_aff0ddb33d597ce59392cc93bf267c34a}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}!set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob@{set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob}}
+\index{set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob@{set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob}!uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}}
+\subsubsection[{set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob(const prob\+\_\+weight prob)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index$>$ void {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}$<$ Word\+Index $>$\+::set\+\_\+def\+\_\+unk\+\_\+word\+\_\+prob (
+\begin{DoxyParamCaption}
+\item[{const {\bf prob\+\_\+weight}}]{prob}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_aff0ddb33d597ce59392cc93bf267c34a}
+Allows to set the default U\+N\+K word probability value, the back-\/off is set to zero 
+\begin{DoxyParams}{Parameters}
+{\em prob} & the unk word default probability value \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 104 of file word\+\_\+index\+\_\+trie\+\_\+base.\+hpp.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a14800ace951997474c3a562405b9482e}{}\index{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}!m\+\_\+word\+\_\+index@{m\+\_\+word\+\_\+index}}
+\index{m\+\_\+word\+\_\+index@{m\+\_\+word\+\_\+index}!uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base@{uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}}
+\subsubsection[{m\+\_\+word\+\_\+index}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Word\+Index$>$ {\bf Word\+Index\+Type}\& {\bf uva\+::smt\+::bpbd\+::server\+::lm\+::word\+\_\+index\+\_\+trie\+\_\+base}$<$ Word\+Index $>$\+::m\+\_\+word\+\_\+index\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1word__index__trie__base_a14800ace951997474c3a562405b9482e}
+
+
+Definition at line 114 of file word\+\_\+index\+\_\+trie\+\_\+base.\+hpp.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+inc/server/lm/models/\hyperlink{word__index__trie__base_8hpp}{word\+\_\+index\+\_\+trie\+\_\+base.\+hpp}\end{DoxyCompactItemize}

@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['c2dhybridtrie',['C2DHybridTrie',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_d_hybrid_trie.html#a3c75a586203214fdd0044a6225cfcec7',1,'uva::smt::bpbd::server::lm::C2DHybridTrie']]],
-  ['c2dmaptrie',['C2DMapTrie',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_d_map_trie.html#ae3613f90d14b2614a157b824ee6720e8',1,'uva::smt::bpbd::server::lm::C2DMapTrie']]],
-  ['c2warraytrie',['C2WArrayTrie',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_c2_w_array_trie.html#a39ab5ec7aca3d70403904417b4d27e0c',1,'uva::smt::bpbd::server::lm::C2WArrayTrie']]],
+  ['c2d_5fhybrid_5ftrie',['c2d_hybrid_trie',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1c2d__hybrid__trie.html#aff66fd60349c736cb01d174e0fa03012',1,'uva::smt::bpbd::server::lm::c2d_hybrid_trie']]],
+  ['c2d_5fmap_5ftrie',['c2d_map_trie',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1c2d__map__trie.html#ad3bc6f164ab7cc95f92b4d260ab43b7d',1,'uva::smt::bpbd::server::lm::c2d_map_trie']]],
+  ['c2w_5farray_5ftrie',['c2w_array_trie',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1c2w__array__trie.html#a2f65e7a797b83bf855ffe24a60f6ecbf',1,'uva::smt::bpbd::server::lm::c2w_array_trie']]],
   ['cache_5fm_5fgram_5fhash',['cache_m_gram_hash',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1caching_1_1_bitmap_hash_cache.html#a26c8629c18ae22880573e68d1b27ba3e',1,'uva::smt::bpbd::server::lm::caching::BitmapHashCache']]],
   ['cancel',['cancel',['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job.html#a285349f1d0300e617b7ac14b6894c9fe',1,'uva::smt::bpbd::server::trans_job::cancel()'],['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task.html#afb1b79f1939721f90458ae41e6775325',1,'uva::smt::bpbd::server::trans_task::cancel()']]],
   ['cancel_5fall_5fjobs',['cancel_all_jobs',['../classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool.html#a37f5a4197b3813daaf25ff51adbedeac',1,'uva::smt::bpbd::server::trans_job_pool']]],
