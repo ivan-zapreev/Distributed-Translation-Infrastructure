@@ -8,12 +8,15 @@
 #ifndef SYSTEM_HPP
 #define	SYSTEM_HPP
 
+#include <string>
 #include <stdexcept>
 #include <execinfo.h>
 #include <INI.h>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+
+using namespace std;
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
