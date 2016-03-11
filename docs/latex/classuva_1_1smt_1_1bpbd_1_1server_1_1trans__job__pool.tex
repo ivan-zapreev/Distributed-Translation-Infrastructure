@@ -156,14 +156,16 @@ Definition at line 94 of file trans\+\_\+job\+\_\+pool.\+hpp.
 \item[{{\bf trans\+\_\+job\+\_\+ptr}}]{trans\+\_\+job}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool_a557da35b4def5a927fab613adb977286}
-Allows to add a new job to the administration. In case the session is not known or the job id is already in use an exception is thrown. Also the job count is incremented 
+Allows to add a new job to the administration. In case the session is not known or the job id is already in use an exception is thrown. Also the job count is incremented \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000019}{Todo}]\{Later, the tasks pool shall be chosen based on the source and target language. This is for when a server can translate from multiple languages to multiple languages.\} 
 \begin{DoxyParams}{Parameters}
 {\em \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job}{trans\+\_\+job}} & the job to be added to the administration \\
 \hline
 \end{DoxyParams}
+\end{DoxyRefDesc}
 
 
-Definition at line 250 of file trans\+\_\+job\+\_\+pool.\+hpp.
+Definition at line 253 of file trans\+\_\+job\+\_\+pool.\+hpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool_a37f5a4197b3813daaf25ff51adbedeac}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool}!cancel\+\_\+all\+\_\+jobs@{cancel\+\_\+all\+\_\+jobs}}
 \index{cancel\+\_\+all\+\_\+jobs@{cancel\+\_\+all\+\_\+jobs}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool}}
@@ -206,7 +208,7 @@ Allows to delete the given job from the administration, decrement the jobs count
 \end{DoxyParams}
 
 
-Definition at line 289 of file trans\+\_\+job\+\_\+pool.\+hpp.
+Definition at line 288 of file trans\+\_\+job\+\_\+pool.\+hpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool_a6e442f963de1dde69c1c60ba2e3b6e70}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool}!is\+\_\+stop\+\_\+running@{is\+\_\+stop\+\_\+running}}
 \index{is\+\_\+stop\+\_\+running@{is\+\_\+stop\+\_\+running}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool}}
@@ -220,7 +222,7 @@ true if the finished jobs processing loop has to stop, otherwise false
 \end{DoxyReturn}
 
 
-Definition at line 325 of file trans\+\_\+job\+\_\+pool.\+hpp.
+Definition at line 324 of file trans\+\_\+job\+\_\+pool.\+hpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool_a5017ac559701b10345439c2ad1c915f8}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool}!notify\+\_\+job\+\_\+done@{notify\+\_\+job\+\_\+done}}
 \index{notify\+\_\+job\+\_\+done@{notify\+\_\+job\+\_\+done}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool}}
@@ -236,7 +238,7 @@ Allows notify the job pool that the given job is done.
 \end{DoxyParams}
 
 
-Definition at line 364 of file trans\+\_\+job\+\_\+pool.\+hpp.
+Definition at line 363 of file trans\+\_\+job\+\_\+pool.\+hpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool_a5ddb309db4337a72239961c5f5b1efde}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool}!plan\+\_\+new\+\_\+job@{plan\+\_\+new\+\_\+job}}
 \index{plan\+\_\+new\+\_\+job@{plan\+\_\+new\+\_\+job}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool}}
@@ -258,7 +260,7 @@ Definition at line 180 of file trans\+\_\+job\+\_\+pool.\+hpp.
 )\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool_a3c9d5b9d5077313b09efac8d662e3311}
 Allows to process the finished translation jobs 
 
-Definition at line 384 of file trans\+\_\+job\+\_\+pool.\+hpp.
+Definition at line 383 of file trans\+\_\+job\+\_\+pool.\+hpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool_a783c385533968e581f0e5f90375d83dc}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool}!report\+\_\+run\+\_\+time\+\_\+info@{report\+\_\+run\+\_\+time\+\_\+info}}
 \index{report\+\_\+run\+\_\+time\+\_\+info@{report\+\_\+run\+\_\+time\+\_\+info}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job\+\_\+pool}}
@@ -323,7 +325,7 @@ Definition at line 101 of file trans\+\_\+job\+\_\+pool.\+hpp.
 )\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool_a826c44d20e2c2999cbe0a353cb7f7abe}
 Allows to wake up the jobs thread. 
 
-Definition at line 353 of file trans\+\_\+job\+\_\+pool.\+hpp.
+Definition at line 352 of file trans\+\_\+job\+\_\+pool.\+hpp.
 
 
 

@@ -334,8 +334,8 @@ namespace uva {
              * is not guaranteed to have it! Yet we could try to take into account
              * the string length, but this might cost performance!
              * 
-             * ToDo: Try to impose the string length limit and test the performance
-             * on reading large ARPA files!
+             * \todo {Try to impose the string length limit and test the performance
+             * on reading large ARPA files!}
              * 
              * @param res the type to read into
              * @param p the pointer to read from,

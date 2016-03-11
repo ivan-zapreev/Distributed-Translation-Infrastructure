@@ -67,6 +67,7 @@ namespace uva {
 
                         /**
                          * Allows to get an instance of the decoder object.
+                         * \todo Pre-allocate decoders, make as many as there are threads
                          * @param is_stop the flag that will be set to true in case 
                          *                one needs to abort the translation process.
                          * @param source_sent [in] the source language sentence to translate
@@ -80,17 +81,15 @@ namespace uva {
                                 const string & source_sent,
                                 string & target_sent) {
                             LOG_DEBUG << "Starting to allocate sentence decoder for: ___" << source_sent << "___" << END_LOG;
-
-                            //ToDo: Pre-allocate decoders, make as many as there are threads
                             return *(new sentence_decoder(*m_params, is_stop, source_sent, target_sent));
                         }
 
                         /**
                          * Allows to dispose the decoder
+                         * \todo Mark the decoder instance as available
                          * @param dec the decoder to be returned
                          */
                         static inline void dispose_decoder(sentence_decoder & dec) {
-                            //ToDo: Mark the decoder instance as available
                             delete &dec;
                         }
 

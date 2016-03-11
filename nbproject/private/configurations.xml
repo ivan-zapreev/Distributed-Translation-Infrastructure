@@ -1,58 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="95">
+<configurationDescriptor version="97">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
       <df name="asio">
         <df name="detail">
           <df name="impl">
-            <in>buffer_sequence_adapter.ipp</in>
-            <in>descriptor_ops.ipp</in>
             <in>dev_poll_reactor.hpp</in>
-            <in>dev_poll_reactor.ipp</in>
             <in>epoll_reactor.hpp</in>
-            <in>epoll_reactor.ipp</in>
-            <in>eventfd_select_interrupter.ipp</in>
-            <in>handler_tracking.ipp</in>
             <in>kqueue_reactor.hpp</in>
-            <in>kqueue_reactor.ipp</in>
-            <in>pipe_select_interrupter.ipp</in>
-            <in>posix_event.ipp</in>
-            <in>posix_mutex.ipp</in>
-            <in>posix_thread.ipp</in>
-            <in>posix_tss_ptr.ipp</in>
-            <in>reactive_descriptor_service.ipp</in>
-            <in>reactive_serial_port_service.ipp</in>
-            <in>reactive_socket_service_base.ipp</in>
-            <in>resolver_service_base.ipp</in>
             <in>select_reactor.hpp</in>
-            <in>select_reactor.ipp</in>
             <in>service_registry.hpp</in>
-            <in>service_registry.ipp</in>
-            <in>signal_set_service.ipp</in>
-            <in>socket_ops.ipp</in>
-            <in>socket_select_interrupter.ipp</in>
             <in>strand_service.hpp</in>
-            <in>strand_service.ipp</in>
             <in>task_io_service.hpp</in>
-            <in>task_io_service.ipp</in>
-            <in>throw_error.ipp</in>
-            <in>timer_queue_ptime.ipp</in>
-            <in>timer_queue_set.ipp</in>
-            <in>win_event.ipp</in>
-            <in>win_iocp_handle_service.ipp</in>
             <in>win_iocp_io_service.hpp</in>
-            <in>win_iocp_io_service.ipp</in>
-            <in>win_iocp_serial_port_service.ipp</in>
-            <in>win_iocp_socket_service_base.ipp</in>
-            <in>win_mutex.ipp</in>
-            <in>win_object_handle_service.ipp</in>
-            <in>win_static_mutex.ipp</in>
-            <in>win_thread.ipp</in>
-            <in>win_tss_ptr.ipp</in>
-            <in>winrt_ssocket_service_base.ipp</in>
             <in>winrt_timer_scheduler.hpp</in>
-            <in>winrt_timer_scheduler.ipp</in>
-            <in>winsock_init.ipp</in>
           </df>
           <in>addressof.hpp</in>
           <in>array.hpp</in>
@@ -231,7 +192,6 @@
         <df name="generic">
           <df name="detail">
             <df name="impl">
-              <in>endpoint.ipp</in>
             </df>
             <in>endpoint.hpp</in>
           </df>
@@ -245,16 +205,11 @@
           <in>buffered_read_stream.hpp</in>
           <in>buffered_write_stream.hpp</in>
           <in>connect.hpp</in>
-          <in>error.ipp</in>
-          <in>error_code.ipp</in>
-          <in>handler_alloc_hook.ipp</in>
           <in>io_service.hpp</in>
-          <in>io_service.ipp</in>
           <in>read.hpp</in>
           <in>read_at.hpp</in>
           <in>read_until.hpp</in>
           <in>serial_port_base.hpp</in>
-          <in>serial_port_base.ipp</in>
           <in>spawn.hpp</in>
           <in>src.cpp</in>
           <in>src.hpp</in>
@@ -265,20 +220,15 @@
         <df name="ip">
           <df name="detail">
             <df name="impl">
-              <in>endpoint.ipp</in>
             </df>
             <in>endpoint.hpp</in>
             <in>socket_option.hpp</in>
           </df>
           <df name="impl">
             <in>address.hpp</in>
-            <in>address.ipp</in>
             <in>address_v4.hpp</in>
-            <in>address_v4.ipp</in>
             <in>address_v6.hpp</in>
-            <in>address_v6.ipp</in>
             <in>basic_endpoint.hpp</in>
-            <in>host_name.ipp</in>
           </df>
           <in>address.hpp</in>
           <in>address_v4.hpp</in>
@@ -301,7 +251,6 @@
         <df name="local">
           <df name="detail">
             <df name="impl">
-              <in>endpoint.ipp</in>
             </df>
             <in>endpoint.hpp</in>
           </df>
@@ -320,8 +269,6 @@
         <df name="ssl">
           <df name="detail">
             <df name="impl">
-              <in>engine.ipp</in>
-              <in>openssl_init.ipp</in>
             </df>
             <in>buffered_handshake_op.hpp</in>
             <in>engine.hpp</in>
@@ -338,9 +285,6 @@
           </df>
           <df name="impl">
             <in>context.hpp</in>
-            <in>context.ipp</in>
-            <in>error.ipp</in>
-            <in>rfc2818_verification.ipp</in>
             <in>src.hpp</in>
           </df>
           <df name="old">

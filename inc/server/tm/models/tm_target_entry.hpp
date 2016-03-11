@@ -184,7 +184,8 @@ namespace uva {
                         protected:
 
                             /**
-                             * Allows to set the weights into the target entry
+                             * Allows to set the weights into the target entry.
+                             * \todo Get rid of magic constants here!
                              * @param num_features the number of features to be set, already in the log10 scale
                              * @param features the weights to be set into the entry
                              * This is an array of translation weights, as we have here:
@@ -204,7 +205,6 @@ namespace uva {
                                     m_total_weight += features[idx];
                                 }
 
-                                //ToDo: Get rid of magic constants here!
                                 //Check that we have enough features
                                 ASSERT_SANITY_THROW((num_features < 3),
                                         "The must be at least 3 features, p(e|f) is not known!");

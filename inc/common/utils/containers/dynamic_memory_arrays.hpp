@@ -137,7 +137,8 @@ namespace uva {
             };
 
             /**
-             * This is a factory function allowing to ge the strategy object for the given parameters
+             * This is a factory function allowing to ge the strategy object for the given parameters.
+             * \todo Optimize the switch, it is pretty ugly, use a map or something.
              * @param stype the strategy type
              * @param min_mem_inc the minimum memory increment in number of elements
              * @param mem_inc_factor the memory increment factor, the number we will multiply by the computed increment
@@ -146,8 +147,6 @@ namespace uva {
             inline mem_increase_strategy get_mem_incr_strat(const mem_inc_types_enum stype,
                     const size_t min_mem_inc, const size_t mem_inc_factor) {
                 TCapacityIncFunct inc_func;
-
-                //ToDo: optimize this switch, it is pretty ugly, use a map or something
                 switch (stype) {
                     case mem_inc_types_enum::CONSTANT:
                         inc_func = [] (const size_t fcap) -> size_t {

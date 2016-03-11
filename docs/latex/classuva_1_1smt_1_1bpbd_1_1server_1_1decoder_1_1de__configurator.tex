@@ -34,7 +34,8 @@ Definition at line 48 of file de\+\_\+configurator.\+hpp.
 \item[{string \&}]{target\+\_\+sent}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1de__configurator_aadf303dc8fbc43df002f0d8bdb97facb}
-Allows to get an instance of the decoder object. 
+Allows to get an instance of the decoder object. \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000003}{Todo}]Pre-\/allocate decoders, make as many as there are threads 
 \begin{DoxyParams}{Parameters}
 {\em is\+\_\+stop} & the flag that will be set to true in case one needs to abort the translation process. \\
 \hline
@@ -46,9 +47,10 @@ Allows to get an instance of the decoder object.
 \begin{DoxyReturn}{Returns}
 an instance of the decoder object. 
 \end{DoxyReturn}
+\end{DoxyRefDesc}
 
 
-Definition at line 78 of file de\+\_\+configurator.\+hpp.
+Definition at line 79 of file de\+\_\+configurator.\+hpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1de__configurator_ad63482752d6be89b3a56d4fa57e0a7c0}{}\index{uva\+::smt\+::bpbd\+::server\+::decoder\+::de\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::decoder\+::de\+\_\+configurator}!connect@{connect}}
 \index{connect@{connect}!uva\+::smt\+::bpbd\+::server\+::decoder\+::de\+\_\+configurator@{uva\+::smt\+::bpbd\+::server\+::decoder\+::de\+\_\+configurator}}
@@ -84,11 +86,13 @@ Definition at line 64 of file de\+\_\+configurator.\+hpp.
 \item[{{\bf sentence\+\_\+decoder} \&}]{dec}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1de__configurator_a0518550eb8a56127225376ccb996d3f2}
-Allows to dispose the decoder 
+Allows to dispose the decoder \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000004}{Todo}]Mark the decoder instance as available 
 \begin{DoxyParams}{Parameters}
 {\em dec} & the decoder to be returned \\
 \hline
 \end{DoxyParams}
+\end{DoxyRefDesc}
 
 
 Definition at line 92 of file de\+\_\+configurator.\+hpp.

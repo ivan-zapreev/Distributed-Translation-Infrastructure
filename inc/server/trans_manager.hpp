@@ -71,9 +71,9 @@ namespace uva {
                      * The basic constructor.
                      * @param num_threads the number of translation threads to run
                      * 
-                     * ToDo: Possibly limit the number of allowed open sessions
+                     * \todo {Possibly limit the number of allowed open sessions
                      * (from one host and the maximum amount of allowed hosts)
-                     * This is for later, if the server is put for www access.
+                     * This is for later, if the server is put for www access.}
                      */
                     trans_manager(const size_t num_threads)
                     : m_job_pool(num_threads), m_session_id_mgr(session_id::MINIMUM_SESSION_ID) {

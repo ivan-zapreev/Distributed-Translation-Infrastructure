@@ -94,21 +94,21 @@ namespace uva {
                             }
 
                             /**
+                             * \todo {In the future we should just use a number of stack
+                             * allocated objects in order to reduce the new/delete overhead}
                              * @see rm_proxy
                              */
                             virtual rm_query_proxy & allocate_query_proxy() {
-                                //ToDo: In the future we should just use a number of stack
-                                //allocated objects in order to reduce the new/delete overhead
                                 return *(new rm_query_proxy_local<rm_model_type>(m_model, *m_begin_tag_entry, *m_end_tag_entry));
                             }
 
                             /**
                              * Dispose the previously allocated query object
+                             * \todo {In the future we should just use a number of stack
+                             * allocated objects in order to reduce the new/delete overhead}
                              * @param query the query to dispose
                              */
                             virtual void dispose_query_proxy(rm_query_proxy & query) {
-                                //ToDo: In the future we should just use a number of stack
-                                //allocated objects in order to reduce the new/delete overhead
                                 delete &query;
                             }
 
@@ -116,6 +116,7 @@ namespace uva {
 
                             /**
                              * Allows to load the model into the instance of the selected container class
+                             * \todo Add the possibility to choose between the file readers from the command line!
                              * @param the name of the model being loaded
                              * @params params the model parameters
                              */
@@ -132,7 +133,6 @@ namespace uva {
                                 LOG_USAGE << "Start creating and loading the " << model_name << " ..." << END_LOG;
                                 LOG_USAGE << model_name << " is located in: " << model_file_name << END_LOG;
 
-                                //ToDo: Add the possibility to choose between the file readers from the command line!
                                 LOG_DEBUG << "Getting the memory statistics before opening the " << model_name << " file ..." << END_LOG;
                                 stat_monitore::get_mem_stat(mem_stat_start);
 

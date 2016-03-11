@@ -77,8 +77,8 @@ namespace uva {
                          * word indexes to the more frequently used words. This allows
                          * for, for example, shorter M-gram ids.
                          * 
-                         * ToDo: Change or create a new version of the word index that will
-                         * just use probabilities of the unigrams instead of counting words.
+                         * \todo {Change or create a new version of the word index that will
+                         * just use probabilities of the unigrams instead of counting words.}
                          */
                         class counting_word_index : public basic_word_index {
                         public:

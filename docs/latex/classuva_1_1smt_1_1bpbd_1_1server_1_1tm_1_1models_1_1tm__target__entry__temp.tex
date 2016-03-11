@@ -216,16 +216,18 @@ Definition at line 104 of file tm\+\_\+target\+\_\+entry.\+hpp.
 \item[{const {\bf prob\+\_\+weight} $\ast$}]{features}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__target__entry__temp_a71842af251358e437e4d1f8c98b62528}
-Allows to set the weights into the target entry 
+Allows to set the weights into the target entry. \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000015}{Todo}]Get rid of magic constants here! 
 \begin{DoxyParams}{Parameters}
 {\em num\+\_\+features} & the number of features to be set, already in the log10 scale \\
 \hline
 {\em features} & the weights to be set into the entry This is an array of translation weights, as we have here\+: features\mbox{[}0\mbox{]} = p(f$\vert$e); features\mbox{[}1\mbox{]} = lex(p(f$\vert$e)); features\mbox{[}2\mbox{]} = p(e$\vert$f); features\mbox{[}3\mbox{]} = lex(p(e$\vert$f)); features\mbox{[}4\mbox{]} = phrase penalty; // optional \\
 \hline
 \end{DoxyParams}
+\end{DoxyRefDesc}
 
 
-Definition at line 197 of file tm\+\_\+target\+\_\+entry.\+hpp.
+Definition at line 198 of file tm\+\_\+target\+\_\+entry.\+hpp.
 
 
 

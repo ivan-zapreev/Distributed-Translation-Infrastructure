@@ -1,9 +1,142 @@
 
 \begin{DoxyRefList}
-\item[\label{todo__todo000001}%
-\hypertarget{todo__todo000001}{}%
-Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_af91a15abfca464b58f7e752ebc258364}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:tm\+:\+:proxy\+:\+:tm\+\_\+proxy\+\_\+local\+:\+:dispose\+\_\+query\+\_\+proxy} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__query__proxy}{tm\+\_\+query\+\_\+proxy} \&query)]In the future we should just use a number of stack allocated objects in order to reduce the new/delete overhead \begin{DoxySeeAlso}{See also}
-\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy}{tm\+\_\+proxy} 
+\item[\label{todo__todo000003}%
+\hypertarget{todo__todo000003}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1de__configurator_aadf303dc8fbc43df002f0d8bdb97facb}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:decoder\+:\+:de\+\_\+configurator\+:\+:allocate\+\_\+decoder} (acr\+\_\+bool\+\_\+flag is\+\_\+stop, const string \&source\+\_\+sent, string \&target\+\_\+sent)]Pre-\/allocate decoders, make as many as there are threads 
+\begin{DoxyParams}{Parameters}
+{\em is\+\_\+stop} & the flag that will be set to true in case one needs to abort the translation process. \\
+\hline
+{\em source\+\_\+sent} & \mbox{[}in\mbox{]} the source language sentence to translate the source sentence is expected to be tokenized, reduced, and in the lower case. \\
+\hline
+{\em target\+\_\+sent} & \mbox{[}out\mbox{]} the resulting target language sentence \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an instance of the decoder object.  
+\end{DoxyReturn}
+
+\item[\label{todo__todo000004}%
+\hypertarget{todo__todo000004}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1de__configurator_a0518550eb8a56127225376ccb996d3f2}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:decoder\+:\+:de\+\_\+configurator\+:\+:dispose\+\_\+decoder} (sentence\+\_\+decoder \&dec)]Mark the decoder instance as available 
+\begin{DoxyParams}{Parameters}
+{\em dec} & the decoder to be returned  \\
+\hline
+\end{DoxyParams}
+
+\item[\label{todo__todo000005}%
+\hypertarget{todo__todo000005}{}%
+Class \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1counting__word__index}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:dictionary\+:\+:counting\+\_\+word\+\_\+index} ]\{Change or create a new version of the word index that will just use probabilities of the unigrams instead of counting words.\}  
+\item[\label{todo__todo000006}%
+\hypertarget{todo__todo000006}{}%
+Namespace \hyperlink{namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1identifiers}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:identifiers} ]Go trough all the L\+M and change from T\+Shord\+Id and T\+Long\+Id to phrase\+\_\+uid, word\+\_\+uid and basic types!  
+\item[\label{todo__todo000007}%
+\hypertarget{todo__todo000007}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__proxy__local_ab2c1055d26c52e84e2171811662446ab}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:proxy\+:\+:lm\+\_\+proxy\+\_\+local\+:\+:allocate\+\_\+fast\+\_\+query\+\_\+proxy} ()]\{In the future we should just use a number of stack allocated objects in order to reduce the new/delete overhead\} \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__proxy}{lm\+\_\+proxy}  
 \end{DoxySeeAlso}
 
+\item[\label{todo__todo000009}%
+\hypertarget{todo__todo000009}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__proxy__local_a95bc77c757872fbdbaa65f31a8bb3228}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:proxy\+:\+:lm\+\_\+proxy\+\_\+local\+:\+:allocate\+\_\+slow\+\_\+query\+\_\+proxy} ()]\{In the future we should just use a number of stack allocated objects in order to reduce the new/delete overhead\} \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__proxy}{lm\+\_\+proxy}  
+\end{DoxySeeAlso}
+
+\item[\label{todo__todo000008}%
+\hypertarget{todo__todo000008}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__proxy__local_a1cc247ccdb00831f196d15cd9ab9eeaa}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:proxy\+:\+:lm\+\_\+proxy\+\_\+local\+:\+:dispose\+\_\+fast\+\_\+query\+\_\+proxy} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__fast__query__proxy}{lm\+\_\+fast\+\_\+query\+\_\+proxy} \&query)]\{In the future we should just use a number of stack allocated objects in order to reduce the new/delete overhead\} \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__proxy}{lm\+\_\+proxy}  
+\end{DoxySeeAlso}
+
+\item[\label{todo__todo000010}%
+\hypertarget{todo__todo000010}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__proxy__local_a2702b2498c14bc79df89484893ee3fc7}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:lm\+:\+:proxy\+:\+:lm\+\_\+proxy\+\_\+local\+:\+:dispose\+\_\+slow\+\_\+query\+\_\+proxy} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__slow__query__proxy}{lm\+\_\+slow\+\_\+query\+\_\+proxy} \&query)]\{In the future we should just use a number of stack allocated objects in order to reduce the new/delete overhead\} \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy_1_1lm__proxy}{lm\+\_\+proxy}  
+\end{DoxySeeAlso}
+
+\item[\label{todo__todo000012}%
+\hypertarget{todo__todo000012}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1proxy_1_1rm__proxy__local_a697c5402937d2f3f55500ed1c2074fc7}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:rm\+:\+:proxy\+:\+:rm\+\_\+proxy\+\_\+local\+:\+:allocate\+\_\+query\+\_\+proxy} ()]\{In the future we should just use a number of stack allocated objects in order to reduce the new/delete overhead\} \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1proxy_1_1rm__proxy}{rm\+\_\+proxy}  
+\end{DoxySeeAlso}
+
+\item[\label{todo__todo000013}%
+\hypertarget{todo__todo000013}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1proxy_1_1rm__proxy__local_a3a26102b7b9b3ecc4d1a8627751406a6}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:rm\+:\+:proxy\+:\+:rm\+\_\+proxy\+\_\+local\+:\+:dispose\+\_\+query\+\_\+proxy} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1proxy_1_1rm__query__proxy}{rm\+\_\+query\+\_\+proxy} \&query)]\{In the future we should just use a number of stack allocated objects in order to reduce the new/delete overhead\} 
+\begin{DoxyParams}{Parameters}
+{\em query} & the query to dispose  \\
+\hline
+\end{DoxyParams}
+
+\item[\label{todo__todo000014}%
+\hypertarget{todo__todo000014}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1proxy_1_1rm__proxy__local_a29f305210313916e132a2ecee15891d4}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:rm\+:\+:proxy\+:\+:rm\+\_\+proxy\+\_\+local\+:\+:load\+\_\+model\+\_\+data} (char const $\ast$model\+\_\+name, const \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1rm__parameters}{rm\+\_\+parameters} \&params)]Add the possibility to choose between the file readers from the command line! 
+\begin{DoxyParams}{Parameters}
+{\em the} & name of the model being loaded  params the model parameters  \\
+\hline
+\end{DoxyParams}
+
+\item[\label{todo__todo000015}%
+\hypertarget{todo__todo000015}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__target__entry__temp_a71842af251358e437e4d1f8c98b62528}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:tm\+:\+:models\+:\+:tm\+\_\+target\+\_\+entry\+\_\+temp$<$ max\+\_\+num\+\_\+features $>$\+:\+:set\+\_\+features} (const size\+\_\+t num\+\_\+features, const prob\+\_\+weight $\ast$features)]Get rid of magic constants here! 
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+features} & the number of features to be set, already in the log10 scale \\
+\hline
+{\em features} & the weights to be set into the entry This is an array of translation weights, as we have here\+: features\mbox{[}0\mbox{]} = p(f$\vert$e); features\mbox{[}1\mbox{]} = lex(p(f$\vert$e)); features\mbox{[}2\mbox{]} = p(e$\vert$f); features\mbox{[}3\mbox{]} = lex(p(e$\vert$f)); features\mbox{[}4\mbox{]} = phrase penalty; // optional  \\
+\hline
+\end{DoxyParams}
+
+\item[\label{todo__todo000016}%
+\hypertarget{todo__todo000016}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_af91a15abfca464b58f7e752ebc258364}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:tm\+:\+:proxy\+:\+:tm\+\_\+proxy\+\_\+local\+:\+:dispose\+\_\+query\+\_\+proxy} (\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__query__proxy}{tm\+\_\+query\+\_\+proxy} \&query)]In the future we should just use a number of stack allocated objects in order to reduce the new/delete overhead \begin{DoxySeeAlso}{See also}
+\hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy}{tm\+\_\+proxy}  
+\end{DoxySeeAlso}
+
+\item[\label{todo__todo000017}%
+\hypertarget{todo__todo000017}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy_1_1tm__proxy__local_ab55bb64bacfd5243dec3c683793cb7f7}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:tm\+:\+:proxy\+:\+:tm\+\_\+proxy\+\_\+local\+:\+:load\+\_\+model\+\_\+data} (char const $\ast$model\+\_\+name, const \hyperlink{structuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1tm__parameters}{tm\+\_\+parameters} \&params)]Add the possibility to choose between the file readers from the command line! 
+\begin{DoxyParams}{Parameters}
+{\em the} & name of the model being loaded  params the model parameters  \\
+\hline
+\end{DoxyParams}
+
+\item[\label{todo__todo000018}%
+\hypertarget{todo__todo000018}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job_ae1ca94b2972dc12e4bc0d8ae6604eae6}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:trans\+\_\+job\+:\+:notify\+\_\+task\+\_\+done} (const trans\+\_\+task\+\_\+ptr \&task)]\{Do a strict check on the tasks reporting to be finished, these should be the ones from the m\+\_\+tasks list and they must report themselves only ones. (Optional -\/ for safety).\} 
+\begin{DoxyParams}{Parameters}
+{\em task} & the translation task that is finished  \\
+\hline
+\end{DoxyParams}
+
+\item[\label{todo__todo000019}%
+\hypertarget{todo__todo000019}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job__pool_a557da35b4def5a927fab613adb977286}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:trans\+\_\+job\+\_\+pool\+:\+:add\+\_\+job} (trans\+\_\+job\+\_\+ptr \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job}{trans\+\_\+job})]\{Later, the tasks pool shall be chosen based on the source and target language. This is for when a server can translate from multiple languages to multiple languages.\} 
+\begin{DoxyParams}{Parameters}
+{\em \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job}{trans\+\_\+job}} & the job to be added to the administration  \\
+\hline
+\end{DoxyParams}
+
+\item[\label{todo__todo000020}%
+\hypertarget{todo__todo000020}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__manager_a053a8f5be8b004358e5e20b3a1810efb}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:trans\+\_\+manager\+:\+:trans\+\_\+manager} (const size\+\_\+t num\+\_\+threads)]\{Possibly limit the number of allowed open sessions (from one host and the maximum amount of allowed hosts) This is for later, if the server is put for www access.\}  
+\item[\label{todo__todo000022}%
+\hypertarget{todo__todo000022}{}%
+Member \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool_a79d4c7977c98b55679b00ae18b6158f1}{uva\+:\+:smt\+:\+:bpbd\+:\+:server\+:\+:trans\+\_\+task\+\_\+pool\+:\+:notify\+\_\+task\+\_\+cancel} (trans\+\_\+task\+\_\+ptr \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task}{trans\+\_\+task})]\{To improve performance we could try checking if the tasks is already running, and if not then search the queue. Or use other data structure for a more efficient task removal. This is for the future, in case the performance is affected.\}  
+\item[\label{todo__todo000001}%
+\hypertarget{todo__todo000001}{}%
+Member \hyperlink{namespaceuva_1_1utils_1_1containers_a04ae8ecdaffa42ace76f1c604659ba6c}{uva\+:\+:utils\+:\+:containers\+:\+:get\+\_\+mem\+\_\+incr\+\_\+strat} (const mem\+\_\+inc\+\_\+types\+\_\+enum stype, const size\+\_\+t min\+\_\+mem\+\_\+inc, const size\+\_\+t mem\+\_\+inc\+\_\+factor)]Optimize the switch, it is pretty ugly, use a map or something. 
+\begin{DoxyParams}{Parameters}
+{\em stype} & the strategy type \\
+\hline
+{\em min\+\_\+mem\+\_\+inc} & the minimum memory increment in number of elements \\
+\hline
+{\em mem\+\_\+inc\+\_\+factor} & the memory increment factor, the number we will multiply by the computed increment \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the pointer to a newly allocated strategy object  
+\end{DoxyReturn}
+
+\item[\label{todo__todo000021}%
+\hypertarget{todo__todo000021}{}%
+Member \hyperlink{classuva_1_1utils_1_1logging_1_1logger_a347abc5c02ffb08a5bfce9a3a23a233b}{uva\+:\+:utils\+:\+:logging\+:\+:logger\+:\+:set\+\_\+reporting\+\_\+level} (const string level)]\{This function is ugly improve it by using a map, or a similar so that we could just get an appropriate level for the string.\} 
 \end{DoxyRefList}

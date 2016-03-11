@@ -119,16 +119,17 @@ namespace uva {
                     }
                 };
 
+                /**
+                 * \todo {To improve performance we could try checking if the
+                 * tasks is already running, and if not then search the queue.
+                 * Or use other data structure for a more efficient task removal.
+                 * This is for the future, in case the performance is affected.}
+                 */
                 void trans_task_pool::notify_task_cancel(trans_task_ptr trans_task) {
                     unique_guard guard(m_queue_mutex);
 
                     LOG_DEBUG << "Request task  " << trans_task << " with id "
                             << trans_task->get_task_id() << " removal from the pool!" << END_LOG;
-
-                    //ToDo: To improve performance we could try checking if the
-                    //tasks is already running, and if not then search the queue.
-                    //Or use other data structure for a more efficient task removal.
-                    //This is for the future, in case the performance is affected.
 
                     //Check if the task is in the pool, if yes then remove it
                     for (tasks_queue_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {

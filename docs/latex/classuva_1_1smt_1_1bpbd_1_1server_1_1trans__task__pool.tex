@@ -129,12 +129,14 @@ Definition at line 108 of file trans\+\_\+task\+\_\+pool.\+cpp.
 )\hspace{0.3cm}{\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool_a79d4c7977c98b55679b00ae18b6158f1}
 The method that will be called in case a task is canceled 
 \begin{DoxyParams}{Parameters}
-{\em \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task}{trans\+\_\+task}} & the task that is being canceled \\
+{\em \hyperlink{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task}{trans\+\_\+task}} & the task that is being canceled\\
 \hline
 \end{DoxyParams}
+\begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000022}{Todo}]\{To improve performance we could try checking if the tasks is already running, and if not then search the queue. Or use other data structure for a more efficient task removal. This is for the future, in case the performance is affected.\} \end{DoxyRefDesc}
 
 
-Definition at line 122 of file trans\+\_\+task\+\_\+pool.\+cpp.
+Definition at line 128 of file trans\+\_\+task\+\_\+pool.\+cpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool_a03e800374f485e13ef8c4c7e39d8db39}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool}!plan\+\_\+new\+\_\+task@{plan\+\_\+new\+\_\+task}}
 \index{plan\+\_\+new\+\_\+task@{plan\+\_\+new\+\_\+task}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool}}
@@ -150,7 +152,7 @@ This method allows to plan a new translation task
 \end{DoxyParams}
 
 
-Definition at line 149 of file trans\+\_\+task\+\_\+pool.\+cpp.
+Definition at line 150 of file trans\+\_\+task\+\_\+pool.\+cpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__task__pool_a1c200441061258c47116296c2181837b}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool}!report\+\_\+run\+\_\+time\+\_\+info@{report\+\_\+run\+\_\+time\+\_\+info}}
 \index{report\+\_\+run\+\_\+time\+\_\+info@{report\+\_\+run\+\_\+time\+\_\+info}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+task\+\_\+pool}}

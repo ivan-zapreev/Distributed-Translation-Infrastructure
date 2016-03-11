@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['readme',['README',['../md__r_e_a_d_m_e.html',1,'']]],
   ['readme_2emd',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
   ['rebind',['rebind',['../structuva_1_1utils_1_1containers_1_1alloc_1_1greedy__memory__allocator_1_1rebind.html',1,'uva::utils::containers::alloc::greedy_memory_allocator']]],
   ['rec_5fscoped_5flock',['rec_scoped_lock',['../structuva_1_1utils_1_1logging_1_1logging__synch.html#afaab265627f1f072fbfd927b6d2b6cb6',1,'uva::utils::logging::logging_synch']]],

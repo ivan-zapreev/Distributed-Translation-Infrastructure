@@ -112,6 +112,7 @@ namespace uva {
 
                             /**
                              * Allows to load the model into the instance of the selected container class
+                             * \todo Add the possibility to choose between the file readers from the command line!
                              * @param the name of the model being loaded
                              * @params params the model parameters
                              */
@@ -128,7 +129,6 @@ namespace uva {
                                 LOG_USAGE << "Start creating and loading the " << model_name << " ..." << END_LOG;
                                 LOG_USAGE << model_name << " is located in: " << model_file_name << END_LOG;
 
-                                //ToDo: Add the possibility to choose between the file readers from the command line!
                                 LOG_DEBUG << "Getting the memory statistics before opening the " << model_name << " file ..." << END_LOG;
                                 stat_monitore::get_mem_stat(mem_stat_start);
 

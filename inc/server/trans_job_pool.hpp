@@ -245,6 +245,9 @@ namespace uva {
                      * Allows to add a new job to the administration. In case the
                      * session is not known or the job id is already in use an
                      * exception is thrown. Also the job count is incremented
+                     * \todo {Later, the tasks pool shall be chosen based on the
+                     * source and target language. This is for when a server can
+                     * translate from multiple languages to multiple languages.}
                      * @param trans_job the job to be added to the administration
                      */
                     void add_job(trans_job_ptr trans_job) {
@@ -275,10 +278,6 @@ namespace uva {
                         }
 
                         LOG_DEBUG << "Adding the job with ptr: " << trans_job << " to the job pool is done!" << END_LOG;
-
-                        //ToDo: Later, the tasks pool shall be chosen based on the
-                        //source and target language. This is for when a server can
-                        //translate from multiple languages to multiple languages.
                     }
 
                     /**

@@ -64,9 +64,10 @@ namespace uva {
                         }
                     }
 
-                    //This namespace stores types and constants for the m-gram and context identifiers.
-                    //ToDo: Go trough all the LM and change from TShordId and
-                    //      TLongId to phrase_uid, word_uid and basic types!
+                    /**
+                     * This namespace stores types and constants for the m-gram and context identifiers.
+                     * \todo Go trough all the LM and change from TShordId and TLongId to phrase_uid, word_uid and basic types!
+                     */
                     namespace identifiers {
                         //This is the small id type to be used for e.g. word ids
                         typedef uint32_t TShortId;

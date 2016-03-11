@@ -108,38 +108,38 @@ namespace uva {
                             }
 
                             /**
+                             * \todo {In the future we should just use a number of stack 
+                             * allocated objects in order to reduce the new/delete overhead}
                              * @see lm_proxy
                              */
                             virtual lm_fast_query_proxy & allocate_fast_query_proxy() {
-                                //ToDo: In the future we should just use a number of stack
-                                //allocated objects in order to reduce the new/delete overhead
                                 return *(new lm_fast_query_proxy_local<lm_model_type>(m_model, m_unk_word_prob, m_begin_tag_uid, m_end_tag_uid));
                             }
 
                             /**
+                             * \todo {In the future we should just use a number of stack
+                             * allocated objects in order to reduce the new/delete overhead}
                              * @see lm_proxy
                              */
                             virtual void dispose_fast_query_proxy(lm_fast_query_proxy & query) {
-                                //ToDo: In the future we should just use a number of stack
-                                //allocated objects in order to reduce the new/delete overhead
                                 delete &query;
                             }
 
                             /**
+                             * \todo {In the future we should just use a number of stack
+                             * allocated objects in order to reduce the new/delete overhead}
                              * @see lm_proxy
                              */
                             virtual lm_slow_query_proxy & allocate_slow_query_proxy() {
-                                //ToDo: In the future we should just use a number of stack
-                                //allocated objects in order to reduce the new/delete overhead
                                 return *(new lm_slow_query_proxy_local<lm_model_type>(m_model));
                             }
 
                             /**
+                             * \todo {In the future we should just use a number of stack
+                             * allocated objects in order to reduce the new/delete overhead}
                              * @see lm_proxy
                              */
                             virtual void dispose_slow_query_proxy(lm_slow_query_proxy & query) {
-                                //ToDo: In the future we should just use a number of stack
-                                //allocated objects in order to reduce the new/delete overhead
                                 delete &query;
                             }
 
@@ -170,6 +170,7 @@ namespace uva {
 
                             /**
                              * Allows to load the model into the instance of the selected container class
+                             * \todo Add the possibility to choose between the file readers from the command line!
                              * @param the name of the model being loaded
                              * @params params the model parameters
                              */
@@ -186,7 +187,6 @@ namespace uva {
                                 LOG_USAGE << "Start creating and loading the " << model_name << " ..." << END_LOG;
                                 LOG_USAGE << model_name << " is located in: " << model_file_name << END_LOG;
 
-                                //ToDo: Add the possibility to choose between the file readers from the command line!
                                 LOG_DEBUG << "Getting the memory statistics before opening the " << model_name << " file ..." << END_LOG;
                                 stat_monitore::get_mem_stat(mem_stat_start);
 

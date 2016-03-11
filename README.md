@@ -1,12 +1,11 @@
-# The Basic Phrase-Based Statistical Machine Translation Tool
+**The Basic Phrase-Based Statistical Machine Translation Tool**
 
-**Author: Dr. Ivan S. Zapreev**: <https://nl.linkedin.com/in/zapreevis>
+**Author: [Dr. Ivan S. Zapreev](https://nl.linkedin.com/in/zapreevis)**
 
-**Git-Hub**: <https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT>
+**Project pages: [Git-Hub-Project](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT)**
 
-## Introduction
-This is a fork project from the Back Off Language Model(s) for SMT project aimed at creating the entire phrase-based SMT translation infrastructure.
-This project follows a client/server atchitecture based on WebSockets for C++ and consists of the three main applications:
+# Introduction
+This is a fork project from the Back Off Language Model(s) for SMT project aimed at creating the entire phrase-based SMT translation infrastructure. This project follows a client/server atchitecture based on WebSockets for C++ and consists of the three main applications:
 
 + **bpbd-client** - is a thin client to send the translation job requests to the translation server and obtain results
 + **bpbd-server** - the the translation server consisting of the following main components:
@@ -16,11 +15,33 @@ This project follows a client/server atchitecture based on WebSockets for C++ an
     - *RM* - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof
 + **lm-query** - a stand-alone language model query tool that allows to perform labguage model queries and estimate the joint phrase probabilities.
 
-##License
+##Decoding
+_ToDo: Extend_
 
-This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+##Translatin model
+_ToDo: Extend_
 
-##Project structure
+##Reordering model
+_ToDo: Extend_
+
+##Language model
+For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.
+
+### Language Models background
+An *n-gram* refers to a continuous sequence of n tokens. For instance, given the following sentence: our neighbor , who moved in recently , came by . If n = 3, then the possible n-grams of
+this sentence include: 
+```
+"our neighbor ,"
+"neighbor , who"
+", who moved"
+...
+", came by"
+"came by ."
+```
+
+Note that punctuation marks such as comma and full stop are treated just like any ‘real’ word and that all words are lower cased.
+
+#Project structure
 This is a Netbeans 8.0.2 project, based on cmake, and its' top-level structure is as follows:
 
 * **[Project-Folder]**/
@@ -35,16 +56,22 @@ This is a Netbeans 8.0.2 project, based on cmake, and its' top-level structure i
     * README.md - this document
     * Doxyfile - the Doxygen configuration file
 
-##Supported platforms
-Currently this project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:
+#Supported platforms
+This project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:
 
 * **Centos 6.6 64-bit** - Complete functionality.
 * **Ubuntu 15.04 64-bit** - Complete functionality.
 * **Mac OS X Yosemite 10.10 64-bit** - Limited by inability to collect memory-usage statistics.
 
-There was only a limited testing performed on 32-bit systems so there is no gaurantee the software will work out of the box.
+**Notes:**
 
-##Building the project
+1. There was only a limited testing performed on 32-bit systems.
+2. The project must be possible to build on Windows platform under [Cygwin](https://www.cygwin.com/).
+
+#External libraries
+_ToDo: Write this section_
+
+#Building the project
 Building this project requires **gcc** version >= *4.9.1* and **cmake** version >= 2.8.12.2. The project can be build in two ways:
 
 + From the Netbeans environment by running Build in the IDE
@@ -61,31 +88,30 @@ Building this project requires **gcc** version >= *4.9.1* and **cmake** version 
 
 The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run `make clean`.
 
-###Project compile-time parameters
+##Project compile-time parameters
+_ToDo: make up to date_
 
+###General
 One can limit the debug-level printing of the code by changing the value of the *LOGER_MAX_LEVEL* constant in the *./inc/Configuration.hpp*. The possible range of values, with increasing logging level is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.
 
-##LM implementation and its details
+###bpbd-client
+_ToDo: Add text_
+###bpbd-server
+_ToDo: Add text_
+###lm-query
+_ToDo: Add text_
 
+#Code documentation
+_ToDo: Extend with more details_
 
-For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.
+At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in the **./docs/** folder of the project.
 
-### Background
-An *n-gram* refers to a continuous sequence of n tokens. For instance, given the following sentence: our neighbor , who moved in recently , came by . If n = 3, then the possible n-grams of
-this sentence include: 
-<code>
-"our neighbor ,"
-"neighbor , who"
-", who moved"
-...
-", came by"
-"came by ."
-</code>
+#Literature and references
 
-Note that punctuation marks such as comma and full stop are treated just like any ‘real’ word and that all words are lower cased.
+This project is originally based on the followin literature:
 
-### References and Decisions
-This project is originally based on two papers:
+_ToDo: Put the BibText entries into linked files_
+
 >        @inproceedings{DBLP:conf/acl/PaulsK11,
 >        author    = {Adam Pauls and
 >                       Dan Klein},
@@ -121,55 +147,58 @@ and
 >          bibsource = {dblp computer science bibliography, http://dblp.org}
 >        }
 
+_ToDo: Add the paper of Ken LM_
+_ToDo: Add the SMT book_
+
 The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using *std::unordered_map* of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations
 
-##Usage
-In order to get the program usage information please run *./back-off-language-model-smt*
-from the command line, the output of the program is supposed to be as follows:
-        
-        $ ../dist/Release__MacOs_/back-off-language-model-smt
-        USAGE:	 ------------------------------------------------------------------ 
-        USAGE:	|                 Back Off Language Model(s) for SMT     :)\___/(: |
-        USAGE:	|                       Software version 1.0             {(@)v(@)} |
-        USAGE:	|                         The Owl release.               {|~- -~|} |
-        USAGE:	|             Copyright (C) Dr. Ivan S Zapreev, 2015     {/^'^'^\} |
-        USAGE:	|  ═════════════════════════════════════════════════════════m-m══  |
-        USAGE:	|        This software is distributed under GPL 2.0 license        |
-        USAGE:	|          (GPL stands for GNU General Public License)             |
-        USAGE:	|          The product comes with ABSOLUTELY NO WARRANTY.          |
-        USAGE:	|   This is a free software, you are welcome to redistribute it.   |
-        USAGE:	|                     Running in 64 bit mode!                      |
-        USAGE:	|                 Build on: Sep 21 2015 17:26:44                   |
-        USAGE:	 ------------------------------------------------------------------ 
-        ERROR:	Incorrect number of arguments, expected >= 3, got 0
-        USAGE:	Running: 
-        USAGE:	  back-off-language-model-smt <model_file> <test_file> <trie_type> [debug-level]
-        USAGE:	      <model_file> - a text file containing the back-off language model.
-        USAGE:	                     This file is supposed to be in ARPA format, see: 
-        USAGE:	                          http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html
-        USAGE:	                     for more details. We also allow doe tags listed here:
-        USAGE:	                          https://msdn.microsoft.com/en-us/library/office/hh378460%28v=office.14%29.aspx
-        USAGE:	      <test_file>  - a text file containing test data.
-        USAGE:	                     The test file consists of a number of N-grams,
-        USAGE:	                     where each line in the file consists of one N-gram.
-        USAGE:	      <trie_type>  - the trie type, one of {c2dm, w2ch, c2wa, w2ca, c2dh, g2dm}
-        USAGE:	     [debug-level] - the optional debug flag from { ERROR, WARN, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4 }
-        USAGE:	Output: 
-        USAGE:	    The program reads in the test queries from the <test_file>. 
-        USAGE:	    Each of these lines is a N-grams of the following form, e.g: 
-        USAGE:	       word1 word2 word3 word4 word5
-        USAGE:	    For each of such N-grams the probability information is 
-        USAGE:	    computed, based on the data from the <model_file>. For
-        USAGE:	    example, for a N-gram such as:
-        USAGE:	       mortgages had lured borrowers and
-        USAGE:	    the program may give the following output:
-        USAGE:	        log_10( Prob( word5 | word1 word2 word3 word4 ) ) = <log-probability>
+_ToDo: Add more details about the papers and books_
 
-##Implementation Details
+#General design
 
-In this section we mention a few implementation details, for more details see the source code documentation. At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in the **./doxygen/** folder of the project.
+#Using software
 
-The code contains the following important source files:
+## _bpbd-server_ - translation server
+## _bpbd-client_ - translation client
+## _lm-query_ - LM query tool
+In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:
+
+``` 
+vpn-stud-146-50-150-5:build zapreevis$ lm-query 
+USAGE:  ------------------------------------------------------------------ 
+USAGE: |                 Back Off Language Model(s) for SMT     :)\___/(: |
+USAGE: |                       Software version 1.1             {(@)v(@)} |
+USAGE: |                         The Owl release.               {|~- -~|} |
+USAGE: |            Copyright (C) Dr. Ivan S Zapreev, 2015-2016 {/^'^'^\} |
+USAGE: |  ═════════════════════════════════════════════════════════m-m══  |
+USAGE: |        This software is distributed under GPL 2.0 license        |
+USAGE: |          (GPL stands for GNU General Public License)             |
+USAGE: |          The product comes with ABSOLUTELY NO WARRANTY.          |
+USAGE: |   This is a free software, you are welcome to redistribute it.   |
+USAGE: |                     Running in 64 bit mode!                      |
+USAGE: |                 Build on: Mar 10 2016 17:11:35                   |
+USAGE:  ------------------------------------------------------------------ 
+PARSE ERROR:  
+             Required arguments missing: query, model
+
+Brief USAGE: 
+   lm-query  [-l <lm lambda weight>] [-d <error|warn|usage|result|info
+             |info1|info2|info3>] -q <query file name> -m <model file name>
+             [--] [--version] [-h]
+
+For complete USAGE and HELP type: 
+   lm-query --help
+```
+
+#Software details
+## _bpbd-client_
+_ToDo: Add details on how the client works including requirements and structure_
+## _bpbd-server_
+_ToDo: Add details on how the server works including requirements and structure_
+## _lm-query_
+_ToDo: Update details on how the query tool works including requirements and structure_
+
+In this section we mention a few implementation details, for more details see the source code documentation. The code contains the following important source files:
 
 * **main.cpp** - contains the entry point of the program
 * **Executor.cpp** -  contains some utility functions including the one reading the test document and performing the queries on a filled in Trie instance.
@@ -189,18 +218,13 @@ The code contains the following important source files:
 * **StatisticsMonitor.hpp / StatisticsMonitor.cpp** - contains a class responsible for gathering memory and CPU usage statistics
 * **Logger.hpp/Logger.cpp** - contains a basic logging facility class
 
-##ToDo
-* ** C2DHashMapTrie.hpp / C2DHashMapTrie.cpp ** - the current implementation is potentially error prone to hash collisions in case of context id overflows. Overflows were not observed on the tries of up to 20 Gb but a more thorough testing must be needed and perhaps the collision detection must be always on for this trie.
-* **Tries** - It is possible to introduce more templating into the tries, e.g. the gram-level-based templating. It must improve performance as many checks can be resolved compile-time.
-* **G2DHashMapTrie.hpp / G2DHashMapTrie.cpp** - This trie is very performance efficient but its memory consumption is at present sub optimal. It needs a significant re-work in the way data is stored.
-* **Thread safety** - Not all the code is thread safe. Tries are to be reviewed for using class data members during filling in the tries or querying. One can just make the entire trie interface synchronized but this is sub-optimal therefore the idea is, when querying, to use the shared class members only for reading and all the temporary storage data is to be allocated and passed through the call stack by reference. This is, for the most, already so but requires and extra check.
-* **Testing** - the testing done with this code was limited. Potentially the Trie code, and the rest, still contains error. So it is recommended to add unit and functional tests for this project
-* **Code** - in some places more of the old style C functions are used, which might have good equivalent in C++. Also, the naming convention is not always ideally followed. The using of Templates in the code might be to complex, although potentially gives some performance and genericity advantages.
- 
-##History
+#Licensing
+This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#History
 * **21.04.2015** - Created
 * **27.07.2015** - Changed project name and some to-do's
 * **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. 
-
+* **11.03.2016** - Updated Updated to reflect the project status. 
 
 https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet

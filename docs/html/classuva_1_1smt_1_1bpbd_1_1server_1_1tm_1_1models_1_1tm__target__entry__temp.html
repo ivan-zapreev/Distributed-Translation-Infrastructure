@@ -530,15 +530,16 @@ template&lt;uint8_t max_num_features&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Allows to set the weights into the target entry </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Allows to set the weights into the target entry. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>Get rid of magic constants here! <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">num_features</td><td>the number of features to be set, already in the log10 scale </td></tr>
     <tr><td class="paramname">features</td><td>the weights to be set into the entry This is an array of translation weights, as we have here: features[0] = p(f|e); features[1] = lex(p(f|e)); features[2] = p(e|f); features[3] = lex(p(e|f)); features[4] = phrase penalty; // optional </td></tr>
   </table>
   </dd>
 </dl>
+</dd></dl>
 
-<p>Definition at line <a class="el" href="tm__target__entry_8hpp_source.html#l00197">197</a> of file <a class="el" href="tm__target__entry_8hpp_source.html">tm_target_entry.hpp</a>.</p>
+<p>Definition at line <a class="el" href="tm__target__entry_8hpp_source.html#l00198">198</a> of file <a class="el" href="tm__target__entry_8hpp_source.html">tm_target_entry.hpp</a>.</p>
 
 </div>
 </div>

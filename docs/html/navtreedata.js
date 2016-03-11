@@ -1,7 +1,7 @@
 var NAVTREE =
 [
   [ "Basic Phrase Based Decoding", "index.html", [
-    [ "Back Off Language Model(s) for SMT", "md__r_e_a_d_m_e.html", null ],
+    [ "README", "md__r_e_a_d_m_e.html", null ],
     [ "Todo List", "todo.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ],

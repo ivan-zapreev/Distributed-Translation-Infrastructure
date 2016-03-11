@@ -207,7 +207,10 @@ namespace uva {
 
                     /**
                      * Is used from the translation task to notify the translation
-                     * job that the task is ready. This method is thread safe
+                     * job that the task is ready. This method is thread safe.
+                     * \todo {Do a strict check on the tasks reporting to be finished,
+                     * these should be the ones from the m_tasks list and they must
+                     * report themselves only ones. (Optional - for safety).}
                      * @param task the translation task that is finished
                      */
                     void notify_task_done(const trans_task_ptr& task) {
@@ -215,10 +218,6 @@ namespace uva {
 
                         {
                             recursive_guard guard_tasks(m_tasks_lock);
-
-                            //ToDo: Do a strict check on the tasks reporting to be finished,
-                            //these should be the ones from the m_tasks list and they must
-                            //report themselves only ones. (Optional - for safety)
 
                             //Increment the finished tasks count
                             m_done_tasks_count++;

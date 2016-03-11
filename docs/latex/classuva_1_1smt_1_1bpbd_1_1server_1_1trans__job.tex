@@ -140,7 +140,7 @@ Definition at line 177 of file trans\+\_\+job.\+hpp.
 )\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job_aab4acf457f64a84e517a25d848959d8a}
 Allows to compile the end job result, e.\+g. based on the task results, come up with the job\textquotesingle{}s result code and the translated text. 
 
-Definition at line 252 of file trans\+\_\+job.\+hpp.
+Definition at line 251 of file trans\+\_\+job.\+hpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job_a2d0377b9dfa3ef4f181c922eeb0e004c}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job}!get\+\_\+code@{get\+\_\+code}}
 \index{get\+\_\+code@{get\+\_\+code}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job}}
@@ -233,14 +233,16 @@ Definition at line 195 of file trans\+\_\+job.\+hpp.
 \item[{const {\bf trans\+\_\+task\+\_\+ptr} \&}]{task}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}\label{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job_ae1ca94b2972dc12e4bc0d8ae6604eae6}
-Is used from the translation task to notify the translation job that the task is ready. This method is thread safe 
+Is used from the translation task to notify the translation job that the task is ready. This method is thread safe. \begin{DoxyRefDesc}{Todo}
+\item[\hyperlink{todo__todo000018}{Todo}]\{Do a strict check on the tasks reporting to be finished, these should be the ones from the m\+\_\+tasks list and they must report themselves only ones. (Optional -\/ for safety).\} 
 \begin{DoxyParams}{Parameters}
 {\em task} & the translation task that is finished \\
 \hline
 \end{DoxyParams}
+\end{DoxyRefDesc}
 
 
-Definition at line 213 of file trans\+\_\+job.\+hpp.
+Definition at line 216 of file trans\+\_\+job.\+hpp.
 
 \hypertarget{classuva_1_1smt_1_1bpbd_1_1server_1_1trans__job_aaafc88ae2a94e07d4cab671006a9212a}{}\index{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job}!set\+\_\+done\+\_\+job\+\_\+notifier@{set\+\_\+done\+\_\+job\+\_\+notifier}}
 \index{set\+\_\+done\+\_\+job\+\_\+notifier@{set\+\_\+done\+\_\+job\+\_\+notifier}!uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job@{uva\+::smt\+::bpbd\+::server\+::trans\+\_\+job}}

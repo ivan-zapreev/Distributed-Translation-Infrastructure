@@ -26,6 +26,5 @@ var searchData=
   ['byte_5fm_5fgram_5fid_2ecpp',['byte_m_gram_id.cpp',['../byte__m__gram__id_8cpp.html',1,'']]],
   ['byte_5fm_5fgram_5fid_5ftables_5fhpp',['BYTE_M_GRAM_ID_TABLES_HPP',['../m__gram__id_8hpp.html#a86934d65096c390b7c21d86a7d8927e4',1,'m_gram_id.hpp']]],
   ['bytes_5fone_5fmb',['BYTES_ONE_MB',['../namespaceuva_1_1utils_1_1monitore.html#a286c7985e00d8d56cb91210a3e801e54',1,'uva::utils::monitore']]],
-  ['bytes_5fto_5fbits',['BYTES_TO_BITS',['../math__utils_8hpp.html#a1178e1e3118ed30f4ed917b18b1e0961',1,'math_utils.hpp']]],
-  ['back_20off_20language_20model_28s_29_20for_20smt',['Back Off Language Model(s) for SMT',['../md__r_e_a_d_m_e.html',1,'']]]
+  ['bytes_5fto_5fbits',['BYTES_TO_BITS',['../math__utils_8hpp.html#a1178e1e3118ed30f4ed917b18b1e0961',1,'math_utils.hpp']]]
 ];

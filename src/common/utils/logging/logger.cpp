@@ -91,10 +91,12 @@ namespace uva {
                 }
             }
 
+            /**
+             * \todo {This function is ugly improve it by using a map, or a
+             * similar so that we could just get an appropriate level
+             * for the string.}
+             */
             void logger::set_reporting_level(string level) {
-                //ToDo: This function is ugly improve it by using a map, or a
-                //      similar so that we could just get an appropriate level
-                //      for the string.
                 bool isGoodLevel = true;
                 transform(level.begin(), level.end(), level.begin(), ::toupper);
 
