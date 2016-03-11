@@ -1,10 +1,10 @@
 {\bfseries The Basic Phrase-\/\+Based Statistical Machine Translation Tool}
 
-{\bfseries Author\+: \href{https://nl.linkedin.com/in/zapreevis}{\tt Dr. Ivan S. Zapreev}}
+{\bfseries Author\+:} \href{https://nl.linkedin.com/in/zapreevis}{\tt Dr. Ivan S. Zapreev}
 
-{\bfseries Project pages\+: \href{https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT}{\tt Git-\/\+Hub-\/\+Project}}
+{\bfseries Project pages\+:} \href{https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT}{\tt Git-\/\+Hub-\/\+Project}
 
-\section*{Introduction}
+\subsection*{Introduction}
 
 This is a fork project from the Back Off Language Model(s) for S\+M\+T project aimed at creating the entire phrase-\/based S\+M\+T translation infrastructure. This project follows a client/server atchitecture based on Web\+Sockets for C++ and consists of the three main applications\+:
 
@@ -21,42 +21,47 @@ This is a fork project from the Back Off Language Model(s) for S\+M\+T project a
 \item {\bfseries lm-\/query} -\/ a stand-\/alone language model query tool that allows to perform labguage model queries and estimate the joint phrase probabilities.
 \end{DoxyItemize}
 
-\subsection*{Decoding}
-
-{\itshape To\+Do\+: Extend}
-
-\subsection*{Translatin model}
-
-{\itshape To\+Do\+: Extend}
-
-\subsection*{Reordering model}
-
-{\itshape To\+Do\+: Extend}
-
-\subsection*{Language model}
-
-For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.\+e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-\/grams) occurring in some training data.
-
-\subsubsection*{Language Models background}
-
-An {\itshape n-\/gram} refers to a continuous sequence of n tokens. For instance, given the following sentence\+: our neighbor , who moved in recently , came by . If n = 3, then the possible n-\/grams of this sentence include\+: 
-\begin{DoxyCode}
-1 "our neighbor ,"
-2 "neighbor , who"
-3 ", who moved"
-4 ...
-5 ", came by"
-6 "came by ."
-\end{DoxyCode}
+To keep a clear view of the used terminology further we will privide some details on the phrase based statistical machine translation as given on the picture below.
 
 
-Note that punctuation marks such as comma and full stop are treated just like any ‘real’ word and that all words are lower cased.
 
-\#\+Project structure This is a Netbeans 8.\+0.\+2 project, based on cmake, and its\textquotesingle{} top-\/level structure is as follows\+:
+The entire phrase-\/based statistical machine translation is based on learned statistical correlations between words and phrases of an example translation text, also called parallel corpus or corpora. Clearly, if the training corpora is large enough then it allows to cover most source/target language words and phrases and shall have enough information for approximating a translation of an arbitrary text. However, before this information can be extracted, the parallel corpora undergoes the process called {\itshape word alignment} which is aimed at estimating which words/phrases in the source language correspond to which words/phrases in the target language. As a result, we obtain two statistical models\+:
+
+
+\begin{DoxyEnumerate}
+\item The Translation model -\/ providing phrases in the source language with learned possible target language translations and the probabilities thereof.
+\item The Reordering model -\/ storing information about probable translation orders of the phrases within the source text, based on the observed source and target phrases and alignment thereof.
+\end{DoxyEnumerate}
+
+The last model, possibly learned from a different corpus in a target language, is the Language model. Its purpose is to reflect the likelihood of this or that phrase in the target language to occur. In other words it is used to evaluate the obtained translation for being {\itshape sound} in the target language.
+
+With these three models at hand one can perform decoding, which is a synonim to a translation process. S\+M\+T decoding is performed by exploring the state space of all possible translations and reorderings of the source language phrases within one sentence and then looking for the most probable translations, as indicated at the bottom part of the picture above.
+
+The rest of the document is organized as follows\+:
+
+
+\begin{DoxyEnumerate}
+\item \href{#project-structure}{\tt Project structure} -\/ Gives the file and folder structure of the project
+\item \href{#supported-platforms}{\tt Supported platforms} -\/ Indicates the project supported platforms
+\item \href{#building-the-project}{\tt Building the project} -\/ Describes the process of building the project
+\item \href{#using-software}{\tt Using software} -\/ Explain how the software is to be used
+\item \href{#input-file-formats}{\tt Input file formats} -\/ Provides examples of the input file formats
+\item \href{#code-documentation}{\tt Code documentation} -\/ Refers to the project documentation
+\item \href{#external-libraries}{\tt External libraries} -\/ Lists the included external libraries
+\item \href{#general-design}{\tt General design} -\/ Outlines the general software desing
+\item \href{#software-details}{\tt Software details} -\/ Goes about some of the software details
+\item \href{#literature-and-references}{\tt Literature and references} -\/ Presents the list of used literature
+\item \href{#licensing}{\tt Licensing} -\/ States the licensing strategy of the project
+\item \href{#history}{\tt History} -\/ Stores a short history of this document
+\end{DoxyEnumerate}
+
+\subsection*{Project structure}
+
+This is a Netbeans 8.\+0.\+2 project, based on cmake, and its top-\/level structure is as follows\+:
 
 
 \begin{DoxyItemize}
-\item $\ast$$\ast$\mbox{[}Project-\/\+Folder\mbox{]}$\ast$$\ast$/
+\item $\ast$$\ast${\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}}$\ast$$\ast$/
 \begin{DoxyItemize}
 \item {\bfseries doc/} -\/ contains the project-\/related documents including the Doxygen-\/generated code documentation
 \item {\bfseries ext/} -\/ stores the external header only libraries used in the project
@@ -71,7 +76,9 @@ Note that punctuation marks such as comma and full stop are treated just like an
 \end{DoxyItemize}
 \end{DoxyItemize}
 
-\#\+Supported platforms This project supports two major platforms\+: Linux and Mac Os X. It has been successfully build and tested on\+:
+\subsection*{Supported platforms}
+
+This project supports two major platforms\+: Linux and Mac Os X. It has been successfully build and tested on\+:
 
 
 \begin{DoxyItemize}
@@ -88,9 +95,9 @@ Note that punctuation marks such as comma and full stop are treated just like an
 \item The project must be possible to build on Windows platform under \href{https://www.cygwin.com/}{\tt Cygwin}.
 \end{DoxyEnumerate}
 
-\#\+External libraries {\itshape To\+Do\+: Write this section}
+\subsection*{Building the project}
 
-\#\+Building the project Building this project requires {\bfseries gcc} version $>$= {\itshape 4.\+9.\+1} and {\bfseries cmake} version $>$= 2.\+8.\+12.\+2. The project can be build in two ways\+:
+Building this project requires {\bfseries gcc} version $>$= {\itshape 4.\+9.\+1} and {\bfseries cmake} version $>$= 2.\+8.\+12.\+2. The project can be build in two ways\+:
 
 
 \begin{DoxyItemize}
@@ -113,57 +120,29 @@ Note that punctuation marks such as comma and full stop are treated just like an
 
 The binaries will be generated and placed into $\ast$./build/$\ast$ folder. In order to clean the project from the command line run {\ttfamily make clean}.
 
-\subsection*{Project compile-\/time parameters}
+\subsubsection*{Project compile-\/time parameters}
 
 {\itshape To\+Do\+: make up to date}
 
-\subsubsection*{General}
+\paragraph*{General}
 
 One can limit the debug-\/level printing of the code by changing the value of the {\itshape L\+O\+G\+E\+R\+\_\+\+M\+A\+X\+\_\+\+L\+E\+V\+E\+L} constant in the $\ast$./inc/\+Configuration.hpp$\ast$. The possible range of values, with increasing logging level is\+: E\+R\+R\+O\+R, W\+A\+R\+N\+I\+N\+G, U\+S\+A\+G\+E, R\+E\+S\+U\+L\+T, I\+N\+F\+O, I\+N\+F\+O1, I\+N\+F\+O2, I\+N\+F\+O3, D\+E\+B\+U\+G, D\+E\+B\+U\+G1, D\+E\+B\+U\+G2, D\+E\+B\+U\+G3, D\+E\+B\+U\+G4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.
 
-\subsubsection*{bpbd-\/client}
+\paragraph*{bpbd-\/client}
 
-{\itshape To\+Do\+: Add text} \subsubsection*{bpbd-\/server}
+{\itshape To\+Do\+: Add text} \paragraph*{bpbd-\/server}
 
-{\itshape To\+Do\+: Add text} \subsubsection*{lm-\/query}
+{\itshape To\+Do\+: Add text} \paragraph*{lm-\/query}
 
 {\itshape To\+Do\+: Add text}
 
-\#\+Code documentation {\itshape To\+Do\+: Extend with more details}
+\subsection*{Using software}
 
-At present the documentation is done in the Java-\/\+Doc style that is successfully accepted by Doxygen with the Doxygen option {\itshape J\+A\+V\+A\+D\+O\+C\+\_\+\+A\+U\+T\+O\+B\+R\+I\+E\+F} set to {\itshape Y\+E\+S}. The generated documentation is located in the $\ast$$\ast$./docs/$\ast$$\ast$ folder of the project.
+\subsubsection*{\+\_\+bpbd-\/server\+\_\+ -\/ translation server}
 
-\#\+Literature and references
+\subsubsection*{\+\_\+bpbd-\/client\+\_\+ -\/ translation client}
 
-This project is originally based on the followin literature\+:
-
-{\itshape To\+Do\+: Put the Bib\+Text entries into linked files}
-
-\begin{quote}
-\{D\+B\+L\+P\+:conf/acl/\+Pauls\+K11, author = \{Adam Pauls and Dan Klein\}, title = \{Faster and Smaller N-\/\+Gram Language Models\}, booktitle = \{The 49th Annual Meeting of the Association for Computational Linguistics\+: Human Language Technologies, Proceedings of the Conference, 19-\/24 June, 2011, Portland, Oregon, \{U\+S\+A\}\}, pages = \{258--267\}, year = \{2011\}, crossref = \{D\+B\+L\+P\+:conf/acl/2011\}, url = \{\href{http://www.aclweb.org/anthology/P11-1027}{\tt http\+://www.\+aclweb.\+org/anthology/\+P11-\/1027}\}, timestamp = \{Fri, 02 Dec 2011 14\+:17\+:37 +0100\}, biburl = \{\href{http://dblp.uni-trier.de/rec/bib/conf/acl/PaulsK11}{\tt http\+://dblp.\+uni-\/trier.\+de/rec/bib/conf/acl/\+Pauls\+K11}\}, bibsource = \{dblp computer science bibliography, \href{http://dblp.org}{\tt http\+://dblp.\+org}\} \} \end{quote}
-
-
-and
-
-\begin{quote}
-\{D\+B\+L\+P\+:conf/dateso/\+Robenek\+P\+S13, author = \{Daniel Robenek and Jan Platos and V\{\textbackslash{}\textquotesingle{}\{a\}\}clav Sn\{\textbackslash{}\textquotesingle{}\{a\}\}sel\}, title = \{Efficient In-\/memory Data Structures for n-\/grams Indexing\}, booktitle = \{Proceedings of the Dateso 2013 Annual International Workshop on D\+Atabases, T\+Exts, Specifications and Objects, Pisek, Czech Republic, April 17, 2013\}, pages = \{48--58\}, year = \{2013\}, crossref = \{D\+B\+L\+P\+:conf/dateso/2013\}, url = \{\href{http://ceur-ws.org/Vol-971/paper21.pdf}{\tt http\+://ceur-\/ws.\+org/\+Vol-\/971/paper21.\+pdf}\}, timestamp = \{Mon, 22 Jul 2013 15\+:19\+:57 +0200\}, biburl = \{\href{http://dblp.uni-trier.de/rec/bib/conf/dateso/RobenekPS13}{\tt http\+://dblp.\+uni-\/trier.\+de/rec/bib/conf/dateso/\+Robenek\+P\+S13}\}, bibsource = \{dblp computer science bibliography, \href{http://dblp.org}{\tt http\+://dblp.\+org}\} \} \end{quote}
-
-
-{\itshape To\+Do\+: Add the paper of Ken L\+M} {\itshape To\+Do\+: Add the S\+M\+T book}
-
-The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using {\itshape std\+::unordered\+\_\+map} of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations
-
-{\itshape To\+Do\+: Add more details about the papers and books}
-
-\#\+General design
-
-\#\+Using software
-
-\subsection*{\+\_\+bpbd-\/server\+\_\+ -\/ translation server}
-
-\subsection*{\+\_\+bpbd-\/client\+\_\+ -\/ translation client}
-
-\subsection*{\+\_\+lm-\/query\+\_\+ -\/ L\+M query tool}
+\subsubsection*{\+\_\+lm-\/query\+\_\+ -\/ language model query tool}
 
 In order to get the program usage information please run $\ast$./lm-\/query$\ast$ from the command line, the output of the program is supposed to be as follows\+:
 

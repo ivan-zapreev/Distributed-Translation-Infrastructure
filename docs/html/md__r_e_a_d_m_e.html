@@ -106,9 +106,9 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><b>The Basic Phrase-Based Statistical Machine Translation Tool</b></p>
-<p><b>Author: <a href="https://nl.linkedin.com/in/zapreevis">Dr. Ivan S. Zapreev</a></b></p>
-<p><b>Project pages: <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT">Git-Hub-Project</a></b></p>
-<h1>Introduction</h1>
+<p><b>Author:</b> <a href="https://nl.linkedin.com/in/zapreevis">Dr. Ivan S. Zapreev</a></p>
+<p><b>Project pages:</b> <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT">Git-Hub-Project</a></p>
+<h2>Introduction</h2>
 <p>This is a fork project from the Back Off Language Model(s) for SMT project aimed at creating the entire phrase-based SMT translation infrastructure. This project follows a client/server atchitecture based on WebSockets for C++ and consists of the three main applications:</p>
 <ul>
 <li><b>bpbd-client</b> - is a thin client to send the translation job requests to the translation server and obtain results</li>
@@ -121,25 +121,36 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 </li>
 <li><b>lm-query</b> - a stand-alone language model query tool that allows to perform labguage model queries and estimate the joint phrase probabilities.</li>
 </ul>
-<h2>Decoding</h2>
-<p><em>ToDo: Extend</em></p>
-<h2>Translatin model</h2>
-<p><em>ToDo: Extend</em></p>
-<h2>Reordering model</h2>
-<p><em>ToDo: Extend</em></p>
-<h2>Language model</h2>
-<p>For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.</p>
-<h3>Language Models background</h3>
-<p>An <em>n-gram</em> refers to a continuous sequence of n tokens. For instance, given the following sentence: our neighbor , who moved in recently , came by . If n = 3, then the possible n-grams of this sentence include: </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;&quot;our neighbor ,&quot;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;&quot;neighbor , who&quot;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;&quot;, who moved&quot;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;...</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;&quot;, came by&quot;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;&quot;came by .&quot;</div>
-</div><!-- fragment --><p>Note that punctuation marks such as comma and full stop are treated just like any ‘real’ word and that all words are lower cased.</p>
-<p>#Project structure This is a Netbeans 8.0.2 project, based on cmake, and its' top-level structure is as follows:</p>
+<p>To keep a clear view of the used terminology further we will privide some details on the phrase based statistical machine translation as given on the picture below.</p>
+<div class="image">
+<img src="https://github.com/ivan-zapreev/Basic-Phrase-Based-Decoding/docs/images/smt/smt.jpg"  alt="Statistical Machine Translation Approach Image" title="Statistical Machine Translation Approach"/>
+</div>
+<p>The entire phrase-based statistical machine translation is based on learned statistical correlations between words and phrases of an example translation text, also called parallel corpus or corpora. Clearly, if the training corpora is large enough then it allows to cover most source/target language words and phrases and shall have enough information for approximating a translation of an arbitrary text. However, before this information can be extracted, the parallel corpora undergoes the process called <em>word alignment</em> which is aimed at estimating which words/phrases in the source language correspond to which words/phrases in the target language. As a result, we obtain two statistical models:</p>
+<ol type="1">
+<li>The Translation model - providing phrases in the source language with learned possible target language translations and the probabilities thereof.</li>
+<li>The Reordering model - storing information about probable translation orders of the phrases within the source text, based on the observed source and target phrases and alignment thereof.</li>
+</ol>
+<p>The last model, possibly learned from a different corpus in a target language, is the Language model. Its purpose is to reflect the likelihood of this or that phrase in the target language to occur. In other words it is used to evaluate the obtained translation for being <em>sound</em> in the target language.</p>
+<p>With these three models at hand one can perform decoding, which is a synonim to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reorderings of the source language phrases within one sentence and then looking for the most probable translations, as indicated at the bottom part of the picture above.</p>
+<p>The rest of the document is organized as follows:</p>
+<ol type="1">
+<li><a href="#project-structure">Project structure</a> - Gives the file and folder structure of the project</li>
+<li><a href="#supported-platforms">Supported platforms</a> - Indicates the project supported platforms</li>
+<li><a href="#building-the-project">Building the project</a> - Describes the process of building the project</li>
+<li><a href="#using-software">Using software</a> - Explain how the software is to be used</li>
+<li><a href="#input-file-formats">Input file formats</a> - Provides examples of the input file formats</li>
+<li><a href="#code-documentation">Code documentation</a> - Refers to the project documentation</li>
+<li><a href="#external-libraries">External libraries</a> - Lists the included external libraries</li>
+<li><a href="#general-design">General design</a> - Outlines the general software desing</li>
+<li><a href="#software-details">Software details</a> - Goes about some of the software details</li>
+<li><a href="#literature-and-references">Literature and references</a> - Presents the list of used literature</li>
+<li><a href="#licensing">Licensing</a> - States the licensing strategy of the project</li>
+<li><a href="#history">History</a> - Stores a short history of this document</li>
+</ol>
+<h2>Project structure</h2>
+<p>This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is as follows:</p>
 <ul>
-<li>**[Project-Folder]**/<ul>
+<li>**<code>[Project-Folder]</code>**/<ul>
 <li><b>doc/</b> - contains the project-related documents including the Doxygen-generated code documentation</li>
 <li><b>ext/</b> - stores the external header only libraries used in the project</li>
 <li><b>inc/</b> - stores the C++ header files of the implementation</li>
@@ -153,7 +164,8 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 </ul>
 </li>
 </ul>
-<p>#Supported platforms This project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:</p>
+<h2>Supported platforms</h2>
+<p>This project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:</p>
 <ul>
 <li><b>Centos 6.6 64-bit</b> - Complete functionality.</li>
 <li><b>Ubuntu 15.04 64-bit</b> - Complete functionality.</li>
@@ -164,8 +176,8 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <li>There was only a limited testing performed on 32-bit systems.</li>
 <li>The project must be possible to build on Windows platform under <a href="https://www.cygwin.com/">Cygwin</a>.</li>
 </ol>
-<p>#External libraries <em>ToDo: Write this section</em></p>
-<p>#Building the project Building this project requires <b>gcc</b> version &gt;= <em>4.9.1</em> and <b>cmake</b> version &gt;= 2.8.12.2. The project can be build in two ways:</p>
+<h2>Building the project</h2>
+<p>Building this project requires <b>gcc</b> version &gt;= <em>4.9.1</em> and <b>cmake</b> version &gt;= 2.8.12.2. The project can be build in two ways:</p>
 <ul>
 <li>From the Netbeans environment by running Build in the IDE<ul>
 <li>Perform <code>mkdir build</code> in the project folder.</li>
@@ -184,34 +196,18 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 </li>
 </ul>
 <p>The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run <code>make clean</code>.</p>
-<h2>Project compile-time parameters</h2>
+<h3>Project compile-time parameters</h3>
 <p><em>ToDo: make up to date</em></p>
-<h3>General</h3>
+<h4>General</h4>
 <p>One can limit the debug-level printing of the code by changing the value of the <em>LOGER_MAX_LEVEL</em> constant in the *./inc/Configuration.hpp*. The possible range of values, with increasing logging level is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.</p>
-<h3>bpbd-client</h3>
-<p><em>ToDo: Add text</em> </p><h3>bpbd-server</h3>
-<p><em>ToDo: Add text</em> </p><h3>lm-query</h3>
+<h4>bpbd-client</h4>
+<p><em>ToDo: Add text</em> </p><h4>bpbd-server</h4>
+<p><em>ToDo: Add text</em> </p><h4>lm-query</h4>
 <p><em>ToDo: Add text</em></p>
-<p>#Code documentation <em>ToDo: Extend with more details</em></p>
-<p>At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option <em>JAVADOC_AUTOBRIEF</em> set to <em>YES</em>. The generated documentation is located in the **./docs/** folder of the project.</p>
-<p>#Literature and references</p>
-<p>This project is originally based on the followin literature:</p>
-<p><em>ToDo: Put the BibText entries into linked files</em></p>
-<blockquote class="doxtable">
-<p>{DBLP:conf/acl/PaulsK11, author = {Adam Pauls and Dan Klein}, title = {Faster and Smaller N-Gram Language Models}, booktitle = {The 49th Annual Meeting of the Association for Computational Linguistics: Human Language Technologies, Proceedings of the Conference, 19-24 June, 2011, Portland, Oregon, {USA}}, pages = {258&ndash;267}, year = {2011}, crossref = {DBLP:conf/acl/2011}, url = {<a href="http://www.aclweb.org/anthology/P11-1027">http://www.aclweb.org/anthology/P11-1027</a>}, timestamp = {Fri, 02 Dec 2011 14:17:37 +0100}, biburl = {<a href="http://dblp.uni-trier.de/rec/bib/conf/acl/PaulsK11">http://dblp.uni-trier.de/rec/bib/conf/acl/PaulsK11</a>}, bibsource = {dblp computer science bibliography, <a href="http://dblp.org">http://dblp.org</a>} } </p>
-</blockquote>
-<p>and</p>
-<blockquote class="doxtable">
-<p>{DBLP:conf/dateso/RobenekPS13, author = {Daniel Robenek and Jan Platos and V{\'{a}}clav Sn{\'{a}}sel}, title = {Efficient In-memory Data Structures for n-grams Indexing}, booktitle = {Proceedings of the Dateso 2013 Annual International Workshop on DAtabases, TExts, Specifications and Objects, Pisek, Czech Republic, April 17, 2013}, pages = {48&ndash;58}, year = {2013}, crossref = {DBLP:conf/dateso/2013}, url = {<a href="http://ceur-ws.org/Vol-971/paper21.pdf">http://ceur-ws.org/Vol-971/paper21.pdf</a>}, timestamp = {Mon, 22 Jul 2013 15:19:57 +0200}, biburl = {<a href="http://dblp.uni-trier.de/rec/bib/conf/dateso/RobenekPS13">http://dblp.uni-trier.de/rec/bib/conf/dateso/RobenekPS13</a>}, bibsource = {dblp computer science bibliography, <a href="http://dblp.org">http://dblp.org</a>} } </p>
-</blockquote>
-<p><em>ToDo: Add the paper of Ken LM</em> <em>ToDo: Add the SMT book</em></p>
-<p>The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using <em>std::unordered_map</em> of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations</p>
-<p><em>ToDo: Add more details about the papers and books</em></p>
-<p>#General design</p>
-<p>#Using software</p>
-<h2>_bpbd-server_ - translation server</h2>
-<h2>_bpbd-client_ - translation client</h2>
-<h2>_lm-query_ - LM query tool</h2>
+<h2>Using software</h2>
+<h3>_bpbd-server_ - translation server</h3>
+<h3>_bpbd-client_ - translation client</h3>
+<h3>_lm-query_ - language model query tool</h3>
 <p>In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:</p>
 <p>``` vpn-stud-146-50-150-5:build zapreevis$ lm-query USAGE: ---------------------------------------------------------------&mdash; USAGE: | Back Off Language Model(s) for SMT :)___/(: | USAGE: | Software version 1.1 {(@)v(@)} | USAGE: | The Owl release. {|~- -~|} | USAGE: | Copyright (C) Dr. Ivan S Zapreev, 2015-2016 {/^'^'^ </p>
 </div></div><!-- contents -->

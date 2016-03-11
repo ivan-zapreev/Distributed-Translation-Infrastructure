@@ -113,11 +113,11 @@ $(document).ready(function(){initNavTree('_r_e_a_d_m_e_8md.html','');});
 <div class="contents">
 <a href="_r_e_a_d_m_e_8md.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;**The Basic Phrase-Based Statistical Machine Translation Tool**</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;**Author: [Dr. Ivan S. Zapreev](https://nl.linkedin.com/in/zapreevis)**</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;**Author:** [Dr. Ivan S. Zapreev](https://nl.linkedin.com/in/zapreevis)</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;**Project pages: [Git-Hub-Project](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT)**</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;**Project pages:** [Git-Hub-Project](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT)</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;# Introduction</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;##Introduction</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;This is a fork project from the Back Off Language Model(s) for SMT project aimed at creating the entire phrase-based SMT translation infrastructure. This project follows a client/server atchitecture based on WebSockets for C++ and consists of the three main applications:</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;+ **bpbd-client** - is a thin client to send the translation job requests to the translation server and obtain results</div>
@@ -128,63 +128,63 @@ $(document).ready(function(){initNavTree('_r_e_a_d_m_e_8md.html','');});
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    - *RM* - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;+ **lm-query** - a stand-alone language model query tool that allows to perform labguage model queries and estimate the joint phrase probabilities.</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;##Decoding</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;_ToDo: Extend_</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;##Translatin model</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;_ToDo: Extend_</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;To keep a clear view of the used terminology further we will privide some details on the phrase based statistical machine translation as given on the picture below.</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;![Statistical Machine Translation Approach Image](https://github.com/ivan-zapreev/Basic-Phrase-Based-Decoding/docs/images/smt/smt.jpg &quot;Statistical Machine Translation Approach&quot;)</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;The entire phrase-based statistical machine translation is based on learned statistical correlations between words and phrases of an example translation text, also called parallel corpus or corpora. Clearly, if the training corpora is large enough then it allows to cover most source/target language words and phrases and shall have enough information for approximating a translation of an arbitrary text. However, before this information can be extracted, the parallel corpora undergoes the process called _word alignment_ which is aimed at estimating which words/phrases in the source language correspond to which words/phrases in the target language. As a result, we obtain two statistical models:</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;##Reordering model</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;_ToDo: Extend_</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;1. The Translation model - providing phrases in the source language with learned possible target language translations and the probabilities thereof.</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;2. The Reordering model - storing information about probable translation orders of the phrases within the source text, based on the observed source and target phrases and alignment thereof.</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;##Language model</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;### Language Models background</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;An *n-gram* refers to a continuous sequence of n tokens. For instance, given the following sentence: our neighbor , who moved in recently , came by . If n = 3, then the possible n-grams of</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;this sentence include: </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;```</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;&quot;our neighbor ,&quot;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;&quot;neighbor , who&quot;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;&quot;, who moved&quot;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;...</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;&quot;, came by&quot;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;&quot;came by .&quot;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;```</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;Note that punctuation marks such as comma and full stop are treated just like any ‘real’ word and that all words are lower cased.</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;#Project structure</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;This is a Netbeans 8.0.2 project, based on cmake, and its&#39; top-level structure is as follows:</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;The last model, possibly learned from a different corpus in a target language, is the Language model. Its purpose is to reflect the likelihood of this or that phrase in the target language to occur. In other words it is used to evaluate the obtained translation for being _sound_ in the target language.</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;With these three models at hand one can perform decoding, which is a synonim to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reorderings of the source language phrases within one sentence and then looking for the most probable translations, as indicated at the bottom part of the picture above.</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;The rest of the document is organized as follows:</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;1. [Project structure](#project-structure) - Gives the file and folder structure of the project</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;2. [Supported platforms](#supported-platforms) - Indicates the project supported platforms</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;3. [Building the project](#building-the-project) - Describes the process of building the project</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;4. [Using software](#using-software) - Explain how the software is to be used</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;5. [Input file formats](#input-file-formats) - Provides examples of the input file formats</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;6. [Code documentation](#code-documentation) - Refers to the project documentation</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;7. [External libraries](#external-libraries) - Lists the included external libraries</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;8. [General design](#general-design) - Outlines the general software desing</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;9. [Software details](#software-details) - Goes about some of the software details</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;10. [Literature and references](#literature-and-references) - Presents the list of used literature</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;11. [Licensing](#licensing) - States the licensing strategy of the project</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;12. [History](#history) - Stores a short history of this document</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;* **[Project-Folder]**/</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    * **doc/** - contains the project-related documents including the Doxygen-generated code documentation</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    * **ext/** - stores the external header only libraries used in the project</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    * **inc/** - stores the C++ header files of the implementation</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    * **src/** - stores the C++ source files of the implementation</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    * **nbproject/** - stores the Netbeans project data, such as makefiles</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    * **data/** - stores the test-related data such as test models and query intput files, as well as some experimental results.</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    * LICENSE - the code license (GPL 2.0)</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    * CMakeLists.txt - the cmake build script for generating the project&#39;s make files</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    * README.md - this document</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    * Doxyfile - the Doxygen configuration file</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;#Supported platforms</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;This project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;##Project structure</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is as follows:</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;* **`[Project-Folder]`**/</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    * **doc/** - contains the project-related documents including the Doxygen-generated code documentation</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    * **ext/** - stores the external header only libraries used in the project</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    * **inc/** - stores the C++ header files of the implementation</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    * **src/** - stores the C++ source files of the implementation</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    * **nbproject/** - stores the Netbeans project data, such as makefiles</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    * **data/** - stores the test-related data such as test models and query intput files, as well as some experimental results.</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    * LICENSE - the code license (GPL 2.0)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    * CMakeLists.txt - the cmake build script for generating the project&#39;s make files</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    * README.md - this document</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    * Doxyfile - the Doxygen configuration file</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;* **Centos 6.6 64-bit** - Complete functionality.</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;* **Ubuntu 15.04 64-bit** - Complete functionality.</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;* **Mac OS X Yosemite 10.10 64-bit** - Limited by inability to collect memory-usage statistics.</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;**Notes:**</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;1. There was only a limited testing performed on 32-bit systems.</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;2. The project must be possible to build on Windows platform under [Cygwin](https://www.cygwin.com/).</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;##Supported platforms</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;This project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;* **Centos 6.6 64-bit** - Complete functionality.</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;* **Ubuntu 15.04 64-bit** - Complete functionality.</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;* **Mac OS X Yosemite 10.10 64-bit** - Limited by inability to collect memory-usage statistics.</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;**Notes:**</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;#External libraries</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;_ToDo: Write this section_</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;1. There was only a limited testing performed on 32-bit systems.</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;2. The project must be possible to build on Windows platform under [Cygwin](https://www.cygwin.com/).</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;#Building the project</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;##Building the project</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;Building this project requires **gcc** version &gt;= *4.9.1* and **cmake** version &gt;= 2.8.12.2. The project can be build in two ways:</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;+ From the Netbeans environment by running Build in the IDE</div>
@@ -201,146 +201,177 @@ $(document).ready(function(){initNavTree('_r_e_a_d_m_e_8md.html','');});
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run `make clean`.</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;##Project compile-time parameters</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;###Project compile-time parameters</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;_ToDo: make up to date_</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;###General</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;####General</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;One can limit the debug-level printing of the code by changing the value of the *LOGER_MAX_LEVEL* constant in the *./inc/Configuration.hpp*. The possible range of values, with increasing logging level is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. It is also possible to vary the information level output by the program during its execution by specifying the command line flag, see the next section.</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;###bpbd-client</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;####bpbd-client</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;_ToDo: Add text_</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;###bpbd-server</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;####bpbd-server</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;_ToDo: Add text_</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;###lm-query</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;####lm-query</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;_ToDo: Add text_</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;#Code documentation</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;_ToDo: Extend with more details_</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in the **./docs/** folder of the project.</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;#Literature and references</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;##Using software</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;###_bpbd-server_ - translation server</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;###_bpbd-client_ - translation client</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;###_lm-query_ - language model query tool</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;This project is originally based on the followin literature:</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;_ToDo: Put the BibText entries into linked files_</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;&gt;        @inproceedings{DBLP:conf/acl/PaulsK11,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;&gt;        author    = {Adam Pauls and</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;&gt;                       Dan Klein},</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;&gt;          title     = {Faster and Smaller N-Gram Language Models},</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;&gt;          booktitle = {The 49th Annual Meeting of the Association for Computational Linguistics:</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;&gt;                       Human Language Technologies, Proceedings of the Conference, 19-24</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;&gt;                       June, 2011, Portland, Oregon, {USA}},</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;&gt;          pages     = {258--267},</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;&gt;          year      = {2011},</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;&gt;          crossref  = {DBLP:conf/acl/2011},</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;&gt;          url       = {http://www.aclweb.org/anthology/P11-1027},</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;&gt;          timestamp = {Fri, 02 Dec 2011 14:17:37 +0100},</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;&gt;          biburl    = {http://dblp.uni-trier.de/rec/bib/conf/acl/PaulsK11},</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;&gt;          bibsource = {dblp computer science bibliography, http://dblp.org}</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;&gt;        }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;and</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;&gt;        @inproceedings{DBLP:conf/dateso/RobenekPS13,</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;&gt;          author    = {Daniel Robenek and</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;&gt;                       Jan Platos and</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;&gt;                       V{\&#39;{a}}clav Sn{\&#39;{a}}sel},</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;&gt;          title     = {Efficient In-memory Data Structures for n-grams Indexing},</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;&gt;          booktitle = {Proceedings of the Dateso 2013 Annual International Workshop on DAtabases,</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;&gt;                       TExts, Specifications and Objects, Pisek, Czech Republic, April 17,</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;&gt;                       2013},</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;&gt;          pages     = {48--58},</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;&gt;          year      = {2013},</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;&gt;          crossref  = {DBLP:conf/dateso/2013},</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;&gt;          url       = {http://ceur-ws.org/Vol-971/paper21.pdf},</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;&gt;          timestamp = {Mon, 22 Jul 2013 15:19:57 +0200},</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;&gt;          biburl    = {http://dblp.uni-trier.de/rec/bib/conf/dateso/RobenekPS13},</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;&gt;          bibsource = {dblp computer science bibliography, http://dblp.org}</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;&gt;        }</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;_ToDo: Add the paper of Ken LM_</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;_ToDo: Add the SMT book_</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using *std::unordered_map* of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;_ToDo: Add more details about the papers and books_</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;#General design</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;#Using software</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;## _bpbd-server_ - translation server</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;## _bpbd-client_ - translation client</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;## _lm-query_ - LM query tool</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;``` </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;vpn-stud-146-50-150-5:build zapreevis$ lm-query </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;USAGE:  ------------------------------------------------------------------ </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;USAGE: |                 Back Off Language Model(s) for SMT     :)\___/(: |</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;USAGE: |                       Software version 1.1             {(@)v(@)} |</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;USAGE: |                         The Owl release.               {|~- -~|} |</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;USAGE: |            Copyright (C) Dr. Ivan S Zapreev, 2015-2016 {/^&#39;^&#39;^\} |</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;USAGE: |  ═════════════════════════════════════════════════════════m-m══  |</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;USAGE: |        This software is distributed under GPL 2.0 license        |</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;USAGE: |          (GPL stands for GNU General Public License)             |</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;USAGE: |          The product comes with ABSOLUTELY NO WARRANTY.          |</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;USAGE: |   This is a free software, you are welcome to redistribute it.   |</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;USAGE: |                     Running in 64 bit mode!                      |</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;USAGE: |                 Build on: Mar 10 2016 17:11:35                   |</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;USAGE:  ------------------------------------------------------------------ </div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;PARSE ERROR:  </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;             Required arguments missing: query, model</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;``` </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;vpn-stud-146-50-150-5:build zapreevis$ lm-query </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;USAGE:  ------------------------------------------------------------------ </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;USAGE: |                 Back Off Language Model(s) for SMT     :)\___/(: |</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;USAGE: |                       Software version 1.1             {(@)v(@)} |</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;USAGE: |                         The Owl release.               {|~- -~|} |</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;USAGE: |            Copyright (C) Dr. Ivan S Zapreev, 2015-2016 {/^&#39;^&#39;^\} |</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;USAGE: |  ═════════════════════════════════════════════════════════m-m══  |</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;USAGE: |        This software is distributed under GPL 2.0 license        |</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;USAGE: |          (GPL stands for GNU General Public License)             |</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;USAGE: |          The product comes with ABSOLUTELY NO WARRANTY.          |</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;USAGE: |   This is a free software, you are welcome to redistribute it.   |</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;USAGE: |                     Running in 64 bit mode!                      |</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;USAGE: |                 Build on: Mar 10 2016 17:11:35                   |</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;USAGE:  ------------------------------------------------------------------ </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;PARSE ERROR:  </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;             Required arguments missing: query, model</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;Brief USAGE: </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;   lm-query  [-l &lt;lm lambda weight&gt;] [-d &lt;error|warn|usage|result|info</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;             |info1|info2|info3&gt;] -q &lt;query file name&gt; -m &lt;model file name&gt;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;             [--] [--version] [-h]</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;For complete USAGE and HELP type: </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;   lm-query --help</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;```</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;##Input file formats</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;###Translatin model</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;_ToDo: Extend_</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;###Reordering model</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;_ToDo: Extend_</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;###Language model</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;####Language Models background</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;An *n-gram* refers to a continuous sequence of n tokens. For instance, given the following sentence: `our neighbor , who moved in recently , came by .` If n = 3, then the possible n-grams of</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;this sentence include:</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;```</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;&quot;our neighbor ,&quot;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;&quot;neighbor , who&quot;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;&quot;, who moved&quot;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;...</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;&quot;, came by&quot;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;&quot;came by .&quot;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;```</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;Note that punctuation marks such as comma and full stop are treated just like any _real_ word and that all words are lower cased.</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;##Code documentation</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;_ToDo: Extend with more details_</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in the **./docs/** folder of the project.</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;##External libraries</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;_ToDo: Write this section_</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;##General design</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;_ToDo: Add the general design, the current and the future one withg images_</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;##Software details</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;###_bpbd-client_</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;_ToDo: Add details on how the client works including requirements and structure_</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;###_bpbd-server_</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;_ToDo: Add details on how the server works including requirements and structure_</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;###_lm-query_</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;_ToDo: Update details on how the query tool works including requirements and structure_</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;In this section we mention a few implementation details, for more details see the source code documentation. The code contains the following important source files:</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;Brief USAGE: </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;   lm-query  [-l &lt;lm lambda weight&gt;] [-d &lt;error|warn|usage|result|info</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;             |info1|info2|info3&gt;] -q &lt;query file name&gt; -m &lt;model file name&gt;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;             [--] [--version] [-h]</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;For complete USAGE and HELP type: </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;   lm-query --help</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;```</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;#Software details</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;## _bpbd-client_</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;_ToDo: Add details on how the client works including requirements and structure_</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;## _bpbd-server_</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;_ToDo: Add details on how the server works including requirements and structure_</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;## _lm-query_</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;_ToDo: Update details on how the query tool works including requirements and structure_</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;In this section we mention a few implementation details, for more details see the source code documentation. The code contains the following important source files:</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;* **main.cpp** - contains the entry point of the program</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;* **Executor.cpp** -  contains some utility functions including the one reading the test document and performing the queries on a filled in Trie instance.</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;* **ARPATrieBuilder.hpp / ARPATrieBuilder.cpp** - contains the class responsible for reading the ARPA file format and building up the trie model using the ARPAGramBuilder.</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;* **TrieDriver.hpp** - is the driver for all trie implementations - allows to execute queries to the tries.</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;* **LayeredTrieDriver.hpp** - is a wrapper driver for all the layered trie implementations - allows to retrieve N-gram probabilities and back-off weights.</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;* **C2DHashMapTrie.hpp / C2DHashMapTrie.cpp** - contains the Context-to-Data mapping trie implementation based on unordered_map.</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;* **C2DMapArrayTrie.hpp / C2DMapArrayTrie.cpp** - contains the Context-to-Data mapping trie implementation based  on unordered_map and ordered arrays.</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;* **C2WOrderedArrayTrie.hpp / C2WOrderedArrayTrie.cpp** - contains the Context-to-Word mapping trie implementation based on ordered arrays.</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;* **G2DHashMapTrie.hpp / G2DHashMapTrie.cpp** - contains the M-Gram-to-Data mapping trie implementation based on self-made hash maps.</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;* **W2CHybridMemoryTrie.hpp / W2CHybridMemoryTrie.cpp** - contains the Word-to-Context mapping trie implementation based on unordered_map and ordered arrays.</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;* **W2COrderedArrayTrie.hpp / W2COrderedArrayTrie.cpp** - contains the Word-to-Context mapping trie implementation based on ordered arrays.</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;* **Configuration.hpp** - contains configuration parameter for the word index and trie and memory management entities.</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;* **Exceptions.hpp** - stores the implementations of the used exception classes.</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;* **HashingUtils.hpp** - stores the hashing utility functions.</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;* ** ARPAGramBuilder.hpp / ARPAGramBuilder.cpp** - contains the class responsible for building n-grams from a line of text and storing it into Trie.</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;* **StatisticsMonitor.hpp / StatisticsMonitor.cpp** - contains a class responsible for gathering memory and CPU usage statistics</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;* **Logger.hpp/Logger.cpp** - contains a basic logging facility class</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;#Licensing</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;* **main.cpp** - contains the entry point of the program</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;* **Executor.cpp** -  contains some utility functions including the one reading the test document and performing the queries on a filled in Trie instance.</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;* **ARPATrieBuilder.hpp / ARPATrieBuilder.cpp** - contains the class responsible for reading the ARPA file format and building up the trie model using the ARPAGramBuilder.</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;* **TrieDriver.hpp** - is the driver for all trie implementations - allows to execute queries to the tries.</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;* **LayeredTrieDriver.hpp** - is a wrapper driver for all the layered trie implementations - allows to retrieve N-gram probabilities and back-off weights.</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;* **C2DHashMapTrie.hpp / C2DHashMapTrie.cpp** - contains the Context-to-Data mapping trie implementation based on unordered_map.</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;* **C2DMapArrayTrie.hpp / C2DMapArrayTrie.cpp** - contains the Context-to-Data mapping trie implementation based  on unordered_map and ordered arrays.</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;* **C2WOrderedArrayTrie.hpp / C2WOrderedArrayTrie.cpp** - contains the Context-to-Word mapping trie implementation based on ordered arrays.</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;* **G2DHashMapTrie.hpp / G2DHashMapTrie.cpp** - contains the M-Gram-to-Data mapping trie implementation based on self-made hash maps.</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;* **W2CHybridMemoryTrie.hpp / W2CHybridMemoryTrie.cpp** - contains the Word-to-Context mapping trie implementation based on unordered_map and ordered arrays.</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;* **W2COrderedArrayTrie.hpp / W2COrderedArrayTrie.cpp** - contains the Word-to-Context mapping trie implementation based on ordered arrays.</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;* **Configuration.hpp** - contains configuration parameter for the word index and trie and memory management entities.</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;* **Exceptions.hpp** - stores the implementations of the used exception classes.</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;* **HashingUtils.hpp** - stores the hashing utility functions.</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;* ** ARPAGramBuilder.hpp / ARPAGramBuilder.cpp** - contains the class responsible for building n-grams from a line of text and storing it into Trie.</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;* **StatisticsMonitor.hpp / StatisticsMonitor.cpp** - contains a class responsible for gathering memory and CPU usage statistics</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;* **Logger.hpp/Logger.cpp** - contains a basic logging facility class</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;##Literature and references</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;This project is originally based on the followin literature:</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;_ToDo: Put the BibText entries into linked files_</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;&gt;        @inproceedings{DBLP:conf/acl/PaulsK11,</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;&gt;        author    = {Adam Pauls and</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;&gt;                       Dan Klein},</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;&gt;          title     = {Faster and Smaller N-Gram Language Models},</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;&gt;          booktitle = {The 49th Annual Meeting of the Association for Computational Linguistics:</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;&gt;                       Human Language Technologies, Proceedings of the Conference, 19-24</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;&gt;                       June, 2011, Portland, Oregon, {USA}},</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;&gt;          pages     = {258--267},</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;&gt;          year      = {2011},</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;&gt;          crossref  = {DBLP:conf/acl/2011},</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;&gt;          url       = {http://www.aclweb.org/anthology/P11-1027},</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;&gt;          timestamp = {Fri, 02 Dec 2011 14:17:37 +0100},</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;&gt;          biburl    = {http://dblp.uni-trier.de/rec/bib/conf/acl/PaulsK11},</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;&gt;          bibsource = {dblp computer science bibliography, http://dblp.org}</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;&gt;        }</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;#History</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;* **21.04.2015** - Created</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;* **27.07.2015** - Changed project name and some to-do&#39;s</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;* **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. </div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;* **11.03.2016** - Updated Updated to reflect the project status. </div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;and</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;&gt;        @inproceedings{DBLP:conf/dateso/RobenekPS13,</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;&gt;          author    = {Daniel Robenek and</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;&gt;                       Jan Platos and</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;&gt;                       V{\&#39;{a}}clav Sn{\&#39;{a}}sel},</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;&gt;          title     = {Efficient In-memory Data Structures for n-grams Indexing},</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;&gt;          booktitle = {Proceedings of the Dateso 2013 Annual International Workshop on DAtabases,</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;&gt;                       TExts, Specifications and Objects, Pisek, Czech Republic, April 17,</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;&gt;                       2013},</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;&gt;          pages     = {48--58},</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;&gt;          year      = {2013},</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;&gt;          crossref  = {DBLP:conf/dateso/2013},</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;&gt;          url       = {http://ceur-ws.org/Vol-971/paper21.pdf},</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;&gt;          timestamp = {Mon, 22 Jul 2013 15:19:57 +0200},</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;&gt;          biburl    = {http://dblp.uni-trier.de/rec/bib/conf/dateso/RobenekPS13},</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;&gt;          bibsource = {dblp computer science bibliography, http://dblp.org}</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;&gt;        }</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;_ToDo: Add the paper of Ken LM_</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;_ToDo: Add the SMT book_</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using *std::unordered_map* of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;_ToDo: Add more details about the papers and books_</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;##Licensing</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;##History</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;* **21.04.2015** - Created</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;* **27.07.2015** - Changed project name and some to-do&#39;s</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;* **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;* **11.03.2016** - Updated Updated to reflect the project status. </div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;![Markdown Logo](https://github.com/ivan-zapreev/Basic-Phrase-Based-Decoding/docs/images/markdown.png &quot;Markdown&quot;)</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; _Powered by [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)_</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
