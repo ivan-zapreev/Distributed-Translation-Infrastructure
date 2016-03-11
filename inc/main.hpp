@@ -103,8 +103,15 @@ namespace uva {
                     //Get the value and assert on its presence
                     GET_ASSERT(ini, section, key, value_str);
 
-                    //Parse this value to an integer
-                    return (INT_TYPE) stoi(value_str);
+                    try {
+                        //Parse this value to an integer
+                        return (INT_TYPE) stoi(value_str);
+                    } catch (std::invalid_argument & ex1) {
+                    } catch (std::out_of_range & ex2) {
+                    }
+
+                    //Throw an exception
+                    THROW_EXCEPTION(string("Could not parse: ") + value_str);
                 }
 
                 string get_string(INI<> &ini, string section, string key) {
@@ -119,8 +126,15 @@ namespace uva {
                     //Get the value and assert on its presence
                     GET_ASSERT(ini, section, key, value_str);
 
-                    //Parse this value to an integer
-                    return stof(value_str);
+                    try {
+                        //Parse this value to an integer
+                        return stof(value_str);
+                    } catch (std::invalid_argument & ex1) {
+                    } catch (std::out_of_range & ex2) {
+                    }
+
+                    //Throw an exception
+                    THROW_EXCEPTION(string("Could not parse: ") + value_str);
                 }
             }
         }
