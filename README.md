@@ -37,11 +37,12 @@ The rest of the document is organized as follows:
 5. [Input file formats](#input-file-formats) - Provides examples of the input file formats
 6. [Code documentation](#code-documentation) - Refers to the project documentation
 7. [External libraries](#external-libraries) - Lists the included external libraries
-8. [General design](#general-design) - Outlines the general software desing
-9. [Software details](#software-details) - Goes about some of the software details
-10. [Literature and references](#literature-and-references) - Presents the list of used literature
-11. [Licensing](#licensing) - States the licensing strategy of the project
-12. [History](#history) - Stores a short history of this document
+8. [Performance evaluation](#performance-evaluation) - Contains performance evaluation results
+9. [General design](#general-design) - Outlines the general software desing
+10. [Software details](#software-details) - Goes about some of the software details
+11. [Literature and references](#literature-and-references) - Presents the list of used literature
+12. [Licensing](#licensing) - States the licensing strategy of the project
+13. [History](#history) - Stores a short history of this document
 
 
 ##Project structure
