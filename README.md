@@ -15,7 +15,7 @@ This is a fork project from the Back Off Language Model(s) for SMT project aimed
     - *RM* - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof
 + **lm-query** - a stand-alone language model query tool that allows to perform labguage model queries and estimate the joint phrase probabilities.
 
-To keep a clear view of the used terminology further we will privide some details on the phrase based statistical machine translation as given on the picture below.
+To keep a clear view of the used terminology further we will privide some details on the phrase based statistical machine translation as given on the picture below, taken from [TAUS MT SHOWCASE slides](http://www.slideshare.net/TAUS/10-april-2013-taus-mt-showcase-mt-for-southeast-asian-languages-aw-ai-ti-institute-for-infocomm-18665069).
 
 ![Statistical Machine Translation Approach Image](./docs/images/smt/smt.jpg "Statistical Machine Translation Approach")
 
@@ -49,7 +49,7 @@ The rest of the document is organized as follows:
 This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is as follows:
 
 * **`[Project-Folder]`**/
-    * **doc/** - contains the project-related documents including the Doxygen-generated code documentation and images
+    * **docs/** - contains the project-related documents including the Doxygen-generated code documentation and images
     * **ext/** - stores the external header only libraries used in the project
     * **inc/** - stores the C++ header files of the implementation
     * **src/** - stores the C++ source files of the implementation
