@@ -115,19 +115,19 @@ There is a number of project parameters that at this moment are to be chosen onl
 **LM configs:** There is a number of Language-model-specific parameters that can be configured runtime. These are located in `./inc/server/lm/lm_configs.hpp`, please be careful changing them:
 
 * `lm_word_index` - the word index type to be used, the possible values are:
-     * `basic_word_index` - _ToDo: Fill In_
-     * `counting_word_index` - _ToDo: Fill In_
-     * `optimizing_word_index<basic_word_index>` - _ToDo: Fill In_
-     * `optimizing_word_index<counting_word_index>` - _ToDo: Fill In_
-     * `hashing_word_index` - 
-* `lm_model_type` - the model type to be used, the possible values (trie types) are:
-     * `c2d_hybrid_trie<lm_word_index>` - _ToDo: Fill In_
-     * `c2d_map_trie<lm_word_index>` - _ToDo: Fill In_
-     * `c2w_array_trie<lm_word_index>` - _ToDo: Fill In_
-     * `g2d_map_trie<lm_word_index>` - _ToDo: Fill In_
-     * `h2d_map_trie<lm_word_index>` - _ToDo: Fill In_
-     * `w2c_array_trie<lm_word_index>` - _ToDo: Fill In_
-     * `w2c_hybrid_trie<lm_word_index>` - _ToDo: Fill In_
+     * `basic_word_index` - the basic word index that just loads the uni-grams in the same order as in the LM model file and give them consequtive id values.
+     * `counting_word_index` - the basic word index that counts the number of times the unigram occurs in the LM model file and gives lower ids to the more frequent unigrams. This ensures some performance boost (within 10%) in querying certain types of langue models but requires longer loading times.
+     * `optimizing_word_index<basic_word_index>` - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a basic word index as a bootstrap word index for issuing the ids.
+     * `optimizing_word_index<counting_word_index>` - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a counting word index as a bootstrap word index for issuing the ids.
+     * `hashing_word_index` - the hashing word index is a discontinuous word index that does not issue the unigram ids consequently but rather associates each unigram with its hash value, the latter is taken to be an id. This is the only type of index supported by the hash-based `h2d_map_trie`.
+* `lm_model_type` - the model type to be used, the possible values (trie types) are, for performance comparison thereof see [Performance Evaluation](#performance-evaluation):
+     * `c2d_hybrid_trie<lm_word_index>` - contains the context-to-data mapping trie implementation based on `std::unordered` map and ordered arrays.
+     * `c2d_map_trie<lm_word_index>` - contains the context-to-data mapping trie implementation based on `std::unordered map`.
+     * `c2w_array_trie<lm_word_index>` - contains the context-to-word mapping trie implementation based on ordered arrays.
+     * `g2d_map_trie<lm_word_index>` - contains the m-gram-to-data mapping trie implementation based on self-made hash maps.
+     * `h2d_map_trie<lm_word_index>` - contains the hash-to-data mapping trie based on the linear probing hash map imlementation.
+     * `w2c_array_trie<lm_word_index>` - contains the word-to-context mapping trie implementation based on ordered arrays.
+     * `w2c_hybrid_trie<lm_word_index>` - contains the word-to-context mapping trie implementation based on `std::unordered` map and ordered arrays.
 * `lm_model_reader` - the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with `cstyle_file_reader` being the default:
      * `file_stream_reader` - uses the C++ streams to read from files, the slowest
      * `cstyle_file_reader` - uses C-style file reading functions, faster than `file_stream_reader`
@@ -160,19 +160,7 @@ In order to get the program usage information please run *./lm-query* from the c
 
 ``` 
 vpn-stud-146-50-150-5:build zapreevis$ lm-query 
-USAGE:  ------------------------------------------------------------------ 
-USAGE: |                 Back Off Language Model(s) for SMT     :)\___/(: |
-USAGE: |                       Software version 1.1             {(@)v(@)} |
-USAGE: |                         The Owl release.               {|~- -~|} |
-USAGE: |            Copyright (C) Dr. Ivan S Zapreev, 2015-2016 {/^'^'^\} |
-USAGE: |  ═════════════════════════════════════════════════════════m-m══  |
-USAGE: |        This software is distributed under GPL 2.0 license        |
-USAGE: |          (GPL stands for GNU General Public License)             |
-USAGE: |          The product comes with ABSOLUTELY NO WARRANTY.          |
-USAGE: |   This is a free software, you are welcome to redistribute it.   |
-USAGE: |                     Running in 64 bit mode!                      |
-USAGE: |                 Build on: Mar 10 2016 17:11:35                   |
-USAGE:  ------------------------------------------------------------------ 
+<...>
 PARSE ERROR:  
              Required arguments missing: query, model
 
@@ -217,6 +205,30 @@ At present the documentation is done in the Java-Doc style that is successfully 
 ##External libraries
 _ToDo: Write this section_
 
+##Performance evaluation
+In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix Tests](#appendix-tests)
+
+###Test set-up
+The main target of this experimental comparison is to evaluate memory consumption and query times of the implemented tries. For doing that we do not rely on the time and memory statis- tics reported by the tools but rather, for the sake of uniform and independent opinion, rely on the Linux standard time utility available in the `zsh` Linux shell. The latter provides system- measured statistics about the program run. We choose to measure:
+* **MRSS** - the maximum resident memory usage of the program* **CPU time** - the CPU time in secondsWe chose to measure maximum resident memory usage as this is what defines the amount of RAM needed to run the program. Also, the CPU times are the actual times that the program was executed on the CPU. Measuring CPU times allows for a fair comparison as excludes possible results influence by the other system processes.
+
+The experiments were set up to be run with different-size 5-gram language models given in the ARPA format with two types of inputs:1. The single 5-gram query that defines the baseline2. The file input with 100,000,000 of 5-gram queriesThe delta in execution CPU times between the baseline and the 100,000,000 query files defines the pure query execution time of the tool. Note that, the query files were produced from the text corpus different from the one used to produce the considered language models. The MRSS values are reported in gigabytes (Gb) and the CPU times are measured in seconds. The plots provide MRSS and CPU times relative to the input model size in Gb.
+
+The test hardware configuration and the model/query files' data is to be found in [Appendix Tests](#appendix-tests)
+
+###Experimental results
+The experimental results are present in the following two pictures. The first one indicates the changes in the MRSS depending on the model size: 
+
+![MRSS Comparions Image](./docs/images/experiments/lm/mem.pdf "MRSS Comparions")
+
+The second one shows the query CPU times depending on the model sizes:
+
+![CPU Times Comparions Image](./docs/images/experiments/lm/time.pdf "CPU Times Comparions")
+
+The results show that the developed LM model trie representations are highly compatible with the available state of the art tools. We also give the following usage guidelines for the implemented tries:
+* **w2ca** and **c2wa** tries are beneficial for the machines with limited RAM. If low memory usage is very critical then bitmap hash caching can also be disabled.* **c2dm** trie provides the fastest performance with moderate memory consumption. This is recommended when high performance is needed but one should be aware of possible m-gram id collisions.10* **c2dh** trie is preferable if performance, as well as moderate memory consumption, is needed. This is the second-fastest trie which, unlike **c2dm**, is fully reliable.* **w2ch** trie did not show itself useful and **g2dm** is yet to be re-worked and improved for better performance and memory usage.
+* **h2dm** following the intuitions of the KenLM implementation, realises the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
+
 ##General design
 
 _ToDo: Add the general design, the current and the future one withg images_
@@ -229,67 +241,11 @@ _ToDo: Add details on how the server works including requirements and structure_
 ###_lm-query_
 _ToDo: Update details on how the query tool works including requirements and structure_
 
-In this section we mention a few implementation details, for more details see the source code documentation. The code contains the following important source files:
-
-* **main.cpp** - contains the entry point of the program
-* **Executor.cpp** -  contains some utility functions including the one reading the test document and performing the queries on a filled in Trie instance.
-* **ARPATrieBuilder.hpp / ARPATrieBuilder.cpp** - contains the class responsible for reading the ARPA file format and building up the trie model using the ARPAGramBuilder.
-* **TrieDriver.hpp** - is the driver for all trie implementations - allows to execute queries to the tries.
-* **LayeredTrieDriver.hpp** - is a wrapper driver for all the layered trie implementations - allows to retrieve N-gram probabilities and back-off weights.
-* **C2DHashMapTrie.hpp / C2DHashMapTrie.cpp** - contains the Context-to-Data mapping trie implementation based on unordered_map.
-* **C2DMapArrayTrie.hpp / C2DMapArrayTrie.cpp** - contains the Context-to-Data mapping trie implementation based  on unordered_map and ordered arrays.
-* **C2WOrderedArrayTrie.hpp / C2WOrderedArrayTrie.cpp** - contains the Context-to-Word mapping trie implementation based on ordered arrays.
-* **G2DHashMapTrie.hpp / G2DHashMapTrie.cpp** - contains the M-Gram-to-Data mapping trie implementation based on self-made hash maps.
-* **W2CHybridMemoryTrie.hpp / W2CHybridMemoryTrie.cpp** - contains the Word-to-Context mapping trie implementation based on unordered_map and ordered arrays.
-* **W2COrderedArrayTrie.hpp / W2COrderedArrayTrie.cpp** - contains the Word-to-Context mapping trie implementation based on ordered arrays.
-* **Configuration.hpp** - contains configuration parameter for the word index and trie and memory management entities.
-* **Exceptions.hpp** - stores the implementations of the used exception classes.
-* **HashingUtils.hpp** - stores the hashing utility functions.
-* ** ARPAGramBuilder.hpp / ARPAGramBuilder.cpp** - contains the class responsible for building n-grams from a line of text and storing it into Trie.
-* **StatisticsMonitor.hpp / StatisticsMonitor.cpp** - contains a class responsible for gathering memory and CPU usage statistics
-* **Logger.hpp/Logger.cpp** - contains a basic logging facility class
-
 ##Literature and references
 
 This project is originally based on the followin literature:
 
 _ToDo: Put the BibText entries into linked files_
-
->        @inproceedings{DBLP:conf/acl/PaulsK11,
->        author    = {Adam Pauls and
->                       Dan Klein},
->          title     = {Faster and Smaller N-Gram Language Models},
->          booktitle = {The 49th Annual Meeting of the Association for Computational Linguistics:
->                       Human Language Technologies, Proceedings of the Conference, 19-24
->                       June, 2011, Portland, Oregon, {USA}},
->          pages     = {258--267},
->          year      = {2011},
->          crossref  = {DBLP:conf/acl/2011},
->          url       = {http://www.aclweb.org/anthology/P11-1027},
->          timestamp = {Fri, 02 Dec 2011 14:17:37 +0100},
->          biburl    = {http://dblp.uni-trier.de/rec/bib/conf/acl/PaulsK11},
->          bibsource = {dblp computer science bibliography, http://dblp.org}
->        }
-
-and
-
->        @inproceedings{DBLP:conf/dateso/RobenekPS13,
->          author    = {Daniel Robenek and
->                       Jan Platos and
->                       V{\'{a}}clav Sn{\'{a}}sel},
->          title     = {Efficient In-memory Data Structures for n-grams Indexing},
->          booktitle = {Proceedings of the Dateso 2013 Annual International Workshop on DAtabases,
->                       TExts, Specifications and Objects, Pisek, Czech Republic, April 17,
->                       2013},
->          pages     = {48--58},
->          year      = {2013},
->          crossref  = {DBLP:conf/dateso/2013},
->          url       = {http://ceur-ws.org/Vol-971/paper21.pdf},
->          timestamp = {Mon, 22 Jul 2013 15:19:57 +0200},
->          biburl    = {http://dblp.uni-trier.de/rec/bib/conf/dateso/RobenekPS13},
->          bibsource = {dblp computer science bibliography, http://dblp.org}
->        }
-
 _ToDo: Add the paper of Ken LM_
 _ToDo: Add the SMT book_
 
@@ -305,6 +261,178 @@ This is a free software: you can redistribute it and/or modify it under the term
 * **27.07.2015** - Changed project name and some to-do's
 * **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. 
 * **11.03.2016** - Updated Updated to reflect the project status. 
+
+##Appendix Tests
+
+###SRILM
+Is a toolkit for building and applying statistical language models (LMs), primarily for use in speech recognition, statistical tagging and segmentation, and machine translation. It has been under development in the SRI Speech Technology and Research Laboratory since 1995. The employed tool version is **1.7.0**. The tool is run with the following command-line options:
+```% ngram -lm model-file -order 5 -ppl queries-file \      -no-sos -no-eos -memuse -debug 0
+```No changes were done to the tool’s source code.
+
+###KenLM
+KenLM is a tool for estimating, filtering, and querying language models. The tool does not have clear version indication, so we used the tool’s GitHub snapshot of the Git revision:
+_0f 306088c3d8b3a668c934f 605e21b693b959d4d_KenLM does not allow to switch off the probability reports from the command line. Therefore we had to modify the tool’s code. In the `kenlm/lm/ngram query.hh` file we commented out the output code lines as follows:
+
+```struct BasicPrint {  void Word(StringPiece, WordIndex, const FullScoreReturn &) const {}  void Line(uint64_t oov, float total) const {    //std::cout << "Total: " << total << " OOV: " << oov << ’\n’;  }  void Summary(double, double, uint64_t, uint64_t) {}};struct FullPrint : public BasicPrint {  void Word(StringPiece surface, WordIndex vocab,            const FullScoreReturn &ret) const {    //std::cout << surface << ’=’ << vocab << ’ ’    //<< static_cast<unsigned int>(ret.ngram_length)    //<< ’ ’ << ret.prob << ’\t’;}  void Summary(double ppl_including_oov, double ppl_excluding_oov,               uint64_t corpus_oov, uint64_t corpus_tokens) {    std::cout <<      "Perplexity including OOVs:\t" << ppl_including_oov << "\n"      "Perplexity excluding OOVs:\t" << ppl_excluding_oov << "\n"      "OOVs:\t" << corpus_oov << "\n"      "Tokens:\t" << corpus_tokens << ’\n’      ;} };
+```After this change, the tool was run with the following command-line options: 18``` 
+% query -n model-file < queries-file
+```
+
+###Hardware configuration
+The experiments were run on the following machine configuration:
+
+```
+[~ smt7 ~]$ lscpu
+Architecture:          x86_64
+CPU op-mode(s):        32-bit, 64-bit
+Byte Order:            Little Endian
+CPU(s):                40
+On-line CPU(s) list:   0-39
+Thread(s) per core:    2
+Core(s) per socket:    10
+Socket(s):             2
+NUMA node(s):          2
+Vendor ID:             GenuineIntel
+CPU family:            6
+Model:                 62
+Stepping:              4
+CPU MHz:               1200.000
+BogoMIPS:              4999.23
+Virtualization:        VT-x
+L1d cache:             32K
+L1i cache:             32K
+L2 cache:              256K
+L3 cache:              25600K
+NUMA node0 CPU(s):     0-9,20-29
+NUMA node1 CPU(s):     10-19,30-39
+[~ smt7 ~]$ lsb_release -irc
+Distributor ID:	CentOS
+Release:	6.7
+Codename:	Final
+[~ smt7 ~]$ grep MemTotal /proc/meminfo
+MemTotal:       264496688 kB
+```
+
+###Language models and query files
+The considered language models and their sizes (in bytes) are:
+
+```
+[~ smt10~]$ ls -al *.lm
+-rw-r--r-- 1     937792965 Sep 21 15:55 e_10_641093.lm
+-rw-r--r-- 1    1708763123 Sep 21 17:36 e_20_1282186.lm
+-rw-r--r-- 1    3148711562 Sep 21 17:45 e_30_2564372.lm
+-rw-r--r-- 1    5880154140 Sep 21 18:09 e_40_5128745.lm
+-rw-r--r-- 1   10952178505 Sep 21 18:29 e_50_10257490.lm
+-rw-r--r-- 1   15667577793 Sep 21 20:22 e_60_15386235.lm
+-rw-r--r-- 1   20098725535 Sep 21 20:37 e_70_20514981.lm
+-rw-r--r-- 1   48998103628 Sep 21 21:08 e_80_48998103628.lm
+```
+
+The considered query files and their sizes are:
+
+```
+[~ smt10 ~]$ ls -al q_5_gram_1*.txt
+-rw-r--r-- 1   2697064872 Sep 21 15:47 q_5_gram_100.000.000.txt
+-rw-r--r-- 1           35 Sep 21 15:57 q_5_gram_1.txt
+[~ smt10 ~]$ 
+```
+
+The number of m-grams per model is:
+
+#####e\_10\_641093.lm
+
+```
+[~ smt10 ~]$ head -n 15 e_10_641093.lm
+\data\
+ngram 1=105682
+ngram 2=1737132
+ngram 3=5121040
+ngram 4=7659442
+ngram 5=8741158
+```
+
+#####e\_20\_1282186.lm
+
+```
+[~ smt10 ~]$ head -n 8 e_20_1282186.lm
+\data\
+ngram 1=143867
+ngram 2=2707890
+ngram 3=8886067
+ngram 4=14188078
+ngram 5=16757214
+```
+
+#####e\_30\_2564372.lm
+```
+[~ smt10 ~]$ head -n 8 e_30_2564372.lm
+\data\
+ngram 1=199164
+ngram 2=4202658
+ngram 3=15300577
+ngram 4=26097321
+ngram 5=31952150
+```
+
+#####e\_40\_5128745.lm
+
+```
+[~ smt10 ~]$ head -n 8 e_40_5128745.lm
+\data\
+ngram 1=298070
+ngram 2=6675818
+ngram 3=26819467
+ngram 4=48897704
+ngram 5=62194729
+```
+
+#####e\_50\_10257490.lm
+
+```
+[~ smt10 ~]$ head -n 8 e_50_10257490.lm
+\data\
+ngram 1=439499
+ngram 2=10447874
+ngram 3=46336705
+ngram 4=90709359
+ngram 5=120411272
+```
+
+#####e\_60\_15386235.lm
+
+```
+[~ smt10 ~]$ head -n 8 e_60_15386235.lm
+\data\
+ngram 1=568105
+ngram 2=13574606
+ngram 3=63474074
+ngram 4=129430409
+ngram 5=176283104
+```
+
+#####e\_70\_20514981.lm
+
+```
+[~ smt10 ~]$ head -n 8 e_70_20514981.lm
+\data\
+ngram 1=676750
+ngram 2=16221298
+ngram 3=78807519
+ngram 4=165569280
+ngram 5=229897626
+```
+
+#####e\_80\_48998103628.lm
+
+```
+[~ smt10 ~]$ head -n 8 e_80_48998103628.lm
+\data\
+ngram 1=2210728
+ngram 2=67285057
+ngram 3=183285165
+ngram 4=396600722
+ngram 5=563533665
+```
 
 ![Markdown Logo](./docs/images/markdown.png "Markdown")
 
