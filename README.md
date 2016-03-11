@@ -124,11 +124,14 @@ There is a number of project parameters that at this moment are to be chosen onl
 * `lm_model_type` - the model type to be used, the possible values (trie types) are, for performance comparison thereof see [Performance Evaluation](#performance-evaluation):
      * `c2d_hybrid_trie<lm_word_index>` - contains the context-to-data mapping trie implementation based on `std::unordered` map and ordered arrays.
      * `c2d_map_trie<lm_word_index>` - contains the context-to-data mapping trie implementation based on `std::unordered map`.
-     * `c2w_array_trie<lm_word_index>` - contains the context-to-word mapping trie implementation based on ordered arrays.
+     * `c2w_array_trie<lm_word_index>` - contains the context-to-
+word mapping trie implementation based on ordered arrays.
      * `g2d_map_trie<lm_word_index>` - contains the m-gram-to-data mapping trie implementation based on self-made hash maps.
      * `h2d_map_trie<lm_word_index>` - contains the hash-to-data mapping trie based on the linear probing hash map imlementation.
-     * `w2c_array_trie<lm_word_index>` - contains the word-to-context mapping trie implementation based on ordered arrays.
-     * `w2c_hybrid_trie<lm_word_index>` - contains the word-to-context mapping trie implementation based on `std::unordered` map and ordered arrays.
+     * `w2c_array_trie<lm_word_index>` - contains the word-to-
+context mapping trie implementation based on ordered arrays.
+     * `w2c_hybrid_trie<lm_word_index>` - contains the word-to-
+context mapping trie implementation based on `std::unordered` map and ordered arrays.
 * `lm_model_reader` - the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with `cstyle_file_reader` being the default:
      * `file_stream_reader` - uses the C++ streams to read from files, the slowest
      * `cstyle_file_reader` - uses C-style file reading functions, faster than `file_stream_reader`
@@ -211,9 +214,18 @@ In this section we provide an empirical comparison of the developed LM query too
 
 ###Test set-up
 The main target of this experimental comparison is to evaluate memory consumption and query times of the implemented tries. For doing that we do not rely on the time and memory statis- tics reported by the tools but rather, for the sake of uniform and independent opinion, rely on the Linux standard time utility available in the `zsh` Linux shell. The latter provides system- measured statistics about the program run. We choose to measure:
-* **MRSS** - the maximum resident memory usage of the program* **CPU time** - the CPU time in secondsWe chose to measure maximum resident memory usage as this is what defines the amount of RAM needed to run the program. Also, the CPU times are the actual times that the program was executed on the CPU. Measuring CPU times allows for a fair comparison as excludes possible results influence by the other system processes.
 
-The experiments were set up to be run with different-size 5-gram language models given in the ARPA format with two types of inputs:1. The single 5-gram query that defines the baseline2. The file input with 100,000,000 of 5-gram queriesThe delta in execution CPU times between the baseline and the 100,000,000 query files defines the pure query execution time of the tool. Note that, the query files were produced from the text corpus different from the one used to produce the considered language models. The MRSS values are reported in gigabytes (Gb) and the CPU times are measured in seconds. The plots provide MRSS and CPU times relative to the input model size in Gb.
+* **MRSS** - the maximum resident memory usage of the program
+* **CPU time** - the CPU time in seconds
+
+We chose to measure maximum resident memory usage as this is what defines the amount of RAM needed to run the program. Also, the CPU times are the actual times that the program was executed on the CPU. Measuring CPU times allows for a fair comparison as excludes possible results influence by the other system processes.
+
+The experiments were set up to be run with different-size 5-gram language models given in the ARPA format with two types of inputs:
+
+1. The single 5-gram query that defines the baseline
+2. The file input with 100,000,000 of 5-gram queries
+
+The delta in execution CPU times between the baseline and the 100,000,000 query files defines the pure query execution time of the tool. Note that, the query files were produced from the text corpus different from the one used to produce the considered language models. The MRSS values are reported in gigabytes (Gb) and the CPU times are measured in seconds. The plots provide MRSS and CPU times relative to the input model size in Gb.
 
 The test hardware configuration and the model/query files' data is to be found in [Appendix Tests](#appendix-tests)
 
@@ -227,7 +239,11 @@ The second one shows the query CPU times depending on the model sizes:
 ![CPU Times Comparions Image](./docs/images/experiments/lm/time.jpg "CPU Times Comparions")
 
 The results show that the developed LM model trie representations are highly compatible with the available state of the art tools. We also give the following usage guidelines for the implemented tries:
-* **w2ca** and **c2wa** tries are beneficial for the machines with limited RAM. If low memory usage is very critical then bitmap hash caching can also be disabled.* **c2dm** trie provides the fastest performance with moderate memory consumption. This is recommended when high performance is needed but one should be aware of possible m-gram id collisions.10* **c2dh** trie is preferable if performance, as well as moderate memory consumption, is needed. This is the second-fastest trie which, unlike **c2dm**, is fully reliable.* **w2ch** trie did not show itself useful and **g2dm** is yet to be re-worked and improved for better performance and memory usage.
+
+* **w2ca** and **c2wa** tries are beneficial for the machines with limited RAM. If low memory usage is very critical then bitmap hash caching can also be disabled.
+* **c2dm** trie provides the fastest performance with moderate memory consumption. This is recommended when high performance is needed but one should be aware of possible m-gram id collisions.10
+* **c2dh** trie is preferable if performance, as well as moderate memory consumption, is needed. This is the second-fastest trie which, unlike **c2dm**, is fully reliable.
+* **w2ch** trie did not show itself useful and **g2dm** is yet to be re-worked and improved for better performance and memory usage.
 * **h2dm** following the intuitions of the KenLM implementation, realises the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
 
 ##General design
@@ -255,7 +271,11 @@ The first paper discusses optimal Trie structures for storing the learned text c
 _ToDo: Add more details about the papers and books_
 
 ##Licensing
-This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ##History
 * **21.04.2015** - Created
@@ -267,15 +287,46 @@ This is a free software: you can redistribute it and/or modify it under the term
 
 ###SRILM
 Is a toolkit for building and applying statistical language models (LMs), primarily for use in speech recognition, statistical tagging and segmentation, and machine translation. It has been under development in the SRI Speech Technology and Research Laboratory since 1995. The employed tool version is **1.7.0**. The tool is run with the following command-line options:
-```% ngram -lm model-file -order 5 -ppl queries-file \      -no-sos -no-eos -memuse -debug 0
-```No changes were done to the tool’s source code.
+```
+% ngram -lm model-file -order 5 -ppl queries-file \
+      -no-sos -no-eos -memuse -debug 0
+```
+No changes were done to the tool’s source code.
 
 ###KenLM
 KenLM is a tool for estimating, filtering, and querying language models. The tool does not have clear version indication, so we used the tool’s GitHub snapshot of the Git revision:
-_0f 306088c3d8b3a668c934f 605e21b693b959d4d_KenLM does not allow to switch off the probability reports from the command line. Therefore we had to modify the tool’s code. In the `kenlm/lm/ngram query.hh` file we commented out the output code lines as follows:
 
-```struct BasicPrint {  void Word(StringPiece, WordIndex, const FullScoreReturn &) const {}  void Line(uint64_t oov, float total) const {    //std::cout << "Total: " << total << " OOV: " << oov << ’\n’;  }  void Summary(double, double, uint64_t, uint64_t) {}};struct FullPrint : public BasicPrint {  void Word(StringPiece surface, WordIndex vocab,            const FullScoreReturn &ret) const {    //std::cout << surface << ’=’ << vocab << ’ ’    //<< static_cast<unsigned int>(ret.ngram_length)    //<< ’ ’ << ret.prob << ’\t’;}  void Summary(double ppl_including_oov, double ppl_excluding_oov,               uint64_t corpus_oov, uint64_t corpus_tokens) {    std::cout <<      "Perplexity including OOVs:\t" << ppl_including_oov << "\n"      "Perplexity excluding OOVs:\t" << ppl_excluding_oov << "\n"      "OOVs:\t" << corpus_oov << "\n"      "Tokens:\t" << corpus_tokens << ’\n’      ;} };
-```After this change, the tool was run with the following command-line options: 18``` 
+_0f 306088c3d8b3a668c934f 605e21b693b959d4d_
+
+KenLM does not allow to switch off the probability reports from the command line. Therefore we had to modify the tool’s code. In the `kenlm/lm/ngram query.hh` file we commented out the output code lines as follows:
+
+```
+struct BasicPrint {
+  void Word(StringPiece, WordIndex, const FullScoreReturn &) const {}
+  void Line(uint64_t oov, float total) const {
+    //std::cout << "Total: " << total << " OOV: " << oov << ’\n’;
+  }
+  void Summary(double, double, uint64_t, uint64_t) {}
+};
+struct FullPrint : public BasicPrint {
+  void Word(StringPiece surface, WordIndex vocab,
+            const FullScoreReturn &ret) const {
+    //std::cout << surface << ’=’ << vocab << ’ ’
+    //<< static_cast<unsigned int>(ret.ngram_length)
+    //<< ’ ’ << ret.prob << ’\t’;
+}
+  void Summary(double ppl_including_oov, double ppl_excluding_oov,
+               uint64_t corpus_oov, uint64_t corpus_tokens) {
+    std::cout <<
+      "Perplexity including OOVs:\t" << ppl_including_oov << "\n"
+      "Perplexity excluding OOVs:\t" << ppl_excluding_oov << "\n"
+      "OOVs:\t" << corpus_oov << "\n"
+      "Tokens:\t" << corpus_tokens << ’\n’
+      ;
+} };
+```
+After this change, the tool was run with the following command-line options: 18
+``` 
 % query -n model-file < queries-file
 ```
 
