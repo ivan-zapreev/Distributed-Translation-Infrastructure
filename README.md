@@ -17,7 +17,7 @@ This is a fork project from the Back Off Language Model(s) for SMT project aimed
 
 To keep a clear view of the used terminology further we will privide some details on the phrase based statistical machine translation as given on the picture below.
 
-![Statistical Machine Translation Approach Image](https://github.com/ivan-zapreev/Basic-Phrase-Based-Decoding/docs/images/smt/smt.jpg "Statistical Machine Translation Approach")
+![Statistical Machine Translation Approach Image](https://github.com/ivan-zapreev/Basic-Phrase-Based-Decoding/blob/master/docs/images/smt/smt.jpg "Statistical Machine Translation Approach")
 
 The entire phrase-based statistical machine translation is based on learned statistical correlations between words and phrases of an example translation text, also called parallel corpus or corpora. Clearly, if the training corpora is large enough then it allows to cover most source/target language words and phrases and shall have enough information for approximating a translation of an arbitrary text. However, before this information can be extracted, the parallel corpora undergoes the process called _word alignment_ which is aimed at estimating which words/phrases in the source language correspond to which words/phrases in the target language. As a result, we obtain two statistical models:
 
@@ -256,6 +256,6 @@ This is a free software: you can redistribute it and/or modify it under the term
 * **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. 
 * **11.03.2016** - Updated Updated to reflect the project status. 
 
-![Markdown Logo](https://github.com/ivan-zapreev/Basic-Phrase-Based-Decoding/docs/images/markdown.png "Markdown")
+![Markdown Logo](https://github.com/ivan-zapreev/Basic-Phrase-Based-Decoding/blob/master/docs/images/markdown.png "Markdown")
 
  _Powered by [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)_
