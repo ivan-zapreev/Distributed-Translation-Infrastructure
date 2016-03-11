@@ -157,21 +157,21 @@ There is a number of project parameters that at this moment are to be chosen onl
 \begin{DoxyItemize}
 \item {\ttfamily lm\+\_\+word\+\_\+index} -\/ the word index type to be used, the possible values are\+:
 \begin{DoxyItemize}
-\item {\ttfamily basic\+\_\+word\+\_\+index} -\/ {\itshape To\+Do\+: Fill In}
-\item {\ttfamily counting\+\_\+word\+\_\+index} -\/ {\itshape To\+Do\+: Fill In}
-\item {\ttfamily optimizing\+\_\+word\+\_\+index$<$basic\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
-\item {\ttfamily optimizing\+\_\+word\+\_\+index$<$counting\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
-\item {\ttfamily hashing\+\_\+word\+\_\+index} -\/
+\item {\ttfamily basic\+\_\+word\+\_\+index} -\/ the basic word index that just loads the uni-\/grams in the same order as in the L\+M model file and give them consequtive id values.
+\item {\ttfamily counting\+\_\+word\+\_\+index} -\/ the basic word index that counts the number of times the unigram occurs in the L\+M model file and gives lower ids to the more frequent unigrams. This ensures some performance boost (within 10\%) in querying certain types of langue models but requires longer loading times.
+\item {\ttfamily optimizing\+\_\+word\+\_\+index$<$basic\+\_\+word\+\_\+index$>$} -\/ the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a basic word index as a bootstrap word index for issuing the ids.
+\item {\ttfamily optimizing\+\_\+word\+\_\+index$<$counting\+\_\+word\+\_\+index$>$} -\/ the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a counting word index as a bootstrap word index for issuing the ids.
+\item {\ttfamily hashing\+\_\+word\+\_\+index} -\/ the hashing word index is a discontinuous word index that does not issue the unigram ids consequently but rather associates each unigram with its hash value, the latter is taken to be an id. This is the only type of index supported by the hash-\/based {\ttfamily h2d\+\_\+map\+\_\+trie}.
 \end{DoxyItemize}
-\item {\ttfamily lm\+\_\+model\+\_\+type} -\/ the model type to be used, the possible values (trie types) are\+:
+\item {\ttfamily lm\+\_\+model\+\_\+type} -\/ the model type to be used, the possible values (trie types) are, for performance comparison thereof see \href{#performance-evaluation}{\tt Performance Evaluation}\+:
 \begin{DoxyItemize}
-\item {\ttfamily c2d\+\_\+hybrid\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
-\item {\ttfamily c2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
-\item {\ttfamily c2w\+\_\+array\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
-\item {\ttfamily g2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
-\item {\ttfamily h2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
-\item {\ttfamily w2c\+\_\+array\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
-\item {\ttfamily w2c\+\_\+hybrid\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ {\itshape To\+Do\+: Fill In}
+\item {\ttfamily c2d\+\_\+hybrid\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the context-\/to-\/data mapping trie implementation based on {\ttfamily std\+::unordered} map and ordered arrays.
+\item {\ttfamily c2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the context-\/to-\/data mapping trie implementation based on {\ttfamily std\+::unordered map}.
+\item {\ttfamily c2w\+\_\+array\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the context-\/to-\/ word mapping trie implementation based on ordered arrays.
+\item {\ttfamily g2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the m-\/gram-\/to-\/data mapping trie implementation based on self-\/made hash maps.
+\item {\ttfamily h2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the hash-\/to-\/data mapping trie based on the linear probing hash map imlementation.
+\item {\ttfamily w2c\+\_\+array\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the word-\/to-\/ context mapping trie implementation based on ordered arrays.
+\item {\ttfamily w2c\+\_\+hybrid\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the word-\/to-\/ context mapping trie implementation based on {\ttfamily std\+::unordered} map and ordered arrays.
 \end{DoxyItemize}
 \item {\ttfamily lm\+\_\+model\+\_\+reader} -\/ the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with {\ttfamily cstyle\+\_\+file\+\_\+reader} being the default\+:
 \begin{DoxyItemize}
@@ -214,4 +214,379 @@ Note that not all of the combinations of the {\ttfamily lm\+\_\+word\+\_\+index}
 
 In order to get the program usage information please run $\ast$./lm-\/query$\ast$ from the command line, the output of the program is supposed to be as follows\+:
 
-``` vpn-\/stud-\/146-\/50-\/150-\/5\+:build zapreevis\$ lm-\/query U\+S\+A\+G\+E\+: -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/--- U\+S\+A\+G\+E\+: $\vert$ Back Off Language Model(s) for S\+M\+T \+:)\+\_\+\+\_\+\+\_\+/(\+: $\vert$ U\+S\+A\+G\+E\+: $\vert$ Software version 1.\+1 \{(@)v(@)\} $\vert$ U\+S\+A\+G\+E\+: $\vert$ The Owl release. \{$\vert$$\sim$-\/ -\/$\sim$$\vert$\} $\vert$ U\+S\+A\+G\+E\+: $\vert$ Copyright (C) Dr. Ivan S Zapreev, 2015-\/2016 \{/$^\wedge$\textquotesingle{}$^\wedge$\textquotesingle{}$^\wedge$ 
+
+\begin{DoxyCode}
+1 vpn-stud-146-50-150-5:build zapreevis$ lm-query 
+2 <...>
+3 PARSE ERROR:  
+4              Required arguments missing: query, model
+5 
+6 Brief USAGE: 
+7    lm-query  [-l <lm lambda weight>] [-d <error|warn|usage|result|info
+8              |info1|info2|info3>] -q <query file name> -m <model file name>
+9              [--] [--version] [-h]
+10 
+11 For complete USAGE and HELP type: 
+12    lm-query --help
+\end{DoxyCode}
+
+
+\subsection*{Input file formats}
+
+\subsubsection*{Translatin model}
+
+{\itshape To\+Do\+: Extend}
+
+\subsubsection*{Reordering model}
+
+{\itshape To\+Do\+: Extend}
+
+\subsubsection*{Language model}
+
+For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.\+e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-\/grams) occurring in some training data.
+
+\paragraph*{Language Models background}
+
+An {\itshape n-\/gram} refers to a continuous sequence of n tokens. For instance, given the following sentence\+: {\ttfamily our neighbor , who moved in recently , came by .} If n = 3, then the possible n-\/grams of this sentence include\+:
+
+
+\begin{DoxyCode}
+1 "our neighbor ,"
+2 "neighbor , who"
+3 ", who moved"
+4 ...
+5 ", came by"
+6 "came by ."
+\end{DoxyCode}
+ Note that punctuation marks such as comma and full stop are treated just like any {\itshape real} word and that all words are lower cased.
+
+\subsection*{Code documentation}
+
+{\itshape To\+Do\+: Extend with more details}
+
+At present the documentation is done in the Java-\/\+Doc style that is successfully accepted by Doxygen with the Doxygen option {\itshape J\+A\+V\+A\+D\+O\+C\+\_\+\+A\+U\+T\+O\+B\+R\+I\+E\+F} set to {\itshape Y\+E\+S}. The generated documentation is located in the $\ast$$\ast$./docs/$\ast$$\ast$ folder of the project.
+
+\subsection*{External libraries}
+
+{\itshape To\+Do\+: Write this section}
+
+\subsection*{Performance evaluation}
+
+In this section we provide an empirical comparison of the developed L\+M query tool with two other well known tools, namely \href{http://www.speech.sri.com/projects/srilm/}{\tt S\+R\+I\+L\+M} and \href{https://kheafield.com/code/kenlm/}{\tt Ken\+L\+M}, both of which provide language model implementations that can be queried. The additional information on the compared tools is to be found in \href{#appendix-tests}{\tt Appendix Tests}
+
+\subsubsection*{Test set-\/up}
+
+The main target of this experimental comparison is to evaluate memory consumption and query times of the implemented tries. For doing that we do not rely on the time and memory statis-\/ tics reported by the tools but rather, for the sake of uniform and independent opinion, rely on the Linux standard time utility available in the {\ttfamily zsh} Linux shell. The latter provides system-\/ measured statistics about the program run. We choose to measure\+:
+
+
+\begin{DoxyItemize}
+\item {\bfseries M\+R\+S\+S} -\/ the maximum resident memory usage of the program
+\item {\bfseries C\+P\+U time} -\/ the C\+P\+U time in seconds
+\end{DoxyItemize}
+
+We chose to measure maximum resident memory usage as this is what defines the amount of R\+A\+M needed to run the program. Also, the C\+P\+U times are the actual times that the program was executed on the C\+P\+U. Measuring C\+P\+U times allows for a fair comparison as excludes possible results influence by the other system processes.
+
+The experiments were set up to be run with different-\/size 5-\/gram language models given in the A\+R\+P\+A format with two types of inputs\+:
+
+
+\begin{DoxyEnumerate}
+\item The single 5-\/gram query that defines the baseline
+\item The file input with 100,000,000 of 5-\/gram queries
+\end{DoxyEnumerate}
+
+The delta in execution C\+P\+U times between the baseline and the 100,000,000 query files defines the pure query execution time of the tool. Note that, the query files were produced from the text corpus different from the one used to produce the considered language models. The M\+R\+S\+S values are reported in gigabytes (Gb) and the C\+P\+U times are measured in seconds. The plots provide M\+R\+S\+S and C\+P\+U times relative to the input model size in Gb.
+
+The test hardware configuration and the model/query files\textquotesingle{} data is to be found in \href{#appendix-tests}{\tt Appendix Tests}
+
+\subsubsection*{Experimental results}
+
+The experimental results are present in the following two pictures. The first one indicates the changes in the M\+R\+S\+S depending on the model size\+:
+
+
+
+The second one shows the query C\+P\+U times depending on the model sizes\+:
+
+
+
+The results show that the developed L\+M model trie representations are highly compatible with the available state of the art tools. We also give the following usage guidelines for the implemented tries\+:
+
+
+\begin{DoxyItemize}
+\item {\bfseries w2ca} and {\bfseries c2wa} tries are beneficial for the machines with limited R\+A\+M. If low memory usage is very critical then bitmap hash caching can also be disabled.
+\item {\bfseries c2dm} trie provides the fastest performance with moderate memory consumption. This is recommended when high performance is needed but one should be aware of possible m-\/gram id collisions.\+10
+\item {\bfseries c2dh} trie is preferable if performance, as well as moderate memory consumption, is needed. This is the second-\/fastest trie which, unlike {\bfseries c2dm}, is fully reliable.
+\item {\bfseries w2ch} trie did not show itself useful and {\bfseries g2dm} is yet to be re-\/worked and improved for better performance and memory usage.
+\item {\bfseries h2dm} following the intuitions of the Ken\+L\+M implementation, realises the hash-\/map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
+\end{DoxyItemize}
+
+\subsection*{General design}
+
+{\itshape To\+Do\+: Add the general design, the current and the future one withg images}
+
+\subsection*{Software details}
+
+\subsubsection*{\+\_\+bpbd-\/client\+\_\+}
+
+{\itshape To\+Do\+: Add details on how the client works including requirements and structure} \subsubsection*{\+\_\+bpbd-\/server\+\_\+}
+
+{\itshape To\+Do\+: Add details on how the server works including requirements and structure} \subsubsection*{\+\_\+lm-\/query\+\_\+}
+
+{\itshape To\+Do\+: Update details on how the query tool works including requirements and structure}
+
+\subsection*{Literature and references}
+
+This project is originally based on the followin literature\+:
+
+{\itshape To\+Do\+: Put the Bib\+Text entries into linked files} {\itshape To\+Do\+: Add the paper of Ken L\+M} {\itshape To\+Do\+: Add the S\+M\+T book}
+
+The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using {\itshape std\+::unordered\+\_\+map} of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations
+
+{\itshape To\+Do\+: Add more details about the papers and books}
+
+\subsection*{Licensing}
+
+This is a free software\+: you can redistribute it and/or modify it under the terms of the G\+N\+U General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but W\+I\+T\+H\+O\+U\+T A\+N\+Y W\+A\+R\+R\+A\+N\+T\+Y; without even the implied warranty of M\+E\+R\+C\+H\+A\+N\+T\+A\+B\+I\+L\+I\+T\+Y or F\+I\+T\+N\+E\+S\+S F\+O\+R A P\+A\+R\+T\+I\+C\+U\+L\+A\+R P\+U\+R\+P\+O\+S\+E. See the G\+N\+U General Public License for more details. You should have received a copy of the G\+N\+U General Public License along with this program. If not, see \href{http://www.gnu.org/licenses/}{\tt http\+://www.\+gnu.\+org/licenses/}.
+
+\subsection*{History}
+
+
+\begin{DoxyItemize}
+\item {\bfseries 21.\+04.\+2015} -\/ Created
+\item {\bfseries 27.\+07.\+2015} -\/ Changed project name and some to-\/do\textquotesingle{}s
+\item {\bfseries 21.\+09.\+2015} -\/ Updated with the latest developments preparing for the version 1, Owl release.
+\item {\bfseries 11.\+03.\+2016} -\/ Updated Updated to reflect the project status.
+\end{DoxyItemize}
+
+\subsection*{Appendix Tests}
+
+\subsubsection*{S\+R\+I\+L\+M}
+
+Is a toolkit for building and applying statistical language models (L\+Ms), primarily for use in speech recognition, statistical tagging and segmentation, and machine translation. It has been under development in the S\+R\+I Speech Technology and Research Laboratory since 1995. The employed tool version is {\bfseries 1.\+7.\+0}. The tool is run with the following command-\/line options\+: 
+\begin{DoxyCode}
+1 % ngram -lm model-file -order 5 -ppl queries-file \(\backslash\)
+2       -no-sos -no-eos -memuse -debug 0
+\end{DoxyCode}
+ No changes were done to the tool’s source code.
+
+\subsubsection*{Ken\+L\+M}
+
+Ken\+L\+M is a tool for estimating, filtering, and querying language models. The tool does not have clear version indication, so we used the tool’s Git\+Hub snapshot of the Git revision\+:
+
+{\itshape 0f 306088c3d8b3a668c934f 605e21b693b959d4d}
+
+Ken\+L\+M does not allow to switch off the probability reports from the command line. Therefore we had to modify the tool’s code. In the {\ttfamily kenlm/lm/ngram query.\+hh} file we commented out the output code lines as follows\+:
+
+
+\begin{DoxyCode}
+1 struct BasicPrint \{
+2   void Word(StringPiece, WordIndex, const FullScoreReturn &) const \{\}
+3   void Line(uint64\_t oov, float total) const \{
+4     //std::cout << "Total: " << total << " OOV: " << oov << ’\(\backslash\)n’;
+5   \}
+6   void Summary(double, double, uint64\_t, uint64\_t) \{\}
+7 \};
+8 struct FullPrint : public BasicPrint \{
+9   void Word(StringPiece surface, WordIndex vocab,
+10             const FullScoreReturn &ret) const \{
+11     //std::cout << surface << ’=’ << vocab << ’ ’
+12     //<< static\_cast<unsigned int>(ret.ngram\_length)
+13     //<< ’ ’ << ret.prob << ’\(\backslash\)t’;
+14 \}
+15   void Summary(double ppl\_including\_oov, double ppl\_excluding\_oov,
+16                uint64\_t corpus\_oov, uint64\_t corpus\_tokens) \{
+17     std::cout <<
+18       "Perplexity including OOVs:\(\backslash\)t" << ppl\_including\_oov << "\(\backslash\)n"
+19       "Perplexity excluding OOVs:\(\backslash\)t" << ppl\_excluding\_oov << "\(\backslash\)n"
+20       "OOVs:\(\backslash\)t" << corpus\_oov << "\(\backslash\)n"
+21       "Tokens:\(\backslash\)t" << corpus\_tokens << ’\(\backslash\)n’
+22       ;
+23 \} \};
+\end{DoxyCode}
+ After this change, the tool was run with the following command-\/line options\+: 18 
+\begin{DoxyCode}
+1 % query -n model-file < queries-file
+\end{DoxyCode}
+
+
+\subsubsection*{Hardware configuration}
+
+The experiments were run on the following machine configuration\+:
+
+
+\begin{DoxyCode}
+1 [~ smt7 ~]$ lscpu
+2 Architecture:          x86\_64
+3 CPU op-mode(s):        32-bit, 64-bit
+4 Byte Order:            Little Endian
+5 CPU(s):                40
+6 On-line CPU(s) list:   0-39
+7 Thread(s) per core:    2
+8 Core(s) per socket:    10
+9 Socket(s):             2
+10 NUMA node(s):          2
+11 Vendor ID:             GenuineIntel
+12 CPU family:            6
+13 Model:                 62
+14 Stepping:              4
+15 CPU MHz:               1200.000
+16 BogoMIPS:              4999.23
+17 Virtualization:        VT-x
+18 L1d cache:             32K
+19 L1i cache:             32K
+20 L2 cache:              256K
+21 L3 cache:              25600K
+22 NUMA node0 CPU(s):     0-9,20-29
+23 NUMA node1 CPU(s):     10-19,30-39
+24 [~ smt7 ~]$ lsb\_release -irc
+25 Distributor ID: CentOS
+26 Release:    6.7
+27 Codename:   Final
+28 [~ smt7 ~]$ grep MemTotal /proc/meminfo
+29 MemTotal:       264496688 kB
+\end{DoxyCode}
+
+
+\subsubsection*{Language models and query files}
+
+The considered language models and their sizes (in bytes) are\+:
+
+
+\begin{DoxyCode}
+1 [~ smt10~]$ ls -al *.lm
+2 -rw-r--r-- 1     937792965 Sep 21 15:55 e\_10\_641093.lm
+3 -rw-r--r-- 1    1708763123 Sep 21 17:36 e\_20\_1282186.lm
+4 -rw-r--r-- 1    3148711562 Sep 21 17:45 e\_30\_2564372.lm
+5 -rw-r--r-- 1    5880154140 Sep 21 18:09 e\_40\_5128745.lm
+6 -rw-r--r-- 1   10952178505 Sep 21 18:29 e\_50\_10257490.lm
+7 -rw-r--r-- 1   15667577793 Sep 21 20:22 e\_60\_15386235.lm
+8 -rw-r--r-- 1   20098725535 Sep 21 20:37 e\_70\_20514981.lm
+9 -rw-r--r-- 1   48998103628 Sep 21 21:08 e\_80\_48998103628.lm
+\end{DoxyCode}
+
+
+The considered query files and their sizes are\+:
+
+
+\begin{DoxyCode}
+1 [~ smt10 ~]$ ls -al q\_5\_gram\_1*.txt
+2 -rw-r--r-- 1   2697064872 Sep 21 15:47 q\_5\_gram\_100.000.000.txt
+3 -rw-r--r-- 1           35 Sep 21 15:57 q\_5\_gram\_1.txt
+4 [~ smt10 ~]$ 
+\end{DoxyCode}
+
+
+The number of m-\/grams per model is\+:
+
+\subparagraph*{e\+\_\+10\+\_\+641093.\+lm}
+
+
+\begin{DoxyCode}
+1 [~ smt10 ~]$ head -n 15 e\_10\_641093.lm
+2 \(\backslash\)data\(\backslash\)
+3 ngram 1=105682
+4 ngram 2=1737132
+5 ngram 3=5121040
+6 ngram 4=7659442
+7 ngram 5=8741158
+\end{DoxyCode}
+
+
+\subparagraph*{e\+\_\+20\+\_\+1282186.\+lm}
+
+
+\begin{DoxyCode}
+1 [~ smt10 ~]$ head -n 8 e\_20\_1282186.lm
+2 \(\backslash\)data\(\backslash\)
+3 ngram 1=143867
+4 ngram 2=2707890
+5 ngram 3=8886067
+6 ngram 4=14188078
+7 ngram 5=16757214
+\end{DoxyCode}
+
+
+\#\#\#\#\#e\+\_\+30\+\_\+2564372.\+lm 
+\begin{DoxyCode}
+1 [~ smt10 ~]$ head -n 8 e\_30\_2564372.lm
+2 \(\backslash\)data\(\backslash\)
+3 ngram 1=199164
+4 ngram 2=4202658
+5 ngram 3=15300577
+6 ngram 4=26097321
+7 ngram 5=31952150
+\end{DoxyCode}
+
+
+\subparagraph*{e\+\_\+40\+\_\+5128745.\+lm}
+
+
+\begin{DoxyCode}
+1 [~ smt10 ~]$ head -n 8 e\_40\_5128745.lm
+2 \(\backslash\)data\(\backslash\)
+3 ngram 1=298070
+4 ngram 2=6675818
+5 ngram 3=26819467
+6 ngram 4=48897704
+7 ngram 5=62194729
+\end{DoxyCode}
+
+
+\subparagraph*{e\+\_\+50\+\_\+10257490.\+lm}
+
+
+\begin{DoxyCode}
+1 [~ smt10 ~]$ head -n 8 e\_50\_10257490.lm
+2 \(\backslash\)data\(\backslash\)
+3 ngram 1=439499
+4 ngram 2=10447874
+5 ngram 3=46336705
+6 ngram 4=90709359
+7 ngram 5=120411272
+\end{DoxyCode}
+
+
+\subparagraph*{e\+\_\+60\+\_\+15386235.\+lm}
+
+
+\begin{DoxyCode}
+1 [~ smt10 ~]$ head -n 8 e\_60\_15386235.lm
+2 \(\backslash\)data\(\backslash\)
+3 ngram 1=568105
+4 ngram 2=13574606
+5 ngram 3=63474074
+6 ngram 4=129430409
+7 ngram 5=176283104
+\end{DoxyCode}
+
+
+\subparagraph*{e\+\_\+70\+\_\+20514981.\+lm}
+
+
+\begin{DoxyCode}
+1 [~ smt10 ~]$ head -n 8 e\_70\_20514981.lm
+2 \(\backslash\)data\(\backslash\)
+3 ngram 1=676750
+4 ngram 2=16221298
+5 ngram 3=78807519
+6 ngram 4=165569280
+7 ngram 5=229897626
+\end{DoxyCode}
+
+
+\subparagraph*{e\+\_\+80\+\_\+48998103628.\+lm}
+
+
+\begin{DoxyCode}
+1 [~ smt10 ~]$ head -n 8 e\_80\_48998103628.lm
+2 \(\backslash\)data\(\backslash\)
+3 ngram 1=2210728
+4 ngram 2=67285057
+5 ngram 3=183285165
+6 ngram 4=396600722
+7 ngram 5=563533665
+\end{DoxyCode}
+
+
+
+
+{\itshape Powered by \href{https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet}{\tt Markdown-\/\+Cheatsheet}} 

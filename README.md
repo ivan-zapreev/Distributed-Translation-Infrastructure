@@ -219,11 +219,11 @@ The test hardware configuration and the model/query files' data is to be found i
 ###Experimental results
 The experimental results are present in the following two pictures. The first one indicates the changes in the MRSS depending on the model size: 
 
-![MRSS Comparions Image](./docs/images/experiments/lm/mem.pdf "MRSS Comparions")
+![MRSS Comparions Image](./docs/images/experiments/lm/mem.jpg "MRSS Comparions")
 
 The second one shows the query CPU times depending on the model sizes:
 
-![CPU Times Comparions Image](./docs/images/experiments/lm/time.pdf "CPU Times Comparions")
+![CPU Times Comparions Image](./docs/images/experiments/lm/time.jpg "CPU Times Comparions")
 
 The results show that the developed LM model trie representations are highly compatible with the available state of the art tools. We also give the following usage guidelines for the implemented tries:
 * **w2ca** and **c2wa** tries are beneficial for the machines with limited RAM. If low memory usage is very critical then bitmap hash caching can also be disabled.* **c2dm** trie provides the fastest performance with moderate memory consumption. This is recommended when high performance is needed but one should be aware of possible m-gram id collisions.10* **c2dh** trie is preferable if performance, as well as moderate memory consumption, is needed. This is the second-fastest trie which, unlike **c2dm**, is fully reliable.* **w2ch** trie did not show itself useful and **g2dm** is yet to be re-worked and improved for better performance and memory usage.

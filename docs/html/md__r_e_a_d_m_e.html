@@ -220,21 +220,21 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <p><b>LM configs:</b> There is a number of Language-model-specific parameters that can be configured runtime. These are located in <code>./inc/server/lm/lm_configs.hpp</code>, please be careful changing them:</p>
 <ul>
 <li><code>lm_word_index</code> - the word index type to be used, the possible values are:<ul>
-<li><code>basic_word_index</code> - <em>ToDo: Fill In</em></li>
-<li><code>counting_word_index</code> - <em>ToDo: Fill In</em></li>
-<li><code>optimizing_word_index&lt;basic_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
-<li><code>optimizing_word_index&lt;counting_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
-<li><code>hashing_word_index</code> -</li>
+<li><code>basic_word_index</code> - the basic word index that just loads the uni-grams in the same order as in the LM model file and give them consequtive id values.</li>
+<li><code>counting_word_index</code> - the basic word index that counts the number of times the unigram occurs in the LM model file and gives lower ids to the more frequent unigrams. This ensures some performance boost (within 10%) in querying certain types of langue models but requires longer loading times.</li>
+<li><code>optimizing_word_index&lt;basic_word_index&gt;</code> - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a basic word index as a bootstrap word index for issuing the ids.</li>
+<li><code>optimizing_word_index&lt;counting_word_index&gt;</code> - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a counting word index as a bootstrap word index for issuing the ids.</li>
+<li><code>hashing_word_index</code> - the hashing word index is a discontinuous word index that does not issue the unigram ids consequently but rather associates each unigram with its hash value, the latter is taken to be an id. This is the only type of index supported by the hash-based <code>h2d_map_trie</code>.</li>
 </ul>
 </li>
-<li><code>lm_model_type</code> - the model type to be used, the possible values (trie types) are:<ul>
-<li><code>c2d_hybrid_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
-<li><code>c2d_map_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
-<li><code>c2w_array_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
-<li><code>g2d_map_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
-<li><code>h2d_map_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
-<li><code>w2c_array_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
-<li><code>w2c_hybrid_trie&lt;lm_word_index&gt;</code> - <em>ToDo: Fill In</em></li>
+<li><code>lm_model_type</code> - the model type to be used, the possible values (trie types) are, for performance comparison thereof see <a href="#performance-evaluation">Performance Evaluation</a>:<ul>
+<li><code>c2d_hybrid_trie&lt;lm_word_index&gt;</code> - contains the context-to-data mapping trie implementation based on <code>std::unordered</code> map and ordered arrays.</li>
+<li><code>c2d_map_trie&lt;lm_word_index&gt;</code> - contains the context-to-data mapping trie implementation based on <code>std::unordered map</code>.</li>
+<li><code>c2w_array_trie&lt;lm_word_index&gt;</code> - contains the context-to- word mapping trie implementation based on ordered arrays.</li>
+<li><code>g2d_map_trie&lt;lm_word_index&gt;</code> - contains the m-gram-to-data mapping trie implementation based on self-made hash maps.</li>
+<li><code>h2d_map_trie&lt;lm_word_index&gt;</code> - contains the hash-to-data mapping trie based on the linear probing hash map imlementation.</li>
+<li><code>w2c_array_trie&lt;lm_word_index&gt;</code> - contains the word-to- context mapping trie implementation based on ordered arrays.</li>
+<li><code>w2c_hybrid_trie&lt;lm_word_index&gt;</code> - contains the word-to- context mapping trie implementation based on <code>std::unordered</code> map and ordered arrays.</li>
 </ul>
 </li>
 <li><code>lm_model_reader</code> - the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with <code>cstyle_file_reader</code> being the default:<ul>
@@ -264,7 +264,241 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <p><em>ToDo: Configuration file</em> </p><h3>_bpbd-client_ - translation client</h3>
 <h3>_lm-query_ - language model query tool</h3>
 <p>In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:</p>
-<p>``` vpn-stud-146-50-150-5:build zapreevis$ lm-query USAGE: ---------------------------------------------------------------&mdash; USAGE: | Back Off Language Model(s) for SMT :)___/(: | USAGE: | Software version 1.1 {(@)v(@)} | USAGE: | The Owl release. {|~- -~|} | USAGE: | Copyright (C) Dr. Ivan S Zapreev, 2015-2016 {/^'^'^ </p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;vpn-stud-146-50-150-5:build zapreevis$ lm-query </div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;&lt;...&gt;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;PARSE ERROR:  </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;             Required arguments missing: query, model</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;Brief USAGE: </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;   lm-query  [-l &lt;lm lambda weight&gt;] [-d &lt;error|warn|usage|result|info</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;             |info1|info2|info3&gt;] -q &lt;query file name&gt; -m &lt;model file name&gt;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;             [--] [--version] [-h]</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;For complete USAGE and HELP type: </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;   lm-query --help</div>
+</div><!-- fragment --><h2>Input file formats</h2>
+<h3>Translatin model</h3>
+<p><em>ToDo: Extend</em></p>
+<h3>Reordering model</h3>
+<p><em>ToDo: Extend</em></p>
+<h3>Language model</h3>
+<p>For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.</p>
+<h4>Language Models background</h4>
+<p>An <em>n-gram</em> refers to a continuous sequence of n tokens. For instance, given the following sentence: <code>our neighbor , who moved in recently , came by .</code> If n = 3, then the possible n-grams of this sentence include:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;&quot;our neighbor ,&quot;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;&quot;neighbor , who&quot;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;&quot;, who moved&quot;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;...</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;&quot;, came by&quot;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;&quot;came by .&quot;</div>
+</div><!-- fragment --><p> Note that punctuation marks such as comma and full stop are treated just like any <em>real</em> word and that all words are lower cased.</p>
+<h2>Code documentation</h2>
+<p><em>ToDo: Extend with more details</em></p>
+<p>At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option <em>JAVADOC_AUTOBRIEF</em> set to <em>YES</em>. The generated documentation is located in the **./docs/** folder of the project.</p>
+<h2>External libraries</h2>
+<p><em>ToDo: Write this section</em></p>
+<h2>Performance evaluation</h2>
+<p>In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely <a href="http://www.speech.sri.com/projects/srilm/">SRILM</a> and <a href="https://kheafield.com/code/kenlm/">KenLM</a>, both of which provide language model implementations that can be queried. The additional information on the compared tools is to be found in <a href="#appendix-tests">Appendix Tests</a></p>
+<h3>Test set-up</h3>
+<p>The main target of this experimental comparison is to evaluate memory consumption and query times of the implemented tries. For doing that we do not rely on the time and memory statis- tics reported by the tools but rather, for the sake of uniform and independent opinion, rely on the Linux standard time utility available in the <code>zsh</code> Linux shell. The latter provides system- measured statistics about the program run. We choose to measure:</p>
+<ul>
+<li><b>MRSS</b> - the maximum resident memory usage of the program</li>
+<li><b>CPU time</b> - the CPU time in seconds</li>
+</ul>
+<p>We chose to measure maximum resident memory usage as this is what defines the amount of RAM needed to run the program. Also, the CPU times are the actual times that the program was executed on the CPU. Measuring CPU times allows for a fair comparison as excludes possible results influence by the other system processes.</p>
+<p>The experiments were set up to be run with different-size 5-gram language models given in the ARPA format with two types of inputs:</p>
+<ol type="1">
+<li>The single 5-gram query that defines the baseline</li>
+<li>The file input with 100,000,000 of 5-gram queries</li>
+</ol>
+<p>The delta in execution CPU times between the baseline and the 100,000,000 query files defines the pure query execution time of the tool. Note that, the query files were produced from the text corpus different from the one used to produce the considered language models. The MRSS values are reported in gigabytes (Gb) and the CPU times are measured in seconds. The plots provide MRSS and CPU times relative to the input model size in Gb.</p>
+<p>The test hardware configuration and the model/query files' data is to be found in <a href="#appendix-tests">Appendix Tests</a></p>
+<h3>Experimental results</h3>
+<p>The experimental results are present in the following two pictures. The first one indicates the changes in the MRSS depending on the model size:</p>
+<div class="image">
+<img src="./docs/images/experiments/lm/mem.jpg"  alt="MRSS Comparions Image" title="MRSS Comparions"/>
+</div>
+<p>The second one shows the query CPU times depending on the model sizes:</p>
+<div class="image">
+<img src="./docs/images/experiments/lm/time.jpg"  alt="CPU Times Comparions Image" title="CPU Times Comparions"/>
+</div>
+<p>The results show that the developed LM model trie representations are highly compatible with the available state of the art tools. We also give the following usage guidelines for the implemented tries:</p>
+<ul>
+<li><b>w2ca</b> and <b>c2wa</b> tries are beneficial for the machines with limited RAM. If low memory usage is very critical then bitmap hash caching can also be disabled.</li>
+<li><b>c2dm</b> trie provides the fastest performance with moderate memory consumption. This is recommended when high performance is needed but one should be aware of possible m-gram id collisions.10</li>
+<li><b>c2dh</b> trie is preferable if performance, as well as moderate memory consumption, is needed. This is the second-fastest trie which, unlike <b>c2dm</b>, is fully reliable.</li>
+<li><b>w2ch</b> trie did not show itself useful and <b>g2dm</b> is yet to be re-worked and improved for better performance and memory usage.</li>
+<li><b>h2dm</b> following the intuitions of the KenLM implementation, realises the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one</li>
+</ul>
+<h2>General design</h2>
+<p><em>ToDo: Add the general design, the current and the future one withg images</em></p>
+<h2>Software details</h2>
+<h3>_bpbd-client_</h3>
+<p><em>ToDo: Add details on how the client works including requirements and structure</em> </p><h3>_bpbd-server_</h3>
+<p><em>ToDo: Add details on how the server works including requirements and structure</em> </p><h3>_lm-query_</h3>
+<p><em>ToDo: Update details on how the query tool works including requirements and structure</em></p>
+<h2>Literature and references</h2>
+<p>This project is originally based on the followin literature:</p>
+<p><em>ToDo: Put the BibText entries into linked files</em> <em>ToDo: Add the paper of Ken LM</em> <em>ToDo: Add the SMT book</em></p>
+<p>The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using <em>std::unordered_map</em> of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations</p>
+<p><em>ToDo: Add more details about the papers and books</em></p>
+<h2>Licensing</h2>
+<p>This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+<h2>History</h2>
+<ul>
+<li><b>21.04.2015</b> - Created</li>
+<li><b>27.07.2015</b> - Changed project name and some to-do's</li>
+<li><b>21.09.2015</b> - Updated with the latest developments preparing for the version 1, Owl release.</li>
+<li><b>11.03.2016</b> - Updated Updated to reflect the project status.</li>
+</ul>
+<h2>Appendix Tests</h2>
+<h3>SRILM</h3>
+<p>Is a toolkit for building and applying statistical language models (LMs), primarily for use in speech recognition, statistical tagging and segmentation, and machine translation. It has been under development in the SRI Speech Technology and Research Laboratory since 1995. The employed tool version is <b>1.7.0</b>. The tool is run with the following command-line options: </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;% ngram -lm model-file -order 5 -ppl queries-file \</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;      -no-sos -no-eos -memuse -debug 0</div>
+</div><!-- fragment --><p> No changes were done to the tool’s source code.</p>
+<h3>KenLM</h3>
+<p>KenLM is a tool for estimating, filtering, and querying language models. The tool does not have clear version indication, so we used the tool’s GitHub snapshot of the Git revision:</p>
+<p><em>0f 306088c3d8b3a668c934f 605e21b693b959d4d</em></p>
+<p>KenLM does not allow to switch off the probability reports from the command line. Therefore we had to modify the tool’s code. In the <code>kenlm/lm/ngram query.hh</code> file we commented out the output code lines as follows:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;struct BasicPrint {</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;  void Word(StringPiece, WordIndex, const FullScoreReturn &amp;) const {}</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;  void Line(uint64_t oov, float total) const {</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    //std::cout &lt;&lt; &quot;Total: &quot; &lt;&lt; total &lt;&lt; &quot; OOV: &quot; &lt;&lt; oov &lt;&lt; ’\n’;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;  }</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;  void Summary(double, double, uint64_t, uint64_t) {}</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;};</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;struct FullPrint : public BasicPrint {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  void Word(StringPiece surface, WordIndex vocab,</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;            const FullScoreReturn &amp;ret) const {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    //std::cout &lt;&lt; surface &lt;&lt; ’=’ &lt;&lt; vocab &lt;&lt; ’ ’</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    //&lt;&lt; static_cast&lt;unsigned int&gt;(ret.ngram_length)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    //&lt;&lt; ’ ’ &lt;&lt; ret.prob &lt;&lt; ’\t’;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  void Summary(double ppl_including_oov, double ppl_excluding_oov,</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;               uint64_t corpus_oov, uint64_t corpus_tokens) {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    std::cout &lt;&lt;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;      &quot;Perplexity including OOVs:\t&quot; &lt;&lt; ppl_including_oov &lt;&lt; &quot;\n&quot;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;      &quot;Perplexity excluding OOVs:\t&quot; &lt;&lt; ppl_excluding_oov &lt;&lt; &quot;\n&quot;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;      &quot;OOVs:\t&quot; &lt;&lt; corpus_oov &lt;&lt; &quot;\n&quot;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;      &quot;Tokens:\t&quot; &lt;&lt; corpus_tokens &lt;&lt; ’\n’</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;      ;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;} };</div>
+</div><!-- fragment --><p> After this change, the tool was run with the following command-line options: 18 </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;% query -n model-file &lt; queries-file</div>
+</div><!-- fragment --><h3>Hardware configuration</h3>
+<p>The experiments were run on the following machine configuration:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;[~ smt7 ~]$ lscpu</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;Architecture:          x86_64</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;CPU op-mode(s):        32-bit, 64-bit</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;Byte Order:            Little Endian</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;CPU(s):                40</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;On-line CPU(s) list:   0-39</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;Thread(s) per core:    2</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;Core(s) per socket:    10</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;Socket(s):             2</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;NUMA node(s):          2</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;Vendor ID:             GenuineIntel</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;CPU family:            6</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;Model:                 62</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;Stepping:              4</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;CPU MHz:               1200.000</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;BogoMIPS:              4999.23</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;Virtualization:        VT-x</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;L1d cache:             32K</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;L1i cache:             32K</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;L2 cache:              256K</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;L3 cache:              25600K</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;NUMA node0 CPU(s):     0-9,20-29</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;NUMA node1 CPU(s):     10-19,30-39</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;[~ smt7 ~]$ lsb_release -irc</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;Distributor ID: CentOS</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;Release:    6.7</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;Codename:   Final</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;[~ smt7 ~]$ grep MemTotal /proc/meminfo</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;MemTotal:       264496688 kB</div>
+</div><!-- fragment --><h3>Language models and query files</h3>
+<p>The considered language models and their sizes (in bytes) are:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;[~ smt10~]$ ls -al *.lm</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;-rw-r--r-- 1     937792965 Sep 21 15:55 e_10_641093.lm</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;-rw-r--r-- 1    1708763123 Sep 21 17:36 e_20_1282186.lm</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;-rw-r--r-- 1    3148711562 Sep 21 17:45 e_30_2564372.lm</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;-rw-r--r-- 1    5880154140 Sep 21 18:09 e_40_5128745.lm</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;-rw-r--r-- 1   10952178505 Sep 21 18:29 e_50_10257490.lm</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;-rw-r--r-- 1   15667577793 Sep 21 20:22 e_60_15386235.lm</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;-rw-r--r-- 1   20098725535 Sep 21 20:37 e_70_20514981.lm</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;-rw-r--r-- 1   48998103628 Sep 21 21:08 e_80_48998103628.lm</div>
+</div><!-- fragment --><p>The considered query files and their sizes are:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;[~ smt10 ~]$ ls -al q_5_gram_1*.txt</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;-rw-r--r-- 1   2697064872 Sep 21 15:47 q_5_gram_100.000.000.txt</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;-rw-r--r-- 1           35 Sep 21 15:57 q_5_gram_1.txt</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;[~ smt10 ~]$ </div>
+</div><!-- fragment --><p>The number of m-grams per model is:</p>
+<h5>e_10_641093.lm</h5>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;[~ smt10 ~]$ head -n 15 e_10_641093.lm</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;\data\</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ngram 1=105682</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;ngram 2=1737132</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;ngram 3=5121040</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;ngram 4=7659442</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;ngram 5=8741158</div>
+</div><!-- fragment --><h5>e_20_1282186.lm</h5>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;[~ smt10 ~]$ head -n 8 e_20_1282186.lm</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;\data\</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ngram 1=143867</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;ngram 2=2707890</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;ngram 3=8886067</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;ngram 4=14188078</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;ngram 5=16757214</div>
+</div><!-- fragment --><p>#####e_30_2564372.lm </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;[~ smt10 ~]$ head -n 8 e_30_2564372.lm</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;\data\</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ngram 1=199164</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;ngram 2=4202658</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;ngram 3=15300577</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;ngram 4=26097321</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;ngram 5=31952150</div>
+</div><!-- fragment --><h5>e_40_5128745.lm</h5>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;[~ smt10 ~]$ head -n 8 e_40_5128745.lm</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;\data\</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ngram 1=298070</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;ngram 2=6675818</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;ngram 3=26819467</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;ngram 4=48897704</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;ngram 5=62194729</div>
+</div><!-- fragment --><h5>e_50_10257490.lm</h5>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;[~ smt10 ~]$ head -n 8 e_50_10257490.lm</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;\data\</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ngram 1=439499</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;ngram 2=10447874</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;ngram 3=46336705</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;ngram 4=90709359</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;ngram 5=120411272</div>
+</div><!-- fragment --><h5>e_60_15386235.lm</h5>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;[~ smt10 ~]$ head -n 8 e_60_15386235.lm</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;\data\</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ngram 1=568105</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;ngram 2=13574606</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;ngram 3=63474074</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;ngram 4=129430409</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;ngram 5=176283104</div>
+</div><!-- fragment --><h5>e_70_20514981.lm</h5>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;[~ smt10 ~]$ head -n 8 e_70_20514981.lm</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;\data\</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ngram 1=676750</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;ngram 2=16221298</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;ngram 3=78807519</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;ngram 4=165569280</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;ngram 5=229897626</div>
+</div><!-- fragment --><h5>e_80_48998103628.lm</h5>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;[~ smt10 ~]$ head -n 8 e_80_48998103628.lm</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;\data\</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;ngram 1=2210728</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;ngram 2=67285057</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;ngram 3=183285165</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;ngram 4=396600722</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;ngram 5=563533665</div>
+</div><!-- fragment --><div class="image">
+<img src="./docs/images/markdown.png"  alt="Markdown Logo" title="Markdown"/>
+</div>
+<p><em>Powered by <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Markdown-Cheatsheet</a></em> </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -228,200 +228,375 @@ $(document).ready(function(){initNavTree('_r_e_a_d_m_e_8md.html','');});
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;**LM configs:** There is a number of Language-model-specific parameters that can be configured runtime. These are located in `./inc/server/lm/lm_configs.hpp`, please be careful changing them:</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;* `lm_word_index` - the word index type to be used, the possible values are:</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;     * `basic_word_index` - _ToDo: Fill In_</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;     * `counting_word_index` - _ToDo: Fill In_</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;     * `optimizing_word_index&lt;basic_word_index&gt;` - _ToDo: Fill In_</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;     * `optimizing_word_index&lt;counting_word_index&gt;` - _ToDo: Fill In_</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;     * `hashing_word_index` - </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;* `lm_model_type` - the model type to be used, the possible values (trie types) are:</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;     * `c2d_hybrid_trie&lt;lm_word_index&gt;` - _ToDo: Fill In_</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;     * `c2d_map_trie&lt;lm_word_index&gt;` - _ToDo: Fill In_</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;     * `c2w_array_trie&lt;lm_word_index&gt;` - _ToDo: Fill In_</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;     * `g2d_map_trie&lt;lm_word_index&gt;` - _ToDo: Fill In_</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;     * `h2d_map_trie&lt;lm_word_index&gt;` - _ToDo: Fill In_</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;     * `w2c_array_trie&lt;lm_word_index&gt;` - _ToDo: Fill In_</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;     * `w2c_hybrid_trie&lt;lm_word_index&gt;` - _ToDo: Fill In_</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;* `lm_model_reader` - the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with `cstyle_file_reader` being the default:</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;     * `file_stream_reader` - uses the C++ streams to read from files, the slowest</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;     * `cstyle_file_reader` - uses C-style file reading functions, faster than `file_stream_reader`</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;     * `memory_mapped_file_reader` - uses memory-mapped files which, faster than `cstyle_file_reader`, consumes twise the file size memory (virtual RAM).</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;* `lm_builder_type` - currently there is just one builder type available: `lm_basic_builder&lt;lm_model_reader&gt;`.</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;Note that not all of the combinations of the `lm_word_index` and `lm_model_type` can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the `./inc/server/lm/lm_consts.hpp` header file comments. The default and the most optimal performance/memory ratio configuration is `lm_word_index` being set to `hashing_word_index` and `lm_model_type` begin set to `h2d_map_trie&lt;lm_word_index&gt;`.</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;**TM configs:** There is a number of Translation-model-specific parameters that can be configured runtime. These are located in `./inc/server/tm/tm_configs.hpp`, please be careful changing them:</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;* `tm_model_type` - currently there is just one model type available: `tm_basic_model`.</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;* `tm_model_reader` - the same as `lm_model_reader` for _&quot;LM configs&quot;_ above.</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;* `tm_builder_type` - currently there is just one builder byte available: `tm_basic_builder&lt;tm_model_reader&gt;`.</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;**RM configs:** There is a number of Reordering-model-specific parameters that can be configured runtime. These are located in `./inc/server/rm/rm_configs.hpp`, please be careful changing them:</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;* `rm_model_type` - currently there is just one model type available: `rm_basic_model`.</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;* `rm_model_reader` - the same as `lm_model_reader` for _&quot;LM configs&quot;_ above.</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;* `rm_builder_type` - currently there is just one builder byte available: `rm_basic_builder&lt;rm_model_reader&gt;`.</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;##Using software</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;###_bpbd-server_ - translation server</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;_ToDo: server console_</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;     * `basic_word_index` - the basic word index that just loads the uni-grams in the same order as in the LM model file and give them consequtive id values.</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;     * `counting_word_index` - the basic word index that counts the number of times the unigram occurs in the LM model file and gives lower ids to the more frequent unigrams. This ensures some performance boost (within 10%) in querying certain types of langue models but requires longer loading times.</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;     * `optimizing_word_index&lt;basic_word_index&gt;` - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a basic word index as a bootstrap word index for issuing the ids.</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;     * `optimizing_word_index&lt;counting_word_index&gt;` - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a counting word index as a bootstrap word index for issuing the ids.</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;     * `hashing_word_index` - the hashing word index is a discontinuous word index that does not issue the unigram ids consequently but rather associates each unigram with its hash value, the latter is taken to be an id. This is the only type of index supported by the hash-based `h2d_map_trie`.</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;* `lm_model_type` - the model type to be used, the possible values (trie types) are, for performance comparison thereof see [Performance Evaluation](#performance-evaluation):</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;     * `c2d_hybrid_trie&lt;lm_word_index&gt;` - contains the context-to-data mapping trie implementation based on `std::unordered` map and ordered arrays.</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;     * `c2d_map_trie&lt;lm_word_index&gt;` - contains the context-to-data mapping trie implementation based on `std::unordered map`.</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;     * `c2w_array_trie&lt;lm_word_index&gt;` - contains the context-to-</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;word mapping trie implementation based on ordered arrays.</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;     * `g2d_map_trie&lt;lm_word_index&gt;` - contains the m-gram-to-data mapping trie implementation based on self-made hash maps.</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;     * `h2d_map_trie&lt;lm_word_index&gt;` - contains the hash-to-data mapping trie based on the linear probing hash map imlementation.</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;     * `w2c_array_trie&lt;lm_word_index&gt;` - contains the word-to-</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;context mapping trie implementation based on ordered arrays.</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;     * `w2c_hybrid_trie&lt;lm_word_index&gt;` - contains the word-to-</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;context mapping trie implementation based on `std::unordered` map and ordered arrays.</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;* `lm_model_reader` - the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with `cstyle_file_reader` being the default:</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;     * `file_stream_reader` - uses the C++ streams to read from files, the slowest</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;     * `cstyle_file_reader` - uses C-style file reading functions, faster than `file_stream_reader`</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;     * `memory_mapped_file_reader` - uses memory-mapped files which, faster than `cstyle_file_reader`, consumes twise the file size memory (virtual RAM).</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;* `lm_builder_type` - currently there is just one builder type available: `lm_basic_builder&lt;lm_model_reader&gt;`.</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;Note that not all of the combinations of the `lm_word_index` and `lm_model_type` can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the `./inc/server/lm/lm_consts.hpp` header file comments. The default and the most optimal performance/memory ratio configuration is `lm_word_index` being set to `hashing_word_index` and `lm_model_type` begin set to `h2d_map_trie&lt;lm_word_index&gt;`.</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;**TM configs:** There is a number of Translation-model-specific parameters that can be configured runtime. These are located in `./inc/server/tm/tm_configs.hpp`, please be careful changing them:</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;* `tm_model_type` - currently there is just one model type available: `tm_basic_model`.</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;* `tm_model_reader` - the same as `lm_model_reader` for _&quot;LM configs&quot;_ above.</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;* `tm_builder_type` - currently there is just one builder byte available: `tm_basic_builder&lt;tm_model_reader&gt;`.</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;**RM configs:** There is a number of Reordering-model-specific parameters that can be configured runtime. These are located in `./inc/server/rm/rm_configs.hpp`, please be careful changing them:</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;* `rm_model_type` - currently there is just one model type available: `rm_basic_model`.</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;* `rm_model_reader` - the same as `lm_model_reader` for _&quot;LM configs&quot;_ above.</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;* `rm_builder_type` - currently there is just one builder byte available: `rm_basic_builder&lt;rm_model_reader&gt;`.</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;##Using software</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;_ToDo: Configuration file_</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;###_bpbd-client_ - translation client</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;###_lm-query_ - language model query tool</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;``` </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;vpn-stud-146-50-150-5:build zapreevis$ lm-query </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;USAGE:  ------------------------------------------------------------------ </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;USAGE: |                 Back Off Language Model(s) for SMT     :)\___/(: |</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;USAGE: |                       Software version 1.1             {(@)v(@)} |</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;USAGE: |                         The Owl release.               {|~- -~|} |</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;USAGE: |            Copyright (C) Dr. Ivan S Zapreev, 2015-2016 {/^&#39;^&#39;^\} |</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;USAGE: |  ═════════════════════════════════════════════════════════m-m══  |</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;USAGE: |        This software is distributed under GPL 2.0 license        |</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;USAGE: |          (GPL stands for GNU General Public License)             |</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;USAGE: |          The product comes with ABSOLUTELY NO WARRANTY.          |</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;USAGE: |   This is a free software, you are welcome to redistribute it.   |</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;USAGE: |                     Running in 64 bit mode!                      |</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;USAGE: |                 Build on: Mar 10 2016 17:11:35                   |</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;USAGE:  ------------------------------------------------------------------ </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;PARSE ERROR:  </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;             Required arguments missing: query, model</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;###_bpbd-server_ - translation server</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;_ToDo: server console_</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;_ToDo: Configuration file_</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;###_bpbd-client_ - translation client</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;###_lm-query_ - language model query tool</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;``` </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;vpn-stud-146-50-150-5:build zapreevis$ lm-query </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;&lt;...&gt;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;PARSE ERROR:  </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;             Required arguments missing: query, model</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;Brief USAGE: </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;   lm-query  [-l &lt;lm lambda weight&gt;] [-d &lt;error|warn|usage|result|info</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;             |info1|info2|info3&gt;] -q &lt;query file name&gt; -m &lt;model file name&gt;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;             [--] [--version] [-h]</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;For complete USAGE and HELP type: </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;   lm-query --help</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;```</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;Brief USAGE: </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;   lm-query  [-l &lt;lm lambda weight&gt;] [-d &lt;error|warn|usage|result|info</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;             |info1|info2|info3&gt;] -q &lt;query file name&gt; -m &lt;model file name&gt;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;             [--] [--version] [-h]</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;For complete USAGE and HELP type: </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;   lm-query --help</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;```</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;##Input file formats</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;###Translatin model</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;_ToDo: Extend_</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;###Reordering model</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;_ToDo: Extend_</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;###Language model</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;####Language Models background</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;An *n-gram* refers to a continuous sequence of n tokens. For instance, given the following sentence: `our neighbor , who moved in recently , came by .` If n = 3, then the possible n-grams of</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;this sentence include:</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;```</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;&quot;our neighbor ,&quot;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;&quot;neighbor , who&quot;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;&quot;, who moved&quot;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;...</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;&quot;, came by&quot;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;&quot;came by .&quot;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;```</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;Note that punctuation marks such as comma and full stop are treated just like any _real_ word and that all words are lower cased.</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;##Code documentation</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;_ToDo: Extend with more details_</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in the **./docs/** folder of the project.</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;##Input file formats</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;###Translatin model</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;_ToDo: Extend_</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;###Reordering model</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;_ToDo: Extend_</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;###Language model</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;####Language Models background</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;An *n-gram* refers to a continuous sequence of n tokens. For instance, given the following sentence: `our neighbor , who moved in recently , came by .` If n = 3, then the possible n-grams of</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;this sentence include:</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;```</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;&quot;our neighbor ,&quot;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;&quot;neighbor , who&quot;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;&quot;, who moved&quot;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;...</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;&quot;, came by&quot;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;&quot;came by .&quot;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;```</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;Note that punctuation marks such as comma and full stop are treated just like any _real_ word and that all words are lower cased.</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;##Code documentation</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;_ToDo: Extend with more details_</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in the **./docs/** folder of the project.</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;##External libraries</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;_ToDo: Write this section_</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;##Performance evaluation</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix Tests](#appendix-tests)</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;###Test set-up</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;The main target of this experimental comparison is to evaluate memory consumption and query times of the implemented tries. For doing that we do not rely on the time and memory statis- tics reported by the tools but rather, for the sake of uniform and independent opinion, rely on the Linux standard time utility available in the `zsh` Linux shell. The latter provides system- measured statistics about the program run. We choose to measure:</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;##External libraries</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;_ToDo: Write this section_</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;* **MRSS** - the maximum resident memory usage of the program</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;* **CPU time** - the CPU time in seconds</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;##General design</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;We chose to measure maximum resident memory usage as this is what defines the amount of RAM needed to run the program. Also, the CPU times are the actual times that the program was executed on the CPU. Measuring CPU times allows for a fair comparison as excludes possible results influence by the other system processes.</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;_ToDo: Add the general design, the current and the future one withg images_</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;The experiments were set up to be run with different-size 5-gram language models given in the ARPA format with two types of inputs:</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;##Software details</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;###_bpbd-client_</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;_ToDo: Add details on how the client works including requirements and structure_</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;###_bpbd-server_</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;_ToDo: Add details on how the server works including requirements and structure_</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;###_lm-query_</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;_ToDo: Update details on how the query tool works including requirements and structure_</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;In this section we mention a few implementation details, for more details see the source code documentation. The code contains the following important source files:</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;1. The single 5-gram query that defines the baseline</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;2. The file input with 100,000,000 of 5-gram queries</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;The delta in execution CPU times between the baseline and the 100,000,000 query files defines the pure query execution time of the tool. Note that, the query files were produced from the text corpus different from the one used to produce the considered language models. The MRSS values are reported in gigabytes (Gb) and the CPU times are measured in seconds. The plots provide MRSS and CPU times relative to the input model size in Gb.</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;The test hardware configuration and the model/query files&#39; data is to be found in [Appendix Tests](#appendix-tests)</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;###Experimental results</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;The experimental results are present in the following two pictures. The first one indicates the changes in the MRSS depending on the model size: </div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;* **main.cpp** - contains the entry point of the program</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;* **Executor.cpp** -  contains some utility functions including the one reading the test document and performing the queries on a filled in Trie instance.</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;* **ARPATrieBuilder.hpp / ARPATrieBuilder.cpp** - contains the class responsible for reading the ARPA file format and building up the trie model using the ARPAGramBuilder.</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;* **TrieDriver.hpp** - is the driver for all trie implementations - allows to execute queries to the tries.</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;* **LayeredTrieDriver.hpp** - is a wrapper driver for all the layered trie implementations - allows to retrieve N-gram probabilities and back-off weights.</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;* **C2DHashMapTrie.hpp / C2DHashMapTrie.cpp** - contains the Context-to-Data mapping trie implementation based on unordered_map.</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;* **C2DMapArrayTrie.hpp / C2DMapArrayTrie.cpp** - contains the Context-to-Data mapping trie implementation based  on unordered_map and ordered arrays.</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;* **C2WOrderedArrayTrie.hpp / C2WOrderedArrayTrie.cpp** - contains the Context-to-Word mapping trie implementation based on ordered arrays.</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;* **G2DHashMapTrie.hpp / G2DHashMapTrie.cpp** - contains the M-Gram-to-Data mapping trie implementation based on self-made hash maps.</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;* **W2CHybridMemoryTrie.hpp / W2CHybridMemoryTrie.cpp** - contains the Word-to-Context mapping trie implementation based on unordered_map and ordered arrays.</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;* **W2COrderedArrayTrie.hpp / W2COrderedArrayTrie.cpp** - contains the Word-to-Context mapping trie implementation based on ordered arrays.</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;* **Configuration.hpp** - contains configuration parameter for the word index and trie and memory management entities.</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;* **Exceptions.hpp** - stores the implementations of the used exception classes.</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;* **HashingUtils.hpp** - stores the hashing utility functions.</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;* ** ARPAGramBuilder.hpp / ARPAGramBuilder.cpp** - contains the class responsible for building n-grams from a line of text and storing it into Trie.</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;* **StatisticsMonitor.hpp / StatisticsMonitor.cpp** - contains a class responsible for gathering memory and CPU usage statistics</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;* **Logger.hpp/Logger.cpp** - contains a basic logging facility class</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;![MRSS Comparions Image](./docs/images/experiments/lm/mem.jpg &quot;MRSS Comparions&quot;)</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;The second one shows the query CPU times depending on the model sizes:</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;![CPU Times Comparions Image](./docs/images/experiments/lm/time.jpg &quot;CPU Times Comparions&quot;)</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;The results show that the developed LM model trie representations are highly compatible with the available state of the art tools. We also give the following usage guidelines for the implemented tries:</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;* **w2ca** and **c2wa** tries are beneficial for the machines with limited RAM. If low memory usage is very critical then bitmap hash caching can also be disabled.</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;* **c2dm** trie provides the fastest performance with moderate memory consumption. This is recommended when high performance is needed but one should be aware of possible m-gram id collisions.10</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;* **c2dh** trie is preferable if performance, as well as moderate memory consumption, is needed. This is the second-fastest trie which, unlike **c2dm**, is fully reliable.</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;* **w2ch** trie did not show itself useful and **g2dm** is yet to be re-worked and improved for better performance and memory usage.</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;* **h2dm** following the intuitions of the KenLM implementation, realises the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;##General design</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;_ToDo: Add the general design, the current and the future one withg images_</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;##Literature and references</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;This project is originally based on the followin literature:</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;_ToDo: Put the BibText entries into linked files_</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;&gt;        @inproceedings{DBLP:conf/acl/PaulsK11,</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;&gt;        author    = {Adam Pauls and</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;&gt;                       Dan Klein},</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;&gt;          title     = {Faster and Smaller N-Gram Language Models},</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;&gt;          booktitle = {The 49th Annual Meeting of the Association for Computational Linguistics:</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;&gt;                       Human Language Technologies, Proceedings of the Conference, 19-24</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;&gt;                       June, 2011, Portland, Oregon, {USA}},</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;&gt;          pages     = {258--267},</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;&gt;          year      = {2011},</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;&gt;          crossref  = {DBLP:conf/acl/2011},</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;&gt;          url       = {http://www.aclweb.org/anthology/P11-1027},</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;&gt;          timestamp = {Fri, 02 Dec 2011 14:17:37 +0100},</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;&gt;          biburl    = {http://dblp.uni-trier.de/rec/bib/conf/acl/PaulsK11},</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;&gt;          bibsource = {dblp computer science bibliography, http://dblp.org}</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;&gt;        }</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;and</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;&gt;        @inproceedings{DBLP:conf/dateso/RobenekPS13,</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;&gt;          author    = {Daniel Robenek and</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;&gt;                       Jan Platos and</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;&gt;                       V{\&#39;{a}}clav Sn{\&#39;{a}}sel},</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;&gt;          title     = {Efficient In-memory Data Structures for n-grams Indexing},</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;&gt;          booktitle = {Proceedings of the Dateso 2013 Annual International Workshop on DAtabases,</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;&gt;                       TExts, Specifications and Objects, Pisek, Czech Republic, April 17,</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;&gt;                       2013},</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;&gt;          pages     = {48--58},</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;&gt;          year      = {2013},</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;&gt;          crossref  = {DBLP:conf/dateso/2013},</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;&gt;          url       = {http://ceur-ws.org/Vol-971/paper21.pdf},</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;&gt;          timestamp = {Mon, 22 Jul 2013 15:19:57 +0200},</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;&gt;          biburl    = {http://dblp.uni-trier.de/rec/bib/conf/dateso/RobenekPS13},</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;&gt;          bibsource = {dblp computer science bibliography, http://dblp.org}</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;&gt;        }</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;_ToDo: Add the paper of Ken LM_</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;_ToDo: Add the SMT book_</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;##Software details</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;###_bpbd-client_</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;_ToDo: Add details on how the client works including requirements and structure_</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;###_bpbd-server_</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;_ToDo: Add details on how the server works including requirements and structure_</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;###_lm-query_</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;_ToDo: Update details on how the query tool works including requirements and structure_</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;##Literature and references</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;This project is originally based on the followin literature:</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;_ToDo: Put the BibText entries into linked files_</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;_ToDo: Add the paper of Ken LM_</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;_ToDo: Add the SMT book_</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using *std::unordered_map* of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;_ToDo: Add more details about the papers and books_</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;##Licensing</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;##History</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;* **21.04.2015** - Created</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;* **27.07.2015** - Changed project name and some to-do&#39;s</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;* **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. </div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;* **11.03.2016** - Updated Updated to reflect the project status. </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;##Appendix Tests</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;###SRILM</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;Is a toolkit for building and applying statistical language models (LMs), primarily for use in speech recognition, statistical tagging and segmentation, and machine translation. It has been under development in the SRI Speech Technology and Research Laboratory since 1995. The employed tool version is **1.7.0**. The tool is run with the following command-line options:</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;```</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;% ngram -lm model-file -order 5 -ppl queries-file \</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;      -no-sos -no-eos -memuse -debug 0</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;```</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;No changes were done to the tool’s source code.</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;###KenLM</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;KenLM is a tool for estimating, filtering, and querying language models. The tool does not have clear version indication, so we used the tool’s GitHub snapshot of the Git revision:</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;_0f 306088c3d8b3a668c934f 605e21b693b959d4d_</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using *std::unordered_map* of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;KenLM does not allow to switch off the probability reports from the command line. Therefore we had to modify the tool’s code. In the `kenlm/lm/ngram query.hh` file we commented out the output code lines as follows:</div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;_ToDo: Add more details about the papers and books_</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;##Licensing</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;##History</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;* **21.04.2015** - Created</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;* **27.07.2015** - Changed project name and some to-do&#39;s</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;* **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. </div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;* **11.03.2016** - Updated Updated to reflect the project status. </div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;![Markdown Logo](./docs/images/markdown.png &quot;Markdown&quot;)</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; _Powered by [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)_</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;```</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;struct BasicPrint {</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;  void Word(StringPiece, WordIndex, const FullScoreReturn &amp;) const {}</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;  void Line(uint64_t oov, float total) const {</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    //std::cout &lt;&lt; &quot;Total: &quot; &lt;&lt; total &lt;&lt; &quot; OOV: &quot; &lt;&lt; oov &lt;&lt; ’\n’;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;  }</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;  void Summary(double, double, uint64_t, uint64_t) {}</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;};</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;struct FullPrint : public BasicPrint {</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;  void Word(StringPiece surface, WordIndex vocab,</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;            const FullScoreReturn &amp;ret) const {</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    //std::cout &lt;&lt; surface &lt;&lt; ’=’ &lt;&lt; vocab &lt;&lt; ’ ’</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    //&lt;&lt; static_cast&lt;unsigned int&gt;(ret.ngram_length)</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    //&lt;&lt; ’ ’ &lt;&lt; ret.prob &lt;&lt; ’\t’;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;}</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;  void Summary(double ppl_including_oov, double ppl_excluding_oov,</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;               uint64_t corpus_oov, uint64_t corpus_tokens) {</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    std::cout &lt;&lt;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;      &quot;Perplexity including OOVs:\t&quot; &lt;&lt; ppl_including_oov &lt;&lt; &quot;\n&quot;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;      &quot;Perplexity excluding OOVs:\t&quot; &lt;&lt; ppl_excluding_oov &lt;&lt; &quot;\n&quot;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;      &quot;OOVs:\t&quot; &lt;&lt; corpus_oov &lt;&lt; &quot;\n&quot;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;      &quot;Tokens:\t&quot; &lt;&lt; corpus_tokens &lt;&lt; ’\n’</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;      ;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;} };</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;```</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;After this change, the tool was run with the following command-line options: 18</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;``` </div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;% query -n model-file &lt; queries-file</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;```</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;###Hardware configuration</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;The experiments were run on the following machine configuration:</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;```</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;[~ smt7 ~]$ lscpu</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;Architecture:          x86_64</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;CPU op-mode(s):        32-bit, 64-bit</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;Byte Order:            Little Endian</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;CPU(s):                40</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;On-line CPU(s) list:   0-39</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;Thread(s) per core:    2</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;Core(s) per socket:    10</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;Socket(s):             2</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;NUMA node(s):          2</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;Vendor ID:             GenuineIntel</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;CPU family:            6</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;Model:                 62</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;Stepping:              4</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;CPU MHz:               1200.000</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;BogoMIPS:              4999.23</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;Virtualization:        VT-x</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;L1d cache:             32K</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;L1i cache:             32K</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;L2 cache:              256K</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;L3 cache:              25600K</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;NUMA node0 CPU(s):     0-9,20-29</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;NUMA node1 CPU(s):     10-19,30-39</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;[~ smt7 ~]$ lsb_release -irc</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;Distributor ID:    CentOS</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;Release:   6.7</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;Codename:  Final</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;[~ smt7 ~]$ grep MemTotal /proc/meminfo</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;MemTotal:       264496688 kB</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;```</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;###Language models and query files</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;The considered language models and their sizes (in bytes) are:</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;```</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;[~ smt10~]$ ls -al *.lm</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;-rw-r--r-- 1     937792965 Sep 21 15:55 e_10_641093.lm</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;-rw-r--r-- 1    1708763123 Sep 21 17:36 e_20_1282186.lm</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;-rw-r--r-- 1    3148711562 Sep 21 17:45 e_30_2564372.lm</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;-rw-r--r-- 1    5880154140 Sep 21 18:09 e_40_5128745.lm</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;-rw-r--r-- 1   10952178505 Sep 21 18:29 e_50_10257490.lm</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;-rw-r--r-- 1   15667577793 Sep 21 20:22 e_60_15386235.lm</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;-rw-r--r-- 1   20098725535 Sep 21 20:37 e_70_20514981.lm</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;-rw-r--r-- 1   48998103628 Sep 21 21:08 e_80_48998103628.lm</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;```</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;The considered query files and their sizes are:</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;```</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;[~ smt10 ~]$ ls -al q_5_gram_1*.txt</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;-rw-r--r-- 1   2697064872 Sep 21 15:47 q_5_gram_100.000.000.txt</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;-rw-r--r-- 1           35 Sep 21 15:57 q_5_gram_1.txt</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;[~ smt10 ~]$ </div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;```</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;The number of m-grams per model is:</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;#####e\_10\_641093.lm</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;```</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;[~ smt10 ~]$ head -n 15 e_10_641093.lm</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;\data\</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;ngram 1=105682</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;ngram 2=1737132</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;ngram 3=5121040</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;ngram 4=7659442</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;ngram 5=8741158</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;```</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;#####e\_20\_1282186.lm</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;```</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;[~ smt10 ~]$ head -n 8 e_20_1282186.lm</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;\data\</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;ngram 1=143867</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;ngram 2=2707890</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;ngram 3=8886067</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;ngram 4=14188078</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;ngram 5=16757214</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;```</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;#####e\_30\_2564372.lm</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;```</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;[~ smt10 ~]$ head -n 8 e_30_2564372.lm</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;\data\</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;ngram 1=199164</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;ngram 2=4202658</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;ngram 3=15300577</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;ngram 4=26097321</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;ngram 5=31952150</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;```</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;#####e\_40\_5128745.lm</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;```</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;[~ smt10 ~]$ head -n 8 e_40_5128745.lm</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;\data\</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;ngram 1=298070</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;ngram 2=6675818</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;ngram 3=26819467</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;ngram 4=48897704</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;ngram 5=62194729</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;```</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;#####e\_50\_10257490.lm</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;```</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;[~ smt10 ~]$ head -n 8 e_50_10257490.lm</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;\data\</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;ngram 1=439499</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;ngram 2=10447874</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;ngram 3=46336705</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;ngram 4=90709359</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;ngram 5=120411272</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;```</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;#####e\_60\_15386235.lm</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;```</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;[~ smt10 ~]$ head -n 8 e_60_15386235.lm</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;\data\</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;ngram 1=568105</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;ngram 2=13574606</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;ngram 3=63474074</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;ngram 4=129430409</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;ngram 5=176283104</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;```</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;#####e\_70\_20514981.lm</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;```</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;[~ smt10 ~]$ head -n 8 e_70_20514981.lm</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;\data\</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;ngram 1=676750</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;ngram 2=16221298</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;ngram 3=78807519</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;ngram 4=165569280</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;ngram 5=229897626</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;```</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;#####e\_80\_48998103628.lm</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;```</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;[~ smt10 ~]$ head -n 8 e_80_48998103628.lm</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;\data\</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;ngram 1=2210728</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;ngram 2=67285057</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;ngram 3=183285165</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;ngram 4=396600722</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;ngram 5=563533665</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;```</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;![Markdown Logo](./docs/images/markdown.png &quot;Markdown&quot;)</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160; _Powered by [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)_</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
