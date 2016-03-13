@@ -306,7 +306,7 @@ For complete USAGE and HELP type:
 The language query tool has not changed much since the split-off from its official repository [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT). The main changes are that:
 
 * Now it is not possible to have just a single m-gram probability query. The tool always computes the joint probability of all the m-grams in the query starting from 1 up to N and then with a sliding window of the N-grams where N is the maximum language model level. However, the information over the intermediate single m-gram probabilities is still provided in the tool's output.
-* The length of the LM query is not limited by the maximum language model level N but is limited by a compile-time constant `lm::LM_MAX_QUERY_LEN`, see section [Project compile-time parameters](project-compile-time-parameters).
+* The length of the LM query is not limited by the maximum language model level N but is limited by a compile-time constant `lm::LM_MAX_QUERY_LEN`, see section [Project compile-time parameters](#project-compile-time-parameters).
 
 ##Input file formats
 ###Translatin model
