@@ -54,7 +54,8 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * **inc/** - stores the C++ header files of the implementation
     * **src/** - stores the C++ source files of the implementation
     * **nbproject/** - stores the Netbeans project data, such as makefiles
-    * **data/** - stores the test-related data such as test models and query intput files, as well as some experimental results.
+    * **data/** - stores the test-related data such as test models and query intput files, as well as some experimental results
+    * default.cfg - an example server configuration file
     * LICENSE - the code license (GPL 2.0)
     * CMakeLists.txt - the cmake build script for generating the project's make files
     * README.md - this document
@@ -73,93 +74,199 @@ This project supports two major platforms: Linux and Mac Os X. It has been succe
 2. The project must be possible to build on Windows platform under [Cygwin](https://www.cygwin.com/).
 
 ##Building the project
-Building this project requires **gcc** version >= *4.9.1* and **cmake** version >= 2.8.12.2. The project can be build in two ways:
+Building this project requires **gcc** version >= *4.9.1* and **cmake** version >= 2.8.12.2.
+
+The first two steps before building the project, to be performed from the linux command line console, are:
+
++ `cd [Project-Folder]`
++ `mkdir build`
+
+Further the project can be build in two ways:
 
 + From the Netbeans environment by running Build in the IDE
-    - Perform `mkdir build` in the project folder.
-    - In Netbeans menu: *Tools/Options/"C/C++"* make sure that the cmake executable is properly set.
+    - In Netbeans menu: `Tools/Options/"C/C++"` make sure that the cmake executable is properly set.
     - Netbeans will always run cmake for the DEBUG version of the project
     - To build project in RELEASE version use building from Linux console
-+ From the Linux command-line console perform the following steps
-    - `cd [Project-Folder]`
-    - `mkdir build`
-    - `cd build`
++ From the Linux command-line console by following the next steps
+    - `cd [Project-Folder]/build`
     - `cmake -DCMAKE_BUILD_TYPE=Release ..` OR `cmake -DCMAKE_BUILD_TYPE=Debug ..`
     - `make -j [NUMBER-OF-THREADS]` add `VERBOSE=1` to make the compile-time options visible
 
 The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run `make clean`. Cleaning from Netbeans is as simple calling the `Clean and Build` from the `Run` menu.
 
 ###Project compile-time parameters
-There is a number of project parameters that at this moment are to be chosen only once before the project is compiled. These are otherwise called the compile-time parameters. Further we consider the most important of them and indicate where all of them are to be found.
+For the sake of performance optimizations, the project has a number of compile-time parameters that are to be set before the project is build and can not be modified in the runtime. Let us consider the most important of them and indicate where all of them are to be found.
 
-**Loggin level:** Logging is important when debugging software or providing an additional used information during the program's runtime. Yet additional output actions come at a prise and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project's logging levels, listed incrementally is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at runtime by setting the `LOGER_M_GRAM_LEVEL_MAX` constaint value in the `./inc/common/utils/logging/logger.hpp` header file.
+**Loggin level:** Logging is important when debugging software or providing an additional user information during the program's runtime. Yet additional output actions come at a prise and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project's logging levels, listed incrementally, is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at runtime by setting the `LOGER_M_GRAM_LEVEL_MAX` constaint value in the `./inc/common/utils/logging/logger.hpp` header file. The default value is INFO3.
 
-**Sanity checks:** When program is not running as expected, it could be caused by the internal software errors that are not detectable runtime. It is therefore possible to enable/disable software internal sanity checks by setting the `DO_SANITY_CHECKS` constand in the `./inc/common/utils/exceptions.hpp` header file. Note that enabling the sanity checks does not guarantee that the internal error will be found and will have a negative effect on the program's performance. Yet, it might help to identify errors with e.g. input file formats and alike.
+**Sanity checks:** When program is not running as expected, it could be caused by the internal software errors that are potentially detectable at runtime. This software has a number of build-in sanity checks that can be enabled/disabled at compile time by setting the `DO_SANITY_CHECKS` boolean flag in the `./inc/common/utils/exceptions.hpp` header file. Note that enabling the sanity checks does not guarantee that the internal error will be found but will have a negative effect on the program's performance. Yet, it might help to identify some of the errors with e.g. input file formats and alike.
 
-**Server configs:** There is a number of translation server common parameters used in decoding, translation, reordering anb language models. Those are to be found in the `./inc/server/server_configs.hpp`. Please be carefull changing them:
+**Server configs:** There is a number of translation server common parameters used in decoding, translation, reordering anb language models. Those are to be found in the `./inc/server/server_configs.hpp`:
 
 * `UNKNOWN_LOG_PROB_WEIGHT` - The value used for the unknown probability weight _(log10 scale)_
 * `ZERO_LOG_PROB_WEIGHT` - The value used for the 'zero' probability weight _(log10 scale)_
-* `tm::NUM_TM_FEATURES` - The number of the translation model features, defines the number of features read per entry in from the translation model input file.
+* `tm::NUM_TM_FEATURES` - The number of the translation model features, which defines the exact number of features read per entry from the translation model input file
 * `tm::TM_MAX_TARGET_PHRASE_LEN` - The maximum length of the target phrase to be considered, this defines the maximum number of tokens to be stored per translation entry
-* `lm::NUM_LM_FEATURES` - The number of languahe model features, the program currenly supports only one value: `1`
+* `lm::NUM_LM_FEATURES` - The number of language model features, the program currenly supports only one value: `1`
 * `lm::LM_M_GRAM_LEVEL_MAX` - The languahe model maximum level, the maximum number of words in the language model phrase
 * `lm::LM_HISTORY_LEN_MAX` - **do not change** this parameter 
 * `lm::LM_MAX_QUERY_LEN` - **do not change** this parameter 
 * `lm::DEF_UNK_WORD_LOG_PROB_WEIGHT` - The default unknown word probability weight, for the case the `<unk>` entry is not present in the language model file _(log10 scale)_
-* `rm::NUM_RM_FEATURES` - The maximum number of reordering model features, the only two currently supported values are: `6` and `8`. 
+* `rm::NUM_RM_FEATURES` - The number of reordering model features, the only two currently supported values are: `6` and `8`
 
-**Decoder configs:** There is a number of decoder-specific parameters that can be configured runtime. These are located in `./inc/server/decoder/de_configs.hpp`, please be careful changing them:
+**Decoder configs:** The decoder-specific parameters are located in `./inc/server/decoder/de_configs.hpp`:
 
 * `MAX_WORDS_PER_SENTENCE` - The maximum allowed number of words/tokens per sentence to translate.
 
-**LM configs:** There is a number of Language-model-specific parameters that can be configured runtime. These are located in `./inc/server/lm/lm_configs.hpp`, please be careful changing them:
+**LM configs:** The Language-model-specific parameters located in `./inc/server/lm/lm_configs.hpp`:
 
 * `lm_word_index` - the word index type to be used, the possible values are:
-     * `basic_word_index` - the basic word index that just loads the uni-grams in the same order as in the LM model file and give them consequtive id values.
-     * `counting_word_index` - the basic word index that counts the number of times the unigram occurs in the LM model file and gives lower ids to the more frequent unigrams. This ensures some performance boost (within 10%) in querying certain types of langue models but requires longer loading times.
+     * `basic_word_index` - the basic word index that just loads the uni-grams in the same order as in the LM model file and gives them consequtive id values.
+     * `counting_word_index` - the basic word index that counts the number of times the unigram occurs in the LM model file and gives lower ids to the more frequent unigrams. This ensures some performance boost (within 10%) when querying certain types of langue models but requires longer loading times.
      * `optimizing_word_index<basic_word_index>` - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a basic word index as a bootstrap word index for issuing the ids.
      * `optimizing_word_index<counting_word_index>` - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a counting word index as a bootstrap word index for issuing the ids.
-     * `hashing_word_index` - the hashing word index is a discontinuous word index that does not issue the unigram ids consequently but rather associates each unigram with its hash value, the latter is taken to be an id. This is the only type of index supported by the hash-based `h2d_map_trie`.
-* `lm_model_type` - the model type to be used, the possible values (trie types) are, for performance comparison thereof see [Performance Evaluation](#performance-evaluation):
-     * `c2d_hybrid_trie<lm_word_index>` - contains the context-to-data mapping trie implementation based on `std::unordered` map and ordered arrays.
-     * `c2d_map_trie<lm_word_index>` - contains the context-to-data mapping trie implementation based on `std::unordered map`.
-     * `c2w_array_trie<lm_word_index>` - contains the context-to-
-word mapping trie implementation based on ordered arrays.
-     * `g2d_map_trie<lm_word_index>` - contains the m-gram-to-data mapping trie implementation based on self-made hash maps.
-     * `h2d_map_trie<lm_word_index>` - contains the hash-to-data mapping trie based on the linear probing hash map imlementation.
-     * `w2c_array_trie<lm_word_index>` - contains the word-to-
-context mapping trie implementation based on ordered arrays.
-     * `w2c_hybrid_trie<lm_word_index>` - contains the word-to-
-context mapping trie implementation based on `std::unordered` map and ordered arrays.
+     * `hashing_word_index` - the hashing word index is a discontinuous word index that does not issue the unigram ids consequently but rather associates each unigram with its hash value, the latter is taken to be a unique identifier. This is the only type of index supported by the hash-based `h2d_map_trie`.
+* `lm_model_type` - the trie model type to be used, the possible values (trie types) are as follows, for a performance comparison thereof see [Performance Evaluation](#performance-evaluation):
+     * `c2d_hybrid_trie<lm_word_index>` - contains the context-to-data mapping trie implementation based on `std::unordered` map and ordered arrays
+     * `c2d_map_trie<lm_word_index>` - contains the context-to-data mapping trie implementation based on `std::unordered map`
+     * `c2w_array_trie<lm_word_index>` - contains the context-to-word mapping trie implementation based on ordered arrays
+     * `g2d_map_trie<lm_word_index>` - contains the m-gram-to-data mapping trie implementation based on self-made hash maps
+     * `h2d_map_trie<lm_word_index>` - contains the hash-to-data mapping trie based on the linear probing hash map imlementation
+     * `w2c_array_trie<lm_word_index>` - contains the word-to-context mapping trie implementation based on ordered arrays
+     * `w2c_hybrid_trie<lm_word_index>` - contains the word-to-context mapping trie implementation based on `std::unordered` map and ordered arrays
 * `lm_model_reader` - the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with `cstyle_file_reader` being the default:
      * `file_stream_reader` - uses the C++ streams to read from files, the slowest
      * `cstyle_file_reader` - uses C-style file reading functions, faster than `file_stream_reader`
-     * `memory_mapped_file_reader` - uses memory-mapped files which, faster than `cstyle_file_reader`, consumes twise the file size memory (virtual RAM).
+     * `memory_mapped_file_reader` - uses memory-mapped files which are faster than the `cstyle_file_reader` but consume twise the file size memory (virtual RAM).
 * `lm_builder_type` - currently there is just one builder type available: `lm_basic_builder<lm_model_reader>`.
 
-Note that not all of the combinations of the `lm_word_index` and `lm_model_type` can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the `./inc/server/lm/lm_consts.hpp` header file comments. The default and the most optimal performance/memory ratio configuration is `lm_word_index` being set to `hashing_word_index` and `lm_model_type` begin set to `h2d_map_trie<lm_word_index>`.
+Note that not all of the combinations of the `lm_word_index` and `lm_model_type` can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the `./inc/server/lm/lm_consts.hpp` header file comments. The default, and the most optimal performance/memory ratio configuration, is:
 
-**TM configs:** There is a number of Translation-model-specific parameters that can be configured runtime. These are located in `./inc/server/tm/tm_configs.hpp`, please be careful changing them:
+* `lm_word_index` being set to `hashing_word_index`
+* `lm_model_type` begin set to `h2d_map_trie<lm_word_index>`.
 
-* `tm_model_type` - currently there is just one model type available: `tm_basic_model`.
-* `tm_model_reader` - the same as `lm_model_reader` for _"LM configs"_ above.
-* `tm_builder_type` - currently there is just one builder byte available: `tm_basic_builder<tm_model_reader>`.
+**TM configs:** The Translation-model-specific parameters are located in `./inc/server/tm/tm_configs.hpp`:
 
-**RM configs:** There is a number of Reordering-model-specific parameters that can be configured runtime. These are located in `./inc/server/rm/rm_configs.hpp`, please be careful changing them:
+* `tm_model_type` - currently there is just one model type available: `tm_basic_model`
+* `tm_model_reader` - the same as `lm_model_reader` for _"LM configs"_, see above
+* `tm_builder_type` - currently there is just one builder type available: `tm_basic_builder<tm_model_reader>`
 
-* `rm_model_type` - currently there is just one model type available: `rm_basic_model`.
-* `rm_model_reader` - the same as `lm_model_reader` for _"LM configs"_ above.
-* `rm_builder_type` - currently there is just one builder byte available: `rm_basic_builder<rm_model_reader>`.
+**RM configs:** The Reordering-model-specific parameters are located in `./inc/server/rm/rm_configs.hpp`:
+
+* `rm_model_type` - currently there is just one model type available: `rm_basic_model`
+* `rm_model_reader` - the same as `lm_model_reader` for _"LM configs"_, see above
+* `rm_builder_type` - currently there is just one builder type available: `rm_basic_builder<rm_model_reader>`
 
 ##Using software
+This section briefly covers how the provided software can be used for performing text translations. We begin with the **bpbd-server** and the **bpbd-client** then briefly talk about the **lm-query**.
 
-###_bpbd-server_ - translation server
-_ToDo: server console_
+###Translation server: _bpbd-server_ 
+The translation server is used to load language, translation and reordering models for a given source/target language pair and to process the translation requests coming from the translation client. When started from a command line witout any parameters **bpbd-server** reports on the supported command line parameters:
 
-_ToDo: Configuration file_
-###_bpbd-client_ - translation client
-###_lm-query_ - language model query tool
+```
+$ bpbd-server
+<...>
+PARSE ERROR:  
+             Required argument missing: config
+
+Brief USAGE: 
+   bpbd-server  [-d <error|warn|usage|result|info|info1|info2|info3>] -c
+                <server configuration file> [--] [--version] [-h]
+
+For complete USAGE and HELP type: 
+   bpbd-server --help
+```
+
+There are to complementing ways to configure the **bpbd-server**, the first one is the _configuration file_ and another is the _server console_. We consider both of them below in more details.
+
+####Configuration file####
+In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the Websockets port through which the server will accept requests. An example configuration file can be found in: `[Project-Folder]/default.cfg` and in `[Project-Folder]/data`. The content of this file is self explanatory and contains a significant amount of comments.
+
+When run with a properly formed configuration file the **bpbd-server** gives the following output. Note the `-d info1` option ensuring additional information output during loading the models.
+
+```
+$ bpbd-server -c ../data/default-1-3.000.000.cfg -d info1
+<...>
+USAGE: The requested debug level is: 'INFO1', the maximum build level is 'INFO3' the set level is 'INFO1'
+USAGE: Loading the server configuration option from: ../data/default-1-3.000.000.cfg
+USAGE: Translation server from 'German' into 'English' on port: '9002' translation threads: '25'
+INFO: LM parameters: [ conn_string = ../data/models/e_30_2564372.lm, num_lm_feature_weights = 1, lm_feature_weights = [ 1 ] ]
+INFO: TM parameters: [ conn_string = ../data/models/de-en-1-3.000.000.tm, num_tm_feature_weights = 4, tm_feature_weights = [ 1|1|1|1 ], translation_limit = 30, min_trans_prob = 1e-20 ]
+INFO: RM parameters: [ conn_string = ../data/models/de-en-1-3.000.000.rm, num_rm_feature_weights = 6, rm_feature_weights = [ 1|1|1|1|1|1 ] ]
+INFO: DE parameters: [ distortion = 5, ext_dist_left = 1, num_best_trans = 10, pruning_threshold = 1.1, stack_capacity = 100, word_penalty = -0.3, phrase_penalty = 1.2, max_source_phrase_len = 7, max_target_phrase_len = 7 ]
+USAGE: --------------------------------------------------------
+USAGE: Start creating and loading the Language Model ...
+USAGE: Language Model is located in: ../data/models/e_30_2564372.lm
+USAGE: Using the <cstyle_file_reader.hpp> file reader!
+USAGE: Using the <h2d_map_trie.hpp> model.
+INFO: The <h2d_map_trie.hpp> model's buckets factor: 2
+INFO: Expected number of M-grams per level: [ 199164 4202658 15300577 26097321 31952150 ]
+INFO1: Pre-allocating memory:  0 hour(s) 0 minute(s) 0 second(s) 
+INFO1: Reading ARPA 1-Grams:  0 hour(s) 0 minute(s) 0 second(s) 
+INFO1: Reading ARPA 2-Grams:  0 hour(s) 0 minute(s) 5 second(s) 
+INFO1: Reading ARPA 3-Grams:  0 hour(s) 0 minute(s) 27 second(s) 
+INFO1: Reading ARPA 4-Grams:  0 hour(s) 0 minute(s) 56 second(s) 
+INFO1: Reading ARPA 5-Grams:  0 hour(s) 1 minute(s) 16 second(s) 
+USAGE: Reading the Language Model took 170.276 CPU seconds.
+USAGE: Action: 'Loading the Language Model' memory change:
+USAGE: vmsize=+1770 Mb, vmpeak=+1770 Mb, vmrss=+1771 Mb, vmhwm=+1771 Mb
+USAGE: --------------------------------------------------------
+USAGE: Start creating and loading the Translation Model ...
+USAGE: Translation Model is located in: ../data/models/de-en-1-3.000.000.tm
+USAGE: Using the <cstyle_file_reader.hpp> file reader!
+USAGE: Using the hash-based translation model: tm_basic_model.hpp
+INFO1: Counting phrase translations:  0 hour(s) 0 minute(s) 10 second(s) 
+INFO: The number of valid TM source entries is: 1620524
+INFO1: Building translation model:  0 hour(s) 0 minute(s) 43 second(s) 
+USAGE: Reading the Translation Model took 58.8196 CPU seconds.
+USAGE: Action: 'Loading the Translation Model' memory change:
+USAGE: vmsize=+550 Mb, vmpeak=+550 Mb, vmrss=+550 Mb, vmhwm=+550 Mb
+USAGE: --------------------------------------------------------
+USAGE: Start creating and loading the Reordering Model ...
+USAGE: Reordering Model is located in: ../data/models/de-en-1-3.000.000.rm
+USAGE: Using the <cstyle_file_reader.hpp> file reader!
+USAGE: Using the hash-based reordering model: rm_basic_model.hpp
+INFO1: Counting reordering entries:  0 hour(s) 0 minute(s) 6 second(s) 
+INFO: The number of RM source/target entries matching TM is: 2567397
+INFO1: Building reordering model:  0 hour(s) 0 minute(s) 12 second(s) 
+USAGE: Reading the Reordering Model took 21.6754 CPU seconds.
+USAGE: Action: 'Loading the Reordering Model' memory change:
+USAGE: vmsize=+78 Mb, vmpeak=+61 Mb, vmrss=+78 Mb, vmhwm=+61 Mb
+USAGE: The server is started!
+<...>
+```
+
+In the first seven lines we see information loaded from the configuration file. Further, the LM, TM, and RM, models are loaded and the information thereof is provided. Note that for less output one can simply run `bpbd-server -c ../data/default-1-3.000.000.cfg`.
+
+####Server console####
+Once the server is started it is not run as a linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the server. The list of available server console commands is given in the listing below:
+
+```
+$ bpbd-server -c ../data/default-1-3.000.000.cfg -d info2
+<...>
+USAGE: The server is started!
+USAGE: Available server commands: 
+USAGE: 	'q & <enter>'  - to exit.
+USAGE: 	'h & <enter>'  - print HELP info.
+USAGE: 	'r & <enter>'  - run-time statistics.
+USAGE: 	'p & <enter>'  - print server parameters.
+USAGE: 	'set ll <level> & <enter>'  - set log level.
+USAGE: 	'set nt  <positive integer> & <enter>'  - set the number of worker threads.
+USAGE: 	'set nbt <unsigned integer> & <enter>'  - set the number of best translations.
+USAGE: 	'set d <integer> & <enter>'  - set the distortion limit.
+USAGE: 	'set edl <unsigned integer> & <enter>'  - set the extra left distortion.
+USAGE: 	'set pt <unsigned float> & <enter>'  - set pruning threshold.
+USAGE: 	'set sc <integer> & <enter>'  - set stack capacity.
+USAGE: 	'set wp <float> & <enter>'  - set word penalty.
+USAGE: 	'set pp <float> & <enter>'  - set phrase penalty.
+>> 
+```
+
+Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, **bpbd-server** has just one copy of the server runtime parameters used from all the translation processes. So if there are translations process run, changing the parameters can cause disruptions starting from inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not be disrupted.
+
+###Translation client: _bpbd-client_
+
+###Language model query tool: _lm-query_
 In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:
 
 ``` 

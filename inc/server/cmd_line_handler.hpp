@@ -24,8 +24,8 @@ namespace uva {
 
                 //Declare the program exit command
                 static const string PROGRAM_EXIT_CMD = "q";
-                //Declare the program info command
-                static const string PROGRAM_INFO_CMD = "i";
+                //Declare the program help command
+                static const string PROGRAM_HELP_CMD = "h";
                 //Declare the program runtime command
                 static const string PROGRAM_RUNTIME_CMD = "r";
                 //Declare the command for parameters logging
@@ -74,7 +74,7 @@ namespace uva {
                 void print_server_commands() {
                     LOG_USAGE << "Available server commands: " << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_EXIT_CMD << " & <enter>'  - to exit." << END_LOG;
-                    LOG_USAGE << "\t'" << PROGRAM_INFO_CMD << " & <enter>'  - print info." << END_LOG;
+                    LOG_USAGE << "\t'" << PROGRAM_HELP_CMD << " & <enter>'  - print HELP info." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_RUNTIME_CMD << " & <enter>'  - run-time statistics." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_PARAMS_CMD << " & <enter>'  - print server parameters." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_LL_CMD << "<level> & <enter>'  - set log level." << END_LOG;
@@ -183,7 +183,7 @@ namespace uva {
                                     << num_threads << "!" << END_LOG;
                         }
                     } catch (uva_exception &ex) {
-                        LOG_ERROR << ex.get_message() << "\nEnter '" << PROGRAM_INFO_CMD << "' for help!" << END_LOG;
+                        LOG_ERROR << ex.get_message() << "\nEnter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
                     }
                 }
 
@@ -236,7 +236,7 @@ namespace uva {
                         de_params = de_local;
 
                     } catch (uva_exception &ex) {
-                        LOG_ERROR << ex.get_message() << " Enter '" << PROGRAM_INFO_CMD << "' for help!" << END_LOG;
+                        LOG_ERROR << ex.get_message() << " Enter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
                     }
                 }
 
@@ -265,7 +265,7 @@ namespace uva {
                     }
 
                     //Print the server commands menu
-                    if (cmd == PROGRAM_INFO_CMD) {
+                    if (cmd == PROGRAM_HELP_CMD) {
                         print_server_commands();
                         return false;
                     }

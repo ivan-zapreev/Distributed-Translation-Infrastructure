@@ -56,7 +56,7 @@ namespace uva {
             static constexpr debug_levels_enum LOGER_M_GRAM_LEVEL_MAX = INFO3;
 
             //Defines the log level from which the detailed timing info is available
-            static constexpr debug_levels_enum PROGRESS_ACTIVE_LEVEL = INFO2;
+            static constexpr debug_levels_enum PROGRESS_ACTIVE_LEVEL = INFO1;
 
             /**
              * This structures stores the recursive synchronization mutex for logging.
