@@ -284,6 +284,8 @@ The translation client makes a websocket connection to the translation server, r
 
 Once the translations are performed the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each line is prefixed with a translation status having a form: `<status>`. If a translation task was cancelled, or an error has occured then it is indicaed by the status and the information about that is also placed in the output file on the corresponding sentence line.
 
+As always, running **bpbd-clinet** with higher logging levels will give more insight into the translation process and functioning of the client.
+
 ###Language model query tool: _lm-query_
 The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line witout any parameters, **lm-query** reports on the available command-line options:
 
