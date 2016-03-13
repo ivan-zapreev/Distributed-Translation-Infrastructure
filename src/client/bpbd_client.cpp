@@ -77,13 +77,13 @@ void create_arguments_parser() {
     p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
 
     //Add the  parameter - compulsory
-    p_source_file_arg = new ValueArg<string>("I", "input-file", "The source file with the input corpus to translate", true, "", "source file name", *p_cmd_args);
+    p_source_file_arg = new ValueArg<string>("I", "input-file", "The utf8 source file with the input corpus to translate", true, "", "source file name", *p_cmd_args);
 
     //Add the  parameter - compulsory
     p_source_lang_arg = new ValueArg<string>("i", "input-lang", "The source language to translate from", true, "", "source language", *p_cmd_args);
 
     //Add the  parameter - compulsory
-    p_target_file_arg = new ValueArg<string>("O", "output-file", "The output file to put the translation into", true, "", "target file name", *p_cmd_args);
+    p_target_file_arg = new ValueArg<string>("O", "output-file", "The utf8 output file to put the translation into", true, "", "target file name", *p_cmd_args);
 
     //Add the  parameter - optional, by default is "English"
     p_target_lang_arg = new ValueArg<string>("o", "output-lang", "The target language to translate into, default is 'English'", false, "English", "target language", *p_cmd_args);
