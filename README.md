@@ -303,34 +303,22 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    lm-query --help
 ```
-The language query tool has not changed much since the split-off from its official repository [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT). The main changes are that:
+The language query tool has not changed much since the split-off from its official repository [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT). The tool's input file formats have not changed either, except for what is mentioned below. The main tool's changes are:
 
 * Now it is not possible to have just a single m-gram probability query. The tool always computes the joint probability of all the m-grams in the query starting from 1 up to N and then with a sliding window of the N-grams where N is the maximum language model level. However, the information over the intermediate single m-gram probabilities is still provided in the tool's output.
 * The length of the LM query is not limited by the maximum language model level N but is limited by a compile-time constant `lm::LM_MAX_QUERY_LEN`, see section [Project compile-time parameters](#project-compile-time-parameters).
 
 ##Input file formats
-###Translatin model
+In this section we briefly discuss the model file formats supported by the tools. We shall occasionally reference the other tools supporting the same file formats and external third-party web pages with extended format descriptions.
+
+###Translatin model: `*.tm`
 _ToDo: Extend_
 
-###Reordering model
+###Reordering model: `*.rm`
 _ToDo: Extend_
 
-###Language model
-For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.
-
-####Language Models background
-An *n-gram* refers to a continuous sequence of n tokens. For instance, given the following sentence: `our neighbor , who moved in recently , came by .` If n = 3, then the possible n-grams of
-this sentence include:
-
-```
-"our neighbor ,"
-"neighbor , who"
-", who moved"
-...
-", came by"
-"came by ."
-```
-Note that punctuation marks such as comma and full stop are treated just like any _real_ word and that all words are lower cased.
+###Language model: `*.lm`
+_ToDo: Extend_
 
 ##Code documentation
 _ToDo: Extend with more details_
