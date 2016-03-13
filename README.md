@@ -158,10 +158,10 @@ Note that not all of the combinations of the `lm_word_index` and `lm_model_type`
 * `rm_builder_type` - currently there is just one builder type available: `rm_basic_builder<rm_model_reader>`
 
 ##Using software
-This section briefly covers how the provided software can be used for performing text translations. We begin with the **bpbd-server** and the **bpbd-client** then briefly talk about the **lm-query**.
+This section briefly covers how the provided software can be used for performing text translations. We begin with the **bpbd-server** and the **bpbd-client** then briefly talk about the **lm-query**. For information on the LM, TM and RM model file formats and others see section [Input file formats](#input-file-formats)
 
 ###Translation server: _bpbd-server_ 
-The translation server is used to load language, translation and reordering models for a given source/target language pair and to process the translation requests coming from the translation client. When started from a command line witout any parameters **bpbd-server** reports on the supported command line parameters:
+The translation server is used to load language, translation and reordering models for a given source/target language pair and to process the translation requests coming from the translation client. When started from a command line witout any parameters, **bpbd-server** reports on the available command-line options:
 
 ```
 $ bpbd-server
@@ -176,13 +176,12 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    bpbd-server --help
 ```
-
 There are to complementing ways to configure the **bpbd-server**, the first one is the _configuration file_ and another is the _server console_. We consider both of them below in more details.
 
 ####Configuration file####
 In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the Websockets port through which the server will accept requests. An example configuration file can be found in: `[Project-Folder]/default.cfg` and in `[Project-Folder]/data`. The content of this file is self explanatory and contains a significant amount of comments.
 
-When run with a properly formed configuration file the **bpbd-server** gives the following output. Note the `-d info1` option ensuring additional information output during loading the models.
+When run with a properly formed configuration file, **bpbd-server** gives the following output. Note the `-d info1` option ensuring additional information output during loading the models.
 
 ```
 $ bpbd-server -c ../data/default-1-3.000.000.cfg -d info1
@@ -235,7 +234,6 @@ USAGE: vmsize=+78 Mb, vmpeak=+61 Mb, vmrss=+78 Mb, vmhwm=+61 Mb
 USAGE: The server is started!
 <...>
 ```
-
 In the first seven lines we see information loaded from the configuration file. Further, the LM, TM, and RM, models are loaded and the information thereof is provided. Note that for less output one can simply run `bpbd-server -c ../data/default-1-3.000.000.cfg`.
 
 ####Server console####
@@ -261,16 +259,36 @@ USAGE: 	'set wp <float> & <enter>'  - set word penalty.
 USAGE: 	'set pp <float> & <enter>'  - set phrase penalty.
 >> 
 ```
-
-Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, **bpbd-server** has just one copy of the server runtime parameters used from all the translation processes. So if there are translations process run, changing the parameters can cause disruptions starting from inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not be disrupted.
+Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, **bpbd-server** has just one copy of the server runtime parameters used from all the translation processes. So in case of active translation process, changing these parameters can cause disruptions thereof starting from an inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not experience any disruptions.
 
 ###Translation client: _bpbd-client_
+The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line witout any parameters, **bpbd-clinet** reports on the available command-line options:
+
+```
+$bpbd-client
+<...>
+PARSE ERROR:  
+             Required arguments missing: output-file, input-lang, input-file
+
+Brief USAGE: 
+   bpbd-client  [-d <error|warn|usage|result|info|info1|info2|info3>] [-t]
+                [-l <min #sentences per request>] [-u <max #sentences per
+                request>] [-p <server port>] [-s <server address>] [-o
+                <target language>] -O <target file name> -i <source
+                language> -I <source file name> [--] [--version] [-h]
+
+For complete USAGE and HELP type: 
+   bpbd-client --help
+```
+The translation client makes a websocket connection to the translation server, reads text from the input file and splits it into a number of translation job requests which are sent to the translation server. Note that, the input file is expected to have one source language sentence per line. The client has a basic algorithm for tokenising strings and putting them into the lower case, i.e. preparing the text for translation. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run: `bpbd-client --help`.
+
+Once the translations are performed the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each line is prefixed with a translation status having a form: `<status>`. If a translation task was cancelled, or an error has occured then it is indicaed by the status and the information about that is also placed in the output file on the corresponding sentence line.
 
 ###Language model query tool: _lm-query_
-In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:
+The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line witout any parameters, **lm-query** reports on the available command-line options:
 
 ``` 
-vpn-stud-146-50-150-5:build zapreevis$ lm-query 
+$ lm-query 
 <...>
 PARSE ERROR:  
              Required arguments missing: query, model
@@ -283,6 +301,10 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    lm-query --help
 ```
+The language query tool has not changed much since the split-off from its official repository [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT). The main changes are that:
+
+* Now it is not possible to have just a single m-gram probability query. The tool always computes the joint probability of all the m-grams in the query starting from 1 up to N and then with a sliding window of the N-grams where N is the maximum language model level. However, the information over the intermediate single m-gram probabilities is still provided in the tool's output.
+* The length of the LM query is not limited by the maximum language model level N but is limited by a compile-time constant `lm::LM_MAX_QUERY_LEN`, see section [Project compile-time parameters](project-compile-time-parameters).
 
 ##Input file formats
 ###Translatin model
