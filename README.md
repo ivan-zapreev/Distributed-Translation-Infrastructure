@@ -548,13 +548,13 @@ All of the *lm-query* specific implementation classes are located in `[Project-F
 
 This project is originally based on the following literature:
 
-_ToDo: Put the BibTex entries into linked files_
-_ToDo: Add the paper of Ken LM_
-_ToDo: Add the SMT book_
-
-The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using *std::unordered_map* of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations
-
-_ToDo: Add more details about the papers and books_
+* Kenneth Heafield. "Kenlm: Faster and smaller language model queries." [BibTex](./docs/bibtex/Heafield_WMT11.bib)
+* Philipp Koehn. "Statistical Machine Translation". [BibTex](./docs/bibtex/Koehn_SMT_Book10.bib)
+* Mark Jan Nederhof, Giorgio Satta. "Prefix Probability for Probabilistic Synchronous Context-Free Grammars" [BibTex](./docs/bibtex/NederhofSatta_NLP11.bib)
+* Adam Pauls, Dan Klein. "Faster and Smaller N-Gram Language Models" [BibTex](./docs/bibtex/PaulsKlein_ACL11.bib)
+* Daniel Robenek, Jan Platos, Vaclav Snasel. "Efficient In-memory Data Structures for n-grams Indexing" [BibTex](./docs/bibtex/RobenekPlatosSnasel_DATESO13.bib)
+* Andreas Stolcke, Jing Zheng, Wen Wang, Victor Abrash. "SRILM at Sixteen: Update and Outlook" [BibTex](./docs/bibtex/StolckeZhengWangAbrash_ASRU11.bib)
+* Matthew Szudzik. "An Elegant Pairing Function" [BibTex](./docs/bibtex/Szudzik_NKS06.bib)
 
 ##Licensing
 This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -564,6 +564,7 @@ This software is distributed in the hope that it will be useful, but WITHOUT ANY
 You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ##History
+
 * **21.04.2015** - Created
 * **27.07.2015** - Changed project name and some to-do's
 * **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. 

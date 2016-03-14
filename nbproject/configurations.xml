@@ -6,13 +6,6 @@
     <df root="ext" name="3">
     </df>
     <df root="inc" name="1">
-      <df name="server">
-        <df name="decoder">
-          <df name="stack">
-            <in>stack_data.hpp</in>
-          </df>
-        </df>
-      </df>
     </df>
     <df root="inc" name="4">
     </df>
@@ -116,7 +109,7 @@
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <flagsDictionary>
-        <element flagsID="0" commonFlags="-std=c++0x -m64"/>
+        <element flagsID="0" commonFlags="-std=c++0x -m64 -O3"/>
       </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
@@ -126,13 +119,6 @@
           <buildCommand>${MAKE} -f Makefile -j 8</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath></executablePath>
-          <cTool>
-            <incDir>
-              <pElem>inc</pElem>
-              <pElem>ext</pElem>
-              <pElem>build</pElem>
-            </incDir>
-          </cTool>
           <ccTool>
             <standard>8</standard>
             <incDir>
@@ -140,19 +126,12 @@
               <pElem>ext</pElem>
               <pElem>build</pElem>
             </incDir>
+            <preprocessorList>
+              <Elem>NDEBUG</Elem>
+            </preprocessorList>
           </ccTool>
         </makeTool>
       </makefileType>
-      <item path="inc/common/utils/monitor/statistics_monitor.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/decoder/stack/stack_data.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
@@ -299,7 +278,9 @@
       <item path="src/server/tm/models/tm_target_entry.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/server/tm/tm_configurator.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
