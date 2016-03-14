@@ -30,6 +30,9 @@
 *.toc
 *.ind
 
+#The text editor's rubbish
+*.bak
+
 # Executables
 *.exe
 *.out

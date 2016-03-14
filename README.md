@@ -5,17 +5,17 @@
 **Project pages:** [Git-Hub-Project](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT)
 
 ##Introduction
-This is a fork project from the Back Off Language Model(s) for SMT project aimed at creating the entire phrase-based SMT translation infrastructure. This project follows a client/server atchitecture based on WebSockets for C++ and consists of the three main applications:
+This is a fork project from the Back Off Language Model(s) for SMT project aimed at creating the entire phrase-based SMT translation infrastructure. This project follows a client/server architecture based on Web Sockets for C++ and consists of the three main applications:
 
 + **bpbd-client** - is a thin client to send the translation job requests to the translation server and obtain results
 + **bpbd-server** - the the translation server consisting of the following main components:
     - *Decoder* - the decoder component responsible for translating text from one language into another
     - *LM* - the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities.
-    - *TM* - the translation model implementation required for providing source to target language phrase translation and the probailities thereof.
+    - *TM* - the translation model implementation required for providing source to target language phrase translation and the probabilities thereof.
     - *RM* - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof
-+ **lm-query** - a stand-alone language model query tool that allows to perform labguage model queries and estimate the joint phrase probabilities.
++ **lm-query** - a stand-alone language model query tool that allows to perform language model queries and estimate the joint phrase probabilities.
 
-To keep a clear view of the used terminology further we will privide some details on the phrase based statistical machine translation as given on the picture below, taken from [TAUS MT SHOWCASE slides](http://www.slideshare.net/TAUS/10-april-2013-taus-mt-showcase-mt-for-southeast-asian-languages-aw-ai-ti-institute-for-infocomm-18665069).
+To keep a clear view of the used terminology further we will provide some details on the phrase based statistical machine translation as given on the picture below, taken from [TAUS MT SHOWCASE slides](http://www.slideshare.net/TAUS/10-april-2013-taus-mt-showcase-mt-for-southeast-asian-languages-aw-ai-ti-institute-for-infocomm-18665069).
 
 ![Statistical Machine Translation Approach Image](./docs/images/smt/smt.jpg "Statistical Machine Translation Approach")
 
@@ -26,7 +26,7 @@ The entire phrase-based statistical machine translation is based on learned stat
 
 The last model, possibly learned from a different corpus in a target language, is the Language model. Its purpose is to reflect the likelihood of this or that phrase in the target language to occur. In other words it is used to evaluate the obtained translation for being _sound_ in the target language.
  
-With these three models at hand one can perform decoding, which is a synonim to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reorderings of the source language phrases within one sentence and then looking for the most probable translations, as indicated at the bottom part of the picture above.
+With these three models at hand one can perform decoding, which is a synonym to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reordering of the source language phrases within one sentence and then looking for the most probable translations, as indicated at the bottom part of the picture above.
  
 The rest of the document is organized as follows:
 
@@ -38,7 +38,7 @@ The rest of the document is organized as follows:
 6. [Code documentation](#code-documentation) - Refers to the project documentation
 7. [External libraries](#external-libraries) - Lists the included external libraries
 8. [Performance evaluation](#performance-evaluation) - Contains performance evaluation results
-9. [General design](#general-design) - Outlines the general software desing
+9. [General design](#general-design) - Outlines the general software design
 10. [Software details](#software-details) - Goes about some of the software details
 11. [Literature and references](#literature-and-references) - Presents the list of used literature
 12. [Licensing](#licensing) - States the licensing strategy of the project
@@ -54,7 +54,7 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * **inc/** - stores the C++ header files of the implementation
     * **src/** - stores the C++ source files of the implementation
     * **nbproject/** - stores the Netbeans project data, such as makefiles
-    * **data/** - stores the test-related data such as test models and query intput files, as well as some experimental results
+    * **data/** - stores the test-related data such as test models and query input files, as well as some experimental results
     * default.cfg - an example server configuration file
     * LICENSE - the code license (GPL 2.0)
     * CMakeLists.txt - the cmake build script for generating the project's make files
@@ -76,7 +76,7 @@ This project supports two major platforms: Linux and Mac Os X. It has been succe
 ##Building the project
 Building this project requires **gcc** version >= *4.9.1* and **cmake** version >= 2.8.12.2.
 
-The first two steps before building the project, to be performed from the linux command line console, are:
+The first two steps before building the project, to be performed from the Linux command line console, are:
 
 + `cd [Project-Folder]`
 + `mkdir build`
@@ -97,18 +97,18 @@ The binaries will be generated and placed into *./build/* folder. In order to cl
 ###Project compile-time parameters
 For the sake of performance optimizations, the project has a number of compile-time parameters that are to be set before the project is build and can not be modified in the runtime. Let us consider the most important of them and indicate where all of them are to be found.
 
-**Loggin level:** Logging is important when debugging software or providing an additional user information during the program's runtime. Yet additional output actions come at a prise and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project's logging levels, listed incrementally, is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at runtime by setting the `LOGER_M_GRAM_LEVEL_MAX` constaint value in the `./inc/common/utils/logging/logger.hpp` header file. The default value is INFO3.
+**Logging level:** Logging is important when debugging software or providing an additional user information during the program's runtime. Yet additional output actions come at a price and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project's logging levels, listed incrementally, is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at runtime by setting the `LOGER_M_GRAM_LEVEL_MAX` constant value in the `./inc/common/utils/logging/logger.hpp` header file. The default value is INFO3.
 
 **Sanity checks:** When program is not running as expected, it could be caused by the internal software errors that are potentially detectable at runtime. This software has a number of build-in sanity checks that can be enabled/disabled at compile time by setting the `DO_SANITY_CHECKS` boolean flag in the `./inc/common/utils/exceptions.hpp` header file. Note that enabling the sanity checks does not guarantee that the internal error will be found but will have a negative effect on the program's performance. Yet, it might help to identify some of the errors with e.g. input file formats and alike.
 
-**Server configs:** There is a number of translation server common parameters used in decoding, translation, reordering anb language models. Those are to be found in the `./inc/server/server_configs.hpp`:
+**Server configs:** There is a number of translation server common parameters used in decoding, translation, reordering and language models. Those are to be found in the `./inc/server/server_configs.hpp`:
 
 * `UNKNOWN_LOG_PROB_WEIGHT` - The value used for the unknown probability weight _(log10 scale)_
 * `ZERO_LOG_PROB_WEIGHT` - The value used for the 'zero' probability weight _(log10 scale)_
 * `tm::NUM_TM_FEATURES` - The number of the translation model features, which defines the exact number of features read per entry from the translation model input file
 * `tm::TM_MAX_TARGET_PHRASE_LEN` - The maximum length of the target phrase to be considered, this defines the maximum number of tokens to be stored per translation entry
-* `lm::NUM_LM_FEATURES` - The number of language model features, the program currenly supports only one value: `1`
-* `lm::LM_M_GRAM_LEVEL_MAX` - The languahe model maximum level, the maximum number of words in the language model phrase
+* `lm::NUM_LM_FEATURES` - The number of language model features, the program currently supports only one value: `1`
+* `lm::LM_M_GRAM_LEVEL_MAX` - The language model maximum level, the maximum number of words in the language model phrase
 * `lm::LM_HISTORY_LEN_MAX` - **do not change** this parameter 
 * `lm::LM_MAX_QUERY_LEN` - **do not change** this parameter 
 * `lm::DEF_UNK_WORD_LOG_PROB_WEIGHT` - The default unknown word probability weight, for the case the `<unk>` entry is not present in the language model file _(log10 scale)_
@@ -121,23 +121,23 @@ For the sake of performance optimizations, the project has a number of compile-t
 **LM configs:** The Language-model-specific parameters located in `./inc/server/lm/lm_configs.hpp`:
 
 * `lm_word_index` - the word index type to be used, the possible values are:
-     * `basic_word_index` - the basic word index that just loads the uni-grams in the same order as in the LM model file and gives them consequtive id values.
-     * `counting_word_index` - the basic word index that counts the number of times the unigram occurs in the LM model file and gives lower ids to the more frequent unigrams. This ensures some performance boost (within 10%) when querying certain types of langue models but requires longer loading times.
+     * `basic_word_index` - the basic word index that just loads the uni-grams in the same order as in the LM model file and gives them consecutive id values.
+     * `counting_word_index` - the basic word index that counts the number of times the uni-gram occurs in the LM model file and gives lower ids to the more frequent uni-grams. This ensures some performance boost (within 10%) when querying certain types of language models but requires longer loading times.
      * `optimizing_word_index<basic_word_index>` - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a basic word index as a bootstrap word index for issuing the ids.
      * `optimizing_word_index<counting_word_index>` - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a counting word index as a bootstrap word index for issuing the ids.
-     * `hashing_word_index` - the hashing word index is a discontinuous word index that does not issue the unigram ids consequently but rather associates each unigram with its hash value, the latter is taken to be a unique identifier. This is the only type of index supported by the hash-based `h2d_map_trie`.
+     * `hashing_word_index` - the hashing word index is a discontinuous word index that does not issue the uni-gram ids consequently but rather associates each uni-gram with its hash value, the latter is taken to be a unique identifier. This is the only type of index supported by the hash-based `h2d_map_trie`.
 * `lm_model_type` - the trie model type to be used, the possible values (trie types) are as follows, for a performance comparison thereof see [Performance Evaluation](#performance-evaluation):
      * `c2d_hybrid_trie<lm_word_index>` - contains the context-to-data mapping trie implementation based on `std::unordered` map and ordered arrays
      * `c2d_map_trie<lm_word_index>` - contains the context-to-data mapping trie implementation based on `std::unordered map`
      * `c2w_array_trie<lm_word_index>` - contains the context-to-word mapping trie implementation based on ordered arrays
      * `g2d_map_trie<lm_word_index>` - contains the m-gram-to-data mapping trie implementation based on self-made hash maps
-     * `h2d_map_trie<lm_word_index>` - contains the hash-to-data mapping trie based on the linear probing hash map imlementation
+     * `h2d_map_trie<lm_word_index>` - contains the hash-to-data mapping trie based on the linear probing hash map implementation
      * `w2c_array_trie<lm_word_index>` - contains the word-to-context mapping trie implementation based on ordered arrays
      * `w2c_hybrid_trie<lm_word_index>` - contains the word-to-context mapping trie implementation based on `std::unordered` map and ordered arrays
 * `lm_model_reader` - the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with `cstyle_file_reader` being the default:
      * `file_stream_reader` - uses the C++ streams to read from files, the slowest
      * `cstyle_file_reader` - uses C-style file reading functions, faster than `file_stream_reader`
-     * `memory_mapped_file_reader` - uses memory-mapped files which are faster than the `cstyle_file_reader` but consume twise the file size memory (virtual RAM).
+     * `memory_mapped_file_reader` - uses memory-mapped files which are faster than the `cstyle_file_reader` but consume twice the file size memory (virtual RAM).
 * `lm_builder_type` - currently there is just one builder type available: `lm_basic_builder<lm_model_reader>`.
 
 Note that not all of the combinations of the `lm_word_index` and `lm_model_type` can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the `./inc/server/lm/lm_consts.hpp` header file comments. The default, and the most optimal performance/memory ratio configuration, is:
@@ -161,7 +161,7 @@ Note that not all of the combinations of the `lm_word_index` and `lm_model_type`
 This section briefly covers how the provided software can be used for performing text translations. We begin with the **bpbd-server** and the **bpbd-client** then briefly talk about the **lm-query**. For information on the LM, TM and RM model file formats and others see section [Input file formats](#input-file-formats)
 
 ###Translation server: _bpbd-server_ 
-The translation server is used to load language, translation and reordering models for a given source/target language pair and to process the translation requests coming from the translation client. When started from a command line witout any parameters, **bpbd-server** reports on the available command-line options:
+The translation server is used to load language, translation and reordering models for a given source/target language pair and to process the translation requests coming from the translation client. When started from a command line without any parameters, **bpbd-server** reports on the available command-line options:
 
 ```
 $ bpbd-server
@@ -179,7 +179,7 @@ For complete USAGE and HELP type:
 There are to complementing ways to configure the **bpbd-server**, the first one is the _configuration file_ and another is the _server console_. We consider both of them below in more details.
 
 ####Configuration file####
-In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the Websockets port through which the server will accept requests. An example configuration file can be found in: `[Project-Folder]/default.cfg` and in `[Project-Folder]/data`. The content of this file is self explanatory and contains a significant amount of comments.
+In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the web socket port through which the server will accept requests. An example configuration file can be found in: `[Project-Folder]/default.cfg` and in `[Project-Folder]/data`. The content of this file is self explanatory and contains a significant amount of comments.
 
 When run with a properly formed configuration file, **bpbd-server** gives the following output. Note the `-d info1` option ensuring additional information output during loading the models.
 
@@ -244,7 +244,7 @@ There is a few important things to note about the configuration file at the mome
 * `[Language Models]/lm_feature_weights` - the number of features must be equal to the value of `lm::NUM_LM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
 
 ####Server console####
-Once the server is started it is not run as a linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the server. The list of available server console commands is given in the listing below:
+Once the server is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the server. The list of available server console commands is given in the listing below:
 
 ```
 $ bpbd-server -c ../data/default-1-3.000.000.cfg -d info2
@@ -269,7 +269,7 @@ USAGE: 	'set pp <float> & <enter>'  - set phrase penalty.
 Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, **bpbd-server** has just one copy of the server runtime parameters used from all the translation processes. So in case of active translation process, changing these parameters can cause disruptions thereof starting from an inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not experience any disruptions.
 
 ###Translation client: _bpbd-client_
-The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line witout any parameters, **bpbd-clinet** reports on the available command-line options:
+The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line without any parameters, **bpbd-client** reports on the available command-line options:
 
 ```
 $bpbd-client
@@ -287,14 +287,14 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    bpbd-client --help
 ```
-The translation client makes a websocket connection to the translation server, reads text from the input file and splits it into a number of translation job requests which are sent to the translation server. Note that, the input file is expected to have one source language sentence per line. The client has a basic algorithm for tokenising strings and putting them into the lower case, i.e. preparing the text for translation. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run: `bpbd-client --help`.
+The translation client makes a web socket connection to the translation server, reads text from the input file and splits it into a number of translation job requests which are sent to the translation server. Note that, the input file is expected to have one source language sentence per line. The client has a basic algorithm for tokenising strings and putting them into the lower case, i.e. preparing the text for translation. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run: `bpbd-client --help`.
 
-Once the translations are performed the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each line is prefixed with a translation status having a form: `<status>`. If a translation task was cancelled, or an error has occured then it is indicaed by the status and the information about that is also placed in the output file on the corresponding sentence line.
+Once the translations are performed the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each line is prefixed with a translation status having a form: `<status>`. If a translation task was cancelled, or an error has occurred then it is indicated by the status and the information about that is also placed in the output file on the corresponding sentence line.
 
-As always, running **bpbd-clinet** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the niput file is required to be in the utf8 encoding.
+As always, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is required to be in the utf8 encoding.
 
 ###Language model query tool: _lm-query_
-The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line witout any parameters, **lm-query** reports on the available command-line options:
+The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line without any parameters, **lm-query** reports on the available command-line options:
 
 ``` 
 $ lm-query 
@@ -318,7 +318,7 @@ The language query tool has not changed much since the split-off from its offici
 ##Input file formats
 In this section we briefly discuss the model file formats supported by the tools. We shall occasionally reference the other tools supporting the same file formats and external third-party web pages with extended format descriptions.
 
-###Translatin model: `*.tm`
+###Translation model: `*.tm`
 The translation-model file stores the phrase pairs in the source and target languages and the pre-computed probability weights in the following strict format:
 
 ```
@@ -403,7 +403,7 @@ The `[Project-Folder]/Doxyfile` can be used to re-generate the documentation at 
 ##External libraries
 At present this project uses the following external/third-party header-only libraries:
 
-| Library Name | Purpose | Website | Version | Lisence |
+| Library Name | Purpose | Website | Version | Licence |
 |:------------|:--------:|:-------:|:-------:|:-------:|
 |Feather ini parser|_Fast, lightweight, header, portable INI/configuration file parser for ANSI C++._|[link](https://github.com/Turbine1991/feather-ini-parser)|1.40|[MIT](http://www.linfo.org/mitlicense.html)|
 |WebSocket++|_Is an open source, header only C++ library implementing RFC6455 (The WebSocket Protocol)._|[link](http://www.zaphoyd.com/websocketpp)|0.6.0|[BSD](http://www.linfo.org/bsdlicense.html)|
@@ -433,11 +433,11 @@ The test hardware configuration and the model/query files' data is to be found i
 ###Experimental results
 The experimental results are present in the following two pictures. The first one indicates the changes in the MRSS depending on the model size: 
 
-![MRSS Comparions Image](./docs/images/experiments/lm/mem.jpg "MRSS Comparions")
+![MRSS Comparisons Image](./docs/images/experiments/lm/mem.jpg "MRSS Comparisons")
 
 The second one shows the query CPU times depending on the model sizes:
 
-![CPU Times Comparions Image](./docs/images/experiments/lm/time.jpg "CPU Times Comparions")
+![CPU Times Comparisons Image](./docs/images/experiments/lm/time.jpg "CPU Times Comparisons")
 
 The results show that the developed LM model trie representations are highly compatible with the available state of the art tools. We also give the following usage guidelines for the implemented tries:
 
@@ -445,11 +445,11 @@ The results show that the developed LM model trie representations are highly com
 * **c2dm** trie provides the fastest performance with moderate memory consumption. This is recommended when high performance is needed but one should be aware of possible m-gram id collisions.10
 * **c2dh** trie is preferable if performance, as well as moderate memory consumption, is needed. This is the second-fastest trie which, unlike **c2dm**, is fully reliable.
 * **w2ch** trie did not show itself useful and **g2dm** is yet to be re-worked and improved for better performance and memory usage.
-* **h2dm** following the intuitions of the KenLM implementation, realises the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
+* **h2dm** following the intuitions of the KenLM implementation, realizes the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
 
 ##General design
 
-This section describes the ultimate and the current desings of the probided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overal structure of the software. We first provide the ultimate desing we are targeting for and then give some insights into the currently implemented version thereof. The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
+This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software. We first provide the ultimate design we are targeting for and then give some insights into the currently implemented version thereof. The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
 
 ###The ultimate design
 ![The ultimate deployment Image](./docs/images/design/deployment_ideal.png "The ultimate deployment")
@@ -469,9 +469,9 @@ _ToDo: Update details on how the query tool works including requirements and str
 
 ##Literature and references
 
-This project is originally based on the followin literature:
+This project is originally based on the following literature:
 
-_ToDo: Put the BibText entries into linked files_
+_ToDo: Put the BibTex entries into linked files_
 _ToDo: Add the paper of Ken LM_
 _ToDo: Add the SMT book_
 
