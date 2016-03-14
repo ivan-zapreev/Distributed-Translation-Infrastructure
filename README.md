@@ -399,7 +399,6 @@ The `[Project-Folder]/Doxyfile` can be used to re-generate the documentation at 
     + `cd [Project-Folder]/docs/latex`
     + `make`
 
-
 ##External libraries
 At present this project uses the following external/third-party header-only libraries:
 
@@ -453,21 +452,51 @@ This section describes the ultimate and the current designs of the provided soft
 
 ###The ultimate design
 Consider the deployment diagram below. It shows the ultimate design we are aiming at.
+
 ![The ultimate deployment Image](./docs/images/design/deployment_ideal.png "The ultimate deployment")
+
 This design's main feature is that it is fully distributed, and consists of three, vertical, layers.
 
-The first layer, located on the left side, is the front desk-load balancing piece of software who's responsibility is receiving the translation job requests from one language to another and then forwarding them to the second layer of the design performing load balancing.
-
-The second layer, located in the middle of the picture, id a number of decoding servers that perform translation jobs. These servers can run decoders performing one-to-one language translation each, and there may be multiple instances of decoders for the same source/target language pair.  Alternatively, each decoder might be able to translate from a bunch of languages into a bunch of languages and all the middle level server instances run multiple copies of such decoders. Of course an intermediate variant is also possible.
-
-The third layer, located on the right side, is the layer of various instances of the Language, Translation, and Reordering models. Once again, there can be multiple instances of the same model running to distribute the workload. Any decoder is free to use any and any number of model instances running in the third layer.
+1. _The first layer_, located on the left side, is the front desk-load balancing piece of software who's responsibility is receiving the translation job requests from one language to another and then forwarding them to the second layer of the design performing load balancing.
+2. _The second layer_, located in the middle of the picture, id a number of decoding servers that perform translation jobs. These servers can run decoders performing one-to-one language translation each, and there may be multiple instances of decoders for the same source/target language pair.  Alternatively, each decoder might be able to translate from a bunch of languages into a bunch of languages and all the middle level server instances run multiple copies of such decoders. Of course an intermediate variant is also possible.
+3. _The third layer_, located on the right side, is the layer of various instances of the Language, Translation, and Reordering models. Once again, there can be multiple instances of the same model running to distribute the workload. Any decoder is free to use any and any number of model instances running in the third layer.
 
 The communication between the layers here is suggested to be done using Web sockets as the fastest available asynchronous communication protocol available at the moment. In case of significant network communication overhead some of the system components can be run locally on the same physical computing unit or even be build into a monolith application for complete avoidance of the socket communications. The latter can be achieved by simply providing a local implementation of the needed system component. This approach is taken in the first version of the implemented software discussed in the next sub-section.
 
 ###The current design
+Due to the limited time and as a proof of concept, the first version of the project follows the simplified version of the ultimate design given by the deployment diagram below.
 
 ![The current deployment Image](./docs/images/design/deployment_first.png "The current deployment")
+
+As one can notice, in this figure the first layer is removed, i.e. there is no load-balancing entity. Also the Language, Translation, and Reordering models have local interface implementations only and are compiled together with the decoder in a single application. One can easily extend this design towards the ultimate one by simply providing the remove implementations for the LM, TM and RM models using the existing libraries used in the current implementation.
+
+Let us now briefly consider the two most complicated components of the software, the _Decoder_ and the _Language model_.
+
+####The decoder component
+The class diagram of the decoder component is given below. The decoder has a multi-threaded implementation, where each translation job (_a number of sentences to translate_) gets split into a number of translations tasks (_one task is one sentence_). Every translation task is executed in a separate thread. The number of translation threads is configurable at any moment of time.
+
 ![The decoder Image](./docs/images/design/decoder_component.png "The decoder")
+
+Let us consider the main classes from the diagram:
+
+The _Decoder Impl_ is responsible for: receiving the Web socket session open and close requests; parsing the translation requests into translation jobs; scheduling the translation jobs to the _JobPool_; receiving the finished job notification; and sending the finished job reply to the client.
+
+The _JobPool_ stores all the scheduled translation jobs and splits them into the translation tasks scheduled by the _TaskPool_. Once all the translation tasks of a translation job are finished the JobPool notifies the _Decoder Impl_.
+
+The _TaskPool_ contains the queue of scheduled translation tasks and a limited number of translation worker threads to perform translations. In essence this is a thread pool entity with a queue of thread tasks.
+
+The _TranslationTask_ is a sentence translation entity, its responsibility is to retrieve the preliminary information from the Language, Translation, and Reordering models and then to perform translations using the translation multi-_Stack_, and instances of _Level_ and _State_ classes. The latter represents the translation expansion hypothesis. At present the translation algorithm supports:
+
+* Beam search 
+* Future cost estimates
+* Threshold pruning of hypothesis
+* Histogram pruning of hypothesis
+* Hypothesis recombination
+
+####The LM component
+
+Let us now consider the LM implementation class/package diagram on the figure below:
+
 ![The LM component Image](./docs/images/design/lm_component.png "LM component")
 
 ##Software details
