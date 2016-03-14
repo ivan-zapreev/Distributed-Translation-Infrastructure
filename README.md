@@ -449,12 +449,23 @@ The results show that the developed LM model trie representations are highly com
 
 ##General design
 
-This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software. We first provide the ultimate design we are targeting for and then give some insights into the currently implemented version thereof. The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
+This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software. We first provide the ultimate design we are going to work for and then give some insights into the currently implemented version thereof. The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
 
 ###The ultimate design
+Consider the deployment diagram below. It shows the ultimate design we are aiming at.
 ![The ultimate deployment Image](./docs/images/design/deployment_ideal.png "The ultimate deployment")
+This design's main feature is that it is fully distributed, and consists of three, vertical, layers.
+
+The first layer, located on the left side, is the front desk-load balancing piece of software who's responsibility is receiving the translation job requests from one language to another and then forwarding them to the second layer of the design performing load balancing.
+
+The second layer, located in the middle of the picture, id a number of decoding servers that perform translation jobs. These servers can run decoders performing one-to-one language translation each, and there may be multiple instances of decoders for the same source/target language pair.  Alternatively, each decoder might be able to translate from a bunch of languages into a bunch of languages and all the middle level server instances run multiple copies of such decoders. Of course an intermediate variant is also possible.
+
+The third layer, located on the right side, is the layer of various instances of the Language, Translation, and Reordering models. Once again, there can be multiple instances of the same model running to distribute the workload. Any decoder is free to use any and any number of model instances running in the third layer.
+
+The communication between the layers here is suggested to be done using Web sockets as the fastest available asynchronous communication protocol available at the moment. In case of significant network communication overhead some of the system components can be run locally on the same physical computing unit or even be build into a monolith application for complete avoidance of the socket communications. The latter can be achieved by simply providing a local implementation of the needed system component. This approach is taken in the first version of the implemented software discussed in the next sub-section.
 
 ###The current design
+
 ![The current deployment Image](./docs/images/design/deployment_first.png "The current deployment")
 ![The decoder Image](./docs/images/design/decoder_component.png "The decoder")
 ![The LM component Image](./docs/images/design/lm_component.png "LM component")
