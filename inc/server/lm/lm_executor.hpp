@@ -52,7 +52,7 @@ using namespace std;
 using namespace uva::utils::file;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
-using namespace uva::utils::monitore;
+using namespace uva::utils::monitor;
 
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::lm::dictionary;
@@ -95,7 +95,7 @@ namespace uva {
                             LOG_USAGE << "Start reading and executing the test queries ..." << END_LOG;
 
                             //Start the timer
-                            start_time = stat_monitore::get_cpu_time();
+                            start_time = stat_monitor::get_cpu_time();
 
                             //Read the test file line by line
                             while (test_file.get_first_line(line)) {
@@ -111,7 +111,7 @@ namespace uva {
                             }
 
                             //Stop the timer
-                            end_time = stat_monitore::get_cpu_time();
+                            end_time = stat_monitor::get_cpu_time();
 
                             //Dispose the query
                             lm_configurator::dispose_slow_query_proxy(query);

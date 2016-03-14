@@ -32,7 +32,7 @@ using namespace uva::utils::exceptions;
 
 namespace uva {
     namespace utils {
-        namespace monitore {
+        namespace monitor {
 
             /**
              * This structure stores the memory statistics.
@@ -63,7 +63,7 @@ namespace uva {
              * This class is responsible for monitoring the program statistics, such as the used memory and CPU times.
              * This class is a trivial singleton
              */
-            class stat_monitore {
+            class stat_monitor {
             public:
 
                 /**
@@ -83,13 +83,13 @@ namespace uva {
 
             private:
 
-                stat_monitore() {
+                stat_monitor() {
                 }
 
-                stat_monitore(const stat_monitore& orig) {
+                stat_monitor(const stat_monitor& orig) {
                 }
 
-                virtual ~stat_monitore() {
+                virtual ~stat_monitor() {
                 }
 
             };

@@ -26,7 +26,7 @@ set(LM_QUERY_SOURCES
     src/server/lm/mgrams/byte_m_gram_id.cpp
     src/server/lm/builders/lm_basic_builder.cpp
     src/server/lm/builders/lm_gram_builder.cpp
-    src/common/utils/monitore/statistics_monitor.cpp 
+    src/common/utils/monitor/statistics_monitor.cpp 
     src/common/utils/logging/logger.cpp
 )
 #Define the server executable
@@ -55,7 +55,7 @@ set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
     src/server/lm/mgrams/byte_m_gram_id.cpp
     src/server/lm/builders/lm_basic_builder.cpp
     src/server/lm/builders/lm_gram_builder.cpp
-    src/common/utils/monitore/statistics_monitor.cpp 
+    src/common/utils/monitor/statistics_monitor.cpp 
     src/common/utils/logging/logger.cpp
     src/common/messaging/trans_job_code.cpp
     src/server/trans_task_pool_worker.cpp

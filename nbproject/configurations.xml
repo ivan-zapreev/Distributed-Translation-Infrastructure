@@ -3,6 +3,8 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
     </df>
+    <df root="ext" name="3">
+    </df>
     <df root="inc" name="1">
       <df name="server">
         <df name="decoder">
@@ -11,6 +13,8 @@
           </df>
         </df>
       </df>
+    </df>
+    <df root="inc" name="4">
     </df>
     <df root="src" name="2">
       <df name="client">
@@ -25,7 +29,7 @@
           <df name="logging">
             <in>logger.cpp</in>
           </df>
-          <df name="monitore">
+          <df name="monitor">
             <in>statistics_monitor.cpp</in>
           </df>
         </df>
@@ -71,6 +75,18 @@
         <in>trans_task_pool_worker.cpp</in>
       </df>
     </df>
+    <df root="src" name="5">
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>CMakeLists.txt</itemPath>
+      <itemPath>build/Makefile</itemPath>
+      <itemPath>data/default-1-10.000.cfg</itemPath>
+      <itemPath>data/default-1-3.000.000.cfg</itemPath>
+      <itemPath>default.cfg</itemPath>
+    </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false"
@@ -84,6 +100,9 @@
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>ext</Elem>
     <Elem>src</Elem>
     <Elem>inc</Elem>
     <Elem>ext</Elem>
@@ -124,6 +143,11 @@
           </ccTool>
         </makeTool>
       </makefileType>
+      <item path="inc/common/utils/monitor/statistics_monitor.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/server/decoder/stack/stack_data.hpp"
             ex="false"
             tool="3"
@@ -151,7 +175,7 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/common/utils/monitore/statistics_monitor.cpp"
+      <item path="src/common/utils/monitor/statistics_monitor.cpp"
             ex="false"
             tool="1"
             flavor2="8">

@@ -23,7 +23,7 @@
  * Created on April 18, 2015, 12:18 PM
  */
 
-#include "common/utils/monitore/statistics_monitore.hpp"
+#include "common/utils/monitor/statistics_monitor.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
@@ -49,7 +49,7 @@ using namespace uva::utils::logging;
 
 namespace uva {
     namespace utils {
-        namespace monitore {
+        namespace monitor {
 
             /**
              * This implementation is derived from 
@@ -58,13 +58,13 @@ namespace uva {
              */
 #ifdef __APPLE__
 
-            void stat_monitore::get_mem_stat(TMemotyUsage & memStat) {
+            void stat_monitor::get_mem_stat(TMemotyUsage & memStat) {
                 LOG_DEBUG << "Unable to obtain memory usage statistics on Mac OS yet!" << END_LOG;
                 memStat = {};
             }
 #else
 
-            void stat_monitore::get_mem_stat(TMemotyUsage & memStat) {
+            void stat_monitor::get_mem_stat(TMemotyUsage & memStat) {
                 char *line;
                 char *vmsize = NULL;
                 char *vmpeak = NULL;
@@ -141,7 +141,7 @@ namespace uva {
              * Returns the amount of CPU time used by the current process,
              * in seconds, or -1.0 if an error occurred.
              */
-            double stat_monitore::get_cpu_time() {
+            double stat_monitor::get_cpu_time() {
 #if defined(_WIN32)
                 /* Windows -------------------------------------------------- */
                 FILETIME createTime;

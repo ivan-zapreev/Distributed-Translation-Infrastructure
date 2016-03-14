@@ -28,14 +28,14 @@
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
-#include "common/utils/monitore/statistics_monitore.hpp"
+#include "common/utils/monitor/statistics_monitor.hpp"
 
 #include "server/server_configs.hpp"
 #include "server/rm/rm_configs.hpp"
 #include "server/rm/proxy/rm_query_proxy.hpp"
 #include "server/rm/proxy/rm_query_proxy_local.hpp"
 
-using namespace uva::utils::monitore;
+using namespace uva::utils::monitor;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::file;
@@ -134,21 +134,21 @@ namespace uva {
                                 LOG_USAGE << model_name << " is located in: " << model_file_name << END_LOG;
 
                                 LOG_DEBUG << "Getting the memory statistics before opening the " << model_name << " file ..." << END_LOG;
-                                stat_monitore::get_mem_stat(mem_stat_start);
+                                stat_monitor::get_mem_stat(mem_stat_start);
 
                                 //Attempt to open the model file
                                 file_reader_type model_file(model_file_name.c_str());
                                 model_file.log_reader_type_info();
                                 LOG_DEBUG << "Getting the memory statistics after opening the " << model_name << " file ..." << END_LOG;
-                                stat_monitore::get_mem_stat(mem_stat_end);
+                                stat_monitor::get_mem_stat(mem_stat_end);
 
                                 //Log the usage information
                                 m_model.log_model_type_info();
 
                                 LOG_DEBUG << "Getting the memory statistics before loading the " << model_name << " ..." << END_LOG;
-                                stat_monitore::get_mem_stat(mem_stat_start);
+                                stat_monitor::get_mem_stat(mem_stat_start);
                                 LOG_DEBUG << "Getting the time statistics before creating the " << model_name << " ..." << END_LOG;
-                                start_time = stat_monitore::get_cpu_time();
+                                start_time = stat_monitor::get_cpu_time();
 
                                 //Assert that the model file is opened
                                 ASSERT_CONDITION_THROW(!model_file.is_open(), string("The ") + string(model_name) + string(" file: '")
@@ -160,20 +160,20 @@ namespace uva {
                                 builder.build();
 
                                 LOG_DEBUG << "Getting the time statistics after loading the " << model_name << " ..." << END_LOG;
-                                end_time = stat_monitore::get_cpu_time();
+                                end_time = stat_monitor::get_cpu_time();
                                 LOG_USAGE << "Reading the " << model_name << " took " << (end_time - start_time) << " CPU seconds." << END_LOG;
                                 LOG_DEBUG << "Getting the memory statistics after loading the " << model_name << " ..." << END_LOG;
-                                stat_monitore::get_mem_stat(mem_stat_end);
+                                stat_monitor::get_mem_stat(mem_stat_end);
                                 LOG_DEBUG << "Reporting on the memory consumption" << END_LOG;
                                 const string action_name = string("Loading the ") + string(model_name);
                                 report_memory_usage(action_name.c_str(), mem_stat_start, mem_stat_end, true);
 
                                 LOG_DEBUG << "Getting the memory statistics before closing the " << model_name << " file ..." << END_LOG;
-                                stat_monitore::get_mem_stat(mem_stat_start);
+                                stat_monitor::get_mem_stat(mem_stat_start);
                                 LOG_DEBUG << "Closing the model file ..." << END_LOG;
                                 model_file.close();
                                 LOG_DEBUG << "Getting the memory statistics after closing the " << model_name << " file ..." << END_LOG;
-                                stat_monitore::get_mem_stat(mem_stat_end);
+                                stat_monitor::get_mem_stat(mem_stat_end);
                             }
 
                         private:

@@ -33,7 +33,7 @@
 
 #include "main.hpp"
 
-#include "common/utils/monitore/statistics_monitore.hpp"
+#include "common/utils/monitor/statistics_monitor.hpp"
 #include "common/utils/logging/logger.hpp"
 
 #include "common/utils/string_utils.hpp"

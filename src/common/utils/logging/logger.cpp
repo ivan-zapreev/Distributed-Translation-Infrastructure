@@ -29,9 +29,9 @@
 #include <algorithm>    // std::transform
 
 #include "common/utils/logging/logger.hpp"
-#include "common/utils/monitore/statistics_monitore.hpp"
+#include "common/utils/monitor/statistics_monitor.hpp"
 
-using namespace uva::utils::monitore;
+using namespace uva::utils::monitor;
 
 namespace uva {
     namespace utils {

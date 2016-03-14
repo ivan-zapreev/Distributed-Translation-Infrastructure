@@ -502,12 +502,47 @@ Let us now consider the LM implementation class/package diagram on the figure be
 The design of the Language model has not changed since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we refer to the [Implementation Details section](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details) of the README.md thereof. Please note that, recently the project class, file and folder names have changed slightly to become more uniform across the LM, TM, and RM implementations. The latter can be a minor source of confusion when relating this diagram back to the source code. Still, the overall conceptual design is remained intact and is reflected by the diagram in a perfect way.
 
 ##Software details
+In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.
+
+Note that, to the possible extend the software is implemented via the header files located in the `[Project-Folder]/inc`. Due to the C++ language restrictions some of the header files do have corresponding C++ source files located in `[Project-Folder]/src`. The latter, to the necessary extend, follows the structure and file names found in `[Project-Folder]/inc`. Therefore, further we will only concentrate on the content of the `[Project-Folder]/inc` folder.
+
+Additional information about the source code implementation classes can be found in the project's [Code documentation](#code-documentation).
+
+###_common packages_
+The project's common packages are located in `[Project-Folder]/inc/common`:
+
+* `/messaging` - web-socket message related classes common for the bpbd server and client
+* `/utils` - various utility classes and libraries needed for logging and etc.
+    - `/containers` - some container type classes
+    - `/file` - file-reading related classes
+    - `/logging` - logging classes
+    - `/monitor` - memory usage and CPU times monitor classes
+
 ###_bpbd-client_
-_ToDo: Add details on how the client works including requirements and structure_
+All of the *bpbd-client* specific implementation classes are located in `[Project-Folder]/inc/client`.
+
 ###_bpbd-server_
-_ToDo: Add details on how the server works including requirements and structure_
+All of the *bpbd-server* specific implementation classes are located in `[Project-Folder]/inc/server`:
+
+* `/common` - classes common to all server components
+    - `/models` - model-related classes common to all server components
+* `/decoder` - classes used in the decoder component
+    - `sentence` - classes related to the top-level sentence decoding algorithms
+    - `stack` - the multi-stack classes related to the stack-based decoding algorithms
+* `/tm` - the translation model classes
+    - `builders` - the model builder classes needed for reading the models
+    - `models` - the model representation classes
+    - `proxy` - the proxy objects implementing the local and/or remote model interface
+* `/rm` - the reordering model classes
+    - The same as for `/tm`.
+* `/lm` - the language model classes
+    - Similar to `/tm` and `/rm` but has some differences, see the next sub-section.
+
 ###_lm-query_
-_ToDo: Update details on how the query tool works including requirements and structure_
+All of the *lm-query* specific implementation classes are located in `[Project-Folder]/inc/server/lm/`. The structure of this folder follows the general patters of that of `[Project-Folder]/inc/server/tm/` and `[Project-Folder]/inc/server/rm/` but has the following additional sub-folders:
+
+* `/dictionaries` - dictionary/word-index related classes
+* `/mgrams` - model and query m-gram related classes.
 
 ##Literature and references
 
@@ -532,7 +567,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **21.04.2015** - Created
 * **27.07.2015** - Changed project name and some to-do's
 * **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. 
-* **11.03.2016** - Updated Updated to reflect the project status. 
+* **11.03.2016** - Updated to reflect the latest project status. 
 
 ##Appendix Tests
 
