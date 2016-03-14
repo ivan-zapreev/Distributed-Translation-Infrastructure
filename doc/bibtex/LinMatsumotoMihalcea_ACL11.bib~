@@ -1,0 +1,11 @@
+@inbook{c9d057a485ab421396ef6ce3713a13b9,
+    title = "Prefix Probability for Probabilistic Synchronous Context-Free Grammars",
+    keywords = "parsing algorithms, Natural language processing",
+    author = "Nederhof, {Mark Jan} and Giorgio Satta",
+    year = "2011",
+    isbn = "978-1-932432-87-9",
+    pages = "460–469",
+    editor = "Dekang Lin and Yuji Matsumoto and Rada Mihalcea",
+    booktitle = "Proceedings of the 49th Annual Meeting of the Association for Computational Linguistics",
+    publisher = "Association for Computational Linguistics",
+}

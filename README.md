@@ -17,7 +17,7 @@ This is a fork project from the Back Off Language Model(s) for SMT project aimed
 
 To keep a clear view of the used terminology further we will provide some details on the phrase based statistical machine translation as given on the picture below, taken from [TAUS MT SHOWCASE slides](http://www.slideshare.net/TAUS/10-april-2013-taus-mt-showcase-mt-for-southeast-asian-languages-aw-ai-ti-institute-for-infocomm-18665069).
 
-![Statistical Machine Translation Approach Image](./docs/images/smt/smt.jpg "Statistical Machine Translation Approach")
+![Statistical Machine Translation Approach Image](./doc/images/smt/smt.jpg "Statistical Machine Translation Approach")
 
 The entire phrase-based statistical machine translation is based on learned statistical correlations between words and phrases of an example translation text, also called parallel corpus or corpora. Clearly, if the training corpora is large enough then it allows to cover most source/target language words and phrases and shall have enough information for approximating a translation of an arbitrary text. However, before this information can be extracted, the parallel corpora undergoes the process called _word alignment_ which is aimed at estimating which words/phrases in the source language correspond to which words/phrases in the target language. As a result, we obtain two statistical models:
 
@@ -49,7 +49,7 @@ The rest of the document is organized as follows:
 This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is as follows:
 
 * **`[Project-Folder]`**/
-    * **docs/** - contains the project-related documents including the Doxygen-generated code documentation and images
+    * **doc/** - contains the project-related documents including the Doxygen-generated code documentation and images
     * **ext/** - stores the external header only libraries used in the project
     * **inc/** - stores the C++ header files of the implementation
     * **src/** - stores the C++ source files of the implementation
@@ -388,15 +388,15 @@ Must have one _tabulation_ symbol after the `<probability>`, single space betwee
 ##Code documentation
 At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in two folders:
 
-* `[Project-Folder]/docs/html`
+* `[Project-Folder]/doc/html`
     - Open the _index.html_ file located in this folder with your favorite web browser.
-* `[Project-Folder]/docs/latex`
+* `[Project-Folder]/doc/latex`
     - Open the _refman.pdf_ file located in this folder with your favorite pdf viewer.
 
 The `[Project-Folder]/Doxyfile` can be used to re-generate the documentation at any given time, for more details see [Doxygen](www.doxygen.org/).
 
 * To re-build the Latex documentation run the following commands from the Linux console:
-    + `cd [Project-Folder]/docs/latex`
+    + `cd [Project-Folder]/doc/latex`
     + `make`
 
 ##External libraries
@@ -432,11 +432,11 @@ The test hardware configuration and the model/query files' data is to be found i
 ###Experimental results
 The experimental results are present in the following two pictures. The first one indicates the changes in the MRSS depending on the model size: 
 
-![MRSS Comparisons Image](./docs/images/experiments/lm/mem.jpg "MRSS Comparisons")
+![MRSS Comparisons Image](./doc/images/experiments/lm/mem.jpg "MRSS Comparisons")
 
 The second one shows the query CPU times depending on the model sizes:
 
-![CPU Times Comparisons Image](./docs/images/experiments/lm/time.jpg "CPU Times Comparisons")
+![CPU Times Comparisons Image](./doc/images/experiments/lm/time.jpg "CPU Times Comparisons")
 
 The results show that the developed LM model trie representations are highly compatible with the available state of the art tools. We also give the following usage guidelines for the implemented tries:
 
@@ -453,7 +453,7 @@ This section describes the ultimate and the current designs of the provided soft
 ###The ultimate design
 Consider the deployment diagram below. It shows the ultimate design we are aiming at.
 
-![The ultimate deployment Image](./docs/images/design/deployment_ideal.png "The ultimate deployment")
+![The ultimate deployment Image](./doc/images/design/deployment_ideal.png "The ultimate deployment")
 
 This design's main feature is that it is fully distributed, and consists of three, vertical, layers.
 
@@ -466,7 +466,7 @@ The communication between the layers here is suggested to be done using Web sock
 ###The current design
 Due to the limited time and as a proof of concept, the first version of the project follows the simplified version of the ultimate design given by the deployment diagram below.
 
-![The current deployment Image](./docs/images/design/deployment_first.png "The current deployment")
+![The current deployment Image](./doc/images/design/deployment_first.png "The current deployment")
 
 As one can notice, in this figure the first layer is removed, i.e. there is no load-balancing entity. Also the Language, Translation, and Reordering models have local interface implementations only and are compiled together with the decoder in a single application. One can easily extend this design towards the ultimate one by simply providing the remove implementations for the LM, TM and RM models using the existing libraries used in the current implementation.
 
@@ -475,7 +475,7 @@ Let us now briefly consider the two most complicated components of the software,
 ####The decoder component
 The class diagram of the decoder component is given below. The decoder has a multi-threaded implementation, where each translation job (_a number of sentences to translate_) gets split into a number of translations tasks (_one task is one sentence_). Every translation task is executed in a separate thread. The number of translation threads is configurable at any moment of time.
 
-![The decoder Image](./docs/images/design/decoder_component.png "The decoder")
+![The decoder Image](./doc/images/design/decoder_component.png "The decoder")
 
 Let us consider the main classes from the diagram:
 
@@ -497,7 +497,7 @@ The _trans\_task_ is a simple wrapper around the sentence translation entity _se
 
 Let us now consider the LM implementation class/package diagram on the figure below:
 
-![The LM component Image](./docs/images/design/lm_component.png "LM component")
+![The LM component Image](./doc/images/design/lm_component.png "LM component")
 
 The design of the Language model has not changed much since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we still refer to the [Implementation Details section](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details) of the README.md thereof. For the most recent information on the LM component design please read the project's [Code documentation](#code-documentation).
 
@@ -548,13 +548,13 @@ All of the *lm-query* specific implementation classes are located in `[Project-F
 
 This project is originally based on the following literature:
 
-* Kenneth Heafield. "Kenlm: Faster and smaller language model queries." [BibTex](./docs/bibtex/Heafield_WMT11.bib)
-* Philipp Koehn. "Statistical Machine Translation". [BibTex](./docs/bibtex/Koehn_SMT_Book10.bib)
-* Mark Jan Nederhof, Giorgio Satta. "Prefix Probability for Probabilistic Synchronous Context-Free Grammars" [BibTex](./docs/bibtex/NederhofSatta_NLP11.bib)
-* Adam Pauls, Dan Klein. "Faster and Smaller N-Gram Language Models" [BibTex](./docs/bibtex/PaulsKlein_ACL11.bib)
-* Daniel Robenek, Jan Platos, Vaclav Snasel. "Efficient In-memory Data Structures for n-grams Indexing" [BibTex](./docs/bibtex/RobenekPlatosSnasel_DATESO13.bib)
-* Andreas Stolcke, Jing Zheng, Wen Wang, Victor Abrash. "SRILM at Sixteen: Update and Outlook" [BibTex](./docs/bibtex/StolckeZhengWangAbrash_ASRU11.bib)
-* Matthew Szudzik. "An Elegant Pairing Function" [BibTex](./docs/bibtex/Szudzik_NKS06.bib)
+* Kenneth Heafield. "Kenlm: Faster and smaller language model queries." [BibTex](./doc/bibtex/Heafield_WMT11.bib)
+* Philipp Koehn. "Statistical Machine Translation". [BibTex](./doc/bibtex/Koehn_SMT_Book10.bib)
+* Mark Jan Nederhof, Giorgio Satta. "Prefix Probability for Probabilistic Synchronous Context-Free Grammars" [BibTex](./doc/bibtex/NederhofSatta_NLP11.bib)
+* Adam Pauls, Dan Klein. "Faster and Smaller N-Gram Language Models" [BibTex](./doc/bibtex/PaulsKlein_ACL11.bib)
+* Daniel Robenek, Jan Platos, Vaclav Snasel. "Efficient In-memory Data Structures for n-grams Indexing" [BibTex](./doc/bibtex/RobenekPlatosSnasel_DATESO13.bib)
+* Andreas Stolcke, Jing Zheng, Wen Wang, Victor Abrash. "SRILM at Sixteen: Update and Outlook" [BibTex](./doc/bibtex/StolckeZhengWangAbrash_ASRU11.bib)
+* Matthew Szudzik. "An Elegant Pairing Function" [BibTex](./doc/bibtex/Szudzik_NKS06.bib)
 
 ##Licensing
 This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -773,6 +773,6 @@ ngram 4=396600722
 ngram 5=563533665
 ```
 
-![Markdown Logo](./docs/images/markdown.png "Markdown")
+![Markdown Logo](./doc/images/markdown.png "Markdown")
 
  _Powered by [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)_
