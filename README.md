@@ -386,12 +386,29 @@ Note that the format is expected to be followed in a very strict way. The header
 Must have one _tabulation_ symbol after the `<probability>`, single space between any two words, and a single _tabulation_ symbol before the `<back-off-weight>`. If the format is not followed, the program's behavior is not specified. The maximum allowed language model level, the maximum value of N in the N-gram, is defined by the compile-time parameter `lm::LM_M_GRAM_LEVEL_MAX`, see [Project compile-time parameters](#project-compile-time-parameters).
 
 ##Code documentation
-_ToDo: Extend with more details_
+At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in two folders:
 
-At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in the **./docs/** folder of the project.
+* `[Project-Folder]/docs/html`
+    - Open the _index.html_ file located in this folder with your favorite web browser.
+* `[Project-Folder]/docs/latex`
+    - Open the _refman.pdf_ file located in this folder with your favorite pdf viewer.
+
+The `[Project-Folder]/Doxyfile` can be used to re-generate the documentation at any given time, for more details see [Doxygen](www.doxygen.org/).
+
+* To re-build the Latex documentation run the following commands from the Linux console:
+    + `cd [Project-Folder]/docs/latex`
+    + `make`
+
 
 ##External libraries
-_ToDo: Write this section_
+At present this project uses the following external/third-party header-only libraries:
+
+| Library Name | Purpose | Website | Version | Lisence |
+|:------------|:--------:|:-------:|:-------:|:-------:|
+|Feather ini parser|_Fast, lightweight, header, portable INI/configuration file parser for ANSI C++._|[link](https://github.com/Turbine1991/feather-ini-parser)|1.40|[MIT](http://www.linfo.org/mitlicense.html)|
+|WebSocket++|_Is an open source, header only C++ library implementing RFC6455 (The WebSocket Protocol)._|[link](http://www.zaphoyd.com/websocketpp)|0.6.0|[BSD](http://www.linfo.org/bsdlicense.html)|
+|Asio C++ Library|_A cross-platform C++ library for network and low-level I/O programming_|[link](http://think-async.com/)|1.10.6|[Boost](http://www.boost.org/users/license.html)|
+|Tclap|_A small and flexible library that provides a simple interface for defining and accessing command line arguments_|[link](http://tclap.sourceforge.net/)|1.2.1|[MIT](http://www.linfo.org/mitlicense.html)|
 
 ##Performance evaluation
 In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix Tests](#appendix-tests)

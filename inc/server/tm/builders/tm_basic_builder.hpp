@@ -218,9 +218,9 @@ namespace uva {
                              * The line format assumes source to target and then at least four weights as given by:
                              *     http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases
                              * Currently, four different phrase translation scores are computed:
-                             *    inverse phrase translation probability φ(f|e)
+                             *    inverse phrase translation probability phi(f|e)
                              *    inverse lexical weighting lex(f|e)
-                             *    direct phrase translation probability φ(e|f)
+                             *    direct phrase translation probability phi(e|f)
                              *    direct lexical weighting lex(e|f) 
                              * Previously, there was another score:
                              *    phrase penalty (always exp(1) = 2.718) 

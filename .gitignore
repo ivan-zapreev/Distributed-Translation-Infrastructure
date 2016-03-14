@@ -22,6 +22,14 @@
 *.a
 *.lib
 
+#LaTex
+*.aux
+*.idx
+*.ilg
+*.log
+*.toc
+*.ind
+
 # Executables
 *.exe
 *.out

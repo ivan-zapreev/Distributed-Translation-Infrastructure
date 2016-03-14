@@ -75,7 +75,7 @@ namespace uva {
                      * 
                      * and unordered_maps showed good performance in:
                      *      "Efficient in-memory data structures for n-grams indexing"
-                     *       Daniel Robenek, Jan Platoˇs, and V ́aclav Sn ́aˇsel
+                     *       D. Robenek, J. Platos. and V. Snásel
                      *       Department of Computer Science, FEI, VSB – Technical University of Ostrava
                      *       17. listopadu 15, 708 33, Ostrava-Poruba, Czech Republic
                      *       {daniel.robenek.st, jan.platos, vaclav.snasel}@vsb.cz
