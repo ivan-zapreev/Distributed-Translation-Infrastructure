@@ -499,6 +499,8 @@ Let us now consider the LM implementation class/package diagram on the figure be
 
 ![The LM component Image](./docs/images/design/lm_component.png "LM component")
 
+The design of the Languahe model has not changed since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we refer to the [Implementation Details section](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details) of the README.md thereof. Please note that, recently the project class, file and folder names have changed slightly to become more uniform across the LM, TM, and RM implementations. The latter can be a minor source of confusion when relating this deiagram back to the source code. Still, the overall conceptual design is remained itact and is reflected by the diagram in a perfect way.
+
 ##Software details
 ###_bpbd-client_
 _ToDo: Add details on how the client works including requirements and structure_
