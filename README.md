@@ -479,13 +479,13 @@ The class diagram of the decoder component is given below. The decoder has a mul
 
 Let us consider the main classes from the diagram:
 
-The _Decoder Impl_ is responsible for: receiving the Web socket session open and close requests; parsing the translation requests into translation jobs; scheduling the translation jobs to the _JobPool_; receiving the finished job notification; and sending the finished job reply to the client.
+The _translation\_server_ is responsible for: receiving the Web socket session open and close requests; parsing the translation requests into translation jobs; scheduling the translation jobs to the _trans\_job\_pool; receiving the finished job notification; and sending the finished job reply to the client.
 
-The _JobPool_ stores all the scheduled translation jobs and splits them into the translation tasks scheduled by the _TaskPool_. Once all the translation tasks of a translation job are finished the JobPool notifies the _Decoder Impl_.
+The _trans\_job\_pool_ stores all the scheduled translation jobs and splits them into the translation tasks scheduled by the _trans\_task\_pool_. Once all the translation tasks of a translation job are finished the _trans\_job_ notifies the _trans\_job\_pool and that, in its turn notifies the _translation\_server_.
 
-The _TaskPool_ contains the queue of scheduled translation tasks and a limited number of translation worker threads to perform translations. In essence this is a thread pool entity with a queue of thread tasks.
+The _trans\_task\_pool_ contains the queue of scheduled translation tasks and a limited number of translation worker threads to perform translations. In essence this is a thread pool entity with a queue of thread tasks.
 
-The _TranslationTask_ is a sentence translation entity, its responsibility is to retrieve the preliminary information from the Language, Translation, and Reordering models and then to perform translations using the translation multi-_Stack_, and instances of _Level_ and _State_ classes. The latter represents the translation expansion hypothesis. At present the translation algorithm supports:
+The _trans\_task_ is a simple wrapper around the sentence translation entity _sentence\_decoder_. The latter's responsibility is to retrieve the preliminary information from the Language, Translation, and Reordering models and then to perform translations using the _multi\_tack_ class, and instances of _stack\_level_ and _stack\_state_ classes. The latter represents the translation expansion hypothesis. At present the translation algorithm supports:
 
 * Beam search 
 * Future cost estimates
@@ -499,7 +499,7 @@ Let us now consider the LM implementation class/package diagram on the figure be
 
 ![The LM component Image](./docs/images/design/lm_component.png "LM component")
 
-The design of the Language model has not changed since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we refer to the [Implementation Details section](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details) of the README.md thereof. Please note that, recently the project class, file and folder names have changed slightly to become more uniform across the LM, TM, and RM implementations. The latter can be a minor source of confusion when relating this diagram back to the source code. Still, the overall conceptual design is remained intact and is reflected by the diagram in a perfect way.
+The design of the Language model has not changed much since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we still refer to the [Implementation Details section](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details) of the README.md thereof. For the most recent information on the LM component design please read the project's [Code documentation](#code-documentation).
 
 ##Software details
 In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.
