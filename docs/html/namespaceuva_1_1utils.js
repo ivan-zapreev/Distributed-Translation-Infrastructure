@@ -5,5 +5,5 @@ var namespaceuva_1_1utils =
     [ "file", "namespaceuva_1_1utils_1_1file.html", "namespaceuva_1_1utils_1_1file" ],
     [ "logging", "namespaceuva_1_1utils_1_1logging.html", "namespaceuva_1_1utils_1_1logging" ],
     [ "math", "namespaceuva_1_1utils_1_1math.html", null ],
-    [ "monitore", "namespaceuva_1_1utils_1_1monitore.html", "namespaceuva_1_1utils_1_1monitore" ]
+    [ "monitor", "namespaceuva_1_1utils_1_1monitor.html", "namespaceuva_1_1utils_1_1monitor" ]
 ];

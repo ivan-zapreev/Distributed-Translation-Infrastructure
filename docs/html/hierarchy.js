@@ -48,7 +48,7 @@ var hierarchy =
     [ "uva::smt::bpbd::server::lm::m_grams::m_gram_payload_s", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__payload__s.html", null ],
     [ "uva::smt::bpbd::server::lm::m_gram_query", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__gram__query.html", null ],
     [ "uva::utils::containers::mem_increase_strategy", "classuva_1_1utils_1_1containers_1_1mem__increase__strategy.html", null ],
-    [ "uva::utils::monitore::memory_usage", "structuva_1_1utils_1_1monitore_1_1memory__usage.html", null ],
+    [ "uva::utils::monitor::memory_usage", "structuva_1_1utils_1_1monitor_1_1memory__usage.html", null ],
     [ "uva::smt::bpbd::server::decoder::stack::multi_stack", "classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1multi__stack.html", null ],
     [ "uva::smt::bpbd::server::lm::m_grams::phrase_base< MAX_PHRASE_LENGTH, MAX_PHRASE_ID_LENGTH >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1phrase__base.html", null ],
     [ "uva::smt::bpbd::server::lm::m_grams::phrase_base< MODEL_M_GRAM_MAX_LEN, MODEL_M_GRAM_MAX_LEN >", "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1phrase__base.html", [
@@ -79,7 +79,7 @@ var hierarchy =
     [ "uva::smt::bpbd::server::decoder::stack::stack_data", "structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__data.html", null ],
     [ "uva::smt::bpbd::server::decoder::stack::stack_level", "classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__level.html", null ],
     [ "uva::smt::bpbd::server::decoder::stack::stack_state_templ< NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH >", "classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1stack__state__templ.html", null ],
-    [ "uva::utils::monitore::stat_monitore", "classuva_1_1utils_1_1monitore_1_1stat__monitore.html", null ],
+    [ "uva::utils::monitor::stat_monitor", "classuva_1_1utils_1_1monitor_1_1stat__monitor.html", null ],
     [ "uva::smt::bpbd::server::decoder::stack::state_data_templ< NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH >", "structuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack_1_1state__data__templ.html", null ],
     [ "uva::smt::bpbd::server::lm::m_grams::m_gram_id::T_Gram_Id_Key", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__id_1_1_t___gram___id___key.html", null ],
     [ "uva::utils::containers::utils::T_IS_COMPARE_FUNC< ELEM_TYPE >", "structuva_1_1utils_1_1containers_1_1utils_1_1_t___i_s___c_o_m_p_a_r_e___f_u_n_c.html", null ],

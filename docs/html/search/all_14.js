@@ -43,7 +43,7 @@ var searchData=
   ['models',['models',['../namespaceuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1models.html',1,'uva::smt::bpbd::server::rm']]],
   ['models',['models',['../namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models.html',1,'uva::smt::bpbd::server::tm']]],
   ['models',['models',['../namespaceuva_1_1smt_1_1bpbd_1_1server_1_1common_1_1models.html',1,'uva::smt::bpbd::server::common']]],
-  ['monitore',['monitore',['../namespaceuva_1_1utils_1_1monitore.html',1,'uva::utils']]],
+  ['monitor',['monitor',['../namespaceuva_1_1utils_1_1monitor.html',1,'uva::utils']]],
   ['proxy',['proxy',['../namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1proxy.html',1,'uva::smt::bpbd::server::lm']]],
   ['proxy',['proxy',['../namespaceuva_1_1smt_1_1bpbd_1_1server_1_1rm_1_1proxy.html',1,'uva::smt::bpbd::server::rm']]],
   ['proxy',['proxy',['../namespaceuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1proxy.html',1,'uva::smt::bpbd::server::tm']]],

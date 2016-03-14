@@ -6,10 +6,16 @@
             <name>Basic-Phrase-Based-Decoding</name>
             <c-extensions/>
             <cpp-extensions>cpp</cpp-extensions>
-            <header-extensions>h,hpp,ipp</header-extensions>
+            <header-extensions>h,hpp</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
+                <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>ext</sourceRootElem>
+                <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>ext</sourceRootElem>
                 <sourceRootElem>src</sourceRootElem>
                 <sourceRootElem>inc</sourceRootElem>
                 <sourceRootElem>ext</sourceRootElem>

@@ -10,6 +10,6 @@ var searchData=
   ['stack_5fstate_2ehpp',['stack_state.hpp',['../stack__state_8hpp.html',1,'']]],
   ['state_5fdata_2ehpp',['state_data.hpp',['../state__data_8hpp.html',1,'']]],
   ['statistics_5fmonitor_2ecpp',['statistics_monitor.cpp',['../statistics__monitor_8cpp.html',1,'']]],
-  ['statistics_5fmonitore_2ehpp',['statistics_monitore.hpp',['../statistics__monitore_8hpp.html',1,'']]],
+  ['statistics_5fmonitor_2ehpp',['statistics_monitor.hpp',['../statistics__monitor_8hpp.html',1,'']]],
   ['string_5futils_2ehpp',['string_utils.hpp',['../string__utils_8hpp.html',1,'']]]
 ];
