@@ -109,19 +109,19 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <p><b>Author:</b> <a href="https://nl.linkedin.com/in/zapreevis">Dr. Ivan S. Zapreev</a></p>
 <p><b>Project pages:</b> <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT">Git-Hub-Project</a></p>
 <h2>Introduction</h2>
-<p>This is a fork project from the Back Off Language Model(s) for SMT project aimed at creating the entire phrase-based SMT translation infrastructure. This project follows a client/server atchitecture based on WebSockets for C++ and consists of the three main applications:</p>
+<p>This is a fork project from the Back Off Language Model(s) for SMT project aimed at creating the entire phrase-based SMT translation infrastructure. This project follows a client/server architecture based on Web Sockets for C++ and consists of the three main applications:</p>
 <ul>
 <li><b>bpbd-client</b> - is a thin client to send the translation job requests to the translation server and obtain results</li>
 <li><b>bpbd-server</b> - the the translation server consisting of the following main components:<ul>
 <li><em>Decoder</em> - the decoder component responsible for translating text from one language into another</li>
 <li><em>LM</em> - the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities.</li>
-<li><em>TM</em> - the translation model implementation required for providing source to target language phrase translation and the probailities thereof.</li>
+<li><em>TM</em> - the translation model implementation required for providing source to target language phrase translation and the probabilities thereof.</li>
 <li><em>RM</em> - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof</li>
 </ul>
 </li>
-<li><b>lm-query</b> - a stand-alone language model query tool that allows to perform labguage model queries and estimate the joint phrase probabilities.</li>
+<li><b>lm-query</b> - a stand-alone language model query tool that allows to perform language model queries and estimate the joint phrase probabilities.</li>
 </ul>
-<p>To keep a clear view of the used terminology further we will privide some details on the phrase based statistical machine translation as given on the picture below.</p>
+<p>To keep a clear view of the used terminology further we will provide some details on the phrase based statistical machine translation as given on the picture below, taken from <a href="http://www.slideshare.net/TAUS/10-april-2013-taus-mt-showcase-mt-for-southeast-asian-languages-aw-ai-ti-institute-for-infocomm-18665069">TAUS MT SHOWCASE slides</a>.</p>
 <div class="image">
 <img src="./docs/images/smt/smt.jpg"  alt="Statistical Machine Translation Approach Image" title="Statistical Machine Translation Approach"/>
 </div>
@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <li>The Reordering model - storing information about probable translation orders of the phrases within the source text, based on the observed source and target phrases and alignment thereof.</li>
 </ol>
 <p>The last model, possibly learned from a different corpus in a target language, is the Language model. Its purpose is to reflect the likelihood of this or that phrase in the target language to occur. In other words it is used to evaluate the obtained translation for being <em>sound</em> in the target language.</p>
-<p>With these three models at hand one can perform decoding, which is a synonim to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reorderings of the source language phrases within one sentence and then looking for the most probable translations, as indicated at the bottom part of the picture above.</p>
+<p>With these three models at hand one can perform decoding, which is a synonym to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reordering of the source language phrases within one sentence and then looking for the most probable translations, as indicated at the bottom part of the picture above.</p>
 <p>The rest of the document is organized as follows:</p>
 <ol type="1">
 <li><a href="#project-structure">Project structure</a> - Gives the file and folder structure of the project</li>
@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <li><a href="#code-documentation">Code documentation</a> - Refers to the project documentation</li>
 <li><a href="#external-libraries">External libraries</a> - Lists the included external libraries</li>
 <li><a href="#performance-evaluation">Performance evaluation</a> - Contains performance evaluation results</li>
-<li><a href="#general-design">General design</a> - Outlines the general software desing</li>
+<li><a href="#general-design">General design</a> - Outlines the general software design</li>
 <li><a href="#software-details">Software details</a> - Goes about some of the software details</li>
 <li><a href="#literature-and-references">Literature and references</a> - Presents the list of used literature</li>
 <li><a href="#licensing">Licensing</a> - States the licensing strategy of the project</li>
@@ -152,12 +152,13 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <p>This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is as follows:</p>
 <ul>
 <li>**<code>[Project-Folder]</code>**/<ul>
-<li><b>doc/</b> - contains the project-related documents including the Doxygen-generated code documentation and images</li>
+<li><b>docs/</b> - contains the project-related documents including the Doxygen-generated code documentation and images</li>
 <li><b>ext/</b> - stores the external header only libraries used in the project</li>
 <li><b>inc/</b> - stores the C++ header files of the implementation</li>
 <li><b>src/</b> - stores the C++ source files of the implementation</li>
 <li><b>nbproject/</b> - stores the Netbeans project data, such as makefiles</li>
-<li><b>data/</b> - stores the test-related data such as test models and query intput files, as well as some experimental results.</li>
+<li><b>data/</b> - stores the test-related data such as test models and query input files, as well as some experimental results</li>
+<li>default.cfg - an example server configuration file</li>
 <li>LICENSE - the code license (GPL 2.0)</li>
 <li>CMakeLists.txt - the cmake build script for generating the project's make files</li>
 <li><a class="el" href="_r_e_a_d_m_e_8md.html">README.md</a> - this document</li>
@@ -178,19 +179,22 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <li>The project must be possible to build on Windows platform under <a href="https://www.cygwin.com/">Cygwin</a>.</li>
 </ol>
 <h2>Building the project</h2>
-<p>Building this project requires <b>gcc</b> version &gt;= <em>4.9.1</em> and <b>cmake</b> version &gt;= 2.8.12.2. The project can be build in two ways:</p>
+<p>Building this project requires <b>gcc</b> version &gt;= <em>4.9.1</em> and <b>cmake</b> version &gt;= 2.8.12.2.</p>
+<p>The first two steps before building the project, to be performed from the Linux command line console, are:</p>
+<ul>
+<li><code>cd [Project-Folder]</code></li>
+<li><code>mkdir build</code></li>
+</ul>
+<p>Further the project can be build in two ways:</p>
 <ul>
 <li>From the Netbeans environment by running Build in the IDE<ul>
-<li>Perform <code>mkdir build</code> in the project folder.</li>
-<li>In Netbeans menu: <em>Tools/Options/"C/C++"</em> make sure that the cmake executable is properly set.</li>
+<li>In Netbeans menu: <code>Tools/Options/"C/C++"</code> make sure that the cmake executable is properly set.</li>
 <li>Netbeans will always run cmake for the DEBUG version of the project</li>
 <li>To build project in RELEASE version use building from Linux console</li>
 </ul>
 </li>
-<li>From the Linux command-line console perform the following steps<ul>
-<li><code>cd [Project-Folder]</code></li>
-<li><code>mkdir build</code></li>
-<li><code>cd build</code></li>
+<li>From the Linux command-line console by following the next steps<ul>
+<li><code>cd [Project-Folder]/build</code></li>
 <li><code>cmake -DCMAKE_BUILD_TYPE=Release ..</code> OR <code>cmake -DCMAKE_BUILD_TYPE=Debug ..</code></li>
 <li><code>make -j [NUMBER-OF-THREADS]</code> add <code>VERBOSE=1</code> to make the compile-time options visible</li>
 </ul>
@@ -198,74 +202,190 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 </ul>
 <p>The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run <code>make clean</code>. Cleaning from Netbeans is as simple calling the <code>Clean and Build</code> from the <code>Run</code> menu.</p>
 <h3>Project compile-time parameters</h3>
-<p>There is a number of project parameters that at this moment are to be chosen only once before the project is compiled. These are otherwise called the compile-time parameters. Further we consider the most important of them and indicate where all of them are to be found.</p>
-<p><b>Loggin level:</b> Logging is important when debugging software or providing an additional used information during the program's runtime. Yet additional output actions come at a prise and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project's logging levels, listed incrementally is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at runtime by setting the <code>LOGER_M_GRAM_LEVEL_MAX</code> constaint value in the <code>./inc/common/utils/logging/logger.hpp</code> header file.</p>
-<p><b>Sanity checks:</b> When program is not running as expected, it could be caused by the internal software errors that are not detectable runtime. It is therefore possible to enable/disable software internal sanity checks by setting the <code>DO_SANITY_CHECKS</code> constand in the <code>./inc/common/utils/exceptions.hpp</code> header file. Note that enabling the sanity checks does not guarantee that the internal error will be found and will have a negative effect on the program's performance. Yet, it might help to identify errors with e.g. input file formats and alike.</p>
-<p><b>Server configs:</b> There is a number of translation server common parameters used in decoding, translation, reordering anb language models. Those are to be found in the <code>./inc/server/server_configs.hpp</code>. Please be carefull changing them:</p>
+<p>For the sake of performance optimizations, the project has a number of compile-time parameters that are to be set before the project is build and can not be modified in the runtime. Let us consider the most important of them and indicate where all of them are to be found.</p>
+<p><b>Logging level:</b> Logging is important when debugging software or providing an additional user information during the program's runtime. Yet additional output actions come at a price and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project's logging levels, listed incrementally, is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at runtime by setting the <code>LOGER_M_GRAM_LEVEL_MAX</code> constant value in the <code>./inc/common/utils/logging/logger.hpp</code> header file. The default value is INFO3.</p>
+<p><b>Sanity checks:</b> When program is not running as expected, it could be caused by the internal software errors that are potentially detectable at runtime. This software has a number of build-in sanity checks that can be enabled/disabled at compile time by setting the <code>DO_SANITY_CHECKS</code> boolean flag in the <code>./inc/common/utils/exceptions.hpp</code> header file. Note that enabling the sanity checks does not guarantee that the internal error will be found but will have a negative effect on the program's performance. Yet, it might help to identify some of the errors with e.g. input file formats and alike.</p>
+<p><b>Server configs:</b> There is a number of translation server common parameters used in decoding, translation, reordering and language models. Those are to be found in the <code>./inc/server/server_configs.hpp</code>:</p>
 <ul>
 <li><code>UNKNOWN_LOG_PROB_WEIGHT</code> - The value used for the unknown probability weight _(log10 scale)_</li>
 <li><code>ZERO_LOG_PROB_WEIGHT</code> - The value used for the 'zero' probability weight _(log10 scale)_</li>
-<li><code>tm::NUM_TM_FEATURES</code> - The number of the translation model features, defines the number of features read per entry in from the translation model input file.</li>
+<li><code>tm::NUM_TM_FEATURES</code> - The number of the translation model features, which defines the exact number of features read per entry from the translation model input file</li>
 <li><code>tm::TM_MAX_TARGET_PHRASE_LEN</code> - The maximum length of the target phrase to be considered, this defines the maximum number of tokens to be stored per translation entry</li>
-<li><code>lm::NUM_LM_FEATURES</code> - The number of languahe model features, the program currenly supports only one value: <code>1</code></li>
-<li><code>lm::LM_M_GRAM_LEVEL_MAX</code> - The languahe model maximum level, the maximum number of words in the language model phrase</li>
+<li><code>lm::NUM_LM_FEATURES</code> - The number of language model features, the program currently supports only one value: <code>1</code></li>
+<li><code>lm::LM_M_GRAM_LEVEL_MAX</code> - The language model maximum level, the maximum number of words in the language model phrase</li>
 <li><code>lm::LM_HISTORY_LEN_MAX</code> - <b>do not change</b> this parameter</li>
 <li><code>lm::LM_MAX_QUERY_LEN</code> - <b>do not change</b> this parameter</li>
 <li><code>lm::DEF_UNK_WORD_LOG_PROB_WEIGHT</code> - The default unknown word probability weight, for the case the <code>&lt;unk&gt;</code> entry is not present in the language model file _(log10 scale)_</li>
-<li><code>rm::NUM_RM_FEATURES</code> - The maximum number of reordering model features, the only two currently supported values are: <code>6</code> and <code>8</code>.</li>
+<li><code>rm::NUM_RM_FEATURES</code> - The number of reordering model features, the only two currently supported values are: <code>6</code> and <code>8</code></li>
 </ul>
-<p><b>Decoder configs:</b> There is a number of decoder-specific parameters that can be configured runtime. These are located in <code>./inc/server/decoder/de_configs.hpp</code>, please be careful changing them:</p>
+<p><b>Decoder configs:</b> The decoder-specific parameters are located in <code>./inc/server/decoder/de_configs.hpp</code>:</p>
 <ul>
 <li><code>MAX_WORDS_PER_SENTENCE</code> - The maximum allowed number of words/tokens per sentence to translate.</li>
 </ul>
-<p><b>LM configs:</b> There is a number of Language-model-specific parameters that can be configured runtime. These are located in <code>./inc/server/lm/lm_configs.hpp</code>, please be careful changing them:</p>
+<p><b>LM configs:</b> The Language-model-specific parameters located in <code>./inc/server/lm/lm_configs.hpp</code>:</p>
 <ul>
 <li><code>lm_word_index</code> - the word index type to be used, the possible values are:<ul>
-<li><code>basic_word_index</code> - the basic word index that just loads the uni-grams in the same order as in the LM model file and give them consequtive id values.</li>
-<li><code>counting_word_index</code> - the basic word index that counts the number of times the unigram occurs in the LM model file and gives lower ids to the more frequent unigrams. This ensures some performance boost (within 10%) in querying certain types of langue models but requires longer loading times.</li>
+<li><code>basic_word_index</code> - the basic word index that just loads the uni-grams in the same order as in the LM model file and gives them consecutive id values.</li>
+<li><code>counting_word_index</code> - the basic word index that counts the number of times the uni-gram occurs in the LM model file and gives lower ids to the more frequent uni-grams. This ensures some performance boost (within 10%) when querying certain types of language models but requires longer loading times.</li>
 <li><code>optimizing_word_index&lt;basic_word_index&gt;</code> - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a basic word index as a bootstrap word index for issuing the ids.</li>
 <li><code>optimizing_word_index&lt;counting_word_index&gt;</code> - the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a counting word index as a bootstrap word index for issuing the ids.</li>
-<li><code>hashing_word_index</code> - the hashing word index is a discontinuous word index that does not issue the unigram ids consequently but rather associates each unigram with its hash value, the latter is taken to be an id. This is the only type of index supported by the hash-based <code>h2d_map_trie</code>.</li>
+<li><code>hashing_word_index</code> - the hashing word index is a discontinuous word index that does not issue the uni-gram ids consequently but rather associates each uni-gram with its hash value, the latter is taken to be a unique identifier. This is the only type of index supported by the hash-based <code>h2d_map_trie</code>.</li>
 </ul>
 </li>
-<li><code>lm_model_type</code> - the model type to be used, the possible values (trie types) are, for performance comparison thereof see <a href="#performance-evaluation">Performance Evaluation</a>:<ul>
-<li><code>c2d_hybrid_trie&lt;lm_word_index&gt;</code> - contains the context-to-data mapping trie implementation based on <code>std::unordered</code> map and ordered arrays.</li>
-<li><code>c2d_map_trie&lt;lm_word_index&gt;</code> - contains the context-to-data mapping trie implementation based on <code>std::unordered map</code>.</li>
-<li><code>c2w_array_trie&lt;lm_word_index&gt;</code> - contains the context-to- word mapping trie implementation based on ordered arrays.</li>
-<li><code>g2d_map_trie&lt;lm_word_index&gt;</code> - contains the m-gram-to-data mapping trie implementation based on self-made hash maps.</li>
-<li><code>h2d_map_trie&lt;lm_word_index&gt;</code> - contains the hash-to-data mapping trie based on the linear probing hash map imlementation.</li>
-<li><code>w2c_array_trie&lt;lm_word_index&gt;</code> - contains the word-to- context mapping trie implementation based on ordered arrays.</li>
-<li><code>w2c_hybrid_trie&lt;lm_word_index&gt;</code> - contains the word-to- context mapping trie implementation based on <code>std::unordered</code> map and ordered arrays.</li>
+<li><code>lm_model_type</code> - the trie model type to be used, the possible values (trie types) are as follows, for a performance comparison thereof see <a href="#performance-evaluation">Performance Evaluation</a>:<ul>
+<li><code>c2d_hybrid_trie&lt;lm_word_index&gt;</code> - contains the context-to-data mapping trie implementation based on <code>std::unordered</code> map and ordered arrays</li>
+<li><code>c2d_map_trie&lt;lm_word_index&gt;</code> - contains the context-to-data mapping trie implementation based on <code>std::unordered map</code></li>
+<li><code>c2w_array_trie&lt;lm_word_index&gt;</code> - contains the context-to-word mapping trie implementation based on ordered arrays</li>
+<li><code>g2d_map_trie&lt;lm_word_index&gt;</code> - contains the m-gram-to-data mapping trie implementation based on self-made hash maps</li>
+<li><code>h2d_map_trie&lt;lm_word_index&gt;</code> - contains the hash-to-data mapping trie based on the linear probing hash map implementation</li>
+<li><code>w2c_array_trie&lt;lm_word_index&gt;</code> - contains the word-to-context mapping trie implementation based on ordered arrays</li>
+<li><code>w2c_hybrid_trie&lt;lm_word_index&gt;</code> - contains the word-to-context mapping trie implementation based on <code>std::unordered</code> map and ordered arrays</li>
 </ul>
 </li>
 <li><code>lm_model_reader</code> - the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with <code>cstyle_file_reader</code> being the default:<ul>
 <li><code>file_stream_reader</code> - uses the C++ streams to read from files, the slowest</li>
 <li><code>cstyle_file_reader</code> - uses C-style file reading functions, faster than <code>file_stream_reader</code></li>
-<li><code>memory_mapped_file_reader</code> - uses memory-mapped files which, faster than <code>cstyle_file_reader</code>, consumes twise the file size memory (virtual RAM).</li>
+<li><code>memory_mapped_file_reader</code> - uses memory-mapped files which are faster than the <code>cstyle_file_reader</code> but consume twice the file size memory (virtual RAM).</li>
 </ul>
 </li>
 <li><code>lm_builder_type</code> - currently there is just one builder type available: <code>lm_basic_builder&lt;lm_model_reader&gt;</code>.</li>
 </ul>
-<p>Note that not all of the combinations of the <code>lm_word_index</code> and <code>lm_model_type</code> can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the <code>./inc/server/lm/lm_consts.hpp</code> header file comments. The default and the most optimal performance/memory ratio configuration is <code>lm_word_index</code> being set to <code>hashing_word_index</code> and <code>lm_model_type</code> begin set to <code>h2d_map_trie&lt;lm_word_index&gt;</code>.</p>
-<p><b>TM configs:</b> There is a number of Translation-model-specific parameters that can be configured runtime. These are located in <code>./inc/server/tm/tm_configs.hpp</code>, please be careful changing them:</p>
+<p>Note that not all of the combinations of the <code>lm_word_index</code> and <code>lm_model_type</code> can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the <code>./inc/server/lm/lm_consts.hpp</code> header file comments. The default, and the most optimal performance/memory ratio configuration, is:</p>
 <ul>
-<li><code>tm_model_type</code> - currently there is just one model type available: <code>tm_basic_model</code>.</li>
-<li><code>tm_model_reader</code> - the same as <code>lm_model_reader</code> for _"LM configs"_ above.</li>
-<li><code>tm_builder_type</code> - currently there is just one builder byte available: <code>tm_basic_builder&lt;tm_model_reader&gt;</code>.</li>
+<li><code>lm_word_index</code> being set to <code>hashing_word_index</code></li>
+<li><code>lm_model_type</code> begin set to <code>h2d_map_trie&lt;lm_word_index&gt;</code>.</li>
 </ul>
-<p><b>RM configs:</b> There is a number of Reordering-model-specific parameters that can be configured runtime. These are located in <code>./inc/server/rm/rm_configs.hpp</code>, please be careful changing them:</p>
+<p><b>TM configs:</b> The Translation-model-specific parameters are located in <code>./inc/server/tm/tm_configs.hpp</code>:</p>
 <ul>
-<li><code>rm_model_type</code> - currently there is just one model type available: <code>rm_basic_model</code>.</li>
-<li><code>rm_model_reader</code> - the same as <code>lm_model_reader</code> for _"LM configs"_ above.</li>
-<li><code>rm_builder_type</code> - currently there is just one builder byte available: <code>rm_basic_builder&lt;rm_model_reader&gt;</code>.</li>
+<li><code>tm_model_type</code> - currently there is just one model type available: <code>tm_basic_model</code></li>
+<li><code>tm_model_reader</code> - the same as <code>lm_model_reader</code> for _"LM configs"_, see above</li>
+<li><code>tm_builder_type</code> - currently there is just one builder type available: <code>tm_basic_builder&lt;tm_model_reader&gt;</code></li>
+</ul>
+<p><b>RM configs:</b> The Reordering-model-specific parameters are located in <code>./inc/server/rm/rm_configs.hpp</code>:</p>
+<ul>
+<li><code>rm_model_type</code> - currently there is just one model type available: <code>rm_basic_model</code></li>
+<li><code>rm_model_reader</code> - the same as <code>lm_model_reader</code> for _"LM configs"_, see above</li>
+<li><code>rm_builder_type</code> - currently there is just one builder type available: <code>rm_basic_builder&lt;rm_model_reader&gt;</code></li>
 </ul>
 <h2>Using software</h2>
-<h3>_bpbd-server_ - translation server</h3>
-<p><em>ToDo: server console</em></p>
-<p><em>ToDo: Configuration file</em> </p><h3>_bpbd-client_ - translation client</h3>
-<h3>_lm-query_ - language model query tool</h3>
-<p>In order to get the program usage information please run *./lm-query* from the command line, the output of the program is supposed to be as follows:</p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;vpn-stud-146-50-150-5:build zapreevis$ lm-query </div>
+<p>This section briefly covers how the provided software can be used for performing text translations. We begin with the <b>bpbd-server</b> and the <b>bpbd-client</b> then briefly talk about the <b>lm-query</b>. For information on the LM, TM and RM model file formats and others see section <a href="#input-file-formats">Input file formats</a></p>
+<h3>Translation server: <em>bpbd-server</em></h3>
+<p>The translation server is used to load language, translation and reordering models for a given source/target language pair and to process the translation requests coming from the translation client. When started from a command line without any parameters, <b>bpbd-server</b> reports on the available command-line options:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;$ bpbd-server</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;&lt;...&gt;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;PARSE ERROR:  </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;             Required argument missing: config</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;Brief USAGE: </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;   bpbd-server  [-d &lt;error|warn|usage|result|info|info1|info2|info3&gt;] -c</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;                &lt;server configuration file&gt; [--] [--version] [-h]</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;For complete USAGE and HELP type: </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;   bpbd-server --help</div>
+</div><!-- fragment --><p> There are to complementing ways to configure the <b>bpbd-server</b>, the first one is the <em>configuration file</em> and another is the <em>server console</em>. We consider both of them below in more details.</p>
+<h4>Configuration file</h4>
+<p>In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the web socket port through which the server will accept requests. An example configuration file can be found in: <code>[Project-Folder]/default.cfg</code> and in <code>[Project-Folder]/data</code>. The content of this file is self explanatory and contains a significant amount of comments.</p>
+<p>When run with a properly formed configuration file, <b>bpbd-server</b> gives the following output. Note the <code>-d info1</code> option ensuring additional information output during loading the models.</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;$ bpbd-server -c ../data/default-1-3.000.000.cfg -d info1</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;&lt;...&gt;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;USAGE: The requested debug level is: &#39;INFO1&#39;, the maximum build level is &#39;INFO3&#39; the set level is &#39;INFO1&#39;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;USAGE: Loading the server configuration option from: ../data/default-1-3.000.000.cfg</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;USAGE: Translation server from &#39;German&#39; into &#39;English&#39; on port: &#39;9002&#39; translation threads: &#39;25&#39;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;INFO: LM parameters: [ conn_string = ../data/models/e_30_2564372.lm, num_lm_feature_weights = 1, lm_feature_weights = [ 1 ] ]</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;INFO: TM parameters: [ conn_string = ../data/models/de-en-1-3.000.000.tm, num_tm_feature_weights = 4, tm_feature_weights = [ 1|1|1|1 ], translation_limit = 30, min_trans_prob = 1e-20 ]</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;INFO: RM parameters: [ conn_string = ../data/models/de-en-1-3.000.000.rm, num_rm_feature_weights = 6, rm_feature_weights = [ 1|1|1|1|1|1 ] ]</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;INFO: DE parameters: [ distortion = 5, ext_dist_left = 1, num_best_trans = 10, pruning_threshold = 1.1, stack_capacity = 100, word_penalty = -0.3, phrase_penalty = 1.2, max_source_phrase_len = 7, max_target_phrase_len = 7 ]</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;USAGE: --------------------------------------------------------</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;USAGE: Start creating and loading the Language Model ...</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;USAGE: Language Model is located in: ../data/models/e_30_2564372.lm</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;USAGE: Using the &lt;cstyle_file_reader.hpp&gt; file reader!</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;USAGE: Using the &lt;h2d_map_trie.hpp&gt; model.</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;INFO: The &lt;h2d_map_trie.hpp&gt; model&#39;s buckets factor: 2</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;INFO: Expected number of M-grams per level: [ 199164 4202658 15300577 26097321 31952150 ]</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;INFO1: Pre-allocating memory:  0 hour(s) 0 minute(s) 0 second(s) </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;INFO1: Reading ARPA 1-Grams:  0 hour(s) 0 minute(s) 0 second(s) </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;INFO1: Reading ARPA 2-Grams:  0 hour(s) 0 minute(s) 5 second(s) </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;INFO1: Reading ARPA 3-Grams:  0 hour(s) 0 minute(s) 27 second(s) </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;INFO1: Reading ARPA 4-Grams:  0 hour(s) 0 minute(s) 56 second(s) </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;INFO1: Reading ARPA 5-Grams:  0 hour(s) 1 minute(s) 16 second(s) </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;USAGE: Reading the Language Model took 170.276 CPU seconds.</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;USAGE: Action: &#39;Loading the Language Model&#39; memory change:</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;USAGE: vmsize=+1770 Mb, vmpeak=+1770 Mb, vmrss=+1771 Mb, vmhwm=+1771 Mb</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;USAGE: --------------------------------------------------------</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;USAGE: Start creating and loading the Translation Model ...</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;USAGE: Translation Model is located in: ../data/models/de-en-1-3.000.000.tm</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;USAGE: Using the &lt;cstyle_file_reader.hpp&gt; file reader!</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;USAGE: Using the hash-based translation model: tm_basic_model.hpp</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;INFO1: Counting phrase translations:  0 hour(s) 0 minute(s) 10 second(s) </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;INFO: The number of valid TM source entries is: 1620524</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;INFO1: Building translation model:  0 hour(s) 0 minute(s) 43 second(s) </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;USAGE: Reading the Translation Model took 58.8196 CPU seconds.</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;USAGE: Action: &#39;Loading the Translation Model&#39; memory change:</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;USAGE: vmsize=+550 Mb, vmpeak=+550 Mb, vmrss=+550 Mb, vmhwm=+550 Mb</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;USAGE: --------------------------------------------------------</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;USAGE: Start creating and loading the Reordering Model ...</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;USAGE: Reordering Model is located in: ../data/models/de-en-1-3.000.000.rm</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;USAGE: Using the &lt;cstyle_file_reader.hpp&gt; file reader!</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;USAGE: Using the hash-based reordering model: rm_basic_model.hpp</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;INFO1: Counting reordering entries:  0 hour(s) 0 minute(s) 6 second(s) </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;INFO: The number of RM source/target entries matching TM is: 2567397</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;INFO1: Building reordering model:  0 hour(s) 0 minute(s) 12 second(s) </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;USAGE: Reading the Reordering Model took 21.6754 CPU seconds.</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;USAGE: Action: &#39;Loading the Reordering Model&#39; memory change:</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;USAGE: vmsize=+78 Mb, vmpeak=+61 Mb, vmrss=+78 Mb, vmhwm=+61 Mb</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;USAGE: The server is started!</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;&lt;...&gt;</div>
+</div><!-- fragment --><p> In the first seven lines we see information loaded from the configuration file. Further, the LM, TM, and RM, models are loaded and the information thereof is provided. Note that for less output one can simply run <code>bpbd-server -c ../data/default-1-3.000.000.cfg</code>.</p>
+<p>There is a few important things to note about the configuration file at the moment:</p>
+<ul>
+<li><code>[Translation Models]/tm_feature_weights</code> - the number of features must be equal to the value of <code>tm::NUM_TM_FEATURES</code>, see <a href="#project-compile-time-parameters">Project compile-time parameters</a>.</li>
+<li><code>[Translation Models]/tm_unk_features</code> - the number of features must be equal to the value of <code>tm::NUM_TM_FEATURES</code>, see <a href="#project-compile-time-parameters">Project compile-time parameters</a>.</li>
+<li><code>[Reordering Models]/rm_feature_weights</code> - the number of features must be equal to the value of <code>lm::NUM_RM_FEATURES</code>, see <a href="#project-compile-time-parameters">Project compile-time parameters</a>.</li>
+<li><code>[Language Models]/lm_feature_weights</code> - the number of features must be equal to the value of <code>lm::NUM_LM_FEATURES</code>, see <a href="#project-compile-time-parameters">Project compile-time parameters</a>.</li>
+</ul>
+<h4>Server console</h4>
+<p>Once the server is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the server. The list of available server console commands is given in the listing below:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;$ bpbd-server -c ../data/default-1-3.000.000.cfg -d info2</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;&lt;...&gt;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;USAGE: The server is started!</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;USAGE: Available server commands: </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;USAGE:  &#39;q &amp; &lt;enter&gt;&#39;  - to exit.</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;USAGE:  &#39;h &amp; &lt;enter&gt;&#39;  - print HELP info.</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;USAGE:  &#39;r &amp; &lt;enter&gt;&#39;  - run-time statistics.</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;USAGE:  &#39;p &amp; &lt;enter&gt;&#39;  - print server parameters.</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;USAGE:  &#39;set ll &lt;level&gt; &amp; &lt;enter&gt;&#39;  - set log level.</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;USAGE:  &#39;set nt  &lt;positive integer&gt; &amp; &lt;enter&gt;&#39;  - set the number of worker threads.</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;USAGE:  &#39;set nbt &lt;unsigned integer&gt; &amp; &lt;enter&gt;&#39;  - set the number of best translations.</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;USAGE:  &#39;set d &lt;integer&gt; &amp; &lt;enter&gt;&#39;  - set the distortion limit.</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;USAGE:  &#39;set edl &lt;unsigned integer&gt; &amp; &lt;enter&gt;&#39;  - set the extra left distortion.</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;USAGE:  &#39;set pt &lt;unsigned float&gt; &amp; &lt;enter&gt;&#39;  - set pruning threshold.</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;USAGE:  &#39;set sc &lt;integer&gt; &amp; &lt;enter&gt;&#39;  - set stack capacity.</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;USAGE:  &#39;set wp &lt;float&gt; &amp; &lt;enter&gt;&#39;  - set word penalty.</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;USAGE:  &#39;set pp &lt;float&gt; &amp; &lt;enter&gt;&#39;  - set phrase penalty.</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;&gt;&gt; </div>
+</div><!-- fragment --><p> Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, <b>bpbd-server</b> has just one copy of the server runtime parameters used from all the translation processes. So in case of active translation process, changing these parameters can cause disruptions thereof starting from an inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not experience any disruptions.</p>
+<h3>Translation client: <em>bpbd-client</em></h3>
+<p>The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line without any parameters, <b>bpbd-client</b> reports on the available command-line options:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;$bpbd-client</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;&lt;...&gt;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;PARSE ERROR:  </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;             Required arguments missing: output-file, input-lang, input-file</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;Brief USAGE: </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;   bpbd-client  [-d &lt;error|warn|usage|result|info|info1|info2|info3&gt;] [-t]</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;                [-l &lt;min #sentences per request&gt;] [-u &lt;max #sentences per</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;                request&gt;] [-p &lt;server port&gt;] [-s &lt;server address&gt;] [-o</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;                &lt;target language&gt;] -O &lt;target file name&gt; -i &lt;source</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;                language&gt; -I &lt;source file name&gt; [--] [--version] [-h]</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;For complete USAGE and HELP type: </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;   bpbd-client --help</div>
+</div><!-- fragment --><p> The translation client makes a web socket connection to the translation server, reads text from the input file and splits it into a number of translation job requests which are sent to the translation server. Note that, the input file is expected to have one source language sentence per line. The client has a basic algorithm for tokenising strings and putting them into the lower case, i.e. preparing the text for translation. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run: <code>bpbd-client --help</code>.</p>
+<p>Once the translations are performed the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each line is prefixed with a translation status having a form: <code>&lt;status&gt;</code>. If a translation task was cancelled, or an error has occurred then it is indicated by the status and the information about that is also placed in the output file on the corresponding sentence line.</p>
+<p>As always, running <b>bpbd-client</b> with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is required to be in the utf8 encoding.</p>
+<h3>Language model query tool: <em>lm-query</em></h3>
+<p>The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line without any parameters, <b>lm-query</b> reports on the available command-line options:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;$ lm-query </div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;&lt;...&gt;</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;PARSE ERROR:  </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;             Required arguments missing: query, model</div>
@@ -277,27 +397,97 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;For complete USAGE and HELP type: </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;   lm-query --help</div>
-</div><!-- fragment --><h2>Input file formats</h2>
-<h3>Translatin model</h3>
-<p><em>ToDo: Extend</em></p>
-<h3>Reordering model</h3>
-<p><em>ToDo: Extend</em></p>
-<h3>Language model</h3>
-<p>For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-grams) occurring in some training data.</p>
-<h4>Language Models background</h4>
-<p>An <em>n-gram</em> refers to a continuous sequence of n tokens. For instance, given the following sentence: <code>our neighbor , who moved in recently , came by .</code> If n = 3, then the possible n-grams of this sentence include:</p>
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;&quot;our neighbor ,&quot;</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;&quot;neighbor , who&quot;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;&quot;, who moved&quot;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;...</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;&quot;, came by&quot;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;&quot;came by .&quot;</div>
-</div><!-- fragment --><p> Note that punctuation marks such as comma and full stop are treated just like any <em>real</em> word and that all words are lower cased.</p>
+</div><!-- fragment --><p> The language query tool has not changed much since the split-off from its official repository <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT">Back Off Language Model SMT</a>. The tool's input file formats have not changed either, except for what is mentioned below. The main tool's changes are:</p>
+<ul>
+<li>Now it is not possible to have just a single m-gram probability query. The tool always computes the joint probability of all the m-grams in the query starting from 1 up to N and then with a sliding window of the N-grams where N is the maximum language model level. However, the information over the intermediate single m-gram probabilities is still provided in the tool's output.</li>
+<li>The length of the LM query is not limited by the maximum language model level N but is limited by a compile-time constant <code>lm::LM_MAX_QUERY_LEN</code>, see <a href="#project-compile-time-parameters">Project compile-time parameters</a>.</li>
+</ul>
+<h2>Input file formats</h2>
+<p>In this section we briefly discuss the model file formats supported by the tools. We shall occasionally reference the other tools supporting the same file formats and external third-party web pages with extended format descriptions.</p>
+<h3>Translation model: <code>*.tm</code></h3>
+<p>The translation-model file stores the phrase pairs in the source and target languages and the pre-computed probability weights in the following strict format:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;&lt;source-phrase&gt; ||| &lt;target-phrase&gt; ||| &lt;prob-1&gt; &lt;prob-2&gt; &lt;prob-3&gt; &lt;prob-4&gt;</div>
+</div><!-- fragment --><p>As generated by, e.g. <a href="http://www.statmt.org/moses/?n=Moses.Tutorial">Moses</a>. In general the source and target phrases and target phrase and probability weight sections are separated by five symbols: one space three vertical lines and one space. Source and target space words must be space separated, as well as the probability weights. At the moment, everything followed after the fourth probability, until the end of the line, is ignored. The tool supports <code>4</code> translation probabilities and the supported number of weights is defined by the <code>tm::NUM_TM_FEATURES</code> constant value, see <a href="#project-compile-time-parameters">Project compile-time parameters</a>. If the format is not followed, the program's behavior is not specified.</p>
+<h3>Reordering model: <code>*.rm</code></h3>
+<p>The reordering-model file stores the phrase pairs in the source and target languages and the reordering weights in the following strict format:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;&lt;source-phrase&gt; ||| &lt;target-phrase&gt; ||| &lt;weight-1&gt; &lt;weight-2&gt; ... &lt;weight-k&gt;</div>
+</div><!-- fragment --><p>As generated by, e.g. <a href="http://www.statmt.org/moses/?n=FactoredTraining.BuildReorderingModel">Moses</a>. In general the source and target phrases and target phrase and probability weight sections are separated by five symbols: one space three vertical lines and one space. Source and target space words must be space separated, as well as the probability weights. At the moment, everything followed after the last probability, until the end of the line, is ignored. The number weights <code>k</code> is fixed per model file. The tool supports <code>6</code> or <code>8</code> reordering weights and the supported number of weights is defined by the <code>rm::NUM_RM_FEATURES</code> constant value, see <a href="#project-compile-time-parameters">Project compile-time parameters</a>. If the format is not followed, the program's behavior is not specified.</p>
+<h3>Language model: <code>*.lm</code></h3>
+<p>The language model file is a UTF8 text file in a well known ARPA format, see e.g. details on <a href="https://msdn.microsoft.com/en-us/library/office/hh378460%28v=office.14%29.aspx">MSDN help</a> or <a href="http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html">Speech Technology and Research (STAR) Laboratory</a>. An example ARPA file is given below:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;&lt;header - information ignored by applications&gt;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;\data\</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;ngram 1=9</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;ngram 2=11</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;ngram 3=3</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;\1-grams:</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;-0.8953 &lt;unk&gt;        -0.7373</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;-0.7404 &lt;/s&gt; -0.6515</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;-0.7861 &lt;s&gt;   -0.1764</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;-1.0414 When -0.4754</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;-1.0414 will -0.1315</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;-0.9622 the   0.0080</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;-1.4393 Stock        -0.3100</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;-1.0414 Go    -0.3852</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;-0.9622 Up    -0.1286</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;\2-grams:</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;-0.3626 &lt;s&gt; When     0.1736</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;-1.2765 &lt;s&gt; the      0.0000</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;-1.2765 &lt;s&gt; Up       0.0000</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;-0.2359 When will    0.1011</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;-1.0212 will &lt;/s&gt;    0.0000</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;-0.4191 will the     0.0000</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;-1.1004 the &lt;/s&gt;     0.0000</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;-1.1004 the Go       0.0000</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;-0.6232 Stock Go     0.0000</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;-0.2359 Go Up        0.0587</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;-0.4983 Up &lt;/s&gt;      </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;\3-grams:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;-0.4260 &lt;s&gt; When will      </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;-0.6601 When will the      </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;-0.6601 Go Up &lt;/s&gt;   </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;\end\</div>
+</div><!-- fragment --><p> Note that the format is expected to be followed in a very strict way. The headers can be skipped, the empty lines must be empty, the M-gram entry:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;&lt;probability&gt;    &lt;word-1&gt; &lt;word-2&gt; ... &lt;word-m&gt;    &lt;back-off-weight&gt;</div>
+</div><!-- fragment --><p> Must have one <em>tabulation</em> symbol after the <code>&lt;probability&gt;</code>, single space between any two words, and a single <em>tabulation</em> symbol before the <code>&lt;back-off-weight&gt;</code>. If the format is not followed, the program's behavior is not specified. The maximum allowed language model level, the maximum value of N in the N-gram, is defined by the compile-time parameter <code>lm::LM_M_GRAM_LEVEL_MAX</code>, see <a href="#project-compile-time-parameters">Project compile-time parameters</a>.</p>
 <h2>Code documentation</h2>
-<p><em>ToDo: Extend with more details</em></p>
-<p>At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option <em>JAVADOC_AUTOBRIEF</em> set to <em>YES</em>. The generated documentation is located in the **./docs/** folder of the project.</p>
+<p>At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option <em>JAVADOC_AUTOBRIEF</em> set to <em>YES</em>. The generated documentation is located in two folders:</p>
+<ul>
+<li><code>[Project-Folder]/docs/html</code><ul>
+<li>Open the <em>index.html</em> file located in this folder with your favorite web browser.</li>
+</ul>
+</li>
+<li><code>[Project-Folder]/docs/latex</code><ul>
+<li>Open the <em>refman.pdf</em> file located in this folder with your favorite pdf viewer.</li>
+</ul>
+</li>
+</ul>
+<p>The <code>[Project-Folder]/Doxyfile</code> can be used to re-generate the documentation at any given time, for more details see <a href="www.doxygen.org/">Doxygen</a>.</p>
+<ul>
+<li>To re-build the Latex documentation run the following commands from the Linux console:<ul>
+<li><code>cd [Project-Folder]/docs/latex</code></li>
+<li><code>make</code></li>
+</ul>
+</li>
+</ul>
 <h2>External libraries</h2>
-<p><em>ToDo: Write this section</em></p>
+<p>At present this project uses the following external/third-party header-only libraries:</p>
+<table class="doxtable">
+<tr>
+<th align="left">Library Name </th><th align="center">Purpose </th><th align="center">Website </th><th align="center">Version </th><th align="center">Licence  </th></tr>
+<tr>
+<td align="left">Feather ini parser</td><td align="center">_Fast, lightweight, header, portable INI/configuration file parser for ANSI C++._</td><td align="center"><a href="https://github.com/Turbine1991/feather-ini-parser">link</a></td><td align="center">1.40</td><td align="center"><a href="http://www.linfo.org/mitlicense.html">MIT</a> </td></tr>
+<tr>
+<td align="left">WebSocket++</td><td align="center">_Is an open source, header only C++ library implementing RFC6455 (The WebSocket Protocol)._</td><td align="center"><a href="http://www.zaphoyd.com/websocketpp">link</a></td><td align="center">0.6.0</td><td align="center"><a href="http://www.linfo.org/bsdlicense.html">BSD</a> </td></tr>
+<tr>
+<td align="left">Asio C++ Library</td><td align="center">_A cross-platform C++ library for network and low-level I/O programming_</td><td align="center"><a href="http://think-async.com/">link</a></td><td align="center">1.10.6</td><td align="center"><a href="http://www.boost.org/users/license.html">Boost</a> </td></tr>
+<tr>
+<td align="left">Tclap</td><td align="center">_A small and flexible library that provides a simple interface for defining and accessing command line arguments_</td><td align="center"><a href="http://tclap.sourceforge.net/">link</a></td><td align="center">1.2.1</td><td align="center"><a href="http://www.linfo.org/mitlicense.html">MIT</a> </td></tr>
+</table>
 <h2>Performance evaluation</h2>
 <p>In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely <a href="http://www.speech.sri.com/projects/srilm/">SRILM</a> and <a href="https://kheafield.com/code/kenlm/">KenLM</a>, both of which provide language model implementations that can be queried. The additional information on the compared tools is to be found in <a href="#appendix-tests">Appendix Tests</a></p>
 <h3>Test set-up</h3>
@@ -317,11 +507,11 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <h3>Experimental results</h3>
 <p>The experimental results are present in the following two pictures. The first one indicates the changes in the MRSS depending on the model size:</p>
 <div class="image">
-<img src="./docs/images/experiments/lm/mem.jpg"  alt="MRSS Comparions Image" title="MRSS Comparions"/>
+<img src="./docs/images/experiments/lm/mem.jpg"  alt="MRSS Comparisons Image" title="MRSS Comparisons"/>
 </div>
 <p>The second one shows the query CPU times depending on the model sizes:</p>
 <div class="image">
-<img src="./docs/images/experiments/lm/time.jpg"  alt="CPU Times Comparions Image" title="CPU Times Comparions"/>
+<img src="./docs/images/experiments/lm/time.jpg"  alt="CPU Times Comparisons Image" title="CPU Times Comparisons"/>
 </div>
 <p>The results show that the developed LM model trie representations are highly compatible with the available state of the art tools. We also give the following usage guidelines for the implemented tries:</p>
 <ul>
@@ -329,28 +519,124 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <li><b>c2dm</b> trie provides the fastest performance with moderate memory consumption. This is recommended when high performance is needed but one should be aware of possible m-gram id collisions.10</li>
 <li><b>c2dh</b> trie is preferable if performance, as well as moderate memory consumption, is needed. This is the second-fastest trie which, unlike <b>c2dm</b>, is fully reliable.</li>
 <li><b>w2ch</b> trie did not show itself useful and <b>g2dm</b> is yet to be re-worked and improved for better performance and memory usage.</li>
-<li><b>h2dm</b> following the intuitions of the KenLM implementation, realises the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one</li>
+<li><b>h2dm</b> following the intuitions of the KenLM implementation, realizes the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one</li>
 </ul>
 <h2>General design</h2>
-<p><em>ToDo: Add the general design, the current and the future one withg images</em></p>
+<p>This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software. We first provide the ultimate design we are going to work for and then give some insights into the currently implemented version thereof. The designs were created using <a href="http://www.uml.org/">Unified Modeling Language (UML)</a> with the help of the online UML tool called <a href="http://www.umletino.com/">UMLetino</a>.</p>
+<h3>The ultimate design</h3>
+<p>Consider the deployment diagram below. It shows the ultimate design we are aiming at.</p>
+<div class="image">
+<img src="./docs/images/design/deployment_ideal.png"  alt="The ultimate deployment Image" title="The ultimate deployment"/>
+</div>
+<p>This design's main feature is that it is fully distributed, and consists of three, vertical, layers.</p>
+<ol type="1">
+<li><em>The first layer</em>, located on the left side, is the front desk-load balancing piece of software who's responsibility is receiving the translation job requests from one language to another and then forwarding them to the second layer of the design performing load balancing.</li>
+<li><em>The second layer</em>, located in the middle of the picture, id a number of decoding servers that perform translation jobs. These servers can run decoders performing one-to-one language translation each, and there may be multiple instances of decoders for the same source/target language pair. Alternatively, each decoder might be able to translate from a bunch of languages into a bunch of languages and all the middle level server instances run multiple copies of such decoders. Of course an intermediate variant is also possible.</li>
+<li><em>The third layer</em>, located on the right side, is the layer of various instances of the Language, Translation, and Reordering models. Once again, there can be multiple instances of the same model running to distribute the workload. Any decoder is free to use any and any number of model instances running in the third layer.</li>
+</ol>
+<p>The communication between the layers here is suggested to be done using Web sockets as the fastest available asynchronous communication protocol available at the moment. In case of significant network communication overhead some of the system components can be run locally on the same physical computing unit or even be build into a monolith application for complete avoidance of the socket communications. The latter can be achieved by simply providing a local implementation of the needed system component. This approach is taken in the first version of the implemented software discussed in the next sub-section.</p>
+<h3>The current design</h3>
+<p>Due to the limited time and as a proof of concept, the first version of the project follows the simplified version of the ultimate design given by the deployment diagram below.</p>
+<div class="image">
+<img src="./docs/images/design/deployment_first.png"  alt="The current deployment Image" title="The current deployment"/>
+</div>
+<p>As one can notice, in this figure the first layer is removed, i.e. there is no load-balancing entity. Also the Language, Translation, and Reordering models have local interface implementations only and are compiled together with the decoder in a single application. One can easily extend this design towards the ultimate one by simply providing the remove implementations for the LM, TM and RM models using the existing libraries used in the current implementation.</p>
+<p>Let us now briefly consider the two most complicated components of the software, the <em>Decoder</em> and the <em>Language model</em>.</p>
+<h4>The decoder component</h4>
+<p>The class diagram of the decoder component is given below. The decoder has a multi-threaded implementation, where each translation job (<em>a number of sentences to translate</em>) gets split into a number of translations tasks (<em>one task is one sentence</em>). Every translation task is executed in a separate thread. The number of translation threads is configurable at any moment of time.</p>
+<div class="image">
+<img src="./docs/images/design/decoder_component.png"  alt="The decoder Image" title="The decoder"/>
+</div>
+<p>Let us consider the main classes from the diagram:</p>
+<p>The <em>Decoder Impl</em> is responsible for: receiving the Web socket session open and close requests; parsing the translation requests into translation jobs; scheduling the translation jobs to the <em>JobPool</em>; receiving the finished job notification; and sending the finished job reply to the client.</p>
+<p>The <em>JobPool</em> stores all the scheduled translation jobs and splits them into the translation tasks scheduled by the <em>TaskPool</em>. Once all the translation tasks of a translation job are finished the JobPool notifies the <em>Decoder Impl</em>.</p>
+<p>The <em>TaskPool</em> contains the queue of scheduled translation tasks and a limited number of translation worker threads to perform translations. In essence this is a thread pool entity with a queue of thread tasks.</p>
+<p>The <em>TranslationTask</em> is a sentence translation entity, its responsibility is to retrieve the preliminary information from the Language, Translation, and Reordering models and then to perform translations using the translation multi-_Stack_, and instances of <em>Level</em> and <em>State</em> classes. The latter represents the translation expansion hypothesis. At present the translation algorithm supports:</p>
+<ul>
+<li>Beam search</li>
+<li>Future cost estimates</li>
+<li>Threshold pruning of hypothesis</li>
+<li>Histogram pruning of hypothesis</li>
+<li>Hypothesis recombination</li>
+</ul>
+<h4>The LM component</h4>
+<p>Let us now consider the LM implementation class/package diagram on the figure below:</p>
+<div class="image">
+<img src="./docs/images/design/lm_component.png"  alt="The LM component Image" title="LM component"/>
+</div>
+<p>The design of the Language model has not changed since the split off from the <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT">Back Off Language Model SMT</a> project. So for more details we refer to the <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details">Implementation Details section</a> of the <a class="el" href="_r_e_a_d_m_e_8md.html">README.md</a> thereof. Please note that, recently the project class, file and folder names have changed slightly to become more uniform across the LM, TM, and RM implementations. The latter can be a minor source of confusion when relating this diagram back to the source code. Still, the overall conceptual design is remained intact and is reflected by the diagram in a perfect way.</p>
 <h2>Software details</h2>
+<p>In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.</p>
+<p>Note that, to the possible extend the software is implemented via the header files located in the <code>[Project-Folder]/inc</code>. Due to the C++ language restrictions some of the header files do have corresponding C++ source files located in <code>[Project-Folder]/src</code>. The latter, to the necessary extend, follows the structure and file names found in <code>[Project-Folder]/inc</code>. Therefore, further we will only concentrate on the content of the <code>[Project-Folder]/inc</code> folder.</p>
+<p>Additional information about the source code implementation classes can be found in the project's <a href="#code-documentation">Code documentation</a>.</p>
+<h3>_common packages_</h3>
+<p>The project's common packages are located in <code>[Project-Folder]/inc/common</code>:</p>
+<ul>
+<li><code>/messaging</code> - web-socket message related classes common for the bpbd server and client</li>
+<li><code>/utils</code> - various utility classes and libraries needed for logging and etc.<ul>
+<li><code>/containers</code> - some container type classes</li>
+<li><code>/file</code> - file-reading related classes</li>
+<li><code>/logging</code> - logging classes</li>
+<li><code>/monitor</code> - memory usage and CPU times monitor classes</li>
+</ul>
+</li>
+</ul>
 <h3>_bpbd-client_</h3>
-<p><em>ToDo: Add details on how the client works including requirements and structure</em> </p><h3>_bpbd-server_</h3>
-<p><em>ToDo: Add details on how the server works including requirements and structure</em> </p><h3>_lm-query_</h3>
-<p><em>ToDo: Update details on how the query tool works including requirements and structure</em></p>
+<p>All of the <em>bpbd-client</em> specific implementation classes are located in <code>[Project-Folder]/inc/client</code>.</p>
+<h3>_bpbd-server_</h3>
+<p>All of the <em>bpbd-server</em> specific implementation classes are located in <code>[Project-Folder]/inc/server</code>:</p>
+<ul>
+<li><code>/common</code> - classes common to all server components<ul>
+<li><code>/models</code> - model-related classes common to all server components</li>
+</ul>
+</li>
+<li><code>/decoder</code> - classes used in the decoder component<ul>
+<li><code>sentence</code> - classes related to the top-level sentence decoding algorithms</li>
+<li><code>stack</code> - the multi-stack classes related to the stack-based decoding algorithms</li>
+</ul>
+</li>
+<li><code>/tm</code> - the translation model classes<ul>
+<li><code>builders</code> - the model builder classes needed for reading the models</li>
+<li><code>models</code> - the model representation classes</li>
+<li><code>proxy</code> - the proxy objects implementing the local and/or remote model interface</li>
+</ul>
+</li>
+<li><code>/rm</code> - the reordering model classes<ul>
+<li>The same as for <code>/tm</code>.</li>
+</ul>
+</li>
+<li><code>/lm</code> - the language model classes<ul>
+<li>Similar to <code>/tm</code> and <code>/rm</code> but has some differences, see the next sub-section.</li>
+</ul>
+</li>
+</ul>
+<h3>_lm-query_</h3>
+<p>All of the <em>lm-query</em> specific implementation classes are located in <code>[Project-Folder]/inc/server/lm/</code>. The structure of this folder follows the general patters of that of <code>[Project-Folder]/inc/server/tm/</code> and <code>[Project-Folder]/inc/server/rm/</code> but has the following additional sub-folders:</p>
+<ul>
+<li><code>/dictionaries</code> - dictionary/word-index related classes</li>
+<li><code>/mgrams</code> - model and query m-gram related classes.</li>
+</ul>
 <h2>Literature and references</h2>
-<p>This project is originally based on the followin literature:</p>
-<p><em>ToDo: Put the BibText entries into linked files</em> <em>ToDo: Add the paper of Ken LM</em> <em>ToDo: Add the SMT book</em></p>
-<p>The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using <em>std::unordered_map</em> of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations</p>
-<p><em>ToDo: Add more details about the papers and books</em></p>
+<p>This project is originally based on the following literature:</p>
+<ul>
+<li>Kenneth Heafield. "Kenlm: Faster and smaller language model queries." <a href="./docs/bibtex/Heafield_WMT11.bib">BibTex</a></li>
+<li>Philipp Koehn. "Statistical Machine Translation". <a href="./docs/bibtex/Koehn_SMT_Book10.bib">BibTex</a></li>
+<li>Mark Jan Nederhof, Giorgio Satta. "Prefix Probability for Probabilistic Synchronous Context-Free Grammars" <a href="./docs/bibtex/NederhofSatta_NLP11.bib">BibTex</a></li>
+<li>Adam Pauls, Dan Klein. "Faster and Smaller N-Gram Language Models" <a href="./docs/bibtex/PaulsKlein_ACL11.bib">BibTex</a></li>
+<li>Daniel Robenek, Jan Platos, Vaclav Snasel. "Efficient In-memory Data Structures for n-grams Indexing" <a href="./docs/bibtex/RobenekPlatosSnasel_DATESO13.bib">BibTex</a></li>
+<li>Andreas Stolcke, Jing Zheng, Wen Wang, Victor Abrash. "SRILM at Sixteen: Update and Outlook" <a href="./docs/bibtex/StolckeZhengWangAbrash_ASRU11.bib">BibTex</a></li>
+<li>Matthew Szudzik. "An Elegant Pairing Function" <a href="./docs/bibtex/Szudzik_NKS06.bib">BibTex</a></li>
+</ul>
 <h2>Licensing</h2>
-<p>This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+<p>This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
+<p>This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
 <h2>History</h2>
 <ul>
 <li><b>21.04.2015</b> - Created</li>
 <li><b>27.07.2015</b> - Changed project name and some to-do's</li>
 <li><b>21.09.2015</b> - Updated with the latest developments preparing for the version 1, Owl release.</li>
-<li><b>11.03.2016</b> - Updated Updated to reflect the project status.</li>
+<li><b>11.03.2016</b> - Updated to reflect the latest project status.</li>
 </ul>
 <h2>Appendix Tests</h2>
 <h3>SRILM</h3>

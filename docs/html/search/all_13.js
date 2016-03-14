@@ -102,7 +102,7 @@ var searchData=
   ['tm_5ftarget_5fentry_2ehpp',['tm_target_entry.hpp',['../tm__target__entry_8hpp.html',1,'']]],
   ['tm_5ftarget_5fentry_5ftemp',['tm_target_entry_temp',['../classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__target__entry__temp.html',1,'uva::smt::bpbd::server::tm::models']]],
   ['tm_5ftarget_5fentry_5ftemp',['tm_target_entry_temp',['../classuva_1_1smt_1_1bpbd_1_1server_1_1tm_1_1models_1_1tm__target__entry__temp.html#a10d254c10a6cdeb7b5538d2fc1f29a96',1,'uva::smt::bpbd::server::tm::models::tm_target_entry_temp']]],
-  ['tmemotyusage',['TMemotyUsage',['../namespaceuva_1_1utils_1_1monitore.html#aa3ee5e440e3d902d9b6d26a24aa95c39',1,'uva::utils::monitore']]],
+  ['tmemotyusage',['TMemotyUsage',['../namespaceuva_1_1utils_1_1monitor.html#a49c196b840bf3fd2dc8cab233952922a',1,'uva::utils::monitor']]],
   ['todo_20list',['Todo List',['../todo.html',1,'']]],
   ['tokens_5fto_5fstring',['tokens_to_string',['../namespaceuva_1_1utils_1_1file.html#a2aaec3916cd13f25fe073c84db6d0af3',1,'uva::utils::file']]],
   ['trans_5fjob',['trans_job',['../structuva_1_1smt_1_1bpbd_1_1client_1_1trans__job.html',1,'uva::smt::bpbd::client']]],

@@ -594,7 +594,7 @@ template&lt;typename model_type , typename reader_type &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>The line format assumes source to target and then at least four weights as given by: <a href="http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases">http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases</a> Currently, four different phrase translation scores are computed: inverse phrase translation probability φ(f|e) inverse lexical weighting lex(f|e) direct phrase translation probability φ(e|f) direct lexical weighting lex(e|f) Previously, there was another score: phrase penalty (always exp(1) = 2.718) The latter is considered optional, all the other elements followed on the translation line are now skipped. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>The line format assumes source to target and then at least four weights as given by: <a href="http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases">http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases</a> Currently, four different phrase translation scores are computed: inverse phrase translation probability phi(f|e) inverse lexical weighting lex(f|e) direct phrase translation probability phi(e|f) direct lexical weighting lex(e|f) Previously, there was another score: phrase penalty (always exp(1) = 2.718) The latter is considered optional, all the other elements followed on the translation line are now skipped. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">source_entry</td><td>the pointer to the source entry for which this translation is </td></tr>
     <tr><td class="paramname">rest</td><td>stores the line to be parsed into a translation entry </td></tr>

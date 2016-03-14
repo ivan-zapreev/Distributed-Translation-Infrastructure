@@ -6,7 +6,7 @@
 
 \subsection*{Introduction}
 
-This is a fork project from the Back Off Language Model(s) for S\+M\+T project aimed at creating the entire phrase-\/based S\+M\+T translation infrastructure. This project follows a client/server atchitecture based on Web\+Sockets for C++ and consists of the three main applications\+:
+This is a fork project from the Back Off Language Model(s) for S\+M\+T project aimed at creating the entire phrase-\/based S\+M\+T translation infrastructure. This project follows a client/server architecture based on Web Sockets for C++ and consists of the three main applications\+:
 
 
 \begin{DoxyItemize}
@@ -15,13 +15,13 @@ This is a fork project from the Back Off Language Model(s) for S\+M\+T project a
 \begin{DoxyItemize}
 \item {\itshape Decoder} -\/ the decoder component responsible for translating text from one language into another
 \item {\itshape L\+M} -\/ the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities.
-\item {\itshape T\+M} -\/ the translation model implementation required for providing source to target language phrase translation and the probailities thereof.
+\item {\itshape T\+M} -\/ the translation model implementation required for providing source to target language phrase translation and the probabilities thereof.
 \item {\itshape R\+M} -\/ the reordering model implementation required for providing the possible translation order changes and the probabilities thereof
 \end{DoxyItemize}
-\item {\bfseries lm-\/query} -\/ a stand-\/alone language model query tool that allows to perform labguage model queries and estimate the joint phrase probabilities.
+\item {\bfseries lm-\/query} -\/ a stand-\/alone language model query tool that allows to perform language model queries and estimate the joint phrase probabilities.
 \end{DoxyItemize}
 
-To keep a clear view of the used terminology further we will privide some details on the phrase based statistical machine translation as given on the picture below.
+To keep a clear view of the used terminology further we will provide some details on the phrase based statistical machine translation as given on the picture below, taken from \href{http://www.slideshare.net/TAUS/10-april-2013-taus-mt-showcase-mt-for-southeast-asian-languages-aw-ai-ti-institute-for-infocomm-18665069}{\tt T\+A\+U\+S M\+T S\+H\+O\+W\+C\+A\+S\+E slides}.
 
 
 
@@ -35,7 +35,7 @@ The entire phrase-\/based statistical machine translation is based on learned st
 
 The last model, possibly learned from a different corpus in a target language, is the Language model. Its purpose is to reflect the likelihood of this or that phrase in the target language to occur. In other words it is used to evaluate the obtained translation for being {\itshape sound} in the target language.
 
-With these three models at hand one can perform decoding, which is a synonim to a translation process. S\+M\+T decoding is performed by exploring the state space of all possible translations and reorderings of the source language phrases within one sentence and then looking for the most probable translations, as indicated at the bottom part of the picture above.
+With these three models at hand one can perform decoding, which is a synonym to a translation process. S\+M\+T decoding is performed by exploring the state space of all possible translations and reordering of the source language phrases within one sentence and then looking for the most probable translations, as indicated at the bottom part of the picture above.
 
 The rest of the document is organized as follows\+:
 
@@ -49,7 +49,7 @@ The rest of the document is organized as follows\+:
 \item \href{#code-documentation}{\tt Code documentation} -\/ Refers to the project documentation
 \item \href{#external-libraries}{\tt External libraries} -\/ Lists the included external libraries
 \item \href{#performance-evaluation}{\tt Performance evaluation} -\/ Contains performance evaluation results
-\item \href{#general-design}{\tt General design} -\/ Outlines the general software desing
+\item \href{#general-design}{\tt General design} -\/ Outlines the general software design
 \item \href{#software-details}{\tt Software details} -\/ Goes about some of the software details
 \item \href{#literature-and-references}{\tt Literature and references} -\/ Presents the list of used literature
 \item \href{#licensing}{\tt Licensing} -\/ States the licensing strategy of the project
@@ -64,12 +64,13 @@ This is a Netbeans 8.\+0.\+2 project, based on cmake, and its top-\/level struct
 \begin{DoxyItemize}
 \item $\ast$$\ast${\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}}$\ast$$\ast$/
 \begin{DoxyItemize}
-\item {\bfseries doc/} -\/ contains the project-\/related documents including the Doxygen-\/generated code documentation and images
+\item {\bfseries docs/} -\/ contains the project-\/related documents including the Doxygen-\/generated code documentation and images
 \item {\bfseries ext/} -\/ stores the external header only libraries used in the project
 \item {\bfseries inc/} -\/ stores the C++ header files of the implementation
 \item {\bfseries src/} -\/ stores the C++ source files of the implementation
 \item {\bfseries nbproject/} -\/ stores the Netbeans project data, such as makefiles
-\item {\bfseries data/} -\/ stores the test-\/related data such as test models and query intput files, as well as some experimental results.
+\item {\bfseries data/} -\/ stores the test-\/related data such as test models and query input files, as well as some experimental results
+\item default.\+cfg -\/ an example server configuration file
 \item L\+I\+C\+E\+N\+S\+E -\/ the code license (G\+P\+L 2.\+0)
 \item C\+Make\+Lists.\+txt -\/ the cmake build script for generating the project\textquotesingle{}s make files
 \item \hyperlink{_r_e_a_d_m_e_8md}{R\+E\+A\+D\+M\+E.\+md} -\/ this document
@@ -98,22 +99,29 @@ This project supports two major platforms\+: Linux and Mac Os X. It has been suc
 
 \subsection*{Building the project}
 
-Building this project requires {\bfseries gcc} version $>$= {\itshape 4.\+9.\+1} and {\bfseries cmake} version $>$= 2.\+8.\+12.\+2. The project can be build in two ways\+:
+Building this project requires {\bfseries gcc} version $>$= {\itshape 4.\+9.\+1} and {\bfseries cmake} version $>$= 2.\+8.\+12.\+2.
+
+The first two steps before building the project, to be performed from the Linux command line console, are\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily cd \mbox{[}Project-\/\+Folder\mbox{]}}
+\item {\ttfamily mkdir build}
+\end{DoxyItemize}
+
+Further the project can be build in two ways\+:
 
 
 \begin{DoxyItemize}
 \item From the Netbeans environment by running Build in the I\+D\+E
 \begin{DoxyItemize}
-\item Perform {\ttfamily mkdir build} in the project folder.
-\item In Netbeans menu\+: {\itshape Tools/\+Options/\char`\"{}\+C/\+C++\char`\"{}} make sure that the cmake executable is properly set.
+\item In Netbeans menu\+: {\ttfamily Tools/\+Options/\char`\"{}\+C/\+C++\char`\"{}} make sure that the cmake executable is properly set.
 \item Netbeans will always run cmake for the D\+E\+B\+U\+G version of the project
 \item To build project in R\+E\+L\+E\+A\+S\+E version use building from Linux console
 \end{DoxyItemize}
-\item From the Linux command-\/line console perform the following steps
+\item From the Linux command-\/line console by following the next steps
 \begin{DoxyItemize}
-\item {\ttfamily cd \mbox{[}Project-\/\+Folder\mbox{]}}
-\item {\ttfamily mkdir build}
-\item {\ttfamily cd build}
+\item {\ttfamily cd \mbox{[}Project-\/\+Folder\mbox{]}/build}
 \item {\ttfamily cmake -\/\+D\+C\+M\+A\+K\+E\+\_\+\+B\+U\+I\+L\+D\+\_\+\+T\+Y\+P\+E=Release ..} O\+R {\ttfamily cmake -\/\+D\+C\+M\+A\+K\+E\+\_\+\+B\+U\+I\+L\+D\+\_\+\+T\+Y\+P\+E=Debug ..}
 \item {\ttfamily make -\/j \mbox{[}N\+U\+M\+B\+E\+R-\/\+O\+F-\/\+T\+H\+R\+E\+A\+D\+S\mbox{]}} add {\ttfamily V\+E\+R\+B\+O\+S\+E=1} to make the compile-\/time options visible
 \end{DoxyItemize}
@@ -123,101 +131,252 @@ The binaries will be generated and placed into $\ast$./build/$\ast$ folder. In o
 
 \subsubsection*{Project compile-\/time parameters}
 
-There is a number of project parameters that at this moment are to be chosen only once before the project is compiled. These are otherwise called the compile-\/time parameters. Further we consider the most important of them and indicate where all of them are to be found.
+For the sake of performance optimizations, the project has a number of compile-\/time parameters that are to be set before the project is build and can not be modified in the runtime. Let us consider the most important of them and indicate where all of them are to be found.
 
-{\bfseries Loggin level\+:} Logging is important when debugging software or providing an additional used information during the program\textquotesingle{}s runtime. Yet additional output actions come at a prise and can negatively influence the program\textquotesingle{}s performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project\textquotesingle{}s logging levels, listed incrementally is\+: E\+R\+R\+O\+R, W\+A\+R\+N\+I\+N\+G, U\+S\+A\+G\+E, R\+E\+S\+U\+L\+T, I\+N\+F\+O, I\+N\+F\+O1, I\+N\+F\+O2, I\+N\+F\+O3, D\+E\+B\+U\+G, D\+E\+B\+U\+G1, D\+E\+B\+U\+G2, D\+E\+B\+U\+G3, D\+E\+B\+U\+G4. One can limit the logging level range available at runtime by setting the {\ttfamily L\+O\+G\+E\+R\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X} constaint value in the {\ttfamily ./inc/common/utils/logging/logger.hpp} header file.
+{\bfseries Logging level\+:} Logging is important when debugging software or providing an additional user information during the program\textquotesingle{}s runtime. Yet additional output actions come at a price and can negatively influence the program\textquotesingle{}s performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project\textquotesingle{}s logging levels, listed incrementally, is\+: E\+R\+R\+O\+R, W\+A\+R\+N\+I\+N\+G, U\+S\+A\+G\+E, R\+E\+S\+U\+L\+T, I\+N\+F\+O, I\+N\+F\+O1, I\+N\+F\+O2, I\+N\+F\+O3, D\+E\+B\+U\+G, D\+E\+B\+U\+G1, D\+E\+B\+U\+G2, D\+E\+B\+U\+G3, D\+E\+B\+U\+G4. One can limit the logging level range available at runtime by setting the {\ttfamily L\+O\+G\+E\+R\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X} constant value in the {\ttfamily ./inc/common/utils/logging/logger.hpp} header file. The default value is I\+N\+F\+O3.
 
-{\bfseries Sanity checks\+:} When program is not running as expected, it could be caused by the internal software errors that are not detectable runtime. It is therefore possible to enable/disable software internal sanity checks by setting the {\ttfamily D\+O\+\_\+\+S\+A\+N\+I\+T\+Y\+\_\+\+C\+H\+E\+C\+K\+S} constand in the {\ttfamily ./inc/common/utils/exceptions.hpp} header file. Note that enabling the sanity checks does not guarantee that the internal error will be found and will have a negative effect on the program\textquotesingle{}s performance. Yet, it might help to identify errors with e.\+g. input file formats and alike.
+{\bfseries Sanity checks\+:} When program is not running as expected, it could be caused by the internal software errors that are potentially detectable at runtime. This software has a number of build-\/in sanity checks that can be enabled/disabled at compile time by setting the {\ttfamily D\+O\+\_\+\+S\+A\+N\+I\+T\+Y\+\_\+\+C\+H\+E\+C\+K\+S} boolean flag in the {\ttfamily ./inc/common/utils/exceptions.hpp} header file. Note that enabling the sanity checks does not guarantee that the internal error will be found but will have a negative effect on the program\textquotesingle{}s performance. Yet, it might help to identify some of the errors with e.\+g. input file formats and alike.
 
-{\bfseries Server configs\+:} There is a number of translation server common parameters used in decoding, translation, reordering anb language models. Those are to be found in the {\ttfamily ./inc/server/server\+\_\+configs.hpp}. Please be carefull changing them\+:
+{\bfseries Server configs\+:} There is a number of translation server common parameters used in decoding, translation, reordering and language models. Those are to be found in the {\ttfamily ./inc/server/server\+\_\+configs.hpp}\+:
 
 
 \begin{DoxyItemize}
 \item {\ttfamily U\+N\+K\+N\+O\+W\+N\+\_\+\+L\+O\+G\+\_\+\+P\+R\+O\+B\+\_\+\+W\+E\+I\+G\+H\+T} -\/ The value used for the unknown probability weight \+\_\+(log10 scale)\+\_\+
 \item {\ttfamily Z\+E\+R\+O\+\_\+\+L\+O\+G\+\_\+\+P\+R\+O\+B\+\_\+\+W\+E\+I\+G\+H\+T} -\/ The value used for the \textquotesingle{}zero\textquotesingle{} probability weight \+\_\+(log10 scale)\+\_\+
-\item {\ttfamily tm\+::\+N\+U\+M\+\_\+\+T\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} -\/ The number of the translation model features, defines the number of features read per entry in from the translation model input file.
+\item {\ttfamily tm\+::\+N\+U\+M\+\_\+\+T\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} -\/ The number of the translation model features, which defines the exact number of features read per entry from the translation model input file
 \item {\ttfamily tm\+::\+T\+M\+\_\+\+M\+A\+X\+\_\+\+T\+A\+R\+G\+E\+T\+\_\+\+P\+H\+R\+A\+S\+E\+\_\+\+L\+E\+N} -\/ The maximum length of the target phrase to be considered, this defines the maximum number of tokens to be stored per translation entry
-\item {\ttfamily lm\+::\+N\+U\+M\+\_\+\+L\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} -\/ The number of languahe model features, the program currenly supports only one value\+: {\ttfamily 1}
-\item {\ttfamily lm\+::\+L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X} -\/ The languahe model maximum level, the maximum number of words in the language model phrase
+\item {\ttfamily lm\+::\+N\+U\+M\+\_\+\+L\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} -\/ The number of language model features, the program currently supports only one value\+: {\ttfamily 1}
+\item {\ttfamily lm\+::\+L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X} -\/ The language model maximum level, the maximum number of words in the language model phrase
 \item {\ttfamily lm\+::\+L\+M\+\_\+\+H\+I\+S\+T\+O\+R\+Y\+\_\+\+L\+E\+N\+\_\+\+M\+A\+X} -\/ {\bfseries do not change} this parameter
 \item {\ttfamily lm\+::\+L\+M\+\_\+\+M\+A\+X\+\_\+\+Q\+U\+E\+R\+Y\+\_\+\+L\+E\+N} -\/ {\bfseries do not change} this parameter
 \item {\ttfamily lm\+::\+D\+E\+F\+\_\+\+U\+N\+K\+\_\+\+W\+O\+R\+D\+\_\+\+L\+O\+G\+\_\+\+P\+R\+O\+B\+\_\+\+W\+E\+I\+G\+H\+T} -\/ The default unknown word probability weight, for the case the {\ttfamily $<$unk$>$} entry is not present in the language model file \+\_\+(log10 scale)\+\_\+
-\item {\ttfamily rm\+::\+N\+U\+M\+\_\+\+R\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} -\/ The maximum number of reordering model features, the only two currently supported values are\+: {\ttfamily 6} and {\ttfamily 8}.
+\item {\ttfamily rm\+::\+N\+U\+M\+\_\+\+R\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} -\/ The number of reordering model features, the only two currently supported values are\+: {\ttfamily 6} and {\ttfamily 8}
 \end{DoxyItemize}
 
-{\bfseries Decoder configs\+:} There is a number of decoder-\/specific parameters that can be configured runtime. These are located in {\ttfamily ./inc/server/decoder/de\+\_\+configs.hpp}, please be careful changing them\+:
+{\bfseries Decoder configs\+:} The decoder-\/specific parameters are located in {\ttfamily ./inc/server/decoder/de\+\_\+configs.hpp}\+:
 
 
 \begin{DoxyItemize}
 \item {\ttfamily M\+A\+X\+\_\+\+W\+O\+R\+D\+S\+\_\+\+P\+E\+R\+\_\+\+S\+E\+N\+T\+E\+N\+C\+E} -\/ The maximum allowed number of words/tokens per sentence to translate.
 \end{DoxyItemize}
 
-{\bfseries L\+M configs\+:} There is a number of Language-\/model-\/specific parameters that can be configured runtime. These are located in {\ttfamily ./inc/server/lm/lm\+\_\+configs.hpp}, please be careful changing them\+:
+{\bfseries L\+M configs\+:} The Language-\/model-\/specific parameters located in {\ttfamily ./inc/server/lm/lm\+\_\+configs.hpp}\+:
 
 
 \begin{DoxyItemize}
 \item {\ttfamily lm\+\_\+word\+\_\+index} -\/ the word index type to be used, the possible values are\+:
 \begin{DoxyItemize}
-\item {\ttfamily basic\+\_\+word\+\_\+index} -\/ the basic word index that just loads the uni-\/grams in the same order as in the L\+M model file and give them consequtive id values.
-\item {\ttfamily counting\+\_\+word\+\_\+index} -\/ the basic word index that counts the number of times the unigram occurs in the L\+M model file and gives lower ids to the more frequent unigrams. This ensures some performance boost (within 10\%) in querying certain types of langue models but requires longer loading times.
+\item {\ttfamily basic\+\_\+word\+\_\+index} -\/ the basic word index that just loads the uni-\/grams in the same order as in the L\+M model file and gives them consecutive id values.
+\item {\ttfamily counting\+\_\+word\+\_\+index} -\/ the basic word index that counts the number of times the uni-\/gram occurs in the L\+M model file and gives lower ids to the more frequent uni-\/grams. This ensures some performance boost (within 10\%) when querying certain types of language models but requires longer loading times.
 \item {\ttfamily optimizing\+\_\+word\+\_\+index$<$basic\+\_\+word\+\_\+index$>$} -\/ the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a basic word index as a bootstrap word index for issuing the ids.
 \item {\ttfamily optimizing\+\_\+word\+\_\+index$<$counting\+\_\+word\+\_\+index$>$} -\/ the optimizing word index is based on the linear probing hash map so it is the fastest, it uses a counting word index as a bootstrap word index for issuing the ids.
-\item {\ttfamily hashing\+\_\+word\+\_\+index} -\/ the hashing word index is a discontinuous word index that does not issue the unigram ids consequently but rather associates each unigram with its hash value, the latter is taken to be an id. This is the only type of index supported by the hash-\/based {\ttfamily h2d\+\_\+map\+\_\+trie}.
+\item {\ttfamily hashing\+\_\+word\+\_\+index} -\/ the hashing word index is a discontinuous word index that does not issue the uni-\/gram ids consequently but rather associates each uni-\/gram with its hash value, the latter is taken to be a unique identifier. This is the only type of index supported by the hash-\/based {\ttfamily h2d\+\_\+map\+\_\+trie}.
 \end{DoxyItemize}
-\item {\ttfamily lm\+\_\+model\+\_\+type} -\/ the model type to be used, the possible values (trie types) are, for performance comparison thereof see \href{#performance-evaluation}{\tt Performance Evaluation}\+:
+\item {\ttfamily lm\+\_\+model\+\_\+type} -\/ the trie model type to be used, the possible values (trie types) are as follows, for a performance comparison thereof see \href{#performance-evaluation}{\tt Performance Evaluation}\+:
 \begin{DoxyItemize}
-\item {\ttfamily c2d\+\_\+hybrid\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the context-\/to-\/data mapping trie implementation based on {\ttfamily std\+::unordered} map and ordered arrays.
-\item {\ttfamily c2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the context-\/to-\/data mapping trie implementation based on {\ttfamily std\+::unordered map}.
-\item {\ttfamily c2w\+\_\+array\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the context-\/to-\/ word mapping trie implementation based on ordered arrays.
-\item {\ttfamily g2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the m-\/gram-\/to-\/data mapping trie implementation based on self-\/made hash maps.
-\item {\ttfamily h2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the hash-\/to-\/data mapping trie based on the linear probing hash map imlementation.
-\item {\ttfamily w2c\+\_\+array\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the word-\/to-\/ context mapping trie implementation based on ordered arrays.
-\item {\ttfamily w2c\+\_\+hybrid\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the word-\/to-\/ context mapping trie implementation based on {\ttfamily std\+::unordered} map and ordered arrays.
+\item {\ttfamily c2d\+\_\+hybrid\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the context-\/to-\/data mapping trie implementation based on {\ttfamily std\+::unordered} map and ordered arrays
+\item {\ttfamily c2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the context-\/to-\/data mapping trie implementation based on {\ttfamily std\+::unordered map}
+\item {\ttfamily c2w\+\_\+array\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the context-\/to-\/word mapping trie implementation based on ordered arrays
+\item {\ttfamily g2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the m-\/gram-\/to-\/data mapping trie implementation based on self-\/made hash maps
+\item {\ttfamily h2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the hash-\/to-\/data mapping trie based on the linear probing hash map implementation
+\item {\ttfamily w2c\+\_\+array\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the word-\/to-\/context mapping trie implementation based on ordered arrays
+\item {\ttfamily w2c\+\_\+hybrid\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$} -\/ contains the word-\/to-\/context mapping trie implementation based on {\ttfamily std\+::unordered} map and ordered arrays
 \end{DoxyItemize}
 \item {\ttfamily lm\+\_\+model\+\_\+reader} -\/ the model reader is basically the file reader type one can use to load the model, currently there are three model reader types available, with {\ttfamily cstyle\+\_\+file\+\_\+reader} being the default\+:
 \begin{DoxyItemize}
 \item {\ttfamily file\+\_\+stream\+\_\+reader} -\/ uses the C++ streams to read from files, the slowest
 \item {\ttfamily cstyle\+\_\+file\+\_\+reader} -\/ uses C-\/style file reading functions, faster than {\ttfamily file\+\_\+stream\+\_\+reader}
-\item {\ttfamily memory\+\_\+mapped\+\_\+file\+\_\+reader} -\/ uses memory-\/mapped files which, faster than {\ttfamily cstyle\+\_\+file\+\_\+reader}, consumes twise the file size memory (virtual R\+A\+M).
+\item {\ttfamily memory\+\_\+mapped\+\_\+file\+\_\+reader} -\/ uses memory-\/mapped files which are faster than the {\ttfamily cstyle\+\_\+file\+\_\+reader} but consume twice the file size memory (virtual R\+A\+M).
 \end{DoxyItemize}
 \item {\ttfamily lm\+\_\+builder\+\_\+type} -\/ currently there is just one builder type available\+: {\ttfamily lm\+\_\+basic\+\_\+builder$<$lm\+\_\+model\+\_\+reader$>$}.
 \end{DoxyItemize}
 
-Note that not all of the combinations of the {\ttfamily lm\+\_\+word\+\_\+index} and {\ttfamily lm\+\_\+model\+\_\+type} can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the {\ttfamily ./inc/server/lm/lm\+\_\+consts.hpp} header file comments. The default and the most optimal performance/memory ratio configuration is {\ttfamily lm\+\_\+word\+\_\+index} being set to {\ttfamily hashing\+\_\+word\+\_\+index} and {\ttfamily lm\+\_\+model\+\_\+type} begin set to {\ttfamily h2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$}.
-
-{\bfseries T\+M configs\+:} There is a number of Translation-\/model-\/specific parameters that can be configured runtime. These are located in {\ttfamily ./inc/server/tm/tm\+\_\+configs.hpp}, please be careful changing them\+:
+Note that not all of the combinations of the {\ttfamily lm\+\_\+word\+\_\+index} and {\ttfamily lm\+\_\+model\+\_\+type} can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the {\ttfamily ./inc/server/lm/lm\+\_\+consts.hpp} header file comments. The default, and the most optimal performance/memory ratio configuration, is\+:
 
 
 \begin{DoxyItemize}
-\item {\ttfamily tm\+\_\+model\+\_\+type} -\/ currently there is just one model type available\+: {\ttfamily tm\+\_\+basic\+\_\+model}.
-\item {\ttfamily tm\+\_\+model\+\_\+reader} -\/ the same as {\ttfamily lm\+\_\+model\+\_\+reader} for \+\_\+\char`\"{}\+L\+M configs\char`\"{}\+\_\+ above.
-\item {\ttfamily tm\+\_\+builder\+\_\+type} -\/ currently there is just one builder byte available\+: {\ttfamily tm\+\_\+basic\+\_\+builder$<$tm\+\_\+model\+\_\+reader$>$}.
+\item {\ttfamily lm\+\_\+word\+\_\+index} being set to {\ttfamily hashing\+\_\+word\+\_\+index}
+\item {\ttfamily lm\+\_\+model\+\_\+type} begin set to {\ttfamily h2d\+\_\+map\+\_\+trie$<$lm\+\_\+word\+\_\+index$>$}.
 \end{DoxyItemize}
 
-{\bfseries R\+M configs\+:} There is a number of Reordering-\/model-\/specific parameters that can be configured runtime. These are located in {\ttfamily ./inc/server/rm/rm\+\_\+configs.hpp}, please be careful changing them\+:
+{\bfseries T\+M configs\+:} The Translation-\/model-\/specific parameters are located in {\ttfamily ./inc/server/tm/tm\+\_\+configs.hpp}\+:
 
 
 \begin{DoxyItemize}
-\item {\ttfamily rm\+\_\+model\+\_\+type} -\/ currently there is just one model type available\+: {\ttfamily rm\+\_\+basic\+\_\+model}.
-\item {\ttfamily rm\+\_\+model\+\_\+reader} -\/ the same as {\ttfamily lm\+\_\+model\+\_\+reader} for \+\_\+\char`\"{}\+L\+M configs\char`\"{}\+\_\+ above.
-\item {\ttfamily rm\+\_\+builder\+\_\+type} -\/ currently there is just one builder byte available\+: {\ttfamily rm\+\_\+basic\+\_\+builder$<$rm\+\_\+model\+\_\+reader$>$}.
+\item {\ttfamily tm\+\_\+model\+\_\+type} -\/ currently there is just one model type available\+: {\ttfamily tm\+\_\+basic\+\_\+model}
+\item {\ttfamily tm\+\_\+model\+\_\+reader} -\/ the same as {\ttfamily lm\+\_\+model\+\_\+reader} for \+\_\+\char`\"{}\+L\+M configs\char`\"{}\+\_\+, see above
+\item {\ttfamily tm\+\_\+builder\+\_\+type} -\/ currently there is just one builder type available\+: {\ttfamily tm\+\_\+basic\+\_\+builder$<$tm\+\_\+model\+\_\+reader$>$}
+\end{DoxyItemize}
+
+{\bfseries R\+M configs\+:} The Reordering-\/model-\/specific parameters are located in {\ttfamily ./inc/server/rm/rm\+\_\+configs.hpp}\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily rm\+\_\+model\+\_\+type} -\/ currently there is just one model type available\+: {\ttfamily rm\+\_\+basic\+\_\+model}
+\item {\ttfamily rm\+\_\+model\+\_\+reader} -\/ the same as {\ttfamily lm\+\_\+model\+\_\+reader} for \+\_\+\char`\"{}\+L\+M configs\char`\"{}\+\_\+, see above
+\item {\ttfamily rm\+\_\+builder\+\_\+type} -\/ currently there is just one builder type available\+: {\ttfamily rm\+\_\+basic\+\_\+builder$<$rm\+\_\+model\+\_\+reader$>$}
 \end{DoxyItemize}
 
 \subsection*{Using software}
 
-\subsubsection*{\+\_\+bpbd-\/server\+\_\+ -\/ translation server}
+This section briefly covers how the provided software can be used for performing text translations. We begin with the {\bfseries bpbd-\/server} and the {\bfseries bpbd-\/client} then briefly talk about the {\bfseries lm-\/query}. For information on the L\+M, T\+M and R\+M model file formats and others see section \href{#input-file-formats}{\tt Input file formats}
 
-{\itshape To\+Do\+: server console}
+\subsubsection*{Translation server\+: {\itshape bpbd-\/server}}
 
-{\itshape To\+Do\+: Configuration file} \subsubsection*{\+\_\+bpbd-\/client\+\_\+ -\/ translation client}
-
-\subsubsection*{\+\_\+lm-\/query\+\_\+ -\/ language model query tool}
-
-In order to get the program usage information please run $\ast$./lm-\/query$\ast$ from the command line, the output of the program is supposed to be as follows\+:
+The translation server is used to load language, translation and reordering models for a given source/target language pair and to process the translation requests coming from the translation client. When started from a command line without any parameters, {\bfseries bpbd-\/server} reports on the available command-\/line options\+:
 
 
 \begin{DoxyCode}
-1 vpn-stud-146-50-150-5:build zapreevis$ lm-query 
+1 $ bpbd-server
+2 <...>
+3 PARSE ERROR:  
+4              Required argument missing: config
+5 
+6 Brief USAGE: 
+7    bpbd-server  [-d <error|warn|usage|result|info|info1|info2|info3>] -c
+8                 <server configuration file> [--] [--version] [-h]
+9 
+10 For complete USAGE and HELP type: 
+11    bpbd-server --help
+\end{DoxyCode}
+ There are to complementing ways to configure the {\bfseries bpbd-\/server}, the first one is the {\itshape configuration file} and another is the {\itshape server console}. We consider both of them below in more details.
+
+\paragraph*{Configuration file}
+
+In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the web socket port through which the server will accept requests. An example configuration file can be found in\+: {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/default.cfg} and in {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/data}. The content of this file is self explanatory and contains a significant amount of comments.
+
+When run with a properly formed configuration file, {\bfseries bpbd-\/server} gives the following output. Note the {\ttfamily -\/d info1} option ensuring additional information output during loading the models.
+
+
+\begin{DoxyCode}
+1 $ bpbd-server -c ../data/default-1-3.000.000.cfg -d info1
+2 <...>
+3 USAGE: The requested debug level is: 'INFO1', the maximum build level is 'INFO3' the set level is 'INFO1'
+4 USAGE: Loading the server configuration option from: ../data/default-1-3.000.000.cfg
+5 USAGE: Translation server from 'German' into 'English' on port: '9002' translation threads: '25'
+6 INFO: LM parameters: [ conn\_string = ../data/models/e\_30\_2564372.lm, num\_lm\_feature\_weights = 1,
+       lm\_feature\_weights = [ 1 ] ]
+7 INFO: TM parameters: [ conn\_string = ../data/models/de-en-1-3.000.000.tm, num\_tm\_feature\_weights = 4,
+       tm\_feature\_weights = [ 1|1|1|1 ], translation\_limit = 30, min\_trans\_prob = 1e-20 ]
+8 INFO: RM parameters: [ conn\_string = ../data/models/de-en-1-3.000.000.rm, num\_rm\_feature\_weights = 6,
+       rm\_feature\_weights = [ 1|1|1|1|1|1 ] ]
+9 INFO: DE parameters: [ distortion = 5, ext\_dist\_left = 1, num\_best\_trans = 10, pruning\_threshold = 1.1,
+       stack\_capacity = 100, word\_penalty = -0.3, phrase\_penalty = 1.2, max\_source\_phrase\_len = 7,
+       max\_target\_phrase\_len = 7 ]
+10 USAGE: --------------------------------------------------------
+11 USAGE: Start creating and loading the Language Model ...
+12 USAGE: Language Model is located in: ../data/models/e\_30\_2564372.lm
+13 USAGE: Using the <cstyle\_file\_reader.hpp> file reader!
+14 USAGE: Using the <h2d\_map\_trie.hpp> model.
+15 INFO: The <h2d\_map\_trie.hpp> model's buckets factor: 2
+16 INFO: Expected number of M-grams per level: [ 199164 4202658 15300577 26097321 31952150 ]
+17 INFO1: Pre-allocating memory:  0 hour(s) 0 minute(s) 0 second(s) 
+18 INFO1: Reading ARPA 1-Grams:  0 hour(s) 0 minute(s) 0 second(s) 
+19 INFO1: Reading ARPA 2-Grams:  0 hour(s) 0 minute(s) 5 second(s) 
+20 INFO1: Reading ARPA 3-Grams:  0 hour(s) 0 minute(s) 27 second(s) 
+21 INFO1: Reading ARPA 4-Grams:  0 hour(s) 0 minute(s) 56 second(s) 
+22 INFO1: Reading ARPA 5-Grams:  0 hour(s) 1 minute(s) 16 second(s) 
+23 USAGE: Reading the Language Model took 170.276 CPU seconds.
+24 USAGE: Action: 'Loading the Language Model' memory change:
+25 USAGE: vmsize=+1770 Mb, vmpeak=+1770 Mb, vmrss=+1771 Mb, vmhwm=+1771 Mb
+26 USAGE: --------------------------------------------------------
+27 USAGE: Start creating and loading the Translation Model ...
+28 USAGE: Translation Model is located in: ../data/models/de-en-1-3.000.000.tm
+29 USAGE: Using the <cstyle\_file\_reader.hpp> file reader!
+30 USAGE: Using the hash-based translation model: tm\_basic\_model.hpp
+31 INFO1: Counting phrase translations:  0 hour(s) 0 minute(s) 10 second(s) 
+32 INFO: The number of valid TM source entries is: 1620524
+33 INFO1: Building translation model:  0 hour(s) 0 minute(s) 43 second(s) 
+34 USAGE: Reading the Translation Model took 58.8196 CPU seconds.
+35 USAGE: Action: 'Loading the Translation Model' memory change:
+36 USAGE: vmsize=+550 Mb, vmpeak=+550 Mb, vmrss=+550 Mb, vmhwm=+550 Mb
+37 USAGE: --------------------------------------------------------
+38 USAGE: Start creating and loading the Reordering Model ...
+39 USAGE: Reordering Model is located in: ../data/models/de-en-1-3.000.000.rm
+40 USAGE: Using the <cstyle\_file\_reader.hpp> file reader!
+41 USAGE: Using the hash-based reordering model: rm\_basic\_model.hpp
+42 INFO1: Counting reordering entries:  0 hour(s) 0 minute(s) 6 second(s) 
+43 INFO: The number of RM source/target entries matching TM is: 2567397
+44 INFO1: Building reordering model:  0 hour(s) 0 minute(s) 12 second(s) 
+45 USAGE: Reading the Reordering Model took 21.6754 CPU seconds.
+46 USAGE: Action: 'Loading the Reordering Model' memory change:
+47 USAGE: vmsize=+78 Mb, vmpeak=+61 Mb, vmrss=+78 Mb, vmhwm=+61 Mb
+48 USAGE: The server is started!
+49 <...>
+\end{DoxyCode}
+ In the first seven lines we see information loaded from the configuration file. Further, the L\+M, T\+M, and R\+M, models are loaded and the information thereof is provided. Note that for less output one can simply run {\ttfamily bpbd-\/server -\/c ../data/default-\/1-\/3.000.\+000.\+cfg}.
+
+There is a few important things to note about the configuration file at the moment\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily \mbox{[}Translation Models\mbox{]}/tm\+\_\+feature\+\_\+weights} -\/ the number of features must be equal to the value of {\ttfamily tm\+::\+N\+U\+M\+\_\+\+T\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S}, see \href{#project-compile-time-parameters}{\tt Project compile-\/time parameters}.
+\item {\ttfamily \mbox{[}Translation Models\mbox{]}/tm\+\_\+unk\+\_\+features} -\/ the number of features must be equal to the value of {\ttfamily tm\+::\+N\+U\+M\+\_\+\+T\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S}, see \href{#project-compile-time-parameters}{\tt Project compile-\/time parameters}.
+\item {\ttfamily \mbox{[}Reordering Models\mbox{]}/rm\+\_\+feature\+\_\+weights} -\/ the number of features must be equal to the value of {\ttfamily lm\+::\+N\+U\+M\+\_\+\+R\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S}, see \href{#project-compile-time-parameters}{\tt Project compile-\/time parameters}.
+\item {\ttfamily \mbox{[}Language Models\mbox{]}/lm\+\_\+feature\+\_\+weights} -\/ the number of features must be equal to the value of {\ttfamily lm\+::\+N\+U\+M\+\_\+\+L\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S}, see \href{#project-compile-time-parameters}{\tt Project compile-\/time parameters}.
+\end{DoxyItemize}
+
+\paragraph*{Server console}
+
+Once the server is started it is not run as a Linux daemon but is a simple multi-\/threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-\/time information about the server. The list of available server console commands is given in the listing below\+:
+
+
+\begin{DoxyCode}
+1 $ bpbd-server -c ../data/default-1-3.000.000.cfg -d info2
+2 <...>
+3 USAGE: The server is started!
+4 USAGE: Available server commands: 
+5 USAGE:  'q & <enter>'  - to exit.
+6 USAGE:  'h & <enter>'  - print HELP info.
+7 USAGE:  'r & <enter>'  - run-time statistics.
+8 USAGE:  'p & <enter>'  - print server parameters.
+9 USAGE:  'set ll <level> & <enter>'  - set log level.
+10 USAGE:  'set nt  <positive integer> & <enter>'  - set the number of worker threads.
+11 USAGE:  'set nbt <unsigned integer> & <enter>'  - set the number of best translations.
+12 USAGE:  'set d <integer> & <enter>'  - set the distortion limit.
+13 USAGE:  'set edl <unsigned integer> & <enter>'  - set the extra left distortion.
+14 USAGE:  'set pt <unsigned float> & <enter>'  - set pruning threshold.
+15 USAGE:  'set sc <integer> & <enter>'  - set stack capacity.
+16 USAGE:  'set wp <float> & <enter>'  - set word penalty.
+17 USAGE:  'set pp <float> & <enter>'  - set phrase penalty.
+18 >> 
+\end{DoxyCode}
+ Note that, the commands allowing to change the translation process, e.\+g. the stack capacity, are to be used with great care. For the sake of memory optimization, {\bfseries bpbd-\/server} has just one copy of the server runtime parameters used from all the translation processes. So in case of active translation process, changing these parameters can cause disruptions thereof starting from an inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not experience any disruptions.
+
+\subsubsection*{Translation client\+: {\itshape bpbd-\/client}}
+
+The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line without any parameters, {\bfseries bpbd-\/client} reports on the available command-\/line options\+:
+
+
+\begin{DoxyCode}
+1 $bpbd-client
+2 <...>
+3 PARSE ERROR:  
+4              Required arguments missing: output-file, input-lang, input-file
+5 
+6 Brief USAGE: 
+7    bpbd-client  [-d <error|warn|usage|result|info|info1|info2|info3>] [-t]
+8                 [-l <min #sentences per request>] [-u <max #sentences per
+9                 request>] [-p <server port>] [-s <server address>] [-o
+10                 <target language>] -O <target file name> -i <source
+11                 language> -I <source file name> [--] [--version] [-h]
+12 
+13 For complete USAGE and HELP type: 
+14    bpbd-client --help
+\end{DoxyCode}
+ The translation client makes a web socket connection to the translation server, reads text from the input file and splits it into a number of translation job requests which are sent to the translation server. Note that, the input file is expected to have one source language sentence per line. The client has a basic algorithm for tokenising strings and putting them into the lower case, i.\+e. preparing the text for translation. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run\+: {\ttfamily bpbd-\/client -\/-\/help}.
+
+Once the translations are performed the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each line is prefixed with a translation status having a form\+: {\ttfamily $<$status$>$}. If a translation task was cancelled, or an error has occurred then it is indicated by the status and the information about that is also placed in the output file on the corresponding sentence line.
+
+As always, running {\bfseries bpbd-\/client} with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-\/language text in the input file is required to be in the utf8 encoding.
+
+\subsubsection*{Language model query tool\+: {\itshape lm-\/query}}
+
+The language model query tool is used for querying stand alone language models to obtain the joint m-\/gram probabilities. When started from a command line without any parameters, {\bfseries lm-\/query} reports on the available command-\/line options\+:
+
+
+\begin{DoxyCode}
+1 $ lm-query 
 2 <...>
 3 PARSE ERROR:  
 4              Required arguments missing: query, model
@@ -230,47 +389,133 @@ In order to get the program usage information please run $\ast$./lm-\/query$\ast
 11 For complete USAGE and HELP type: 
 12    lm-query --help
 \end{DoxyCode}
+ The language query tool has not changed much since the split-\/off from its official repository \href{https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT}{\tt Back Off Language Model S\+M\+T}. The tool\textquotesingle{}s input file formats have not changed either, except for what is mentioned below. The main tool\textquotesingle{}s changes are\+:
 
+
+\begin{DoxyItemize}
+\item Now it is not possible to have just a single m-\/gram probability query. The tool always computes the joint probability of all the m-\/grams in the query starting from 1 up to N and then with a sliding window of the N-\/grams where N is the maximum language model level. However, the information over the intermediate single m-\/gram probabilities is still provided in the tool\textquotesingle{}s output.
+\item The length of the L\+M query is not limited by the maximum language model level N but is limited by a compile-\/time constant {\ttfamily lm\+::\+L\+M\+\_\+\+M\+A\+X\+\_\+\+Q\+U\+E\+R\+Y\+\_\+\+L\+E\+N}, see \href{#project-compile-time-parameters}{\tt Project compile-\/time parameters}.
+\end{DoxyItemize}
 
 \subsection*{Input file formats}
 
-\subsubsection*{Translatin model}
+In this section we briefly discuss the model file formats supported by the tools. We shall occasionally reference the other tools supporting the same file formats and external third-\/party web pages with extended format descriptions.
 
-{\itshape To\+Do\+: Extend}
+\subsubsection*{Translation model\+: {\ttfamily $\ast$.tm}}
 
-\subsubsection*{Reordering model}
-
-{\itshape To\+Do\+: Extend}
-
-\subsubsection*{Language model}
-
-For machine translation it is important to estimate and compare the fluency of different possible translation outputs for the same source (i.\+e., foreign) sentence. This is commonly achieved by using a language model, which measures the probability of a string (which is commonly a sentence). Since entire sentences are unlikely to occur more than once, this is often approximated by using sliding windows of words (n-\/grams) occurring in some training data.
-
-\paragraph*{Language Models background}
-
-An {\itshape n-\/gram} refers to a continuous sequence of n tokens. For instance, given the following sentence\+: {\ttfamily our neighbor , who moved in recently , came by .} If n = 3, then the possible n-\/grams of this sentence include\+:
+The translation-\/model file stores the phrase pairs in the source and target languages and the pre-\/computed probability weights in the following strict format\+:
 
 
 \begin{DoxyCode}
-1 "our neighbor ,"
-2 "neighbor , who"
-3 ", who moved"
-4 ...
-5 ", came by"
-6 "came by ."
+1 <source-phrase> ||| <target-phrase> ||| <prob-1> <prob-2> <prob-3> <prob-4>
 \end{DoxyCode}
- Note that punctuation marks such as comma and full stop are treated just like any {\itshape real} word and that all words are lower cased.
+
+
+As generated by, e.\+g. \href{http://www.statmt.org/moses/?n=Moses.Tutorial}{\tt Moses}. In general the source and target phrases and target phrase and probability weight sections are separated by five symbols\+: one space three vertical lines and one space. Source and target space words must be space separated, as well as the probability weights. At the moment, everything followed after the fourth probability, until the end of the line, is ignored. The tool supports {\ttfamily 4} translation probabilities and the supported number of weights is defined by the {\ttfamily tm\+::\+N\+U\+M\+\_\+\+T\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} constant value, see \href{#project-compile-time-parameters}{\tt Project compile-\/time parameters}. If the format is not followed, the program\textquotesingle{}s behavior is not specified.
+
+\subsubsection*{Reordering model\+: {\ttfamily $\ast$.rm}}
+
+The reordering-\/model file stores the phrase pairs in the source and target languages and the reordering weights in the following strict format\+:
+
+
+\begin{DoxyCode}
+1 <source-phrase> ||| <target-phrase> ||| <weight-1> <weight-2> ... <weight-k>
+\end{DoxyCode}
+
+
+As generated by, e.\+g. \href{http://www.statmt.org/moses/?n=FactoredTraining.BuildReorderingModel}{\tt Moses}. In general the source and target phrases and target phrase and probability weight sections are separated by five symbols\+: one space three vertical lines and one space. Source and target space words must be space separated, as well as the probability weights. At the moment, everything followed after the last probability, until the end of the line, is ignored. The number weights {\ttfamily k} is fixed per model file. The tool supports {\ttfamily 6} or {\ttfamily 8} reordering weights and the supported number of weights is defined by the {\ttfamily rm\+::\+N\+U\+M\+\_\+\+R\+M\+\_\+\+F\+E\+A\+T\+U\+R\+E\+S} constant value, see \href{#project-compile-time-parameters}{\tt Project compile-\/time parameters}. If the format is not followed, the program\textquotesingle{}s behavior is not specified.
+
+\subsubsection*{Language model\+: {\ttfamily $\ast$.lm}}
+
+The language model file is a U\+T\+F8 text file in a well known A\+R\+P\+A format, see e.\+g. details on \href{https://msdn.microsoft.com/en-us/library/office/hh378460%28v=office.14%29.aspx}{\tt M\+S\+D\+N help} or \href{http://www.speech.sri.com/projects/srilm/manpages/ngram-format.5.html}{\tt Speech Technology and Research (S\+T\+A\+R) Laboratory}. An example A\+R\+P\+A file is given below\+:
+
+
+\begin{DoxyCode}
+1 <header - information ignored by applications>
+2 
+3 \(\backslash\)data\(\backslash\)
+4 ngram 1=9
+5 ngram 2=11
+6 ngram 3=3
+7 
+8 \(\backslash\)1-grams:
+9 -0.8953 <unk>        -0.7373
+10 -0.7404 </s> -0.6515
+11 -0.7861 <s>   -0.1764
+12 -1.0414 When -0.4754
+13 -1.0414 will -0.1315
+14 -0.9622 the   0.0080
+15 -1.4393 Stock        -0.3100
+16 -1.0414 Go    -0.3852
+17 -0.9622 Up    -0.1286
+18 
+19 \(\backslash\)2-grams:
+20 -0.3626 <s> When     0.1736
+21 -1.2765 <s> the      0.0000
+22 -1.2765 <s> Up       0.0000
+23 -0.2359 When will    0.1011
+24 -1.0212 will </s>    0.0000
+25 -0.4191 will the     0.0000
+26 -1.1004 the </s>     0.0000
+27 -1.1004 the Go       0.0000
+28 -0.6232 Stock Go     0.0000
+29 -0.2359 Go Up        0.0587
+30 -0.4983 Up </s>      
+31 
+32 \(\backslash\)3-grams:
+33 -0.4260 <s> When will      
+34 -0.6601 When will the      
+35 -0.6601 Go Up </s>   
+36 
+37 \(\backslash\)end\(\backslash\)
+\end{DoxyCode}
+ Note that the format is expected to be followed in a very strict way. The headers can be skipped, the empty lines must be empty, the M-\/gram entry\+:
+
+
+\begin{DoxyCode}
+1 <probability>    <word-1> <word-2> ... <word-m>    <back-off-weight>
+\end{DoxyCode}
+ Must have one {\itshape tabulation} symbol after the {\ttfamily $<$probability$>$}, single space between any two words, and a single {\itshape tabulation} symbol before the {\ttfamily $<$back-\/off-\/weight$>$}. If the format is not followed, the program\textquotesingle{}s behavior is not specified. The maximum allowed language model level, the maximum value of N in the N-\/gram, is defined by the compile-\/time parameter {\ttfamily lm\+::\+L\+M\+\_\+\+M\+\_\+\+G\+R\+A\+M\+\_\+\+L\+E\+V\+E\+L\+\_\+\+M\+A\+X}, see \href{#project-compile-time-parameters}{\tt Project compile-\/time parameters}.
 
 \subsection*{Code documentation}
 
-{\itshape To\+Do\+: Extend with more details}
+At present the documentation is done in the Java-\/\+Doc style that is successfully accepted by Doxygen with the Doxygen option {\itshape J\+A\+V\+A\+D\+O\+C\+\_\+\+A\+U\+T\+O\+B\+R\+I\+E\+F} set to {\itshape Y\+E\+S}. The generated documentation is located in two folders\+:
 
-At present the documentation is done in the Java-\/\+Doc style that is successfully accepted by Doxygen with the Doxygen option {\itshape J\+A\+V\+A\+D\+O\+C\+\_\+\+A\+U\+T\+O\+B\+R\+I\+E\+F} set to {\itshape Y\+E\+S}. The generated documentation is located in the $\ast$$\ast$./docs/$\ast$$\ast$ folder of the project.
+
+\begin{DoxyItemize}
+\item {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/docs/html}
+\begin{DoxyItemize}
+\item Open the {\itshape index.\+html} file located in this folder with your favorite web browser.
+\end{DoxyItemize}
+\item {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/docs/latex}
+\begin{DoxyItemize}
+\item Open the {\itshape refman.\+pdf} file located in this folder with your favorite pdf viewer.
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+The {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/\+Doxyfile} can be used to re-\/generate the documentation at any given time, for more details see \href{www.doxygen.org/}{\tt Doxygen}.
+
+
+\begin{DoxyItemize}
+\item To re-\/build the Latex documentation run the following commands from the Linux console\+:
+\begin{DoxyItemize}
+\item {\ttfamily cd \mbox{[}Project-\/\+Folder\mbox{]}/docs/latex}
+\item {\ttfamily make}
+\end{DoxyItemize}
+\end{DoxyItemize}
 
 \subsection*{External libraries}
 
-{\itshape To\+Do\+: Write this section}
+At present this project uses the following external/third-\/party header-\/only libraries\+:
 
+\begin{TabularC}{5}
+\hline
+\rowcolor{lightgray}{\bf Library Name }&\PBS\centering {\bf Purpose }&\PBS\centering {\bf Website }&\PBS\centering {\bf Version }&\PBS\centering {\bf Licence  }\\\cline{1-5}
+Feather ini parser&\PBS\centering \+\_\+\+Fast, lightweight, header, portable I\+N\+I/configuration file parser for A\+N\+S\+I C++.\+\_\+&\PBS\centering \href{https://github.com/Turbine1991/feather-ini-parser}{\tt link}&\PBS\centering 1.\+40&\PBS\centering \href{http://www.linfo.org/mitlicense.html}{\tt M\+I\+T} \\\cline{1-5}
+Web\+Socket++&\PBS\centering \+\_\+\+Is an open source, header only C++ library implementing R\+F\+C6455 (The Web\+Socket Protocol).\+\_\+&\PBS\centering \href{http://www.zaphoyd.com/websocketpp}{\tt link}&\PBS\centering 0.\+6.\+0&\PBS\centering \href{http://www.linfo.org/bsdlicense.html}{\tt B\+S\+D} \\\cline{1-5}
+Asio C++ Library&\PBS\centering \+\_\+\+A cross-\/platform C++ library for network and low-\/level I/\+O programming\+\_\+&\PBS\centering \href{http://think-async.com/}{\tt link}&\PBS\centering 1.\+10.\+6&\PBS\centering \href{http://www.boost.org/users/license.html}{\tt Boost} \\\cline{1-5}
+Tclap&\PBS\centering \+\_\+\+A small and flexible library that provides a simple interface for defining and accessing command line arguments\+\_\+&\PBS\centering \href{http://tclap.sourceforge.net/}{\tt link}&\PBS\centering 1.\+2.\+1&\PBS\centering \href{http://www.linfo.org/mitlicense.html}{\tt M\+I\+T} \\\cline{1-5}
+\end{TabularC}
 \subsection*{Performance evaluation}
 
 In this section we provide an empirical comparison of the developed L\+M query tool with two other well known tools, namely \href{http://www.speech.sri.com/projects/srilm/}{\tt S\+R\+I\+L\+M} and \href{https://kheafield.com/code/kenlm/}{\tt Ken\+L\+M}, both of which provide language model implementations that can be queried. The additional information on the compared tools is to be found in \href{#appendix-tests}{\tt Appendix Tests}
@@ -317,36 +562,164 @@ The results show that the developed L\+M model trie representations are highly c
 \item {\bfseries c2dm} trie provides the fastest performance with moderate memory consumption. This is recommended when high performance is needed but one should be aware of possible m-\/gram id collisions.\+10
 \item {\bfseries c2dh} trie is preferable if performance, as well as moderate memory consumption, is needed. This is the second-\/fastest trie which, unlike {\bfseries c2dm}, is fully reliable.
 \item {\bfseries w2ch} trie did not show itself useful and {\bfseries g2dm} is yet to be re-\/worked and improved for better performance and memory usage.
-\item {\bfseries h2dm} following the intuitions of the Ken\+L\+M implementation, realises the hash-\/map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
+\item {\bfseries h2dm} following the intuitions of the Ken\+L\+M implementation, realizes the hash-\/map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
 \end{DoxyItemize}
 
 \subsection*{General design}
 
-{\itshape To\+Do\+: Add the general design, the current and the future one withg images}
+This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software. We first provide the ultimate design we are going to work for and then give some insights into the currently implemented version thereof. The designs were created using \href{http://www.uml.org/}{\tt Unified Modeling Language (U\+M\+L)} with the help of the online U\+M\+L tool called \href{http://www.umletino.com/}{\tt U\+M\+Letino}.
+
+\subsubsection*{The ultimate design}
+
+Consider the deployment diagram below. It shows the ultimate design we are aiming at.
+
+
+
+This design\textquotesingle{}s main feature is that it is fully distributed, and consists of three, vertical, layers.
+
+
+\begin{DoxyEnumerate}
+\item {\itshape The first layer}, located on the left side, is the front desk-\/load balancing piece of software who\textquotesingle{}s responsibility is receiving the translation job requests from one language to another and then forwarding them to the second layer of the design performing load balancing.
+\item {\itshape The second layer}, located in the middle of the picture, id a number of decoding servers that perform translation jobs. These servers can run decoders performing one-\/to-\/one language translation each, and there may be multiple instances of decoders for the same source/target language pair. Alternatively, each decoder might be able to translate from a bunch of languages into a bunch of languages and all the middle level server instances run multiple copies of such decoders. Of course an intermediate variant is also possible.
+\item {\itshape The third layer}, located on the right side, is the layer of various instances of the Language, Translation, and Reordering models. Once again, there can be multiple instances of the same model running to distribute the workload. Any decoder is free to use any and any number of model instances running in the third layer.
+\end{DoxyEnumerate}
+
+The communication between the layers here is suggested to be done using Web sockets as the fastest available asynchronous communication protocol available at the moment. In case of significant network communication overhead some of the system components can be run locally on the same physical computing unit or even be build into a monolith application for complete avoidance of the socket communications. The latter can be achieved by simply providing a local implementation of the needed system component. This approach is taken in the first version of the implemented software discussed in the next sub-\/section.
+
+\subsubsection*{The current design}
+
+Due to the limited time and as a proof of concept, the first version of the project follows the simplified version of the ultimate design given by the deployment diagram below.
+
+
+
+As one can notice, in this figure the first layer is removed, i.\+e. there is no load-\/balancing entity. Also the Language, Translation, and Reordering models have local interface implementations only and are compiled together with the decoder in a single application. One can easily extend this design towards the ultimate one by simply providing the remove implementations for the L\+M, T\+M and R\+M models using the existing libraries used in the current implementation.
+
+Let us now briefly consider the two most complicated components of the software, the {\itshape Decoder} and the {\itshape Language model}.
+
+\paragraph*{The decoder component}
+
+The class diagram of the decoder component is given below. The decoder has a multi-\/threaded implementation, where each translation job ({\itshape a number of sentences to translate}) gets split into a number of translations tasks ({\itshape one task is one sentence}). Every translation task is executed in a separate thread. The number of translation threads is configurable at any moment of time.
+
+
+
+Let us consider the main classes from the diagram\+:
+
+The {\itshape Decoder Impl} is responsible for\+: receiving the Web socket session open and close requests; parsing the translation requests into translation jobs; scheduling the translation jobs to the {\itshape Job\+Pool}; receiving the finished job notification; and sending the finished job reply to the client.
+
+The {\itshape Job\+Pool} stores all the scheduled translation jobs and splits them into the translation tasks scheduled by the {\itshape Task\+Pool}. Once all the translation tasks of a translation job are finished the Job\+Pool notifies the {\itshape Decoder Impl}.
+
+The {\itshape Task\+Pool} contains the queue of scheduled translation tasks and a limited number of translation worker threads to perform translations. In essence this is a thread pool entity with a queue of thread tasks.
+
+The {\itshape Translation\+Task} is a sentence translation entity, its responsibility is to retrieve the preliminary information from the Language, Translation, and Reordering models and then to perform translations using the translation multi-\/\+\_\+\+Stack\+\_\+, and instances of {\itshape Level} and {\itshape State} classes. The latter represents the translation expansion hypothesis. At present the translation algorithm supports\+:
+
+
+\begin{DoxyItemize}
+\item Beam search
+\item Future cost estimates
+\item Threshold pruning of hypothesis
+\item Histogram pruning of hypothesis
+\item Hypothesis recombination
+\end{DoxyItemize}
+
+\paragraph*{The L\+M component}
+
+Let us now consider the L\+M implementation class/package diagram on the figure below\+:
+
+
+
+The design of the Language model has not changed since the split off from the \href{https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT}{\tt Back Off Language Model S\+M\+T} project. So for more details we refer to the \href{https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details}{\tt Implementation Details section} of the \hyperlink{_r_e_a_d_m_e_8md}{R\+E\+A\+D\+M\+E.\+md} thereof. Please note that, recently the project class, file and folder names have changed slightly to become more uniform across the L\+M, T\+M, and R\+M implementations. The latter can be a minor source of confusion when relating this diagram back to the source code. Still, the overall conceptual design is remained intact and is reflected by the diagram in a perfect way.
 
 \subsection*{Software details}
 
+In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.
+
+Note that, to the possible extend the software is implemented via the header files located in the {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/inc}. Due to the C++ language restrictions some of the header files do have corresponding C++ source files located in {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/src}. The latter, to the necessary extend, follows the structure and file names found in {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/inc}. Therefore, further we will only concentrate on the content of the {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/inc} folder.
+
+Additional information about the source code implementation classes can be found in the project\textquotesingle{}s \href{#code-documentation}{\tt Code documentation}.
+
+\subsubsection*{\+\_\+common packages\+\_\+}
+
+The project\textquotesingle{}s common packages are located in {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/inc/common}\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily /messaging} -\/ web-\/socket message related classes common for the bpbd server and client
+\item {\ttfamily /utils} -\/ various utility classes and libraries needed for logging and etc.
+\begin{DoxyItemize}
+\item {\ttfamily /containers} -\/ some container type classes
+\item {\ttfamily /file} -\/ file-\/reading related classes
+\item {\ttfamily /logging} -\/ logging classes
+\item {\ttfamily /monitor} -\/ memory usage and C\+P\+U times monitor classes
+\end{DoxyItemize}
+\end{DoxyItemize}
+
 \subsubsection*{\+\_\+bpbd-\/client\+\_\+}
 
-{\itshape To\+Do\+: Add details on how the client works including requirements and structure} \subsubsection*{\+\_\+bpbd-\/server\+\_\+}
+All of the {\itshape bpbd-\/client} specific implementation classes are located in {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/inc/client}.
 
-{\itshape To\+Do\+: Add details on how the server works including requirements and structure} \subsubsection*{\+\_\+lm-\/query\+\_\+}
+\subsubsection*{\+\_\+bpbd-\/server\+\_\+}
 
-{\itshape To\+Do\+: Update details on how the query tool works including requirements and structure}
+All of the {\itshape bpbd-\/server} specific implementation classes are located in {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/inc/server}\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily /common} -\/ classes common to all server components
+\begin{DoxyItemize}
+\item {\ttfamily /models} -\/ model-\/related classes common to all server components
+\end{DoxyItemize}
+\item {\ttfamily /decoder} -\/ classes used in the decoder component
+\begin{DoxyItemize}
+\item {\ttfamily sentence} -\/ classes related to the top-\/level sentence decoding algorithms
+\item {\ttfamily stack} -\/ the multi-\/stack classes related to the stack-\/based decoding algorithms
+\end{DoxyItemize}
+\item {\ttfamily /tm} -\/ the translation model classes
+\begin{DoxyItemize}
+\item {\ttfamily builders} -\/ the model builder classes needed for reading the models
+\item {\ttfamily models} -\/ the model representation classes
+\item {\ttfamily proxy} -\/ the proxy objects implementing the local and/or remote model interface
+\end{DoxyItemize}
+\item {\ttfamily /rm} -\/ the reordering model classes
+\begin{DoxyItemize}
+\item The same as for {\ttfamily /tm}.
+\end{DoxyItemize}
+\item {\ttfamily /lm} -\/ the language model classes
+\begin{DoxyItemize}
+\item Similar to {\ttfamily /tm} and {\ttfamily /rm} but has some differences, see the next sub-\/section.
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\subsubsection*{\+\_\+lm-\/query\+\_\+}
+
+All of the {\itshape lm-\/query} specific implementation classes are located in {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/inc/server/lm/}. The structure of this folder follows the general patters of that of {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/inc/server/tm/} and {\ttfamily \mbox{[}Project-\/\+Folder\mbox{]}/inc/server/rm/} but has the following additional sub-\/folders\+:
+
+
+\begin{DoxyItemize}
+\item {\ttfamily /dictionaries} -\/ dictionary/word-\/index related classes
+\item {\ttfamily /mgrams} -\/ model and query m-\/gram related classes.
+\end{DoxyItemize}
 
 \subsection*{Literature and references}
 
-This project is originally based on the followin literature\+:
+This project is originally based on the following literature\+:
 
-{\itshape To\+Do\+: Put the Bib\+Text entries into linked files} {\itshape To\+Do\+: Add the paper of Ken L\+M} {\itshape To\+Do\+: Add the S\+M\+T book}
 
-The first paper discusses optimal Trie structures for storing the learned text corpus and the second indicates that using {\itshape std\+::unordered\+\_\+map} of C++ delivers one of the best time and space performances, compared to other data structures, when using for Trie implementations
-
-{\itshape To\+Do\+: Add more details about the papers and books}
+\begin{DoxyItemize}
+\item Kenneth Heafield. \char`\"{}\+Kenlm\+: Faster and smaller language model queries.\char`\"{} \href{./docs/bibtex/Heafield_WMT11.bib}{\tt Bib\+Tex}
+\item Philipp Koehn. \char`\"{}\+Statistical Machine Translation\char`\"{}. \href{./docs/bibtex/Koehn_SMT_Book10.bib}{\tt Bib\+Tex}
+\item Mark Jan Nederhof, Giorgio Satta. \char`\"{}\+Prefix Probability for Probabilistic Synchronous Context-\/\+Free Grammars\char`\"{} \href{./docs/bibtex/NederhofSatta_NLP11.bib}{\tt Bib\+Tex}
+\item Adam Pauls, Dan Klein. \char`\"{}\+Faster and Smaller N-\/\+Gram Language Models\char`\"{} \href{./docs/bibtex/PaulsKlein_ACL11.bib}{\tt Bib\+Tex}
+\item Daniel Robenek, Jan Platos, Vaclav Snasel. \char`\"{}\+Efficient In-\/memory Data Structures for n-\/grams Indexing\char`\"{} \href{./docs/bibtex/RobenekPlatosSnasel_DATESO13.bib}{\tt Bib\+Tex}
+\item Andreas Stolcke, Jing Zheng, Wen Wang, Victor Abrash. \char`\"{}\+S\+R\+I\+L\+M at Sixteen\+: Update and Outlook\char`\"{} \href{./docs/bibtex/StolckeZhengWangAbrash_ASRU11.bib}{\tt Bib\+Tex}
+\item Matthew Szudzik. \char`\"{}\+An Elegant Pairing Function\char`\"{} \href{./docs/bibtex/Szudzik_NKS06.bib}{\tt Bib\+Tex}
+\end{DoxyItemize}
 
 \subsection*{Licensing}
 
-This is a free software\+: you can redistribute it and/or modify it under the terms of the G\+N\+U General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This software is distributed in the hope that it will be useful, but W\+I\+T\+H\+O\+U\+T A\+N\+Y W\+A\+R\+R\+A\+N\+T\+Y; without even the implied warranty of M\+E\+R\+C\+H\+A\+N\+T\+A\+B\+I\+L\+I\+T\+Y or F\+I\+T\+N\+E\+S\+S F\+O\+R A P\+A\+R\+T\+I\+C\+U\+L\+A\+R P\+U\+R\+P\+O\+S\+E. See the G\+N\+U General Public License for more details. You should have received a copy of the G\+N\+U General Public License along with this program. If not, see \href{http://www.gnu.org/licenses/}{\tt http\+://www.\+gnu.\+org/licenses/}.
+This is a free software\+: you can redistribute it and/or modify it under the terms of the G\+N\+U General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This software is distributed in the hope that it will be useful, but W\+I\+T\+H\+O\+U\+T A\+N\+Y W\+A\+R\+R\+A\+N\+T\+Y; without even the implied warranty of M\+E\+R\+C\+H\+A\+N\+T\+A\+B\+I\+L\+I\+T\+Y or F\+I\+T\+N\+E\+S\+S F\+O\+R A P\+A\+R\+T\+I\+C\+U\+L\+A\+R P\+U\+R\+P\+O\+S\+E. See the G\+N\+U General Public License for more details.
+
+You should have received a copy of the G\+N\+U General Public License along with this program. If not, see \href{http://www.gnu.org/licenses/}{\tt http\+://www.\+gnu.\+org/licenses/}.
 
 \subsection*{History}
 
@@ -355,7 +728,7 @@ This is a free software\+: you can redistribute it and/or modify it under the te
 \item {\bfseries 21.\+04.\+2015} -\/ Created
 \item {\bfseries 27.\+07.\+2015} -\/ Changed project name and some to-\/do\textquotesingle{}s
 \item {\bfseries 21.\+09.\+2015} -\/ Updated with the latest developments preparing for the version 1, Owl release.
-\item {\bfseries 11.\+03.\+2016} -\/ Updated Updated to reflect the project status.
+\item {\bfseries 11.\+03.\+2016} -\/ Updated to reflect the latest project status.
 \end{DoxyItemize}
 
 \subsection*{Appendix Tests}

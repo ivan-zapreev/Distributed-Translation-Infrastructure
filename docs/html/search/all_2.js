@@ -25,6 +25,6 @@ var searchData=
   ['byte_5fm_5fgram_5fid',['Byte_M_Gram_Id',['../classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1m__grams_1_1m__gram__id_1_1_byte___m___gram___id.html',1,'uva::smt::bpbd::server::lm::m_grams::m_gram_id']]],
   ['byte_5fm_5fgram_5fid_2ecpp',['byte_m_gram_id.cpp',['../byte__m__gram__id_8cpp.html',1,'']]],
   ['byte_5fm_5fgram_5fid_5ftables_5fhpp',['BYTE_M_GRAM_ID_TABLES_HPP',['../m__gram__id_8hpp.html#a86934d65096c390b7c21d86a7d8927e4',1,'m_gram_id.hpp']]],
-  ['bytes_5fone_5fmb',['BYTES_ONE_MB',['../namespaceuva_1_1utils_1_1monitore.html#a286c7985e00d8d56cb91210a3e801e54',1,'uva::utils::monitore']]],
+  ['bytes_5fone_5fmb',['BYTES_ONE_MB',['../namespaceuva_1_1utils_1_1monitor.html#aae853f690eea0d25fcf5e288859a3c75',1,'uva::utils::monitor']]],
   ['bytes_5fto_5fbits',['BYTES_TO_BITS',['../math__utils_8hpp.html#a1178e1e3118ed30f4ed917b18b1e0961',1,'math_utils.hpp']]]
 ];
