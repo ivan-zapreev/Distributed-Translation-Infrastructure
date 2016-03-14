@@ -604,13 +604,13 @@ The class diagram of the decoder component is given below. The decoder has a mul
 
 Let us consider the main classes from the diagram\+:
 
-The {\itshape Decoder Impl} is responsible for\+: receiving the Web socket session open and close requests; parsing the translation requests into translation jobs; scheduling the translation jobs to the {\itshape Job\+Pool}; receiving the finished job notification; and sending the finished job reply to the client.
+The {\itshape translation\+\_\+server} is responsible for\+: receiving the Web socket session open and close requests; parsing the translation requests into translation jobs; scheduling the translation jobs to the \+\_\+trans\+\_\+job\+\_\+pool; receiving the finished job notification; and sending the finished job reply to the client.
 
-The {\itshape Job\+Pool} stores all the scheduled translation jobs and splits them into the translation tasks scheduled by the {\itshape Task\+Pool}. Once all the translation tasks of a translation job are finished the Job\+Pool notifies the {\itshape Decoder Impl}.
+The {\itshape trans\+\_\+job\+\_\+pool} stores all the scheduled translation jobs and splits them into the translation tasks scheduled by the {\itshape trans\+\_\+task\+\_\+pool}. Once all the translation tasks of a translation job are finished the {\itshape trans\+\_\+job} notifies the {\itshape trans\+\_\+job\+\_\+pool and that, in its turn notifies the \+\_\+translation\+\_\+server}.
 
-The {\itshape Task\+Pool} contains the queue of scheduled translation tasks and a limited number of translation worker threads to perform translations. In essence this is a thread pool entity with a queue of thread tasks.
+The {\itshape trans\+\_\+task\+\_\+pool} contains the queue of scheduled translation tasks and a limited number of translation worker threads to perform translations. In essence this is a thread pool entity with a queue of thread tasks.
 
-The {\itshape Translation\+Task} is a sentence translation entity, its responsibility is to retrieve the preliminary information from the Language, Translation, and Reordering models and then to perform translations using the translation multi-\/\+\_\+\+Stack\+\_\+, and instances of {\itshape Level} and {\itshape State} classes. The latter represents the translation expansion hypothesis. At present the translation algorithm supports\+:
+The {\itshape trans\+\_\+task} is a simple wrapper around the sentence translation entity {\itshape sentence\+\_\+decoder}. The latter\textquotesingle{}s responsibility is to retrieve the preliminary information from the Language, Translation, and Reordering models and then to perform translations using the {\itshape multi\+\_\+tack} class, and instances of {\itshape stack\+\_\+level} and {\itshape stack\+\_\+state} classes. The latter represents the translation expansion hypothesis. At present the translation algorithm supports\+:
 
 
 \begin{DoxyItemize}
@@ -627,7 +627,7 @@ Let us now consider the L\+M implementation class/package diagram on the figure 
 
 
 
-The design of the Language model has not changed since the split off from the \href{https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT}{\tt Back Off Language Model S\+M\+T} project. So for more details we refer to the \href{https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details}{\tt Implementation Details section} of the \hyperlink{_r_e_a_d_m_e_8md}{R\+E\+A\+D\+M\+E.\+md} thereof. Please note that, recently the project class, file and folder names have changed slightly to become more uniform across the L\+M, T\+M, and R\+M implementations. The latter can be a minor source of confusion when relating this diagram back to the source code. Still, the overall conceptual design is remained intact and is reflected by the diagram in a perfect way.
+The design of the Language model has not changed much since the split off from the \href{https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT}{\tt Back Off Language Model S\+M\+T} project. So for more details we still refer to the \href{https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details}{\tt Implementation Details section} of the \hyperlink{_r_e_a_d_m_e_8md}{R\+E\+A\+D\+M\+E.\+md} thereof. For the most recent information on the L\+M component design please read the project\textquotesingle{}s \href{#code-documentation}{\tt Code documentation}.
 
 \subsection*{Software details}
 
