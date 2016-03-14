@@ -449,7 +449,15 @@ The results show that the developed LM model trie representations are highly com
 
 ##General design
 
-_ToDo: Add the general design, the current and the future one withg images_
+This section describes the ultimate and the current desings of the probided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overal structure of the software. We first provide the ultimate desing we are targeting for and then give some insights into the currently implemented version thereof. The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
+
+###The ultimate design
+![The ultimate deployment Image](./docs/images/design/deployment_ideal.png "The ultimate deployment")
+
+###The current design
+![The current deployment Image](./docs/images/design/deployment_first.png "The current deployment")
+![The decoder Image](./docs/images/design/decoder_component.png "The decoder")
+![The LM component Image](./docs/images/design/lm_component.png "LM component")
 
 ##Software details
 ###_bpbd-client_
