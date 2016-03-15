@@ -109,29 +109,30 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <p><b>Author:</b> <a href="https://nl.linkedin.com/in/zapreevis">Dr. Ivan S. Zapreev</a></p>
 <p><b>Project pages:</b> <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT">Git-Hub-Project</a></p>
 <h2>Introduction</h2>
-<p>This is a fork project from the Back Off Language Model(s) for SMT project aimed at creating the entire phrase-based SMT translation infrastructure. This project follows a client/server architecture based on Web Sockets for C++ and consists of the three main applications:</p>
+<p>This fork from the Back Off Language Model(s) for SMT project is aimed at creating an entire phrase-based statistical machine translation system. The delivered software follows a client/server architecture based on Web Sockets for C++ and consists of the three main applications::</p>
 <ul>
-<li><b>bpbd-client</b> - is a thin client to send the translation job requests to the translation server and obtain results</li>
-<li><b>bpbd-server</b> - the the translation server consisting of the following main components:<ul>
+<li><b>bpbd-client</b> - a thin client to send the translation job requests to the translation server and obtain results</li>
+<li><b>bpbd-server</b> - the translation server consisting of the following main components:<ul>
 <li><em>Decoder</em> - the decoder component responsible for translating text from one language into another</li>
-<li><em>LM</em> - the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities.</li>
-<li><em>TM</em> - the translation model implementation required for providing source to target language phrase translation and the probabilities thereof.</li>
+<li><em>LM</em> - the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities</li>
+<li><em>TM</em> - the translation model implementation required for providing source to target language phrase translation and the probabilities thereof</li>
 <li><em>RM</em> - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof</li>
 </ul>
 </li>
-<li><b>lm-query</b> - a stand-alone language model query tool that allows to perform language model queries and estimate the joint phrase probabilities.</li>
+<li><b>lm-query</b> - a stand-alone language model query tool that allows to perform language model queries and estimate the joint phrase probabilities</li>
 </ul>
-<p>To keep a clear view of the used terminology further we will provide some details on the phrase based statistical machine translation as given on the picture below, taken from <a href="http://www.slideshare.net/TAUS/10-april-2013-taus-mt-showcase-mt-for-southeast-asian-languages-aw-ai-ti-institute-for-infocomm-18665069">TAUS MT SHOWCASE slides</a>.</p>
+<p>To keep a clear view of the used terminology further, we provide some details on the topic of phrase-based SMT, and illustrate it the picture below, taken from <a href="http://www.slideshare.net/TAUS/10-april-2013-taus-mt-showcase-mt-for-southeast-asian-languages-aw-ai-ti-institute-for-infocomm-18665069">TAUS MT SHOWCASE</a> slides.</p>
 <div class="image">
-<img src="./docs/images/smt/smt.jpg"  alt="Statistical Machine Translation Approach Image" title="Statistical Machine Translation Approach"/>
+<img src="./doc/images/smt/smt.jpg"  alt="Statistical Machine Translation Approach Image" title="Statistical Machine Translation Approach"/>
 </div>
-<p>The entire phrase-based statistical machine translation is based on learned statistical correlations between words and phrases of an example translation text, also called parallel corpus or corpora. Clearly, if the training corpora is large enough then it allows to cover most source/target language words and phrases and shall have enough information for approximating a translation of an arbitrary text. However, before this information can be extracted, the parallel corpora undergoes the process called <em>word alignment</em> which is aimed at estimating which words/phrases in the source language correspond to which words/phrases in the target language. As a result, we obtain two statistical models:</p>
+<p>The entire phrase-based statistical machine translation relies on learning statistical correlations between words and phrases in an existing source/target translation text pair, also called parallel corpus or corpora. These correlations are learned by, generally speaking, three statistical models: TM - translation model; RM - reordering mode; and LM - language model; briefly mentioned above. If the training corpora is large enough, then these models will possess enough information to approximate a translation of an arbitrary text from the given source language to the given target language. Note that, before this information can be extracted, the parallel corpora undergoes the process called <em>word alignment</em> which is aimed at estimating which words/phrases in the source language correspond to which words/phrases in the target language. Let us give a more precise definition of these models:</p>
 <ol type="1">
-<li>The Translation model - providing phrases in the source language with learned possible target language translations and the probabilities thereof.</li>
-<li>The Reordering model - storing information about probable translation orders of the phrases within the source text, based on the observed source and target phrases and alignment thereof.</li>
+<li>Translation model - provides phrases in the source language with learned possible target language translations and the probabilities thereof.</li>
+<li>Reordering model - stores information about probable translation orders of the phrases within the source text, based on the observed source and target phrases and their alignments.</li>
+<li>Language model - reflects the likelihood of this or that phrase in the target language to occur. In other words, it is used to evaluate the obtained translation for being _"sound"_ in the target language.</li>
 </ol>
-<p>The last model, possibly learned from a different corpus in a target language, is the Language model. Its purpose is to reflect the likelihood of this or that phrase in the target language to occur. In other words it is used to evaluate the obtained translation for being <em>sound</em> in the target language.</p>
-<p>With these three models at hand one can perform decoding, which is a synonym to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reordering of the source language phrases within one sentence and then looking for the most probable translations, as indicated at the bottom part of the picture above.</p>
+<p>Note that, the language model is typically learned from a different corpus in a target language.</p>
+<p>With these three models at hand one can perform decoding, which is a synonym to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reordering of the source language phrases within one sentence. The purpose of decoding, as indicated by the maximization procedure at the bottom of the figure above, is to find a translation with the largest possible probability.</p>
 <p>The rest of the document is organized as follows:</p>
 <ol type="1">
 <li><a href="#project-structure">Project structure</a> - Gives the file and folder structure of the project</li>
@@ -152,7 +153,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <p>This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is as follows:</p>
 <ul>
 <li>**<code>[Project-Folder]</code>**/<ul>
-<li><b>docs/</b> - contains the project-related documents including the Doxygen-generated code documentation and images</li>
+<li><b>doc/</b> - contains the project-related documents including the Doxygen-generated code documentation and images</li>
 <li><b>ext/</b> - stores the external header only libraries used in the project</li>
 <li><b>inc/</b> - stores the C++ header files of the implementation</li>
 <li><b>src/</b> - stores the C++ source files of the implementation</li>
@@ -181,11 +182,11 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <h2>Building the project</h2>
 <p>Building this project requires <b>gcc</b> version &gt;= <em>4.9.1</em> and <b>cmake</b> version &gt;= 2.8.12.2.</p>
 <p>The first two steps before building the project, to be performed from the Linux command line console, are:</p>
-<ul>
+<ol type="1">
 <li><code>cd [Project-Folder]</code></li>
 <li><code>mkdir build</code></li>
-</ul>
-<p>Further the project can be build in two ways:</p>
+</ol>
+<p>After these are performed, the project can be build in two ways:</p>
 <ul>
 <li>From the Netbeans environment by running Build in the IDE<ul>
 <li>In Netbeans menu: <code>Tools/Options/"C/C++"</code> make sure that the cmake executable is properly set.</li>
@@ -270,7 +271,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <h2>Using software</h2>
 <p>This section briefly covers how the provided software can be used for performing text translations. We begin with the <b>bpbd-server</b> and the <b>bpbd-client</b> then briefly talk about the <b>lm-query</b>. For information on the LM, TM and RM model file formats and others see section <a href="#input-file-formats">Input file formats</a></p>
 <h3>Translation server: <em>bpbd-server</em></h3>
-<p>The translation server is used to load language, translation and reordering models for a given source/target language pair and to process the translation requests coming from the translation client. When started from a command line without any parameters, <b>bpbd-server</b> reports on the available command-line options:</p>
+<p>The translation server is used for two things: _(i)_ to load language, translation and reordering models (for a given source/target language pair); _(ii)_ to process the translation requests coming from the translation client. The use of this executable is straightforward. When started from a command line without any parameters, <b>bpbd-server</b> reports on the available command-line options:</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;$ bpbd-server</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;&lt;...&gt;</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;PARSE ERROR:  </div>
@@ -282,7 +283,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;For complete USAGE and HELP type: </div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;   bpbd-server --help</div>
-</div><!-- fragment --><p> There are to complementing ways to configure the <b>bpbd-server</b>, the first one is the <em>configuration file</em> and another is the <em>server console</em>. We consider both of them below in more details.</p>
+</div><!-- fragment --><p> As one can see the only required command-line parameter of the translation server is a configuration file. The latter shall contain the necessary information for loading the models, and running the server. The configuration file content is covered in section <a href="#configuration-file">Configuration file</a> below. Once the translation server is started there is still a way to change some of its run-time parameters. The latter can be done with a server console explained in the <a href="#server-console">Server console</a> section below. In addition, for information on the LM, TM and RM model file formats see the <a href="#input-file-formats">Input file formats</a></p>
 <h4>Configuration file</h4>
 <p>In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the web socket port through which the server will accept requests. An example configuration file can be found in: <code>[Project-Folder]/default.cfg</code> and in <code>[Project-Folder]/data</code>. The content of this file is self explanatory and contains a significant amount of comments.</p>
 <p>When run with a properly formed configuration file, <b>bpbd-server</b> gives the following output. Note the <code>-d info1</code> option ensuring additional information output during loading the models.</p>
@@ -380,9 +381,10 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;For complete USAGE and HELP type: </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;   bpbd-client --help</div>
-</div><!-- fragment --><p> The translation client makes a web socket connection to the translation server, reads text from the input file and splits it into a number of translation job requests which are sent to the translation server. Note that, the input file is expected to have one source language sentence per line. The client has a basic algorithm for tokenising strings and putting them into the lower case, i.e. preparing the text for translation. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run: <code>bpbd-client --help</code>.</p>
-<p>Once the translations are performed the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each line is prefixed with a translation status having a form: <code>&lt;status&gt;</code>. If a translation task was cancelled, or an error has occurred then it is indicated by the status and the information about that is also placed in the output file on the corresponding sentence line.</p>
-<p>As always, running <b>bpbd-client</b> with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is required to be in the utf8 encoding.</p>
+</div><!-- fragment --><p> One of the main required parameters of the translation client is the input file. The latter should contain text in the source language to be translated into the target one. The input file is expected to have one source language sentence per line. The client application does have a basic algorithm for tokenising sentences and putting them into the lower case, i.e. preparing each individual sentence for translation but this algorithm is pretty rudimental. Therefore, it is suggested that the input file should not only contain one sentence per line but each sentence must be provided in a tokenized (space-separated), lower-case format.</p>
+<p>Once started, the translation client makes a web socket connection to the translation server, reads text from the input file, splits it into a number of translation job requests (which are sent to the translation server) and waits for the reply. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run: <code>bpbd-client --help</code>.</p>
+<p>Once the translations are performed, and the translation job responses are received, the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each output line/sentence also gets prefixed with a translation status having a form: <code>&lt;status&gt;</code>. If a translation task was cancelled, or an error has occurred then it is indicated by the status and the information about that is also placed in the output file on the corresponding sentence line.</p>
+<p>Remember that, running <b>bpbd-client</b> with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the <b>UTF8</b> encoding.</p>
 <h3>Language model query tool: <em>lm-query</em></h3>
 <p>The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line without any parameters, <b>lm-query</b> reports on the available command-line options:</p>
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;$ lm-query </div>
@@ -397,11 +399,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;For complete USAGE and HELP type: </div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;   lm-query --help</div>
-</div><!-- fragment --><p> The language query tool has not changed much since the split-off from its official repository <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT">Back Off Language Model SMT</a>. The tool's input file formats have not changed either, except for what is mentioned below. The main tool's changes are:</p>
-<ul>
-<li>Now it is not possible to have just a single m-gram probability query. The tool always computes the joint probability of all the m-grams in the query starting from 1 up to N and then with a sliding window of the N-grams where N is the maximum language model level. However, the information over the intermediate single m-gram probabilities is still provided in the tool's output.</li>
-<li>The length of the LM query is not limited by the maximum language model level N but is limited by a compile-time constant <code>lm::LM_MAX_QUERY_LEN</code>, see <a href="#project-compile-time-parameters">Project compile-time parameters</a>.</li>
-</ul>
+</div><!-- fragment --><p> For information on the LM file format see section <a href="#input-file-formats">Input file formats</a>. The query file format is a text file in a <b>UTF8</b> encoding which, per line, stores one query being a space-separated sequence of tokens in the target language. The maximum allowed query length is limited by the compile-time constant <code>lm::LM\_MAX\_QUERY\_LEN</code>, see section <a href="#project-compile-time-parameters">Project compile-time parameters</a></p>
 <h2>Input file formats</h2>
 <p>In this section we briefly discuss the model file formats supported by the tools. We shall occasionally reference the other tools supporting the same file formats and external third-party web pages with extended format descriptions.</p>
 <h3>Translation model: <code>*.tm</code></h3>
@@ -457,11 +455,11 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <h2>Code documentation</h2>
 <p>At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option <em>JAVADOC_AUTOBRIEF</em> set to <em>YES</em>. The generated documentation is located in two folders:</p>
 <ul>
-<li><code>[Project-Folder]/docs/html</code><ul>
+<li><code>[Project-Folder]/doc/html</code><ul>
 <li>Open the <em>index.html</em> file located in this folder with your favorite web browser.</li>
 </ul>
 </li>
-<li><code>[Project-Folder]/docs/latex</code><ul>
+<li><code>[Project-Folder]/doc/latex</code><ul>
 <li>Open the <em>refman.pdf</em> file located in this folder with your favorite pdf viewer.</li>
 </ul>
 </li>
@@ -469,7 +467,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <p>The <code>[Project-Folder]/Doxyfile</code> can be used to re-generate the documentation at any given time, for more details see <a href="www.doxygen.org/">Doxygen</a>.</p>
 <ul>
 <li>To re-build the Latex documentation run the following commands from the Linux console:<ul>
-<li><code>cd [Project-Folder]/docs/latex</code></li>
+<li><code>cd [Project-Folder]/doc/latex</code></li>
 <li><code>make</code></li>
 </ul>
 </li>
@@ -507,11 +505,11 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <h3>Experimental results</h3>
 <p>The experimental results are present in the following two pictures. The first one indicates the changes in the MRSS depending on the model size:</p>
 <div class="image">
-<img src="./docs/images/experiments/lm/mem.jpg"  alt="MRSS Comparisons Image" title="MRSS Comparisons"/>
+<img src="./doc/images/experiments/lm/mem.jpg"  alt="MRSS Comparisons Image" title="MRSS Comparisons"/>
 </div>
 <p>The second one shows the query CPU times depending on the model sizes:</p>
 <div class="image">
-<img src="./docs/images/experiments/lm/time.jpg"  alt="CPU Times Comparisons Image" title="CPU Times Comparisons"/>
+<img src="./doc/images/experiments/lm/time.jpg"  alt="CPU Times Comparisons Image" title="CPU Times Comparisons"/>
 </div>
 <p>The results show that the developed LM model trie representations are highly compatible with the available state of the art tools. We also give the following usage guidelines for the implemented tries:</p>
 <ul>
@@ -522,30 +520,31 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <li><b>h2dm</b> following the intuitions of the KenLM implementation, realizes the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one</li>
 </ul>
 <h2>General design</h2>
-<p>This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software. We first provide the ultimate design we are going to work for and then give some insights into the currently implemented version thereof. The designs were created using <a href="http://www.uml.org/">Unified Modeling Language (UML)</a> with the help of the online UML tool called <a href="http://www.umletino.com/">UMLetino</a>.</p>
+<p>This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software. We first provide the ultimate design we are going to work for and then give some insights into the currently implemented version thereof.</p>
+<p>The designs were created using <a href="http://www.uml.org/">Unified Modeling Language (UML)</a> with the help of the online UML tool called <a href="http://www.umletino.com/">UMLetino</a>.</p>
 <h3>The ultimate design</h3>
 <p>Consider the deployment diagram below. It shows the ultimate design we are aiming at.</p>
 <div class="image">
-<img src="./docs/images/design/deployment_ideal.png"  alt="The ultimate deployment Image" title="The ultimate deployment"/>
+<img src="./doc/images/design/deployment_ideal.png"  alt="The ultimate deployment Image" title="The ultimate deployment"/>
 </div>
 <p>This design's main feature is that it is fully distributed, and consists of three, vertical, layers.</p>
 <ol type="1">
-<li><em>The first layer</em>, located on the left side, is the front desk-load balancing piece of software who's responsibility is receiving the translation job requests from one language to another and then forwarding them to the second layer of the design performing load balancing.</li>
-<li><em>The second layer</em>, located in the middle of the picture, id a number of decoding servers that perform translation jobs. These servers can run decoders performing one-to-one language translation each, and there may be multiple instances of decoders for the same source/target language pair. Alternatively, each decoder might be able to translate from a bunch of languages into a bunch of languages and all the middle level server instances run multiple copies of such decoders. Of course an intermediate variant is also possible.</li>
-<li><em>The third layer</em>, located on the right side, is the layer of various instances of the Language, Translation, and Reordering models. Once again, there can be multiple instances of the same model running to distribute the workload. Any decoder is free to use any and any number of model instances running in the third layer.</li>
+<li><em>The first layer</em> - (located on the left side), is the front desk-load balancing piece of software who's responsibility is receiving the translation job requests from one language to another and then forwarding them to the second layer of the design, performing load balancing.</li>
+<li><em>The second layer</em> - (located in the middle), is a number of decoding servers that execute translation jobs. These servers can run decoders performing one-to-one language translations, and there may be multiple instances thereof for the same or different models. To generalize, each decoder might be able to translate from a bunch of languages into a bunch of other languages and then the middle layer servers can run one or more multiple instances of similarly or differently configured decoders, each.</li>
+<li><em>The third layer</em> - (located on the right side), is the layer of various instances of the Language, Translation, and Reordering models. Once again, each server can can run multiple instances of the same or different models to distribute the workload. Any decoder is free to use any number of model instances running in the third layer.</li>
 </ol>
-<p>The communication between the layers here is suggested to be done using Web sockets as the fastest available asynchronous communication protocol available at the moment. In case of significant network communication overhead some of the system components can be run locally on the same physical computing unit or even be build into a monolith application for complete avoidance of the socket communications. The latter can be achieved by simply providing a local implementation of the needed system component. This approach is taken in the first version of the implemented software discussed in the next sub-section.</p>
+<p>The communication between the layers here is suggested to be done using Web sockets as from industry it is known to be the fastest non-proprietary asynchronous communication protocol over TCP/IP. However, in case of significant network communication overhead the design allows for the system components to be run locally on the same physical computing unit or even to be build into a monolithic application for a complete avoidance of the socket communications. The latter is achieved by simply providing a local implementation of the needed system component. This approach is exactly an taken in the first version of the implemented software discussed in the next section.</p>
 <h3>The current design</h3>
 <p>Due to the limited time and as a proof of concept, the first version of the project follows the simplified version of the ultimate design given by the deployment diagram below.</p>
 <div class="image">
-<img src="./docs/images/design/deployment_first.png"  alt="The current deployment Image" title="The current deployment"/>
+<img src="./doc/images/design/deployment_first.png"  alt="The current deployment Image" title="The current deployment"/>
 </div>
-<p>As one can notice, in this figure the first layer is removed, i.e. there is no load-balancing entity. Also the Language, Translation, and Reordering models have local interface implementations only and are compiled together with the decoder in a single application. One can easily extend this design towards the ultimate one by simply providing the remove implementations for the LM, TM and RM models using the existing libraries used in the current implementation.</p>
+<p>As one can notice, in this figure the first layer is removed, i.e. there is no load-balancing entity. Also the Language, Translation, and Reordering models have local interface implementations only and are compiled together with the decoder component to form a single application. Of course, one can easily extend this design towards the ultimate one by simply providing the remove implementations for the LM, TM and RM models using the existing interfaces and implemented LM, RM and TM libraries.</p>
 <p>Let us now briefly consider the two most complicated components of the software, the <em>Decoder</em> and the <em>Language model</em>.</p>
 <h4>The decoder component</h4>
 <p>The class diagram of the decoder component is given below. The decoder has a multi-threaded implementation, where each translation job (<em>a number of sentences to translate</em>) gets split into a number of translations tasks (<em>one task is one sentence</em>). Every translation task is executed in a separate thread. The number of translation threads is configurable at any moment of time.</p>
 <div class="image">
-<img src="./docs/images/design/decoder_component.png"  alt="The decoder Image" title="The decoder"/>
+<img src="./doc/images/design/decoder_component.png"  alt="The decoder Image" title="The decoder"/>
 </div>
 <p>Let us consider the main classes from the diagram:</p>
 <p>The <em>translation_server</em> is responsible for: receiving the Web socket session open and close requests; parsing the translation requests into translation jobs; scheduling the translation jobs to the _trans_job_pool; receiving the finished job notification; and sending the finished job reply to the client.</p>
@@ -562,7 +561,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <h4>The LM component</h4>
 <p>Let us now consider the LM implementation class/package diagram on the figure below:</p>
 <div class="image">
-<img src="./docs/images/design/lm_component.png"  alt="The LM component Image" title="LM component"/>
+<img src="./doc/images/design/lm_component.png"  alt="The LM component Image" title="LM component"/>
 </div>
 <p>The design of the Language model has not changed much since the split off from the <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT">Back Off Language Model SMT</a> project. So for more details we still refer to the <a href="https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details">Implementation Details section</a> of the <a class="el" href="_r_e_a_d_m_e_8md.html">README.md</a> thereof. For the most recent information on the LM component design please read the project's <a href="#code-documentation">Code documentation</a>.</p>
 <h2>Software details</h2>
@@ -619,13 +618,13 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <h2>Literature and references</h2>
 <p>This project is originally based on the following literature:</p>
 <ul>
-<li>Kenneth Heafield. "Kenlm: Faster and smaller language model queries." <a href="./docs/bibtex/Heafield_WMT11.bib">BibTex</a></li>
-<li>Philipp Koehn. "Statistical Machine Translation". <a href="./docs/bibtex/Koehn_SMT_Book10.bib">BibTex</a></li>
-<li>Mark Jan Nederhof, Giorgio Satta. "Prefix Probability for Probabilistic Synchronous Context-Free Grammars" <a href="./docs/bibtex/NederhofSatta_NLP11.bib">BibTex</a></li>
-<li>Adam Pauls, Dan Klein. "Faster and Smaller N-Gram Language Models" <a href="./docs/bibtex/PaulsKlein_ACL11.bib">BibTex</a></li>
-<li>Daniel Robenek, Jan Platos, Vaclav Snasel. "Efficient In-memory Data Structures for n-grams Indexing" <a href="./docs/bibtex/RobenekPlatosSnasel_DATESO13.bib">BibTex</a></li>
-<li>Andreas Stolcke, Jing Zheng, Wen Wang, Victor Abrash. "SRILM at Sixteen: Update and Outlook" <a href="./docs/bibtex/StolckeZhengWangAbrash_ASRU11.bib">BibTex</a></li>
-<li>Matthew Szudzik. "An Elegant Pairing Function" <a href="./docs/bibtex/Szudzik_NKS06.bib">BibTex</a></li>
+<li>Kenneth Heafield. "Kenlm: Faster and smaller language model queries." <a href="./doc/bibtex/Heafield_WMT11.bib">BibTex</a></li>
+<li>Philipp Koehn. "Statistical Machine Translation". <a href="./doc/bibtex/Koehn_SMT_Book10.bib">BibTex</a></li>
+<li>Mark Jan Nederhof, Giorgio Satta. "Prefix Probability for Probabilistic Synchronous Context-Free Grammars" <a href="./doc/bibtex/NederhofSatta_NLP11.bib">BibTex</a></li>
+<li>Adam Pauls, Dan Klein. "Faster and Smaller N-Gram Language Models" <a href="./doc/bibtex/PaulsKlein_ACL11.bib">BibTex</a></li>
+<li>Daniel Robenek, Jan Platos, Vaclav Snasel. "Efficient In-memory Data Structures for n-grams Indexing" <a href="./doc/bibtex/RobenekPlatosSnasel_DATESO13.bib">BibTex</a></li>
+<li>Andreas Stolcke, Jing Zheng, Wen Wang, Victor Abrash. "SRILM at Sixteen: Update and Outlook" <a href="./doc/bibtex/StolckeZhengWangAbrash_ASRU11.bib">BibTex</a></li>
+<li>Matthew Szudzik. "An Elegant Pairing Function" <a href="./doc/bibtex/Szudzik_NKS06.bib">BibTex</a></li>
 </ul>
 <h2>Licensing</h2>
 <p>This is a free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
@@ -783,7 +782,7 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;ngram 4=396600722</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;ngram 5=563533665</div>
 </div><!-- fragment --><div class="image">
-<img src="./docs/images/markdown.png"  alt="Markdown Logo" title="Markdown"/>
+<img src="./doc/images/markdown.png"  alt="Markdown Logo" title="Markdown"/>
 </div>
 <p><em>Powered by <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Markdown-Cheatsheet</a></em> </p>
 </div></div><!-- contents -->
