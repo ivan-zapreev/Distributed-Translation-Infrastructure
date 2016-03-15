@@ -5,28 +5,38 @@
 **Project pages:** [Git-Hub-Project](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT)
 
 ##Introduction
-This is a fork project from the Back Off Language Model(s) for SMT project aimed at creating the entire phrase-based SMT translation infrastructure. This project follows a client/server architecture based on Web Sockets for C++ and consists of the three main applications:
+This fork from the Back Off Language Model(s) for SMT project is aimed at creating an entire phrase-based statistical machine translation system.
+The delivered software follows a client/server architecture based on Web Sockets for C++ and consists of the three main applications::
 
-+ **bpbd-client** - is a thin client to send the translation job requests to the translation server and obtain results
-+ **bpbd-server** - the the translation server consisting of the following main components:
++ **bpbd-client** - a thin client to send the translation job requests to the translation server and obtain results
++ **bpbd-server** - the translation server consisting of the following main components:
     - *Decoder* - the decoder component responsible for translating text from one language into another
-    - *LM* - the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities.
-    - *TM* - the translation model implementation required for providing source to target language phrase translation and the probabilities thereof.
+    - *LM* - the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities
+    - *TM* - the translation model implementation required for providing source to target language phrase translation and the probabilities thereof
     - *RM* - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof
-+ **lm-query** - a stand-alone language model query tool that allows to perform language model queries and estimate the joint phrase probabilities.
++ **lm-query** - a stand-alone language model query tool that allows to perform language model queries and estimate the joint phrase probabilities
 
-To keep a clear view of the used terminology further we will provide some details on the phrase based statistical machine translation as given on the picture below, taken from [TAUS MT SHOWCASE slides](http://www.slideshare.net/TAUS/10-april-2013-taus-mt-showcase-mt-for-southeast-asian-languages-aw-ai-ti-institute-for-infocomm-18665069).
+To keep a clear view of the used terminology further, we provide some details on the topic of phrase-based SMT, and illustrate it the picture below, taken from [TAUS MT SHOWCASE](http://www.slideshare.net/TAUS/10-april-2013-taus-mt-showcase-mt-for-southeast-asian-languages-aw-ai-ti-institute-for-infocomm-18665069) slides.
 
 ![Statistical Machine Translation Approach Image](./doc/images/smt/smt.jpg "Statistical Machine Translation Approach")
 
-The entire phrase-based statistical machine translation is based on learned statistical correlations between words and phrases of an example translation text, also called parallel corpus or corpora. Clearly, if the training corpora is large enough then it allows to cover most source/target language words and phrases and shall have enough information for approximating a translation of an arbitrary text. However, before this information can be extracted, the parallel corpora undergoes the process called _word alignment_ which is aimed at estimating which words/phrases in the source language correspond to which words/phrases in the target language. As a result, we obtain two statistical models:
+The entire phrase-based statistical machine translation relies on learning statistical correlations between words and
+phrases in an existing source/target translation text pair, also called parallel corpus or corpora. These correlations
+are learned by, generally speaking, three statistical models: TM - translation model; RM - reordering mode; and LM - language
+model; briefly mentioned above. If the training corpora is large enough, then these models will possess enough information
+to approximate a translation of an arbitrary text from the given source language to the given target language. Note that,
+before this information can be extracted, the parallel corpora undergoes the process called _word alignment_ which is aimed
+at estimating which words/phrases in the source language correspond to which words/phrases in the target language.
+Let us give a more precise definition of these models:
 
-1. The Translation model - providing phrases in the source language with learned possible target language translations and the probabilities thereof.
-2. The Reordering model - storing information about probable translation orders of the phrases within the source text, based on the observed source and target phrases and alignment thereof.
+1. Translation model - provides phrases in the source language with learned possible target language translations and the probabilities thereof.
+2. Reordering model - stores information about probable translation orders of the phrases within the source text, based on the observed source and target phrases and their alignments.
+3. Language model - reflects the likelihood of this or that phrase in the target language to occur. In other words, it is used to evaluate the obtained translation for being _"sound"_ in the target language.
 
-The last model, possibly learned from a different corpus in a target language, is the Language model. Its purpose is to reflect the likelihood of this or that phrase in the target language to occur. In other words it is used to evaluate the obtained translation for being _sound_ in the target language.
- 
-With these three models at hand one can perform decoding, which is a synonym to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reordering of the source language phrases within one sentence and then looking for the most probable translations, as indicated at the bottom part of the picture above.
+Note that, the language model is typically learned from a different corpus in a target language.
+
+With these three models at hand one can perform decoding, which is a synonym to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reordering
+of the source language phrases within one sentence. The purpose of decoding, as indicated by the maximization procedure at the bottom of the figure above, is to find a translation with the largest possible probability.
  
 The rest of the document is organized as follows:
 
@@ -78,10 +88,10 @@ Building this project requires **gcc** version >= *4.9.1* and **cmake** version 
 
 The first two steps before building the project, to be performed from the Linux command line console, are:
 
-+ `cd [Project-Folder]`
-+ `mkdir build`
+1. `cd [Project-Folder]`
+2. `mkdir build`
 
-Further the project can be build in two ways:
+After these are performed, the project can be build in two ways:
 
 + From the Netbeans environment by running Build in the IDE
     - In Netbeans menu: `Tools/Options/"C/C++"` make sure that the cmake executable is properly set.
@@ -161,7 +171,10 @@ Note that not all of the combinations of the `lm_word_index` and `lm_model_type`
 This section briefly covers how the provided software can be used for performing text translations. We begin with the **bpbd-server** and the **bpbd-client** then briefly talk about the **lm-query**. For information on the LM, TM and RM model file formats and others see section [Input file formats](#input-file-formats)
 
 ###Translation server: _bpbd-server_ 
-The translation server is used to load language, translation and reordering models for a given source/target language pair and to process the translation requests coming from the translation client. When started from a command line without any parameters, **bpbd-server** reports on the available command-line options:
+The translation server is used for two things:
+_(i)_ to load language, translation and reordering models (for a given source/target language pair); 
+_(ii)_ to process the translation requests coming from the translation client.
+The use of this executable is straightforward. When started from a command line without any parameters, **bpbd-server** reports on the available command-line options:
 
 ```
 $ bpbd-server
@@ -176,7 +189,7 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    bpbd-server --help
 ```
-There are to complementing ways to configure the **bpbd-server**, the first one is the _configuration file_ and another is the _server console_. We consider both of them below in more details.
+As one can see the only required command-line parameter of the translation server is a configuration file. The latter shall contain the necessary information for loading the models, and running the server. The configuration file content is covered in section [Configuration file](#configuration-file) below. Once the translation server is started there is still a way to change some of its run-time parameters. The latter can be done with a server console explained in the [Server console](#server-console) section below. In addition, for information on the LM, TM and RM model file formats see the [Input file formats](#input-file-formats)
 
 ####Configuration file####
 In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the web socket port through which the server will accept requests. An example configuration file can be found in: `[Project-Folder]/default.cfg` and in `[Project-Folder]/data`. The content of this file is self explanatory and contains a significant amount of comments.
@@ -287,11 +300,13 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    bpbd-client --help
 ```
-The translation client makes a web socket connection to the translation server, reads text from the input file and splits it into a number of translation job requests which are sent to the translation server. Note that, the input file is expected to have one source language sentence per line. The client has a basic algorithm for tokenising strings and putting them into the lower case, i.e. preparing the text for translation. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run: `bpbd-client --help`.
+One of the main required parameters of the translation client is the input file. The latter should contain text in the source language to be translated into the target one. The input file is expected to have one source language sentence per line. The client application does have a basic algorithm for tokenising sentences and putting them into the lower case, i.e. preparing each individual sentence for translation but this algorithm is pretty rudimental. Therefore, it is suggested that the input file should not only contain one sentence per line but each sentence must be provided in a tokenized (space-separated), lower-case format.
 
-Once the translations are performed the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each line is prefixed with a translation status having a form: `<status>`. If a translation task was cancelled, or an error has occurred then it is indicated by the status and the information about that is also placed in the output file on the corresponding sentence line.
+Once started, the translation client makes a web socket connection to the translation server, reads text from the input file, splits it into a number of translation job requests (which are sent to the translation server) and waits for the reply. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run: `bpbd-client --help`.
 
-As always, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is required to be in the utf8 encoding.
+Once the translations are performed, and the translation job responses are received, the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each output line/sentence also gets prefixed with a translation status having a form: `<status>`. If a translation task was cancelled, or an error has occurred then it is indicated by the status and the information about that is also placed in the output file on the corresponding sentence line.
+
+Remember that, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the **UTF8** encoding.
 
 ###Language model query tool: _lm-query_
 The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line without any parameters, **lm-query** reports on the available command-line options:
@@ -310,10 +325,7 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    lm-query --help
 ```
-The language query tool has not changed much since the split-off from its official repository [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT). The tool's input file formats have not changed either, except for what is mentioned below. The main tool's changes are:
-
-* Now it is not possible to have just a single m-gram probability query. The tool always computes the joint probability of all the m-grams in the query starting from 1 up to N and then with a sliding window of the N-grams where N is the maximum language model level. However, the information over the intermediate single m-gram probabilities is still provided in the tool's output.
-* The length of the LM query is not limited by the maximum language model level N but is limited by a compile-time constant `lm::LM_MAX_QUERY_LEN`, see [Project compile-time parameters](#project-compile-time-parameters).
+For information on the LM file format see section [Input file formats](#input-file-formats). The query file format is a text file in a **UTF8** encoding which, per line, stores one query being a space-separated sequence of tokens in the target language. The maximum allowed query length is limited by the compile-time constant `lm::LM\_MAX\_QUERY\_LEN`, see section [Project compile-time parameters](#project-compile-time-parameters)
 
 ##Input file formats
 In this section we briefly discuss the model file formats supported by the tools. We shall occasionally reference the other tools supporting the same file formats and external third-party web pages with extended format descriptions.
@@ -447,8 +459,9 @@ The results show that the developed LM model trie representations are highly com
 * **h2dm** following the intuitions of the KenLM implementation, realizes the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
 
 ##General design
+This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software. We first provide the ultimate design we are going to work for and then give some insights into the currently implemented version thereof.
 
-This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software. We first provide the ultimate design we are going to work for and then give some insights into the currently implemented version thereof. The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
+The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
 
 ###The ultimate design
 Consider the deployment diagram below. It shows the ultimate design we are aiming at.
@@ -457,18 +470,18 @@ Consider the deployment diagram below. It shows the ultimate design we are aimin
 
 This design's main feature is that it is fully distributed, and consists of three, vertical, layers.
 
-1. _The first layer_, located on the left side, is the front desk-load balancing piece of software who's responsibility is receiving the translation job requests from one language to another and then forwarding them to the second layer of the design performing load balancing.
-2. _The second layer_, located in the middle of the picture, id a number of decoding servers that perform translation jobs. These servers can run decoders performing one-to-one language translation each, and there may be multiple instances of decoders for the same source/target language pair.  Alternatively, each decoder might be able to translate from a bunch of languages into a bunch of languages and all the middle level server instances run multiple copies of such decoders. Of course an intermediate variant is also possible.
-3. _The third layer_, located on the right side, is the layer of various instances of the Language, Translation, and Reordering models. Once again, there can be multiple instances of the same model running to distribute the workload. Any decoder is free to use any and any number of model instances running in the third layer.
+1. _The first layer_ - (located on the left side), is the front desk-load balancing piece of software who's responsibility is receiving the translation job requests from one language to another and then forwarding them to the second layer of the design, performing load balancing.
+2. _The second layer_ - (located in the middle), is a number of decoding servers that execute translation jobs. These servers can run decoders performing one-to-one language translations, and there may be multiple instances thereof for the same or different models. To generalize, each decoder might be able to translate from a bunch of languages into a bunch of other languages and then the middle layer servers can run one or more multiple instances of similarly or differently configured decoders, each.
+3. _The third layer_ - (located on the right side), is the layer of various instances of the Language, Translation, and Reordering models. Once again, each server can can run multiple instances of the same or different models to distribute the workload. Any decoder is free to use any number of model instances running in the third layer.
 
-The communication between the layers here is suggested to be done using Web sockets as the fastest available asynchronous communication protocol available at the moment. In case of significant network communication overhead some of the system components can be run locally on the same physical computing unit or even be build into a monolith application for complete avoidance of the socket communications. The latter can be achieved by simply providing a local implementation of the needed system component. This approach is taken in the first version of the implemented software discussed in the next sub-section.
+The communication between the layers here is suggested to be done using Web sockets as from industry it is known to be the fastest non-proprietary asynchronous communication protocol over TCP/IP. However, in case of significant network communication overhead the design allows for the system components to be run locally on the same physical computing unit or even to be build into a monolithic application for a complete avoidance of the socket communications. The latter is achieved by simply providing a local implementation of the needed system component. This approach is exactly an taken in the first version of the implemented software discussed in the next section.
 
 ###The current design
 Due to the limited time and as a proof of concept, the first version of the project follows the simplified version of the ultimate design given by the deployment diagram below.
 
 ![The current deployment Image](./doc/images/design/deployment_first.png "The current deployment")
 
-As one can notice, in this figure the first layer is removed, i.e. there is no load-balancing entity. Also the Language, Translation, and Reordering models have local interface implementations only and are compiled together with the decoder in a single application. One can easily extend this design towards the ultimate one by simply providing the remove implementations for the LM, TM and RM models using the existing libraries used in the current implementation.
+As one can notice, in this figure the first layer is removed, i.e. there is no load-balancing entity. Also the Language, Translation, and Reordering models have local interface implementations only and are compiled together  with the decoder component to form a single application. Of course, one can easily extend this design towards the ultimate one by simply providing the remove implementations for the LM, TM and RM models using the existing interfaces and implemented LM, RM and TM libraries.
 
 Let us now briefly consider the two most complicated components of the software, the _Decoder_ and the _Language model_.
 
