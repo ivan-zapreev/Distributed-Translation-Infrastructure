@@ -1,4 +1,0 @@
-var structasio____1____1detail____1____1async________result________init__8js_8js =
-[
-    [ "structasio__1__1detail__1__1async____result____init_8js", "structasio____1____1detail____1____1async________result________init__8js_8js.html#a198b8c48dfb0493e5e2aa3a440013fe6", null ]
-];

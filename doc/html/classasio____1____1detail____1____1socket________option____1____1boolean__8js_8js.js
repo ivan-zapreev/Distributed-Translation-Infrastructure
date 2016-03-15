@@ -1,4 +1,0 @@
-var classasio____1____1detail____1____1socket________option____1____1boolean__8js_8js =
-[
-    [ "classasio__1__1detail__1__1socket____option__1__1boolean_8js", "classasio____1____1detail____1____1socket________option____1____1boolean__8js_8js.html#aad62d703067d867c5e8fcf8431df3316", null ]
-];

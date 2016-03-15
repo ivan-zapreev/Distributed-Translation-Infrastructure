@@ -1,4 +1,0 @@
-var classuva__1__1smt__1__1bpbd__1__1server__1__1lm__1__1__w2__c__array__trie__1__1__word__data__entry_8js =
-[
-    [ "classuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1_w2_c_array_trie_1_1_word_data_entry", "classuva__1__1smt__1__1bpbd__1__1server__1__1lm__1__1__w2__c__array__trie__1__1__word__data__entry_8js.html#a6b55503a0ca266c1826ae884e7067716", null ]
-];

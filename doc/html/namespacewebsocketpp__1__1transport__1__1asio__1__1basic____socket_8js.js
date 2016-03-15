@@ -1,4 +1,0 @@
-var namespacewebsocketpp__1__1transport__1__1asio__1__1basic____socket_8js =
-[
-    [ "namespacewebsocketpp_1_1transport_1_1asio_1_1basic__socket", "namespacewebsocketpp__1__1transport__1__1asio__1__1basic____socket_8js.html#af701c779e06761c1cbe41551c5c6b1fc", null ]
-];

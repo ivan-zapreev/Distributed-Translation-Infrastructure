@@ -1,4 +1,0 @@
-var namespaceuva__1__1smt__1__1bpbd__1__1server__1__1decoder__1__1stack_8js =
-[
-    [ "namespaceuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1stack", "namespaceuva__1__1smt__1__1bpbd__1__1server__1__1decoder__1__1stack_8js.html#a052f2bd09c823e027f73f2c4bfe99ed7", null ]
-];

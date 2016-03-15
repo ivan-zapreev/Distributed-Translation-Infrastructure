@@ -1,4 +1,0 @@
-var namespacewebsocketpp____1____1transport____1____1stub____1____1error__8js_8js =
-[
-    [ "namespacewebsocketpp__1__1transport__1__1stub__1__1error_8js", "namespacewebsocketpp____1____1transport____1____1stub____1____1error__8js_8js.html#ae8ebe343e093e84e9f8c406918d1ff76", null ]
-];

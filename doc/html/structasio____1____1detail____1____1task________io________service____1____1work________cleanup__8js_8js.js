@@ -1,4 +1,0 @@
-var structasio____1____1detail____1____1task________io________service____1____1work________cleanup__8js_8js =
-[
-    [ "structasio__1__1detail__1__1task____io____service__1__1work____cleanup_8js", "structasio____1____1detail____1____1task________io________service____1____1work________cleanup__8js_8js.html#a88186ecf9ce605e360c9d860900669d6", null ]
-];

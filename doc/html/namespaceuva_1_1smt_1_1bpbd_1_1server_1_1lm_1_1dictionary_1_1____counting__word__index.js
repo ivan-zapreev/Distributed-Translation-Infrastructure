@@ -1,4 +1,0 @@
-var namespaceuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____counting__word__index =
-[
-    [ "TWordInfo", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____counting__word__index_1_1_t_word_info.html", "structuva_1_1smt_1_1bpbd_1_1server_1_1lm_1_1dictionary_1_1____counting__word__index_1_1_t_word_info" ]
-];

@@ -1,4 +1,0 @@
-var classasio____1____1error____1____1detail____1____1netdb________category__8js_8js =
-[
-    [ "classasio__1__1error__1__1detail__1__1netdb____category_8js", "classasio____1____1error____1____1detail____1____1netdb________category__8js_8js.html#acf05bea5ad24bba02d575a0689d8ed1d", null ]
-];

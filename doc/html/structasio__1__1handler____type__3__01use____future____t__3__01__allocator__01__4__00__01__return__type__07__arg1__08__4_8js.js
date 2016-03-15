@@ -1,4 +1,0 @@
-var structasio__1__1handler____type__3__01use____future____t__3__01__allocator__01__4__00__01__return__type__07__arg1__08__4_8js =
-[
-    [ "structasio_1_1handler__type_3_01use__future__t_3_01_allocator_01_4_00_01_return_type_07_arg1_08_4", "structasio__1__1handler____type__3__01use____future____t__3__01__allocator__01__4__00__01__return__type__07__arg1__08__4_8js.html#a9ef706b6a7674280a22ad6be1ace8c3a", null ]
-];

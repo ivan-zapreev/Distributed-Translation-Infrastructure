@@ -1,4 +1,0 @@
-var classwebsocketpp__1__1extensions__1__1permessage____deflate__1__1error__1__1category_8js =
-[
-    [ "classwebsocketpp_1_1extensions_1_1permessage__deflate_1_1error_1_1category", "classwebsocketpp__1__1extensions__1__1permessage____deflate__1__1error__1__1category_8js.html#aa4f0ba70a2e3dbfd33602069cc9fd91d", null ]
-];

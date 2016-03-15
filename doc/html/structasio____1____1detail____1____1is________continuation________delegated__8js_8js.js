@@ -1,4 +1,0 @@
-var structasio____1____1detail____1____1is________continuation________delegated__8js_8js =
-[
-    [ "structasio__1__1detail__1__1is____continuation____delegated_8js", "structasio____1____1detail____1____1is________continuation________delegated__8js_8js.html#a79adc0bf305d84ae385d0ac0387ed255", null ]
-];

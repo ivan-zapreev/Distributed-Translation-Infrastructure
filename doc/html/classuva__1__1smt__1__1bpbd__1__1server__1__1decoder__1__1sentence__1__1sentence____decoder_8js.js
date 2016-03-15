@@ -1,4 +1,0 @@
-var classuva__1__1smt__1__1bpbd__1__1server__1__1decoder__1__1sentence__1__1sentence____decoder_8js =
-[
-    [ "classuva_1_1smt_1_1bpbd_1_1server_1_1decoder_1_1sentence_1_1sentence__decoder", "classuva__1__1smt__1__1bpbd__1__1server__1__1decoder__1__1sentence__1__1sentence____decoder_8js.html#ad65342b103578447b8246c7b993cec66", null ]
-];

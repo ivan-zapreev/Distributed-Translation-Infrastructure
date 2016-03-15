@@ -1,4 +1,0 @@
-var structasio_1_1handler__type_3_01basic__yield__context_3_01_handler_01_4_00_01_return_type_07_08_4 =
-[
-    [ "type", "structasio_1_1handler__type_3_01basic__yield__context_3_01_handler_01_4_00_01_return_type_07_08_4.html#a95cc39df11262f252961b7f1a4e1586a", null ]
-];

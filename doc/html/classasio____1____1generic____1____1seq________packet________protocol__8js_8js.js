@@ -1,4 +1,0 @@
-var classasio____1____1generic____1____1seq________packet________protocol__8js_8js =
-[
-    [ "classasio__1__1generic__1__1seq____packet____protocol_8js", "classasio____1____1generic____1____1seq________packet________protocol__8js_8js.html#afdd0b02ab451fc4ea19293a7e007c732", null ]
-];

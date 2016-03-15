@@ -1,4 +1,0 @@
-var structasio_1_1handler__type_3_01use__future__t_3_01_allocator_01_4_00_01_01_01_01_01_01_01_01_01e03a2a25b6ea2f5e6fbc374eca266e19 =
-[
-    [ "type", "structasio_1_1handler__type_3_01use__future__t_3_01_allocator_01_4_00_01_01_01_01_01_01_01_01_01e03a2a25b6ea2f5e6fbc374eca266e19.html#a8d732ade8f0fbf4f1950311ed58a1e4c", null ]
-];

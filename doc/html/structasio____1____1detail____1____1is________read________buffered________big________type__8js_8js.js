@@ -1,4 +1,0 @@
-var structasio____1____1detail____1____1is________read________buffered________big________type__8js_8js =
-[
-    [ "structasio__1__1detail__1__1is____read____buffered____big____type_8js", "structasio____1____1detail____1____1is________read________buffered________big________type__8js_8js.html#a48e24042222ca64022c8294863a4a986", null ]
-];

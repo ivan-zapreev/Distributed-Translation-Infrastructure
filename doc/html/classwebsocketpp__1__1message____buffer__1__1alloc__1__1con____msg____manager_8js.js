@@ -1,4 +1,0 @@
-var classwebsocketpp__1__1message____buffer__1__1alloc__1__1con____msg____manager_8js =
-[
-    [ "classwebsocketpp_1_1message__buffer_1_1alloc_1_1con__msg__manager", "classwebsocketpp__1__1message____buffer__1__1alloc__1__1con____msg____manager_8js.html#af81889e58394ffd194f3da4cc99bd84b", null ]
-];

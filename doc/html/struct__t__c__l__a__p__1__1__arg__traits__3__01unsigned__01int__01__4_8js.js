@@ -1,4 +1,0 @@
-var struct__t__c__l__a__p__1__1__arg__traits__3__01unsigned__01int__01__4_8js =
-[
-    [ "struct_t_c_l_a_p_1_1_arg_traits_3_01unsigned_01int_01_4", "struct__t__c__l__a__p__1__1__arg__traits__3__01unsigned__01int__01__4_8js.html#a8b85c3480d874993dad36d0cf28edaaa", null ]
-];

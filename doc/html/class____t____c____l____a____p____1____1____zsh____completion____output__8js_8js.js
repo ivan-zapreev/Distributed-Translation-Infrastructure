@@ -1,4 +1,0 @@
-var class____t____c____l____a____p____1____1____zsh____completion____output__8js_8js =
-[
-    [ "class__t__c__l__a__p__1__1__zsh__completion__output_8js", "class____t____c____l____a____p____1____1____zsh____completion____output__8js_8js.html#a976bb716a590b80ef84f3353f78f7b34", null ]
-];

@@ -1,4 +1,0 @@
-var classasio____1____1detail____1____1consuming________buffers________iterator__8js_8js =
-[
-    [ "classasio__1__1detail__1__1consuming____buffers____iterator_8js", "classasio____1____1detail____1____1consuming________buffers________iterator__8js_8js.html#a8b20a0d970ec8c158a02f39a16edf0b3", null ]
-];
