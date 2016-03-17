@@ -16,7 +16,7 @@ The delivered software follows a client/server architecture based on Web Sockets
     - *RM* - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof
 + **lm-query** - a stand-alone language model query tool that allows to perform language model queries and estimate the joint phrase probabilities
 
-To keep a clear view of the used terminology further, we provide some details on the topic of phrase-based SMT, and illustrate it, the following picture.
+To keep a clear view of the used terminology further, we provide some details on the topic of phrase-based SMT, and to illustrate it, the following picture.
 
 ![Statistical Machine Translation Approach Image](./doc/images/smt/smt.pdf "Statistical Machine Translation Approach")
 
