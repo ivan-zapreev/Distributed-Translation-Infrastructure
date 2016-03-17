@@ -18,7 +18,7 @@ The delivered software follows a client/server architecture based on Web Sockets
 
 To keep a clear view of the used terminology further, we provide some details on the topic of phrase-based SMT, and to illustrate it, the following picture.
 
-![Statistical Machine Translation Approach Image](./doc/images/smt/smt.pdf "Statistical Machine Translation Approach")
+![Statistical Machine Translation Approach Image](./doc/images/smt/smt.jpg "Statistical Machine Translation Approach")
 
 The entire phrase-based statistical machine translation relies on learning statistical correlations between words and
 phrases in an existing source/target translation text pair, also called parallel corpus or corpora. These correlations
