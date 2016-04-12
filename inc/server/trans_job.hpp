@@ -112,18 +112,19 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~trans_job() {
-                        LOG_DEBUG << "Deleting the translation job " << this << " with job_id: "
+                        LOG_USAGE << "Deleting the translation job " << this << " with job_id: "
                                 << m_request_ptr->get_job_id() << " session id: "
                                 << m_request_ptr->get_session_id() << END_LOG;
 
-                        LOG_DEBUG << "Start deleting translation tasks of job " << this << END_LOG;
+                        LOG_USAGE << "Start deleting translation tasks of job " << this << END_LOG;
 
                         //Delete the translation tasks
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
+                            LOG_USAGE << "Deleting translation tasks" << this->get_job_id() << "/" << (*it)->get_task_id() << END_LOG;
                             delete *it;
                         }
 
-                        LOG_DEBUG << "The translation tasks of job " << this << " are deleted" << END_LOG;
+                        LOG_USAGE << "The translation tasks of job " << this << " are deleted" << END_LOG;
 
                         //If the job with its tasks is deleted then the request is not needed any more
                         if (m_request_ptr != NULL) {
