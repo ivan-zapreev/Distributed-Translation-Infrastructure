@@ -310,6 +310,9 @@ namespace uva {
 
                             LOG_DEBUG << "Deleted the job " << trans_job << " from the administration, the jobs count is " << m_job_count << END_LOG;
                         }
+                        
+                        //Make sure that the job-finished notification is indeed complete
+                        trans_job->wait_notify_finished();
 
                         //Delete the job as it is not needed any more
                         delete trans_job;
