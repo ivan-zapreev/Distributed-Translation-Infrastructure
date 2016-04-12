@@ -216,11 +216,14 @@ namespace uva {
                     void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
                         LOG_DEBUG << "Received a message!" << END_LOG;
 
-                        //Declare the translation job request pointer
-                        trans_job_request_ptr request_ptr = NULL;
+                        //Declare the job id for the case of needed error reporting
+                        job_id_type job_id_val = job_id::UNDEFINED_JOB_ID;
                         try {
-                            //Extract the translation job request
-                            request_ptr = new trans_job_request(msg->get_payload());
+                            //Extract the translation job request, will be deleted by the translation job
+                            trans_job_request_ptr request_ptr = new trans_job_request(msg->get_payload());
+                            
+                            //Store the job id in case of an error
+                            job_id_val = request_ptr->get_job_id();
 
                             //Schedule a translation job
                             m_manager.translate(hdl, request_ptr);
@@ -229,8 +232,7 @@ namespace uva {
                             LOG_ERROR << ex.get_message() << END_LOG;
 
                             //Create the reply message, with or without job id
-                            const job_id_type job_id = (request_ptr == NULL) ? job_id::UNDEFINED_JOB_ID : request_ptr->get_job_id();
-                            trans_job_response response(job_id, trans_job_code::RESULT_ERROR, ex.get_message());
+                            trans_job_response response(job_id_val, trans_job_code::RESULT_ERROR, ex.get_message());
 
                             //Send the response
                             send_response(hdl, response);

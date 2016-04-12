@@ -169,7 +169,7 @@ namespace uva {
                         //Set the session id into the request
                         request_ptr->set_session_id(session_id);
 
-                        //Instantiate a new translation job
+                        //Instantiate a new translation job, it will destroy the translation request in its destructor
                         trans_job_ptr job = new trans_job(request_ptr);
 
                         LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;

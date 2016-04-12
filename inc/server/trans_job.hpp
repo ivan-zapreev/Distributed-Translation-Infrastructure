@@ -116,11 +116,6 @@ namespace uva {
                                 << m_request_ptr->get_job_id() << " session id: "
                                 << m_request_ptr->get_session_id() << END_LOG;
 
-                        //If the job is deleted then the request is not needed any more
-                        if (m_request_ptr != NULL) {
-                            delete m_request_ptr;
-                        }
-
                         LOG_DEBUG << "Start deleting translation tasks of job " << this << END_LOG;
 
                         //Delete the translation tasks
@@ -129,6 +124,11 @@ namespace uva {
                         }
 
                         LOG_DEBUG << "The translation tasks of job " << this << " are deleted" << END_LOG;
+
+                        //If the job with its tasks is deleted then the request is not needed any more
+                        if (m_request_ptr != NULL) {
+                            delete m_request_ptr;
+                        }
                     }
 
                     /**
