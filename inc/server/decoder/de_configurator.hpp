@@ -74,14 +74,14 @@ namespace uva {
                          *                         the source sentence is expected to be
                          *                         tokenized, reduced, and in the lower case.
                          * @param target_sent [out] the resulting target language sentence
-                         * @return an instance of the decoder object.
+                         * @return a pointer to an instance of the decoder object.
                          */
-                        static inline sentence_decoder & allocate_decoder(
+                        static inline sentence_decoder * allocate_decoder(
                                 acr_bool_flag is_stop,
                                 const string & source_sent,
                                 string & target_sent) {
                             LOG_DEBUG << "Starting to allocate sentence decoder for: ___" << source_sent << "___" << END_LOG;
-                            return *(new sentence_decoder(*m_params, is_stop, source_sent, target_sent));
+                            return new sentence_decoder(*m_params, is_stop, source_sent, target_sent);
                         }
 
                         /**
@@ -89,8 +89,10 @@ namespace uva {
                          * \todo Mark the decoder instance as available
                          * @param dec the decoder to be returned
                          */
-                        static inline void dispose_decoder(sentence_decoder & dec) {
-                            delete &dec;
+                        static inline void dispose_decoder(sentence_decoder * dec) {
+                            if (dec != NULL) {
+                                delete dec;
+                            }
                         }
 
                     private:

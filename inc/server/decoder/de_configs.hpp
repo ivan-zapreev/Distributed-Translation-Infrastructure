@@ -40,7 +40,7 @@ namespace uva {
             namespace server {
                 namespace decoder {
                     //Stores the maximum considered number of words per sentence
-                    static const size_t MAX_WORDS_PER_SENTENCE = 100;
+                    static const size_t MAX_WORDS_PER_SENTENCE = 256;
                 }
             }
         }

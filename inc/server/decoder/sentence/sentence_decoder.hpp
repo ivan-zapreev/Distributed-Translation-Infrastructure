@@ -257,7 +257,7 @@ namespace uva {
                                 ASSERT_CONDITION_THROW((num_tokens > MAX_WORDS_PER_SENTENCE),
                                         string("The number of words in the sentence (") + to_string(num_tokens) +
                                         string(") exceeds the maximum allowed number of words per sentence (") +
-                                        to_string(MAX_WORDS_PER_SENTENCE));
+                                        to_string(MAX_WORDS_PER_SENTENCE) + string(")"));
 
                                 LOG_DEBUG1 << "The sentence: __" << sentence << "___ has " << num_tokens << " tokens" << END_LOG;
 

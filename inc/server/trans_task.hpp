@@ -78,7 +78,7 @@ namespace uva {
                     m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED), m_source_text(source_sentence),
                     m_notify_task_done_func(notify_task_done_func), m_target_text("") {
                         LOG_DEBUG1 << "/session id=" << m_session_id << ", job id="
-                                << m_job_id << ", NEW task id=" <<  m_task_id
+                                << m_job_id << ", NEW task id=" << m_task_id
                                 << "/ text: " << m_source_text << END_LOG;
                     }
 
@@ -127,13 +127,15 @@ namespace uva {
                         LOG_DEBUG1 << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
                         //Obtain the new decoder instance
-                        sentence_decoder & dec = de_configurator::allocate_decoder(m_is_interrupted, m_source_text, m_target_text);
+                        sentence_decoder * dec = NULL;
 
-                        LOG_DEBUG1 << "Invoking the sentence translation for task " << m_task_id << END_LOG;
-                        
                         //Perform the decoding task
                         try {
-                            dec.translate();
+                            dec = de_configurator::allocate_decoder(m_is_interrupted, m_source_text, m_target_text);
+
+                            LOG_DEBUG1 << "Invoking the sentence translation for task " << m_task_id << END_LOG;
+
+                            dec->translate();
                         } catch (uva_exception & ex) {
                             //Set the response code
                             m_code = trans_job_code::RESULT_ERROR;
