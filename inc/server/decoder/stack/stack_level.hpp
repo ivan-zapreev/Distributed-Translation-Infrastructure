@@ -191,9 +191,14 @@ namespace uva {
                                 //state place where we should put the new one
                                 curr_state = m_first_state;
 
-                                //Search for the proper position of the state,
-                                //the state we could recombine into or until
-                                //we find an empty position, then stop.
+                                //Search for the proper position of the state, that is we push
+                                //the new state down the list of states ordered by the total
+                                //probability. THis is done until the end of the list is reached
+                                //or a state with a smaller or equal probability is met.
+                                //Every considered state with a higher probability is checked to
+                                //be equal to the new one, in the sense of possible re-combination.
+                                //If we find the state the new state could be recombined into then
+                                //we are also finished, as we shall just do recombination.
                                 while ((curr_state != NULL) && (new_state < *curr_state)) {
                                     if (new_state == *curr_state) {
                                         //The two states are equal meaning that they can be recombined.
