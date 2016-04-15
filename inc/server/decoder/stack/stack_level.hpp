@@ -99,9 +99,14 @@ namespace uva {
 
                                         //Find the position the new state is to be inserted into
                                         //or possibly recombine, if needed, with an existing state.
-                                        if (m_params.m_is_recombine && find_recombine(curr_state, *new_state)) {
-                                            //The new state was recombined into an existing one, no need to proceed.
-                                            return;
+                                        if (m_params.m_is_recombine) {
+                                            if (find_pos_recombine(curr_state, *new_state)) {
+                                                //If the new state was recombined into an existing one, no need to proceed.
+                                                return;
+                                            }
+                                        } else {
+                                            //Search for the position to insert the new state into
+                                            find_pos(curr_state, *new_state);
                                         }
 
                                         LOG_DEBUG1 << "The last considered state is: " << curr_state << END_LOG;
@@ -181,9 +186,8 @@ namespace uva {
                              * We known that the state satisfies the total weight threshold.
                              * @param curr_state [out]
                              * @param new_state [in] the new state to be inserted into the list
-                             * @return true if the new state was recombined into an existing one, otherwise false.
                              */
-                            inline bool find_recombine(stack_state_ptr & curr_state, stack_state & new_state) {
+                            inline void find_pos(stack_state_ptr & curr_state, const stack_state & new_state) {
                                 LOG_DEBUG1 << "Searching for the place for the " << &new_state
                                         << " state within the level!" << END_LOG;
 
@@ -193,7 +197,34 @@ namespace uva {
 
                                 //Search for the proper position of the state, that is we push
                                 //the new state down the list of states ordered by the total
-                                //probability. THis is done until the end of the list is reached
+                                //probability. This is done until the end of the list is reached
+                                //or a state with a smaller or equal probability is met.
+                                while ((curr_state != NULL) && (new_state < *curr_state)) {
+                                    //Move further to the next state
+                                    curr_state = curr_state->m_next;
+                                }
+                            }
+
+                            /**
+                             * This method allows to search for a position to insert the new state into.
+                             * We known that the state satisfies the total weight threshold. This function
+                             * also checks if the state is to be recombined into a state with a higher
+                             * total weight.
+                             * @param curr_state [out]
+                             * @param new_state [in] the new state to be inserted into the list
+                             * @return true if the new state was recombined into an existing one, otherwise false.
+                             */
+                            inline bool find_pos_recombine(stack_state_ptr & curr_state, stack_state & new_state) {
+                                LOG_DEBUG1 << "Searching for the place for the " << &new_state
+                                        << " state within the level!" << END_LOG;
+
+                                //Initialize the reference to the pointer to the
+                                //state place where we should put the new one
+                                curr_state = m_first_state;
+
+                                //Search for the proper position of the state, that is we push
+                                //the new state down the list of states ordered by the total
+                                //probability. This is done until the end of the list is reached
                                 //or a state with a smaller or equal probability is met.
                                 //Every considered state with a higher probability is checked to
                                 //be equal to the new one, in the sense of possible re-combination.
@@ -274,7 +305,7 @@ namespace uva {
                                 //newly added one. There can not be more than one of such 
                                 //states due to incremental nature of the stack building.
                                 if (m_params.m_is_recombine) {
-                                    
+
                                     //Search for the state to be recombined into this one
                                     while ((curr_state != NULL) && (*new_state != *curr_state)) {
                                         LOG_DEBUG << "Moving from " << curr_state << " to " << curr_state->m_next << END_LOG;
