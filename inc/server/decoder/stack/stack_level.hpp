@@ -213,6 +213,10 @@ namespace uva {
                                         curr_state = curr_state->m_next;
                                     }
                                 }
+                                //We found the place where the new stare is to be put 
+                                //with respect to its total probability and so far we
+                                //could not recombine the new stare into any other state.
+                                //Any other state with a higher probability.
                                 return false;
                             }
 
