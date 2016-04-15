@@ -264,7 +264,7 @@ int main(int argc, char** argv) {
         LOG_USAGE << "The server is started!" << END_LOG;
 
         //Override the reporting level for testing purposes
-        //Logger::get_reporting_level() = DebugLevelsEnum::DEBUG2;
+        //logger::get_reporting_level() = debug_levels_enum::DEBUG2;
 
         //Wait until the server is stopped by pressing and exit button
         perform_command_loop(params, server, server_thread);

@@ -258,9 +258,9 @@ namespace uva {
                                         << array_to_string<word_uid>(num_query_words, query_word_ids) << END_LOG;
                                 
                                 //Execute the query and return the value
-                                //Logger::get_reporting_level() = DebugLevelsEnum::INFO2;
+                                //logger::get_reporting_level() = debug_levels_enum::INFO2;
                                 const prob_weight prob = m_stack_data.m_lm_query.execute(num_query_words, query_word_ids, m_begin_lm_level);
-                                //Logger::get_reporting_level() = DebugLevelsEnum::DEBUG2;
+                                //logger::get_reporting_level() = debug_levels_enum::DEBUG2;
 
                                 return prob;
                             }
