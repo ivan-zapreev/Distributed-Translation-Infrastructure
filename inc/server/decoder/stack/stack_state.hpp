@@ -309,41 +309,48 @@ namespace uva {
                                 LOG_DEBUG2 << "====================================================================" << END_LOG;
                                 LOG_DEBUG1 << "Recombining " << other_state << " into " << this << END_LOG;
 
-                                //Combine the new state with its recombined from states
-                                const stack_state_ptr recomb_from = other_state;
-                                const size_t recomb_from_count = 1 + other_state->m_recomb_from_count;
-                                recomb_from->m_prev = NULL;
-                                recomb_from->m_next = other_state->m_recomb_from;
-                                //If there was something in the other's state recombine from then link the list
-                                if (other_state->m_recomb_from != NULL) {
-                                    LOG_DEBUG << "State " << other_state << " recombined from "
-                                            << "ptr = " << other_state->m_recomb_from << END_LOG;
-                                    other_state->m_recomb_from->m_prev = recomb_from;
-                                    //Clean the recombined from data
-                                    other_state->m_recomb_from = NULL;
-                                    other_state->m_recomb_from_count = 0;
-                                }
+                                //Check if we need to keep the alternative hypothesis for the recombined state
+                                if (m_state_data.m_stack_data.m_params.m_num_alt_to_keep != 0) {
+                                    //Combine the new state with its recombined from states
+                                    const stack_state_ptr recomb_from = other_state;
+                                    const size_t recomb_from_count = 1 + other_state->m_recomb_from_count;
+                                    //First put the other state and its recombine from list into one
+                                    recomb_from->m_prev = NULL;
+                                    recomb_from->m_next = other_state->m_recomb_from;
+                                    //If the other's state recombine from list is not empty then link-back the list
+                                    if (other_state->m_recomb_from != NULL) {
+                                        LOG_DEBUG << "State " << other_state << " recombined from "
+                                                << "ptr = " << other_state->m_recomb_from << END_LOG;
+                                        other_state->m_recomb_from->m_prev = recomb_from;
+                                        //Clean the recombined from data
+                                        other_state->m_recomb_from = NULL;
+                                        other_state->m_recomb_from_count = 0;
+                                    }
 
-                                //Attempt to insert the other new state into the recombined from list.
-                                if (m_recomb_from == NULL) {
-                                    LOG_DEBUG << "State " << other_state << " is the first"
-                                            << " state recombined into " << this << END_LOG;
+                                    //Attempt to insert the other new state into the recombined from list.
+                                    if (m_recomb_from == NULL) {
+                                        LOG_DEBUG << "State " << other_state << " is the first"
+                                                << " state recombined into " << this << END_LOG;
 
-                                    //If this state has no recombined-from states
-                                    //then just set the other list into this state
-                                    m_recomb_from = recomb_from;
-                                    m_recomb_from_count = recomb_from_count;
+                                        //If this state has no recombined-from states
+                                        //then just set the other list into this state
+                                        m_recomb_from = recomb_from;
+                                        m_recomb_from_count = recomb_from_count;
 
-                                    //Do not prune the extra recombined from states, as 
-                                    //there an be just one extra. We can postpone  this
-                                    //until more states are recombined into this one.
+                                        //Do not prune the extra recombined from states, as 
+                                        //there an be just one extra. We can postpone  this
+                                        //until more states are recombined into this one.
+                                    } else {
+                                        LOG_DEBUG << "State " << this << " has more recombined-from states, merging "
+                                                << " state " << other_state << " into the list" << END_LOG;
+
+                                        //If this state has recombined-from states
+                                        //then merge this and the other list.
+                                        merge_recomb_from(recomb_from, recomb_from_count);
+                                    }
                                 } else {
-                                    LOG_DEBUG << "State " << this << " has more recombined-from states, merging "
-                                            << " state " << other_state << " into the list" << END_LOG;
-
-                                    //If this state has recombined-from states
-                                    //then merge this and the other list.
-                                    merge_recomb_from(recomb_from, recomb_from_count);
+                                    //In  case the number of alternative states is set to zero, then just delete the other state
+                                    delete other_state;
                                 }
                                 LOG_DEBUG1 << "Recombining " << other_state << " into " << this << " is done!" << END_LOG;
                                 LOG_DEBUG2 << "====================================================================" << END_LOG;
