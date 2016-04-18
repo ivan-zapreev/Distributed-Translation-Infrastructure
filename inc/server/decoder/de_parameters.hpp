@@ -90,7 +90,7 @@ namespace uva {
                         //for a state to keep. This value is used when two states are
                         //recombined. If the value is zero then we only keep one of the
                         //two equivalent hypothesis, with the highest score. 
-                        atomic<int32_t> m_num_alt_to_keep;
+                        atomic<uint32_t> m_num_alt_to_keep;
 
                         /**
                          * The basic constructor, does nothing
