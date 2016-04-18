@@ -97,27 +97,19 @@ namespace uva {
                                         //position prior to which the new state is to be added.
                                         stack_state_ptr curr_state = NULL;
 
-                                        //Find the position the new state is to be inserted into
-                                        //or possibly recombine, if needed, with an existing state.
-                                        if (m_params.m_is_recombine) {
-                                            if (find_pos_recombine(curr_state, *new_state)) {
-                                                //If the new state was recombined into an existing one, no need to proceed.
-                                                return;
+                                        //Find the position the new state is to be inserted
+                                        //into or possibly recombine, with an existing state.
+                                        if (!find_pos_recombine(curr_state, *new_state)) {
+                                            LOG_DEBUG1 << "The last considered state is: " << curr_state << END_LOG;
+
+                                            //Check if we found a state which is less probable than the new one
+                                            if (curr_state != NULL) {
+                                                //We need to add the new state before some existing state
+                                                add_before(curr_state, new_state);
+                                            } else {
+                                                //Add the new state as the last state inside the level
+                                                add_last(new_state);
                                             }
-                                        } else {
-                                            //Search for the position to insert the new state into
-                                            find_pos(curr_state, *new_state);
-                                        }
-
-                                        LOG_DEBUG1 << "The last considered state is: " << curr_state << END_LOG;
-
-                                        //Check if we found a state which is less probable than the new one
-                                        if (curr_state != NULL) {
-                                            //We need to add the new state before some existing state
-                                            add_before(curr_state, new_state);
-                                        } else {
-                                            //Add the new state as the last state inside the level
-                                            add_last(new_state);
                                         }
                                     } else {
                                         //The new state is below the threshold, so delete it
@@ -180,30 +172,6 @@ namespace uva {
                             }
 
                         protected:
-
-                            /**
-                             * This method allows to search for a position to insert the new state into.
-                             * We known that the state satisfies the total weight threshold.
-                             * @param curr_state [out]
-                             * @param new_state [in] the new state to be inserted into the list
-                             */
-                            inline void find_pos(stack_state_ptr & curr_state, const stack_state & new_state) {
-                                LOG_DEBUG1 << "Searching for the place for the " << &new_state
-                                        << " state within the level!" << END_LOG;
-
-                                //Initialize the reference to the pointer to the
-                                //state place where we should put the new one
-                                curr_state = m_first_state;
-
-                                //Search for the proper position of the state, that is we push
-                                //the new state down the list of states ordered by the total
-                                //probability. This is done until the end of the list is reached
-                                //or a state with a smaller or equal probability is met.
-                                while ((curr_state != NULL) && (new_state < *curr_state)) {
-                                    //Move further to the next state
-                                    curr_state = curr_state->m_next;
-                                }
-                            }
 
                             /**
                              * This method allows to search for a position to insert the new state into.
@@ -300,30 +268,26 @@ namespace uva {
                                 LOG_DEBUG1 << "Checking for states equivalent to " << new_state
                                         << " starting from " << curr_state << END_LOG;
 
-                                //If needed, search further from the curr_state, including 
-                                //curr_state, for a state that could be recombined into the 
-                                //newly added one. There can not be more than one of such 
-                                //states due to incremental nature of the stack building.
-                                if (m_params.m_is_recombine) {
+                                //Search further from the curr_state, including  curr_state,
+                                //for a state that could be recombined into the  newly added
+                                //one. There can not be more than one of such states due to
+                                //the incremental nature of the stack building.
+                                while ((curr_state != NULL) && (*new_state != *curr_state)) {
+                                    LOG_DEBUG << "Moving from " << curr_state << " to " << curr_state->m_next << END_LOG;
+                                    //Move further to the next state
+                                    curr_state = curr_state->m_next;
+                                }
 
-                                    //Search for the state to be recombined into this one
-                                    while ((curr_state != NULL) && (*new_state != *curr_state)) {
-                                        LOG_DEBUG << "Moving from " << curr_state << " to " << curr_state->m_next << END_LOG;
-                                        //Move further to the next state
-                                        curr_state = curr_state->m_next;
-                                    }
+                                //We found a state that is to be recombined into the new one.
+                                if (curr_state != NULL) {
+                                    LOG_DEBUG << "Found an equivalent state " << curr_state
+                                            << " == " << new_state << " !" << END_LOG;
 
-                                    //We found a state that is to be recombined into the new one.
-                                    if (curr_state != NULL) {
-                                        LOG_DEBUG << "Found an equivalent state " << curr_state
-                                                << " == " << new_state << " !" << END_LOG;
+                                    //Remove the current state from the level
+                                    remove_from_level(curr_state);
 
-                                        //Remove the current state from the level
-                                        remove_from_level(curr_state);
-
-                                        //Recombine the current state state into the new one
-                                        new_state->recombine_from(curr_state);
-                                    }
+                                    //Recombine the current state state into the new one
+                                    new_state->recombine_from(curr_state);
                                 }
 
                                 //Perform pruning techniques, we might not have added a new

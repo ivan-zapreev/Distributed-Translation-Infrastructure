@@ -309,9 +309,6 @@ namespace uva {
                                 LOG_DEBUG2 << "====================================================================" << END_LOG;
                                 LOG_DEBUG1 << "Recombining " << other_state << " into " << this << END_LOG;
 
-                                ASSERT_SANITY_THROW((!m_state_data.m_stack_data.m_params.m_is_recombine),
-                                        "Recombination is switched off but we are trying to recombine!");
-
                                 //Combine the new state with its recombined from states
                                 const stack_state_ptr recomb_from = other_state;
                                 const size_t recomb_from_count = 1 + other_state->m_recomb_from_count;
@@ -391,7 +388,7 @@ namespace uva {
                             void count_and_prune(size_t state_count, stack_state_ptr tail) {
                                 //While the tail is not empty or we reached the capacity
                                 while ((tail != NULL) &&
-                                        (state_count < m_state_data.m_stack_data.m_params.m_num_best_trans)) {
+                                        (state_count < m_state_data.m_stack_data.m_params.m_num_alt_to_keep)) {
                                     //Count the element
                                     ++state_count;
                                     //Move to the next one
@@ -464,7 +461,7 @@ namespace uva {
                                             }
 
                                             //Check if we need to stop due to reaching the capacity
-                                            if (state_count == m_state_data.m_stack_data.m_params.m_num_best_trans) {
+                                            if (state_count == m_state_data.m_stack_data.m_params.m_num_alt_to_keep) {
                                                 //We've reached the capacity, need to stop now
                                                 is_go_on = false;
 

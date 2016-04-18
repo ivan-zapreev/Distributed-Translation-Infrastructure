@@ -6,7 +6,7 @@
  */
 
 #ifndef CMD_LINE_HANDLER_HPP
-#define	CMD_LINE_HANDLER_HPP
+#define CMD_LINE_HANDLER_HPP
 
 #include "common/utils/logging/logger.hpp"
 
@@ -337,5 +337,5 @@ namespace uva {
     }
 }
 
-#endif	/* CMD_LINE_HANDLER_HPP */
+#endif /* CMD_LINE_HANDLER_HPP */
 
