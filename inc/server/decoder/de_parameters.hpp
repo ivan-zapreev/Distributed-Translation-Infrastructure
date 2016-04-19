@@ -55,9 +55,6 @@ namespace uva {
                         //The the number of words to the right and left
                         //from the last phrase end word to consider
                         atomic<int32_t> m_distortion;
-                        //Stores the flag indicating whether there is a left distortion limit
-                        //or not, the value is set by this class in the finalize method
-                        atomic<bool> m_is_dist;
 
                         //The extra left distortion limit to use; <unsigned integer>
                         //The the number of non covered words to the left of the last
@@ -107,7 +104,6 @@ namespace uva {
                             if (this != &other) {
                                 this->m_distortion = other.m_distortion.load();
                                 this->m_ext_dist_left = other.m_ext_dist_left.load();
-                                this->m_is_dist = other.m_is_dist.load();
                                 this->m_max_s_phrase_len = other.m_max_s_phrase_len;
                                 this->m_max_t_phrase_len = other.m_max_t_phrase_len;
                                 this->m_num_best_trans = other.m_num_best_trans.load();
@@ -133,10 +129,8 @@ namespace uva {
                          * Allows to verify the parameters to be correct.
                          */
                         void finalize() {
-                            ASSERT_CONDITION_THROW((m_distortion == 0),
-                                    string("The m_distortion must not be 0!"));
-                            //We are to use the distortion limit if the distortion is positive
-                            m_is_dist = (m_distortion > 0);
+                            ASSERT_CONDITION_THROW((m_distortion < 0),
+                                    string("The m_distortion must not be >= 0!"));
 
                             ASSERT_CONDITION_THROW((m_ext_dist_left < 0),
                                     string("The ext_dist_left must not be >= 0!"));
@@ -185,7 +179,7 @@ namespace uva {
                         stream << "DE parameters: [ ";
 
                         //Log the distortion parameters
-                        if (params.m_is_dist) {
+                        if (params.m_distortion != 0) {
                             stream << "distortion = " << params.m_distortion;
                             stream << ", ext_dist_left = " << params.m_ext_dist_left;
                         } else {
