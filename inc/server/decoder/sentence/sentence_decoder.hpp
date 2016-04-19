@@ -90,8 +90,7 @@ namespace uva {
                             m_target_sent(target_sent), m_sent_data(count_words(m_source_sent)),
                             m_lm_query(lm_configurator::allocate_fast_query_proxy()),
                             m_tm_query(tm_configurator::allocate_query_proxy()),
-                            m_rm_query(rm_configurator::allocate_query_proxy()),
-                            m_stack(m_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query, m_lm_query) {
+                            m_rm_query(rm_configurator::allocate_query_proxy()) {
                                 LOG_DEBUG << "Created a sentence decoder " << m_params << END_LOG;
 
                                 //Initialize with an empty string
@@ -376,6 +375,32 @@ namespace uva {
                              * Performs the sentence translation 
                              */
                             inline void perform_translation() {
+                                //Depending on the stack template parameters do the thing
+                                if (m_params.m_distortion != 0) {
+                                    if (m_params.m_num_alt_to_keep != 0) {
+                                        perform_translation<true, true>();
+                                    } else {
+                                        perform_translation<true, false>();
+                                    }
+                                } else {
+                                    if (m_params.m_num_alt_to_keep != 0) {
+                                        perform_translation<false, true>();
+                                    } else {
+                                        perform_translation<false, false>();
+                                    }
+                                }
+                            }
+
+                        protected:
+
+                            /**
+                             * Performs the sentence translation 
+                             */
+                            template<bool is_dist, bool is_alt_trans>
+                            inline void perform_translation() {
+                                //Stores the multi-stack
+                                multi_stack_templ<is_dist, is_alt_trans> m_stack(m_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query, m_lm_query);
+
                                 //Extend the stack, here we do everything in one go
                                 //Including expanding, pruning and recombination
                                 m_stack.expand();
@@ -405,9 +430,6 @@ namespace uva {
                             tm_query_proxy & m_tm_query;
                             //The reference to the reordering model query proxy
                             rm_query_proxy & m_rm_query;
-
-                            //Stores the multi-stack
-                            multi_stack m_stack;
                         };
                     }
                 }
