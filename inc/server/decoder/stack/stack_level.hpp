@@ -34,23 +34,30 @@ namespace uva {
                 namespace decoder {
                     namespace stack {
 
-                        //Forward declaration of the stack level class
-                        class stack_level;
-                        //The typedef of the stack level pointer
-                        typedef stack_level * stack_level_ptr;
-
                         /**
                          * Represents the multi-stack level
+                         * @param is_dist the flag indicating whether there is a left distortion limit or not
+                         * @param is_alt_trans the flag indicating if the alternative translations are to be stored when recombining states.
+                         * @param NUM_WORDS_PER_SENTENCE the maximum allowed number of words per sentence
+                         * @param MAX_HISTORY_LENGTH the maximum allowed length of the target translation hystory
+                         * @param MAX_M_GRAM_QUERY_LENGTH the maximum length of the m-gram query
                          */
-                        class stack_level {
+                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        class stack_level_templ {
                         public:
+                            //Give a short name for the stack data
+                            typedef stack_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_data;
+                            //Typedef the state pointer
+                            typedef typename stack_data::stack_state stack_state;
+                            //Typedef the state pointer
+                            typedef typename stack_state::stack_state_ptr stack_state_ptr;
 
                             /**
                              * The basic constructor
                              * @param params the decoder parameters, stores the reference to it
                              * @param is_stop the stop flag
                              */
-                            stack_level(const de_parameters & params, acr_bool_flag is_stop)
+                            stack_level_templ(const de_parameters & params, acr_bool_flag is_stop)
                             : m_params(params), m_is_stop(is_stop), m_first_state(NULL),
                             m_last_state(NULL), m_size(0), m_score_bound(0.0) {
                                 LOG_DEBUG3 << "stack_level create, with parameters: " << m_params << END_LOG;
@@ -59,7 +66,7 @@ namespace uva {
                             /**
                              * The basic destructor, this implementation is iterative.
                              */
-                            ~stack_level() {
+                            ~stack_level_templ() {
                                 LOG_DEBUG1 << "Destructing level" << this << ", # states: " << m_size << END_LOG;
 
                                 //Delete the states one by one

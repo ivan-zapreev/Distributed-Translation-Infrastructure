@@ -398,8 +398,9 @@ namespace uva {
                              */
                             template<bool is_dist, bool is_alt_trans>
                             inline void perform_translation() {
-                                //Stores the multi-stack
-                                multi_stack_templ<is_dist, is_alt_trans> m_stack(m_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query, m_lm_query);
+                                //Instantiate the multi-stack
+                                multi_stack_templ<is_dist, is_alt_trans, MAX_WORDS_PER_SENTENCE, LM_HISTORY_LEN_MAX, LM_MAX_QUERY_LEN>
+                                        m_stack(m_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query, m_lm_query);
 
                                 //Extend the stack, here we do everything in one go
                                 //Including expanding, pruning and recombination

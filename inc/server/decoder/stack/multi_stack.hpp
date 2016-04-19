@@ -69,9 +69,25 @@ namespace uva {
 
                         /**
                          * This is the translation stack class that is responsible for the sentence translation
+                         * @param is_dist the flag indicating whether there is a left distortion limit or not
+                         * @param is_alt_trans the flag indicating if the alternative translations are to be stored when recombining states.
+                         * @param NUM_WORDS_PER_SENTENCE the maximum allowed number of words per sentence
+                         * @param MAX_HISTORY_LENGTH the maximum allowed length of the target translation hystory
+                         * @param MAX_M_GRAM_QUERY_LENGTH the maximum length of the m-gram query
                          */
-                        class multi_stack {
+                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        class multi_stack_templ {
                         public:
+                            //Give a short name for the stack data
+                            typedef stack_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_data;
+                            //Give a short name for the stack level
+                            typedef stack_level_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_level;
+                            //The typedef of the stack level pointer
+                            typedef stack_level * stack_level_ptr;
+                            //Typedef the state pointer
+                            typedef typename stack_data::stack_state_ptr stack_state_ptr;
+                            //Typedef the state
+                            typedef typename stack_data::stack_state stack_state;
 
                             /**
                              * The basic constructor
@@ -82,13 +98,13 @@ namespace uva {
                              * @param rm_query the reordering model query
                              * @param lm_query the language model query object
                              */
-                            multi_stack(const de_parameters & params,
+                            multi_stack_templ(const de_parameters & params,
                                     acr_bool_flag is_stop,
                                     const string & source_sent,
                                     const sentence_data_map & sent_data,
                                     const rm_query_proxy & rm_query,
                                     lm_fast_query_proxy & lm_query)
-                            : m_data(params, is_stop, source_sent, sent_data, rm_query, lm_query, bind(&multi_stack::add_stack_state, this, _1)),
+                            : m_data(params, is_stop, source_sent, sent_data, rm_query, lm_query, bind(&multi_stack_templ::add_stack_state, this, _1)),
                             m_num_levels(m_data.m_sent_data.get_dim() + NUM_EXTRA_STACK_LEVELS) {
                                 LOG_DEBUG1 << "Created a multi stack with parameters: " << m_data.m_params << END_LOG;
 
@@ -118,7 +134,7 @@ namespace uva {
                             /**
                              * The basic destructor
                              */
-                            ~multi_stack() {
+                            ~multi_stack_templ() {
                                 LOG_DEBUG1 << "Destructing stack" << this << ", # levels: " << m_num_levels << END_LOG;
 
                                 //Dispose the stacks

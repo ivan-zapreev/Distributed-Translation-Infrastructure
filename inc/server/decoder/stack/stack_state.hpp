@@ -58,15 +58,30 @@ namespace uva {
             namespace server {
                 namespace decoder {
                     namespace stack {
+                        
+                        //Forward declaration of the stack level to be used as a state friend
+                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        class stack_level_templ;
 
                         /**
                          * This is the translation stack state class that is responsible for the sentence translation
+                         * @param is_dist the flag indicating whether there is a left distortion limit or not
+                         * @param is_alt_trans the flag indicating if the alternative translations are to be stored when recombining states.
+                         * @param NUM_WORDS_PER_SENTENCE the maximum allowed number of words per sentence
+                         * @param MAX_HISTORY_LENGTH the maximum allowed length of the target translation hystory
+                         * @param MAX_M_GRAM_QUERY_LENGTH the maximum length of the m-gram query
                          */
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
                         class stack_state_templ {
                         public:
                             //Typedef the state data template for a shorter name
-                            typedef state_data_templ<NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> state_data;
+                            typedef state_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> state_data;
+                            //Typedef the stack data
+                            typedef typename state_data::stack_data stack_data; 
+                            //Typedef the state pointer
+                            typedef typename stack_data::stack_state_ptr stack_state_ptr;
+                            //Typedef the state
+                            typedef typename stack_data::stack_state stack_state;
 
                             /**
                              * The basic constructor for the begin stack state
@@ -310,7 +325,7 @@ namespace uva {
                                 LOG_DEBUG1 << "Recombining " << other_state << " into " << this << END_LOG;
 
                                 //Check if we need to keep the alternative hypothesis for the recombined state
-                                if (m_state_data.m_stack_data.m_params.m_num_alt_to_keep != 0) {
+                                if (is_alt_trans) {
                                     //Combine the new state with its recombined from states
                                     const stack_state_ptr recomb_from = other_state;
                                     const size_t recomb_from_count = 1 + other_state->m_recomb_from_count;
@@ -547,7 +562,7 @@ namespace uva {
 
                                 //Compute the minimum position to consider, based on distortion
                                 int32_t min_pos;
-                                if (m_state_data.m_stack_data.m_params.m_is_dist) {
+                                if (is_dist) {
                                     //Compute the normal minimum position for distortion
                                     min_pos = (m_state_data.m_s_end_word_idx - m_state_data.m_stack_data.m_params.m_distortion);
                                     //Bound the position by the minimum word index
@@ -600,7 +615,7 @@ namespace uva {
 
                                 //Compute the maximum position to consider, based on distortion
                                 int32_t max_pos;
-                                if (m_state_data.m_stack_data.m_params.m_is_dist) {
+                                if (is_dist) {
                                     //Compute the normal maximum position for distortion
                                     max_pos = m_state_data.m_s_end_word_idx + m_state_data.m_stack_data.m_params.m_distortion;
                                     //Bound the position by the maximum word index
@@ -722,7 +737,7 @@ namespace uva {
                             size_t m_recomb_from_count;
 
                             //Make the stack level the friend of this class
-                            friend class stack_level;
+                            friend class stack_level_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>;
                         };
                     }
                 }

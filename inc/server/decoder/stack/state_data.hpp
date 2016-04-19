@@ -60,9 +60,16 @@ namespace uva {
                          * This structure is needed to store the common state data
                          * that however changes/mutates from state to state and thus
                          * is to be passed on from each state to its child.
+                         * @param is_dist the flag indicating whether there is a left distortion limit or not
+                         * @param is_alt_trans the flag indicating if the alternative translations are to be stored when recombining states.
+                         * @param NUM_WORDS_PER_SENTENCE the maximum allowed number of words per sentence
+                         * @param MAX_HISTORY_LENGTH the maximum allowed length of the target translation hystory
+                         * @param MAX_M_GRAM_QUERY_LENGTH the maximum length of the m-gram query
                          */
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
                         struct state_data_templ {
+                            //Give a short name for the stack data
+                            typedef stack_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_data;
                             //Make the typedef for the stack state translation frame
                             typedef circular_queue<word_uid, MAX_M_GRAM_QUERY_LENGTH > state_frame;
 
@@ -436,11 +443,11 @@ namespace uva {
                             }
                         };
 
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
-                        constexpr int32_t state_data_templ<NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>::UNDEFINED_WORD_IDX;
+                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        constexpr int32_t state_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>::UNDEFINED_WORD_IDX;
 
-                        template<size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
-                        constexpr int32_t state_data_templ<NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>::ZERRO_WORD_IDX;
+                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        constexpr int32_t state_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>::ZERRO_WORD_IDX;
                     }
                 }
             }
