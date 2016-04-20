@@ -287,14 +287,16 @@ namespace uva {
                              * Allows to report the total joint probability of the query
                              */
                             inline void report_final_result() {
-                                LOG_DEBUG << "---" << END_LOG;
-                                //Print the total cumulative probability if needed
-                                const string gram_str = get_query_str();
-                                LOG_DEBUG << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                        << " ) ) = " << SSTR(m_joint_prob) << END_LOG;
-                                LOG_DEBUG1 << "  Prob( " << gram_str << " ) = "
-                                        << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_joint_prob)) << END_LOG;
-                                LOG_DEBUG << "-------------------------------------------" << END_LOG;
+                                if (LOGER_M_GRAM_LEVEL_MAX >= debug_levels_enum::DEBUG) {
+                                    LOG_DEBUG << "---" << END_LOG;
+                                    //Print the total cumulative probability if needed
+                                    const string gram_str = get_query_str();
+                                    LOG_DEBUG << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                            << " ) ) = " << SSTR(m_joint_prob) << END_LOG;
+                                    LOG_DEBUG1 << "  Prob( " << gram_str << " ) = "
+                                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_joint_prob)) << END_LOG;
+                                    LOG_DEBUG << "-------------------------------------------" << END_LOG;
+                                }
                             }
 
                         private:
@@ -304,7 +306,7 @@ namespace uva {
 
                             //Stores the reference to the trie
                             const trie_type & m_trie;
-                            
+
                             //Stores the cached unknown word probability from LM
                             const prob_weight m_unk_word_prob;
 
