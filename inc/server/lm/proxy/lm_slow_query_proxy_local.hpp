@@ -151,12 +151,14 @@ namespace uva {
                                     const phrase_length last_end_word_idx) {
                                 //Print the intermediate results
                                 for (phrase_length end_word_idx = first_end_word_idx; end_word_idx <= last_end_word_idx; ++end_word_idx) {
-                                    const string gram_str = get_m_gram_str(begin_word_idx, end_word_idx);
+                                    if (LOGER_M_GRAM_LEVEL_MAX >= debug_levels_enum::RESULT) {
+                                        const string gram_str = get_m_gram_str(begin_word_idx, end_word_idx);
 
-                                    LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                            << " ) ) = " << SSTR(m_query.m_probs[end_word_idx]) << END_LOG;
-                                    LOG_INFO << "  Prob( " << gram_str << " ) = "
-                                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_query.m_probs[end_word_idx])) << END_LOG;
+                                        LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                                << " ) ) = " << SSTR(m_query.m_probs[end_word_idx]) << END_LOG;
+                                        LOG_INFO << "  Prob( " << gram_str << " ) = "
+                                                << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_query.m_probs[end_word_idx])) << END_LOG;
+                                    }
 
                                     if (m_query.m_probs[end_word_idx] > ZERO_LOG_PROB_WEIGHT) {
                                         m_joint_prob += m_query.m_probs[end_word_idx];
@@ -168,13 +170,15 @@ namespace uva {
                              * Allows to report the total joint probability of the query
                              */
                             inline void report_final_result() {
-                                LOG_RESULT << "---" << END_LOG;
-                                //Print the total cumulative probability if needed
-                                const string gram_str = get_query_str();
-                                LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
-                                        << " ) ) = " << SSTR(m_joint_prob) << END_LOG;
-                                LOG_INFO << "  Prob( " << gram_str << " ) = "
-                                        << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_joint_prob)) << END_LOG;
+                                if (LOGER_M_GRAM_LEVEL_MAX >= debug_levels_enum::RESULT) {
+                                    LOG_RESULT << "---" << END_LOG;
+                                    //Print the total cumulative probability if needed
+                                    const string gram_str = get_query_str();
+                                    LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                            << " ) ) = " << SSTR(m_joint_prob) << END_LOG;
+                                    LOG_INFO << "  Prob( " << gram_str << " ) = "
+                                            << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_joint_prob)) << END_LOG;
+                                }
                             }
 
                             /**
@@ -258,7 +262,7 @@ namespace uva {
                             };
 
                         private:
-                            
+
                             //Store the flag indicating whether the trie needs context ids
                             static constexpr bool m_is_ctx = trie_type::is_context_needed();
 
