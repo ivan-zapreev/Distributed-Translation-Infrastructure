@@ -7,6 +7,9 @@ include_directories(inc SYSTEM ext)
 #Add the required flags
 set(CMAKE_CXX_FLAGS "-pipe -std=c++0x -Wall -m64")
 
+#Add the performance profiling flag to Debug mode
+set(CMAKE_CXX_FLAGS_DEBUG "-pg")
+
 ###############################DEFINE THE LM QUERY###################################
 
 #Bring the source files into the project
