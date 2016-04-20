@@ -80,21 +80,21 @@ namespace uva {
             //Defines the progress bar update period in CPU seconds
 #define PROGRESS_UPDATE_PERIOD 0.05
 
-#define LOGGER(level)                                \
-{                                                    \
-  logging_synch::rec_scoped_lock lock(logging_synch::mv);\
-  if (level > LOGER_M_GRAM_LEVEL_MAX) ;                     \
-  else if (level > logger::get_reporting_level()) ;  \
-       else logger::get(level)
+#define LOGGER(level)                                               \
+  if (level > LOGER_M_GRAM_LEVEL_MAX) ;                             \
+  else if (level > logger::get_reporting_level()) ;                 \
+       else {                                                       \
+            logging_synch::rec_scoped_lock lock(logging_synch::mv); \
+            logger::get(level)
 
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
-#define LOGGER_DEBUG(level)                          \
-{                                                    \
-  logging_synch::rec_scoped_lock lock(logging_synch::mv);\
-  if (level > LOGER_M_GRAM_LEVEL_MAX) ;                     \
-  else if (level > logger::get_reporting_level()) ;  \
-       else logger::get(level, __FILENAME__, __FUNCTION__, LINE_STRING)
+#define LOGGER_DEBUG(level)                                             \
+  if (level > LOGER_M_GRAM_LEVEL_MAX) ;                                 \
+  else if (level > logger::get_reporting_level()) ;                     \
+       else {                                                           \
+            logging_synch::rec_scoped_lock lock(logging_synch::mv);     \
+            logger::get(level, __FILENAME__, __FUNCTION__, LINE_STRING)
 
             //The Macro commands to be used for logging data with different log levels,
             //For example, to log a warning one can use:
