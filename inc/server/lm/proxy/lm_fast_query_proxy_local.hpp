@@ -279,10 +279,8 @@ namespace uva {
                                                 << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_query.m_probs[end_word_idx])) << END_LOG;
                                     }
                                     
-                                    //Note: not doing this check significantly reduces the BLEU score
-                                    if (m_query.m_probs[end_word_idx] > ZERO_LOG_PROB_WEIGHT) {
-                                        m_joint_prob += m_query.m_probs[end_word_idx];
-                                    }
+                                    //Do not add anything below the zero weight.
+                                    m_joint_prob += max(ZERO_LOG_PROB_WEIGHT, m_query.m_probs[end_word_idx]);
                                 }
                             }
 
