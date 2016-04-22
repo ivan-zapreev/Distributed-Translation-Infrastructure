@@ -264,7 +264,7 @@ namespace uva {
                              * @param first_end_word_idx the first sub-sub query end word index
                              * @param last_end_word_idx the last sub-sub query end word index
                              */
-                            void get_report_interm_results(
+                            inline void get_report_interm_results(
                                     const phrase_length begin_word_idx,
                                     const phrase_length first_end_word_idx,
                                     const phrase_length last_end_word_idx) {
