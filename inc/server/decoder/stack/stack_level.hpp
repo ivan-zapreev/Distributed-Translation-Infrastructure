@@ -173,9 +173,9 @@ namespace uva {
                                     target_sent = "";
                                     cursor->get_translation(target_sent);
                                     LOG_USAGE << cnt++ << " (" << cursor << "):" << target_sent << END_LOG;
-                                    ASSERT_CONDITION_THROW((cursor == m_first_state->m_next),
+                                    ASSERT_CONDITION_THROW((cursor == cursor->m_next),
                                             "Broken next list in translation stack!");
-                                    cursor = m_first_state->m_next;
+                                    cursor = cursor->m_next;
                                 }
                                 LOG_USAGE << "#states: " << (cnt - 1) << END_LOG;
 
