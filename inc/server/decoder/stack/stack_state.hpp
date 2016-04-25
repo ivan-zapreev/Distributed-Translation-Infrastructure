@@ -467,15 +467,15 @@ namespace uva {
                                                 if (target_state->m_prev == NULL) {
                                                     //There is no previous, set this as the first one
                                                     m_recomb_from = source_state;
-                                                    ASSERT_CONDITION_THROW(source_state->m_next == target_state, "CHECK-D");
+                                                    ASSERT_CONDITION_THROW(source_state == target_state, "CHECK-D");
                                                     source_state->m_next = target_state;
                                                     target_state->m_prev = source_state;
                                                 } else {
                                                     //Set the new one in between the two existing states
-                                                    ASSERT_CONDITION_THROW(target_state->m_prev->m_next == source_state, "CHECK-C");
+                                                    ASSERT_CONDITION_THROW(target_state->m_prev == source_state, "CHECK-C");
                                                     target_state->m_prev->m_next = source_state;
                                                     source_state->m_prev = target_state->m_prev;
-                                                    ASSERT_CONDITION_THROW(source_state->m_next == target_state, "CHECK-B");
+                                                    ASSERT_CONDITION_THROW(source_state == target_state, "CHECK-B");
                                                     source_state->m_next = target_state;
                                                     target_state->m_prev = source_state;
                                                 }
@@ -500,7 +500,7 @@ namespace uva {
                                             //The target state is NULL, we moved past the last element
                                             //of the target list, all the subsequent source list states
                                             //are to be added to the end of the target list.
-                                            ASSERT_CONDITION_THROW(last_target_state->m_next == source_state, "CHECK-A");
+                                            ASSERT_CONDITION_THROW(last_target_state == source_state, "CHECK-A");
                                             last_target_state->m_next = source_state;
                                             source_state->m_prev = last_target_state;
 

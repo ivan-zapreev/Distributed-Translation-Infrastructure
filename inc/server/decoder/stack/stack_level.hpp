@@ -232,7 +232,7 @@ namespace uva {
                                         curr_state = curr_state->m_next;
                                     }
                                 }
-                                
+
                                 //We found the place where the new stare is to be put 
                                 //with respect to its total probability and so far we
                                 //could not recombine the new stare into any other state.
@@ -387,7 +387,7 @@ namespace uva {
                                 //This state will be the first in the level, so the previous is NULL
                                 state->m_prev = NULL;
                                 //The next state will be the current first state
-                                ASSERT_CONDITION_THROW((m_first_state != NULL) && (state->m_next == m_first_state), "CHECK-H");
+                                ASSERT_CONDITION_THROW((state == m_first_state), "CHECK-H");
                                 state->m_next = m_first_state;
 
                                 //Check if there was something inside the level
@@ -397,7 +397,6 @@ namespace uva {
                                 } else {
                                     //If there was something within the level then the old
                                     //first one should point to this one as to its previous
-
                                     m_first_state->m_prev = state;
                                 }
 
@@ -433,7 +432,7 @@ namespace uva {
                                 } else {
                                     //If there was something within the level then the old
                                     //last one should point to this one as to its next
-                                    ASSERT_CONDITION_THROW(m_last_state->m_next == state, "CHECK-G");
+                                    ASSERT_CONDITION_THROW(m_last_state == state, "CHECK-G");
                                     m_last_state->m_next = state;
                                 }
 
@@ -461,7 +460,7 @@ namespace uva {
 
                                 //Store the previous and next states for this one
                                 state->m_prev = prev;
-                                ASSERT_CONDITION_THROW(state->m_next == next, "CHECK-F");
+                                ASSERT_CONDITION_THROW(state == next, "CHECK-F");
                                 state->m_next = next;
 
                                 ASSERT_SANITY_THROW((prev == NULL),
@@ -472,7 +471,7 @@ namespace uva {
                                         string("Bad pointer: state = NULL!"));
 
                                 //Update the previous and next states of the others
-                                ASSERT_CONDITION_THROW(prev->m_next == state, "CHECK-E");
+                                ASSERT_CONDITION_THROW(prev == state, "CHECK-E");
                                 prev->m_next = state;
                                 next->m_prev = state;
 
@@ -549,9 +548,10 @@ namespace uva {
                                             //We are deleting some intermediate element
                                             LOG_DEBUG1 << "Removing an intermediate state " << state << "!" << END_LOG;
 
+                                            ASSERT_CONDITION_THROW((state->m_prev == state->m_next),"CHECK-I");
+                                            
                                             //The previous of this shall now point to the next of this as next
                                             state->m_prev->m_next = state->m_next;
-
                                             //The next of this shall now point to the previous of this as previous
                                             state->m_next->m_prev = state->m_prev;
                                         }
