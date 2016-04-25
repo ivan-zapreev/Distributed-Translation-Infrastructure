@@ -167,18 +167,18 @@ namespace uva {
                                         "We could not find any translation, increase distortion/ext_dist_left?");
 
                                 //Debug output
-                                stack_state_ptr cursor = m_first_state;
-                                uint32_t cnt = 1;
-                                while (cursor != NULL) {
-                                    target_sent = "";
-                                    cursor->get_translation(target_sent);
-                                    LOG_USAGE << cnt++ << " (" << cursor << "):" << target_sent << END_LOG;
-                                    ASSERT_CONDITION_THROW((cursor == cursor->m_next),
-                                            "Broken next list in translation stack!");
-                                    cursor = cursor->m_next;
-                                }
-                                LOG_USAGE << "#states: " << (cnt - 1) << END_LOG;
-                                target_sent = "";
+                                //stack_state_ptr cursor = m_first_state;
+                                //uint32_t cnt = 1;
+                                //while (cursor != NULL) {
+                                //    target_sent = "";
+                                //    cursor->get_translation(target_sent);
+                                //    LOG_USAGE << cnt++ << " (" << cursor << "):" << target_sent << END_LOG;
+                                //    ASSERT_CONDITION_THROW((cursor == cursor->m_next),
+                                //            "Broken next list in translation stack!");
+                                //    cursor = cursor->m_next;
+                                //}
+                                //LOG_USAGE << "#states: " << (cnt - 1) << END_LOG;
+                                //target_sent = "";
 
                                 //Call the get-translation function of the most probable state in the stack
                                 m_first_state->get_translation(target_sent);
