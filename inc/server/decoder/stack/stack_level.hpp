@@ -166,6 +166,19 @@ namespace uva {
                                 ASSERT_CONDITION_THROW((m_first_state == NULL),
                                         "We could not find any translation, increase distortion/ext_dist_left?");
 
+                                //Debug output
+                                stack_state_ptr cursor = m_first_state;
+                                uint32_t cnt = 1;
+                                while (cursor != NULL) {
+                                    target_sent = "";
+                                    cursor->get_translation(target_sent);
+                                    LOG_USAGE << cnt++ << " (" << cursor << "):" << target_sent << END_LOG;
+                                    ASSERT_CONDITION_THROW((cursor == m_first_state->m_next),
+                                            "Broken next list in translation stack!");
+                                    cursor = m_first_state->m_next;
+                                }
+                                LOG_USAGE << "#states: " << (cnt - 1) << END_LOG;
+
                                 //Call the get-translation function of the most probable state in the stack
                                 m_first_state->get_translation(target_sent);
                             }
@@ -373,6 +386,7 @@ namespace uva {
                                 //This state will be the first in the level, so the previous is NULL
                                 state->m_prev = NULL;
                                 //The next state will be the current first state
+                                ASSERT_CONDITION_THROW(state->m_next == m_first_state, "CHECK-H");
                                 state->m_next = m_first_state;
 
                                 //Check if there was something inside the level
@@ -418,6 +432,7 @@ namespace uva {
                                 } else {
                                     //If there was something within the level then the old
                                     //last one should point to this one as to its next
+                                    ASSERT_CONDITION_THROW(m_last_state->m_next == state, "CHECK-G");
                                     m_last_state->m_next = state;
                                 }
 
@@ -445,6 +460,7 @@ namespace uva {
 
                                 //Store the previous and next states for this one
                                 state->m_prev = prev;
+                                ASSERT_CONDITION_THROW(state->m_next == next, "CHECK-F");
                                 state->m_next = next;
 
                                 ASSERT_SANITY_THROW((prev == NULL),
@@ -455,6 +471,7 @@ namespace uva {
                                         string("Bad pointer: state = NULL!"));
 
                                 //Update the previous and next states of the others
+                                ASSERT_CONDITION_THROW(prev->m_next == state, "CHECK-E");
                                 prev->m_next = state;
                                 next->m_prev = state;
 
