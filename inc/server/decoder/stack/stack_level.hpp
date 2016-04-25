@@ -198,7 +198,7 @@ namespace uva {
                              * We known that the state satisfies the total weight threshold. This function
                              * also checks if the state is to be recombined into a state with a higher
                              * total weight.
-                             * @param curr_state [out]
+                             * @param curr_state [out] the state the new state is to be placed after, in case the result of the function is false
                              * @param new_state [in] the new state to be inserted into the list
                              * @return true if the new state was recombined into an existing one, otherwise false.
                              */
@@ -232,6 +232,7 @@ namespace uva {
                                         curr_state = curr_state->m_next;
                                     }
                                 }
+                                
                                 //We found the place where the new stare is to be put 
                                 //with respect to its total probability and so far we
                                 //could not recombine the new stare into any other state.
@@ -386,7 +387,7 @@ namespace uva {
                                 //This state will be the first in the level, so the previous is NULL
                                 state->m_prev = NULL;
                                 //The next state will be the current first state
-                                ASSERT_CONDITION_THROW(state->m_next == m_first_state, "CHECK-H");
+                                ASSERT_CONDITION_THROW((m_first_state != NULL) && (state->m_next == m_first_state), "CHECK-H");
                                 state->m_next = m_first_state;
 
                                 //Check if there was something inside the level
