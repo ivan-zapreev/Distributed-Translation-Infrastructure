@@ -154,7 +154,7 @@ namespace uva {
                             /**
                              * Allows to extend the hypothesis, when extending the stack we immediately re-combine
                              */
-                            void expand() {
+                            inline void expand() {
                                 //Define the max stack level constant
                                 const size_t MAX_STACK_LEVEL = (m_num_levels - 1);
                                 //Stores the current stack level index
@@ -185,7 +185,7 @@ namespace uva {
                              * stack after the decoding has finished.
                              * @param target_sent [out] the variable to store the translation
                              */
-                            void get_best_trans(string & target_sent) const {
+                            inline void get_best_trans(string & target_sent) const {
                                 //Define the max stack level constant
                                 const size_t MAX_STACK_LEVEL = (m_num_levels - 1);
 
@@ -204,7 +204,7 @@ namespace uva {
                              * Allows to add a new stack state into the proper stack level
                              * @param new_state the new stack state, not NULL
                              */
-                            void add_stack_state(stack_state_ptr new_state) {
+                            inline void add_stack_state(stack_state_ptr new_state) {
                                 LOG_DEBUG2 << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
 
                                 //Perform a NULL pointer sanity check

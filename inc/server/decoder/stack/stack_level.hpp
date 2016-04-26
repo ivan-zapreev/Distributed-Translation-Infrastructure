@@ -135,7 +135,7 @@ namespace uva {
                              * We could have done this recursively but this way we avoid stack
                              * allocations so we might be just faster.
                              */
-                            void expand() {
+                            inline void expand() {
                                 //Get the pointer to the first state
                                 stack_state_ptr curr_state = m_first_state;
 
@@ -159,7 +159,7 @@ namespace uva {
                              * by costs stack and asks it to unroll itself to give its translation.
                              * @param target_sent [out] the variable to store the translation
                              */
-                            void get_best_trans(string & target_sent) const {
+                            inline void get_best_trans(string & target_sent) const {
                                 //Assert that there is something in the stack, if not
                                 //then it is possible we could not get any translation due
                                 //to an unexpected situation in the algorithms

@@ -157,7 +157,7 @@ namespace uva {
                              * to the number of so far translated words.
                              * @return the stack level
                              */
-                            uint32_t get_stack_level() const {
+                            inline uint32_t get_stack_level() const {
                                 //Get the stack level as it was computed during the state creation.
                                 return m_state_data.m_stack_level;
                             }
@@ -378,7 +378,7 @@ namespace uva {
                              * The states present in the cut tail are to be deleted.
                              * @param tail the tails of staits to delete
                              */
-                            void cut_the_tail(stack_state_ptr tail) {
+                            inline void cut_the_tail(stack_state_ptr tail) {
                                 //If the tail is not empty
                                 if (tail != NULL) {
                                     //If the tail has a preceeding state
@@ -407,7 +407,7 @@ namespace uva {
                              * @param state_count the number of elements up until the tail element
                              * @param tail the pointer to the firt tail element
                              */
-                            void count_and_prune(size_t state_count, stack_state_ptr tail) {
+                            inline void count_and_prune(size_t state_count, stack_state_ptr tail) {
                                 //While the tail is not empty or we reached the capacity
                                 while ((tail != NULL) &&
                                         (state_count < m_state_data.m_stack_data.m_params.m_num_alt_to_keep)) {
