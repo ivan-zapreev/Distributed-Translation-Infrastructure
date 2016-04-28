@@ -377,7 +377,7 @@ namespace uva {
                                 LOG_DEBUG1 << "partial score + word penalty is: " << partial_score << END_LOG;
 
                                 //Add the distance based reordering penalty
-                                partial_score += -abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
+                                partial_score += m_stack_data.m_params.m_lin_dist_penalty * abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
 
                                 LOG_DEBUG1 << "partial score + RM discrete is: " << partial_score << END_LOG;
 

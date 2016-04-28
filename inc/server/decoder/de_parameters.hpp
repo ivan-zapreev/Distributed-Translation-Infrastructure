@@ -79,6 +79,8 @@ namespace uva {
                         atomic<float> m_word_penalty;
                         //Stores the phrase penalty - the cost of each target phrase
                         atomic<float> m_phrase_penalty;
+                        //Stores the linear distortion lambda parameter value
+                        atomic<float> m_lin_dist_penalty;
                         
                         //Stores the number of best translations 
                         atomic<uint32_t> m_num_best_trans;
@@ -112,6 +114,7 @@ namespace uva {
                                 this->m_pruning_threshold = other.m_pruning_threshold.load();
                                 this->m_stack_capacity = other.m_stack_capacity.load();
                                 this->m_word_penalty = other.m_word_penalty.load();
+                                this->m_lin_dist_penalty = other.m_lin_dist_penalty.load();
                             }
 
                             return *this;

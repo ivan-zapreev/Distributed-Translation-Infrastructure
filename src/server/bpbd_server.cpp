@@ -184,6 +184,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, "max_target_phrase_length");
         params.m_de_params.m_word_penalty = get_float(ini, section, "word_penalty");
         params.m_de_params.m_phrase_penalty = get_float(ini, section, "phrase_penalty");
+        params.m_de_params.m_lin_dist_penalty = get_float(ini, section, "lin_dist_penalty");
         params.m_de_params.finalize();
         LOG_INFO << params.m_de_params << END_LOG;
 
