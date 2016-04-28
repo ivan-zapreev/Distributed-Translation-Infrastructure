@@ -216,12 +216,12 @@ namespace uva {
                     void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
                         LOG_DEBUG << "Received a message!" << END_LOG;
 
+                        //Create translation job request, will be deleted by the translation job
+                        trans_job_request_ptr request_ptr = new trans_job_request();
+
                         //Declare the job id for the case of needed error reporting
                         job_id_type job_id_val = job_id::UNDEFINED_JOB_ID;
                         try {
-                            //Extract the translation job request, will be deleted by the translation job
-                            trans_job_request_ptr request_ptr = new trans_job_request();
-
                             //De-serialize the job request
                             request_ptr->de_serialize(msg->get_payload());
 
@@ -239,6 +239,11 @@ namespace uva {
 
                             //Send the response
                             send_response(hdl, response);
+
+                            //Delete the request object if the pointer is not NULL
+                            if (request_ptr != NULL) {
+                                delete request_ptr;
+                            }
                         }
                     }
 

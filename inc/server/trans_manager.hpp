@@ -96,7 +96,7 @@ namespace uva {
                         //No need to do anything the manager is destroyed only when the application is stopped.
                         //The scheduled jobs will be canceled by the by the trans_job_pool destructor
                     }
-                    
+
                     /**
                      * Allows to set the new number of worker threads.
                      * This operation should be safe as the new threads
@@ -107,7 +107,7 @@ namespace uva {
                     void set_num_threads(const size_t num_threads) {
                         m_job_pool.set_num_threads(num_threads);
                     }
-                    
+
                     /**
                      * Allows to report the runtime information.
                      */
@@ -115,7 +115,7 @@ namespace uva {
                         //Report data from the jobs pool
                         m_job_pool.report_run_time_info();
                     }
-                    
+
                     /**
                      * Allows to create and register a new session object, synchronized.
                      * If for some reason a new session can not be opened, an exception is thrown.
@@ -146,9 +146,10 @@ namespace uva {
                      * request is from this moment on a responsibility of the
                      * underlying object to be managed.
                      * @param hdl [in] the connection handler to identify the session object.
-                     * @param request_ptr [in] the translation job request to be stored, not NULL
+                     * @param request_ptr [in/out] the translation job request pointer reference to be stored, not NULL
+                     * once the request is set into the translation job, the pointer must be set to NULL
                      */
-                    void translate(websocketpp::connection_hdl hdl, trans_job_request_ptr request_ptr) {
+                    void translate(websocketpp::connection_hdl hdl, trans_job_request_ptr & request_ptr) {
                         //Declare the session id variable
                         session_id_type session_id = session_id::UNDEFINED_SESSION_ID;
 
@@ -172,10 +173,22 @@ namespace uva {
                         //Instantiate a new translation job, it will destroy the translation request in its destructor
                         trans_job_ptr job = new trans_job(request_ptr);
 
+                        //Set the pointer to NULL as the job is not created and owns the request
+                        request_ptr = NULL;
+
                         LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
 
-                        //Schedule a translation job request for the session id
-                        m_job_pool.plan_new_job(job);
+                        try {
+                            //Schedule a translation job request for the session id
+                            m_job_pool.plan_new_job(job);
+                        } catch (...) {
+                            //Catch any possible exception and delete the translation job
+                            if (job != NULL) {
+                                delete job;
+                            }
+                            //Re-throw the exception
+                            throw;
+                        }
                     }
 
                     /**
