@@ -43,6 +43,7 @@ namespace uva {
                 static const string PROGRAM_SET_PT_CMD = "set pt ";
                 static const string PROGRAM_SET_SC_CMD = "set sc ";
                 static const string PROGRAM_SET_WP_CMD = "set wp ";
+                static const string PROGRAM_SET_LDP_CMD = "set ldp ";
                 static const string PROGRAM_SET_PP_CMD = "set pp ";
 
                 /**
@@ -84,6 +85,7 @@ namespace uva {
                     LOG_USAGE << "\t'" << PROGRAM_SET_EDL_CMD << "<unsigned integer> & <enter>'  - set the extra left distortion." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_PT_CMD << "<unsigned float> & <enter>'  - set pruning threshold." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_SC_CMD << "<integer> & <enter>'  - set stack capacity." << END_LOG;
+                    LOG_USAGE << "\t'" << PROGRAM_SET_LDP_CMD << "<float> & <enter>'  - set linear distortion penalty." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_WP_CMD << "<float> & <enter>'  - set word penalty." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_PP_CMD << "<float> & <enter>'  - set phrase penalty." << END_LOG;
                 }
@@ -220,7 +222,11 @@ namespace uva {
                                                 if (begins_with(cmd, PROGRAM_SET_PP_CMD)) {
                                                     de_local.m_phrase_penalty = get_float_value(cmd, PROGRAM_SET_PP_CMD);
                                                 } else {
-                                                    THROW_EXCEPTION(string("The command '") + cmd + string("' is unknown!"));
+                                                    if (begins_with(cmd, PROGRAM_SET_LDP_CMD)) {
+                                                        de_local.m_lin_dist_penalty = get_float_value(cmd, PROGRAM_SET_LDP_CMD);
+                                                    } else {
+                                                        THROW_EXCEPTION(string("The command '") + cmd + string("' is unknown!"));
+                                                    }
                                                 }
                                             }
                                         }
