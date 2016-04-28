@@ -58,7 +58,7 @@ namespace uva {
             namespace server {
                 namespace decoder {
                     namespace stack {
-                        
+
                         //Forward declaration of the stack level to be used as a state friend
                         template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
                         class stack_level_templ;
@@ -77,7 +77,7 @@ namespace uva {
                             //Typedef the state data template for a shorter name
                             typedef state_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> state_data;
                             //Typedef the stack data
-                            typedef typename state_data::stack_data stack_data; 
+                            typedef typename state_data::stack_data stack_data;
                             //Typedef the state pointer
                             typedef typename stack_data::stack_state_ptr stack_state_ptr;
                             //Typedef the state
@@ -528,13 +528,12 @@ namespace uva {
                             /**
                              * Allows to expand the lengths if not the word given
                              * by the current position is not covered.
-                             * @param curr_pos the reference to the current position,
-                             * will be decremented by the method by one
+                             * @param curr_pos the reference to the current position
                              * @param num_exp the reference to the number of positions
                              * we could expand from will be incremented by this method
                              * by one if an expansion is possible.
                              */
-                            inline void expand_length_if_not_covered(int32_t & curr_pos, size_t & num_exp) {
+                            inline void expand_length_if_not_covered(const size_t curr_pos, size_t & num_exp) {
                                 LOG_DEBUG << "Checking the coverage vector @ position " << curr_pos << END_LOG;
 
                                 //If the next position is not covered then expand the lengths
@@ -545,9 +544,6 @@ namespace uva {
                                     //Count the expansion
                                     ++num_exp;
                                 }
-
-                                //Decrement the start position
-                                curr_pos--;
                             }
 
                             /**
@@ -586,6 +582,8 @@ namespace uva {
                                 while (curr_pos >= min_pos) {
                                     //Expand the state to the words of the last phrase if not covered
                                     expand_length_if_not_covered(curr_pos, num_exp);
+                                    //Decrement the start position
+                                    curr_pos--;
                                 }
 
                                 LOG_DEBUG << "Number of regular left expansion position: " << num_exp << END_LOG;
@@ -599,6 +597,8 @@ namespace uva {
                                             (num_exp < m_state_data.m_stack_data.m_params.m_ext_dist_left)) {
                                         //Expand the state to the words of the last phrase if not covered
                                         expand_length_if_not_covered(curr_pos, num_exp);
+                                        //Decrement the start position
+                                        curr_pos--;
                                     }
                                     LOG_DEBUG << "Number of extra left expansion position: " << num_exp << END_LOG;
                                 }
@@ -613,16 +613,19 @@ namespace uva {
                                 LOG_DEBUG1 << ">>>>> expand right from [" << m_state_data.m_s_begin_word_idx
                                         << "," << m_state_data.m_s_end_word_idx << "]" << END_LOG;
 
+                                //Store the shorthand to the minimum possible word index
+                                const int32_t & MAX_WORD_IDX = m_state_data.m_stack_data.m_sent_data.m_max_idx;
+
                                 //Compute the maximum position to consider, based on distortion
                                 int32_t max_pos;
                                 if (is_dist) {
                                     //Compute the normal maximum position for distortion
                                     max_pos = m_state_data.m_s_end_word_idx + m_state_data.m_stack_data.m_params.m_distortion;
                                     //Bound the position by the maximum word index
-                                    max_pos = min(max_pos, m_state_data.m_stack_data.m_sent_data.m_max_idx);
+                                    max_pos = min(max_pos, MAX_WORD_IDX);
                                 } else {
                                     //There is no distortion limit
-                                    max_pos = m_state_data.m_stack_data.m_sent_data.m_max_idx;
+                                    max_pos = MAX_WORD_IDX;
                                 }
 
                                 //We shall start expanding from the first word
@@ -631,19 +634,33 @@ namespace uva {
 
                                 LOG_DEBUG << "start pos = " << curr_pos << ", max pos = " << max_pos << END_LOG;
 
+                                //Store the number of right expansions made
+                                size_t num_exp = 0;
+
                                 //Iterate to the right of the last positions until the
                                 //position is valid and the distortion is within the limits
                                 while (curr_pos <= max_pos) {
-                                    LOG_DEBUG << "Checking the coverage vector @ position " << curr_pos << END_LOG;
-
-                                    //If the next position is not covered then expand the lengths
-                                    if (!m_state_data.m_covered[curr_pos]) {
-                                        //Expand the lengths
-                                        expand_length(curr_pos);
-                                    }
-
+                                    //Expand the state to the words of the last phrase if not covered
+                                    expand_length_if_not_covered(curr_pos, num_exp);
                                     //Increment the start position
                                     ++curr_pos;
+                                }
+
+                                LOG_DEBUG << "Number of regular right expansion position: " << num_exp << END_LOG;
+
+                                //If we could not expand to the right at all then use the
+                                //extra distortion limit. At this point there is no need
+                                //to check for whether the distortion is on, if it is not
+                                //then we have already gone past the MAX_WORD_IDX.
+                                if (num_exp == 0) {
+                                    while ((curr_pos <= MAX_WORD_IDX) &&
+                                            (num_exp < m_state_data.m_stack_data.m_params.m_ext_dist_left)) {
+                                        //Expand the state to the words of the last phrase if not covered
+                                        expand_length_if_not_covered(curr_pos, num_exp);
+                                        //Increment the start position
+                                        ++curr_pos;
+                                    }
+                                    LOG_DEBUG << "Number of extra right expansion position: " << num_exp << END_LOG;
                                 }
 
                                 LOG_DEBUG1 << "<<<<< expand right" << END_LOG;
