@@ -180,18 +180,20 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const de_parameters & params) {
                         stream << "DE parameters: [ ";
+                        //Log the number of best translations value
+                        stream << "num_best_trans = " << params.m_num_best_trans;
 
                         //Log the distortion parameters
                         if (params.m_distortion != 0) {
-                            stream << "distortion = " << params.m_distortion;
+                            stream << ", distortion = " << params.m_distortion;
                             stream << ", ext_dist_left = " << params.m_ext_dist_left;
                         } else {
-                            stream << "distortion_limit = false (set d)";
+                            stream << ", distortion_limit = false (set d)";
                         }
 
-                        //Log the number of best translations value
-                        stream << ", num_best_trans = " << params.m_num_best_trans;
-
+                        //The linear distortion penalty lambda
+                        stream << ", lin_dist_penalty = " << params.m_lin_dist_penalty;
+                        
                         //Log simple value parameters
                         stream << ", pruning_threshold = " << params.m_pruning_threshold
                                 << ", stack_capacity = " << params.m_stack_capacity
