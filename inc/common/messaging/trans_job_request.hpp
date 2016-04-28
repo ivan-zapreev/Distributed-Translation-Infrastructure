@@ -147,7 +147,7 @@ namespace uva {
                                     to_string(m_is_trans_info) +
                                     NEW_LINE_HEADER_ENDING + m_text;
 
-                            LOG_USAGE << "Serializing request message: '" << result << "'" << END_LOG;
+                            LOG_DEBUG1 << "Serializing request message: '" << result << "'" << END_LOG;
 
                             return result;
                         }
