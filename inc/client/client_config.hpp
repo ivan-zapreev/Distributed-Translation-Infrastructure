@@ -52,7 +52,9 @@ namespace uva {
                     //The minimum number of source sentences to send per translation request
                     uint64_t m_min_sent;
                     //Stores the flag that indicates whether the source sentence is to be pre-processed
-                    bool is_pre_process;
+                    bool m_is_pre_process;
+                    //The flag indicating whether the client requests the translation details from the translation server or not.
+                    bool m_is_trans_info;
                 } client_config;
 
             }

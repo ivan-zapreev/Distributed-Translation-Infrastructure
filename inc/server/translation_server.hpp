@@ -93,7 +93,7 @@ namespace uva {
                         //Set the port that the server will listen to
                         m_server.listen(port);
                     }
-                    
+
                     /**
                      * Allows to set the new number of worker threads.
                      * This operation should be safe as the new threads
@@ -104,7 +104,7 @@ namespace uva {
                     void set_num_threads(const size_t num_threads) {
                         m_manager.set_num_threads(num_threads);
                     }
-                    
+
                     /**
                      * Allows to report the runtime information about the server.
                      */
@@ -220,8 +220,11 @@ namespace uva {
                         job_id_type job_id_val = job_id::UNDEFINED_JOB_ID;
                         try {
                             //Extract the translation job request, will be deleted by the translation job
-                            trans_job_request_ptr request_ptr = new trans_job_request(msg->get_payload());
-                            
+                            trans_job_request_ptr request_ptr = new trans_job_request();
+
+                            //De-serialize the job request
+                            request_ptr->de_serialize(msg->get_payload());
+
                             //Store the job id in case of an error
                             job_id_val = request_ptr->get_job_id();
 

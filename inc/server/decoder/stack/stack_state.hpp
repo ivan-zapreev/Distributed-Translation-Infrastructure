@@ -134,7 +134,7 @@ namespace uva {
                                 stack_state_ptr curr_state = m_recomb_from;
                                 stack_state_ptr next_state = NULL;
 
-                                LOG_DEBUG1 << "Destructing state" << this << ", recombined-"
+                                LOG_DEBUG1 << "Destructing state " << this << ", recombined-"
                                         << "from states ptr: " << curr_state << END_LOG;
 
                                 //While there is states to delete

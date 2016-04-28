@@ -62,11 +62,8 @@ namespace uva {
                          * original client message to parse. This constructor is
                          * to be used on the server to de-serialize the translation
                          * request.
-                         * @param message the client translation request to be parsed
                          */
-                        trans_job_request(const string & message) : m_session_id(session_id::UNDEFINED_SESSION_ID) {
-                            //De-serialize from the message
-                            de_serialize(message);
+                        trans_job_request() : m_session_id(session_id::UNDEFINED_SESSION_ID) {
                         }
 
                         /**
@@ -77,49 +74,65 @@ namespace uva {
                          * @param source_lang the source language string
                          * @param text the text in the source language to translate
                          * @param target_lang the target language string
+                         * @param is_trans_info true if the client should requests the translation info from the server
                          */
-                        trans_job_request(const job_id_type job_id, const string & source_lang, const string & text, const string & target_lang)
+                        trans_job_request(const job_id_type job_id, const string & source_lang,
+                                const string & text, const string & target_lang,
+                                const bool is_trans_info)
                         : m_session_id(session_id::UNDEFINED_SESSION_ID), m_job_id(job_id),
-                        m_source_lang(source_lang), m_target_lang(target_lang), m_text(text) {
+                        m_source_lang(source_lang), m_target_lang(target_lang), m_text(text),
+                        m_is_trans_info(is_trans_info) {
                             LOG_DEBUG << "Created a translation job request with job id: " << m_job_id << " and text:\n" << m_text << END_LOG;
                         }
 
                         /**
                          * Allows to de-serialize the job request from a string
-                         * @param message the string representation of the translation job request
+                         * @param request the string representation of the translation job request
                          */
-                        void de_serialize(const string & message) {
-                            //Initialize the reader
-                            text_piece_reader reader(message.c_str(), message.length());
-                            LOG_DEBUG1 << "De-serializing request message: '" << reader.str() << "'" << END_LOG;
+                        void de_serialize(const string & request) {
+                            try {
+                                //Initialize the reader
+                                text_piece_reader reader(request.c_str(), request.length());
+                                LOG_DEBUG1 << "De-serializing request message: '" << reader.str() << "'" << END_LOG;
 
-                            //The text will contain the read text from the reader
-                            text_piece_reader text;
+                                //The text will contain the read text from the reader
+                                text_piece_reader text;
 
-                            //First get the job id
-                            if (reader.get_first<HEADER_DELIMITER>(text)) {
-                                m_job_id = stoi(text.str());
-                                //Second get the source language string
+                                //Get the job id
                                 if (reader.get_first<HEADER_DELIMITER>(text)) {
-                                    m_source_lang = text.str();
-                                    //Third get the target language string
-                                    if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
-                                        m_target_lang = text.str();
+                                    m_job_id = stoi(text.str());
+                                    //Get the source language string
+                                    if (reader.get_first<HEADER_DELIMITER>(text)) {
+                                        m_source_lang = text.str();
+                                        //Get the target language string
+                                        if (reader.get_first<HEADER_DELIMITER>(text)) {
+                                            m_target_lang = text.str();
+                                            //Get the translation clues flag
+                                            if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
+                                                m_is_trans_info = (stoi(text.str()) != 0);
 
-                                        //Now the rest is the text to be translated.
-                                        m_text = reader.get_rest_str();
+                                                //Now the rest is the text to be translated.
+                                                m_text = reader.get_rest_str();
 
-                                        LOG_DEBUG << "\nm_job_id = " << m_job_id << ", m_source_lang = "
-                                                << m_source_lang << ", m_target_lang = " << m_target_lang
-                                                << ", m_text = \n" << m_text << END_LOG;
+                                                LOG_DEBUG << "\nm_job_id = " << m_job_id << ", m_source_lang = "
+                                                        << m_source_lang << ", m_target_lang = " << m_target_lang
+                                                        << ", m_text = \n" << m_text << END_LOG;
+                                            } else {
+                                                THROW_EXCEPTION(string("Could not find the translation clue flag in the job request header!"));
+                                            }
+                                        } else {
+                                            THROW_EXCEPTION(string("Could not find the target language in the job request header!"));
+                                        }
                                     } else {
-                                        THROW_EXCEPTION(string("Could not find result code in the job reply header!"));
+                                        THROW_EXCEPTION(string("Could not find the source language in the job request header!"));
                                     }
                                 } else {
-                                    THROW_EXCEPTION(string("Could not find result code in the job reply header!"));
+                                    THROW_EXCEPTION(string("Could not find job_id in the job request header!"));
                                 }
-                            } else {
-                                THROW_EXCEPTION(string("Could not find job_id in the job reply header!"));
+                            } catch (invalid_argument & ex1) {
+                                THROW_EXCEPTION(string("Error invalid_argument for job request!"));
+                            } catch (out_of_range & ex1) {
+                                THROW_EXCEPTION(string("Error out_of_range for job request!"));
                             }
                         }
 
@@ -129,10 +142,12 @@ namespace uva {
                          */
                         const string serialize() const {
                             string result = to_string(m_job_id) + HEADER_DELIMITER +
-                                    m_source_lang + HEADER_DELIMITER + m_target_lang +
+                                    m_source_lang + HEADER_DELIMITER +
+                                    m_target_lang + HEADER_DELIMITER +
+                                    to_string(m_is_trans_info) +
                                     NEW_LINE_HEADER_ENDING + m_text;
 
-                            LOG_DEBUG1 << "Serializing request message: '" << result << "'" << END_LOG;
+                            LOG_USAGE << "Serializing request message: '" << result << "'" << END_LOG;
 
                             return result;
                         }
@@ -191,6 +206,14 @@ namespace uva {
                             return m_text;
                         }
 
+                        /**
+                         * Allows to check whether the client has requested the translation information
+                         * @return true if the translation information is requested, otherwise false
+                         */
+                        const bool is_trans_info() const {
+                            return m_is_trans_info;
+                        }
+
                     private:
                         //Stores the session id, undefined in the first place and always on the client
                         session_id_type m_session_id;
@@ -202,6 +225,8 @@ namespace uva {
                         string m_target_lang;
                         //Stores the translation job text in the source language.
                         string m_text;
+                        //Stores the translation info flag
+                        bool m_is_trans_info;
                     };
 
                     constexpr char trans_job_request::HEADER_DELIMITER;

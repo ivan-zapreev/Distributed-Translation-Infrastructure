@@ -68,6 +68,7 @@ static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
 static ValueArg<string> * p_debug_level_arg = NULL;
 static SwitchArg * p_pre_process_arg = NULL;
+static SwitchArg * p_trans_details_arg = NULL;
 
 /**
  * Creates and sets up the command line parameters parser
@@ -76,32 +77,35 @@ void create_arguments_parser() {
     //Declare the command line arguments parser
     p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
 
-    //Add the  parameter - compulsory
+    //Add the input file to translate parameter - compulsory
     p_source_file_arg = new ValueArg<string>("I", "input-file", "The utf8 source file with the input corpus to translate", true, "", "source file name", *p_cmd_args);
 
-    //Add the  parameter - compulsory
+    //Add the source language type for the source file parameter - compulsory
     p_source_lang_arg = new ValueArg<string>("i", "input-lang", "The source language to translate from", true, "", "source language", *p_cmd_args);
 
-    //Add the  parameter - compulsory
+    //Add the output file for translated text parameter - compulsory
     p_target_file_arg = new ValueArg<string>("O", "output-file", "The utf8 output file to put the translation into", true, "", "target file name", *p_cmd_args);
 
-    //Add the  parameter - optional, by default is "English"
+    //Add the the target language to translate into parameter - optional, by default is "English"
     p_target_lang_arg = new ValueArg<string>("o", "output-lang", "The target language to translate into, default is 'English'", false, "English", "target language", *p_cmd_args);
 
-    //Add the  parameter - optional, by default is "localhost"
+    //Add the the translation server ip address or name parameter - optional, by default is "localhost"
     p_server_arg = new ValueArg<string>("s", "server", "The server address to connect to, default is 'localhost'", false, "localhost", "server address", *p_cmd_args);
 
-    //Add the  parameter - optional, by default is 9002
+    //Add the the server port parameter - optional, by default is 9002
     p_port_arg = new ValueArg<uint16_t>("p", "port", "The server port to connect to, default is 9002", false, 9002, "server port", *p_cmd_args);
 
-    //Add the  parameter - optional, by default is 100
+    //Add the maximum number of sentences to send by a job parameter - optional, by default is 100
     p_max_sent = new ValueArg<uint32_t>("u", "upper-size", "The maximum number of sentences to send per request, default is 100", false, 100, "max #sentences per request", *p_cmd_args);
 
-    //Add the  parameter - optional, by default is 100
+    //Add the minimum number of sentences to send by a job parameter - optional, by default is 10
     p_min_sent = new ValueArg<uint32_t>("l", "lower-size", "The minimum number of sentences to send per request, default is 10", false, 10, "min #sentences per request", *p_cmd_args);
 
-    //Add the -p the "preprocess" switch - optional, default is true
+    //Add the tokenize text switch  parameter - optional, default is true
     p_pre_process_arg = new SwitchArg("t", "tokenize", "Tokenize the source language lines: to-lowercase, punctuate, reduce", *p_cmd_args, true);
+
+    //Add the translation details switch parameter - optional, default is false
+    p_trans_details_arg = new SwitchArg("c", "clues", "Request the server to provide the translation details", *p_cmd_args, false);
 
     //Add the -d the debug level parameter - optional, default is e.g. RESULT
     logger::get_reporting_levels(&debug_levels);
@@ -122,6 +126,7 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_max_sent);
     SAFE_DESTROY(p_min_sent);
     SAFE_DESTROY(p_pre_process_arg);
+    SAFE_DESTROY(p_trans_details_arg);
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
     SAFE_DESTROY(p_cmd_args);
@@ -161,8 +166,11 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     params.m_max_sent = p_max_sent->getValue();
     LOG_USAGE << "The min/max number of sentences per request: '" << params.m_min_sent << "/" << params.m_max_sent << "'" << END_LOG;
     
-    params.is_pre_process = p_pre_process_arg->getValue();
-    LOG_USAGE << "The source sentence pre-processing is " << ( params.is_pre_process ? "ON" : "OFF") << END_LOG;
+    params.m_is_pre_process = p_pre_process_arg->getValue();
+    LOG_USAGE << "The source sentence pre-processing is " << ( params.m_is_pre_process ? "ON" : "OFF") << END_LOG;
+    
+    params.m_is_trans_info = p_trans_details_arg->getValue();
+    LOG_USAGE << "The translation details is " << ( params.m_is_trans_info ? "ON" : "OFF") << END_LOG;
 }
 
 /**

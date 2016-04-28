@@ -499,7 +499,7 @@ namespace uva {
                                 LOG_DEBUG2 << "Read line: '" << source_sent << "'" << END_LOG;
 
                                 //If needed, do the source sentence pre-processing
-                                if (m_params.is_pre_process) {
+                                if (m_params.m_is_pre_process) {
                                     //Pre-proces the source sentence:
                                     //1. Lowercase
                                     to_lower(source_sent);
@@ -532,7 +532,8 @@ namespace uva {
                                 trans_job_ptr data = new trans_job();
 
                                 //Create the translation job request 
-                                data->m_request = new trans_job_request(job_id, m_params.m_source_lang, source_text, m_params.m_target_lang);
+                                data->m_request = new trans_job_request(job_id, m_params.m_source_lang,
+                                        source_text, m_params.m_target_lang, m_params.m_is_trans_info);
                                 //Store the number of sentences in the translation request
                                 data->m_num_sentences = num_read;
                                 //Mark the job sending as good in the administration
