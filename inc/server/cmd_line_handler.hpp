@@ -82,7 +82,6 @@ namespace uva {
                     LOG_USAGE << "\t'" << PROGRAM_SET_NT_CMD << " <positive integer> & <enter>'  - set the number of worker threads." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_NBT_CMD << "<unsigned integer> & <enter>'  - set the number of best translations." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_D_CMD << "<integer> & <enter>'  - set the distortion limit." << END_LOG;
-                    LOG_USAGE << "\t'" << PROGRAM_SET_EDL_CMD << "<unsigned integer> & <enter>'  - set the extra left distortion." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_PT_CMD << "<unsigned float> & <enter>'  - set pruning threshold." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_SC_CMD << "<integer> & <enter>'  - set stack capacity." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_LDP_CMD << "<float> & <enter>'  - set linear distortion penalty." << END_LOG;
@@ -207,26 +206,22 @@ namespace uva {
                             if (begins_with(cmd, PROGRAM_SET_D_CMD)) {
                                 de_local.m_distortion = get_int_value(cmd, PROGRAM_SET_D_CMD);
                             } else {
-                                if (begins_with(cmd, PROGRAM_SET_EDL_CMD)) {
-                                    de_local.m_ext_dist_left = get_int_value(cmd, PROGRAM_SET_EDL_CMD);
+                                if (begins_with(cmd, PROGRAM_SET_PT_CMD)) {
+                                    de_local.m_pruning_threshold = get_float_value(cmd, PROGRAM_SET_PT_CMD);
                                 } else {
-                                    if (begins_with(cmd, PROGRAM_SET_PT_CMD)) {
-                                        de_local.m_pruning_threshold = get_float_value(cmd, PROGRAM_SET_PT_CMD);
+                                    if (begins_with(cmd, PROGRAM_SET_SC_CMD)) {
+                                        de_local.m_stack_capacity = get_int_value(cmd, PROGRAM_SET_SC_CMD);
                                     } else {
-                                        if (begins_with(cmd, PROGRAM_SET_SC_CMD)) {
-                                            de_local.m_stack_capacity = get_int_value(cmd, PROGRAM_SET_SC_CMD);
+                                        if (begins_with(cmd, PROGRAM_SET_WP_CMD)) {
+                                            de_local.m_word_penalty = get_float_value(cmd, PROGRAM_SET_WP_CMD);
                                         } else {
-                                            if (begins_with(cmd, PROGRAM_SET_WP_CMD)) {
-                                                de_local.m_word_penalty = get_float_value(cmd, PROGRAM_SET_WP_CMD);
+                                            if (begins_with(cmd, PROGRAM_SET_PP_CMD)) {
+                                                de_local.m_phrase_penalty = get_float_value(cmd, PROGRAM_SET_PP_CMD);
                                             } else {
-                                                if (begins_with(cmd, PROGRAM_SET_PP_CMD)) {
-                                                    de_local.m_phrase_penalty = get_float_value(cmd, PROGRAM_SET_PP_CMD);
+                                                if (begins_with(cmd, PROGRAM_SET_LDP_CMD)) {
+                                                    de_local.m_lin_dist_penalty = get_float_value(cmd, PROGRAM_SET_LDP_CMD);
                                                 } else {
-                                                    if (begins_with(cmd, PROGRAM_SET_LDP_CMD)) {
-                                                        de_local.m_lin_dist_penalty = get_float_value(cmd, PROGRAM_SET_LDP_CMD);
-                                                    } else {
-                                                        THROW_EXCEPTION(string("The command '") + cmd + string("' is unknown!"));
-                                                    }
+                                                    THROW_EXCEPTION(string("The command '") + cmd + string("' is unknown!"));
                                                 }
                                             }
                                         }

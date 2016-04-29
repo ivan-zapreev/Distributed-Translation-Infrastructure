@@ -577,30 +577,17 @@ namespace uva {
                                 //Store the number of left expansions made
                                 size_t num_exp = 0;
 
-                                //Iterate to the left of the last begin positions until the
+                                //Iterate to the left of the last positions until the
                                 //position is valid and the distortion is within the limits
-                                while (curr_pos >= min_pos) {
+                                //If there was nothing reached with the regular distortion.
+                                //limit then we iterate until we can cover at least something
+                                while ((curr_pos >= min_pos) || ((num_exp == 0)&&(curr_pos >= MIN_WORD_IDX))) {
                                     //Expand the state to the words of the last phrase if not covered
                                     expand_length_if_not_covered(curr_pos, num_exp);
                                     //Decrement the start position
                                     curr_pos--;
-                                }
-
-                                LOG_DEBUG << "Number of regular left expansion position: " << num_exp << END_LOG;
-
-                                //If we could not expand to the left at all then use the
-                                //extra distortion limit. At this point there is no need
-                                //to check for whether the distortion is on, if it is not
-                                //then we have already gone past the MIN_WORD_IDX.
-                                if (num_exp == 0) {
-                                    while ((curr_pos >= MIN_WORD_IDX) &&
-                                            (num_exp < m_state_data.m_stack_data.m_params.m_ext_dist_left)) {
-                                        //Expand the state to the words of the last phrase if not covered
-                                        expand_length_if_not_covered(curr_pos, num_exp);
-                                        //Decrement the start position
-                                        curr_pos--;
-                                    }
-                                    LOG_DEBUG << "Number of extra left expansion position: " << num_exp << END_LOG;
+                                    //Log the current number of expansions
+                                    LOG_DEBUG << "Number of left expansion position: " << num_exp << END_LOG;
                                 }
 
                                 LOG_DEBUG1 << "<<<<< expand left" << END_LOG;
@@ -639,28 +626,15 @@ namespace uva {
 
                                 //Iterate to the right of the last positions until the
                                 //position is valid and the distortion is within the limits
-                                while (curr_pos <= max_pos) {
+                                //If there was nothing reached with the regular distortion.
+                                //limit then we iterate until we can cover at least something
+                                while ((curr_pos <= max_pos) || ((num_exp == 0)&&(curr_pos <= MAX_WORD_IDX))) {
                                     //Expand the state to the words of the last phrase if not covered
                                     expand_length_if_not_covered(curr_pos, num_exp);
                                     //Increment the start position
                                     ++curr_pos;
-                                }
-
-                                LOG_DEBUG << "Number of regular right expansion position: " << num_exp << END_LOG;
-
-                                //If we could not expand to the right at all then use the
-                                //extra distortion limit. At this point there is no need
-                                //to check for whether the distortion is on, if it is not
-                                //then we have already gone past the MAX_WORD_IDX.
-                                if (num_exp == 0) {
-                                    while ((curr_pos <= MAX_WORD_IDX) &&
-                                            (num_exp < m_state_data.m_stack_data.m_params.m_ext_dist_left)) {
-                                        //Expand the state to the words of the last phrase if not covered
-                                        expand_length_if_not_covered(curr_pos, num_exp);
-                                        //Increment the start position
-                                        ++curr_pos;
-                                    }
-                                    LOG_DEBUG << "Number of extra right expansion position: " << num_exp << END_LOG;
+                                    //Log the current number of expansions
+                                    LOG_DEBUG << "Number of right expansion position: " << num_exp << END_LOG;
                                 }
 
                                 LOG_DEBUG1 << "<<<<< expand right" << END_LOG;
