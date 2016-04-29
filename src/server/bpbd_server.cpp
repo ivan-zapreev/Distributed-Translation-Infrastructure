@@ -125,6 +125,8 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
     //Parse the configuration file
     if (ini.parse()) {
+        LOG_INFO << "The configuration file has been parsed!" << END_LOG;
+        
         //Get the configuration options from the file
         string section = "Server Options";
         params.m_server_port = get_integer<uint16_t>(ini, section, "server_port");
