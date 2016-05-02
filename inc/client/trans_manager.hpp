@@ -186,13 +186,18 @@ namespace uva {
                      * to write the resulting translations into the file.
                      */
                     void stop() {
+                        LOG_INFO << "Stopping the translation manager" << END_LOG;
+                        
                         //Set the stopping flag
                         m_is_stopping = true;
 
                         //Wait until the request sending thread is stopped.
-                        if (m_sending_thread_ptr != NULL) {
+                        if (m_sending_thread_ptr != NULL && m_sending_thread_ptr->joinable()) {
+                            LOG_DEBUG << "Joining the sending thread" << END_LOG;
                             m_sending_thread_ptr->join();
                         }
+
+                        LOG_INFO << "Disconnecting the client" << END_LOG;
 
                         //Disconnect from the server
                         m_client.disconnect();
@@ -342,7 +347,7 @@ namespace uva {
                         m_is_stopping = true;
 
                         //Wait until the request sending thread is stopped.
-                        if (m_sending_thread_ptr != NULL) {
+                        if (m_sending_thread_ptr != NULL && m_sending_thread_ptr->joinable()) {
                             m_sending_thread_ptr->join();
                         }
 

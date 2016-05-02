@@ -21,9 +21,6 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
-      <df name="server">
-        <in>trans_info.hpp</in>
-      </df>
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -183,34 +180,6 @@
           </preprocessorList>
         </ccTool>
       </folder>
-      <folder path="2/common">
-        <ccTool>
-          <incDir>
-            <pElem>build/CMakeFiles/CMakeTmp</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
-      <folder path="2/server/lm">
-        <ccTool>
-          <incDir>
-            <pElem>build/CMakeFiles/CMakeTmp</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
-      <folder path="2/server/rm">
-        <ccTool>
-          <incDir>
-            <pElem>build/CMakeFiles/CMakeTmp</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
-      <folder path="2/server/tm">
-        <ccTool>
-          <incDir>
-            <pElem>build/CMakeFiles/CMakeTmp</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
       <folder path="CMakeFiles">
         <ccTool>
           <incDir>
@@ -225,25 +194,12 @@
           </incDir>
         </ccTool>
       </folder>
-      <item path="inc/server/trans_info.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <incDir>
-            <pElem>inc</pElem>
-            <pElem>ext</pElem>
-            <pElem>build</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <incDir>
-            <pElem>build/CMakeFiles/CMakeTmp</pElem>
-            <pElem>inc</pElem>
-            <pElem>ext</pElem>
-            <pElem>build</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="src/common/messaging/trans_job_code.cpp"
@@ -269,11 +225,6 @@
       </item>
       <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <incDir>
-            <pElem>inc</pElem>
-            <pElem>ext</pElem>
-            <pElem>build</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="src/server/decoder/de_configurator.cpp"
@@ -399,11 +350,6 @@
       </item>
       <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <incDir>
-            <pElem>inc</pElem>
-            <pElem>ext</pElem>
-            <pElem>build</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="src/server/trans_task_pool_worker.cpp"
@@ -411,11 +357,6 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
-          <incDir>
-            <pElem>inc</pElem>
-            <pElem>ext</pElem>
-            <pElem>build</pElem>
-          </incDir>
         </ccTool>
       </item>
     </conf>

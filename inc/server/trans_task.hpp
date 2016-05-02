@@ -156,6 +156,11 @@ namespace uva {
                             process_task_result();
                         }
 
+                        LOG_DEBUG1 << "The task " << m_task_id << " translation is done, notifying!" << END_LOG;
+
+                        //Call the task-done notification function to report that we are finished!s
+                        m_notify_task_done_func(this);
+
                         LOG_DEBUG1 << "The task " << m_task_id << " translation is done!" << END_LOG;
                     }
 
@@ -237,11 +242,6 @@ namespace uva {
                                 m_target_text = string("<finished>: ") + m_target_text;
                             }
                         }
-
-                        LOG_DEBUG1 << "The task " << m_task_id << " translation is done, notifying!" << END_LOG;
-
-                        //Call the task-done notification function to report that we are finished!s
-                        m_notify_task_done_func(this);
                     }
 
                 private:
