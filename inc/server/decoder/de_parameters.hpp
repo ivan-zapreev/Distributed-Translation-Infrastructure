@@ -62,8 +62,7 @@ namespace uva {
                         phrase_length m_max_t_phrase_len;
 
                         //The pruning threshold is to be a <positive float> it is 
-                        //the deviation from the best hypothesis score. I.e. must
-                        //be a value from the half open interval [1.0, +inf)
+                        //the %/100 deviation from the best hypothesis score. 
                         atomic<float> m_pruning_threshold;
                         //The stack capacity for stack pruning
                         atomic<uint32_t> m_stack_capacity;
@@ -136,8 +135,8 @@ namespace uva {
                                     string("The max_target_phrase_len must not be <= ") +
                                     to_string(tm::TM_MAX_TARGET_PHRASE_LEN));
 
-                            ASSERT_CONDITION_THROW((m_pruning_threshold < 1.0),
-                                    string("The pruning_threshold must be >= 1.0!"));
+                            ASSERT_CONDITION_THROW((m_pruning_threshold <= 0.0),
+                                    string("The pruning_threshold must be > 0.0!"));
 
                             ASSERT_CONDITION_THROW((m_word_penalty == 0.0),
                                     string("The word_penalty must not be 0.0!"));
