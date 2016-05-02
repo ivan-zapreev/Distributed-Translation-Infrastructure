@@ -232,7 +232,7 @@ namespace uva {
                             m_manager.translate(hdl, request_ptr);
                         } catch (uva_exception & ex) {
                             //Locally report error
-                            LOG_ERROR << ex.get_message() << END_LOG;
+                            LOG_ERROR << "job " << job_id_val << ": " << ex.get_message() << END_LOG;
 
                             //Create the reply message, with or without job id
                             trans_job_response response(job_id_val, trans_job_code::RESULT_ERROR, ex.get_message());
