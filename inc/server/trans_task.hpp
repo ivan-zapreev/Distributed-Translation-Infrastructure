@@ -26,12 +26,16 @@
 #ifndef TRANS_TASK_HPP
 #define TRANS_TASK_HPP
 
+#include <stdint.h>
+
+#include "trans_task_id.hpp"
+#include "trans_info.hpp"
+
 #include "common/utils/threads.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_code.hpp"
-#include "trans_task_id.hpp"
 
 #include "server/decoder/de_configurator.hpp"
 #include "server/decoder/sentence/sentence_decoder.hpp"
@@ -76,7 +80,8 @@ namespace uva {
                             const string & source_sentence, done_task_notifier notify_task_done_func)
                     : m_is_interrupted(false), m_session_id(session_id), m_job_id(job_id),
                     m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED), m_source_text(source_sentence),
-                    m_notify_task_done_func(notify_task_done_func), m_target_text("") {
+                    m_notify_task_done_func(notify_task_done_func), m_target_text(""),
+                    m_decoder(de_configurator::get_params(), m_is_interrupted, m_source_text, m_target_text) {
                         LOG_DEBUG1 << "/session id=" << m_session_id << ", job id="
                                 << m_job_id << ", NEW task id=" << m_task_id
                                 << "/ text: " << m_source_text << END_LOG;
@@ -86,7 +91,7 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~trans_task() {
-                        //Nothing to be done
+                        //Nothing to be done here
                     }
 
                     /**
@@ -126,16 +131,10 @@ namespace uva {
                     void translate() {
                         LOG_DEBUG1 << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
-                        //Obtain the new decoder instance
-                        sentence_decoder * dec = NULL;
-
                         //Perform the decoding task
                         try {
-                            dec = de_configurator::allocate_decoder(m_is_interrupted, m_source_text, m_target_text);
-
                             LOG_DEBUG1 << "Invoking the sentence translation for task " << m_task_id << END_LOG;
-
-                            dec->translate();
+                            m_decoder.translate();
                         } catch (uva_exception & ex) {
                             //Set the response code
                             m_code = trans_job_code::RESULT_ERROR;
@@ -144,9 +143,6 @@ namespace uva {
                             //Do local logging
                             LOG_DEBUG << "SERVER ERROR: " << m_target_text << END_LOG;
                         }
-
-                        //Dispose the decoder instance 
-                        de_configurator::dispose_decoder(dec);
 
                         LOG_DEBUG1 << "The task " << m_task_id << " translation part is over." << END_LOG;
 
@@ -185,6 +181,18 @@ namespace uva {
                      */
                     const string & get_source_text() const {
                         return m_source_text;
+                    }
+
+                    /**
+                     * Allows to obtain the translation info for the translation task.
+                     * @param [out] the container object for the translation task info
+                     */
+                    inline void get_trans_info(trans_info & info) {
+                        //Clean the translation task info
+                        info.clean();
+
+                        //Fill in the translation task info
+                        m_decoder.get_trans_info(info);
                     }
 
                     /**
@@ -260,6 +268,9 @@ namespace uva {
 
                     //Stores the translated sentence or an error message
                     string m_target_text;
+
+                    //Stores the pointer to the sentence decoder instance
+                    sentence_decoder m_decoder;
 
                     //Stores the synchronization mutex for synchronization on task canceling
                     //Have a recursive miutex as the last task that will be finished will

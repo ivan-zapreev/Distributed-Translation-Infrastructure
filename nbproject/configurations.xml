@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="CMakeFiles"
+                   displayName="CMakeFiles"
+                   projectFiles="true"
+                   root="build/CMakeFiles">
+      <logicalFolder name="3.5.1" displayName="3.5.1" projectFiles="true">
+        <logicalFolder name="CompilerIdC" displayName="CompilerIdC" projectFiles="true">
+          <itemPath>build/CMakeFiles/3.5.1/CompilerIdC/CMakeCCompilerId.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="CompilerIdCXX"
+                       displayName="CompilerIdCXX"
+                       projectFiles="true">
+          <itemPath>build/CMakeFiles/3.5.1/CompilerIdCXX/CMakeCXXCompilerId.cpp</itemPath>
+        </logicalFolder>
+      </logicalFolder>
+      <itemPath>build/CMakeFiles/feature_tests.c</itemPath>
+      <itemPath>build/CMakeFiles/feature_tests.cxx</itemPath>
+    </logicalFolder>
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="server">
+        <in>trans_info.hpp</in>
+      </df>
     </df>
+    <logicalFolder name="Modules"
+                   displayName="Modules"
+                   projectFiles="true"
+                   root="/usr/share/cmake-3.5/Modules">
+      <itemPath>/usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c</itemPath>
+      <itemPath>/usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp</itemPath>
+      <itemPath>/usr/share/cmake-3.5/Modules/CMakeCompilerABI.h</itemPath>
+    </logicalFolder>
     <df root="src" name="2">
       <df name="client">
         <in>bpbd_client.cpp</in>
@@ -91,6 +119,8 @@
       </toolsSet>
       <flagsDictionary>
         <element flagsID="0" commonFlags="-std=c++0x -m64 -O3"/>
+        <element flagsID="1" commonFlags="-std=c++14"/>
+        <element flagsID="2" commonFlags="-std=c11"/>
       </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
@@ -100,29 +130,120 @@
           <buildCommand>${MAKE} -f Makefile -j 8</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath></executablePath>
+          <cTool>
+            <incDir>
+              <pElem>build/CMakeFiles/CMakeTmp</pElem>
+            </incDir>
+          </cTool>
           <ccTool>
             <standard>8</standard>
-            <incDir>
-              <pElem>inc</pElem>
-              <pElem>ext</pElem>
-              <pElem>build</pElem>
-            </incDir>
-            <preprocessorList>
-              <Elem>NDEBUG</Elem>
-            </preprocessorList>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
+      <item path="/usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="/usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+      </item>
+      <item path="build/CMakeFiles/3.5.1/CompilerIdC/CMakeCCompilerId.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="build/CMakeFiles/3.5.1/CompilerIdCXX/CMakeCXXCompilerId.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+      </item>
+      <item path="build/CMakeFiles/feature_tests.c" ex="false" tool="0" flavor2="10">
+        <cTool flags="2">
+        </cTool>
+      </item>
+      <item path="build/CMakeFiles/feature_tests.cxx"
+            ex="false"
+            tool="1"
+            flavor2="11">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <folder path="2">
+        <ccTool>
+          <incDir>
+            <pElem>inc</pElem>
+            <pElem>ext</pElem>
+            <pElem>build</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
+        </ccTool>
+      </folder>
+      <folder path="2/common">
+        <ccTool>
+          <incDir>
+            <pElem>build/CMakeFiles/CMakeTmp</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="2/server/lm">
+        <ccTool>
+          <incDir>
+            <pElem>build/CMakeFiles/CMakeTmp</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="2/server/rm">
+        <ccTool>
+          <incDir>
+            <pElem>build/CMakeFiles/CMakeTmp</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="2/server/tm">
+        <ccTool>
+          <incDir>
+            <pElem>build/CMakeFiles/CMakeTmp</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="CMakeFiles">
+        <ccTool>
+          <incDir>
+            <pElem>build/CMakeFiles/CMakeTmp</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="Modules">
+        <ccTool>
+          <incDir>
+            <pElem>build/CMakeFiles/CMakeTmp</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <item path="inc/server/trans_info.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <incDir>
+            <pElem>inc</pElem>
+            <pElem>ext</pElem>
+            <pElem>build</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <incDir>
+            <pElem>build/CMakeFiles/CMakeTmp</pElem>
+            <pElem>inc</pElem>
+            <pElem>ext</pElem>
+            <pElem>build</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/common/messaging/trans_job_code.cpp"
@@ -148,6 +269,11 @@
       </item>
       <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <incDir>
+            <pElem>inc</pElem>
+            <pElem>ext</pElem>
+            <pElem>build</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/server/decoder/de_configurator.cpp"
@@ -273,6 +399,11 @@
       </item>
       <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <incDir>
+            <pElem>inc</pElem>
+            <pElem>ext</pElem>
+            <pElem>build</pElem>
+          </incDir>
         </ccTool>
       </item>
       <item path="src/server/trans_task_pool_worker.cpp"
@@ -280,6 +411,11 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
+          <incDir>
+            <pElem>inc</pElem>
+            <pElem>ext</pElem>
+            <pElem>build</pElem>
+          </incDir>
         </ccTool>
       </item>
     </conf>

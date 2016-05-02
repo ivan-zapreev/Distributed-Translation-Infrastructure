@@ -238,7 +238,11 @@ namespace uva {
                                 LOG_DEBUG << "The translation job " << this << " is finished!" << END_LOG;
 
                                 //Combine the task results into the job result
-                                combine_job_result();
+                                if (m_request_ptr->is_trans_info()) {
+                                    combine_job_result<true>();
+                                } else {
+                                    combine_job_result<false>();
+                                }
 
                                 //Do the sanity check assert
                                 ASSERT_SANITY_THROW(!m_notify_job_done_func,
@@ -256,22 +260,36 @@ namespace uva {
                      * Allows to compile the end job result, e.g. based on the task results,
                      * come up with the job's result code and the translated text.
                      */
+                    template<bool is_trans_info>
                     void combine_job_result() {
                         LOG_DEBUG << "Combining the job " << this << " result!" << END_LOG;
 
                         //Declare the variable for counting the number of CANCELED tasks
                         uint32_t num_canceled = 0;
+                        
+                        //Define the translation task info object
+                        trans_info info;
 
                         //Iterate through the translation tasks and combine the results
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
                             //Get the task pointer for future use
                             trans_task_ptr task = *it;
+                            
                             //Count the number of canceled tasks and leave text as an empty line then
                             if (task->get_code() == trans_job_code::RESULT_CANCELED) {
                                 num_canceled++;
                             }
+                            
                             //Append the next task result
                             m_target_text += task->get_target_text() + "\n";
+                            
+                            //Append the task translation info if needed
+                            if(is_trans_info) {
+                                //Get the translation task info
+                                task->get_trans_info(info);
+                                m_target_text += info.serialize() + "\n";
+                            }
+                            
                             LOG_DEBUG1 << "The target text of task: " << task->get_task_id() << " has been retrieved!" << END_LOG;
                         }
 

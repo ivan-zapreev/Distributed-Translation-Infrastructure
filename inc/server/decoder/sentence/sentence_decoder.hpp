@@ -35,6 +35,8 @@
 
 #include "server/common/models/phrase_uid.hpp"
 
+#include "server/trans_info.hpp"
+
 #include "server/decoder/de_parameters.hpp"
 #include "server/decoder/sentence/sentence_data_map.hpp"
 #include "server/decoder/stack/multi_stack.hpp"
@@ -49,6 +51,8 @@ using namespace uva::utils::threads;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::text;
+
+using namespace uva::smt::bpbd::server;
 
 using namespace uva::smt::bpbd::server::common::models;
 
@@ -86,8 +90,9 @@ namespace uva {
                              */
                             sentence_decoder(const de_parameters & params, acr_bool_flag is_stop,
                                     const string & source_sent, string & target_sent)
-                            : m_params(params), m_is_stop(is_stop), m_source_sent(source_sent),
-                            m_target_sent(target_sent), m_sent_data(count_words(m_source_sent)),
+                            : m_stack_info_prov(NULL), m_params(params), m_is_stop(is_stop),
+                            m_source_sent(source_sent), m_target_sent(target_sent),
+                            m_sent_data(count_words(m_source_sent)),
                             m_lm_query(lm_configurator::allocate_fast_query_proxy()),
                             m_tm_query(tm_configurator::allocate_query_proxy()),
                             m_rm_query(rm_configurator::allocate_query_proxy()) {
@@ -105,6 +110,10 @@ namespace uva {
                                 lm_configurator::dispose_fast_query_proxy(m_lm_query);
                                 tm_configurator::dispose_query_proxy(m_tm_query);
                                 rm_configurator::dispose_query_proxy(m_rm_query);
+                                //Dispose the translation info provider and thus the stack, if present
+                                if (m_stack_info_prov != NULL) {
+                                    delete m_stack_info_prov;
+                                }
                             }
 
                             /**
@@ -134,6 +143,18 @@ namespace uva {
 
                                     //Perform the translation
                                     perform_translation();
+                                }
+                            }
+
+                            /**
+                             * Allows to obtain the translation info for the translation task.
+                             * @param [out] the container object for the translation task info
+                             */
+                            inline void get_trans_info(trans_info & info) {
+                                if (m_stack_info_prov != NULL) {
+                                    m_stack_info_prov->get_trans_info(info);
+                                } else {
+                                    THROW_EXCEPTION("Trying to get the translation info but the stack pointer is NULL!");
                                 }
                             }
 
@@ -394,24 +415,32 @@ namespace uva {
                         protected:
 
                             /**
-                             * Performs the sentence translation 
+                             * Performs the sentence translation.
+                             * @param is_dist true if we need to 
+                             * @param is_alt_trans true if we need to find alternative translation otherwise false
                              */
                             template<bool is_dist, bool is_alt_trans>
                             inline void perform_translation() {
+                                typedef multi_stack_templ<is_dist, is_alt_trans, MAX_WORDS_PER_SENTENCE, LM_HISTORY_LEN_MAX, LM_MAX_QUERY_LEN> stack_type;
                                 //Instantiate the multi-stack
-                                multi_stack_templ<is_dist, is_alt_trans, MAX_WORDS_PER_SENTENCE, LM_HISTORY_LEN_MAX, LM_MAX_QUERY_LEN>
-                                        m_stack(m_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query, m_lm_query);
+                                stack_type * m_stack = new stack_type (m_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query, m_lm_query);
 
                                 //Extend the stack, here we do everything in one go
                                 //Including expanding, pruning and recombination
-                                m_stack.expand();
+                                m_stack->expand();
 
                                 //If we are finished then retrieve the best 
                                 //translation. If we have stopped then nothing.
-                                m_stack.get_best_trans(m_target_sent);
+                                m_stack->get_best_trans(m_target_sent);
+                                
+                                //Store the stack pointer for getting the translation info later, if needed
+                                m_stack_info_prov = m_stack;
                             }
 
                         private:
+                            //Stores the pointer to the translation info provider
+                            trans_info_provider * m_stack_info_prov;
+
                             //Stores the reference to the decoder parameters
                             const de_parameters & m_params;
                             //Stores the stopping flag

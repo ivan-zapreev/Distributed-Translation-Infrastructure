@@ -64,35 +64,13 @@ namespace uva {
                         static void disconnect() {
                             //Nothing to be done, no dynamically allocated resources at the moment.
                         }
-
+                        
                         /**
-                         * Allows to get an instance of the decoder object.
-                         * \todo Pre-allocate decoders, make as many as there are threads
-                         * @param is_stop the flag that will be set to true in case 
-                         *                one needs to abort the translation process.
-                         * @param source_sent [in] the source language sentence to translate
-                         *                         the source sentence is expected to be
-                         *                         tokenized, reduced, and in the lower case.
-                         * @param target_sent [out] the resulting target language sentence
-                         * @return a pointer to an instance of the decoder object.
+                         * Allows to get the decoder parameters
+                         * @return the reference to the decoder parameters
                          */
-                        static inline sentence_decoder * allocate_decoder(
-                                acr_bool_flag is_stop,
-                                const string & source_sent,
-                                string & target_sent) {
-                            LOG_DEBUG << "Starting to allocate sentence decoder for: ___" << source_sent << "___" << END_LOG;
-                            return new sentence_decoder(*m_params, is_stop, source_sent, target_sent);
-                        }
-
-                        /**
-                         * Allows to dispose the decoder
-                         * \todo Mark the decoder instance as available
-                         * @param dec the decoder to be returned
-                         */
-                        static inline void dispose_decoder(sentence_decoder * dec) {
-                            if (dec != NULL) {
-                                delete dec;
-                            }
+                        static const de_parameters &  get_params() {
+                            return *m_params;
                         }
 
                     private:

@@ -29,6 +29,8 @@
 #include <string>
 #include <functional>
 
+#include "server/trans_info.hpp"
+
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -48,6 +50,8 @@ using namespace std::placeholders;
 using namespace uva::utils::threads;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+
+using namespace uva::smt::bpbd::server;
 
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::lm::proxy;
@@ -76,7 +80,7 @@ namespace uva {
                          * @param MAX_M_GRAM_QUERY_LENGTH the maximum length of the m-gram query
                          */
                         template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
-                        class multi_stack_templ {
+                        class multi_stack_templ : public trans_info_provider {
                         public:
                             //Give a short name for the stack data
                             typedef stack_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_data;
@@ -134,7 +138,7 @@ namespace uva {
                             /**
                              * The basic destructor
                              */
-                            ~multi_stack_templ() {
+                            virtual ~multi_stack_templ() {
                                 LOG_DEBUG1 << "Destructing stack" << this << ", # levels: " << m_num_levels << END_LOG;
 
                                 //Dispose the stacks
@@ -148,6 +152,16 @@ namespace uva {
                                     //Delete the levels array itself
                                     delete[] m_levels;
                                     m_levels = NULL;
+                                }
+                            }
+
+                            /**
+                             * Allows to fill in the translation info with the stack information
+                             * @param info the translation info to fill in
+                             */
+                            virtual void get_trans_info(trans_info & info) {
+                                for (uint32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
+                                    m_levels[level]->get_trans_info(info);
                                 }
                             }
 

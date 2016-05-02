@@ -83,6 +83,15 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to fill in the translation info with the stack information
+                             * @param info the translation info to fill in
+                             */
+                            void get_trans_info(trans_info & info) {
+                                //Add the stack level usage percent
+                                info.push_stack_usage((m_size * 100.0f) / m_params.m_stack_capacity);
+                            }
+
+                            /**
                              * Allows to add a new state into the level
                              * @param new_state the new state to add
                              */
