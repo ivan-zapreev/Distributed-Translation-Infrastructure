@@ -138,12 +138,6 @@ namespace uva {
                             ASSERT_CONDITION_THROW((m_pruning_threshold <= 0.0),
                                     string("The pruning_threshold must be > 0.0!"));
 
-                            ASSERT_CONDITION_THROW((m_word_penalty == 0.0),
-                                    string("The word_penalty must not be 0.0!"));
-
-                            ASSERT_CONDITION_THROW((m_phrase_penalty == 0.0),
-                                    string("The phrase_penalty must not be 0.0!"));
-
                             ASSERT_CONDITION_THROW((m_stack_capacity <= 0),
                                     string("The stack_capacity must be > 0!"));
 
