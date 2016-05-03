@@ -64,6 +64,12 @@ namespace uva {
                         //The pruning threshold is to be a <positive float> it is 
                         //the %/100 deviation from the best hypothesis score. 
                         atomic<float> m_pruning_threshold;
+                        //The pruning multiplier for positive costs, is computed from the 
+                        //m_pruning_threshold automatically in the finalization function
+                        atomic<float> m_pruning_mult_neg;
+                        //The pruning multiplier for negative costs, is computed from the 
+                        //m_pruning_threshold automatically in the finalization function
+                        atomic<float> m_pruning_mult_pos;
                         //The stack capacity for stack pruning
                         atomic<uint32_t> m_stack_capacity;
                         //Stores the word penalty - the cost of each target word
@@ -72,7 +78,7 @@ namespace uva {
                         atomic<float> m_phrase_penalty;
                         //Stores the linear distortion lambda parameter value
                         atomic<float> m_lin_dist_penalty;
-                        
+
                         //Stores the number of best translations 
                         atomic<uint32_t> m_num_best_trans;
 
@@ -102,6 +108,8 @@ namespace uva {
                                 this->m_num_alt_to_keep = other.m_num_alt_to_keep.load();
                                 this->m_phrase_penalty = other.m_phrase_penalty.load();
                                 this->m_pruning_threshold = other.m_pruning_threshold.load();
+                                this->m_pruning_mult_neg = other.m_pruning_mult_neg.load();
+                                this->m_pruning_mult_pos = other.m_pruning_mult_pos.load();
                                 this->m_stack_capacity = other.m_stack_capacity.load();
                                 this->m_word_penalty = other.m_word_penalty.load();
                                 this->m_lin_dist_penalty = other.m_lin_dist_penalty.load();
@@ -138,12 +146,17 @@ namespace uva {
                             ASSERT_CONDITION_THROW((m_pruning_threshold <= 0.0),
                                     string("The pruning_threshold must be > 0.0!"));
 
+                            //Set the multiplier for the negative value
+                            m_pruning_mult_neg = 1.0 + m_pruning_threshold;
+                            //Set the multiplier for the positive value
+                            m_pruning_mult_pos = 1.0 - m_pruning_threshold;
+
                             ASSERT_CONDITION_THROW((m_stack_capacity <= 0),
                                     string("The stack_capacity must be > 0!"));
 
                             ASSERT_CONDITION_THROW((m_num_best_trans < 1),
                                     string("The num_best_trans must be >= 1!"));
-                            
+
                             //The number of alternative translations in
                             //the number of best translations minus one
                             this->m_num_alt_to_keep = m_num_best_trans - 1;
@@ -173,7 +186,7 @@ namespace uva {
 
                         //The linear distortion penalty lambda
                         stream << ", lin_dist_penalty = " << params.m_lin_dist_penalty;
-                        
+
                         //Log simple value parameters
                         stream << ", pruning_threshold = " << params.m_pruning_threshold
                                 << ", stack_capacity = " << params.m_stack_capacity
