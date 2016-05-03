@@ -315,24 +315,24 @@ namespace uva {
                                 //thus it is declared as constant and here we do a const_cast
                                 prob_weight & partial_score = const_cast<prob_weight &> (m_partial_score);
 
-                                LOG_DEBUG1 << "Initial partial score is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "Initial end-state score is: " << partial_score << END_LOG;
 
                                 //Add the language model probability
                                 partial_score += get_lm_probability();
 
-                                LOG_DEBUG1 << "partial score + LM is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "end-state score + LM is: " << partial_score << END_LOG;
 
                                 //Add the distance based reordering penalty
-                                partial_score += -abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
+                                partial_score += m_stack_data.m_params.m_lin_dist_penalty * abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
 
-                                LOG_DEBUG1 << "partial score + RM discrete is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "end-state score + RM discrete is: " << partial_score << END_LOG;
 
                                 //Add the lexicolized reordering costs
                                 const reordering_orientation orient = get_reordering_orientation(prev_state_data);
                                 partial_score += prev_state_data.rm_entry_data.template get_weight<true>(orient);
                                 partial_score += rm_entry_data.template get_weight<false>(orient);
 
-                                LOG_DEBUG1 << "partial score + RM lexicolized is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "end-state score + RM lexicolized is: " << partial_score << END_LOG;
 
                                 //After the construction the total score is to stay fixed,
                                 //thus it is declared as constant and here we do a const_cast
@@ -341,7 +341,7 @@ namespace uva {
                                 //Set the total score to be equal to the partial score as the translation is finished
                                 total_score = partial_score;
 
-                                LOG_DEBUG1 << "Total score: " << total_score << END_LOG;
+                                LOG_DEBUG1 << "Final end-state score: " << total_score << END_LOG;
                             }
 
                             /**
