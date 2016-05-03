@@ -60,7 +60,7 @@ namespace uva {
                          * This structure is needed to store the common state data
                          * that however changes/mutates from state to state and thus
                          * is to be passed on from each state to its child.
-                         * @param is_dist the flag indicating whether there is a left distortion limit or not
+                         * @param is_dist the flag indicating whether there is a distortion limit or not
                          * @param is_alt_trans the flag indicating if the alternative translations are to be stored when recombining states.
                          * @param NUM_WORDS_PER_SENTENCE the maximum allowed number of words per sentence
                          * @param MAX_HISTORY_LENGTH the maximum allowed length of the target translation hystory
@@ -241,11 +241,11 @@ namespace uva {
                                 const size_t num_new_words = ((m_target != NULL) ? m_target->get_num_words() : 1);
 
                                 //Do the sanity check
-                                ASSERT_SANITY_THROW(((MAX_HISTORY_LENGTH + num_new_words) > MAX_M_GRAM_QUERY_LENGTH ),
+                                ASSERT_SANITY_THROW(((MAX_HISTORY_LENGTH + num_new_words) > MAX_M_GRAM_QUERY_LENGTH),
                                         string("MAX_HISTORY_LENGTH (") + to_string(MAX_HISTORY_LENGTH) +
                                         string(") + num_new_words (") + to_string(num_new_words) +
                                         string(") > MAX_M_GRAM_QUERY_LENGTH (") + to_string(MAX_M_GRAM_QUERY_LENGTH) + string(")"));
-                                
+
                                 //It is only for these new words that we need to compute the lm probabilities
                                 //for. So compute the current number of elements in the words' history.
                                 const size_t all_hist_words = m_trans_frame.get_size() - num_new_words;
@@ -263,7 +263,7 @@ namespace uva {
                                 LOG_DEBUG1 << "Begin lm_level: " << m_begin_lm_level << ", hist_words: "
                                         << act_hist_words << ", new_words: " << num_new_words << ", query words: "
                                         << array_to_string<word_uid>(num_query_words, query_word_ids) << END_LOG;
-                                
+
                                 //Execute the query and return the value
                                 //logger::get_reporting_level() = debug_levels_enum::INFO2;
                                 const prob_weight prob = m_stack_data.m_lm_query.execute(num_query_words, query_word_ids, m_begin_lm_level);
@@ -307,6 +307,30 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to compute the linear distortion penalty.
+                             * @param prev_state_data the previous state
+                             * @return the linear distortion penalty value
+                             */
+                            inline prob_weight get_lin_dist_cost(const state_data_templ & prev_state_data) {
+                                int32_t distance = abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
+                                if (is_dist && (distance > m_stack_data.m_params.m_distortion)) {
+                                    distance = m_stack_data.m_params.m_distortion;
+                                }
+                                return m_stack_data.m_params.m_lin_dist_penalty * distance;
+                            }
+
+                            /**
+                             * Allows to compute the lexicolized reordering penalty
+                             * @param prev_state_data the previous state
+                             * @return the lexicolized distortion penalty 
+                             */
+                            inline prob_weight get_lex_reord_cost(const state_data_templ & prev_state_data) {
+                                const reordering_orientation orient = get_reordering_orientation(prev_state_data);
+                                return prev_state_data.rm_entry_data.template get_weight<true>(orient) +
+                                        rm_entry_data.template get_weight<false>(orient);
+                            }
+
+                            /**
                              * For the end translation hypothesis state is supposed to compute the partial and total score
                              * @param prev_state_data the previous state data
                              */
@@ -323,14 +347,12 @@ namespace uva {
                                 LOG_DEBUG1 << "end-state score + LM is: " << partial_score << END_LOG;
 
                                 //Add the distance based reordering penalty
-                                partial_score += m_stack_data.m_params.m_lin_dist_penalty * abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
+                                partial_score += get_lin_dist_cost(prev_state_data);
 
                                 LOG_DEBUG1 << "end-state score + RM discrete is: " << partial_score << END_LOG;
 
                                 //Add the lexicolized reordering costs
-                                const reordering_orientation orient = get_reordering_orientation(prev_state_data);
-                                partial_score += prev_state_data.rm_entry_data.template get_weight<true>(orient);
-                                partial_score += rm_entry_data.template get_weight<false>(orient);
+                                partial_score += get_lex_reord_cost(prev_state_data);
 
                                 LOG_DEBUG1 << "end-state score + RM lexicolized is: " << partial_score << END_LOG;
 
@@ -377,14 +399,12 @@ namespace uva {
                                 LOG_DEBUG1 << "partial score + word penalty is: " << partial_score << END_LOG;
 
                                 //Add the distance based reordering penalty
-                                partial_score += m_stack_data.m_params.m_lin_dist_penalty * abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
+                                partial_score += get_lin_dist_cost(prev_state_data);
 
                                 LOG_DEBUG1 << "partial score + RM discrete is: " << partial_score << END_LOG;
 
                                 //Add the lexicolized reordering costs
-                                const reordering_orientation orient = get_reordering_orientation(prev_state_data);
-                                partial_score += prev_state_data.rm_entry_data.template get_weight<true>(orient);
-                                partial_score += rm_entry_data.template get_weight<false>(orient);
+                                partial_score += get_lex_reord_cost(prev_state_data);
 
                                 LOG_DEBUG1 << "partial score + RM lexicolized is: " << partial_score << END_LOG;
                             }

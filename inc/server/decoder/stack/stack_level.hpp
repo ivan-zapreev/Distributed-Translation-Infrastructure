@@ -334,6 +334,7 @@ namespace uva {
                                 //Get the best state score
                                 const float best_score = m_first_state->m_state_data.m_total_score;
                                 //Compute the score lower bound
+                                //ToDo: Make two different thresholds for positive and negative values
                                 m_score_bound = best_score - abs(best_score) * m_params.m_pruning_threshold;
 
                                 LOG_DEBUG1 << "new best state: " << m_first_state
