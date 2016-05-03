@@ -685,7 +685,8 @@ namespace uva {
                                         string("The source entry [") + to_string(start_pos) +
                                         string(", ") + to_string(end_pos) + string("] is NULL!"));
 
-                                //Check if we are in the situation of a single word
+                                //Check if we are in the situation of a single word or in the
+                                //situation when we actually have translations for a phrase
                                 if (single_word || entry->has_translations()) {
                                     //Get the targets
                                     tm_const_target_entry* targets = entry->get_targets();
