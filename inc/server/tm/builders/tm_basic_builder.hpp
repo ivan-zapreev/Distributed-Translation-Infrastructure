@@ -23,11 +23,13 @@
  * Created on February 8, 2016, 9:55 AM
  */
 
-#ifndef TM_BUILDER_HPP
-#define TM_BUILDER_HPP
+#ifndef TM_BASIC_BUILDER_HPP
+#define TM_BASIC_BUILDER_HPP
 
 #include <cmath>
 #include <unordered_map>
+
+#include "tm_builder.hpp"
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -64,16 +66,8 @@ namespace uva {
                 namespace tm {
                     namespace builders {
 
-                        //Stores the translation model delimiter character for parsing one line
-                        static const char TM_DELIMITER = '|';
-                        //Stores the translation model delimiter character cardinality
-                        static const size_t TM_DELIMITER_CDTY = 3;
-
-                        //Define the map storing the source phrase ids and the number of translations per phrase
-                        typedef unordered_map<phrase_uid, size_t> sizes_map;
-
                         /**
-                         * This class represents a basic reader of the translation model.
+                         * This class represents a basic builder of the translation model.
                          * It allows to read a text-formatted translation model and to put
                          * it into the given instance of the model class. It assumes the
                          * simple text model format as used by Oyster or Moses.

@@ -26,7 +26,6 @@
 #ifndef UPP_DIAG_MATRIX_HPP
 #define UPP_DIAG_MATRIX_HPP
 
-
 #include <string>       // std::stringstream
 #include <cstdlib>      // std::qsort std::bsearch
 #include <algorithm>    // std::sort std::abs

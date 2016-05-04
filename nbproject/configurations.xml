@@ -198,6 +198,21 @@
           </incDir>
         </ccTool>
       </folder>
+      <item path="inc/common/utils/containers/ordered_list.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/tm/builders/tm_builder.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/tm/builders/tm_limiting_builder.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
