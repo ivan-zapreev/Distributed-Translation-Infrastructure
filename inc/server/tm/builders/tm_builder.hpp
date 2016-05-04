@@ -37,9 +37,6 @@ namespace uva {
                         static const char TM_DELIMITER = '|';
                         //Stores the translation model delimiter character cardinality
                         static const size_t TM_DELIMITER_CDTY = 3;
-
-                        //Define the map storing the source phrase ids and the number of translations per phrase
-                        typedef unordered_map<phrase_uid, size_t> sizes_map;
                     }
                 }
             }

@@ -136,6 +136,24 @@ namespace uva {
 
                             /**
                              * Allows to add a new translation to the source entry for the given target phrase
+                             */
+                            inline void add_target(const tm_target_entry & target, const prob_weight lm_weight) {
+                                //Perform a sanity check
+                                ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
+                                        string("Exceeding the source entry capacity: ") + to_string(m_capacity));
+
+                                //Get the next free entry for the target phrase
+                                tm_target_entry & entry = m_targets[m_next_idx++];
+
+                                //Copy the data from the given target entry to storage
+                                entry = target;
+
+                                //Compute the minimum cost which in log space is a maximum value
+                                m_min_cost = max(m_min_cost, (entry.get_t_c_s() + lm_weight));
+                            }
+
+                            /**
+                             * Allows to add a new translation to the source entry for the given target phrase
                              * @param target the target phrase string 
                              * @param target_uid the uid of the target phrase
                              * @param num_features the number of features in the next array
@@ -268,7 +286,7 @@ namespace uva {
 
                         //Define the constant source entry
                         typedef const tm_source_entry tm_const_source_entry;
-                        
+
                         //Define the pointer to the const source entry
                         typedef tm_const_source_entry * tm_const_source_entry_ptr;
 

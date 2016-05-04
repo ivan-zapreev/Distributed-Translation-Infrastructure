@@ -89,6 +89,15 @@ namespace uva {
                                     m_word_ids = NULL;
                                 }
                             }
+                            
+                            /**
+                             * Allows to compare two target entries based on their total weight
+                             * @param other the other entry to compare with
+                             * @return true if the total weight of this entry is smaller than the total weight of the other entry
+                             */
+                            inline bool operator < (const tm_target_entry_temp & other) const {
+                                return get_total_weight() < other.get_total_weight();
+                            }
 
                             /**
                              * Allows to set the target phrase and its id
@@ -179,6 +188,19 @@ namespace uva {
                              */
                             inline const word_uid* get_word_ids() const {
                                 return m_word_ids;
+                            }
+                            
+                            /**
+                             * The assignment operator
+                             * @param other the other entry to assign the values from
+                             * @return the reference to this target entry
+                             */
+                            inline tm_target_entry_temp & operator=(const tm_target_entry_temp & other) {
+                                //ToDo: Implement
+                                
+                                THROW_NOT_IMPLEMENTED();
+                                
+                                return *this;
                             }
 
                         protected:

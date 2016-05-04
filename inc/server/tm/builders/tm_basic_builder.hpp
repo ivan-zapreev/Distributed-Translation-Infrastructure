@@ -66,6 +66,9 @@ namespace uva {
                 namespace tm {
                     namespace builders {
 
+                        //Define the map storing the source phrase ids and the number of translations per phrase
+                        typedef unordered_map<phrase_uid, size_t> sizes_map;
+
                         /**
                          * This class represents a basic builder of the translation model.
                          * It allows to read a text-formatted translation model and to put

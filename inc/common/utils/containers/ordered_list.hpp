@@ -79,8 +79,16 @@ namespace uva {
                      * @param other the other element container to compare with
                      * @return true if the element stored in this container is < the element stored in the other container
                      */
-                    bool operator<(const elem_container & other) const {
-                        return *m_elem < *(other->m_elem);
+                    inline bool operator<(const elem_container & other) const {
+                        return *m_elem < *(other.m_elem);
+                    }
+                    
+                    /**
+                     * Allows to get the reference to the stored object
+                     * @return the reference to the stored element
+                     */
+                    inline elem_type & operator *() const {
+                        return *m_elem;
                     }
                 };
 
@@ -111,6 +119,14 @@ namespace uva {
                     }
                 }
 
+                /**
+                 * Allows to retrieve the first container element from the list
+                 * @return the pointer to the first container element of the list.
+                 */
+                elem_container * get_first(){
+                    return m_first;
+                }
+                
                 /**
                  * This method is needed to add the new element to the list.
                  * In case the element does not pass into the list it gets deleted.
@@ -156,6 +172,14 @@ namespace uva {
                     }
                 }
 
+                /**
+                 * Allows to get the number of elements currently stored in the list
+                 * @return the number of elements stored in the list
+                 */
+                inline size_t get_size(){
+                    return m_size;
+                }
+                
             protected:
 
                 /**
@@ -218,6 +242,7 @@ namespace uva {
                             elem = elem->m_next;
                             ++idx;
                         }
+                        
                         //Now that the exceeding element is found, remove it
                         elem->m_prev->m_next = NULL;
                         //Delete the element 
