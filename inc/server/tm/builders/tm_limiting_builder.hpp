@@ -92,7 +92,7 @@ namespace uva {
                              * @param reader the reader to read the data from
                              */
                             tm_limiting_builder(const tm_parameters & params, model_type & model, reader_type & reader)
-                            : m_params(params), m_data(), m_model(model), m_reader(reader),
+                            : m_params(params), m_data(NULL), m_model(model), m_reader(reader),
                             m_lm_query(lm_configurator::allocate_fast_query_proxy()), m_tmp_num_words(0) {
                             }
 
@@ -102,6 +102,10 @@ namespace uva {
                             ~tm_limiting_builder() {
                                 //Dispose the query proxy
                                 lm_configurator::dispose_fast_query_proxy(m_lm_query);
+                                //Destroy the data container if it is not destroyed yet
+                                if (m_data != NULL) {
+                                    delete m_data;
+                                }
                             }
 
                             /**
@@ -289,6 +293,9 @@ namespace uva {
 
                                 LOG_DEBUG << "Start parsing the TM file" << END_LOG;
 
+                                //Instantiate the data map container
+                                m_data = new tm_data_map();
+
                                 //Start reading the translation model file line by line
                                 while (m_reader.get_first_line(line)) {
                                     //Read the source phrase
@@ -307,7 +314,7 @@ namespace uva {
                                             LOG_DEBUG << "Deleting the previous source entry "
                                                     << source_uid << ", as it has no targets!" << END_LOG;
                                             delete targets;
-                                            m_data.erase(source_uid);
+                                            m_data->erase(source_uid);
                                         }
 
                                         //Store the new source string
@@ -317,9 +324,13 @@ namespace uva {
 
                                         LOG_DEBUG1 << "The NEW source ___" << source_str << "___ id is: " << source_uid << END_LOG;
 
-                                        //Create a new list of targets
-                                        targets = new targets_list(m_params.m_trans_limit);
-                                        m_data[source_uid] = targets;
+                                        //Create a new list of targets, or retrieve an existing one
+                                        if (m_data->find(source_uid) == m_data->end()) {
+                                            targets = new targets_list(m_params.m_trans_limit);
+                                            m_data->operator[](source_uid) = targets;
+                                        } else {
+                                            targets = m_data->at(source_uid);
+                                        }
                                     }
 
                                     //Get the target entry if it is passes
@@ -347,7 +358,7 @@ namespace uva {
                                 //Stop the progress bar in case of no exception
                                 logger::stop_progress_bar();
 
-                                LOG_INFO << "The number of loaded TM source entries is: " << m_data.size() << END_LOG;
+                                LOG_INFO << "The number of loaded TM source entries is: " << m_data->size() << END_LOG;
                             }
 
                             /**
@@ -357,10 +368,10 @@ namespace uva {
                                 logger::start_progress_bar(string("Storing the pre-loaded phrase translations"));
 
                                 //Set the number of entries into the model
-                                m_model.set_num_entries(m_data.size());
+                                m_model.set_num_entries(m_data->size());
 
                                 //Iterate through the map elements and do conversion
-                                for (tm_data_map::iterator it = m_data.begin(); it != m_data.end(); ++it) {
+                                for (tm_data_map::iterator it = m_data->begin(); it != m_data->end(); ++it) {
                                     //The current source id
                                     phrase_uid source_uid = it->first;
                                     //The pointers to the current targets list
@@ -370,6 +381,11 @@ namespace uva {
                                     if (targets->get_size() != 0) {
                                         //Open the new source entry
                                         tm_source_entry * source_entry = m_model.begin_entry(source_uid, targets->get_size());
+                                        
+                                        ASSERT_SANITY_THROW( (m_params.m_trans_limit > 0) &&
+                                                (targets->get_size() > m_params.m_trans_limit),
+                                                string("The targets size ")+to_string(targets->get_size()) +
+                                                string(" is exceeding the trans limit ")+to_string(m_params.m_trans_limit));
 
                                         //The pointer variable for the target entry container
                                         ordered_list<tm_target_entry>::elem_container * entry = targets->get_first();
@@ -400,8 +416,9 @@ namespace uva {
                                     logger::update_progress_bar();
                                 }
 
-                                //Erase the map entries
-                                m_data.clear();
+                                //Erase the map as we do not need it any more
+                                delete m_data;
+                                m_data = NULL;
 
                                 //Stop the progress bar in case of no exception
                                 logger::stop_progress_bar();
@@ -415,7 +432,7 @@ namespace uva {
                             const tm_parameters & m_params;
 
                             //The map storing the model sizes
-                            tm_data_map m_data;
+                            tm_data_map * m_data;
 
                             //Stores the reference to the model
                             model_type & m_model;

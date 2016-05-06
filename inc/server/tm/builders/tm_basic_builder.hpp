@@ -91,7 +91,10 @@ namespace uva {
                             : m_params(params), m_model(model), m_reader(reader),
                             m_lm_query(lm_configurator::allocate_fast_query_proxy()),
                             m_tmp_num_words(0) {
-
+                                if (m_params.m_trans_limit > 0) {
+                                    LOG_WARNING << "The translation limit (" << m_params.m_trans_limit
+                                            << ") is not supported, ignoring!" << END_LOG;
+                                }
                             }
 
                             /**
@@ -367,8 +370,7 @@ namespace uva {
                                     size_t & size_ref = m_sizes[source_uid];
                                     if (count_or_build) {
                                         //Check that the filter conditions hold
-                                        if ((size_ref < m_params.m_trans_limit) &&
-                                                is_good_features(line, tmp_features_size, tmp_features)) {
+                                        if (is_good_features(line, tmp_features_size, tmp_features)) {
                                             //Increment the count for the given source uid
                                             ++size_ref;
 

@@ -46,6 +46,8 @@ namespace uva {
             class ordered_list {
             public:
 
+#define CAPACITY_THRESHOLD 2
+
                 /**
                  * This is the container structure to store the pointer to the
                  * stored elements and to link the list elements between each other
@@ -94,11 +96,23 @@ namespace uva {
                 };
 
                 /**
-                 * 
-                 * @param capacity
+                 * The basic constructor for the ordered list. Note that the
+                 * capacity value must be > CAPACITY_THRESHOLD. If the capacity value
+                 * is less or equal the CAPACITY_THRESHOLD then there is no capacity
+                 * limit, i.e. all added elements are stored.
+                 * @param capacity the capacity to hold within this list
                  */
                 ordered_list(size_t capacity) : m_capacity(capacity), m_size(0), m_first(NULL) {
-                    LOG_DEBUG1 << "Created a new ordered list with capacity: " << capacity << END_LOG;
+                    LOG_DEBUG1 << "Created a new ordered list" << END_LOG;
+
+                    //Check that the capacity is to be checked, if not set the capacity to zerro
+                    if (m_capacity <= CAPACITY_THRESHOLD) {
+                        LOG_DEBUG1 << "The capacity " << m_capacity << " is <= "
+                                << CAPACITY_THRESHOLD << "no capacity limit!" << END_LOG;
+                        m_capacity = 0;
+                    } else {
+                        LOG_DEBUG1 << "The list capacity is: " << m_capacity << END_LOG;
+                    }
                 }
 
                 /**
@@ -268,7 +282,7 @@ namespace uva {
                             << ", size " << m_size << "/" << m_capacity << END_LOG;
 
                     //Check if we need to prune
-                    if (m_size > m_capacity) {
+                    if ((m_capacity != 0) && (m_size > m_capacity)) {
                         //Check the sanity 
                         ASSERT_SANITY_THROW((m_size > (m_capacity + 1)),
                                 "There is more than one extra element in the list!!!");
