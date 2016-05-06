@@ -352,6 +352,8 @@ namespace uva {
                                             //Check if the new entry is to be entirely skipped
                                             is_good_source = (size_val != 0);
 
+                                            LOG_DEBUG << "TM source: " << source_uid << ", #targets: " << size_val << END_LOG;
+
                                             if (is_good_source) {
                                                 //Open the new source entry
                                                 source_entry = m_model.begin_entry(source_uid, size_val);
@@ -373,16 +375,15 @@ namespace uva {
                                         if (is_good_features(line, tmp_features_size, tmp_features)) {
                                             //Increment the count for the given source uid
                                             ++size_ref;
-
-                                            LOG_DEBUG1 << "The new source " << source_uid << " count is " << size_ref << END_LOG;
                                         }
+                                        LOG_DEBUG1 << "The new source " << source_uid << " targets count is " << size_ref << END_LOG;
                                     } else {
                                         //If the source entry is not to be skipped, parse 
                                         if (is_good_source && (size_ref > 0)) {
                                             //Parse the rest of the target entry
                                             process_target_entry(source_entry, line, size_ref, tmp_features_size, tmp_features);
                                         } else {
-                                            LOG_DEBUG << "Skipping source-target entry: " << line << END_LOG;
+                                            LOG_DEBUG << "Source " << source_uid << ", skipping the target entry: " << line << END_LOG;
                                         }
                                     }
 

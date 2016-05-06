@@ -116,9 +116,8 @@
       </toolsSet>
       <flagsDictionary>
         <element flagsID="0" commonFlags="-std=c++0x -m64"/>
-        <element flagsID="1" commonFlags="-std=c++0x -m64 -O3"/>
-        <element flagsID="2" commonFlags="-std=c++14"/>
-        <element flagsID="3" commonFlags="-std=c11"/>
+        <element flagsID="1" commonFlags="-std=c++14"/>
+        <element flagsID="2" commonFlags="-std=c11"/>
       </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
@@ -159,14 +158,14 @@
             flavor2="8">
       </item>
       <item path="build/CMakeFiles/feature_tests.c" ex="false" tool="0" flavor2="10">
-        <cTool flags="3">
+        <cTool flags="2">
         </cTool>
       </item>
       <item path="build/CMakeFiles/feature_tests.cxx"
             ex="false"
             tool="1"
             flavor2="11">
-        <ccTool flags="2">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <folder path="2">
@@ -196,32 +195,32 @@
         </ccTool>
       </folder>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/common/messaging/trans_job_code.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/common/utils/logging/logger.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/common/utils/monitor/statistics_monitor.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
@@ -239,99 +238,99 @@
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/builders/lm_gram_builder.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/lm_configurator.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/lm_query.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/mgrams/byte_m_gram_id.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/mgrams/model_m_gram.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/mgrams/query_m_gram.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/models/c2d_hybrid_trie.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/models/c2d_map_trie.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/models/c2w_array_trie.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/models/g2d_map_trie.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/models/h2d_map_trie.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/models/m_gram_query.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/models/w2c_array_trie.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/lm/models/w2c_hybrid_trie.cpp"
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/rm/rm_configurator.cpp" ex="false" tool="1" flavor2="8">
@@ -342,7 +341,7 @@
             ex="false"
             tool="1"
             flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/server/tm/tm_configurator.cpp" ex="false" tool="1" flavor2="8">

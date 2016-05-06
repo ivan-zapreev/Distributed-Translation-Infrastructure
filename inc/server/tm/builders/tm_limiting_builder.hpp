@@ -381,14 +381,16 @@ namespace uva {
                                     if (targets->get_size() != 0) {
                                         //Open the new source entry
                                         tm_source_entry * source_entry = m_model.begin_entry(source_uid, targets->get_size());
-                                        
-                                        ASSERT_SANITY_THROW( (m_params.m_trans_limit > 0) &&
+
+                                        ASSERT_SANITY_THROW((m_params.m_trans_limit > 0) &&
                                                 (targets->get_size() > m_params.m_trans_limit),
-                                                string("The targets size ")+to_string(targets->get_size()) +
-                                                string(" is exceeding the trans limit ")+to_string(m_params.m_trans_limit));
+                                                string("The COUNTED targets size ") + to_string(targets->get_size()) +
+                                                string(" is exceeding the trans limit ") + to_string(m_params.m_trans_limit));
+
+                                        LOG_DEBUG << "TM source: " << source_uid << ", #targets: " << targets->get_size() << END_LOG;
 
                                         //The pointer variable for the target entry container
-                                        ordered_list<tm_target_entry>::elem_container * entry = targets->get_first();
+                                        targets_list::elem_container * entry = targets->get_first();
 
                                         //Add the translation entries
                                         while (entry != NULL) {
@@ -404,6 +406,11 @@ namespace uva {
                                             //Move on to the next entry
                                             entry = entry->m_next;
                                         }
+
+                                        ASSERT_SANITY_THROW((m_params.m_trans_limit > 0) &&
+                                                (source_entry->num_targets() > m_params.m_trans_limit),
+                                                string("The ACTUAL targets size ") + to_string(source_entry->num_targets()) +
+                                                string(" is exceeding the trans limit ") + to_string(m_params.m_trans_limit));
 
                                         //Finalize the source entry
                                         m_model.finalize_entry(source_uid);
