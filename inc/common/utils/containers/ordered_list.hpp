@@ -102,7 +102,7 @@ namespace uva {
                  * limit, i.e. all added elements are stored.
                  * @param capacity the capacity to hold within this list
                  */
-                ordered_list(size_t capacity) : m_capacity(capacity), m_size(0), m_first(NULL) {
+                ordered_list(size_t capacity) : m_capacity(capacity), m_size(0), m_first(NULL), m_last(NULL) {
                     LOG_DEBUG1 << "Created a new ordered list" << END_LOG;
 
                     //Check that the capacity is to be checked, if not set the capacity to zerro
@@ -169,29 +169,25 @@ namespace uva {
 
                         //Check if the new element is smaller than the first one
                         if (*new_elem < *curr) {
-                            LOG_DEBUG1 << "0: Got " << new_elem << " < " << curr
+                            LOG_DEBUG1 << "Got " << new_elem << " < " << curr
                                     << " - moving on to " << curr->m_next << END_LOG;
 
-                            //Declare the index of the element that will be given to the new one
-                            size_t idx = 1;
                             //Search until there is no further elements
                             while (curr != NULL) {
                                 //If this is not the last element in the list
                                 if ((curr->m_next != NULL) && (*new_elem < *(curr->m_next))) {
-                                    LOG_DEBUG1 << idx << ": Got " << new_elem << " < "
+                                    LOG_DEBUG1 << "Got " << new_elem << " < "
                                             << curr->m_next << " - moving on" << END_LOG;
 
                                     //Move on to the next element
                                     curr = curr->m_next;
-                                    //Increment the index
-                                    ++idx;
                                 } else {
-                                    LOG_DEBUG1 << idx << ": Got " << new_elem << " >= " << curr->m_next
+                                    LOG_DEBUG1 << "Got " << new_elem << " >= " << curr->m_next
                                             << " - inserting after " << curr << END_LOG;
 
                                     //The new element is larger than the next one then 
                                     //add it here between the current and the next ones
-                                    add_after_this(curr, idx, new_elem);
+                                    add_after_this(curr, new_elem);
                                     //Make the loop stop
                                     curr = NULL;
                                 }
@@ -219,19 +215,28 @@ namespace uva {
                 /**
                  * Allows to add a new element that will be given a certain index after the current element
                  * @param curr the current element to insert the element after
-                 * @param idx the index the new element will get
                  * @param new_elem the new element to be inserted after the current one
                  */
-                inline void add_after_this(elem_container * curr, size_t idx, elem_container * new_elem) {
-                    LOG_DEBUG1 << "Start adding a new element " << new_elem << " after "
-                            << curr << ", the element index is " << idx << END_LOG;
+                inline void add_after_this(elem_container * curr, elem_container * new_elem) {
+                    LOG_DEBUG1 << "Start adding a new element "
+                            << new_elem << " after " << curr << END_LOG;
 
+                    //Save the current next of the current element
                     elem_container * next_next = curr->m_next;
+
+                    //Connect the current and the new elements
                     curr->m_next = new_elem;
-                    new_elem->m_next = next_next;
                     new_elem->m_prev = curr;
-                    //If there is one more element then loop it back to the new first one
-                    if (new_elem->m_next != NULL) {
+
+                    //If there was no element after the current one
+                    //then set the new element as the last one, as
+                    //before the current element was the last one.
+                    //Otherwise set the next of the new one to be
+                    //the previous next of the current one.
+                    if (next_next == NULL) {
+                        m_last = new_elem;
+                    } else {
+                        new_elem->m_next = next_next;
                         new_elem->m_next->m_prev = new_elem;
                     }
 
@@ -239,10 +244,10 @@ namespace uva {
                     ++m_size;
 
                     //Prune some elements out, if needed
-                    prune(idx, new_elem);
+                    prune(new_elem);
 
-                    LOG_DEBUG1 << "Finished adding a new element " << new_elem << " after "
-                            << curr << ", the element index is " << idx << END_LOG;
+                    LOG_DEBUG1 << "Finished adding a new element "
+                            << new_elem << " after " << curr << END_LOG;
                 }
 
                 /**
@@ -257,16 +262,19 @@ namespace uva {
                     new_elem->m_next = m_first;
                     m_first = new_elem;
 
-                    //If there is one more element then loop it back to the new first one
+                    //If there was already an element in the list then link it back.
+                    //Otherwise set this new first and only element as the last one.
                     if (m_first->m_next != NULL) {
                         m_first->m_next->m_prev = m_first;
+                    } else {
+                        m_last = m_first;
                     }
 
                     //Increment the size
                     ++m_size;
 
                     //Prune some elements out, if needed
-                    prune(0, new_elem);
+                    prune(new_elem);
 
                     LOG_DEBUG1 << "Finished adding a new element " << new_elem
                             << " as a first one" << END_LOG;
@@ -274,42 +282,36 @@ namespace uva {
 
                 /**
                  * Allows to prune the exceeding elements
-                 * @param idx the index under which the new element was added
                  * @param elem the new element that was added
                  */
-                inline void prune(size_t idx, elem_container * elem) {
-                    LOG_DEBUG1 << "Start pruning elements from " << idx << ": " << elem
+                inline void prune(elem_container * elem) {
+                    LOG_DEBUG1 << "Start pruning elements from: " << elem
                             << ", size " << m_size << "/" << m_capacity << END_LOG;
 
                     //Check if we need to prune
-                    if ((m_capacity != 0) && (m_size > m_capacity)) {
-                        //Check the sanity 
-                        ASSERT_SANITY_THROW((m_size > (m_capacity + 1)),
-                                "There is more than one extra element in the list!!!");
+                    if (m_capacity != 0) {
+                        //Begin with the last element
+                        elem_container * curr = m_last;
 
-                        LOG_DEBUG1 << "Start searching for the exceeding element" << END_LOG;
+                        LOG_DEBUG1 << "Start removing the exceeding elements" << END_LOG;
 
-                        //Find the exceeding element
-                        while (idx != m_capacity) {
-                            LOG_DEBUG1 << "Element: " << idx << ": " << elem << END_LOG;
+                        while (m_size > m_capacity) {
+                            //Get to the previous element as it should always exist
+                            curr = curr->m_prev;
 
-                            elem = elem->m_next;
-                            ++idx;
+                            //Delete the next element
+                            delete curr->m_next;
+
+                            //Decrement the size
+                            m_size--;
                         }
 
-                        LOG_DEBUG1 << "The exceeding element: " << idx << ": "
-                                << elem << ", previous: " << elem->m_prev << END_LOG;
-
-                        //Now that the exceeding element is found, remove it
-                        elem->m_prev->m_next = NULL;
-
-                        //Delete the element 
-                        delete elem;
-                        //Decrement the size
-                        m_size--;
+                        //Set the new last element
+                        m_last = curr;
+                        m_last->m_next = NULL;
                     }
 
-                    LOG_DEBUG1 << "Finished pruning elements from " << idx << ": " << elem
+                    LOG_DEBUG1 << "Finished pruning elements: " << elem
                             << ", size " << m_size << "/" << m_capacity << END_LOG;
                 }
 
@@ -320,6 +322,8 @@ namespace uva {
                 size_t m_size;
                 //Stores the pointer to the first element of the list
                 elem_container * m_first;
+                //Stores the pointer to the last element of the list
+                elem_container * m_last;
             };
         }
     }
