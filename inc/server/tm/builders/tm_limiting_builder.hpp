@@ -395,8 +395,11 @@ namespace uva {
 
                                     //Delete the entry
                                     delete targets;
+
+                                    //Update the progress bar status
+                                    logger::update_progress_bar();
                                 }
-                                
+
                                 //Erase the map entries
                                 m_data.clear();
 
