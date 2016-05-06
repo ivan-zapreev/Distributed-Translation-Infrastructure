@@ -399,7 +399,7 @@ namespace uva {
                                             const prob_weight lm_weight = m_lm_query.execute(target.get_num_words(), target.get_word_ids());
                                             LOG_DEBUG << "The phrase: ___" << target.get_target_phrase() << "__ lm-weight: " << lm_weight << END_LOG;
 
-                                            source_entry->add_target(target, lm_weight);
+                                            source_entry->emplace_target(target, lm_weight);
 
                                             //Move on to the next entry
                                             entry = entry->m_next;

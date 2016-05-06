@@ -133,6 +133,32 @@ namespace uva {
                             }
 
                             /**
+                             * This method allows to move the data from the given target entry to this one.
+                             * The dynamically allocated data from the given entry is moved to this one,
+                             * the rest is copied.
+                             * @param other the other entry to move the values from
+                             */
+                            inline void move_from(tm_target_entry_temp & other) {
+                                //Copy the target phrase
+                                m_target_phrase = other.m_target_phrase;
+
+                                //Copy the number of words in the source phrase and the word ids
+                                m_num_words = other.m_num_words;
+                                m_word_ids = other.m_word_ids;
+                                
+                                //Set the word ids to null so that the original
+                                //class can not modify/destroy it.
+                                other.m_word_ids = NULL;
+
+                                //Copy the source/target uid
+                                m_st_uid = other.m_st_uid;
+                                //Copy the features[2] = p(e|f);
+                                m_t_cond_s = other.m_t_cond_s;
+                                //Copy the total weight
+                                m_total_weight = other.m_total_weight;
+                            }
+
+                            /**
                              * Allows to check whether this is an unknown translation
                              * @return true if this is UNK translation, otherwise false
                              */
@@ -188,30 +214,6 @@ namespace uva {
                              */
                             inline const word_uid* get_word_ids() const {
                                 return m_word_ids;
-                            }
-
-                            /**
-                             * The assignment operator
-                             * @param other the other entry to assign the values from
-                             * @return the reference to this target entry
-                             */
-                            inline tm_target_entry_temp & operator=(const tm_target_entry_temp & other) {
-                                //Copy the target phrase
-                                m_target_phrase = other.m_target_phrase;
-
-                                //Copy the number of words in the source phrase and the word ids
-                                m_num_words = other.m_num_words;
-                                m_word_ids = new word_uid[m_num_words];
-                                memcpy(m_word_ids, other.m_word_ids, m_num_words * sizeof (word_uid));
-
-                                //Copy the source/target uid
-                                m_st_uid = other.m_st_uid;
-                                //Copy the features[2] = p(e|f);
-                                m_t_cond_s = other.m_t_cond_s;
-                                //Copy the total weight
-                                m_total_weight = other.m_total_weight;
-
-                                return *this;
                             }
 
                         protected:
