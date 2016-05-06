@@ -287,6 +287,8 @@ namespace uva {
                                 //Declare the pointer variable for the target entry
                                 tm_target_entry * entry = NULL;
 
+                                LOG_DEBUG << "Start parsing the TM file" << END_LOG;
+
                                 //Start reading the translation model file line by line
                                 while (m_reader.get_first_line(line)) {
                                     //Read the source phrase
@@ -302,6 +304,8 @@ namespace uva {
                                     if (source_str != next_source_str) {
                                         //Delete the unneeded source entry
                                         if (targets != NULL && (targets->get_size() == 0)) {
+                                            LOG_DEBUG << "Deleting the previous source entry "
+                                                    << source_uid << ", as it has no targets!" << END_LOG;
                                             delete targets;
                                             m_data.erase(source_uid);
                                         }
@@ -320,6 +324,7 @@ namespace uva {
 
                                     //Get the target entry if it is passes
                                     if (get_target_entry(line, source_uid, entry)) {
+                                        LOG_DEBUG1 << "Adding the new target entry to the source " << source_uid << END_LOG;
                                         //Add the translation entry to the list
                                         targets->add_elemenent(entry);
                                     }
@@ -379,7 +384,7 @@ namespace uva {
                                             LOG_DEBUG << "The phrase: ___" << target.get_target_phrase() << "__ lm-weight: " << lm_weight << END_LOG;
 
                                             source_entry->add_target(target, lm_weight);
-                                            
+
                                             //Move on to the next entry
                                             entry = entry->m_next;
                                         }
@@ -390,9 +395,10 @@ namespace uva {
 
                                     //Delete the entry
                                     delete targets;
-                                    //Erase the entry from the map
-                                    m_data.erase(it);
                                 }
+                                
+                                //Erase the map entries
+                                m_data.clear();
 
                                 //Stop the progress bar in case of no exception
                                 logger::stop_progress_bar();
