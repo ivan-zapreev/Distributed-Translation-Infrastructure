@@ -112,7 +112,7 @@ namespace uva {
                              */
                             inline void set_data(const phrase_uid source_uid,
                                     const string & target_phrase, const phrase_uid target_uid,
-                                    const size_t num_features, const float * features,
+                                    const size_t num_features, const prob_weight * features,
                                     const phrase_length num_words, const word_uid * word_ids) {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;

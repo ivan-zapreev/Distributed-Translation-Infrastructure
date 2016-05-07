@@ -45,8 +45,10 @@ namespace uva {
             template<typename elem_type>
             class ordered_list {
             public:
-
-#define CAPACITY_THRESHOLD 2
+                //Stores the capacity threshold for the ordered list.
+                //If the capacity is less or equal to this value then
+                //the capacity of the list is set to be unlimited
+                constexpr static uint32_t CAPACITY_THRESHOLD = 2;
 
                 /**
                  * This is the container structure to store the pointer to the

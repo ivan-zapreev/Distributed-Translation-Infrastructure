@@ -76,6 +76,8 @@ namespace uva {
                          * simple text model format as used by Oyster or Moses.
                          * See http://www.statmt.org/moses/?n=Moses.Tutorial for some info.
                          * The translation model is also commonly known as a phrase table.
+                         * This class does not support translation limit but is fast loading
+                         * the unlimited phrase table.
                          */
                         template< typename model_type, typename reader_type>
                         class tm_basic_builder {

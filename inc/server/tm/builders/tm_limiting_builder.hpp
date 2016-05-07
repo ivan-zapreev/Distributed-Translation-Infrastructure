@@ -80,10 +80,16 @@ namespace uva {
                          * simple text model format as used by Oyster or Moses.
                          * See http://www.statmt.org/moses/?n=Moses.Tutorial for some info.
                          * The translation model is also commonly known as a phrase table.
+                         * This implementation is slow on loading the models when the 
+                         * translation limit is too large or is not set.
                          */
                         template< typename model_type, typename reader_type>
                         class tm_limiting_builder {
                         public:
+                            //Stores the best-translations threshold for the builder.
+                            //If the requested best trans. is less or equal to this
+                            //value then the translation limit is ignored with a warning.
+                            constexpr static uint32_t BEST_TRANS_THRESHOLD = targets_list::CAPACITY_THRESHOLD;
 
                             /**
                              * The basic constructor of the builder object
@@ -94,6 +100,12 @@ namespace uva {
                             tm_limiting_builder(const tm_parameters & params, model_type & model, reader_type & reader)
                             : m_params(params), m_data(NULL), m_model(model), m_reader(reader),
                             m_lm_query(lm_configurator::allocate_fast_query_proxy()), m_tmp_num_words(0) {
+                                if (m_params.m_trans_limit <= BEST_TRANS_THRESHOLD) {
+                                    LOG_WARNING << "The translation limit: " << m_params.m_trans_limit
+                                            << " is too small, will be ignored!" << END_LOG;
+                                    LOG_INFO << "The translation limit must be > " << BEST_TRANS_THRESHOLD
+                                            << " to be taken into account." << END_LOG;
+                                }
                             }
 
                             /**
@@ -309,7 +321,8 @@ namespace uva {
 
                                     //If we are now reading the new source entry
                                     if (source_str != next_source_str) {
-                                        //Delete the unneeded source entry
+                                        //Delete the empty targets of the previous source entry
+                                        //and erase the entry as it got no translations
                                         if (targets != NULL && (targets->get_size() == 0)) {
                                             LOG_DEBUG << "Deleting the previous source entry "
                                                     << source_uid << ", as it has no targets!" << END_LOG;
@@ -325,11 +338,12 @@ namespace uva {
                                         LOG_DEBUG1 << "The NEW source ___" << source_str << "___ id is: " << source_uid << END_LOG;
 
                                         //Create a new list of targets, or retrieve an existing one
-                                        if (m_data->find(source_uid) == m_data->end()) {
+                                        tm_data_map::iterator iter = m_data->find(source_uid);
+                                        if (iter == m_data->end()) {
                                             targets = new targets_list(m_params.m_trans_limit);
                                             m_data->operator[](source_uid) = targets;
                                         } else {
-                                            targets = m_data->at(source_uid);
+                                            targets = iter->second;
                                         }
                                     }
 
@@ -397,7 +411,7 @@ namespace uva {
                                             //Get the reference to the target entry
                                             tm_target_entry & target = **entry;
 
-                                            //Get the language model weights for the target translation
+                                            //Get the language model weight for the target translation
                                             const prob_weight lm_weight = m_lm_query.execute(target.get_num_words(), target.get_word_ids());
                                             LOG_DEBUG << "The phrase: ___" << target.get_target_phrase() << "__ lm-weight: " << lm_weight << END_LOG;
 
