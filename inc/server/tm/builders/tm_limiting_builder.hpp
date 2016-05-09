@@ -364,7 +364,7 @@ namespace uva {
                              * Loads the translation model data into memory and filters is
                              */
                             inline void load_tm_data() {
-                                logger::start_progress_bar(string("Pre-loading the phrase translations"));
+                                logger::start_progress_bar(string("Pre-loading phrase translations"));
 
                                 //Count the good entries
                                 parse_tm_file();
