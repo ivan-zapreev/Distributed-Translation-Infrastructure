@@ -20,11 +20,11 @@
     </logicalFolder>
     <df root="ext" name="0">
     </df>
-    <df root="ext" name="3">
+    <df root="ext" name="1">
     </df>
-    <df root="inc" name="1">
+    <df root="inc" name="2">
     </df>
-    <df root="inc" name="4">
+    <df root="inc" name="3">
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -34,7 +34,7 @@
       <itemPath>/usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp</itemPath>
       <itemPath>/usr/share/cmake-3.5/Modules/CMakeCompilerABI.h</itemPath>
     </logicalFolder>
-    <df root="src" name="2">
+    <df root="src" name="4">
       <df name="client">
         <in>bpbd_client.cpp</in>
         <in>trans_job_status.cpp</in>

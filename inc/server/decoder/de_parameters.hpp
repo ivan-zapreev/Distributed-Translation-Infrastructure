@@ -88,6 +88,10 @@ namespace uva {
                         //two equivalent hypothesis, with the highest score. 
                         atomic<uint32_t> m_num_alt_to_keep;
 
+                        //This flag is needed for when the server is compiled in the tuning mode.
+                        //This flag should allow to set the tuning lattice generation of and off.
+                        atomic<bool> m_is_gen_lattice;
+
                         /**
                          * The basic constructor, does nothing
                          */
@@ -113,6 +117,7 @@ namespace uva {
                                 this->m_stack_capacity = other.m_stack_capacity.load();
                                 this->m_word_penalty = other.m_word_penalty.load();
                                 this->m_lin_dist_penalty = other.m_lin_dist_penalty.load();
+                                this->m_is_gen_lattice = other.m_is_gen_lattice.load();
                             }
 
                             return *this;
@@ -160,6 +165,14 @@ namespace uva {
                             //The number of alternative translations in
                             //the number of best translations minus one
                             this->m_num_alt_to_keep = m_num_best_trans - 1;
+
+#if !IS_SERVER_TUNING_MODE
+                            if (this->m_is_gen_lattice) {
+                                LOG_WARNING << "The is_gen_lattice is set to true in a non-training"
+                                        << " mode server compilation, re-setting to false!" << END_LOG;
+                                this->m_is_gen_lattice = false;
+                            }
+#endif                            
                         }
                     };
 
@@ -193,7 +206,8 @@ namespace uva {
                                 << ", word_penalty = " << params.m_word_penalty
                                 << ", phrase_penalty = " << params.m_phrase_penalty
                                 << ", max_source_phrase_len = " << to_string(params.m_max_s_phrase_len)
-                                << ", max_target_phrase_len = " << to_string(params.m_max_t_phrase_len);
+                                << ", max_target_phrase_len = " << to_string(params.m_max_t_phrase_len)
+                                << ", is_gen_lattice = " << (params.m_is_gen_lattice ? "true" : "false");
 
                         return stream << " ]";
                     }

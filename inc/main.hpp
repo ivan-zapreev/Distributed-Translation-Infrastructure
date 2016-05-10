@@ -6,7 +6,7 @@
  */
 
 #ifndef SYSTEM_HPP
-#define	SYSTEM_HPP
+#define SYSTEM_HPP
 
 #include <string>
 #include <stdexcept>
@@ -114,7 +114,7 @@ namespace uva {
                     }
 
                     //Throw an exception
-                    THROW_EXCEPTION(string("Could not parse: ") + value_str);
+                    THROW_EXCEPTION(string("Could not parse integer: ") + value_str);
                 }
 
                 string get_string(INI<> &ini, string section, string key) {
@@ -137,12 +137,28 @@ namespace uva {
                     }
 
                     //Throw an exception
-                    THROW_EXCEPTION(string("Could not parse: ") + value_str);
+                    THROW_EXCEPTION(string("Could not parse float: ") + value_str);
+                }
+
+                bool get_bool(INI<> &ini, string section, string key) {
+                    //Get the value and assert on its presence
+                    GET_ASSERT(ini, section, key, value_str);
+
+                    if (value_str == "true") {
+                        return true;
+                    } else {
+                        if (value_str == "false") {
+                            return false;
+                        }
+                    }
+
+                    //Throw an exception
+                    THROW_EXCEPTION(string("Could not parse boolean: ") + value_str);
                 }
             }
         }
     }
 }
 
-#endif	/* SYSTEM_HPP */
+#endif /* SYSTEM_HPP */
 

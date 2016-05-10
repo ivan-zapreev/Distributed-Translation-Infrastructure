@@ -45,6 +45,7 @@ namespace uva {
                 static const string PROGRAM_SET_WP_CMD = "set wp ";
                 static const string PROGRAM_SET_LDP_CMD = "set ldp ";
                 static const string PROGRAM_SET_PP_CMD = "set pp ";
+                static const string PROGRAM_SET_GL_CMD = "set gl ";
 
                 /**
                  * Allows to stop the server;
@@ -87,6 +88,9 @@ namespace uva {
                     LOG_USAGE << "\t'" << PROGRAM_SET_LDP_CMD << "<float> & <enter>'  - set linear distortion penalty." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_WP_CMD << "<float> & <enter>'  - set word penalty." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_PP_CMD << "<float> & <enter>'  - set phrase penalty." << END_LOG;
+#if IS_SERVER_TUNING_MODE
+                    LOG_USAGE << "\t'" << PROGRAM_SET_GL_CMD << "<bool> & <enter>'  - enable/disable search lattice generation." << END_LOG;
+#endif
                 }
 
                 //Stores the command buffer size
@@ -115,7 +119,7 @@ namespace uva {
                 /**
                  * Allows to parse the command parameter and return it
                  * @param str the command string
-                 * @param prefix the command pregix
+                 * @param prefix the command prefix
                  * @return the parsed value
                  */
                 inline int32_t get_int_value(const string & str, const string & prefix) {
@@ -128,13 +132,13 @@ namespace uva {
                     }
 
                     //Throw an exception
-                    THROW_EXCEPTION(string("Could not parse: ") + str_val);
+                    THROW_EXCEPTION(string("Could not parse integer: ") + str_val);
                 }
 
                 /**
                  * Allows to parse the command parameter and return it
                  * @param str the command string
-                 * @param prefix the command pregix
+                 * @param prefix the command prefix
                  * @return the parsed value
                  */
                 inline float get_float_value(const string & str, const string & prefix) {
@@ -147,7 +151,29 @@ namespace uva {
                     }
 
                     //Throw an exception
-                    THROW_EXCEPTION(string("Could not parse: ") + str_val);
+                    THROW_EXCEPTION(string("Could not parse float: ") + str_val);
+                }
+
+                /**
+                 * Allows to parse the command parameter and return it
+                 * @param str the command string
+                 * @param prefix the command prefix
+                 * @return the parsed value
+                 */
+                inline bool get_bool_value(const string & str, const string & prefix) {
+                    //Get the string value to be parsed
+                    string str_val = get_string_value(str, prefix);
+
+                    if (str_val == "true") {
+                        return true;
+                    } else {
+                        if (str_val == "false") {
+                            return false;
+                        }
+                    }
+
+                    //Throw an exception
+                    THROW_EXCEPTION(string("Could not parse boolean: ") + str_val);
                 }
 
                 /**
@@ -199,35 +225,48 @@ namespace uva {
                     try {
                         //Get a copy of current decoder parameters
                         de_parameters de_local = de_params;
-
+                        
+                        //Stores the boolean flag indicating whether the command was recognized or not.
+                        bool is_recognized = false;
+                        
                         if (begins_with(cmd, PROGRAM_SET_NBT_CMD)) {
                             de_local.m_num_best_trans = get_int_value(cmd, PROGRAM_SET_NBT_CMD);
-                        } else {
-                            if (begins_with(cmd, PROGRAM_SET_D_CMD)) {
-                                de_local.m_distortion = get_int_value(cmd, PROGRAM_SET_D_CMD);
-                            } else {
-                                if (begins_with(cmd, PROGRAM_SET_PT_CMD)) {
-                                    de_local.m_pruning_threshold = get_float_value(cmd, PROGRAM_SET_PT_CMD);
-                                } else {
-                                    if (begins_with(cmd, PROGRAM_SET_SC_CMD)) {
-                                        de_local.m_stack_capacity = get_int_value(cmd, PROGRAM_SET_SC_CMD);
-                                    } else {
-                                        if (begins_with(cmd, PROGRAM_SET_WP_CMD)) {
-                                            de_local.m_word_penalty = get_float_value(cmd, PROGRAM_SET_WP_CMD);
-                                        } else {
-                                            if (begins_with(cmd, PROGRAM_SET_PP_CMD)) {
-                                                de_local.m_phrase_penalty = get_float_value(cmd, PROGRAM_SET_PP_CMD);
-                                            } else {
-                                                if (begins_with(cmd, PROGRAM_SET_LDP_CMD)) {
-                                                    de_local.m_lin_dist_penalty = get_float_value(cmd, PROGRAM_SET_LDP_CMD);
-                                                } else {
-                                                    THROW_EXCEPTION(string("The command '") + cmd + string("' is unknown!"));
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            is_recognized = true;
+                        }
+                        if (begins_with(cmd, PROGRAM_SET_D_CMD)) {
+                            de_local.m_distortion = get_int_value(cmd, PROGRAM_SET_D_CMD);
+                            is_recognized = true;
+                        }
+                        if (begins_with(cmd, PROGRAM_SET_PT_CMD)) {
+                            de_local.m_pruning_threshold = get_float_value(cmd, PROGRAM_SET_PT_CMD);
+                            is_recognized = true;
+                        }
+                        if (begins_with(cmd, PROGRAM_SET_SC_CMD)) {
+                            de_local.m_stack_capacity = get_int_value(cmd, PROGRAM_SET_SC_CMD);
+                            is_recognized = true;
+                        }
+                        if (begins_with(cmd, PROGRAM_SET_WP_CMD)) {
+                            de_local.m_word_penalty = get_float_value(cmd, PROGRAM_SET_WP_CMD);
+                            is_recognized = true;
+                        }
+                        if (begins_with(cmd, PROGRAM_SET_PP_CMD)) {
+                            de_local.m_phrase_penalty = get_float_value(cmd, PROGRAM_SET_PP_CMD);
+                            is_recognized = true;
+                        }
+                        if (begins_with(cmd, PROGRAM_SET_LDP_CMD)) {
+                            de_local.m_lin_dist_penalty = get_float_value(cmd, PROGRAM_SET_LDP_CMD);
+                            is_recognized = true;
+                        }
+
+#if IS_SERVER_TUNING_MODE
+                        if (begins_with(cmd, PROGRAM_SET_GL_CMD)) {
+                            de_local.m_is_gen_lattice = get_bool_value(cmd, PROGRAM_SET_GL_CMD);
+                            is_recognized = true;
+                        }
+#endif
+
+                        if (!is_recognized) {
+                            THROW_EXCEPTION(string("The command '") + cmd + string("' is unknown!"));
                         }
 
                         //Finalize the parameters
