@@ -1,0 +1,80 @@
+Parameter tuning with the Oister framework is done based on the following three files:
+
+1. <souirce-file-name>.lattices        - stores the translation tree/graph per translated sentence with the information on the transitions between partial hypothesis and source and target phrases and added costs
+2. <souirce-file-name>.feature_scores  - stores, per sentence, information on which partial hypothesis added/used which feature weights (multiplied with lambdas?) in which partial hypothesis score computation
+3. oister.conf.feature_id2name         - this one maps the oister feature name to the id number used to identify the feature within the lattice feature score file
+
+Let us further specify the format/gine an example of the files mentioned above:
+
+*********************************
+<souirce-file-name>.lattices
+*********************************
+
+The first node for the sentence is the end dummy node for which there are no target translation phrases - empty and the score deltas are all zero
+
+<SENT ID=XXXXXXX>
+TO_NODE_ID_1   FROM_NODE_ID_1|||TARGET_PHRASE|||SCORE_DELTA FROM_NODE_ID_2|||TARGET_PHRASE|||SCORE_DELTA ... FROM_NODE_ID_K|||TARGET_PHRASE|||SCORE_DELTA
+...
+<COVERVECS>TO_NODE_ID_1-FROM_NODE_ID_1:BEGIN_SROURCE_PHRASE_IDX:END_SROURCE_PHRASE_IDX TO_NODE_ID_1-FROM_NODE_ID_2:BEGIN_SROURCE_PHRASE_IDX:END_SROURCE_PHRASE_IDX …</COVERVECS>
+</SENT>
+...
+
+Here XXXXXXX is an unsigned integer, starting with 0, representing the sentence id.
+Each TO_NODE_ID_YYYYYY entry is placed on a separate line
+TO_NODE_ID and FROM_NODE_ID_1 have 3 spaces in between
+Every other incoming edge, e.g. FROM_NODE_ID_2, is divided from the previous score delta with a space.
+If there is no target phrase translation, for the end dummy one referencing all the other ones, then TARGET_PHRASE turns into an empty string.
+If there is no known translation for a source phrase then the corresponding source phrase is used instead of the target phrase.
+<COVERVECS> contains to-from node id pairs with the corresponding index interval for the last translated source phrase
+The <COVERVECS> tag seems to store everything in one line
+There is one <COVERVECS></COVERVECS> entry per sentence 
+There are multiple <SENT></SENT> entries per file.
+NODE_IDs seem to start from 1.
+
+*********************************
+<source-file-name>.feature_scores
+*********************************
+
+<SENT ID=0>
+NODE_ID_1 FEATURE_ID_A11=FEATURE_WEIGHT ... FEATURE_ID_A1N1=FEATURE_WEIGHT
+...
+NODE_ID_Z FEATURE_ID_AZ1=FEATURE_WEIGHT ... FEATURE_ID_AZNZ=FEATURE_WEIGHT
+</SENT>
+
+Here the nod ids and feature weights are space separated.
+Nodes are have an ascending order in their ids.
+ONLY the feature weights added to the node partial/total cost are listed in the file
+FEATURE_IDs start from zero
+
+*********************************
+oister.conf.feature_id2name
+*********************************
+
+This file just matches the feature names of the oister.conf file to the
+feature id numbers, as used in a <source-file-name>.feature_scores file. 
+Consider the following example:
+
+0       phrase_table[0]
+1       phrase_table[1]
+2       phrase_table[2]
+3       phrase_table[3]
+4       phrase_table[4]
+5       lm_weight
+6       word_penalty
+7       distortion_cost
+8       lex_dm_fe[0]
+9       lex_dm_fe[1]
+10      lex_dm_fe[2]
+11      lex_dm_fe[3]
+12      lex_dm_fe[4]
+13      lex_dm_fe[5]
+14      lex_dm_fe[6]
+15      lex_dm_fe[7]
+16      lex_hrm_fe[0]
+17      lex_hrm_fe[1]
+18      lex_hrm_fe[2]
+19      lex_hrm_fe[3]
+20      lex_hrm_fe[4]
+21      lex_hrm_fe[5]
+22      lex_hrm_fe[6]
+23      lex_hrm_fe[7]

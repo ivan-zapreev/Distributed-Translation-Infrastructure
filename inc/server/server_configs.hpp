@@ -42,6 +42,11 @@ namespace uva {
                 //The zero like value for log probability weight
                 static constexpr prob_weight ZERO_LOG_PROB_WEIGHT = -100.0f;
 
+                //This macro defines whether or not the software is to be compiled
+                //in the tuning mode or not. The tuning mode allows to dump the
+                //search lattices and related data but it is also slower.
+#define IS_SERVER_TUNING_MODE true
+
                 namespace decoder {
                 }
 
