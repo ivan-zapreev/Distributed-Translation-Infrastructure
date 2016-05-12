@@ -313,8 +313,8 @@ namespace uva {
                              */
                             inline prob_weight get_lin_dist_cost(const state_data_templ & prev_state_data) {
                                 int32_t distance = abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
-                                if (is_dist && (distance > m_stack_data.m_params.m_distortion)) {
-                                    distance = m_stack_data.m_params.m_distortion;
+                                if (is_dist && (distance > m_stack_data.m_params.m_dist_limit)) {
+                                    distance = m_stack_data.m_params.m_dist_limit;
                                 }
                                 return m_stack_data.m_params.m_lin_dist_penalty * distance;
                             }

@@ -34,12 +34,17 @@
 #include "common/utils/threads.hpp"
 
 #include "server/decoder/de_configs.hpp"
+#include "server/server_consts.hpp"
 
 using namespace std;
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::threads;
+
+using namespace uva::smt::bpbd::server::lm;
+using namespace uva::smt::bpbd::server::rm;
+using namespace uva::smt::bpbd::server::tm;
 
 namespace uva {
     namespace smt {
@@ -54,7 +59,7 @@ namespace uva {
                         //The distortion limit to use; <integer>
                         //The the number of words to the right and left
                         //from the last phrase end word to consider
-                        atomic<int32_t> m_distortion;
+                        atomic<int32_t> m_dist_limit;
 
                         //The maximum number of words to consider when making phrases
                         phrase_length m_max_s_phrase_len;
@@ -105,7 +110,7 @@ namespace uva {
                          */
                         de_parameters_struct& operator=(const de_parameters_struct & other) {
                             if (this != &other) {
-                                this->m_distortion = other.m_distortion.load();
+                                this->m_dist_limit = other.m_dist_limit.load();
                                 this->m_max_s_phrase_len = other.m_max_s_phrase_len;
                                 this->m_max_t_phrase_len = other.m_max_t_phrase_len;
                                 this->m_num_best_trans = other.m_num_best_trans.load();
@@ -135,7 +140,7 @@ namespace uva {
                          * Allows to verify the parameters to be correct.
                          */
                         void finalize() {
-                            ASSERT_CONDITION_THROW((m_distortion < 0),
+                            ASSERT_CONDITION_THROW((m_dist_limit < 0),
                                     string("The m_distortion must not be >= 0!"));
 
                             ASSERT_CONDITION_THROW((m_max_s_phrase_len == 0),
@@ -190,21 +195,22 @@ namespace uva {
                         //Log the number of best translations value
                         stream << "num_best_trans = " << params.m_num_best_trans;
 
-                        //Log the distortion parameters
-                        if (params.m_distortion != 0) {
-                            stream << ", distortion = " << params.m_distortion;
+                        //Log the distortion limit parameter
+                        stream << ", " << RM_DIST_LIMIT_PARAM_NAME << " = ";
+                        if (params.m_dist_limit != 0) {
+                            stream << params.m_dist_limit;
                         } else {
-                            stream << ", distortion_limit = false (help)";
+                            stream << "none (help)";
                         }
 
                         //The linear distortion penalty lambda
-                        stream << ", lin_dist_penalty = " << params.m_lin_dist_penalty;
+                        stream << ", " << RM_LIN_DIST_PARAM_NAME << " = " << params.m_lin_dist_penalty;
 
                         //Log simple value parameters
                         stream << ", pruning_threshold = " << params.m_pruning_threshold
                                 << ", stack_capacity = " << params.m_stack_capacity
-                                << ", word_penalty = " << params.m_word_penalty
-                                << ", phrase_penalty = " << params.m_phrase_penalty
+                                << ", " << TM_WORD_PENALTY_PARAM_NAME << " = " << params.m_word_penalty
+                                << ", " << TM_PHRASE_PENALTY_PARAM_NAME << " = " << params.m_phrase_penalty
                                 << ", max_source_phrase_len = " << to_string(params.m_max_s_phrase_len)
                                 << ", max_target_phrase_len = " << to_string(params.m_max_t_phrase_len)
                                 << ", is_gen_lattice = " << (params.m_is_gen_lattice ? "true" : "false");

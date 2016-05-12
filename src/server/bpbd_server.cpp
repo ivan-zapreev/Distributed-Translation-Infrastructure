@@ -37,12 +37,12 @@
 
 #include "common/utils/exceptions.hpp"
 
+#include "server/server_consts.hpp"
+#include "server/cmd_line_handler.hpp"
 #include "server/decoder/de_configurator.hpp"
 #include "server/lm/lm_configurator.hpp"
 #include "server/tm/tm_configurator.hpp"
 #include "server/rm/rm_configurator.hpp"
-
-#include "server/cmd_line_handler.hpp"
 
 using namespace std;
 using namespace TCLAP;
@@ -141,8 +141,8 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
         section = "Language Models";
         params.m_lm_params.m_conn_string = get_string(ini, section, "connection_string");
-        tokenize_s_t_f<NUM_LM_FEATURES>("lm_feature_weights",
-                get_string(ini, section, "lm_feature_weights"),
+        tokenize_s_t_f<NUM_LM_FEATURES>(LM_FEATURE_PARAM_NAME,
+                get_string(ini, section, LM_FEATURE_PARAM_NAME),
                 params.m_lm_params.m_lambdas,
                 params.m_lm_params.m_num_lambdas,
                 LM_FEATURE_WEIGHTS_DELIMITER_STR);
@@ -151,8 +151,8 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
         section = "Translation Models";
         params.m_tm_params.m_conn_string = get_string(ini, section, "connection_string");
-        tokenize_s_t_f<NUM_TM_FEATURES>("tm_feature_weights",
-                get_string(ini, section, "tm_feature_weights"),
+        tokenize_s_t_f<NUM_TM_FEATURES>(TM_FEATURE_PARAM_NAME,
+                get_string(ini, section, TM_FEATURE_PARAM_NAME),
                 params.m_tm_params.m_lambdas,
                 params.m_tm_params.m_num_lambdas,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
@@ -163,29 +163,29 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
         params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, "translation_limit");
         params.m_tm_params.m_min_tran_prob = get_float(ini, section, "min_trans_prob");
+        params.m_de_params.m_word_penalty = get_float(ini, section, TM_WORD_PENALTY_PARAM_NAME);
+        params.m_de_params.m_phrase_penalty = get_float(ini, section, TM_PHRASE_PENALTY_PARAM_NAME);
         params.m_tm_params.finalize();
         LOG_INFO << params.m_tm_params << END_LOG;
 
         section = "Reordering Models";
         params.m_rm_params.m_conn_string = get_string(ini, section, "connection_string");
-        tokenize_s_t_f<NUM_RM_FEATURES>("rm_feature_weights",
-                get_string(ini, section, "rm_feature_weights"),
+        tokenize_s_t_f<NUM_RM_FEATURES>(RM_FEATURE_PARAM_NAME,
+                get_string(ini, section, RM_FEATURE_PARAM_NAME),
                 params.m_rm_params.m_lambdas,
                 params.m_rm_params.m_num_lambdas,
                 RM_FEATURE_WEIGHTS_DELIMITER_STR);
+        params.m_de_params.m_lin_dist_penalty = get_float(ini, section, RM_LIN_DIST_PARAM_NAME);
+        params.m_de_params.m_dist_limit = get_integer<int32_t>(ini, section, RM_DIST_LIMIT_PARAM_NAME);
         params.m_rm_params.finalize();
         LOG_INFO << params.m_rm_params << END_LOG;
 
         section = "Decoding Options";
         params.m_de_params.m_num_best_trans = get_integer<uint32_t>(ini, section, "num_best_trans");
-        params.m_de_params.m_distortion = get_integer<int32_t>(ini, section, "distortion");
         params.m_de_params.m_pruning_threshold = get_float(ini, section, "pruning_threshold");
         params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, "stack_capacity");
         params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section, "max_source_phrase_length");
         params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, "max_target_phrase_length");
-        params.m_de_params.m_word_penalty = get_float(ini, section, "word_penalty");
-        params.m_de_params.m_phrase_penalty = get_float(ini, section, "phrase_penalty");
-        params.m_de_params.m_lin_dist_penalty = get_float(ini, section, "lin_dist_penalty");
         params.m_de_params.m_is_gen_lattice = get_bool(ini, section, "is_gen_lattice");
         params.m_de_params.finalize();
         LOG_INFO << params.m_de_params << END_LOG;

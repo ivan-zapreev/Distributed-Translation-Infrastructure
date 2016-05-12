@@ -109,7 +109,7 @@ namespace uva {
                     static inline std::ostream& operator<<(std::ostream& stream, const lm_parameters & params) {
                         return stream << "LM parameters: [ conn_string = " << params.m_conn_string
                                 << ", num_lm_feature_weights = " << params.m_num_lambdas
-                                << ", lm_feature_weights = " << array_to_string<float>(params.m_num_lambdas,
+                                << ", " << LM_FEATURE_PARAM_NAME << " = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, LM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << " ]";
                     }

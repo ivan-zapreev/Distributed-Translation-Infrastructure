@@ -99,6 +99,13 @@ namespace uva {
                     static const string TM_UNKNOWN_SOURCE_STR = u8"UNK";
                     //Stores the unknown target phrase string, should be configurable
                     static const string TM_UNKNOWN_TARGET_STR = u8"<unk>";
+
+                    //The feature weights parameter name
+                    static const string TM_FEATURE_PARAM_NAME = "tm_feature_weights";
+                    //The word penalty weight parameter name
+                    static const string TM_WORD_PENALTY_PARAM_NAME = "tm_word_penalty";
+                    //The phrase penalty weight parameter name
+                    static const string TM_PHRASE_PENALTY_PARAM_NAME = "tm_phrase_penalty";
                 }
 
                 namespace lm {
@@ -115,6 +122,9 @@ namespace uva {
                     static const string BEGIN_SENTENCE_TAG_STR = u8"<s>";
                     //Stores the end of the sentence symbol
                     static const string END_SENTENCE_TAG_STR = u8"</s>";
+
+                    //The feature weights parameter name
+                    static const string LM_FEATURE_PARAM_NAME = "lm_feature_weights";
                 }
 
                 namespace rm {
@@ -131,8 +141,14 @@ namespace uva {
                     static constexpr size_t FOUR_RM_FEATURES = 4u;
                     static constexpr size_t SIX_RM_FEATURES = 6u;
                     static constexpr size_t EIGHT_RM_FEATURES = 8u;
-                }
-                
+                    
+                    //The feature weights parameter name
+                    static const string RM_FEATURE_PARAM_NAME = "rm_feature_weights";
+                    //The linear distortion weight parameter name
+                    static const string RM_DIST_LIMIT_PARAM_NAME = "rm_dist_limit";
+                    //The distortion limit parameter name
+                    static const string RM_LIN_DIST_PARAM_NAME = "rm_lin_dist_penalty";
+                }                
             }
         }
     }

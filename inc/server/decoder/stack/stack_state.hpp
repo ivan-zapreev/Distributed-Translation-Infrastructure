@@ -560,7 +560,7 @@ namespace uva {
                                 int32_t min_pos;
                                 if (is_dist) {
                                     //Compute the normal minimum position for distortion
-                                    min_pos = (m_state_data.m_s_end_word_idx - m_state_data.m_stack_data.m_params.m_distortion);
+                                    min_pos = (m_state_data.m_s_end_word_idx - m_state_data.m_stack_data.m_params.m_dist_limit);
                                     //Bound the position by the minimum word index
                                     min_pos = max(min_pos, MIN_WORD_IDX);
                                 } else {
@@ -607,7 +607,7 @@ namespace uva {
                                 int32_t max_pos;
                                 if (is_dist) {
                                     //Compute the normal maximum position for distortion
-                                    max_pos = m_state_data.m_s_end_word_idx + m_state_data.m_stack_data.m_params.m_distortion;
+                                    max_pos = m_state_data.m_s_end_word_idx + m_state_data.m_stack_data.m_params.m_dist_limit;
                                     //Bound the position by the maximum word index
                                     max_pos = min(max_pos, MAX_WORD_IDX);
                                 } else {

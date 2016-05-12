@@ -46,12 +46,39 @@ Nodes are have an ascending order in their ids.
 ONLY the feature weights added to the node partial/total cost are listed in the file
 FEATURE_IDs start from zero
 
+Questions to be answered:
+
+1. Do we take into account the features used in the future cost computation or just the features from the current score computation?
+   - 
+
+2. Do the feature values have to be multiplied with lambda’s or those shall be just the original weights?
+   - 
+
+3. Is the Language model weight is the joint probability of the new phrase with the given history, right?
+   - 
+
+4. The word penalty is the #words * the word_penalty?
+   - Yes, I am almost sure that it is, looking into the example file, as I see that the values
+     change all the time where as the word_penalty is single and constant.
+
+5. The distortion penalty is the linear distortion cost and not just the value of lin_dist_penalty?
+   - Yes, I am almost sure that it is, looking into the example file, as I see that the values
+     change all the time where as the lin_dist_penalty is single and constant.
+
+6. The lex_dm_fe values are the distortion model features but what are lex_hrm_fe?
+   - lex_hrm_fe is a hierarchical reordering model, which is not present in my decoder right now.
+
+7. The phrase_table[4] (phrase_penalty) is just a constant value, and is to be used for any hypothesis as is.
+   - Yes, grep -v " 4=" <file_name>.feature_scores | grep -v "SENT" gives an empty result, so each entry had
+     a phrase_table[4] used.
+
 *********************************
 oister.conf.feature_id2name
 *********************************
 
 This file just matches the feature names of the oister.conf file to the
 feature id numbers, as used in a <source-file-name>.feature_scores file. 
+The list of features should be easily extendable to more models.
 Consider the following example:
 
 0       phrase_table[0]
@@ -78,3 +105,6 @@ Consider the following example:
 21      lex_hrm_fe[5]
 22      lex_hrm_fe[6]
 23      lex_hrm_fe[7]
+
+In the example above the lex_hrm_fe are the features that are not present inside the current basic translation system.
+Also the lex_dm_fe[3] and lex_dm_fe[7] are not present either. In out system phrase_table[4] is the phrase penalty.

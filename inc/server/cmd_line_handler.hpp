@@ -234,7 +234,7 @@ namespace uva {
                             is_recognized = true;
                         }
                         if (begins_with(cmd, PROGRAM_SET_D_CMD)) {
-                            de_local.m_distortion = get_int_value(cmd, PROGRAM_SET_D_CMD);
+                            de_local.m_dist_limit = get_int_value(cmd, PROGRAM_SET_D_CMD);
                             is_recognized = true;
                         }
                         if (begins_with(cmd, PROGRAM_SET_PT_CMD)) {

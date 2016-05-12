@@ -120,7 +120,7 @@ namespace uva {
                     static inline std::ostream& operator<<(std::ostream& stream, const tm_parameters & params) {
                         return stream << "TM parameters: [ conn_string = " << params.m_conn_string
                                 << ", num_tm_feature_weights = " << params.m_num_lambdas
-                                << ", tm_feature_weights = " << array_to_string<float>(params.m_num_lambdas,
+                                << ", " << TM_FEATURE_PARAM_NAME << " = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, TM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << ", translation_limit = " << params.m_trans_limit
                                 << ", min_trans_prob = " << params.m_min_tran_prob

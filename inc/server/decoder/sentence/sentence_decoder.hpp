@@ -397,7 +397,7 @@ namespace uva {
                              */
                             inline void perform_translation() {
                                 //Depending on the stack template parameters do the thing
-                                if (m_params.m_distortion != 0) {
+                                if (m_params.m_dist_limit != 0) {
                                     if (m_params.m_num_alt_to_keep != 0) {
                                         perform_translation<true, true>();
                                     } else {

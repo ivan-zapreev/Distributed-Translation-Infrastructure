@@ -155,7 +155,7 @@ namespace uva {
              */
             template<size_t EXP_NUM_ELEMS>
             static inline void tokenize_s_t_f(
-                    const char * name, const std::string &data,
+                    const string name, const std::string &data,
                     float elems[EXP_NUM_ELEMS], size_t & num_elems,
                     const string& delim = UTF8_SPACE_STRING) {
                 size_t start = 0;
@@ -168,7 +168,7 @@ namespace uva {
                 while (end <= std::string::npos) {
                     //Check that the number of elements is not exceeded
                     ASSERT_CONDITION_THROW((num_elems > EXP_NUM_ELEMS),
-                            string("Exceeding the maximum allowed number of ") + string(name) +
+                            string("Exceeding the maximum allowed number of ") + name +
                             string(": ") + to_string(EXP_NUM_ELEMS) + string(" when parsing: ") + data);
 
                     //Parse the next token into the float
@@ -185,7 +185,7 @@ namespace uva {
                 }
 
                 ASSERT_CONDITION_THROW((num_elems < EXP_NUM_ELEMS),
-                        string("The expected number of ") + string(name) +
+                        string("The expected number of ") + name +
                         string(": ") + to_string(EXP_NUM_ELEMS) +
                         string(" got only: ") + to_string(num_elems));
             }
