@@ -96,6 +96,14 @@ namespace uva {
                         //This flag is needed for when the server is compiled in the tuning mode.
                         //This flag should allow to set the tuning lattice generation of and off.
                         atomic<bool> m_is_gen_lattice;
+                        //The server configuration file name, is only set if IS_SERVER_TUNING_MODE == true
+                        string m_config_file_name;
+                        //The lattice id to name file extension, is only set if IS_SERVER_TUNING_MODE == true
+                        string m_li2d_file_ext;
+                        //The lattice feature scores file extension, is only set if IS_SERVER_TUNING_MODE == true
+                        string m_scores_file_ext;
+                        //The lattice file extension, is only set if IS_SERVER_TUNING_MODE == true
+                        string m_lattice_file_ext;
 
                         /**
                          * The basic constructor, does nothing
@@ -123,6 +131,10 @@ namespace uva {
                                 this->m_word_penalty = other.m_word_penalty.load();
                                 this->m_lin_dist_penalty = other.m_lin_dist_penalty.load();
                                 this->m_is_gen_lattice = other.m_is_gen_lattice.load();
+                                this->m_config_file_name = other.m_config_file_name;
+                                this->m_li2d_file_ext = other.m_li2d_file_ext;
+                                this->m_scores_file_ext = other.m_scores_file_ext;
+                                this->m_lattice_file_ext = other.m_lattice_file_ext;
                             }
 
                             return *this;
@@ -174,14 +186,21 @@ namespace uva {
                             //the number of best translations minus one
                             this->m_num_alt_to_keep = m_num_best_trans - 1;
 
-#if !IS_SERVER_TUNING_MODE
+#if IS_SERVER_TUNING_MODE
+                            ASSERT_CONDITION_THROW((m_li2d_file_ext == ""),
+                                    string("The ") + DE_LI2N_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
+                            ASSERT_CONDITION_THROW((m_scores_file_ext == ""),
+                                    string("The ") + DE_SCORES_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
+                            ASSERT_CONDITION_THROW((m_lattice_file_ext == ""),
+                                    string("The ") + DE_LATTICE_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
+#else
                             if (this->m_is_gen_lattice) {
                                 LOG_WARNING << "The " << DE_IS_GEN_LATTICE_PARAM_NAME
                                         << " is set to true in a non-training mode server"
                                         << " compilation, re-setting to false!" << END_LOG;
                                 this->m_is_gen_lattice = false;
                             }
-#endif                            
+#endif
                         }
                     };
 
@@ -218,6 +237,13 @@ namespace uva {
                                 << ", " << DE_MAX_SP_LEN_PARAM_NAME << " = " << to_string(params.m_max_s_phrase_len)
                                 << ", " << DE_MAX_TP_LEN_PARAM_NAME << " = " << to_string(params.m_max_t_phrase_len)
                                 << ", " << DE_IS_GEN_LATTICE_PARAM_NAME << " = " << (params.m_is_gen_lattice ? "true" : "false");
+
+                        //Log the additional lattice related parameters, if needed
+                        if (params.m_is_gen_lattice) {
+                            stream << ", " << DE_LI2N_FILE_EXT_PARAM_NAME << " = '." << params.m_li2d_file_ext << "'"
+                                    << ", " << DE_SCORES_FILE_EXT_PARAM_NAME << " = '." << params.m_scores_file_ext << "'"
+                                    << ", " << DE_LATTICE_FILE_EXT_PARAM_NAME << " = '." << params.m_lattice_file_ext << "'";
+                        }
 
                         return stream << " ]";
                     }

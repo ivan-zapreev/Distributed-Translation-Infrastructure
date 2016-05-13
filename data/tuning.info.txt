@@ -4,7 +4,7 @@ Parameter tuning with the Oister framework is done based on the following three 
 2. <souirce-file-name>.feature_scores  - stores, per sentence, information on which partial hypothesis added/used which feature weights (multiplied with lambdas?) in which partial hypothesis score computation
 3. oister.conf.feature_id2name         - this one maps the oister feature name to the id number used to identify the feature within the lattice feature score file
 
-Let us further specify the format/gine an example of the files mentioned above:
+Let us further specify the format/give an example of the files mentioned above:
 
 *********************************
 <souirce-file-name>.lattices
@@ -29,7 +29,7 @@ If there is no known translation for a source phrase then the corresponding sour
 The <COVERVECS> tag seems to store everything in one line
 There is one <COVERVECS></COVERVECS> entry per sentence 
 There are multiple <SENT></SENT> entries per file.
-NODE_IDs seem to start from 1.
+NODE_IDs seem to start from 1, the 0 id is for the first hypothesis.
 
 *********************************
 <source-file-name>.feature_scores
@@ -46,24 +46,24 @@ Nodes are have an ascending order in their ids.
 ONLY the feature weights added to the node partial/total cost are listed in the file
 FEATURE_IDs start from zero
 
+Features with zero weights do not have to be in the node line even if they are used.
+
 Questions to be answered:
 
 1. Do we take into account the features used in the future cost computation or just the features from the current score computation?
-   - 
+   - No, the future costs are not taken into account.
 
 2. Do the feature values have to be multiplied with lambda’s or those shall be just the original weights?
-   - 
+   - These are to be the original weights.
 
 3. Is the Language model weight is the joint probability of the new phrase with the given history, right?
-   - 
+   - Yes, it is so.
 
 4. The word penalty is the #words * the word_penalty?
-   - Yes, I am almost sure that it is, looking into the example file, as I see that the values
-     change all the time where as the word_penalty is single and constant.
+   - No, this is only the #words (can be positive or negative)
 
 5. The distortion penalty is the linear distortion cost and not just the value of lin_dist_penalty?
-   - Yes, I am almost sure that it is, looking into the example file, as I see that the values
-     change all the time where as the lin_dist_penalty is single and constant.
+   - No, this is only the distortion cost without lambda
 
 6. The lex_dm_fe values are the distortion model features but what are lex_hrm_fe?
    - lex_hrm_fe is a hierarchical reordering model, which is not present in my decoder right now.

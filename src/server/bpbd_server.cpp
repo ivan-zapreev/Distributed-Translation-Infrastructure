@@ -126,7 +126,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     //Parse the configuration file
     if (ini.parse()) {
         LOG_INFO << "The configuration file has been parsed!" << END_LOG;
-        
+
         //Get the configuration options from the file
         string section = "Server Options";
         params.m_server_port = get_integer<uint16_t>(ini, section, "server_port");
@@ -188,6 +188,10 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, DE_MAX_TP_LEN_PARAM_NAME);
 #if IS_SERVER_TUNING_MODE
         params.m_de_params.m_is_gen_lattice = get_bool(ini, section, DE_IS_GEN_LATTICE_PARAM_NAME);
+        params.m_de_params.m_config_file_name = config_file_name;
+        params.m_de_params.m_li2d_file_ext = get_string(ini, section, DE_LI2N_FILE_EXT_PARAM_NAME);
+        params.m_de_params.m_scores_file_ext = get_string(ini, section, DE_SCORES_FILE_EXT_PARAM_NAME);
+        params.m_de_params.m_lattice_file_ext = get_string(ini, section, DE_LATTICE_FILE_EXT_PARAM_NAME);
 #else
         params.m_de_params.m_is_gen_lattice = false;
 #endif

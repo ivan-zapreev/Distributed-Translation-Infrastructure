@@ -98,12 +98,18 @@ namespace uva {
                     static const string DE_MAX_TP_LEN_PARAM_NAME = "de_max_target_phrase_length";
                     //The is-generate-search-lattice parameter name
                     static const string DE_IS_GEN_LATTICE_PARAM_NAME = "de_is_gen_lattice";
+                    //The parameter name
+                    static const string DE_LI2N_FILE_EXT_PARAM_NAME = "de_lattice_id2name_file_ext";
+                    //The  parameter name
+                    static const string DE_SCORES_FILE_EXT_PARAM_NAME = "de_feature_scores_file_ext";
+                    //The  parameter name
+                    static const string DE_LATTICE_FILE_EXT_PARAM_NAME = "de_lattice_file_ext";
                 }
-                
+
                 namespace tm {
                     //Define the feature weights delimiter string for the config file
                     static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = u8"|";
-                    
+
                     //Stores the different values of TM features
                     static constexpr size_t ONE_TM_FEATURES = 4u;
                     static constexpr size_t TWO_TM_FEATURES = 4u;
@@ -166,7 +172,7 @@ namespace uva {
                     static constexpr size_t FOUR_RM_FEATURES = 4u;
                     static constexpr size_t SIX_RM_FEATURES = 6u;
                     static constexpr size_t EIGHT_RM_FEATURES = 8u;
-                    
+
                     //The RM connection string parameter name
                     static const string RM_CONN_STRING_PARAM_NAME = "rm_conn_string";
                     //The feature weights parameter name
@@ -175,7 +181,7 @@ namespace uva {
                     static const string RM_DIST_LIMIT_PARAM_NAME = "rm_dist_lim";
                     //The distortion limit parameter name
                     static const string RM_LIN_DIST_PARAM_NAME = "rm_lin_dist_penalty";
-                }                
+                }
             }
         }
     }
