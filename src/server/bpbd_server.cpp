@@ -186,7 +186,11 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, DE_STACK_CAPACITY_PARAM_NAME);
         params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section, DE_MAX_SP_LEN_PARAM_NAME);
         params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, DE_MAX_TP_LEN_PARAM_NAME);
+#if IS_SERVER_TUNING_MODE
         params.m_de_params.m_is_gen_lattice = get_bool(ini, section, DE_IS_GEN_LATTICE_PARAM_NAME);
+#else
+        params.m_de_params.m_is_gen_lattice = false;
+#endif
         params.m_de_params.finalize();
         LOG_INFO << params.m_de_params << END_LOG;
 
