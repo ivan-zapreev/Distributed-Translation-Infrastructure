@@ -113,6 +113,9 @@ namespace uva {
                                 << ", " << TM_FEATURE_PARAM_NAME << "[" << params.m_num_lambdas
                                 << "] = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, TM_FEATURE_WEIGHTS_DELIMITER_STR)
+                                << ", " << TM_UNK_FEATURE_PARAM_NAME << "[" << params.m_num_unk_features
+                                << "] = " << array_to_string<float>(params.m_num_unk_features,
+                                params.m_unk_features, TM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << ", " << TM_TRANS_LIM_PARAM_NAME << " = " << params.m_trans_limit
                                 << ", " << TM_MIN_TRANS_PROB_PARAM_NAME << " = " << params.m_min_tran_prob
                                 << " ]";
