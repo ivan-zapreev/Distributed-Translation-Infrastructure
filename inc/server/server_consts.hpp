@@ -172,7 +172,7 @@ namespace uva {
                     //The feature weights parameter name
                     static const string RM_FEATURE_PARAM_NAME = "rm_feature_weights";
                     //The linear distortion weight parameter name
-                    static const string RM_DIST_LIMIT_PARAM_NAME = "rm_dist_limit";
+                    static const string RM_DIST_LIMIT_PARAM_NAME = "rm_dist_lim";
                     //The distortion limit parameter name
                     static const string RM_LIN_DIST_PARAM_NAME = "rm_lin_dist_penalty";
                 }                
