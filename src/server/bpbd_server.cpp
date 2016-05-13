@@ -140,7 +140,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
                 << "' translation threads: '" << params.m_num_threads << "'" << END_LOG;
 
         section = "Language Models";
-        params.m_lm_params.m_conn_string = get_string(ini, section, "connection_string");
+        params.m_lm_params.m_conn_string = get_string(ini, section, LM_CONN_STRING_PARAM_NAME);
         tokenize_s_t_f<NUM_LM_FEATURES>(LM_FEATURE_PARAM_NAME,
                 get_string(ini, section, LM_FEATURE_PARAM_NAME),
                 params.m_lm_params.m_lambdas,
@@ -150,26 +150,26 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         LOG_INFO << params.m_lm_params << END_LOG;
 
         section = "Translation Models";
-        params.m_tm_params.m_conn_string = get_string(ini, section, "connection_string");
+        params.m_tm_params.m_conn_string = get_string(ini, section, TM_CONN_STRING_PARAM_NAME);
         tokenize_s_t_f<NUM_TM_FEATURES>(TM_FEATURE_PARAM_NAME,
                 get_string(ini, section, TM_FEATURE_PARAM_NAME),
                 params.m_tm_params.m_lambdas,
                 params.m_tm_params.m_num_lambdas,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
-        tokenize_s_t_f<NUM_TM_FEATURES>("tm_unk_features",
-                get_string(ini, section, "tm_unk_features"),
+        tokenize_s_t_f<NUM_TM_FEATURES>(TM_UNK_FEATURE_PARAM_NAME,
+                get_string(ini, section, TM_UNK_FEATURE_PARAM_NAME),
                 params.m_tm_params.m_unk_features,
                 params.m_tm_params.m_num_unk_features,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
-        params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, "translation_limit");
-        params.m_tm_params.m_min_tran_prob = get_float(ini, section, "min_trans_prob");
+        params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, TM_TRANS_LIM_PARAM_NAME);
+        params.m_tm_params.m_min_tran_prob = get_float(ini, section, TM_MIN_TRANS_PROB_PARAM_NAME);
         params.m_de_params.m_word_penalty = get_float(ini, section, TM_WORD_PENALTY_PARAM_NAME);
         params.m_de_params.m_phrase_penalty = get_float(ini, section, TM_PHRASE_PENALTY_PARAM_NAME);
         params.m_tm_params.finalize();
         LOG_INFO << params.m_tm_params << END_LOG;
 
         section = "Reordering Models";
-        params.m_rm_params.m_conn_string = get_string(ini, section, "connection_string");
+        params.m_rm_params.m_conn_string = get_string(ini, section, RM_CONN_STRING_PARAM_NAME);
         tokenize_s_t_f<NUM_RM_FEATURES>(RM_FEATURE_PARAM_NAME,
                 get_string(ini, section, RM_FEATURE_PARAM_NAME),
                 params.m_rm_params.m_lambdas,
@@ -181,12 +181,12 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         LOG_INFO << params.m_rm_params << END_LOG;
 
         section = "Decoding Options";
-        params.m_de_params.m_num_best_trans = get_integer<uint32_t>(ini, section, "num_best_trans");
-        params.m_de_params.m_pruning_threshold = get_float(ini, section, "pruning_threshold");
-        params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, "stack_capacity");
-        params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section, "max_source_phrase_length");
-        params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, "max_target_phrase_length");
-        params.m_de_params.m_is_gen_lattice = get_bool(ini, section, "is_gen_lattice");
+        params.m_de_params.m_num_best_trans = get_integer<uint32_t>(ini, section, DE_NUM_BEST_TRANS_PARAM_NAME);
+        params.m_de_params.m_pruning_threshold = get_float(ini, section, DE_PRUNING_THRESHOLD_PARAM_NAME);
+        params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, DE_STACK_CAPACITY_PARAM_NAME);
+        params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section, DE_MAX_SP_LEN_PARAM_NAME);
+        params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, DE_MAX_TP_LEN_PARAM_NAME);
+        params.m_de_params.m_is_gen_lattice = get_bool(ini, section, DE_IS_GEN_LATTICE_PARAM_NAME);
         params.m_de_params.finalize();
         LOG_INFO << params.m_de_params << END_LOG;
 

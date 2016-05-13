@@ -141,20 +141,21 @@ namespace uva {
                          */
                         void finalize() {
                             ASSERT_CONDITION_THROW((m_dist_limit < 0),
-                                    string("The m_distortion must not be >= 0!"));
+                                    string("The ") + RM_DIST_LIMIT_PARAM_NAME + string(" must not be >= 0!"));
 
                             ASSERT_CONDITION_THROW((m_max_s_phrase_len == 0),
-                                    string("The max_source_phrase_len must not be 0!"));
+                                    string("The ") + DE_MAX_SP_LEN_PARAM_NAME + string(" must not be 0!"));
 
                             ASSERT_CONDITION_THROW((m_max_t_phrase_len == 0),
-                                    string("The max_target_phrase_len must not be 0!"));
+                                    string("The ") + DE_MAX_TP_LEN_PARAM_NAME + string(" must not be 0!"));
 
                             ASSERT_CONDITION_THROW((m_max_t_phrase_len > tm::TM_MAX_TARGET_PHRASE_LEN),
-                                    string("The max_target_phrase_len must not be <= ") +
+                                    string("The ") + DE_MAX_TP_LEN_PARAM_NAME + string(" must not be <= ") +
                                     to_string(tm::TM_MAX_TARGET_PHRASE_LEN));
 
                             ASSERT_CONDITION_THROW((m_pruning_threshold <= 0.0),
-                                    string("The pruning_threshold must be > 0.0!"));
+                                    string("The ") + DE_PRUNING_THRESHOLD_PARAM_NAME +
+                                    string(" must be > 0.0!"));
 
                             //Set the multiplier for the negative value
                             m_pruning_mult_neg = 1.0 + m_pruning_threshold;
@@ -162,10 +163,12 @@ namespace uva {
                             m_pruning_mult_pos = 1.0 - m_pruning_threshold;
 
                             ASSERT_CONDITION_THROW((m_stack_capacity <= 0),
-                                    string("The stack_capacity must be > 0!"));
+                                    string("The ") + DE_STACK_CAPACITY_PARAM_NAME +
+                                    string(" must be > 0!"));
 
                             ASSERT_CONDITION_THROW((m_num_best_trans < 1),
-                                    string("The num_best_trans must be >= 1!"));
+                                    string("The ") + DE_NUM_BEST_TRANS_PARAM_NAME +
+                                    string(" must be >= 1!"));
 
                             //The number of alternative translations in
                             //the number of best translations minus one
@@ -173,8 +176,9 @@ namespace uva {
 
 #if !IS_SERVER_TUNING_MODE
                             if (this->m_is_gen_lattice) {
-                                LOG_WARNING << "The is_gen_lattice is set to true in a non-training"
-                                        << " mode server compilation, re-setting to false!" << END_LOG;
+                                LOG_WARNING << "The " << DE_IS_GEN_LATTICE_PARAM_NAME
+                                        << " is set to true in a non-training mode server"
+                                        << " compilation, re-setting to false!" << END_LOG;
                                 this->m_is_gen_lattice = false;
                             }
 #endif                            
@@ -193,7 +197,7 @@ namespace uva {
                     static inline std::ostream& operator<<(std::ostream& stream, const de_parameters & params) {
                         stream << "DE parameters: [ ";
                         //Log the number of best translations value
-                        stream << "num_best_trans = " << params.m_num_best_trans;
+                        stream << DE_NUM_BEST_TRANS_PARAM_NAME << " = " << params.m_num_best_trans;
 
                         //Log the distortion limit parameter
                         stream << ", " << RM_DIST_LIMIT_PARAM_NAME << " = ";
@@ -207,13 +211,13 @@ namespace uva {
                         stream << ", " << RM_LIN_DIST_PARAM_NAME << " = " << params.m_lin_dist_penalty;
 
                         //Log simple value parameters
-                        stream << ", pruning_threshold = " << params.m_pruning_threshold
-                                << ", stack_capacity = " << params.m_stack_capacity
+                        stream << ", " << DE_PRUNING_THRESHOLD_PARAM_NAME << " = " << params.m_pruning_threshold
+                                << ", " << DE_STACK_CAPACITY_PARAM_NAME << " = " << params.m_stack_capacity
                                 << ", " << TM_WORD_PENALTY_PARAM_NAME << " = " << params.m_word_penalty
                                 << ", " << TM_PHRASE_PENALTY_PARAM_NAME << " = " << params.m_phrase_penalty
-                                << ", max_source_phrase_len = " << to_string(params.m_max_s_phrase_len)
-                                << ", max_target_phrase_len = " << to_string(params.m_max_t_phrase_len)
-                                << ", is_gen_lattice = " << (params.m_is_gen_lattice ? "true" : "false");
+                                << ", " << DE_MAX_SP_LEN_PARAM_NAME << " = " << to_string(params.m_max_s_phrase_len)
+                                << ", " << DE_MAX_TP_LEN_PARAM_NAME << " = " << to_string(params.m_max_t_phrase_len)
+                                << ", " << DE_IS_GEN_LATTICE_PARAM_NAME << " = " << (params.m_is_gen_lattice ? "true" : "false");
 
                         return stream << " ]";
                     }

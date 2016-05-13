@@ -86,16 +86,10 @@ namespace uva {
                                     string("The number of LM features: ") + to_string(m_num_lambdas) +
                                     string(" must be == ") + to_string(NUM_LM_FEATURES));
 
-                            //The other values are currently not supported, need to do the code check before introduced.
-                            ASSERT_CONDITION_THROW(
-                                    (m_num_lambdas != ONE_LM_FEATURE),
-                                    string("The number of LM features: ") + to_string(m_num_lambdas) +
-                                    string(" must be ") + to_string(ONE_LM_FEATURE));
-
                             //The Language model weight must not be zero or negative
                             ASSERT_CONDITION_THROW((m_lambdas[0] <= 0.0),
-                                    string("Improper value of LM weight: ") +
-                                    to_string(m_lambdas[0]) + string(" must be > 0.0 "));
+                                    string("Improper value of ") + LM_FEATURE_PARAM_NAME +
+                                    string(": ") + to_string(m_lambdas[0]) + string(" must be > 0.0 "));
 
                         }
                     } lm_parameters;
@@ -108,8 +102,8 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const lm_parameters & params) {
                         return stream << "LM parameters: [ conn_string = " << params.m_conn_string
-                                << ", num_lm_feature_weights = " << params.m_num_lambdas
-                                << ", " << LM_FEATURE_PARAM_NAME << " = " << array_to_string<float>(params.m_num_lambdas,
+                                << ", " << LM_FEATURE_PARAM_NAME << "[" << params.m_num_lambdas
+                                << "] = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, LM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << " ]";
                     }

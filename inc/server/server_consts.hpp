@@ -85,6 +85,21 @@ namespace uva {
                 const static phrase_length M_GRAM_LEVEL_11 = 11u;
                 const static phrase_length M_GRAM_LEVEL_12 = 12u;
 
+                namespace decoder {
+                    //The number of best translations parameter name
+                    static const string DE_NUM_BEST_TRANS_PARAM_NAME = "de_num_best_trans";
+                    //The pruning threshold parameter name
+                    static const string DE_PRUNING_THRESHOLD_PARAM_NAME = "de_pruning_threshold";
+                    //The stack level capacity parameter name
+                    static const string DE_STACK_CAPACITY_PARAM_NAME = "de_stack_capacity";
+                    //The maximum source phrase length parameter name
+                    static const string DE_MAX_SP_LEN_PARAM_NAME = "de_max_source_phrase_length";
+                    //The maximum target phrase length parameter name
+                    static const string DE_MAX_TP_LEN_PARAM_NAME = "de_max_target_phrase_length";
+                    //The is-generate-search-lattice parameter name
+                    static const string DE_IS_GEN_LATTICE_PARAM_NAME = "de_is_gen_lattice";
+                }
+                
                 namespace tm {
                     //Define the feature weights delimiter string for the config file
                     static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = u8"|";
@@ -100,12 +115,20 @@ namespace uva {
                     //Stores the unknown target phrase string, should be configurable
                     static const string TM_UNKNOWN_TARGET_STR = u8"<unk>";
 
+                    //The TM connection string parameter name
+                    static const string TM_CONN_STRING_PARAM_NAME = "tm_conn_string";
                     //The feature weights parameter name
                     static const string TM_FEATURE_PARAM_NAME = "tm_feature_weights";
+                    //The unknown translation feature weights parameter name
+                    static const string TM_UNK_FEATURE_PARAM_NAME = "tm_unk_features";
                     //The word penalty weight parameter name
                     static const string TM_WORD_PENALTY_PARAM_NAME = "tm_word_penalty";
                     //The phrase penalty weight parameter name
                     static const string TM_PHRASE_PENALTY_PARAM_NAME = "tm_phrase_penalty";
+                    //The translation limit parameter name
+                    static const string TM_TRANS_LIM_PARAM_NAME = "tm_trans_lim";
+                    //The minimum translation probability parameter name
+                    static const string TM_MIN_TRANS_PROB_PARAM_NAME = "tm_min_trans_prob";
                 }
 
                 namespace lm {
@@ -123,6 +146,8 @@ namespace uva {
                     //Stores the end of the sentence symbol
                     static const string END_SENTENCE_TAG_STR = u8"</s>";
 
+                    //The LM connection string parameter name
+                    static const string LM_CONN_STRING_PARAM_NAME = "lm_conn_string";
                     //The feature weights parameter name
                     static const string LM_FEATURE_PARAM_NAME = "lm_feature_weights";
                 }
@@ -142,6 +167,8 @@ namespace uva {
                     static constexpr size_t SIX_RM_FEATURES = 6u;
                     static constexpr size_t EIGHT_RM_FEATURES = 8u;
                     
+                    //The RM connection string parameter name
+                    static const string RM_CONN_STRING_PARAM_NAME = "rm_conn_string";
                     //The feature weights parameter name
                     static const string RM_FEATURE_PARAM_NAME = "rm_feature_weights";
                     //The linear distortion weight parameter name
