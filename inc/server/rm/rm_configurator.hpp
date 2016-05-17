@@ -51,7 +51,7 @@ namespace uva {
                      */
                     class rm_configurator {
                     public:
-                        
+
                         /**
                          * This method allows to connect to the reordering model.
                          * This method is to be called only once! The latter is
@@ -65,16 +65,27 @@ namespace uva {
 
                             //At the moment we only support a local proxy
                             m_model_proxy = new rm_proxy_local();
-                            
+
                             //Connect to the model instance using the given parameters
                             m_model_proxy->connect(*m_params);
+                        }
+
+                        /**
+                         * Allows to get the features used in the configurator in the proper and fixed order
+                         * @param features the vector the features will be appended to
+                         */
+                        static void add_features(vector<string> & features) {
+                            for (size_t idx = 0; idx < m_params->m_num_lambdas; ++idx) {
+                                features.push_back(rm_parameters::RM_FEATURE_PARAM_NAME +
+                                        string("[") + to_string(idx) + string("]"));
+                            }
                         }
 
                         /**
                          * Allows to disconnect from the reordering model.
                          */
                         static void disconnect() {
-                            if( m_model_proxy != NULL) {
+                            if (m_model_proxy != NULL) {
                                 //Disconnect from the model
                                 m_model_proxy->disconnect();
                                 //Delete the object, free the resources
@@ -90,7 +101,7 @@ namespace uva {
                          */
                         static inline rm_query_proxy & allocate_query_proxy() {
                             LOG_DEBUG2 << "Allocating a new RM query proxy" << END_LOG;
-                            
+
                             //Return the query executor as given by the proxy class
                             return m_model_proxy->allocate_query_proxy();
                         }
@@ -102,11 +113,11 @@ namespace uva {
                         static inline void dispose_query_proxy(rm_query_proxy & query) {
                             m_model_proxy->dispose_query_proxy(query);
                         }
-                        
+
                     private:
                         //Stores the pointer to the configuration parameters
                         static const rm_parameters * m_params;
-                        
+
                         //Store the trie proxy object
                         static rm_proxy * m_model_proxy;
                     };

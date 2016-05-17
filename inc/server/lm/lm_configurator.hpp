@@ -72,6 +72,17 @@ namespace uva {
                             //Connect to the trie instance using the given parameters
                             m_model_proxy->connect(*m_params);
                         }
+                        
+                        /**
+                         * Allows to get the features used in the configurator in the proper and fixed order
+                         * @param features the vector the features will be appended to
+                         */
+                        static void add_features(vector<string> & features) {
+                            for (size_t idx = 0; idx < m_params->m_num_lambdas; ++idx) {
+                                features.push_back(lm_parameters::LM_FEATURE_PARAM_NAME +
+                                        string("[") + to_string(idx) + string("]"));
+                            }
+                        }
 
                         /**
                          * Allows to disconnect from the language model.

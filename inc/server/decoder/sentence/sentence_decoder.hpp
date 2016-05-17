@@ -90,13 +90,13 @@ namespace uva {
                              */
                             sentence_decoder(const de_parameters & params, acr_bool_flag is_stop,
                                     const string & source_sent, string & target_sent)
-                            : m_stack_info_prov(NULL), m_params(params), m_is_stop(is_stop),
+                            : m_stack_info_prov(NULL), m_de_params(params), m_is_stop(is_stop),
                             m_source_sent(source_sent), m_target_sent(target_sent),
                             m_sent_data(count_words(m_source_sent)),
                             m_lm_query(lm_configurator::allocate_fast_query_proxy()),
                             m_tm_query(tm_configurator::allocate_query_proxy()),
                             m_rm_query(rm_configurator::allocate_query_proxy()) {
-                                LOG_DEBUG << "Created a sentence decoder " << m_params << END_LOG;
+                                LOG_DEBUG << "Created a sentence decoder " << m_de_params << END_LOG;
 
                                 //Initialize with an empty string
                                 m_target_sent = UTF8_EMPTY_STRING;
@@ -325,7 +325,7 @@ namespace uva {
                                     //Compute the new phrases and phrase ids for the new column elements,
                                     //Note that, the longest phrase length to consider is defined by the
                                     //decoding parameters. It is the end word plus several previous.
-                                    int32_t begin_wd_idx = max(MIN_SENT_WORD_INDEX, end_wd_idx - m_params.m_max_s_phrase_len + 1);
+                                    int32_t begin_wd_idx = max(MIN_SENT_WORD_INDEX, end_wd_idx - m_de_params.m_max_s_phrase_len + 1);
                                     for (; (begin_wd_idx < end_wd_idx); ++begin_wd_idx) {
                                         LOG_DEBUG1 << "Considering the phrase [" << begin_wd_idx << ", " << end_wd_idx << "] translation." << END_LOG;
 
@@ -397,14 +397,14 @@ namespace uva {
                              */
                             inline void perform_translation() {
                                 //Depending on the stack template parameters do the thing
-                                if (m_params.m_dist_limit != 0) {
-                                    if (m_params.m_num_alt_to_keep != 0) {
+                                if (m_de_params.m_dist_limit != 0) {
+                                    if (m_de_params.m_num_alt_to_keep != 0) {
                                         perform_translation<true, true>();
                                     } else {
                                         perform_translation<true, false>();
                                     }
                                 } else {
-                                    if (m_params.m_num_alt_to_keep != 0) {
+                                    if (m_de_params.m_num_alt_to_keep != 0) {
                                         perform_translation<false, true>();
                                     } else {
                                         perform_translation<false, false>();
@@ -423,7 +423,7 @@ namespace uva {
                             inline void perform_translation() {
                                 typedef multi_stack_templ<is_dist, is_alt_trans, MAX_WORDS_PER_SENTENCE, LM_HISTORY_LEN_MAX, LM_MAX_QUERY_LEN> stack_type;
                                 //Instantiate the multi-stack
-                                stack_type * m_stack = new stack_type (m_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query, m_lm_query);
+                                stack_type * m_stack = new stack_type (m_de_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query, m_lm_query);
 
                                 //Extend the stack, here we do everything in one go
                                 //Including expanding, pruning and recombination
@@ -442,7 +442,7 @@ namespace uva {
                             trans_info_provider * m_stack_info_prov;
 
                             //Stores the reference to the decoder parameters
-                            const de_parameters & m_params;
+                            const de_parameters & m_de_params;
                             //Stores the stopping flag
                             acr_bool_flag m_is_stop;
 

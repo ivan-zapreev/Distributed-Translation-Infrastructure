@@ -76,7 +76,7 @@ namespace uva {
                         //The linear distortion weight parameter name
                         static const string DE_DIST_LIMIT_PARAM_NAME;
                         //The distortion limit parameter name
-                        static const string DE_LIN_DIST_PARAM_NAME;
+                        static const string DE_LIN_DIST_PENALTY_PARAM_NAME;
 
                         //The is-generate-search-lattice parameter name
                         static const string DE_IS_GEN_LATTICE_PARAM_NAME;
@@ -130,7 +130,7 @@ namespace uva {
                         //The server configuration file name, is only set if IS_SERVER_TUNING_MODE == true
                         string m_config_file_name;
                         //The lattice id to name file extension, is only set if IS_SERVER_TUNING_MODE == true
-                        string m_li2d_file_ext;
+                        string m_li2n_file_ext;
                         //The lattice feature scores file extension, is only set if IS_SERVER_TUNING_MODE == true
                         string m_scores_file_ext;
                         //The lattice file extension, is only set if IS_SERVER_TUNING_MODE == true
@@ -163,7 +163,7 @@ namespace uva {
                                 this->m_lin_dist_penalty = other.m_lin_dist_penalty.load();
                                 this->m_is_gen_lattice = other.m_is_gen_lattice.load();
                                 this->m_config_file_name = other.m_config_file_name;
-                                this->m_li2d_file_ext = other.m_li2d_file_ext;
+                                this->m_li2n_file_ext = other.m_li2n_file_ext;
                                 this->m_scores_file_ext = other.m_scores_file_ext;
                                 this->m_lattice_file_ext = other.m_lattice_file_ext;
                             }
@@ -218,7 +218,7 @@ namespace uva {
                             this->m_num_alt_to_keep = m_num_best_trans - 1;
 
 #if IS_SERVER_TUNING_MODE
-                            ASSERT_CONDITION_THROW((m_li2d_file_ext == ""),
+                            ASSERT_CONDITION_THROW((m_li2n_file_ext == ""),
                                     string("The ") + DE_LI2N_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
                             ASSERT_CONDITION_THROW((m_scores_file_ext == ""),
                                     string("The ") + DE_SCORES_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
@@ -258,7 +258,7 @@ namespace uva {
                         }
 
                         //The linear distortion penalty lambda
-                        stream << ", " << de_parameters::DE_LIN_DIST_PARAM_NAME << " = " << params.m_lin_dist_penalty;
+                        stream << ", " << de_parameters::DE_LIN_DIST_PENALTY_PARAM_NAME << " = " << params.m_lin_dist_penalty;
 
                         //Log simple value parameters
                         stream << ", " << de_parameters::DE_PRUNING_THRESHOLD_PARAM_NAME << " = " << params.m_pruning_threshold
@@ -271,7 +271,7 @@ namespace uva {
 
                         //Log the additional lattice related parameters, if needed
                         if (params.m_is_gen_lattice) {
-                            stream << ", " << de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME << " = '." << params.m_li2d_file_ext << "'"
+                            stream << ", " << de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME << " = '." << params.m_li2n_file_ext << "'"
                                     << ", " << de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME << " = '." << params.m_scores_file_ext << "'"
                                     << ", " << de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME << " = '." << params.m_lattice_file_ext << "'";
                         }

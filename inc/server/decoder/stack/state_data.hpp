@@ -411,7 +411,9 @@ namespace uva {
 
                             /**
                              * Allows to compute the total score of the current hypothesis
-                             * I.e. the partial score plus the future cost estimate
+                             * I.e. the partial score plus the future cost estimate. The
+                             * future cost estimate is not used in the search lattice used
+                             * for tuning.
                              */
                             inline void compute_total_score() {
                                 //After the construction the total score is to stay fixed,

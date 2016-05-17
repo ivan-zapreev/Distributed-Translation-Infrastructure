@@ -106,8 +106,9 @@ void destroy_arguments_parser() {
  * @param argc the number of program arguments
  * @param argv the array of program arguments
  * @param params the structure that will be filled in with the parsed program arguments
+ * @return the configuration file name
  */
-static void extract_arguments(const uint argc, char const * const * const argv, server_parameters & params) {
+static string extract_arguments(const uint argc, char const * const * const argv, server_parameters & params) {
     //Parse the arguments
     try {
         p_cmd_args->parse(argc, argv);
@@ -184,12 +185,12 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, de_parameters::DE_MAX_TP_LEN_PARAM_NAME);
         params.m_de_params.m_word_penalty = get_float(ini, section, de_parameters::DE_WORD_PENALTY_PARAM_NAME);
         params.m_de_params.m_phrase_penalty = get_float(ini, section, de_parameters::DE_PHRASE_PENALTY_PARAM_NAME);
-        params.m_de_params.m_lin_dist_penalty = get_float(ini, section, de_parameters::DE_LIN_DIST_PARAM_NAME);
+        params.m_de_params.m_lin_dist_penalty = get_float(ini, section, de_parameters::DE_LIN_DIST_PENALTY_PARAM_NAME);
         params.m_de_params.m_dist_limit = get_integer<int32_t>(ini, section, de_parameters::DE_DIST_LIMIT_PARAM_NAME);
 #if IS_SERVER_TUNING_MODE
         params.m_de_params.m_is_gen_lattice = get_bool(ini, section, de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME);
         params.m_de_params.m_config_file_name = config_file_name;
-        params.m_de_params.m_li2d_file_ext = get_string(ini, section, de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME);
+        params.m_de_params.m_li2n_file_ext = get_string(ini, section, de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME);
         params.m_de_params.m_scores_file_ext = get_string(ini, section, de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME);
         params.m_de_params.m_lattice_file_ext = get_string(ini, section, de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME);
 #else
@@ -202,6 +203,55 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     } else {
         //We could not parse the configuration file, report an error
         THROW_EXCEPTION(string("Could not find or parse the configuration file: ") + config_file_name);
+    }
+
+    ///Return the name of the config file
+    return config_file_name;
+}
+
+/**
+ * This function allow to dump the feature to id mapping
+ * for the server tuning using the search lattice.
+ * @param params the server parameters
+ * @config_file_name the configuration file name
+ */
+inline void dump_feature_to_id_mappings(const server_parameters & params, const string & config_file_name) {
+    //Check if the id to name is to be dumped
+    if (params.m_de_params.m_is_gen_lattice) {
+        LOG_USAGE << "--------------------------------------------------------" << END_LOG;
+        
+        //The full feature names will be placed into the vector in the fixed order
+        vector<string> names;
+
+        //Add the features to the vector
+        de_configurator::add_features(names);
+        lm_configurator::add_features(names);
+        rm_configurator::add_features(names);
+        tm_configurator::add_features(names);
+
+        //Dump the features to the file
+        const string file_name = config_file_name + "." + params.m_de_params.m_li2n_file_ext;
+        //Open the output stream to the file
+        ofstream id2n_file(file_name);
+        //Declare the id counter
+        size_t ids = 0;
+
+        //Check that the file is open
+        ASSERT_CONDITION_THROW(!id2n_file.is_open(), string("Could not open: ") +
+                file_name + string(" for writing"));
+
+        //Iterate and output
+        for (vector<string>::const_iterator iter = names.begin();
+                iter != names.end(); ++iter) {
+            id2n_file << ids++ << "\t" << *iter << std::endl;
+        }
+
+        //Close the file
+        id2n_file.close();
+
+        LOG_USAGE << "The feature id-to-name mapping is dumped into: " << file_name << END_LOG;
+        
+        LOG_USAGE << "--------------------------------------------------------" << END_LOG;
     }
 }
 
@@ -261,10 +311,13 @@ int main(int argc, char** argv) {
         server_parameters params;
 
         //Attempt to extract the program arguments
-        extract_arguments(argc, argv, params);
+        const string config_file_name = extract_arguments(argc, argv, params);
 
         //Initialize connections to the used models
         connect_to_models(params);
+
+        //Dump the feature name to id mappings, if needed
+        dump_feature_to_id_mappings(params, config_file_name);
 
         //Instantiate the translation server
         translation_server server(params.m_server_port, params.m_num_threads);
