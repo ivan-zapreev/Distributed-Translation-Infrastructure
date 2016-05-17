@@ -56,6 +56,37 @@ namespace uva {
                      * This structure stores the decoder parameters
                      */
                     struct de_parameters_struct {
+                        //Stores the configuration section name
+                        static const string DE_CONFIG_SECTION_NAME;
+                        //The number of best translations parameter name
+                        static const string DE_NUM_BEST_TRANS_PARAM_NAME;
+                        //The pruning threshold parameter name
+                        static const string DE_PRUNING_THRESHOLD_PARAM_NAME;
+                        //The stack level capacity parameter name
+                        static const string DE_STACK_CAPACITY_PARAM_NAME;
+                        //The maximum source phrase length parameter name
+                        static const string DE_MAX_SP_LEN_PARAM_NAME;
+                        //The maximum target phrase length parameter name
+                        static const string DE_MAX_TP_LEN_PARAM_NAME;
+
+                        //The word penalty weight parameter name
+                        static const string DE_WORD_PENALTY_PARAM_NAME;
+                        //The phrase penalty weight parameter name
+                        static const string DE_PHRASE_PENALTY_PARAM_NAME;
+                        //The linear distortion weight parameter name
+                        static const string DE_DIST_LIMIT_PARAM_NAME;
+                        //The distortion limit parameter name
+                        static const string DE_LIN_DIST_PARAM_NAME;
+
+                        //The is-generate-search-lattice parameter name
+                        static const string DE_IS_GEN_LATTICE_PARAM_NAME;
+                        //The lattice id to name mapping file extension parameter name
+                        static const string DE_LI2N_FILE_EXT_PARAM_NAME;
+                        //The feature scores file extension parameter name
+                        static const string DE_SCORES_FILE_EXT_PARAM_NAME;
+                        //The lattice file parameter name
+                        static const string DE_LATTICE_FILE_EXT_PARAM_NAME;
+
                         //The distortion limit to use; <integer>
                         //The the number of words to the right and left
                         //from the last phrase end word to consider
@@ -153,7 +184,7 @@ namespace uva {
                          */
                         void finalize() {
                             ASSERT_CONDITION_THROW((m_dist_limit < 0),
-                                    string("The ") + RM_DIST_LIMIT_PARAM_NAME + string(" must not be >= 0!"));
+                                    string("The ") + DE_DIST_LIMIT_PARAM_NAME + string(" must not be >= 0!"));
 
                             ASSERT_CONDITION_THROW((m_max_s_phrase_len == 0),
                                     string("The ") + DE_MAX_SP_LEN_PARAM_NAME + string(" must not be 0!"));
@@ -216,10 +247,10 @@ namespace uva {
                     static inline std::ostream& operator<<(std::ostream& stream, const de_parameters & params) {
                         stream << "DE parameters: [ ";
                         //Log the number of best translations value
-                        stream << DE_NUM_BEST_TRANS_PARAM_NAME << " = " << params.m_num_best_trans;
+                        stream << de_parameters::DE_NUM_BEST_TRANS_PARAM_NAME << " = " << params.m_num_best_trans;
 
                         //Log the distortion limit parameter
-                        stream << ", " << RM_DIST_LIMIT_PARAM_NAME << " = ";
+                        stream << ", " << de_parameters::DE_DIST_LIMIT_PARAM_NAME << " = ";
                         if (params.m_dist_limit != 0) {
                             stream << params.m_dist_limit;
                         } else {
@@ -227,22 +258,22 @@ namespace uva {
                         }
 
                         //The linear distortion penalty lambda
-                        stream << ", " << RM_LIN_DIST_PARAM_NAME << " = " << params.m_lin_dist_penalty;
+                        stream << ", " << de_parameters::DE_LIN_DIST_PARAM_NAME << " = " << params.m_lin_dist_penalty;
 
                         //Log simple value parameters
-                        stream << ", " << DE_PRUNING_THRESHOLD_PARAM_NAME << " = " << params.m_pruning_threshold
-                                << ", " << DE_STACK_CAPACITY_PARAM_NAME << " = " << params.m_stack_capacity
-                                << ", " << TM_WORD_PENALTY_PARAM_NAME << " = " << params.m_word_penalty
-                                << ", " << TM_PHRASE_PENALTY_PARAM_NAME << " = " << params.m_phrase_penalty
-                                << ", " << DE_MAX_SP_LEN_PARAM_NAME << " = " << to_string(params.m_max_s_phrase_len)
-                                << ", " << DE_MAX_TP_LEN_PARAM_NAME << " = " << to_string(params.m_max_t_phrase_len)
-                                << ", " << DE_IS_GEN_LATTICE_PARAM_NAME << " = " << (params.m_is_gen_lattice ? "true" : "false");
+                        stream << ", " << de_parameters::DE_PRUNING_THRESHOLD_PARAM_NAME << " = " << params.m_pruning_threshold
+                                << ", " << de_parameters::DE_STACK_CAPACITY_PARAM_NAME << " = " << params.m_stack_capacity
+                                << ", " << de_parameters::DE_WORD_PENALTY_PARAM_NAME << " = " << params.m_word_penalty
+                                << ", " << de_parameters::DE_PHRASE_PENALTY_PARAM_NAME << " = " << params.m_phrase_penalty
+                                << ", " << de_parameters::DE_MAX_SP_LEN_PARAM_NAME << " = " << to_string(params.m_max_s_phrase_len)
+                                << ", " << de_parameters::DE_MAX_TP_LEN_PARAM_NAME << " = " << to_string(params.m_max_t_phrase_len)
+                                << ", " << de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME << " = " << (params.m_is_gen_lattice ? "true" : "false");
 
                         //Log the additional lattice related parameters, if needed
                         if (params.m_is_gen_lattice) {
-                            stream << ", " << DE_LI2N_FILE_EXT_PARAM_NAME << " = '." << params.m_li2d_file_ext << "'"
-                                    << ", " << DE_SCORES_FILE_EXT_PARAM_NAME << " = '." << params.m_scores_file_ext << "'"
-                                    << ", " << DE_LATTICE_FILE_EXT_PARAM_NAME << " = '." << params.m_lattice_file_ext << "'";
+                            stream << ", " << de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME << " = '." << params.m_li2d_file_ext << "'"
+                                    << ", " << de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME << " = '." << params.m_scores_file_ext << "'"
+                                    << ", " << de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME << " = '." << params.m_lattice_file_ext << "'";
                         }
 
                         return stream << " ]";

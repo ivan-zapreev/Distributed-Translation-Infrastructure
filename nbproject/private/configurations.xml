@@ -762,6 +762,7 @@
       <df name="server">
         <df name="decoder">
           <in>de_configurator.cpp</in>
+          <in>de_parameters.cpp</in>
         </df>
         <df name="lm">
           <df name="builders">
@@ -784,18 +785,22 @@
             <in>w2c_hybrid_trie.cpp</in>
           </df>
           <in>lm_configurator.cpp</in>
+          <in>lm_parameters.cpp</in>
           <in>lm_query.cpp</in>
         </df>
         <df name="rm">
           <in>rm_configurator.cpp</in>
+          <in>rm_parameters.cpp</in>
         </df>
         <df name="tm">
           <df name="models">
             <in>tm_target_entry.cpp</in>
           </df>
           <in>tm_configurator.cpp</in>
+          <in>tm_parameters.cpp</in>
         </df>
         <in>bpbd_server.cpp</in>
+        <in>server_parameters.cpp</in>
         <in>trans_task_pool.cpp</in>
         <in>trans_task_pool_worker.cpp</in>
       </df>

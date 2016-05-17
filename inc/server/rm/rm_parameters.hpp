@@ -50,7 +50,14 @@ namespace uva {
                     /**
                      * This structure stores the reordering model parameters
                      */
-                    typedef struct {
+                    struct rm_parameters_struct {
+                        //Stores the configuration section name
+                        static const string RM_CONFIG_SECTION_NAME;
+                        //The RM connection string parameter name
+                        static const string RM_CONN_STRING_PARAM_NAME;
+                        //The feature weights parameter name
+                        static const string RM_FEATURE_PARAM_NAME;
+
                         //The the connection string needed to connect to the model
                         string m_conn_string;
 
@@ -70,7 +77,10 @@ namespace uva {
                                     string(": ") + to_string(m_num_lambdas) +
                                     string(" must be == ") + to_string(NUM_RM_FEATURES));
                         }
-                    } rm_parameters;
+                    };
+
+                    //Typedef the structure
+                    typedef rm_parameters_struct rm_parameters;
 
                     /**
                      * Allows to output the parameters object to the stream
@@ -80,7 +90,7 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const rm_parameters & params) {
                         return stream << "RM parameters: [ conn_string = " << params.m_conn_string
-                                << ", " << RM_FEATURE_PARAM_NAME << "[" << params.m_num_lambdas
+                                << ", " << rm_parameters::RM_FEATURE_PARAM_NAME << "[" << params.m_num_lambdas
                                 << "] = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, RM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << " ]";

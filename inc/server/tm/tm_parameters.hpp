@@ -50,7 +50,20 @@ namespace uva {
                     /**
                      * This structure stores the translation model parameters
                      */
-                    typedef struct {
+                    struct tm_parameters_struct {
+                        //Stores the configuration section name
+                        static const string TM_CONFIG_SECTION_NAME;
+                        //The TM connection string parameter name
+                        static const string TM_CONN_STRING_PARAM_NAME;
+                        //The feature weights parameter name
+                        static const string TM_FEATURE_PARAM_NAME;
+                        //The unknown translation feature weights parameter name
+                        static const string TM_UNK_FEATURE_PARAM_NAME;
+                        //The translation limit parameter name
+                        static const string TM_TRANS_LIM_PARAM_NAME;
+                        //The minimum translation probability parameter name
+                        static const string TM_MIN_TRANS_PROB_PARAM_NAME;
+
                         //The the connection string needed to connect to the model
                         string m_conn_string;
 
@@ -100,7 +113,10 @@ namespace uva {
                                         to_string(idx) + string("] is zero!"));
                             }
                         }
-                    } tm_parameters;
+                    };
+
+                    //Typedef the structure
+                    typedef tm_parameters_struct tm_parameters;
 
                     /**
                      * Allows to output the parameters object to the stream
@@ -110,14 +126,14 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const tm_parameters & params) {
                         return stream << "TM parameters: [ conn_string = " << params.m_conn_string
-                                << ", " << TM_FEATURE_PARAM_NAME << "[" << params.m_num_lambdas
+                                << ", " << tm_parameters::TM_FEATURE_PARAM_NAME << "[" << params.m_num_lambdas
                                 << "] = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, TM_FEATURE_WEIGHTS_DELIMITER_STR)
-                                << ", " << TM_UNK_FEATURE_PARAM_NAME << "[" << params.m_num_unk_features
+                                << ", " << tm_parameters::TM_UNK_FEATURE_PARAM_NAME << "[" << params.m_num_unk_features
                                 << "] = " << array_to_string<float>(params.m_num_unk_features,
                                 params.m_unk_features, TM_FEATURE_WEIGHTS_DELIMITER_STR)
-                                << ", " << TM_TRANS_LIM_PARAM_NAME << " = " << params.m_trans_limit
-                                << ", " << TM_MIN_TRANS_PROB_PARAM_NAME << " = " << params.m_min_tran_prob
+                                << ", " << tm_parameters::TM_TRANS_LIM_PARAM_NAME << " = " << params.m_trans_limit
+                                << ", " << tm_parameters::TM_MIN_TRANS_PROB_PARAM_NAME << " = " << params.m_min_tran_prob
                                 << " ]";
                     }
                 }

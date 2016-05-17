@@ -15,6 +15,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-pg")
 #Bring the source files into the project
 set(LM_QUERY_SOURCES 
     src/server/lm/lm_query.cpp
+    src/server/lm/lm_parameters.cpp
     src/server/lm/lm_configurator.cpp
     src/server/lm/models/m_gram_query.cpp
     src/server/lm/models/w2c_hybrid_trie.cpp
@@ -38,13 +39,19 @@ add_executable(lm-query ${LM_QUERY_SOURCES})
 ###############################DEFINE THE SERVER EXECUTABLE##########################
 
 #Manually add the source files if needed
-set(BPBD_SERVER_SOURCES src/server/bpbd_server.cpp
+set(BPBD_SERVER_SOURCES
+    src/server/bpbd_server.cpp
+    src/server/server_parameters.cpp
     src/common/utils/logging/logger.cpp
+    src/server/decoder/de_parameters.cpp
+    src/server/lm/lm_parameters.cpp
+    src/server/tm/tm_parameters.cpp
+    src/server/rm/rm_parameters.cpp
     src/server/decoder/de_configurator.cpp
     src/server/lm/lm_configurator.cpp
     src/server/tm/tm_configurator.cpp
-    src/server/tm/models/tm_target_entry.cpp
     src/server/rm/rm_configurator.cpp
+    src/server/tm/models/tm_target_entry.cpp
     src/server/lm/models/m_gram_query.cpp
     src/server/lm/models/w2c_hybrid_trie.cpp
     src/server/lm/models/w2c_array_trie.cpp

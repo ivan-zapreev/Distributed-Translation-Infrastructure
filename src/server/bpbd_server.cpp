@@ -128,70 +128,70 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
         LOG_INFO << "The configuration file has been parsed!" << END_LOG;
 
         //Get the configuration options from the file
-        string section = "Server Options";
-        params.m_server_port = get_integer<uint16_t>(ini, section, "server_port");
-        params.m_num_threads = get_integer<uint16_t>(ini, section, "num_threads");
-        params.m_source_lang = get_string(ini, section, "source_lang");
-        params.m_target_lang = get_string(ini, section, "target_lang");
+        string section = server_parameters::SE_CONFIG_SECTION_NAME;
+        params.m_server_port = get_integer<uint16_t>(ini, section, server_parameters::SE_SERVER_PORT_PARAM_NAME);
+        params.m_num_threads = get_integer<uint16_t>(ini, section, server_parameters::SE_NUM_THREADS_PARAM_NAME);
+        params.m_source_lang = get_string(ini, section, server_parameters::SE_SOURCE_LANG_PARAM_NAME);
+        params.m_target_lang = get_string(ini, section, server_parameters::SE_TARGET_LANG_PARAM_NAME);
         params.verify();
 
         LOG_USAGE << "Translation server from '" << params.m_source_lang << "' into '"
                 << params.m_target_lang << "' on port: '" << params.m_server_port
                 << "' translation threads: '" << params.m_num_threads << "'" << END_LOG;
 
-        section = "Language Models";
-        params.m_lm_params.m_conn_string = get_string(ini, section, LM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<NUM_LM_FEATURES>(LM_FEATURE_PARAM_NAME,
-                get_string(ini, section, LM_FEATURE_PARAM_NAME),
+        section = lm_parameters::LM_CONFIG_SECTION_NAME;
+        params.m_lm_params.m_conn_string = get_string(ini, section, lm_parameters::LM_CONN_STRING_PARAM_NAME);
+        tokenize_s_t_f<NUM_LM_FEATURES>(lm_parameters::LM_FEATURE_PARAM_NAME,
+                get_string(ini, section, lm_parameters::LM_FEATURE_PARAM_NAME),
                 params.m_lm_params.m_lambdas,
                 params.m_lm_params.m_num_lambdas,
                 LM_FEATURE_WEIGHTS_DELIMITER_STR);
         params.m_lm_params.finalize();
         LOG_INFO << params.m_lm_params << END_LOG;
 
-        section = "Translation Models";
-        params.m_tm_params.m_conn_string = get_string(ini, section, TM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<NUM_TM_FEATURES>(TM_FEATURE_PARAM_NAME,
-                get_string(ini, section, TM_FEATURE_PARAM_NAME),
+        section = tm_parameters::TM_CONFIG_SECTION_NAME;
+        params.m_tm_params.m_conn_string = get_string(ini, section, tm_parameters::TM_CONN_STRING_PARAM_NAME);
+        tokenize_s_t_f<NUM_TM_FEATURES>(tm_parameters::TM_FEATURE_PARAM_NAME,
+                get_string(ini, section, tm_parameters::TM_FEATURE_PARAM_NAME),
                 params.m_tm_params.m_lambdas,
                 params.m_tm_params.m_num_lambdas,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
-        tokenize_s_t_f<NUM_TM_FEATURES>(TM_UNK_FEATURE_PARAM_NAME,
-                get_string(ini, section, TM_UNK_FEATURE_PARAM_NAME),
+        tokenize_s_t_f<NUM_TM_FEATURES>(tm_parameters::TM_UNK_FEATURE_PARAM_NAME,
+                get_string(ini, section, tm_parameters::TM_UNK_FEATURE_PARAM_NAME),
                 params.m_tm_params.m_unk_features,
                 params.m_tm_params.m_num_unk_features,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
-        params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, TM_TRANS_LIM_PARAM_NAME);
-        params.m_tm_params.m_min_tran_prob = get_float(ini, section, TM_MIN_TRANS_PROB_PARAM_NAME);
-        params.m_de_params.m_word_penalty = get_float(ini, section, TM_WORD_PENALTY_PARAM_NAME);
-        params.m_de_params.m_phrase_penalty = get_float(ini, section, TM_PHRASE_PENALTY_PARAM_NAME);
+        params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, tm_parameters::TM_TRANS_LIM_PARAM_NAME);
+        params.m_tm_params.m_min_tran_prob = get_float(ini, section, tm_parameters::TM_MIN_TRANS_PROB_PARAM_NAME);
         params.m_tm_params.finalize();
         LOG_INFO << params.m_tm_params << END_LOG;
 
-        section = "Reordering Models";
-        params.m_rm_params.m_conn_string = get_string(ini, section, RM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<NUM_RM_FEATURES>(RM_FEATURE_PARAM_NAME,
-                get_string(ini, section, RM_FEATURE_PARAM_NAME),
+        section = rm_parameters::RM_CONFIG_SECTION_NAME;
+        params.m_rm_params.m_conn_string = get_string(ini, section, rm_parameters::RM_CONN_STRING_PARAM_NAME);
+        tokenize_s_t_f<NUM_RM_FEATURES>(rm_parameters::RM_FEATURE_PARAM_NAME,
+                get_string(ini, section, rm_parameters::RM_FEATURE_PARAM_NAME),
                 params.m_rm_params.m_lambdas,
                 params.m_rm_params.m_num_lambdas,
                 RM_FEATURE_WEIGHTS_DELIMITER_STR);
-        params.m_de_params.m_lin_dist_penalty = get_float(ini, section, RM_LIN_DIST_PARAM_NAME);
-        params.m_de_params.m_dist_limit = get_integer<int32_t>(ini, section, RM_DIST_LIMIT_PARAM_NAME);
         params.m_rm_params.finalize();
         LOG_INFO << params.m_rm_params << END_LOG;
 
-        section = "Decoding Options";
-        params.m_de_params.m_num_best_trans = get_integer<uint32_t>(ini, section, DE_NUM_BEST_TRANS_PARAM_NAME);
-        params.m_de_params.m_pruning_threshold = get_float(ini, section, DE_PRUNING_THRESHOLD_PARAM_NAME);
-        params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, DE_STACK_CAPACITY_PARAM_NAME);
-        params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section, DE_MAX_SP_LEN_PARAM_NAME);
-        params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, DE_MAX_TP_LEN_PARAM_NAME);
+        section = de_parameters::DE_CONFIG_SECTION_NAME;
+        params.m_de_params.m_num_best_trans = get_integer<uint32_t>(ini, section, de_parameters::DE_NUM_BEST_TRANS_PARAM_NAME);
+        params.m_de_params.m_pruning_threshold = get_float(ini, section, de_parameters::DE_PRUNING_THRESHOLD_PARAM_NAME);
+        params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, de_parameters::DE_STACK_CAPACITY_PARAM_NAME);
+        params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section, de_parameters::DE_MAX_SP_LEN_PARAM_NAME);
+        params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, de_parameters::DE_MAX_TP_LEN_PARAM_NAME);
+        params.m_de_params.m_word_penalty = get_float(ini, section, de_parameters::DE_WORD_PENALTY_PARAM_NAME);
+        params.m_de_params.m_phrase_penalty = get_float(ini, section, de_parameters::DE_PHRASE_PENALTY_PARAM_NAME);
+        params.m_de_params.m_lin_dist_penalty = get_float(ini, section, de_parameters::DE_LIN_DIST_PARAM_NAME);
+        params.m_de_params.m_dist_limit = get_integer<int32_t>(ini, section, de_parameters::DE_DIST_LIMIT_PARAM_NAME);
 #if IS_SERVER_TUNING_MODE
-        params.m_de_params.m_is_gen_lattice = get_bool(ini, section, DE_IS_GEN_LATTICE_PARAM_NAME);
+        params.m_de_params.m_is_gen_lattice = get_bool(ini, section, de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME);
         params.m_de_params.m_config_file_name = config_file_name;
-        params.m_de_params.m_li2d_file_ext = get_string(ini, section, DE_LI2N_FILE_EXT_PARAM_NAME);
-        params.m_de_params.m_scores_file_ext = get_string(ini, section, DE_SCORES_FILE_EXT_PARAM_NAME);
-        params.m_de_params.m_lattice_file_ext = get_string(ini, section, DE_LATTICE_FILE_EXT_PARAM_NAME);
+        params.m_de_params.m_li2d_file_ext = get_string(ini, section, de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME);
+        params.m_de_params.m_scores_file_ext = get_string(ini, section, de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME);
+        params.m_de_params.m_lattice_file_ext = get_string(ini, section, de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME);
 #else
         params.m_de_params.m_is_gen_lattice = false;
 #endif

@@ -55,7 +55,18 @@ namespace uva {
                 /**
                  * This structure stores the translation server parameters
                  */
-                typedef struct {
+                struct server_parameters_struct {
+                    //Stores the configuration section name
+                    static const string SE_CONFIG_SECTION_NAME;
+                    //Stores the server port parameter name
+                    static const string SE_SERVER_PORT_PARAM_NAME;
+                    //Stores the number of threads parameter name
+                    static const string SE_NUM_THREADS_PARAM_NAME;
+                    //Stores the source language parameter name
+                    static const string SE_SOURCE_LANG_PARAM_NAME;
+                    //Stores the target language parameter name
+                    static const string SE_TARGET_LANG_PARAM_NAME;
+
                     //The source language name
                     string m_source_lang;
                     //The target language name
@@ -88,7 +99,10 @@ namespace uva {
                                 to_string(m_num_threads) +
                                 string(" must be larger than zero! "));
                     }
-                } server_parameters;
+                };
+
+                //Typedef the structure
+                typedef server_parameters_struct server_parameters;
 
                 /**
                  * Allows to output the parameters object to the stream

@@ -50,10 +50,16 @@ namespace uva {
                     /**
                      * This structure is needed to store the language model parameters
                      */
-                    typedef struct {
+                    struct lm_parameters_struct {
+                        //Stores the configuration section name
+                        static const string LM_CONFIG_SECTION_NAME;
+                        //The LM connection string parameter name
+                        static const string LM_CONN_STRING_PARAM_NAME;
+                        //The feature weights parameter name
+                        static const string LM_FEATURE_PARAM_NAME;
+
                         //The the connection string needed to connect to the model
                         string m_conn_string;
-
 
                         //Stores the number of language model weights
                         size_t m_num_lambdas;
@@ -92,7 +98,10 @@ namespace uva {
                                     string(": ") + to_string(m_lambdas[0]) + string(" must be > 0.0 "));
 
                         }
-                    } lm_parameters;
+                    };
+
+                    //Typedef the structure
+                    typedef lm_parameters_struct lm_parameters;
 
                     /**
                      * Allows to output the parameters object to the stream
@@ -102,7 +111,7 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const lm_parameters & params) {
                         return stream << "LM parameters: [ conn_string = " << params.m_conn_string
-                                << ", " << LM_FEATURE_PARAM_NAME << "[" << params.m_num_lambdas
+                                << ", " << lm_parameters::LM_FEATURE_PARAM_NAME << "[" << params.m_num_lambdas
                                 << "] = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, LM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << " ]";
