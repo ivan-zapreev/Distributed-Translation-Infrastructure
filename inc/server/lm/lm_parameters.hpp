@@ -28,6 +28,7 @@
 
 #include <string>
 #include <ostream>
+#include <utility>
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
@@ -57,6 +58,10 @@ namespace uva {
                         static const string LM_CONN_STRING_PARAM_NAME;
                         //The feature weights parameter name
                         static const string LM_WEIGHTS_PARAM_NAME;
+                        //Stores the number of lm weight names
+                        static constexpr size_t LM_WEIGHT_NAMES_SIZE = 5;
+                        //The feature weight names
+                        static const string LM_WEIGHT_NAMES[LM_WEIGHT_NAMES_SIZE];
 
                         //The the connection string needed to connect to the model
                         string m_conn_string;
@@ -67,36 +72,20 @@ namespace uva {
                         //Stores the language model weights
                         float m_lambdas[NUM_LM_FEATURES];
 
-                        //Store the feature id offset for globally storing feature values
-                        //Is only set to a valid value when the lattice generation is on.
-                        size_t m_w_id_offset;
-
-                        /**
-                         * Store the feature ids in a form of an enumeration
-                         */
-                        enum lm_weight_ids {
-                            LM_WEIGHTS_PARAM_ID_0 = 0,
-                            lm_weight_ids_size = LM_WEIGHTS_PARAM_ID_0 + 1
-                        };
-
                         /**
                          * Allows to get the features weights used in the corresponding model.
-                         * @param wconsumer [out] a unique feature weights consumer name,
-                         *                        its uniqueness is checked in the caller
                          * @param wcount [in/out] the number of feature weights up until
                          *                        now, when called, when the call if finished
                          *                        the number of feature weights including the
                          *                        added ones.
                          * @param features [out] the vector the features will be appended to
                          */
-                        void add_weight_names(string & wconsumer, size_t & wcount, vector<string> & features) {
-                            //Set the id offset
-                            m_w_id_offset = wcount;
-                            
+                        void add_weight_names(size_t & wcount, vector<pair<size_t, string>> &features) {
                             //Add the feature weight names and increment the weight count
                             for (size_t idx = 0; idx < m_num_lambdas; ++idx) {
-                                features.push_back(LM_WEIGHTS_PARAM_NAME +
-                                        string("[") + to_string(idx) + string("]"));
+                                //Add the feature global id to its name mapping
+                                features.push_back(pair<size_t, string>(wcount, LM_WEIGHT_NAMES[idx]));
+                                //Increment the feature count
                                 ++wcount;
                             }
                         }
@@ -123,8 +112,16 @@ namespace uva {
                         void finalize() {
                             //The number of lambdas must correspond to the expected one
                             ASSERT_CONDITION_THROW((m_num_lambdas != NUM_LM_FEATURES),
-                                    string("The number of LM features: ") + to_string(m_num_lambdas) +
+                                    string("The number of ") + LM_WEIGHTS_PARAM_NAME +
+                                    string(": ") + to_string(m_num_lambdas) +
                                     string(" must be == ") + to_string(NUM_LM_FEATURES));
+
+                            //The number of lambdas must not exceed the number of enum names
+                            ASSERT_CONDITION_THROW((m_num_lambdas > LM_WEIGHT_NAMES_SIZE),
+                                    string("The number of ") + LM_WEIGHTS_PARAM_NAME +
+                                    string(": ") + to_string(m_num_lambdas) +
+                                    string(" exceeds the number of available ") +
+                                    string("feature id names: ") + to_string(LM_WEIGHT_NAMES_SIZE));
 
                             //The Language model weight must not be zero or negative
                             ASSERT_CONDITION_THROW((m_lambdas[0] <= 0.0),

@@ -230,6 +230,9 @@
       </item>
       <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/decoder/de_configurator.cpp"
@@ -244,6 +247,9 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/lm/builders/lm_basic_builder.cpp"
@@ -266,10 +272,16 @@
       </item>
       <item path="src/server/lm/lm_parameters.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/lm/lm_query.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/lm/mgrams/byte_m_gram_id.cpp"
@@ -361,10 +373,16 @@
       </item>
       <item path="src/server/rm/rm_parameters.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/server_parameters.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/tm/models/tm_target_entry.cpp"

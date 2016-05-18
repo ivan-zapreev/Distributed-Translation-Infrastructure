@@ -29,6 +29,7 @@
 #include <string>
 #include <ostream>
 #include <map>
+#include <utility>
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
@@ -77,7 +78,7 @@ namespace uva {
                         //The linear distortion weight parameter name
                         static const string DE_DIST_LIMIT_PARAM_NAME;
                         //The distortion limit parameter name
-                        static const string DE_LIN_DIST_PENALTY_PARAM_NAME;
+                        static const string DE_LD_PENALTY_PARAM_NAME;
 
                         //The is-generate-search-lattice parameter name
                         static const string DE_IS_GEN_LATTICE_PARAM_NAME;
@@ -136,13 +137,9 @@ namespace uva {
                         string m_scores_file_ext;
                         //The lattice file extension, is only set if IS_SERVER_TUNING_MODE == true
                         string m_lattice_file_ext;
-                        //Stores the mapping from ids to the feature weight names.
+                        //Stores the mapping from the feature weight names to the ids.
                         //This map is not to be output with the << operator.
-                        map<size_t, string> m_id_2_weight;
-
-                        //Store the feature id offset for globally storing feature values
-                        //Is only set to a valid value when the lattice generation is on.
-                        size_t m_w_id_offset;
+                        map<string, size_t> m_weight_name_2_id;
 
                         /**
                          * Store the feature ids in a form of an enumeration
@@ -156,25 +153,39 @@ namespace uva {
 
                         /**
                          * Allows to get the features weights used in the corresponding model.
-                         * @param wconsumer [out] a unique feature weights consumer name,
-                         *                        its uniqueness is checked in the caller
                          * @param wcount [in/out] the number of feature weights up until
                          *                        now, when called, when the call if finished
                          *                        the number of feature weights including the
                          *                        added ones.
                          * @param features [out] the vector the features will be appended to
                          */
-                        void add_weight_names(string & wconsumer, size_t & wcount, vector<string> & features) {
-                            //Set the id offset
-                            m_w_id_offset = wcount;
-                            
+                        void add_weight_names(size_t & wcount, vector<pair<size_t, string>> &features) {
                             //Add the feature weight names and increment the weight count
-                            features.push_back(DE_LIN_DIST_PENALTY_PARAM_NAME);
+                            features.push_back(pair<size_t, string>(wcount, DE_LD_PENALTY_PARAM_NAME));
                             ++wcount;
-                            features.push_back(DE_PHRASE_PENALTY_PARAM_NAME);
+                            features.push_back(pair<size_t, string>(wcount, DE_PHRASE_PENALTY_PARAM_NAME));
                             ++wcount;
-                            features.push_back(DE_WORD_PENALTY_PARAM_NAME);
+                            features.push_back(pair<size_t, string>(wcount, DE_WORD_PENALTY_PARAM_NAME));
                             ++wcount;
+                        }
+
+                        /**
+                         * Allows to add a new feature weight name to id mapping
+                         * @param id the id of the feature weight
+                         * @param name the name of the new feature weight
+                         */
+                        void add_weight_name_2_id_mapping(const size_t & id, const string & name) {
+                            //Search for a feature weight with the same name:
+                            map<string, size_t>::const_iterator iter = m_weight_name_2_id.find(name);
+
+                            //Assert sanity so that we know that the parameter name is unique
+                            ASSERT_CONDITION_THROW(iter != m_weight_name_2_id.end(),
+                                    string("The feature name '") + name +
+                                    string("' already exists with id: ") +
+                                    to_string(iter->second));
+
+                            //Store the mapping for the internal use in the decoder
+                            m_weight_name_2_id[name] = id;
                         }
 
                         /**
@@ -203,12 +214,10 @@ namespace uva {
                                 this->m_word_penalty = other.m_word_penalty.load();
                                 this->m_lin_dist_penalty = other.m_lin_dist_penalty.load();
                                 this->m_is_gen_lattice = other.m_is_gen_lattice.load();
-                                this->m_config_file_name = other.m_config_file_name;
                                 this->m_li2n_file_ext = other.m_li2n_file_ext;
                                 this->m_scores_file_ext = other.m_scores_file_ext;
                                 this->m_lattice_file_ext = other.m_lattice_file_ext;
-                                this->m_id_2_weight = other.m_id_2_weight;
-                                this->m_w_id_offset = other.m_w_id_offset;
+                                this->m_weight_name_2_id = other.m_weight_name_2_id;
                             }
 
                             return *this;
@@ -301,7 +310,7 @@ namespace uva {
                         }
 
                         //The linear distortion penalty lambda
-                        stream << ", " << de_parameters::DE_LIN_DIST_PENALTY_PARAM_NAME << " = " << params.m_lin_dist_penalty;
+                        stream << ", " << de_parameters::DE_LD_PENALTY_PARAM_NAME << " = " << params.m_lin_dist_penalty;
 
                         //Log simple value parameters
                         stream << ", " << de_parameters::DE_PRUNING_THRESHOLD_PARAM_NAME << " = " << params.m_pruning_threshold

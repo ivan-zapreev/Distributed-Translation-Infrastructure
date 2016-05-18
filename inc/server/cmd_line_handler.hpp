@@ -225,10 +225,10 @@ namespace uva {
                     try {
                         //Get a copy of current decoder parameters
                         de_parameters de_local = de_params;
-                        
+
                         //Stores the boolean flag indicating whether the command was recognized or not.
                         bool is_recognized = false;
-                        
+
                         if (begins_with(cmd, PROGRAM_SET_NBT_CMD)) {
                             de_local.m_num_best_trans = get_int_value(cmd, PROGRAM_SET_NBT_CMD);
                             is_recognized = true;
@@ -351,6 +351,8 @@ namespace uva {
                 void perform_command_loop(server_parameters & params, translation_server &server, thread &server_thread) {
                     //Command buffer
                     char command[CMD_BUFF_SIZE];
+
+                    LOG_USAGE << "--------------------------------------------------------" << END_LOG;
 
                     //Print the server commands menu
                     print_server_commands();

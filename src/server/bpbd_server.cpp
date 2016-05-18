@@ -26,6 +26,8 @@
 #include <cctype>
 #include <cstdlib>
 #include <string>
+#include <vector>
+#include <utility>
 
 #include <websocketpp/common/thread.hpp>
 #include <tclap/CmdLine.h>
@@ -185,11 +187,10 @@ static string extract_arguments(const uint argc, char const * const * const argv
         params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, de_parameters::DE_MAX_TP_LEN_PARAM_NAME);
         params.m_de_params.m_word_penalty = get_float(ini, section, de_parameters::DE_WORD_PENALTY_PARAM_NAME);
         params.m_de_params.m_phrase_penalty = get_float(ini, section, de_parameters::DE_PHRASE_PENALTY_PARAM_NAME);
-        params.m_de_params.m_lin_dist_penalty = get_float(ini, section, de_parameters::DE_LIN_DIST_PENALTY_PARAM_NAME);
+        params.m_de_params.m_lin_dist_penalty = get_float(ini, section, de_parameters::DE_LD_PENALTY_PARAM_NAME);
         params.m_de_params.m_dist_limit = get_integer<int32_t>(ini, section, de_parameters::DE_DIST_LIMIT_PARAM_NAME);
 #if IS_SERVER_TUNING_MODE
         params.m_de_params.m_is_gen_lattice = get_bool(ini, section, de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME);
-        params.m_de_params.m_config_file_name = config_file_name;
         params.m_de_params.m_li2n_file_ext = get_string(ini, section, de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME);
         params.m_de_params.m_scores_file_ext = get_string(ini, section, de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME);
         params.m_de_params.m_lattice_file_ext = get_string(ini, section, de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME);
@@ -223,46 +224,38 @@ inline void process_feature_to_id_mappings(const string & config_file_name, serv
         LOG_USAGE << "--------------------------------------------------------" << END_LOG;
 
         //The full feature names will be placed into the vector in the fixed order
-        vector<string> names;
+        vector<pair<size_t, string>> id_to_name;
         //The counter for the number of feature weights
         size_t wcount = 0;
-        //The feature weight consumer name
-        string wconsumer = "";
 
         //Add the features to the vector
-        params.m_de_params.add_weight_names(wconsumer, wcount, names);
-        params.m_lm_params.add_weight_names(wconsumer, wcount, names);
-        params.m_rm_params.add_weight_names(wconsumer, wcount, names);
-        params.m_tm_params.add_weight_names(wconsumer, wcount, names);
+        params.m_de_params.add_weight_names(wcount, id_to_name);
+        params.m_lm_params.add_weight_names(wcount, id_to_name);
+        params.m_rm_params.add_weight_names(wcount, id_to_name);
+        params.m_tm_params.add_weight_names(wcount, id_to_name);
 
         //Dump the features to the file
         const string file_name = config_file_name + "." + params.m_de_params.m_li2n_file_ext;
         //Open the output stream to the file
         ofstream id2n_file(file_name);
-        //Declare the id counter
-        size_t ids = 0;
 
         //Check that the file is open
         ASSERT_CONDITION_THROW(!id2n_file.is_open(), string("Could not open: ") +
                 file_name + string(" for writing"));
 
         //Iterate and output
-        for (vector<string>::const_iterator iter = names.begin();
-                iter != names.end(); ++iter) {
+        for (vector<pair < size_t, string>>::const_iterator iter = id_to_name.begin();
+                iter != id_to_name.end(); ++iter) {
             //Output the mapping to the file
-            id2n_file << ids << "\t" << *iter << std::endl;
-            //Store the mapping for the internal use in the decoder
-            params.m_de_params.m_id_2_weight[ids] = *iter;
-            //Increment the id index
-            ++ids;
+            id2n_file << iter->first << "\t" << iter->second << std::endl;
+            //Add the feature weight name to the global mapping
+            params.m_de_params.add_weight_name_2_id_mapping(iter->first, iter->second);
         }
 
         //Close the file
         id2n_file.close();
 
         LOG_USAGE << "The feature id-to-name mapping is dumped into: " << file_name << END_LOG;
-
-        LOG_USAGE << "--------------------------------------------------------" << END_LOG;
     }
 }
 

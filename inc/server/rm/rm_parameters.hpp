@@ -28,6 +28,7 @@
 
 #include <string>
 #include <ostream>
+#include <utility>
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
@@ -57,6 +58,10 @@ namespace uva {
                         static const string RM_CONN_STRING_PARAM_NAME;
                         //The feature weights parameter name
                         static const string RM_WEIGHTS_PARAM_NAME;
+                        //Stores the number of lm weight names
+                        static constexpr size_t RM_WEIGHT_NAMES_SIZE = 8;
+                        //The feature weight names
+                        static const string RM_WEIGHT_NAMES[RM_WEIGHT_NAMES_SIZE];
 
                         //The the connection string needed to connect to the model
                         string m_conn_string;
@@ -66,44 +71,21 @@ namespace uva {
 
                         //Stores the reordering model weights
                         float m_lambdas[NUM_RM_FEATURES];
-                        
-                        //Store the feature id offset for globally storing feature values
-                        //Is only set to a valid value when the lattice generation is on.
-                        size_t m_w_id_offset;
-
-                        /**
-                         * Store the feature ids in a form of an enumeration
-                         */
-                        enum rm_weight_ids {
-                            RM_WEIGHTS_PARAM_ID_0 = 0,
-                            RM_WEIGHTS_PARAM_ID_1 = RM_WEIGHTS_PARAM_ID_0 + 1,
-                            RM_WEIGHTS_PARAM_ID_2 = RM_WEIGHTS_PARAM_ID_1 + 1,
-                            RM_WEIGHTS_PARAM_ID_3 = RM_WEIGHTS_PARAM_ID_2 + 1,
-                            RM_WEIGHTS_PARAM_ID_4 = RM_WEIGHTS_PARAM_ID_3 + 1,
-                            RM_WEIGHTS_PARAM_ID_5 = RM_WEIGHTS_PARAM_ID_4 + 1,
-                            RM_WEIGHTS_PARAM_ID_6 = RM_WEIGHTS_PARAM_ID_5 + 1,
-                            RM_WEIGHTS_PARAM_ID_7 = RM_WEIGHTS_PARAM_ID_6 + 1,
-                            rm_weight_ids_size = RM_WEIGHTS_PARAM_ID_7 + 1
-                        };
 
                         /**
                          * Allows to get the features weights used in the corresponding model.
-                         * @param wconsumer [out] a unique feature weights consumer name,
-                         *                        its uniqueness is checked in the caller
                          * @param wcount [in/out] the number of feature weights up until
                          *                        now, when called, when the call if finished
                          *                        the number of feature weights including the
                          *                        added ones.
                          * @param features [out] the vector the features will be appended to
                          */
-                       void add_weight_names(string & wconsumer, size_t & wcount, vector<string> & features) {
-                            //Set the id offset
-                            m_w_id_offset = wcount;
-                            
+                        void add_weight_names(size_t & wcount, vector<pair<size_t, string>> &features) {
                             //Add the feature weight names and increment the weight count
                             for (size_t idx = 0; idx < m_num_lambdas; ++idx) {
-                                features.push_back(RM_WEIGHTS_PARAM_NAME +
-                                        string("[") + to_string(idx) + string("]"));
+                                //Add the feature global id to its name mapping
+                                features.push_back(pair<size_t, string>(wcount, RM_WEIGHT_NAMES[idx]));
+                                //Increment the feature count
                                 ++wcount;
                             }
                         }
@@ -117,6 +99,13 @@ namespace uva {
                                     string("The number of ") + RM_WEIGHTS_PARAM_NAME +
                                     string(": ") + to_string(m_num_lambdas) +
                                     string(" must be == ") + to_string(NUM_RM_FEATURES));
+
+                            //The number of lambdas must not exceed the number of enum names
+                            ASSERT_CONDITION_THROW((m_num_lambdas > RM_WEIGHT_NAMES_SIZE),
+                                    string("The number of ") + RM_WEIGHTS_PARAM_NAME +
+                                    string(": ") + to_string(m_num_lambdas) +
+                                    string(" exceeds the number of available ") +
+                                    string("feature ids: ") + to_string(RM_WEIGHT_NAMES_SIZE));
                         }
                     };
 
