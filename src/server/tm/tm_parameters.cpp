@@ -32,7 +32,7 @@ namespace uva {
                 namespace tm {
                     const string tm_parameters_struct::TM_CONFIG_SECTION_NAME = "Translation Models";
                     const string tm_parameters_struct::TM_CONN_STRING_PARAM_NAME = "tm_conn_string";
-                    const string tm_parameters_struct::TM_FEATURE_PARAM_NAME = "tm_feature_weights";
+                    const string tm_parameters_struct::TM_WEIGHTS_PARAM_NAME = "tm_feature_weights";
                     const string tm_parameters_struct::TM_UNK_FEATURE_PARAM_NAME = "tm_unk_features";
                     const string tm_parameters_struct::TM_TRANS_LIM_PARAM_NAME = "tm_trans_lim";
                     const string tm_parameters_struct::TM_MIN_TRANS_PROB_PARAM_NAME = "tm_min_trans_prob";

@@ -56,7 +56,7 @@ namespace uva {
                         //The TM connection string parameter name
                         static const string TM_CONN_STRING_PARAM_NAME;
                         //The feature weights parameter name
-                        static const string TM_FEATURE_PARAM_NAME;
+                        static const string TM_WEIGHTS_PARAM_NAME;
                         //The unknown translation feature weights parameter name
                         static const string TM_UNK_FEATURE_PARAM_NAME;
                         //The translation limit parameter name
@@ -89,13 +89,51 @@ namespace uva {
                         //without feature weights
                         float m_min_tran_prob;
 
+                        //Store the feature id offset for globally storing feature values
+                        //Is only set to a valid value when the lattice generation is on.
+                        size_t m_w_id_offset;
+
+                        /**
+                         * Store the feature ids in a form of an enumeration
+                         */
+                        enum tm_weight_ids {
+                            TM_WEIGHTS_PARAM_ID_0 = 0,
+                            TM_WEIGHTS_PARAM_ID_1 = TM_WEIGHTS_PARAM_ID_0 + 1,
+                            TM_WEIGHTS_PARAM_ID_2 = TM_WEIGHTS_PARAM_ID_1 + 1,
+                            TM_WEIGHTS_PARAM_ID_3 = TM_WEIGHTS_PARAM_ID_2 + 1,
+                            TM_WEIGHTS_PARAM_ID_4 = TM_WEIGHTS_PARAM_ID_3 + 1,
+                            tm_weight_ids_size = TM_WEIGHTS_PARAM_ID_4 + 1
+                        };
+
+                        /**
+                         * Allows to get the features weights used in the corresponding model.
+                         * @param wconsumer [out] a unique feature weights consumer name,
+                         *                        its uniqueness is checked in the caller
+                         * @param wcount [in/out] the number of feature weights up until
+                         *                        now, when called, when the call if finished
+                         *                        the number of feature weights including the
+                         *                        added ones.
+                         * @param features [out] the vector the features will be appended to
+                         */
+                        void add_weight_names(string & wconsumer, size_t & wcount, vector<string> & features) {
+                            //Set the id offset
+                            m_w_id_offset = wcount;
+                            
+                            //Add the feature weight names and increment the weight count
+                            for (size_t idx = 0; idx < m_num_lambdas; ++idx) {
+                                features.push_back(TM_WEIGHTS_PARAM_NAME +
+                                        string("[") + to_string(idx) + string("]"));
+                                ++wcount;
+                            }
+                        }
+
                         /**
                          * Allows to verify the parameters to be correct.
                          */
                         void finalize() {
                             //The number of lambdas must correspond to the expected one
                             ASSERT_CONDITION_THROW((m_num_lambdas != NUM_TM_FEATURES),
-                                    string("The number of ") + TM_FEATURE_PARAM_NAME +
+                                    string("The number of ") + TM_WEIGHTS_PARAM_NAME +
                                     string(": ") + to_string(m_num_lambdas) +
                                     string(" must be == ") + to_string(NUM_TM_FEATURES));
 
@@ -126,7 +164,7 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const tm_parameters & params) {
                         return stream << "TM parameters: [ conn_string = " << params.m_conn_string
-                                << ", " << tm_parameters::TM_FEATURE_PARAM_NAME << "[" << params.m_num_lambdas
+                                << ", " << tm_parameters::TM_WEIGHTS_PARAM_NAME << "[" << params.m_num_lambdas
                                 << "] = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, TM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << ", " << tm_parameters::TM_UNK_FEATURE_PARAM_NAME << "[" << params.m_num_unk_features

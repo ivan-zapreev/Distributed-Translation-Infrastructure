@@ -57,16 +57,6 @@ namespace uva {
                         static void connect(const de_parameters & params) {
                             m_params = &params;
                         }
-                        
-                        /**
-                         * Allows to get the features used in the configurator in the proper and fixed order
-                         * @param features the vector the features will be appended to
-                         */
-                        static void add_features(vector<string> & features) {
-                            features.push_back(de_parameters::DE_LIN_DIST_PENALTY_PARAM_NAME);
-                            features.push_back(de_parameters::DE_PHRASE_PENALTY_PARAM_NAME);
-                            features.push_back(de_parameters::DE_WORD_PENALTY_PARAM_NAME);
-                        }
 
                         /**
                          * Allows to disconnect from the decoder, i.e. clean up the memory etc.

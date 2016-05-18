@@ -28,6 +28,7 @@
 
 #include <string>
 #include <ostream>
+#include <map>
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
@@ -135,6 +136,46 @@ namespace uva {
                         string m_scores_file_ext;
                         //The lattice file extension, is only set if IS_SERVER_TUNING_MODE == true
                         string m_lattice_file_ext;
+                        //Stores the mapping from ids to the feature weight names.
+                        //This map is not to be output with the << operator.
+                        map<size_t, string> m_id_2_weight;
+
+                        //Store the feature id offset for globally storing feature values
+                        //Is only set to a valid value when the lattice generation is on.
+                        size_t m_w_id_offset;
+
+                        /**
+                         * Store the feature ids in a form of an enumeration
+                         */
+                        enum de_weight_ids {
+                            DE_WORD_PENALTY_ID = 0,
+                            DE_PHRASE_PENALTY_ID = DE_WORD_PENALTY_ID + 1,
+                            DE_LIN_DIST_PENALTY_ID = DE_PHRASE_PENALTY_ID + 1,
+                            de_weight_ids_size = DE_LIN_DIST_PENALTY_ID + 1
+                        };
+
+                        /**
+                         * Allows to get the features weights used in the corresponding model.
+                         * @param wconsumer [out] a unique feature weights consumer name,
+                         *                        its uniqueness is checked in the caller
+                         * @param wcount [in/out] the number of feature weights up until
+                         *                        now, when called, when the call if finished
+                         *                        the number of feature weights including the
+                         *                        added ones.
+                         * @param features [out] the vector the features will be appended to
+                         */
+                        void add_weight_names(string & wconsumer, size_t & wcount, vector<string> & features) {
+                            //Set the id offset
+                            m_w_id_offset = wcount;
+                            
+                            //Add the feature weight names and increment the weight count
+                            features.push_back(DE_LIN_DIST_PENALTY_PARAM_NAME);
+                            ++wcount;
+                            features.push_back(DE_PHRASE_PENALTY_PARAM_NAME);
+                            ++wcount;
+                            features.push_back(DE_WORD_PENALTY_PARAM_NAME);
+                            ++wcount;
+                        }
 
                         /**
                          * The basic constructor, does nothing
@@ -166,6 +207,8 @@ namespace uva {
                                 this->m_li2n_file_ext = other.m_li2n_file_ext;
                                 this->m_scores_file_ext = other.m_scores_file_ext;
                                 this->m_lattice_file_ext = other.m_lattice_file_ext;
+                                this->m_id_2_weight = other.m_id_2_weight;
+                                this->m_w_id_offset = other.m_w_id_offset;
                             }
 
                             return *this;

@@ -64,24 +64,13 @@ namespace uva {
                          */
                         static void connect(const lm_parameters & params) {
                             //Store the parameters for future use
-                            m_params = & params;
+                            m_params = &params;
 
                             //At the moment we only support a local proxy
                             m_model_proxy = new lm_proxy_local();
 
                             //Connect to the trie instance using the given parameters
                             m_model_proxy->connect(*m_params);
-                        }
-                        
-                        /**
-                         * Allows to get the features used in the configurator in the proper and fixed order
-                         * @param features the vector the features will be appended to
-                         */
-                        static void add_features(vector<string> & features) {
-                            for (size_t idx = 0; idx < m_params->m_num_lambdas; ++idx) {
-                                features.push_back(lm_parameters::LM_FEATURE_PARAM_NAME +
-                                        string("[") + to_string(idx) + string("]"));
-                            }
                         }
 
                         /**
@@ -104,7 +93,7 @@ namespace uva {
                          */
                         static inline lm_slow_query_proxy & allocate_slow_query_proxy() {
                             LOG_DEBUG2 << "Allocating a new slow LM query proxy" << END_LOG;
-                            
+
                             //Return the query executor as given by the proxy class
                             return m_model_proxy->allocate_slow_query_proxy();
                         }
@@ -124,7 +113,7 @@ namespace uva {
                          */
                         static inline lm_fast_query_proxy & allocate_fast_query_proxy() {
                             LOG_DEBUG2 << "Allocating a new fast LM query proxy" << END_LOG;
-                            
+
                             //Return the query executor as given by the proxy class
                             return m_model_proxy->allocate_fast_query_proxy();
                         }

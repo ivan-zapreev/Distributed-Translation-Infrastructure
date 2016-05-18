@@ -32,7 +32,7 @@ namespace uva {
                 namespace rm {
                     const string rm_parameters_struct::RM_CONFIG_SECTION_NAME = "Reordering Models";
                     const string rm_parameters_struct::RM_CONN_STRING_PARAM_NAME = "rm_conn_string";
-                    const string rm_parameters_struct::RM_FEATURE_PARAM_NAME = "rm_feature_weights";
+                    const string rm_parameters_struct::RM_WEIGHTS_PARAM_NAME = "rm_feature_weights";
                 }
             }
         }

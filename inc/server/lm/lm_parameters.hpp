@@ -56,7 +56,7 @@ namespace uva {
                         //The LM connection string parameter name
                         static const string LM_CONN_STRING_PARAM_NAME;
                         //The feature weights parameter name
-                        static const string LM_FEATURE_PARAM_NAME;
+                        static const string LM_WEIGHTS_PARAM_NAME;
 
                         //The the connection string needed to connect to the model
                         string m_conn_string;
@@ -66,6 +66,40 @@ namespace uva {
 
                         //Stores the language model weights
                         float m_lambdas[NUM_LM_FEATURES];
+
+                        //Store the feature id offset for globally storing feature values
+                        //Is only set to a valid value when the lattice generation is on.
+                        size_t m_w_id_offset;
+
+                        /**
+                         * Store the feature ids in a form of an enumeration
+                         */
+                        enum lm_weight_ids {
+                            LM_WEIGHTS_PARAM_ID_0 = 0,
+                            lm_weight_ids_size = LM_WEIGHTS_PARAM_ID_0 + 1
+                        };
+
+                        /**
+                         * Allows to get the features weights used in the corresponding model.
+                         * @param wconsumer [out] a unique feature weights consumer name,
+                         *                        its uniqueness is checked in the caller
+                         * @param wcount [in/out] the number of feature weights up until
+                         *                        now, when called, when the call if finished
+                         *                        the number of feature weights including the
+                         *                        added ones.
+                         * @param features [out] the vector the features will be appended to
+                         */
+                        void add_weight_names(string & wconsumer, size_t & wcount, vector<string> & features) {
+                            //Set the id offset
+                            m_w_id_offset = wcount;
+                            
+                            //Add the feature weight names and increment the weight count
+                            for (size_t idx = 0; idx < m_num_lambdas; ++idx) {
+                                features.push_back(LM_WEIGHTS_PARAM_NAME +
+                                        string("[") + to_string(idx) + string("]"));
+                                ++wcount;
+                            }
+                        }
 
                         /**
                          * Allows to detect that the lm weight is set and needs to be used
@@ -94,7 +128,7 @@ namespace uva {
 
                             //The Language model weight must not be zero or negative
                             ASSERT_CONDITION_THROW((m_lambdas[0] <= 0.0),
-                                    string("Improper value of ") + LM_FEATURE_PARAM_NAME +
+                                    string("Improper value of ") + LM_WEIGHTS_PARAM_NAME +
                                     string(": ") + to_string(m_lambdas[0]) + string(" must be > 0.0 "));
 
                         }
@@ -111,7 +145,7 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const lm_parameters & params) {
                         return stream << "LM parameters: [ conn_string = " << params.m_conn_string
-                                << ", " << lm_parameters::LM_FEATURE_PARAM_NAME << "[" << params.m_num_lambdas
+                                << ", " << lm_parameters::LM_WEIGHTS_PARAM_NAME << "[" << params.m_num_lambdas
                                 << "] = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, LM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << " ]";

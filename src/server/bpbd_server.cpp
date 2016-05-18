@@ -142,8 +142,8 @@ static string extract_arguments(const uint argc, char const * const * const argv
 
         section = lm_parameters::LM_CONFIG_SECTION_NAME;
         params.m_lm_params.m_conn_string = get_string(ini, section, lm_parameters::LM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<NUM_LM_FEATURES>(lm_parameters::LM_FEATURE_PARAM_NAME,
-                get_string(ini, section, lm_parameters::LM_FEATURE_PARAM_NAME),
+        tokenize_s_t_f<NUM_LM_FEATURES>(lm_parameters::LM_WEIGHTS_PARAM_NAME,
+                get_string(ini, section, lm_parameters::LM_WEIGHTS_PARAM_NAME),
                 params.m_lm_params.m_lambdas,
                 params.m_lm_params.m_num_lambdas,
                 LM_FEATURE_WEIGHTS_DELIMITER_STR);
@@ -152,8 +152,8 @@ static string extract_arguments(const uint argc, char const * const * const argv
 
         section = tm_parameters::TM_CONFIG_SECTION_NAME;
         params.m_tm_params.m_conn_string = get_string(ini, section, tm_parameters::TM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<NUM_TM_FEATURES>(tm_parameters::TM_FEATURE_PARAM_NAME,
-                get_string(ini, section, tm_parameters::TM_FEATURE_PARAM_NAME),
+        tokenize_s_t_f<NUM_TM_FEATURES>(tm_parameters::TM_WEIGHTS_PARAM_NAME,
+                get_string(ini, section, tm_parameters::TM_WEIGHTS_PARAM_NAME),
                 params.m_tm_params.m_lambdas,
                 params.m_tm_params.m_num_lambdas,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
@@ -169,8 +169,8 @@ static string extract_arguments(const uint argc, char const * const * const argv
 
         section = rm_parameters::RM_CONFIG_SECTION_NAME;
         params.m_rm_params.m_conn_string = get_string(ini, section, rm_parameters::RM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<NUM_RM_FEATURES>(rm_parameters::RM_FEATURE_PARAM_NAME,
-                get_string(ini, section, rm_parameters::RM_FEATURE_PARAM_NAME),
+        tokenize_s_t_f<NUM_RM_FEATURES>(rm_parameters::RM_WEIGHTS_PARAM_NAME,
+                get_string(ini, section, rm_parameters::RM_WEIGHTS_PARAM_NAME),
                 params.m_rm_params.m_lambdas,
                 params.m_rm_params.m_num_lambdas,
                 RM_FEATURE_WEIGHTS_DELIMITER_STR);
@@ -210,24 +210,30 @@ static string extract_arguments(const uint argc, char const * const * const argv
 }
 
 /**
- * This function allow to dump the feature to id mapping
- * for the server tuning using the search lattice.
+ * This function allow to process the feature to id mappings needed
+ * for the search lattice. As a part of this process we will need to
+ * dump the id to feature weight name into the file and also set up
+ * the parameters.
  * @param params the server parameters
  * @config_file_name the configuration file name
  */
-inline void dump_feature_to_id_mappings(const server_parameters & params, const string & config_file_name) {
+inline void process_feature_to_id_mappings(const string & config_file_name, server_parameters & params) {
     //Check if the id to name is to be dumped
     if (params.m_de_params.m_is_gen_lattice) {
         LOG_USAGE << "--------------------------------------------------------" << END_LOG;
-        
+
         //The full feature names will be placed into the vector in the fixed order
         vector<string> names;
+        //The counter for the number of feature weights
+        size_t wcount = 0;
+        //The feature weight consumer name
+        string wconsumer = "";
 
         //Add the features to the vector
-        de_configurator::add_features(names);
-        lm_configurator::add_features(names);
-        rm_configurator::add_features(names);
-        tm_configurator::add_features(names);
+        params.m_de_params.add_weight_names(wconsumer, wcount, names);
+        params.m_lm_params.add_weight_names(wconsumer, wcount, names);
+        params.m_rm_params.add_weight_names(wconsumer, wcount, names);
+        params.m_tm_params.add_weight_names(wconsumer, wcount, names);
 
         //Dump the features to the file
         const string file_name = config_file_name + "." + params.m_de_params.m_li2n_file_ext;
@@ -243,14 +249,19 @@ inline void dump_feature_to_id_mappings(const server_parameters & params, const 
         //Iterate and output
         for (vector<string>::const_iterator iter = names.begin();
                 iter != names.end(); ++iter) {
-            id2n_file << ids++ << "\t" << *iter << std::endl;
+            //Output the mapping to the file
+            id2n_file << ids << "\t" << *iter << std::endl;
+            //Store the mapping for the internal use in the decoder
+            params.m_de_params.m_id_2_weight[ids] = *iter;
+            //Increment the id index
+            ++ids;
         }
 
         //Close the file
         id2n_file.close();
 
         LOG_USAGE << "The feature id-to-name mapping is dumped into: " << file_name << END_LOG;
-        
+
         LOG_USAGE << "--------------------------------------------------------" << END_LOG;
     }
 }
@@ -313,11 +324,11 @@ int main(int argc, char** argv) {
         //Attempt to extract the program arguments
         const string config_file_name = extract_arguments(argc, argv, params);
 
+        //Process the feature name to id mappings, if needed
+        process_feature_to_id_mappings(config_file_name, params);
+
         //Initialize connections to the used models
         connect_to_models(params);
-
-        //Dump the feature name to id mappings, if needed
-        dump_feature_to_id_mappings(params, config_file_name);
 
         //Instantiate the translation server
         translation_server server(params.m_server_port, params.m_num_threads);
