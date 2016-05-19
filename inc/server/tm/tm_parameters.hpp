@@ -102,7 +102,7 @@ namespace uva {
                          *                        added ones.
                          * @param features [out] the vector the features will be appended to
                          */
-                        void add_weight_names(size_t & wcount, vector<pair<size_t, string>> &features) {
+                        void get_weight_names(size_t & wcount, vector<pair<size_t, string>> &features) {
                             //Add the feature weight names and increment the weight count
                             for (size_t idx = 0; idx < m_num_lambdas; ++idx) {
                                 //Add the feature global id to its name mapping

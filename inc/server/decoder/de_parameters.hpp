@@ -159,7 +159,7 @@ namespace uva {
                          *                        added ones.
                          * @param features [out] the vector the features will be appended to
                          */
-                        void add_weight_names(size_t & wcount, vector<pair<size_t, string>> &features) {
+                        void get_weight_names(size_t & wcount, vector<pair<size_t, string>> &features) {
                             //Add the feature weight names and increment the weight count
                             features.push_back(pair<size_t, string>(wcount, DE_LD_PENALTY_PARAM_NAME));
                             ++wcount;
@@ -269,21 +269,26 @@ namespace uva {
                             //the number of best translations minus one
                             this->m_num_alt_to_keep = m_num_best_trans - 1;
 
-#if IS_SERVER_TUNING_MODE
-                            ASSERT_CONDITION_THROW((m_li2n_file_ext == ""),
-                                    string("The ") + DE_LI2N_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
-                            ASSERT_CONDITION_THROW((m_scores_file_ext == ""),
-                                    string("The ") + DE_SCORES_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
-                            ASSERT_CONDITION_THROW((m_lattice_file_ext == ""),
-                                    string("The ") + DE_LATTICE_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
-#else
                             if (this->m_is_gen_lattice) {
+#if IS_SERVER_TUNING_MODE
+                                ASSERT_CONDITION_THROW((m_li2n_file_ext == ""),
+                                        string("The ") + DE_LI2N_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
+                                ASSERT_CONDITION_THROW((m_scores_file_ext == ""),
+                                        string("The ") + DE_SCORES_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
+                                ASSERT_CONDITION_THROW((m_lattice_file_ext == ""),
+                                        string("The ") + DE_LATTICE_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
+                                ASSERT_CONDITION_THROW((m_weight_name_2_id.size() > MAX_NUMBER_OF_REATURES),
+                                        string("The total number of decoding features: ") +
+                                        to_string(m_weight_name_2_id.size()) +
+                                        string(" exceeds the allowed maximum of: ") +
+                                        to_string(MAX_NUMBER_OF_REATURES));
+#else
                                 LOG_WARNING << "The " << DE_IS_GEN_LATTICE_PARAM_NAME
                                         << " is set to true in a non-training mode server"
                                         << " compilation, re-setting to false!" << END_LOG;
                                 this->m_is_gen_lattice = false;
-                            }
 #endif
+                            }
                         }
                     };
 

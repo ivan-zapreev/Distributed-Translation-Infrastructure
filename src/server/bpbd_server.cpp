@@ -104,13 +104,62 @@ void destroy_arguments_parser() {
 }
 
 /**
+ * This function allow to process the feature to id mappings needed
+ * for the search lattice. As a part of this process we will need to
+ * dump the id to feature weight name into the file and also set up
+ * the parameters.
+ * @param params the server parameters
+ * @config_file_name the configuration file name
+ */
+inline void process_feature_to_id_mappings(const string & config_file_name, server_parameters & params) {
+    //Check if the id to name is to be dumped
+    if (params.m_de_params.m_is_gen_lattice) {
+        LOG_USAGE << "--------------------------------------------------------" << END_LOG;
+
+        //The full feature names will be placed into the vector in the fixed order
+        vector<pair<size_t, string>> id_to_name;
+        //The counter for the number of feature weights
+        size_t wcount = 0;
+
+        //Add the features to the vector
+        params.m_de_params.get_weight_names(wcount, id_to_name);
+        params.m_lm_params.get_weight_names(wcount, id_to_name);
+        params.m_rm_params.get_weight_names(wcount, id_to_name);
+        params.m_tm_params.get_weight_names(wcount, id_to_name);
+
+        //Dump the features to the file
+        const string file_name = config_file_name + "." + params.m_de_params.m_li2n_file_ext;
+        //Open the output stream to the file
+        ofstream id2n_file(file_name);
+
+        //Check that the file is open
+        ASSERT_CONDITION_THROW(!id2n_file.is_open(), string("Could not open: ") +
+                file_name + string(" for writing"));
+
+        //Iterate and output
+        for (vector<pair < size_t, string>>::const_iterator iter = id_to_name.begin();
+                iter != id_to_name.end(); ++iter) {
+            //Output the mapping to the file
+            id2n_file << iter->first << "\t" << iter->second << std::endl;
+            //Add the feature weight name to the global mapping
+            params.m_de_params.add_weight_name_2_id_mapping(iter->first, iter->second);
+        }
+
+        //Close the file
+        id2n_file.close();
+
+        LOG_USAGE << "The feature id-to-name mapping is dumped into: " << file_name << END_LOG;
+    }
+}
+
+/**
  * This function tries to extract the 
  * @param argc the number of program arguments
  * @param argv the array of program arguments
  * @param params the structure that will be filled in with the parsed program arguments
  * @return the configuration file name
  */
-static string extract_arguments(const uint argc, char const * const * const argv, server_parameters & params) {
+static void prepare_config_structures(const uint argc, char const * const * const argv, server_parameters & params) {
     //Parse the arguments
     try {
         p_cmd_args->parse(argc, argv);
@@ -194,6 +243,8 @@ static string extract_arguments(const uint argc, char const * const * const argv
         params.m_de_params.m_li2n_file_ext = get_string(ini, section, de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME);
         params.m_de_params.m_scores_file_ext = get_string(ini, section, de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME);
         params.m_de_params.m_lattice_file_ext = get_string(ini, section, de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME);
+        //Process the feature name to id mappings, if needed
+        process_feature_to_id_mappings(config_file_name, params);
 #else
         params.m_de_params.m_is_gen_lattice = false;
 #endif
@@ -204,58 +255,6 @@ static string extract_arguments(const uint argc, char const * const * const argv
     } else {
         //We could not parse the configuration file, report an error
         THROW_EXCEPTION(string("Could not find or parse the configuration file: ") + config_file_name);
-    }
-
-    ///Return the name of the config file
-    return config_file_name;
-}
-
-/**
- * This function allow to process the feature to id mappings needed
- * for the search lattice. As a part of this process we will need to
- * dump the id to feature weight name into the file and also set up
- * the parameters.
- * @param params the server parameters
- * @config_file_name the configuration file name
- */
-inline void process_feature_to_id_mappings(const string & config_file_name, server_parameters & params) {
-    //Check if the id to name is to be dumped
-    if (params.m_de_params.m_is_gen_lattice) {
-        LOG_USAGE << "--------------------------------------------------------" << END_LOG;
-
-        //The full feature names will be placed into the vector in the fixed order
-        vector<pair<size_t, string>> id_to_name;
-        //The counter for the number of feature weights
-        size_t wcount = 0;
-
-        //Add the features to the vector
-        params.m_de_params.add_weight_names(wcount, id_to_name);
-        params.m_lm_params.add_weight_names(wcount, id_to_name);
-        params.m_rm_params.add_weight_names(wcount, id_to_name);
-        params.m_tm_params.add_weight_names(wcount, id_to_name);
-
-        //Dump the features to the file
-        const string file_name = config_file_name + "." + params.m_de_params.m_li2n_file_ext;
-        //Open the output stream to the file
-        ofstream id2n_file(file_name);
-
-        //Check that the file is open
-        ASSERT_CONDITION_THROW(!id2n_file.is_open(), string("Could not open: ") +
-                file_name + string(" for writing"));
-
-        //Iterate and output
-        for (vector<pair < size_t, string>>::const_iterator iter = id_to_name.begin();
-                iter != id_to_name.end(); ++iter) {
-            //Output the mapping to the file
-            id2n_file << iter->first << "\t" << iter->second << std::endl;
-            //Add the feature weight name to the global mapping
-            params.m_de_params.add_weight_name_2_id_mapping(iter->first, iter->second);
-        }
-
-        //Close the file
-        id2n_file.close();
-
-        LOG_USAGE << "The feature id-to-name mapping is dumped into: " << file_name << END_LOG;
     }
 }
 
@@ -314,11 +313,8 @@ int main(int argc, char** argv) {
         //Define en empty parameters structure
         server_parameters params;
 
-        //Attempt to extract the program arguments
-        const string config_file_name = extract_arguments(argc, argv, params);
-
-        //Process the feature name to id mappings, if needed
-        process_feature_to_id_mappings(config_file_name, params);
+        //Prepare the configuration structures, parse the config file
+        prepare_config_structures(argc, argv, params);
 
         //Initialize connections to the used models
         connect_to_models(params);

@@ -40,7 +40,11 @@ namespace uva {
             namespace server {
                 namespace decoder {
                     //Stores the maximum considered number of words per sentence
-                    static const size_t MAX_WORDS_PER_SENTENCE = 256;
+                    static constexpr size_t MAX_WORDS_PER_SENTENCE = 256;
+                    //Stores the maximum number of features to be used in the
+                    //decoding process, the only purpose of this variable is to
+                    //simplify the code and avoid dynamic array allocations
+                    static constexpr size_t MAX_NUMBER_OF_REATURES = 20;
                 }
             }
         }
