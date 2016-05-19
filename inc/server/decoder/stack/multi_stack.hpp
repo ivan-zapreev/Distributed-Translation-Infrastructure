@@ -166,6 +166,16 @@ namespace uva {
                             }
 
                             /**
+                             * Is needed to dump the search lattice data for the given sentence.
+                             * This method is to be called after a translation is successfully finished.
+                             * @param scores_file the file the scores are to be dumped into.
+                             * @param lattice_file the file the lattice is to be dumped into.
+                             */
+                            virtual void dump_search_lattice(ofstream & scores_file, ofstream & lattice_file) {
+                                //ToDo: Implement
+                            }
+
+                            /**
                              * Allows to extend the hypothesis, when extending the stack we immediately re-combine
                              */
                             inline void expand() {

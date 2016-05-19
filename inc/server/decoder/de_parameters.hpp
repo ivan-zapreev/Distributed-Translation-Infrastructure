@@ -82,6 +82,8 @@ namespace uva {
 
                         //The is-generate-search-lattice parameter name
                         static const string DE_IS_GEN_LATTICE_PARAM_NAME;
+                        //The lattices folder parameter name
+                        static const string DE_LATTICES_FOLDER_PARAM_NAME;
                         //The lattice id to name mapping file extension parameter name
                         static const string DE_LI2N_FILE_EXT_PARAM_NAME;
                         //The feature scores file extension parameter name
@@ -131,6 +133,8 @@ namespace uva {
                         atomic<bool> m_is_gen_lattice;
                         //The server configuration file name, is only set if IS_SERVER_TUNING_MODE == true
                         string m_config_file_name;
+                        //The folder where the lattice related files are to be stored
+                        string m_lattices_folder;
                         //The lattice id to name file extension, is only set if IS_SERVER_TUNING_MODE == true
                         string m_li2n_file_ext;
                         //The lattice feature scores file extension, is only set if IS_SERVER_TUNING_MODE == true
@@ -214,6 +218,7 @@ namespace uva {
                                 this->m_word_penalty = other.m_word_penalty.load();
                                 this->m_lin_dist_penalty = other.m_lin_dist_penalty.load();
                                 this->m_is_gen_lattice = other.m_is_gen_lattice.load();
+                                this->m_lattices_folder = other.m_lattices_folder;
                                 this->m_li2n_file_ext = other.m_li2n_file_ext;
                                 this->m_scores_file_ext = other.m_scores_file_ext;
                                 this->m_lattice_file_ext = other.m_lattice_file_ext;
@@ -271,6 +276,16 @@ namespace uva {
 
                             if (this->m_is_gen_lattice) {
 #if IS_SERVER_TUNING_MODE
+                                //Check if the lattices folder is set
+                                if (m_lattices_folder == "") {
+                                    //Log the warning
+                                    LOG_WARNING << "The " << DE_IS_GEN_LATTICE_PARAM_NAME
+                                            << " is set to true in a non-training mode server"
+                                            << " compilation, re-setting to false!" << END_LOG;
+                                    //just use the current folder
+                                    m_lattices_folder = ".";
+                                }
+                                
                                 ASSERT_CONDITION_THROW((m_li2n_file_ext == ""),
                                         string("The ") + DE_LI2N_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
                                 ASSERT_CONDITION_THROW((m_scores_file_ext == ""),

@@ -158,6 +158,20 @@ namespace uva {
                                 }
                             }
 
+                            /**
+                             * Is needed to dump the search lattice data for the given sentence.
+                             * This method is to be called after a translation is successfully finished.
+                             * @param scores_file the file the scores are to be dumped into.
+                             * @param lattice_file the file the lattice is to be dumped into.
+                             */
+                            inline void dump_search_lattice(ofstream & scores_file, ofstream & lattice_file) {
+                                if (m_stack_info_prov != NULL) {
+                                    m_stack_info_prov->dump_search_lattice(scores_file, lattice_file);
+                                } else {
+                                    THROW_EXCEPTION("Trying to dump the search lattice but the stack pointer is NULL!");
+                                }
+                            }
+
                         protected:
 
                             /**
@@ -422,8 +436,14 @@ namespace uva {
                             template<bool is_dist, bool is_alt_trans>
                             inline void perform_translation() {
                                 typedef multi_stack_templ<is_dist, is_alt_trans, MAX_WORDS_PER_SENTENCE, LM_HISTORY_LEN_MAX, LM_MAX_QUERY_LEN> stack_type;
+
                                 //Instantiate the multi-stack
-                                stack_type * m_stack = new stack_type (m_de_params, m_is_stop, m_source_sent, m_sent_data, m_rm_query, m_lm_query);
+                                stack_type * m_stack = new stack_type(m_de_params, m_is_stop,
+                                        m_source_sent, m_sent_data, m_rm_query, m_lm_query);
+
+                                //Store the stack pointer for getting the translation info
+                                //later, if needed, and also for a safe destruction
+                                m_stack_info_prov = m_stack;
 
                                 //Extend the stack, here we do everything in one go
                                 //Including expanding, pruning and recombination
@@ -432,9 +452,6 @@ namespace uva {
                                 //If we are finished then retrieve the best 
                                 //translation. If we have stopped then nothing.
                                 m_stack->get_best_trans(m_target_sent);
-                                
-                                //Store the stack pointer for getting the translation info later, if needed
-                                m_stack_info_prov = m_stack;
                             }
 
                         private:

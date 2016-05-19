@@ -135,6 +135,11 @@ namespace uva {
                         try {
                             LOG_DEBUG1 << "Invoking the sentence translation for task " << m_task_id << END_LOG;
                             m_decoder.translate();
+
+                            const de_parameters & de_params = de_configurator::get_params();
+                            if (de_params.m_is_gen_lattice) {
+                                dump_search_lattice(de_params);
+                            }
                         } catch (uva_exception & ex) {
                             //Set the response code
                             m_code = trans_job_code::RESULT_ERROR;
@@ -214,6 +219,42 @@ namespace uva {
                     }
 
                 protected:
+
+                    /**
+                     * Allows to dump the search lattice in case it is needed.
+                     * Note that, in this code we do not care if in case of an
+                     * error we do not close the files. This is because lattice
+                     * dumping is only needed while model training, plus it should
+                     * work without throwing any errors. So if it happens then
+                     * it is not a big problem.
+                     * @param de_params the decoder parameters
+                     */
+                    inline void dump_search_lattice(const de_parameters & de_params) {
+                        LOG_DEBUG1 << "Dumping the search lattice for the translation task " << m_task_id << END_LOG;
+
+                        //Create the file names
+                        const string file_name = de_params.m_lattices_folder + "/" +
+                                to_string(m_session_id) + "." + to_string(m_job_id) + "." +
+                                to_string(m_task_id) + ".";
+                        const string scores_file_name = file_name + de_params.m_scores_file_ext;
+                        const string lattice_file_name = file_name + de_params.m_lattice_file_ext;
+
+                        //Open the output stream to the files
+                        ofstream scores_file(scores_file_name), lattice_file(lattice_file_name);
+
+                        //Check that the files are open
+                        ASSERT_CONDITION_THROW(!scores_file.is_open(), string("Could not open: ") +
+                                scores_file_name + string(" for writing"));
+                        ASSERT_CONDITION_THROW(!lattice_file.is_open(), string("Could not open: ") +
+                                lattice_file_name + string(" for writing"));
+
+                        //Call the sentence decoder to do dumping.
+                        m_decoder.dump_search_lattice(scores_file, lattice_file);
+
+                        //Close the files
+                        scores_file.close();
+                        lattice_file.close();
+                    }
 
                     /**
                      * Allows to process the translation task result in case of a successful and abnormal task termination.

@@ -28,6 +28,10 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <sys/types.h>
+#include <stdio.h>
+#include <dirent.h>
+#include <cstdlib>
 
 #include <websocketpp/common/thread.hpp>
 #include <tclap/CmdLine.h>
@@ -104,52 +108,88 @@ void destroy_arguments_parser() {
 }
 
 /**
+ * Allows to check/create the lattices folder
+ * @param params the decoder parameters storing the needed information
+ */
+inline void check_create_lattices_folder(const server_parameters & params) {
+    //Open the specified folder
+    DIR * pdir = opendir(params.m_de_params.m_lattices_folder.c_str());
+
+    //Check if the directory is present
+    if (pdir == NULL) {
+        //Log the warning that the directory does not exist
+        LOG_WARNING << "The directory: " << params.m_de_params.m_lattices_folder
+                << " does not exist, creating!" << END_LOG;
+
+        //Construct the command to create the directory
+        const string cmd = string("mkdir -p ") + params.m_de_params.m_lattices_folder;
+        //Try to create the directory recursively using shell
+        const int dir_err = system(cmd.c_str());
+
+        //Check that the directory has been created
+        ASSERT_CONDITION_THROW((-1 == dir_err),
+                string("Could not create the directory: ") +
+                params.m_de_params.m_lattices_folder);
+    } else {
+        //Close the directory
+        closedir(pdir);
+    }
+}
+
+/**
  * This function allow to process the feature to id mappings needed
  * for the search lattice. As a part of this process we will need to
  * dump the id to feature weight name into the file and also set up
  * the parameters.
  * @param params the server parameters
- * @config_file_name the configuration file name
+ * @param cfg_file_name the configuration file name
  */
-inline void process_feature_to_id_mappings(const string & config_file_name, server_parameters & params) {
-    //Check if the id to name is to be dumped
-    if (params.m_de_params.m_is_gen_lattice) {
-        LOG_USAGE << "--------------------------------------------------------" << END_LOG;
+inline void process_feature_to_id_mappings(const string & cfg_file_name, server_parameters & params) {
+    LOG_USAGE << "--------------------------------------------------------" << END_LOG;
 
-        //The full feature names will be placed into the vector in the fixed order
-        vector<pair<size_t, string>> id_to_name;
-        //The counter for the number of feature weights
-        size_t wcount = 0;
+    //The full feature names will be placed into the vector in the fixed order
+    vector<pair<size_t, string>> id_to_name;
+    //The counter for the number of feature weights
+    size_t wcount = 0;
 
-        //Add the features to the vector
-        params.m_de_params.get_weight_names(wcount, id_to_name);
-        params.m_lm_params.get_weight_names(wcount, id_to_name);
-        params.m_rm_params.get_weight_names(wcount, id_to_name);
-        params.m_tm_params.get_weight_names(wcount, id_to_name);
+    //Add the features to the vector
+    params.m_de_params.get_weight_names(wcount, id_to_name);
+    params.m_lm_params.get_weight_names(wcount, id_to_name);
+    params.m_rm_params.get_weight_names(wcount, id_to_name);
+    params.m_tm_params.get_weight_names(wcount, id_to_name);
 
-        //Dump the features to the file
-        const string file_name = config_file_name + "." + params.m_de_params.m_li2n_file_ext;
-        //Open the output stream to the file
-        ofstream id2n_file(file_name);
-
-        //Check that the file is open
-        ASSERT_CONDITION_THROW(!id2n_file.is_open(), string("Could not open: ") +
-                file_name + string(" for writing"));
-
-        //Iterate and output
-        for (vector<pair < size_t, string>>::const_iterator iter = id_to_name.begin();
-                iter != id_to_name.end(); ++iter) {
-            //Output the mapping to the file
-            id2n_file << iter->first << "\t" << iter->second << std::endl;
-            //Add the feature weight name to the global mapping
-            params.m_de_params.add_weight_name_2_id_mapping(iter->first, iter->second);
-        }
-
-        //Close the file
-        id2n_file.close();
-
-        LOG_USAGE << "The feature id-to-name mapping is dumped into: " << file_name << END_LOG;
+    //Extract the configuration file name without any path prefix 
+    string cfg_name = cfg_file_name;
+    //Search for the last path delimiter symbol
+    size_t last_pos = cfg_name.find_last_of("\\/");
+    //If there path delimiter symbol was found take the remainder
+    if (last_pos != string::npos) {
+        cfg_name = cfg_name.substr(last_pos + 1);
     }
+
+    //Construct the feature weight to id file name
+    const string file_name = params.m_de_params.m_lattices_folder + "/" +
+            cfg_name + "." + params.m_de_params.m_li2n_file_ext;
+    //Open the output stream to the file
+    ofstream id2n_file(file_name);
+
+    //Check that the file is open
+    ASSERT_CONDITION_THROW(!id2n_file.is_open(), string("Could not open: ") +
+            file_name + string(" for writing"));
+
+    //Iterate and output
+    for (vector<pair < size_t, string>>::const_iterator iter = id_to_name.begin();
+            iter != id_to_name.end(); ++iter) {
+        //Output the mapping to the file
+        id2n_file << iter->first << "\t" << iter->second << std::endl;
+        //Add the feature weight name to the global mapping
+        params.m_de_params.add_weight_name_2_id_mapping(iter->first, iter->second);
+    }
+
+    //Close the file
+    id2n_file.close();
+
+    LOG_USAGE << "The feature id-to-name mapping is dumped into: " << file_name << END_LOG;
 }
 
 /**
@@ -240,11 +280,17 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         params.m_de_params.m_dist_limit = get_integer<int32_t>(ini, section, de_parameters::DE_DIST_LIMIT_PARAM_NAME);
 #if IS_SERVER_TUNING_MODE
         params.m_de_params.m_is_gen_lattice = get_bool(ini, section, de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME);
+        params.m_de_params.m_lattices_folder = get_string(ini, section, de_parameters::DE_LATTICES_FOLDER_PARAM_NAME);
         params.m_de_params.m_li2n_file_ext = get_string(ini, section, de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME);
         params.m_de_params.m_scores_file_ext = get_string(ini, section, de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME);
         params.m_de_params.m_lattice_file_ext = get_string(ini, section, de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME);
-        //Process the feature name to id mappings, if needed
-        process_feature_to_id_mappings(config_file_name, params);
+        //If the lattice dumping is enabled then
+        if (params.m_de_params.m_is_gen_lattice) {
+            //Check that the lattices folder does, if not - create.
+            check_create_lattices_folder(params);
+            //Dump the feature weight to id mappings
+            process_feature_to_id_mappings(config_file_name, params);
+        }
 #else
         params.m_de_params.m_is_gen_lattice = false;
 #endif

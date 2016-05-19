@@ -24,7 +24,7 @@
  */
 
 #ifndef TRANS_INFO_HPP
-#define	TRANS_INFO_HPP
+#define TRANS_INFO_HPP
 
 #include <map>
 #include <string>
@@ -51,16 +51,26 @@ namespace uva {
                  */
                 class trans_info_provider {
                 public:
+
                     /**
                      * The basic virtual destructor
                      */
-                    virtual ~trans_info_provider() {}
+                    virtual ~trans_info_provider() {
+                    }
 
                     /**
                      * The method that is to be implemented in for getting the translation info
                      * @param info
                      */
                     virtual void get_trans_info(trans_info & info) = 0;
+
+                    /**
+                     * Is needed to dump the search lattice data for the given sentence.
+                     * This method is to be called after a translation is successfully finished.
+                     * @param scores_file the file the scores are to be dumped into.
+                     * @param lattice_file the file the lattice is to be dumped into.
+                     */
+                    virtual void dump_search_lattice(ofstream & scores_file, ofstream & lattice_file) = 0;
                 };
 
                 /**
@@ -126,5 +136,5 @@ namespace uva {
     }
 }
 
-#endif	/* TRANS_INFO_HPP */
+#endif /* TRANS_INFO_HPP */
 

@@ -69,7 +69,7 @@ namespace uva {
                          * Allows to get the decoder parameters
                          * @return the reference to the decoder parameters
                          */
-                        static const de_parameters &  get_params() {
+                        static const de_parameters & get_params() {
                             return *m_params;
                         }
 
