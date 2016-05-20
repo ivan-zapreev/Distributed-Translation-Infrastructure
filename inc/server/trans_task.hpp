@@ -73,7 +73,7 @@ namespace uva {
                      * The basic constructor allowing to initialize the main class constants
                      * @param session_id the session id of the task, is used for logging
                      * @param job_id the job id of the task, is used for logging
-                     * @param task_id the id of the translation task within the translation job
+                     * @param task_id a unique translation task id that is at least unique within a translation job
                      * @param source_sentence the sentence to be translated
                      */
                     trans_task(const session_id_type session_id, const job_id_type job_id, const task_id_type task_id,

@@ -152,6 +152,17 @@ namespace uva {
                                 }
                             }
 
+#if IS_SERVER_TUNING_MODE
+                            /**
+                             * Allows to set the state id for the case of decoder
+                             * tuning, i.e. search lattice generation.
+                             * @param state_id the state id as issued by the stack
+                             */
+                            void set_state_id(const size_t & state_id) {
+                                m_state_data.set_state_id(state_id);
+                            }
+#endif
+                            
                             /**
                              * Allows to get the stack level, the latter is equal
                              * to the number of so far translated words.

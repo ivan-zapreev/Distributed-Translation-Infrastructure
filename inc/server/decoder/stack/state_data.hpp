@@ -229,6 +229,23 @@ namespace uva {
                             //the future cost estimate for the given hypothesis state
                             const prob_weight m_total_score;
 
+#if IS_SERVER_TUNING_MODE
+
+                            /**
+                             * Allows to set the state id for the case of decoder
+                             * tuning, i.e. search lattice generation.
+                             * @param state_id the state id as issued by the stack
+                             */
+                            void set_state_id(const size_t & state_id) {
+                                m_state_id = state_id;
+                            }
+
+                        private:
+                            //Stores the state id unique within the multi-stack
+                            //In case the software is compiled for the tuning mode.
+                            size_t m_state_id;
+#endif
+
                         private:
 
                             /**

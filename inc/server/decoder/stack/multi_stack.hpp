@@ -124,6 +124,11 @@ namespace uva {
                                     m_levels[level] = new stack_level(m_data.m_params, m_data.m_is_stop);
                                 }
 
+#if IS_SERVER_TUNING_MODE
+                                //Initialize the state counter for the case of server tuning
+                                m_state_counter = 0;
+#endif                                
+
                                 //Add the root state to the stack, the root state must have 
                                 //information about the sentence data, rm and lm query and 
                                 //have a method for adding a state expansion to the stack.
@@ -245,6 +250,16 @@ namespace uva {
                                         to_string(level) + string(" the maximum allowed is: ") +
                                         to_string(m_num_levels - 1));
 
+#if IS_SERVER_TUNING_MODE
+                                //Give the state an id, if we are in the server tuning mode
+                                //We do not make the state id a stack state constructor
+                                //parameter as in the end we need to add a new super end
+                                //state which aggregates all the end states. This new state
+                                //Has to have the maximum id, and it is just easier then that
+                                //The id counter is stored within the multi-stack
+                                new_state->set_state_id(m_state_counter++);
+#endif
+
                                 //Add the state to the corresponding stack
                                 m_levels[level]->add_state(new_state);
 
@@ -262,6 +277,11 @@ namespace uva {
 
                             //This is a pointer to the array of stacks, one stack per number of covered words.
                             stack_level_ptr * m_levels;
+
+#if IS_SERVER_TUNING_MODE
+                            //Stores the number of allocated states
+                            uint32_t m_state_counter;
+#endif
                         };
                     }
                 }
