@@ -22,6 +22,10 @@ TO_NODE_ID_1   FROM_NODE_ID_1|||TARGET_PHRASE|||SCORE_DELTA FROM_NODE_ID_2|||TAR
 Here XXXXXXX is an unsigned integer, starting with 0, representing the sentence id.
 Each TO_NODE_ID_YYYYYY entry is placed on a separate line
 TO_NODE_ID and FROM_NODE_ID_1 have 3 spaces in between
+
+The multiple FROM_NODE_ID_XXX for the same TO_NODE_ID_YYY mean that the TO_NODE_ID_YYY has a number of states recombined into it.
+So those additional FROM_NODE_ID_XXX nodes are from those recombined states.
+
 Every other incoming edge, e.g. FROM_NODE_ID_2, is divided from the previous score delta with a space.
 If there is no target phrase translation, for the end dummy one referencing all the other ones, then TARGET_PHRASE turns into an empty string.
 If there is no known translation for a source phrase then the corresponding source phrase is used instead of the target phrase.

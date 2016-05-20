@@ -178,6 +178,10 @@ namespace uva {
                              */
                             virtual void dump_search_lattice(ofstream & scores_file, ofstream & lattice_file) {
                                 //ToDo: Implement
+                                
+                                //Create the super end state and link it to the parents - all states in the last stack
+                                
+                                //Start the dumping process from that super end state, do it recursively
                             }
 
                             /**

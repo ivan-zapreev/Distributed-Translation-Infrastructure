@@ -728,10 +728,14 @@ namespace uva {
                             //Stores the state data that is to be passed on the the children
                             state_data m_state_data;
 
-                            //This variable stores the pointer to the previous state in the stack level or NULL if it is the first one
+                            //This variable stores the pointer to the previous state:
+                            //1. In the stack level or NULL if it is the first one
+                            //2. In the list of recombined from states
                             stack_state_ptr m_prev;
 
-                            //This variable stores the pointer to the next state in the stack level or NULL if it is the last one
+                            //This variable stores the pointer to the next state:
+                            //1. In the stack level or NULL if it is the last one
+                            //2. In the list of recombined from states
                             stack_state_ptr m_next;
 
                             //This double-linked list stores the list of states recombined into this state
