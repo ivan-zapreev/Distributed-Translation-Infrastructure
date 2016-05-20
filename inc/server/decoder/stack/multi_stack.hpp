@@ -27,6 +27,7 @@
 #define MULTI_STACK_HPP
 
 #include <string>
+#include <sstream>
 #include <functional>
 
 #include "server/trans_info.hpp"
@@ -176,12 +177,23 @@ namespace uva {
                              * @param scores_file the file the scores are to be dumped into.
                              * @param lattice_file the file the lattice is to be dumped into.
                              */
-                            virtual void dump_search_lattice(ofstream & scores_file, ofstream & lattice_file) {
-                                //ToDo: Implement
+                            void dump_search_lattice(ofstream & scores_file, ofstream & lattice_file) {
+                                //Define the max stack level constant
+                                const size_t MAX_STACK_LEVEL = (m_num_levels - 1);
                                 
-                                //Create the super end state and link it to the parents - all states in the last stack
+                                //Dump the super end state for the end level
+                                m_levels[MAX_STACK_LEVEL]->dump_super_end_state(m_state_counter, lattice_file);
                                 
-                                //Start the dumping process from that super end state, do it recursively
+                                //Declare the string stream buffer for the cover vectors
+                                stringstream covers_buffer;
+
+                                //Dump the lattice level by level
+                                for (int32_t curr_level = MAX_STACK_LEVEL; curr_level >= MIN_STACK_LEVEL; curr_level--) {
+                                    m_levels[curr_level]->dump_stack_level(lattice_file, scores_file, covers_buffer);
+                                }
+                                
+                                //Dump the covers buffer content to the lattice file
+                                lattice_file << "<COVERVECS>" << covers_buffer.str() << "</COVERVECS>" << std::endl;
                             }
 
                             /**

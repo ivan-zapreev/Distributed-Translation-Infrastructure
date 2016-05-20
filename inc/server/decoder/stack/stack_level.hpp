@@ -9,6 +9,7 @@
 #define STACK_LEVEL_HPP
 
 #include <string>
+#include <sstream>
 
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
@@ -89,6 +90,32 @@ namespace uva {
                             void get_trans_info(trans_info & info) {
                                 //Add the stack level usage percent
                                 info.push_stack_usage((m_size * 100.0f) / m_params.m_stack_capacity);
+                            }
+
+                            /**
+                             * Shall be called on the end level to dump the super end state for the end level
+                             * @param end_state_id the end super state id to be used
+                             * @return the string representing the super end state for this end level.
+                             */
+                            void dump_super_end_state(const size_t end_state_id, ofstream & lattice_file) {
+                                //Check if there is actually a translation available
+                                if (m_size > 0) {
+                                    //ToDo: Dump the super end state
+                                    
+                                    //lattice_file << << std::endl;
+                                } else {
+                                    //ToDo: What shall we do in case that there is no translation? What shall we dump?
+                                }
+                            }
+                            
+                            /**
+                             * Shall be called to dump the stack level to the search lattice and scores
+                             * @param scores_file the scores file to dump the scores of the state nodes
+                             * @param lattice_file the lattice file to dump the lattice relations into
+                             * @param covers_buffer the temporary covers buffer to dump the covers vectors into
+                             */
+                            void dump_stack_level(ofstream & scores_file, ofstream & lattice_file, stringstream & covers_buffer) {
+                                //ToDo: Implement
                             }
 
                             /**
