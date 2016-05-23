@@ -174,29 +174,44 @@ namespace uva {
                             /**
                              * Is needed to dump the search lattice data for the given sentence.
                              * This method is to be called after a translation is successfully finished.
-                             * @param scores_file the file the scores are to be dumped into.
-                             * @param lattice_file the file the lattice is to be dumped into.
+                             * @param lattice_dump the stream the lattice is to be dumped into.
+                             * @param scores_dump the stream the scores are to be dumped into.
                              */
-                            void dump_search_lattice(ofstream & scores_file, ofstream & lattice_file) {
+                            void dump_search_lattice(ostream & lattice_dump, ostream & scores_dump) const {
                                 //Define the max stack level constant
                                 const size_t MAX_STACK_LEVEL = (m_num_levels - 1);
 
-                                //Dump the super end state for the end level
-                                m_levels[MAX_STACK_LEVEL]->dump_super_end_state(m_state_counter, lattice_file);
+                                LOG_DEBUG << "Begin dumping the search lattice from stack level: " << MAX_STACK_LEVEL << END_LOG;
 
-                                //Declare the string stream buffer for the cover vectors
-                                stringstream covers_buffer;
+                                //Define the max stack level constant
+                                stack_level_ptr end_level = m_levels[MAX_STACK_LEVEL];
 
-                                //Dump the lattice level by level
-                                for (int32_t curr_level = MAX_STACK_LEVEL; curr_level >= MIN_STACK_LEVEL; curr_level--) {
-                                    LOG_DEBUG << "Begin dumping the stack level: " << curr_level << END_LOG;
-                                    m_levels[curr_level]->dump_stack_level(lattice_file, scores_file, covers_buffer);
-                                    LOG_DEBUG << "Done dumping the stack level: " << curr_level << END_LOG;
+                                //Dump the super end state to part
+                                lattice_dump << to_string(m_state_counter) << "\t";
+
+                                //Iterate the level's state as they are all the
+                                //from states for the given super-end state
+                                typename stack_level::const_iterator iter = end_level->begin();
+                                stringstream parents_dump, covers_dump;
+                                while (iter != end_level->end()) {
+                                    //Dump the from state content
+                                    (*iter)->template dump_from_stack_state<true>(lattice_dump, parents_dump, scores_dump, covers_dump);
+
+                                    //Move on to the next state
+                                    ++iter;
+
+                                    //Add an extra space if there is more state to come
+                                    if (iter) {
+                                        lattice_dump << " ";
+                                    }
                                 }
+                                lattice_dump << std::endl << parents_dump.str();
 
                                 //Dump the covers buffer content to the lattice file
                                 LOG_DEBUG << "Append the cover vectors to the lattice" << END_LOG;
-                                lattice_file << "<COVERVECS>" << covers_buffer.str() << "</COVERVECS>" << std::endl;
+                                lattice_dump << "<COVERVECS>" << covers_dump.str() << "</COVERVECS>" << std::endl;
+
+                                LOG_DEBUG << "Done dumping the search lattice" << END_LOG;
                             }
 
                             /**

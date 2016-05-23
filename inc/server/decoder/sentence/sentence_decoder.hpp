@@ -161,12 +161,12 @@ namespace uva {
                             /**
                              * Is needed to dump the search lattice data for the given sentence.
                              * This method is to be called after a translation is successfully finished.
-                             * @param scores_file the file the scores are to be dumped into.
-                             * @param lattice_file the file the lattice is to be dumped into.
+                             * @param lattice_dump the stream the lattice is to be dumped into.
+                             * @param scores_dump the stream the scores are to be dumped into.
                              */
-                            inline void dump_search_lattice(ofstream & scores_file, ofstream & lattice_file) {
+                            inline void dump_search_lattice(ostream & lattice_dump, ostream & scores_dump) const {
                                 if (m_stack_info_prov != NULL) {
-                                    m_stack_info_prov->dump_search_lattice(scores_file, lattice_file);
+                                    m_stack_info_prov->dump_search_lattice(lattice_dump, scores_dump);
                                 } else {
                                     THROW_EXCEPTION("Trying to dump the search lattice but the stack pointer is NULL!");
                                 }

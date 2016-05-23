@@ -301,7 +301,7 @@ namespace uva {
                              * @param cp_score the partial score of the child of this hypothesis state, the default value is 0.0
                              */
                             template<bool is_super_end_state = false>
-                            inline void dump_stack_state(ofstream & lattice_file, const prob_weight cp_score = 0.0) {
+                            inline void dump_from_stack_state(ostream & lattice_file, const prob_weight cp_score = 0.0) const {
                                 LOG_DEBUG1 << "Dumping the state " << m_state_id << " to the search lattice" << END_LOG;
 
                                 //Extract the target, including the case when we are in the

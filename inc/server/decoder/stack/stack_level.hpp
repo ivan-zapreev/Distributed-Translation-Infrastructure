@@ -52,6 +52,62 @@ namespace uva {
                             typedef typename stack_data::stack_state stack_state;
                             //Typedef the state pointer
                             typedef typename stack_state::stack_state_ptr stack_state_ptr;
+                            //Typedef the state pointer
+                            typedef typename stack_state::const_stack_state_ptr const_stack_state_ptr;
+
+                            /**
+                             * This class represents the constant stack level iterator
+                             */
+                            class const_iterator {
+                            public:
+
+                                /**
+                                 * The basic constructor
+                                 * @param state_ptr the pointer to the stack state
+                                 */
+                                const_iterator(const_stack_state_ptr state_ptr) : m_state_ptr(state_ptr) {
+                                }
+
+                                /**
+                                 * The convertion to bool operator
+                                 * @return true if the iterator is not pointing to NULL, i.e. it is not the end iterator 
+                                 */
+                                inline operator bool() const {
+                                    return (m_state_ptr != 0);
+                                }
+
+                                /**
+                                 * Allows to obtaine the stored pointer to a state
+                                 * @return the stored pointer to a state
+                                 */
+                                inline const_stack_state_ptr operator*() const {
+                                    return m_state_ptr;
+                                }
+
+                                /**
+                                 * A comparison operator allowing to compare the stored pointers
+                                 * @param other the other iterator to compare with
+                                 * @return true if both iterators store equal pointers
+                                 */
+                                inline bool operator==(const const_iterator & other) const {
+                                    return (this->m_state_ptr == other.m_state_ptr);
+                                }
+
+                                /**
+                                 * The pre-fix increment operator, changes the stored
+                                 * pointer, moves forward, unless we reached the end.
+                                 * @return the reference to this iterator
+                                 */
+                                inline const_iterator & operator++() {
+                                    if (m_state_ptr != NULL) {
+                                        m_state_ptr = m_state_ptr->m_next;
+                                    }
+                                    return *this;
+                                }
+                            private:
+                                //The encapsulated state pointer
+                                const_stack_state_ptr m_state_ptr;
+                            };
 
                             /**
                              * The basic constructor
@@ -93,37 +149,21 @@ namespace uva {
                             }
 
                             /**
-                             * Shall be called on the end level to dump the super end state for the end level.
-                             * If the end level is empty then we shall just dump empty content for the node
-                             * @param end_state_id the end super state id to be used
-                             * @return the string representing the super end state for this end level.
+                             * Returns the iterator pointing to the first element of the stack level
+                             * @return the iterator pointing to the first element of the stack level
                              */
-                            inline void dump_super_end_state(const size_t end_state_id, ofstream & lattice_file) {
-                                LOG_DEBUG << "Begin dumping the super end state" << END_LOG;
-
-                                //Dump the super end state
-                                lattice_file << to_string(end_state_id) << "\t";
-                                stack_state_ptr curr_state = m_first_state;
-                                while (curr_state != NULL) {
-                                    LOG_DEBUG << "Dumping " << curr_state << " to the lattice" << END_LOG;
-
-                                    //Dump the from state content, note that the super-end-state score does not change 
-                                    curr_state->template dump_stack_state<true>(lattice_file);
-
-                                    //Move on to the next state
-                                    LOG_DEBUG << "Moving from " << curr_state << " to " << curr_state->m_next << END_LOG;
-                                    curr_state = curr_state->m_next;
-
-                                    //Add an extra space if there is more state to come
-                                    if (curr_state != NULL) {
-                                        lattice_file << " ";
-                                    }
-                                }
-                                lattice_file << std::endl;
-
-                                LOG_DEBUG << "Done dumping the super end state" << END_LOG;
+                            inline const_iterator begin() const {
+                                return const_iterator(m_first_state);
                             }
 
+                            /**
+                             * Returns the iterator to after the last element of the stack level
+                             * @return the iterator to after the last element of the stack level
+                             */
+                            inline const_iterator end() const {
+                                return const_iterator(NULL);
+                            }
+                            
                             /**
                              * Shall be called to dump the stack level to the search lattice and scores
                              * @param scores_file the scores file to dump the scores of the state nodes
@@ -131,7 +171,17 @@ namespace uva {
                              * @param covers_buffer the temporary covers buffer to dump the covers vectors into
                              */
                             inline void dump_stack_level(ofstream & scores_file, ofstream & lattice_file, stringstream & covers_buffer) {
-                                //ToDo: Implement
+                                //Dump the stack states
+                                stack_state_ptr curr_state = m_first_state;
+                                while (curr_state != NULL) {
+                                    //Dump the from state content, note that the super-end-state score does not change 
+                                    LOG_DEBUG1 << "Dumping TO-state " << curr_state << " to the lattice" << END_LOG;
+                                    curr_state->dump_to_stack_state(scores_file, lattice_file, covers_buffer);
+
+                                    //Move on to the next state
+                                    LOG_DEBUG2 << "Moving from " << curr_state << " to " << curr_state->m_next << END_LOG;
+                                    curr_state = curr_state->m_next;
+                                }
                             }
 
                             /**

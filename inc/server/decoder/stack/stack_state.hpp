@@ -80,6 +80,8 @@ namespace uva {
                             typedef typename state_data::stack_data stack_data;
                             //Typedef the state pointer
                             typedef typename stack_data::stack_state_ptr stack_state_ptr;
+                            //Typedef the state pointer
+                            typedef typename stack_data::const_stack_state_ptr const_stack_state_ptr;
                             //Typedef the state
                             typedef typename stack_data::stack_state stack_state;
 
@@ -166,12 +168,24 @@ namespace uva {
                             /**
                              * Allows to dump the stack state data to the lattice
                              * @param is_super_end_state true if we are dumping a parent of a super end state, otherwise shall be false, the default is false
-                             * @param lattice_file the lattice output stream to dump the data into
+                             * @param this_dump 
+                             * @param parents_dump 
+                             * @param scores_dump 
+                             * @param covers_dump 
                              * @param cp_score the partial score of the child of this hypothesis state, the default value is 0.0
                              */
-                            template<bool is_super_end_state = false>
-                            inline void dump_stack_state(ofstream & lattice_file, const prob_weight cp_score = 0.0) {
-                                m_state_data.template dump_stack_state<is_super_end_state>(lattice_file, cp_score);
+                            template<bool is_super_end_state = false >
+                            inline void dump_from_stack_state(ostream & this_dump, ostream & parents_dump,
+                                    ostream & scores_dump, ostream & covers_dump, const prob_weight cp_score = 0.0) const {
+                                m_state_data.template dump_from_stack_state<is_super_end_state>(this_dump, cp_score);
+                                
+                                //ToDo: ?????
+                                //  1. Dump the state into 
+                                //  2. Dump it's parent - from
+                                //    2.1 Go recursively to the parent(s)
+                                //  3. Dump all the parents of the state's recombined into this one - from
+                                //    3.1 Go recursively to the parent(s)
+                                //  4. Dump the to_state_dump into the lattice file
                             }
 #endif
 

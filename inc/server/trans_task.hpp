@@ -255,7 +255,7 @@ namespace uva {
                                 lattice_file_name + string(" for writing"));
 
                         //Call the sentence decoder to do dumping.
-                        m_decoder.dump_search_lattice(scores_file, lattice_file);
+                        m_decoder.dump_search_lattice(lattice_file, scores_file);
 
                         //Close the files
                         scores_file.close();

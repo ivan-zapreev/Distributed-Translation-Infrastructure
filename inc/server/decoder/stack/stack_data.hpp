@@ -54,6 +54,9 @@ namespace uva {
                             //Define the multi state pointer
                             typedef stack_state * stack_state_ptr;
 
+                            //Define the multi state pointer
+                            typedef const stack_state * const_stack_state_ptr;
+
                             //The typedef for a function that adds a new state to the multi-stack
                             typedef function<void(stack_state_ptr) > add_new_state_function;
 

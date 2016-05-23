@@ -67,10 +67,10 @@ namespace uva {
                     /**
                      * Is needed to dump the search lattice data for the given sentence.
                      * This method is to be called after a translation is successfully finished.
-                     * @param scores_file the file the scores are to be dumped into.
-                     * @param lattice_file the file the lattice is to be dumped into.
+                     * @param lattice_dump the stream the lattice is to be dumped into.
+                     * @param scores_dump the stream the scores are to be dumped into.
                      */
-                    virtual void dump_search_lattice(ofstream & scores_file, ofstream & lattice_file) = 0;
+                    virtual void dump_search_lattice(ostream & lattice_dump, ostream & scores_dump) const = 0;
                 };
 
                 /**
