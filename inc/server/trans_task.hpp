@@ -137,6 +137,12 @@ namespace uva {
                             m_decoder.translate();
 
                             const de_parameters & de_params = de_configurator::get_params();
+
+                            LOG_DEBUG1 << "Dumping the search lattice for task " << m_task_id
+                                    << " is " << (de_params.m_is_gen_lattice ? "" : "NOT ")
+                                    << "needed!" << END_LOG;
+
+                            //Dump thje search lattice for the sentence if needed
                             if (de_params.m_is_gen_lattice) {
                                 dump_search_lattice(de_params);
                             }

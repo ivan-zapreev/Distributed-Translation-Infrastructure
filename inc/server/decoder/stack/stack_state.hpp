@@ -153,16 +153,28 @@ namespace uva {
                             }
 
 #if IS_SERVER_TUNING_MODE
+
                             /**
                              * Allows to set the state id for the case of decoder
                              * tuning, i.e. search lattice generation.
                              * @param state_id the state id as issued by the stack
                              */
-                            void set_state_id(const size_t & state_id) {
+                            inline void set_state_id(const size_t & state_id) {
                                 m_state_data.set_state_id(state_id);
                             }
+
+                            /**
+                             * Allows to dump the stack state data to the lattice
+                             * @param is_super_end_state true if we are dumping a parent of a super end state, otherwise shall be false, the default is false
+                             * @param lattice_file the lattice output stream to dump the data into
+                             * @param cp_score the partial score of the child of this hypothesis state, the default value is 0.0
+                             */
+                            template<bool is_super_end_state = false>
+                            inline void dump_stack_state(ofstream & lattice_file, const prob_weight cp_score = 0.0) {
+                                m_state_data.template dump_stack_state<is_super_end_state>(lattice_file, cp_score);
+                            }
 #endif
-                            
+
                             /**
                              * Allows to get the stack level, the latter is equal
                              * to the number of so far translated words.
@@ -212,31 +224,8 @@ namespace uva {
                                     m_parent->get_translation(target_sent);
                                 }
 
-                                //Check that the target is not NULL if it is then
-                                //it is either the begin <s> or end </s> state
-                                if (m_state_data.m_target != NULL) {
-                                    //Append the space plus the current state translation
-                                    if (m_state_data.m_target->is_unk_trans()) {
-                                        //If this is an unknown translation then just copy the original source text
-
-                                        //Get the begin and end source phrase word indexes
-                                        const phrase_length begin_word_idx = m_state_data.m_s_begin_word_idx;
-                                        const phrase_length end_word_idx = m_state_data.m_s_end_word_idx;
-
-                                        //Get the begin and end source phrase character indexes
-                                        const uint32_t begin_ch_idx = m_state_data.m_stack_data.m_sent_data[begin_word_idx][begin_word_idx].m_begin_ch_idx;
-                                        const uint32_t end_ch_idx = m_state_data.m_stack_data.m_sent_data[end_word_idx][end_word_idx].m_end_ch_idx;
-
-                                        //Add the source phrase to the target
-                                        target_sent += m_state_data.m_stack_data.m_source_sent.substr(begin_ch_idx, end_ch_idx - begin_ch_idx);
-                                    } else {
-                                        //If this is a known translation then add the translation text
-                                        target_sent += m_state_data.m_target->get_target_phrase();
-                                    }
-
-                                    //Add the space after the new phrase
-                                    target_sent += UTF8_SPACE_STRING;
-                                }
+                                //Allows to add the target phrase to the given string
+                                m_state_data.template append_target_phrase<true>(target_sent);
                             }
 
                             /**

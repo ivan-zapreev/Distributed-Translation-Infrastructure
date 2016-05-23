@@ -67,10 +67,10 @@ namespace uva {
 
                         //Stores the number of extrs stack levels that we will need in a multi-
                         //stack, the first one is for <s> and the second one is for </s>
-                        static constexpr uint32_t NUM_EXTRA_STACK_LEVELS = 2;
+                        static constexpr int32_t NUM_EXTRA_STACK_LEVELS = 2;
 
                         //Stores the minimum stack level index
-                        static constexpr uint32_t MIN_STACK_LEVEL = 0;
+                        static constexpr int32_t MIN_STACK_LEVEL = 0;
 
                         /**
                          * This is the translation stack class that is responsible for the sentence translation
@@ -121,7 +121,7 @@ namespace uva {
                                 LOG_DEBUG2 << "The minimum stack level is " << MIN_STACK_LEVEL << END_LOG;
 
                                 //Initialize the stack levels
-                                for (uint32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
+                                for (int32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
                                     m_levels[level] = new stack_level(m_data.m_params, m_data.m_is_stop);
                                 }
 
@@ -151,7 +151,7 @@ namespace uva {
                                 if (m_levels != NULL) {
 
                                     //Iterate through the levels and delete them
-                                    for (uint32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
+                                    for (int32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
                                         delete m_levels[level];
                                     }
 
@@ -166,7 +166,7 @@ namespace uva {
                              * @param info the translation info to fill in
                              */
                             virtual void get_trans_info(trans_info & info) {
-                                for (uint32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
+                                for (int32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
                                     m_levels[level]->get_trans_info(info);
                                 }
                             }
@@ -180,19 +180,22 @@ namespace uva {
                             void dump_search_lattice(ofstream & scores_file, ofstream & lattice_file) {
                                 //Define the max stack level constant
                                 const size_t MAX_STACK_LEVEL = (m_num_levels - 1);
-                                
+
                                 //Dump the super end state for the end level
                                 m_levels[MAX_STACK_LEVEL]->dump_super_end_state(m_state_counter, lattice_file);
-                                
+
                                 //Declare the string stream buffer for the cover vectors
                                 stringstream covers_buffer;
 
                                 //Dump the lattice level by level
                                 for (int32_t curr_level = MAX_STACK_LEVEL; curr_level >= MIN_STACK_LEVEL; curr_level--) {
+                                    LOG_DEBUG << "Begin dumping the stack level: " << curr_level << END_LOG;
                                     m_levels[curr_level]->dump_stack_level(lattice_file, scores_file, covers_buffer);
+                                    LOG_DEBUG << "Done dumping the stack level: " << curr_level << END_LOG;
                                 }
-                                
+
                                 //Dump the covers buffer content to the lattice file
+                                LOG_DEBUG << "Append the cover vectors to the lattice" << END_LOG;
                                 lattice_file << "<COVERVECS>" << covers_buffer.str() << "</COVERVECS>" << std::endl;
                             }
 
@@ -203,7 +206,7 @@ namespace uva {
                                 //Define the max stack level constant
                                 const size_t MAX_STACK_LEVEL = (m_num_levels - 1);
                                 //Stores the current stack level index
-                                uint32_t curr_level = MIN_STACK_LEVEL;
+                                int32_t curr_level = MIN_STACK_LEVEL;
 
                                 //Iterate the stack levels and expand them one by one 
                                 //until the last one or until we are requested to stop
@@ -256,7 +259,7 @@ namespace uva {
                                 ASSERT_SANITY_THROW((new_state == NULL), "A NULL pointer stack state!");
 
                                 //Get the new state stack level
-                                const uint32_t level = new_state->get_stack_level();
+                                const int32_t level = new_state->get_stack_level();
 
                                 LOG_DEBUG << "Adding a new state (" << new_state << ") to stack level " << level << END_LOG;
 
@@ -289,7 +292,7 @@ namespace uva {
                             const stack_data m_data;
 
                             //Stores the number of multi-stack levels
-                            const uint32_t m_num_levels;
+                            const int32_t m_num_levels;
 
                             //This is a pointer to the array of stacks, one stack per number of covered words.
                             stack_level_ptr * m_levels;

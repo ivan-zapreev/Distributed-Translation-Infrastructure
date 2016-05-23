@@ -81,7 +81,7 @@ namespace uva {
                             static constexpr int32_t ZERRO_WORD_IDX = UNDEFINED_WORD_IDX + 1;
 
                             /**
-                             * The basic constructor that is to be used for the BEGIN STATE
+                             * The basic constructor that is to be used for the BEGIN STATE <s>
                              * @param stack_data the general shared stack data reference 
                              * @param is_begin_end this flag allows to detect whether this
                              * data is created for the begin or end tag. If true then it is
@@ -106,7 +106,7 @@ namespace uva {
                             }
 
                             /**
-                             * The basic constructor that is to be used for the END STATE
+                             * The basic constructor that is to be used for the END STATE </s>
                              * @param stack_data the general shared stack data reference 
                              * @param is_begin_end this flag allows to detect whether this
                              * data is created for the begin or end tag. If true then it is
@@ -134,7 +134,10 @@ namespace uva {
                                 LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
 
                                 //Compute the end state final score, the new partial score is then the same as the total score
-                                compute_final_score(prev_state_data);
+                                compute_partial_score_final(prev_state_data);
+
+                                //Compute the total score
+                                compute_total_score_final();
                             }
 
                             /**
@@ -166,7 +169,7 @@ namespace uva {
                                 LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
 
                                 //Update the partial score;
-                                update_partial_score(prev_state_data);
+                                compute_partial_score(prev_state_data);
 
                                 //Compute the total score;
                                 compute_total_score();
@@ -224,10 +227,61 @@ namespace uva {
                             //Stores the logarithmic partial score of the current hypothesis
                             const prob_weight m_partial_score;
 
-                            //Stores the logarithmic totasl score of the current hypothesis
+                            //Stores the logarithmic total score of the current hypothesis
                             //The total score is the sum of the current partial score and
                             //the future cost estimate for the given hypothesis state
                             const prob_weight m_total_score;
+
+                            /**
+                             * Extract the target, including the case when we are in the
+                             * begin <s> or end state </s> or a phrase with no translation.
+                             * @param storage the storage string to append the target string to.
+                             * @param is_add_space if true then in case there is a target (non-
+                             *                     begin/end state) a space symbol will be appended
+                             *                     after the end of the target phrase.
+                             */
+                            template<bool is_add_space>
+                            void append_target_phrase(string & storage) const {
+                                LOG_DEBUG1 << "The BEGIN storage value is: ___" << storage << "___" << END_LOG;
+
+                                LOG_DEBUG1 << "The target phrase pointer is " << ((m_target != NULL) ? "NOT " : "") << "NULL" << END_LOG;
+                                //Check that the target is not NULL if it is then
+                                //it is either the begin <s> or end </s> state
+                                if (m_target != NULL) {
+                                    LOG_DEBUG1 << "The source phrase has " << (m_target->is_unk_trans() ? "NO " : "") << "translation" << END_LOG;
+                                    //Append the space plus the current state translation
+                                    if (m_target->is_unk_trans()) {
+                                        //If this is an unknown translation then just copy the original source text
+
+                                        //Get the begin and end source phrase word indexes
+                                        const phrase_length begin_word_idx = m_s_begin_word_idx;
+                                        const phrase_length end_word_idx = m_s_end_word_idx;
+
+                                        LOG_DEBUG1 << "begin_word_idx = " << to_string(begin_word_idx) << ", end_word_idx =" << to_string(end_word_idx) << END_LOG;
+
+                                        //Get the begin and end source phrase character indexes
+                                        const uint32_t begin_ch_idx = m_stack_data.m_sent_data[begin_word_idx][begin_word_idx].m_begin_ch_idx;
+                                        LOG_DEBUG1 << "m_stack_data.m_sent_data[" << to_string(begin_word_idx) << "]["
+                                                << to_string(begin_word_idx) << "].m_begin_ch_idx = " << to_string(begin_ch_idx) << END_LOG;
+                                        const uint32_t end_ch_idx = m_stack_data.m_sent_data[end_word_idx][end_word_idx].m_end_ch_idx;
+                                        LOG_DEBUG1 << "m_stack_data.m_sent_data[" << to_string(end_word_idx) << "]["
+                                                << to_string(end_word_idx) << "].m_begin_ch_idx = " << to_string(end_ch_idx) << END_LOG;
+
+                                        //Add the source phrase to the target
+                                        storage += m_stack_data.m_source_sent.substr(begin_ch_idx, end_ch_idx - begin_ch_idx);
+                                    } else {
+                                        //If this is a known translation then add the translation text
+                                        storage += m_target->get_target_phrase();
+                                    }
+
+                                    //Add the space after the new phrase, if needed
+                                    if (is_add_space) {
+                                        storage += UTF8_SPACE_STRING;
+                                    }
+                                }
+
+                                LOG_DEBUG1 << "The END storage value is: ___" << storage << "___" << END_LOG;
+                            }
 
 #if IS_SERVER_TUNING_MODE
 
@@ -238,6 +292,28 @@ namespace uva {
                              */
                             void set_state_id(const size_t & state_id) {
                                 m_state_id = state_id;
+                            }
+
+                            /**
+                             * Allows to dump the stack state data to the lattice
+                             * @param is_super_end_state true if we are dumping a parent of a super end state, otherwise shall be false, the default is false
+                             * @param lattice_file the lattice output stream to dump the data into
+                             * @param cp_score the partial score of the child of this hypothesis state, the default value is 0.0
+                             */
+                            template<bool is_super_end_state = false>
+                            inline void dump_stack_state(ofstream & lattice_file, const prob_weight cp_score = 0.0) {
+                                LOG_DEBUG1 << "Dumping the state " << m_state_id << " to the search lattice" << END_LOG;
+
+                                //Extract the target, including the case when we are in the
+                                //begin <s> or end state </s> or a phrase with no translation.
+                                string target = "";
+                                append_target_phrase<false>(target);
+
+                                //Dump the data into the lattice
+                                lattice_file << to_string(m_state_id) << "|||" << target << "|||"
+                                        << (is_super_end_state ? "0" : to_string(cp_score - m_partial_score));
+
+                                LOG_DEBUG1 << "Dumping the state " << m_state_id << " to the lattice is done" << END_LOG;
                             }
 
                         private:
@@ -351,7 +427,7 @@ namespace uva {
                              * For the end translation hypothesis state is supposed to compute the partial and total score
                              * @param prev_state_data the previous state data
                              */
-                            inline void compute_final_score(const state_data_templ & prev_state_data) {
+                            inline void compute_partial_score_final(const state_data_templ & prev_state_data) {
                                 //After the construction the partial score is to stay fixed,
                                 //thus it is declared as constant and here we do a const_cast
                                 prob_weight & partial_score = const_cast<prob_weight &> (m_partial_score);
@@ -372,15 +448,6 @@ namespace uva {
                                 partial_score += get_lex_reord_cost(prev_state_data);
 
                                 LOG_DEBUG1 << "end-state score + RM lexicolized is: " << partial_score << END_LOG;
-
-                                //After the construction the total score is to stay fixed,
-                                //thus it is declared as constant and here we do a const_cast
-                                prob_weight & total_score = const_cast<prob_weight &> (m_total_score);
-
-                                //Set the total score to be equal to the partial score as the translation is finished
-                                total_score = partial_score;
-
-                                LOG_DEBUG1 << "Final end-state score: " << total_score << END_LOG;
                             }
 
                             /**
@@ -388,7 +455,7 @@ namespace uva {
                              * parent state with the partial score of the current hypothesis
                              * @param prev_state_data the previous strate data
                              */
-                            inline void update_partial_score(const state_data_templ & prev_state_data) {
+                            inline void compute_partial_score(const state_data_templ & prev_state_data) {
                                 //After the construction the partial score is to stay fixed,
                                 //thus it is declared as constant and here we do a const_cast
                                 prob_weight & partial_score = const_cast<prob_weight &> (m_partial_score);
@@ -424,6 +491,23 @@ namespace uva {
                                 partial_score += get_lex_reord_cost(prev_state_data);
 
                                 LOG_DEBUG1 << "partial score + RM lexicolized is: " << partial_score << END_LOG;
+                            }
+
+                            /**
+                             * Allows to compute the total score of the current hypothesis
+                             * I.e. the partial score plus the future cost estimate. The
+                             * future cost estimate is not used in the search lattice used
+                             * for tuning.
+                             */
+                            inline void compute_total_score_final() {
+                                //After the construction the total score is to stay fixed,
+                                //thus it is declared as constant and here we do a const_cast
+                                prob_weight & total_score = const_cast<prob_weight &> (m_total_score);
+
+                                //Set the total score to be equal to the partial score as the translation is finished
+                                total_score = m_partial_score;
+
+                                LOG_DEBUG1 << "Final end-state score: " << total_score << END_LOG;
                             }
 
                             /**
