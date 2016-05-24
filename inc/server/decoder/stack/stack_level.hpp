@@ -163,26 +163,6 @@ namespace uva {
                             inline const_iterator end() const {
                                 return const_iterator(NULL);
                             }
-                            
-                            /**
-                             * Shall be called to dump the stack level to the search lattice and scores
-                             * @param scores_file the scores file to dump the scores of the state nodes
-                             * @param lattice_file the lattice file to dump the lattice relations into
-                             * @param covers_buffer the temporary covers buffer to dump the covers vectors into
-                             */
-                            inline void dump_stack_level(ofstream & scores_file, ofstream & lattice_file, stringstream & covers_buffer) {
-                                //Dump the stack states
-                                stack_state_ptr curr_state = m_first_state;
-                                while (curr_state != NULL) {
-                                    //Dump the from state content, note that the super-end-state score does not change 
-                                    LOG_DEBUG1 << "Dumping TO-state " << curr_state << " to the lattice" << END_LOG;
-                                    curr_state->dump_to_stack_state(scores_file, lattice_file, covers_buffer);
-
-                                    //Move on to the next state
-                                    LOG_DEBUG2 << "Moving from " << curr_state << " to " << curr_state->m_next << END_LOG;
-                                    curr_state = curr_state->m_next;
-                                }
-                            }
 
                             /**
                              * Allows to add a new state into the level

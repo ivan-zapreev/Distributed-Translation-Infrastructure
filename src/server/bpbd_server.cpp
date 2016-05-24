@@ -278,8 +278,8 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         params.m_de_params.m_phrase_penalty = get_float(ini, section, de_parameters::DE_PHRASE_PENALTY_PARAM_NAME);
         params.m_de_params.m_lin_dist_penalty = get_float(ini, section, de_parameters::DE_LD_PENALTY_PARAM_NAME);
         params.m_de_params.m_dist_limit = get_integer<int32_t>(ini, section, de_parameters::DE_DIST_LIMIT_PARAM_NAME);
-#if IS_SERVER_TUNING_MODE
         params.m_de_params.m_is_gen_lattice = get_bool(ini, section, de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME);
+#if IS_SERVER_TUNING_MODE
         params.m_de_params.m_lattices_folder = get_string(ini, section, de_parameters::DE_LATTICES_FOLDER_PARAM_NAME);
         params.m_de_params.m_li2n_file_ext = get_string(ini, section, de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME);
         params.m_de_params.m_scores_file_ext = get_string(ini, section, de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME);
@@ -291,8 +291,6 @@ static void prepare_config_structures(const uint argc, char const * const * cons
             //Dump the feature weight to id mappings
             process_feature_to_id_mappings(config_file_name, params);
         }
-#else
-        params.m_de_params.m_is_gen_lattice = false;
 #endif
         params.m_de_params.finalize();
         LOG_INFO << params.m_de_params << END_LOG;

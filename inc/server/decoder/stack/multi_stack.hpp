@@ -171,6 +171,7 @@ namespace uva {
                                 }
                             }
 
+#if IS_SERVER_TUNING_MODE
                             /**
                              * Is needed to dump the search lattice data for the given sentence.
                              * This method is to be called after a translation is successfully finished.
@@ -194,8 +195,11 @@ namespace uva {
                                 typename stack_level::const_iterator iter = end_level->begin();
                                 stringstream parents_dump, covers_dump;
                                 while (iter != end_level->end()) {
-                                    //Dump the from state content
-                                    (*iter)->template dump_from_stack_state<true>(lattice_dump, parents_dump, scores_dump, covers_dump);
+                                    //Dump as a FROM state content
+                                    (*iter)->dump_as_from_se_state(lattice_dump);
+                                    
+                                    //Dump as a TO state content
+                                    (*iter)->dump_as_to_state(parents_dump, scores_dump, covers_dump);
 
                                     //Move on to the next state
                                     ++iter;
@@ -213,7 +217,7 @@ namespace uva {
 
                                 LOG_DEBUG << "Done dumping the search lattice" << END_LOG;
                             }
-
+#endif
                             /**
                              * Allows to extend the hypothesis, when extending the stack we immediately re-combine
                              */
@@ -314,7 +318,7 @@ namespace uva {
 
 #if IS_SERVER_TUNING_MODE
                             //Stores the number of allocated states
-                            uint32_t m_state_counter;
+                            int32_t m_state_counter;
 #endif
                         };
                     }

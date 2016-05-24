@@ -158,6 +158,7 @@ namespace uva {
                                 }
                             }
 
+#if IS_SERVER_TUNING_MODE
                             /**
                              * Is needed to dump the search lattice data for the given sentence.
                              * This method is to be called after a translation is successfully finished.
@@ -171,7 +172,7 @@ namespace uva {
                                     THROW_EXCEPTION("Trying to dump the search lattice but the stack pointer is NULL!");
                                 }
                             }
-
+#endif
                         protected:
 
                             /**

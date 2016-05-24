@@ -124,7 +124,8 @@ namespace uva {
                             m_trans_frame(prev_state_data.m_trans_frame, 1, &m_stack_data.m_lm_query.get_end_tag_uid()),
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             //The coverage vector stays the same, nothin new is added, we take over the partial score
-                            m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score), m_total_score(0.0) {
+                            m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score),
+                            m_total_score(0.0) {
                                 LOG_DEBUG1 << "New END state data: " << this << " translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___</s>___" << END_LOG;
@@ -158,7 +159,8 @@ namespace uva {
                             m_target(target), rm_entry_data(m_stack_data.m_rm_query.get_reordering(m_target->get_st_uid())),
                             m_trans_frame(prev_state_data.m_trans_frame, m_target->get_num_words(), m_target->get_word_ids()),
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
-                            m_covered(covered), m_partial_score(prev_state_data.m_partial_score), m_total_score(0.0) {
+                            m_covered(covered), m_partial_score(prev_state_data.m_partial_score),
+                            m_total_score(0.0) {
                                 LOG_DEBUG1 << "New state data: " << this << ", translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___"
@@ -235,13 +237,14 @@ namespace uva {
                             /**
                              * Extract the target, including the case when we are in the
                              * begin <s> or end state </s> or a phrase with no translation.
-                             * @param storage the storage string to append the target string to.
-                             * @param is_add_space if true then in case there is a target (non-
-                             *                     begin/end state) a space symbol will be appended
-                             *                     after the end of the target phrase.
+                             * @param is_lattice if true then we are retrieving a translation
+                             *                   for lattice dump in this case we just set the
+                             *                   target to the argument value and do not append,
+                             *                   also we do not add a space after. Default is false.
+                             * @param storage the storage string to append or set the target string to.
                              */
-                            template<bool is_add_space>
-                            void append_target_phrase(string & storage) const {
+                            template<bool is_lattice = false >
+                            void get_target_phrase(string & storage) const {
                                 LOG_DEBUG1 << "The BEGIN storage value is: ___" << storage << "___" << END_LOG;
 
                                 LOG_DEBUG1 << "The target phrase pointer is " << ((m_target != NULL) ? "NOT " : "") << "NULL" << END_LOG;
@@ -268,59 +271,28 @@ namespace uva {
                                                 << to_string(end_word_idx) << "].m_begin_ch_idx = " << to_string(end_ch_idx) << END_LOG;
 
                                         //Add the source phrase to the target
-                                        storage += m_stack_data.m_source_sent.substr(begin_ch_idx, end_ch_idx - begin_ch_idx);
+                                        if (is_lattice) {
+                                            storage = m_stack_data.m_source_sent.substr(begin_ch_idx, end_ch_idx - begin_ch_idx);
+                                        } else {
+                                            storage += m_stack_data.m_source_sent.substr(begin_ch_idx, end_ch_idx - begin_ch_idx);
+                                        }
                                     } else {
                                         //If this is a known translation then add the translation text
-                                        storage += m_target->get_target_phrase();
+                                        if (is_lattice) {
+                                            storage = m_target->get_target_phrase();
+                                        } else {
+                                            storage += m_target->get_target_phrase();
+                                        }
                                     }
 
                                     //Add the space after the new phrase, if needed
-                                    if (is_add_space) {
+                                    if (!is_lattice) {
                                         storage += UTF8_SPACE_STRING;
                                     }
                                 }
 
                                 LOG_DEBUG1 << "The END storage value is: ___" << storage << "___" << END_LOG;
                             }
-
-#if IS_SERVER_TUNING_MODE
-
-                            /**
-                             * Allows to set the state id for the case of decoder
-                             * tuning, i.e. search lattice generation.
-                             * @param state_id the state id as issued by the stack
-                             */
-                            void set_state_id(const size_t & state_id) {
-                                m_state_id = state_id;
-                            }
-
-                            /**
-                             * Allows to dump the stack state data to the lattice
-                             * @param is_super_end_state true if we are dumping a parent of a super end state, otherwise shall be false, the default is false
-                             * @param lattice_file the lattice output stream to dump the data into
-                             * @param cp_score the partial score of the child of this hypothesis state, the default value is 0.0
-                             */
-                            template<bool is_super_end_state = false>
-                            inline void dump_from_stack_state(ostream & lattice_file, const prob_weight cp_score = 0.0) const {
-                                LOG_DEBUG1 << "Dumping the state " << m_state_id << " to the search lattice" << END_LOG;
-
-                                //Extract the target, including the case when we are in the
-                                //begin <s> or end state </s> or a phrase with no translation.
-                                string target = "";
-                                append_target_phrase<false>(target);
-
-                                //Dump the data into the lattice
-                                lattice_file << to_string(m_state_id) << "|||" << target << "|||"
-                                        << (is_super_end_state ? "0" : to_string(cp_score - m_partial_score));
-
-                                LOG_DEBUG1 << "Dumping the state " << m_state_id << " to the lattice is done" << END_LOG;
-                            }
-
-                        private:
-                            //Stores the state id unique within the multi-stack
-                            //In case the software is compiled for the tuning mode.
-                            size_t m_state_id;
-#endif
 
                         private:
 

@@ -30,6 +30,7 @@
 #include <string>
 #include <iomanip>
 
+#include "server/server_configs.hpp"
 #include "common/utils/logging/logger.hpp"
 
 using namespace std;
@@ -64,6 +65,7 @@ namespace uva {
                      */
                     virtual void get_trans_info(trans_info & info) = 0;
 
+#if IS_SERVER_TUNING_MODE
                     /**
                      * Is needed to dump the search lattice data for the given sentence.
                      * This method is to be called after a translation is successfully finished.
@@ -71,6 +73,7 @@ namespace uva {
                      * @param scores_dump the stream the scores are to be dumped into.
                      */
                     virtual void dump_search_lattice(ostream & lattice_dump, ostream & scores_dump) const = 0;
+#endif
                 };
 
                 /**

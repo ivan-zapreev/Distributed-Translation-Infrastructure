@@ -85,13 +85,23 @@ namespace uva {
                             //Typedef the state
                             typedef typename stack_data::stack_state stack_state;
 
+                            //Stores the undefined and initial ids for the state 
+                            static constexpr int32_t UNDEFINED_STATE_ID = -1;
+                            static constexpr int32_t INITIAL_STATE_ID = 0;
+
+#if IS_SERVER_TUNING_MODE
+#define INITIALIZE_TUNING_DATA , m_state_id(UNDEFINED_STATE_ID), m_is_not_dumped(true)
+#else
+#define INITIALIZE_TUNING_DATA
+#endif                        
+
                             /**
                              * The basic constructor for the begin stack state
                              * @param data the shared data container
                              */
                             stack_state_templ(const stack_data & data)
                             : m_parent(NULL), m_state_data(data),
-                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) {
+                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) INITIALIZE_TUNING_DATA{
                                 LOG_DEBUG1 << "New BEGIN state: " << this << ", parent: " << m_parent << END_LOG;
                             }
 
@@ -102,7 +112,7 @@ namespace uva {
                              */
                             stack_state_templ(stack_state_ptr parent) :
                             m_parent(parent), m_state_data(parent->m_state_data),
-                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) {
+                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) INITIALIZE_TUNING_DATA{
                                 LOG_DEBUG1 << "New END state: " << this << ", parent: " << m_parent << END_LOG;
                             }
 
@@ -119,10 +129,10 @@ namespace uva {
                                     const typename state_data::covered_info & covered,
                                     tm_const_target_entry* target)
                             : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, covered, target),
-                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) {
+                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL), m_recomb_from_count(0) INITIALIZE_TUNING_DATA{
                                 LOG_DEBUG1 << "New state: " << this << ", parent: " << m_parent
-                                        << ", source[" << begin_pos << "," << end_pos << "], target ___"
-                                        << target->get_target_phrase() << "___" << END_LOG;
+                                << ", source[" << begin_pos << "," << end_pos << "], target ___"
+                                << target->get_target_phrase() << "___" << END_LOG;
                             }
 
                             /**
@@ -161,31 +171,100 @@ namespace uva {
                              * tuning, i.e. search lattice generation.
                              * @param state_id the state id as issued by the stack
                              */
-                            inline void set_state_id(const size_t & state_id) {
-                                m_state_data.set_state_id(state_id);
+                            inline void set_state_id(const int32_t & state_id) {
+                                //Check the sanity, that the id is not set yet
+                                ASSERT_SANITY_THROW((m_state_id != UNDEFINED_STATE_ID),
+                                        string("Re-initializing state id, old value: ") +
+                                        to_string(m_state_id) + string(" new value: ") +
+                                        to_string(state_id));
+
+                                //Set the new state id
+                                m_state_id = state_id;
+                            }
+
+                            /**
+                             * Allows to dump the end level states as if they were the
+                             * from states for the super-end state of the lattice
+                             * @param this_dump the stream to dump the from state into
+                             */
+                            inline void dump_as_from_se_state(ostream & this_dump) const {
+                                LOG_DEBUG1 << "Dumping the SE FROM state " << m_state_id << " to the search lattice" << END_LOG;
+
+                                //Dump the data into the lattice
+                                this_dump << to_string(m_state_id) << "||||||0";
+
+                                LOG_DEBUG1 << "Dumping the SE FROM state " << m_state_id << " to the lattice is done" << END_LOG;
                             }
 
                             /**
                              * Allows to dump the stack state data to the lattice
-                             * @param is_super_end_state true if we are dumping a parent of a super end state, otherwise shall be false, the default is false
-                             * @param this_dump 
-                             * @param parents_dump 
-                             * @param scores_dump 
-                             * @param covers_dump 
+                             * @param this_dump the lattice output stream to dump the data into
                              * @param cp_score the partial score of the child of this hypothesis state, the default value is 0.0
                              */
-                            template<bool is_super_end_state = false >
-                            inline void dump_from_stack_state(ostream & this_dump, ostream & parents_dump,
-                                    ostream & scores_dump, ostream & covers_dump, const prob_weight cp_score = 0.0) const {
-                                m_state_data.template dump_from_stack_state<is_super_end_state>(this_dump, cp_score);
-                                
-                                //ToDo: ?????
-                                //  1. Dump the state into 
-                                //  2. Dump it's parent - from
-                                //    2.1 Go recursively to the parent(s)
-                                //  3. Dump all the parents of the state's recombined into this one - from
-                                //    3.1 Go recursively to the parent(s)
-                                //  4. Dump the to_state_dump into the lattice file
+                            inline void dump_as_from_state(ostream & this_dump, const string & target, const prob_weight cp_score) const {
+                                LOG_DEBUG1 << "Dumping the state " << m_state_id << " to the search lattice" << END_LOG;
+
+                                //Dump the data into the lattice
+                                this_dump << to_string(m_state_id) << "|||" << target << "|||"
+                                        << to_string(cp_score - m_state_data.m_partial_score);
+
+                                LOG_DEBUG1 << "Dumping the state " << m_state_id << " to the lattice is done" << END_LOG;
+                            }
+
+                            /**
+                             * Allows to dump the stack state data to the lattice as a TO state
+                             * @param this_dump the stream where the current state is to be dumped right away
+                             * @param scores_dump the stream for dumping the used model features per state
+                             * @param covers_dump the stream for dumping the cover vectors
+                             */
+                            inline void dump_as_to_state(ostream & this_dump, ostream & scores_dump, ostream & covers_dump) const {
+                                //Assert sanity that the only state with no parent is the rood one with the zero id.
+                                ASSERT_SANITY_THROW((m_parent != NULL)&&(m_state_id == INITIAL_STATE_ID),
+                                        string("The parent is present but the root state id is ") + to_string(INITIAL_STATE_ID));
+                                ASSERT_SANITY_THROW((m_parent == NULL)&&(m_state_id != INITIAL_STATE_ID),
+                                        string("The parent is NOT present but the root state id is NOT ") + to_string(INITIAL_STATE_ID));
+
+                                //If the state does not have a parent then it is the
+                                //root of translation tree, so no need to dump it
+                                if ((m_parent != NULL) && m_is_not_dumped) {
+                                    //Dump the state info
+                                    this_dump << to_string(m_state_id) << "\t";
+
+                                    //ToDo: Dump the scores and the covers
+
+                                    //Declare the stream to store the parent's data
+                                    stringstream parents_dump;
+
+                                    //Extract the target translation string.
+                                    string target = "";
+                                    m_state_data.template get_target_phrase<true>(target);
+
+                                    //Dump the state's parent as its from state 
+                                    m_parent->dump_as_from_state(this_dump, target, m_state_data.m_partial_score);
+                                    //Dump as a to state into the parent dump
+                                    m_parent->dump_as_to_state(parents_dump, scores_dump, covers_dump);
+
+                                    //Dump the parents of the recombined from states, if any
+                                    stack_state_ptr rec_from = m_recomb_from;
+                                    while (rec_from != NULL) {
+                                        //Add an extra space before the new element
+                                        this_dump << " ";
+                                        //Extract the target translation string.
+                                        rec_from->m_state_data.template get_target_phrase<true>(target);
+                                        //Dump as a from state
+                                        rec_from->m_parent->dump_as_from_state(this_dump, target, m_state_data.m_partial_score);
+                                        //Dump as a to state into the parent dump
+                                        rec_from->m_parent->dump_as_to_state(parents_dump, scores_dump, covers_dump);
+                                        //Move to the next recombined from state
+                                        rec_from = rec_from->m_next;
+                                    }
+
+                                    //Finish this entry and add the parents
+                                    this_dump << std::endl << parents_dump.str();
+
+                                    //Mark the state as dumped 
+                                    const_cast<bool &> (m_is_not_dumped) = false;
+                                }
                             }
 #endif
 
@@ -239,7 +318,7 @@ namespace uva {
                                 }
 
                                 //Allows to add the target phrase to the given string
-                                m_state_data.template append_target_phrase<true>(target_sent);
+                                m_state_data.get_target_phrase(target_sent);
                             }
 
                             /**
@@ -745,6 +824,16 @@ namespace uva {
                             stack_state_ptr m_recomb_from;
                             //Stores the number of recombined from elements in the recombined from list
                             size_t m_recomb_from_count;
+
+#if IS_SERVER_TUNING_MODE
+                            //Stores the state id unique within the multi-stack
+                            //In case the software is compiled for the tuning mode.
+                            int32_t m_state_id;
+
+                            //Stores the flag indicating whether the state
+                            //has been dumped to the lattice or not.
+                            const bool m_is_not_dumped;
+#endif
 
                             //Make the stack level the friend of this class
                             friend class stack_level_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>;

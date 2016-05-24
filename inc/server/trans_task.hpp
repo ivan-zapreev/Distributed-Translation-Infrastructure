@@ -141,11 +141,12 @@ namespace uva {
                             LOG_DEBUG1 << "Dumping the search lattice for task " << m_task_id
                                     << " is " << (de_params.m_is_gen_lattice ? "" : "NOT ")
                                     << "needed!" << END_LOG;
-
-                            //Dump thje search lattice for the sentence if needed
+#if IS_SERVER_TUNING_MODE
+                            //Dump the search lattice for the sentence if needed
                             if (de_params.m_is_gen_lattice) {
                                 dump_search_lattice(de_params);
                             }
+#endif
                         } catch (uva_exception & ex) {
                             //Set the response code
                             m_code = trans_job_code::RESULT_ERROR;
@@ -227,6 +228,22 @@ namespace uva {
                 protected:
 
                     /**
+                     * Close the files in case they are open
+                     * @param scores_file the scores file
+                     * @param lattice_file the lattice file
+                     */
+                    inline void close_lattice_files(ofstream & scores_file, ofstream & lattice_file) const {
+                        if (scores_file.is_open()) {
+                            scores_file.close();
+                        }
+                        if (lattice_file.is_open()) {
+                            lattice_file.close();
+                        }
+                    }
+
+#if IS_SERVER_TUNING_MODE
+
+                    /**
                      * Allows to dump the search lattice in case it is needed.
                      * Note that, in this code we do not care if in case of an
                      * error we do not close the files. This is because lattice
@@ -235,7 +252,7 @@ namespace uva {
                      * it is not a big problem.
                      * @param de_params the decoder parameters
                      */
-                    inline void dump_search_lattice(const de_parameters & de_params) {
+                    inline void dump_search_lattice(const de_parameters & de_params) const {
                         LOG_DEBUG1 << "Dumping the search lattice for the translation task " << m_task_id << END_LOG;
 
                         //Create the file names
@@ -248,19 +265,25 @@ namespace uva {
                         //Open the output stream to the files
                         ofstream scores_file(scores_file_name), lattice_file(lattice_file_name);
 
-                        //Check that the files are open
-                        ASSERT_CONDITION_THROW(!scores_file.is_open(), string("Could not open: ") +
-                                scores_file_name + string(" for writing"));
-                        ASSERT_CONDITION_THROW(!lattice_file.is_open(), string("Could not open: ") +
-                                lattice_file_name + string(" for writing"));
+                        try {
+                            //Check that the files are open
+                            ASSERT_CONDITION_THROW(!scores_file.is_open(), string("Could not open: ") +
+                                    scores_file_name + string(" for writing"));
+                            ASSERT_CONDITION_THROW(!lattice_file.is_open(), string("Could not open: ") +
+                                    lattice_file_name + string(" for writing"));
 
-                        //Call the sentence decoder to do dumping.
-                        m_decoder.dump_search_lattice(lattice_file, scores_file);
-
-                        //Close the files
-                        scores_file.close();
-                        lattice_file.close();
+                            //Call the sentence decoder to do dumping.
+                            m_decoder.dump_search_lattice(lattice_file, scores_file);
+                        } catch (...) {
+                            //Close the lattice files
+                            close_lattice_files(scores_file, lattice_file);
+                            //Re-throw the exception
+                            throw;
+                        }
+                        //Close the lattice files
+                        close_lattice_files(scores_file, lattice_file);
                     }
+#endif
 
                     /**
                      * Allows to process the translation task result in case of a successful and abnormal task termination.

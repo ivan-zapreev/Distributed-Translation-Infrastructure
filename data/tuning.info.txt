@@ -7,8 +7,10 @@ Parameter tuning with the Oister framework is done based on the following three 
 Let us further specify the format/give an example of the files mentioned above:
 
 QUESTIONS:
- 1. What shall we do in case that there is no translation for a sentence? What shall we dump?: Nothing or throw an exception?
- 2. The scores file per sentence stores all the nodes with the feature values, do the nodes have to be ordered by the node id?
+ 1. What shall we do in case that there is no translation for a sentence? 
+    What shall we dump?: Nothing or throw an exception? - shall not happen any ways!
+ 2. The scores file per sentence stores all the nodes with the feature values, do
+    the nodes have to be ordered by the node id?
     (we could actually do the ordering later on with the standard sort utility)
 
 *********************************
