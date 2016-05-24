@@ -94,8 +94,14 @@ namespace uva {
 
                         //Read the text line by line, each line must be one sentence
                         //to translate. For each read line create a translation task.
+                        size_t task_id = 1; //In case of production use just start with 1 to make it uniform with the session and job ids
                         while (reader.get_first<trans_job_request::TEXT_SENTENCE_DELIMITER>(sentence)) {
-                            m_tasks.push_back(new trans_task(session_id, job_id, m_id_mgr.get_next_id(),
+                            m_tasks.push_back(new trans_task(session_id, job_id,
+#if DO_SANITY_CHECKS
+                                    m_id_mgr.get_next_id(),
+#else
+                                    task_id++,
+#endif
                                     sentence.str(), bind(&trans_job::notify_task_done, this, _1)));
                         }
                     }
@@ -266,7 +272,7 @@ namespace uva {
 
                         //Declare the variable for counting the number of CANCELED tasks
                         uint32_t num_canceled = 0;
-                        
+
                         //Define the translation task info object
                         trans_info info;
 
@@ -274,22 +280,22 @@ namespace uva {
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
                             //Get the task pointer for future use
                             trans_task_ptr task = *it;
-                            
+
                             //Count the number of canceled tasks and leave text as an empty line then
                             if (task->get_code() == trans_job_code::RESULT_CANCELED) {
                                 num_canceled++;
                             }
-                            
+
                             //Append the next task result
                             m_target_text += task->get_target_text() + "\n";
-                            
+
                             //Append the task translation info if needed
-                            if(is_trans_info) {
+                            if (is_trans_info) {
                                 //Get the translation task info
                                 task->get_trans_info(info);
                                 m_target_text += info.serialize() + "\n";
                             }
-                            
+
                             LOG_DEBUG1 << "The target text of task: " << task->get_task_id() << " has been retrieved!" << END_LOG;
                         }
 
