@@ -128,28 +128,24 @@ namespace uva {
                 void trans_task_pool::notify_task_cancel(trans_task_ptr trans_task) {
                     unique_guard guard(m_queue_mutex);
 
-                    LOG_DEBUG << "Request task  " << trans_task << " with id "
-                            << trans_task->get_task_id() << " removal from the pool!" << END_LOG;
+                    LOG_DEBUG << "Request task  " << *trans_task << " removal from the pool!" << END_LOG;
 
                     //Check if the task is in the pool, if yes then remove it
                     for (tasks_queue_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
                         if ((*it) == trans_task) {
                             m_tasks.erase(it);
-                            LOG_DEBUG << "Task  " << trans_task << " with id " << trans_task->get_task_id()
-                                    << " is found and erased" << END_LOG;
+                            LOG_DEBUG << "Task  " << *trans_task << " is found and erased" << END_LOG;
                             break;
                         }
                     }
 
-                    LOG_DEBUG << "Task  " << trans_task << " with id " << trans_task->get_task_id()
-                            << " removal from the pool is done!" << END_LOG;
+                    LOG_DEBUG << "Task  " << *trans_task << " removal from the pool is done!" << END_LOG;
 
                     //Note: If the task is already being run then it will be canceled by itself
                 }
 
                 void trans_task_pool::plan_new_task(trans_task_ptr trans_task) {
-                    LOG_DEBUG << "Request adding a new task " << trans_task << " with id "
-                            << trans_task->get_task_id() << " to the pool!" << END_LOG;
+                    LOG_DEBUG << "Request adding a new task " << *trans_task << " to the pool!" << END_LOG;
 
                     //Set the translation task with the method that should be called on the task cancel
                     trans_task->set_cancel_task_notifier(bind(&trans_task_pool::notify_task_cancel, this, _1));
@@ -158,7 +154,7 @@ namespace uva {
                     {
                         unique_guard guard(m_queue_mutex);
 
-                        LOG_DEBUG << "Pushing the task " << trans_task << " to the list of translation tasks." << END_LOG;
+                        LOG_DEBUG << "Pushing the task " << *trans_task << " to the list of translation tasks." << END_LOG;
 
                         //Add the translation task to the queue
                         m_tasks.push_back(trans_task);

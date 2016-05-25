@@ -42,6 +42,7 @@ add_executable(lm-query ${LM_QUERY_SOURCES})
 set(BPBD_SERVER_SOURCES
     src/server/bpbd_server.cpp
     src/server/server_parameters.cpp
+    src/server/trans_task.cpp
     src/common/utils/logging/logger.cpp
     src/server/decoder/de_parameters.cpp
     src/server/lm/lm_parameters.cpp

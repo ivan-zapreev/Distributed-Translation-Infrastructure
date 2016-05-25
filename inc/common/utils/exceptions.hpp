@@ -23,7 +23,7 @@
  * Created on April 18, 2015, 1:31 PM
  */
 #ifndef EXCEPTIONS_HPP
-#define	EXCEPTIONS_HPP
+#define EXCEPTIONS_HPP
 
 #include <exception>    // std::exception
 #include <string>       // std::string
@@ -52,7 +52,7 @@ namespace uva {
     LOG_DEBUG << "<THROWING> " << msg.str() << END_LOG; \
     throw uva_exception(msg.str()); \
 }
-            
+
 #define THROW_MUST_OVERRIDE() THROW_EXCEPTION("Must be overridden in the sub class!")
 #define THROW_MUST_NOT_CALL() THROW_EXCEPTION("Must not be called, is not needed!")
 #define THROW_NOT_IMPLEMENTED() THROW_EXCEPTION("This functionality is not yet implemented!")
@@ -113,5 +113,5 @@ ASSERT_CONDITION_THROW(DO_SANITY_CHECKS && (CONDITION), MESSAGE);
         }
     }
 }
-#endif	/* EXCEPTIONS_HPP */
+#endif /* EXCEPTIONS_HPP */
 

@@ -33,6 +33,7 @@
 
 #include "common/utils/threads.hpp"
 #include "common/utils/logging/logger.hpp"
+#include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_code.hpp"
@@ -73,13 +74,12 @@ namespace uva {
                      * The basic constructor allowing to initialize the main class constants
                      * @param session_id the session id of the task, is used for logging
                      * @param job_id the job id of the task, is used for logging
-                     * @param task_id a unique translation task id that is at least unique within a translation job
                      * @param source_sentence the sentence to be translated
                      */
-                    trans_task(const session_id_type session_id, const job_id_type job_id, const task_id_type task_id,
+                    trans_task(const session_id_type session_id, const job_id_type job_id,
                             const string & source_sentence, done_task_notifier notify_task_done_func)
                     : m_is_interrupted(false), m_session_id(session_id), m_job_id(job_id),
-                    m_task_id(task_id), m_code(trans_job_code::RESULT_UNDEFINED), m_source_text(source_sentence),
+                    m_task_id(m_id_mgr.get_next_id()), m_code(trans_job_code::RESULT_UNDEFINED), m_source_text(source_sentence),
                     m_notify_task_done_func(notify_task_done_func), m_target_text(""),
                     m_decoder(de_configurator::get_params(), m_is_interrupted, m_source_text, m_target_text) {
                         LOG_DEBUG1 << "/session id=" << m_session_id << ", job id="
@@ -174,14 +174,6 @@ namespace uva {
                         m_notify_task_done_func(this);
 
                         LOG_DEBUG1 << "The task " << m_task_id << " translation is done!" << END_LOG;
-                    }
-
-                    /**
-                     * Allows to retrieve the task id
-                     * @return the task id
-                     */
-                    const task_id_type get_task_id() const {
-                        return m_task_id;
                     }
 
                     /**
@@ -350,6 +342,11 @@ namespace uva {
 
                     //Stores the function to be called in case the tasks is cancelled
                     cancel_task_notifier m_notify_task_cancel_func;
+
+                    //Stores the static instance of the id manager
+                    static id_manager<task_id_type> m_id_mgr;
+                    
+                    friend ostream & operator<<(ostream & stream, const trans_task & taks);
                 };
             }
         }

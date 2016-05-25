@@ -31,7 +31,6 @@
 
 #include "trans_task.hpp"
 #include "common/utils/threads.hpp"
-#include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_id.hpp"
@@ -94,14 +93,8 @@ namespace uva {
 
                         //Read the text line by line, each line must be one sentence
                         //to translate. For each read line create a translation task.
-                        size_t task_id = 1; //In case of production use just start with 1 to make it uniform with the session and job ids
                         while (reader.get_first<trans_job_request::TEXT_SENTENCE_DELIMITER>(sentence)) {
                             m_tasks.push_back(new trans_task(session_id, job_id,
-#if DO_SANITY_CHECKS
-                                    m_id_mgr.get_next_id(),
-#else
-                                    task_id++,
-#endif
                                     sentence.str(), bind(&trans_job::notify_task_done, this, _1)));
                         }
                     }
@@ -126,7 +119,7 @@ namespace uva {
 
                         //Delete the translation tasks
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
-                            LOG_DEBUG << "Deleting translation tasks" << this->get_job_id() << "/" << (*it)->get_task_id() << END_LOG;
+                            LOG_DEBUG << "Deleting translation tasks" << this->get_job_id() << "/" << **it << END_LOG;
                             delete *it;
                         }
 
@@ -228,7 +221,7 @@ namespace uva {
                      * @param task the translation task that is finished
                      */
                     void notify_task_done(const trans_task_ptr& task) {
-                        LOG_DEBUG1 << "The task " << task->get_task_id() << " is done!" << END_LOG;
+                        LOG_DEBUG1 << "The task " << *task << " is done!" << END_LOG;
 
                         {
                             recursive_guard guard_tasks(m_tasks_lock);
@@ -296,7 +289,7 @@ namespace uva {
                                 m_target_text += info.serialize() + "\n";
                             }
 
-                            LOG_DEBUG1 << "The target text of task: " << task->get_task_id() << " has been retrieved!" << END_LOG;
+                            LOG_DEBUG1 << "The target text of task: " << *task << " has been retrieved!" << END_LOG;
                         }
 
                         LOG_DEBUG2 << "The translation job " << this << " result is:\n" << m_target_text << END_LOG;
@@ -342,12 +335,7 @@ namespace uva {
 
                     //Stores the translation job result text
                     string m_target_text;
-
-                    //Stores the static instance of the id manager
-                    static id_manager<task_id_type> m_id_mgr;
                 };
-
-                id_manager<task_id_type> trans_job::m_id_mgr(task_id::MINIMUM_TASK_ID);
             }
         }
     }

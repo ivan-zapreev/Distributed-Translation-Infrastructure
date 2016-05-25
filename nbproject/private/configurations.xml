@@ -801,6 +801,7 @@
         </df>
         <in>bpbd_server.cpp</in>
         <in>server_parameters.cpp</in>
+        <in>trans_task.cpp</in>
         <in>trans_task_pool.cpp</in>
         <in>trans_task_pool_worker.cpp</in>
       </df>

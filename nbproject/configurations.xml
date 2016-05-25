@@ -90,6 +90,7 @@
         </df>
         <in>bpbd_server.cpp</in>
         <in>server_parameters.cpp</in>
+        <in>trans_task.cpp</in>
         <in>trans_task_pool.cpp</in>
         <in>trans_task_pool_worker.cpp</in>
       </df>
@@ -404,6 +405,8 @@
       <item path="src/server/tm/tm_parameters.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/server/trans_task.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
