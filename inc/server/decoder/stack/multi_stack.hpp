@@ -183,7 +183,7 @@ namespace uva {
                              */
                             void dump_search_lattice(ostream & lattice_dump, ostream & scores_dump) const {
                                 //Define the max stack level constant
-                                const size_t MAX_STACK_LEVEL = (m_num_levels - 1);
+                                const int32_t MAX_STACK_LEVEL = (m_num_levels - 1);
 
                                 LOG_DEBUG << "Begin dumping the search lattice from stack level: " << MAX_STACK_LEVEL << END_LOG;
 
@@ -228,7 +228,7 @@ namespace uva {
                              */
                             inline void expand() {
                                 //Define the max stack level constant
-                                const size_t MAX_STACK_LEVEL = (m_num_levels - 1);
+                                const int32_t MAX_STACK_LEVEL = (m_num_levels - 1);
                                 //Stores the current stack level index
                                 int32_t curr_level = MIN_STACK_LEVEL;
 
