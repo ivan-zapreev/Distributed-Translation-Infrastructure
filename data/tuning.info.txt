@@ -7,11 +7,18 @@ Parameter tuning with the Oister framework is done based on the following three 
 Let us further specify the format/give an example of the files mentioned above:
 
 QUESTIONS:
- 1. What shall we do in case that there is no translation for a sentence? 
-    What shall we dump?: Nothing or throw an exception? - shall not happen any ways!
- 2. The scores file per sentence stores all the nodes with the feature values, do
-    the nodes have to be ordered by the node id?
-    (we could actually do the ordering later on with the standard sort utility)
+ + 1. What shall we do in case that there is no translation for a sentence? 
+      What shall we dump?: Nothing or throw an exception? - (?) shall not be happening at all!
+ + 2. The scores file per sentence stores all the nodes with the feature values, do
+      the nodes have to be ordered by the node id? NO
+      (we could actually do the ordering later on with the standard sort utility)
+ - 3. The FROM state entry for the recombined states: what probability delta shall
+      it include, the delta compared to the original state we recombined into, or
+      the delta compared to the state that was recombined into this one?
+ - 4. The recombination, the number of best translations is limited, i.e. if we
+      recombine we only store that many "recombined from" states. Shall there be
+      an option for storing all of them? How many do we need to keep? I have it
+      set to 1. in my tests with the news data.
 
 *********************************
 <source-file-name>.lattices

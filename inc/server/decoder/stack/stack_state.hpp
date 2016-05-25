@@ -96,7 +96,7 @@ namespace uva {
 #endif                        
 
                             /**
-                             * The basic constructor for the begin stack state
+                             * The basic constructor for the BEGIN stack state
                              * @param data the shared data container
                              */
                             stack_state_templ(const stack_data & data)
@@ -106,7 +106,7 @@ namespace uva {
                             }
 
                             /**
-                             * The basic constructor for the end stack state
+                             * The basic constructor for the END stack state
                              * @param parent the parent state pointer, NOT NULL!
                              * @param prev_history the previous translation history
                              */
@@ -256,7 +256,7 @@ namespace uva {
                                         //Add an extra space before the new element in the lattice dump
                                         this_dump << " ";
                                         //Dump as a from state
-                                        rec_from->m_parent->dump_to_from_state_data(this_dump, covers_dump, *this);
+                                        rec_from->m_parent->dump_to_from_state_data(this_dump, covers_dump, *rec_from);
                                         //Dump as a to state into the parent dump
                                         rec_from->m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
                                         //Move to the next recombined from state
@@ -298,7 +298,8 @@ namespace uva {
                                 //Check if this is the last state, i.e. we translated everything
                                 if (curr_count == num_words) {
                                     //All of the words have been translated, add the end state
-                                    m_state_data.m_stack_data.m_add_state(new stack_state(this));
+                                    stack_state_ptr end_state = new stack_state(this);
+                                    m_state_data.m_stack_data.m_add_state(end_state);
                                 } else {
                                     //If there are still things to translate then
 
