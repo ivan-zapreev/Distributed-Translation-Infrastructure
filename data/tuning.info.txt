@@ -18,7 +18,11 @@ QUESTIONS:
  - 4. The recombination, the number of best translations is limited, i.e. if we
       recombine we only store that many "recombined from" states. Shall there be
       an option for storing all of them? How many do we need to keep? I have it
-      set to 1. in my tests with the news data.
+      set to 1. in my tests with the news data. Is the number of best translations
+      is the number of recombined from states to be kept or is it something else?
+      If not, shall we then limit the number of states we recombine from or not?
+      Do these states need to be ordered by the partial score or can just be stored
+      in a simple unordered list?
 
 *********************************
 <source-file-name>.lattices
