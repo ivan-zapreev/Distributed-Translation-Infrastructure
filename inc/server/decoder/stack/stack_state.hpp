@@ -187,7 +187,7 @@ namespace uva {
                              * from states for the super-end state of the lattice
                              * @param this_dump the stream to dump the from state into
                              */
-                            inline void dump_as_from_se_state(ostream & this_dump) const {
+                            inline void dump_to_from_se_state_data(ostream & this_dump) const {
                                 LOG_DEBUG1 << "Dumping the SE FROM state " << m_state_id << " to the search lattice" << END_LOG;
 
                                 //Dump the data into the lattice
@@ -199,16 +199,26 @@ namespace uva {
                             /**
                              * Allows to dump the stack state data to the lattice
                              * @param this_dump the lattice output stream to dump the data into
-                             * @param cp_score the partial score of the child of this hypothesis state, the default value is 0.0
+                             * @param covers_dump the dump stream to dump the to-from covers
+                             * @param to_state the to state
                              */
-                            inline void dump_as_from_state(ostream & this_dump, const string & target, const prob_weight cp_score) const {
-                                LOG_DEBUG1 << "Dumping the state " << m_state_id << " to the search lattice" << END_LOG;
+                            inline void dump_to_from_state_data(ostream & this_dump, ostream & covers_dump, const stack_state & to_state) const {
+                                LOG_DEBUG1 << "Dumping the FROM state " << m_state_id << " to the search lattice" << END_LOG;
+
+                                //Extract the target translation string.
+                                string target = "";
+                                to_state.m_state_data.template get_target_phrase<true>(target);
 
                                 //Dump the data into the lattice
                                 this_dump << to_string(m_state_id) << "|||" << target << "|||"
-                                        << to_string(cp_score - m_state_data.m_partial_score);
+                                        << to_string(to_state.m_state_data.m_partial_score - m_state_data.m_partial_score);
 
-                                LOG_DEBUG1 << "Dumping the state " << m_state_id << " to the lattice is done" << END_LOG;
+                                //ToDo: Dump the cover vector for the to state
+                                covers_dump << to_string(to_state.m_state_id) << "-" << to_string(m_state_id)
+                                        << ":" << to_string(to_state.m_state_data.m_s_begin_word_idx)
+                                        << ":" << to_string(to_state.m_state_data.m_s_end_word_idx) << " ";
+
+                                LOG_DEBUG1 << "Dumping the FROM state " << m_state_id << " to the lattice is done" << END_LOG;
                             }
 
                             /**
@@ -217,7 +227,7 @@ namespace uva {
                              * @param scores_dump the stream for dumping the used model features per state
                              * @param covers_dump the stream for dumping the cover vectors
                              */
-                            inline void dump_as_to_state(ostream & this_dump, ostream & scores_dump, ostream & covers_dump) const {
+                            inline void dump_to_state_data(ostream & this_dump, ostream & scores_dump, ostream & covers_dump) const {
                                 //Assert sanity that the only state with no parent is the rood one with the zero id.
                                 ASSERT_SANITY_THROW((m_parent != NULL)&&(m_state_id == INITIAL_STATE_ID),
                                         string("The parent is present but the root state id is ") + to_string(INITIAL_STATE_ID));
@@ -230,31 +240,25 @@ namespace uva {
                                     //Dump the state info
                                     this_dump << to_string(m_state_id) << "\t";
 
-                                    //ToDo: Dump the scores and the covers
+                                    //ToDo: Dump the scores
 
                                     //Declare the stream to store the parent's data
                                     stringstream parents_dump;
 
-                                    //Extract the target translation string.
-                                    string target = "";
-                                    m_state_data.template get_target_phrase<true>(target);
-
                                     //Dump the state's parent as its from state 
-                                    m_parent->dump_as_from_state(this_dump, target, m_state_data.m_partial_score);
+                                    m_parent->dump_to_from_state_data(this_dump, covers_dump, *this);
                                     //Dump as a to state into the parent dump
-                                    m_parent->dump_as_to_state(parents_dump, scores_dump, covers_dump);
+                                    m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
 
                                     //Dump the parents of the recombined from states, if any
                                     stack_state_ptr rec_from = m_recomb_from;
                                     while (rec_from != NULL) {
-                                        //Add an extra space before the new element
+                                        //Add an extra space before the new element in the lattice dump
                                         this_dump << " ";
-                                        //Extract the target translation string.
-                                        rec_from->m_state_data.template get_target_phrase<true>(target);
                                         //Dump as a from state
-                                        rec_from->m_parent->dump_as_from_state(this_dump, target, m_state_data.m_partial_score);
+                                        rec_from->m_parent->dump_to_from_state_data(this_dump, covers_dump, *this);
                                         //Dump as a to state into the parent dump
-                                        rec_from->m_parent->dump_as_to_state(parents_dump, scores_dump, covers_dump);
+                                        rec_from->m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
                                         //Move to the next recombined from state
                                         rec_from = rec_from->m_next;
                                     }

@@ -41,11 +41,12 @@ So those additional FROM_NODE_ID_XXX nodes are from those recombined states.
 Every other incoming edge, e.g. FROM_NODE_ID_2, is divided from the previous score delta with a space.
 If there is no target phrase translation, for the end dummy one referencing all the other ones, then TARGET_PHRASE turns into an empty string.
 If there is no known translation for a source phrase then the corresponding source phrase is used instead of the target phrase.
-<COVERVECS> contains TO-FROM node id pairs with the corresponding index interval for the last translated source phrase
+<COVERVECS> contains TO_NODE_ID_YYY-FROM_NODE_ID_XXX node id pairs with the corresponding index interval for the last translated source phrase
 The <COVERVECS> tag seems to store everything in one line
 There is one <COVERVECS></COVERVECS> entry per sentence 
 There are multiple <SENT></SENT> entries per file.
 NODE_IDs seem to start from 1, the 0 id is for the first hypothesis.
+Sentence ids should also start with zero, but this is more something for the scripting around the dumped lattices
 
 *********************************
 <source-file-name>.feature_scores

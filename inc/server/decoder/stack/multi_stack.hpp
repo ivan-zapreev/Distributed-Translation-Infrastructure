@@ -32,6 +32,7 @@
 
 #include "server/trans_info.hpp"
 
+#include "common/utils/string_utils.hpp"
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -48,6 +49,7 @@
 using namespace std;
 using namespace std::placeholders;
 
+using namespace uva::utils::text;
 using namespace uva::utils::threads;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
@@ -172,6 +174,7 @@ namespace uva {
                             }
 
 #if IS_SERVER_TUNING_MODE
+
                             /**
                              * Is needed to dump the search lattice data for the given sentence.
                              * This method is to be called after a translation is successfully finished.
@@ -196,10 +199,10 @@ namespace uva {
                                 stringstream parents_dump, covers_dump;
                                 while (iter != end_level->end()) {
                                     //Dump as a FROM state content
-                                    (*iter)->dump_as_from_se_state(lattice_dump);
-                                    
+                                    (*iter)->dump_to_from_se_state_data(lattice_dump);
+
                                     //Dump as a TO state content
-                                    (*iter)->dump_as_to_state(parents_dump, scores_dump, covers_dump);
+                                    (*iter)->dump_to_state_data(parents_dump, scores_dump, covers_dump);
 
                                     //Move on to the next state
                                     ++iter;
@@ -213,11 +216,13 @@ namespace uva {
 
                                 //Dump the covers buffer content to the lattice file
                                 LOG_DEBUG << "Append the cover vectors to the lattice" << END_LOG;
-                                lattice_dump << "<COVERVECS>" << covers_dump.str() << "</COVERVECS>" << std::endl;
+                                string covers_str = covers_dump.str(); //Remove the trailing space, by using trim
+                                lattice_dump << "<COVERVECS>" << trim(covers_str) << "</COVERVECS>" << std::endl;
 
                                 LOG_DEBUG << "Done dumping the search lattice" << END_LOG;
                             }
 #endif
+
                             /**
                              * Allows to extend the hypothesis, when extending the stack we immediately re-combine
                              */
