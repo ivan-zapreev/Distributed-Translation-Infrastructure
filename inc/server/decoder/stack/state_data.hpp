@@ -300,7 +300,7 @@ namespace uva {
                              * Allows to retrieve the language model probability for the given query, to
                              * do that we need to extract the query from the current translation frame
                              */
-                            prob_weight get_lm_probability() {
+                            prob_weight get_lm_cost() {
                                 //The number of new words that came into translation is either the
                                 //number of words in the target or one, for the <s> or </s> tags
                                 const size_t num_new_words = ((m_target != NULL) ? m_target->get_num_words() : 1);
@@ -333,6 +333,8 @@ namespace uva {
                                 //logger::get_reporting_level() = debug_levels_enum::INFO2;
                                 const prob_weight prob = m_stack_data.m_lm_query.execute(num_query_words, query_word_ids, m_begin_lm_level);
                                 //logger::get_reporting_level() = debug_levels_enum::DEBUG2;
+                                
+                                //ToDo: Lattice - store the lm feature value without the lambda
 
                                 return prob;
                             }
@@ -381,6 +383,9 @@ namespace uva {
                                 if (is_dist && (distance > m_stack_data.m_params.m_dist_limit)) {
                                     distance = m_stack_data.m_params.m_dist_limit;
                                 }
+                                
+                                //ToDo: Lattice - store the lin dist cost feature value without the lambdas
+                                
                                 return m_stack_data.m_params.m_lin_dist_penalty * distance;
                             }
 
@@ -391,8 +396,46 @@ namespace uva {
                              */
                             inline prob_weight get_lex_reord_cost(const state_data_templ & prev_state_data) {
                                 const reordering_orientation orient = get_reordering_orientation(prev_state_data);
+                                
+                                //ToDo: Lattice - store the rm feature values without the lambda
+                                
                                 return prev_state_data.rm_entry_data.template get_weight<true>(orient) +
                                         rm_entry_data.template get_weight<false>(orient);
+                            }
+
+                            /**
+                             * Allows to obtain the translation model probability
+                             * @return the translation model probability for the chosen phrase translation
+                             */
+                            inline prob_weight get_tm_cost() {
+                                
+                                //ToDo: Lattice - store the tm feature values without the lambdas
+                                
+                                return m_target->get_total_weight();
+                            }
+
+                            /**
+                             * Allows to obtain the phrase penalty costs
+                             * @return the phrase penalty costs
+                             */
+                            inline prob_weight get_phrase_cost() {
+                                
+                                //ToDo: Lattice - store the phrase cost feature value without the lambda
+                                //      It will be the value of the phrase penalty itself
+                                
+                                return m_stack_data.m_params.m_phrase_penalty;
+                            }
+                            
+                            /**
+                             * Allows to obtain the word penalty costs
+                             * @return the word penalty costs
+                             */
+                            inline prob_weight get_word_cost() {
+                                
+                                //ToDo: Lattice - store the word penalty feature value without the lambda
+                                //      It will be the number of words with the negative sign
+                                
+                                return m_stack_data.m_params.m_word_penalty * m_target->get_num_words();
                             }
 
                             /**
@@ -407,7 +450,7 @@ namespace uva {
                                 LOG_DEBUG1 << "Initial end-state score is: " << partial_score << END_LOG;
 
                                 //Add the language model probability
-                                partial_score += get_lm_probability();
+                                partial_score += get_lm_cost();
 
                                 LOG_DEBUG1 << "end-state score + LM is: " << partial_score << END_LOG;
 
@@ -435,22 +478,22 @@ namespace uva {
                                 LOG_DEBUG1 << "Initial partial score is: " << partial_score << END_LOG;
 
                                 //Add the phrase translation probability
-                                partial_score += m_target->get_total_weight();
+                                partial_score += get_tm_cost();
 
                                 LOG_DEBUG1 << "partial score + TM is: " << partial_score << END_LOG;
 
                                 //Add the language model probability
-                                partial_score += get_lm_probability();
+                                partial_score += get_lm_cost();
 
                                 LOG_DEBUG1 << "partial score + LM is: " << partial_score << END_LOG;
 
                                 //Add the phrase penalty
-                                partial_score += m_stack_data.m_params.m_phrase_penalty;
+                                partial_score += get_phrase_cost();
 
                                 LOG_DEBUG1 << "partial score + phrase penalty is: " << partial_score << END_LOG;
 
                                 //Add the word penalty
-                                partial_score += m_stack_data.m_params.m_word_penalty * m_target->get_num_words();
+                                partial_score += get_word_cost();
 
                                 LOG_DEBUG1 << "partial score + word penalty is: " << partial_score << END_LOG;
 
