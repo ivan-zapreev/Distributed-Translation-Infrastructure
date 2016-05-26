@@ -31,7 +31,6 @@ namespace uva {
             namespace server {
                 namespace decoder {
                     const string de_parameters_struct::DE_CONFIG_SECTION_NAME = "Decoding Options";
-                    const string de_parameters_struct::DE_NUM_BEST_TRANS_PARAM_NAME = "de_num_best_trans";
                     const string de_parameters_struct::DE_PRUNING_THRESHOLD_PARAM_NAME = "de_pruning_threshold";
                     const string de_parameters_struct::DE_STACK_CAPACITY_PARAM_NAME = "de_stack_capacity";
                     const string de_parameters_struct::DE_MAX_SP_LEN_PARAM_NAME = "de_max_source_phrase_length";

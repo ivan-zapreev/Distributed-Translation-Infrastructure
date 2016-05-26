@@ -28,6 +28,7 @@
 
 #include <algorithm>
 
+#include "server/lm/lm_parameters.hpp"
 #include "server/lm/proxy/lm_fast_query_proxy.hpp"
 #include "server/lm/models/m_gram_query.hpp"
 
@@ -56,14 +57,16 @@ namespace uva {
                             /**
                              * The basic constructor that accepts the trie reference to query to
                              * Note that the begin and end tag uids are provided only for the sake of performance optimization.
+                             * @param m_params the lm model parameters
                              * @param trie the trie to query
                              * @param unk_word_prob the unknown word LM probability
                              * @param begin_tag_uid the begin sentence tag word uid
                              * @param end_tag_uid the begin sentence tag word uid
                              */
-                            lm_fast_query_proxy_local(const trie_type & trie, const prob_weight& unk_word_prob,
-                                    const word_uid & begin_tag_uid, const word_uid & end_tag_uid)
-                            : m_trie(trie), m_unk_word_prob(unk_word_prob),
+                            lm_fast_query_proxy_local(const lm_parameters & params, const trie_type & trie,
+                                    const prob_weight& unk_word_prob, const word_uid & begin_tag_uid,
+                                    const word_uid & end_tag_uid)
+                            : m_params(params), m_trie(trie), m_unk_word_prob(unk_word_prob),
                             m_begin_tag_uid(begin_tag_uid), m_end_tag_uid(end_tag_uid),
                             m_word_idx(m_trie.get_word_index()), m_query(), m_joint_prob(0.0) {
                             }
@@ -147,8 +150,9 @@ namespace uva {
                              * @see lm_query_proxy
                              */
                             virtual prob_weight execute(const phrase_length num_words,
-                                    const word_uid * word_ids, phrase_length & min_level) {
-                                //Re-initialize the joint prob reault with zero
+                                    const word_uid * word_ids, phrase_length & min_level,
+                                    map<string, prob_weight> * scores = NULL) {
+                                //Re-initialize the joint prob result with zero
                                 m_joint_prob = 0.0;
 
                                 //Set the words data into the query object
@@ -203,6 +207,12 @@ namespace uva {
                                 min_level = std::min<phrase_length>(max_m_gram_level + 1, LM_M_GRAM_LEVEL_MAX);
 
                                 LOG_DEBUG << "Computed log10(Prob(" << m_query << ")) = " << m_joint_prob << ", next min_level:  " << min_level << END_LOG;
+
+                                //Report the feature scores, here we do it outside the model - for simplicity
+                                if (scores != NULL) {
+                                    //Store the score and divide it by the lambda weight to restore the original!
+                                    scores->operator[](lm_parameters::LM_WEIGHT_NAMES[0]) = m_joint_prob / m_params.m_lambdas[0];
+                                }
 
                                 //Return the final result;
                                 return m_joint_prob;
@@ -306,6 +316,9 @@ namespace uva {
 
                             //Store the flag indicating whether the trie needs context ids
                             static constexpr bool m_is_ctx = trie_type::is_context_needed();
+
+                            //Stores the pointer to the configuration parameters
+                            const lm_parameters & m_params;
 
                             //Stores the reference to the trie
                             const trie_type & m_trie;

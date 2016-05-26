@@ -12,17 +12,24 @@ QUESTIONS:
  + 2. The scores file per sentence stores all the nodes with the feature values, do
       the nodes have to be ordered by the node id? NO
       (we could actually do the ordering later on with the standard sort utility)
- - 3. The FROM state entry for the recombined states: what probability delta shall
+ + 3. The FROM state entry for the recombined states: what probability delta shall
       it include, the delta compared to the original state we recombined into, or
       the delta compared to the state that was recombined into this one?
- - 4. The recombination, the number of best translations is limited, i.e. if we
+      This should be delta with the original state and not the one we recombined into.
+ + 4. The recombination, the number of best translations is limited, i.e. if we
       recombine we only store that many "recombined from" states. Shall there be
       an option for storing all of them? How many do we need to keep? I have it
       set to 1. in my tests with the news data. Is the number of best translations
       is the number of recombined from states to be kept or is it something else?
       If not, shall we then limit the number of states we recombine from or not?
       Do these states need to be ordered by the partial score or can just be stored
-      in a simple unordered list?
+      in a simple unordered list? The limit on the number of best translations is for
+      lattice analysis but is not for the decoder. The limit on the number of stored
+      states during the recombination process is to be removed. The order in which
+      the recombined states are stored is also not important.
+ + 5. Why are not there any |||</s>||| states in the oister lattice? This is because
+      they are never explicitly made! I can for now just store those </s> states with
+      an empty translation.
 
 *********************************
 <source-file-name>.lattices

@@ -32,7 +32,7 @@ namespace uva {
                 namespace decoder {
                     namespace stack {
                         //Forward declaration of the class
-                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        template<bool is_dist, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
                         class stack_state_templ;
 
                         /**
@@ -40,16 +40,15 @@ namespace uva {
                          * This data is valid within one sentence translation
                          * and is needed by multiple states and etc
                          * @param is_dist the flag indicating whether there is a left distortion limit or not
-                         * @param is_alt_trans the flag indicating if the alternative translations are to be stored when recombining states.
                          * @param NUM_WORDS_PER_SENTENCE the maximum allowed number of words per sentence
                          * @param MAX_HISTORY_LENGTH the maximum allowed length of the target translation hystory
                          * @param MAX_M_GRAM_QUERY_LENGTH the maximum length of the m-gram query
                          */
-                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        template<bool is_dist, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
                         struct stack_data_templ {
                             //Typedef the multi state and instantiate it with the maximum number of words per sentence and
                             //the maximum LM query length as this is the max LM level - 1 plus the max target phrase length
-                            typedef stack_state_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_state;
+                            typedef stack_state_templ<is_dist, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_state;
 
                             //Define the multi state pointer
                             typedef stack_state * stack_state_ptr;
@@ -97,6 +96,31 @@ namespace uva {
 
                             //The function needed to add new states
                             const add_new_state_function m_add_state;
+
+                            /**
+                             * Allows to retrieve the number of feature scores for the lattice dump
+                             * @return the number of features used in the model
+                             */
+                            inline size_t get_num_features() const {
+                                return m_params.m_weight_name_2_id.size();
+                            }
+
+                            /**
+                             * Allows to get the feature id by the feature name
+                             * @param name the feature name
+                             * @return the feature id
+                             */
+                            inline size_t get_feature_id(const string & name) const {
+                                //Search for the feature in the map
+                                auto id_iter = m_params.m_weight_name_2_id.find(name);
+                                
+                                //Perform the sanity check to find out if the feature name is registered
+                                ASSERT_SANITY_THROW( id_iter == m_params.m_weight_name_2_id.end(),
+                                        string("The feature id for feature name '") + name + string("' is not known!"));
+
+                                //Return the feature id
+                                return id_iter->second;
+                            }
                         };
                     }
                 }

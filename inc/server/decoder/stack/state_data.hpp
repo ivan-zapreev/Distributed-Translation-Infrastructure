@@ -61,15 +61,14 @@ namespace uva {
                          * that however changes/mutates from state to state and thus
                          * is to be passed on from each state to its child.
                          * @param is_dist the flag indicating whether there is a distortion limit or not
-                         * @param is_alt_trans the flag indicating if the alternative translations are to be stored when recombining states.
                          * @param NUM_WORDS_PER_SENTENCE the maximum allowed number of words per sentence
                          * @param MAX_HISTORY_LENGTH the maximum allowed length of the target translation hystory
                          * @param MAX_M_GRAM_QUERY_LENGTH the maximum length of the m-gram query
                          */
-                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        template<bool is_dist, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
                         struct state_data_templ {
                             //Give a short name for the stack data
-                            typedef stack_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_data;
+                            typedef stack_data_templ<is_dist, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_data;
                             //Make the typedef for the stack state translation frame
                             typedef circular_queue<word_uid, MAX_M_GRAM_QUERY_LENGTH > state_frame;
 
@@ -79,6 +78,18 @@ namespace uva {
                             //Stores the undefined word index
                             static constexpr int32_t UNDEFINED_WORD_IDX = -1;
                             static constexpr int32_t ZERRO_WORD_IDX = UNDEFINED_WORD_IDX + 1;
+
+#if IS_SERVER_TUNING_MODE
+#define INIT_STATE_DATA_TUNING_DATA(storage) , m_lattice_scores(storage)
+#define DEFINE_TUNING_FEATURES_MAP(name) map<string, prob_weight> name;
+#define PASS_TUNING_FEATURES_MAP(name) &name
+#define PROCESS_TUNING_FEATURES_MAP(name) add_feature_scores(name);
+#else
+#define INITIALIZE_TUNING_DATA(storage)
+#define DEFINE_TUNING_FEATURES_MAP(name)
+#define PASS_TUNING_FEATURES_MAP(name) NULL
+#define PROCESS_TUNING_FEATURES_MAP(name)
+#endif                        
 
                             /**
                              * The basic constructor that is to be used for the BEGIN STATE <s>
@@ -95,7 +106,7 @@ namespace uva {
                             //Add the sentence begin tag uid to the target, since this is for the begin state
                             m_trans_frame(1, &m_stack_data.m_lm_query.get_begin_tag_uid()),
                             m_begin_lm_level(M_GRAM_LEVEL_1),
-                            m_covered(), m_partial_score(0.0), m_total_score(0.0) {
+                            m_covered(), m_partial_score(0.0), m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA(NULL) {
                                 LOG_DEBUG1 << "New BEGIN state data: " << this << ", translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___<s>___" << END_LOG;
@@ -125,7 +136,7 @@ namespace uva {
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             //The coverage vector stays the same, nothing new is added, we take over the partial score
                             m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score),
-                            m_total_score(0.0) {
+                            m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA(new prob_weight[m_stack_data.get_num_features()]()) {
                                 LOG_DEBUG1 << "New END state data: " << this << " translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___</s>___" << END_LOG;
@@ -160,7 +171,7 @@ namespace uva {
                             m_trans_frame(prev_state_data.m_trans_frame, m_target->get_num_words(), m_target->get_word_ids()),
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             m_covered(covered), m_partial_score(prev_state_data.m_partial_score),
-                            m_total_score(0.0) {
+                            m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA(new prob_weight[m_stack_data.get_num_features()]()) {
                                 LOG_DEBUG1 << "New state data: " << this << ", translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___"
@@ -196,43 +207,6 @@ namespace uva {
                                 }
                                 return result + "]";
                             }
-
-                            //Stores the reference to the parameters
-                            const stack_data & m_stack_data;
-
-                            //Stores the begin word index of the translated phrase in the source sentence
-                            const int32_t m_s_begin_word_idx;
-                            //Stores the end word index of the translated phrase in the source sentence
-                            const int32_t m_s_end_word_idx;
-
-                            //Stores the stack level, i.e. the number of so far translated source words
-                            const phrase_length m_stack_level;
-
-                            //Stores the pointer to the target translation of the last phrase
-                            tm_const_target_entry * const m_target;
-
-                            //Stores the reference to the reordering model entry data corresponding to this state
-                            const rm_entry & rm_entry_data;
-
-                            //Stores the translation frame i.e. the number of translated
-                            //word ids up until and including now. This structure should
-                            //be large enough to store the maximum m-gram length - 1 from
-                            //the LM plus the maximum target phrase length from TM
-                            const state_frame m_trans_frame;
-
-                            //Stores the minimum m-gram level to consider when computing the LM probability of the history
-                            phrase_length m_begin_lm_level;
-
-                            //Stores the bitset of covered words indexes
-                            const covered_info m_covered;
-
-                            //Stores the logarithmic partial score of the current hypothesis
-                            const prob_weight m_partial_score;
-
-                            //Stores the logarithmic total score of the current hypothesis
-                            //The total score is the sum of the current partial score and
-                            //the future cost estimate for the given hypothesis state
-                            const prob_weight m_total_score;
 
                             /**
                              * Extract the target, including the case when we are in the
@@ -294,13 +268,75 @@ namespace uva {
                                 LOG_DEBUG1 << "The END storage value is: ___" << storage << "___" << END_LOG;
                             }
 
+                            //Stores the reference to the parameters
+                            const stack_data & m_stack_data;
+
+                            //Stores the begin word index of the translated phrase in the source sentence
+                            const int32_t m_s_begin_word_idx;
+                            //Stores the end word index of the translated phrase in the source sentence
+                            const int32_t m_s_end_word_idx;
+
+                            //Stores the stack level, i.e. the number of so far translated source words
+                            const phrase_length m_stack_level;
+
+                            //Stores the pointer to the target translation of the last phrase
+                            tm_const_target_entry * const m_target;
+
+                            //Stores the reference to the reordering model entry data corresponding to this state
+                            const rm_entry & rm_entry_data;
+
+                            //Stores the translation frame i.e. the number of translated
+                            //word ids up until and including now. This structure should
+                            //be large enough to store the maximum m-gram length - 1 from
+                            //the LM plus the maximum target phrase length from TM
+                            const state_frame m_trans_frame;
+
+                            //Stores the minimum m-gram level to consider when computing the LM probability of the history
+                            phrase_length m_begin_lm_level;
+
+                            //Stores the bitset of covered words indexes
+                            const covered_info m_covered;
+
+                            //Stores the logarithmic partial score of the current hypothesis
+                            const prob_weight m_partial_score;
+
+                            //Stores the logarithmic total score of the current hypothesis
+                            //The total score is the sum of the current partial score and
+                            //the future cost estimate for the given hypothesis state
+                            const prob_weight m_total_score;
+
+#if IS_SERVER_TUNING_MODE
+
+                            //An array of lattice scores for the case of server tuning
+                            const prob_weight * const m_lattice_scores;
+
+                            /**
+                             * Allows to add the used feature score into the lattice scores data
+                             * @param name the name of the feature
+                             * @param value the value of the feature score
+                             */
+                            inline void add_feature_score(const string & name, const prob_weight & value) {
+                                const_cast<prob_weight &> (m_lattice_scores[m_stack_data.get_feature_id(name)]) = value;
+                            }
+
+                            /**
+                             * Allows to add the feature scores into the lattice scores data
+                             * @param scores the map storing the feature-name/score pairs
+                             */
+                            inline void add_feature_scores(map<string, prob_weight> scores) {
+                                for (auto iter = scores.cbegin(); iter != scores.end(); ++iter) {
+                                    add_feature_score(iter->first, iter->second);
+                                }
+                            }
+#endif
+
                         private:
 
                             /**
                              * Allows to retrieve the language model probability for the given query, to
                              * do that we need to extract the query from the current translation frame
                              */
-                            prob_weight get_lm_cost() {
+                            inline prob_weight get_lm_cost() {
                                 //The number of new words that came into translation is either the
                                 //number of words in the target or one, for the <s> or </s> tags
                                 const size_t num_new_words = ((m_target != NULL) ? m_target->get_num_words() : 1);
@@ -329,18 +365,22 @@ namespace uva {
                                         << act_hist_words << ", new_words: " << num_new_words << ", query words: "
                                         << array_to_string<word_uid>(num_query_words, query_word_ids) << END_LOG;
 
+                                //Define the feature scores data map
+                                DEFINE_TUNING_FEATURES_MAP(scores);
+
                                 //Execute the query and return the value
-                                //logger::get_reporting_level() = debug_levels_enum::INFO2;
-                                const prob_weight prob = m_stack_data.m_lm_query.execute(num_query_words, query_word_ids, m_begin_lm_level);
-                                //logger::get_reporting_level() = debug_levels_enum::DEBUG2;
-                                
-                                //ToDo: Lattice - store the lm feature value without the lambda
+                                const prob_weight prob = m_stack_data.m_lm_query.execute(
+                                        num_query_words, query_word_ids,
+                                        m_begin_lm_level, PASS_TUNING_FEATURES_MAP(scores));
+
+                                //Process the tuning feature scores data
+                                PROCESS_TUNING_FEATURES_MAP(scores)
 
                                 return prob;
                             }
 
                             /**
-                             * Allows to compute the reordering orientatino for the phrase based lexicolized reordering model
+                             * Allows to compute the reordering orientation for the phrase based lexicolized reordering model
                              * @param prev_state_data the previous state translation
                              * @return the reordering orientation
                              */
@@ -383,9 +423,10 @@ namespace uva {
                                 if (is_dist && (distance > m_stack_data.m_params.m_dist_limit)) {
                                     distance = m_stack_data.m_params.m_dist_limit;
                                 }
-                                
-                                //ToDo: Lattice - store the lin dist cost feature value without the lambdas
-                                
+
+                                //Store the lin dist cost feature value without the lambda, so just the distance
+                                add_feature_score(de_parameters::DE_LD_PENALTY_PARAM_NAME, distance);
+
                                 return m_stack_data.m_params.m_lin_dist_penalty * distance;
                             }
 
@@ -396,9 +437,9 @@ namespace uva {
                              */
                             inline prob_weight get_lex_reord_cost(const state_data_templ & prev_state_data) {
                                 const reordering_orientation orient = get_reordering_orientation(prev_state_data);
-                                
+
                                 //ToDo: Lattice - store the rm feature values without the lambda
-                                
+
                                 return prev_state_data.rm_entry_data.template get_weight<true>(orient) +
                                         rm_entry_data.template get_weight<false>(orient);
                             }
@@ -408,9 +449,8 @@ namespace uva {
                              * @return the translation model probability for the chosen phrase translation
                              */
                             inline prob_weight get_tm_cost() {
-                                
                                 //ToDo: Lattice - store the tm feature values without the lambdas
-                                
+
                                 return m_target->get_total_weight();
                             }
 
@@ -419,22 +459,22 @@ namespace uva {
                              * @return the phrase penalty costs
                              */
                             inline prob_weight get_phrase_cost() {
-                                
-                                //ToDo: Lattice - store the phrase cost feature value without the lambda
-                                //      It will be the value of the phrase penalty itself
-                                
+                                //Store the phrase cost feature value without the lambda
+                                //It will be the value of the phrase penalty itself
+                                add_feature_score(de_parameters::DE_PHRASE_PENALTY_PARAM_NAME, m_stack_data.m_params.m_phrase_penalty);
+
                                 return m_stack_data.m_params.m_phrase_penalty;
                             }
-                            
+
                             /**
                              * Allows to obtain the word penalty costs
                              * @return the word penalty costs
                              */
                             inline prob_weight get_word_cost() {
-                                
-                                //ToDo: Lattice - store the word penalty feature value without the lambda
-                                //      It will be the number of words with the negative sign
-                                
+                                //Store the word penalty feature value without the lambda
+                                //It will be the number of words with the negative sign
+                                add_feature_score(de_parameters::DE_WORD_PENALTY_PARAM_NAME, m_target->get_num_words());
+
                                 return m_stack_data.m_params.m_word_penalty * m_target->get_num_words();
                             }
 
@@ -581,11 +621,11 @@ namespace uva {
                             }
                         };
 
-                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
-                        constexpr int32_t state_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>::UNDEFINED_WORD_IDX;
+                        template<bool is_dist, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        constexpr int32_t state_data_templ<is_dist, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>::UNDEFINED_WORD_IDX;
 
-                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
-                        constexpr int32_t state_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>::ZERRO_WORD_IDX;
+                        template<bool is_dist, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        constexpr int32_t state_data_templ<is_dist, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH>::ZERRO_WORD_IDX;
                     }
                 }
             }

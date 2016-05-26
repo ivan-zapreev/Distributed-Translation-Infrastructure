@@ -269,7 +269,6 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         LOG_INFO << params.m_rm_params << END_LOG;
 
         section = de_parameters::DE_CONFIG_SECTION_NAME;
-        params.m_de_params.m_num_best_trans = get_integer<uint32_t>(ini, section, de_parameters::DE_NUM_BEST_TRANS_PARAM_NAME);
         params.m_de_params.m_pruning_threshold = get_float(ini, section, de_parameters::DE_PRUNING_THRESHOLD_PARAM_NAME);
         params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, de_parameters::DE_STACK_CAPACITY_PARAM_NAME);
         params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section, de_parameters::DE_MAX_SP_LEN_PARAM_NAME);

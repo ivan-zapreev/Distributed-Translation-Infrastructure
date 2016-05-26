@@ -37,7 +37,6 @@ namespace uva {
                 //The log level setting command
                 static const string PROGRAM_SET_LL_CMD = "set ll ";
                 //Declare the program "set" commands, NOTE the end spaces are needed!
-                static const string PROGRAM_SET_NBT_CMD = "set nbt ";
                 static const string PROGRAM_SET_D_CMD = "set d ";
                 static const string PROGRAM_SET_EDL_CMD = "set edl ";
                 static const string PROGRAM_SET_PT_CMD = "set pt ";
@@ -81,7 +80,6 @@ namespace uva {
                     LOG_USAGE << "\t'" << PROGRAM_PARAMS_CMD << " & <enter>'  - print server parameters." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_LL_CMD << "<level> & <enter>'  - set log level." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_NT_CMD << " <positive integer> & <enter>'  - set the number of worker threads." << END_LOG;
-                    LOG_USAGE << "\t'" << PROGRAM_SET_NBT_CMD << "<unsigned integer> & <enter>'  - set the number of best translations." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_D_CMD << "<integer> & <enter>'  - set the distortion limit." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_PT_CMD << "<unsigned float> & <enter>'  - set pruning threshold." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_SC_CMD << "<integer> & <enter>'  - set stack capacity." << END_LOG;
@@ -229,10 +227,6 @@ namespace uva {
                         //Stores the boolean flag indicating whether the command was recognized or not.
                         bool is_recognized = false;
 
-                        if (begins_with(cmd, PROGRAM_SET_NBT_CMD)) {
-                            de_local.m_num_best_trans = get_int_value(cmd, PROGRAM_SET_NBT_CMD);
-                            is_recognized = true;
-                        }
                         if (begins_with(cmd, PROGRAM_SET_D_CMD)) {
                             de_local.m_dist_limit = get_int_value(cmd, PROGRAM_SET_D_CMD);
                             is_recognized = true;

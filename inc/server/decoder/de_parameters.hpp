@@ -60,8 +60,6 @@ namespace uva {
                     struct de_parameters_struct {
                         //Stores the configuration section name
                         static const string DE_CONFIG_SECTION_NAME;
-                        //The number of best translations parameter name
-                        static const string DE_NUM_BEST_TRANS_PARAM_NAME;
                         //The pruning threshold parameter name
                         static const string DE_PRUNING_THRESHOLD_PARAM_NAME;
                         //The stack level capacity parameter name
@@ -118,15 +116,6 @@ namespace uva {
                         atomic<float> m_phrase_penalty;
                         //Stores the linear distortion lambda parameter value
                         atomic<float> m_lin_dist_penalty;
-
-                        //Stores the number of best translations 
-                        atomic<uint32_t> m_num_best_trans;
-
-                        //Stores the number of the alternative translations/hypothesis
-                        //for a state to keep. This value is used when two states are
-                        //recombined. If the value is zero then we only keep one of the
-                        //two equivalent hypothesis, with the highest score. 
-                        atomic<uint32_t> m_num_alt_to_keep;
 
                         //This flag is needed for when the server is compiled in the tuning mode.
                         //This flag should allow to set the tuning lattice generation of and off.
@@ -208,8 +197,6 @@ namespace uva {
                                 this->m_dist_limit = other.m_dist_limit.load();
                                 this->m_max_s_phrase_len = other.m_max_s_phrase_len;
                                 this->m_max_t_phrase_len = other.m_max_t_phrase_len;
-                                this->m_num_best_trans = other.m_num_best_trans.load();
-                                this->m_num_alt_to_keep = other.m_num_alt_to_keep.load();
                                 this->m_phrase_penalty = other.m_phrase_penalty.load();
                                 this->m_pruning_threshold = other.m_pruning_threshold.load();
                                 this->m_pruning_mult_neg = other.m_pruning_mult_neg.load();
@@ -266,14 +253,6 @@ namespace uva {
                                     string("The ") + DE_STACK_CAPACITY_PARAM_NAME +
                                     string(" must be > 0!"));
 
-                            ASSERT_CONDITION_THROW((m_num_best_trans < 1),
-                                    string("The ") + DE_NUM_BEST_TRANS_PARAM_NAME +
-                                    string(" must be >= 1!"));
-
-                            //The number of alternative translations in
-                            //the number of best translations minus one
-                            this->m_num_alt_to_keep = m_num_best_trans - 1;
-
                             if (this->m_is_gen_lattice) {
 #if IS_SERVER_TUNING_MODE
                                 //Check if the lattices folder is set
@@ -318,8 +297,6 @@ namespace uva {
                      */
                     static inline std::ostream& operator<<(std::ostream& stream, const de_parameters & params) {
                         stream << "DE parameters: [ ";
-                        //Log the number of best translations value
-                        stream << de_parameters::DE_NUM_BEST_TRANS_PARAM_NAME << " = " << params.m_num_best_trans;
 
                         //Log the distortion limit parameter
                         stream << ", " << de_parameters::DE_DIST_LIMIT_PARAM_NAME << " = ";

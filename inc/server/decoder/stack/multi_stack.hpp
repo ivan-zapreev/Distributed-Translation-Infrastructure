@@ -77,18 +77,17 @@ namespace uva {
                         /**
                          * This is the translation stack class that is responsible for the sentence translation
                          * @param is_dist the flag indicating whether there is a left distortion limit or not
-                         * @param is_alt_trans the flag indicating if the alternative translations are to be stored when recombining states.
                          * @param NUM_WORDS_PER_SENTENCE the maximum allowed number of words per sentence
                          * @param MAX_HISTORY_LENGTH the maximum allowed length of the target translation hystory
                          * @param MAX_M_GRAM_QUERY_LENGTH the maximum length of the m-gram query
                          */
-                        template<bool is_dist, bool is_alt_trans, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
+                        template<bool is_dist, size_t NUM_WORDS_PER_SENTENCE, size_t MAX_HISTORY_LENGTH, size_t MAX_M_GRAM_QUERY_LENGTH>
                         class multi_stack_templ : public trans_info_provider {
                         public:
                             //Give a short name for the stack data
-                            typedef stack_data_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_data;
+                            typedef stack_data_templ<is_dist, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_data;
                             //Give a short name for the stack level
-                            typedef stack_level_templ<is_dist, is_alt_trans, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_level;
+                            typedef stack_level_templ<is_dist, NUM_WORDS_PER_SENTENCE, MAX_HISTORY_LENGTH, MAX_M_GRAM_QUERY_LENGTH> stack_level;
                             //The typedef of the stack level pointer
                             typedef stack_level * stack_level_ptr;
                             //Typedef the state pointer

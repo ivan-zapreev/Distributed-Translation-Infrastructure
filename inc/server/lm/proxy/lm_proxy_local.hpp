@@ -71,7 +71,7 @@ namespace uva {
                              * The basic constructor of the trie proxy implementation class
                              * @param params the language model parameters
                              */
-                            lm_proxy_local() : m_word_index(__AWordIndex::MEMORY_FACTOR), m_model(m_word_index) {
+                            lm_proxy_local() : m_word_index(__AWordIndex::MEMORY_FACTOR), m_model(m_word_index), m_params(NULL) {
                             }
 
                             /**
@@ -86,13 +86,16 @@ namespace uva {
                              * @see lm_proxy
                              */
                             virtual void connect(const lm_parameters & params) {
+                                //Store the parameters
+                                m_params = &params;
+
                                 //The whole purpose of this method connect here is
                                 //just to load the language model into the memory.
                                 load_model_data<lm_builder_type, lm_model_reader>("Language Model", params);
 
                                 //Retrieve the unknown word probability
                                 get_unk_word_prob();
-                                
+
                                 //Retrieve the begin and end tag uid values
                                 get_tag_uid(BEGIN_SENTENCE_TAG_STR, m_begin_tag_uid);
                                 get_tag_uid(END_SENTENCE_TAG_STR, m_end_tag_uid);
@@ -112,7 +115,7 @@ namespace uva {
                              * @see lm_proxy
                              */
                             virtual lm_fast_query_proxy & allocate_fast_query_proxy() {
-                                return *(new lm_fast_query_proxy_local<lm_model_type>(m_model, m_unk_word_prob, m_begin_tag_uid, m_end_tag_uid));
+                                return *(new lm_fast_query_proxy_local<lm_model_type>(*m_params, m_model, m_unk_word_prob, m_begin_tag_uid, m_end_tag_uid));
                             }
 
                             /**
@@ -143,11 +146,11 @@ namespace uva {
                             }
 
                         private:
-                            
+
                             /**
                              * Allows to retrieve the unknown word LM probability from the model for the sake of caching
                              */
-                            void get_unk_word_prob(){
+                            void get_unk_word_prob() {
                                 m_unk_word_prob = m_model.get_unk_word_prob();
                             }
 
@@ -235,13 +238,16 @@ namespace uva {
 
                             //Stores the trie
                             lm_model_type m_model;
-                            
+
                             //Stores the cached unknown word probability from LM
                             prob_weight m_unk_word_prob;
 
                             //Sore the begin and end sentence tag word uids as retrieved from the LM word index.
                             word_uid m_begin_tag_uid;
                             word_uid m_end_tag_uid;
+
+                            //Stores the pointer to the configuration parameters
+                            const lm_parameters * m_params;
                         };
                     }
                 }

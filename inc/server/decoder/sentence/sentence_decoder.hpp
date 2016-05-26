@@ -159,6 +159,7 @@ namespace uva {
                             }
 
 #if IS_SERVER_TUNING_MODE
+
                             /**
                              * Is needed to dump the search lattice data for the given sentence.
                              * This method is to be called after a translation is successfully finished.
@@ -413,17 +414,9 @@ namespace uva {
                             inline void perform_translation() {
                                 //Depending on the stack template parameters do the thing
                                 if (m_de_params.m_dist_limit != 0) {
-                                    if (m_de_params.m_num_alt_to_keep != 0) {
-                                        perform_translation<true, true>();
-                                    } else {
-                                        perform_translation<true, false>();
-                                    }
+                                    perform_translation<true>();
                                 } else {
-                                    if (m_de_params.m_num_alt_to_keep != 0) {
-                                        perform_translation<false, true>();
-                                    } else {
-                                        perform_translation<false, false>();
-                                    }
+                                    perform_translation<false>();
                                 }
                             }
 
@@ -432,11 +425,10 @@ namespace uva {
                             /**
                              * Performs the sentence translation.
                              * @param is_dist true if we need to 
-                             * @param is_alt_trans true if we need to find alternative translation otherwise false
                              */
-                            template<bool is_dist, bool is_alt_trans>
+                            template<bool is_dist>
                             inline void perform_translation() {
-                                typedef multi_stack_templ<is_dist, is_alt_trans, MAX_WORDS_PER_SENTENCE, LM_HISTORY_LEN_MAX, LM_MAX_QUERY_LEN> stack_type;
+                                typedef multi_stack_templ<is_dist, MAX_WORDS_PER_SENTENCE, LM_HISTORY_LEN_MAX, LM_MAX_QUERY_LEN> stack_type;
 
                                 //Instantiate the multi-stack
                                 stack_type * m_stack = new stack_type(m_de_params, m_is_stop,
