@@ -380,40 +380,6 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to compute the reordering orientation for the phrase based lexicolized reordering model
-                             * @param prev_state_data the previous state translation
-                             * @return the reordering orientation
-                             */
-                            inline reordering_orientation get_reordering_orientation(const state_data_templ & prev_state_data) {
-                                LOG_DEBUG2 << "Previous state end_word_idx: " << prev_state_data.m_s_end_word_idx
-                                        << ", new state begin_word_idx: " << m_s_begin_word_idx << END_LOG;
-
-                                if (m_s_begin_word_idx < prev_state_data.m_s_end_word_idx) {
-                                    //We went to the left from the previous translation
-                                    if ((prev_state_data.m_s_begin_word_idx - m_s_end_word_idx) == 1) {
-                                        LOG_DEBUG2 << "SWAP_ORIENT" << END_LOG;
-                                        //The current phrase is right next to the previous
-                                        return reordering_orientation::SWAP_ORIENT;
-                                    } else {
-                                        LOG_DEBUG2 << "DISCONT_LEFT_ORIENT" << END_LOG;
-                                        //We have a discontinuous jump from the previous
-                                        return reordering_orientation::DISCONT_LEFT_ORIENT;
-                                    }
-                                } else {
-                                    //We went to the right from the previous translation
-                                    if ((m_s_begin_word_idx - prev_state_data.m_s_end_word_idx) == 1) {
-                                        LOG_DEBUG2 << "MONOTONE_ORIENT" << END_LOG;
-                                        //The current phrase is right next to the previous
-                                        return reordering_orientation::MONOTONE_ORIENT;
-                                    } else {
-                                        LOG_DEBUG2 << "DISCONT_RIGHT_ORIENT" << END_LOG;
-                                        //We have a discontinuous jump from the previous
-                                        return reordering_orientation::DISCONT_RIGHT_ORIENT;
-                                    }
-                                }
-                            }
-
-                            /**
                              * Allows to compute the linear distortion penalty.
                              * @param prev_state_data the previous state
                              * @return the linear distortion penalty value
@@ -436,14 +402,39 @@ namespace uva {
                              * @return the lexicolized distortion penalty 
                              */
                             inline prob_weight get_lex_reord_cost(const state_data_templ & prev_state_data) {
-                                const reordering_orientation orient = get_reordering_orientation(prev_state_data);
+                                const reordering_orientation orient =
+                                        rm_entry::get_reordering_orientation(
+                                        prev_state_data.m_s_begin_word_idx,
+                                        prev_state_data.m_s_end_word_idx,
+                                        m_s_begin_word_idx, m_s_end_word_idx);
 
-                                //ToDo: Lattice - store the rm feature values without the lambda
+                                //Define the feature scores data map
+                                DEFINE_TUNING_FEATURES_MAP(scores);
 
-                                return prev_state_data.rm_entry_data.template get_weight<true>(orient) +
-                                        rm_entry_data.template get_weight<false>(orient);
+                                //Compute the reordering costs
+                                prob_weight costs =
+                                        prev_state_data.template get_weight<true>(orient, PASS_TUNING_FEATURES_MAP(scores)) +
+                                        this->template get_weight<false>(orient, PASS_TUNING_FEATURES_MAP(scores));
+
+                                //Process the tuning feature scores data
+                                PROCESS_TUNING_FEATURES_MAP(scores)
+
+                                return costs;
                             }
 
+                            /**
+                             * Allows to get the weight for the given distortion value
+                             * @param is_from the flag allowing to distinguish between the from and to case 
+                             * if true then we get the value from the from source phrase case
+                             * if false then we get the value for the to source phrase case
+                             * @param orient the reordering orientation
+                             * @return the weight for the given distortion value
+                             */
+                            template<bool is_from>
+                            inline const prob_weight get_weight(const reordering_orientation orient, map<string, prob_weight> * scores = NULL) const {
+                                return rm_entry_data.template get_weight<true>(orient, scores);
+                            }
+                            
                             /**
                              * Allows to obtain the translation model probability
                              * @return the translation model probability for the chosen phrase translation

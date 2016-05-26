@@ -81,9 +81,10 @@ namespace uva {
                             TARGET_UNK_UID(get_phrase_uid<true>(rm::RM_UNK_TARGET_PHRASE)),
                             BEGIN_SENT_TAG_UID(get_phrase_uid<true>(lm::BEGIN_SENTENCE_TAG_STR)),
                             END_SENT_TAG_UID(get_phrase_uid<true>(lm::END_SENTENCE_TAG_STR)),
-                            m_rm_data(NULL), m_unk_entry(NULL), m_begin_entry(NULL), m_end_entry(NULL) {
+                            m_rm_data(NULL), m_unk_entry(NULL),
+                            m_begin_entry(NULL), m_end_entry(NULL) {
                                 LOG_DEBUG << "SOURCE_UNK_UID = " << SOURCE_UNK_UID << END_LOG;
-                                LOG_DEBUG << "TARGET_UNK_UID = "<< TARGET_UNK_UID << END_LOG;
+                                LOG_DEBUG << "TARGET_UNK_UID = " << TARGET_UNK_UID << END_LOG;
                                 LOG_DEBUG << "BEGIN_SENT_TAG_UID = " << BEGIN_SENT_TAG_UID << END_LOG;
                                 LOG_DEBUG << "END_SENT_TAG_UID = " << END_SENT_TAG_UID << END_LOG;
                             }
@@ -98,7 +99,7 @@ namespace uva {
                                     m_rm_data = NULL;
                                 }
                             }
-                            
+
                             /**
                              * This method allows to detect if the number of
                              * reordering entries is needed before the entries
@@ -148,7 +149,7 @@ namespace uva {
                                 m_unk_entry = get_entry(SOURCE_UNK_UID, TARGET_UNK_UID);
 
                                 LOG_DEBUG << "UNK->UNK reordering: " << array_to_string<prob_weight>(m_unk_entry->NUM_FEATURES, m_unk_entry->get_weights()) << END_LOG;
-                                
+
                                 //Assert on that the UNK/UNK entry is found!
                                 ASSERT_CONDITION_THROW((m_unk_entry == NULL), string("Could not find the ") +
                                         RM_UNK_SOURCE_PHRASE + string("/") + RM_UNK_SOURCE_PHRASE +
@@ -168,7 +169,7 @@ namespace uva {
                                 ASSERT_CONDITION_THROW(((m_begin_entry == NULL) || (m_begin_entry == m_unk_entry)),
                                         string("Could not find the ") + lm::BEGIN_SENTENCE_TAG_STR + string("/") +
                                         lm::BEGIN_SENTENCE_TAG_STR + string(" entry in the reordering model!"));
-                                
+
                                 //Try to find the </s> ||| </s> entry
                                 m_end_entry = get_entry(END_SENT_TAG_UID, END_SENT_TAG_UID);
 
@@ -177,7 +178,7 @@ namespace uva {
                                         string("Could not find the ") + lm::END_SENTENCE_TAG_STR + string("/") +
                                         lm::END_SENTENCE_TAG_STR + string(" entry in the reordering model!"));
                             }
-                            
+
                             /**
                              * Allows to get the sentence begin tag entry if found 
                              * @return the sentence begin tag entry if found or NULL
@@ -185,7 +186,7 @@ namespace uva {
                             inline const rm_entry * get_begin_tag_entry() const {
                                 return m_begin_entry;
                             }
-                            
+
                             /**
                              * Allows to get the sentence end tag entry if found 
                              * @return the sentence end tag entry if found or NULL
@@ -193,7 +194,7 @@ namespace uva {
                             inline const rm_entry * get_end_tag_entry() const {
                                 return m_end_entry;
                             }
-                            
+
                             /**
                              * Allows to detect whether the given entry is an entry for the unknown phrase pair
                              * @param entry the entry pointer to be checked for being from the UNK/UNK entry

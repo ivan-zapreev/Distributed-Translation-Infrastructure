@@ -27,11 +27,14 @@
 #define RM_ENTRY_HPP
 
 #include <string>
+#include <map>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
 #include "server/common/models/phrase_uid.hpp"
+
+#include "server/rm/rm_parameters.hpp"
 
 using namespace std;
 
@@ -87,7 +90,7 @@ namespace uva {
                              * Allows to get the entry weights array
                              * @return the entry weights array
                              */
-                            const prob_weight * get_weights() const {
+                            inline const prob_weight * get_weights() const {
                                 return m_weights;
                             }
 
@@ -100,7 +103,7 @@ namespace uva {
                              * @return the weight for the given distortion value
                              */
                             template<bool is_from>
-                            const prob_weight get_weight(const reordering_orientation orient) const {
+                            inline const prob_weight get_weight(const reordering_orientation orient, map<string, prob_weight> * scores = NULL) const {
                                 //Compute the static position correction for the from/to cases
                                 static constexpr uint32_t pos_corr = (is_from ? 0 : num_features / 2);
                                 static constexpr uint32_t mon_pos = pos_corr;
@@ -113,18 +116,26 @@ namespace uva {
                                     case reordering_orientation::MONOTONE_ORIENT:
                                         LOG_DEBUG1 << "MONOTONE_ORIENT " << (is_from ? "'from'" : "'to'")
                                                 << " position: " << mon_pos << ", value: " << m_weights[mon_pos] << END_LOG;
+                                        //ToDo: Need to set the original weight and not the lambda * weight 
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[mon_pos]) = m_weights[mon_pos];
                                         return m_weights[mon_pos];
                                     case reordering_orientation::SWAP_ORIENT:
                                         LOG_DEBUG1 << "SWAP_ORIENT " << (is_from ? "'from'" : "'to'")
                                                 << " position: " << swap_pos << ", value: " << m_weights[swap_pos] << END_LOG;
+                                        //ToDo: Need to set the original weight and not the lambda * weight 
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[swap_pos]) = m_weights[swap_pos];
                                         return m_weights[swap_pos];
                                     case reordering_orientation::DISCONT_RIGHT_ORIENT:
                                         LOG_DEBUG1 << "DISCONT_RIGHT_ORIENT " << (is_from ? "'from'" : "'to'")
                                                 << " position: " << disc_left_pos << ", value: " << m_weights[disc_left_pos] << END_LOG;
+                                        //ToDo: Need to set the original weight and not the lambda * weight 
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_left_pos]) = m_weights[disc_left_pos];
                                         return m_weights[disc_left_pos];
                                     case reordering_orientation::DISCONT_LEFT_ORIENT:
                                         LOG_DEBUG1 << "DISCONT_LEFT_ORIENT " << (is_from ? "'from'" : "'to'")
                                                 << " position: " << disc_right_pos << ", value: " << m_weights[disc_right_pos] << END_LOG;
+                                        //ToDo: Need to set the original weight and not the lambda * weight 
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_right_pos]) = m_weights[disc_right_pos];
                                         return m_weights[disc_right_pos];
                                     default:
                                         THROW_EXCEPTION(string("Unsupported orientation value: ") + to_string(orient));
@@ -169,6 +180,45 @@ namespace uva {
                              */
                             inline bool operator==(const rm_entry_temp & other) const {
                                 return (m_uid == other.m_uid);
+                            }
+
+                            /**
+                             * Allows to compute the reordering orientation for the phrase based lexicolized reordering model
+                             * @param prev_begin_word_idx the previous translated phrase begin word index
+                             * @param prev_end_word_idx the previous translated phrase end word index
+                             * @param next_begin_word_idx the next translated phrase begin word index
+                             * @param next_end_word_idx the next translated phrase end word index
+                             * @return the reordering orientation
+                             */
+                            static inline reordering_orientation get_reordering_orientation(
+                            const int32_t & prev_begin_word_idx, const int32_t & prev_end_word_idx,
+                            const int32_t & next_begin_word_idx, const int32_t & next_end_word_idx) {
+                                LOG_DEBUG2 << "Previous state end_word_idx: " << prev_end_word_idx
+                                        << ", new state begin_word_idx: " << next_begin_word_idx << END_LOG;
+
+                                if (next_begin_word_idx < prev_end_word_idx) {
+                                    //We went to the left from the previous translation
+                                    if ((prev_begin_word_idx - next_end_word_idx) == 1) {
+                                        LOG_DEBUG2 << "SWAP_ORIENT" << END_LOG;
+                                        //The current phrase is right next to the previous
+                                        return reordering_orientation::SWAP_ORIENT;
+                                    } else {
+                                        LOG_DEBUG2 << "DISCONT_LEFT_ORIENT" << END_LOG;
+                                        //We have a discontinuous jump from the previous
+                                        return reordering_orientation::DISCONT_LEFT_ORIENT;
+                                    }
+                                } else {
+                                    //We went to the right from the previous translation
+                                    if ((next_begin_word_idx - prev_end_word_idx) == 1) {
+                                        LOG_DEBUG2 << "MONOTONE_ORIENT" << END_LOG;
+                                        //The current phrase is right next to the previous
+                                        return reordering_orientation::MONOTONE_ORIENT;
+                                    } else {
+                                        LOG_DEBUG2 << "DISCONT_RIGHT_ORIENT" << END_LOG;
+                                        //We have a discontinuous jump from the previous
+                                        return reordering_orientation::DISCONT_RIGHT_ORIENT;
+                                    }
+                                }
                             }
 
                         private:
