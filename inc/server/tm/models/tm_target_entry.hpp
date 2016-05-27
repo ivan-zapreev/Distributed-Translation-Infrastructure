@@ -162,6 +162,13 @@ namespace uva {
                                 m_t_cond_s = other.m_t_cond_s;
                                 //Copy the total weight
                                 m_total_weight = other.m_total_weight;
+
+#if IS_SERVER_TUNING_MODE
+                                //Copy the features
+                                m_num_features = other.m_num_features;
+                                memcpy(m_pure_features, other.m_pure_features, sizeof (prob_weight) * m_num_features);
+                                //ToDo: Improve performance by making the array dynamically allocated and only copying the pointer
+#endif
                             }
 
                             /**
@@ -200,7 +207,7 @@ namespace uva {
 #if IS_SERVER_TUNING_MODE
                                 if (scores != NULL) {
                                     ASSERT_CONDITION_THROW((m_num_features == 0), string("The number of features is zero!"));
-                                    LOG_USAGE << this << ": The features: "
+                                    LOG_DEBUG1 << this << ": The features: "
                                             << array_to_string<prob_weight>(m_num_features, m_pure_features) << END_LOG;
                                     for (size_t idx = 0; idx != m_num_features; ++idx) {
                                         scores->operator[](tm_parameters::TM_WEIGHT_NAMES[idx]) = m_pure_features[idx];
@@ -260,7 +267,7 @@ namespace uva {
                                 //Store the individual feature weights
                                 memcpy(m_pure_features, features, sizeof (prob_weight) * m_num_features);
                                 //ToDo: The m_pure_features are to store the weights without lambda!
-                                LOG_USAGE << this << ": The features: "
+                                LOG_DEBUG1 << this << ": The features: "
                                         << array_to_string<prob_weight>(m_num_features, m_pure_features) << END_LOG;
 #endif
 
