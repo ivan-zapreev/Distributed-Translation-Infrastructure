@@ -83,12 +83,14 @@ namespace uva {
 #define INIT_STATE_DATA_TUNING_DATA(storage) , m_lattice_scores(storage)
 #define DEFINE_TUNING_FEATURES_MAP(name) map<string, prob_weight> name;
 #define PASS_TUNING_FEATURES_MAP(name) &name
-#define PROCESS_TUNING_FEATURES_MAP(name) add_feature_scores(name);
+#define ADD_TUNING_FEATURE_SCORE(name, value) add_feature_score(name, value);
+#define ADD_TUNING_FEATURE_SCORES(data) add_feature_scores(data);
 #else
-#define INITIALIZE_TUNING_DATA(storage)
+#define INIT_STATE_DATA_TUNING_DATA(storage)
 #define DEFINE_TUNING_FEATURES_MAP(name)
 #define PASS_TUNING_FEATURES_MAP(name) NULL
-#define PROCESS_TUNING_FEATURES_MAP(name)
+#define ADD_TUNING_FEATURE_SCORE(name, value)
+#define ADD_TUNING_FEATURE_SCORES(data)
 #endif                        
 
                             /**
@@ -316,6 +318,7 @@ namespace uva {
                              * @param value the value of the feature score
                              */
                             inline void add_feature_score(const string & name, const prob_weight & value) {
+                                LOG_DEBUG1 << "Adding feature score: " << name << " -> " << value << END_LOG;
                                 const_cast<prob_weight &> (m_lattice_scores[m_stack_data.get_feature_id(name)]) = value;
                             }
 
@@ -374,7 +377,7 @@ namespace uva {
                                         m_begin_lm_level, PASS_TUNING_FEATURES_MAP(scores));
 
                                 //Process the tuning feature scores data
-                                PROCESS_TUNING_FEATURES_MAP(scores)
+                                ADD_TUNING_FEATURE_SCORES(scores);
 
                                 return prob;
                             }
@@ -391,7 +394,7 @@ namespace uva {
                                 }
 
                                 //Store the lin dist cost feature value without the lambda, so just the distance
-                                add_feature_score(de_parameters::DE_LD_PENALTY_PARAM_NAME, distance);
+                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_LD_PENALTY_PARAM_NAME, distance);
 
                                 return m_stack_data.m_params.m_lin_dist_penalty * distance;
                             }
@@ -401,7 +404,7 @@ namespace uva {
                              * @param prev_state_data the previous state
                              * @return the lexicolized distortion penalty 
                              */
-                            inline prob_weight get_lex_reord_cost(const state_data_templ & prev_state_data) {
+                            inline prob_weight get_lex_rm_cost(const state_data_templ & prev_state_data) {
                                 const reordering_orientation orient =
                                         rm_entry::get_reordering_orientation(
                                         prev_state_data.m_s_begin_word_idx,
@@ -417,7 +420,7 @@ namespace uva {
                                         this->template get_weight<false>(orient, PASS_TUNING_FEATURES_MAP(scores));
 
                                 //Process the tuning feature scores data
-                                PROCESS_TUNING_FEATURES_MAP(scores)
+                                ADD_TUNING_FEATURE_SCORES(scores);
 
                                 return costs;
                             }
@@ -432,9 +435,9 @@ namespace uva {
                              */
                             template<bool is_from>
                             inline const prob_weight get_weight(const reordering_orientation orient, map<string, prob_weight> * scores = NULL) const {
-                                return rm_entry_data.template get_weight<true>(orient, scores);
+                                return rm_entry_data.template get_weight<is_from>(orient, scores);
                             }
-                            
+
                             /**
                              * Allows to obtain the translation model probability
                              * @return the translation model probability for the chosen phrase translation
@@ -452,7 +455,7 @@ namespace uva {
                             inline prob_weight get_phrase_cost() {
                                 //Store the phrase cost feature value without the lambda
                                 //It will be the value of the phrase penalty itself
-                                add_feature_score(de_parameters::DE_PHRASE_PENALTY_PARAM_NAME, m_stack_data.m_params.m_phrase_penalty);
+                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_PHRASE_PENALTY_PARAM_NAME, m_stack_data.m_params.m_phrase_penalty);
 
                                 return m_stack_data.m_params.m_phrase_penalty;
                             }
@@ -464,7 +467,7 @@ namespace uva {
                             inline prob_weight get_word_cost() {
                                 //Store the word penalty feature value without the lambda
                                 //It will be the number of words with the negative sign
-                                add_feature_score(de_parameters::DE_WORD_PENALTY_PARAM_NAME, m_target->get_num_words());
+                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_WORD_PENALTY_PARAM_NAME, m_target->get_num_words());
 
                                 return m_stack_data.m_params.m_word_penalty * m_target->get_num_words();
                             }
@@ -491,7 +494,7 @@ namespace uva {
                                 LOG_DEBUG1 << "end-state score + RM discrete is: " << partial_score << END_LOG;
 
                                 //Add the lexicolized reordering costs
-                                partial_score += get_lex_reord_cost(prev_state_data);
+                                partial_score += get_lex_rm_cost(prev_state_data);
 
                                 LOG_DEBUG1 << "end-state score + RM lexicolized is: " << partial_score << END_LOG;
                             }
@@ -534,7 +537,7 @@ namespace uva {
                                 LOG_DEBUG1 << "partial score + RM discrete is: " << partial_score << END_LOG;
 
                                 //Add the lexicolized reordering costs
-                                partial_score += get_lex_reord_cost(prev_state_data);
+                                partial_score += get_lex_rm_cost(prev_state_data);
 
                                 LOG_DEBUG1 << "partial score + RM lexicolized is: " << partial_score << END_LOG;
                             }

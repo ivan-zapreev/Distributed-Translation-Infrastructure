@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="CMakeFiles"
                    displayName="CMakeFiles"
@@ -143,10 +143,6 @@
             <standard>8</standard>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
       <item path="/usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c"
             ex="false"
@@ -236,9 +232,6 @@
       </item>
       <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/decoder/de_configurator.cpp"
@@ -278,16 +271,10 @@
       </item>
       <item path="src/server/lm/lm_parameters.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/lm/lm_query.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/lm/mgrams/byte_m_gram_id.cpp"
@@ -302,9 +289,6 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/lm/mgrams/query_m_gram.cpp"
@@ -312,9 +296,6 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/lm/models/c2d_hybrid_trie.cpp"
@@ -379,9 +360,6 @@
       </item>
       <item path="src/server/rm/rm_parameters.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/server_parameters.cpp" ex="false" tool="1" flavor2="8">
@@ -406,7 +384,9 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/server/trans_task.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/server/trans_task.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">

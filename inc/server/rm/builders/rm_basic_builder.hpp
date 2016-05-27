@@ -122,12 +122,14 @@ namespace uva {
 
                                 //Read the subsequent weights, check that the number of weights is as expected
                                 size_t idx = 0;
+                                prob_weight weight = 0.0;
                                 while (rest.get_first_space(token) && (idx < rm_entry::NUM_FEATURES)) {
                                     //Parse the token into the entry weight
-                                    ASSERT_CONDITION_THROW(!fast_s_to_f(entry[idx], token.str().c_str()),
+                                    ASSERT_CONDITION_THROW(!fast_s_to_f(weight, token.str().c_str()),
                                             string("Could not parse the token: ") + token.str());
                                     //Now convert to the log probability and multiply with the appropriate weight
-                                    entry[idx] = log10(entry[idx]) * m_params.m_lambdas[idx];
+                                    entry.set_weight(idx, log10(weight), m_params.m_lambdas[idx]);
+                                    
                                     //Increment the index 
                                     ++idx;
                                 }

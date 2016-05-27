@@ -78,6 +78,9 @@ namespace uva {
                              */
                             rm_entry_temp() : m_uid(UNDEFINED_PHRASE_ID) {
                                 memset(m_weights, 0, NUM_FEATURES * sizeof (prob_weight));
+#if IS_SERVER_TUNING_MODE
+                                memset(m_pure_weights, 0, NUM_FEATURES * sizeof (prob_weight));
+#endif
                             }
 
                             /**
@@ -111,31 +114,43 @@ namespace uva {
                                 static constexpr uint32_t disc_left_pos = ((num_features <= FOUR_RM_FEATURES) ? swap_pos : swap_pos + 1);
                                 static constexpr uint32_t disc_right_pos = ((num_features <= SIX_RM_FEATURES) ? disc_left_pos : disc_left_pos + 1);
 
+                                LOG_DEBUG << (is_from ? "from mon_pos = " : "to mon_pos = ") << to_string(mon_pos)
+                                        << ", swap_pos = " << to_string(swap_pos) << ", disc_left_pos =" << to_string(disc_left_pos)
+                                        << ", disc_right_pos = " << to_string(disc_right_pos) << END_LOG;
+
                                 //Return the proper weight based on the orientation
                                 switch (orient) {
                                     case reordering_orientation::MONOTONE_ORIENT:
                                         LOG_DEBUG1 << "MONOTONE_ORIENT " << (is_from ? "'from'" : "'to'")
                                                 << " position: " << mon_pos << ", value: " << m_weights[mon_pos] << END_LOG;
-                                        //ToDo: Need to set the original weight and not the lambda * weight 
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[mon_pos]) = m_weights[mon_pos];
+#if IS_SERVER_TUNING_MODE
+                                        LOG_DEBUG1 << mon_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[mon_pos] << END_LOG;
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[mon_pos]) = m_pure_weights[mon_pos];
+#endif
                                         return m_weights[mon_pos];
                                     case reordering_orientation::SWAP_ORIENT:
                                         LOG_DEBUG1 << "SWAP_ORIENT " << (is_from ? "'from'" : "'to'")
                                                 << " position: " << swap_pos << ", value: " << m_weights[swap_pos] << END_LOG;
-                                        //ToDo: Need to set the original weight and not the lambda * weight 
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[swap_pos]) = m_weights[swap_pos];
+#if IS_SERVER_TUNING_MODE
+                                        LOG_DEBUG1 << swap_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[swap_pos] << END_LOG;
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[swap_pos]) = m_pure_weights[swap_pos];
+#endif
                                         return m_weights[swap_pos];
                                     case reordering_orientation::DISCONT_RIGHT_ORIENT:
                                         LOG_DEBUG1 << "DISCONT_RIGHT_ORIENT " << (is_from ? "'from'" : "'to'")
                                                 << " position: " << disc_left_pos << ", value: " << m_weights[disc_left_pos] << END_LOG;
-                                        //ToDo: Need to set the original weight and not the lambda * weight 
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_left_pos]) = m_weights[disc_left_pos];
+#if IS_SERVER_TUNING_MODE
+                                        LOG_DEBUG1 << disc_left_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[disc_left_pos] << END_LOG;
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_left_pos]) = m_pure_weights[disc_left_pos];
+#endif
                                         return m_weights[disc_left_pos];
                                     case reordering_orientation::DISCONT_LEFT_ORIENT:
                                         LOG_DEBUG1 << "DISCONT_LEFT_ORIENT " << (is_from ? "'from'" : "'to'")
                                                 << " position: " << disc_right_pos << ", value: " << m_weights[disc_right_pos] << END_LOG;
-                                        //ToDo: Need to set the original weight and not the lambda * weight 
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_right_pos]) = m_weights[disc_right_pos];
+#if IS_SERVER_TUNING_MODE
+                                        LOG_DEBUG1 << disc_right_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[disc_right_pos] << END_LOG;
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_right_pos]) = m_pure_weights[disc_right_pos];
+#endif
                                         return m_weights[disc_right_pos];
                                     default:
                                         THROW_EXCEPTION(string("Unsupported orientation value: ") + to_string(orient));
@@ -143,17 +158,17 @@ namespace uva {
                             }
 
                             /**
-                             * This operator allows to work with the given reordering entry weights in an array fashion
-                             * @param idx the index of the feature
-                             * @return the feature value
+                             * Allows to set the probability weight inside the entry.
+                             * This should be the log_10 scale probability weight
+                             * @param idx the feature index
+                             * @param weight the log_10 weight of the feature, without lambda
+                             * @param lambda the lambda to multiply the weight with
                              */
-                            inline prob_weight & operator[](size_t idx) {
-                                //Chech that the index is within the bounds
-                                ASSERT_SANITY_THROW(idx >= num_features, string("The index: ") + to_string(idx) +
-                                        string(" is outside the bounds [0, ") + to_string(num_features - 1) + string("]"));
-
-                                //Return the reference to the corresponding weight
-                                return m_weights[idx];
+                            inline void set_weight(const size_t idx, const prob_weight weight, const prob_weight lambda) {
+#if IS_SERVER_TUNING_MODE
+                                m_pure_weights[idx] = weight;
+#endif
+                                m_weights[idx] = weight * lambda;
                             }
 
                             /**
@@ -191,8 +206,8 @@ namespace uva {
                              * @return the reordering orientation
                              */
                             static inline reordering_orientation get_reordering_orientation(
-                            const int32_t & prev_begin_word_idx, const int32_t & prev_end_word_idx,
-                            const int32_t & next_begin_word_idx, const int32_t & next_end_word_idx) {
+                                    const int32_t & prev_begin_word_idx, const int32_t & prev_end_word_idx,
+                                    const int32_t & next_begin_word_idx, const int32_t & next_end_word_idx) {
                                 LOG_DEBUG2 << "Previous state end_word_idx: " << prev_end_word_idx
                                         << ", new state begin_word_idx: " << next_begin_word_idx << END_LOG;
 
@@ -226,6 +241,10 @@ namespace uva {
                             phrase_uid m_uid;
                             //This is an array of reordering weights
                             prob_weight m_weights[num_features];
+#if IS_SERVER_TUNING_MODE
+                            //This is an array of reordering weights not multiplied with lambda's
+                            prob_weight m_pure_weights[num_features];
+#endif
 
                             //Add a friend operator for easy output
                             template<uint8_t num_weights>
