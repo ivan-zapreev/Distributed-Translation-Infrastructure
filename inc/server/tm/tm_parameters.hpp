@@ -64,10 +64,8 @@ namespace uva {
                         static const string TM_TRANS_LIM_PARAM_NAME;
                         //The minimum translation probability parameter name
                         static const string TM_MIN_TRANS_PROB_PARAM_NAME;
-                        //Stores the number of lm weight names
-                        static constexpr size_t TM_WEIGHT_NAMES_SIZE = 6;
                         //The feature weight names
-                        static const string TM_WEIGHT_NAMES[TM_WEIGHT_NAMES_SIZE];
+                        static const string TM_WEIGHT_NAMES[NUM_TM_FEATURES];
 
                         //The the connection string needed to connect to the model
                         string m_conn_string;
@@ -121,13 +119,6 @@ namespace uva {
                                     string("The number of ") + TM_WEIGHTS_PARAM_NAME +
                                     string(": ") + to_string(m_num_lambdas) +
                                     string(" must be == ") + to_string(NUM_TM_FEATURES));
-
-                            //The number of lambdas must not exceed the number of enum names
-                            ASSERT_CONDITION_THROW((m_num_lambdas > TM_WEIGHT_NAMES_SIZE),
-                                    string("The number of ") + TM_WEIGHTS_PARAM_NAME +
-                                    string(": ") + to_string(m_num_lambdas) +
-                                    string(" exceeds the number of available ") +
-                                    string("feature ids: ") + to_string(TM_WEIGHT_NAMES_SIZE));
 
                             //The number of features must correspond to the expected one
                             ASSERT_CONDITION_THROW((m_num_unk_features != NUM_TM_FEATURES),

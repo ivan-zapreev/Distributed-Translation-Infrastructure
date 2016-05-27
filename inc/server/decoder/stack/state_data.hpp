@@ -443,21 +443,17 @@ namespace uva {
                              * @return the translation model probability for the chosen phrase translation
                              */
                             inline prob_weight get_tm_cost() {
-                                //ToDo: Lattice - store the tm feature values without the lambdas
 
-                                return m_target->get_total_weight();
-                            }
+                                //Define the feature scores data map
+                                DEFINE_TUNING_FEATURES_MAP(scores);
 
-                            /**
-                             * Allows to obtain the phrase penalty costs
-                             * @return the phrase penalty costs
-                             */
-                            inline prob_weight get_phrase_cost() {
-                                //Store the phrase cost feature value without the lambda
-                                //It will be the value of the phrase penalty itself
-                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_PHRASE_PENALTY_PARAM_NAME, m_stack_data.m_params.m_phrase_penalty);
+                                //Compute the reordering costs
+                                prob_weight costs = m_target->get_total_weight(PASS_TUNING_FEATURES_MAP(scores));
 
-                                return m_stack_data.m_params.m_phrase_penalty;
+                                //Process the tuning feature scores data
+                                ADD_TUNING_FEATURE_SCORES(scores);
+
+                                return costs;
                             }
 
                             /**
@@ -520,11 +516,6 @@ namespace uva {
                                 partial_score += get_lm_cost();
 
                                 LOG_DEBUG1 << "partial score + LM is: " << partial_score << END_LOG;
-
-                                //Add the phrase penalty
-                                partial_score += get_phrase_cost();
-
-                                LOG_DEBUG1 << "partial score + phrase penalty is: " << partial_score << END_LOG;
 
                                 //Add the word penalty
                                 partial_score += get_word_cost();

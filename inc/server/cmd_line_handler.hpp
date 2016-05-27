@@ -43,7 +43,6 @@ namespace uva {
                 static const string PROGRAM_SET_SC_CMD = "set sc ";
                 static const string PROGRAM_SET_WP_CMD = "set wp ";
                 static const string PROGRAM_SET_LDP_CMD = "set ldp ";
-                static const string PROGRAM_SET_PP_CMD = "set pp ";
                 static const string PROGRAM_SET_GL_CMD = "set gl ";
 
                 /**
@@ -85,7 +84,6 @@ namespace uva {
                     LOG_USAGE << "\t'" << PROGRAM_SET_SC_CMD << "<integer> & <enter>'  - set stack capacity." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_LDP_CMD << "<float> & <enter>'  - set linear distortion penalty." << END_LOG;
                     LOG_USAGE << "\t'" << PROGRAM_SET_WP_CMD << "<float> & <enter>'  - set word penalty." << END_LOG;
-                    LOG_USAGE << "\t'" << PROGRAM_SET_PP_CMD << "<float> & <enter>'  - set phrase penalty." << END_LOG;
 #if IS_SERVER_TUNING_MODE
                     LOG_USAGE << "\t'" << PROGRAM_SET_GL_CMD << "<bool> & <enter>'  - enable/disable search lattice generation." << END_LOG;
 #endif
@@ -241,10 +239,6 @@ namespace uva {
                         }
                         if (begins_with(cmd, PROGRAM_SET_WP_CMD)) {
                             de_local.m_word_penalty = get_float_value(cmd, PROGRAM_SET_WP_CMD);
-                            is_recognized = true;
-                        }
-                        if (begins_with(cmd, PROGRAM_SET_PP_CMD)) {
-                            de_local.m_phrase_penalty = get_float_value(cmd, PROGRAM_SET_PP_CMD);
                             is_recognized = true;
                         }
                         if (begins_with(cmd, PROGRAM_SET_LDP_CMD)) {

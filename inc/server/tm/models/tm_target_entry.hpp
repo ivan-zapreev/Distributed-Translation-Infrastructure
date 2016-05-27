@@ -37,6 +37,8 @@
 
 #include "server/common/models/phrase_uid.hpp"
 
+#include "server/tm/tm_parameters.hpp"
+
 using namespace std;
 
 using namespace uva::utils::exceptions;
@@ -77,6 +79,10 @@ namespace uva {
                             tm_target_entry_temp()
                             : m_target_phrase(""), m_num_words(0), m_word_ids(NULL), m_st_uid(UNDEFINED_PHRASE_ID),
                             m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total_weight(UNKNOWN_LOG_PROB_WEIGHT) {
+#if IS_SERVER_TUNING_MODE
+                                m_num_features = 0;
+                                memset(m_pure_weights, 0, NUM_FEATURES * sizeof (prob_weight));
+#endif                        
                             }
 
                             /**
@@ -145,7 +151,7 @@ namespace uva {
                                 //Copy the number of words in the source phrase and the word ids
                                 m_num_words = other.m_num_words;
                                 m_word_ids = other.m_word_ids;
-                                
+
                                 //Set the word ids to null so that the original
                                 //class can not modify/destroy it.
                                 other.m_word_ids = NULL;
@@ -185,9 +191,20 @@ namespace uva {
                             /**
                              * Allows to get the total weight of the entry, the sum
                              * of features that are turned into log10 scale.
+                             * @param scores [in/out] the pointer to the map storing the mapping from the feature name
+                             *               to the feature score, without lambda. If not null and we are in the tuning
+                             *               mode the map will be filled in with the feature-value data
                              * @return the total weight of the entry, the sum of feature weights
                              */
-                            inline const prob_weight get_total_weight() const {
+                            inline const prob_weight get_total_weight(map<string, prob_weight> * scores = NULL) const {
+#if IS_SERVER_TUNING_MODE
+                                if (scores != NULL) {
+                                    for (size_t idx = 0; idx != m_num_features; ++idx) {
+                                        scores->operator[](tm_parameters::TM_WEIGHT_NAMES[idx]) = m_pure_weights[idx];
+                                        LOG_USAGE << tm_parameters::TM_WEIGHT_NAMES[idx] << " = " << m_pure_weights[idx] << END_LOG;
+                                    }
+                                }
+#endif
                                 return m_total_weight;
                             }
 
@@ -228,11 +245,19 @@ namespace uva {
                              * features[1] = lex(p(f|e));
                              * features[2] = p(e|f);
                              * features[3] = lex(p(e|f));
-                             * features[4] = phrase penalty; // optional
+                             * features[4] = phrase penalty;
                              */
                             inline void set_features(const size_t num_features, const prob_weight * features) {
                                 ASSERT_CONDITION_THROW((num_features > max_num_features), string("The number of features: ") +
                                         to_string(num_features) + string(" exceeds the maximum: ") + to_string(max_num_features));
+
+#if IS_SERVER_TUNING_MODE
+                                //Store the number of features
+                                m_num_features = num_features;
+                                //Store the individual feature weights
+                                memcpy(m_pure_weights, features, sizeof(prob_weight) * m_num_features);
+                                //ToDo: The m_pure_weights are to store the weights without lambda!
+#endif
 
                                 //Compute the total weight
                                 m_total_weight = 0.0; //First re-set to zero
@@ -264,6 +289,13 @@ namespace uva {
 
                             //Stores the total features weight of the entity
                             prob_weight m_total_weight;
+
+#if IS_SERVER_TUNING_MODE
+                            //Stores the number of features
+                            size_t m_num_features;
+                            //Stores the the features
+                            prob_weight m_pure_weights[NUM_FEATURES];
+#endif                            
                         };
 
                         template<uint8_t num_features>

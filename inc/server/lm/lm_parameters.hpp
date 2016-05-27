@@ -58,10 +58,8 @@ namespace uva {
                         static const string LM_CONN_STRING_PARAM_NAME;
                         //The feature weights parameter name
                         static const string LM_WEIGHTS_PARAM_NAME;
-                        //Stores the number of lm weight names
-                        static constexpr size_t LM_WEIGHT_NAMES_SIZE = 5;
                         //The feature weight names
-                        static const string LM_WEIGHT_NAMES[LM_WEIGHT_NAMES_SIZE];
+                        static const string LM_WEIGHT_NAMES[NUM_LM_FEATURES];
 
                         //The the connection string needed to connect to the model
                         string m_conn_string;
@@ -115,13 +113,6 @@ namespace uva {
                                     string("The number of ") + LM_WEIGHTS_PARAM_NAME +
                                     string(": ") + to_string(m_num_lambdas) +
                                     string(" must be == ") + to_string(NUM_LM_FEATURES));
-
-                            //The number of lambdas must not exceed the number of enum names
-                            ASSERT_CONDITION_THROW((m_num_lambdas > LM_WEIGHT_NAMES_SIZE),
-                                    string("The number of ") + LM_WEIGHTS_PARAM_NAME +
-                                    string(": ") + to_string(m_num_lambdas) +
-                                    string(" exceeds the number of available ") +
-                                    string("feature id names: ") + to_string(LM_WEIGHT_NAMES_SIZE));
 
                             //The Language model weight must not be zero or negative
                             ASSERT_CONDITION_THROW((m_lambdas[0] <= 0.0),

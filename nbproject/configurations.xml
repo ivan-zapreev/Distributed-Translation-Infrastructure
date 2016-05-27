@@ -360,6 +360,9 @@
       </item>
       <item path="src/server/rm/rm_parameters.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/server_parameters.cpp" ex="false" tool="1" flavor2="8">
@@ -382,6 +385,9 @@
       </item>
       <item path="src/server/tm/tm_parameters.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/trans_task.cpp" ex="false" tool="1" flavor2="8">

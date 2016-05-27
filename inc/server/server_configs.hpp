@@ -52,7 +52,7 @@ namespace uva {
 
                 namespace tm {
                     //Stores the number of the translation model features
-                    static constexpr size_t NUM_TM_FEATURES = FOUR_TM_FEATURES;
+                    static constexpr size_t NUM_TM_FEATURES = FIVE_TM_FEATURES;
 
                     //The considered maximum length of the target phrase
                     static constexpr uint16_t TM_MAX_TARGET_PHRASE_LEN = 7u;

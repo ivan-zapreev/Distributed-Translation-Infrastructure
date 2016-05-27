@@ -103,6 +103,9 @@ namespace uva {
                              * if true then we get the value from the from source phrase case
                              * if false then we get the value for the to source phrase case
                              * @param orient the reordering orientation
+                             * @param scores [in/out] the pointer to the map storing the mapping from the feature name
+                             *               to the feature score, without lambda. If not null and we are in the tuning
+                             *               mode the map will be filled in with the feature-value data
                              * @return the weight for the given distortion value
                              */
                             template<bool is_from>
@@ -240,10 +243,10 @@ namespace uva {
                             //Stores the phrase id, i.e. the unique identifier for the source/target phrase pair
                             phrase_uid m_uid;
                             //This is an array of reordering weights
-                            prob_weight m_weights[num_features];
+                            prob_weight m_weights[NUM_FEATURES];
 #if IS_SERVER_TUNING_MODE
                             //This is an array of reordering weights not multiplied with lambda's
-                            prob_weight m_pure_weights[num_features];
+                            prob_weight m_pure_weights[NUM_FEATURES];
 #endif
 
                             //Add a friend operator for easy output

@@ -36,7 +36,6 @@ namespace uva {
                     const string de_parameters_struct::DE_MAX_SP_LEN_PARAM_NAME = "de_max_source_phrase_length";
                     const string de_parameters_struct::DE_MAX_TP_LEN_PARAM_NAME = "de_max_target_phrase_length";
                     const string de_parameters_struct::DE_WORD_PENALTY_PARAM_NAME = "de_word_penalty";
-                    const string de_parameters_struct::DE_PHRASE_PENALTY_PARAM_NAME = "de_phrase_penalty";
                     const string de_parameters_struct::DE_DIST_LIMIT_PARAM_NAME = "de_dist_lim";
                     const string de_parameters_struct::DE_LD_PENALTY_PARAM_NAME = "de_lin_dist_penalty";
                     const string de_parameters_struct::DE_IS_GEN_LATTICE_PARAM_NAME = "de_is_gen_lattice";

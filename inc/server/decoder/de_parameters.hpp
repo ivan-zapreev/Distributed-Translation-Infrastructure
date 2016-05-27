@@ -71,8 +71,6 @@ namespace uva {
 
                         //The word penalty weight parameter name
                         static const string DE_WORD_PENALTY_PARAM_NAME;
-                        //The phrase penalty weight parameter name
-                        static const string DE_PHRASE_PENALTY_PARAM_NAME;
                         //The linear distortion weight parameter name
                         static const string DE_DIST_LIMIT_PARAM_NAME;
                         //The distortion limit parameter name
@@ -112,8 +110,6 @@ namespace uva {
                         atomic<uint32_t> m_stack_capacity;
                         //Stores the word penalty - the cost of each target word
                         atomic<float> m_word_penalty;
-                        //Stores the phrase penalty - the cost of each target phrase
-                        atomic<float> m_phrase_penalty;
                         //Stores the linear distortion lambda parameter value
                         atomic<float> m_lin_dist_penalty;
 
@@ -156,8 +152,6 @@ namespace uva {
                             //Add the feature weight names and increment the weight count
                             features.push_back(pair<size_t, string>(wcount, DE_LD_PENALTY_PARAM_NAME));
                             ++wcount;
-                            features.push_back(pair<size_t, string>(wcount, DE_PHRASE_PENALTY_PARAM_NAME));
-                            ++wcount;
                             features.push_back(pair<size_t, string>(wcount, DE_WORD_PENALTY_PARAM_NAME));
                             ++wcount;
                         }
@@ -197,7 +191,6 @@ namespace uva {
                                 this->m_dist_limit = other.m_dist_limit.load();
                                 this->m_max_s_phrase_len = other.m_max_s_phrase_len;
                                 this->m_max_t_phrase_len = other.m_max_t_phrase_len;
-                                this->m_phrase_penalty = other.m_phrase_penalty.load();
                                 this->m_pruning_threshold = other.m_pruning_threshold.load();
                                 this->m_pruning_mult_neg = other.m_pruning_mult_neg.load();
                                 this->m_pruning_mult_pos = other.m_pruning_mult_pos.load();
@@ -313,7 +306,6 @@ namespace uva {
                         stream << ", " << de_parameters::DE_PRUNING_THRESHOLD_PARAM_NAME << " = " << params.m_pruning_threshold
                                 << ", " << de_parameters::DE_STACK_CAPACITY_PARAM_NAME << " = " << params.m_stack_capacity
                                 << ", " << de_parameters::DE_WORD_PENALTY_PARAM_NAME << " = " << params.m_word_penalty
-                                << ", " << de_parameters::DE_PHRASE_PENALTY_PARAM_NAME << " = " << params.m_phrase_penalty
                                 << ", " << de_parameters::DE_MAX_SP_LEN_PARAM_NAME << " = " << to_string(params.m_max_s_phrase_len)
                                 << ", " << de_parameters::DE_MAX_TP_LEN_PARAM_NAME << " = " << to_string(params.m_max_t_phrase_len)
                                 << ", " << de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME << " = " << (params.m_is_gen_lattice ? "true" : "false");
