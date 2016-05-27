@@ -79,7 +79,7 @@ namespace uva {
                             rm_entry_temp() : m_uid(UNDEFINED_PHRASE_ID) {
                                 memset(m_weights, 0, NUM_FEATURES * sizeof (prob_weight));
 #if IS_SERVER_TUNING_MODE
-                                memset(m_pure_weights, 0, NUM_FEATURES * sizeof (prob_weight));
+                                memset(m_pure_features, 0, NUM_FEATURES * sizeof (prob_weight));
 #endif
                             }
 
@@ -128,7 +128,7 @@ namespace uva {
                                                 << " position: " << mon_pos << ", value: " << m_weights[mon_pos] << END_LOG;
 #if IS_SERVER_TUNING_MODE
                                         LOG_DEBUG1 << mon_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[mon_pos] << END_LOG;
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[mon_pos]) = m_pure_weights[mon_pos];
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[mon_pos]) = m_pure_features[mon_pos];
 #endif
                                         return m_weights[mon_pos];
                                     case reordering_orientation::SWAP_ORIENT:
@@ -136,7 +136,7 @@ namespace uva {
                                                 << " position: " << swap_pos << ", value: " << m_weights[swap_pos] << END_LOG;
 #if IS_SERVER_TUNING_MODE
                                         LOG_DEBUG1 << swap_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[swap_pos] << END_LOG;
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[swap_pos]) = m_pure_weights[swap_pos];
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[swap_pos]) = m_pure_features[swap_pos];
 #endif
                                         return m_weights[swap_pos];
                                     case reordering_orientation::DISCONT_RIGHT_ORIENT:
@@ -144,7 +144,7 @@ namespace uva {
                                                 << " position: " << disc_left_pos << ", value: " << m_weights[disc_left_pos] << END_LOG;
 #if IS_SERVER_TUNING_MODE
                                         LOG_DEBUG1 << disc_left_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[disc_left_pos] << END_LOG;
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_left_pos]) = m_pure_weights[disc_left_pos];
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_left_pos]) = m_pure_features[disc_left_pos];
 #endif
                                         return m_weights[disc_left_pos];
                                     case reordering_orientation::DISCONT_LEFT_ORIENT:
@@ -152,7 +152,7 @@ namespace uva {
                                                 << " position: " << disc_right_pos << ", value: " << m_weights[disc_right_pos] << END_LOG;
 #if IS_SERVER_TUNING_MODE
                                         LOG_DEBUG1 << disc_right_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[disc_right_pos] << END_LOG;
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_right_pos]) = m_pure_weights[disc_right_pos];
+                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_right_pos]) = m_pure_features[disc_right_pos];
 #endif
                                         return m_weights[disc_right_pos];
                                     default:
@@ -169,7 +169,7 @@ namespace uva {
                              */
                             inline void set_weight(const size_t idx, const prob_weight weight, const prob_weight lambda) {
 #if IS_SERVER_TUNING_MODE
-                                m_pure_weights[idx] = weight;
+                                m_pure_features[idx] = weight;
 #endif
                                 m_weights[idx] = weight * lambda;
                             }
@@ -246,7 +246,7 @@ namespace uva {
                             prob_weight m_weights[NUM_FEATURES];
 #if IS_SERVER_TUNING_MODE
                             //This is an array of reordering weights not multiplied with lambda's
-                            prob_weight m_pure_weights[NUM_FEATURES];
+                            prob_weight m_pure_features[NUM_FEATURES];
 #endif
 
                             //Add a friend operator for easy output

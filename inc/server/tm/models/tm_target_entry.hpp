@@ -81,7 +81,7 @@ namespace uva {
                             m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total_weight(UNKNOWN_LOG_PROB_WEIGHT) {
 #if IS_SERVER_TUNING_MODE
                                 m_num_features = 0;
-                                memset(m_pure_weights, 0, NUM_FEATURES * sizeof (prob_weight));
+                                memset(m_pure_features, 0, NUM_FEATURES * sizeof (prob_weight));
 #endif                        
                             }
 
@@ -199,9 +199,12 @@ namespace uva {
                             inline const prob_weight get_total_weight(map<string, prob_weight> * scores = NULL) const {
 #if IS_SERVER_TUNING_MODE
                                 if (scores != NULL) {
+                                    ASSERT_CONDITION_THROW((m_num_features == 0), string("The number of features is zero!"));
+                                    LOG_USAGE << this << ": The features: "
+                                            << array_to_string<prob_weight>(m_num_features, m_pure_features) << END_LOG;
                                     for (size_t idx = 0; idx != m_num_features; ++idx) {
-                                        scores->operator[](tm_parameters::TM_WEIGHT_NAMES[idx]) = m_pure_weights[idx];
-                                        LOG_USAGE << tm_parameters::TM_WEIGHT_NAMES[idx] << " = " << m_pure_weights[idx] << END_LOG;
+                                        scores->operator[](tm_parameters::TM_WEIGHT_NAMES[idx]) = m_pure_features[idx];
+                                        LOG_DEBUG2 << tm_parameters::TM_WEIGHT_NAMES[idx] << " = " << m_pure_features[idx] << END_LOG;
                                     }
                                 }
 #endif
@@ -250,13 +253,15 @@ namespace uva {
                             inline void set_features(const size_t num_features, const prob_weight * features) {
                                 ASSERT_CONDITION_THROW((num_features > max_num_features), string("The number of features: ") +
                                         to_string(num_features) + string(" exceeds the maximum: ") + to_string(max_num_features));
-
+                                ASSERT_CONDITION_THROW((num_features == 0), string("The number of features is zero!"));
 #if IS_SERVER_TUNING_MODE
                                 //Store the number of features
                                 m_num_features = num_features;
                                 //Store the individual feature weights
-                                memcpy(m_pure_weights, features, sizeof(prob_weight) * m_num_features);
-                                //ToDo: The m_pure_weights are to store the weights without lambda!
+                                memcpy(m_pure_features, features, sizeof (prob_weight) * m_num_features);
+                                //ToDo: The m_pure_features are to store the weights without lambda!
+                                LOG_USAGE << this << ": The features: "
+                                        << array_to_string<prob_weight>(m_num_features, m_pure_features) << END_LOG;
 #endif
 
                                 //Compute the total weight
@@ -294,7 +299,7 @@ namespace uva {
                             //Stores the number of features
                             size_t m_num_features;
                             //Stores the the features
-                            prob_weight m_pure_weights[NUM_FEATURES];
+                            prob_weight m_pure_features[NUM_FEATURES];
 #endif                            
                         };
 

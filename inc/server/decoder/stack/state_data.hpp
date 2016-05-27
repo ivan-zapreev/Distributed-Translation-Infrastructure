@@ -318,7 +318,7 @@ namespace uva {
                              * @param value the value of the feature score
                              */
                             inline void add_feature_score(const string & name, const prob_weight & value) {
-                                LOG_DEBUG1 << "Adding feature score: " << name << " -> " << value << END_LOG;
+                                LOG_USAGE << "Adding feature score: " << name << " -> " << value << END_LOG;
                                 const_cast<prob_weight &> (m_lattice_scores[m_stack_data.get_feature_id(name)]) = value;
                             }
 
