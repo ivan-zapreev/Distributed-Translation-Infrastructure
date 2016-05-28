@@ -81,7 +81,7 @@ namespace uva {
                             m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total_weight(UNKNOWN_LOG_PROB_WEIGHT) {
 #if IS_SERVER_TUNING_MODE
                                 m_num_features = 0;
-                                memset(m_pure_features, 0, NUM_FEATURES * sizeof (prob_weight));
+                                m_pure_features = NULL;
 #endif                        
                             }
 
@@ -94,6 +94,12 @@ namespace uva {
                                     delete[] m_word_ids;
                                     m_word_ids = NULL;
                                 }
+#if IS_SERVER_TUNING_MODE
+                                if(m_pure_features != NULL) {
+                                    delete m_pure_features;
+                                    m_pure_features = NULL;
+                                }
+#endif
                             }
 
                             /**
@@ -164,10 +170,13 @@ namespace uva {
                                 m_total_weight = other.m_total_weight;
 
 #if IS_SERVER_TUNING_MODE
-                                //Copy the features
+                                //Take over the features
                                 m_num_features = other.m_num_features;
-                                memcpy(m_pure_features, other.m_pure_features, sizeof (prob_weight) * m_num_features);
-                                //ToDo: Improve performance by making the array dynamically allocated and only copying the pointer
+                                m_pure_features = other.m_pure_features;
+                                //Make sure the features in the target
+                                //entry we move from are discarded
+                                other.m_num_features = 0;
+                                other.m_pure_features = NULL;
 #endif
                             }
 
@@ -264,8 +273,11 @@ namespace uva {
 #if IS_SERVER_TUNING_MODE
                                 //Store the number of features
                                 m_num_features = num_features;
+                                //Allocate the features storage
+                                m_pure_features = new prob_weight[m_num_features]();
                                 //Store the individual feature weights
                                 memcpy(m_pure_features, features, sizeof (prob_weight) * m_num_features);
+
                                 //ToDo: The m_pure_features are to store the weights without lambda!
                                 LOG_DEBUG1 << this << ": The features: "
                                         << array_to_string<prob_weight>(m_num_features, m_pure_features) << END_LOG;
@@ -306,7 +318,7 @@ namespace uva {
                             //Stores the number of features
                             size_t m_num_features;
                             //Stores the the features
-                            prob_weight m_pure_features[NUM_FEATURES];
+                            prob_weight * m_pure_features;
 #endif                            
                         };
 
