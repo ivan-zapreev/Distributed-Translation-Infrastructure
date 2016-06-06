@@ -36,12 +36,19 @@ namespace uva {
                     const string tm_parameters_struct::TM_UNK_FEATURE_PARAM_NAME = "tm_unk_features";
                     const string tm_parameters_struct::TM_TRANS_LIM_PARAM_NAME = "tm_trans_lim";
                     const string tm_parameters_struct::TM_MIN_TRANS_PROB_PARAM_NAME = "tm_min_trans_prob";
-                    const string tm_parameters_struct::TM_WEIGHT_NAMES[NUM_TM_FEATURES] = {
+                    const string tm_parameters_struct::TM_WEIGHT_NAMES[MAX_NUM_TM_FEATURES] = {
                         TM_WEIGHTS_PARAM_NAME + string("[0]"),
                         TM_WEIGHTS_PARAM_NAME + string("[1]"),
                         TM_WEIGHTS_PARAM_NAME + string("[2]"),
                         TM_WEIGHTS_PARAM_NAME + string("[3]"),
-                        TM_WEIGHTS_PARAM_NAME + string("[4]")
+                        TM_WEIGHTS_PARAM_NAME + string("[4]"),
+                        TM_WEIGHTS_PARAM_NAME + string("[5]"),
+                        TM_WEIGHTS_PARAM_NAME + string("[6]"),
+                        TM_WEIGHTS_PARAM_NAME + string("[7]"),
+                        TM_WEIGHTS_PARAM_NAME + string("[8]"),
+                        TM_WEIGHTS_PARAM_NAME + string("[9]"),
+                        TM_WEIGHTS_PARAM_NAME + string("[10]"),
+                        TM_WEIGHTS_PARAM_NAME + string("[11]")
                     };
                 }
             }

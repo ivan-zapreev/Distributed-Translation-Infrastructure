@@ -210,7 +210,7 @@ namespace uva {
                                 LOG_DEBUG3 << "TM features to parse: " << weights << END_LOG;
 
                                 //Read the subsequent weights, check that the number of weights is as expected
-                                while (weights.get_first_space(token) && (idx < tm_target_entry::NUM_FEATURES)) {
+                                while (weights.get_first_space(token) && (idx < m_params.m_num_lambdas)) {
                                     //Parse the token into the entry weight
                                     ASSERT_CONDITION_THROW(!fast_s_to_f(raw_feature, token.str().c_str()),
                                             string("Could not parse the token: ") + token.str());

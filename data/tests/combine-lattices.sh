@@ -75,7 +75,9 @@ for FILE_NAME in ${SENTENCE_FILES}; do
 done
 
 #Archive the resulting files
+echo "Archiving: ${LATTICES_OUT_FILE}"
 gzip ${LATTICES_OUT_FILE}
+echo "Archiving: ${SCORES_OUT_FILE}"
 gzip ${SCORES_OUT_FILE}
 
 #Report on the results

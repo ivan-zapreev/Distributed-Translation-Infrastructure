@@ -64,19 +64,15 @@ namespace uva {
                          * phrase string. The latter can be a hash value but then
                          * there is a possibility for the hash collisions
                          */
-                        template<uint8_t max_num_features>
-                        class tm_target_entry_temp {
+                        class tm_target_entry {
                         public:
-                            //Define the number of weights constant for the reordering entry
-                            static constexpr uint8_t NUM_FEATURES = max_num_features;
-
                             //Define the variable storing the unknown target uid
                             static const phrase_uid UNKNOWN_TARGET_ENTRY_UID;
 
                             /**
                              * The basic constructor
                              */
-                            tm_target_entry_temp()
+                            tm_target_entry()
                             : m_target_phrase(""), m_num_words(0), m_word_ids(NULL), m_st_uid(UNDEFINED_PHRASE_ID),
                             m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total_weight(UNKNOWN_LOG_PROB_WEIGHT) {
 #if IS_SERVER_TUNING_MODE
@@ -88,7 +84,7 @@ namespace uva {
                             /**
                              * The basic destructor
                              */
-                            ~tm_target_entry_temp() {
+                            ~tm_target_entry() {
                                 //Deallocate the word ids
                                 if (m_word_ids != NULL) {
                                     delete[] m_word_ids;
@@ -107,7 +103,7 @@ namespace uva {
                              * @param other the other entry to compare with
                              * @return true if the total weight of this entry is smaller than the total weight of the other entry
                              */
-                            inline bool operator<(const tm_target_entry_temp & other) const {
+                            inline bool operator<(const tm_target_entry & other) const {
                                 return get_total_weight() < other.get_total_weight();
                             }
 
@@ -153,7 +149,7 @@ namespace uva {
                              * the rest is copied.
                              * @param other the other entry to move the values from
                              */
-                            inline void move_from(tm_target_entry_temp & other) {
+                            inline void move_from(tm_target_entry & other) {
                                 //Copy the target phrase
                                 m_target_phrase = other.m_target_phrase;
 
@@ -272,8 +268,8 @@ namespace uva {
                              * features[4] = phrase penalty;
                              */
                             inline void set_features(const size_t num_features, const prob_weight * features, const prob_weight * pure_features = NULL) {
-                                ASSERT_CONDITION_THROW((num_features > max_num_features), string("The number of features: ") +
-                                        to_string(num_features) + string(" exceeds the maximum: ") + to_string(max_num_features));
+                                ASSERT_CONDITION_THROW((num_features > MAX_NUM_TM_FEATURES), string("The number of features: ") +
+                                        to_string(num_features) + string(" exceeds the maximum: ") + to_string(MAX_NUM_TM_FEATURES));
                                 ASSERT_CONDITION_THROW((num_features == 0), string("The number of features is zero!"));
 #if IS_SERVER_TUNING_MODE
                                 //Check that the pure features list is present
@@ -329,17 +325,11 @@ namespace uva {
 #endif                            
                         };
 
-                        template<uint8_t num_features>
-                        constexpr uint8_t tm_target_entry_temp<num_features>::NUM_FEATURES;
-
-                        //Instantiate template
-                        typedef tm_target_entry_temp<NUM_TM_FEATURES> tm_target_entry;
-
                         //Define the constant entry
                         typedef const tm_target_entry tm_const_target_entry;
 
                         //Typedef an array of weights
-                        typedef prob_weight feature_array[tm_target_entry::NUM_FEATURES];
+                        typedef prob_weight feature_array[MAX_NUM_TM_FEATURES];
                     }
                 }
             }
