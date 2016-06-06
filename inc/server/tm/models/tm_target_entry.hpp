@@ -95,7 +95,7 @@ namespace uva {
                                     m_word_ids = NULL;
                                 }
 #if IS_SERVER_TUNING_MODE
-                                if(m_pure_features != NULL) {
+                                if (m_pure_features != NULL) {
                                     delete m_pure_features;
                                     m_pure_features = NULL;
                                 }
@@ -121,11 +121,14 @@ namespace uva {
                              * @param features the weights to be set into the entry
                              * @param num_words the number of words in the target translation
                              * @param word_ids the LM word ids for the target phrase 
+                             * @param pure_features the feature values without the lambda weights,
+                             *        to be stored for server tuning mode, default is NULL
                              */
                             inline void set_data(const phrase_uid source_uid,
                                     const string & target_phrase, const phrase_uid target_uid,
                                     const size_t num_features, const prob_weight * features,
-                                    const phrase_length num_words, const word_uid * word_ids) {
+                                    const phrase_length num_words, const word_uid * word_ids,
+                                    const prob_weight * pure_features = NULL) {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;
 
@@ -138,7 +141,7 @@ namespace uva {
                                 m_st_uid = combine_phrase_uids(source_uid, target_uid);
 
                                 //Set the features 
-                                set_features(num_features, features);
+                                set_features(num_features, features, pure_features);
 
                                 LOG_DEBUG1 << "Adding the source/target (" << source_uid << "/"
                                         << target_uid << ") entry with id" << m_st_uid << END_LOG;
@@ -259,6 +262,8 @@ namespace uva {
                              * \todo Get rid of magic constants here!
                              * @param num_features the number of features to be set, already in the log10 scale
                              * @param features the weights to be set into the entry
+                             * @param pure_features the feature values without the lambda weights,
+                             *        to be stored for server tuning mode, default is NULL
                              * This is an array of translation weights, as we have here:
                              * features[0] = p(f|e);
                              * features[1] = lex(p(f|e));
@@ -266,19 +271,21 @@ namespace uva {
                              * features[3] = lex(p(e|f));
                              * features[4] = phrase penalty;
                              */
-                            inline void set_features(const size_t num_features, const prob_weight * features) {
+                            inline void set_features(const size_t num_features, const prob_weight * features, const prob_weight * pure_features = NULL) {
                                 ASSERT_CONDITION_THROW((num_features > max_num_features), string("The number of features: ") +
                                         to_string(num_features) + string(" exceeds the maximum: ") + to_string(max_num_features));
                                 ASSERT_CONDITION_THROW((num_features == 0), string("The number of features is zero!"));
 #if IS_SERVER_TUNING_MODE
+                                //Check that the pure features list is present
+                                ASSERT_SANITY_THROW((pure_features == NULL), "The pure_features is NULL!");
+
                                 //Store the number of features
                                 m_num_features = num_features;
                                 //Allocate the features storage
                                 m_pure_features = new prob_weight[m_num_features]();
                                 //Store the individual feature weights
-                                memcpy(m_pure_features, features, sizeof (prob_weight) * m_num_features);
+                                memcpy(m_pure_features, pure_features, sizeof (prob_weight) * m_num_features);
 
-                                //ToDo: The m_pure_features are to store the weights without lambda!
                                 LOG_DEBUG1 << this << ": The features: "
                                         << array_to_string<prob_weight>(m_num_features, m_pure_features) << END_LOG;
 #endif

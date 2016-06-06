@@ -96,9 +96,12 @@ namespace uva {
                              * @param num_unk_features the number of initialized unk features
                              * @param unk_features the unk entry features
                              * @param lm_weight the cost of the target (UNK) translation from the LM model
+                             * @param pure_features the feature values without the lambda weights,
+                             *        to be stored for server tuning mode, default is NULL
                              */
                             void set_unk_entry(word_uid unk_word_id, const size_t num_unk_features,
-                                    feature_array unk_features, const prob_weight lm_weight) {
+                                    feature_array unk_features, const prob_weight lm_weight,
+                                    const prob_weight * pure_features = NULL) {
                                 //Initialize the UNK entry
                                 m_unk_entry = new tm_source_entry();
                                 //Set thew source id
@@ -119,7 +122,8 @@ namespace uva {
                                 m_unk_entry->add_target(
                                         tm::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID,
                                         num_unk_features, unk_features,
-                                        num_words, word_ids, lm_weight);
+                                        num_words, word_ids,
+                                        lm_weight, pure_features);
 
                                 //Finalize the source entry
                                 m_unk_entry->finalize();

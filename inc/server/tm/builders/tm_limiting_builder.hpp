@@ -173,7 +173,7 @@ namespace uva {
 
                                 //Set the unk features to the model
                                 m_model.set_unk_entry(UNKNOWN_WORD_ID, m_params.m_num_unk_features,
-                                        unk_features, m_lm_query.get_unk_word_prob());
+                                        unk_features, m_lm_query.get_unk_word_prob(), m_params.m_unk_features);
                             }
 
                             /**
@@ -242,7 +242,7 @@ namespace uva {
                                 LOG_DEBUG2 << "Got translation line to parse: ___" << rest << "___" << END_LOG;
 
                                 //Declare an array of weights for temporary use
-                                feature_array tmp_features;
+                                feature_array tmp_features, tmp_pure_features;
                                 size_t tmp_features_size = 0;
 
                                 //Declare the target entry storing reader
@@ -255,6 +255,7 @@ namespace uva {
                                 rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
 
                                 //Check that the weights are good and retrieve them if they are
+                                //ToDo: Add the pure features as an argument for process_features
                                 if (process_features(rest, tmp_features_size, tmp_features)) {
                                     LOG_DEBUG2 << "The target phrase is: " << target << END_LOG;
                                     //Add the translation entry to the model
@@ -274,7 +275,8 @@ namespace uva {
                                     entry = new tm_target_entry();
                                     entry->set_data(source_uid, target_str, target_uid,
                                             tmp_features_size, tmp_features,
-                                            m_tmp_num_words, m_tmp_word_ids);
+                                            m_tmp_num_words, m_tmp_word_ids, 
+                                            tmp_pure_features);
 
                                     LOG_DEBUG1 << "The source/target (" << source_uid
                                             << "/" << target_uid << ") entry was created!" << END_LOG;

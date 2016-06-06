@@ -247,7 +247,11 @@ namespace uva {
                                 //Read the target phrase, it is surrounded by spaces
                                 rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
 
+                                //Declare an array of weights for temporary use
+                                feature_array tmp_pure_features;
+                                
                                 //Check that the weights are good and retrieve them if they are
+                                //ToDo: Add the pure features as an argument for process_features
                                 if (process_features<true>(rest, tmp_features_size, tmp_features)) {
                                     LOG_DEBUG2 << "The target phrase is: " << target << END_LOG;
                                     //Add the translation entry to the model
@@ -271,7 +275,8 @@ namespace uva {
                                     //Initiate a new target entry
                                     source_entry->add_target(target_str, target_uid,
                                             tmp_features_size, tmp_features,
-                                            m_tmp_num_words, m_tmp_word_ids, lm_weight);
+                                            m_tmp_num_words, m_tmp_word_ids,
+                                            lm_weight, tmp_pure_features);
 
                                     //Reduce the counter
                                     count_ref--;
@@ -463,7 +468,7 @@ namespace uva {
 
                                 //Set the unk features to the model
                                 m_model.set_unk_entry(UNKNOWN_WORD_ID, m_params.m_num_unk_features,
-                                        unk_features, m_lm_query.get_unk_word_prob());
+                                        unk_features, m_lm_query.get_unk_word_prob(), m_params.m_unk_features);
                             }
 
                         private:
