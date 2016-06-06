@@ -247,10 +247,9 @@ namespace uva {
                     inline void dump_search_lattice(const de_parameters & de_params) const {
                         LOG_DEBUG1 << "Dumping the search lattice for the translation task " << m_task_id << END_LOG;
 
-                        //Create the file names
-                        const string file_name = de_params.m_lattices_folder + "/" +
-                                to_string(m_session_id) + "." + to_string(m_job_id) + "." +
-                                to_string(m_task_id) + ".";
+                        //Create the file names, we do not add the session id and job id as
+                        //the tasks in training mode are issued unique task ids.
+                        const string file_name = de_params.m_lattices_folder + "/" + to_string(m_task_id) + ".";
                         const string scores_file_name = file_name + de_params.m_scores_file_ext;
                         const string lattice_file_name = file_name + de_params.m_lattice_file_ext;
 
