@@ -142,15 +142,22 @@ namespace uva {
                             /**
                              * Allows to post-process a single feature, i.e. do:
                              *         log10(feature)*lambda
-                             * @param feature the feature to post-process
+                             * @param raw_feature the feature to post-process
                              * @param lambda the lambda weight to multiply the log10 feature with
-                             * @return the post-processed feature
+                             * @param feature the out parameter into which the resulting value will be placed: log_10(raw_feature)*lambda
+                             * @return the log_10 of the provided raw_feature
                              */
-                            inline float post_process_feature(const float feature, const float lambda) {
-                                //Now convert to the log probability and multiply with the appropriate weight
-                                float result = log10(feature) * lambda;
-                                LOG_DEBUG << "log10(" << feature << ") * " << lambda << " = " << result << END_LOG;
-                                return result;
+                            inline prob_weight post_process_feature(const prob_weight raw_feature, const prob_weight lambda, prob_weight & feature) {
+                                //Convert the feature into the log scale
+                                const prob_weight log_feature = log10(raw_feature);
+                                
+                                //Multiply the log-scale feature weight with the appropriate lambda
+                                feature = log_feature * lambda;
+                                
+                                LOG_DEBUG << "log10(" << raw_feature << ") * " << lambda << " = " << feature << END_LOG;
+                                
+                                //Return the log scale of the raw features
+                                return log_feature;
                             }
 
                             /**
@@ -158,7 +165,7 @@ namespace uva {
                              */
                             inline void add_unk_translation() {
                                 //Declare an array of features, zero-valued
-                                feature_array unk_features = {};
+                                feature_array unk_features = {}, pure_unk_features = {};
 
                                 LOG_DEBUG << "The UNK initial features: "
                                         << array_to_string<prob_weight>(m_params.m_num_unk_features, m_params.m_unk_features) << END_LOG;
@@ -168,12 +175,12 @@ namespace uva {
                                 //Copy the values of the unk features to the writable array
                                 for (size_t idx = 0; idx < m_params.m_num_unk_features; ++idx) {
                                     //Now convert to the log probability and multiply with the appropriate weight
-                                    unk_features[idx] = post_process_feature(m_params.m_unk_features[idx], m_params.m_lambdas[idx]);
+                                    pure_unk_features[idx] = post_process_feature(m_params.m_unk_features[idx], m_params.m_lambdas[idx], unk_features[idx]);
                                 }
 
                                 //Set the unk features to the model
                                 m_model.set_unk_entry(UNKNOWN_WORD_ID, m_params.m_num_unk_features,
-                                        unk_features, m_lm_query.get_unk_word_prob(), m_params.m_unk_features);
+                                        unk_features, m_lm_query.get_unk_word_prob(), pure_unk_features);
                             }
 
                             /**
@@ -186,13 +193,14 @@ namespace uva {
                              * @param storage [out] the read and post-processed features features if they satisfy on the constraints
                              * @return true if the features satisfy the constraints, otherwise false
                              */
-                            inline bool process_features(text_piece_reader weights, size_t & num_features, prob_weight * storage) {
+                            inline bool process_features(text_piece_reader weights, size_t & num_features,
+                                    prob_weight * features, prob_weight * pure_features = NULL) {
                                 //Declare the token
                                 text_piece_reader token;
                                 //Store the read probability weight
                                 size_t idx = 0;
                                 //Store the read weight value
-                                float feature;
+                                prob_weight raw_feature;
 
                                 LOG_DEBUG << "Reading the features from: " << weights << END_LOG;
 
@@ -204,19 +212,24 @@ namespace uva {
                                 //Read the subsequent weights, check that the number of weights is as expected
                                 while (weights.get_first_space(token) && (idx < tm_target_entry::NUM_FEATURES)) {
                                     //Parse the token into the entry weight
-                                    ASSERT_CONDITION_THROW(!fast_s_to_f(feature, token.str().c_str()),
+                                    ASSERT_CONDITION_THROW(!fast_s_to_f(raw_feature, token.str().c_str()),
                                             string("Could not parse the token: ") + token.str());
 
-                                    LOG_DEBUG3 << "parsed: " << token << " -> " << feature << END_LOG;
+                                    LOG_DEBUG3 << "parsed: " << token << " -> " << raw_feature << END_LOG;
 
                                     //Check the probabilities at the indexes for the bound
-                                    if (((idx == 0) || (idx == 2)) && (feature < m_params.m_min_tran_prob)) {
-                                        LOG_DEBUG1 << "The feature[" << idx << "] = " << feature
+                                    if (((idx == 0) || (idx == 2)) && (raw_feature < m_params.m_min_tran_prob)) {
+                                        LOG_DEBUG1 << "The feature[" << idx << "] = " << raw_feature
                                                 << " < " << m_params.m_min_tran_prob << END_LOG;
                                         return false;
                                     } else {
                                         //Now convert to the log probability and multiply with the appropriate weight
-                                        storage[idx] = post_process_feature(feature, m_params.m_lambdas[idx]);
+#if IS_SERVER_TUNING_MODE
+                                        ASSERT_SANITY_THROW((pure_features == NULL), "The pure_features is NULL!");
+                                        pure_features[idx] = post_process_feature(raw_feature, m_params.m_lambdas[idx], features[idx]);
+#else
+                                        (void) post_process_feature(raw_feature, m_params.m_lambdas[idx], features[idx]);
+#endif
                                     }
 
                                     //Increment the index 
@@ -242,7 +255,7 @@ namespace uva {
                                 LOG_DEBUG2 << "Got translation line to parse: ___" << rest << "___" << END_LOG;
 
                                 //Declare an array of weights for temporary use
-                                feature_array tmp_features, tmp_pure_features;
+                                feature_array tmp_features = {}, tmp_pure_features = {};
                                 size_t tmp_features_size = 0;
 
                                 //Declare the target entry storing reader
@@ -256,7 +269,7 @@ namespace uva {
 
                                 //Check that the weights are good and retrieve them if they are
                                 //ToDo: Add the pure features as an argument for process_features
-                                if (process_features(rest, tmp_features_size, tmp_features)) {
+                                if (process_features(rest, tmp_features_size, tmp_features, tmp_pure_features)) {
                                     LOG_DEBUG2 << "The target phrase is: " << target << END_LOG;
                                     //Add the translation entry to the model
                                     string target_str = target.str();
@@ -275,7 +288,7 @@ namespace uva {
                                     entry = new tm_target_entry();
                                     entry->set_data(source_uid, target_str, target_uid,
                                             tmp_features_size, tmp_features,
-                                            m_tmp_num_words, m_tmp_word_ids, 
+                                            m_tmp_num_words, m_tmp_word_ids,
                                             tmp_pure_features);
 
                                     LOG_DEBUG1 << "The source/target (" << source_uid

@@ -115,6 +115,8 @@ inline void check_create_lattices_folder(const server_parameters & params) {
     //Open the specified folder
     DIR * pdir = opendir(params.m_de_params.m_lattices_folder.c_str());
 
+    LOG_USAGE << "The lattice file folder is: " << params.m_de_params.m_lattices_folder << END_LOG;
+    
     //Check if the directory is present
     if (pdir == NULL) {
         //Log the warning that the directory does not exist
@@ -145,8 +147,6 @@ inline void check_create_lattices_folder(const server_parameters & params) {
  * @param cfg_file_name the configuration file name
  */
 inline void process_feature_to_id_mappings(const string & cfg_file_name, server_parameters & params) {
-    LOG_USAGE << "--------------------------------------------------------" << END_LOG;
-
     //The full feature names will be placed into the vector in the fixed order
     vector<pair<size_t, string>> id_to_name;
     //The counter for the number of feature weights
@@ -284,6 +284,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         params.m_de_params.m_lattice_file_ext = get_string(ini, section, de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME);
         //If the lattice dumping is enabled then
         if (params.m_de_params.m_is_gen_lattice) {
+            LOG_USAGE << "--------------------------------------------------------" << END_LOG;
             //Check that the lattices folder does, if not - create.
             check_create_lattices_folder(params);
             //Dump the feature weight to id mappings
