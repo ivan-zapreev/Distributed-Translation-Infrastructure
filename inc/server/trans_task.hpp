@@ -347,6 +347,14 @@ namespace uva {
                     
                     friend ostream & operator<<(ostream & stream, const trans_task & taks);
                 };
+
+                /**
+                 * Allows to log the translation task into an output stream
+                 * @param stream the output stream
+                 * @param task the task to log
+                 * @return the reference to the same output stream send back for chaining
+                 */
+                ostream & operator<<(ostream & stream, const trans_task & task);
             }
         }
     }

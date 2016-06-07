@@ -82,7 +82,7 @@ namespace uva {
 
                                     //In case we need to multiply with the lambda weight do it now;
                                     if (is_mult_weight) {
-                                        m_m_gram.m_payload.m_prob *= m_params.get_lm_weight();
+                                        m_m_gram.m_payload.m_prob *= m_params.get_0_lm_weight();
                                         LOG_DEBUG2 << "Weighted N-gram probability: " << m_m_gram.m_payload.m_back << END_LOG;
                                     }
 
@@ -122,7 +122,7 @@ namespace uva {
 
                                         //In case we need to multiply with the lambda weight do it now;
                                         if (is_mult_weight) {
-                                            m_m_gram.m_payload.m_back *= m_params.get_lm_weight();
+                                            m_m_gram.m_payload.m_back *= m_params.get_0_lm_weight();
                                             LOG_DEBUG2 << "Weighted N-gram back-off weight: " << m_m_gram.m_payload.m_back << END_LOG;
                                         }
                                     } else {

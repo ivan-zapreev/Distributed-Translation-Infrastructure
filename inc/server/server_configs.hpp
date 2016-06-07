@@ -51,8 +51,8 @@ namespace uva {
                 }
 
                 namespace tm {
-                    //Stores the number of the translation model features
-                    static constexpr size_t NUM_TM_FEATURES = FIVE_TM_FEATURES;
+                    //Stores the maximum number of the translation model features
+                    static constexpr size_t MAX_NUM_TM_FEATURES = 12u;
 
                     //The considered maximum length of the target phrase
                     static constexpr uint16_t TM_MAX_TARGET_PHRASE_LEN = 7u;
@@ -60,7 +60,7 @@ namespace uva {
 
                 namespace lm {
                     //Stores the number of the language model features
-                    static constexpr size_t NUM_LM_FEATURES = ONE_LM_FEATURE;
+                    static constexpr size_t MAX_NUM_LM_FEATURES = 1u;
 
                     //The considered maximum length of the N-gram 
                     static constexpr uint16_t LM_M_GRAM_LEVEL_MAX = 5u;
@@ -75,7 +75,9 @@ namespace uva {
 
                 namespace rm {
                     //Stores the number of the reordering model features
-                    static constexpr size_t NUM_RM_FEATURES = SIX_RM_FEATURES;
+                    static constexpr size_t MAX_NUM_RM_FEATURES = EIGHT_RM_FEATURES;
+                    //Stores the half of the maximum number of the reordering model features
+                    static constexpr size_t HALF_MAX_NUM_RM_FEATURES = MAX_NUM_RM_FEATURES / 2;
                 }
             }
         }

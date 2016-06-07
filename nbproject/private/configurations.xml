@@ -789,6 +789,9 @@
           <in>lm_query.cpp</in>
         </df>
         <df name="rm">
+          <df name="models">
+            <in>rm_entry.cpp</in>
+          </df>
           <in>rm_configurator.cpp</in>
           <in>rm_parameters.cpp</in>
         </df>

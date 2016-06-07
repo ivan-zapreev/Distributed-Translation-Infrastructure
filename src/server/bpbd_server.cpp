@@ -233,7 +233,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 
         section = lm_parameters::LM_CONFIG_SECTION_NAME;
         params.m_lm_params.m_conn_string = get_string(ini, section, lm_parameters::LM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<NUM_LM_FEATURES>(lm_parameters::LM_WEIGHTS_PARAM_NAME,
+        tokenize_s_t_f<MAX_NUM_LM_FEATURES>(lm_parameters::LM_WEIGHTS_PARAM_NAME,
                 get_string(ini, section, lm_parameters::LM_WEIGHTS_PARAM_NAME),
                 params.m_lm_params.m_lambdas,
                 params.m_lm_params.m_num_lambdas,
@@ -243,12 +243,12 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 
         section = tm_parameters::TM_CONFIG_SECTION_NAME;
         params.m_tm_params.m_conn_string = get_string(ini, section, tm_parameters::TM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<NUM_TM_FEATURES>(tm_parameters::TM_WEIGHTS_PARAM_NAME,
+        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(tm_parameters::TM_WEIGHTS_PARAM_NAME,
                 get_string(ini, section, tm_parameters::TM_WEIGHTS_PARAM_NAME),
                 params.m_tm_params.m_lambdas,
                 params.m_tm_params.m_num_lambdas,
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
-        tokenize_s_t_f<NUM_TM_FEATURES>(tm_parameters::TM_UNK_FEATURE_PARAM_NAME,
+        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(tm_parameters::TM_UNK_FEATURE_PARAM_NAME,
                 get_string(ini, section, tm_parameters::TM_UNK_FEATURE_PARAM_NAME),
                 params.m_tm_params.m_unk_features,
                 params.m_tm_params.m_num_unk_features,
@@ -260,7 +260,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 
         section = rm_parameters::RM_CONFIG_SECTION_NAME;
         params.m_rm_params.m_conn_string = get_string(ini, section, rm_parameters::RM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<NUM_RM_FEATURES>(rm_parameters::RM_WEIGHTS_PARAM_NAME,
+        tokenize_s_t_f<MAX_NUM_RM_FEATURES>(rm_parameters::RM_WEIGHTS_PARAM_NAME,
                 get_string(ini, section, rm_parameters::RM_WEIGHTS_PARAM_NAME),
                 params.m_rm_params.m_lambdas,
                 params.m_rm_params.m_num_lambdas,

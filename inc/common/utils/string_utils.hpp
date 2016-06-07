@@ -103,7 +103,7 @@ namespace uva {
                 stringstream data;
                 data << u8"[ ";
                 for (size_t idx = 0; idx < N; idx++) {
-                    data << values[idx] << ((idx != (N - 1)) ? delim : u8"");
+                    data << to_string(values[idx]) << ((idx != (N - 1)) ? delim : u8"");
                 }
                 data << u8" ]";
                 return data.str();
@@ -147,16 +147,18 @@ namespace uva {
 
             /**
              * Tokenize a given string into a a bunch of strings each of which will be parsed into a float
+             * @param MAX_NUM_ELEMS defines the size of the elements vector into which the values will be placed
+             *                      an exception is thrown if there is more than MAX_NUM_ELEMS that are parsed!
              * @param name the name of the data we are parsing for error messages
              * @param data the string to tokenize
              * @param elems the array to fill the data into
              * @param num_elems the actual number of elements
              * @param delim the delimiter string storing the token delimiters, default is UTF8_SPACE_STRING
              */
-            template<size_t EXP_NUM_ELEMS>
+            template<size_t MAX_NUM_ELEMS>
             static inline void tokenize_s_t_f(
                     const string name, const std::string &data,
-                    float elems[EXP_NUM_ELEMS], size_t & num_elems,
+                    float elems[MAX_NUM_ELEMS], size_t & num_elems,
                     const string& delim = UTF8_SPACE_STRING) {
                 size_t start = 0;
                 size_t end = data.find_first_of(delim);
@@ -167,9 +169,9 @@ namespace uva {
                 //Search for the delimiter and make tokens
                 while (end <= std::string::npos) {
                     //Check that the number of elements is not exceeded
-                    ASSERT_CONDITION_THROW((num_elems > EXP_NUM_ELEMS),
+                    ASSERT_CONDITION_THROW((num_elems > MAX_NUM_ELEMS),
                             string("Exceeding the maximum allowed number of ") + name +
-                            string(": ") + to_string(EXP_NUM_ELEMS) + string(" when parsing: ") + data);
+                            string(": ") + to_string(MAX_NUM_ELEMS) + string(" when parsing: ") + data);
 
                     //Parse the next token into the float
                     string str = data.substr(start, end - start);
@@ -183,11 +185,6 @@ namespace uva {
                         break;
                     }
                 }
-
-                ASSERT_CONDITION_THROW((num_elems < EXP_NUM_ELEMS),
-                        string("The expected number of ") + name +
-                        string(": ") + to_string(EXP_NUM_ELEMS) +
-                        string(" got only: ") + to_string(num_elems));
             }
 
             /**

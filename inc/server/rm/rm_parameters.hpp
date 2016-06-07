@@ -59,7 +59,7 @@ namespace uva {
                         //The feature weights parameter name
                         static const string RM_WEIGHTS_PARAM_NAME;
                         //The feature weight names
-                        static const string RM_WEIGHT_NAMES[NUM_RM_FEATURES];
+                        static const string RM_WEIGHT_NAMES[MAX_NUM_RM_FEATURES];
 
                         //The the connection string needed to connect to the model
                         string m_conn_string;
@@ -68,7 +68,7 @@ namespace uva {
                         size_t m_num_lambdas;
 
                         //Stores the reordering model weights
-                        float m_lambdas[NUM_RM_FEATURES];
+                        float m_lambdas[MAX_NUM_RM_FEATURES];
 
                         /**
                          * Allows to get the features weights used in the corresponding model.
@@ -92,11 +92,23 @@ namespace uva {
                          * Allows to verify the parameters to be correct.
                          */
                         void finalize() {
-                            //The number of lambdas must correspond to the expected one
-                            ASSERT_CONDITION_THROW((m_num_lambdas != NUM_RM_FEATURES),
+                            //The number of lambdas must not exceed the maximum
+                            ASSERT_CONDITION_THROW(((m_num_lambdas > MAX_NUM_RM_FEATURES) &&
+                                    (m_num_lambdas != EIGHT_RM_FEATURES)),
                                     string("The number of ") + RM_WEIGHTS_PARAM_NAME +
                                     string(": ") + to_string(m_num_lambdas) +
-                                    string(" must be == ") + to_string(NUM_RM_FEATURES));
+                                    string(" must be <= ") + to_string(MAX_NUM_RM_FEATURES));
+
+                            //The number of features must be an even number
+                            ASSERT_CONDITION_THROW(((m_num_lambdas % 2) == 1),
+                                    string("The number of ") + RM_WEIGHTS_PARAM_NAME +
+                                    string(": ") + to_string(m_num_lambdas) + string(", must be even!"));
+
+                            //The number of features must not exceed the maximum supported value
+                            ASSERT_CONDITION_THROW((m_num_lambdas > EIGHT_RM_FEATURES),
+                                    string("The number of ") + RM_WEIGHTS_PARAM_NAME +
+                                    string(": ") + to_string(m_num_lambdas) +
+                                    string(" must be <= ") + to_string(EIGHT_RM_FEATURES));
                         }
                     };
 

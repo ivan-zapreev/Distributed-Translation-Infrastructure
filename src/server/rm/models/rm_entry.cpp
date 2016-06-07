@@ -1,5 +1,5 @@
-/* 
- * File:   lm_parameters.cpp
+/*
+ * File:   rm_entry.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,22 +20,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 17, 2016, 12:23 AM
+ * Created on June 7, 2016, 14:05 AM
  */
 
-#include "server/lm/lm_parameters.hpp"
+#include "server/rm/models/rm_entry.hpp"
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace server {
-                namespace lm {
-                    const string lm_parameters_struct::LM_CONFIG_SECTION_NAME = "Language Models";
-                    const string lm_parameters_struct::LM_CONN_STRING_PARAM_NAME = "lm_conn_string";
-                    const string lm_parameters_struct::LM_WEIGHTS_PARAM_NAME = "lm_feature_weights";
-                    const string lm_parameters_struct::LM_WEIGHT_NAMES[MAX_NUM_LM_FEATURES] = {
-                        LM_WEIGHTS_PARAM_NAME + string("[0]")
-                    };
+                namespace rm {
+                    namespace models {
+                        //Default initialize with zero and negative values
+                        int8_t rm_entry::NUMBER_OF_FEATURES = 0;
+                        int8_t rm_entry::FROM_POSITIONS[HALF_MAX_NUM_RM_FEATURES] = {};
+                        int8_t rm_entry::TO_POSITIONS[HALF_MAX_NUM_RM_FEATURES] = {};
+
+                        ostream & operator<<(ostream & stream, const rm_entry & entry) {
+                            return stream << "[ uid: " << entry.m_uid << ", weights: "
+                                    << array_to_string<prob_weight>(rm_entry::NUMBER_OF_FEATURES, entry.m_weights) << " ]";
+                        }
+                    }
                 }
             }
         }

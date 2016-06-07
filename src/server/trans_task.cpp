@@ -38,7 +38,7 @@ namespace uva {
                  * @param task the task to log
                  * @return the reference to the same output stream send back for chaining
                  */
-                inline ostream & operator<<(ostream & stream, const trans_task & task) {
+                ostream & operator<<(ostream & stream, const trans_task & task) {
                     return stream << to_string(task.m_task_id);
                 }
             }

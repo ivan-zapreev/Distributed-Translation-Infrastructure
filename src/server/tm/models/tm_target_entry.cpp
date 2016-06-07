@@ -33,11 +33,7 @@ namespace uva {
                     namespace models {
 
                         //Initialize the unknown target entry UID constant 
-                        template<uint8_t num_features>
-                        const phrase_uid tm_target_entry_temp<num_features>::UNKNOWN_TARGET_ENTRY_UID = combine_phrase_uids(UNKNOWN_PHRASE_ID, UNKNOWN_PHRASE_ID);
-                        
-                        //Instantiate the template
-                        template class tm_target_entry_temp<NUM_TM_FEATURES>;
+                        const phrase_uid tm_target_entry::UNKNOWN_TARGET_ENTRY_UID = combine_phrase_uids(UNKNOWN_PHRASE_ID, UNKNOWN_PHRASE_ID);
                     }
                 }
             }

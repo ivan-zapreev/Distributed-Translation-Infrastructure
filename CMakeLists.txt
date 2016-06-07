@@ -48,6 +48,7 @@ set(BPBD_SERVER_SOURCES
     src/server/lm/lm_parameters.cpp
     src/server/tm/tm_parameters.cpp
     src/server/rm/rm_parameters.cpp
+    src/server/rm/models/rm_entry.cpp
     src/server/decoder/de_configurator.cpp
     src/server/lm/lm_configurator.cpp
     src/server/tm/tm_configurator.cpp

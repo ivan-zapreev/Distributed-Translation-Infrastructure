@@ -211,7 +211,7 @@ namespace uva {
                                 //Report the feature scores, here we do it outside the model - for simplicity
                                 if (scores != NULL) {
                                     //Store the score and divide it by the lambda weight to restore the original!
-                                    scores->operator[](lm_parameters::LM_WEIGHT_NAMES[0]) = m_joint_prob / m_params.m_lambdas[0];
+                                    scores->operator[](lm_parameters::LM_WEIGHT_NAMES[0]) = m_joint_prob / m_params.get_0_lm_weight();
                                 }
 
                                 //Return the final result;
@@ -280,7 +280,7 @@ namespace uva {
                                     const phrase_length last_end_word_idx) {
                                 //Print the intermediate results
                                 for (phrase_length end_word_idx = first_end_word_idx; end_word_idx <= last_end_word_idx; ++end_word_idx) {
-                                    if (LOGER_M_GRAM_LEVEL_MAX >= debug_levels_enum::DEBUG) {
+                                    if (MAXIMUM_LOGGING_LEVEL >= debug_levels_enum::DEBUG) {
                                         const string gram_str = get_m_gram_str(begin_word_idx, end_word_idx);
 
                                         LOG_DEBUG << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
@@ -300,7 +300,7 @@ namespace uva {
                              * Allows to report the total joint probability of the query
                              */
                             inline void report_final_result() {
-                                if (LOGER_M_GRAM_LEVEL_MAX >= debug_levels_enum::DEBUG) {
+                                if (MAXIMUM_LOGGING_LEVEL >= debug_levels_enum::DEBUG) {
                                     LOG_DEBUG << "---" << END_LOG;
                                     //Print the total cumulative probability if needed
                                     const string gram_str = get_query_str();

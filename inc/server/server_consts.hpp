@@ -92,14 +92,6 @@ namespace uva {
                     //Define the feature weights delimiter string for the config file
                     static const string TM_FEATURE_WEIGHTS_DELIMITER_STR = u8"|";
 
-                    //Stores the different values of TM features
-                    static constexpr size_t ONE_TM_FEATURES = 1u;
-                    static constexpr size_t TWO_TM_FEATURES = 2u;
-                    static constexpr size_t THREE_TM_FEATURES = 3u;
-                    static constexpr size_t FOUR_TM_FEATURES = 4u;
-                    static constexpr size_t FIVE_TM_FEATURES = 5u;
-                    static constexpr size_t SIX_TM_FEATURES = 5u;
-
                     //Stores the unknown source phrase string, should be configurable
                     static const string TM_UNKNOWN_SOURCE_STR = u8"UNK";
                     //Stores the unknown target phrase string, should be configurable
@@ -109,9 +101,6 @@ namespace uva {
                 namespace lm {
                     //Define the feature weights delimiter string for the config file
                     static const string LM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
-
-                    //Stores the different values of RM features                    
-                    static constexpr size_t ONE_LM_FEATURE = 1u;
 
                     //Stores the unknown word string, should be configurable
                     static const string UNKNOWN_WORD_STR = u8"<unk>";

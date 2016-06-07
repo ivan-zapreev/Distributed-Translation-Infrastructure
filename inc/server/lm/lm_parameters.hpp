@@ -59,16 +59,17 @@ namespace uva {
                         //The feature weights parameter name
                         static const string LM_WEIGHTS_PARAM_NAME;
                         //The feature weight names
-                        static const string LM_WEIGHT_NAMES[NUM_LM_FEATURES];
+                        static const string LM_WEIGHT_NAMES[MAX_NUM_LM_FEATURES];
 
                         //The the connection string needed to connect to the model
                         string m_conn_string;
 
                         //Stores the number of language model weights
                         size_t m_num_lambdas;
-
                         //Stores the language model weights
-                        float m_lambdas[NUM_LM_FEATURES];
+                        float m_lambdas[MAX_NUM_LM_FEATURES];
+                        //Stores the flag indicating whether the lm flag is to be used
+                        bool m_is_0_lm_weight;
 
                         /**
                          * Allows to get the features weights used in the corresponding model.
@@ -78,7 +79,7 @@ namespace uva {
                          *                        added ones.
                          * @param features [out] the vector the features will be appended to
                          */
-                        void get_weight_names(size_t & wcount, vector<pair<size_t, string>> &features) {
+                        inline void get_weight_names(size_t & wcount, vector<pair<size_t, string>> &features) {
                             //Add the feature weight names and increment the weight count
                             for (size_t idx = 0; idx < m_num_lambdas; ++idx) {
                                 //Add the feature global id to its name mapping
@@ -89,36 +90,29 @@ namespace uva {
                         }
 
                         /**
-                         * Allows to detect that the lm weight is set and needs to be used
-                         * @return true if we need to multiply with the lambda weight otherwise not.
-                         */
-                        bool is_lm_weight() const {
-                            return (m_num_lambdas >= 1) && (m_lambdas[0] != 1.0) && (m_lambdas[0] != 0.0);
-                        }
-
-                        /**
-                         * Allows to retrieve the language model m-gram weight
+                         * Allows to retrieve the first LM language model m-gram weight
                          * @return the language model m-gram weight
                          */
-                        inline const float & get_lm_weight() const {
+                        inline const float & get_0_lm_weight() const {
                             return m_lambdas[0];
                         }
 
                         /**
                          * Allows to verify the parameters to be correct.
                          */
-                        void finalize() {
+                        inline void finalize() {
                             //The number of lambdas must correspond to the expected one
-                            ASSERT_CONDITION_THROW((m_num_lambdas != NUM_LM_FEATURES),
+                            ASSERT_CONDITION_THROW((m_num_lambdas > MAX_NUM_LM_FEATURES),
                                     string("The number of ") + LM_WEIGHTS_PARAM_NAME +
                                     string(": ") + to_string(m_num_lambdas) +
-                                    string(" must be == ") + to_string(NUM_LM_FEATURES));
+                                    string(" must be <= ") + to_string(MAX_NUM_LM_FEATURES));
 
-                            //The Language model weight must not be zero or negative
-                            ASSERT_CONDITION_THROW((m_lambdas[0] <= 0.0),
-                                    string("Improper value of ") + LM_WEIGHTS_PARAM_NAME +
-                                    string(": ") + to_string(m_lambdas[0]) + string(" must be > 0.0 "));
+                            //Check that there is at least one feature
+                            ASSERT_CONDITION_THROW((m_num_lambdas == 0) || (m_lambdas[0] == 0.0),
+                                    string("The value of ") + LM_WEIGHT_NAMES[0] + string(" must not be 0.0!"));
 
+                            //Set the flag value, indicating whether the lambda is to be used
+                            m_is_0_lm_weight = ((m_num_lambdas != 0) && (m_lambdas[0] != 1.0));
                         }
                     };
 
