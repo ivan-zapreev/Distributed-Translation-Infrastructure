@@ -211,7 +211,7 @@ namespace uva {
                                 //Report the feature scores, here we do it outside the model - for simplicity
                                 if (scores != NULL) {
                                     //Store the score and divide it by the lambda weight to restore the original!
-                                    scores->operator[](lm_parameters::LM_WEIGHT_NAMES[0]) = m_joint_prob / m_params.m_lambdas[0];
+                                    scores->operator[](lm_parameters::LM_WEIGHT_NAMES[0]) = m_joint_prob / m_params.get_0_lm_weight();
                                 }
 
                                 //Return the final result;

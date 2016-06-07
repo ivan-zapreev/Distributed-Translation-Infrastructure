@@ -233,7 +233,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 
         section = lm_parameters::LM_CONFIG_SECTION_NAME;
         params.m_lm_params.m_conn_string = get_string(ini, section, lm_parameters::LM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<NUM_LM_FEATURES>(lm_parameters::LM_WEIGHTS_PARAM_NAME,
+        tokenize_s_t_f<MAX_NUM_LM_FEATURES>(lm_parameters::LM_WEIGHTS_PARAM_NAME,
                 get_string(ini, section, lm_parameters::LM_WEIGHTS_PARAM_NAME),
                 params.m_lm_params.m_lambdas,
                 params.m_lm_params.m_num_lambdas,

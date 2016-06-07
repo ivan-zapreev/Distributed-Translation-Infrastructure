@@ -102,9 +102,6 @@ namespace uva {
                     //Define the feature weights delimiter string for the config file
                     static const string LM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
 
-                    //Stores the different values of RM features                    
-                    static constexpr size_t ONE_LM_FEATURE = 1u;
-
                     //Stores the unknown word string, should be configurable
                     static const string UNKNOWN_WORD_STR = u8"<unk>";
 

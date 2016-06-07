@@ -33,7 +33,7 @@ namespace uva {
                     const string lm_parameters_struct::LM_CONFIG_SECTION_NAME = "Language Models";
                     const string lm_parameters_struct::LM_CONN_STRING_PARAM_NAME = "lm_conn_string";
                     const string lm_parameters_struct::LM_WEIGHTS_PARAM_NAME = "lm_feature_weights";
-                    const string lm_parameters_struct::LM_WEIGHT_NAMES[NUM_LM_FEATURES] = {
+                    const string lm_parameters_struct::LM_WEIGHT_NAMES[MAX_NUM_LM_FEATURES] = {
                         LM_WEIGHTS_PARAM_NAME + string("[0]")
                     };
                 }

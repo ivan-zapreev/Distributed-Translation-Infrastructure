@@ -325,7 +325,7 @@ namespace uva {
                             //Check if the line that was input is the header of the N-grams section for N=level
                             if (regex_match(m_line.str(), n_gram_sect_reg_exp)) {
                                 //Check if we need to multiply with the m-gram weight
-                                if (m_params.is_lm_weight()) {
+                                if (m_params.m_is_0_lm_weight) {
                                     //Read the M-grams of the given level
                                     read_m_gram_level<CURR_LEVEL, true>();
                                 } else {
@@ -434,14 +434,17 @@ namespace uva {
 
                         template<typename TrieType, typename TFileReaderModel>
                         void lm_basic_builder<TrieType, TFileReaderModel>::set_def_unk_word_prob() {
-                            //Obtain the LM weight
-                            const prob_weight lm_weight = (m_params.is_lm_weight() ? m_params.get_lm_weight() : 1.0);
+                            LOG_DEBUG << "LM default UNK word prob weight: "
+                                    << DEF_UNK_WORD_LOG_PROB_WEIGHT << END_LOG;
 
-                            LOG_DEBUG << "LM weight: " << lm_weight << ", default UNK "
-                                    << "word prob weight: " << DEF_UNK_WORD_LOG_PROB_WEIGHT << END_LOG;
-
-                            //Get the default log probability multiplied by the lambda weight
-                            m_trie.set_def_unk_word_prob(lm_weight * DEF_UNK_WORD_LOG_PROB_WEIGHT);
+                            //Set the default unk word probability weight
+                            prob_weight unk_prob = DEF_UNK_WORD_LOG_PROB_WEIGHT;
+                            if (m_params.m_is_0_lm_weight) {
+                                LOG_DEBUG << "LM weight: " << m_params.get_0_lm_weight() << END_LOG;
+                                unk_prob *= m_params.get_0_lm_weight();
+                            }
+                            //Set the probability weight
+                            m_trie.set_def_unk_word_prob(unk_prob);
                         }
 
                         //Iterate through the ARPA file and fill in the back-off model of the trie
