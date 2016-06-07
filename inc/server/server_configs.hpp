@@ -75,9 +75,9 @@ namespace uva {
 
                 namespace rm {
                     //Stores the number of the reordering model features
-                    static constexpr size_t MAX_NUM_RM_FEATURES = EIGHT_RM_FEATURES;
+                    static constexpr int8_t MAX_NUM_RM_FEATURES = EIGHT_RM_FEATURES;
                     //Stores the half of the maximum number of the reordering model features
-                    static constexpr size_t HALF_MAX_NUM_RM_FEATURES = MAX_NUM_RM_FEATURES / 2;
+                    static constexpr int8_t HALF_MAX_NUM_RM_FEATURES = MAX_NUM_RM_FEATURES / 2;
                 }
             }
         }
