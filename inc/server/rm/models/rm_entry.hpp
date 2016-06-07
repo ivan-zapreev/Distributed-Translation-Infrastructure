@@ -54,39 +54,96 @@ namespace uva {
                          * Defined the reordering orientations in the lexicolized model
                          */
                         enum reordering_orientation {
-                            UNKNOWN_ORIENT = 0,
-                            MONOTONE_ORIENT = UNKNOWN_ORIENT + 1,
+                            MONOTONE_ORIENT = 0,
                             SWAP_ORIENT = MONOTONE_ORIENT + 1,
                             DISCONT_LEFT_ORIENT = SWAP_ORIENT + 1,
                             DISCONT_RIGHT_ORIENT = DISCONT_LEFT_ORIENT + 1,
-                            size = DISCONT_RIGHT_ORIENT + 1
+                            UNKNOWN_ORIENT = DISCONT_RIGHT_ORIENT + 1,
+                            size = UNKNOWN_ORIENT + 1
                         };
 
                         /**
                          * This is the reordering entry class it stores the
                          * reordering penalties for one source to target phrase.
-                         * @param num_features is the number of reordering weights
+                         * @param m_num_features is the number of reordering weights
                          */
-                        template<uint8_t num_features>
-                        class rm_entry_temp {
+                        class rm_entry {
                         public:
-                            //Define the number of weights constant for the reordering entry
-                            static constexpr uint8_t NUM_FEATURES = num_features;
+                            
+                            /**
+                             * Allows to get the number of features
+                             * @return the number of features
+                             */
+                            static size_t set_num_features() {
+                                ASSERT_CONDITION_THROW((NUMBER_OF_FEATURES == 0),
+                                        string("The number of features has not been set!"));
+                                
+                                return NUMBER_OF_FEATURES;
+                            }
+
+                            /**
+                             * Allows to set the number of RM model features, must be called once during program execution
+                             * @param num_features the number of features to set
+                             */
+                            static void set_num_features(const int8_t num_features) {
+                                LOG_DEBUG1 << "Setting the number of RM features: " << to_string(num_features) << END_LOG;
+
+                                ASSERT_CONDITION_THROW((num_features <= 0),
+                                        string("The number of features: ") + to_string(num_features) +
+                                        string(" must be a positive value!"));
+
+                                //Store the number of features
+                                NUMBER_OF_FEATURES = num_features;
+
+                                //Compute the number of feature types
+                                const int8_t HALF_NUMBER_OF_FEATURES = NUMBER_OF_FEATURES / 2;
+
+                                LOG_DEBUG1 << "Starting to initialize the FROM and TO positions array" << END_LOG;
+
+                                //Compute the from and to position of the monotone move feature
+                                FROM_POSITIONS[0] = 0;
+                                TO_POSITIONS[0] = HALF_NUMBER_OF_FEATURES;
+
+                                //Initialize the from and to positions in the loop
+                                for (size_t idx = 1; idx < HALF_MAX_NUM_RM_FEATURES; ++idx) {
+                                    if (idx < HALF_NUMBER_OF_FEATURES) {
+                                        FROM_POSITIONS[idx] = FROM_POSITIONS[idx - 1] + 1;
+                                        TO_POSITIONS[idx] = TO_POSITIONS[idx - 1] + 1;
+                                    } else {
+                                        FROM_POSITIONS[idx] = FROM_POSITIONS[HALF_NUMBER_OF_FEATURES - 1];
+                                        TO_POSITIONS[idx] = TO_POSITIONS[HALF_NUMBER_OF_FEATURES - 1];
+                                    }
+                                }
+
+                                LOG_DEBUG << " FROM_POSITIONS = " << array_to_string(HALF_NUMBER_OF_FEATURES, FROM_POSITIONS)
+                                        << ", TO_POSITIONS =" << array_to_string(HALF_NUMBER_OF_FEATURES, TO_POSITIONS) << END_LOG;
+                            }
 
                             /**
                              * The basic constructor
                              */
-                            rm_entry_temp() : m_uid(UNDEFINED_PHRASE_ID) {
-                                memset(m_weights, 0, NUM_FEATURES * sizeof (prob_weight));
+                            rm_entry() : m_uid(UNDEFINED_PHRASE_ID) {
+                                if (NUMBER_OF_FEATURES > 0) {
+                                    m_weights = new prob_weight[NUMBER_OF_FEATURES]();
 #if IS_SERVER_TUNING_MODE
-                                memset(m_pure_features, 0, NUM_FEATURES * sizeof (prob_weight));
+                                    m_pure_features = new prob_weight[NUMBER_OF_FEATURES]();
 #endif
+                                } else {
+                                    m_weights = NULL;
+#if IS_SERVER_TUNING_MODE
+                                    m_pure_features = NULL;
+#endif
+                                }
                             }
 
                             /**
                              * The basic destructor
                              */
-                            ~rm_entry_temp() {
+                            ~rm_entry() {
+                                if (m_weights != NULL) delete[] m_weights;
+#if IS_SERVER_TUNING_MODE
+                                if (m_pure_features != NULL) delete[] m_pure_features;
+#endif
                             }
 
                             /**
@@ -110,54 +167,19 @@ namespace uva {
                              */
                             template<bool is_from>
                             inline const prob_weight get_weight(const reordering_orientation orient, map<string, prob_weight> * scores = NULL) const {
-                                //Compute the static position correction for the from/to cases
-                                static constexpr uint32_t pos_corr = (is_from ? 0 : num_features / 2);
-                                static constexpr uint32_t mon_pos = pos_corr;
-                                static constexpr uint32_t swap_pos = ((num_features <= TWO_RM_FEATURES) ? mon_pos : mon_pos + 1);
-                                static constexpr uint32_t disc_left_pos = ((num_features <= FOUR_RM_FEATURES) ? swap_pos : swap_pos + 1);
-                                static constexpr uint32_t disc_right_pos = ((num_features <= SIX_RM_FEATURES) ? disc_left_pos : disc_left_pos + 1);
+                                //Get the position of the feature value in the features array
+                                const int8_t position = (is_from ? FROM_POSITIONS[orient] : TO_POSITIONS[orient]);
+                                LOG_DEBUG1 << (is_from ? "FROM " : "TO ") << "ORIENTATION " << orient << " position: "
+                                        << position << ", value: " << m_weights[position] << END_LOG;
 
-                                LOG_DEBUG << (is_from ? "from mon_pos = " : "to mon_pos = ") << to_string(mon_pos)
-                                        << ", swap_pos = " << to_string(swap_pos) << ", disc_left_pos =" << to_string(disc_left_pos)
-                                        << ", disc_right_pos = " << to_string(disc_right_pos) << END_LOG;
+#if IS_SERVER_TUNING_MODE
+                                //Store the pure feature weight if in the tuning mode 
+                                LOG_DEBUG1 << position << " -> " << rm_parameters::RM_WEIGHT_NAMES[position] << END_LOG;
+                                if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[position]) = m_pure_features[position];
+#endif
 
-                                //Return the proper weight based on the orientation
-                                switch (orient) {
-                                    case reordering_orientation::MONOTONE_ORIENT:
-                                        LOG_DEBUG1 << "MONOTONE_ORIENT " << (is_from ? "'from'" : "'to'")
-                                                << " position: " << mon_pos << ", value: " << m_weights[mon_pos] << END_LOG;
-#if IS_SERVER_TUNING_MODE
-                                        LOG_DEBUG1 << mon_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[mon_pos] << END_LOG;
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[mon_pos]) = m_pure_features[mon_pos];
-#endif
-                                        return m_weights[mon_pos];
-                                    case reordering_orientation::SWAP_ORIENT:
-                                        LOG_DEBUG1 << "SWAP_ORIENT " << (is_from ? "'from'" : "'to'")
-                                                << " position: " << swap_pos << ", value: " << m_weights[swap_pos] << END_LOG;
-#if IS_SERVER_TUNING_MODE
-                                        LOG_DEBUG1 << swap_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[swap_pos] << END_LOG;
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[swap_pos]) = m_pure_features[swap_pos];
-#endif
-                                        return m_weights[swap_pos];
-                                    case reordering_orientation::DISCONT_RIGHT_ORIENT:
-                                        LOG_DEBUG1 << "DISCONT_RIGHT_ORIENT " << (is_from ? "'from'" : "'to'")
-                                                << " position: " << disc_left_pos << ", value: " << m_weights[disc_left_pos] << END_LOG;
-#if IS_SERVER_TUNING_MODE
-                                        LOG_DEBUG1 << disc_left_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[disc_left_pos] << END_LOG;
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_left_pos]) = m_pure_features[disc_left_pos];
-#endif
-                                        return m_weights[disc_left_pos];
-                                    case reordering_orientation::DISCONT_LEFT_ORIENT:
-                                        LOG_DEBUG1 << "DISCONT_LEFT_ORIENT " << (is_from ? "'from'" : "'to'")
-                                                << " position: " << disc_right_pos << ", value: " << m_weights[disc_right_pos] << END_LOG;
-#if IS_SERVER_TUNING_MODE
-                                        LOG_DEBUG1 << disc_right_pos << " -> " << rm_parameters::RM_WEIGHT_NAMES[disc_right_pos] << END_LOG;
-                                        if (scores != NULL) scores->operator[](rm_parameters::RM_WEIGHT_NAMES[disc_right_pos]) = m_pure_features[disc_right_pos];
-#endif
-                                        return m_weights[disc_right_pos];
-                                    default:
-                                        THROW_EXCEPTION(string("Unsupported orientation value: ") + to_string(orient));
-                                }
+                                //Return the weight value
+                                return m_weights[position];
                             }
 
                             /**
@@ -196,7 +218,7 @@ namespace uva {
                              * @param other the other entry to compare with
                              * @return true if the provided entry has the same uid as this one, otherwise false 
                              */
-                            inline bool operator==(const rm_entry_temp & other) const {
+                            inline bool operator==(const rm_entry & other) const {
                                 return (m_uid == other.m_uid);
                             }
 
@@ -240,25 +262,26 @@ namespace uva {
                             }
 
                         private:
+                            //Stores the number of weights constant for the reordering entry
+                            //This value is initialized before the RM model is loaded
+                            static int8_t NUMBER_OF_FEATURES;
+                            //Stores the difference move position indexes in the feature array
+                            //These values are initialized before the RM model is loaded
+                            static int8_t FROM_POSITIONS[HALF_MAX_NUM_RM_FEATURES];
+                            static int8_t TO_POSITIONS[HALF_MAX_NUM_RM_FEATURES];
+                            
                             //Stores the phrase id, i.e. the unique identifier for the source/target phrase pair
                             phrase_uid m_uid;
                             //This is an array of reordering weights
-                            prob_weight m_weights[NUM_FEATURES];
+                            prob_weight * m_weights;
 #if IS_SERVER_TUNING_MODE
                             //This is an array of reordering weights not multiplied with lambda's
-                            prob_weight m_pure_features[NUM_FEATURES];
+                            prob_weight * m_pure_features;
 #endif
 
                             //Add a friend operator for easy output
-                            template<uint8_t num_weights>
-                            friend ostream & operator<<(ostream & stream, const rm_entry_temp<num_weights> & entry);
+                            friend ostream & operator<<(ostream & stream, const rm_entry & entry);
                         };
-
-                        template<uint8_t num_features>
-                        constexpr uint8_t rm_entry_temp<num_features>::NUM_FEATURES;
-
-                        //Instantiate template
-                        typedef rm_entry_temp<NUM_RM_FEATURES> rm_entry;
 
                         /**
                          * This operator allows to stream the reordering entry to the output stream
@@ -266,11 +289,7 @@ namespace uva {
                          * @param entry the entry to stream
                          * @return the reference to the same stream is returned
                          */
-                        template<uint8_t num_weights>
-                        static inline ostream & operator<<(ostream & stream, const rm_entry_temp<num_weights> & entry) {
-                            return stream << "[ uid: " << entry.m_uid << ", weights: "
-                                    << array_to_string<prob_weight>(rm_entry::NUM_FEATURES, entry.m_weights) << " ]";
-                        }
+                        ostream & operator<<(ostream & stream, const rm_entry & entry);
                     }
                 }
             }

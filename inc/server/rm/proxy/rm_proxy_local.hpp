@@ -135,10 +135,13 @@ namespace uva {
 
                                 LOG_DEBUG << "Getting the memory statistics before opening the " << model_name << " file ..." << END_LOG;
                                 stat_monitor::get_mem_stat(mem_stat_start);
+                                LOG_DEBUG1 << "The memory statistics is obtained" << END_LOG;
 
                                 //Attempt to open the model file
+                                LOG_DEBUG << "Attempting to open the RM model file: " << model_file_name << END_LOG;
                                 file_reader_type model_file(model_file_name.c_str());
                                 model_file.log_reader_type_info();
+
                                 LOG_DEBUG << "Getting the memory statistics after opening the " << model_name << " file ..." << END_LOG;
                                 stat_monitor::get_mem_stat(mem_stat_end);
 
@@ -155,8 +158,11 @@ namespace uva {
                                         + model_file_name + string("' does not exist!"));
 
                                 //Create the trie builder and give it the trie
+                                LOG_DEBUG << "Creating the RM model builder!" << END_LOG;
                                 rm_builder_type builder(params, m_model, model_file);
+
                                 //Load the model from the file
+                                LOG_DEBUG << "Start reading the RM model with the builder!" << END_LOG;
                                 builder.build();
 
                                 LOG_DEBUG << "Getting the time statistics after loading the " << model_name << " ..." << END_LOG;

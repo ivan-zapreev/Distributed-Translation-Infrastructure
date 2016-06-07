@@ -78,6 +78,9 @@
           <in>lm_query.cpp</in>
         </df>
         <df name="rm">
+          <df name="models">
+            <in>rm_entry.cpp</in>
+          </df>
           <in>rm_configurator.cpp</in>
           <in>rm_parameters.cpp</in>
         </df>
@@ -357,6 +360,8 @@
             flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/server/rm/models/rm_entry.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/server/rm/rm_configurator.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">

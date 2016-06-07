@@ -260,7 +260,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 
         section = rm_parameters::RM_CONFIG_SECTION_NAME;
         params.m_rm_params.m_conn_string = get_string(ini, section, rm_parameters::RM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<NUM_RM_FEATURES>(rm_parameters::RM_WEIGHTS_PARAM_NAME,
+        tokenize_s_t_f<MAX_NUM_RM_FEATURES>(rm_parameters::RM_WEIGHTS_PARAM_NAME,
                 get_string(ini, section, rm_parameters::RM_WEIGHTS_PARAM_NAME),
                 params.m_rm_params.m_lambdas,
                 params.m_rm_params.m_num_lambdas,

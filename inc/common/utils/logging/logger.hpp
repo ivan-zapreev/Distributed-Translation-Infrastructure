@@ -53,7 +53,7 @@ namespace uva {
             };
 
             //Defines the maximum logging level
-            static constexpr debug_levels_enum LOGER_M_GRAM_LEVEL_MAX = INFO3;
+            static constexpr debug_levels_enum MAXIMUM_LOGGING_LEVEL = INFO3;
 
             //Defines the log level from which the detailed timing info is available
             static constexpr debug_levels_enum PROGRESS_ACTIVE_LEVEL = INFO1;
@@ -81,7 +81,7 @@ namespace uva {
 #define PROGRESS_UPDATE_PERIOD 0.05
 
 #define LOGGER(level)                                               \
-  if (level > LOGER_M_GRAM_LEVEL_MAX) ;                             \
+  if (level > MAXIMUM_LOGGING_LEVEL) ;                             \
   else if (level > logger::get_reporting_level()) ;                 \
        else {                                                       \
             logging_synch::rec_scoped_lock lock(logging_synch::mv); \
@@ -90,7 +90,7 @@ namespace uva {
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 #define LOGGER_DEBUG(level)                                             \
-  if (level > LOGER_M_GRAM_LEVEL_MAX) ;                                 \
+  if (level > MAXIMUM_LOGGING_LEVEL) ;                                 \
   else if (level > logger::get_reporting_level()) ;                     \
        else {                                                           \
             logging_synch::rec_scoped_lock lock(logging_synch::mv);     \

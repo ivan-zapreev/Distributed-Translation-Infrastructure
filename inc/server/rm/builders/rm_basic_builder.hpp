@@ -83,6 +83,7 @@ namespace uva {
                              */
                             rm_basic_builder(const rm_parameters & params, model_type & model, reader_type & reader)
                             : m_params(params), m_model(model), m_reader(reader), m_num_entries(0) {
+                                LOG_DEBUG << "Creating the basic RM builder" << END_LOG;
                             }
 
                             /**
@@ -91,6 +92,11 @@ namespace uva {
                              * of distinct source phrases.
                              */
                             void build() {
+                                LOG_DEBUG << "Starting to build the RM model!" << END_LOG;
+
+                                //Set the number of RM features
+                                rm_entry::set_num_features(m_params.m_num_lambdas);
+
                                 //Obtains the query proxy
                                 tm_query_proxy & query = tm_configurator::allocate_query_proxy();
 
@@ -104,6 +110,8 @@ namespace uva {
 
                                 //Dispose the query proxy
                                 tm_configurator::dispose_query_proxy(query);
+
+                                LOG_DEBUG << "The RM model is built!" << END_LOG;
                             }
 
                         protected:
@@ -123,7 +131,7 @@ namespace uva {
                                 //Read the subsequent weights, check that the number of weights is as expected
                                 size_t idx = 0;
                                 prob_weight weight = 0.0;
-                                while (rest.get_first_space(token) && (idx < rm_entry::NUM_FEATURES)) {
+                                while (rest.get_first_space(token) && (idx < rm_entry::set_num_features())) {
                                     //Parse the token into the entry weight
                                     ASSERT_CONDITION_THROW(!fast_s_to_f(weight, token.str().c_str()),
                                             string("Could not parse the token: ") + token.str());

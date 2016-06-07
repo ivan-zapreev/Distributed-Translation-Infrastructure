@@ -103,7 +103,7 @@ namespace uva {
                 stringstream data;
                 data << u8"[ ";
                 for (size_t idx = 0; idx < N; idx++) {
-                    data << values[idx] << ((idx != (N - 1)) ? delim : u8"");
+                    data << to_string(values[idx]) << ((idx != (N - 1)) ? delim : u8"");
                 }
                 data << u8" ]";
                 return data.str();

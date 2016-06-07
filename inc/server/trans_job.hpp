@@ -220,7 +220,7 @@ namespace uva {
                      * report themselves only ones. (Optional - for safety).}
                      * @param task the translation task that is finished
                      */
-                    void notify_task_done(const trans_task_ptr& task) {
+                    void notify_task_done(const trans_task_ptr task) {
                         LOG_DEBUG1 << "The task " << *task << " is done!" << END_LOG;
 
                         {

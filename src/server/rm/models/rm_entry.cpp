@@ -1,5 +1,5 @@
-/* 
- * File:   trans_task.hpp
+/*
+ * File:   rm_entry.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,26 +20,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 25, 2016, 9:14 AM
+ * Created on June 7, 2016, 14:05 AM
  */
 
-#include "server/trans_task.hpp"
+#include "server/rm/models/rm_entry.hpp"
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace server {
+                namespace rm {
+                    namespace models {
+                        //Default initialize with zero and negative values
+                        int8_t rm_entry::NUMBER_OF_FEATURES = 0;
+                        int8_t rm_entry::FROM_POSITIONS[HALF_MAX_NUM_RM_FEATURES] = {};
+                        int8_t rm_entry::TO_POSITIONS[HALF_MAX_NUM_RM_FEATURES] = {};
 
-                id_manager<task_id_type> trans_task::m_id_mgr(task_id::MINIMUM_TASK_ID);
-
-                /**
-                 * Allows to log the translation task into an output stream
-                 * @param stream the output stream
-                 * @param task the task to log
-                 * @return the reference to the same output stream send back for chaining
-                 */
-                ostream & operator<<(ostream & stream, const trans_task & task) {
-                    return stream << to_string(task.m_task_id);
+                        ostream & operator<<(ostream & stream, const rm_entry & entry) {
+                            return stream << "[ uid: " << entry.m_uid << ", weights: "
+                                    << array_to_string<prob_weight>(rm_entry::NUMBER_OF_FEATURES, entry.m_weights) << " ]";
+                        }
+                    }
                 }
             }
         }

@@ -74,6 +74,9 @@ for FILE_NAME in ${SENTENCE_FILES}; do
   echo "</SENT>" >> ${SCORES_OUT_FILE}
 done
 
+#Re-set the gzip files
+rm -f ${LATTICES_OUT_FILE}.gz ${SCORES_OUT_FILE}.gz
+
 #Archive the resulting files
 echo "Archiving: ${LATTICES_OUT_FILE}"
 gzip ${LATTICES_OUT_FILE}
