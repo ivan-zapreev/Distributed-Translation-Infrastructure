@@ -105,7 +105,7 @@ namespace uva {
                                 TO_POSITIONS[0] = HALF_NUMBER_OF_FEATURES;
 
                                 //Initialize the from and to positions in the loop
-                                for (size_t idx = 1; idx < HALF_MAX_NUM_RM_FEATURES; ++idx) {
+                                for (int8_t idx = 1; idx < HALF_MAX_NUM_RM_FEATURES; ++idx) {
                                     if (idx < HALF_NUMBER_OF_FEATURES) {
                                         FROM_POSITIONS[idx] = FROM_POSITIONS[idx - 1] + 1;
                                         TO_POSITIONS[idx] = TO_POSITIONS[idx - 1] + 1;
