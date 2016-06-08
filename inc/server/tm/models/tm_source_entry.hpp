@@ -159,7 +159,6 @@ namespace uva {
                              * Allows to add a new translation to the source entry for the given target phrase
                              * @param target the target phrase string 
                              * @param target_uid the uid of the target phrase
-                             * @param num_features the number of features in the next array
                              * @param weights the features to put into the entry
                              * @param num_words the number of words in the target translation
                              * @param word_ids the LM word ids for the target phrase
@@ -168,9 +167,9 @@ namespace uva {
                              *        to be stored for server tuning mode, default is NULL
                              */
                             inline void add_target(const string & target, const phrase_uid target_uid,
-                                    const size_t num_features, const prob_weight * features,
-                                    const phrase_length num_words, const word_uid * word_ids,
-                                    const prob_weight lm_weight, const prob_weight * pure_features = NULL) {
+                                    const prob_weight * features, const phrase_length num_words,
+                                    const word_uid * word_ids, const prob_weight lm_weight,
+                                    const prob_weight * pure_features = NULL) {
                                 //Perform a sanity check
                                 ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
                                         string("Exceeding the source entry capacity: ") + to_string(m_capacity));
@@ -180,9 +179,7 @@ namespace uva {
 
                                 //Set the entry's target phrase and its id
                                 entry.set_data(m_source_uid, target, target_uid,
-                                        num_features, features,
-                                        num_words, word_ids,
-                                        pure_features);
+                                        features, num_words, word_ids, pure_features);
 
                                 //Compute the minimum cost which in log space is a maximum value
                                 m_min_cost = max(m_min_cost, (entry.get_t_c_s() + lm_weight));

@@ -54,10 +54,12 @@ namespace uva {
                     //Here we have a default model file reader type
                     typedef cstyle_file_reader tm_model_reader;
 
-                    //Define the builder type 
-                    //Is fast but does not filter the translation model on the maximum allowed target entries
+                    //Define the builder type:
+                    //I. tm_basic_builder is fast but does not filter the
+                    //   translation model on the maximum allowed target entries
                     //typedef tm_basic_builder<tm_model_type, tm_model_reader> tm_builder_type;
-                    //Does filter the translation model on the maximum allowed target entries but is relatively slow
+                    //II. tm_limiting_builder can filter the translation model on
+                    //    the maximum allowed target entries but is relatively slow
                     typedef tm_limiting_builder<tm_model_type, tm_model_reader> tm_builder_type;
                 }
             }

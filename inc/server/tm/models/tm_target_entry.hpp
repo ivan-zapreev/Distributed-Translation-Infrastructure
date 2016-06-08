@@ -75,8 +75,10 @@ namespace uva {
                             tm_target_entry()
                             : m_target_phrase(""), m_num_words(0), m_word_ids(NULL), m_st_uid(UNDEFINED_PHRASE_ID),
                             m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total_weight(UNKNOWN_LOG_PROB_WEIGHT) {
+                                //Check that the number of features is set
+                                ASSERT_SANITY_THROW((NUMBER_OF_FEATURES == 0),
+                                        "The NUMBER_OF_FEATURES has not been set!");
 #if IS_SERVER_TUNING_MODE
-                                m_num_features = 0;
                                 m_pure_features = NULL;
 #endif                        
                             }
@@ -113,7 +115,6 @@ namespace uva {
                              *                   target phrase into the source/target pair uid
                              * @param target_phrase the target phrase
                              * @param target_uid the uid of the target phrase
-                             * @param num_features the number of features to be set, already in the log10 scale
                              * @param features the weights to be set into the entry
                              * @param num_words the number of words in the target translation
                              * @param word_ids the LM word ids for the target phrase 
@@ -122,9 +123,8 @@ namespace uva {
                              */
                             inline void set_data(const phrase_uid source_uid,
                                     const string & target_phrase, const phrase_uid target_uid,
-                                    const size_t num_features, const prob_weight * features,
-                                    const phrase_length num_words, const word_uid * word_ids,
-                                    const prob_weight * pure_features = NULL) {
+                                    const prob_weight * features, const phrase_length num_words,
+                                    const word_uid * word_ids, const prob_weight * pure_features = NULL) {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;
 
@@ -137,7 +137,7 @@ namespace uva {
                                 m_st_uid = combine_phrase_uids(source_uid, target_uid);
 
                                 //Set the features 
-                                set_features(num_features, features, pure_features);
+                                set_features(features, pure_features);
 
                                 LOG_DEBUG1 << "Adding the source/target (" << source_uid << "/"
                                         << target_uid << ") entry with id" << m_st_uid << END_LOG;
@@ -169,12 +169,9 @@ namespace uva {
                                 m_total_weight = other.m_total_weight;
 
 #if IS_SERVER_TUNING_MODE
-                                //Take over the features
-                                m_num_features = other.m_num_features;
                                 m_pure_features = other.m_pure_features;
                                 //Make sure the features in the target
                                 //entry we move from are discarded
-                                other.m_num_features = 0;
                                 other.m_pure_features = NULL;
 #endif
                             }
@@ -214,10 +211,10 @@ namespace uva {
                             inline const prob_weight get_total_weight(map<string, prob_weight> * scores = NULL) const {
 #if IS_SERVER_TUNING_MODE
                                 if (scores != NULL) {
-                                    ASSERT_CONDITION_THROW((m_num_features == 0), string("The number of features is zero!"));
+                                    ASSERT_SANITY_THROW((NUMBER_OF_FEATURES == 0), string("The number of features is zero!"));
                                     LOG_DEBUG1 << this << ": The features: "
-                                            << array_to_string<prob_weight>(m_num_features, m_pure_features) << END_LOG;
-                                    for (size_t idx = 0; idx != m_num_features; ++idx) {
+                                            << array_to_string<prob_weight>(NUMBER_OF_FEATURES, m_pure_features) << END_LOG;
+                                    for (size_t idx = 0; idx != NUMBER_OF_FEATURES; ++idx) {
                                         scores->operator[](tm_parameters::TM_WEIGHT_NAMES[idx]) = m_pure_features[idx];
                                         LOG_DEBUG2 << tm_parameters::TM_WEIGHT_NAMES[idx] << " = " << m_pure_features[idx] << END_LOG;
                                     }
@@ -251,12 +248,37 @@ namespace uva {
                                 return m_word_ids;
                             }
 
+                            /**
+                             * Allows to get the number of features
+                             * @return the number of features
+                             */
+                            static size_t get_num_features() {
+                                ASSERT_CONDITION_THROW((NUMBER_OF_FEATURES == 0),
+                                        string("The number of features has not been set!"));
+
+                                return NUMBER_OF_FEATURES;
+                            }
+
+                            /**
+                             * Allows to set the number of RM model features, must be called once during program execution
+                             * @param num_features the number of features to set
+                             */
+                            static void set_num_features(const int8_t num_features) {
+                                LOG_DEBUG1 << "Setting the number of TM features: " << to_string(num_features) << END_LOG;
+
+                                ASSERT_CONDITION_THROW((num_features <= 0),
+                                        string("The number of features: ") + to_string(num_features) +
+                                        string(" must be a positive value!"));
+
+                                //Store the number of features
+                                NUMBER_OF_FEATURES = num_features;
+                            }
+                            
                         protected:
 
                             /**
                              * Allows to set the weights into the target entry.
                              * \todo Get rid of magic constants here!
-                             * @param num_features the number of features to be set, already in the log10 scale
                              * @param features the weights to be set into the entry
                              * @param pure_features the feature values without the lambda weights,
                              *        to be stored for server tuning mode, default is NULL
@@ -267,33 +289,30 @@ namespace uva {
                              * features[3] = lex(p(e|f));
                              * features[4] = phrase penalty;
                              */
-                            inline void set_features(const size_t num_features, const prob_weight * features, const prob_weight * pure_features = NULL) {
-                                ASSERT_CONDITION_THROW((num_features > MAX_NUM_TM_FEATURES), string("The number of features: ") +
-                                        to_string(num_features) + string(" exceeds the maximum: ") + to_string(MAX_NUM_TM_FEATURES));
-                                ASSERT_CONDITION_THROW((num_features == 0), string("The number of features is zero!"));
+                            inline void set_features(const prob_weight * features, const prob_weight * pure_features = NULL) {
 #if IS_SERVER_TUNING_MODE
                                 //Check that the pure features list is present
                                 ASSERT_SANITY_THROW((pure_features == NULL), "The pure_features is NULL!");
 
-                                //Store the number of features
-                                m_num_features = num_features;
                                 //Allocate the features storage
-                                m_pure_features = new prob_weight[m_num_features]();
+                                m_pure_features = new prob_weight[NUMBER_OF_FEATURES]();
                                 //Store the individual feature weights
-                                memcpy(m_pure_features, pure_features, sizeof (prob_weight) * m_num_features);
+                                memcpy(m_pure_features, pure_features, sizeof (prob_weight) * NUMBER_OF_FEATURES);
 
                                 LOG_DEBUG1 << this << ": The features: "
-                                        << array_to_string<prob_weight>(m_num_features, m_pure_features) << END_LOG;
+                                        << array_to_string<prob_weight>(NUMBER_OF_FEATURES, m_pure_features) << END_LOG;
 #endif
 
                                 //Compute the total weight
                                 m_total_weight = 0.0; //First re-set to zero
-                                for (size_t idx = 0; idx < num_features; ++idx) {
+                                for (size_t idx = 0; idx < NUMBER_OF_FEATURES; ++idx) {
                                     m_total_weight += features[idx];
                                 }
 
                                 //Check that we have enough features
-                                ASSERT_SANITY_THROW((num_features < 3),
+                                //ToDo: Why 3 and 2, later on? We shall change this into
+                                //      a constant and this kind of check is also bogus ... 
+                                ASSERT_SANITY_THROW((NUMBER_OF_FEATURES < 3),
                                         "The must be at least 3 features, p(e|f) is not known!");
 
                                 //Store the target conditioned on source probability
@@ -301,6 +320,10 @@ namespace uva {
                             }
 
                         private:
+                            //Stores the number of weights constant for the reordering entry
+                            //This value is initialized before the RM model is loaded
+                            static int8_t NUMBER_OF_FEATURES;
+
                             //Stores the target phrase of the translation which a key value
                             string m_target_phrase;
                             //Stores the number of words in the translation, maximum should be TM_MAX_TARGET_PHRASE_LEN
@@ -318,8 +341,6 @@ namespace uva {
                             prob_weight m_total_weight;
 
 #if IS_SERVER_TUNING_MODE
-                            //Stores the number of features
-                            size_t m_num_features;
                             //Stores the the features
                             prob_weight * m_pure_features;
 #endif                            

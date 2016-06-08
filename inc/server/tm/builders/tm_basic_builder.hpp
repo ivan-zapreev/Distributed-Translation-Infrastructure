@@ -113,6 +113,9 @@ namespace uva {
                              * of distinct source phrases.
                              */
                             void build() {
+                                //Set the number of TM features
+                                tm_target_entry::set_num_features(m_params.m_num_lambdas);
+
                                 //Count and set the number of source phrases if needed
                                 if (m_model.is_num_entries_needed()) {
                                     count_source_phrases();
@@ -155,16 +158,15 @@ namespace uva {
                              * multiplied with the lambda factors
                              * @param is_get_weights if the weights are to be retrieved or just checked
                              * @param rest [in] the text piece with weights and other TM stuff, that starts with a space!
-                             * @param num_features [out] the number of read features if they satisfy on the constraints
                              * @param storage [out] the read and post-processed features features if they satisfy on the constraints
                              * @return true if the features satisfy the constraints, otherwise false
                              */
                             template<bool is_get_weights>
-                            inline bool process_features(text_piece_reader rest, size_t & num_features,
-                                    prob_weight * features, prob_weight * pure_features = NULL) {
+                            inline bool process_features(text_piece_reader rest, prob_weight * features,
+                                    prob_weight * pure_features = NULL) {
                                 //Declare the token and weights text piece readers
                                 text_piece_reader token, weights;
-                                
+
                                 //Store the read probability weight
                                 size_t idx = 0;
                                 //Store the read weight value
@@ -216,10 +218,7 @@ namespace uva {
                                         string("the specified lambda values (") +
                                         to_string(m_params.m_num_lambdas)+(") in the config file"));
 
-                                //Update the number of features
-                                num_features = idx;
-
-                                LOG_DEBUG1 << "Got " << num_features << " good features!" << END_LOG;
+                                LOG_DEBUG1 << "Got " << idx << " good features!" << END_LOG;
 
                                 return true;
                             }
@@ -230,14 +229,14 @@ namespace uva {
                              * @param tmp_features the temporary weights storage
                              * @return true if the conditions are satisfied, otherwise false
                              */
-                            inline bool is_good_features(text_piece_reader rest, size_t & tmp_features_size, prob_weight * tmp_features) {
+                            inline bool is_good_features(text_piece_reader rest, prob_weight * tmp_features) {
                                 text_piece_reader target;
 
                                 //Skip the target phrase with its end delimiter
                                 rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
 
                                 //Process the weights
-                                return process_features<false>(rest, tmp_features_size, tmp_features);
+                                return process_features<false>(rest, tmp_features);
                             }
 
                             /**
@@ -255,11 +254,10 @@ namespace uva {
                              * @param source_entry the pointer to the source entry for which this translation is
                              * @param rest stores the line to be parsed into a translation entry
                              * @param count_ref [in/out] the number of remaining entries
-                             * @param tmp_features_size [out] the number of read features
                              * @param tmp_features the temporary feature storage
                              */
                             inline void process_target_entry(tm_source_entry * source_entry, text_piece_reader &rest,
-                                    size_t & count_ref, size_t & tmp_features_size, prob_weight * tmp_features) {
+                                    size_t & count_ref, prob_weight * tmp_features) {
                                 LOG_DEBUG2 << "Got translation line to parse: ___" << rest << "___" << END_LOG;
 
                                 //Declare the target entry storing reader
@@ -275,7 +273,7 @@ namespace uva {
                                 feature_array tmp_pure_features = {};
 
                                 //Check that the weights are good and retrieve them if they are
-                                if (process_features<true>(rest, tmp_features_size, tmp_features, tmp_pure_features)) {
+                                if (process_features<true>(rest, tmp_features, tmp_pure_features)) {
                                     LOG_DEBUG2 << "The target phrase is: " << target << END_LOG;
                                     //Add the translation entry to the model
                                     string target_str = target.str();
@@ -297,8 +295,7 @@ namespace uva {
 
                                     //Initiate a new target entry
                                     source_entry->add_target(target_str, target_uid,
-                                            tmp_features_size, tmp_features,
-                                            m_tmp_num_words, m_tmp_word_ids,
+                                            tmp_features, m_tmp_num_words, m_tmp_word_ids,
                                             lm_weight, tmp_pure_features);
 
                                     //Reduce the counter
@@ -333,7 +330,6 @@ namespace uva {
 
                                 //Declare an array of weights for temporary use
                                 feature_array tmp_features;
-                                size_t tmp_features_size = 0;
 
                                 //Start reading the translation model file line by line
                                 while (m_reader.get_first_line(line)) {
@@ -402,7 +398,7 @@ namespace uva {
                                     size_t & size_ref = m_sizes[source_uid];
                                     if (count_or_build) {
                                         //Check that the filter conditions hold
-                                        if (is_good_features(line, tmp_features_size, tmp_features)) {
+                                        if (is_good_features(line, tmp_features)) {
                                             //Increment the count for the given source uid
                                             ++size_ref;
                                         }
@@ -411,7 +407,7 @@ namespace uva {
                                         //If the source entry is not to be skipped, parse 
                                         if (is_good_source && (size_ref > 0)) {
                                             //Parse the rest of the target entry
-                                            process_target_entry(source_entry, line, size_ref, tmp_features_size, tmp_features);
+                                            process_target_entry(source_entry, line, size_ref, tmp_features);
                                         } else {
                                             LOG_DEBUG << "Source " << source_uid << ", skipping the target entry: " << line << END_LOG;
                                         }
@@ -490,8 +486,8 @@ namespace uva {
                                 }
 
                                 //Set the unk features to the model
-                                m_model.set_unk_entry(UNKNOWN_WORD_ID, m_params.m_num_unk_features,
-                                        unk_features, m_lm_query.get_unk_word_prob(), pure_unk_features);
+                                m_model.set_unk_entry(UNKNOWN_WORD_ID, unk_features,
+                                        m_lm_query.get_unk_word_prob(), pure_unk_features);
                             }
 
                         private:

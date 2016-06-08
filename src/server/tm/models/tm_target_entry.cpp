@@ -31,6 +31,8 @@ namespace uva {
             namespace server {
                 namespace tm {
                     namespace models {
+                        //Default initialize with zero and negative values
+                        int8_t tm_target_entry::NUMBER_OF_FEATURES = 0;
 
                         //Initialize the unknown target entry UID constant 
                         const phrase_uid tm_target_entry::UNKNOWN_TARGET_ENTRY_UID = combine_phrase_uids(UNKNOWN_PHRASE_ID, UNKNOWN_PHRASE_ID);

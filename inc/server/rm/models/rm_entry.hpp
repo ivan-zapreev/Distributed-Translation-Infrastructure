@@ -71,58 +71,10 @@ namespace uva {
                         public:
 
                             /**
-                             * Allows to get the number of features
-                             * @return the number of features
-                             */
-                            static size_t get_num_features() {
-                                ASSERT_CONDITION_THROW((NUMBER_OF_FEATURES == 0),
-                                        string("The number of features has not been set!"));
-
-                                return NUMBER_OF_FEATURES;
-                            }
-
-                            /**
-                             * Allows to set the number of RM model features, must be called once during program execution
-                             * @param num_features the number of features to set
-                             */
-                            static void set_num_features(const int8_t num_features) {
-                                LOG_DEBUG1 << "Setting the number of RM features: " << to_string(num_features) << END_LOG;
-
-                                ASSERT_CONDITION_THROW((num_features <= 0),
-                                        string("The number of features: ") + to_string(num_features) +
-                                        string(" must be a positive value!"));
-
-                                //Store the number of features
-                                NUMBER_OF_FEATURES = num_features;
-
-                                //Compute the number of feature types
-                                const int8_t HALF_NUMBER_OF_FEATURES = NUMBER_OF_FEATURES / 2;
-
-                                LOG_DEBUG1 << "Starting to initialize the FROM and TO positions array" << END_LOG;
-
-                                //Compute the from and to position of the monotone move feature
-                                FROM_POSITIONS[0] = 0;
-                                TO_POSITIONS[0] = HALF_NUMBER_OF_FEATURES;
-
-                                //Initialize the from and to positions in the loop
-                                for (int8_t idx = 1; idx < HALF_MAX_NUM_RM_FEATURES; ++idx) {
-                                    if (idx < HALF_NUMBER_OF_FEATURES) {
-                                        FROM_POSITIONS[idx] = FROM_POSITIONS[idx - 1] + 1;
-                                        TO_POSITIONS[idx] = TO_POSITIONS[idx - 1] + 1;
-                                    } else {
-                                        FROM_POSITIONS[idx] = FROM_POSITIONS[HALF_NUMBER_OF_FEATURES - 1];
-                                        TO_POSITIONS[idx] = TO_POSITIONS[HALF_NUMBER_OF_FEATURES - 1];
-                                    }
-                                }
-
-                                LOG_DEBUG << " FROM_POSITIONS = " << array_to_string(HALF_NUMBER_OF_FEATURES, FROM_POSITIONS)
-                                        << ", TO_POSITIONS =" << array_to_string(HALF_NUMBER_OF_FEATURES, TO_POSITIONS) << END_LOG;
-                            }
-
-                            /**
                              * The basic constructor
                              */
                             rm_entry() : m_uid(UNDEFINED_PHRASE_ID) {
+                                //Check that the number of features is set
                                 ASSERT_SANITY_THROW((NUMBER_OF_FEATURES == 0),
                                         "The NUMBER_OF_FEATURES has not been set!");
 
@@ -255,6 +207,55 @@ namespace uva {
                                         return reordering_orientation::DISCONT_RIGHT_ORIENT;
                                     }
                                 }
+                            }
+
+                            /**
+                             * Allows to get the number of features
+                             * @return the number of features
+                             */
+                            static size_t get_num_features() {
+                                ASSERT_CONDITION_THROW((NUMBER_OF_FEATURES == 0),
+                                        string("The number of features has not been set!"));
+
+                                return NUMBER_OF_FEATURES;
+                            }
+
+                            /**
+                             * Allows to set the number of RM model features, must be called once during program execution
+                             * @param num_features the number of features to set
+                             */
+                            static void set_num_features(const int8_t num_features) {
+                                LOG_DEBUG1 << "Setting the number of RM features: " << to_string(num_features) << END_LOG;
+
+                                ASSERT_CONDITION_THROW((num_features <= 0),
+                                        string("The number of features: ") + to_string(num_features) +
+                                        string(" must be a positive value!"));
+
+                                //Store the number of features
+                                NUMBER_OF_FEATURES = num_features;
+
+                                //Compute the number of feature types
+                                const int8_t HALF_NUMBER_OF_FEATURES = NUMBER_OF_FEATURES / 2;
+
+                                LOG_DEBUG1 << "Starting to initialize the FROM and TO positions array" << END_LOG;
+
+                                //Compute the from and to position of the monotone move feature
+                                FROM_POSITIONS[0] = 0;
+                                TO_POSITIONS[0] = HALF_NUMBER_OF_FEATURES;
+
+                                //Initialize the from and to positions in the loop
+                                for (int8_t idx = 1; idx < HALF_MAX_NUM_RM_FEATURES; ++idx) {
+                                    if (idx < HALF_NUMBER_OF_FEATURES) {
+                                        FROM_POSITIONS[idx] = FROM_POSITIONS[idx - 1] + 1;
+                                        TO_POSITIONS[idx] = TO_POSITIONS[idx - 1] + 1;
+                                    } else {
+                                        FROM_POSITIONS[idx] = FROM_POSITIONS[HALF_NUMBER_OF_FEATURES - 1];
+                                        TO_POSITIONS[idx] = TO_POSITIONS[HALF_NUMBER_OF_FEATURES - 1];
+                                    }
+                                }
+
+                                LOG_DEBUG << " FROM_POSITIONS = " << array_to_string(HALF_NUMBER_OF_FEATURES, FROM_POSITIONS)
+                                        << ", TO_POSITIONS =" << array_to_string(HALF_NUMBER_OF_FEATURES, TO_POSITIONS) << END_LOG;
                             }
 
                         private:

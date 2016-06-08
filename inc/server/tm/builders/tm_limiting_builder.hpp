@@ -126,6 +126,9 @@ namespace uva {
                              * of distinct source phrases.
                              */
                             void build() {
+                                //Set the number of TM features
+                                tm_target_entry::set_num_features(m_params.m_num_lambdas);
+                                
                                 //Load the model data into memory and filter
                                 load_tm_data();
 
@@ -179,8 +182,8 @@ namespace uva {
                                 }
 
                                 //Set the unk features to the model
-                                m_model.set_unk_entry(UNKNOWN_WORD_ID, m_params.m_num_unk_features,
-                                        unk_features, m_lm_query.get_unk_word_prob(), pure_unk_features);
+                                m_model.set_unk_entry(UNKNOWN_WORD_ID, unk_features,
+                                        m_lm_query.get_unk_word_prob(), pure_unk_features);
                             }
 
                             /**
@@ -189,11 +192,10 @@ namespace uva {
                              * If needed the weights will be converted to log scale and
                              * multiplied with the lambda factors
                              * @param weights [in] the text piece with weights, that starts with a space!
-                             * @param num_features [out] the number of read features if they satisfy on the constraints
                              * @param storage [out] the read and post-processed features features if they satisfy on the constraints
                              * @return true if the features satisfy the constraints, otherwise false
                              */
-                            inline bool process_features(text_piece_reader weights, size_t & num_features,
+                            inline bool process_features(text_piece_reader weights,
                                     prob_weight * features, prob_weight * pure_features = NULL) {
                                 //Declare the token
                                 text_piece_reader token;
@@ -242,10 +244,7 @@ namespace uva {
                                         string("the specified lambda values (") +
                                         to_string(m_params.m_num_lambdas)+(") in the config file"));
 
-                                //Update the number of features
-                                num_features = idx;
-
-                                LOG_DEBUG1 << "Got " << num_features << " good features!" << END_LOG;
+                                LOG_DEBUG1 << "Got " << idx << " good features!" << END_LOG;
 
                                 return true;
                             }
@@ -262,7 +261,6 @@ namespace uva {
 
                                 //Declare an array of weights for temporary use
                                 feature_array tmp_features = {}, tmp_pure_features = {};
-                                size_t tmp_features_size = 0;
 
                                 //Declare the target and weights entry reader
                                 text_piece_reader target, weights;
@@ -277,8 +275,7 @@ namespace uva {
                                 rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
 
                                 //Check that the weights are good and retrieve them if they are
-                                //ToDo: Add the pure features as an argument for process_features
-                                if (process_features(weights, tmp_features_size, tmp_features, tmp_pure_features)) {
+                                if (process_features(weights, tmp_features, tmp_pure_features)) {
                                     LOG_DEBUG2 << "The target phrase is: " << target << END_LOG;
                                     //Add the translation entry to the model
                                     string target_str = target.str();
@@ -296,8 +293,7 @@ namespace uva {
                                     //Initiate a new target entry
                                     entry = new tm_target_entry();
                                     entry->set_data(source_uid, target_str, target_uid,
-                                            tmp_features_size, tmp_features,
-                                            m_tmp_num_words, m_tmp_word_ids,
+                                            tmp_features, m_tmp_num_words, m_tmp_word_ids,
                                             tmp_pure_features);
 
                                     LOG_DEBUG1 << "The source/target (" << source_uid
