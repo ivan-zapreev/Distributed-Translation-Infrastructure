@@ -214,7 +214,7 @@ namespace uva {
                                     ASSERT_SANITY_THROW((NUMBER_OF_FEATURES == 0), string("The number of features is zero!"));
                                     LOG_DEBUG1 << this << ": The features: "
                                             << array_to_string<prob_weight>(NUMBER_OF_FEATURES, m_pure_features) << END_LOG;
-                                    for (size_t idx = 0; idx != NUMBER_OF_FEATURES; ++idx) {
+                                    for (int8_t idx = 0; idx != NUMBER_OF_FEATURES; ++idx) {
                                         scores->operator[](tm_parameters::TM_WEIGHT_NAMES[idx]) = m_pure_features[idx];
                                         LOG_DEBUG2 << tm_parameters::TM_WEIGHT_NAMES[idx] << " = " << m_pure_features[idx] << END_LOG;
                                     }
@@ -305,7 +305,7 @@ namespace uva {
 
                                 //Compute the total weight
                                 m_total_weight = 0.0; //First re-set to zero
-                                for (size_t idx = 0; idx < NUMBER_OF_FEATURES; ++idx) {
+                                for (int8_t idx = 0; idx < NUMBER_OF_FEATURES; ++idx) {
                                     m_total_weight += features[idx];
                                 }
 
