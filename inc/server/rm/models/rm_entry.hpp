@@ -69,7 +69,7 @@ namespace uva {
                          */
                         class rm_entry {
                         public:
-                            
+
                             /**
                              * Allows to get the number of features
                              * @return the number of features
@@ -77,7 +77,7 @@ namespace uva {
                             static size_t set_num_features() {
                                 ASSERT_CONDITION_THROW((NUMBER_OF_FEATURES == 0),
                                         string("The number of features has not been set!"));
-                                
+
                                 return NUMBER_OF_FEATURES;
                             }
 
@@ -123,17 +123,13 @@ namespace uva {
                              * The basic constructor
                              */
                             rm_entry() : m_uid(UNDEFINED_PHRASE_ID) {
-                                if (NUMBER_OF_FEATURES > 0) {
-                                    m_weights = new prob_weight[NUMBER_OF_FEATURES]();
+                                ASSERT_SANITY_THROW((NUMBER_OF_FEATURES == 0),
+                                        "The NUMBER_OF_FEATURES has not been set!");
+
+                                m_weights = new prob_weight[NUMBER_OF_FEATURES]();
 #if IS_SERVER_TUNING_MODE
-                                    m_pure_features = new prob_weight[NUMBER_OF_FEATURES]();
+                                m_pure_features = new prob_weight[NUMBER_OF_FEATURES]();
 #endif
-                                } else {
-                                    m_weights = NULL;
-#if IS_SERVER_TUNING_MODE
-                                    m_pure_features = NULL;
-#endif
-                                }
                             }
 
                             /**
@@ -269,7 +265,7 @@ namespace uva {
                             //These values are initialized before the RM model is loaded
                             static int8_t FROM_POSITIONS[HALF_MAX_NUM_RM_FEATURES];
                             static int8_t TO_POSITIONS[HALF_MAX_NUM_RM_FEATURES];
-                            
+
                             //Stores the phrase id, i.e. the unique identifier for the source/target phrase pair
                             phrase_uid m_uid;
                             //This is an array of reordering weights
