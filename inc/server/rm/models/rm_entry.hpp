@@ -74,7 +74,7 @@ namespace uva {
                              * Allows to get the number of features
                              * @return the number of features
                              */
-                            static size_t set_num_features() {
+                            static size_t get_num_features() {
                                 ASSERT_CONDITION_THROW((NUMBER_OF_FEATURES == 0),
                                         string("The number of features has not been set!"));
 

@@ -138,12 +138,12 @@ namespace uva {
                             inline prob_weight post_process_feature(const prob_weight raw_feature, const prob_weight lambda, prob_weight & feature) {
                                 //Convert the feature into the log scale
                                 const prob_weight log_feature = log10(raw_feature);
-                                
+
                                 //Multiply the log-scale feature weight with the appropriate lambda
                                 feature = log_feature * lambda;
-                                
+
                                 LOG_DEBUG << "log10(" << raw_feature << ") * " << lambda << " = " << feature << END_LOG;
-                                
+
                                 //Return the log scale of the raw feature
                                 return log_feature;
                             }
@@ -154,27 +154,31 @@ namespace uva {
                              * If needed the weights will be converted to log scale and
                              * multiplied with the lambda factors
                              * @param is_get_weights if the weights are to be retrieved or just checked
-                             * @param weights [in] the text piece with weights, that starts with a space!
+                             * @param rest [in] the text piece with weights and other TM stuff, that starts with a space!
                              * @param num_features [out] the number of read features if they satisfy on the constraints
                              * @param storage [out] the read and post-processed features features if they satisfy on the constraints
                              * @return true if the features satisfy the constraints, otherwise false
                              */
                             template<bool is_get_weights>
-                            inline bool process_features(text_piece_reader weights, size_t & num_features,
+                            inline bool process_features(text_piece_reader rest, size_t & num_features,
                                     prob_weight * features, prob_weight * pure_features = NULL) {
-                                //Declare the token
-                                text_piece_reader token;
+                                //Declare the token and weights text piece readers
+                                text_piece_reader token, weights;
+                                
                                 //Store the read probability weight
                                 size_t idx = 0;
                                 //Store the read weight value
                                 prob_weight raw_feature;
 
-                                LOG_DEBUG << "Reading the features from: " << weights << END_LOG;
+                                LOG_DEBUG << "BB Reading the features from: ____" << rest.get_rest_str() << "____" << END_LOG;
+
+                                //Read the weights
+                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
 
                                 //Skip the first space
                                 weights.get_first_space(token);
 
-                                LOG_DEBUG3 << "TM features to parse: " << weights << END_LOG;
+                                LOG_DEBUG << "TM features to parse: ____" << weights << "____" << END_LOG;
 
                                 //Read the subsequent weights, check that the number of weights is as expected
                                 while (weights.get_first_space(token) && (idx < m_params.m_num_lambdas)) {
@@ -182,7 +186,7 @@ namespace uva {
                                     ASSERT_CONDITION_THROW(!fast_s_to_f(raw_feature, token.str().c_str()),
                                             string("Could not parse the token: ") + token.str());
 
-                                    LOG_DEBUG3 << "parsed: " << token << " -> " << raw_feature << END_LOG;
+                                    LOG_DEBUG1 << "parsed: " << token << " -> " << raw_feature << END_LOG;
 
                                     //Check the probabilities at the indexes for the bound
                                     //ToDo: Why it is 0 and 2? What if we have more features??? Change 0 and 2 into concrete names?
@@ -205,6 +209,12 @@ namespace uva {
                                     //Increment the index 
                                     ++idx;
                                 }
+
+                                //Check that the number of weights is good
+                                ASSERT_CONDITION_THROW(!weights.get_rest_str().empty(),
+                                        string("The TM model contains more features than ") +
+                                        string("the specified lambda values (") +
+                                        to_string(m_params.m_num_lambdas)+(") in the config file"));
 
                                 //Update the number of features
                                 num_features = idx;

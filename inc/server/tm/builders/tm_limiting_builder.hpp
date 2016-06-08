@@ -150,12 +150,12 @@ namespace uva {
                             inline prob_weight post_process_feature(const prob_weight raw_feature, const prob_weight lambda, prob_weight & feature) {
                                 //Convert the feature into the log scale
                                 const prob_weight log_feature = log10(raw_feature);
-                                
+
                                 //Multiply the log-scale feature weight with the appropriate lambda
                                 feature = log_feature * lambda;
-                                
+
                                 LOG_DEBUG << "log10(" << raw_feature << ") * " << lambda << " = " << feature << END_LOG;
-                                
+
                                 //Return the log scale of the raw features
                                 return log_feature;
                             }
@@ -202,7 +202,7 @@ namespace uva {
                                 //Store the read weight value
                                 prob_weight raw_feature;
 
-                                LOG_DEBUG << "Reading the features from: " << weights << END_LOG;
+                                LOG_DEBUG << "LB Reading the features from: " << weights << END_LOG;
 
                                 //Skip the first space
                                 weights.get_first_space(token);
@@ -235,6 +235,12 @@ namespace uva {
                                     //Increment the index 
                                     ++idx;
                                 }
+                                
+                                //Check that the number of weights is good
+                                ASSERT_CONDITION_THROW(!weights.get_rest_str().empty(),
+                                        string("The TM model contains more features than ") +
+                                        string("the specified lambda values (") +
+                                        to_string(m_params.m_num_lambdas)+(") in the config file"));
 
                                 //Update the number of features
                                 num_features = idx;
@@ -258,18 +264,21 @@ namespace uva {
                                 feature_array tmp_features = {}, tmp_pure_features = {};
                                 size_t tmp_features_size = 0;
 
-                                //Declare the target entry storing reader
-                                text_piece_reader target;
+                                //Declare the target and weights entry reader
+                                text_piece_reader target, weights;
 
                                 //Skip the first space symbol that follows the delimiter with the source
                                 rest.get_first_space(target);
 
                                 //Read the target phrase, it is surrounded by spaces
                                 rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
+                                
+                                //Read the weights
+                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
 
                                 //Check that the weights are good and retrieve them if they are
                                 //ToDo: Add the pure features as an argument for process_features
-                                if (process_features(rest, tmp_features_size, tmp_features, tmp_pure_features)) {
+                                if (process_features(weights, tmp_features_size, tmp_features, tmp_pure_features)) {
                                     LOG_DEBUG2 << "The target phrase is: " << target << END_LOG;
                                     //Add the translation entry to the model
                                     string target_str = target.str();

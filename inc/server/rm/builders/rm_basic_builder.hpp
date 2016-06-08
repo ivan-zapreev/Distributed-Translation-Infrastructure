@@ -118,20 +118,20 @@ namespace uva {
 
                             /**
                              * Allows to parse the reordering weights and set them into the reordering entry
-                             * @param rest the line to be parsed, starts with a space
+                             * @param weights the line to be parsed, starts with a space, contains reordering weights
                              * @param entry the entry to put the values into
                              */
-                            void process_entry_weights(text_piece_reader & rest, rm_entry & entry) {
+                            void process_entry_weights(text_piece_reader & weights, rm_entry & entry) {
                                 //Declare the token to store weights
                                 text_piece_reader token;
 
                                 //Skip the first space
-                                ASSERT_CONDITION_THROW(!rest.get_first_space(token), "Could not skip the first space!");
+                                ASSERT_CONDITION_THROW(!weights.get_first_space(token), "Could not skip the first space!");
 
                                 //Read the subsequent weights, check that the number of weights is as expected
                                 size_t idx = 0;
                                 prob_weight weight = 0.0;
-                                while (rest.get_first_space(token) && (idx < rm_entry::set_num_features())) {
+                                while (weights.get_first_space(token) && (idx < m_params.m_num_lambdas)) {
                                     //Parse the token into the entry weight
                                     ASSERT_CONDITION_THROW(!fast_s_to_f(weight, token.str().c_str()),
                                             string("Could not parse the token: ") + token.str());
@@ -141,6 +141,12 @@ namespace uva {
                                     //Increment the index 
                                     ++idx;
                                 }
+                                
+                                //Check that the number of weights is good
+                                ASSERT_CONDITION_THROW(!weights.get_rest_str().empty(),
+                                        string("The RM model contains more features than ") +
+                                        string("the specified lambda values (") +
+                                        to_string(m_params.m_num_lambdas)+(") in the config file"));
                             }
 
                             /**
