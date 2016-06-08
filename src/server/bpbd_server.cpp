@@ -116,7 +116,7 @@ inline void check_create_lattices_folder(const server_parameters & params) {
     DIR * pdir = opendir(params.m_de_params.m_lattices_folder.c_str());
 
     LOG_USAGE << "The lattice file folder is: " << params.m_de_params.m_lattices_folder << END_LOG;
-    
+
     //Check if the directory is present
     if (pdir == NULL) {
         //Log the warning that the directory does not exist
@@ -138,26 +138,8 @@ inline void check_create_lattices_folder(const server_parameters & params) {
     }
 }
 
-/**
- * This function allow to process the feature to id mappings needed
- * for the search lattice. As a part of this process we will need to
- * dump the id to feature weight name into the file and also set up
- * the parameters.
- * @param params the server parameters
- * @param cfg_file_name the configuration file name
- */
-inline void process_feature_to_id_mappings(const string & cfg_file_name, server_parameters & params) {
-    //The full feature names will be placed into the vector in the fixed order
-    vector<pair<size_t, string>> id_to_name;
-    //The counter for the number of feature weights
-    size_t wcount = 0;
-
-    //Add the features to the vector
-    params.m_de_params.get_weight_names(wcount, id_to_name);
-    params.m_lm_params.get_weight_names(wcount, id_to_name);
-    params.m_rm_params.get_weight_names(wcount, id_to_name);
-    params.m_tm_params.get_weight_names(wcount, id_to_name);
-
+inline void dump_feature_to_id_file(const string & cfg_file_name, server_parameters & params,
+        const vector<pair<size_t, string>> &id_to_name) {
     //Extract the configuration file name without any path prefix 
     string cfg_name = cfg_file_name;
     //Search for the last path delimiter symbol
@@ -182,14 +164,46 @@ inline void process_feature_to_id_mappings(const string & cfg_file_name, server_
             iter != id_to_name.end(); ++iter) {
         //Output the mapping to the file
         id2n_file << iter->first << "\t" << iter->second << std::endl;
-        //Add the feature weight name to the global mapping
-        params.m_de_params.add_weight_name_2_id_mapping(iter->first, iter->second);
     }
 
     //Close the file
     id2n_file.close();
 
     LOG_USAGE << "The feature id-to-name mapping is dumped into: " << file_name << END_LOG;
+}
+
+/**
+ * This function allow to process the feature to id mappings needed
+ * for the search lattice. As a part of this process we will need to
+ * dump the id to feature weight name into the file and also set up
+ * the parameters.
+ * @param dump_file if true then the id to feature mapping file will be dumped, otherwise not.
+ * @param params the server parameters
+ * @param cfg_file_name the configuration file name
+ */
+template<bool dump_file = true >
+inline void process_feature_to_id_mappings(const string & cfg_file_name, server_parameters & params) {
+    //The full feature names will be placed into the vector in the fixed order
+    vector<pair<size_t, string>> id_to_name;
+    //The counter for the number of feature weights
+    size_t wcount = 0;
+
+    //Add the features to the vector
+    params.m_de_params.get_weight_names(wcount, id_to_name);
+    params.m_lm_params.get_weight_names(wcount, id_to_name);
+    params.m_rm_params.get_weight_names(wcount, id_to_name);
+    params.m_tm_params.get_weight_names(wcount, id_to_name);
+
+    //Dump the id to feature mapping into the file, if needed
+    if (dump_file) {
+        dump_feature_to_id_file(cfg_file_name, params, id_to_name);
+    }
+
+    //Add the feature weight name to id the global mapping
+    for (vector<pair < size_t, string>>::const_iterator iter = id_to_name.begin();
+            iter != id_to_name.end(); ++iter) {
+        params.m_de_params.add_weight_name_2_id_mapping(iter->first, iter->second);
+    }
 }
 
 /**
@@ -287,8 +301,11 @@ static void prepare_config_structures(const uint argc, char const * const * cons
             LOG_USAGE << "--------------------------------------------------------" << END_LOG;
             //Check that the lattices folder does, if not - create.
             check_create_lattices_folder(params);
-            //Dump the feature weight to id mappings
-            process_feature_to_id_mappings(config_file_name, params);
+            //Create global feature to id mapping and dump it into the file
+            process_feature_to_id_mappings<true>(config_file_name, params);
+        } else {
+            //Only create the global feature to id mapping
+            process_feature_to_id_mappings<false>(config_file_name, params);
         }
 #endif
         params.m_de_params.finalize();

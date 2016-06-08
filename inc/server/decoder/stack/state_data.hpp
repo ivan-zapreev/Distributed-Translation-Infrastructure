@@ -83,8 +83,8 @@ namespace uva {
 #define INIT_STATE_DATA_TUNING_DATA(storage) , m_lattice_scores(storage)
 #define DEFINE_TUNING_FEATURES_MAP(name) map<string, prob_weight> name;
 #define PASS_TUNING_FEATURES_MAP(name) &name
-#define ADD_TUNING_FEATURE_SCORE(name, value) if(m_stack_data.m_params.m_is_gen_lattice){add_feature_score(name, value);}
-#define ADD_TUNING_FEATURE_SCORES(data) if(m_stack_data.m_params.m_is_gen_lattice){add_feature_scores(data);}
+#define ADD_TUNING_FEATURE_SCORE(name, value) add_feature_score(name, value);
+#define ADD_TUNING_FEATURE_SCORES(data) add_feature_scores(data);
 #else
 #define INIT_STATE_DATA_TUNING_DATA(storage)
 #define DEFINE_TUNING_FEATURES_MAP(name)

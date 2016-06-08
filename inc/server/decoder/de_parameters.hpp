@@ -292,7 +292,7 @@ namespace uva {
                         stream << "DE parameters: [ ";
 
                         //Log the distortion limit parameter
-                        stream << ", " << de_parameters::DE_DIST_LIMIT_PARAM_NAME << " = ";
+                        stream << de_parameters::DE_DIST_LIMIT_PARAM_NAME << " = ";
                         if (params.m_dist_limit != 0) {
                             stream << params.m_dist_limit;
                         } else {
