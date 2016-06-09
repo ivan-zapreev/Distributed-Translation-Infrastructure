@@ -106,7 +106,7 @@ namespace uva {
                              * @return true if the total weight of this entry is smaller than the total weight of the other entry
                              */
                             inline bool operator<(const tm_target_entry & other) const {
-                                return get_total_weight() < other.get_total_weight();
+                                return get_total_weight<false>() < other.get_total_weight<false>();
                             }
 
                             /**
@@ -203,17 +203,20 @@ namespace uva {
                             /**
                              * Allows to get the total weight of the entry, the sum
                              * of features that are turned into log10 scale.
+                             * @param is_consider_scores if true then the scores will be considered in the tuning mode
                              * @param scores [in/out] the pointer to the map storing the mapping from the feature name
                              *               to the feature score, without lambda. If not null and we are in the tuning
                              *               mode the map will be filled in with the feature-value data
                              * @return the total weight of the entry, the sum of feature weights
                              */
+                            template<bool is_consider_scores = true>
                             inline const prob_weight get_total_weight(map<string, prob_weight> * scores = NULL) const {
 #if IS_SERVER_TUNING_MODE
-                                if (scores != NULL) {
+                                if (is_consider_scores) {
                                     ASSERT_SANITY_THROW((NUMBER_OF_FEATURES == 0), string("The number of features is zero!"));
                                     LOG_DEBUG1 << this << ": The features: "
                                             << array_to_string<prob_weight>(NUMBER_OF_FEATURES, m_pure_features) << END_LOG;
+                                    ASSERT_SANITY_THROW((scores == NULL), string("The scores map pointer is NULL!"));
                                     for (int8_t idx = 0; idx != NUMBER_OF_FEATURES; ++idx) {
                                         scores->operator[](tm_parameters::TM_WEIGHT_NAMES[idx]) = m_pure_features[idx];
                                         LOG_DEBUG2 << tm_parameters::TM_WEIGHT_NAMES[idx] << " = " << m_pure_features[idx] << END_LOG;
@@ -273,7 +276,7 @@ namespace uva {
                                 //Store the number of features
                                 NUMBER_OF_FEATURES = num_features;
                             }
-                            
+
                         protected:
 
                             /**

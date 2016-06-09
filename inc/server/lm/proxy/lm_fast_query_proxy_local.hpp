@@ -138,7 +138,7 @@ namespace uva {
                                 phrase_length min_level = M_GRAM_LEVEL_1;
 
                                 //Compute the probability value
-                                prob_weight prob = execute(num_words, word_ids, min_level);
+                                prob_weight prob = execute_query<false>(num_words, word_ids, min_level);
 
                                 LOG_DEBUG1 << "The resulting LM query probability is: " << prob << END_LOG;
 
@@ -150,6 +150,23 @@ namespace uva {
                              * @see lm_query_proxy
                              */
                             virtual prob_weight execute(const phrase_length num_words,
+                                    const word_uid * word_ids, phrase_length & min_level) {
+                                return execute_query<false>(num_words, word_ids, min_level);
+                            }
+
+                            /**
+                             * @see lm_query_proxy
+                             */
+                            virtual prob_weight execute(const phrase_length num_words,
+                                    const word_uid * word_ids, phrase_length & min_level,
+                                    map<string, prob_weight> * scores) {
+                                return execute_query(num_words, word_ids, min_level, scores);
+                            }
+
+                        protected:
+
+                            template<bool is_consider_scores = true >
+                            inline prob_weight execute_query(const phrase_length num_words,
                                     const word_uid * word_ids, phrase_length & min_level,
                                     map<string, prob_weight> * scores = NULL) {
                                 //Re-initialize the joint prob result with zero
@@ -208,17 +225,18 @@ namespace uva {
 
                                 LOG_DEBUG << "Computed log10(Prob(" << m_query << ")) = " << m_joint_prob << ", next min_level:  " << min_level << END_LOG;
 
-                                //Report the feature scores, here we do it outside the model - for simplicity
-                                if (scores != NULL) {
+#if IS_SERVER_TUNING_MODE
+                                //Report the feature scores, here we do it outside the model - for
+                                //simplicity, also only in case that the scores map is present
+                                if (is_consider_scores) {
                                     //Store the score and divide it by the lambda weight to restore the original!
                                     scores->operator[](lm_parameters::LM_WEIGHT_NAMES[0]) = m_joint_prob / m_params.get_0_lm_weight();
                                 }
+#endif
 
                                 //Return the final result;
                                 return m_joint_prob;
                             }
-
-                        protected:
 
                             /**
                              * For the given N-gram, for some level M <=N , this method
