@@ -717,7 +717,7 @@ namespace uva {
                              */
                             inline void dump_state_scores(ostream & scores_dump) const {
                                 scores_dump << to_string(m_state_id);
-                                for (size_t idx = 0; idx < m_state_data.m_stack_data.m_params.m_weight_name_2_id.size(); ++idx) {
+                                for (size_t idx = 0; idx < m_state_data.m_stack_data.get_num_features(); ++idx) {
                                     if (m_state_data.m_lattice_scores[idx] != 0.0) {
                                         scores_dump << " " << to_string(idx) << "=" << m_state_data.m_lattice_scores[idx];
                                     }

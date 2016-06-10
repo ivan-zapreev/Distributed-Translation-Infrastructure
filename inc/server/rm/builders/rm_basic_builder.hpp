@@ -128,6 +128,8 @@ namespace uva {
                                 //Skip the first space
                                 ASSERT_CONDITION_THROW(!weights.get_first_space(token), "Could not skip the first space!");
 
+                                LOG_DEBUG2 << "Parsing RM weights: " << weights << END_LOG;
+
                                 //Read the subsequent weights, check that the number of weights is as expected
                                 size_t idx = 0;
                                 prob_weight weight = 0.0;
@@ -135,13 +137,16 @@ namespace uva {
                                     //Parse the token into the entry weight
                                     ASSERT_CONDITION_THROW(!fast_s_to_f(weight, token.str().c_str()),
                                             string("Could not parse the token: ") + token.str());
+
+                                    LOG_DEBUG2 << token << " -> " << to_string(weight) << END_LOG;
+
                                     //Now convert to the log probability and multiply with the appropriate weight
                                     entry.set_weight(idx, log10(weight), m_params.m_lambdas[idx]);
-                                    
+
                                     //Increment the index 
                                     ++idx;
                                 }
-                                
+
                                 //Check that the number of weights is good
                                 ASSERT_CONDITION_THROW(!weights.get_rest_str().empty(),
                                         string("The RM model contains more features than ") +

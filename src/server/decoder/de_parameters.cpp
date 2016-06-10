@@ -43,6 +43,10 @@ namespace uva {
                     const string de_parameters_struct::DE_LI2N_FILE_EXT_PARAM_NAME = "de_lattice_id2name_file_ext";
                     const string de_parameters_struct::DE_SCORES_FILE_EXT_PARAM_NAME = "de_feature_scores_file_ext";
                     const string de_parameters_struct::DE_LATTICE_FILE_EXT_PARAM_NAME = "de_lattice_file_ext";
+
+                    size_t de_parameters_struct::DE_LD_PENALTY_GLOBAL_ID = 0;
+                    size_t de_parameters_struct::DE_WORD_PENALTY_GLOBAL_ID = 0;
+
                 }
             }
         }

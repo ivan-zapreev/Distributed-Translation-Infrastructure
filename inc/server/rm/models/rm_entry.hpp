@@ -109,24 +109,23 @@ namespace uva {
                              * if true then we get the value from the from source phrase case
                              * if false then we get the value for the to source phrase case
                              * @param orient the reordering orientation
-                             * @param scores [in/out] the pointer to the map storing the mapping from the feature name
-                             *               to the feature score, without lambda. If not null and we are in the tuning
-                             *               mode the map will be filled in with the feature-value data
+                             * @param scores the pointer to the array of feature scores that is to 
+                             *               be filled in, unless the provided pointer is NULL.
                              * @return the weight for the given distortion value
                              */
                             template<bool is_from, bool is_consider_scores = true >
-                            inline const prob_weight get_weight(const reordering_orientation orient, map<string, prob_weight> * scores = NULL) const {
+                            inline const prob_weight get_weight(const reordering_orientation orient, prob_weight * scores = NULL) const {
                                 //Get the position of the feature value in the features array
                                 const int8_t position = (is_from ? FROM_POSITIONS[orient] : TO_POSITIONS[orient]);
-                                LOG_DEBUG1 << (is_from ? "FROM " : "TO ") << "ORIENTATION " << orient << " position: "
-                                        << position << ", value: " << m_weights[position] << END_LOG;
+                                LOG_DEBUG2 << (is_from ? "FROM " : "TO ") << "ORIENTATION " << to_string(orient) << " position: "
+                                        << to_string(position) << ", value: " << m_weights[position] << END_LOG;
 
 #if IS_SERVER_TUNING_MODE
                                 if (is_consider_scores) {
+                                    ASSERT_SANITY_THROW((scores == NULL), string("The scores pointer is NULL!"));
                                     //Store the pure feature weight if in the tuning mode 
-                                    LOG_DEBUG1 << position << " -> " << rm_parameters::RM_WEIGHT_NAMES[position] << END_LOG;
-                                    ASSERT_SANITY_THROW((scores == NULL), string("The scores map pointer is NULL!"));
-                                    scores->operator[](rm_parameters::RM_WEIGHT_NAMES[position]) = m_pure_features[position];
+                                    scores[rm_parameters::RM_WEIGHT_GLOBAL_IDS[position]] = m_pure_features[position];
+                                    LOG_DEBUG2 << m_pure_features << "@" << rm_parameters::RM_WEIGHT_NAMES[position] << " = " << m_pure_features[position] << END_LOG;
                                 }
 #endif
 

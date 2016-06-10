@@ -102,24 +102,7 @@ namespace uva {
                              * @return the number of features used in the model
                              */
                             inline size_t get_num_features() const {
-                                return m_params.m_weight_name_2_id.size();
-                            }
-
-                            /**
-                             * Allows to get the feature id by the feature name
-                             * @param name the feature name
-                             * @return the feature id
-                             */
-                            inline size_t get_feature_id(const string & name) const {
-                                //Search for the feature in the map
-                                auto id_iter = m_params.m_weight_name_2_id.find(name);
-                                
-                                //Perform the sanity check to find out if the feature name is registered
-                                ASSERT_SANITY_THROW( id_iter == m_params.m_weight_name_2_id.end(),
-                                        string("The feature id for feature name '") + name + string("' is not known!"));
-
-                                //Return the feature id
-                                return id_iter->second;
+                                return m_params.m_num_features;
                             }
                         };
                     }

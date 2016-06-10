@@ -159,7 +159,7 @@ namespace uva {
                              */
                             virtual prob_weight execute(const phrase_length num_words,
                                     const word_uid * word_ids, phrase_length & min_level,
-                                    map<string, prob_weight> * scores) {
+                                    prob_weight * scores) {
                                 return execute_query(num_words, word_ids, min_level, scores);
                             }
 
@@ -168,7 +168,7 @@ namespace uva {
                             template<bool is_consider_scores = true >
                             inline prob_weight execute_query(const phrase_length num_words,
                                     const word_uid * word_ids, phrase_length & min_level,
-                                    map<string, prob_weight> * scores = NULL) {
+                                    prob_weight * scores = NULL) {
                                 //Re-initialize the joint prob result with zero
                                 m_joint_prob = 0.0;
 
@@ -229,8 +229,11 @@ namespace uva {
                                 //Report the feature scores, here we do it outside the model - for
                                 //simplicity, also only in case that the scores map is present
                                 if (is_consider_scores) {
+                                    ASSERT_SANITY_THROW((scores == NULL), string("The scores pointer is NULL!"));
                                     //Store the score and divide it by the lambda weight to restore the original!
-                                    scores->operator[](lm_parameters::LM_WEIGHT_NAMES[0]) = m_joint_prob / m_params.get_0_lm_weight();
+                                    const prob_weight pure_cost = m_joint_prob / m_params.get_0_lm_weight();
+                                    scores[lm_parameters::LM_WEIGHT_GLOBAL_IDS[0]] = pure_cost;
+                                    LOG_DEBUG2 << lm_parameters::LM_WEIGHT_NAMES[0] << " = " << pure_cost << END_LOG;
                                 }
 #endif
 

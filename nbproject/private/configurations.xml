@@ -616,6 +616,7 @@
           <df name="models">
             <in>phrase_uid.hpp</in>
           </df>
+          <in>feature_id_registry.hpp</in>
         </df>
         <df name="decoder">
           <df name="sentence">

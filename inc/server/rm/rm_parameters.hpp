@@ -35,12 +35,15 @@
 #include "common/utils/string_utils.hpp"
 
 #include "server/server_configs.hpp"
+#include "server/common/feature_id_registry.hpp"
 
 using namespace std;
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::text;
+
+using namespace uva::smt::bpbd::server::common;
 
 namespace uva {
     namespace smt {
@@ -60,6 +63,8 @@ namespace uva {
                         static const string RM_WEIGHTS_PARAM_NAME;
                         //The feature weight names
                         static const string RM_WEIGHT_NAMES[MAX_NUM_RM_FEATURES];
+                        //The feature weight names
+                        static size_t RM_WEIGHT_GLOBAL_IDS[MAX_NUM_RM_FEATURES];
 
                         //The the connection string needed to connect to the model
                         string m_conn_string;
@@ -72,19 +77,15 @@ namespace uva {
 
                         /**
                          * Allows to get the features weights used in the corresponding model.
-                         * @param wcount [in/out] the number of feature weights up until
-                         *                        now, when called, when the call if finished
-                         *                        the number of feature weights including the
-                         *                        added ones.
-                         * @param features [out] the vector the features will be appended to
+                         * @param registry the feature registry entity
                          */
-                        void get_weight_names(size_t & wcount, vector<pair<size_t, string>> &features) {
+                        inline void get_weight_names(feature_id_registry & registry) {
+                            //Declare the feature source 
+                            const string source = __FILENAME__;
                             //Add the feature weight names and increment the weight count
                             for (size_t idx = 0; idx < m_num_lambdas; ++idx) {
                                 //Add the feature global id to its name mapping
-                                features.push_back(pair<size_t, string>(wcount, RM_WEIGHT_NAMES[idx]));
-                                //Increment the feature count
-                                ++wcount;
+                                registry.add_feature(source, RM_WEIGHT_NAMES[idx], RM_WEIGHT_GLOBAL_IDS[idx]);
                             }
                         }
 

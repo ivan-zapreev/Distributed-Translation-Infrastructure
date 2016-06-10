@@ -42,6 +42,7 @@
 #include "server/translation_server.hpp"
 
 #include "common/utils/exceptions.hpp"
+#include "server/common/feature_id_registry.hpp"
 
 #include "server/server_consts.hpp"
 #include "server/cmd_line_handler.hpp"
@@ -55,6 +56,7 @@ using namespace TCLAP;
 
 using namespace uva::smt::bpbd::common;
 using namespace uva::smt::bpbd::server;
+using namespace uva::smt::bpbd::server::common;
 using namespace uva::smt::bpbd::server::decoder;
 using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::lm;
@@ -138,40 +140,6 @@ inline void check_create_lattices_folder(const server_parameters & params) {
     }
 }
 
-inline void dump_feature_to_id_file(const string & cfg_file_name, server_parameters & params,
-        const vector<pair<size_t, string>> &id_to_name) {
-    //Extract the configuration file name without any path prefix 
-    string cfg_name = cfg_file_name;
-    //Search for the last path delimiter symbol
-    size_t last_pos = cfg_name.find_last_of("\\/");
-    //If there path delimiter symbol was found take the remainder
-    if (last_pos != string::npos) {
-        cfg_name = cfg_name.substr(last_pos + 1);
-    }
-
-    //Construct the feature weight to id file name
-    const string file_name = params.m_de_params.m_lattices_folder + "/" +
-            cfg_name + "." + params.m_de_params.m_li2n_file_ext;
-    //Open the output stream to the file
-    ofstream id2n_file(file_name);
-
-    //Check that the file is open
-    ASSERT_CONDITION_THROW(!id2n_file.is_open(), string("Could not open: ") +
-            file_name + string(" for writing"));
-
-    //Iterate and output
-    for (vector<pair < size_t, string>>::const_iterator iter = id_to_name.begin();
-            iter != id_to_name.end(); ++iter) {
-        //Output the mapping to the file
-        id2n_file << iter->first << "\t" << iter->second << std::endl;
-    }
-
-    //Close the file
-    id2n_file.close();
-
-    LOG_USAGE << "The feature id-to-name mapping is dumped into: " << file_name << END_LOG;
-}
-
 /**
  * This function allow to process the feature to id mappings needed
  * for the search lattice. As a part of this process we will need to
@@ -183,27 +151,36 @@ inline void dump_feature_to_id_file(const string & cfg_file_name, server_paramet
  */
 template<bool dump_file = true >
 inline void process_feature_to_id_mappings(const string & cfg_file_name, server_parameters & params) {
-    //The full feature names will be placed into the vector in the fixed order
-    vector<pair<size_t, string>> id_to_name;
-    //The counter for the number of feature weights
-    size_t wcount = 0;
+    //Declare the feature id registry
+    feature_id_registry registry;
 
     //Add the features to the vector
-    params.m_de_params.get_weight_names(wcount, id_to_name);
-    params.m_lm_params.get_weight_names(wcount, id_to_name);
-    params.m_rm_params.get_weight_names(wcount, id_to_name);
-    params.m_tm_params.get_weight_names(wcount, id_to_name);
+    params.m_de_params.get_weight_names(registry);
+    params.m_lm_params.get_weight_names(registry);
+    params.m_rm_params.get_weight_names(registry);
+    params.m_tm_params.get_weight_names(registry);
 
     //Dump the id to feature mapping into the file, if needed
     if (dump_file) {
-        dump_feature_to_id_file(cfg_file_name, params, id_to_name);
+        //Extract the configuration file name without any path prefix 
+        string cfg_name = cfg_file_name;
+        //Search for the last path delimiter symbol
+        size_t last_pos = cfg_name.find_last_of("\\/");
+        //If there path delimiter symbol was found take the remainder
+        if (last_pos != string::npos) {
+            cfg_name = cfg_name.substr(last_pos + 1);
+        }
+        
+        //Construct the feature weight to id file name
+        const string file_name = params.m_de_params.m_lattices_folder + "/" +
+                cfg_name + "." + params.m_de_params.m_li2n_file_ext;
+
+        //Dump the mapping into the file
+        registry.dump_feature_to_id_file(file_name);
     }
 
-    //Add the feature weight name to id the global mapping
-    for (vector<pair < size_t, string>>::const_iterator iter = id_to_name.begin();
-            iter != id_to_name.end(); ++iter) {
-        params.m_de_params.add_weight_name_2_id_mapping(iter->first, iter->second);
-    }
+    //Set the number of features
+    params.m_de_params.m_num_features = registry.size();
 }
 
 /**

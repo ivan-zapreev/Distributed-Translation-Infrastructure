@@ -37,6 +37,7 @@
 
 #include "server/decoder/de_configs.hpp"
 #include "server/server_consts.hpp"
+#include "server/common/feature_id_registry.hpp"
 
 using namespace std;
 
@@ -44,6 +45,7 @@ using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::threads;
 
+using namespace uva::smt::bpbd::server::common;
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::tm;
@@ -87,6 +89,11 @@ namespace uva {
                         //The lattice file parameter name
                         static const string DE_LATTICE_FILE_EXT_PARAM_NAME;
 
+                        //The global id of the linear distortion feature
+                        static size_t DE_LD_PENALTY_GLOBAL_ID;
+                        //The global id of the word penalty feature
+                        static size_t DE_WORD_PENALTY_GLOBAL_ID;
+                        
                         //The distortion limit to use; <integer>
                         //The the number of words to the right and left
                         //from the last phrase end word to consider
@@ -126,9 +133,9 @@ namespace uva {
                         string m_scores_file_ext;
                         //The lattice file extension, is only set if IS_SERVER_TUNING_MODE == true
                         string m_lattice_file_ext;
-                        //Stores the mapping from the feature weight names to the ids.
-                        //This map is not to be output with the << operator.
-                        map<string, size_t> m_weight_name_2_id;
+                        //Stores the number of known features, for the case of lattice generation
+                        //This is not to be output with the << operator.
+                        size_t m_num_features;
 
                         /**
                          * Store the feature ids in a form of an enumeration
@@ -142,37 +149,14 @@ namespace uva {
 
                         /**
                          * Allows to get the features weights used in the corresponding model.
-                         * @param wcount [in/out] the number of feature weights up until
-                         *                        now, when called, when the call if finished
-                         *                        the number of feature weights including the
-                         *                        added ones.
-                         * @param features [out] the vector the features will be appended to
+                         * @param registry the feature registry entity
                          */
-                        void get_weight_names(size_t & wcount, vector<pair<size_t, string>> &features) {
+                        inline void get_weight_names(feature_id_registry & registry) {
+                            //Declare the feature source 
+                            const string source = __FILENAME__;
                             //Add the feature weight names and increment the weight count
-                            features.push_back(pair<size_t, string>(wcount, DE_LD_PENALTY_PARAM_NAME));
-                            ++wcount;
-                            features.push_back(pair<size_t, string>(wcount, DE_WORD_PENALTY_PARAM_NAME));
-                            ++wcount;
-                        }
-
-                        /**
-                         * Allows to add a new feature weight name to id mapping
-                         * @param id the id of the feature weight
-                         * @param name the name of the new feature weight
-                         */
-                        void add_weight_name_2_id_mapping(const size_t & id, const string & name) {
-                            //Search for a feature weight with the same name:
-                            map<string, size_t>::const_iterator iter = m_weight_name_2_id.find(name);
-
-                            //Assert sanity so that we know that the parameter name is unique
-                            ASSERT_CONDITION_THROW(iter != m_weight_name_2_id.end(),
-                                    string("The feature name '") + name +
-                                    string("' already exists with id: ") +
-                                    to_string(iter->second));
-
-                            //Store the mapping for the internal use in the decoder
-                            m_weight_name_2_id[name] = id;
+                            registry.add_feature(source, DE_LD_PENALTY_PARAM_NAME, DE_LD_PENALTY_GLOBAL_ID);
+                            registry.add_feature(source, DE_WORD_PENALTY_PARAM_NAME, DE_WORD_PENALTY_GLOBAL_ID);
                         }
 
                         /**
@@ -202,7 +186,7 @@ namespace uva {
                                 this->m_li2n_file_ext = other.m_li2n_file_ext;
                                 this->m_scores_file_ext = other.m_scores_file_ext;
                                 this->m_lattice_file_ext = other.m_lattice_file_ext;
-                                this->m_weight_name_2_id = other.m_weight_name_2_id;
+                                this->m_num_features = other.m_num_features;
                             }
 
                             return *this;
@@ -257,16 +241,20 @@ namespace uva {
                                     //just use the current folder
                                     m_lattices_folder = ".";
                                 }
-                                
+
                                 ASSERT_CONDITION_THROW((m_li2n_file_ext == ""),
                                         string("The ") + DE_LI2N_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
                                 ASSERT_CONDITION_THROW((m_scores_file_ext == ""),
                                         string("The ") + DE_SCORES_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
                                 ASSERT_CONDITION_THROW((m_lattice_file_ext == ""),
                                         string("The ") + DE_LATTICE_FILE_EXT_PARAM_NAME + string(" must not be empty!"));
-                                ASSERT_CONDITION_THROW((m_weight_name_2_id.size() > MAX_NUMBER_OF_REATURES),
-                                        string("The total number of decoding features: ") +
-                                        to_string(m_weight_name_2_id.size()) +
+                                ASSERT_CONDITION_THROW((m_num_features == 0),
+                                        string("The total number of translation features: ") +
+                                        to_string(m_num_features) +
+                                        string(", must be larger than zero!"));
+                                ASSERT_CONDITION_THROW((m_num_features > MAX_NUMBER_OF_REATURES),
+                                        string("The total number of translation features: ") +
+                                        to_string(m_num_features) +
                                         string(" exceeds the allowed maximum of: ") +
                                         to_string(MAX_NUMBER_OF_REATURES));
 #else

@@ -139,13 +139,13 @@ namespace uva {
                              * to compute the probability for
                              * @param [in/out] min_level the first m-gram level to consider, the next
                              * minimum m-gram level to consider, is limited by LM_M_GRAM_LEVEL_MAX
-                             * @param scores the pointer to the map that is to be filled in with the
-                             *               feature-name/score pairs, unless the provided pointer is NULL.
+                             * @param scores the pointer to the array of feature scores that is to 
+                             *               be filled in, unless the provided pointer is NULL.
                              * @return the resulting probability weight
                              */
                             virtual prob_weight execute(const phrase_length num_words,
                                     const word_uid * word_ids, phrase_length & min_level, 
-                                    map<string, prob_weight> * scores) = 0;
+                                    prob_weight * scores) = 0;
                         };
                     }
                 }

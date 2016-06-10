@@ -80,17 +80,13 @@ namespace uva {
                             static constexpr int32_t ZERRO_WORD_IDX = UNDEFINED_WORD_IDX + 1;
 
 #if IS_SERVER_TUNING_MODE
-#define INIT_STATE_DATA_TUNING_DATA(storage) , m_lattice_scores(storage)
-#define DEFINE_TUNING_FEATURES_MAP(name) map<string, prob_weight> name;
-#define PASS_TUNING_FEATURES_MAP(name) &name
-#define ADD_TUNING_FEATURE_SCORE(name, value) add_feature_score(name, value);
-#define ADD_TUNING_FEATURE_SCORES(data) add_feature_scores(data);
+#define INIT_STATE_DATA_TUNING_DATA , m_lattice_scores(new prob_weight[m_stack_data.get_num_features()]())
+#define PASS_TUNING_FEATURES_MAP m_lattice_scores
+#define ADD_TUNING_FEATURE_SCORE(id, value) m_lattice_scores[id] = value;
 #else
-#define INIT_STATE_DATA_TUNING_DATA(storage)
-#define DEFINE_TUNING_FEATURES_MAP(name)
-#define PASS_TUNING_FEATURES_MAP(name) NULL
+#define INIT_STATE_DATA_TUNING_DATA
+#define PASS_TUNING_FEATURES_MAP NULL
 #define ADD_TUNING_FEATURE_SCORE(name, value)
-#define ADD_TUNING_FEATURE_SCORES(data)
 #endif                        
 
                             /**
@@ -108,7 +104,7 @@ namespace uva {
                             //Add the sentence begin tag uid to the target, since this is for the begin state
                             m_trans_frame(1, &m_stack_data.m_lm_query.get_begin_tag_uid()),
                             m_begin_lm_level(M_GRAM_LEVEL_1),
-                            m_covered(), m_partial_score(0.0), m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA(NULL) {
+                            m_covered(), m_partial_score(0.0), m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA {
                                 LOG_DEBUG1 << "New BEGIN state data: " << this << ", translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___<s>___" << END_LOG;
@@ -138,7 +134,7 @@ namespace uva {
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             //The coverage vector stays the same, nothing new is added, we take over the partial score
                             m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score),
-                            m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA(new prob_weight[m_stack_data.get_num_features()]()) {
+                            m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA {
                                 LOG_DEBUG1 << "New END state data: " << this << " translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___</s>___" << END_LOG;
@@ -173,7 +169,7 @@ namespace uva {
                             m_trans_frame(prev_state_data.m_trans_frame, m_target->get_num_words(), m_target->get_word_ids()),
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             m_covered(covered), m_partial_score(prev_state_data.m_partial_score),
-                            m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA(new prob_weight[m_stack_data.get_num_features()]()) {
+                            m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA {
                                 LOG_DEBUG1 << "New state data: " << this << ", translating [" << m_s_begin_word_idx
                                         << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
                                         << ", lm_level=" << m_begin_lm_level << ", target = ___"
@@ -308,29 +304,8 @@ namespace uva {
                             const prob_weight m_total_score;
 
 #if IS_SERVER_TUNING_MODE
-
                             //An array of lattice scores for the case of server tuning
-                            const prob_weight * const m_lattice_scores;
-
-                            /**
-                             * Allows to add the used feature score into the lattice scores data
-                             * @param name the name of the feature
-                             * @param value the value of the feature score
-                             */
-                            inline void add_feature_score(const string & name, const prob_weight & value) {
-                                LOG_DEBUG2 << "Adding feature score: " << name << " -> " << value << END_LOG;
-                                const_cast<prob_weight &> (m_lattice_scores[m_stack_data.get_feature_id(name)]) = value;
-                            }
-
-                            /**
-                             * Allows to add the feature scores into the lattice scores data
-                             * @param scores the map storing the feature-name/score pairs
-                             */
-                            inline void add_feature_scores(map<string, prob_weight> scores) {
-                                for (auto iter = scores.cbegin(); iter != scores.end(); ++iter) {
-                                    add_feature_score(iter->first, iter->second);
-                                }
-                            }
+                            prob_weight * const m_lattice_scores;
 #endif
 
                         private:
@@ -368,18 +343,10 @@ namespace uva {
                                         << act_hist_words << ", new_words: " << num_new_words << ", query words: "
                                         << array_to_string<word_uid>(num_query_words, query_word_ids) << END_LOG;
 
-                                //Define the feature scores data map
-                                DEFINE_TUNING_FEATURES_MAP(scores);
-
                                 //Execute the query and return the value
-                                const prob_weight prob = m_stack_data.m_lm_query.execute(
+                                return m_stack_data.m_lm_query.execute(
                                         num_query_words, query_word_ids,
-                                        m_begin_lm_level, PASS_TUNING_FEATURES_MAP(scores));
-
-                                //Process the tuning feature scores data
-                                ADD_TUNING_FEATURE_SCORES(scores);
-
-                                return prob;
+                                        m_begin_lm_level, PASS_TUNING_FEATURES_MAP);
                             }
 
                             /**
@@ -394,7 +361,7 @@ namespace uva {
                                 }
 
                                 //Store the lin dist cost feature value without the lambda, so just the distance
-                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_LD_PENALTY_PARAM_NAME, distance);
+                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_LD_PENALTY_GLOBAL_ID, distance);
 
                                 return m_stack_data.m_params.m_lin_dist_penalty * distance;
                             }
@@ -410,19 +377,9 @@ namespace uva {
                                         prev_state_data.m_s_begin_word_idx,
                                         prev_state_data.m_s_end_word_idx,
                                         m_s_begin_word_idx, m_s_end_word_idx);
-
-                                //Define the feature scores data map
-                                DEFINE_TUNING_FEATURES_MAP(scores);
-
                                 //Compute the reordering costs
-                                prob_weight costs =
-                                        prev_state_data.template get_weight<true>(orient, PASS_TUNING_FEATURES_MAP(scores)) +
-                                        this->template get_weight<false>(orient, PASS_TUNING_FEATURES_MAP(scores));
-
-                                //Process the tuning feature scores data
-                                ADD_TUNING_FEATURE_SCORES(scores);
-
-                                return costs;
+                                return prev_state_data.template get_weight<true>(orient, PASS_TUNING_FEATURES_MAP) +
+                                        this->template get_weight<false>(orient, PASS_TUNING_FEATURES_MAP);
                             }
 
                             /**
@@ -434,7 +391,7 @@ namespace uva {
                              * @return the weight for the given distortion value
                              */
                             template<bool is_from>
-                            inline const prob_weight get_weight(const reordering_orientation orient, map<string, prob_weight> * scores = NULL) const {
+                            inline const prob_weight get_weight(const reordering_orientation orient, prob_weight * scores = NULL) const {
                                 return rm_entry_data.template get_weight<is_from>(orient, scores);
                             }
 
@@ -443,17 +400,8 @@ namespace uva {
                              * @return the translation model probability for the chosen phrase translation
                              */
                             inline prob_weight get_tm_cost() {
-
-                                //Define the feature scores data map
-                                DEFINE_TUNING_FEATURES_MAP(scores);
-
-                                //Compute the reordering costs
-                                prob_weight costs = m_target->get_total_weight(PASS_TUNING_FEATURES_MAP(scores));
-
-                                //Process the tuning feature scores data
-                                ADD_TUNING_FEATURE_SCORES(scores);
-
-                                return costs;
+                                //Get the translation model costs
+                                return m_target->get_total_weight(PASS_TUNING_FEATURES_MAP);
                             }
 
                             /**
@@ -463,7 +411,7 @@ namespace uva {
                             inline prob_weight get_word_cost() {
                                 //Store the word penalty feature value without the lambda
                                 //It will be the number of words with the negative sign
-                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_WORD_PENALTY_PARAM_NAME, m_target->get_num_words());
+                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_WORD_PENALTY_GLOBAL_ID, m_target->get_num_words());
 
                                 return m_stack_data.m_params.m_word_penalty * m_target->get_num_words();
                             }

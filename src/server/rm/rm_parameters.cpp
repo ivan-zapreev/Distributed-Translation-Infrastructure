@@ -43,6 +43,7 @@ namespace uva {
                         RM_WEIGHTS_PARAM_NAME + string("[6]"),
                         RM_WEIGHTS_PARAM_NAME + string("[7]")
                     };
+                    size_t rm_parameters_struct::RM_WEIGHT_GLOBAL_IDS[MAX_NUM_RM_FEATURES] = {};
                 }
             }
         }

@@ -21,6 +21,11 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="server">
+        <df name="common">
+          <in>feature_id_registry.hpp</in>
+        </df>
+      </df>
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -208,6 +213,11 @@
           </incDir>
         </ccTool>
       </folder>
+      <item path="inc/server/common/feature_id_registry.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
