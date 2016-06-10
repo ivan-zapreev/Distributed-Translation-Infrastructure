@@ -48,6 +48,8 @@ cd ${LATTICES_DERECTORY}
 
 #Collect the lattice file names
 export SENTENCE_FILES=`ls *.${LATTICE_FILE_EXT} | cut -f 1 -d '.' | sort -k 1n`
+#Obtain the minimum sentence id
+export MIN_FILE_NAME=`echo ${SENTENCE_FILES} | sed -e "s/ .*//"`
 
 #Define the lattices and scores output file names
 export LATTICES_OUT_FILE="${OUTPUT_FILE_NAME}.lattices"
@@ -58,10 +60,10 @@ rm -f ${LATTICES_OUT_FILE} ${SCORES_OUT_FILE}
 
 #Iterate through the files and combine them into lattices and scores file
 for FILE_NAME in ${SENTENCE_FILES}; do
-  echo "Considering ${FILE_NAME}.${LATTICE_FILE_EXT} and ${FILE_NAME}.${SCORE_FILE_EXT}"
-  
   #Compute the sentence id
-  export SENT_ID=$(expr ${FILE_NAME} - 1)
+  export SENT_ID=$(expr ${FILE_NAME} - ${MIN_FILE_NAME})
+
+  echo "Processing ${FILE_NAME}.${LATTICE_FILE_EXT} and ${FILE_NAME}.${SCORE_FILE_EXT}, sentence id: ${SENT_ID}"
 
   #Append the lattice data
   echo "<SENT ID=${SENT_ID}>" >> ${LATTICES_OUT_FILE}
