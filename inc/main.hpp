@@ -26,6 +26,9 @@ namespace uva {
         namespace bpbd {
             namespace common {
 
+//Declare the program version string
+#define PROGRAM_VERSION_STR "1.1"
+
                 // Check windows
 #if _WIN32 || _WIN64
 #if _WIN64
@@ -53,10 +56,10 @@ namespace uva {
                 /**
                  * This functions does nothing more but printing the program header information
                  */
-                static void print_info(const char * prog_name_str, const char * prog_ver_str) {
+                static void print_info(const char * prog_name_str) {
                     LOG_USAGE << " ------------------------------------------------------------------ " << END_LOG;
                     LOG_USAGE << "|                 " << prog_name_str << "     :)\\___/(: |" << END_LOG;
-                    LOG_USAGE << "|                       Software version " << prog_ver_str << "             {(@)v(@)} |" << END_LOG;
+                    LOG_USAGE << "|                       Software version " << PROGRAM_VERSION_STR << "             {(@)v(@)} |" << END_LOG;
                     LOG_USAGE << "|                         The Owl release.               {|~- -~|} |" << END_LOG;
                     LOG_USAGE << "|            Copyright (C) Dr. Ivan S Zapreev, 2015-2016 {/^'^'^\\} |" << END_LOG;
                     LOG_USAGE << "|  ═════════════════════════════════════════════════════════m-m══  |" << END_LOG;

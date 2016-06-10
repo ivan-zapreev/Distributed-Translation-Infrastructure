@@ -44,14 +44,11 @@ using namespace uva::smt::bpbd::client;
 using namespace uva::smt::bpbd::common;
 using namespace uva::smt::bpbd::common::messaging;
 
-//Declare the program version string
-#define PROGRAM_VERSION_STR "1.0"
-
 /**
  * This functions does nothing more but printing the program header information
  */
 static void print_info() {
-    print_info("The translation client application", PROGRAM_VERSION_STR);
+    print_info("The translation client application");
 }
 
 //The pointer to the command line parameters parser

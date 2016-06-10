@@ -66,14 +66,11 @@ using namespace uva::utils::exceptions;
 
 using websocketpp::lib::bind;
 
-//Declare the program version string
-#define PROGRAM_VERSION_STR "1.0"
-
 /**
  * This functions does nothing more but printing the program header information
  */
 static void print_info() {
-    print_info("The translation server application", PROGRAM_VERSION_STR);
+    print_info("The translation server application");
 }
 
 //The pointer to the command line parameters parser

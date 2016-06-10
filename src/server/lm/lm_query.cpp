@@ -57,14 +57,11 @@ using namespace uva::utils::logging;
 using namespace uva::utils::text;
 using namespace uva::utils::exceptions;
 
-//Declare the program version string
-#define PROGRAM_VERSION_STR "1.1"
-
 /**
  * This functions does nothing more but printing the program header information
  */
 static void print_info() {
-    print_info("Back Off Language Model(s) for SMT", PROGRAM_VERSION_STR);
+    print_info("Back Off Language Model(s) for SMT");
 }
 
 //The pointer to the command line parameters parser
