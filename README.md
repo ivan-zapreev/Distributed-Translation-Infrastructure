@@ -123,7 +123,7 @@ For the sake of performance optimizations, the project has a number of compile-t
 * `lm::LM_HISTORY_LEN_MAX` - **do not change** this parameter 
 * `lm::LM_MAX_QUERY_LEN` - **do not change** this parameter 
 * `lm::DEF_UNK_WORD_LOG_PROB_WEIGHT` - The default unknown word probability weight, for the case the `<unk>` entry is not present in the language model file _(log10 scale)_
-* `rm::MAX_NUM_RM_FEATURES` - Defines the maximum allowed number of the reordering model features to be read, per reordering entry, from the model input file. The number of features must be even, the maximum supported number of features is currenly `8`.
+* `rm::MAX_NUM_RM_FEATURES` - Defines the maximum allowed number of the reordering model features to be read, per reordering entry, from the model input file. The number of features must be even, the maximum supported number of features is currently `8`.
 
 **Decoder configs:** The decoder-specific parameters are located in `./inc/server/decoder/de_configs.hpp`:
 
@@ -201,69 +201,76 @@ When run with a properly formed configuration file, **bpbd-server** gives the fo
 $ bpbd-server -c ../data/default-1-3.000.000.cfg -d info1
 <...>
 USAGE: The requested debug level is: 'INFO1', the maximum build level is 'INFO3' the set level is 'INFO1'
-USAGE: Loading the server configuration option from: ../data/default-1-3.000.000.cfg
+USAGE: Loading the server configuration option from: ../data/default-1-10.000.cfg
+INFO: The configuration file has been parsed!
 USAGE: Translation server from 'German' into 'English' on port: '9002' translation threads: '25'
-INFO: LM parameters: [ conn_string = ../data/models/e_30_2564372.lm, num_lm_feature_weights = 1, lm_feature_weights = [ 1 ] ]
-INFO: TM parameters: [ conn_string = ../data/models/de-en-1-3.000.000.tm, num_tm_feature_weights = 4, tm_feature_weights = [ 1|1|1|1 ], translation_limit = 30, min_trans_prob = 1e-20 ]
-INFO: RM parameters: [ conn_string = ../data/models/de-en-1-3.000.000.rm, num_rm_feature_weights = 6, rm_feature_weights = [ 1|1|1|1|1|1 ] ]
-INFO: DE parameters: [ distortion = 5, ext_dist_left = 1, num_best_trans = 10, pruning_threshold = 1.1, stack_capacity = 100, word_penalty = -0.3, phrase_penalty = 1.2, max_source_phrase_len = 7, max_target_phrase_len = 7 ]
+INFO: LM parameters: [ conn_string = ../data/models/e_00_1000.lm, lm_feature_weights[1] = [ 0.200000 ] ]
+INFO: TM parameters: [ conn_string = ../data/models/de-en-1-10.000.tm, tm_feature_weights[5] = [ 1.000000|1.000000|1.000000|1.000000|1.000000 ], tm_unk_features[5] = [ 1.000000|1.000000|0.000000|1.000000|1.000000 ], tm_trans_lim = 30, tm_min_trans_prob = 1e-20 ]
+INFO: RM parameters: [ conn_string = ../data/models/de-en-1-10.000.rm, rm_feature_weights[6] = [ 1.000000|1.000000|1.000000|1.000000|1.000000|1.000000 ] ]
+WARN: The de_is_gen_lattice is set to true in a non-training mode server compilation, re-setting to false!
+INFO: DE parameters: [ de_dist_lim = 5, de_lin_dist_penalty = 1, de_pruning_threshold = 0.1, de_stack_capacity = 100, de_word_penalty = -0.3, de_max_source_phrase_length = 7, de_max_target_phrase_length = 7, de_is_gen_lattice = false ]
 USAGE: --------------------------------------------------------
 USAGE: Start creating and loading the Language Model ...
-USAGE: Language Model is located in: ../data/models/e_30_2564372.lm
+USAGE: Language Model is located in: ../data/models/e_00_1000.lm
 USAGE: Using the <cstyle_file_reader.hpp> file reader!
 USAGE: Using the <h2d_map_trie.hpp> model.
 INFO: The <h2d_map_trie.hpp> model's buckets factor: 2
-INFO: Expected number of M-grams per level: [ 199164 4202658 15300577 26097321 31952150 ]
+INFO: Expected number of M-grams per level: [ 4101 14605 19222 19930 19618 ]
 INFO1: Pre-allocating memory:  0 hour(s) 0 minute(s) 0 second(s) 
 INFO1: Reading ARPA 1-Grams:  0 hour(s) 0 minute(s) 0 second(s) 
-INFO1: Reading ARPA 2-Grams:  0 hour(s) 0 minute(s) 5 second(s) 
-INFO1: Reading ARPA 3-Grams:  0 hour(s) 0 minute(s) 27 second(s) 
-INFO1: Reading ARPA 4-Grams:  0 hour(s) 0 minute(s) 56 second(s) 
-INFO1: Reading ARPA 5-Grams:  0 hour(s) 1 minute(s) 16 second(s) 
-USAGE: Reading the Language Model took 170.276 CPU seconds.
+INFO1: Reading ARPA 2-Grams:  0 hour(s) 0 minute(s) 0 second(s) 
+INFO1: Reading ARPA 3-Grams:  0 hour(s) 0 minute(s) 0 second(s) 
+INFO1: Reading ARPA 4-Grams:  0 hour(s) 0 minute(s) 0 second(s) 
+INFO1: Reading ARPA 5-Grams:  0 hour(s) 0 minute(s) 0 second(s) 
+USAGE: Reading the Language Model took 0.149301 CPU seconds.
 USAGE: Action: 'Loading the Language Model' memory change:
-USAGE: vmsize=+1770 Mb, vmpeak=+1770 Mb, vmrss=+1771 Mb, vmhwm=+1771 Mb
+USAGE: vmsize=+0 Mb, vmpeak=+0 Mb, vmrss=+0 Mb, vmhwm=+0 Mb
 USAGE: --------------------------------------------------------
 USAGE: Start creating and loading the Translation Model ...
-USAGE: Translation Model is located in: ../data/models/de-en-1-3.000.000.tm
+USAGE: Translation Model is located in: ../data/models/de-en-1-10.000.tm
 USAGE: Using the <cstyle_file_reader.hpp> file reader!
 USAGE: Using the hash-based translation model: tm_basic_model.hpp
-INFO1: Counting phrase translations:  0 hour(s) 0 minute(s) 10 second(s) 
-INFO: The number of valid TM source entries is: 1620524
-INFO1: Building translation model:  0 hour(s) 0 minute(s) 43 second(s) 
-USAGE: Reading the Translation Model took 58.8196 CPU seconds.
+INFO1: Pre-loading phrase translations:  0 hour(s) 0 minute(s) 0 second(s) 
+INFO: The number of loaded TM source entries is: 7055
+INFO1: Storing the pre-loaded phrase translations:  0 hour(s) 0 minute(s) 0 second(s) 
+INFO: The phrase-translations table is created and loaded
+USAGE: Reading the Translation Model took 0.182227 CPU seconds.
 USAGE: Action: 'Loading the Translation Model' memory change:
-USAGE: vmsize=+550 Mb, vmpeak=+550 Mb, vmrss=+550 Mb, vmhwm=+550 Mb
+USAGE: vmsize=+0 Mb, vmpeak=+0 Mb, vmrss=+0 Mb, vmhwm=+0 Mb
 USAGE: --------------------------------------------------------
 USAGE: Start creating and loading the Reordering Model ...
-USAGE: Reordering Model is located in: ../data/models/de-en-1-3.000.000.rm
+USAGE: Reordering Model is located in: ../data/models/de-en-1-10.000.rm
 USAGE: Using the <cstyle_file_reader.hpp> file reader!
 USAGE: Using the hash-based reordering model: rm_basic_model.hpp
-INFO1: Counting reordering entries:  0 hour(s) 0 minute(s) 6 second(s) 
-INFO: The number of RM source/target entries matching TM is: 2567397
-INFO1: Building reordering model:  0 hour(s) 0 minute(s) 12 second(s) 
-USAGE: Reading the Reordering Model took 21.6754 CPU seconds.
+INFO1: Counting reordering entries:  0 hour(s) 0 minute(s) 0 second(s) 
+INFO: The number of RM source/target entries matching TM is: 9694
+INFO1: Building reordering model:  0 hour(s) 0 minute(s) 0 second(s) 
+USAGE: Reading the Reordering Model took 0.161332 CPU seconds.
 USAGE: Action: 'Loading the Reordering Model' memory change:
-USAGE: vmsize=+78 Mb, vmpeak=+61 Mb, vmrss=+78 Mb, vmhwm=+61 Mb
+USAGE: vmsize=+0 Mb, vmpeak=+0 Mb, vmrss=+0 Mb, vmhwm=+0 Mb
 USAGE: The server is started!
+USAGE: --------------------------------------------------------
 <...>
 ```
-In the first seven lines we see information loaded from the configuration file. Further, the LM, TM, and RM, models are loaded and the information thereof is provided. Note that for less output one can simply run `bpbd-server -c ../data/default-1-3.000.000.cfg`.
+In the first seven lines we see information loaded from the configuration file. Further, the LM, TM, and RM, models are loaded and the information thereof is provided. Note that for less output one can simply run `bpbd-server -c ../data/default-1-10.000.cfg`.
 
 There is a few important things to note about the configuration file at the moment:
 
-* `[Translation Models]/tm_feature_weights` - the number of features must be equal to the value of `tm::NUM_TM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
-* `[Translation Models]/tm_unk_features` - the number of features must be equal to the value of `tm::NUM_TM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
-* `[Reordering Models]/rm_feature_weights` - the number of features must be equal to the value of `lm::NUM_RM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
-* `[Language Models]/lm_feature_weights` - the number of features must be equal to the value of `lm::NUM_LM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
+* `[Translation Models]/tm_feature_weights` - the number of features must not exceed the value of `tm::MAX_NUM_TM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
+* `[Translation Models]/tm_unk_features` - the number of features must not exceed the value of `tm::MAX_NUM_TM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
+* `[Reordering Models]/rm_feature_weights` - the number of features must not exceed the value of `lm::MAX_NUM_RM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
+* `[Language Models]/lm_feature_weights` - the number of features must not exceed the value of `lm::MAX_NUM_LM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
+
+Note that, if there number of lambda weights specified in the configuration file is less than the actual number of features in the corresponding model then the remaining lambda's a re taken to be zero. In other words, those additional weights, which do not have corresponding lambda values, are ignored and not loaded.
 
 ####Server console####
 Once the server is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the server. The list of available server console commands is given in the listing below:
 
 ```
-$ bpbd-server -c ../data/default-1-3.000.000.cfg -d info2
+$ bpbd-server -c ../data/default-1-10.000.cfg -d info2
 <...>
 USAGE: The server is started!
+USAGE: --------------------------------------------------------
 USAGE: Available server commands: 
 USAGE: 	'q & <enter>'  - to exit.
 USAGE: 	'h & <enter>'  - print HELP info.
@@ -271,13 +278,11 @@ USAGE: 	'r & <enter>'  - run-time statistics.
 USAGE: 	'p & <enter>'  - print server parameters.
 USAGE: 	'set ll <level> & <enter>'  - set log level.
 USAGE: 	'set nt  <positive integer> & <enter>'  - set the number of worker threads.
-USAGE: 	'set nbt <unsigned integer> & <enter>'  - set the number of best translations.
 USAGE: 	'set d <integer> & <enter>'  - set the distortion limit.
-USAGE: 	'set edl <unsigned integer> & <enter>'  - set the extra left distortion.
 USAGE: 	'set pt <unsigned float> & <enter>'  - set pruning threshold.
 USAGE: 	'set sc <integer> & <enter>'  - set stack capacity.
+USAGE: 	'set ldp <float> & <enter>'  - set linear distortion penalty.
 USAGE: 	'set wp <float> & <enter>'  - set word penalty.
-USAGE: 	'set pp <float> & <enter>'  - set phrase penalty.
 >> 
 ```
 Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, **bpbd-server** has just one copy of the server run time parameters used from all the translation processes. So in case of active translation process, changing these parameters can cause disruptions thereof starting from an inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not experience any disruptions.
