@@ -86,8 +86,7 @@ namespace uva {
                             //Increment the next feature id
                             m_next_feature_id++;
 
-                            LOG_USAGE << source_name << "::" << feature_name << " -> " << to_string(global_feature_id) << END_LOG;
-                            
+                            LOG_DEBUG << source_name << "::" << feature_name << " -> " << to_string(global_feature_id) << END_LOG;
                             
                             //Remember the feature source
                             m_feature_2_source[feature_name] = source_name;
