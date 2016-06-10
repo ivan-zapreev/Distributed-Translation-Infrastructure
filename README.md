@@ -5,8 +5,7 @@
 **Project pages:** [Git-Hub-Project](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT)
 
 ##Introduction
-This fork from the Back Off Language Model(s) for SMT project is aimed at creating an entire phrase-based statistical machine translation system.
-The delivered software follows a client/server architecture based on Web Sockets for C++ and consists of the three main applications::
+This fork from the Back Off Language Model(s) for SMT project is aimed at creating an entire phrase-based statistical machine translation system. The delivered software follows a client/server architecture based on Web Sockets for C++ and consists of the three main applications::
 
 + **bpbd-client** - a thin client to send the translation job requests to the translation server and obtain results
 + **bpbd-server** - the translation server consisting of the following main components:
@@ -105,24 +104,26 @@ After these are performed, the project can be build in two ways:
 The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run `make clean`. Cleaning from Netbeans is as simple calling the `Clean and Build` from the `Run` menu.
 
 ###Project compile-time parameters
-For the sake of performance optimizations, the project has a number of compile-time parameters that are to be set before the project is build and can not be modified in the runtime. Let us consider the most important of them and indicate where all of them are to be found.
+For the sake of performance optimizations, the project has a number of compile-time parameters that are to be set before the project is build and can not be modified in the run time. Let us consider the most important of them and indicate where all of them are to be found.
 
-**Logging level:** Logging is important when debugging software or providing an additional user information during the program's runtime. Yet additional output actions come at a price and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its runtime but also at compile time. The possible range of project's logging levels, listed incrementally, is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at runtime by setting the `LOGER_M_GRAM_LEVEL_MAX` constant value in the `./inc/common/utils/logging/logger.hpp` header file. The default value is INFO3.
+**Tuning mode:** The software can be compiled in the tuning mode, which supports the search-lattice generation for the performance tuning of the translation system. The performance is measured in terms of the translation quality measure such as BLEU. When the software is compiled in the tuning mode, it is a number of times slower than in the regular, i.e. production, mode. Enabling of the tuning mode can be done by setting the value of the `IS_SERVER_TUNING_MODE` macro to `true` in the `./inc/server/server_configs.hpp` file and then re-compiling the software. The tuning mode only has impact on the **bpbd-server** executable. The lattice dumping is then not immediately enabled and configured. The latter can be done via the server's [configuration file](#configuration-file).
 
-**Sanity checks:** When program is not running as expected, it could be caused by the internal software errors that are potentially detectable at runtime. This software has a number of build-in sanity checks that can be enabled/disabled at compile time by setting the `DO_SANITY_CHECKS` boolean flag in the `./inc/common/utils/exceptions.hpp` header file. Note that enabling the sanity checks does not guarantee that the internal error will be found but will have a negative effect on the program's performance. Yet, it might help to identify some of the errors with e.g. input file formats and alike.
+**Logging level:** Logging is important when debugging software or providing an additional user information during the program's run time. Yet additional output actions come at a price and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its run time but also at compile time. The possible range of project's logging levels, listed incrementally, is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at run time by setting the `LOGER_M_GRAM_LEVEL_MAX` constant value in the `./inc/common/utils/logging/logger.hpp` header file. The default value is INFO3.
+
+**Sanity checks:** When program is not running as expected, it could be caused by the internal software errors that are potentially detectable at run time. This software has a number of build-in sanity checks that can be enabled/disabled at compile time by setting the `DO_SANITY_CHECKS` boolean flag in the `./inc/common/utils/exceptions.hpp` header file. Note that enabling the sanity checks does not guarantee that the internal error will be found but will have a negative effect on the program's performance. Yet, it might help to identify some of the errors with e.g. input file formats and alike.
 
 **Server configs:** There is a number of translation server common parameters used in decoding, translation, reordering and language models. Those are to be found in the `./inc/server/server_configs.hpp`:
 
 * `UNKNOWN_LOG_PROB_WEIGHT` - The value used for the unknown probability weight _(log10 scale)_
 * `ZERO_LOG_PROB_WEIGHT` - The value used for the 'zero' probability weight _(log10 scale)_
-* `tm::NUM_TM_FEATURES` - The number of the translation model features, which defines the exact number of features read per entry from the translation model input file
+* `tm::MAX_NUM_TM_FEATURES` - Defines the maximum allowed number of the translation model features to be read, per translation target, from the model input file
 * `tm::TM_MAX_TARGET_PHRASE_LEN` - The maximum length of the target phrase to be considered, this defines the maximum number of tokens to be stored per translation entry
-* `lm::NUM_LM_FEATURES` - The number of language model features, the program currently supports only one value: `1`
+* `lm::MAX_NUM_LM_FEATURES` - The maximum allowed number of language model features, the program currently supports only one value: `1`, which is also the minimum allowed number of features
 * `lm::LM_M_GRAM_LEVEL_MAX` - The language model maximum level, the maximum number of words in the language model phrase
 * `lm::LM_HISTORY_LEN_MAX` - **do not change** this parameter 
 * `lm::LM_MAX_QUERY_LEN` - **do not change** this parameter 
 * `lm::DEF_UNK_WORD_LOG_PROB_WEIGHT` - The default unknown word probability weight, for the case the `<unk>` entry is not present in the language model file _(log10 scale)_
-* `rm::NUM_RM_FEATURES` - The number of reordering model features, the only two currently supported values are: `6` and `8`
+* `rm::MAX_NUM_RM_FEATURES` - Defines the maximum allowed number of the reordering model features to be read, per reordering entry, from the model input file. The number of features must be even, the maximum supported number of features is currenly `8`.
 
 **Decoder configs:** The decoder-specific parameters are located in `./inc/server/decoder/de_configs.hpp`:
 
@@ -150,7 +151,7 @@ For the sake of performance optimizations, the project has a number of compile-t
      * `memory_mapped_file_reader` - uses memory-mapped files which are faster than the `cstyle_file_reader` but consume twice the file size memory (virtual RAM).
 * `lm_builder_type` - currently there is just one builder type available: `lm_basic_builder<lm_model_reader>`.
 
-Note that not all of the combinations of the `lm_word_index` and `lm_model_type` can work together, this is reported runtime after the program is build. Some additional details on the preferred configurations can be also found in the `./inc/server/lm/lm_consts.hpp` header file comments. The default, and the most optimal performance/memory ratio configuration, is:
+Note that not all of the combinations of the `lm_word_index` and `lm_model_type` can work together, this is reported run time after the program is build. Some additional details on the preferred configurations can be also found in the `./inc/server/lm/lm_consts.hpp` header file comments. The default, and the most optimal performance/memory ratio configuration, is:
 
 * `lm_word_index` being set to `hashing_word_index`
 * `lm_model_type` begin set to `h2d_map_trie<lm_word_index>`.
@@ -279,7 +280,7 @@ USAGE: 	'set wp <float> & <enter>'  - set word penalty.
 USAGE: 	'set pp <float> & <enter>'  - set phrase penalty.
 >> 
 ```
-Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, **bpbd-server** has just one copy of the server runtime parameters used from all the translation processes. So in case of active translation process, changing these parameters can cause disruptions thereof starting from an inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not experience any disruptions.
+Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, **bpbd-server** has just one copy of the server run time parameters used from all the translation processes. So in case of active translation process, changing these parameters can cause disruptions thereof starting from an inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not experience any disruptions.
 
 ###Translation client: _bpbd-client_
 The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line without any parameters, **bpbd-client** reports on the available command-line options:
@@ -304,7 +305,7 @@ One of the main required parameters of the translation client is the input file.
 
 Once started, the translation client makes a web socket connection to the translation server, reads text from the input file, splits it into a number of translation job requests (which are sent to the translation server) and waits for the reply. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run: `bpbd-client --help`.
 
-Once the translations are performed, and the translation job responses are received, the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each output line/sentence also gets prefixed with a translation status having a form: `<status>`. If a translation task was cancelled, or an error has occurred then it is indicated by the status and the information about that is also placed in the output file on the corresponding sentence line.
+Once the translations are performed, and the translation job responses are received, the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each output line/sentence also gets prefixed with a translation status having a form: `<status>`. If a translation task was canceled, or an error has occurred then it is indicated by the status and the information about that is also placed in the output file on the corresponding sentence line.
 
 Remember that, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the **UTF8** encoding.
 
@@ -414,7 +415,7 @@ The `[Project-Folder]/Doxyfile` can be used to re-generate the documentation at 
 ##External libraries
 At present this project uses the following external/third-party header-only libraries:
 
-| Library Name | Purpose | Website | Version | Licence |
+| Library Name | Purpose | Website | Version | License |
 |:------------|:--------:|:-------:|:-------:|:-------:|
 |Feather ini parser|_Fast, lightweight, header, portable INI/configuration file parser for ANSI C++._|[link](https://github.com/Turbine1991/feather-ini-parser)|1.40|[MIT](http://www.linfo.org/mitlicense.html)|
 |WebSocket++|_Is an open source, header only C++ library implementing RFC6455 (The WebSocket Protocol)._|[link](http://www.zaphoyd.com/websocketpp)|0.6.0|[BSD](http://www.linfo.org/bsdlicense.html)|
@@ -425,7 +426,7 @@ At present this project uses the following external/third-party header-only libr
 In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix Tests](#appendix-tests)
 
 ###Test set-up
-The main target of this experimental comparison is to evaluate memory consumption and query times of the implemented tries. For doing that we do not rely on the time and memory statis- tics reported by the tools but rather, for the sake of uniform and independent opinion, rely on the Linux standard time utility available in the `zsh` Linux shell. The latter provides system- measured statistics about the program run. We choose to measure:
+The main target of this experimental comparison is to evaluate memory consumption and query times of the implemented tries. For doing that we do not rely on the time and memory statistics reported by the tools but rather, for the sake of uniform and independent opinion, rely on the Linux standard time utility available in the `zsh` Linux shell. The latter provides system- measured statistics about the program run. We choose to measure:
 
 * **MRSS** - the maximum resident memory usage of the program
 * **CPU time** - the CPU time in seconds

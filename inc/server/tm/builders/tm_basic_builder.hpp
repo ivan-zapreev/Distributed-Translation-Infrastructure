@@ -156,6 +156,7 @@ namespace uva {
                              * check that they are valid with respect to the option bound
                              * If needed the weights will be converted to log scale and
                              * multiplied with the lambda factors
+                             * \todo Get rid of magic constants in this function!
                              * @param is_get_weights if the weights are to be retrieved or just checked
                              * @param rest [in] the text piece with weights and other TM stuff, that starts with a space!
                              * @param storage [out] the read and post-processed features features if they satisfy on the constraints

@@ -280,7 +280,7 @@ namespace uva {
 
                             /**
                              * Allows to set the weights into the target entry.
-                             * \todo Get rid of magic constants here!
+                             * \todo Get rid of magic constants in this function!
                              * @param features the weights to be set into the entry
                              * @param pure_features the feature values without the lambda weights,
                              *        to be stored for server tuning mode, default is NULL
@@ -313,7 +313,7 @@ namespace uva {
 
                                 //Check that we have enough features
                                 //ToDo: Why 3 and 2, later on? We shall change this into
-                                //      a constant and this kind of check is also bogus ... 
+                                //      a constant and this kind of check is also bogus ...
                                 ASSERT_SANITY_THROW((NUMBER_OF_FEATURES < 3),
                                         "The must be at least 3 features, p(e|f) is not known!");
 
