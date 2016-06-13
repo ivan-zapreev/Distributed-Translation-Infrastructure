@@ -261,7 +261,7 @@ There is a few important things to note about the configuration file at the mome
 * `[Reordering Models]/rm_feature_weights` - the number of features must not exceed the value of `lm::MAX_NUM_RM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
 * `[Language Models]/lm_feature_weights` - the number of features must not exceed the value of `lm::MAX_NUM_LM_FEATURES`, see [Project compile-time parameters](#project-compile-time-parameters).
 
-Note that, if there number of lambda weights specified in the configuration file is less than the actual number of features in the corresponding model then the remaining lambda's a re taken to be zero. In other words, those additional weights, which do not have corresponding lambda values, are ignored and not loaded.
+Note that, if there number of lambda weights specified in the configuration file is less than the actual number of features in the corresponding model then an error is reported.
 
 ####Server console####
 Once the server is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the server. The list of available server console commands is given in the listing below:
@@ -297,9 +297,9 @@ PARSE ERROR:
              Required arguments missing: output-file, input-lang, input-file
 
 Brief USAGE: 
-   bpbd-client  [-d <error|warn|usage|result|info|info1|info2|info3>] [-t]
-                [-l <min #sentences per request>] [-u <max #sentences per
-                request>] [-p <server port>] [-s <server address>] [-o
+   bpbd-client  [-d <error|warn|usage|result|info|info1|info2|info3>] [-c]
+                [-t] [-l <min #sentences per request>] [-u <max #sentences
+                per request>] [-p <server port>] [-s <server address>] [-o
                 <target language>] -O <target file name> -i <source
                 language> -I <source file name> [--] [--version] [-h]
 
@@ -311,6 +311,14 @@ One of the main required parameters of the translation client is the input file.
 Once started, the translation client makes a web socket connection to the translation server, reads text from the input file, splits it into a number of translation job requests (which are sent to the translation server) and waits for the reply. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run: `bpbd-client --help`.
 
 Once the translations are performed, and the translation job responses are received, the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each output line/sentence also gets prefixed with a translation status having a form: `<status>`. If a translation task was canceled, or an error has occurred then it is indicated by the status and the information about that is also placed in the output file on the corresponding sentence line.
+
+For the sake of better tuning the translation server's parameters, we introduce a special client-side option: `-c`. This optional parameter allows to request supplementary translation-process information per sentence. Currently, we only provide multi-stack level's load factors. For example, when translating from German into English the next sentence: `" wer ist voldemort ? "` with the `-c` option, we get an output:
+
+```
+<finished>: "Who is voldemort ?"
+<info>: stack[ 1% 5% 25% 45% 44% 28% 6% 1% ]
+```
+Where the second line, starting with `<info>`, contains the stack level's load information. Note that, the number of tokens in the German source sentence is *6*. Yet, the number of stack levels is *8*. The latter is due to that the first and the last stack levels corresponds to the sentence's, implicitly introduced, begin and end tags: `<s>` and `</s>`. The latter are added to the sentence during the translation process. Clearly, it is important to tune the server's options in such a way that all the stack levels, except for the first and the last one, are `100%` loaded. If so, then we know that we ensure an exhaustive search through the translation hypothesis, for the given system parameters, thus ensuring for the best translation result.
 
 Remember that, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the **UTF8** encoding.
 
@@ -331,7 +339,7 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    lm-query --help
 ```
-For information on the LM file format see section [Input file formats](#input-file-formats). The query file format is a text file in a **UTF8** encoding which, per line, stores one query being a space-separated sequence of tokens in the target language. The maximum allowed query length is limited by the compile-time constant `lm::LM\_MAX\_QUERY\_LEN`, see section [Project compile-time parameters](#project-compile-time-parameters)
+For information on the LM file format see section [Input file formats](#input-file-formats). The query file format is a text file in a **UTF8** encoding which, per line, stores one query being a space-separated sequence of tokens in the target language. The maximum allowed query length is limited by the compile-time constant `lm::LM_MAX_QUERY_LEN`, see section [Project compile-time parameters](#project-compile-time-parameters)
 
 ##Input file formats
 In this section we briefly discuss the model file formats supported by the tools. We shall occasionally reference the other tools supporting the same file formats and external third-party web pages with extended format descriptions.
@@ -588,6 +596,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **27.07.2015** - Changed project name and some to-do's
 * **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. 
 * **11.03.2016** - Updated to reflect the latest project status. 
+* **13.06.2016** - Added information on the `-c` option of the client. Introduced the server tuning mode for lattice generation. Updated description of model features and lambda's thereof. Prepared for the release 1.1.
 
 ##Appendix Tests
 
