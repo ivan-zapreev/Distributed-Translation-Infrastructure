@@ -2,7 +2,7 @@
 
 if [ "$#" -eq 0 ]; then
   echo "Usage: $0 <lattice-dir> <result-file-name> <sent-lattice-ext> <set-scores-ext>"
-  echo "    <lattice-dir> - the diurectory with the lattice files"
+  echo "    <lattice-dir> - the directory with the lattice files"
   echo "    <result-file-name> - the file name to be used for the combined lattice data"
   echo "    <sent-lattice-ext> - the lattice file extension for a sentence, default is 'lattice'"
   echo "    <set-scores-ext> - the feature scores file extension for a sentence, default is 'feature_scores'"

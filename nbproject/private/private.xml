@@ -10,18 +10,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/default.cfg</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/stack/stack_state.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/server_configs.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/rm/builders/rm_basic_builder.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/rm/models/rm_basic_model.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/rm/rm_configs.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/data/tuning.info.txt</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/data/default-1-3.000.000.cfg</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/stack/state_data.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_task.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/stack/multi_stack.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/data/default-1-10.000.cfg</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/rm/models/rm_entry.hpp</file>
         </group>
     </open-files>
 </project-private>

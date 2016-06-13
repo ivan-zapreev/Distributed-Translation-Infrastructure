@@ -19,14 +19,7 @@ To keep a clear view of the used terminology further, we provide some details on
 
 ![Statistical Machine Translation Approach Image](./doc/images/smt/smt.jpg "Statistical Machine Translation Approach")
 
-The entire phrase-based statistical machine translation relies on learning statistical correlations between words and
-phrases in an existing source/target translation text pair, also called parallel corpus or corpora. These correlations
-are learned by, generally speaking, three statistical models: TM - translation model; RM - reordering mode; and LM - language
-model; briefly mentioned above. If the training corpora is large enough, then these models will possess enough information
-to approximate a translation of an arbitrary text from the given source language to the given target language. Note that,
-before this information can be extracted, the parallel corpora undergoes the process called _word alignment_ which is aimed
-at estimating which words/phrases in the source language correspond to which words/phrases in the target language.
-Let us give a more precise definition of these models:
+The entire phrase-based statistical machine translation relies on learning statistical correlations between words and phrases in an existing source/target translation text pair, also called parallel corpus or corpora. These correlations are learned by, generally speaking, three statistical models: TM - translation model; RM - reordering mode; and LM - language model; briefly mentioned above. If the training corpora is large enough, then these models will possess enough information to approximate a translation of an arbitrary text from the given source language to the given target language. Note that, before this information can be extracted, the parallel corpora undergoes the process called _word alignment_ which is aimed at estimating which words/phrases in the source language correspond to which words/phrases in the target language. Let us give a more precise definition of these models:
 
 1. Translation model - provides phrases in the source language with learned possible target language translations and the probabilities thereof.
 2. Reordering model - stores information about probable translation orders of the phrases within the source text, based on the observed source and target phrases and their alignments.
@@ -34,8 +27,9 @@ Let us give a more precise definition of these models:
 
 Note that, the language model is typically learned from a different corpus in a target language.
 
-With these three models at hand one can perform decoding, which is a synonym to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reordering
-of the source language phrases within one sentence. The purpose of decoding, as indicated by the maximization procedure at the bottom of the figure above, is to find a translation with the largest possible probability.
+With these three models at hand one can perform decoding, which is a synonym to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reordering of the source language phrases within one sentence. The purpose of decoding, as indicated by the maximization procedure at the bottom of the figure above, is to find a translation with the largest possible probability.
+
+In order to obtain the best performance of the translation system one can employ Discriminative Training. The latter uses generated word lattice to optimize translation performance by reducing some measure of translation error. This is done by tuning the translation parameters such as feature lambda values of the model feature weights. Our software allows for word lattice generation, as mentioned in sections [Building the project](#building-the-project) and [Using software](#using-software).
  
 The rest of the document is organized as follows:
 
@@ -62,6 +56,7 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * **ext/** - stores the external header only libraries used in the project
     * **inc/** - stores the C++ header files of the implementation
     * **src/** - stores the C++ source files of the implementation
+    * **script/** - stores the various scripts, some of which can only be used in certain environments
     * **nbproject/** - stores the Netbeans project data, such as makefiles
     * **data/** - stores the test-related data such as test models and query input files, as well as some experimental results
     * default.cfg - an example server configuration file
@@ -106,7 +101,7 @@ The binaries will be generated and placed into *./build/* folder. In order to cl
 ###Project compile-time parameters
 For the sake of performance optimizations, the project has a number of compile-time parameters that are to be set before the project is build and can not be modified in the run time. Let us consider the most important of them and indicate where all of them are to be found.
 
-**Tuning mode:** The software can be compiled in the tuning mode, which supports the search-lattice generation for the performance tuning of the translation system. The performance is measured in terms of the translation quality measure such as BLEU. When the software is compiled in the tuning mode, it is a number of times slower than in the regular, i.e. production, mode. Enabling of the tuning mode can be done by setting the value of the `IS_SERVER_TUNING_MODE` macro to `true` in the `./inc/server/server_configs.hpp` file and then re-compiling the software. The tuning mode only has impact on the **bpbd-server** executable. The lattice dumping is then not immediately enabled and configured. The latter can be done via the server's [configuration file](#configuration-file).
+**Tuning mode:** The software can be compiled in the tuning mode, which supports the word lattice generation for the performance tuning of the translation system. The performance is measured in terms of the translation quality measure such as BLEU. When the software is compiled in the tuning mode, it is a number of times slower than in the regular, i.e. production, mode. Enabling of the tuning mode can be done by setting the value of the `IS_SERVER_TUNING_MODE` macro, in the `./inc/server/server_configs.hpp` file, to `true` and then re-compiling the software. The tuning mode only has impact on the **bpbd-server** executable. The lattice dumping is then not immediately enabled and configured. This is to be done via the server's [Configuration file](#configuration-file). For more details on word lattice see section [Word lattice generation](#word-lattice-generation).
 
 **Logging level:** Logging is important when debugging software or providing an additional user information during the program's run time. Yet additional output actions come at a price and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its run time but also at compile time. The possible range of project's logging levels, listed incrementally, is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at run time by setting the `LOGER_M_GRAM_LEVEL_MAX` constant value in the `./inc/common/utils/logging/logger.hpp` header file. The default value is INFO3.
 
@@ -286,6 +281,56 @@ USAGE: 	'set wp <float> & <enter>'  - set word penalty.
 >> 
 ```
 Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, **bpbd-server** has just one copy of the server run time parameters used from all the translation processes. So in case of active translation process, changing these parameters can cause disruptions thereof starting from an inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not experience any disruptions.
+
+
+####Word lattice generation####
+
+If the server is compiled in the [Tuning mode](#project-compile-time-parameters), then the word lattice generation can be enabled through the options in the [Configuration file](#configuration-file). 
+The word lattice is generated per source sentence that is being translated and contains the translation hypothesis graph and the used feature weights. Also, a general *id to feature name* file mapping is generated, when the server is started. The word lattice format is conformant to that of the Oister translation system. The following configuration file options have influence on the lattice generation:
+
+```
+[Decoding Options]
+    #The the tuning word lattice generation flag; <bool>:
+    #This flag only works if the server is compiled with
+    #the IS_SERVER_TUNING_MODE macro flag to true, otherwise
+    #it is ignored, i.e. is internally re-set to false.
+    de_is_gen_lattice=true
+
+    #Stores the lattice data folder location for where the
+    #generated lattice information is to be stored.
+    de_lattices_folder=./lattices
+
+    #The file name extension for the feature id to name mapping file
+    #needed for tuning. The file will be generated if the lattice
+    #generation is enabled. It will have the same name as the config
+    #file plus this extension.
+    de_lattice_id2name_file_ext=feature_id2name
+
+    #The file name extension for the feature scores file needed for tuning.
+    #The file will be generated if the lattice generation is enabled.
+    #It will have the same name as the session id plus the translation
+    #job id plus this extension.
+    de_feature_scores_file_ext=feature_scores
+
+    #The file name extension for the lattice file needed for tuning.
+    #The file will be generated if the lattice generation is enabled.
+    #It will have the same name as the session id plus the translation
+    #job id plus this extension.
+    de_lattice_file_ext=lattice
+```
+
+The lattice generation will be enabled if the value of the `de_is_gen_lattice` parameter is set to `true`. The *id to feature name* mapping file is then generated when server is started and is placed next to the produced lattice files. The name of the mapping file is formed as the name of the configuration file suffixed with `.feature_id2name`. The lattice files, per sentence, are dumped into the folder specified by the `de_lattices_folder` parameter. Each sentence gets a unique id, starting from *1*, corresponding to its position in the test source file. Each sentence lattice consists of two files with the name begin the sentence id and the extensions defined by the `de_feature_scores_file_ext` and `de_lattice_file_ext` parameters. The `de_lattice_file_ext` file stores the graph representation of the search hypothesis tree used in the translation process. The `de_feature_scores_file_ext` files stores the feature score values used during the process of expanding the hypothesis search tree.
+
+Once the translation process, with lattice file generation, is finished the `de_lattices_folder` folder stores the lattice information files for each of the translated sentences. In order to combine them together into two larger files, storing lattice graphs and feature scores for all sentences, one needs to use the **script/combine-lattices.sh** script. It's synopsis is self explanatory:
+
+```
+$ combine-lattices.sh
+Usage: ./combine-lattices.sh <lattice-dir> <result-file-name> <sent-lattice-ext> <set-scores-ext>
+    <lattice-dir> - the directory with the lattice files
+    <result-file-name> - the file name to be used for the combined lattice data
+    <sent-lattice-ext> - the lattice file extension for a sentence, default is 'lattice'
+    <set-scores-ext> - the feature scores file extension for a sentence, default is 'feature_scores'
+```
 
 ###Translation client: _bpbd-client_
 The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line without any parameters, **bpbd-client** reports on the available command-line options:
