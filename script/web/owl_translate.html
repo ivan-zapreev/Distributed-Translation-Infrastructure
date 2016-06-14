@@ -1,55 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Owl online translator</title>
-	<meta name="description" content="Web interface for the Owl translation system.">
-	<meta name="keywords" content="Online, Translation, System">
-	<meta name="author" content="Dr. Ivan S. Zapreev">
-	<meta charset="UTF-8">
+   <title>Owl online translator</title>
+   <meta name="description" content="Web interface for the Owl translation system.">
+   <meta name="keywords" content="Online, Translation, System">
+   <meta name="author" content="Dr. Ivan S. Zapreev">
+   <meta charset="UTF-8">
 
-	<!--Include the style sheet-->
-	<link rel="stylesheet" href="./owl_translate.css"> 
+   <!--Include the style sheet-->
+   <link rel="stylesheet" href="./owl_translate.css"> 
 
-	<!--Include the java script-->
-	<script src="./owl_translate.js" async=""></script>
+   <!--Include the java script-->
+   <script src="./owl_translate.js" type="text/javascript"></script>
 </head>
 <body>
-<div id="header">
-	<div id="title">Translate</div>
+   <div id="header">
+      <div id="title">Translate</div>
+   </div>
+   <div class="v_sep"></div>
+   <div id="settings">
+        <div id="server">Server: <input id="server" type="text" value="ws://localhost:9002"></div>
 	<div id="instant">Instant translate <input type="checkbox" checked="true" name="trans_cb"></div>
-</div>
-<div class="v_sep"></div>
-<div id="main">
-   <div id="from_part">
-      From: 
-      <select id="from_lang_sel" name="from_language" required>
-         <option value="">Please select</option>
-         <option value="german">German</option>
-         <option value="french">French</option>
-         <option value="chinese">Chinese</option>
-         <option value="russian">Russina</option>
-         <option value="english">English</option>
-      </select>
-      <textarea id="from_text" class="text_area">
-      </textarea>
    </div>
-   <div id="middle_part">
-      <img id="progress" src="globe32.gif">
-      <input id="trans_btn" type="button" value="Translate">
+   <div class="v_sep"></div>
+   <div id="main">
+      <div id="from_part">
+         From: 
+         <select id="from_lang_sel" name="from_language" required>
+            <option value="">Please select</option>
+            <option value="german">German</option>
+            <option value="french">French</option>
+            <option value="chinese">Chinese</option>
+            <option value="russian">Russina</option>
+            <option value="english">English</option>
+         </select>
+         <textarea id="from_text" class="text_area" value="">
+         </textarea>
+      </div>
+      <div id="middle_part">
+         <img id="progress" src="globe32.png">
+         <input id="trans_btn" type="button" value="Translate" onclick="do_translate()">
+      </div>
+      <div id="to_part">
+         To: 
+         <select id="to_lang_sel" name="to_language" required>
+            <option value="">Please select</option>
+            <option value="english">English</option>
+            <option value="german">German</option>
+            <option value="french">French</option>
+            <option value="chinese">Chinese</option>
+            <option value="russian">Russina</option>
+         </select>
+         <textarea id="to_text" class="text_area" disabled value="">
+         </textarea>
+      </div>
    </div>
-   <div id="to_part">
-      To: 
-      <select id="to_lang_sel" name="to_language" required>
-         <option value="">Please select</option>
-         <option value="english">English</option>
-         <option value="german">German</option>
-         <option value="french">French</option>
-         <option value="chinese">Chinese</option>
-         <option value="russian">Russina</option>
-      </select>
-      <textarea id="to_text" class="text_area" disabled>
-      </textarea>
-   </div>
-</div>
 </body>
 </html>
+<script>
+   initialize_translation();
+</script>

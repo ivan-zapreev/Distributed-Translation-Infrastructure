@@ -8,9 +8,26 @@ div#title {
 div#header {
 }
 
-div#instant {
+div#settings {
+   padding-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
    color: gray;
-   float: right;
+}
+
+div#server {
+}
+
+input#server {
+   width: 150px;
+   color: gray;
+}
+
+input#server:focus {
+   color: black;
+}
+
+div#instant {
 }
 
 input#trans_cb {
