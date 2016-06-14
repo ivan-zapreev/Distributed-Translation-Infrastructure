@@ -1,0 +1,75 @@
+div#title {
+   color: red;
+   font-size: 120%;
+   font-weight: bold;
+   float: left;
+}
+
+div#header {
+}
+
+div#instant {
+   color: gray;
+   float: right;
+}
+
+input#trans_cb {
+}
+
+div.v_sep {
+   border-bottom-style: solid;
+   border-bottom-color: lightgray;
+   clear: left;
+   margin-bottom: 5px;
+}
+
+div#main {
+   text-align:left;
+   width: 100%;
+}
+
+div#from_part {
+   display: inline-block;
+   width: 43%;
+}
+
+div#middle_part {
+   display: inline-block;
+   width: 100px;
+   height: 100%;
+}
+
+div#to_part {
+   display: inline-block;
+   width: 43%;
+}
+
+img#progress {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input#trans_btn {
+    display: block;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+    background-color: #7db8fe;
+    border-radius: 5px;
+}
+
+textarea#from_text {
+}
+
+textarea#to_text {
+   background-color : #f2f1f1;
+}
+
+textarea {
+   width: 100%;
+   margin-top: 5px;
+   min-height: 90px;
+   min-width: 180px;
+}
