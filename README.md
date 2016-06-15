@@ -891,6 +891,36 @@ The latter has just one attribute `ID` which shall store the corresponding sente
 
 #### Scores file: *\<sentence-id\.*`de_feature_scores_file_ext`
 
+The structure of the feature scores file is then given by the following format:
+
+```
+TO_NODE_ID_1 FEATURE_ID_A11=FEATURE_WEIGHT ... FEATURE_ID_A1N1=FEATURE_WEIGHT
+...
+TO_NODE_ID_Z FEATURE_ID_AZ1=FEATURE_WEIGHT ... FEATURE_ID_AZNZ=FEATURE_WEIGHT
+```
+
+Here each line contains the list of the corresponding non-zero feature weights that were added to the node's partial score by expanding from the parent hypothesis. The node ids and feature weights are single (1) space separated, and feature id values begin with zero. More specifically:
+
+* `TO_NODE_ID_*` - is a translation hypothesis node id for the hypothesis we expand into (a child hypothesis).
+* `FEATURE_ID_*` - the unique identifier, unsigned integer, of a model feature.
+* `FEATURE_WEIGHT` - a non-zero value of the feature weight, not multiplied with the corresponding lambda.
+
+The order of nodes in the file is not important. Let us also consider a few important notes:
+
+1. The features used to compute the future costs of a hypothesis  are not taken into account. We only list features and weights thereof used in the current hypothesis partial score computation.
+2. The feature weights are given as is in the model files, i.e. are not multiplied with corresponding lambda values from the server config file.
+3. The feature weight of the Language model is taken to be the joint m-gram probability of the newly added target phrase with the given target translation history.
+4. The word penalty is just the number of words in the target phrase.
+5. The distortion penalty is the linear distortion cost without lambda.
+
+Note that once the single sentence feature scores file is combined with other sentence feature score files, the content of a single feature scores file is wrapped with the `<SENT>` tag:
+
+```
+<SENT ID="sentence-id">
+</SENT>
+```
+The latter has just one attribute `ID` which shall store the corresponding sentence id given by *\<sentence-id\>* from the original feature scores file name.
+
 #### Mapping file: *\<config-file-name\>.feature_id2name*
 
 ![Markdown Logo](./doc/images/markdown.png "Markdown")
