@@ -923,6 +923,39 @@ The latter has just one attribute `ID` which shall store the corresponding sente
 
 #### Mapping file: *\<config-file-name\>.feature_id2name*
 
+The structure of the id-to-feature-name mapping file is then given by the following format:
+
+```
+FEATURE_ID_1		FEATURE_NAME_1
+...
+FEATURE_ID_1		FEATURE_NAME_1
+```
+
+Here, each line contains a tab (`\t`) separated feature's global id  and feature name pair. The global feature ids are unsigned integers starting with zero. The feature names match those from the server's config file. In case a feature name corresponds to an array of values, we treat each array element as an individual feature. The name of a latter one is formed by the feature name plus a suffix of the array index in square brackets. Consider the following real-life example:
+
+```
+0       de_lin_dist_penalty
+1       de_word_penalty
+2       lm_feature_weights[0]
+3       rm_feature_weights[0]
+4       rm_feature_weights[1]
+5       rm_feature_weights[2]
+6       rm_feature_weights[3]
+7       rm_feature_weights[4]
+8       rm_feature_weights[5]
+9       tm_feature_weights[0]
+10      tm_feature_weights[1]
+11      tm_feature_weights[2]
+12      tm_feature_weights[3]
+13      tm_feature_weights[4]
+```
+
+Note that in the example above, the phrase penalty is the translation model feature with index `4`, i.e. it corresponds to the global feature index `13`:
+
+```
+13      tm_feature_weights[4]
+```
+
 ![Markdown Logo](./doc/images/markdown.png "Markdown")
 
  _Powered by [Markdown-Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)_

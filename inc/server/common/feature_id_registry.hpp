@@ -56,7 +56,7 @@ namespace uva {
                         /**
                          * The basic constructor
                          */
-                        feature_id_registry() : m_next_feature_id(0), m_feature_2_id(), m_feature_2_source() {
+                        feature_id_registry() : m_next_feature_id(0), m_id_2_feature(), m_feature_2_source() {
                         }
 
                         /**
@@ -82,7 +82,7 @@ namespace uva {
                             //Assign the feature id;
                             global_feature_id = m_next_feature_id;
                             //Add the feature to the mapping 
-                            m_feature_2_id[m_next_feature_id] = feature_name;
+                            m_id_2_feature[m_next_feature_id] = feature_name;
                             //Increment the next feature id
                             m_next_feature_id++;
 
@@ -105,9 +105,9 @@ namespace uva {
                                     file_name + string(" for writing"));
 
                             //Iterate and output
-                            for (auto iter = m_feature_2_id.begin(); iter != m_feature_2_id.end(); ++iter) {
+                            for (auto iter = m_id_2_feature.begin(); iter != m_id_2_feature.end(); ++iter) {
                                 //Output the mapping to the file
-                                id2n_file << iter->second << "\t" << iter->first << std::endl;
+                                id2n_file << iter->first << "\t" << iter->second << std::endl;
                             }
 
                             //Close the file
@@ -121,7 +121,7 @@ namespace uva {
                          * @return the number of registered features
                          */
                         size_t size() const {
-                            return m_feature_2_id.size();
+                            return m_id_2_feature.size();
                         }
                         
                     private:
@@ -129,7 +129,7 @@ namespace uva {
                         size_t m_next_feature_id;
 
                         //Stores the mapping from the feature weight names to the ids.
-                        map<size_t, string> m_feature_2_id;
+                        map<size_t, string> m_id_2_feature;
                         //Stores the mapping from the feature weight names to the sources thereof.
                         map<string, string> m_feature_2_source;
 
