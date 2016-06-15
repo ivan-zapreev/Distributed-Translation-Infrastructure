@@ -285,8 +285,7 @@ Note that, the commands allowing to change the translation process, e.g. the sta
 
 ####Word lattice generation####
 
-If the server is compiled in the [Tuning mode](#project-compile-time-parameters), then the word lattice generation can be enabled through the options in the [Configuration file](#configuration-file). 
-The word lattice is generated per source sentence that is being translated and contains the translation hypothesis graph and the used feature weights. Also, a general *id to feature name* file mapping is generated, when the server is started. The word lattice format is conformant to that of the Oister translation system. The following configuration file options have influence on the lattice generation:
+If the server is compiled in the [Tuning mode](#project-compile-time-parameters), then the word lattice generation can be enabled through the options in the server's [Configuration file](#configuration-file). The options influencing the lattice generation are as follows:
 
 ```
 [Decoding Options]
@@ -319,9 +318,15 @@ The word lattice is generated per source sentence that is being translated and c
     de_lattice_file_ext=lattice
 ```
 
-The lattice generation will be enabled if the value of the `de_is_gen_lattice` parameter is set to `true`. The *id to feature name* mapping file is then generated when server is started and is placed next to the produced lattice files. The name of the mapping file is formed as the name of the configuration file suffixed with `.feature_id2name`. The lattice files, per sentence, are dumped into the folder specified by the `de_lattices_folder` parameter. Each sentence gets a unique id, starting from *1*, corresponding to its position in the test source file. Each sentence lattice consists of two files with the name begin the sentence id and the extensions defined by the `de_feature_scores_file_ext` and `de_lattice_file_ext` parameters. The `de_lattice_file_ext` file stores the graph representation of the search hypothesis tree used in the translation process. The `de_feature_scores_file_ext` files stores the feature score values used during the process of expanding the hypothesis search tree.
+The lattice generation will be enabled if the value of the `de_is_gen_lattice` parameter is set to `true`. The word lattice is generated per source sentence and consists of a translation hypothesis graph and employed feature weights. The word lattice format is conformant to that of the Oister translation system. The lattice files, are dumped into the folder specified by the `de_lattices_folder` parameter. A global *id-to-feature-name* file mapping is generated, when server is started, and is placed next to the produced lattice files. Each sentence gets a unique *sentence-id*, starting from *1*, corresponding to its position in the test source file. Each sentence lattice consists of two files with the name begin the sentence id and the extensions defined by the `de_feature_scores_file_ext` and `de_lattice_file_ext` parameters:
+ 
+1. *\<sentence-id\>.*`de_lattice_file_ext` - stores the graph of the translation process: the partial hypothesis and the transitions between them attributed with source and target phrases and added costs.
+2. *\<sentence-id\.*`de_feature_scores_file_ext`  - stores information about the feature weights values (without lambdas coefficients) that were used in the hypothesis expansion process.
+3. *\<config-file-name\>.feature_id2name* - this one maps the feature name to the feature id and is used to identify the features within the feature scores file. The name of the mapping file is formed as the name of the configuration file suffixed with `.feature_id2name`.
 
-Once the translation process, with lattice file generation, is finished the `de_lattices_folder` folder stores the lattice information files for each of the translated sentences. In order to combine them together into two larger files, storing lattice graphs and feature scores for all sentences, one needs to use the **script/combine-lattices.sh** script. It's synopsis is self explanatory:
+For additional information on the lattice file formats see Section [Word lattice files](#word-lattice-files).
+
+Once the translation, with word lattice generation, is finished `de_lattices_folder` folder stores the lattice information files for each of the translated sentences. In order to combine them together into just two larger files, storing lattice graphs and feature scores for all sentences, one needs to use the **script/combine-lattices.sh** script. It's synopsis is self explanatory:
 
 ```
 $ combine-lattices.sh
@@ -845,6 +850,48 @@ ngram 3=183285165
 ngram 4=396600722
 ngram 5=563533665
 ```
+
+###Word lattice files
+In this section we give detailed information on the format of word lattice files, discussed in Section [Word lattice generation](#word-lattice-generation).
+
+Remember that *\<sentence-id\>* is an unsigned integer. For each new decoder instance the first received sentence gets an id zero. Also, `de_lattice_file_ext` and `de_feature_scores_file_ext` represent values defined by the server config file. *\<config-file-name\>* stands for the server configuration file name.
+
+#### Lattice file: *\<sentence-id\>.*`de_lattice_file_ext`
+
+The structure of the word lattice file is then given by the following format:
+
+```
+TO_NODE_ID_1   FROM_NODE_ID_1|||TARGET_PHRASE|||SCORE_DELTA FROM_NODE_ID_2|||TARGET_PHRASE|||SCORE_DELTA ... FROM_NODE_ID_K|||TARGET_PHRASE|||SCORE_DELTA
+...
+<COVERVECS>TO_NODE_ID_1-FROM_NODE_ID_1:BEGIN_SOURCE_PHRASE_IDX:END_SOURCE_PHRASE_IDX TO_NODE_ID_1-FROM_NODE_ID_2:BEGIN_SOURCE_PHRASE_IDX:END_SOURCE_PHRASE_IDX …</COVERVECS>
+```
+The file consists of two distinct parts: the list of hypothesis nodes-to-node transitions, defining the translation graph, and the set of source phrase word cover indexes, enclosed in the single-line `<COVERVECS>` tag. Each nodes-to-node line begins with the id of the node we come to by an expansion, followed by the list of the hypothesis nodes from which we expand to the given one. Clearly, this list must contain at least one node and more nodes are possible in case of the to-node begin recombined with other nodes in the corresponding stack level.
+
+More specifically, in the above:
+
+* `TO_NODE_ID_*` - is a translation hypothesis node id for the hypothesis we expand into (a child hypothesis).
+* `FROM_NODE_ID_*` - is a translation hypothesis node id for the hypothesis we expand from (a parent hypothesis).
+* A three (3) space separated pair `TO_NODE_ID_*   FROM_NODE_ID_*` forms the begin of each graph transition line.
+* `TARGET_PHRASE` - is a target translation phrase added to the translation result when expanding from one hypothesis to another.
+* `SCORE_DELTA` - the translation cost added to the translation result when expanding from one hypothesis to another.
+* Each subsequent from-node in the list is single (1) space separated from the previous.
+* The single-line `<COVERVECS>` tag contains a single (1) space separated list of the to- and from- node pairs attributed with the translated source phrase begin and end index.
+* `BEGIN_SOURCE_PHRASE_IDX` - the begin word index of the phrase, in the source sentence, translated when expanding from one hypothesis to another.
+* `END_SOURCE_PHRASE_IDX` - the end word index of the phrase, in the source sentence, translated when expanding from one hypothesis to another.
+
+Note that the node ids begin with zero (0) and the lowest id is assigned to the sentence begin tag hypothesis **\<s\>**. The highest node id is assigned to the dummy hypothesis node which "aggregates" all the last-stack end tag hypothesis **\</s\>**. In the given format this dummy node is always present in the first line of the lattice file. The lattice dumping happens in a backwards fashion: from the end super state to the front of the stack.
+
+Note that once the single sentence lattice file is combined with other sentence lattice files, the content of a single lattice file is wrapped with the `<SENT>` tag:
+
+```
+<SENT ID="sentence-id">
+</SENT>
+```
+The latter has just one attribute `ID` which shall store the corresponding sentence id given by *\<sentence-id\>* from the original lattice file name.
+
+#### Scores file: *\<sentence-id\.*`de_feature_scores_file_ext`
+
+#### Mapping file: *\<config-file-name\>.feature_id2name*
 
 ![Markdown Logo](./doc/images/markdown.png "Markdown")
 
