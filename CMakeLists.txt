@@ -70,6 +70,10 @@ set(BPBD_SERVER_SOURCES
     src/common/utils/monitor/statistics_monitor.cpp 
     src/common/utils/logging/logger.cpp
     src/common/messaging/trans_job_code.cpp
+    src/common/messaging/trans_job_request.cpp
+    src/common/messaging/trans_job_response.cpp
+    src/common/messaging/supp_lang_request.cpp
+    src/common/messaging/supp_lang_response.cpp
     src/server/trans_task_pool_worker.cpp
     src/server/trans_task_pool.cpp
 )
@@ -83,6 +87,8 @@ set(BPBD_CLIENT_SOURCES
     src/client/bpbd_client.cpp
     src/common/utils/logging/logger.cpp
     src/common/messaging/trans_job_code.cpp
+    src/common/messaging/trans_job_request.cpp
+    src/common/messaging/trans_job_response.cpp
     src/client/trans_job_status.cpp
 )
 #Define the server executable

@@ -35,10 +35,15 @@
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+
 #include "common/messaging/trans_job_response.hpp"
 #include "common/messaging/trans_job_request.hpp"
+#include "common/messaging/supp_lang_request.hpp"
+#include "common/messaging/supp_lang_response.hpp"
 #include "common/messaging/trans_job_code.hpp"
+
 #include "trans_manager.hpp"
+#include "server_parameters.hpp"
 
 using namespace std;
 using namespace std::placeholders;
@@ -67,11 +72,15 @@ namespace uva {
 
                     /**
                      * The basic constructor
-                     * @param port the port to listen to
-                     * @param num_threads the number of translation threads to run
+                     * @param params the server parameters
                      */
-                    translation_server(const uint16_t port, const size_t num_threads)
-                    : m_manager(num_threads) {
+                    translation_server(const server_parameters &params)
+                    : m_manager(params.m_num_threads), m_params(params) {
+                        //Initialize the supported languages and store the response for future use
+                        supp_lang_response supp_lang_resp;
+                        supp_lang_resp.add_supp_lang(params.m_source_lang, params.m_target_lang);
+                        m_supp_lang_resp = supp_lang_resp.serialize();
+
                         //Set up access channels to only log interesting things
                         m_server.clear_access_channels(log::alevel::all);
                         m_server.set_access_channels(log::alevel::app);
@@ -91,7 +100,7 @@ namespace uva {
                         m_manager.set_response_sender(bind(&translation_server::send_response, this, _1, _2));
 
                         //Set the port that the server will listen to
-                        m_server.listen(port);
+                        m_server.listen(params.m_server_port);
                     }
 
                     /**
@@ -149,15 +158,13 @@ namespace uva {
                 protected:
 
                     /**
-                     * Allows to send the translation job response to the client associated with the given connection handler.
+                     * Allows to send the response to the client associated with the given connection handler.
                      * @param hdl the connection handler to identify the connection
-                     * @param response the translation response object to be used
+                     * @param reply_str the response string
                      */
-                    void send_response(connection_hdl hdl, trans_job_response & response) {
-                        LOG_DEBUG << "Sending the job response: " << &response << END_LOG;
+                    inline void send_str_response(connection_hdl hdl, const string reply_str) {
+                        LOG_DEBUG << "Sending the job response: ____" << reply_str << "____" << END_LOG;
 
-                        //Get the response string
-                        const string reply_str = response.serialize();
                         //Declare the error code
                         lib::error_code ec;
 
@@ -168,6 +175,20 @@ namespace uva {
                         if (ec) {
                             LOG_ERROR << "Failed sending error '" << reply_str << "' reply: " << ec.message() << END_LOG;
                         }
+
+                        LOG_DEBUG << "The job response: ____" << reply_str << "____ is sent!" << END_LOG;
+                    }
+
+                    /**
+                     * Allows to send the translation job response to the client associated with the given connection handler.
+                     * @param hdl the connection handler to identify the connection
+                     * @param response the translation response object to be used
+                     */
+                    void send_response(connection_hdl hdl, trans_job_response & response) {
+                        LOG_DEBUG << "Sending the job response: " << &response << END_LOG;
+
+                        //Send the response 
+                        send_str_response(hdl, response.serialize());
 
                         LOG_DEBUG << "The job response: " << &response << " is sent!" << END_LOG;
                     }
@@ -209,6 +230,15 @@ namespace uva {
                     }
 
                     /**
+                     * This enumeration stores the request types
+                     */
+                    enum request_type_enum {
+                        UNKNOWN_TYPE_REQUEST = 0,
+                        TRANSLATION_JOB_REQUEST = 1,
+                        SUPPORTED_LANGUAGES_REQUEST = 2
+                    };
+
+                    /**
                      * Is called when the message is received by the server
                      * @param hdl the connection handler
                      * @param msg the received message
@@ -216,6 +246,56 @@ namespace uva {
                     void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
                         LOG_DEBUG << "Received a message!" << END_LOG;
 
+                        //Obtain the message payload
+                        const string payload = msg->get_payload();
+
+                        //Act depending on the request type
+                        switch (detect_msg_type(payload)) {
+                            case request_type_enum::TRANSLATION_JOB_REQUEST:
+                                translation_job(hdl, payload);
+                                break;
+                            case request_type_enum::SUPPORTED_LANGUAGES_REQUEST:
+                                language_request(hdl, payload);
+                                break;
+                            default:
+                                //Send the error response
+                                send_str_response(hdl, "Unknown or unsupported request message!");
+                        }
+                    }
+
+                    /**
+                     * This method allows to detect the kind of request received by the translation server
+                     * @param payload the serialized version of the request
+                     * @return the detected request type
+                     */
+                    inline request_type_enum detect_msg_type(const string & payload) {
+                        if (trans_job_request::is_request(payload)) {
+                            return request_type_enum::TRANSLATION_JOB_REQUEST;
+                        } else {
+                            if (supp_lang_request::is_request(payload)) {
+                                return request_type_enum::SUPPORTED_LANGUAGES_REQUEST;
+                            } else {
+                                return request_type_enum::UNKNOWN_TYPE_REQUEST;
+                            }
+                        }
+                    }
+
+                    /**
+                     * This method allows to handle the supported-languages request
+                     * @param hdl the connection handler
+                     * @param payload the serialized supported languages request request
+                     */
+                    inline void language_request(websocketpp::connection_hdl hdl, const string & payload) {
+                        //Send the response
+                        send_str_response(hdl, m_supp_lang_resp);
+                    }
+
+                    /**
+                     * This method allows to handle the translation job request
+                     * @param hdl the connection handler
+                     * @param payload the serialized translation job request
+                     */
+                    inline void translation_job(websocketpp::connection_hdl hdl, const string & payload) {
                         //Create translation job request, will be deleted by the translation job
                         trans_job_request_ptr request_ptr = new trans_job_request();
 
@@ -223,7 +303,14 @@ namespace uva {
                         job_id_type job_id_val = job_id::UNDEFINED_JOB_ID;
                         try {
                             //De-serialize the job request
-                            request_ptr->de_serialize(msg->get_payload());
+                            request_ptr->de_serialize(payload);
+
+                            //Check that the source/target language pairs are proper
+                            ASSERT_CONDITION_THROW(((m_params.m_source_lang != request_ptr->get_source_lang()) ||
+                                    (m_params.m_target_lang != request_ptr->get_target_lang())),
+                                    string("Wrong source-target language pair: ") + request_ptr->get_source_lang() +
+                                    string("->") + request_ptr->get_target_lang() + string(", the server only supports: ") +
+                                    m_params.m_source_lang + string("->") + m_params.m_target_lang);
 
                             //Store the job id in case of an error
                             job_id_val = request_ptr->get_job_id();
@@ -252,6 +339,10 @@ namespace uva {
                     server m_server;
                     //Stores the session manager object
                     trans_manager m_manager;
+                    //Stores the reference to the server options
+                    const server_parameters &m_params;
+                    //Stores the serialized supported languages response string
+                    string m_supp_lang_resp;
                 };
             }
         }

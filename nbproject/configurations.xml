@@ -21,6 +21,12 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="common">
+        <df name="messaging">
+          <in>supp_lang_request.hpp</in>
+          <in>supp_lang_response.hpp</in>
+        </df>
+      </df>
       <df name="server">
         <df name="common">
           <in>feature_id_registry.hpp</in>
@@ -42,7 +48,11 @@
       </df>
       <df name="common">
         <df name="messaging">
+          <in>supp_lang_request.cpp</in>
+          <in>supp_lang_response.cpp</in>
           <in>trans_job_code.cpp</in>
+          <in>trans_job_request.cpp</in>
+          <in>trans_job_response.cpp</in>
         </df>
         <df name="utils">
           <df name="logging">
@@ -213,6 +223,16 @@
           </incDir>
         </ccTool>
       </folder>
+      <item path="inc/common/messaging/supp_lang_request.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/supp_lang_response.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/server/common/feature_id_registry.hpp"
             ex="false"
             tool="3"
@@ -226,12 +246,32 @@
         <ccTool flags="0">
         </ccTool>
       </item>
+      <item path="src/common/messaging/supp_lang_request.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/common/messaging/supp_lang_response.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="src/common/messaging/trans_job_code.cpp"
             ex="false"
             tool="1"
             flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/common/messaging/trans_job_request.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/common/messaging/trans_job_response.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/common/utils/logging/logger.cpp"
             ex="false"

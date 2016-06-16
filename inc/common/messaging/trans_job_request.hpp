@@ -1,5 +1,5 @@
 /* 
- * File:   translation_job_request.hpp
+ * File:   trans_job_request.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -57,6 +57,9 @@ namespace uva {
                         static constexpr char NEW_LINE_HEADER_ENDING = '\n';
                         static constexpr char TEXT_SENTENCE_DELIMITER = '\n';
 
+                        //The begin of the translation job request message
+                        static const string TRANS_JOB_REQUEST_PREFIX;
+
                         /**
                          * This is the basic class constructor that accepts the
                          * original client message to parse. This constructor is
@@ -98,36 +101,41 @@ namespace uva {
                                 //The text will contain the read text from the reader
                                 text_piece_reader text;
 
-                                //Get the job id
+                                //Skip the translation job request prefix
                                 if (reader.get_first<HEADER_DELIMITER>(text)) {
-                                    m_job_id = stoi(text.str());
-                                    //Get the source language string
+                                    //Get the job id
                                     if (reader.get_first<HEADER_DELIMITER>(text)) {
-                                        m_source_lang = text.str();
-                                        //Get the target language string
+                                        m_job_id = stoi(text.str());
+                                        //Get the source language string
                                         if (reader.get_first<HEADER_DELIMITER>(text)) {
-                                            m_target_lang = text.str();
-                                            //Get the translation clues flag
-                                            if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
-                                                m_is_trans_info = (stoi(text.str()) != 0);
+                                            m_source_lang = text.str();
+                                            //Get the target language string
+                                            if (reader.get_first<HEADER_DELIMITER>(text)) {
+                                                m_target_lang = text.str();
+                                                //Get the translation clues flag
+                                                if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
+                                                    m_is_trans_info = (stoi(text.str()) != 0);
 
-                                                //Now the rest is the text to be translated.
-                                                m_text = reader.get_rest_str();
+                                                    //Now the rest is the text to be translated.
+                                                    m_text = reader.get_rest_str();
 
-                                                LOG_DEBUG << "\nm_job_id = " << m_job_id << ", m_source_lang = "
-                                                        << m_source_lang << ", m_target_lang = " << m_target_lang
-                                                        << ", m_text = \n" << m_text << END_LOG;
+                                                    LOG_DEBUG << "\nm_job_id = " << m_job_id << ", m_source_lang = "
+                                                            << m_source_lang << ", m_target_lang = " << m_target_lang
+                                                            << ", m_text = \n" << m_text << END_LOG;
+                                                } else {
+                                                    THROW_EXCEPTION(string("Could not find the translation clue flag in the job request header!"));
+                                                }
                                             } else {
-                                                THROW_EXCEPTION(string("Could not find the translation clue flag in the job request header!"));
+                                                THROW_EXCEPTION(string("Could not find the target language in the job request header!"));
                                             }
                                         } else {
-                                            THROW_EXCEPTION(string("Could not find the target language in the job request header!"));
+                                            THROW_EXCEPTION(string("Could not find the source language in the job request header!"));
                                         }
                                     } else {
-                                        THROW_EXCEPTION(string("Could not find the source language in the job request header!"));
+                                        THROW_EXCEPTION(string("Could not find job_id in the job request header!"));
                                     }
                                 } else {
-                                    THROW_EXCEPTION(string("Could not find job_id in the job request header!"));
+                                    THROW_EXCEPTION(string("Could not skip the translation job request prefix!"));
                                 }
                             } catch (invalid_argument & ex1) {
                                 THROW_EXCEPTION(string("Error invalid_argument for job request!"));
@@ -137,11 +145,20 @@ namespace uva {
                         }
 
                         /**
+                         * Allows to detect whether the given payload corresponds to the translation job request 
+                         * @param payload the payload that stores the serialized message
+                         * @return true if this is a translation job request, otherwise false
+                         */
+                        static inline bool is_request(const string & payload) {
+                            return (payload.compare(0, TRANS_JOB_REQUEST_PREFIX.length(), TRANS_JOB_REQUEST_PREFIX) == 0);
+                        }
+
+                        /**
                          * Allows to serialize the job request into a string
                          * @return the string representation of the translation job request
                          */
-                        const string serialize() const {
-                            string result = to_string(m_job_id) + HEADER_DELIMITER +
+                        inline const string serialize() const {
+                            string result = TRANS_JOB_REQUEST_PREFIX + to_string(m_job_id) + HEADER_DELIMITER +
                                     m_source_lang + HEADER_DELIMITER +
                                     m_target_lang + HEADER_DELIMITER +
                                     to_string(m_is_trans_info) +
@@ -158,7 +175,7 @@ namespace uva {
                          * by the translation job request class.
                          * @param session_id the session id issued by the server
                          */
-                        void set_session_id(const session_id_type session_id) {
+                        inline void set_session_id(const session_id_type session_id) {
                             m_session_id = session_id;
                         }
 
@@ -168,7 +185,7 @@ namespace uva {
                          * by the translation job request class.
                          * @return the session id issued by the server
                          */
-                        const session_id_type get_session_id() const {
+                        inline const session_id_type get_session_id() const {
                             return m_session_id;
                         }
 
@@ -176,7 +193,7 @@ namespace uva {
                          * Allows to get the client-issued job id
                          * @return the client-issued job id
                          */
-                        const job_id_type get_job_id() const {
+                        inline const job_id_type get_job_id() const {
                             return m_job_id;
                         }
 
@@ -184,7 +201,7 @@ namespace uva {
                          * Allows to get the translation job source language
                          * @return the translation job source language
                          */
-                        const string get_source_lang() const {
+                        inline const string & get_source_lang() const {
                             return m_source_lang;
                         }
 
@@ -192,7 +209,7 @@ namespace uva {
                          * Allows to get the translation job target language
                          * @return the translation job target language
                          */
-                        const string get_target_lang() const {
+                        inline const string & get_target_lang() const {
                             return m_target_lang;
                         }
 
@@ -202,7 +219,7 @@ namespace uva {
                          * message for the case of failed translation job request.
                          * @return the translation job text
                          */
-                        const string & get_text() const {
+                        inline const string & get_text() const {
                             return m_text;
                         }
 
@@ -210,7 +227,7 @@ namespace uva {
                          * Allows to check whether the client has requested the translation information
                          * @return true if the translation information is requested, otherwise false
                          */
-                        const bool is_trans_info() const {
+                        inline const bool is_trans_info() const {
                             return m_is_trans_info;
                         }
 
@@ -228,10 +245,6 @@ namespace uva {
                         //Stores the translation info flag
                         bool m_is_trans_info;
                     };
-
-                    constexpr char trans_job_request::HEADER_DELIMITER;
-                    constexpr char trans_job_request::NEW_LINE_HEADER_ENDING;
-                    constexpr char trans_job_request::TEXT_SENTENCE_DELIMITER;
                 }
             }
         }

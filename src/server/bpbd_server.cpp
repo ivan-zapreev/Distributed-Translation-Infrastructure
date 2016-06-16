@@ -354,7 +354,7 @@ int main(int argc, char** argv) {
         connect_to_models(params);
 
         //Instantiate the translation server
-        translation_server server(params.m_server_port, params.m_num_threads);
+        translation_server server(params);
 
         //Run the translation server in a separate thread
         thread server_thread(bind(&translation_server::run, &server));

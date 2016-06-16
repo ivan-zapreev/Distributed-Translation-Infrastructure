@@ -11,9 +11,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/src/server/bpbd_server.cpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/server_configs.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/data/tuning.info.txt</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/common/feature_id_registry.hpp</file>
         </group>
     </open-files>
 </project-private>

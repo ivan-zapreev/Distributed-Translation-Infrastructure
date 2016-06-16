@@ -19,20 +19,14 @@
    </div>
    <div class="v_sep"></div>
    <div id="settings">
-        <div id="server">Server: <input id="server_url" oninput="on_server_change()" type="text" value=""> <span id="conn_status"></span></div>
+        <div id="server">Server: <input id="server_url" oninput="on_server_change()" onfocus="on_server_change()" type="text" value=""> <span id="conn_status"></span></div>
 	<div id="instant">Instant translate <input type="checkbox" checked="true" name="trans_cb" id="trans_cb"></div>
    </div>
    <div class="v_sep"></div>
    <div id="main">
       <div id="from_part">
          From: 
-         <select id="from_lang_sel" name="from_language" required>
-            <option value="">Please select</option>
-            <option value="german">German</option>
-            <option value="french">French</option>
-            <option value="chinese">Chinese</option>
-            <option value="russian">Russina</option>
-            <option value="english">English</option>
+         <select id="from_lang_sel" onchange="on_source_lang_select()" name="from_language" required>
          </select>
          <textarea id="from_text" class="text_area" value=""></textarea>
       </div>
@@ -43,12 +37,6 @@
       <div id="to_part">
          To: 
          <select id="to_lang_sel" name="to_language" required>
-            <option value="">Please select</option>
-            <option value="english">English</option>
-            <option value="german">German</option>
-            <option value="french">French</option>
-            <option value="chinese">Chinese</option>
-            <option value="russian">Russina</option>
          </select>
          <textarea id="to_text" class="text_area" disabled value=""></textarea>
       </div>
