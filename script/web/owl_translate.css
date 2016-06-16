@@ -18,12 +18,12 @@ div#settings {
 div#server {
 }
 
-input#server {
+input#server_url {
    width: 150px;
    color: gray;
 }
 
-input#server:focus {
+input#server_url:focus {
    color: black;
 }
 

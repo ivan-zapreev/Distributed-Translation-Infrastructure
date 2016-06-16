@@ -19,8 +19,8 @@
    </div>
    <div class="v_sep"></div>
    <div id="settings">
-        <div id="server">Server: <input id="server" type="text" value="ws://localhost:9002"></div>
-	<div id="instant">Instant translate <input type="checkbox" checked="true" name="trans_cb"></div>
+        <div id="server">Server: <input id="server_url" oninput="on_server_change()" type="text" value=""> <span id="conn_status"></span></div>
+	<div id="instant">Instant translate <input type="checkbox" checked="true" name="trans_cb" id="trans_cb"></div>
    </div>
    <div class="v_sep"></div>
    <div id="main">
@@ -34,8 +34,7 @@
             <option value="russian">Russina</option>
             <option value="english">English</option>
          </select>
-         <textarea id="from_text" class="text_area" value="">
-         </textarea>
+         <textarea id="from_text" class="text_area" value=""></textarea>
       </div>
       <div id="middle_part">
          <img id="progress" src="globe32.png">
@@ -51,8 +50,7 @@
             <option value="chinese">Chinese</option>
             <option value="russian">Russina</option>
          </select>
-         <textarea id="to_text" class="text_area" disabled value="">
-         </textarea>
+         <textarea id="to_text" class="text_area" disabled value=""></textarea>
       </div>
    </div>
 </body>
