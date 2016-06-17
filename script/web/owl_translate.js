@@ -218,6 +218,20 @@ function on_open() {
     enable_interface(true);
 }
 
+
+/**
+ * Allows to parse the translation job response into the header object.
+ * @param {String} the string representing the header object
+ * @return {Object} the header object
+ */
+function parse_trans_resp_header(header_str) {
+    var header = {"job_id" : 0, "code_val" : 0};
+    
+    //ToDo: Parse the header into the header object, make the server return JSON header?
+    
+    return header;
+}
+
 /**
  * This function is called when a translation response is to be set into the interface
  * Note that the translation response will not be set if it is outdated.
@@ -225,9 +239,19 @@ function on_open() {
  */
 function set_translation(trans_response) {
     "use strict";
+    var lines, header, i;
     
-    //ToDo: Implement setting the translation response in case it is not outdated.
-    document.getElementById("to_text").value = trans_response;
+    //Split the response into lines
+    lines = trans_response.split('\n');
+    
+    //The first line is the header
+    header = parse_trans_resp_header(lines[0]);
+    
+    //Implement setting the translation response in case it is not outdated.
+    for (i = 1; i < lines.length; i += 1) {
+        //ToDo: Parse the line in order to get the status away
+        document.getElementById("to_text").value += lines[i] + "\n";
+    }
     
     window.console.log("Decrement the number of active translations");
     client_data.active_translations -= 1;
@@ -244,7 +268,6 @@ function set_translation(trans_response) {
  */
 function get_select_option(value, name) {
     "use strict";
-    
     return "<option value=\"" + value + "\">" + name + "</option>";
 }
 
