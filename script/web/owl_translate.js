@@ -161,17 +161,20 @@ function on_source_lang_select() {
     var i, to_select, from_select, source_lang, targets;
     
     window.console.log("The source language is selected");
- 
-    //ToDo: Do not add "Please select" in case there is just one target option possible"
-    
-    to_select = document.getElementById("to_lang_sel");
-    to_select.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
-    
     from_select = document.getElementById("from_lang_sel");
     source_lang = from_select.options[from_select.selectedIndex].value;
+    window.console.log("The source language is: " + source_lang);
 
     if (source_lang !== "") {
+        window.console.log("The source language is not empty!");
         targets = client_data.language_mapping[source_lang];
+
+        //Do not add "Please select" in case there is just one target option possible"
+        to_select = document.getElementById("to_lang_sel");
+        if (targets.length > 1 ) {
+            to_select.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
+        }
+
         window.console.log(source_lang + " -> [ " + targets + " ]");
         for (i = 0; i < targets.length; i += 1) {
             to_select.innerHTML += get_select_option(targets[i], targets[i]);
@@ -187,25 +190,35 @@ function on_source_lang_select() {
  */
 function set_supported_languages(languages) {
     "use strict";
-    var source_lang, to_select, from_select;
+    var source_lang, to_select, from_select, num_sources;
     
     window.console.log("Parsing the supported languages response to JSON: " + languages);
     client_data.language_mapping = JSON.parse(languages);
 
+    window.console.log("Clear the to-select as we are now re-loading the source languages");
     to_select = document.getElementById("to_lang_sel");
     to_select.innerHTML = "";
 
-    //ToDo: Do not add "Please select" in case there is just one source option possible"
-    
-    window.console.log("Update the from and to select boxes");
+    //Do not add "Please select" in case there is just one source option possible"
     from_select = document.getElementById("from_lang_sel");
-    from_select.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
+    num_sources = Object.keys(client_data.language_mapping).length;
+    window.console.log("The number of source languages is: " + num_sources);
+
+    if (num_sources > 1) {
+        window.console.log("Multiple source languages: Adding 'Please select'");
+        from_select.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
+    }
 
     window.console.log("Add the available source languages");
     for (source_lang in client_data.language_mapping) {
         if (client_data.language_mapping.hasOwnProperty(source_lang)) {
             from_select.innerHTML += get_select_option(source_lang, source_lang);
         }
+    }
+    
+    if (num_sources === 1) {
+        window.console.log("Single source language, set the targets right away");
+        on_source_lang_select();
     }
 }
 
