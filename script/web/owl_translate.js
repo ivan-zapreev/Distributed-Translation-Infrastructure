@@ -1,9 +1,18 @@
 var client_data = {
     "server_url" : "ws://localhost:9002", //The web server url
     "ws" : null,                          //The web socket to the server
-    "active_translations" : 0             //The number of active translations
+    "active_translations" : 0,            //The number of active translations
+    "prev_job_req_id" : 0,                //Stores the previously send translation job request
+    "prev_source_md5" : "",               //Stores the previously sent translation job source text
+    "calcMD5" : null                      //The md5 function, to be initialized
 };
 
+//Declare the translation request header delimiter string
+var TRANS_REQ_HEADER_DELIMITER = ":";
+//Declare the translation request header end string
+var TRANS_REQ_HEADER_END = "\n";
+//Declare the prefix of the translation job request message
+var TRANS_JOB_REQUEST_PREFIX = "TRAN_JOB_REQ";
 //Declare the prefix of the translation job response message
 var TRANS_JOB_RESPONSE_PREFIX = "TRAN_JOB_RESP";
 //Declare the prefix of the supported languages response message
@@ -56,18 +65,100 @@ function update_trans_status() {
 }
 
 /**
+ * Allows to get the selected element value from the select element with the given id
+ * @param {String} select_id the id of the select element to get the selected value from
+ * @param {String} the value of the selected element
+ */
+function get_selected_lang(select_id) {
+    "use strict";
+    var select, selected_lang;
+    
+    select = document.getElementById(select_id);
+    selected_lang = select.options[select.selectedIndex].value;
+    window.console.log("The selected '" + select_id + "' language is: " + selected_lang);
+    
+    return selected_lang;
+}
+
+/**
+ * Allows to get the selected language source value
+ * @return {string} the value of the selected source language
+ */
+function get_selected_source_lang() {
+    "use strict";
+
+    return get_selected_lang("from_lang_sel").trim();
+}
+
+/**
+ * Allows to get the selected language target value
+ * @return {string} the value of the selected target language
+ */
+function get_selected_target_lang() {
+    "use strict";
+
+    return get_selected_lang("to_lang_sel").trim();
+}
+
+/**
+ * Allows to send a new translation request to the server
+ * @param {string} new_source_text the prepared new source text to be sent for translation
+ */
+function send_translation_request(new_source_text) {
+    "use strict";
+    var is_trans_info, source_lang, target_lang;
+    
+    //Get the new translation job request id
+    client_data.prev_job_req_id += 1;
+    
+    //Set the translation info request to false
+    is_trans_info = 0;
+    
+    //ToDo: Set the source language
+    source_lang = get_selected_source_lang();
+
+    //ToDo: Set the target language
+    target_lang = get_selected_target_lang();
+    
+    //Send a new translation request
+    client_data.ws.send(TRANS_JOB_REQUEST_PREFIX +
+                        TRANS_REQ_HEADER_DELIMITER + client_data.prev_job_req_id +
+                        TRANS_REQ_HEADER_DELIMITER + source_lang +
+                        TRANS_REQ_HEADER_DELIMITER + target_lang +
+                        TRANS_REQ_HEADER_DELIMITER + is_trans_info +
+                        TRANS_REQ_HEADER_END + new_source_text);
+}
+
+/**
  * This function is called if a new translation request is to be sent.
  */
 function do_translate() {
     "use strict";
+    var source_text, new_source_md5;
     
-    //ToDo: Send a new translation request, in case the text to be translated has changed.
+    //Get and prepare the new source text
+    source_text = document.getElementById("from_text").value.trim();
+    window.console.log("The text to translate is: " + source_text);
     
-    window.console.log("Increment the number of active translations");
-    client_data.active_translations += 1;
+    //Compute the new source md5 value
+    new_source_md5 = client_data.calcMD5(source_text);
+    window.console.log("The new source md5: " + new_source_md5);
+    
+    if ((source_text !== "") && (new_source_md5 !== client_data.prev_source_md5)) {
+        window.console.log("The new text is now empty and is different from the previous");
+    
+        //Store the new previous translation request md5
+        client_data.prev_source_md5 = new_source_md5;
+    
+        window.console.log("Increment the number of active translations");
+        client_data.active_translations += 1;
 
-    window.console.log("Update the translation status");
-    update_trans_status();
+        window.console.log("Update the translation status");
+        update_trans_status();
+        
+        window.console.log("Send the translation request");
+        send_translation_request(source_text);
+    }
 }
 
 /**
@@ -136,8 +227,13 @@ function set_translation(trans_response) {
     "use strict";
     
     //ToDo: Implement setting the translation response in case it is not outdated.
+    document.getElementById("to_text").value = trans_response;
     
-    window.alert("Implement parsing the translation response!");
+    window.console.log("Decrement the number of active translations");
+    client_data.active_translations -= 1;
+
+    window.console.log("Update the translation status");
+    update_trans_status();
 }
 
 /**
@@ -158,12 +254,10 @@ function get_select_option(value, name) {
  */
 function on_source_lang_select() {
     "use strict";
-    var i, to_select, from_select, source_lang, targets;
+    var i, to_select, source_lang, targets;
     
     window.console.log("The source language is selected");
-    from_select = document.getElementById("from_lang_sel");
-    source_lang = from_select.options[from_select.selectedIndex].value;
-    window.console.log("The source language is: " + source_lang);
+    source_lang = get_selected_source_lang();
 
     if (source_lang !== "") {
         window.console.log("The source language is not empty!");
@@ -171,7 +265,7 @@ function on_source_lang_select() {
 
         //Do not add "Please select" in case there is just one target option possible"
         to_select = document.getElementById("to_lang_sel");
-        if (targets.length > 1 ) {
+        if (targets.length > 1) {
             to_select.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
         }
 
@@ -327,8 +421,10 @@ function on_server_change() {
  * This function is called in the beginning just after the DOM tree
  * is parsed and ensures initialization of the web interface.
  */
-function initialize_translation() {
+function initialize_translation(callMD5) {
     "use strict";
+    
+    client_data.calcMD5 = callMD5;
     
     window.console.log("Initializing the client, url: " + client_data.server_url);
 
