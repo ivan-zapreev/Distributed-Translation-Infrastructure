@@ -28,6 +28,8 @@
 
 #include <string>
 
+#include "common/messaging/json_msg.hpp"
+
 using namespace std;
 
 namespace uva {

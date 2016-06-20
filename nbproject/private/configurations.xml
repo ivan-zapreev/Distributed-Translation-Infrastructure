@@ -575,6 +575,7 @@
       <df name="common">
         <df name="messaging">
           <in>id_manager.hpp</in>
+          <in>json_msg.hpp</in>
           <in>supp_lang_request.hpp</in>
           <in>supp_lang_response.hpp</in>
           <in>trans_job_code.hpp</in>
@@ -752,6 +753,7 @@
       </df>
       <df name="common">
         <df name="messaging">
+          <in>json_msg.cpp</in>
           <in>supp_lang_request.cpp</in>
           <in>supp_lang_response.cpp</in>
           <in>trans_job_code.cpp</in>
