@@ -166,7 +166,7 @@ namespace uva {
                              * Allows to fill in the translation info with the stack information
                              * @param info the translation info to fill in
                              */
-                            virtual void get_trans_info(trans_info & info) {
+                            virtual void get_trans_info(trans_info & info) const {
                                 for (int32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
                                     m_levels[level]->get_trans_info(info);
                                 }

@@ -74,7 +74,9 @@ namespace uva {
                          * It default-initializes the class with undefined values.
                          */
                         trans_job_response()
-                        : m_job_id(job_id::UNDEFINED_JOB_ID), m_code(trans_job_code::RESULT_UNDEFINED), m_text("") {
+                        : m_job_id(job_id::UNDEFINED_JOB_ID),
+                        m_status_code(trans_job_code::RESULT_UNDEFINED),
+                        m_status_msg(""), m_target_text("") {
                         }
 
                         /**
@@ -82,11 +84,11 @@ namespace uva {
                          * original server message to parse. This constructor is
                          * to be used on the client to de-serialize the resulting
                          * message.
-                         * @param message the server message to be parsed
+                         * @param data the server message to be parsed
                          */
-                        trans_job_response(const string & message) {
+                        trans_job_response(const string & data) {
                             //De-serialize from the message
-                            de_serialize(message);
+                            de_serialize(data);
                         }
 
                         /**
@@ -94,13 +96,17 @@ namespace uva {
                          * translation job id, the translation result code and 
                          * the text.
                          * @param job_id the client-issued id of the translation job 
-                         * @param code the translation job result code
-                         * @param text the translation job result text, either
+                         * @param status_code the translation job result code
+                         * @param status_msg the translation job status message
+                         * @param target_text the translation job result text, either
                          * the translated text or the error message corresponding
                          * to the error code
                          */
                         trans_job_response(const job_id_type job_id, const trans_job_code code,
-                                const string & text) : m_job_id(job_id), m_code(code), m_text(text) {
+                                const string & status_msg, const string & target_text)
+                        : m_job_id(job_id),
+                        m_status_code(code), m_status_msg(status_msg),
+                        m_target_text(target_text) {
                         }
 
                         /**
@@ -124,13 +130,13 @@ namespace uva {
                                     //Second get the result code
                                     if (reader.get_first<NEW_LINE_HEADER_ENDING>(text)) {
                                         LOG_DEBUG1 << "Message " << &message << ", read the job code: " << text.str() << END_LOG;
-                                        m_code = trans_job_code(stoi(text.str()));
+                                        m_status_code = trans_job_code(stoi(text.str()));
 
                                         //Now the rest is the translated text or the error message
-                                        m_text = reader.get_rest_str();
+                                        m_target_text = reader.get_rest_str();
 
                                         LOG_DEBUG << "Received message " << &message << ", \nm_job_id = " << m_job_id
-                                                << ", m_code = " << m_code << ", m_text = \n" << m_text << END_LOG;
+                                                << ", m_code = " << m_status_code << ", m_text = \n" << m_target_text << END_LOG;
                                     } else {
                                         THROW_EXCEPTION(string("Could not find result code in the job reply header!"));
                                     }
@@ -146,9 +152,9 @@ namespace uva {
                          * Allows to serialize the job reply into a string
                          * @return the string representation of the translation job reply
                          */
-                        const string serialize() {
+                        inline const string serialize() {
                             string result = TRANS_JOB_RESPONSE_PREFIX + to_string(m_job_id) + HEADER_DELIMITER +
-                                    to_string(m_code.val()) + NEW_LINE_HEADER_ENDING + m_text;
+                                    to_string(m_status_code.val()) + NEW_LINE_HEADER_ENDING + m_target_text;
 
                             LOG_DEBUG1 << "Serializing reply message: '" << result << "'" << END_LOG;
 
@@ -159,7 +165,7 @@ namespace uva {
                          * Allows to get the client-issued job id
                          * @return the client-issued job id
                          */
-                        const job_id_type get_job_id() const {
+                        inline job_id_type get_job_id() const {
                             return m_job_id;
                         }
 
@@ -168,7 +174,7 @@ namespace uva {
                          * equal to job_id::UNDEFINED_JOB_ID;
                          * @return true if the job id is defined, otherwise false
                          */
-                        const bool is_job_id_defined() const {
+                        inline bool is_job_id_defined() const {
                             return (m_job_id != job_id::UNDEFINED_JOB_ID);
                         }
 
@@ -176,16 +182,24 @@ namespace uva {
                          * Allows to check if the reply is good, i.e. contains the translated text and not the error message
                          * @return true if the reply is good and contains the translated text.
                          */
-                        const bool is_good() const {
-                            return (m_code == trans_job_code::RESULT_OK);
+                        inline bool is_good() const {
+                            return (m_status_code == trans_job_code::RESULT_OK);
                         }
 
                         /**
                          * Allows to get the translation job result code
                          * @return the translation job result code
                          */
-                        const trans_job_code get_code() const {
-                            return m_code;
+                        inline trans_job_code get_status_code() const {
+                            return m_status_code;
+                        }
+
+                        /**
+                         * Allows to get the translation job status message
+                         * @return the translation job status message
+                         */
+                        inline const string & get_status_msg() const {
+                            return m_status_msg;
                         }
 
                         /**
@@ -194,18 +208,20 @@ namespace uva {
                          * message for the case of failed translation job request.
                          * @return the translation job text
                          */
-                        const string & get_text() const {
-                            return m_text;
+                        inline const string & get_target_text() const {
+                            return m_target_text;
                         }
 
                     private:
                         //Stores the translation job id
                         job_id_type m_job_id;
                         //Stores the translation job result code
-                        trans_job_code m_code;
+                        trans_job_code m_status_code;
+                        //Stores the translation job status message
+                        string m_status_msg;
                         //Stores the translation job result text, the error
                         //message or the text in the target language.
-                        string m_text;
+                        string m_target_text;
                     };
                 }
             }

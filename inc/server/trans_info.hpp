@@ -63,7 +63,7 @@ namespace uva {
                      * The method that is to be implemented in for getting the translation info
                      * @param info
                      */
-                    virtual void get_trans_info(trans_info & info) = 0;
+                    virtual void get_trans_info(trans_info & info) const = 0;
 
 #if IS_SERVER_TUNING_MODE
                     /**

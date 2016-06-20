@@ -251,7 +251,7 @@ namespace uva {
                         const job_id_type session_id = trans_job->get_session_id();
 
                         //Create the translation job response
-                        trans_job_response response(job_id, trans_job->get_code(), trans_job->get_text());
+                        trans_job_response response(job_id, trans_job->get_status_code(), trans_job->get_status_msg(), trans_job->get_target_text());
 
                         LOG_DEBUG << "Created the job response: " << &response << " for job "
                                 << trans_job->get_job_id() << " from session "

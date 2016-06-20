@@ -322,7 +322,7 @@ namespace uva {
                             LOG_ERROR << "job " << job_id_val << ": " << ex.get_message() << END_LOG;
 
                             //Create the reply message, with or without job id
-                            trans_job_response response(job_id_val, trans_job_code::RESULT_ERROR, ex.get_message());
+                            trans_job_response response(job_id_val, trans_job_code::RESULT_ERROR, ex.get_message(), payload);
 
                             //Send the response
                             send_response(hdl, response);

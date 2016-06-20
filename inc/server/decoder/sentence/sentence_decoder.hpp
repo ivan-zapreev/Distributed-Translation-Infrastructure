@@ -150,7 +150,7 @@ namespace uva {
                              * Allows to obtain the translation info for the translation task.
                              * @param [out] the container object for the translation task info
                              */
-                            inline void get_trans_info(trans_info & info) {
+                            inline void get_trans_info(trans_info & info) const {
                                 if (m_stack_info_prov != NULL) {
                                     m_stack_info_prov->get_trans_info(info);
                                 } else {

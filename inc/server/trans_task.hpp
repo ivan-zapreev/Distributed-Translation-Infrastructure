@@ -74,12 +74,13 @@ namespace uva {
                      * The basic constructor allowing to initialize the main class constants
                      * @param session_id the session id of the task, is used for logging
                      * @param job_id the job id of the task, is used for logging
-                     * @param source_sentence the sentence to be translated
+                     * @param source_text the sentence to be translated
                      */
                     trans_task(const session_id_type session_id, const job_id_type job_id,
-                            const string & source_sentence, done_task_notifier notify_task_done_func)
+                            const string & source_text, done_task_notifier notify_task_done_func)
                     : m_is_interrupted(false), m_session_id(session_id), m_job_id(job_id),
-                    m_task_id(m_id_mgr.get_next_id()), m_code(trans_job_code::RESULT_UNDEFINED), m_source_text(source_sentence),
+                    m_task_id(m_id_mgr.get_next_id()), m_status_code(trans_job_code::RESULT_UNDEFINED),
+                    m_status_msg(""), m_source_text(source_text),
                     m_notify_task_done_func(notify_task_done_func), m_target_text(""),
                     m_decoder(de_configurator::get_params(), m_is_interrupted, m_source_text, m_target_text) {
                         LOG_DEBUG1 << "/session id=" << m_session_id << ", job id="
@@ -149,9 +150,9 @@ namespace uva {
 #endif
                         } catch (uva_exception & ex) {
                             //Set the response code
-                            m_code = trans_job_code::RESULT_ERROR;
-                            //Set the error message to be the target text to be sent back
-                            m_target_text = ex.get_message();
+                            m_status_code = trans_job_code::RESULT_ERROR;
+                            //Set the error message for the client
+                            m_status_msg = ex.get_message();
                             //Do local logging
                             LOG_DEBUG << "SERVER ERROR: " << m_target_text << END_LOG;
                         }
@@ -180,15 +181,23 @@ namespace uva {
                      * Allows to retrieve the translation task result code
                      * @return the translation task result code
                      */
-                    const trans_job_code get_code() const {
-                        return m_code;
+                    inline trans_job_code get_status_code() const {
+                        return m_status_code;
+                    }
+
+                    /**
+                     * Allows to retrieve the error message for the sentence
+                     * @return the error's text
+                     */
+                    inline const string & get_status_msg() const {
+                        return m_status_msg;
                     }
 
                     /**
                      * Allows to retrieve the sentence in the source language
                      * @return the sentence in the source language
                      */
-                    const string & get_source_text() const {
+                    inline const string & get_source_text() const {
                         return m_source_text;
                     }
 
@@ -196,7 +205,7 @@ namespace uva {
                      * Allows to obtain the translation info for the translation task.
                      * @param [out] the container object for the translation task info
                      */
-                    inline void get_trans_info(trans_info & info) {
+                    inline void get_trans_info(trans_info & info) const {
                         //Clean the translation task info
                         info.clean();
 
@@ -208,7 +217,7 @@ namespace uva {
                      * Allows to retrieve the sentence in the target language or an error message
                      * @return the sentence in the target language or an error message
                      */
-                    const string & get_target_text() {
+                    inline const string & get_target_text() {
                         LOG_DEBUG1 << "Retrieving the target text of task: " << m_task_id << END_LOG;
                         {
                             recursive_guard guard_end(m_end_lock);
@@ -283,24 +292,26 @@ namespace uva {
                      */
                     void process_task_result() {
                         //Set the task is not canceled then set the result, otherwise set the canceled code.
-                        if (m_code == trans_job_code::RESULT_ERROR) {
-                            //If there was an error during translation send back the error message stored in the target texts
-                            m_target_text = string("<error>: ") + m_target_text;
+                        if (m_status_code == trans_job_code::RESULT_ERROR) {
+                            //If there was an error during translation send back the original text
+                            m_target_text = m_source_text;
                         } else {
                             //Unless it was an error while translating there should be an undefined status
-                            ASSERT_SANITY_THROW((m_code != trans_job_code::RESULT_UNDEFINED),
-                                    string("Unexpected translation code: ") + to_string(m_code) +
+                            ASSERT_SANITY_THROW((m_status_code != trans_job_code::RESULT_UNDEFINED),
+                                    string("Unexpected translation code: ") + to_string(m_status_code) +
                                     string(" must be UNDEFINED!"));
 
                             //Check if we were interrupted or not
                             if (m_is_interrupted) {
                                 //If the translation has been canceled just send back the source
-                                m_code = trans_job_code::RESULT_CANCELED;
-                                m_target_text = string("<canceled>: ") + m_source_text;
+                                m_status_code = trans_job_code::RESULT_CANCELED;
+                                m_status_msg = "The translation task has been canceled!";
+                                m_target_text = m_source_text;
                             } else {
                                 //If the translation has been finished send back the target
-                                m_code = trans_job_code::RESULT_OK;
-                                m_target_text = string("<finished>: ") + m_target_text;
+                                m_status_code = trans_job_code::RESULT_OK;
+                                m_status_msg = "OK";
+                                m_target_text = m_target_text;
                             }
                         }
                     }
@@ -319,7 +330,10 @@ namespace uva {
                     const task_id_type m_task_id;
 
                     //Stores the translation task result code
-                    trans_job_code m_code;
+                    trans_job_code m_status_code;
+
+                    //Stores the error text for the not ok code
+                    string m_status_msg;
 
                     //Stores the sentence to be translated
                     const string m_source_text;
