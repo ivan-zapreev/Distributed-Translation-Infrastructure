@@ -306,7 +306,7 @@ namespace uva {
                             if (m_is_stop) {
                                 //If the translation has been canceled just send back the source
                                 m_status_code = trans_job_code::RESULT_CANCELED;
-                                m_status_msg = "The translation task has been canceled!";
+                                m_status_msg = "Canceled!";
                                 m_target_text = m_source_text;
                             } else {
                                 //If the translation has been finished send back the target

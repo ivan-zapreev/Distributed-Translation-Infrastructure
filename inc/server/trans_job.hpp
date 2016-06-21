@@ -231,11 +231,7 @@ namespace uva {
                                 LOG_DEBUG << "The translation job " << this << " is finished!" << END_LOG;
 
                                 //Combine the task results into the job result
-                                if (m_is_trans_info) {
-                                    combine_job_result<true>();
-                                } else {
-                                    combine_job_result<false>();
-                                }
+                                collect_job_results();
 
                                 //Do the sanity check assert
                                 ASSERT_SANITY_THROW(!m_notify_job_done_func,
@@ -253,8 +249,7 @@ namespace uva {
                      * Allows to compile the end job result, e.g. based on the task results,
                      * come up with the job's result code and the translated text.
                      */
-                    template<bool is_trans_info>
-                    void combine_job_result() {
+                    void collect_job_results() {
                         LOG_DEBUG << "Combining the job " << this << " result!" << END_LOG;
 
                         //Declare the variables for counting the number of CANCELED/ERROR tasks
@@ -287,7 +282,7 @@ namespace uva {
                             m_target_text += task->get_target_text() + "\n";
 
                             //Append the task translation info if needed and the translation was finished
-                            if (is_trans_info && (status == trans_job_code::RESULT_OK)) {
+                            if (m_is_trans_info && (status == trans_job_code::RESULT_OK)) {
                                 //Get the translation task info
                                 task->get_trans_info(info);
                                 m_target_text += info.serialize() + "\n";

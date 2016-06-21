@@ -72,16 +72,6 @@ namespace uva {
                         static const string TRANS_JOB_RESPONSE_PREFIX;
 
                         /**
-                         * The basic no-argument constructor that is needed for the translation client.
-                         * It default-initializes the class with undefined values.
-                         */
-                        trans_job_response()
-                        : m_job_id(job_id::UNDEFINED_JOB_ID),
-                        m_status_code(trans_job_code::RESULT_UNDEFINED),
-                        m_status_msg(""), m_target_text("") {
-                        }
-
-                        /**
                          * This is the basic class constructor that accepts the
                          * original server message to parse. This constructor is
                          * to be used on the client to de-serialize the resulting
