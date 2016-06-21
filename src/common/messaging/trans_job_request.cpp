@@ -30,12 +30,11 @@ namespace uva {
         namespace bpbd {
             namespace common {
                 namespace messaging {
-
-                    constexpr char trans_job_request::HEADER_DELIMITER;
-                    constexpr char trans_job_request::NEW_LINE_HEADER_ENDING;
-                    constexpr char trans_job_request::TEXT_SENTENCE_DELIMITER;
-
-                    const string trans_job_request::TRANS_JOB_REQUEST_PREFIX = string("TRAN_JOB_REQ") + HEADER_DELIMITER;
+                        const string trans_job_request::JOB_ID_NAME = "job_id";
+                        const string trans_job_request::SOURCE_LANG_NAME = "source_lang";
+                        const string trans_job_request::TARGET_LANG_NAME = "target_lang";
+                        const string trans_job_request::TRANS_INFO_FLAG_NAME = "trans_info";
+                        const string trans_job_request::SOURCE_SENTENCES_NAME = "source_sent";
                 }
             }
         }

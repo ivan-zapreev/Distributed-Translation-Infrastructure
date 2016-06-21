@@ -7,12 +7,27 @@ var client_data = {
     "calcMD5" : null                      //The md5 function, to be initialized
 };
 
-//Declare the translation request header delimiter string
-var TRANS_REQ_HEADER_DELIMITER = ":";
-//Declare the translation request header end string
-var TRANS_REQ_HEADER_END = "\n";
-//Declare the prefix of the translation job request message
-var TRANS_JOB_REQUEST_PREFIX = "TRAN_JOB_REQ";
+//The communication protocol version value
+var PROTOCOL_VERSION = 1;
+//This enumeration stores the available message type values
+var MSG_TYPE_ENUM = {
+    //The message type is undefined
+    MESSAGE_UNDEFINED : 0,
+    //The supported languages request message
+    MESSAGE_SUPP_LANG_REQ : 1,
+    //The supported languages response message
+    MESSAGE_SUPP_LANG_RESP : 2,
+    //The translation job request message
+    MESSAGE_TRANS_JOB_REQ : 3,
+    //The translation job response message
+    MESSAGE_TRANS_JOB_RESP : 4
+};
+
+//Declare the supported languages request
+var SUPPORTED_LANG_REQ = {"prot_ver" : PROTOCOL_VERSION, "msg_type" : MSG_TYPE_ENUM.MESSAGE_SUPP_LANG_REQ};
+//Declare the supported languages request
+var TRAN_JOB_REQ_BASE = {"prot_ver" : PROTOCOL_VERSION, "msg_type" : MSG_TYPE_ENUM.MESSAGE_TRANS_JOB_REQ};
+
 //Declare the prefix of the translation job response message
 var TRANS_JOB_RESPONSE_PREFIX = "TRAN_JOB_RESP";
 //Declare the prefix of the supported languages response message
@@ -106,27 +121,30 @@ function get_selected_target_lang() {
  */
 function send_translation_request(new_source_text) {
     "use strict";
-    var is_trans_info, source_lang, target_lang;
     
     //Get the new translation job request id
     client_data.prev_job_req_id += 1;
-    
-    //Set the translation info request to false
-    is_trans_info = 0;
-    
-    //ToDo: Set the source language
-    source_lang = get_selected_source_lang();
 
-    //ToDo: Set the target language
-    target_lang = get_selected_target_lang();
+    //Initialize and construct the json translation job request
+    var trans_job_req = TRAN_JOB_REQ_BASE;
+    
+    //Set the translation job id
+    trans_job_req.job_id = client_data.prev_job_req_id;
+    
+    //Set the source language
+    trans_job_req.source_lang = get_selected_source_lang();
+
+    //Set the target language
+    trans_job_req.target_lang = get_selected_target_lang();
+
+    //Set the translation info request to false
+    trans_job_req.trans_info = false;
+
+    //Set the source text split line by line
+    trans_job_req.source_sent = new_source_text.split('\n');
     
     //Send a new translation request
-    client_data.ws.send(TRANS_JOB_REQUEST_PREFIX +
-                        TRANS_REQ_HEADER_DELIMITER + client_data.prev_job_req_id +
-                        TRANS_REQ_HEADER_DELIMITER + source_lang +
-                        TRANS_REQ_HEADER_DELIMITER + target_lang +
-                        TRANS_REQ_HEADER_DELIMITER + is_trans_info +
-                        TRANS_REQ_HEADER_END + new_source_text);
+    client_data.ws.send(JSON.stringify(trans_job_req));
 }
 
 /**
@@ -212,7 +230,9 @@ function on_open() {
     update_conn_status(window.WebSocket.OPEN);
 
     //Sent the request for the supported languages
-    client_data.ws.send("SUPP_LANG_REQ");
+    var supp_lang_reg_str = JSON.stringify(SUPPORTED_LANG_REQ);
+    window.console.log("Sending the supported languages request: " + supp_lang_reg_str);
+    client_data.ws.send(supp_lang_reg_str);
 
     window.console.log("Enable the controls after connecting to a new server");
     enable_interface(true);
@@ -225,6 +245,7 @@ function on_open() {
  * @return {Object} the header object
  */
 function parse_trans_resp_header(header_str) {
+    "use strict";
     var header = {"job_id" : 0, "code_val" : 0};
     
     //ToDo: Parse the header into the header object, make the server return JSON header?
@@ -239,7 +260,7 @@ function parse_trans_resp_header(header_str) {
  */
 function set_translation(trans_response) {
     "use strict";
-    var lines, header, i;
+    var lines, header, i, to_text_area;
     
     //Split the response into lines
     lines = trans_response.split('\n');
@@ -247,10 +268,14 @@ function set_translation(trans_response) {
     //The first line is the header
     header = parse_trans_resp_header(lines[0]);
     
+    //Get the text element to put the values into
+    to_text_area = document.getElementById("to_text");
+    to_text_area.value = "";
+    
     //Implement setting the translation response in case it is not outdated.
     for (i = 1; i < lines.length; i += 1) {
         //ToDo: Parse the line in order to get the status away
-        document.getElementById("to_text").value += lines[i] + "\n";
+        to_text_area.value += lines[i] + "\n";
     }
     
     window.console.log("Decrement the number of active translations");
@@ -282,12 +307,15 @@ function on_source_lang_select() {
     window.console.log("The source language is selected");
     source_lang = get_selected_source_lang();
 
+    //Re-set the target select to no options
+    to_select = document.getElementById("to_lang_sel");
+    to_select.innerHTML = "";
+    
     if (source_lang !== "") {
         window.console.log("The source language is not empty!");
         targets = client_data.language_mapping[source_lang];
 
         //Do not add "Please select" in case there is just one target option possible"
-        to_select = document.getElementById("to_lang_sel");
         if (targets.length > 1) {
             to_select.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
         }
@@ -296,8 +324,6 @@ function on_source_lang_select() {
         for (i = 0; i < targets.length; i += 1) {
             to_select.innerHTML += get_select_option(targets[i], targets[i]);
         }
-    } else {
-        to_select.innerHTML = "";
     }
 }
 
@@ -324,6 +350,9 @@ function set_supported_languages(languages) {
     if (num_sources > 1) {
         window.console.log("Multiple source languages: Adding 'Please select'");
         from_select.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
+    } else {
+        //Re-set the source select to no options
+        from_select.innerHTML = "";
     }
 
     window.console.log("Add the available source languages");

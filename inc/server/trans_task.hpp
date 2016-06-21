@@ -78,11 +78,11 @@ namespace uva {
                      */
                     trans_task(const session_id_type session_id, const job_id_type job_id,
                             const string & source_text, done_task_notifier notify_task_done_func)
-                    : m_is_interrupted(false), m_session_id(session_id), m_job_id(job_id),
+                    : m_is_stop(false), m_session_id(session_id), m_job_id(job_id),
                     m_task_id(m_id_mgr.get_next_id()), m_status_code(trans_job_code::RESULT_UNDEFINED),
                     m_status_msg(""), m_source_text(source_text),
                     m_notify_task_done_func(notify_task_done_func), m_target_text(""),
-                    m_decoder(de_configurator::get_params(), m_is_interrupted, m_source_text, m_target_text) {
+                    m_decoder(de_configurator::get_params(), m_is_stop, m_source_text, m_target_text) {
                         LOG_DEBUG1 << "/session id=" << m_session_id << ", job id="
                                 << m_job_id << ", NEW task id=" << m_task_id
                                 << "/ text: " << m_source_text << END_LOG;
@@ -117,7 +117,7 @@ namespace uva {
                             LOG_DEBUG1 << "The task " << m_task_id << " is to be interrupted!" << END_LOG;
 
                             //Set the stopping flag to true
-                            m_is_interrupted = true;
+                            m_is_stop = true;
 
                             //Do nothing else, just set the flag, that is needed to avoid deadlocking
                             //The finished task, and job processing is to be done from a separate thread.
@@ -136,23 +136,11 @@ namespace uva {
                         try {
                             LOG_DEBUG1 << "Invoking the sentence translation for task " << m_task_id << END_LOG;
                             m_decoder.translate();
-
-                            const de_parameters & de_params = de_configurator::get_params();
-
-                            LOG_DEBUG1 << "Dumping the search lattice for task " << m_task_id
-                                    << " is " << (de_params.m_is_gen_lattice ? "" : "NOT ")
-                                    << "needed!" << END_LOG;
-#if IS_SERVER_TUNING_MODE
-                            //Dump the search lattice for the sentence if needed
-                            if (de_params.m_is_gen_lattice) {
-                                dump_search_lattice(de_params);
-                            }
-#endif
-                        } catch (uva_exception & ex) {
+                        } catch (exception & ex) {
                             //Set the response code
                             m_status_code = trans_job_code::RESULT_ERROR;
                             //Set the error message for the client
-                            m_status_msg = ex.get_message();
+                            m_status_msg = ex.what();
                             //Do local logging
                             LOG_DEBUG << "SERVER ERROR: " << m_target_text << END_LOG;
                         }
@@ -167,6 +155,18 @@ namespace uva {
 
                             //Produce the task result
                             process_task_result();
+
+#if IS_SERVER_TUNING_MODE
+                            //Dump the search lattice for the sentence if needed
+                            const de_parameters & de_params = de_configurator::get_params();
+                            LOG_DEBUG1 << "Dumping the search lattice for task " << m_task_id
+                                    << " is " << (de_params.m_is_gen_lattice ? "" : "NOT ")
+                                    << "needed!" << END_LOG;
+                            if (!m_is_stop && de_params.m_is_gen_lattice) {
+                                dump_search_lattice(de_params);
+                            }
+#endif
+                            
                         }
 
                         LOG_DEBUG1 << "The task " << m_task_id << " translation is done, notifying!" << END_LOG;
@@ -274,11 +274,12 @@ namespace uva {
 
                             //Call the sentence decoder to do dumping.
                             m_decoder.dump_search_lattice(lattice_file, scores_file);
-                        } catch (...) {
+                        } catch (std::exception & ex) {
                             //Close the lattice files
+                            LOG_ERROR << ex.what() << END_LOG;
                             close_lattice_files(scores_file, lattice_file);
                             //Re-throw the exception
-                            throw;
+                            throw ex;
                         }
                         //Close the lattice files
                         close_lattice_files(scores_file, lattice_file);
@@ -302,7 +303,7 @@ namespace uva {
                                     string(" must be UNDEFINED!"));
 
                             //Check if we were interrupted or not
-                            if (m_is_interrupted) {
+                            if (m_is_stop) {
                                 //If the translation has been canceled just send back the source
                                 m_status_code = trans_job_code::RESULT_CANCELED;
                                 m_status_msg = "The translation task has been canceled!";
@@ -318,7 +319,7 @@ namespace uva {
 
                 private:
                     //Stores the flag that indicates that we need to stop the translation algorithm
-                    atomic<bool> m_is_interrupted;
+                    atomic<bool> m_is_stop;
 
                     //Stores the translation task session id, is needed for logging
                     const session_id_type m_session_id;

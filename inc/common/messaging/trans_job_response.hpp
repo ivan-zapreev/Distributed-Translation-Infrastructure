@@ -33,6 +33,8 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
+
+#include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_code.hpp"

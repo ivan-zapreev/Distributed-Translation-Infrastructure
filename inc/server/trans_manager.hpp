@@ -146,10 +146,9 @@ namespace uva {
                      * request is from this moment on a responsibility of the
                      * underlying object to be managed.
                      * @param hdl [in] the connection handler to identify the session object.
-                     * @param request_ptr [in/out] the translation job request pointer reference to be stored, not NULL
-                     * once the request is set into the translation job, the pointer must be set to NULL
+                     * @param trans_req [in] the translation job request reference
                      */
-                    void translate(websocketpp::connection_hdl hdl, trans_job_request_ptr & request_ptr) {
+                    void translate(websocketpp::connection_hdl hdl, trans_job_request & trans_req) {
                         //Declare the session id variable
                         session_id_type session_id = session_id::UNDEFINED_SESSION_ID;
 
@@ -167,27 +166,22 @@ namespace uva {
                         ASSERT_CONDITION_THROW((session_id == session_id::UNDEFINED_SESSION_ID),
                                 "No session object is associated with the connection handler!");
 
-                        //Set the session id into the request
-                        request_ptr->set_session_id(session_id);
-
                         //Instantiate a new translation job, it will destroy the translation request in its destructor
-                        trans_job_ptr job = new trans_job(request_ptr);
-
-                        //Set the pointer to NULL as the job is not created and owns the request
-                        request_ptr = NULL;
+                        trans_job_ptr job = new trans_job(session_id, trans_req);
 
                         LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
 
                         try {
                             //Schedule a translation job request for the session id
                             m_job_pool.plan_new_job(job);
-                        } catch (...) {
+                        } catch (std::exception & ex) {
                             //Catch any possible exception and delete the translation job
+                            LOG_ERROR << ex.what() << END_LOG;
                             if (job != NULL) {
                                 delete job;
                             }
                             //Re-throw the exception
-                            throw;
+                            throw ex;
                         }
                     }
 
@@ -251,6 +245,7 @@ namespace uva {
                         const job_id_type session_id = trans_job->get_session_id();
 
                         //Create the translation job response
+                        //ToDo: The translation job response is to receive the json message to be sent
                         trans_job_response response(job_id, trans_job->get_status_code(), trans_job->get_status_msg(), trans_job->get_target_text());
 
                         LOG_DEBUG << "Created the job response: " << &response << " for job "

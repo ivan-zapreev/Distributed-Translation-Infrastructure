@@ -65,6 +65,8 @@ ASSERT_CONDITION_THROW(DO_SANITY_CHECKS && (CONDITION), MESSAGE);
 
             /**
              * This is an application exception class that is capable of storing an error message
+             * ToDo: Make sure that the classes catch the generic type exception and the 
+             *       get_message method is substituted with the use of what() method 
              */
             class uva_exception : public exception {
             private:
@@ -91,7 +93,7 @@ ASSERT_CONDITION_THROW(DO_SANITY_CHECKS && (CONDITION), MESSAGE);
                  * This method returns the stored message
                  * @return the reference to a constant error message string
                  */
-                string const & get_message() const throw () {
+                string const & what_str() const throw () {
                     return msg;
                 }
 

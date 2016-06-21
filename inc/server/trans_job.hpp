@@ -71,39 +71,31 @@ namespace uva {
                     /**
                      * The basic constructor allowing to initialize the main class constants
                      * @param session_id the id of the session from which the translation request is received
-                     * @param job_id the translation job id
-                     * @param task_ids the list of task ids from which this job consists of
+                     * @param trans_req the reference to the translation job request to get the data from.
                      */
-                    trans_job(trans_job_request_ptr request_ptr)
-                    : m_request_ptr(request_ptr), m_done_tasks_count(0),
+                    trans_job(const session_id_type session_id, const trans_job_request & trans_req)
+                    : m_session_id(session_id), m_job_id(trans_req.get_job_id()),
+                    m_is_trans_info(trans_req.is_trans_info()), m_done_tasks_count(0),
                     m_status_code(trans_job_code::RESULT_UNDEFINED),
                     m_status_msg(""), m_target_text("") {
                         LOG_DEBUG << "Creating a new translation job " << this << " with job_id: "
-                                << m_request_ptr->get_job_id() << " session id: "
-                                << m_request_ptr->get_session_id() << END_LOG;
+                                << m_job_id << " session id: " << m_session_id << END_LOG;
 
                         //Get the text to be translated
-                        string text = m_request_ptr->get_text();
-                        //Obtain the text to be parsed
-                        text_piece_reader reader(text.c_str(), text.length());
-                        //This reader will store the read text sentence
-                        text_piece_reader sentence;
-
-                        //Get the session and job id for the translation task constructor
-                        const session_id_type session_id = request_ptr->get_session_id();
-                        const job_id_type job_id = request_ptr->get_job_id();
+                        auto source_text = trans_req.get_source_text();
 
                         //Read the text line by line, each line must be one sentence
                         //to translate. For each read line create a translation task.
-                        while (reader.get_first<trans_job_request::TEXT_SENTENCE_DELIMITER>(sentence)) {
-                            m_tasks.push_back(new trans_task(session_id, job_id,
-                                    sentence.str(), bind(&trans_job::notify_task_done, this, _1)));
+                        for (size_t idx = 0; idx < source_text.size(); ++idx) {
+                            m_tasks.push_back(new trans_task(m_session_id, m_job_id,
+                                    source_text[idx], bind(&trans_job::notify_task_done, this, _1)));
                         }
                     }
 
                     /**
                      * Allows to set the function that should be called when the job is done
-                     * @param notify_job_done_func
+                     * @param notify_job_done_func the job done notification function
+                     *              to be called when the translation job is finished
                      */
                     void set_done_job_notifier(done_job_notifier notify_job_done_func) {
                         m_notify_job_done_func = notify_job_done_func;
@@ -114,8 +106,7 @@ namespace uva {
                      */
                     virtual ~trans_job() {
                         LOG_DEBUG << "Deleting the translation job " << this << " with job_id: "
-                                << m_request_ptr->get_job_id() << " session id: "
-                                << m_request_ptr->get_session_id() << END_LOG;
+                                << m_job_id << " session id: " << m_session_id << END_LOG;
 
                         LOG_DEBUG << "Start deleting translation tasks of job " << this << END_LOG;
 
@@ -124,13 +115,6 @@ namespace uva {
                             LOG_DEBUG << "Deleting translation tasks" << this->get_job_id() << "/" << **it << END_LOG;
                             delete *it;
                         }
-
-                        LOG_DEBUG << "The translation tasks of job " << this << " are deleted" << END_LOG;
-
-                        //If the job with its tasks is deleted then the request is not needed any more
-                        if (m_request_ptr != NULL) {
-                            delete m_request_ptr;
-                        }
                     }
 
                     /**
@@ -138,7 +122,7 @@ namespace uva {
                      * @return the session id
                      */
                     inline session_id_type get_session_id() const {
-                        return m_request_ptr->get_session_id();
+                        return m_session_id;
                     }
 
                     /**
@@ -146,7 +130,7 @@ namespace uva {
                      * @return the job id
                      */
                     inline job_id_type get_job_id() const {
-                        return m_request_ptr->get_job_id();
+                        return m_job_id;
                     }
 
                     /**
@@ -247,7 +231,7 @@ namespace uva {
                                 LOG_DEBUG << "The translation job " << this << " is finished!" << END_LOG;
 
                                 //Combine the task results into the job result
-                                if (m_request_ptr->is_trans_info()) {
+                                if (m_is_trans_info) {
                                     combine_job_result<true>();
                                 } else {
                                     combine_job_result<false>();
@@ -284,8 +268,11 @@ namespace uva {
                             //Get the task pointer for future use
                             trans_task_ptr task = *it;
 
+                            //Get the translation job result
+                            const trans_job_code status = task->get_status_code();
+
                             //Count the number of CANCELLED/ERROR tasks
-                            switch (task->get_status_code()) {
+                            switch (status) {
                                 case trans_job_code::RESULT_ERROR:
                                     num_error++;
                                     break;
@@ -299,8 +286,8 @@ namespace uva {
                             //Append the next task result
                             m_target_text += task->get_target_text() + "\n";
 
-                            //Append the task translation info if needed
-                            if (is_trans_info) {
+                            //Append the task translation info if needed and the translation was finished
+                            if (is_trans_info && (status == trans_job_code::RESULT_OK)) {
                                 //Get the translation task info
                                 task->get_trans_info(info);
                                 m_target_text += info.serialize() + "\n";
@@ -338,17 +325,23 @@ namespace uva {
                     //Stores the synchronization mutex for working with the m_sessions_map
                     recursive_mutex m_tasks_lock;
 
-                    //The done job notifier
-                    done_job_notifier m_notify_job_done_func;
+                    //Stores the translation client session id
+                    const session_id_type m_session_id;
 
-                    //Stores the original translation request
-                    trans_job_request_ptr m_request_ptr;
+                    //Stores the translation job id
+                    const job_id_type m_job_id;
 
-                    //Stores the list of translation tasks of this job
-                    tasks_list_type m_tasks;
+                    //Stores the flag of whether the translation info is to be sent back or not
+                    const bool m_is_trans_info;
 
                     //The count of the finished tasks
                     atomic<uint32_t> m_done_tasks_count;
+
+                    //The done job notifier
+                    done_job_notifier m_notify_job_done_func;
+
+                    //Stores the list of translation tasks of this job
+                    tasks_list_type m_tasks;
 
                     //Stores the translation job result code
                     trans_job_code m_status_code;

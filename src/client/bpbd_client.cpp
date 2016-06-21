@@ -209,9 +209,9 @@ int main(int argc, char** argv) {
         manager.stop();
 
         LOG_USAGE << "The job is done, the results are in: '" << params.m_target_file << "'" << END_LOG;
-    } catch (uva_exception & ex) {
+    } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit
-        LOG_ERROR << ex.get_message() << END_LOG;
+        LOG_ERROR << ex.what() << END_LOG;
         return_code = 1;
     }
 

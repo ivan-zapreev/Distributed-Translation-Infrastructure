@@ -36,6 +36,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+#include "common/messaging/json_msg.hpp"
 #include "common/messaging/trans_job_response.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/supp_lang_request.hpp"
@@ -202,9 +203,9 @@ namespace uva {
                         try {
                             //Create a new session object for the handler
                             m_manager.open_session(hdl);
-                        } catch (uva_exception & ex) {
+                        } catch (std::exception & ex) {
                             //Locally report error
-                            string err_msg = ex.get_message();
+                            string err_msg = ex.what();
                             LOG_ERROR << err_msg << END_LOG;
                             m_server.close(hdl, websocketpp::close::status::internal_endpoint_error, err_msg);
                         }
@@ -230,107 +231,91 @@ namespace uva {
                     }
 
                     /**
-                     * This enumeration stores the request types
-                     */
-                    enum request_type_enum {
-                        UNKNOWN_TYPE_REQUEST = 0,
-                        TRANSLATION_JOB_REQUEST = 1,
-                        SUPPORTED_LANGUAGES_REQUEST = 2
-                    };
-
-                    /**
                      * Is called when the message is received by the server
                      * @param hdl the connection handler
-                     * @param msg the received message
+                     * @param raw_msg the received message
                      */
-                    void on_message(websocketpp::connection_hdl hdl, server::message_ptr msg) {
+                    void on_message(websocketpp::connection_hdl hdl, server::message_ptr raw_msg) {
                         LOG_DEBUG << "Received a message!" << END_LOG;
 
-                        //Obtain the message payload
-                        const string payload = msg->get_payload();
+                        //Create an empty json message
+                        json_msg jmsg;
 
-                        //Act depending on the request type
-                        switch (detect_msg_type(payload)) {
-                            case request_type_enum::TRANSLATION_JOB_REQUEST:
-                                translation_job(hdl, payload);
-                                break;
-                            case request_type_enum::SUPPORTED_LANGUAGES_REQUEST:
-                                language_request(hdl, payload);
-                                break;
-                            default:
-                                //Send the error response
-                                send_str_response(hdl, "Unknown or unsupported request message!");
-                        }
-                    }
+                        //De-serialize the message and then handle based on its type
+                        try {
+                            string raw_msg_str = raw_msg->get_payload();
+                            
+                            LOG_DEBUG << "Received JSON msg: " << raw_msg_str << END_LOG;
+                            
+                            //De-serialize the message
+                            jmsg.de_serialize(raw_msg_str);
 
-                    /**
-                     * This method allows to detect the kind of request received by the translation server
-                     * @param payload the serialized version of the request
-                     * @return the detected request type
-                     */
-                    inline request_type_enum detect_msg_type(const string & payload) {
-                        if (trans_job_request::is_request(payload)) {
-                            return request_type_enum::TRANSLATION_JOB_REQUEST;
-                        } else {
-                            if (supp_lang_request::is_request(payload)) {
-                                return request_type_enum::SUPPORTED_LANGUAGES_REQUEST;
-                            } else {
-                                return request_type_enum::UNKNOWN_TYPE_REQUEST;
+                            //Handle the request message based on its type
+                            switch (jmsg.get_type()) {
+                                case msg_type::MESSAGE_TRANS_JOB_REQ:
+                                    translation_job(hdl, jmsg);
+                                    break;
+                                case msg_type::MESSAGE_SUPP_LANG_REQ:
+                                    language_request(hdl, jmsg);
+                                    break;
+                                default:
+                                    THROW_EXCEPTION(string("Unsupported request type: ") + to_string(jmsg.get_type()));
                             }
+                        } catch (std::exception & e) {
+                            //Send the error response
+                            send_str_response(hdl, e.what());
                         }
                     }
 
                     /**
                      * This method allows to handle the supported-languages request
+                     * This function must not throw!
                      * @param hdl the connection handler
-                     * @param payload the serialized supported languages request request
+                     * @param msg a reference to the JSON object storing the request data.
                      */
-                    inline void language_request(websocketpp::connection_hdl hdl, const string & payload) {
-                        //Send the response
+                    inline void language_request(websocketpp::connection_hdl hdl, const json_msg & msg) {
+                        //Send the response supported languages response
                         send_str_response(hdl, m_supp_lang_resp);
                     }
 
                     /**
                      * This method allows to handle the translation job request
+                     * This function must not throw!
                      * @param hdl the connection handler
-                     * @param payload the serialized translation job request
+                     * @param msg a reference to the JSON object storing the request data.
                      */
-                    inline void translation_job(websocketpp::connection_hdl hdl, const string & payload) {
+                    inline void translation_job(websocketpp::connection_hdl hdl, const json_msg & msg) {
                         //Create translation job request, will be deleted by the translation job
-                        trans_job_request_ptr request_ptr = new trans_job_request();
+                        trans_job_request trans_req(msg);
 
                         //Declare the job id for the case of needed error reporting
                         job_id_type job_id_val = job_id::UNDEFINED_JOB_ID;
                         try {
-                            //De-serialize the job request
-                            request_ptr->de_serialize(payload);
-
                             //Check that the source/target language pairs are proper
-                            ASSERT_CONDITION_THROW(((m_params.m_source_lang != request_ptr->get_source_lang()) ||
-                                    (m_params.m_target_lang != request_ptr->get_target_lang())),
-                                    string("Wrong source-target language pair: ") + request_ptr->get_source_lang() +
-                                    string("->") + request_ptr->get_target_lang() + string(", the server only supports: ") +
+                            ASSERT_CONDITION_THROW(((m_params.m_source_lang != trans_req.get_source_lang()) ||
+                                    (m_params.m_target_lang != trans_req.get_target_lang())),
+                                    string("Wrong source-target language pair: ") + trans_req.get_source_lang() +
+                                    string("->") + trans_req.get_target_lang() + string(", the server only supports: ") +
                                     m_params.m_source_lang + string("->") + m_params.m_target_lang);
 
                             //Store the job id in case of an error
-                            job_id_val = request_ptr->get_job_id();
+                            job_id_val = trans_req.get_job_id();
 
                             //Schedule a translation job
-                            m_manager.translate(hdl, request_ptr);
-                        } catch (uva_exception & ex) {
+                            m_manager.translate(hdl, trans_req);
+                        } catch (std::exception & ex) {
+                            //Get the error message
+                            string error_msg = ex.what();
+                            
                             //Locally report error
-                            LOG_ERROR << "job " << job_id_val << ": " << ex.get_message() << END_LOG;
+                            LOG_ERROR << "job " << job_id_val << ": " << error_msg << END_LOG;
 
                             //Create the reply message, with or without job id
-                            trans_job_response response(job_id_val, trans_job_code::RESULT_ERROR, ex.get_message(), payload);
+                            //ToDo: Do we want to send the original text back with the response?
+                            trans_job_response response(job_id_val, trans_job_code::RESULT_ERROR, error_msg, "");
 
                             //Send the response
                             send_response(hdl, response);
-
-                            //Delete the request object if the pointer is not NULL
-                            if (request_ptr != NULL) {
-                                delete request_ptr;
-                            }
                         }
                     }
 

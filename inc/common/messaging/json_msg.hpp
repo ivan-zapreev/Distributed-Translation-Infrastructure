@@ -26,18 +26,24 @@
 #ifndef JSON_MSG_HPP
 #define JSON_MSG_HPP
 
+#include <exception>
+
 #include <stdint.h>
+
+//Disable the assertions in the JSON code
+#define NDEBUG true
 #include <json.hpp>
+#undef NDEBUG
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
 using namespace std;
 
-using namespace nlohmann;
-
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+
+using json = nlohmann::json;
 
 namespace uva {
     namespace smt {
@@ -49,10 +55,16 @@ namespace uva {
                      * This enumeration stores the available message type values
                      */
                     enum msg_type {
-                        MESSAGE_UNDEFINED = 0, //The message type is undefined
-                        MESSAGE_SUPP_LANG_RESP = 1, //The supported languages request message
-                        MESSAGE_TRANS_JOB_REQ = 2, //The translation job request message
-                        MESSAGE_TRANS_JOB_RESP = 3, //The translation job response message
+                        //The message type is undefined
+                        MESSAGE_UNDEFINED = 0,
+                        //The supported languages request message
+                        MESSAGE_SUPP_LANG_REQ = 1,
+                        //The supported languages response message
+                        MESSAGE_SUPP_LANG_RESP = 2,
+                        //The translation job request message
+                        MESSAGE_TRANS_JOB_REQ = 3,
+                        //The translation job response message
+                        MESSAGE_TRANS_JOB_RESP = 4
                     };
 
                     /**
@@ -62,6 +74,9 @@ namespace uva {
                      */
                     class json_msg {
                     public:
+
+                        //The friend declaration of the class
+                        friend class trans_job_request;
 
                         //Stores the version of the message protocol
                         static constexpr uint32_t PROTOCOL_VERSION = 1;
@@ -91,42 +106,28 @@ namespace uva {
                          * @return the message type
                          */
                         inline msg_type get_type() const {
-                            //Assert sanity, the property must be present
-                            ASSERT_SANITY_THROW(m_json_obj[MSG_TYPE_NAME].empty(),
-                                    string("The value of '") + MSG_TYPE_NAME + string("' is empty!"));
-
                             //This is a primitive way to cast to the enumeration type 
                             //from an integer. Later we could introduce a fancier way 
                             //with all sorts of checks but this shall do it for now.
-                            return static_cast<msg_type> (m_json_obj[MSG_TYPE_NAME].get<int32_t>());
-                        }
-
-                        /**
-                         * Allows to get the reference to the constant json object
-                         * @return the reference to the constant json object
-                         */
-                        inline const json & get_json() const {
-                            return m_json_obj;
+                            return static_cast<msg_type> (get_value<int32_t>(MSG_TYPE_NAME));
                         }
 
                         /**
                          * Allows to de-serialize the JSON string into the json object
-                         * @param data
+                         * @param data the JSON string to be parsed
                          */
-                        inline void de_serialize(stringstream & data) {
+                        inline void de_serialize(const string & data) {
                             //De-serialize the data and catch any exception, convert it into our type
                             try {
-                                data >> m_json_obj;
-                            } catch (invalid_argument & ex) {
+                                stringstream stream_data(data);
+                                stream_data >> m_json_obj;
+                            } catch (std::exception & ex) {
                                 LOG_ERROR << "An exception when parsing JSON string: " << ex.what() << END_LOG;
                                 THROW_EXCEPTION(ex.what());
                             }
 
-                            //Verify that the version number is good, otherwise throw
-                            ASSERT_CONDITION_THROW(is_bad_version(),
-                                    string("Client/Server protocol version miss-match got: ") +
-                                    m_json_obj[PROT_VER_NAME].get<string>() + string(" expected <= : ") +
-                                    to_string(PROTOCOL_VERSION))
+                            //Verify that the version number is good
+                            verify_protocol_version();
                         }
 
                         /**
@@ -137,6 +138,26 @@ namespace uva {
                             return m_json_obj.dump();
                         }
 
+                        /**
+                         * Allows to get the data from the JSON object and cast it to the desired result type
+                         * @param result_type the result type to be returned
+                         * @param field_name the name of the JSON field
+                         * @return the value of the required type of the given field 
+                         */
+                        template<typename result_type>
+                        inline result_type get_value(const string & field_name) const {
+                            LOG_DEBUG << "Extracting JSON field: " << field_name << END_LOG;
+
+                            //Retrieve the value from the JSON object
+                            auto entry = m_json_obj.find(field_name);
+
+                            //Assert sanity, the property must be present
+                            ASSERT_CONDITION_THROW((entry == m_json_obj.end()),
+                                    string("The JSON field '") + field_name + string("' is not present!"));
+
+                            return entry->get<result_type>();
+                        }
+
                     protected:
 
                         /**
@@ -145,18 +166,26 @@ namespace uva {
                          * to be less or equal than the constant. 
                          * @return true if the received message version is less or equal to that of the version constant. 
                          */
-                        bool is_bad_version() const {
-                            //Assert sanity, the property must be present
-                            ASSERT_SANITY_THROW(m_json_obj[PROT_VER_NAME].empty(),
-                                    string("The value of '") + PROT_VER_NAME + string("' is empty!"));
+                        void verify_protocol_version() const {
+                            //Get the protocol version and check it
+                            const uint32_t prot_ver = get_value<int32_t>(PROT_VER_NAME);
 
-                            return ( m_json_obj[PROT_VER_NAME].get<uint32_t>() > PROTOCOL_VERSION);
+                            LOG_DEBUG << "The request protocol version: " << to_string(prot_ver)
+                                    << ", local protocol version: " << to_string(PROTOCOL_VERSION) << END_LOG;
+
+                            ASSERT_CONDITION_THROW((prot_ver > PROTOCOL_VERSION),
+                                    string("Client/Server protocol version miss-match got: ") +
+                                    to_string(prot_ver) + string(" expected <= : ") +
+                                    to_string(PROTOCOL_VERSION));
                         }
 
                     private:
                         //Stores the json object instance
                         json m_json_obj;
                     };
+
+                    //Typedef the JSON message pointer
+                    typedef json_msg * json_msg_ptr;
 
                 }
             }

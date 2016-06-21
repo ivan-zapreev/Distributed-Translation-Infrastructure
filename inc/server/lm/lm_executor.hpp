@@ -104,9 +104,9 @@ namespace uva {
                                 try {
                                     //Query the Trie for the results and log them
                                     query.execute(line);
-                                } catch (uva_exception & ex) {
+                                } catch (exception & ex) {
                                     //The query has failed! print an exception and proceed!
-                                    LOG_ERROR << ex.get_message() << END_LOG;
+                                    LOG_ERROR << ex.what() << END_LOG;
                                 }
                             }
 

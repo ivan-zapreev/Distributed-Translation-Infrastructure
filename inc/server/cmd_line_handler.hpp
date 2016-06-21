@@ -205,8 +205,8 @@ namespace uva {
                             LOG_WARNING << "The number of worker threads is already: "
                                     << num_threads << "!" << END_LOG;
                         }
-                    } catch (uva_exception &ex) {
-                        LOG_ERROR << ex.get_message() << "\nEnter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
+                    } catch (std::exception &ex) {
+                        LOG_ERROR << ex.what() << "\nEnter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
                     }
                 }
 
@@ -263,8 +263,8 @@ namespace uva {
                         //Set the parameters back
                         de_params = de_local;
 
-                    } catch (uva_exception &ex) {
-                        LOG_ERROR << ex.get_message() << " Enter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
+                    } catch (std::exception &ex) {
+                        LOG_ERROR << ex.what() << " Enter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
                     }
                 }
 

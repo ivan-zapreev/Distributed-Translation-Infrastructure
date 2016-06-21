@@ -402,11 +402,10 @@ namespace uva {
                                 m_client.send(data->m_request);
                                 //Mark the job sending as good in the administration
                                 data->m_status = trans_job_status::STATUS_REQ_SENT_GOOD;
-                            } catch (uva_exception e) {
+                            } catch (std::exception & e) {
                                 //Log the error message
                                 LOG_ERROR << "Error when sending a translation request "
-                                        << data->m_request->get_job_id() << ": "
-                                        << e.get_message() << END_LOG;
+                                        << data->m_request->get_job_id() << ": " << e.what() << END_LOG;
                                 //Mark the job sending as failed in the administration
                                 data->m_status = trans_job_status::STATUS_REQ_SENT_FAIL;
                                 //Increments the done jobs count
@@ -493,7 +492,7 @@ namespace uva {
                             //Stores the number of read sentences
                             uint64_t num_read = 0;
                             //text to send for translation
-                            string source_text;
+                            vector<string> source_text;
 
                             LOG_DEBUG1 << "Planning to send  " << num_to_sent << " sentences with the next request" << END_LOG;
 
@@ -515,7 +514,7 @@ namespace uva {
                                 }
 
                                 //Append the new line to the text to be sent
-                                source_text += source_sent + UTF8_NEW_LINE_STRING;
+                                source_text.push_back(source_sent);
 
                                 //Increment the number of read sentences
                                 ++num_read;
@@ -529,9 +528,6 @@ namespace uva {
                             if (num_read != 0) {
                                 //Get the new job id
                                 const job_id_type job_id = m_id_mgr.get_next_id();
-
-                                //Remove the last sentence new line symbol
-                                source_text.substr(0, source_text.size() - 1);
 
                                 //Create the new job data object
                                 trans_job_ptr data = new trans_job();

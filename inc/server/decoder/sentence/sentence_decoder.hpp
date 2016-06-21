@@ -154,7 +154,8 @@ namespace uva {
                                 if (m_stack_info_prov != NULL) {
                                     m_stack_info_prov->get_trans_info(info);
                                 } else {
-                                    THROW_EXCEPTION("Trying to get the translation info but the stack pointer is NULL!");
+                                    //Only throw this in the sanity check mode, otherwise just ignore
+                                    ASSERT_SANITY_THROW(true, "Trying to get the translation info but the stack pointer is NULL!");
                                 }
                             }
 
@@ -170,7 +171,8 @@ namespace uva {
                                 if (m_stack_info_prov != NULL) {
                                     m_stack_info_prov->dump_search_lattice(lattice_dump, scores_dump);
                                 } else {
-                                    THROW_EXCEPTION("Trying to dump the search lattice but the stack pointer is NULL!");
+                                    //Only throw this in the sanity check mode, otherwise just ignore
+                                    ASSERT_SANITY_THROW(true, "Trying to dump the search lattice but the stack pointer is NULL!");
                                 }
                             }
 #endif

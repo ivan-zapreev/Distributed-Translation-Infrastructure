@@ -367,9 +367,9 @@ int main(int argc, char** argv) {
         //Wait until the server is stopped by pressing and exit button
         perform_command_loop(params, server, server_thread);
 
-    } catch (uva_exception & ex) {
+    } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit
-        LOG_ERROR << ex.get_message() << END_LOG;
+        LOG_ERROR << ex.what() << END_LOG;
         return_code = 1;
     }
 

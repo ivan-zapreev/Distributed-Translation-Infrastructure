@@ -30,9 +30,6 @@ namespace uva {
         namespace bpbd {
             namespace common {
                 namespace messaging {
-
-                    const string supp_lang_request::SUPP_LANG_REQUEST_PREFIX = "SUPP_LANG_REQ";
-
                 }
             }
         }

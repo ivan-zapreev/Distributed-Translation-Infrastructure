@@ -195,7 +195,7 @@ namespace uva {
                      * @param msg the message
                      */
                     void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
-                        //Set the newply received job response
+                        //Set the newly received job response
                         m_set_response(new trans_job_response(msg->get_payload()));
                     }
 

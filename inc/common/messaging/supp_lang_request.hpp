@@ -39,31 +39,41 @@ namespace uva {
                 namespace messaging {
 
                     /**
-                     * This class represents the supported languages request message
+                     * This class represents the supported languages request message.
+                     * There is no constructor for the received supported languages
+                     * request at the moment as that possesses no special request
+                     * attributes to be extracted. 
                      */
-                    class supp_lang_request{
+                    class supp_lang_request {
                     public:
-                        //The begin of the supported languages request message
-                        static const string SUPP_LANG_REQUEST_PREFIX;
 
                         /**
-                         * Allows to detect whether the given payload corresponds to the translation job request 
-                         * @param payload the payload that stores the serialized message
-                         * @return true if this is a translation job request, otherwise false
+                         * The basic class constructor to be used for the
+                         * supported language requests to be sent to the server.
                          */
-                        static inline bool is_request(const string & payload) {
-                            return (payload.compare(0, SUPP_LANG_REQUEST_PREFIX.length(), SUPP_LANG_REQUEST_PREFIX) == 0);
+                        supp_lang_request() : m_msg(msg_type::MESSAGE_SUPP_LANG_REQ) {
+                        }
+
+                        /**
+                         * The basic destructor
+                         */
+                        virtual ~supp_lang_request() {
+                            //Nothing to be done here
                         }
 
                         /**
                          * Allows to serialize the supported languages request into a string
                          * @return the string representation of the supported languages request
                          */
-                        const string & serialize() const {
-                            return SUPP_LANG_REQUEST_PREFIX;
+                        inline string serialize() const {
+                            return m_msg.serialize();
                         }
+
+                    private:
+                        //Stores the the JSON message object
+                        json_msg m_msg;
                     };
-                    
+
                 }
             }
         }

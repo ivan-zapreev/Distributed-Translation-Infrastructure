@@ -172,9 +172,9 @@ int main(int argc, char** argv) {
         //Do the actual work, read the text corpse, create trie and do queries
         __executor::perform_tasks(params);
 
-    } catch (uva_exception & ex) {
+    } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit
-        LOG_ERROR << ex.get_message() << END_LOG;
+        LOG_ERROR << ex.what() << END_LOG;
         returnCode = 1;
     }
 
