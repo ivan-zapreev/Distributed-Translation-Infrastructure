@@ -75,9 +75,10 @@ namespace uva {
                     class json_msg {
                     public:
 
-                        //The friend declaration of the class
+                        //Declare the friend classes
                         friend class trans_job_request;
-
+                        friend class supp_lang_response;
+                        
                         //Stores the version of the message protocol
                         static constexpr uint32_t PROTOCOL_VERSION = 1;
                         //Stores the protocol version attribute name

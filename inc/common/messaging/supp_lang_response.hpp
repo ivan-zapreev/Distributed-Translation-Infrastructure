@@ -30,6 +30,8 @@
 #include <map>
 #include <vector>
 
+#include "common/messaging/json_msg.hpp"
+
 using namespace std;
 
 namespace uva {
@@ -43,16 +45,14 @@ namespace uva {
                      */
                     class supp_lang_response {
                     public:
-                        //The begin of the supported languages request message
-                        static const string SUPP_LANG_RESPONSE_PREFIX;
-
-                        //Define the map used to store the source-target languages
-                        typedef map<string, vector<string>> source_2_targets_map;
+                        
+                        //Stores the languages field name for the JSON message
+                        static const string LANGUAGES_NAME;
 
                         /**
                          * The basic constructor
                          */
-                        supp_lang_response() : m_source_2_target() {
+                        supp_lang_response() : m_json_obj(msg_type::MESSAGE_SUPP_LANG_RESP) {
                         }
 
                         /**
@@ -61,15 +61,7 @@ namespace uva {
                          * @param target the target language that can be translated in to the source language
                          */
                         inline void add_supp_lang(const string& source, const string& target) {
-                            m_source_2_target[source].push_back(target);
-                        }
-
-                        /**
-                         * Allows to get the response's source-to-target language mapping
-                         * @return the source-to-target language mapping
-                         */
-                        inline const source_2_targets_map get_supp_langs() {
-                            return m_source_2_target;
+                            m_json_obj.m_json_obj[LANGUAGES_NAME][source].push_back(target);
                         }
 
                         /**
@@ -77,24 +69,12 @@ namespace uva {
                          * @return the string representation of the supported languages response
                          */
                         inline const string serialize() const {
-                            string result = SUPP_LANG_RESPONSE_PREFIX;
-
-                            //Serialize the source to targets mappings in the JSON format
-                            for (auto iter_map = m_source_2_target.begin(); iter_map != m_source_2_target.end(); ++iter_map) {
-                                result += "{ \"" + iter_map->first + "\" : [ ";
-                                for (auto iter_arr = iter_map->second.begin(); iter_arr != iter_map->second.end(); ++iter_arr) {
-                                    result += "\"" + *iter_arr + "\", ";
-                                }
-                                //Remove the last ", " from the result and append the closing brackets
-                                result = result.substr(0, result.length() - 2) + " ] }";
-                            }
-
-                            return result;
+                            return m_json_obj.serialize();
                         }
 
                     private:
                         //Stores the source to target language pairs mappings
-                        source_2_targets_map m_source_2_target;
+                        json_msg m_json_obj;
                     };
 
                 }

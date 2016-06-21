@@ -329,14 +329,16 @@ function on_source_lang_select() {
 
 /**
  * This function allows to set the supported languages from the supported languages response from the server
- * @param {String} languages the supported languages response string
+ * @param {Object} supp_lang_resp the supported languages response message
  */
-function set_supported_languages(languages) {
+function set_supported_languages(supp_lang_resp) {
     "use strict";
     var source_lang, to_select, from_select, num_sources;
     
-    window.console.log("Parsing the supported languages response to JSON: " + languages);
-    client_data.language_mapping = JSON.parse(languages);
+    //ToDo: Check for an error message in the response!
+    
+    //Store the supported languages
+    client_data.language_mapping = supp_lang_resp.langs;
 
     window.console.log("Clear the to-select as we are now re-loading the source languages");
     to_select = document.getElementById("to_lang_sel");
@@ -375,14 +377,15 @@ function set_supported_languages(languages) {
 function on_message(evt) {
     "use strict";
     
-    window.console.log("Message is received: " + evt.data);
-
+    window.console.log("Message is received: " + evt.data + " parsing to JSON");
+    var resp_obj = JSON.parse(evt.data);
+    
     //Check of the message type
-    if (evt.data.startsWith(TRANS_JOB_RESPONSE_PREFIX)) {
-        set_translation(evt.data);
+    if (resp_obj.msg_type === MSG_TYPE_ENUM.MESSAGE_TRANS_JOB_RESP) {
+        set_translation(resp_obj);
     } else {
-        if (evt.data.startsWith(SUPP_LANG_RESPONSE_PREFIX)) {
-            set_supported_languages(evt.data.slice(SUPP_LANG_RESPONSE_PREFIX.length));
+        if (resp_obj.msg_type === MSG_TYPE_ENUM.MESSAGE_SUPP_LANG_RESP) {
+            set_supported_languages(resp_obj);
         } else {
             error("An unknown server message: " + evt.data);
         }
