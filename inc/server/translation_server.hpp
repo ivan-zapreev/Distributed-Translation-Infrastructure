@@ -163,7 +163,7 @@ namespace uva {
                      * @param hdl the connection handler to identify the connection
                      * @param reply_str the response string
                      */
-                    inline void send_str_response(connection_hdl hdl, const string reply_str) {
+                    inline void send_response(connection_hdl hdl, const string reply_str) {
                         LOG_DEBUG << "Sending the job response: ____" << reply_str << "____" << END_LOG;
 
                         //Declare the error code
@@ -178,20 +178,6 @@ namespace uva {
                         }
 
                         LOG_DEBUG << "The job response: ____" << reply_str << "____ is sent!" << END_LOG;
-                    }
-
-                    /**
-                     * Allows to send the translation job response to the client associated with the given connection handler.
-                     * @param hdl the connection handler to identify the connection
-                     * @param response the translation response object to be used
-                     */
-                    void send_response(connection_hdl hdl, trans_job_response & response) {
-                        LOG_DEBUG << "Sending the job response: " << &response << END_LOG;
-
-                        //Send the response 
-                        send_str_response(hdl, response.serialize());
-
-                        LOG_DEBUG << "The job response: " << &response << " is sent!" << END_LOG;
                     }
 
                     /**
@@ -263,7 +249,7 @@ namespace uva {
                             }
                         } catch (std::exception & e) {
                             //Send the error response
-                            send_str_response(hdl, e.what());
+                            send_response(hdl, e.what());
                         }
                     }
 
@@ -275,7 +261,7 @@ namespace uva {
                      */
                     inline void language_request(websocketpp::connection_hdl hdl, const json_msg & msg) {
                         //Send the response supported languages response
-                        send_str_response(hdl, m_supp_lang_resp);
+                        send_response(hdl, m_supp_lang_resp);
                     }
 
                     /**
@@ -315,7 +301,7 @@ namespace uva {
                             trans_job_response response(job_id_val, trans_job_code::RESULT_ERROR, error_msg, "");
 
                             //Send the response
-                            send_response(hdl, response);
+                            send_response(hdl, response.serialize());
                         }
                     }
 

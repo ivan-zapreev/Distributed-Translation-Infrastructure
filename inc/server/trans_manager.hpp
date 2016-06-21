@@ -60,7 +60,7 @@ namespace uva {
                 public:
 
                     //Declare the response setting function for the translation job.
-                    typedef function<void(websocketpp::connection_hdl, trans_job_response &) > response_sender;
+                    typedef function<void(websocketpp::connection_hdl, const string &) > response_sender;
 
                     //Declare the session to connection handler maps and iterators;
                     typedef std::map<websocketpp::connection_hdl, session_id_type, std::owner_less<websocketpp::connection_hdl>> sessions_map_type;
@@ -270,7 +270,7 @@ namespace uva {
 
                         //If the sender function is present, and the handler is not expired
                         if (!hdl.expired()) {
-                            m_sender_func(hdl, response);
+                            m_sender_func(hdl, response.serialize());
                         } else {
                             LOG_ERROR << "Could not send the translation response for " << session_id
                                     << "/" << job_id << " as the connection handler has expired!" << END_LOG;
