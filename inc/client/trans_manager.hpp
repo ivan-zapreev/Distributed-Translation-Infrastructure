@@ -187,7 +187,7 @@ namespace uva {
                      */
                     void stop() {
                         LOG_INFO << "Stopping the translation manager" << END_LOG;
-                        
+
                         //Set the stopping flag
                         m_is_stopping = true;
 
@@ -301,15 +301,23 @@ namespace uva {
 
                     /**
                      * Allows to process the server job request response
-                     * @param trans_job_resp the translation job response coming from the server
+                     * @param msg_data the translation job response data
                      */
-                    void set_job_response(trans_job_response * trans_job_resp) {
+                    void set_job_response(const string & msg_data) {
                         //If we are not stopping then set the response
                         if (!m_is_stopping) {
-                            const job_id_type job_id = trans_job_resp->get_job_id();
+                            //Create the response object to be used
+                            trans_job_response_ptr trans_job_resp = new trans_job_response();
 
-                            //Check if the job is valid and if there is something for this job id
-                            if (job_id != job_id::UNDEFINED_JOB_ID) {
+                            try {
+                                //De-serialize the response object
+                                trans_job_resp->de_serialize(msg_data);
+
+                                //Get the job id to work with
+                                const job_id_type job_id = trans_job_resp->get_job_id();
+
+                                LOG_DEBUG << "Got the translation job response for job id: " << to_string(job_id) << END_LOG;
+
                                 //Check if the job with the given id is known
                                 if (m_ids_to_jobs_map.find(job_id) != m_ids_to_jobs_map.end()) {
                                     //Register the job in the administration
@@ -320,16 +328,20 @@ namespace uva {
 
                                     //Increment the number of received jobs
                                     m_num_done_jobs++;
-                                } else {
-                                    LOG_ERROR << "The received job response id " << job_id << " is not known!" << END_LOG;
-                                }
-                            } else {
-                                LOG_ERROR << "One of the job responses could not be parsed!" << END_LOG;
-                            }
 
-                            LOG_INFO << "The job " << job_id << " is finished, "
-                                    << m_num_done_jobs << "/" << m_jobs_list.size()
-                                    << "." << END_LOG;
+                                    LOG_INFO << "The job " << job_id << " is finished, "
+                                            << m_num_done_jobs << "/" << m_jobs_list.size()
+                                            << "." << END_LOG;
+                                } else {
+                                    THROW_EXCEPTION(string("The received job response id ") +
+                                            to_string(job_id) + string(" is not known!"));
+                                }
+                            } catch (std::exception & ex) {
+                                //Log the error
+                                LOG_ERROR << "Failed to parse a job response: " << ex.what() << END_LOG;
+                                //Delete the translation job response
+                                delete trans_job_resp;
+                            }
 
                             //Check if the jobs are done and notify
                             check_jobs_done_and_notify();

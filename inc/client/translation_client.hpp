@@ -63,7 +63,7 @@ namespace uva {
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
 
                     //Define the function type for the function used to set the translation job result
-                    typedef function<void(const trans_job_response_ptr trans_job_resp) > response_setter;
+                    typedef function<void(const string & msg_data) > response_setter;
 
                     //Define the function type for the function used to notify the caller that the connection is closed
                     typedef function<void() > conn_close_notifier;
@@ -196,7 +196,7 @@ namespace uva {
                      */
                     void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
                         //Set the newly received job response
-                        m_set_response(new trans_job_response(msg->get_payload()));
+                        m_set_response(msg->get_payload());
                     }
 
                     /**
