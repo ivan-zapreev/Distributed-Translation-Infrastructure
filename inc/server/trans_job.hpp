@@ -97,7 +97,7 @@ namespace uva {
                      * @param notify_job_done_func the job done notification function
                      *              to be called when the translation job is finished
                      */
-                    void set_done_job_notifier(done_job_notifier notify_job_done_func) {
+                    inline void set_done_job_notifier(done_job_notifier notify_job_done_func) {
                         m_notify_job_done_func = notify_job_done_func;
                     }
 
@@ -168,7 +168,7 @@ namespace uva {
                     /**
                      * Allows to cancel the given translation job by telling all the translation tasks to stop.
                      */
-                    void cancel() {
+                    inline void cancel() {
                         //Note: no need to synchronize this method as the tasks list is
                         //created in the constructor and deleted in the destructor.
 
@@ -180,9 +180,10 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to wait until the notification of that this job is finished is complete
+                     * Allows to wait until the job is finished, this
+                     * includes the notification of the job pool.
                      */
-                    void wait_notify_finished() {
+                    inline void synch_job_finished() {
                         recursive_guard guard(m_tasks_lock);
                     }
 
@@ -190,20 +191,17 @@ namespace uva {
 
                     /**
                      * Allows to check if the job is finished by checking the number
-                     * of finished tasks. The check is synchronized.
+                     * of finished tasks. The check is NOT synchronized.
                      * @return true if all the job's tasks are finished, otherwise false
                      */
-                    bool is_job_finished() {
+                    inline bool is_job_finished() {
                         LOG_DEBUG1 << "Checking if the job " << this << " is finished!" << END_LOG;
-                        {
-                            recursive_guard guard_tasks(m_tasks_lock);
+                        
+                        LOG_DEBUG1 << "The number of active tasks of job " << this
+                                << " is: " << (m_tasks.size() - m_done_tasks_count)
+                                << "/" << m_tasks.size() << END_LOG;
 
-                            LOG_DEBUG1 << "The number of active tasks of job " << this
-                                    << " is: " << (m_tasks.size() - m_done_tasks_count)
-                                    << "/" << m_tasks.size() << END_LOG;
-
-                            return (m_done_tasks_count == m_tasks.size());
-                        }
+                        return (m_done_tasks_count == m_tasks.size());
                     }
 
                     /**
@@ -214,7 +212,7 @@ namespace uva {
                      * report themselves only ones. (Optional - for safety).}
                      * @param task the translation task that is finished
                      */
-                    void notify_task_done(const trans_task_ptr task) {
+                    inline void notify_task_done(const trans_task_ptr task) {
                         LOG_DEBUG1 << "The task " << *task << " is done!" << END_LOG;
 
                         {
@@ -249,7 +247,7 @@ namespace uva {
                      * Allows to compile the end job result, e.g. based on the task results,
                      * come up with the job's result code and the translated text.
                      */
-                    void collect_job_results() {
+                    inline void collect_job_results() {
                         LOG_DEBUG << "Combining the job " << this << " result!" << END_LOG;
 
                         //Declare the variables for counting the number of CANCELED/ERROR tasks

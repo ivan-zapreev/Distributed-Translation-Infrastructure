@@ -98,7 +98,7 @@ namespace uva {
                     /**
                      * Allows to stop all the running jobs and try to send all the responses and then exit
                      */
-                    void stop() {
+                    inline void stop() {
                         LOG_DEBUG << "Request stopping the job pool!" << END_LOG;
 
                         //Make sure this does not interfere with any adding new job activity
@@ -123,7 +123,7 @@ namespace uva {
                         LOG_DEBUG << "All the existing jobs are canceled!" << END_LOG;
 
                         //Wake up the jobs thread for the case there is no jobs being processed
-                        wake_up_jobs_thread();
+                        start_processing_finished_jobs();
 
                         //Wait until the job processing thread finishes
                         m_jobs_thread.join();
@@ -144,14 +144,14 @@ namespace uva {
                      * are let to finish their translation task execution. 
                      * @param num_threads the new number of worker threads
                      */
-                    void set_num_threads(const size_t num_threads) {
+                    inline void set_num_threads(const size_t num_threads) {
                         m_tasks_pool.set_num_threads(num_threads);
                     }
 
                     /**
                      * Allows to report the runtime information.
                      */
-                    void report_run_time_info() {
+                    inline void report_run_time_info() {
                         //Remove the job from the pool's administration 
                         {
                             recursive_guard guard_all_jobs(m_all_jobs_lock);
@@ -168,7 +168,7 @@ namespace uva {
                      * Allows to set the response sender function for sending the replies to the client
                      * @param notify_job_finished_func the setter functional to be set
                      */
-                    void set_job_result_setter(finished_job_notifier notify_job_finished_func) {
+                    inline void set_job_result_setter(finished_job_notifier notify_job_finished_func) {
                         m_notify_job_finished_func = notify_job_finished_func;
                     }
 
@@ -177,7 +177,7 @@ namespace uva {
                      * The execution of the job is deferred and asynchronous.
                      * @oaram trans_job the translation job to be scheduled
                      */
-                    void plan_new_job(trans_job_ptr trans_job) {
+                    inline void plan_new_job(trans_job_ptr trans_job) {
                         //Make sure that we are not being stopped before or during this method call
                         scoped_guard guard_stopping(m_stopping_lock);
 
@@ -198,7 +198,7 @@ namespace uva {
                      * Allows to cancel all translation jobs for the given session id.
                      * @param session_id the session id to cancel the jobs for
                      */
-                    void cancel_jobs(const session_id_type session_id) {
+                    inline void cancel_jobs(const session_id_type session_id) {
                         recursive_guard guard_all_jobs(m_all_jobs_lock);
 
                         LOG_DEBUG << "Canceling the jobs of session: " << session_id << END_LOG;
@@ -227,7 +227,7 @@ namespace uva {
                     /**
                      * Allows to cancel all the currently running translation jobs in the server
                      */
-                    void cancel_all_jobs() {
+                    inline void cancel_all_jobs() {
                         recursive_guard guard_all_jobs(m_all_jobs_lock);
 
                         LOG_DEBUG << "Start canceling all server jobs" << END_LOG;
@@ -250,7 +250,7 @@ namespace uva {
                      * translate from multiple languages to multiple languages.}
                      * @param trans_job the job to be added to the administration
                      */
-                    void add_job(trans_job_ptr trans_job) {
+                    inline void add_job(trans_job_ptr trans_job) {
                         recursive_guard guard_all_jobs(m_all_jobs_lock);
 
                         LOG_DEBUG << "Adding the job with ptr: " << trans_job << " to the job pool" << END_LOG;
@@ -285,7 +285,7 @@ namespace uva {
                      * decrement the jobs count and destroy the job object.
                      * @param trans_job the job to be deleted
                      */
-                    void delete_job(trans_job_ptr trans_job) {
+                    inline void delete_job(trans_job_ptr trans_job) {
                         //Get and store the session and job ids for later use
                         const session_id_type session_id = trans_job->get_session_id();
                         const job_id_type job_id = trans_job->get_job_id();
@@ -312,9 +312,9 @@ namespace uva {
                         }
                         
                         //Make sure that the job-finished notification is indeed complete
-                        trans_job->wait_notify_finished();
+                        trans_job->synch_job_finished();
 
-                        //Delete the job as it is not needed any more
+                        //Delete the job object itself
                         delete trans_job;
 
                         LOG_DEBUG << "Deleted the job " << job_id << " object instance" << END_LOG;
@@ -324,7 +324,7 @@ namespace uva {
                      * Allows to check if the finished jobs processing loop has to stop.
                      * @return true if the finished jobs processing loop has to stop, otherwise false
                      */
-                    bool is_stop_running() {
+                    inline bool is_stop_running() {
                         LOG_DEBUG << "is_stop_running check requested" << END_LOG;
                         {
                             //Make sure that we are not being stopped before or during this method call
@@ -350,9 +350,9 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to wake up the jobs thread.
+                     * Allows to wake up the thread processing the finished jobs.
                      */
-                    void wake_up_jobs_thread() {
+                    inline void start_processing_finished_jobs() {
                         unique_guard guard_finished_jobs(m_finished_jobs_lock);
 
                         //Notify the thread that there is a finished job to be processed
@@ -363,8 +363,7 @@ namespace uva {
                      * Allows notify the job pool that the given job is done.
                      * @param trans_job the pointer to the finished translation job 
                      */
-                    void notify_job_done(trans_job_ptr trans_job) {
-
+                    inline void notify_job_done(trans_job_ptr trans_job) {
                         LOG_DEBUG1 << "The job " << trans_job << " has called in finished!" << END_LOG;
                         {
                             unique_guard guard_finished_jobs(m_finished_jobs_lock);
@@ -383,7 +382,7 @@ namespace uva {
                     /**
                      * Allows to process the finished translation jobs
                      */
-                    void process_finished_jobs() {
+                    inline void process_finished_jobs() {
                         unique_guard guard_finished_jobs(m_finished_jobs_lock);
 
                         //Stop iteration only when we are stopping and there are no jobs left

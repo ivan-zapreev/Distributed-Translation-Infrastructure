@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="CMakeFiles"
                    displayName="CMakeFiles"
@@ -21,18 +21,6 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
-      <df name="common">
-        <df name="messaging">
-          <in>json_msg.hpp</in>
-          <in>supp_lang_request.hpp</in>
-          <in>supp_lang_response.hpp</in>
-        </df>
-      </df>
-      <df name="server">
-        <df name="common">
-          <in>feature_id_registry.hpp</in>
-        </df>
-      </df>
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -163,10 +151,6 @@
             <standard>8</standard>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
       <item path="/usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c"
             ex="false"
@@ -225,23 +209,6 @@
           </incDir>
         </ccTool>
       </folder>
-      <item path="inc/common/messaging/json_msg.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/common/messaging/supp_lang_request.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/supp_lang_response.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/common/feature_id_registry.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
@@ -250,17 +217,23 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/common/messaging/json_msg.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/common/messaging/json_msg.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/common/messaging/supp_lang_request.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/common/messaging/supp_lang_response.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/common/messaging/trans_job_code.cpp"
             ex="false"
@@ -272,12 +245,16 @@
       <item path="src/common/messaging/trans_job_request.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/common/messaging/trans_job_response.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/common/utils/logging/logger.cpp"
             ex="false"
@@ -309,9 +286,6 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/lm/builders/lm_basic_builder.cpp"
@@ -417,7 +391,9 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/server/rm/models/rm_entry.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/server/rm/models/rm_entry.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/server/rm/rm_configurator.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
@@ -425,9 +401,6 @@
       </item>
       <item path="src/server/rm/rm_parameters.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/server_parameters.cpp" ex="false" tool="1" flavor2="8">
@@ -450,17 +423,20 @@
       </item>
       <item path="src/server/tm/tm_parameters.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/server/trans_task.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
           <preprocessorList>
             <Elem>NDEBUG</Elem>
           </preprocessorList>
         </ccTool>
       </item>
-      <item path="src/server/trans_task.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
       <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/trans_task_pool_worker.cpp"
@@ -468,6 +444,9 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
     </conf>
