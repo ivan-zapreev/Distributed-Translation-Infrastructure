@@ -138,7 +138,7 @@ function send_translation_request(new_source_text) {
     trans_job_req.target_lang = get_selected_target_lang();
 
     //Set the translation info request to false
-    trans_job_req.trans_info = false;
+    trans_job_req.is_trans_info = false;
 
     //Set the source text split line by line
     trans_job_req.source_sent = new_source_text.split('\n');

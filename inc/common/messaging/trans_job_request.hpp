@@ -56,15 +56,15 @@ namespace uva {
                     class trans_job_request {
                     public:
                         //Stores the job id attribute name
-                        static const string JOB_ID_NAME;
+                        static const string JOB_ID_FIELD_NAME;
                         //Stores the source language attribute name
-                        static const string SOURCE_LANG_NAME;
+                        static const string SOURCE_LANG_FIELD_NAME;
                         //Stores the target language attribute name
-                        static const string TARGET_LANG_NAME;
+                        static const string TARGET_LANG_FIELD_NAME;
                         //Stores the translation info flag attribute name
-                        static const string TRANS_INFO_FLAG_NAME;
+                        static const string IS_TRANS_INFO_FIELD_NAME;
                         //Stores the source sentences attribute name
-                        static const string SOURCE_SENTENCES_NAME;
+                        static const string SOURCE_SENTENCES_FIELD_NAME;
 
                         /**
                          * This is the basic class. This constructor is to be used
@@ -87,11 +87,11 @@ namespace uva {
                         trans_job_request(const job_id_type job_id, const string & source_lang,
                                 vector<string> & source_text, const string & target_lang, const bool is_trans_info)
                         : m_msg(msg_type::MESSAGE_TRANS_JOB_REQ), m_act_msg(m_msg) {
-                            m_msg.m_json_obj[JOB_ID_NAME] = job_id;
-                            m_msg.m_json_obj[SOURCE_LANG_NAME] = source_lang;
-                            m_msg.m_json_obj[TARGET_LANG_NAME] = target_lang;
-                            m_msg.m_json_obj[TRANS_INFO_FLAG_NAME] = is_trans_info;
-                            m_msg.m_json_obj[SOURCE_SENTENCES_NAME] = source_text;
+                            m_msg.m_json_obj[JOB_ID_FIELD_NAME] = job_id;
+                            m_msg.m_json_obj[SOURCE_LANG_FIELD_NAME] = source_lang;
+                            m_msg.m_json_obj[TARGET_LANG_FIELD_NAME] = target_lang;
+                            m_msg.m_json_obj[IS_TRANS_INFO_FIELD_NAME] = is_trans_info;
+                            m_msg.m_json_obj[SOURCE_SENTENCES_FIELD_NAME] = source_text;
 
                             LOG_DEBUG << "Translation job request, job id: " << job_id
                                     << " source language: " << source_lang
@@ -104,7 +104,7 @@ namespace uva {
                          * @return the string representation of the translation job request
                          */
                         inline const string serialize() const {
-                            string result = m_act_msg.serialize();
+                            const string result = m_act_msg.serialize();
                             LOG_DEBUG1 << "Serializing request message: '" << result << "'" << END_LOG;
                             return result;
                         }
@@ -114,7 +114,7 @@ namespace uva {
                          * @return the client-issued job id
                          */
                         inline const job_id_type get_job_id() const {
-                            return m_act_msg.get_value<job_id_type>(JOB_ID_NAME);
+                            return m_act_msg.get_value<job_id_type>(JOB_ID_FIELD_NAME);
                         }
 
                         /**
@@ -122,7 +122,7 @@ namespace uva {
                          * @return the translation job source language
                          */
                         inline const string get_source_lang() const {
-                            return m_act_msg.get_value<string>(SOURCE_LANG_NAME);
+                            return m_act_msg.get_value<string>(SOURCE_LANG_FIELD_NAME);
                         }
 
                         /**
@@ -130,7 +130,7 @@ namespace uva {
                          * @return the translation job target language
                          */
                         inline const string get_target_lang() const {
-                            return m_act_msg.get_value<string>(TARGET_LANG_NAME);
+                            return m_act_msg.get_value<string>(TARGET_LANG_FIELD_NAME);
                         }
 
                         /**
@@ -138,7 +138,7 @@ namespace uva {
                          * @return true if the translation information is requested, otherwise false
                          */
                         inline const bool is_trans_info() const {
-                            return m_act_msg.get_value<bool>(TRANS_INFO_FLAG_NAME);
+                            return m_act_msg.get_value<bool>(IS_TRANS_INFO_FIELD_NAME);
                         }
 
                         /**
@@ -148,7 +148,7 @@ namespace uva {
                          * @return the translation job text
                          */
                         inline json::array_t get_source_text() const {
-                            return m_act_msg.get_value<json::array_t>(SOURCE_SENTENCES_NAME);
+                            return m_act_msg.get_value<json::array_t>(SOURCE_SENTENCES_FIELD_NAME);
                         }
 
                     private:

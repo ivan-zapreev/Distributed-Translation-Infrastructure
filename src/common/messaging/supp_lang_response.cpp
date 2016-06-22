@@ -31,7 +31,7 @@ namespace uva {
             namespace common {
                 namespace messaging {
 
-                    const string supp_lang_response::LANGUAGES_NAME = "langs";
+                    const string supp_lang_response::LANGUAGES_FIELD_NAME = "langs";
 
                 }
             }

@@ -196,13 +196,14 @@ namespace uva {
                      */
                     inline bool is_job_finished() {
                         LOG_DEBUG1 << "Checking if the job " << this << " is finished!" << END_LOG;
-                        
+
                         LOG_DEBUG1 << "The number of active tasks of job " << this
                                 << " is: " << (m_tasks.size() - m_done_tasks_count)
                                 << "/" << m_tasks.size() << END_LOG;
 
                         return (m_done_tasks_count == m_tasks.size());
                     }
+
 
                     /**
                      * Is used from the translation task to notify the translation
@@ -228,9 +229,6 @@ namespace uva {
                             if (is_job_finished()) {
                                 LOG_DEBUG << "The translation job " << this << " is finished!" << END_LOG;
 
-                                //Combine the task results into the job result
-                                collect_job_results();
-
                                 //Do the sanity check assert
                                 ASSERT_SANITY_THROW(!m_notify_job_done_func,
                                         "The translation job's result setting function is not set!");
@@ -243,13 +241,18 @@ namespace uva {
                         }
                     }
 
+                public: 
+                    
                     /**
                      * Allows to compile the end job result, e.g. based on the task results,
                      * come up with the job's result code and the translated text.
+                     * @param data [out] the object to store the translation job response data to be sent
                      */
-                    inline void collect_job_results() {
+                    inline void collect_job_results(trans_job_resp_data & data) {
                         LOG_DEBUG << "Combining the job " << this << " result!" << END_LOG;
 
+                        //ToDo: Set the data into the translation job response data
+                        
                         //Declare the variables for counting the number of CANCELED/ERROR tasks
                         uint32_t num_canceled = 0, num_error = 0;
 

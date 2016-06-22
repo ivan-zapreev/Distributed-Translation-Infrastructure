@@ -38,11 +38,10 @@
       <df name="common">
         <df name="messaging">
           <in>json_msg.cpp</in>
-          <in>supp_lang_request.cpp</in>
           <in>supp_lang_response.cpp</in>
           <in>trans_job_code.cpp</in>
           <in>trans_job_request.cpp</in>
-          <in>trans_job_response.cpp</in>
+          <in>trans_job_resp_data.cpp</in>
         </df>
         <df name="utils">
           <df name="logging">
@@ -221,13 +220,6 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/common/messaging/supp_lang_request.cpp"
-            ex="false"
-            tool="1"
-            flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
       <item path="src/common/messaging/supp_lang_response.cpp"
             ex="false"
             tool="1"
@@ -249,7 +241,7 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/common/messaging/trans_job_response.cpp"
+      <item path="src/common/messaging/trans_job_resp_data.cpp"
             ex="false"
             tool="1"
             flavor2="8">

@@ -1,5 +1,5 @@
 /* 
- * File:   trans_job_response.hpp
+ * File:   trans_job_resp_data.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,10 +20,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on January 18, 2016, 5:02 PM
+ * Created on June 22, 2016, 15:57 PM
  */
 
-#include "common/messaging/trans_job_response.hpp"
+#include "common/messaging/trans_job_resp_data.hpp"
 
 namespace uva {
     namespace smt {
@@ -31,10 +31,9 @@ namespace uva {
             namespace common {
                 namespace messaging {
 
-                    constexpr char trans_job_response::HEADER_DELIMITER;
-                    constexpr char trans_job_response::NEW_LINE_HEADER_ENDING;
-                    
-                    const string trans_job_response::TRANS_JOB_RESPONSE_PREFIX = string("TRAN_JOB_RESP") + HEADER_DELIMITER;
+                    const string trans_job_resp_data::JOB_ID_FIELD_NAME = "";
+                    const string trans_job_resp_data::TARGET_DATA_FIELD_NAME = "";
+
                 }
             }
         }

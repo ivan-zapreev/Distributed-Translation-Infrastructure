@@ -33,9 +33,10 @@ namespace uva {
 
                         constexpr uint32_t json_msg::PROTOCOL_VERSION;
                         
-                        const string json_msg::PROT_VER_NAME = "prot_ver";
-                        const string json_msg::MSG_TYPE_NAME = "msg_type";
-                    
+                        const string json_msg::PROT_VER_FIELD_NAME = "prot_ver";
+                        const string json_msg::MSG_TYPE_FIELD_NAME = "msg_type";
+                        const string json_msg::STAT_CODE_FIELD_NAME = "stat_code";
+                        const string json_msg::STAT_MSG_FIELD_NAME = "stat_msg";
                 }
             }
         }

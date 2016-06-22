@@ -637,6 +637,7 @@
           <in>trans_job_code.hpp</in>
           <in>trans_job_id.hpp</in>
           <in>trans_job_request.hpp</in>
+          <in>trans_job_resp_data.hpp</in>
           <in>trans_job_response.hpp</in>
           <in>trans_session_id.hpp</in>
         </df>
@@ -810,11 +811,10 @@
       <df name="common">
         <df name="messaging">
           <in>json_msg.cpp</in>
-          <in>supp_lang_request.cpp</in>
           <in>supp_lang_response.cpp</in>
           <in>trans_job_code.cpp</in>
           <in>trans_job_request.cpp</in>
-          <in>trans_job_response.cpp</in>
+          <in>trans_job_resp_data.cpp</in>
         </df>
         <df name="utils">
           <df name="logging">

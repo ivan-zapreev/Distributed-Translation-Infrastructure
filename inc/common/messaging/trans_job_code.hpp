@@ -93,7 +93,7 @@ namespace uva {
                          * Overloading the assignment operator for the code
                          * @param code the code to set
                          */
-                        void operator=(const values &code) {
+                        inline void operator=(const values &code) {
                             m_code = code;
                         }
 
@@ -101,7 +101,7 @@ namespace uva {
                          * Overloading the equality operator for the code
                          * @param code the code to check equality with
                          */
-                        bool operator==(const values &code) const {
+                        inline bool operator==(const values &code) const {
                             return (m_code == code);
                         }
 
@@ -109,7 +109,7 @@ namespace uva {
                          * Overloading the comparison operator for the code
                          * @param code the code to compare with
                          */
-                        bool operator<(const values &code) const {
+                        inline bool operator<(const values &code) const {
                             return (m_code < code);
                         }
 
@@ -117,7 +117,7 @@ namespace uva {
                          * The operator allowing to convert the value to string
                          * @return the string representation of the code
                          */
-                        operator string() const {
+                        inline operator string() const {
                             return str();
                         }
 
@@ -125,7 +125,7 @@ namespace uva {
                          * The operator allowing to convert the value to an integer
                          * @return the the integer value
                          */
-                        operator int() const {
+                        inline operator int() const {
                             return m_code;
                         }
 
@@ -139,7 +139,7 @@ namespace uva {
                          * Returns the stored code value
                          * @return the stored code value
                          */
-                        values val() {
+                        inline values val() const {
                             return m_code;
                         }
 

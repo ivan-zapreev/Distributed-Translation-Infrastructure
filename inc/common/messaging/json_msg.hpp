@@ -38,6 +38,8 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+#include "common/messaging/trans_job_code.hpp"
+
 using namespace std;
 
 using namespace uva::utils::logging;
@@ -78,13 +80,17 @@ namespace uva {
                         //Declare the friend classes
                         friend class trans_job_request;
                         friend class supp_lang_response;
-                        
+
                         //Stores the version of the message protocol
                         static constexpr uint32_t PROTOCOL_VERSION = 1;
                         //Stores the protocol version attribute name
-                        static const string PROT_VER_NAME;
+                        static const string PROT_VER_FIELD_NAME;
                         //Stores the message type attribute name
-                        static const string MSG_TYPE_NAME;
+                        static const string MSG_TYPE_FIELD_NAME;
+                        //Stores the status code attribute name
+                        static const string STAT_CODE_FIELD_NAME;
+                        //Stores the status message attribute name
+                        static const string STAT_MSG_FIELD_NAME;
 
                         /**
                          * The basic constructor, is to be used for the received messages
@@ -98,8 +104,36 @@ namespace uva {
                          * @param type the message type identifier
                          */
                         json_msg(msg_type type) : m_json_obj() {
-                            m_json_obj[PROT_VER_NAME] = PROTOCOL_VERSION;
-                            m_json_obj[MSG_TYPE_NAME] = type;
+                            m_json_obj[PROT_VER_FIELD_NAME] = PROTOCOL_VERSION;
+                            m_json_obj[MSG_TYPE_FIELD_NAME] = type;
+                        }
+
+                        /**
+                         * Allows to set the status
+                         * @param status_code the status code
+                         * @param status_msg the status message
+                         */
+                        inline void set_status(const trans_job_code status_code,
+                                const string & status_msg) {
+                            m_json_obj[STAT_CODE_FIELD_NAME] = status_code.val();
+                            m_json_obj[STAT_MSG_FIELD_NAME] = status_msg;
+                        }
+
+                        /**
+                         * Allows to get the translation job result code
+                         * @return the translation job result code
+                         */
+                        inline trans_job_code get_status_code() const {
+                            //This code here is a fast and brute force to convert the translation job code from an integer into the class
+                            return trans_job_code(static_cast<trans_job_code::values> (get_value<int32_t>(STAT_CODE_FIELD_NAME)));
+                        }
+
+                        /**
+                         * Allows to get the translation job status message
+                         * @return the translation job status message
+                         */
+                        inline const string get_status_msg() const {
+                            return get_value<string>(STAT_MSG_FIELD_NAME);
                         }
 
                         /**
@@ -110,7 +144,7 @@ namespace uva {
                             //This is a primitive way to cast to the enumeration type 
                             //from an integer. Later we could introduce a fancier way 
                             //with all sorts of checks but this shall do it for now.
-                            return static_cast<msg_type> (get_value<int32_t>(MSG_TYPE_NAME));
+                            return static_cast<msg_type> (get_value<int32_t>(MSG_TYPE_FIELD_NAME));
                         }
 
                         /**
@@ -140,13 +174,14 @@ namespace uva {
                         }
 
                         /**
-                         * Allows to get the data from the JSON object and cast it to the desired result type
-                         * @param result_type the result type to be returned
+                         * Allows to get the data from the JSON object and
+                         * cast it to the desired result type.
+                         * @param value_type the result type to be returned
                          * @param field_name the name of the JSON field
                          * @return the value of the required type of the given field 
                          */
-                        template<typename result_type>
-                        inline result_type get_value(const string & field_name) const {
+                        template<typename value_type>
+                        inline value_type get_value(const string & field_name) const {
                             LOG_DEBUG << "Extracting JSON field: " << field_name << END_LOG;
 
                             //Retrieve the value from the JSON object
@@ -156,7 +191,17 @@ namespace uva {
                             ASSERT_CONDITION_THROW((entry == m_json_obj.end()),
                                     string("The JSON field '") + field_name + string("' is not present!"));
 
-                            return entry->get<result_type>();
+                            return entry->get<value_type>();
+                        }
+
+                        /**
+                         * Allows to set the given field to a given value
+                         * @param field_name the field name
+                         * @param value the value to be set
+                         */
+                        template<typename vlaue_type>
+                        inline void set_value(const string & field_name, const vlaue_type & value) {
+                            m_json_obj[field_name] = value;
                         }
 
                     protected:
@@ -169,7 +214,7 @@ namespace uva {
                          */
                         void verify_protocol_version() const {
                             //Get the protocol version and check it
-                            const uint32_t prot_ver = get_value<int32_t>(PROT_VER_NAME);
+                            const uint32_t prot_ver = get_value<int32_t>(PROT_VER_FIELD_NAME);
 
                             LOG_DEBUG << "The request protocol version: " << to_string(prot_ver)
                                     << ", local protocol version: " << to_string(PROTOCOL_VERSION) << END_LOG;

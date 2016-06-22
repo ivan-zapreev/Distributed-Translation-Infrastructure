@@ -47,7 +47,7 @@ namespace uva {
                     public:
                         
                         //Stores the languages field name for the JSON message
-                        static const string LANGUAGES_NAME;
+                        static const string LANGUAGES_FIELD_NAME;
 
                         /**
                          * The basic constructor
@@ -61,7 +61,7 @@ namespace uva {
                          * @param target the target language that can be translated in to the source language
                          */
                         inline void add_supp_lang(const string& source, const string& target) {
-                            m_json_obj.m_json_obj[LANGUAGES_NAME][source].push_back(target);
+                            m_json_obj.m_json_obj[LANGUAGES_FIELD_NAME][source].push_back(target);
                         }
 
                         /**

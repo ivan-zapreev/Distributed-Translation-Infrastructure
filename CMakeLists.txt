@@ -72,8 +72,7 @@ set(BPBD_SERVER_SOURCES
     src/common/messaging/json_msg.cpp
     src/common/messaging/trans_job_code.cpp
     src/common/messaging/trans_job_request.cpp
-    src/common/messaging/trans_job_response.cpp
-    src/common/messaging/supp_lang_request.cpp
+    src/common/messaging/trans_job_resp_data.cpp
     src/common/messaging/supp_lang_response.cpp
     src/server/trans_task_pool_worker.cpp
     src/server/trans_task_pool.cpp
@@ -90,7 +89,7 @@ set(BPBD_CLIENT_SOURCES
     src/common/messaging/json_msg.cpp
     src/common/messaging/trans_job_code.cpp
     src/common/messaging/trans_job_request.cpp
-    src/common/messaging/trans_job_response.cpp
+    src/common/messaging/trans_job_resp_data.cpp
     src/client/trans_job_status.cpp
 )
 #Define the server executable
