@@ -1,4 +1,4 @@
-<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>640</x><y>1422</y><w>370</w><h>180</h></coordinates><panel_attributes>msg_base
+<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>540</x><y>1180</y><w>370</w><h>180</h></coordinates><panel_attributes>msg_base
 --
 //Stores the version of the message protocol
 +PROTOCOL_VERSION : static constexpr uint32_t = 1
@@ -13,7 +13,7 @@ msg_base()
 --
 Responsibilities
 -- Is a base class for all messages
--- Stores the all-messages field names and the json object </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1080</x><y>322</y><w>370</w><h>130</h></coordinates><panel_attributes>response_msg
+-- Stores the all-messages field names and the json object </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1080</x><y>0</y><w>370</w><h>130</h></coordinates><panel_attributes>response_msg
 --
 //Stores the status code attribute name
 +STAT_CODE_FIELD_NAME : static const string = "stat_code"
@@ -24,16 +24,16 @@ response_msg()
 /+~response_msg {virtual}/
 --
 Responsibilities
--- The base class for response messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>840</x><y>1352</y><w>200</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;70;10;40;180;40;180;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>260</x><y>322</y><w>340</w><h>100</h></coordinates><panel_attributes>request_msg
+-- The base class for response messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>740</x><y>1030</y><w>150</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;150;10;90;130;90;130;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>260</x><y>0</y><w>340</w><h>100</h></coordinates><panel_attributes>request_msg
 --
 --
 request_msg()
 /+~request_msg {virtual}/
 --
 Responsibilities
--- The base class for request messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>1362</y><w>200</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;private&gt;&gt;</panel_attributes><additional_attributes>180;60;180;30;10;30;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>872</y><w>340</w><h>180</h></coordinates><panel_attributes>trans_job_req_in
+-- The base class for request messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>570</x><y>1030</y><w>140</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;private&gt;&gt;</panel_attributes><additional_attributes>120;150;120;90;10;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>550</y><w>340</w><h>180</h></coordinates><panel_attributes>trans_job_req_in
 --
 - inc_msg : incoming_msg *;
 --
@@ -45,16 +45,16 @@ Responsibilities
 +is_trans_info() : bool {const}
 --
 Responsibilities
--- The incoming translation job request</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>90</x><y>682</y><w>290</w><h>160</h></coordinates><panel_attributes>supp_lang_req_out
+-- The incoming translation job request</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>90</x><y>360</y><w>290</w><h>160</h></coordinates><panel_attributes>supp_lang_req_out
 --
 --
 +supp_lang_req_out()
 /+~supp_lang_req_out() {virtual}/
 --
 Responsibilities
--- The outgoing supported languages request</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>20</x><y>592</y><w>70</w><h>300</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;280</additional_attributes></element><element><id>Relation</id><coordinates><x>330</x><y>592</y><w>70</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>872</y><w>320</w><h>120</h></coordinates><panel_attributes>supp_lang_req_in
+-- The outgoing supported languages request</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>20</x><y>270</y><w>70</w><h>300</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;280</additional_attributes></element><element><id>Relation</id><coordinates><x>330</x><y>270</y><w>70</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>550</y><w>320</w><h>120</h></coordinates><panel_attributes>supp_lang_req_in
 --
 - inc_msg : incoming_msg *;
 --
@@ -62,7 +62,7 @@ Responsibilities
 /+~supp_lang_req_in() {virtual}/
 --
 Responsibilities
--- The incoming supported languages request</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>682</y><w>300</w><h>160</h></coordinates><panel_attributes>trans_job_req_out
+-- The incoming supported languages request</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>360</y><w>300</w><h>160</h></coordinates><panel_attributes>trans_job_req_out
 --
 --
 +trans_job_req_out(job_id : const job_id_type,
@@ -72,7 +72,7 @@ Responsibilities
                                is_trans_info : const bool)
 --
 Responsibilities
--- The outgoing translation job request</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>870</x><y>512</y><w>370</w><h>130</h></coordinates><panel_attributes>supp_lang_resp
+-- The outgoing translation job request</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>870</x><y>190</y><w>370</w><h>130</h></coordinates><panel_attributes>supp_lang_resp
 --
 +LANGUAGES_FIELD_NAME : string = "langs"
 --
@@ -80,8 +80,8 @@ Responsibilities
 /+~supp_lang_resp() {virtual}/
 --
 Responsibilities
--- The base class for supported languages response</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>330</x><y>412</y><w>70</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>462</y><w>400</w><h>180</h></coordinates><panel_attributes>trans_job_req
+-- The base class for supported languages response</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>330</x><y>90</y><w>70</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>140</y><w>400</w><h>180</h></coordinates><panel_attributes>trans_job_req
 --
 +JOB_ID_FIELD_NAME : string = "job_id"
 +SOURCE_LANG_FIELD_NAME : string = "source_lang"
@@ -93,17 +93,17 @@ Responsibilities
 /+~trans_job_req() {virtual}/
 --
 Responsibilities
--- The base class for translation job request</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>632</y><w>70</w><h>260</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;240</additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>632</y><w>70</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>412</y><w>70</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>462</y><w>380</w><h>140</h></coordinates><panel_attributes>supp_lang_req
+-- The base class for translation job request</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>310</y><w>70</w><h>260</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;240</additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>310</y><w>70</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>90</y><w>70</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>140</y><w>380</w><h>140</h></coordinates><panel_attributes>supp_lang_req
 --
 --
 +supp_lang_req()
 /+~supp_lang_req() {virtual}/
 --
 Responsibilities
--- The base class for supported languages request</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1270</x><y>512</y><w>370</w><h>130</h></coordinates><panel_attributes>trans_job_resp
+-- The base class for supported languages request</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1270</x><y>190</y><w>370</w><h>130</h></coordinates><panel_attributes>trans_job_resp
 --
 +JOB_ID_FIELD_NAME : string = "job_id"
 +TARGET_DATA_FIELD_NAME : string = "target_data"
@@ -112,9 +112,9 @@ Responsibilities
 /+~trans_job_resp() {virtual}/
 --
 Responsibilities
--- The base class for translation job response</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1180</x><y>442</y><w>70</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>1360</x><y>442</y><w>70</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1270</x><y>862</y><w>330</w><h>320</h></coordinates><panel_attributes>trans_job_resp_in
+-- The base class for translation job response</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1180</x><y>120</y><w>70</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>1360</x><y>120</y><w>70</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1270</x><y>540</y><w>330</w><h>320</h></coordinates><panel_attributes>trans_job_resp_in
 --
 {innerclass
 sent_iterator
@@ -123,7 +123,7 @@ sent_iterator
 -m_idx : const size_t
 --
 +sent_iterator(trans_data : const json &amp;, idx : size_t)
-+operator*() : const trans_send_data &amp; {const}
++operator*() : const trans_send_data_in &amp; {const}
 +operator++() : sent_iterator &amp;
 +operator!=(other : const sent_iterator &amp;) : bool {const}
 innerclass}
@@ -138,81 +138,106 @@ innerclass}
 +get_inc_msg() : const incoming_msg &amp; {const}
 --
 Responsibilities
--- The incoming translation job response</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>950</x><y>682</y><w>290</w><h>120</h></coordinates><panel_attributes>supp_lang_resp_out
+-- The incoming translation job response</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>950</x><y>360</y><w>300</w><h>140</h></coordinates><panel_attributes>supp_lang_resp_out
 --
 --
-supp_lang_resp_out()
++supp_lang_resp_out()
 /+~supp_lang_resp_out() {virtual}/
-add_supp_lang(source : const string&amp; , target : const string&amp; ) : void
++add_supp_lang(source : const string&amp;,
+                          target : const string&amp; ) : void
 --
 Responsibilities
--- The outgoing supported languages response</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>870</x><y>862</y><w>330</w><h>140</h></coordinates><panel_attributes>supp_lang_resp_in
+-- The outgoing supported languages response</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>870</x><y>540</y><w>330</w><h>140</h></coordinates><panel_attributes>supp_lang_resp_in
 --
 - inc_msg : incoming_msg *;
 --
-supp_lang_resp_in(inc_msg : incoming_msg *)
++supp_lang_resp_in(inc_msg : incoming_msg *)
 /+~supp_lang_resp_in() {virtual}/
-get_languages() : const json &amp; {const}
++get_languages() : const json &amp; {const}
 --
 Responsibilities
--- The incoming supported languages response</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>880</x><y>632</y><w>70</w><h>250</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;230</additional_attributes></element><element><id>Relation</id><coordinates><x>1190</x><y>632</y><w>70</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>1290</x><y>632</y><w>70</w><h>250</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;230</additional_attributes></element><element><id>Relation</id><coordinates><x>1590</x><y>632</y><w>70</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1360</x><y>682</y><w>310</w><h>140</h></coordinates><panel_attributes>trans_job_resp_out
+-- The incoming supported languages response</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>880</x><y>310</y><w>70</w><h>250</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;230</additional_attributes></element><element><id>Relation</id><coordinates><x>1190</x><y>310</y><w>70</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>1290</x><y>310</y><w>70</w><h>250</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;230</additional_attributes></element><element><id>Relation</id><coordinates><x>1590</x><y>310</y><w>70</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1360</x><y>360</y><w>310</w><h>150</h></coordinates><panel_attributes>trans_job_resp_out
 --
 --
-trans_job_resp_out()
++trans_job_resp_out()
 /+~trans_job_resp_out() {virtual}/
-set_job_id(job_id : job_id_type) : void
-get_new_sent_data() : trans_sent_data &amp;
-set_status( code : trans_job_code, msg : string ) : void
++set_job_id(job_id : job_id_type) : void
++get_new_sent_data() : trans_sent_data_out &amp;
++set_status( code : trans_job_code, msg : string ) : void
 --
 Responsibilities
--- The outgoing translation job response</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>470</x><y>1192</y><w>290</w><h>180</h></coordinates><panel_attributes>outgoing_msg
+-- The outgoing translation job response</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>240</x><y>890</y><w>480</w><h>150</h></coordinates><panel_attributes>outgoing_msg
 --
 --
 +outgoing_msg(type : msg_type)
-+set_value( field_name : const string &amp;,
-                  value : const vlaue_type &amp;) : void
++set_value( field_name : const string &amp;, value : const vlaue_type &amp;) : void
 +serialize() : string
 #get_json() : json &amp;
+_+set_value(data : json &amp;, field_name : const string &amp;, value : const vlaue_type &amp;) : void_
 --
 Responsibilities
--- Is a base class for all outgoing messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>880</x><y>1182</y><w>280</w><h>180</h></coordinates><panel_attributes>incoming_msg
+-- Is a base class for all outgoing messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>750</x><y>860</y><w>440</w><h>180</h></coordinates><panel_attributes>incoming_msg
 --
 --
 +client_msg()
 +de_serialize(data : const string &amp;) : void
-+template&lt;typename T&gt;
-     get_value(name: const string &amp;) : T
++template&lt;typename T&gt; get_value(name: const string &amp;) : T
 +get_type() : msg_type
 +get_json() : const json &amp;
 #verify_protocol_version() : void
+_+template&lt;typename T&gt; get_value(data : const json &amp;, name: const string &amp;) : T_
 --
 Responsibilities
--- Is a base class for all incoming messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>340</x><y>837</y><w>330</w><h>370</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>310;350;310;320;10;320;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>670</x><y>837</y><w>140</w><h>370</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;350;10;240;120;240;120;10</additional_attributes></element><element><id>Relation</id><coordinates><x>700</x><y>792</y><w>540</w><h>420</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;400;10;330;520;330;520;10</additional_attributes></element><element><id>Relation</id><coordinates><x>730</x><y>812</y><w>920</w><h>430</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;380;10;330;480;330;480;410;900;410;900;10</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>982</y><w>670</w><h>220</h></coordinates><panel_attributes>lt=&lt;-
-m1=1</panel_attributes><additional_attributes>640;200;640;120;10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>1012</y><w>290</w><h>190</h></coordinates><panel_attributes>lt=&lt;-
-m1=1</panel_attributes><additional_attributes>260;170;260;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1120</x><y>992</y><w>40</w><h>210</h></coordinates><panel_attributes>lt=&lt;-
-m1=1</panel_attributes><additional_attributes>10;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1150</x><y>1172</y><w>320</w><h>110</h></coordinates><panel_attributes>lt=&lt;-
-m1=1</panel_attributes><additional_attributes>10;80;300;80;300;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1700</x><y>864</y><w>370</w><h>200</h></coordinates><panel_attributes>trans_sent_data
+-- Is a base class for all incoming messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>340</x><y>515</y><w>110</w><h>400</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>90;375;90;320;10;320;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>515</y><w>340</w><h>400</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;375;10;240;320;240;320;10</additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>490</y><w>720</w><h>420</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;400;10;310;700;310;700;10</additional_attributes></element><element><id>Relation</id><coordinates><x>580</x><y>500</y><w>1070</w><h>420</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;390;10;320;630;320;630;400;1050;400;1050;10</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>660</y><w>670</w><h>220</h></coordinates><panel_attributes>lt=&lt;-
+m1=1</panel_attributes><additional_attributes>640;200;640;120;10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>690</y><w>290</w><h>190</h></coordinates><panel_attributes>lt=&lt;-
+m1=1</panel_attributes><additional_attributes>260;170;260;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1120</x><y>670</y><w>40</w><h>210</h></coordinates><panel_attributes>lt=&lt;-
+m1=1</panel_attributes><additional_attributes>10;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1180</x><y>850</y><w>290</w><h>110</h></coordinates><panel_attributes>lt=&lt;-
+m1=1</panel_attributes><additional_attributes>10;80;270;80;270;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1740</x><y>542</y><w>370</w><h>220</h></coordinates><panel_attributes>trans_sent_data
 --
 +TRANS_TEXT_FIELD_NAME : string = "trans_text"
 +STACK_LOAD_FIELD_NAME : string = "stack_load"
-- m_data_obj : json &amp;
+# m_data_obj : json &amp;
 --
-trans_sent_data( data_obj : json &amp; )
++trans_sent_data(data_obj : json &amp;)
 /+~trans_sent_data() {virtual}/
-get_trans_text() : json &amp;
-has_stack_load() : bool {const}
-get_stack_load() : json &amp;
++set_sent_data(data_obj : json &amp;) : void
 --
 Responsibilities
--- Stores the translation data for a sentence</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1660</x><y>724</y><w>170</w><h>160</h></coordinates><panel_attributes>lt=&lt;.
-&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>110;140;110;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1440</x><y>382</y><w>440</w><h>500</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;20;420;20;420;480</additional_attributes></element><element><id>Relation</id><coordinates><x>1540</x><y>1052</y><w>240</w><h>220</h></coordinates><panel_attributes>lt=&lt;.
-&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>220;10;220;200;10;200;10;130</additional_attributes></element></diagram>
+-- Stores the translation data for a sentence</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1660</x><y>402</y><w>580</w><h>470</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>520;450;520;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1440</x><y>60</y><w>480</w><h>500</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;20;460;20;460;480</additional_attributes></element><element><id>Relation</id><coordinates><x>1540</x><y>850</y><w>150</w><h>100</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>130;80;10;80;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1670</x><y>854</y><w>250</w><h>150</h></coordinates><panel_attributes>trans_sent_data_in
+--
+--
++trans_sent_data_in( data_obj : json &amp; )
+/+~trans_sent_data_in() {virtual}/
++get_trans_text() : string {const}
++has_stack_load() : bool {const}
++get_stack_load() : json:array_t {const}
+--
+Responsibilities
+-- Represents the translated sentence data</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1980</x><y>854</y><w>280</w><h>180</h></coordinates><panel_attributes>trans_sent_data_out
+--
+-m_is_trans_info : bool
+--
++trans_sent_data_in(data_obj : json &amp;,
+                                 is_trans_info: const bool &amp; )
+/+~trans_sent_data_in() {virtual}/
++is_trans_info() : bool {const}
++set_trans_text(text : const string &amp;) : void
++set_stack_load(data : vector&lt;int64_t&gt; &amp;)
+--
+Responsibilities
+-- Represents the translated sentence data</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1790</x><y>754</y><w>70</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>2050</x><y>754</y><w>70</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>1000</y><w>1180</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>10;40;10;90;1160;90;1160;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1080</x><y>1030</y><w>1130</w><h>130</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>10;10;10;110;1110;110;1110;10</additional_attributes></element></diagram>
