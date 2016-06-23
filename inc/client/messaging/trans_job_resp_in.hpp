@@ -26,7 +26,10 @@
 #ifndef TRANS_JOB_RESP_IN_HPP
 #define TRANS_JOB_RESP_IN_HPP
 
+#include "common/messaging/trans_job_resp.hpp"
+#include "common/messaging/incoming_msg.hpp"
 
+using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
     namespace smt {
@@ -34,6 +37,13 @@ namespace uva {
             namespace client {
                 namespace messaging {
 
+                    /**
+                     * This class represents an incoming translation job response
+                     */
+                    class trans_job_resp_in : public trans_job_resp, public incoming_msg {
+                    public:
+
+                    };
                 }
             }
         }
