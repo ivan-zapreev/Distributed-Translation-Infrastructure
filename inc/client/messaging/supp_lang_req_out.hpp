@@ -28,5 +28,17 @@
 
 
 
+namespace uva {
+    namespace smt {
+        namespace bpbd {
+            namespace client {
+                namespace messaging {
+
+                }
+            }
+        }
+    }
+}
+
 #endif /* SUPP_LANG_REQ_OUT_HPP */
 

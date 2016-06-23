@@ -28,5 +28,17 @@
 
 
 
+namespace uva {
+    namespace smt {
+        namespace bpbd {
+            namespace client {
+                namespace messaging {
+
+                }
+            }
+        }
+    }
+}
+
 #endif /* TRANS_SENT_DATA_IN_HPP */
 

@@ -28,5 +28,17 @@
 
 
 
+namespace uva {
+    namespace smt {
+        namespace bpbd {
+            namespace client {
+                namespace messaging {
+
+                }
+            }
+        }
+    }
+}
+
 #endif /* TRANS_JOB_RESP_IN_HPP */
 

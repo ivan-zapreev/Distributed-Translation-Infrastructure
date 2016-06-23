@@ -39,6 +39,7 @@ namespace uva {
         namespace bpbd {
             namespace common {
                 namespace messaging {
+                    
                     constexpr uint32_t msg_base::PROTOCOL_VERSION;
                     const string msg_base::PROT_VER_FIELD_NAME = "prot_ver";
                     const string msg_base::MSG_TYPE_FIELD_NAME = "msg_type";
