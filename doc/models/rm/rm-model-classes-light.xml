@@ -1,0 +1,51 @@
+<diagram program="umletino" version="14.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>130</x><y>139</y><w>370</w><h>280</h></coordinates><panel_attributes>*rm_basic_model*
+fontsize=18
+bg=#FFFF00
+--
+m_rm_data : fixed_size_hashmap&lt;...&gt;
+m_unk_entry : rm_entry*
+m_begin_entry : rm_entry*
+m_end_entry : rm_entry*
+--
+rm_basic_model()
+*find_unk_entry(...) : void*
+*find_begin_end_entries() : void*
+*get_entry(...) : rm_entry**
+*get_begin_tag_entry() : rm_entry**
+*get_end_tag_entry() : rm_entry**
+...
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>120</y><w>520</w><h>150</h></coordinates><panel_attributes>template=&lt;rm_entry, phrase_uid&gt;
+*fixed_size_hashmap*
+fontsize=18
+bg=#bebebe
+--
+fixed_size_hashmap(... size_t size ...)
+*add_new_element(...) : tm_source_entry &amp;*
+*get_element(...) : tm_source_entry **
+...</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>490</x><y>259</y><w>240</w><h>100</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+r1=m_tm_data
+fontsize=16</panel_attributes><additional_attributes>140;10;140;80;10;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>660</x><y>359</y><w>340</w><h>180</h></coordinates><panel_attributes>*rm_entry*
+fontsize=18
+bg=#00FF7F
+--
+m_uid : phrase_uid
+m_weights : prob_weight[num_features]
+--
+rm_entry()
+*get_weights() : prob_weight **
+*get_weight(orientation) : prob_weight*
+...</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>890</x><y>260</y><w>80</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=0..*
+fontsize=16
+&lt;&lt;array&gt;&gt;</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>290</x><y>410</y><w>390</w><h>60</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+r1=m_unk_entry
+fontsize=16</panel_attributes><additional_attributes>370;30;10;30;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>260</x><y>410</y><w>420</w><h>100</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+r1=m_begin_entry
+fontsize=16</panel_attributes><additional_attributes>400;70;10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>230</x><y>410</y><w>450</w><h>140</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+r1=m_end_entry
+fontsize=16</panel_attributes><additional_attributes>430;110;10;110;10;10</additional_attributes></element></diagram>

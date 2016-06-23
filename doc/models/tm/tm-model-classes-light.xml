@@ -1,0 +1,61 @@
+<diagram program="umletino" version="14.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>130</x><y>139</y><w>370</w><h>190</h></coordinates><panel_attributes>*tm_basic_model*
+fontsize=18
+bg=#FFFF00
+--
+m_tm_data : fixed_size_hashmap&lt;...&gt;
+m_unk_entry : tm_source_entry*
+--
+tm_basic_model()
+*set_unk_entry(...) : void*
+*get_source_entry(...) : tm_source_entry**
+*get_st_uids(vector&lt;phrase_uid&gt; &amp;) : void*
+...
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>630</x><y>120</y><w>520</w><h>150</h></coordinates><panel_attributes>template=&lt;tm_source_entry, phrase_uid&gt;
+*fixed_size_hashmap*
+fontsize=18
+bg=#bebebe
+--
+fixed_size_hashmap(... size_t size ...)
+*add_new_element(...) : tm_source_entry &amp;*
+*get_element(...) : tm_source_entry **
+...</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>490</x><y>169</y><w>160</w><h>50</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+r1=m_tm_data
+fontsize=16</panel_attributes><additional_attributes>140;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>680</x><y>359</y><w>290</w><h>280</h></coordinates><panel_attributes>*tm_source_entry*
+fontsize=18
+bg=#00FF7F
+--
+*m_source_uid : phrase_uid*
+m_capacity : size_t
+*m_targets : tm_target_entry **
+*m_min_cost : prob_weight*
+--
+tm_source_entry()
+*has_translations() : bool*
+*get_source_uid() : phrase_uid*
+*get_min_cost() : prob_weight*
+*has_target(phrase_uid) : bool*
+*get_targets() : tm_target_entry**
+...</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>800</x><y>260</y><w>80</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=0..*
+fontsize=16
+&lt;&lt;array&gt;&gt;</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>290</x><y>320</y><w>410</w><h>90</h></coordinates><panel_attributes>lt=&lt;-
+m1=1
+r1=m_unk_entry
+fontsize=16</panel_attributes><additional_attributes>390;60;10;60;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>170</x><y>419</y><w>290</w><h>220</h></coordinates><panel_attributes>*tm_target_entry*
+fontsize=18
+bg=#00FF7F
+--
+*m_target_phrase : string*
+m_num_words : phrase_length
+*m_word_ids : word_uid **
+m_st_uid : phrase_uid
+*m_t_cond_s : prob_weight*
+*m_total_weight : prob_weight*
+--
+tm_target_entry()
+...</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>490</y><w>250</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=0..*
+fontsize=16
+&lt;&lt;array&gt;&gt;</panel_attributes><additional_attributes>230;20;10;20</additional_attributes></element></diagram>

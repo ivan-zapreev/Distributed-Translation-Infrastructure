@@ -56,6 +56,10 @@ namespace uva {
                         static const string JOB_ID_FIELD_NAME;
                         //The target data field name
                         static const string TARGET_DATA_FIELD_NAME;
+                        //The target data field name
+                        static const string TRANS_TEXT_FIELD_NAME;
+                        //The target data field name
+                        static const string STACK_LOAD_FIELD_NAME;
 
                         /**
                          * The basic constructor.

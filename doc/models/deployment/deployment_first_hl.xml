@@ -1,0 +1,137 @@
+<diagram program="umletino" version="14.1"><zoom_level>10</zoom_level><element><id>UMLDeployment</id><coordinates><x>84</x><y>0</y><w>700</w><h>210</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+*Server*
+fontsize=18
+bg=#bebebe</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>484</x><y>260</y><w>120</w><h>140</h></coordinates><panel_attributes>*Decoder*
+--
+connect
+translate
+disconnect
+bg=#191970
+fontsize=18</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>624</x><y>130</y><w>130</w><h>70</h></coordinates><panel_attributes>&lt;&lt;app&gt;&gt;
+symbol=component
+lm-query
+bg=#DA70D6
+fontsize=18</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>374</x><y>180</y><w>190</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>170;90;170;10;10;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>594</x><y>230</y><w>180</w><h>30</h></coordinates><panel_attributes>WEB SOCKET API
+bg=#f9e79f
+fontsize=18</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>534</x><y>240</y><w>80</w><h>60</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>60;10;10;40</additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>620</x><y>290</y><w>160</w><h>150</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+*Client*
+group=3
+fontsize=18
+bg=#aed6f1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>80</x><y>260</y><w>390</w><h>180</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+*Client*
+fontsize=18
+bg=#aed6f1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>634</x><y>358</y><w>130</w><h>70</h></coordinates><panel_attributes>&lt;&lt;app&gt;&gt;
+symbol=component
+*bpbd-client*
+bg=#00FF7F
+fontsize=18</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>324</x><y>358</y><w>130</w><h>70</h></coordinates><panel_attributes>&lt;&lt;app&gt;&gt;
+symbol=component
+bpbd-client
+bg=#00FF7F
+fontsize=18</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>544</x><y>270</y><w>120</w><h>110</h></coordinates><panel_attributes>lt=&lt;-&gt;</panel_attributes><additional_attributes>100;90;100;50;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>374</x><y>270</y><w>180</w><h>110</h></coordinates><panel_attributes>lt=&lt;-&gt;</panel_attributes><additional_attributes>10;90;10;50;160;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>254</x><y>130</y><w>130</w><h>70</h></coordinates><panel_attributes>&lt;&lt;app&gt;&gt;
+symbol=component
+*bpbd-server*
+bg=#FFFF00
+fontsize=18</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>184</x><y>360</y><w>130</w><h>70</h></coordinates><panel_attributes>&lt;&lt;app&gt;&gt;
+symbol=component
+*lm-query*
+bg=#DA70D6
+fontsize=18</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>80</y><w>140</w><h>110</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
+lt=&lt;.
+fontsize=18</panel_attributes><additional_attributes>10;10;10;90;114;90</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>80</y><w>100</w><h>70</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
+lt=&lt;.
+fontsize=18</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>50</y><w>260</w><h>130</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
+lt=&lt;.
+fontsize=18</panel_attributes><additional_attributes>240;10;90;10;90;110;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>680</x><y>80</y><w>100</w><h>70</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
+lt=&lt;.
+fontsize=18</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>100</x><y>340</y><w>100</w><h>80</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
+lt=&lt;.
+fontsize=18</panel_attributes><additional_attributes>10;10;10;60;80;60</additional_attributes></element><element><id>Text</id><coordinates><x>250</x><y>20</y><w>130</w><h>70</h></coordinates><panel_attributes>customelement=
+// Text Element
+//drawText("LM Model",55,17,center) fg=black
+// DB Symbol
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,0,width,height*2/5,0,180,true) fg=black bg=#008B8B //Parameters (x, y, width, height, start, extent, open)
+drawArc(0,0,width,height*2/5,180,180,true) fg=black
+//Parameters (x, y, width, height)
+drawRectangle(0,(height+0.5)/5,width,(height-1.5)*3/5+1) lw=0.1 bg=#008B8B fg=#008B8B
+//Parameters (x1, y1, x2, y2) 
+drawLine(0,height/5,0,height*4/5)fg=black
+//Parameters (x1, y1, x2, y2) 
+drawLine(width,height/5,width,height*4/5)fg=black
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*1/5,width,height*2/5,180,180,true) fg=black //Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*2/5,width,height*2/5,180,180,true) fg=black 
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*3/5,width,height*2/5,180,180,true)fg=black bg=#008B8B
+group=4</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>620</x><y>20</y><w>130</w><h>70</h></coordinates><panel_attributes>customelement=
+// Text Element
+//drawText("LM Model",55,17,center) fg=black
+// DB Symbol
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,0,width,height*2/5,0,180,true) fg=black bg=#008B8B //Parameters (x, y, width, height, start, extent, open)
+drawArc(0,0,width,height*2/5,180,180,true) fg=black
+//Parameters (x, y, width, height)
+drawRectangle(0,(height+0.5)/5,width,(height-1.5)*3/5+1) lw=0.1 bg=#008B8B fg=#008B8B
+//Parameters (x1, y1, x2, y2) 
+drawLine(0,height/5,0,height*4/5)fg=black
+//Parameters (x1, y1, x2, y2) 
+drawLine(width,height/5,width,height*4/5)fg=black
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*1/5,width,height*2/5,180,180,true) fg=black //Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*2/5,width,height*2/5,180,180,true) fg=black 
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*3/5,width,height*2/5,180,180,true)fg=black bg=#008B8B
+group=5</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>90</x><y>20</y><w>130</w><h>70</h></coordinates><panel_attributes>customelement=
+// Text Element
+//drawText("LM Model",55,17,center) fg=black
+// DB Symbol
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,0,width,height*2/5,0,180,true) fg=black bg=#008B8B //Parameters (x, y, width, height, start, extent, open)
+drawArc(0,0,width,height*2/5,180,180,true) fg=black
+//Parameters (x, y, width, height)
+drawRectangle(0,(height+0.5)/5,width,(height-1.5)*3/5+1) lw=0.1 bg=#008B8B fg=#008B8B
+//Parameters (x1, y1, x2, y2) 
+drawLine(0,height/5,0,height*4/5)fg=black
+//Parameters (x1, y1, x2, y2) 
+drawLine(width,height/5,width,height*4/5)fg=black
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*1/5,width,height*2/5,180,180,true) fg=black //Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*2/5,width,height*2/5,180,180,true) fg=black 
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*3/5,width,height*2/5,180,180,true)fg=black bg=#008B8B
+group=7</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>90</x><y>280</y><w>130</w><h>70</h></coordinates><panel_attributes>customelement=
+// Text Element
+//drawText("LM Model",55,17,center) fg=black
+// DB Symbol
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,0,width,height*2/5,0,180,true) fg=black bg=#008B8B //Parameters (x, y, width, height, start, extent, open)
+drawArc(0,0,width,height*2/5,180,180,true) fg=black
+//Parameters (x, y, width, height)
+drawRectangle(0,(height+0.5)/5,width,(height-1.5)*3/5+1) lw=0.1 bg=#008B8B fg=#008B8B
+//Parameters (x1, y1, x2, y2) 
+drawLine(0,height/5,0,height*4/5)fg=black
+//Parameters (x1, y1, x2, y2) 
+drawLine(width,height/5,width,height*4/5)fg=black
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*1/5,width,height*2/5,180,180,true) fg=black //Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*2/5,width,height*2/5,180,180,true) fg=black 
+//Parameters (x, y, width, height, start, extent, open)
+drawArc(0,height*3/5,width,height*2/5,180,180,true)fg=black bg=#008B8B
+group=8</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>20</y><w>90</w><h>30</h></coordinates><panel_attributes>RM Model
+valign=center
+fontsize=18
+lw=0
+fg=#132020</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>110</x><y>280</y><w>90</w><h>30</h></coordinates><panel_attributes>LM Model
+valign=center
+fontsize=18
+lw=0
+fg=#132020</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>640</x><y>20</y><w>90</w><h>30</h></coordinates><panel_attributes>LM Model
+valign=center
+fontsize=18
+lw=0
+fg=#132020</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>110</x><y>20</y><w>90</w><h>30</h></coordinates><panel_attributes>TM Model
+valign=center
+fontsize=18
+lw=0
+fg=#132020</panel_attributes><additional_attributes></additional_attributes></element></diagram>

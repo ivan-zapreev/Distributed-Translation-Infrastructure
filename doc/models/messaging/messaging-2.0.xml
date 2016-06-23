@@ -1,0 +1,121 @@
+<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>370</x><y>0</y><w>340</w><h>260</h></coordinates><panel_attributes>json_msg
+--
++PROTOCOL_VERSION : integer {static}
+-m_json_obj : json
+--
+Message()
+Message(type : msg_type)
++de_serialize(data : string)
++serialize() : string
++get_type() : msg_type
++get_json() : const json &amp;
++template&lt;typename T&gt; get_value(name: const string &amp;) : T
+#verify_protocol_version() : void
+--
+Responsibilities
+-- A base class for all messages
+-- Stores the version of the protocol
+-- Stores the type of the message
+-- Stores the json object</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>340</y><w>230</w><h>100</h></coordinates><panel_attributes>supp_lang_request
+--
+-m_msg : json_msg_ptr
+--
++supp_lang_request()
++~supp_lang_request()
++serialize() : string
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>590</x><y>340</y><w>310</w><h>110</h></coordinates><panel_attributes>supp_lang_response
+--
+-m_json_obj : json_msg
+--
++supp_lang_response()
++~supp_lang_response()
++add_supp_lang(source : string, target : string) : void
++serialize() : string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>250</x><y>340</y><w>320</w><h>270</h></coordinates><panel_attributes>trans_job_request
+--
+-m_msg : json_msg
+-m_act_msg : const json_msg &amp;
+--
++trans_job_request(msg : json_msg)
++trans_job_request(job_id : const job_id_type,
+                               source_lang : const string &amp;,
+                               text : const vector&lt;string&gt; &amp;,
+                               target_lang : const string &amp; ,
+                               is_trans_info : const bool)
++~trans_job_request()
++get_job_id() : job_id_type {const}
++get_source_lang() : string {const}
++get_target_lang() : string {const}
++get_text() : json::array_t {const}
++is_trans_info() : bool {const}
++serialize() : string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>920</x><y>340</y><w>330</w><h>230</h></coordinates><panel_attributes>trans_job_response
+--
+--
++trans_job_response(job_id : const job_id_type,
+                                  code : const trans_job_code,
+                                  status_msg : const string &amp;,
+                                  target_text : const string &amp;)
++trans_job_response(msg : json_msg_ptr)
++~trans_job_response()
++get_job_id() : job_id_type {const}
++is_job_id_defined() : bool {const}
++is_good() : bool {const}
++get_status_code() : trans_job_code {const}
++get_status_msg() : string {const}
++get_target_text() : json::value_t::array {const}
++serialize() : string</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>100</x><y>120</y><w>290</w><h>240</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m2=1</panel_attributes><additional_attributes>10;220;10;10;270;10</additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>200</y><w>110</w><h>160</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m2=1</panel_attributes><additional_attributes>10;140;10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>700</x><y>80</y><w>120</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m2=1</panel_attributes><additional_attributes>100;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>888</x><y>650</y><w>390</w><h>300</h></coordinates><panel_attributes>trans_job
+--
+-m_session_id: const session_id_type
+-m_tasks : tasks_list_type
+-m_notify_job_done_func : done_job_notifier
+- m_done_tasks_count : atomic&lt;uint32_t&gt;
+-m_status_code : trans_job_code
+-m_status_msg : string
+-m_target_text : string
+--
++trans_job(session_id: const session_id_type,
+                  trans_req : trans_job_request &amp;)
++set_done_job_notifier(notify_job_done_func : done_job_notifier) : void
++get_session_id() : session_id_type {const}
++get_job_id() : job_id_type {const}
++get_tasks() : const tasks_list_type&amp; {const}
++get_status_code() : trans_job_code {const}
++get_status_msg() : const string &amp; {const}
++get_target_text() : const string &amp; {const}
++cancel() : void
++wait_notify_finished() : void
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>188</x><y>630</y><w>510</w><h>360</h></coordinates><panel_attributes>trans_task
+--
+-m_source_text : const string
+-m_status_code : trans_job_code
+-m_status_msg : string
+-m_target_text : string
+-m_session_id : const session_id_type
+-m_job_id : const job_id_type
+-m_task_id : const task_id_type
+-m_notify_task_done_func : done_task_notifier
+-m_notify_task_cancel_func : cancel_task_notifier
+--
++trans_task(session_id : const session_id_type,
+                    job_id : const job_id_type,
+                    source_text : const string &amp;,
+                    notify_task_done_func: done_task_notifier)
++set_cancel_task_notifier(notify_task_cancel_func : cancel_task_notifier) : void
++cancel() : void
++translate() : void
++get_status_code() : trans_job_code {const}
++get_status_msg() : const string &amp; {const}
++get_source_text() : const string &amp; {const}
++get_trans_info(trans_info &amp; info) : void {const}
++get_target_text() : const string &amp;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>688</x><y>770</y><w>220</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m2=1..n</panel_attributes><additional_attributes>200;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1078</x><y>559</y><w>50</w><h>110</h></coordinates><panel_attributes>lt=&lt;-&gt;&gt;&gt;&gt;&gt;
+m1=0..1</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>800</x><y>14</y><w>210</w><h>170</h></coordinates><panel_attributes>json_msg_resp
+--
+-m_msg : json_msg_ptr
+--
++json_msg_resp()
++json_msg_resp(msg : json_msg_ptr )
+...</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>840</x><y>170</y><w>30</w><h>190</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element><element><id>Relation</id><coordinates><x>960</x><y>170</y><w>30</w><h>190</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element></diagram>

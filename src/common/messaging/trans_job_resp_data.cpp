@@ -31,8 +31,10 @@ namespace uva {
             namespace common {
                 namespace messaging {
 
-                    const string trans_job_resp_data::JOB_ID_FIELD_NAME = "";
-                    const string trans_job_resp_data::TARGET_DATA_FIELD_NAME = "";
+                    const string trans_job_resp_data::JOB_ID_FIELD_NAME = "job_id";
+                    const string trans_job_resp_data::TARGET_DATA_FIELD_NAME = "target_data";
+                    const string trans_job_resp_data::TRANS_TEXT_FIELD_NAME = "trans_text";
+                    const string trans_job_resp_data::STACK_LOAD_FIELD_NAME = "stack_load";
 
                 }
             }
