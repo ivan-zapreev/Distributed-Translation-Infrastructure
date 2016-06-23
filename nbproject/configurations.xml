@@ -21,6 +21,38 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="client">
+        <df name="messaging">
+          <in>supp_lang_req_out.hpp</in>
+          <in>supp_lang_resp_in.hpp</in>
+          <in>trans_job_req_out.hpp</in>
+          <in>trans_job_resp_in.hpp</in>
+          <in>trans_sent_data_in.hpp</in>
+        </df>
+      </df>
+      <df name="common">
+        <df name="messaging">
+          <in>incoming_msg.hpp</in>
+          <in>msg_base.hpp</in>
+          <in>outgoing_msg.hpp</in>
+          <in>request_msg.hpp</in>
+          <in>response_msg.hpp</in>
+          <in>supp_lang_req.hpp</in>
+          <in>supp_lang_resp.hpp</in>
+          <in>trans_job_req.hpp</in>
+          <in>trans_job_resp.hpp</in>
+          <in>trans_sent_data.hpp</in>
+        </df>
+      </df>
+      <df name="server">
+        <df name="messaging">
+          <in>supp_lang_req_in.hpp</in>
+          <in>supp_lang_resp_out.hpp</in>
+          <in>trans_job_req_in.hpp</in>
+          <in>trans_job_resp_out.hpp</in>
+          <in>trans_sent_data_out.hpp</in>
+        </df>
+      </df>
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -32,12 +64,16 @@
     </logicalFolder>
     <df root="src" name="2">
       <df name="client">
+        <df name="messaging">
+          <in>messaging.cpp</in>
+        </df>
         <in>bpbd_client.cpp</in>
         <in>trans_job_status.cpp</in>
       </df>
       <df name="common">
         <df name="messaging">
           <in>json_msg.cpp</in>
+          <in>messaging.cpp</in>
           <in>supp_lang_response.cpp</in>
           <in>trans_job_code.cpp</in>
           <in>trans_job_request.cpp</in>
@@ -80,6 +116,9 @@
           <in>lm_configurator.cpp</in>
           <in>lm_parameters.cpp</in>
           <in>lm_query.cpp</in>
+        </df>
+        <df name="messaging">
+          <in>messaging.cpp</in>
         </df>
         <df name="rm">
           <df name="models">
@@ -212,9 +251,108 @@
           </incDir>
         </ccTool>
       </folder>
+      <item path="inc/client/messaging/supp_lang_req_out.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/client/messaging/supp_lang_resp_in.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/client/messaging/trans_job_req_out.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/client/messaging/trans_job_resp_in.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/client/messaging/trans_sent_data_in.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/incoming_msg.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/msg_base.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/common/messaging/outgoing_msg.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/request_msg.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/response_msg.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/supp_lang_req.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/supp_lang_resp.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/trans_job_req.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/trans_job_resp.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/common/messaging/trans_sent_data.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/messaging/supp_lang_req_in.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/messaging/supp_lang_resp_out.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/messaging/trans_job_req_in.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/messaging/trans_job_resp_out.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/server/messaging/trans_sent_data_out.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/client/messaging/messaging.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
@@ -223,6 +361,8 @@
       <item path="src/common/messaging/json_msg.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/common/messaging/messaging.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/common/messaging/supp_lang_response.cpp"
             ex="false"
@@ -386,6 +526,8 @@
             flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/server/messaging/messaging.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/server/rm/models/rm_entry.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">

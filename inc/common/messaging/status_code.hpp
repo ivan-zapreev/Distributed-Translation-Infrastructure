@@ -23,8 +23,8 @@
  * Created on January 21, 2016, 3:07 PM
  */
 
-#ifndef JOB_RESULT_CODE_HPP
-#define JOB_RESULT_CODE_HPP
+#ifndef STATUS_CODE_HPP
+#define STATUS_CODE_HPP
 
 #include <string>
 #include <iostream>
@@ -46,7 +46,7 @@ namespace uva {
                      * This class represents the translation job result code. This class is used on client and server side.
                      * It represents the server-side status of a translation job and a translation taks.
                      */
-                    class trans_job_code {
+                    class status_code {
                     public:
 
                         /**
@@ -67,14 +67,14 @@ namespace uva {
                          * The basic constructor that allows to initialize the value with the code
                          * @param code the code value to initialize with
                          */
-                        trans_job_code(const values code) : m_code(code) {
+                        status_code(const values code) : m_code(code) {
                         }
 
                         /**
                          * The basic constructor that allows to initialize the value from an integer
                          * @param code_val the code value to initialize with
                          */
-                        trans_job_code(const int32_t code_val) {
+                        status_code(const int32_t code_val) {
                             //Check that the conversion is possible
                             ASSERT_SANITY_THROW((code_val < values::RESULT_UNDEFINED || code_val >= values::size),
                                     string("Improper code value: ") + to_string(code_val));
@@ -86,7 +86,7 @@ namespace uva {
                         /**
                          * The basic constructor that creates an undefined value
                          */
-                        trans_job_code() : trans_job_code(RESULT_UNDEFINED) {
+                        status_code() : status_code(RESULT_UNDEFINED) {
                         }
 
                         /**
@@ -157,7 +157,7 @@ namespace uva {
                      * @param code the code to be output
                      * @return the output stream
                      */
-                    ostream& operator<<(ostream& os, const trans_job_code& code);
+                    ostream& operator<<(ostream& os, const status_code& code);
                 }
             }
         }

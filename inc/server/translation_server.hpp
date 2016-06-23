@@ -41,7 +41,7 @@
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/supp_lang_request.hpp"
 #include "common/messaging/supp_lang_response.hpp"
-#include "common/messaging/trans_job_code.hpp"
+#include "common/messaging/status_code.hpp"
 
 #include "trans_manager.hpp"
 #include "server_parameters.hpp"
@@ -297,7 +297,7 @@ namespace uva {
                             LOG_ERROR << "job " << job_id_val << ": " << error_msg << END_LOG;
 
                             //Create the reply message, with or without job id
-                            trans_job_response response(job_id_val, trans_job_code::RESULT_ERROR, error_msg);
+                            trans_job_response response(job_id_val, status_code::RESULT_ERROR, error_msg);
 
                             //Send the response
                             send_response(hdl, response.serialize());

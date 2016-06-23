@@ -175,7 +175,7 @@ Responsibilities
                     msg : const string &amp;) : void
 --
 Responsibilities
--- The outgoing translation job response</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>240</x><y>890</y><w>480</w><h>150</h></coordinates><panel_attributes>outgoing_msg
+-- The outgoing translation job response</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>200</x><y>890</y><w>520</w><h>150</h></coordinates><panel_attributes>outgoing_msg
 --
 --
 +outgoing_msg(type : msg_type)
@@ -185,7 +185,7 @@ Responsibilities
 _+set_value(data : json::object_t &amp;, field_name : const string &amp;, value : const vlaue_type &amp;) : void_
 --
 Responsibilities
--- Is a base class for all outgoing messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>750</x><y>860</y><w>440</w><h>180</h></coordinates><panel_attributes>incoming_msg
+-- Is a base class for all outgoing messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>750</x><y>860</y><w>450</w><h>180</h></coordinates><panel_attributes>incoming_msg
 --
 --
 +client_msg()
@@ -204,8 +204,8 @@ Responsibilities
 &lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;360;10;290;630;290;630;450;1050;450;1050;10</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>660</y><w>670</w><h>220</h></coordinates><panel_attributes>lt=&lt;-
 m1=1</panel_attributes><additional_attributes>640;200;640;120;10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>690</y><w>290</w><h>190</h></coordinates><panel_attributes>lt=&lt;-
 m1=1</panel_attributes><additional_attributes>260;170;260;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1120</x><y>670</y><w>40</w><h>210</h></coordinates><panel_attributes>lt=&lt;-
-m1=1</panel_attributes><additional_attributes>10;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1180</x><y>930</y><w>290</w><h>130</h></coordinates><panel_attributes>lt=&lt;-
-m1=1</panel_attributes><additional_attributes>10;100;270;100;270;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1740</x><y>542</y><w>370</w><h>200</h></coordinates><panel_attributes>trans_sent_data
+m1=1</panel_attributes><additional_attributes>10;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1190</x><y>930</y><w>280</w><h>130</h></coordinates><panel_attributes>lt=&lt;-
+m1=1</panel_attributes><additional_attributes>10;100;260;100;260;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1740</x><y>542</y><w>370</w><h>170</h></coordinates><panel_attributes>trans_sent_data
 --
 +TRANS_TEXT_FIELD_NAME : string = "trans_text"
 +STACK_LOAD_FIELD_NAME : string = "stack_load"
@@ -214,14 +214,12 @@ m1=1</panel_attributes><additional_attributes>10;100;270;100;270;10</additional_
 +trans_sent_data(data_obj : json::object_t &amp;)
 /+~trans_sent_data() {virtual}/
 +set_sent_data(json::object_t &amp;) : void
-+get_trans_text() : json::string_t &amp; {const}
-+get_stack_load() : json:array_t &amp; {const}
 --
 Responsibilities
--- Stores the translation data for a sentence</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1660</x><y>402</y><w>580</w><h>470</h></coordinates><panel_attributes>lt=&lt;.
-&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>520;450;520;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1440</x><y>60</y><w>480</w><h>500</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;20;460;20;460;480</additional_attributes></element><element><id>Relation</id><coordinates><x>1540</x><y>930</y><w>190</w><h>120</h></coordinates><panel_attributes>lt=&lt;.
-&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>170;80;170;100;10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1670</x><y>854</y><w>290</w><h>150</h></coordinates><panel_attributes>trans_sent_data_in
+-- Stores the translation data for a sentence</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1660</x><y>402</y><w>580</w><h>420</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>520;400;520;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1440</x><y>60</y><w>480</w><h>500</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;20;460;20;460;480</additional_attributes></element><element><id>Relation</id><coordinates><x>1540</x><y>930</y><w>190</w><h>140</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>170;80;170;120;10;120;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1650</x><y>804</y><w>290</w><h>200</h></coordinates><panel_attributes>trans_sent_data_in
 --
 --
 +trans_sent_data_in(data_obj : json::object_t &amp;)
@@ -229,9 +227,11 @@ Responsibilities
 +has_stack_load() : bool {const}
 +get_status_code() : trans_job_code
 +get_status_msg() : const json::string_t &amp;
++get_trans_text() : const json::string_t &amp;
++get_stack_load() : const json::array_t &amp;
 --
 Responsibilities
--- Represents the translated sentence data</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1980</x><y>854</y><w>280</w><h>170</h></coordinates><panel_attributes>trans_sent_data_out
+-- Represents the translated sentence data</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1980</x><y>804</y><w>280</w><h>200</h></coordinates><panel_attributes>trans_sent_data_out
 --
 -m_is_trans_info : bool
 --
@@ -240,10 +240,12 @@ Responsibilities
 /+~trans_sent_data_in() {virtual}/
 +is_trans_info() : bool {const}
 +set_status( code : trans_job_code, msg : string ) : void
++set_trans_text(const json::string_t &amp;) : void
++set_stack_load(const json::array_t &amp;) : void
 --
 Responsibilities
--- Represents the translated sentence data</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1790</x><y>734</y><w>70</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>2050</x><y>734</y><w>70</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>1000</y><w>1200</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
-&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>10;40;10;90;1180;90;1180;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1080</x><y>1020</y><w>1130</w><h>140</h></coordinates><panel_attributes>lt=&lt;.
-&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>10;20;10;120;1110;120;1110;10</additional_attributes></element></diagram>
+-- Represents the translated sentence data</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1790</x><y>704</y><w>70</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>2050</x><y>704</y><w>70</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>990</x><y>1000</y><w>840</w><h>90</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>10;40;10;70;820;70;820;10</additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>1000</y><w>1760</w><h>160</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>10;40;10;140;1740;140;1740;10</additional_attributes></element></diagram>

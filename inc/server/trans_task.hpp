@@ -36,7 +36,7 @@
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
-#include "common/messaging/trans_job_code.hpp"
+#include "common/messaging/status_code.hpp"
 
 #include "server/decoder/de_configurator.hpp"
 #include "server/decoder/sentence/sentence_decoder.hpp"
@@ -79,7 +79,7 @@ namespace uva {
                     trans_task(const session_id_type session_id, const job_id_type job_id,
                             const string & source_text, done_task_notifier notify_task_done_func)
                     : m_is_stop(false), m_session_id(session_id), m_job_id(job_id),
-                    m_task_id(m_id_mgr.get_next_id()), m_status_code(trans_job_code::RESULT_UNDEFINED),
+                    m_task_id(m_id_mgr.get_next_id()), m_status_code(status_code::RESULT_UNDEFINED),
                     m_status_msg(""), m_source_text(source_text),
                     m_notify_task_done_func(notify_task_done_func), m_target_text(""),
                     m_decoder(de_configurator::get_params(), m_is_stop, m_source_text, m_target_text) {
@@ -138,7 +138,7 @@ namespace uva {
                             m_decoder.translate();
                         } catch (exception & ex) {
                             //Set the response code
-                            m_status_code = trans_job_code::RESULT_ERROR;
+                            m_status_code = status_code::RESULT_ERROR;
                             //Set the error message for the client
                             m_status_msg = ex.what();
                             //Do local logging
@@ -181,7 +181,7 @@ namespace uva {
                      * Allows to retrieve the translation task result code
                      * @return the translation task result code
                      */
-                    inline trans_job_code get_status_code() const {
+                    inline status_code get_status_code() const {
                         return m_status_code;
                     }
 
@@ -293,24 +293,24 @@ namespace uva {
                      */
                     void process_task_result() {
                         //Set the task is not canceled then set the result, otherwise set the canceled code.
-                        if (m_status_code == trans_job_code::RESULT_ERROR) {
+                        if (m_status_code == status_code::RESULT_ERROR) {
                             //If there was an error during translation send back the original text
                             m_target_text = m_source_text;
                         } else {
                             //Unless it was an error while translating there should be an undefined status
-                            ASSERT_SANITY_THROW((m_status_code != trans_job_code::RESULT_UNDEFINED),
+                            ASSERT_SANITY_THROW((m_status_code != status_code::RESULT_UNDEFINED),
                                     string("Unexpected translation code: ") + to_string(m_status_code) +
                                     string(" must be UNDEFINED!"));
 
                             //Check if we were interrupted or not
                             if (m_is_stop) {
                                 //If the translation has been canceled just send back the source
-                                m_status_code = trans_job_code::RESULT_CANCELED;
+                                m_status_code = status_code::RESULT_CANCELED;
                                 m_status_msg = "Canceled!";
                                 m_target_text = m_source_text;
                             } else {
                                 //If the translation has been finished send back the target
-                                m_status_code = trans_job_code::RESULT_OK;
+                                m_status_code = status_code::RESULT_OK;
                                 m_status_msg = "OK";
                                 m_target_text = m_target_text;
                             }
@@ -331,7 +331,7 @@ namespace uva {
                     const task_id_type m_task_id;
 
                     //Stores the translation task result code
-                    trans_job_code m_status_code;
+                    status_code m_status_code;
 
                     //Stores the error text for the not ok code
                     string m_status_msg;

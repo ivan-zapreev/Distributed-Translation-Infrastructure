@@ -39,7 +39,7 @@
 #include "trans_job.hpp"
 #include "trans_job_status.hpp"
 
-#include "common/messaging/trans_job_code.hpp"
+#include "common/messaging/status_code.hpp"
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
@@ -220,15 +220,15 @@ namespace uva {
                     void write_received_job_result(const uint32_t fis, const uint32_t lis,
                             const trans_job_ptr job, ofstream & target_file) {
                         //The job response is received but it can still be fully or partially canceled or be an error
-                        const trans_job_code code = job->m_response->get_status_code();
+                        const status_code code = job->m_response->get_status_code();
                         switch (code) {
-                            case trans_job_code::RESULT_OK:
-                            case trans_job_code::RESULT_PARTIAL:
+                            case status_code::RESULT_OK:
+                            case status_code::RESULT_PARTIAL:
                                 //If the result is ok or partial then just put the text into the file
                                 target_file << job->m_response->get_target_text();
                                 break;
-                            case trans_job_code::RESULT_ERROR:
-                            case trans_job_code::RESULT_CANCELED:
+                            case status_code::RESULT_ERROR:
+                            case status_code::RESULT_CANCELED:
                             default:
                                 //Report a warning
                                 LOG_WARNING << "Sentences from " << fis << " to " << lis << " are not "

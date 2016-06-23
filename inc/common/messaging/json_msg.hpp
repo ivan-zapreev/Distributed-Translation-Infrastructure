@@ -38,7 +38,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "common/messaging/trans_job_code.hpp"
+#include "common/messaging/status_code.hpp"
 
 using namespace std;
 
@@ -113,7 +113,7 @@ namespace uva {
                          * @param status_code the status code
                          * @param status_msg the status message
                          */
-                        inline void set_status(const trans_job_code status_code,
+                        inline void set_status(const status_code status_code,
                                 const string & status_msg) {
                             m_json_obj[STAT_CODE_FIELD_NAME] = status_code.val();
                             m_json_obj[STAT_MSG_FIELD_NAME] = status_msg;
@@ -123,9 +123,9 @@ namespace uva {
                          * Allows to get the translation job result code
                          * @return the translation job result code
                          */
-                        inline trans_job_code get_status_code() const {
+                        inline status_code get_status_code() const {
                             //This code here is a fast and brute force to convert the translation job code from an integer into the class
-                            return trans_job_code(static_cast<trans_job_code::values> (get_value<int32_t>(STAT_CODE_FIELD_NAME)));
+                            return status_code(static_cast<status_code::values> (get_value<int32_t>(STAT_CODE_FIELD_NAME)));
                         }
 
                         /**

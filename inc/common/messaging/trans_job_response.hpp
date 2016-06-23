@@ -35,7 +35,7 @@
 
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
-#include "common/messaging/trans_job_code.hpp"
+#include "common/messaging/status_code.hpp"
 #include "common/messaging/trans_job_resp_data.hpp"
 
 using namespace std;
@@ -79,7 +79,7 @@ namespace uva {
                          * @param status_msg the translation job status message
                          */
                         trans_job_response(const job_id_type job_id,
-                                const trans_job_code status_code,
+                                const status_code status_code,
                                 const string & status_msg)
                         : trans_job_resp_data(job_id, status_code, status_msg) {
                         }
@@ -107,7 +107,7 @@ namespace uva {
                          * Allows to retrieve the value of the status code
                          * @return the status code
                          */
-                        inline trans_job_code get_status_code() {
+                        inline status_code get_status_code() {
                             return m_msg.get_status_code();
                         }
 

@@ -34,7 +34,7 @@
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_id.hpp"
-#include "common/messaging/trans_job_code.hpp"
+#include "common/messaging/status_code.hpp"
 
 using namespace std;
 using namespace std::placeholders;
@@ -76,7 +76,7 @@ namespace uva {
                     trans_job(const session_id_type session_id, const trans_job_request & trans_req)
                     : m_session_id(session_id), m_job_id(trans_req.get_job_id()),
                     m_is_trans_info(trans_req.is_trans_info()), m_done_tasks_count(0),
-                    m_status_code(trans_job_code::RESULT_UNDEFINED),
+                    m_status_code(status_code::RESULT_UNDEFINED),
                     m_status_msg(""), m_target_text("") {
                         LOG_DEBUG << "Creating a new translation job " << this << " with job_id: "
                                 << m_job_id << " session id: " << m_session_id << END_LOG;
@@ -145,7 +145,7 @@ namespace uva {
                      * Allows to retrieve the translation task result code
                      * @return the translation task result code
                      */
-                    inline trans_job_code get_status_code() const {
+                    inline status_code get_status_code() const {
                         return m_status_code;
                     }
 
@@ -265,14 +265,14 @@ namespace uva {
                             trans_task_ptr task = *it;
 
                             //Get the translation job result
-                            const trans_job_code status = task->get_status_code();
+                            const status_code status = task->get_status_code();
 
                             //Count the number of CANCELLED/ERROR tasks
                             switch (status) {
-                                case trans_job_code::RESULT_ERROR:
+                                case status_code::RESULT_ERROR:
                                     num_error++;
                                     break;
-                                case trans_job_code::RESULT_CANCELED:
+                                case status_code::RESULT_CANCELED:
                                     num_canceled++;
                                     break;
                                 default:
@@ -283,7 +283,7 @@ namespace uva {
                             m_target_text += task->get_target_text() + "\n";
 
                             //Append the task translation info if needed and the translation was finished
-                            if (m_is_trans_info && (status == trans_job_code::RESULT_OK)) {
+                            if (m_is_trans_info && (status == status_code::RESULT_OK)) {
                                 //Get the translation task info
                                 task->get_trans_info(info);
                                 m_target_text += info.serialize() + "\n";
@@ -300,16 +300,16 @@ namespace uva {
                         //Decide on the result code
                         if ((num_canceled == 0) && (num_error == 0)) {
                             //If there is no canceled jobs then the result is good
-                            m_status_code = trans_job_code::RESULT_OK;
+                            m_status_code = status_code::RESULT_OK;
                             m_status_msg = "The text was fully translated!";
                         } else {
                             if (num_canceled == m_done_tasks_count) {
                                 //All of the tasks have been canceled
-                                m_status_code = trans_job_code::RESULT_CANCELED;
+                                m_status_code = status_code::RESULT_CANCELED;
                                 m_status_msg = "The translation job has been canceled!";
                             } else {
                                 //Some of the sentences were translated but not all of them
-                                m_status_code = trans_job_code::RESULT_PARTIAL;
+                                m_status_code = status_code::RESULT_PARTIAL;
                                 m_status_msg = "The text was partially translated!";
                             }
                         }
@@ -340,7 +340,7 @@ namespace uva {
                     tasks_list_type m_tasks;
 
                     //Stores the translation job result code
-                    trans_job_code m_status_code;
+                    status_code m_status_code;
 
                     //Stores the translation job error message
                     string m_status_msg;

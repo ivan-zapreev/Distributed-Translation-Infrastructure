@@ -566,6 +566,13 @@
     </df>
     <df root="inc" name="1">
       <df name="client">
+        <df name="messaging">
+          <in>supp_lang_req_out.hpp</in>
+          <in>supp_lang_resp_in.hpp</in>
+          <in>trans_job_req_out.hpp</in>
+          <in>trans_job_resp_in.hpp</in>
+          <in>trans_sent_data_in.hpp</in>
+        </df>
         <in>client_config.hpp</in>
         <in>trans_job.hpp</in>
         <in>trans_job_status.hpp</in>
@@ -575,14 +582,24 @@
       <df name="common">
         <df name="messaging">
           <in>id_manager.hpp</in>
+          <in>incoming_msg.hpp</in>
           <in>json_msg.hpp</in>
+          <in>msg_base.hpp</in>
+          <in>outgoing_msg.hpp</in>
+          <in>request_msg.hpp</in>
+          <in>response_msg.hpp</in>
+          <in>status_code.hpp</in>
+          <in>supp_lang_req.hpp</in>
           <in>supp_lang_request.hpp</in>
+          <in>supp_lang_resp.hpp</in>
           <in>supp_lang_response.hpp</in>
-          <in>trans_job_code.hpp</in>
           <in>trans_job_id.hpp</in>
+          <in>trans_job_req.hpp</in>
           <in>trans_job_request.hpp</in>
+          <in>trans_job_resp.hpp</in>
           <in>trans_job_resp_data.hpp</in>
           <in>trans_job_response.hpp</in>
+          <in>trans_sent_data.hpp</in>
           <in>trans_session_id.hpp</in>
         </df>
         <df name="utils">
@@ -688,6 +705,13 @@
           <in>lm_executor.hpp</in>
           <in>lm_parameters.hpp</in>
         </df>
+        <df name="messaging">
+          <in>supp_lang_req_in.hpp</in>
+          <in>supp_lang_resp_out.hpp</in>
+          <in>trans_job_req_in.hpp</in>
+          <in>trans_job_resp_out.hpp</in>
+          <in>trans_sent_data_out.hpp</in>
+        </df>
         <df name="rm">
           <df name="builders">
             <in>rm_basic_builder.hpp</in>
@@ -749,12 +773,16 @@
     </df>
     <df root="src" name="2">
       <df name="client">
+        <df name="messaging">
+          <in>messaging.cpp</in>
+        </df>
         <in>bpbd_client.cpp</in>
         <in>trans_job_status.cpp</in>
       </df>
       <df name="common">
         <df name="messaging">
           <in>json_msg.cpp</in>
+          <in>messaging.cpp</in>
           <in>supp_lang_response.cpp</in>
           <in>trans_job_code.cpp</in>
           <in>trans_job_request.cpp</in>
@@ -797,6 +825,9 @@
           <in>lm_configurator.cpp</in>
           <in>lm_parameters.cpp</in>
           <in>lm_query.cpp</in>
+        </df>
+        <df name="messaging">
+          <in>messaging.cpp</in>
         </df>
         <df name="rm">
           <df name="models">

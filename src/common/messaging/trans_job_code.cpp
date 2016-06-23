@@ -23,7 +23,7 @@
  * Created on January 27, 2016, 10:42 AM
  */
 
-#include "common/messaging/trans_job_code.hpp"
+#include "common/messaging/status_code.hpp"
 
 namespace uva {
     namespace smt {
@@ -40,7 +40,7 @@ namespace uva {
 #define RESULT_PARTIAL_STR "partial"
 
                     //Stores the status to string mappings
-                    const char * const trans_job_code::m_code_str[values::size] = {
+                    const char * const status_code::m_code_str[values::size] = {
                         RESULT_UNDEFINED_STR,
                         RESULT_OK_STR,
                         RESULT_ERROR_STR,
@@ -48,7 +48,7 @@ namespace uva {
                         RESULT_PARTIAL_STR
                     };
 
-                    const char * const trans_job_code::str() const {
+                    const char * const status_code::str() const {
                         if (m_code < values::size) {
                             return m_code_str[m_code];
                         } else {
@@ -56,7 +56,7 @@ namespace uva {
                         }
                     }
 
-                    ostream& operator<<(ostream& os, const trans_job_code& code) {
+                    ostream& operator<<(ostream& os, const status_code& code) {
                         os << code.str();
                         return os;
                     }

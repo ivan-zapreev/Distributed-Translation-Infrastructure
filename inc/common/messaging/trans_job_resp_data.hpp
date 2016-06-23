@@ -32,7 +32,7 @@
 #include "common/utils/logging/logger.hpp"
 
 #include "common/messaging/json_msg.hpp"
-#include "common/messaging/trans_job_code.hpp"
+#include "common/messaging/status_code.hpp"
 #include "common/messaging/trans_job_id.hpp"
 
 using namespace std;
@@ -77,7 +77,7 @@ namespace uva {
                          * @param status_msg the translation job status message
                          */
                         trans_job_resp_data(const job_id_type job_id,
-                                const trans_job_code status_code, const string & status_msg)
+                                const status_code status_code, const string & status_msg)
                         : m_msg(msg_type::MESSAGE_TRANS_JOB_RESP) {
                             //Set the job id
                             set_job_id(job_id);
@@ -98,7 +98,7 @@ namespace uva {
                          * @param status_code the status code
                          * @param status_msg the status message
                          */
-                        inline void set_status(const trans_job_code status_code,
+                        inline void set_status(const status_code status_code,
                                 const string & status_msg) {
                             m_msg.set_status(status_code, status_msg);
                         }
