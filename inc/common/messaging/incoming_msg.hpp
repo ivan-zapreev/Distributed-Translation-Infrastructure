@@ -92,7 +92,7 @@ namespace uva {
                          * @return the value of the required type of the given field 
                          */
                         template<typename value_type>
-                        static inline const value_type get_value(const json::object_t & object, const string & field_name) {
+                        static inline const value_type & get_value(const json::object_t & object, const string & field_name) {
                             LOG_DEBUG << "Extracting JSON field: " << field_name << END_LOG;
 
                             //Retrieve the value from the JSON object
@@ -113,7 +113,7 @@ namespace uva {
                          * @return the value of the required type of the given field 
                          */
                         template<typename value_type>
-                        inline const value_type get_value(const string & field_name) const {
+                        inline const value_type & get_value(const string & field_name) const {
                             return get_value(m_json, field_name);
                         }
 

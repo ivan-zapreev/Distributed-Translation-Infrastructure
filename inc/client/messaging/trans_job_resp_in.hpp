@@ -43,6 +43,25 @@ namespace uva {
                     class trans_job_resp_in : public trans_job_resp, public incoming_msg {
                     public:
 
+                        /**
+                         * The basic constructor
+                         * @param inc_msg the pointer to the incoming message, NOT NULL
+                         */
+                        trans_job_resp_in(incoming_msg * inc_msg)
+                        : supp_lang_resp(), m_inc_msg(inc_msg) {
+                        }
+
+                        /**
+                         * The basic destructor
+                         */
+                        virtual ~trans_job_resp_in() {
+                            delete m_inc_msg;
+                        }
+
+                    private:
+                        //Stores the pointer to the incoming message storing
+                        //the response data, this pointer must not be NULL
+                        incoming_msg * m_inc_msg;
                     };
                 }
             }

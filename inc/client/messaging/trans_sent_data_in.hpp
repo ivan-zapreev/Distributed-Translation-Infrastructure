@@ -44,18 +44,23 @@ namespace uva {
                     class trans_sent_data_in : public trans_sent_data {
                     public:
 
+                        //Typedef the loads array data structure for storing the stack load percent values
+                        typedef vector<int64_t> loads_array;
+
                         /**
                          * The basic constructor. This class is just a wrapper for a
                          * JSON object, but it does not own it.
                          * @param data_obj the reference to the encapsulated JSON object
                          */
                         trans_sent_data_in(json::object_t & data_obj) : trans_sent_data(data_obj) {
+                            //Nothing to be done here
                         }
 
                         /**
                          * The basic constructor
                          */
                         virtual ~trans_sent_data_in() {
+                            //Nothing to be done here
                         }
 
                         /**
@@ -65,10 +70,29 @@ namespace uva {
                         }
 
                         /**
+                         * Allows to get the translation task result code
+                         * @return the translation task result code
+                         */
+                        inline status_code get_status_code() const {
+                            //Get the status code value
+                            int32_t code_value = incoming_msg::get_value<int32_t>(m_data_obj, STAT_CODE_FIELD_NAME);
+                            //Create the status code class instance
+                            return status_code(code_value);
+                        }
+
+                        /**
+                         * Allows to get the translation task status message
+                         * @return the translation task status message
+                         */
+                        inline const string & get_status_msg() const {
+                            return incoming_msg::get_value(m_data_obj, STAT_MSG_FIELD_NAME);
+                        }
+
+                        /**
                          * Allows to get a reference to the translated text string.
                          * @return a reference to the translated text string.
                          */
-                        json::string_t & get_trans_text() {
+                        inline const string & get_trans_text() const {
                             return incoming_msg::get_value(m_data_obj, TRANS_TEXT_FIELD_NAME);
                         }
 
@@ -76,8 +100,16 @@ namespace uva {
                          * Allows to get a reference to an array of stack load numbers
                          * @return a reference to an array of stack load numbers
                          */
-                        json::array_t & get_stack_load() {
+                        inline const loads_array & get_stack_load() const {
                             return incoming_msg::get_value(m_data_obj, STACK_LOAD_FIELD_NAME);
+                        }
+
+                        /**
+                         * Allows to check if the stack loads are present
+                         * @return true if the stack loads are present, otherwise false
+                         */
+                        inline bool has_stack_load() {
+                            return (m_data_obj.find(STACK_LOAD_FIELD_NAME) != m_data_obj.end());
                         }
                     };
 

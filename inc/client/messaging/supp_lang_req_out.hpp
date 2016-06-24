@@ -26,13 +26,40 @@
 #ifndef SUPP_LANG_REQ_OUT_HPP
 #define SUPP_LANG_REQ_OUT_HPP
 
+#include "common/messaging/outgoing_msg.hpp"
+#include "common/messaging/supp_lang_req.hpp"
 
+using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace client {
                 namespace messaging {
+
+                    /**
+                     * This class represents an outgoing request for supported
+                     * languages, created on the client side.
+                     */
+                    class supp_lang_req_out : public supp_lang_req, public outgoing_msg {
+                    public:
+
+                        /**
+                         * The basic constructor
+                         */
+                        supp_lang_req_out()
+                        : supp_lang_req(), outgoing_msg(msg_type::MESSAGE_SUPP_LANG_REQ) {
+                            //Nothing to be done here
+                        }
+
+                        /**
+                         * The basic destructor
+                         */
+                        virtual ~supp_lang_req_out() {
+                            //Nothing to be done here
+                        }
+                    private:
+                    };
 
                 }
             }
