@@ -44,9 +44,6 @@ namespace uva {
                     class trans_sent_data_in : public trans_sent_data {
                     public:
 
-                        //Typedef the loads array data structure for storing the stack load percent values
-                        typedef vector<int64_t> loads_array;
-
                         /**
                          * The basic constructor. This class is just a wrapper for a
                          * JSON object, but it does not own it.

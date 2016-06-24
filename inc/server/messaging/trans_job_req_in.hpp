@@ -26,7 +26,10 @@
 #ifndef TRANS_JOB_REQ_IN_HPP
 #define TRANS_JOB_REQ_IN_HPP
 
+#include "common/messaging/incoming_msg.hpp"
+#include "common/messaging/trans_job_req.hpp"
 
+using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
     namespace smt {
@@ -34,6 +37,73 @@ namespace uva {
             namespace server {
                 namespace messaging {
 
+                    /**
+                     * This class represents the translation job request received by the server.
+                     */
+                    class trans_job_req_in : public trans_job_req {
+
+                        /**
+                         * The basic constructor
+                         * @param inc_msg the pointer to the incoming message, NOT NULL
+                         */
+                        trans_job_req_in(const incoming_msg * inc_msg)
+                        : trans_job_req(), m_inc_msg(inc_msg) {
+                        }
+
+                        /**
+                         * The basic destructor
+                         */
+                        virtual ~trans_job_req_in() {
+                            //Destroy the incoming message, the pointer must not be NULL
+                            delete m_inc_msg;
+                        }
+
+                        /**
+                         * Allows to get the client-issued job id
+                         * @return the client-issued job id
+                         */
+                        inline const job_id_type get_job_id() const {
+                            return m_inc_msg->get_value<job_id_type>(JOB_ID_FIELD_NAME);
+                        }
+
+                        /**
+                         * Allows to get the translation job source language
+                         * @return the translation job source language
+                         */
+                        inline const string & get_source_lang() const {
+                            return m_inc_msg->get_value<string>(SOURCE_LANG_FIELD_NAME);
+                        }
+
+                        /**
+                         * Allows to get the translation job target language
+                         * @return the translation job target language
+                         */
+                        inline const string & get_target_lang() const {
+                            return m_inc_msg->get_value<string>(TARGET_LANG_FIELD_NAME);
+                        }
+
+                        /**
+                         * Allows to check whether the client has requested the translation information
+                         * @return true if the translation information is requested, otherwise false
+                         */
+                        inline const bool is_trans_info() const {
+                            return m_inc_msg->get_value<bool>(IS_TRANS_INFO_FIELD_NAME);
+                        }
+
+                        /**
+                         * Allows to get the translation job text. This is either
+                         * the text translated into the target language or the error
+                         * message for the case of failed translation job request.
+                         * @return the translation job text
+                         */
+                        inline const json::array_t & get_source_text() const {
+                            return m_inc_msg->get_value<json::array_t>(SOURCE_SENTENCES_FIELD_NAME);
+                        }
+
+                    private:
+                        //Stores the pointer to the incoming message
+                        const incoming_msg * m_inc_msg;
+                    };
                 }
             }
         }

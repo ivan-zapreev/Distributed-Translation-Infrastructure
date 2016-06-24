@@ -56,6 +56,9 @@ namespace uva {
                         //The target data field name
                         static const string STACK_LOAD_FIELD_NAME;
 
+                        //Typedef the loads array data structure for storing the stack load percent values
+                        typedef vector<int64_t> loads_array;
+
                         /**
                          * The basic constructor. This class is just a wrapper for a
                          * JSON object, but it does not own it.

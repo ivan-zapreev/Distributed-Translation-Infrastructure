@@ -26,7 +26,10 @@
 #ifndef SUPP_LANG_RESP_OUT_HPP
 #define SUPP_LANG_RESP_OUT_HPP
 
+#include "common/messaging/outgoing_msg.hpp"
+#include "common/messaging/supp_lang_resp.hpp"
 
+using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
     namespace smt {
@@ -34,6 +37,33 @@ namespace uva {
             namespace server {
                 namespace messaging {
 
+                    class supp_lang_resp_out : public supp_lang_resp, public outgoing_msg {
+                    public:
+
+                        /**
+                         * The basic class constructor
+                         */
+                        supp_lang_resp_out()
+                        : supp_lang_resp(), outgoing_msg(msg_type::MESSAGE_SUPP_LANG_RESP) {
+                            //Nothing to be done here
+                        }
+
+                        /**
+                         * The basic class destructor
+                         */
+                        virtual ~supp_lang_resp_out() {
+                            //Nothing to be done here
+                        }
+
+                        /**
+                         * Allows to add a pair of supported source-target languages
+                         * @param source the source language that can be translated into the target language
+                         * @param target the target language that can be translated in to the source language
+                         */
+                        inline void add_supp_lang(const string& source, const string& target) {
+                            get_json()[LANGUAGES_FIELD_NAME][source].push_back(target);
+                        }
+                    };
                 }
             }
         }

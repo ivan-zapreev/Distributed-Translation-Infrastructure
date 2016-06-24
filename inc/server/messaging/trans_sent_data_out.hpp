@@ -26,13 +26,61 @@
 #ifndef TRANS_SENT_DATA_OUT_HPP
 #define TRANS_SENT_DATA_OUT_HPP
 
+#include "common/messaging/trans_sent_data.hpp"
+#include "common/messaging/outgoing_msg.hpp"
 
+#include "server/messaging/trans_sent_data_out.hpp"
+
+using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace server {
                 namespace messaging {
+
+                    /**
+                     * This class represents the translated sentence data object to be sent out to the client.
+                     */
+                    class trans_sent_data_out : public trans_sent_data {
+                    public:
+
+                        /**
+                         * The basic constructor. This class is just a wrapper for a
+                         * JSON object, but it does not own it.
+                         * @param data_obj the reference to the encapsulated JSON object
+                         */
+                        trans_sent_data_out(json::object_t & data_obj) : trans_sent_data(data_obj) {
+                            m_data_obj[TRANS_TEXT_FIELD_NAME] = "";
+                            m_data_obj[STACK_LOAD_FIELD_NAME] = {};
+                        }
+
+                        /**
+                         * Allows to set the message status: code and message
+                         * @param code the status code
+                         * @param msg the status message
+                         */
+                        inline void set_status(const status_code & code, const string & msg) {
+                            m_data_obj[STAT_CODE_FIELD_NAME] = code;
+                            m_data_obj[STAT_MSG_FIELD_NAME] = msg;
+                        }
+
+                        /**
+                         * Allows to get the reference to the translation text, to be filled in.
+                         * @return the reference to the translation text string
+                         */
+                        inline const string & get_trans_text() {
+                            return m_data_obj[TRANS_TEXT_FIELD_NAME];
+                        }
+
+                        /**
+                         * Allows to get the reference to the stack loads array
+                         * @return the reference to the stack loads array
+                         */
+                        inline const loads_array & get_stack_load() {
+                            return m_data_obj[STACK_LOAD_FIELD_NAME];
+                        }
+                    };
 
                 }
             }

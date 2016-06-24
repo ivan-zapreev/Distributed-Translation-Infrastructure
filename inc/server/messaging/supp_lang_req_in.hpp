@@ -26,13 +26,43 @@
 #ifndef SUPP_LANG_REQ_IN_HPP
 #define SUPP_LANG_REQ_IN_HPP
 
+#include "common/messaging/incoming_msg.hpp"
+#include "common/messaging/supp_lang_req.hpp"
 
+using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace server {
                 namespace messaging {
+
+                    /**
+                     * This class represents the supported languages request received by the server.
+                     */
+                    class supp_lang_req_in : public supp_lang_req {
+                    public:
+
+                        /**
+                         * The basic constructor
+                         * @param inc_msg the pointer to the incoming message, NOT NULL
+                         */
+                        supp_lang_req_in(const incoming_msg * inc_msg)
+                        : supp_lang_req(), m_inc_msg(inc_msg) {
+                        }
+
+                        /**
+                         * The basic destructor
+                         */
+                        virtual ~supp_lang_req_in() {
+                            //Destroy the incoming message, the pointer must not be NULL
+                            delete m_inc_msg;
+                        }
+
+                    private:
+                        //Stores the pointer to the incoming message
+                        const incoming_msg * m_inc_msg;
+                    };
 
                 }
             }
