@@ -82,6 +82,20 @@ namespace uva {
                             //with all sorts of checks but this shall do it for now.
                             return static_cast<msg_type> (get_value<int32_t>(MSG_TYPE_FIELD_NAME));
                         }
+                        
+                        /**
+                         * Allows to check if the json object contains the field with the given name
+                         * @param object the object to be checked
+                         * @param field_name the field name to be checked
+                         * @return true if the field is contained, otherwise false
+                         */
+                        static inline bool has_value(const json::object_t & object, const string & field_name) {
+                            //Retrieve the value from the JSON object
+                            auto entry = object.find(field_name);
+
+                            //Return the result, true if the field was found
+                            return (entry != object.end());
+                        }
 
                         /**
                          * Allows to get the data from the JSON object and
@@ -104,7 +118,16 @@ namespace uva {
 
                             return *entry;
                         }
-
+                        
+                        /**
+                         * Allows to check if the json object contains the field with the given name
+                         * @param field_name the field name to be checked
+                         * @return true if the field is contained, otherwise false
+                         */
+                        inline bool has_value(const string & field_name) {
+                            return has_value(m_json, field_name);
+                        }
+                        
                         /**
                          * Allows to get the data from the JSON object and
                          * cast it to the desired result type.

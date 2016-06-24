@@ -28,6 +28,9 @@
 
 #include "common/messaging/trans_job_resp.hpp"
 #include "common/messaging/incoming_msg.hpp"
+#include "common/messaging/trans_job_id.hpp"
+
+#include "client/messaging/trans_sent_data_in.hpp"
 
 using namespace uva::smt::bpbd::common::messaging;
 
@@ -48,20 +51,97 @@ namespace uva {
                          * @param inc_msg the pointer to the incoming message, NOT NULL
                          */
                         trans_job_resp_in(incoming_msg * inc_msg)
-                        : supp_lang_resp(), m_inc_msg(inc_msg) {
+                        : supp_lang_resp(), m_inc_msg(inc_msg), m_data(NULL), m_iter(), m_sent_data(NULL) {
+                            //Nothing to be done here
                         }
 
                         /**
                          * The basic destructor
                          */
                         virtual ~trans_job_resp_in() {
+                            //Delete the incoming message, it must always be present
                             delete m_inc_msg;
+                            //Delete the sentence data if present
+                            if (m_sent_data != NULL) {
+                                delete m_sent_data;
+                            }
+                        }
+
+                        /**
+                         * Allows to iterate through the sentence data objects.
+                         * This is meant to be done one time only
+                         * @return a pointer to the sentence data object or NULL if we reached the end of the list
+                         */
+                        inline trans_sent_data_in * next_send_data() {
+                            if (m_data == NULL) {
+                                //If the data was not yet retrieved, do it
+                                m_data = &m_inc_msg->get_value(TARGET_DATA_FIELD_NAME);
+                                //Check if the vector size is above zero
+                                if (!m_data.empty()) {
+                                    //Initialize the iterator with the first value
+                                    m_iter = m_data.cbegin();
+                                    //Create the sentence data wrapper
+                                    m_sent_data = new m_sent_data(*m_iter);
+                                    //Move to the next element
+                                    ++m_iter;
+                                }
+                            } else {
+                                //The data has been retrieved, so this is not the first iteration
+                                if (m_iter == m_data.end()) {
+                                    //If we have no more elements or thre is not elements left
+                                    if (m_sent_data != NULL) {
+                                        //Delete the sentence data object if it is (still) present
+                                        delete m_sent_data;
+                                        m_sent_data = NULL;
+                                    }
+                                } else {
+                                    //If there is more elements, set them into the sentence data
+                                    m_sent_data->set_sent_data(*m_iter);
+                                    //Move to the next element
+                                    ++m_iter;
+                                }
+                            }
+
+                            return m_sent_data;
+                        }
+
+                        /**
+                         * Allows to get the job id
+                         * @return the job id
+                         */
+                        inline job_id_type get_job_id() {
+                            return m_inc_msg->get_value<job_id_type>(JOB_ID_FIELD_NAME);
+                        }
+
+                        /**
+                         * Allows to get the translation task result code
+                         * @return the translation task result code
+                         */
+                        inline status_code get_status_code() const {
+                            //Get the status code value
+                            int32_t code_value = m_inc_msg->get_value<int32_t>(STAT_CODE_FIELD_NAME);
+                            //Create the status code class instance
+                            return status_code(code_value);
+                        }
+
+                        /**
+                         * Allows to get the translation task status message
+                         * @return the translation task status message
+                         */
+                        inline const string & get_status_msg() const {
+                            return m_inc_msg->get_value(STAT_MSG_FIELD_NAME);
                         }
 
                     private:
                         //Stores the pointer to the incoming message storing
                         //the response data, this pointer must not be NULL
                         incoming_msg * m_inc_msg;
+                        //Stores the pointer to the translation data
+                        json::array_t * m_data;
+                        //Stores the iterator
+                        json::array_t::const_iterator m_iter;
+                        //Stores the pointer to the sentence data
+                        trans_sent_data_in * m_sent_data;
                     };
                 }
             }
