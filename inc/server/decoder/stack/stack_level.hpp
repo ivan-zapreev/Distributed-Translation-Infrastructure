@@ -20,6 +20,8 @@
 
 #include "server/decoder/stack/stack_state.hpp"
 
+#include "server/messaging/trans_sent_data_out.hpp"
+
 using namespace std;
 
 using namespace uva::utils::threads;
@@ -27,6 +29,7 @@ using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 
 using namespace uva::smt::bpbd::server::decoder;
+using namespace uva::smt::bpbd::server::messaging;
 
 namespace uva {
     namespace smt {
@@ -140,11 +143,11 @@ namespace uva {
 
                             /**
                              * Allows to fill in the translation info with the stack information
-                             * @param info the translation info to fill in
+                             * @param sent_data [in/out] the container object for the translation task info
                              */
-                            void get_trans_info(trans_info & info) const {
+                            void get_trans_info(trans_sent_data_out & sent_data) const {
                                 //Add the stack level usage percent
-                                info.push_stack_usage((m_size * 100.0f) / m_params.m_stack_capacity);
+                                sent_data.add_stack_load((m_size * 100.0f) / m_params.m_stack_capacity);
                             }
 
                             /**

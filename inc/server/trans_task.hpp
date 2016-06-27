@@ -29,7 +29,7 @@
 #include <stdint.h>
 
 #include "trans_task_id.hpp"
-#include "trans_info.hpp"
+#include "trans_info_provider.hpp"
 
 #include "common/utils/threads.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -40,6 +40,7 @@
 
 #include "server/decoder/de_configurator.hpp"
 #include "server/decoder/sentence/sentence_decoder.hpp"
+#include "server/messaging/trans_sent_data_out.hpp"
 
 using namespace std;
 
@@ -203,14 +204,11 @@ namespace uva {
 
                     /**
                      * Allows to obtain the translation info for the translation task.
-                     * @param [out] the container object for the translation task info
+                     * @param sent_data [in/out] the container object for the translation task info
                      */
-                    inline void get_trans_info(trans_info & info) const {
-                        //Clean the translation task info
-                        info.clean();
-
+                    inline void get_trans_info(trans_sent_data_out & sent_data) const {
                         //Fill in the translation task info
-                        m_decoder.get_trans_info(info);
+                        m_decoder.get_trans_info(sent_data);
                     }
 
                     /**

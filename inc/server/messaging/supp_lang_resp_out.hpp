@@ -37,14 +37,14 @@ namespace uva {
             namespace server {
                 namespace messaging {
 
-                    class supp_lang_resp_out : public supp_lang_resp, public outgoing_msg {
+                    class supp_lang_resp_out : public outgoing_msg, public supp_lang_resp {
                     public:
 
                         /**
                          * The basic class constructor
                          */
                         supp_lang_resp_out()
-                        : supp_lang_resp(), outgoing_msg(msg_type::MESSAGE_SUPP_LANG_RESP) {
+                        : outgoing_msg(msg_type::MESSAGE_SUPP_LANG_RESP), supp_lang_resp() {
                             //Nothing to be done here
                         }
 
@@ -61,7 +61,7 @@ namespace uva {
                          * @param target the target language that can be translated in to the source language
                          */
                         inline void add_supp_lang(const string& source, const string& target) {
-                            get_json()[LANGUAGES_FIELD_NAME][source].push_back(target);
+                            m_json[LANGUAGES_FIELD_NAME][source].push_back(target);
                         }
                     };
                 }

@@ -583,22 +583,16 @@
         <df name="messaging">
           <in>id_manager.hpp</in>
           <in>incoming_msg.hpp</in>
-          <in>json_msg.hpp</in>
           <in>msg_base.hpp</in>
           <in>outgoing_msg.hpp</in>
           <in>request_msg.hpp</in>
           <in>response_msg.hpp</in>
           <in>status_code.hpp</in>
           <in>supp_lang_req.hpp</in>
-          <in>supp_lang_request.hpp</in>
           <in>supp_lang_resp.hpp</in>
-          <in>supp_lang_response.hpp</in>
           <in>trans_job_id.hpp</in>
           <in>trans_job_req.hpp</in>
-          <in>trans_job_request.hpp</in>
           <in>trans_job_resp.hpp</in>
-          <in>trans_job_resp_data.hpp</in>
-          <in>trans_job_response.hpp</in>
           <in>trans_sent_data.hpp</in>
           <in>trans_session_id.hpp</in>
         </df>
@@ -759,7 +753,7 @@
         <in>server_configs.hpp</in>
         <in>server_consts.hpp</in>
         <in>server_parameters.hpp</in>
-        <in>trans_info.hpp</in>
+        <in>trans_info_provider.hpp</in>
         <in>trans_job.hpp</in>
         <in>trans_job_pool.hpp</in>
         <in>trans_manager.hpp</in>
@@ -781,12 +775,8 @@
       </df>
       <df name="common">
         <df name="messaging">
-          <in>json_msg.cpp</in>
           <in>messaging.cpp</in>
-          <in>supp_lang_response.cpp</in>
           <in>trans_job_code.cpp</in>
-          <in>trans_job_request.cpp</in>
-          <in>trans_job_resp_data.cpp</in>
         </df>
         <df name="utils">
           <df name="logging">
@@ -856,7 +846,7 @@
     <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <compile>
         <compiledirpicklist>

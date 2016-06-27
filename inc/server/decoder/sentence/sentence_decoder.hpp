@@ -35,11 +35,11 @@
 
 #include "server/common/models/phrase_uid.hpp"
 
-#include "server/trans_info.hpp"
-
+#include "server/trans_info_provider.hpp"
 #include "server/decoder/de_parameters.hpp"
 #include "server/decoder/sentence/sentence_data_map.hpp"
 #include "server/decoder/stack/multi_stack.hpp"
+#include "server/messaging/trans_sent_data_out.hpp"
 
 #include "server/lm/lm_configurator.hpp"
 #include "server/tm/tm_configurator.hpp"
@@ -59,6 +59,7 @@ using namespace uva::smt::bpbd::server::common::models;
 using namespace uva::smt::bpbd::server::tm;
 using namespace uva::smt::bpbd::server::rm;
 
+using namespace uva::smt::bpbd::server::messaging;
 using namespace uva::smt::bpbd::server::decoder::sentence;
 using namespace uva::smt::bpbd::server::decoder::stack;
 
@@ -148,11 +149,11 @@ namespace uva {
 
                             /**
                              * Allows to obtain the translation info for the translation task.
-                             * @param [out] the container object for the translation task info
+                             * @param sent_data [in/out] the container object for the translation task info
                              */
-                            inline void get_trans_info(trans_info & info) const {
+                            inline void get_trans_info(trans_sent_data_out & sent_data) const {
                                 if (m_stack_info_prov != NULL) {
-                                    m_stack_info_prov->get_trans_info(info);
+                                    m_stack_info_prov->get_trans_info(sent_data);
                                 } else {
                                     //Only throw this in the sanity check mode, otherwise just ignore
                                     ASSERT_SANITY_THROW(true, "Trying to get the translation info but the stack pointer is NULL!");
@@ -433,20 +434,20 @@ namespace uva {
                                 typedef multi_stack_templ<is_dist, MAX_WORDS_PER_SENTENCE, LM_HISTORY_LEN_MAX, LM_MAX_QUERY_LEN> stack_type;
 
                                 //Instantiate the multi-stack
-                                stack_type * m_stack = new stack_type(m_de_params, m_is_stop,
+                                stack_type * stack = new stack_type(m_de_params, m_is_stop,
                                         m_source_sent, m_sent_data, m_rm_query, m_lm_query);
 
                                 //Store the stack pointer for getting the translation info
                                 //later, if needed, and also for a safe destruction
-                                m_stack_info_prov = m_stack;
+                                m_stack_info_prov = stack;
 
                                 //Extend the stack, here we do everything in one go
                                 //Including expanding, pruning and recombination
-                                m_stack->expand();
+                                stack->expand();
 
                                 //If we are finished then retrieve the best 
                                 //translation. If we have stopped then nothing.
-                                m_stack->get_best_trans(m_target_sent);
+                                stack->get_best_trans(m_target_sent);
                             }
 
                         private:

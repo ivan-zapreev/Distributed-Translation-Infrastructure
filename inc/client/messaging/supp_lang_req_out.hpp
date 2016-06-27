@@ -41,14 +41,14 @@ namespace uva {
                      * This class represents an outgoing request for supported
                      * languages, created on the client side.
                      */
-                    class supp_lang_req_out : public supp_lang_req, public outgoing_msg {
+                    class supp_lang_req_out : public outgoing_msg, public supp_lang_req{
                     public:
 
                         /**
                          * The basic constructor
                          */
                         supp_lang_req_out()
-                        : supp_lang_req(), outgoing_msg(msg_type::MESSAGE_SUPP_LANG_REQ) {
+                        : outgoing_msg(msg_type::MESSAGE_SUPP_LANG_REQ), supp_lang_req() {
                             //Nothing to be done here
                         }
 

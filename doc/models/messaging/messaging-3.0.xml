@@ -32,7 +32,7 @@ request_msg()
 --
 Responsibilities
 -- The base class for request messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>570</x><y>1030</y><w>140</w><h>190</h></coordinates><panel_attributes>lt=&lt;&lt;-
-&lt;&lt;private&gt;&gt;</panel_attributes><additional_attributes>120;170;120;100;10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>540</y><w>340</w><h>190</h></coordinates><panel_attributes>trans_job_req_in
+&lt;&lt;public&gt;&gt;</panel_attributes><additional_attributes>120;170;120;100;10;100;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>540</y><w>340</w><h>190</h></coordinates><panel_attributes>trans_job_req_in
 --
 typedef vector&lt;string&gt; text_array
 - m_inc_msg : incoming_msg *;
@@ -70,6 +70,7 @@ Responsibilities
                                source_text : vector&lt;string&gt; &amp;,
                                target_lang : const string &amp;,
                                is_trans_info : const bool)
++get_job_id() : job_id_type {const}
 --
 Responsibilities
 -- The outgoing translation job request</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>870</x><y>190</y><w>370</w><h>130</h></coordinates><panel_attributes>supp_lang_resp
@@ -127,7 +128,7 @@ Responsibilities
 +get_job_id() : job_id_type {const}
 +get_inc_msg() : const incoming_msg &amp; {const}
 +get_status_code() : trans_job_code
-+get_status_msg() : const json::string_t &amp;
++get_status_msg() : const json &amp;
 --
 Responsibilities
 -- The incoming translation job response</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>950</x><y>360</y><w>300</w><h>140</h></coordinates><panel_attributes>supp_lang_resp_out
@@ -174,7 +175,6 @@ Responsibilities
 +outgoing_msg(type : msg_type)
 +set_value( field_name : const string &amp;, value : const vlaue_type &amp;) : void
 +serialize() : string
-#get_json() : json &amp;
 _+set_value(data : json::object_t &amp;, field_name : const string &amp;, value : const vlaue_type &amp;) : void_
 --
 Responsibilities
@@ -234,8 +234,8 @@ Responsibilities
 +trans_sent_data_in(data_obj : json::object_t &amp;)
 /+~trans_sent_data_in() {virtual}/
 +set_status( code : status_code, msg : string ) : void
-+get_trans_text() : string &amp;
-+get_stack_load() : loads_array &amp;
++set_trans_text( text : const string &amp;) : void
++set_stack_load(loads : const loads_array &amp; ) : void
 --
 Responsibilities
 -- Represents the translated sentence data</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1790</x><y>714</y><w>70</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;-

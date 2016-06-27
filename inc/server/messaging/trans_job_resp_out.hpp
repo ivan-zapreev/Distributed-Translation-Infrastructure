@@ -27,7 +27,7 @@
 #define TRANS_JOB_RESP_OUT_HPP
 
 #include "common/messaging/outgoing_msg.hpp"
-#include "common/messaging/supp_lang_resp.hpp"
+#include "common/messaging/trans_job_resp.hpp"
 
 #include "server/messaging/trans_sent_data_out.hpp"
 
@@ -42,14 +42,15 @@ namespace uva {
                     /**
                      * This class represents a translation job response message to be sent to the client
                      */
-                    class trans_job_resp_out : public trans_job_resp, public outgoing_msg {
+                    class trans_job_resp_out : public outgoing_msg, public trans_job_resp {
                     public:
 
                         /**
                          * The basic class constructor
                          */
                         trans_job_resp_out()
-                        : trans_job_resp(), outgoing_msg(msg_type::MESSAGE_TRANS_JOB_RESP), m_sent_data(NULL) {
+                        : outgoing_msg(msg_type::MESSAGE_TRANS_JOB_RESP), trans_job_resp(),
+                        m_sent_data(NULL), m_empty_sent_data() {
                             //Nothing to be done here
                         }
 
@@ -64,7 +65,8 @@ namespace uva {
                         trans_job_resp_out(const job_id_type job_id,
                                 const status_code code,
                                 const string & msg)
-                        : trans_job_resp(), outgoing_msg(msg_type::MESSAGE_TRANS_JOB_RESP), m_is_trans_info(false) {
+                        : outgoing_msg(msg_type::MESSAGE_TRANS_JOB_RESP), trans_job_resp(),
+                        m_sent_data(NULL), m_empty_sent_data() {
                             //Set the values using the setter methods
                             set_job_id(job_id);
                             set_status(code, msg);
@@ -74,7 +76,12 @@ namespace uva {
                          * The basic class destructor
                          */
                         virtual ~trans_job_resp_out() {
-                            //Nothing to be done here
+                            LOG_DEBUG2 << "Deleting the translation job response" << END_LOG;
+                            //Delete the sentence data wrapper if any
+                            if (m_sent_data != NULL) {
+                                LOG_DEBUG2 << "Deleting the sentence response data wrapper" << END_LOG;
+                                delete m_sent_data;
+                            }
                         }
 
                         /**
@@ -83,8 +90,8 @@ namespace uva {
                          * @param msg the status message
                          */
                         inline void set_status(const status_code & code, const string & msg) {
-                            get_json()[STAT_CODE_FIELD_NAME] = code;
-                            get_json()[STAT_MSG_FIELD_NAME] = msg;
+                            m_json[STAT_CODE_FIELD_NAME] = code;
+                            m_json[STAT_MSG_FIELD_NAME] = msg;
                         }
 
                         /**
@@ -92,7 +99,7 @@ namespace uva {
                          * @return the client-issued job id
                          */
                         inline void set_job_id(const job_id_type job_id) {
-                            get_json()[JOB_ID_FIELD_NAME] = job_id;
+                            m_json[JOB_ID_FIELD_NAME] = job_id;
                         }
 
                         /**
@@ -103,11 +110,31 @@ namespace uva {
                          * @return the same sentence data wrapper wrapping around different sentence data objects.
                          */
                         inline trans_sent_data_out & add_new_sent_data() {
+                            //Get the target data array
+                            json & data = m_json[TARGET_DATA_FIELD_NAME];
+
+                            //Add a new JSON sentence data entry
+                            data.push_back(m_empty_sent_data);
+                            json & sent_data = data.at(data.size() - 1);
+
+                            //If the sentence data is NULL create a new one
+                            if (m_sent_data != NULL) {
+                                m_sent_data->set_sent_data(sent_data);
+                            } else {
+                                ///Otherwise set the sentence data to the old one
+                                m_sent_data = new trans_sent_data_out(sent_data);
+                            }
+
+                            //Return the reference to the data
+                            return *m_sent_data;
                         }
 
                     private:
                         //Stores the pointer to the sentence data
                         trans_sent_data_out * m_sent_data;
+
+                        //Stores an empty json object to be used for a sentence data
+                        const json m_empty_sent_data;
                     };
                 }
             }

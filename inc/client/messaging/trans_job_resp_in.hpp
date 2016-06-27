@@ -51,7 +51,7 @@ namespace uva {
                          * @param inc_msg the pointer to the incoming message, NOT NULL
                          */
                         trans_job_resp_in(incoming_msg * inc_msg)
-                        : supp_lang_resp(), m_inc_msg(inc_msg), m_data(NULL), m_iter(), m_sent_data(NULL) {
+                        : trans_job_resp(), m_inc_msg(inc_msg), m_data(NULL), m_iter(), m_sent_data(NULL) {
                             //Nothing to be done here
                         }
 
@@ -72,22 +72,27 @@ namespace uva {
                          * This is meant to be done one time only
                          * @return a pointer to the sentence data object or NULL if we reached the end of the list
                          */
-                        inline trans_sent_data_in * next_send_data() {
+                        inline const trans_sent_data_in * next_send_data() {
                             if (m_data == NULL) {
                                 //If the data was not yet retrieved, do it
                                 m_data = &m_inc_msg->get_value(TARGET_DATA_FIELD_NAME);
+
+                                //Perform a sanity check
+                                ASSERT_SANITY_THROW(!m_data->is_array(), string("The value of '") +
+                                        TARGET_DATA_FIELD_NAME + string("' is not an array!"));
+                                
                                 //Check if the vector size is above zero
-                                if (!m_data.empty()) {
+                                if (!m_data->empty()) {
                                     //Initialize the iterator with the first value
-                                    m_iter = m_data.cbegin();
+                                    m_iter = m_data->cbegin();
                                     //Create the sentence data wrapper
-                                    m_sent_data = new m_sent_data(*m_iter);
+                                    m_sent_data = new trans_sent_data_in(*m_iter);
                                     //Move to the next element
                                     ++m_iter;
                                 }
                             } else {
                                 //The data has been retrieved, so this is not the first iteration
-                                if (m_iter == m_data.end()) {
+                                if (m_iter == m_data->cend()) {
                                     //If we have no more elements or thre is not elements left
                                     if (m_sent_data != NULL) {
                                         //Delete the sentence data object if it is (still) present
@@ -109,8 +114,8 @@ namespace uva {
                          * Allows to get the job id
                          * @return the job id
                          */
-                        inline job_id_type get_job_id() {
-                            return m_inc_msg->get_value<job_id_type>(JOB_ID_FIELD_NAME);
+                        inline const json & get_job_id() const {
+                            return m_inc_msg->get_value(JOB_ID_FIELD_NAME);
                         }
 
                         /**
@@ -119,7 +124,7 @@ namespace uva {
                          */
                         inline status_code get_status_code() const {
                             //Get the status code value
-                            int32_t code_value = m_inc_msg->get_value<int32_t>(STAT_CODE_FIELD_NAME);
+                            int32_t code_value = m_inc_msg->get_value(STAT_CODE_FIELD_NAME);
                             //Create the status code class instance
                             return status_code(code_value);
                         }
@@ -128,7 +133,7 @@ namespace uva {
                          * Allows to get the translation task status message
                          * @return the translation task status message
                          */
-                        inline const string & get_status_msg() const {
+                        inline const json & get_status_msg() const {
                             return m_inc_msg->get_value(STAT_MSG_FIELD_NAME);
                         }
 
@@ -137,9 +142,9 @@ namespace uva {
                         //the response data, this pointer must not be NULL
                         incoming_msg * m_inc_msg;
                         //Stores the pointer to the translation data
-                        json::array_t * m_data;
+                        const json * m_data;
                         //Stores the iterator
-                        json::array_t::const_iterator m_iter;
+                        json::const_iterator m_iter;
                         //Stores the pointer to the sentence data
                         trans_sent_data_in * m_sent_data;
                     };

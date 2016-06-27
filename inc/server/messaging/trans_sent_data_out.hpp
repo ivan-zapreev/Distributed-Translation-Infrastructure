@@ -26,10 +26,15 @@
 #ifndef TRANS_SENT_DATA_OUT_HPP
 #define TRANS_SENT_DATA_OUT_HPP
 
+#include "common/utils/logging/logger.hpp"
+
 #include "common/messaging/trans_sent_data.hpp"
+#include "common/messaging/status_code.hpp"
 #include "common/messaging/outgoing_msg.hpp"
 
-#include "server/messaging/trans_sent_data_out.hpp"
+#include "common/messaging/trans_sent_data.hpp"
+
+using namespace uva::utils::logging;
 
 using namespace uva::smt::bpbd::common::messaging;
 
@@ -50,9 +55,8 @@ namespace uva {
                          * JSON object, but it does not own it.
                          * @param data_obj the reference to the encapsulated JSON object
                          */
-                        trans_sent_data_out(json::object_t & data_obj) : trans_sent_data(data_obj) {
-                            m_data_obj[TRANS_TEXT_FIELD_NAME] = "";
-                            m_data_obj[STACK_LOAD_FIELD_NAME] = {};
+                        trans_sent_data_out(json & data_obj)
+                        : trans_sent_data(), m_data_obj(data_obj) {
                         }
 
                         /**
@@ -61,25 +65,49 @@ namespace uva {
                          * @param msg the status message
                          */
                         inline void set_status(const status_code & code, const string & msg) {
+                            LOG_DEBUG << "Setting the sentence status code: " << to_string(code)
+                                    << ", message: " << msg << END_LOG;
+                            
                             m_data_obj[STAT_CODE_FIELD_NAME] = code;
                             m_data_obj[STAT_MSG_FIELD_NAME] = msg;
                         }
 
                         /**
-                         * Allows to get the reference to the translation text, to be filled in.
-                         * @return the reference to the translation text string
+                         * Allows to get the translation text
+                         * @param  text the reference to the translation text string
                          */
-                        inline const string & get_trans_text() {
-                            return m_data_obj[TRANS_TEXT_FIELD_NAME];
+                        inline void set_trans_text(const string & text) {
+                            LOG_DEBUG << "Setting the translated sentence: " << text << END_LOG;
+                            
+                            m_data_obj[TRANS_TEXT_FIELD_NAME] = text;
                         }
 
                         /**
-                         * Allows to get the reference to the stack loads array
-                         * @return the reference to the stack loads array
+                         * Allows to add the translation stack load
+                         * @param load the next stack load value
                          */
-                        inline const loads_array & get_stack_load() {
-                            return m_data_obj[STACK_LOAD_FIELD_NAME];
+                        inline void add_stack_load(const float load) {
+                            LOG_DEBUG1 << "Adding the stack load: " << to_string(load) << END_LOG;
+                            json & data = m_data_obj[STACK_LOAD_FIELD_NAME];
+                            LOG_DEBUG2 << "Obtained the container for: " << STACK_LOAD_FIELD_NAME
+                                    << ", content: " << data << END_LOG;
+                            data.push_back(load);
+                            LOG_DEBUG3 << "New content: " << data << END_LOG;
                         }
+
+                        /**
+                         * Allows to replace a stored reference to a JSON object with a new reference.
+                         * @param data_obj the reference to a new JSON object.
+                         */
+                        inline void set_sent_data(json & data_obj) {
+                            LOG_DEBUG1 << "Setting a new sentence data JSON" << END_LOG;
+                            
+                            m_data_obj = data_obj;
+                        }
+
+                    private:
+                        //Stores the reference to the encapsulated JSON object
+                        json & m_data_obj;
                     };
 
                 }

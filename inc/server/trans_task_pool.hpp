@@ -107,6 +107,7 @@ namespace uva {
                      * @param trans_task the task that is being canceled
                      */
                     void notify_task_cancel(trans_task_ptr trans_task);
+                    
                 private:
 
                     //Stores the worker threads

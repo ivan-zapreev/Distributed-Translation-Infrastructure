@@ -43,26 +43,26 @@ namespace uva {
                         /**
                          * The basic constructor
                          */
-                        client_msg() : msg_base() {
+                        incoming_msg() : msg_base() {
                             //Nothing to be done here
                         }
 
                         /**
                          * The basic destructor
                          */
-                        virtual ~client_msg() {
+                        virtual ~incoming_msg() {
                             //Nothing to be done here
                         }
 
                         /**
-                         * 
+                         * Allows to de-serialize the json request
                          * @param data
                          */
                         void de_serialize(const string & data) {
                             //De-serialize the data and catch any exception, convert it into our type
                             try {
                                 stringstream stream_data(data);
-                                stream_data >> m_json_obj;
+                                stream_data >> m_json;
                             } catch (std::exception & ex) {
                                 LOG_ERROR << "An exception when parsing JSON string: " << ex.what() << END_LOG;
                                 THROW_EXCEPTION(ex.what());
@@ -73,14 +73,17 @@ namespace uva {
                         }
 
                         /**
-                         * 
-                         * @return 
+                         * Allows to get the message type
+                         * @return the message type
                          */
                         msg_type get_type() const {
+                            //Get the integer value stored, and then covert it to an enum
+                            const int32_t value = get_value(MSG_TYPE_FIELD_NAME);
+                            
                             //This is a primitive way to cast to the enumeration type 
                             //from an integer. Later we could introduce a fancier way 
                             //with all sorts of checks but this shall do it for now.
-                            return static_cast<msg_type> (get_value<int32_t>(MSG_TYPE_FIELD_NAME));
+                            return static_cast<msg_type> (value);
                         }
                         
                         /**
@@ -89,7 +92,7 @@ namespace uva {
                          * @param field_name the field name to be checked
                          * @return true if the field is contained, otherwise false
                          */
-                        static inline bool has_value(const json::object_t & object, const string & field_name) {
+                        static inline bool has_value(const json & object, const string & field_name) {
                             //Retrieve the value from the JSON object
                             auto entry = object.find(field_name);
 
@@ -100,13 +103,11 @@ namespace uva {
                         /**
                          * Allows to get the data from the JSON object and
                          * cast it to the desired result type.
-                         * @param value_type the result type to be returned
                          * @param object the json object to get the field value from
                          * @param field_name the name of the JSON field
                          * @return the value of the required type of the given field 
                          */
-                        template<typename value_type>
-                        static inline const value_type & get_value(const json::object_t & object, const string & field_name) {
+                        static inline const json & get_value(const json & object, const string & field_name) {
                             LOG_DEBUG << "Extracting JSON field: " << field_name << END_LOG;
 
                             //Retrieve the value from the JSON object
@@ -131,12 +132,10 @@ namespace uva {
                         /**
                          * Allows to get the data from the JSON object and
                          * cast it to the desired result type.
-                         * @param value_type the result type to be returned
                          * @param field_name the name of the JSON field
                          * @return the value of the required type of the given field 
                          */
-                        template<typename value_type>
-                        inline const value_type & get_value(const string & field_name) const {
+                        inline const json & get_value(const string & field_name) const {
                             return get_value(m_json, field_name);
                         }
 
@@ -158,7 +157,7 @@ namespace uva {
                          */
                         void verify_protocol_version() const {
                             //Get the protocol version and check it
-                            const uint32_t prot_ver = get_value<int32_t>(PROT_VER_FIELD_NAME);
+                            const uint32_t prot_ver = get_value(PROT_VER_FIELD_NAME);
 
                             LOG_DEBUG << "The request protocol version: " << to_string(prot_ver)
                                     << ", local protocol version: " << to_string(PROTOCOL_VERSION) << END_LOG;

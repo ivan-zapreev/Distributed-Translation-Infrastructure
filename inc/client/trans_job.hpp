@@ -28,11 +28,12 @@
 
 #include "trans_job_status.hpp"
 #include "common/utils/exceptions.hpp"
-#include "common/messaging/trans_job_request.hpp"
-#include "common/messaging/trans_job_response.hpp"
+
+#include "client/messaging/trans_job_req_out.hpp"
+#include "client/messaging/trans_job_resp_in.hpp"
 
 using namespace uva::utils::exceptions;
-using namespace uva::smt::bpbd::common::messaging;
+using namespace uva::smt::bpbd::client::messaging;
 
 namespace uva {
     namespace smt {
@@ -74,9 +75,9 @@ namespace uva {
                     //The number of sentences to be translated
                     uint32_t m_num_sentences;
                     //The pointer to the job request
-                    trans_job_request_ptr m_request;
+                    trans_job_req_out * m_request;
                     //The pointer to the job response
-                    trans_job_response_ptr m_response;
+                    trans_job_resp_in * m_response;
                     //Stores the flag indicating whether the job was failed to send
                     trans_job_status m_status;
                 };

@@ -34,16 +34,17 @@
 #include <iostream>
 #include <fstream>
 
-#include "client_config.hpp"
-#include "translation_client.hpp"
-#include "trans_job.hpp"
-#include "trans_job_status.hpp"
+#include "client/client_config.hpp"
+#include "client/translation_client.hpp"
+#include "client/trans_job.hpp"
+#include "client/trans_job_status.hpp"
 
 #include "common/messaging/status_code.hpp"
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_job_id.hpp"
-#include "common/messaging/trans_job_request.hpp"
-#include "common/messaging/trans_job_response.hpp"
+
+#include "client/messaging/trans_job_req_out.hpp"
+#include "client/messaging/trans_job_resp_in.hpp"
 
 #include "common/utils/file/cstyle_file_reader.hpp"
 #include "common/utils/threads.hpp"
@@ -52,6 +53,7 @@
 using namespace std;
 using namespace uva::utils::threads;
 using namespace uva::utils::text;
+using namespace uva::utils::file;
 
 namespace uva {
     namespace smt {
@@ -211,6 +213,22 @@ namespace uva {
                 protected:
 
                     /**
+                     * Allows to store the response data
+                     * @param resp the translation job response
+                     * @param target_file the file to write to
+                     */
+                    void store_targety_data(trans_job_resp_in * resp, ofstream & target_file) {
+                        //If the result is ok or partial then just put the text into the file
+                        const trans_sent_data_in * sent_data = resp->next_send_data();
+                        while (sent_data != NULL) {
+                            //ToDo: Extend data by storing the translation status and info etc.
+                            target_file << sent_data->get_trans_text();
+                            //Move to the next sentence if present
+                            sent_data = resp->next_send_data();
+                        }
+                    }
+
+                    /**
                      * Allows to write the received translation job replies into the file
                      * @param fis the first sentence number 
                      * @param lis the last sentence number
@@ -219,13 +237,15 @@ namespace uva {
                      */
                     void write_received_job_result(const uint32_t fis, const uint32_t lis,
                             const trans_job_ptr job, ofstream & target_file) {
+                        //Get the response pointer
+                        trans_job_resp_in * resp = job->m_response;
+
                         //The job response is received but it can still be fully or partially canceled or be an error
-                        const status_code code = job->m_response->get_status_code();
+                        const status_code code = resp->get_status_code();
                         switch (code) {
                             case status_code::RESULT_OK:
                             case status_code::RESULT_PARTIAL:
-                                //If the result is ok or partial then just put the text into the file
-                                target_file << job->m_response->get_target_text();
+                                store_targety_data(resp, target_file);
                                 break;
                             case status_code::RESULT_ERROR:
                             case status_code::RESULT_CANCELED:
@@ -301,18 +321,12 @@ namespace uva {
 
                     /**
                      * Allows to process the server job request response
-                     * @param msg_data the translation job response data
+                     * @param trans_job_resp a pointer to the translation job response data, not NULL
                      */
-                    void set_job_response(const string & msg_data) {
+                    void set_job_response(trans_job_resp_in * trans_job_resp) {
                         //If we are not stopping then set the response
                         if (!m_is_stopping) {
-                            //Create the response object to be used
-                            trans_job_response_ptr trans_job_resp = new trans_job_response();
-
                             try {
-                                //De-serialize the response object
-                                trans_job_resp->de_serialize(msg_data);
-
                                 //Get the job id to work with
                                 const job_id_type job_id = trans_job_resp->get_job_id();
 
@@ -345,6 +359,9 @@ namespace uva {
 
                             //Check if the jobs are done and notify
                             check_jobs_done_and_notify();
+                        } else {
+                            //Discard the translation job response
+                            delete trans_job_resp;
                         }
                     }
 
@@ -545,7 +562,7 @@ namespace uva {
                                 trans_job_ptr data = new trans_job();
 
                                 //Create the translation job request 
-                                data->m_request = new trans_job_request(job_id, m_params.m_source_lang,
+                                data->m_request = new trans_job_req_out(job_id, m_params.m_source_lang,
                                         source_text, m_params.m_target_lang, m_params.m_is_trans_info);
                                 //Store the number of sentences in the translation request
                                 data->m_num_sentences = num_read;

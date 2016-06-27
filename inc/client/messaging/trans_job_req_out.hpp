@@ -28,6 +28,7 @@
 
 #include "common/messaging/outgoing_msg.hpp"
 #include "common/messaging/trans_job_req.hpp"
+#include "common/messaging/trans_job_id.hpp"
 
 using namespace uva::smt::bpbd::common::messaging;
 
@@ -56,17 +57,25 @@ namespace uva {
                          */
                         trans_job_req_out(const job_id_type job_id, const string & source_lang,
                                 vector<string> & source_text, const string & target_lang, const bool is_trans_info)
-                        : outgoing_msg(), trans_job_req(msg_type::MESSAGE_TRANS_JOB_REQ) {
-                            get_json()[JOB_ID_FIELD_NAME] = job_id;
-                            get_json()[SOURCE_LANG_FIELD_NAME] = source_lang;
-                            get_json()[TARGET_LANG_FIELD_NAME] = target_lang;
-                            get_json()[IS_TRANS_INFO_FIELD_NAME] = is_trans_info;
-                            get_json()[SOURCE_SENTENCES_FIELD_NAME] = source_text;
+                        : outgoing_msg(msg_type::MESSAGE_TRANS_JOB_REQ), trans_job_req() {
+                            m_json[JOB_ID_FIELD_NAME] = job_id;
+                            m_json[SOURCE_LANG_FIELD_NAME] = source_lang;
+                            m_json[TARGET_LANG_FIELD_NAME] = target_lang;
+                            m_json[IS_TRANS_INFO_FIELD_NAME] = is_trans_info;
+                            m_json[SOURCE_SENTENCES_FIELD_NAME] = source_text;
 
                             LOG_DEBUG << "Translation job request, job id: " << job_id
                                     << " source language: " << source_lang
                                     << " target language: " << target_lang
                                     << " translation info flag: " << is_trans_info << END_LOG;
+                        }
+
+                        /**
+                         * Allows to get the job id type
+                         * @return the job id type
+                         */
+                        job_id_type get_job_id() const {
+                            return m_json[JOB_ID_FIELD_NAME];
                         }
 
                         /**

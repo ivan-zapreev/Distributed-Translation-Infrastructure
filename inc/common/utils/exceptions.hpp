@@ -39,7 +39,7 @@ namespace uva {
 
             //Enables all sorts of internal sanity checks,
             //e.g. sets the collision detection on and off.
-            constexpr bool DO_SANITY_CHECKS = false;
+            constexpr bool DO_SANITY_CHECKS = true;
 
 #define THROW_EXCEPTION(text) { \
     stringstream msg; \
@@ -65,8 +65,6 @@ ASSERT_CONDITION_THROW(DO_SANITY_CHECKS && (CONDITION), MESSAGE);
 
             /**
              * This is an application exception class that is capable of storing an error message
-             * ToDo: Make sure that the classes catch the generic type exception and the 
-             *       get_message method is substituted with the use of what() method 
              */
             class uva_exception : public exception {
             private:

@@ -36,7 +36,7 @@ namespace uva {
             namespace server {
 
                 trans_task_pool::trans_task_pool(const size_t num_threads)
-                : m_stop(false) {
+                : m_tasks(), m_queue_mutex(), m_condition(), m_stop(false), m_threads(), m_workers() {
                     for (size_t i = 0; i < num_threads; ++i) {
                         //Add the new worker
                         m_workers.emplace_back(new trans_task_pool_worker(*this));
@@ -53,7 +53,12 @@ namespace uva {
                     ASSERT_CONDITION_THROW((new_num_threads == 0),
                             string("The new number of threads is 0, must be > 0!"));
 
+                    //Ge the current number of threads
                     const size_t curr_num_threads = m_threads.size();
+
+                    LOG_DEBUG1 << "The old # threads: " << to_string(curr_num_threads)
+                            << ", the new # threads: " << to_string(new_num_threads) << END_LOG;
+
                     if (new_num_threads > curr_num_threads) {
                         //We are to add more worker threads
                         for (size_t count = curr_num_threads; count < new_num_threads; ++count) {
@@ -81,17 +86,26 @@ namespace uva {
 
                                     //Ask the worker to stop
                                     m_workers[idx]->stop();
-                                    //Wake up all sleeping threads as the notify one might
-                                    //wake up some other thread than the stopped one
+                                    
+                                    //Wake up all sleeping threads as the notify_one sends a wake 
+                                    //up signal to a random thread but not the one we want to stop.
                                     m_condition.notify_all();
-                                    //Wait until the thread is finished
-                                    m_threads[idx].join();
+                                    
+                                    //If the thread is joinable
+                                    if (m_threads[idx].joinable()) {
+                                        LOG_DEBUG1 << "Joining the thread: " << to_string(idx) << END_LOG;
+                                        //Wait until the thread is finished
+                                        m_threads[idx].join();
+                                    }
 
                                     //Delete the worker
+                                    LOG_DEBUG1 << "Deleting worker: " << to_string(idx) << END_LOG;
                                     delete m_workers[idx];
 
                                     //Erase the worker and its thread
+                                    LOG_DEBUG1 << "Erasing the worker: " << to_string(idx) << " pointer" << END_LOG;
                                     m_workers.erase(m_workers.begin() + idx);
+                                    LOG_DEBUG1 << "Erasing the worker's: " << to_string(idx) << "  thread" << END_LOG;
                                     m_threads.erase(m_threads.begin() + idx);
 
                                     //Increment the deleted workers count

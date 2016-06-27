@@ -71,8 +71,8 @@ namespace uva {
                          * Allows to retrieve the JSON object storing the supported languages
                          * @return the object storing the JSON supported languages mapping
                          */
-                        inline const supp_lang_map & get_languages() const {
-                            return m_inc_msg->get_value<supp_lang_map>(LANGUAGES_FIELD_NAME);
+                        inline const json & get_languages() const {
+                            return m_inc_msg->get_value(LANGUAGES_FIELD_NAME);
                         }
 
                     private:

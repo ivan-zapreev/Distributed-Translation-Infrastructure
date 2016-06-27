@@ -37,15 +37,19 @@
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
-#include "common/messaging/trans_job_response.hpp"
-#include "common/messaging/trans_job_request.hpp"
+
+#include "common/messaging/incoming_msg.hpp"
+#include "client/messaging/trans_job_req_out.hpp"
+#include "client/messaging/trans_job_resp_in.hpp"
 
 using namespace std;
 using namespace std::placeholders;
+
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
-using namespace uva::smt::bpbd::common::messaging;
+
+using namespace uva::smt::bpbd::client::messaging;
 
 using websocketpp::log::alevel;
 
@@ -63,15 +67,15 @@ namespace uva {
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
 
                     //Define the function type for the function used to set the translation job result
-                    typedef function<void(const string & msg_data) > response_setter;
+                    typedef function<void(trans_job_resp_in * trans_job_resp) > trans_job_resp_setter;
 
                     //Define the function type for the function used to notify the caller that the connection is closed
                     typedef function<void() > conn_close_notifier;
 
-                    translation_client(const string & host, const uint16_t port, response_setter set_response, conn_close_notifier notify_conn_close)
-                    : m_started(false), m_stopped(false), m_opened(false), m_closed(false), m_set_response(set_response), m_notify_conn_close(notify_conn_close) {
+                    translation_client(const string & host, const uint16_t port, trans_job_resp_setter set_trans_job_resp, conn_close_notifier notify_conn_close)
+                    : m_started(false), m_stopped(false), m_opened(false), m_closed(false), m_set_trans_job_resp(set_trans_job_resp), m_notify_conn_close(notify_conn_close) {
                         //Assert that the notifiers and setter are defined
-                        ASSERT_SANITY_THROW(!m_set_response, "The response setter is NULL!");
+                        ASSERT_SANITY_THROW(!m_set_trans_job_resp, "The response setter is NULL!");
                         ASSERT_SANITY_THROW(!m_notify_conn_close, "The connection close notifier is NULL!");
 
                         //Initialize the URI to connect to
@@ -142,7 +146,7 @@ namespace uva {
 
                             //Close the connection to the server
                             m_client.close(m_hdl, websocketpp::close::status::normal, "The needed translations are finished.");
-                            
+
                             //Set the done flag to true as we  are now done
                             m_closed = true;
                         }
@@ -151,7 +155,7 @@ namespace uva {
                         if (m_started && !m_stopped) {
 
                             LOG_INFO << "Stopping the IO service thread..." << END_LOG;
-                            
+
                             //Stop the io service thread
                             m_client.stop();
 
@@ -170,7 +174,7 @@ namespace uva {
                      * Attempts to send the translation job request
                      * @param request the translation job request
                      */
-                    void send(const trans_job_request_ptr request) {
+                    void send(const trans_job_req_out * request) {
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
@@ -195,8 +199,29 @@ namespace uva {
                      * @param msg the message
                      */
                     void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
-                        //Set the newly received job response
-                        m_set_response(msg->get_payload());
+                        //Create a new incoming message
+                        incoming_msg * json_msg = new incoming_msg();
+
+                        //Try parsing the incoming message
+                        try {
+                            //De-serialize the message from string
+                            json_msg->de_serialize(msg->get_payload());
+
+                            //Check on the message type
+                            switch (json_msg->get_type()) {
+                                case msg_type::MESSAGE_TRANS_JOB_RESP:
+                                    //Set the newly received job response
+                                    m_set_trans_job_resp(new trans_job_resp_in(json_msg));
+                                    break;
+                                default:
+                                    THROW_EXCEPTION(string("Unexpected incoming message type: ") +
+                                            to_string(json_msg->get_type()));
+                            }
+                        } catch (std::exception & ex) {
+                            LOG_ERROR << "Unexpected message: " << ex.what() << END_LOG;
+                            //Delete the incoming message
+                            delete json_msg;
+                        }
                     }
 
                     /**
@@ -310,7 +335,7 @@ namespace uva {
                     atomic<bool> m_closed;
 
                     //Stores the translation job result setting function
-                    response_setter m_set_response;
+                    trans_job_resp_setter m_set_trans_job_resp;
                     //Stores the connection close notifier
                     conn_close_notifier m_notify_conn_close;
 
@@ -320,7 +345,7 @@ namespace uva {
                     //Stores the mapping from the translation job request id to
                     //the resulting translation job result, if already received.
                     //The translation jobs without a reply are mapped to NULL
-                    unordered_map<job_id_type, trans_job_response *> m_jobs;
+                    unordered_map<job_id_type, trans_job_resp_in *> m_jobs;
                 };
             }
         }

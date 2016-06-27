@@ -214,16 +214,16 @@ namespace uva {
              * @param str the word to hash
              * @return the resulting hash
              */
-#define A 54059 /* a prime */
-#define B 76963 /* another prime */
-#define C 86969 /* yet another prime */
+#define PRIME_A 54059 /* a prime */
+#define PRIME_B 76963 /* another prime */
+#define PRIME_C 86969 /* yet another prime */
 
             static inline uint_fast32_t computePrimesHash(const char * data, uint32_t len) {
                 uint_fast32_t h = 31 /* also prime */;
                 for (std::size_t i = 0; i != len; ++i) {
-                    h = (h * A) ^ (data[i] * B);
+                    h = (h * PRIME_A) ^ (data[i] * PRIME_B);
                 }
-                return h; // or return h % C;
+                return h; // or return h % PRIME_C;
             }
 
             static inline uint_fast32_t computePrimesHash(const string & str) {

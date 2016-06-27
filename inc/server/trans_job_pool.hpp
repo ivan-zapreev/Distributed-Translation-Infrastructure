@@ -31,7 +31,6 @@
 #include "trans_task_pool.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
-#include "common/messaging/trans_job_request.hpp"
 
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
@@ -399,9 +398,7 @@ namespace uva {
                                 //Get the translation job pointer
                                 trans_job_ptr trans_job = *iter;
 
-                                LOG_DEBUG << "Got the finished job ptr: " << trans_job << " to process." << END_LOG;
-
-                                LOG_DEBUG << "The job " << trans_job << " id is " << trans_job->get_job_id() <<
+                                LOG_DEBUG << "The finished job " << trans_job << " id is " << trans_job->get_job_id() <<
                                         " session id is " << trans_job->get_session_id() << END_LOG;
 
                                 //Do the sanity check assert

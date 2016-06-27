@@ -28,6 +28,7 @@
 
 #include "common/messaging/incoming_msg.hpp"
 #include "common/messaging/trans_job_req.hpp"
+#include "common/messaging/trans_job_id.hpp"
 
 using namespace uva::smt::bpbd::common::messaging;
 
@@ -41,6 +42,7 @@ namespace uva {
                      * This class represents the translation job request received by the server.
                      */
                     class trans_job_req_in : public trans_job_req {
+                    public:
 
                         /**
                          * The basic constructor
@@ -63,23 +65,23 @@ namespace uva {
                          * @return the client-issued job id
                          */
                         inline const job_id_type get_job_id() const {
-                            return m_inc_msg->get_value<job_id_type>(JOB_ID_FIELD_NAME);
+                            return m_inc_msg->get_value(JOB_ID_FIELD_NAME);
                         }
 
                         /**
                          * Allows to get the translation job source language
                          * @return the translation job source language
                          */
-                        inline const string & get_source_lang() const {
-                            return m_inc_msg->get_value<string>(SOURCE_LANG_FIELD_NAME);
+                        inline const string get_source_lang() const {
+                            return m_inc_msg->get_value(SOURCE_LANG_FIELD_NAME);
                         }
 
                         /**
                          * Allows to get the translation job target language
                          * @return the translation job target language
                          */
-                        inline const string & get_target_lang() const {
-                            return m_inc_msg->get_value<string>(TARGET_LANG_FIELD_NAME);
+                        inline const string get_target_lang() const {
+                            return m_inc_msg->get_value(TARGET_LANG_FIELD_NAME);
                         }
 
                         /**
@@ -87,17 +89,17 @@ namespace uva {
                          * @return true if the translation information is requested, otherwise false
                          */
                         inline const bool is_trans_info() const {
-                            return m_inc_msg->get_value<bool>(IS_TRANS_INFO_FIELD_NAME);
+                            return m_inc_msg->get_value(IS_TRANS_INFO_FIELD_NAME);
                         }
 
                         /**
                          * Allows to get the translation job text. This is either
                          * the text translated into the target language or the error
                          * message for the case of failed translation job request.
-                         * @return the translation job text
+                         * @return an array of sentences to be translated, encapsulated in a json object
                          */
-                        inline const json::array_t & get_source_text() const {
-                            return m_inc_msg->get_value<json::array_t>(SOURCE_SENTENCES_FIELD_NAME);
+                        inline const json & get_source_text() const {
+                            return m_inc_msg->get_value(SOURCE_SENTENCES_FIELD_NAME);
                         }
 
                     private:

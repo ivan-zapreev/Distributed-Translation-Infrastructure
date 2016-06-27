@@ -28,16 +28,9 @@
 
 #include <string>
 
-//Disable the assertions in the JSON code
-#define NDEBUG true
-#include <json.hpp>
-#undef NDEBUG
-
-#include <common/messaging/outgoing_msg.hpp>
+#include <common/messaging/response_msg.hpp>
 
 using namespace std;
-
-using json = nlohmann::json;
 
 namespace uva {
     namespace smt {
@@ -57,15 +50,12 @@ namespace uva {
                         static const string STACK_LOAD_FIELD_NAME;
 
                         //Typedef the loads array data structure for storing the stack load percent values
-                        typedef vector<int64_t> loads_array;
+                        typedef vector<int64_t> stack_loads;
 
                         /**
-                         * The basic constructor. This class is just a wrapper for a
-                         * JSON object, but it does not own it.
-                         * @param data_obj the reference to the encapsulated JSON object
+                         * The basic constructor.
                          */
-                        trans_sent_data(json::object_t & data_obj)
-                        : response_msg(), m_data_obj(data_obj) {
+                        trans_sent_data() : response_msg() {
                             //Nothing to be done here
                         }
 
@@ -75,18 +65,6 @@ namespace uva {
                         virtual ~trans_sent_data() {
                             //Nothing to be done here
                         }
-
-                        /**
-                         * Allows to replace a stored reference to a JSON object with a new reference.
-                         * @param data_obj the reference to a new JSON object.
-                         */
-                        inline void set_sent_data((json::object_t & data_obj)) {
-                            m_data_obj = data_obj;
-                        }
-
-                    protected:
-                        //Stores the reference to the encapsulated JSON object
-                        json::object_t & m_data_obj;
                     };
 
                 }

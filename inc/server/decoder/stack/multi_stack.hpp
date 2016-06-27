@@ -30,8 +30,6 @@
 #include <sstream>
 #include <functional>
 
-#include "server/trans_info.hpp"
-
 #include "common/utils/string_utils.hpp"
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
@@ -46,6 +44,8 @@
 #include "server/decoder/stack/stack_level.hpp"
 #include "server/decoder/stack/stack_data.hpp"
 
+#include "server/messaging/trans_sent_data_out.hpp"
+
 using namespace std;
 using namespace std::placeholders;
 
@@ -55,7 +55,7 @@ using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 
 using namespace uva::smt::bpbd::server;
-
+using namespace uva::smt::bpbd::server::messaging;
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::lm::proxy;
 using namespace uva::smt::bpbd::server::rm::proxy;
@@ -164,11 +164,11 @@ namespace uva {
 
                             /**
                              * Allows to fill in the translation info with the stack information
-                             * @param info the translation info to fill in
+                             * @param sent_data [in/out] the container object for the translation task info
                              */
-                            virtual void get_trans_info(trans_info & info) const {
+                            virtual void get_trans_info(trans_sent_data_out & sent_data) const {
                                 for (int32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
-                                    m_levels[level]->get_trans_info(info);
+                                    m_levels[level]->get_trans_info(sent_data);
                                 }
                             }
 

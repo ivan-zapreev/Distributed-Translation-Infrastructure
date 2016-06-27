@@ -29,16 +29,22 @@
 #include <string>
 #include <vector>
 
-#include "trans_task.hpp"
+#include "server/trans_task.hpp"
+
 #include "common/utils/threads.hpp"
+
 #include "common/messaging/trans_session_id.hpp"
-#include "common/messaging/trans_job_request.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/status_code.hpp"
 
+#include "server/messaging/trans_job_req_in.hpp"
+#include "server/messaging/trans_job_resp_out.hpp"
+
 using namespace std;
 using namespace std::placeholders;
-using namespace uva::smt::bpbd::common::messaging;
+
+using namespace uva::smt::bpbd::server::messaging;
+
 using namespace uva::utils::threads;
 
 namespace uva {
@@ -73,11 +79,10 @@ namespace uva {
                      * @param session_id the id of the session from which the translation request is received
                      * @param trans_req the reference to the translation job request to get the data from.
                      */
-                    trans_job(const session_id_type session_id, const trans_job_request & trans_req)
+                    trans_job(const session_id_type session_id, const trans_job_req_in & trans_req)
                     : m_session_id(session_id), m_job_id(trans_req.get_job_id()),
                     m_is_trans_info(trans_req.is_trans_info()), m_done_tasks_count(0),
-                    m_status_code(status_code::RESULT_UNDEFINED),
-                    m_status_msg(""), m_target_text("") {
+                    m_num_cancel_tasks(0), m_num_error_tasks(0) {
                         LOG_DEBUG << "Creating a new translation job " << this << " with job_id: "
                                 << m_job_id << " session id: " << m_session_id << END_LOG;
 
@@ -142,30 +147,6 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to retrieve the translation task result code
-                     * @return the translation task result code
-                     */
-                    inline status_code get_status_code() const {
-                        return m_status_code;
-                    }
-
-                    /**
-                     * Allows to retrieve the translation job error message
-                     * @return the translation job error message
-                     */
-                    inline const string & get_status_msg() const {
-                        return m_status_msg;
-                    }
-
-                    /**
-                     * Allows to retrieve the translation task result text
-                     * @return the translation task result text
-                     */
-                    inline const string & get_target_text() const {
-                        return m_target_text;
-                    }
-
-                    /**
                      * Allows to cancel the given translation job by telling all the translation tasks to stop.
                      */
                     inline void cancel() {
@@ -204,7 +185,6 @@ namespace uva {
                         return (m_done_tasks_count == m_tasks.size());
                     }
 
-
                     /**
                      * Is used from the translation task to notify the translation
                      * job that the task is ready. This method is thread safe.
@@ -218,6 +198,21 @@ namespace uva {
 
                         {
                             recursive_guard guard_tasks(m_tasks_lock);
+
+                            //Get the translation task status and count
+                            const status_code status = task->get_status_code();
+
+                            //Count the number of CANCELLED/ERROR tasks
+                            switch (status) {
+                                case status_code::RESULT_ERROR:
+                                    m_num_error_tasks++;
+                                    break;
+                                case status_code::RESULT_CANCELED:
+                                    m_num_cancel_tasks++;
+                                    break;
+                                default:
+                                    break;
+                            }
 
                             //Increment the finished tasks count
                             m_done_tasks_count++;
@@ -241,80 +236,68 @@ namespace uva {
                         }
                     }
 
-                public: 
-                    
+                public:
+
                     /**
                      * Allows to compile the end job result, e.g. based on the task results,
                      * come up with the job's result code and the translated text.
-                     * @param data [out] the object to store the translation job response data to be sent
+                     * @param resp_data [out] the object to store the translation job response data to be sent
                      */
-                    inline void collect_job_results(trans_job_resp_data & data) {
-                        LOG_DEBUG << "Combining the job " << this << " result!" << END_LOG;
-
-                        //ToDo: Set the data into the translation job response data
-                        
-                        //Declare the variables for counting the number of CANCELED/ERROR tasks
-                        uint32_t num_canceled = 0, num_error = 0;
-
-                        //Define the translation task info object
-                        trans_info info;
+                    inline void collect_job_results(trans_job_resp_out & resp_data) {
+                        LOG_DEBUG1 << "Combining the job " << this << " result!" << END_LOG;
 
                         //Iterate through the translation tasks and combine the results
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
                             //Get the task pointer for future use
                             trans_task_ptr task = *it;
 
-                            //Get the translation job result
-                            const status_code status = task->get_status_code();
+                            LOG_DEBUG1 << "Adding a new sentence result data" << END_LOG;
 
-                            //Count the number of CANCELLED/ERROR tasks
-                            switch (status) {
-                                case status_code::RESULT_ERROR:
-                                    num_error++;
-                                    break;
-                                case status_code::RESULT_CANCELED:
-                                    num_canceled++;
-                                    break;
-                                default:
-                                    break;
-                            }
+                            //Allocate a new translated sentence data
+                            trans_sent_data_out & sent_data = resp_data.add_new_sent_data();
 
-                            //Append the next task result
-                            m_target_text += task->get_target_text() + "\n";
+                            //Set the target sentence
+                            sent_data.set_trans_text(task->get_target_text());
+
+                            //Set the sentence status
+                            sent_data.set_status(task->get_status_code(), task->get_status_msg());
 
                             //Append the task translation info if needed and the translation was finished
-                            if (m_is_trans_info && (status == status_code::RESULT_OK)) {
+                            if (m_is_trans_info && (task->get_status_code() == status_code::RESULT_OK)) {
+                                LOG_DEBUG1 << "Getting the translation info data" << END_LOG;
                                 //Get the translation task info
-                                task->get_trans_info(info);
-                                m_target_text += info.serialize() + "\n";
+                                task->get_trans_info(sent_data);
                             }
 
                             LOG_DEBUG1 << "The target text of task: " << *task << " has been retrieved!" << END_LOG;
                         }
 
-                        LOG_DEBUG2 << "The translation job " << this << " result is:\n" << m_target_text << END_LOG;
+                        //Decide on the status code and message
+                        set_job_status(resp_data);
 
-                        //Remove the last sentence new line symbol
-                        m_target_text.substr(0, m_target_text.size() - 1);
+                        LOG_DEBUG1 << "The translation job " << this << " result is ready!" << END_LOG;
+                    }
 
-                        //Decide on the result code
-                        if ((num_canceled == 0) && (num_error == 0)) {
+                    /**
+                     * This function sets the translation job response status
+                     * @param resp_data the translation job response to set the status into
+                     */
+                    void set_job_status(trans_job_resp_out & resp_data) {
+                        if ((m_num_cancel_tasks == 0) && (m_num_error_tasks == 0)) {
+                            LOG_DEBUG2 << "The translation job " << this << " status is: OK" << END_LOG;
                             //If there is no canceled jobs then the result is good
-                            m_status_code = status_code::RESULT_OK;
-                            m_status_msg = "The text was fully translated!";
+                            resp_data.set_status(status_code::RESULT_OK, "The text was fully translated!");
                         } else {
-                            if (num_canceled == m_done_tasks_count) {
+                            if (m_num_cancel_tasks == m_done_tasks_count) {
+                                LOG_DEBUG2 << "The translation job " << this << " status is: CANCELED" << END_LOG;
                                 //All of the tasks have been canceled
-                                m_status_code = status_code::RESULT_CANCELED;
-                                m_status_msg = "The translation job has been canceled!";
+                                resp_data.set_status(status_code::RESULT_CANCELED, "The translation job has been canceled!");
                             } else {
+                                LOG_DEBUG2 << "The translation job " << this << " status is: PARTIAL" << END_LOG;
                                 //Some of the sentences were translated but not all of them
-                                m_status_code = status_code::RESULT_PARTIAL;
-                                m_status_msg = "The text was partially translated!";
+                                resp_data.set_status(status_code::RESULT_PARTIAL, "The text was partially translated!");
                             }
                         }
-
-                        LOG_DEBUG << "The translation job " << this << " result is ready!" << END_LOG;
                     }
 
                 private:
@@ -339,14 +322,9 @@ namespace uva {
                     //Stores the list of translation tasks of this job
                     tasks_list_type m_tasks;
 
-                    //Stores the translation job result code
-                    status_code m_status_code;
-
-                    //Stores the translation job error message
-                    string m_status_msg;
-
-                    //Stores the translation job result text
-                    string m_target_text;
+                    //Stores the number of canceled and error tasks
+                    size_t m_num_cancel_tasks;
+                    size_t m_num_error_tasks;
                 };
             }
         }

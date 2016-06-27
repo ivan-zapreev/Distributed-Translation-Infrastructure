@@ -33,19 +33,25 @@
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
-#include "common/messaging/trans_job_request.hpp"
+
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
-#include "trans_job_pool.hpp"
-#include "trans_job.hpp"
+
+#include "server/trans_job_pool.hpp"
+#include "server/trans_job.hpp"
+
+#include "server/messaging/trans_job_req_in.hpp"
+#include "server/messaging/trans_job_resp_out.hpp"
 
 using namespace std;
 using namespace std::placeholders;
+
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
-using namespace uva::smt::bpbd::common::messaging;
+
+using namespace uva::smt::bpbd::server::messaging;
 
 namespace uva {
     namespace smt {
@@ -148,7 +154,7 @@ namespace uva {
                      * @param hdl [in] the connection handler to identify the session object.
                      * @param trans_req [in] the translation job request reference
                      */
-                    void translate(websocketpp::connection_hdl hdl, trans_job_request & trans_req) {
+                    void translate(websocketpp::connection_hdl hdl, trans_job_req_in & trans_req) {
                         //Declare the session id variable
                         session_id_type session_id = session_id::UNDEFINED_SESSION_ID;
 
@@ -266,7 +272,7 @@ namespace uva {
                         //If the sender function is present, and the handler is not expired
                         if (!hdl.expired()) {
                             //Create the translation job response
-                            trans_job_response response;
+                            trans_job_resp_out response;
                             
                             //Populate the translation job response with the data
                             trans_job->collect_job_results(response);

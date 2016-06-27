@@ -37,7 +37,7 @@ namespace uva {
                     /**
                      * This class represents a JSON message begin sent between the client and the server.
                      */
-                    class outgoing_msg : private msg_base {
+                    class outgoing_msg : public msg_base {
                     public:
 
                         /**
@@ -72,7 +72,7 @@ namespace uva {
                          * @return the string representation of the message
                          */
                         inline string serialize() const {
-                            return m_json.size();
+                            return m_json.dump();
                         }
 
                         /**
@@ -82,18 +82,8 @@ namespace uva {
                          * @param value the value
                          */
                         template<typename value_type>
-                        static inline void set_value(json::object_t & object, const string & field_name, const value_type & value) {
+                        static inline void set_value(json & object, const string & field_name, const value_type & value) {
                             object[field_name] = value;
-                        }
-                        
-                    protected:
-
-                        /**
-                         * Allows to get a reference to the internally stored json object
-                         * @return the reference to the internally stored json object.
-                         */
-                        inline json & get_json() {
-                            return m_json;
                         }
                     };
 

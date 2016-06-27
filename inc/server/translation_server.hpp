@@ -36,15 +36,16 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "common/messaging/json_msg.hpp"
-#include "common/messaging/trans_job_response.hpp"
-#include "common/messaging/trans_job_request.hpp"
-#include "common/messaging/supp_lang_request.hpp"
-#include "common/messaging/supp_lang_response.hpp"
 #include "common/messaging/status_code.hpp"
+#include "common/messaging/incoming_msg.hpp"
 
-#include "trans_manager.hpp"
-#include "server_parameters.hpp"
+#include "server/trans_manager.hpp"
+#include "server/server_parameters.hpp"
+
+#include "server/messaging/supp_lang_req_in.hpp"
+#include "server/messaging/trans_job_req_in.hpp"
+#include "server/messaging/supp_lang_resp_out.hpp"
+#include "server/messaging/trans_job_resp_out.hpp"
 
 using namespace std;
 using namespace std::placeholders;
@@ -78,7 +79,7 @@ namespace uva {
                     translation_server(const server_parameters &params)
                     : m_manager(params.m_num_threads), m_params(params) {
                         //Initialize the supported languages and store the response for future use
-                        supp_lang_response supp_lang_resp;
+                        supp_lang_resp_out supp_lang_resp;
                         supp_lang_resp.add_supp_lang(params.m_source_lang, params.m_target_lang);
                         m_supp_lang_resp = supp_lang_resp.serialize();
 
@@ -225,7 +226,7 @@ namespace uva {
                         LOG_DEBUG << "Received a message!" << END_LOG;
 
                         //Create an empty json message
-                        json_msg jmsg;
+                        incoming_msg * jmsg = new incoming_msg();
 
                         //De-serialize the message and then handle based on its type
                         try {
@@ -234,10 +235,10 @@ namespace uva {
                             LOG_DEBUG << "Received JSON msg: " << raw_msg_str << END_LOG;
                             
                             //De-serialize the message
-                            jmsg.de_serialize(raw_msg_str);
+                            jmsg->de_serialize(raw_msg_str);
 
                             //Handle the request message based on its type
-                            switch (jmsg.get_type()) {
+                            switch (jmsg->get_type()) {
                                 case msg_type::MESSAGE_TRANS_JOB_REQ:
                                     translation_job(hdl, jmsg);
                                     break;
@@ -245,7 +246,7 @@ namespace uva {
                                     language_request(hdl, jmsg);
                                     break;
                                 default:
-                                    THROW_EXCEPTION(string("Unsupported request type: ") + to_string(jmsg.get_type()));
+                                    THROW_EXCEPTION(string("Unsupported request type: ") + to_string(jmsg->get_type()));
                             }
                         } catch (std::exception & e) {
                             //Send the error response
@@ -257,9 +258,12 @@ namespace uva {
                      * This method allows to handle the supported-languages request
                      * This function must not throw!
                      * @param hdl the connection handler
-                     * @param msg a reference to the JSON object storing the request data.
+                     * @param msg a pointer to the JSON object storing the request data, not NULL.
                      */
-                    inline void language_request(websocketpp::connection_hdl hdl, const json_msg & msg) {
+                    inline void language_request(websocketpp::connection_hdl hdl, const incoming_msg * msg) {
+                        //Create the supported languages request message
+                        supp_lang_req_in supp_lang_req(msg);
+                        
                         //Send the response supported languages response
                         send_response(hdl, m_supp_lang_resp);
                     }
@@ -268,11 +272,11 @@ namespace uva {
                      * This method allows to handle the translation job request
                      * This function must not throw!
                      * @param hdl the connection handler
-                     * @param msg a reference to the JSON object storing the request data.
+                     * @param msg a pointer to the JSON object storing the request data, not NULL.
                      */
-                    inline void translation_job(websocketpp::connection_hdl hdl, const json_msg & msg) {
+                    inline void translation_job(websocketpp::connection_hdl hdl, const incoming_msg * msg) {
                         //Create translation job request, will be deleted by the translation job
-                        trans_job_request trans_req(msg);
+                        trans_job_req_in trans_req(msg);
 
                         //Declare the job id for the case of needed error reporting
                         job_id_type job_id_val = job_id::UNDEFINED_JOB_ID;
@@ -297,7 +301,7 @@ namespace uva {
                             LOG_ERROR << "job " << job_id_val << ": " << error_msg << END_LOG;
 
                             //Create the reply message, with or without job id
-                            trans_job_response response(job_id_val, status_code::RESULT_ERROR, error_msg);
+                            trans_job_resp_out response(job_id_val, status_code::RESULT_ERROR, error_msg);
 
                             //Send the response
                             send_response(hdl, response.serialize());

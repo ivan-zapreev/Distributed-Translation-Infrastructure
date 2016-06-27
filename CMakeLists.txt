@@ -69,11 +69,9 @@ set(BPBD_SERVER_SOURCES
     src/server/lm/builders/lm_gram_builder.cpp
     src/common/utils/monitor/statistics_monitor.cpp 
     src/common/utils/logging/logger.cpp
-    src/common/messaging/json_msg.cpp
     src/common/messaging/trans_job_code.cpp
-    src/common/messaging/trans_job_request.cpp
-    src/common/messaging/trans_job_resp_data.cpp
-    src/common/messaging/supp_lang_response.cpp
+    src/common/messaging/messaging.cpp
+    src/server/messaging/messaging.cpp
     src/server/trans_task_pool_worker.cpp
     src/server/trans_task_pool.cpp
 )
@@ -86,10 +84,9 @@ add_executable(bpbd-server ${BPBD_SERVER_SOURCES})
 set(BPBD_CLIENT_SOURCES
     src/client/bpbd_client.cpp
     src/common/utils/logging/logger.cpp
-    src/common/messaging/json_msg.cpp
     src/common/messaging/trans_job_code.cpp
-    src/common/messaging/trans_job_request.cpp
-    src/common/messaging/trans_job_resp_data.cpp
+    src/common/messaging/messaging.cpp
+    src/client/messaging/messaging.cpp
     src/client/trans_job_status.cpp
 )
 #Define the server executable
