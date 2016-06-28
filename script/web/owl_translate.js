@@ -23,15 +23,21 @@ var MSG_TYPE_ENUM = {
     MESSAGE_TRANS_JOB_RESP : 4
 };
 
+//This enumeration stores the status code value
+var STATUS_CODE_ENUM = {
+    RESULT_UNDEFINED : 0,
+    RESULT_UNKNOWN : 1,
+    RESULT_OK : 2,
+    RESULT_ERROR : 3,
+    RESULT_CANCELED : 4,
+    RESULT_PARTIAL : 5
+};
+
 //Declare the supported languages request
 var SUPPORTED_LANG_REQ = {"prot_ver" : PROTOCOL_VERSION, "msg_type" : MSG_TYPE_ENUM.MESSAGE_SUPP_LANG_REQ};
 //Declare the supported languages request
 var TRAN_JOB_REQ_BASE = {"prot_ver" : PROTOCOL_VERSION, "msg_type" : MSG_TYPE_ENUM.MESSAGE_TRANS_JOB_REQ};
 
-//Declare the prefix of the translation job response message
-var TRANS_JOB_RESPONSE_PREFIX = "TRAN_JOB_RESP";
-//Declare the prefix of the supported languages response message
-var SUPP_LANG_RESPONSE_PREFIX = "SUPP_LANG_RESP";
 //Declare the "Please select" string for the srouce/target language select boxes
 var PLEASE_SELECT_STRING = "Please select";
 
@@ -61,6 +67,68 @@ function update_conn_status(ws_status) {
         break;
     }
 }
+
+/**
+ * Allows to translate the status code number into a value
+ * @param {Number} status_code the status code received from the server
+ * @return {String} the string representation of the status code
+ */
+function get_status_code_string(status_code) {
+    "use strict";
+    
+    switch (status_code) {
+    case STATUS_CODE_ENUM.RESULT_OK:
+        return "FULLY TRANSLATED";
+    case STATUS_CODE_ENUM.RESULT_ERROR:
+        return "FAILED TO TRANSLATE";
+    case STATUS_CODE_ENUM.RESULT_CANCELED:
+        return "CANCELED TRANSLATION";
+    case STATUS_CODE_ENUM.RESULT_PARTIAL:
+        return "PARTIALY TRANSLATED";
+    default:
+        return "oooOPS, unknown";
+    }
+}
+
+/**
+ * Allows to visualize the status code and message if needed
+ * @param {html span} to_text_span the span to contain the target translation
+ * @param {Number} stat_code the job response status code
+ * @param {String} stat_msg the status message string the status message
+ */
+function visualize_status_code(to_text_span, stat_code, stat_msg) {
+    "use strict";
+    
+    switch (stat_code) {
+    case STATUS_CODE_ENUM.RESULT_OK:
+            to_text_span.style.boxShadow = "0 0 10px green";
+            break;
+    case STATUS_CODE_ENUM.RESULT_ERROR:
+            to_text_span.style.boxShadow = "0 0 10px red";
+            window.alert("Server status: " + stat_msg);
+            break;
+    case STATUS_CODE_ENUM.RESULT_CANCELED:
+            window.alert("Server status: " + stat_msg);
+            to_text_span.style.boxShadow = "0 0 10px orange";
+            break;
+    case STATUS_CODE_ENUM.RESULT_PARTIAL:
+            window.alert("Server status: " + stat_msg);
+            to_text_span.style.boxShadow = "0 0 10px yellow";
+            break;
+    default:
+            to_text_span.style.boxShadow = "none";
+            break;
+    }
+}
+
+/**
+ * Allows to re-set the status code visualization
+ */
+function remove_status_code_visual() {
+    to_text_span = document.getElementById("to_text");
+    visualize_status_code(to_text_span, STATUS_CODE_ENUM.RESULT_UNDEFINED, "");
+}
+
 
 /**
  * This function allows to update the translation progress bar status.
@@ -138,7 +206,7 @@ function send_translation_request(new_source_text) {
     trans_job_req.target_lang = get_selected_target_lang();
 
     //Set the translation info request to false
-    trans_job_req.is_trans_info = false;
+    trans_job_req.is_trans_info = true;
 
     //Set the source text split line by line
     trans_job_req.source_sent = new_source_text.split('\n');
@@ -164,7 +232,10 @@ function do_translate() {
     
     if ((source_text !== "") && (new_source_md5 !== client_data.prev_source_md5)) {
         window.console.log("The new text is now empty and is different from the previous");
-    
+        
+        //Remove the visualization of the status
+        remove_status_code_visual();
+
         //Store the new previous translation request md5
         client_data.prev_source_md5 = new_source_md5;
     
@@ -245,22 +316,35 @@ function on_open() {
  */
 function set_translation(trans_response) {
     "use strict";
-    var target, i, to_text_area;
+    var to_text_span, i, target, status;
     
     //Check that the responce is for the most recent job
     if (trans_response.job_id === client_data.prev_job_req_id) {
         //Get the text element to put the values into
-        to_text_area = document.getElementById("to_text");
-        to_text_area.value = "";
+        to_text_span = document.getElementById("to_text");
+        to_text_span.innerHTML = "";
+        
+        //Set the border color based on the overall status
+        visualize_status_code(to_text_span, trans_response.stat_code, trans_response.stat_msg);
     
         //Assemble the data
         for (i = 0; i < trans_response.target_data.length; i += 1) {
             //Get the target
             target = trans_response.target_data[i];
-            //ToDo: Instead of using a text area to store the data we
-            //shall use html elements to that we can put annotations
-            //on them for the sake of giving error messages etc.
-            to_text_area.value += target.trans_text + "\n";
+            //Create the status string, to hover
+            status = get_status_code_string(target.stat_code);
+            //Add the message if it is not empty
+            if (target.stat_code !== STATUS_CODE_ENUM.RESULT_OK) {
+                status += ": " + target.stat_msg;
+            } else {
+                //Check if the stack loads are present, if yes, add them
+                if (target.hasOwnProperty('stack_load')) {
+                    status += ", multi-stack loads(%): [" + target.stack_load.join(" ") + "]";
+                }
+            }
+            //Add the translation element to the panel
+            to_text_span.innerHTML += "<span data-tooltip='" + status +
+                "' class='target_sent_tag'>" + target.trans_text + "</span>";
         }
     } else {
         window.console.log("Received a translation job response for job: " + trans_response.job_id +

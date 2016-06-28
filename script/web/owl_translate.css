@@ -48,17 +48,21 @@ div#main {
 div#from_part {
    display: inline-block;
    width: 43%;
+   vertical-align:top;
 }
 
 div#middle_part {
    display: inline-block;
-   width: 100px;
+   width: 4%;
+   min-width: 100px;
    height: 100%;
+   vertical-align:top;
 }
 
 div#to_part {
    display: inline-block;
    width: 43%;
+   vertical-align:top;
 }
 
 img#progress {
@@ -77,17 +81,49 @@ input#trans_btn {
     border-radius: 5px;
 }
 
+.text_data {
+   font-family: arial,sans-serif;
+   font-size: 16px;
+   width: 100%;
+   margin-top: 5px;
+   min-height: 250px;
+   max-height: 750%;
+   min-width: 180px;
+   padding: 8px;
+   resize: vertical;
+   box-sizing: border-box;
+}
+
 textarea#from_text {
 }
 
-textarea#to_text {
+span#to_text {
    background-color : #f2f1f1;
+   display : inline-block;
+   border: 1px solid;
+   overflow: auto;
 }
 
-textarea {
-   width: 100%;
-   height: 250px;
-   margin-top: 5px;
-   min-height: 90px;
-   min-width: 180px;
+span.target_sent_tag {
+    display: block;
+    border-radius: 3px;
+}
+
+span.target_sent_tag:hover {
+    background-color: #f9e79f;
+}
+
+span.target_sent_tag:hover:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    background: #bb8fce;
+    padding: 3px 7px;
+    color: #e6fd52;
+    border: black, 1px, solid;
+    border-radius: 2px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    margin-left: 7px;
+    margin-top: -24px;
+
 }
