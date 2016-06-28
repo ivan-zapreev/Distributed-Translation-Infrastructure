@@ -246,6 +246,9 @@ namespace uva {
                     inline void collect_job_results(trans_job_resp_out & resp_data) {
                         LOG_DEBUG1 << "Combining the job " << this << " result!" << END_LOG;
 
+                        //Set the translation job id
+                        resp_data.set_job_id(m_job_id);
+                        
                         //Iterate through the translation tasks and combine the results
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
                             //Get the task pointer for future use

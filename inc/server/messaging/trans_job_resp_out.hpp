@@ -90,7 +90,7 @@ namespace uva {
                          * @param msg the status message
                          */
                         inline void set_status(const status_code & code, const string & msg) {
-                            m_json[STAT_CODE_FIELD_NAME] = code;
+                            m_json[STAT_CODE_FIELD_NAME] = code.val();
                             m_json[STAT_MSG_FIELD_NAME] = msg;
                         }
 

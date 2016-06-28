@@ -208,7 +208,7 @@ int main(int argc, char** argv) {
         LOG_USAGE << "Finishing the translation process ..." << END_LOG;
         manager.stop();
 
-        LOG_USAGE << "The job is done, the results are in: '" << params.m_target_file << "'" << END_LOG;
+        LOG_USAGE << "The translation is done, the results are in: '" << params.m_target_file << "'" << END_LOG;
     } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.what() << END_LOG;

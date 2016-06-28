@@ -56,7 +56,7 @@ namespace uva {
                          * @param data_obj the reference to the encapsulated JSON object
                          */
                         trans_sent_data_out(json & data_obj)
-                        : trans_sent_data(), m_data_obj(data_obj) {
+                        : trans_sent_data(), m_data_obj(&data_obj) {
                         }
 
                         /**
@@ -68,8 +68,8 @@ namespace uva {
                             LOG_DEBUG << "Setting the sentence status code: " << to_string(code)
                                     << ", message: " << msg << END_LOG;
                             
-                            m_data_obj[STAT_CODE_FIELD_NAME] = code;
-                            m_data_obj[STAT_MSG_FIELD_NAME] = msg;
+                            m_data_obj->operator[](STAT_CODE_FIELD_NAME) = code.val();
+                            m_data_obj->operator[](STAT_MSG_FIELD_NAME) = msg;
                         }
 
                         /**
@@ -79,7 +79,7 @@ namespace uva {
                         inline void set_trans_text(const string & text) {
                             LOG_DEBUG << "Setting the translated sentence: " << text << END_LOG;
                             
-                            m_data_obj[TRANS_TEXT_FIELD_NAME] = text;
+                            m_data_obj->operator[](TRANS_TEXT_FIELD_NAME) = text;
                         }
 
                         /**
@@ -88,7 +88,7 @@ namespace uva {
                          */
                         inline void add_stack_load(const float load) {
                             LOG_DEBUG1 << "Adding the stack load: " << to_string(load) << END_LOG;
-                            json & data = m_data_obj[STACK_LOAD_FIELD_NAME];
+                            json & data = m_data_obj->operator[](STACK_LOAD_FIELD_NAME);
                             LOG_DEBUG2 << "Obtained the container for: " << STACK_LOAD_FIELD_NAME
                                     << ", content: " << data << END_LOG;
                             data.push_back(load);
@@ -102,12 +102,12 @@ namespace uva {
                         inline void set_sent_data(json & data_obj) {
                             LOG_DEBUG1 << "Setting a new sentence data JSON" << END_LOG;
                             
-                            m_data_obj = data_obj;
+                            m_data_obj = &data_obj;
                         }
 
                     private:
-                        //Stores the reference to the encapsulated JSON object
-                        json & m_data_obj;
+                        //Stores a non NULL pointer to the encapsulated JSON object
+                        json * m_data_obj;
                     };
 
                 }

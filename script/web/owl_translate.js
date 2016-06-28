@@ -238,21 +238,6 @@ function on_open() {
     enable_interface(true);
 }
 
-
-/**
- * Allows to parse the translation job response into the header object.
- * @param {String} the string representing the header object
- * @return {Object} the header object
- */
-function parse_trans_resp_header(header_str) {
-    "use strict";
-    var header = {"job_id" : 0, "code_val" : 0};
-    
-    //ToDo: Parse the header into the header object, make the server return JSON header?
-    
-    return header;
-}
-
 /**
  * This function is called when a translation response is to be set into the interface
  * Note that the translation response will not be set if it is outdated.
@@ -260,22 +245,26 @@ function parse_trans_resp_header(header_str) {
  */
 function set_translation(trans_response) {
     "use strict";
-    var lines, header, i, to_text_area;
+    var target, i, to_text_area;
     
-    //Split the response into lines
-    lines = trans_response.split('\n');
+    //Check that the responce is for the most recent job
+    if (trans_response.job_id === client_data.prev_job_req_id) {
+        //Get the text element to put the values into
+        to_text_area = document.getElementById("to_text");
+        to_text_area.value = "";
     
-    //The first line is the header
-    header = parse_trans_resp_header(lines[0]);
-    
-    //Get the text element to put the values into
-    to_text_area = document.getElementById("to_text");
-    to_text_area.value = "";
-    
-    //Implement setting the translation response in case it is not outdated.
-    for (i = 1; i < lines.length; i += 1) {
-        //ToDo: Parse the line in order to get the status away
-        to_text_area.value += lines[i] + "\n";
+        //Assemble the data
+        for (i = 0; i < trans_response.target_data.length; i += 1) {
+            //Get the target
+            target = trans_response.target_data[i];
+            //ToDo: Instead of using a text area to store the data we
+            //shall use html elements to that we can put annotations
+            //on them for the sake of giving error messages etc.
+            to_text_area.value += target.trans_text + "\n";
+        }
+    } else {
+        window.console.log("Received a translation job response for job: " + trans_response.job_id +
+                           " but the most recent one is " + client_data.prev_job_req_id + ", ignoring!");
     }
     
     window.console.log("Decrement the number of active translations");
