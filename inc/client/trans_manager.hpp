@@ -199,12 +199,12 @@ namespace uva {
                             m_sending_thread_ptr->join();
                         }
 
-                        LOG_INFO << "Disconnecting the client" << END_LOG;
+                        LOG_INFO << "Disconnecting the client ... " << END_LOG;
 
                         //Disconnect from the server
                         m_client.disconnect();
 
-                        LOG_INFO << "The translation process is finished" << END_LOG;
+                        LOG_INFO << "The client is disconnected" << END_LOG;
 
                         //Write the translations we have so far into the file
                         write_result_to_file();
@@ -214,17 +214,29 @@ namespace uva {
 
                     /**
                      * Allows to store the response data
+                     * @param fis the first sentence number 
                      * @param resp the translation job response
                      * @param trans_file the file to write the translated text into
+                     * @param info_file the file to write the translation info into
                      */
-                    void store_targety_data(trans_job_resp_in * resp, ofstream & trans_file) {
+                    void store_targety_data(uint32_t fis, trans_job_resp_in * resp, ofstream & trans_file, ofstream & info_file) {
                         //If the result is ok or partial then just put the text into the file
                         const trans_sent_data_in * sent_data = resp->next_send_data();
                         while (sent_data != NULL) {
-                            //ToDo: Extend data by storing the translation status and info etc.
-                            trans_file << sent_data->get_trans_text() << "\n";
+                            //Dump the translated text
+                            trans_file << sent_data->get_trans_text() << std::endl;
+                            //Get the sentence status code
+                            const status_code code = sent_data->get_status_code();
+                            //Dump the status code and message and the translation info such as stack loads
+                            info_file << "--" << std::endl << "Sentence: " << to_string(fis) << " translation status: '"
+                                    << code << "', message: " << sent_data->get_status_msg() << std::endl;
+                            if (sent_data->has_stack_load()) {
+                                info_file << "Multi-stack loads: " << sent_data->get_stack_load() << std::endl;
+                            }
                             //Move to the next sentence if present
                             sent_data = resp->next_send_data();
+                            //Increment the sentence number
+                            ++fis;
                         }
                     }
 
@@ -234,30 +246,28 @@ namespace uva {
                      * @param lis the last sentence number
                      * @param job the translation job data
                      * @param trans_file the file to write to
+                     * @param info_file the file to write the translation info into
                      */
                     void write_received_job_result(const uint32_t fis, const uint32_t lis,
-                            const trans_job_ptr job, ofstream & trans_file) {
+                            const trans_job_ptr job, ofstream & trans_file, ofstream & info_file) {
                         //Get the response pointer
                         trans_job_resp_in * resp = job->m_response;
 
                         try {
                             //The job response is received but it can still be fully or partially canceled or be an error
                             const status_code code = resp->get_status_code();
-                            switch (code) {
-                                case status_code::RESULT_OK:
-                                case status_code::RESULT_PARTIAL:
-                                    store_targety_data(resp, trans_file);
-                                    break;
-                                case status_code::RESULT_ERROR:
-                                case status_code::RESULT_CANCELED:
-                                default:
-                                    THROW_EXCEPTION(string("Bad job status code: '") + code.str() + string("'"));
+
+                            //Dump the server response info
+                            info_file << "Server response status: '" << code << "', "
+                                    << "message: " << resp->get_status_msg() << std::endl;
+
+                            //Dump the sentences data in case the code is OK or PARTIAL
+                            if ((code == status_code::RESULT_OK) || (code == status_code::RESULT_PARTIAL)) {
+                                store_targety_data(fis, resp, trans_file, info_file);
                             }
                         } catch (std::exception & e) {
-                            //Write data to file
-                            trans_file << "<--------- Error: Sentences [" << to_string(fis) << ":"
-                                    << to_string(lis) << "] are NOT translated, error: '" << e.what()
-                                    << "'-------->\n";
+                            LOG_ERROR << "Could not dump data for sentences [" << to_string(fis)
+                                    << ":" << to_string(lis) << "]: " << e.what() << END_LOG;
                         }
                     }
 
@@ -265,46 +275,56 @@ namespace uva {
                      * Allows to generate the translation result file.
                      */
                     void write_result_to_file() {
-                        //Open the report file
-                        ofstream trans_file;
-                        trans_file.open(m_params.m_target_file);
+                        //Get the names for the translation and info files
+                        const string trans_file_name = m_params.m_target_file;
+                        const string info_file_name = m_params.m_target_file + ".log";
+
+                        //Open the report file and the info file
+                        ofstream trans_file, info_file;
+                        trans_file.open(trans_file_name);
+                        info_file.open(info_file_name);
                         //Declare the variable to store the line cursor
                         uint32_t line_cursor = 1;
 
-                        LOG_INFO << "Dumping translation results to file." << END_LOG;
+                        LOG_USAGE << "Dumping translation into '" << trans_file_name << "'" << END_LOG;
+                        LOG_INFO << "Storing logging into '" << info_file_name << "'" << END_LOG;
 
-                        //Go through the translation job data and write it into the files
-                        for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()); ++it) {
-                            //Get the translation job data
-                            const trans_job_ptr job = *it;
+                        try {
+                            ASSERT_CONDITION_THROW(!trans_file.is_open(), string("Could not open: ") + trans_file_name);
+                            ASSERT_CONDITION_THROW(!info_file.is_open(), string("Could not open: ") + info_file_name);
 
-                            //Compute the first and last sentence numbers for the case the job is not completed
-                            const uint32_t fis = line_cursor;
-                            const uint32_t lis = fis + job->m_num_sentences - 1;
+                            //Go through the translation job data and write it into the files
+                            for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()); ++it) {
+                                //Get the translation job data
+                                const trans_job_ptr job = *it;
 
-                            //Check on the translation job status
-                            const trans_job_status & status = job->m_status;
-                            switch (status) {
-                                case trans_job_status::STATUS_RES_RECEIVED:
-                                    write_received_job_result(fis, lis, job, trans_file);
-                                    break;
-                                case trans_job_status::STATUS_REQ_SENT_GOOD:
-                                case trans_job_status::STATUS_REQ_SENT_FAIL:
-                                case trans_job_status::STATUS_REQ_INITIALIZED:
-                                case trans_job_status::STATUS_UNDEFINED:
-                                default:
-                                    //Write data to file
-                                    trans_file << "<--------- Error: Sentences [" << to_string(fis) << ":"
-                                            << to_string(lis) << "] are NOT translated, status: '" << status
-                                            << "'-------->\n";
+                                //Compute the first and last sentence numbers for the case the job is not completed
+                                const uint32_t fis = line_cursor;
+                                const uint32_t lis = fis + job->m_num_sentences - 1;
+                                //Get the client-side job status
+                                const trans_job_status & status = job->m_status;
+
+                                //Log the client status
+                                info_file << "----------------------------------------------------" << std::endl;
+                                info_file << "Job id: " << to_string(job->m_request->get_job_id())
+                                        << ", sentences [" << to_string(fis) << ":"
+                                        << to_string(lis) << "], client status: '" << status << "'" << std::endl;
+
+                                //If the status is that the response is received, log it
+                                if (status == trans_job_status::STATUS_RES_RECEIVED) {
+                                    write_received_job_result(fis, lis, job, trans_file, info_file);
+                                }
+
+                                //Set the line cursor to the next line
+                                line_cursor = lis + 1;
                             }
-
-                            //Set the line cursor to the next line
-                            line_cursor = lis + 1;
+                        } catch (std::exception & e) {
+                            LOG_ERROR << "Could not dump results: " << e.what() << END_LOG;
                         }
 
-                        //Close the report file
+                        //Close the report and info files
                         trans_file.close();
+                        info_file.close();
                     }
 
                     /**
@@ -341,7 +361,7 @@ namespace uva {
                                     //Set the translation job status as received 
                                     m_ids_to_jobs_map[job_id]->m_status = trans_job_status::STATUS_RES_RECEIVED;
 
-                                    LOG_INFO << "The job " << job_id << " is finished, "
+                                    LOG_INFO1 << "The job " << job_id << " is finished, "
                                             << m_num_done_jobs << "/" << m_jobs_list.size()
                                             << "." << END_LOG;
                                 } else {

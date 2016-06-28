@@ -101,7 +101,7 @@ namespace uva {
                          * Allows to check if the stack loads are present
                          * @return true if the stack loads are present, otherwise false
                          */
-                        inline bool has_stack_load() {
+                        inline bool has_stack_load() const {
                             return incoming_msg::has_value(*m_data_obj, STACK_LOAD_FIELD_NAME);
                         }
 

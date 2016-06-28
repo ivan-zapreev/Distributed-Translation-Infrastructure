@@ -125,7 +125,7 @@ namespace uva {
                          * @param field_name the field name to be checked
                          * @return true if the field is contained, otherwise false
                          */
-                        inline bool has_value(const string & field_name) {
+                        inline bool has_value(const string & field_name) const {
                             return has_value(m_json, field_name);
                         }
                         
