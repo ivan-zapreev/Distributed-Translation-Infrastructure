@@ -281,16 +281,8 @@ namespace uva {
                         //Declare the job id for the case of needed error reporting
                         job_id_type job_id_val = job_id::UNDEFINED_JOB_ID;
                         try {
-                            //Check that the source/target language pairs are proper
-                            string source_lang = trans_req.get_source_lang();
-                            (void) to_lower(source_lang);
-                            string target_lang = trans_req.get_target_lang();
-                            (void) to_lower(target_lang);
-                            ASSERT_CONDITION_THROW(((m_params.m_source_lang != source_lang) ||
-                                    (m_params.m_target_lang != target_lang)),
-                                    string("Wrong source-target language pair: ") + source_lang +
-                                    string("->") + target_lang + string(", the server only supports: ") +
-                                    m_params.m_source_lang + string("->") + m_params.m_target_lang);
+                            //Check the source and target languages
+                            check_source_target_languages(trans_req.get_source_lang(), trans_req.get_target_lang());
 
                             //Store the job id in case of an error
                             job_id_val = trans_req.get_job_id();
@@ -309,6 +301,42 @@ namespace uva {
 
                             //Send the response
                             send_response(hdl, response.serialize());
+                        }
+                    }
+
+                protected:
+
+                    /**
+                     * Allows to check that the source and target languages are proper,
+                     * as the ones that this server instance supports.
+                     * @param source_lang the source language string, from the job request.
+                     * @param target_lang the target language string, from the job request.
+                     * @throws uva_exception in case the source or target language do not match.
+                     */
+                    void check_source_target_languages(string source_lang, string target_lang) {
+                        //Check for an exact match
+                        if (m_params.m_source_lang != source_lang) {
+                            //If no exact match then lowercase
+                            (void) to_lower(source_lang);
+                            //Check for a match again
+                            if (m_params.m_source_lang_lower != source_lang) {
+                                //If there is still no match then throw 
+                                THROW_EXCEPTION(string("Unsupported source language: '") + source_lang +
+                                        string("' the server only supports: '") + m_params.m_source_lang +
+                                        string("'"));
+                            }
+                        }
+                        //Check for an exact match
+                        if (m_params.m_target_lang != target_lang) {
+                            //If no exact match then lowercase
+                            (void) to_lower(target_lang);
+                            //Check for a match again
+                            if (m_params.m_target_lang_lower != target_lang) {
+                                //If there is still no match then throw 
+                                THROW_EXCEPTION(string("Unsupported target language: '") + target_lang +
+                                        string("' the server only supports: '") + m_params.m_target_lang +
+                                        string("'"));
+                            }
                         }
                     }
 

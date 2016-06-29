@@ -67,10 +67,14 @@ namespace uva {
                     //Stores the target language parameter name
                     static const string SE_TARGET_LANG_PARAM_NAME;
 
-                    //The source language name, lowercased
+                    //The source language name
                     string m_source_lang;
-                    //The target language name, lowercased
+                    //The source language name, lowercased
+                    string m_source_lang_lower;
+                    //The target language name
                     string m_target_lang;
+                    //The source language name, lowercased
+                    string m_target_lang_lower;
 
                     //The port to listen to
                     uint16_t m_server_port;
@@ -99,9 +103,11 @@ namespace uva {
                                 to_string(m_num_threads) +
                                 string(" must be larger than zero! "));
                         
-                        //Lowercase the source and target languages
-                        (void) to_lower(m_source_lang);
-                        (void) to_lower(m_target_lang);
+                        //Create the lowercase versions of the source and target languages
+                        m_source_lang_lower = m_source_lang;
+                        (void) to_lower(m_source_lang_lower);
+                        m_target_lang_lower = m_target_lang;
+                        (void) to_lower(m_target_lang_lower);
                     }
                 };
 
