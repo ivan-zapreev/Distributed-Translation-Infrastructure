@@ -33,6 +33,7 @@
 #include "common/utils/threads.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+#include "common/utils/string_utils.hpp"
 
 #include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_session_id.hpp"
@@ -50,6 +51,7 @@ using namespace std::placeholders;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
+using namespace uva::utils::text;
 
 using namespace uva::smt::bpbd::server::messaging;
 

@@ -213,7 +213,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         params.m_num_threads = get_integer<uint16_t>(ini, section, server_parameters::SE_NUM_THREADS_PARAM_NAME);
         params.m_source_lang = get_string(ini, section, server_parameters::SE_SOURCE_LANG_PARAM_NAME);
         params.m_target_lang = get_string(ini, section, server_parameters::SE_TARGET_LANG_PARAM_NAME);
-        params.verify();
+        params.finalize();
 
         LOG_USAGE << "Translation server from '" << params.m_source_lang << "' into '"
                 << params.m_target_lang << "' on port: '" << params.m_server_port

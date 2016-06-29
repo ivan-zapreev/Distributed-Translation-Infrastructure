@@ -67,9 +67,9 @@ namespace uva {
                     //Stores the target language parameter name
                     static const string SE_TARGET_LANG_PARAM_NAME;
 
-                    //The source language name
+                    //The source language name, lowercased
                     string m_source_lang;
-                    //The target language name
+                    //The target language name, lowercased
                     string m_target_lang;
 
                     //The port to listen to
@@ -93,11 +93,15 @@ namespace uva {
                     /**
                      * Allows to verify the parameters to be correct.
                      */
-                    void verify() {
+                    void finalize() {
                         ASSERT_CONDITION_THROW((m_num_threads == 0),
                                 string("The number of decoding threads: ") +
                                 to_string(m_num_threads) +
                                 string(" must be larger than zero! "));
+                        
+                        //Lowercase the source and target languages
+                        (void) to_lower(m_source_lang);
+                        (void) to_lower(m_target_lang);
                     }
                 };
 

@@ -231,9 +231,9 @@ namespace uva {
                         //De-serialize the message and then handle based on its type
                         try {
                             string raw_msg_str = raw_msg->get_payload();
-                            
+
                             LOG_DEBUG << "Received JSON msg: " << raw_msg_str << END_LOG;
-                            
+
                             //De-serialize the message
                             jmsg->de_serialize(raw_msg_str);
 
@@ -263,7 +263,7 @@ namespace uva {
                     inline void language_request(websocketpp::connection_hdl hdl, const incoming_msg * msg) {
                         //Create the supported languages request message
                         supp_lang_req_in supp_lang_req(msg);
-                        
+
                         //Send the response supported languages response
                         send_response(hdl, m_supp_lang_resp);
                     }
@@ -282,10 +282,14 @@ namespace uva {
                         job_id_type job_id_val = job_id::UNDEFINED_JOB_ID;
                         try {
                             //Check that the source/target language pairs are proper
-                            ASSERT_CONDITION_THROW(((m_params.m_source_lang != trans_req.get_source_lang()) ||
-                                    (m_params.m_target_lang != trans_req.get_target_lang())),
-                                    string("Wrong source-target language pair: ") + trans_req.get_source_lang() +
-                                    string("->") + trans_req.get_target_lang() + string(", the server only supports: ") +
+                            string source_lang = trans_req.get_source_lang();
+                            (void) to_lower(source_lang);
+                            string target_lang = trans_req.get_target_lang();
+                            (void) to_lower(target_lang);
+                            ASSERT_CONDITION_THROW(((m_params.m_source_lang != source_lang) ||
+                                    (m_params.m_target_lang != target_lang)),
+                                    string("Wrong source-target language pair: ") + source_lang +
+                                    string("->") + target_lang + string(", the server only supports: ") +
                                     m_params.m_source_lang + string("->") + m_params.m_target_lang);
 
                             //Store the job id in case of an error
@@ -296,7 +300,7 @@ namespace uva {
                         } catch (std::exception & ex) {
                             //Get the error message
                             string error_msg = ex.what();
-                            
+
                             //Locally report error
                             LOG_ERROR << "job " << job_id_val << ": " << error_msg << END_LOG;
 

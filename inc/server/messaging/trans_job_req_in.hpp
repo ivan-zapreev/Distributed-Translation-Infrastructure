@@ -64,23 +64,23 @@ namespace uva {
                          * Allows to get the client-issued job id
                          * @return the client-issued job id
                          */
-                        inline const job_id_type get_job_id() const {
+                        inline job_id_type get_job_id() const {
                             return m_inc_msg->get_value(JOB_ID_FIELD_NAME);
                         }
 
                         /**
                          * Allows to get the translation job source language
-                         * @return the translation job source language
+                         * @return the translation job source language, lowercased
                          */
-                        inline const string get_source_lang() const {
+                        inline string get_source_lang() const {
                             return m_inc_msg->get_value(SOURCE_LANG_FIELD_NAME);
                         }
 
                         /**
                          * Allows to get the translation job target language
-                         * @return the translation job target language
+                         * @return the translation job target language, lowercased
                          */
-                        inline const string get_target_lang() const {
+                        inline string get_target_lang() const {
                             return m_inc_msg->get_value(TARGET_LANG_FIELD_NAME);
                         }
 
@@ -88,7 +88,7 @@ namespace uva {
                          * Allows to check whether the client has requested the translation information
                          * @return true if the translation information is requested, otherwise false
                          */
-                        inline const bool is_trans_info() const {
+                        inline bool is_trans_info() const {
                             return m_inc_msg->get_value(IS_TRANS_INFO_FIELD_NAME);
                         }
 
