@@ -27,10 +27,10 @@ input#server_url:focus {
    color: black;
 }
 
-div#instant {
+div#trans_info {
 }
 
-input#trans_cb {
+input#trans_info_cb {
 }
 
 div.v_sep {

@@ -4,7 +4,8 @@ var client_data = {
     "active_translations" : 0,            //The number of active translations
     "prev_job_req_id" : 0,                //Stores the previously send translation job request
     "prev_source_md5" : "",               //Stores the previously sent translation job source text
-    "calcMD5" : null                      //The md5 function, to be initialized
+    "calcMD5" : null,                     //The md5 function, to be initialized
+    "server_url_inpt" : null              //Stores the server url input
 };
 
 //The communication protocol version value
@@ -42,28 +43,40 @@ var TRAN_JOB_REQ_BASE = {"prot_ver" : PROTOCOL_VERSION, "msg_type" : MSG_TYPE_EN
 var PLEASE_SELECT_STRING = "Please select";
 
 /**
+ * This function must be called in case one needs a new translation when the
+ * translation is requests, even if the given text has already been translated.
+ * I.e. this function is to be called when some client options change.
+ */
+function require_new_translation() {
+    "use strict";
+
+    client_data.prev_source_md5 = null;
+}
+
+
+/**
  * This function allows to update the current connection status
  * in the GUI. We use the same values as the Websocket connection.
  * @param {Number} ws_status the Webscoket status value to be stored
  */
 function update_conn_status(ws_status) {
     "use strict";
-    var status_span = document.getElementById("conn_status");
+
     switch (ws_status) {
     case window.WebSocket.CONNECTING:
-        status_span.innerHTML = "Connecting ...";
+        client_data.conn_status_span.innerHTML = "Connecting ...";
         break;
     case window.WebSocket.OPEN:
-        status_span.innerHTML = "Connected";
+        client_data.conn_status_span.innerHTML = "Connected";
         break;
     case window.WebSocket.CLOSING:
-        status_span.innerHTML = "Disconnecting ...";
+        client_data.conn_status_span.innerHTML = "Disconnecting ...";
         break;
     case window.WebSocket.CLOSED:
-        status_span.innerHTML = "Disconnected";
+        client_data.conn_status_span.innerHTML = "Disconnected";
         break;
     default:
-        status_span.innerHTML = "Puzzled :)";
+        client_data.conn_status_span.innerHTML = "Puzzled :)";
         break;
     }
 }
@@ -92,32 +105,31 @@ function get_status_code_string(status_code) {
 
 /**
  * Allows to visualize the status code and message if needed
- * @param {html span} to_text_span the span to contain the target translation
  * @param {Number} stat_code the job response status code
  * @param {String} stat_msg the status message string the status message
  */
-function visualize_status_code(to_text_span, stat_code, stat_msg) {
+function visualize_status_code(stat_code, stat_msg) {
     "use strict";
     
     switch (stat_code) {
     case STATUS_CODE_ENUM.RESULT_OK:
-            to_text_span.style.boxShadow = "0 0 10px green";
-            break;
+        client_data.to_text_span.style.boxShadow = "0 0 10px green";
+        break;
     case STATUS_CODE_ENUM.RESULT_ERROR:
-            to_text_span.style.boxShadow = "0 0 10px red";
-            window.alert("Server status: " + stat_msg);
-            break;
+        client_data.to_text_span.style.boxShadow = "0 0 10px red";
+        window.alert("Server status: " + stat_msg);
+        break;
     case STATUS_CODE_ENUM.RESULT_CANCELED:
-            window.alert("Server status: " + stat_msg);
-            to_text_span.style.boxShadow = "0 0 10px orange";
-            break;
+        window.alert("Server status: " + stat_msg);
+        client_data.to_text_span.style.boxShadow = "0 0 10px orange";
+        break;
     case STATUS_CODE_ENUM.RESULT_PARTIAL:
-            window.alert("Server status: " + stat_msg);
-            to_text_span.style.boxShadow = "0 0 10px yellow";
-            break;
+        window.alert("Server status: " + stat_msg);
+        client_data.to_text_span.style.boxShadow = "0 0 10px yellow";
+        break;
     default:
-            to_text_span.style.boxShadow = "none";
-            break;
+        client_data.to_text_span.style.boxShadow = "none";
+        break;
     }
 }
 
@@ -125,8 +137,9 @@ function visualize_status_code(to_text_span, stat_code, stat_msg) {
  * Allows to re-set the status code visualization
  */
 function remove_status_code_visual() {
-    to_text_span = document.getElementById("to_text");
-    visualize_status_code(to_text_span, STATUS_CODE_ENUM.RESULT_UNDEFINED, "");
+    "use strict";
+    
+    visualize_status_code(STATUS_CODE_ENUM.RESULT_UNDEFINED, "");
 }
 
 
@@ -139,28 +152,27 @@ function remove_status_code_visual() {
 function update_trans_status() {
     "use strict";
     
-    var progressImage = document.getElementById("progress");
     if (client_data.active_translations === 0) {
-        progressImage.src = "globe32.png";
+        client_data.progress_image.src = "globe32.png";
     } else {
-        progressImage.src = "globe32.gif";
+        client_data.progress_image.src = "globe32.gif";
     }
 }
 
 /**
  * Allows to get the selected element value from the select element with the given id
- * @param {String} select_id the id of the select element to get the selected value from
+ * @param {Object} the select element to get the selected value from
  * @param {String} the value of the selected element
  */
-function get_selected_lang(select_id) {
+function get_selected_lang(select) {
     "use strict";
-    var select, selected_lang;
     
-    select = document.getElementById(select_id);
+    var selected_lang;
+    
     selected_lang = select.options[select.selectedIndex].value;
-    window.console.log("The selected '" + select_id + "' language is: " + selected_lang);
+    window.console.log("The selected '" + select + "' language is: " + selected_lang);
     
-    return selected_lang;
+    return selected_lang.trim();
 }
 
 /**
@@ -170,7 +182,7 @@ function get_selected_lang(select_id) {
 function get_selected_source_lang() {
     "use strict";
 
-    return get_selected_lang("from_lang_sel").trim();
+    return get_selected_lang(client_data.from_lang_sel);
 }
 
 /**
@@ -180,7 +192,7 @@ function get_selected_source_lang() {
 function get_selected_target_lang() {
     "use strict";
 
-    return get_selected_lang("to_lang_sel").trim();
+    return get_selected_lang(client_data.to_lang_sel);
 }
 
 /**
@@ -205,8 +217,8 @@ function send_translation_request(new_source_text) {
     //Set the target language
     trans_job_req.target_lang = get_selected_target_lang();
 
-    //Set the translation info request to false
-    trans_job_req.is_trans_info = true;
+    //ToDo: Get the translation info flag from thecheckox!
+    trans_job_req.is_trans_info = client_data.trans_info_cb.checked;
 
     //Set the source text split line by line
     trans_job_req.source_sent = new_source_text.split('\n');
@@ -223,7 +235,7 @@ function do_translate() {
     var source_text, new_source_md5;
     
     //Get and prepare the new source text
-    source_text = document.getElementById("from_text").value.trim();
+    source_text = client_data.from_text_area.value.trim();
     window.console.log("The text to translate is: " + source_text);
     
     //Compute the new source md5 value
@@ -255,12 +267,13 @@ function do_translate() {
  */
 function disable_interface() {
     "use strict";
-    document.getElementById("server_url").disabled = true;
-    document.getElementById("trans_btn").disabled = true;
-    document.getElementById("trans_cb").disabled = true;
-    document.getElementById("from_text").disabled = true;
-    document.getElementById("from_lang_sel").disabled = true;
-    document.getElementById("to_lang_sel").disabled = true;
+    
+    client_data.server_url_inpt.disabled = true;
+    client_data.trans_btn.disabled = true;
+    client_data.trans_info_cb.disabled = true;
+    client_data.from_text_area.disabled = true;
+    client_data.from_lang_sel.disabled = true;
+    client_data.to_lang_sel.disabled = true;
 }
 
 /**
@@ -270,13 +283,13 @@ function disable_interface() {
  */
 function enable_interface(is_connected) {
     "use strict";
-    document.getElementById("server_url").disabled = false;
+    client_data.server_url_inpt.disabled = false;
     if (is_connected) {
-        document.getElementById("trans_btn").disabled = false;
-        document.getElementById("trans_cb").disabled = false;
-        document.getElementById("from_text").disabled = false;
-        document.getElementById("from_lang_sel").disabled = false;
-        document.getElementById("to_lang_sel").disabled = false;
+        client_data.trans_btn.disabled = false;
+        client_data.trans_info_cb.disabled = false;
+        client_data.from_text_area.disabled = false;
+        client_data.from_lang_sel.disabled = false;
+        client_data.to_lang_sel.disabled = false;
     }
 }
 
@@ -316,16 +329,15 @@ function on_open() {
  */
 function set_translation(trans_response) {
     "use strict";
-    var to_text_span, i, target, status;
+    var i, target, status;
     
     //Check that the responce is for the most recent job
     if (trans_response.job_id === client_data.prev_job_req_id) {
         //Get the text element to put the values into
-        to_text_span = document.getElementById("to_text");
-        to_text_span.innerHTML = "";
+        client_data.to_text_span.innerHTML = "";
         
         //Set the border color based on the overall status
-        visualize_status_code(to_text_span, trans_response.stat_code, trans_response.stat_msg);
+        visualize_status_code(trans_response.stat_code, trans_response.stat_msg);
     
         //Assemble the data
         for (i = 0; i < trans_response.target_data.length; i += 1) {
@@ -343,7 +355,7 @@ function set_translation(trans_response) {
                 }
             }
             //Add the translation element to the panel
-            to_text_span.innerHTML += "<span data-tooltip='" + status +
+            client_data.to_text_span.innerHTML += "<span data-tooltip='" + status +
                 "' class='target_sent_tag'>" + target.trans_text + "</span>";
         }
     } else {
@@ -375,14 +387,16 @@ function get_select_option(value, name) {
  */
 function on_source_lang_select() {
     "use strict";
-    var i, to_select, source_lang, targets;
+    var i, source_lang, targets;
     
+    //A new source language means new translation
+    require_new_translation();
+        
     window.console.log("The source language is selected");
     source_lang = get_selected_source_lang();
 
     //Re-set the target select to no options
-    to_select = document.getElementById("to_lang_sel");
-    to_select.innerHTML = "";
+    client_data.to_lang_sel.innerHTML = "";
     
     if (source_lang !== "") {
         window.console.log("The source language is not empty!");
@@ -390,12 +404,12 @@ function on_source_lang_select() {
 
         //Do not add "Please select" in case there is just one target option possible"
         if (targets.length > 1) {
-            to_select.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
+            client_data.to_lang_sel.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
         }
 
         window.console.log(source_lang + " -> [ " + targets + " ]");
         for (i = 0; i < targets.length; i += 1) {
-            to_select.innerHTML += get_select_option(targets[i], targets[i]);
+            client_data.to_lang_sel.innerHTML += get_select_option(targets[i], targets[i]);
         }
     }
 }
@@ -406,7 +420,7 @@ function on_source_lang_select() {
  */
 function set_supported_languages(supp_lang_resp) {
     "use strict";
-    var source_lang, to_select, from_select, num_sources;
+    var source_lang, num_sources;
     
     //ToDo: Check for an error message in the response!
     
@@ -414,26 +428,24 @@ function set_supported_languages(supp_lang_resp) {
     client_data.language_mapping = supp_lang_resp.langs;
 
     window.console.log("Clear the to-select as we are now re-loading the source languages");
-    to_select = document.getElementById("to_lang_sel");
-    to_select.innerHTML = "";
+    client_data.to_lang_sel.innerHTML = "";
 
     //Do not add "Please select" in case there is just one source option possible"
-    from_select = document.getElementById("from_lang_sel");
     num_sources = Object.keys(client_data.language_mapping).length;
     window.console.log("The number of source languages is: " + num_sources);
 
     if (num_sources > 1) {
         window.console.log("Multiple source languages: Adding 'Please select'");
-        from_select.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
+        client_data.from_lang_sel.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
     } else {
         //Re-set the source select to no options
-        from_select.innerHTML = "";
+        client_data.from_lang_sel.innerHTML = "";
     }
 
     window.console.log("Add the available source languages");
     for (source_lang in client_data.language_mapping) {
         if (client_data.language_mapping.hasOwnProperty(source_lang)) {
-            from_select.innerHTML += get_select_option(source_lang, source_lang);
+            client_data.from_lang_sel.innerHTML += get_select_option(source_lang, source_lang);
         }
     }
     
@@ -490,14 +502,15 @@ function on_close() {
  */
 function connect_to_server() {
     "use strict";
-    
-    window.console.log("Disable the controls before connecting to a new server");
-    disable_interface();
 
     window.console.log("Checking that the web socket connection is available");
     if (window.hasOwnProperty("WebSocket")) {
         window.console.log("Close the web socket connection if there is one");
-        if (client_data.ws !== null) {
+        if ((client_data.ws !== null) && ((client_data.ws.readyState === window.WebSocket.CONNECTING) ||
+                                          (client_data.ws.readyState === window.WebSocket.OPEN))) {
+            window.console.log("Disable the controls before connecting to a new server");
+            disable_interface();
+            
             window.console.log("Closing the previously opened connection");
             update_conn_status(window.WebSocket.CLOSING);
             client_data.ws.close();
@@ -524,15 +537,21 @@ function connect_to_server() {
  */
 function on_server_change() {
     "use strict";
-    var server_url_inpt, new_server_url;
+    var new_server_url;
     
-    server_url_inpt = document.getElementById("server_url");
-    new_server_url = server_url_inpt.value;
-    new_server_url = new_server_url.trim();
-    server_url_inpt.value = new_server_url;
+    //Get the current value and trim it
+    new_server_url = client_data.server_url_inpt.value.trim();
+    //Put the trimmed value back into the input
+    client_data.server_url_inpt.value = new_server_url;
+    
     window.console.log("The new server url is: " + new_server_url);
 
-    if ((client_data.ws.readyState !== window.WebSocket.OPEN) || (client_data.server_url !== new_server_url)) {
+    if ((client_data.ws.readyState !== window.WebSocket.OPEN) ||
+            (client_data.server_url !== new_server_url)) {
+        
+        //A new server means new translation
+        require_new_translation();
+        
         window.console.log("Storing the new server url value");
         client_data.server_url = new_server_url;
     
@@ -546,18 +565,44 @@ function on_server_change() {
 }
 
 /**
+ * This function initializes the client data
+ */
+function initialize_client_data(callMD5) {
+    "use strict";
+    
+    window.console.log("Initial client data: " + client_data);
+    
+    //Get the references to the needed UI elements
+    client_data.trans_btn = document.getElementById("trans_btn");
+    client_data.trans_info_cb = document.getElementById("trans_info_cb");
+    client_data.from_text_area = document.getElementById("from_text");
+    client_data.to_text_span = document.getElementById("to_text");
+    client_data.from_lang_sel = document.getElementById("from_lang_sel");
+    client_data.to_lang_sel = document.getElementById("to_lang_sel");
+    client_data.server_url_inpt = document.getElementById("server_url");
+    client_data.progress_image = document.getElementById("progress");
+    client_data.conn_status_span = document.getElementById("conn_status");
+    client_data.trans_info_cb = document.getElementById("trans_info_cb");
+    
+    //Set up the server URL
+    client_data.server_url_inpt.value = client_data.server_url;
+    
+    //Store the MD5 function
+    client_data.calcMD5 = callMD5;
+}
+
+/**
  * This function is called in the beginning just after the DOM tree
  * is parsed and ensures initialization of the web interface.
+ * @param {Object} callMD5 the function to compute MD5
  */
 function initialize_translation(callMD5) {
     "use strict";
     
-    client_data.calcMD5 = callMD5;
+    window.console.log("Initializing the client data");
     
-    window.console.log("Initializing the client, url: " + client_data.server_url);
-
-    //Set up the page
-    document.getElementById("server_url").value = client_data.server_url;
+    //Initialize the client data
+    initialize_client_data(callMD5);
 
     window.console.log("Open an initial connection to the server");
 

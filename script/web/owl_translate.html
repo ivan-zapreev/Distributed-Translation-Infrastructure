@@ -23,7 +23,7 @@
    <div class="v_sep"></div>
    <div id="settings">
         <div id="server">Server: <input id="server_url" oninput="on_server_change()" onfocus="on_server_change()" type="text" value=""> <span id="conn_status"></span></div>
-	<div id="instant">Instant translate <input type="checkbox" checked="true" name="trans_cb" id="trans_cb"></div>
+	<div id="trans_info">Translation info <input type="checkbox" name="trans_info_cb" onchange="require_new_translation()" id="trans_info_cb"></div>
    </div>
    <div class="v_sep"></div>
    <div id="main">
@@ -39,7 +39,7 @@
       </div>
       <div id="to_part">
          To: 
-         <select id="to_lang_sel" name="to_language" required>
+         <select id="to_lang_sel" name="to_language" onchange="require_new_translation()" required>
          </select>
          <span id="to_text" class="text_data"></span>
       </div>
