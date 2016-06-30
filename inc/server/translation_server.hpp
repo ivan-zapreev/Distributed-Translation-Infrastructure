@@ -80,7 +80,13 @@ namespace uva {
                     : m_manager(params.m_num_threads), m_params(params) {
                         //Initialize the supported languages and store the response for future use
                         supp_lang_resp_out supp_lang_resp;
-                        supp_lang_resp.add_supp_lang(params.m_source_lang, params.m_target_lang);
+                        //Add the supported languages
+                        supp_lang_resp.start_supp_lang_obj();
+                        supp_lang_resp.start_source_lang_arr(params.m_source_lang);
+                        supp_lang_resp.add_target_lang(params.m_target_lang);
+                        supp_lang_resp.end_source_lang_arr();
+                        supp_lang_resp.end_supp_lang_obj();
+                        
                         m_supp_lang_resp = supp_lang_resp.serialize();
 
                         //Set up access channels to only log interesting things
@@ -238,7 +244,7 @@ namespace uva {
                             jmsg->de_serialize(raw_msg_str);
 
                             //Handle the request message based on its type
-                            switch (jmsg->get_type()) {
+                            switch (jmsg->get_msg_type()) {
                                 case msg_type::MESSAGE_TRANS_JOB_REQ:
                                     translation_job(hdl, jmsg);
                                     break;
@@ -246,7 +252,7 @@ namespace uva {
                                     language_request(hdl, jmsg);
                                     break;
                                 default:
-                                    THROW_EXCEPTION(string("Unsupported request type: ") + to_string(jmsg->get_type()));
+                                    THROW_EXCEPTION(string("Unsupported request type: ") + to_string(jmsg->get_msg_type()));
                             }
                         } catch (std::exception & e) {
                             //Send the error response

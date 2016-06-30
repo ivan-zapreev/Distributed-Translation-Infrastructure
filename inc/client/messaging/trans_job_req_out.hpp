@@ -57,14 +57,25 @@ namespace uva {
                          */
                         trans_job_req_out(const job_id_type job_id, const string & source_lang,
                                 vector<string> & source_text, const string & target_lang, const bool is_trans_info)
-                        : outgoing_msg(msg_type::MESSAGE_TRANS_JOB_REQ), trans_job_req() {
-                            m_json[JOB_ID_FIELD_NAME] = job_id;
-                            m_json[SOURCE_LANG_FIELD_NAME] = source_lang;
-                            m_json[TARGET_LANG_FIELD_NAME] = target_lang;
-                            m_json[IS_TRANS_INFO_FIELD_NAME] = is_trans_info;
-                            m_json[SOURCE_SENTENCES_FIELD_NAME] = source_text;
+                        : outgoing_msg(msg_type::MESSAGE_TRANS_JOB_REQ), trans_job_req(), m_job_id(job_id) {
+                            m_writer.String(JOB_ID_FIELD_NAME);
+                            m_writer.Uint64(job_id);
+                            m_writer.String(SOURCE_LANG_FIELD_NAME);
+                            m_writer.String(source_lang.c_str());
+                            m_writer.String(TARGET_LANG_FIELD_NAME);
+                            m_writer.String(target_lang.c_str());
+                            m_writer.String(IS_TRANS_INFO_FIELD_NAME);
+                            m_writer.Bool(is_trans_info);
+                            
+                            //Add the source sentences one by one in an array
+                            m_writer.String(SOURCE_SENTENCES_FIELD_NAME);
+                            m_writer.StartArray();
+                            for (auto iter = source_text.begin(); iter != source_text.end(); ++iter) {
+                                m_writer.String(iter->c_str());
+                            }
+                            m_writer.EndArray();
 
-                            LOG_DEBUG << "Translation job request, job id: " << job_id
+                            LOG_DEBUG << "Translation job request, job id: " << m_job_id
                                     << " source language: " << source_lang
                                     << " target language: " << target_lang
                                     << " translation info flag: " << is_trans_info << END_LOG;
@@ -75,7 +86,7 @@ namespace uva {
                          * @return the job id type
                          */
                         job_id_type get_job_id() const {
-                            return m_json[JOB_ID_FIELD_NAME];
+                            return m_job_id;
                         }
 
                         /**
@@ -84,6 +95,11 @@ namespace uva {
                         virtual ~trans_job_req_out() {
                             //Nothing to be done here
                         }
+                        
+                    private:
+                        //Stores the job id
+                        job_id_type m_job_id;
+                        
                     };
 
                 }

@@ -174,7 +174,7 @@ namespace uva {
                      * Attempts to send the translation job request
                      * @param request the translation job request
                      */
-                    void send(const trans_job_req_out * request) {
+                    void send(trans_job_req_out * request) {
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
@@ -208,14 +208,14 @@ namespace uva {
                             json_msg->de_serialize(msg->get_payload());
 
                             //Check on the message type
-                            switch (json_msg->get_type()) {
+                            switch (json_msg->get_msg_type()) {
                                 case msg_type::MESSAGE_TRANS_JOB_RESP:
                                     //Set the newly received job response
                                     m_set_trans_job_resp(new trans_job_resp_in(json_msg));
                                     break;
                                 default:
                                     THROW_EXCEPTION(string("Unexpected incoming message type: ") +
-                                            to_string(json_msg->get_type()));
+                                            to_string(json_msg->get_msg_type()));
                             }
                         } catch (std::exception & ex) {
                             LOG_ERROR << "Unexpected message: " << ex.what() << END_LOG;

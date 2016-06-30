@@ -167,9 +167,17 @@ namespace uva {
                              * @param sent_data [in/out] the container object for the translation task info
                              */
                             virtual void get_trans_info(trans_sent_data_out & sent_data) const {
+                                //Allows to start the loads array entry
+                                sent_data.start_loads_arr();
+
+                                //Fill in the level loads
                                 for (int32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
-                                    m_levels[level]->get_trans_info(sent_data);
+                                    //Add the stack level usage percent
+                                    sent_data.add_stack_load(m_levels[level]->get_level_load());
                                 }
+
+                                //Allows to end the loads array entry
+                                sent_data.end_loads_arr();
                             }
 
 #if IS_SERVER_TUNING_MODE

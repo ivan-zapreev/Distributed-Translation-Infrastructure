@@ -40,7 +40,7 @@ namespace uva {
                     class supp_lang_resp : public response_msg {
                     public:
                         //Stores the languages field name for the JSON message
-                        static const string LANGUAGES_FIELD_NAME;
+                        static const char * LANGUAGES_FIELD_NAME;
 
                         /**
                          * The basic constructor

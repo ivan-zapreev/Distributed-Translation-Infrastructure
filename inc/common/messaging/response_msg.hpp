@@ -46,9 +46,9 @@ namespace uva {
                     class response_msg {
                     public:
                         //Stores the status code attribute name
-                        static const string STAT_CODE_FIELD_NAME;
+                        static const char * STAT_CODE_FIELD_NAME;
                         //Stores the status message attribute name
-                        static const string STAT_MSG_FIELD_NAME;
+                        static const char * STAT_MSG_FIELD_NAME;
 
                         /**
                          * The basic constructor

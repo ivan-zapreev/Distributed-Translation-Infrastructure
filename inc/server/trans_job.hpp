@@ -87,13 +87,13 @@ namespace uva {
                                 << m_job_id << " session id: " << m_session_id << END_LOG;
 
                         //Get the text to be translated
-                        auto source_text = trans_req.get_source_text();
+                        const Value & source_text = trans_req.get_source_text();
 
                         //Read the text line by line, each line must be one sentence
                         //to translate. For each read line create a translation task.
-                        for (size_t idx = 0; idx < source_text.size(); ++idx) {
+                        for (auto iter = source_text.Begin(); iter != source_text.End(); ++iter) {
                             m_tasks.push_back(new trans_task(m_session_id, m_job_id,
-                                    source_text[idx], bind(&trans_job::notify_task_done, this, _1)));
+                                    iter->GetString(), bind(&trans_job::notify_task_done, this, _1)));
                         }
                     }
 
@@ -248,7 +248,13 @@ namespace uva {
 
                         //Set the translation job id
                         resp_data.set_job_id(m_job_id);
-                        
+
+                        //Begin the sentence data section
+                        resp_data.begin_sent_data_arr();
+
+                        //Get the sentence data object through which we can build the JSON
+                        trans_sent_data_out & sent_data = resp_data.get_sent_data_writer();
+
                         //Iterate through the translation tasks and combine the results
                         for (tasks_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
                             //Get the task pointer for future use
@@ -256,8 +262,8 @@ namespace uva {
 
                             LOG_DEBUG1 << "Adding a new sentence result data" << END_LOG;
 
-                            //Allocate a new translated sentence data
-                            trans_sent_data_out & sent_data = resp_data.add_new_sent_data();
+                            //Begin the sentence data
+                            sent_data.begin_sent_data_ent();
 
                             //Set the target sentence
                             sent_data.set_trans_text(task->get_target_text());
@@ -272,8 +278,14 @@ namespace uva {
                                 task->get_trans_info(sent_data);
                             }
 
+                            //End the sentence data section
+                            sent_data.end_sent_data_ent();
+
                             LOG_DEBUG1 << "The target text of task: " << *task << " has been retrieved!" << END_LOG;
                         }
+
+                        //End the sentence data section
+                        resp_data.end_sent_data_arr();
 
                         //Decide on the status code and message
                         set_job_status(resp_data);

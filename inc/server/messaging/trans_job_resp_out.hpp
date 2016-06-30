@@ -49,8 +49,8 @@ namespace uva {
                          * The basic class constructor
                          */
                         trans_job_resp_out()
-                        : outgoing_msg(msg_type::MESSAGE_TRANS_JOB_RESP), trans_job_resp(),
-                        m_sent_data(NULL), m_empty_sent_data() {
+                        : outgoing_msg(msg_type::MESSAGE_TRANS_JOB_RESP),
+                        trans_job_resp(), m_sent_data(m_writer) {
                             //Nothing to be done here
                         }
 
@@ -66,7 +66,7 @@ namespace uva {
                                 const status_code code,
                                 const string & msg)
                         : outgoing_msg(msg_type::MESSAGE_TRANS_JOB_RESP), trans_job_resp(),
-                        m_sent_data(NULL), m_empty_sent_data() {
+                        m_sent_data(m_writer) {
                             //Set the values using the setter methods
                             set_job_id(job_id);
                             set_status(code, msg);
@@ -76,12 +76,22 @@ namespace uva {
                          * The basic class destructor
                          */
                         virtual ~trans_job_resp_out() {
-                            LOG_DEBUG2 << "Deleting the translation job response" << END_LOG;
-                            //Delete the sentence data wrapper if any
-                            if (m_sent_data != NULL) {
-                                LOG_DEBUG2 << "Deleting the sentence response data wrapper" << END_LOG;
-                                delete m_sent_data;
-                            }
+                            //Nothing to be done here
+                        }
+
+                        /**
+                         * Begin the sentence data array section
+                         */
+                        inline void begin_sent_data_arr() {
+                            m_writer.String(TARGET_DATA_FIELD_NAME);
+                            m_writer.StartArray();
+                        }
+
+                        /**
+                         * End the sentence data array section
+                         */
+                        inline void end_sent_data_arr() {
+                            m_writer.EndArray();
                         }
 
                         /**
@@ -90,8 +100,10 @@ namespace uva {
                          * @param msg the status message
                          */
                         inline void set_status(const status_code & code, const string & msg) {
-                            m_json[STAT_CODE_FIELD_NAME] = code.val();
-                            m_json[STAT_MSG_FIELD_NAME] = msg;
+                            m_writer.String(STAT_CODE_FIELD_NAME);
+                            m_writer.Int(code.val());
+                            m_writer.String(STAT_MSG_FIELD_NAME);
+                            m_writer.String(msg.c_str());
                         }
 
                         /**
@@ -99,7 +111,8 @@ namespace uva {
                          * @return the client-issued job id
                          */
                         inline void set_job_id(const job_id_type job_id) {
-                            m_json[JOB_ID_FIELD_NAME] = job_id;
+                            m_writer.String(JOB_ID_FIELD_NAME);
+                            m_writer.Uint64(job_id);
                         }
 
                         /**
@@ -109,32 +122,14 @@ namespace uva {
                          * object wrapped inside it.
                          * @return the same sentence data wrapper wrapping around different sentence data objects.
                          */
-                        inline trans_sent_data_out & add_new_sent_data() {
-                            //Get the target data array
-                            json & data = m_json[TARGET_DATA_FIELD_NAME];
-
-                            //Add a new JSON sentence data entry
-                            data.push_back(m_empty_sent_data);
-                            json & sent_data = data.at(data.size() - 1);
-
-                            //If the sentence data is NULL create a new one
-                            if (m_sent_data != NULL) {
-                                m_sent_data->set_sent_data(sent_data);
-                            } else {
-                                ///Otherwise set the sentence data to the old one
-                                m_sent_data = new trans_sent_data_out(sent_data);
-                            }
-
+                        inline trans_sent_data_out & get_sent_data_writer() {
                             //Return the reference to the data
-                            return *m_sent_data;
+                            return m_sent_data;
                         }
 
                     private:
                         //Stores the pointer to the sentence data
-                        trans_sent_data_out * m_sent_data;
-
-                        //Stores an empty json object to be used for a sentence data
-                        const json m_empty_sent_data;
+                        trans_sent_data_out m_sent_data;
                     };
                 }
             }

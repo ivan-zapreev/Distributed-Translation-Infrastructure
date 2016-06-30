@@ -55,8 +55,22 @@ namespace uva {
                          * JSON object, but it does not own it.
                          * @param data_obj the reference to the encapsulated JSON object
                          */
-                        trans_sent_data_out(json & data_obj)
-                        : trans_sent_data(), m_data_obj(&data_obj) {
+                        trans_sent_data_out(JSONWriter & writer)
+                        : trans_sent_data(), m_writer(writer) {
+                        }
+
+                        /**
+                         * Begin the sentence data object entry
+                         */
+                        inline void begin_sent_data_ent() {
+                            m_writer.StartObject();
+                        }
+
+                        /**
+                         * End the sentence data object entry
+                         */
+                        inline void end_sent_data_ent() {
+                            m_writer.EndObject();
                         }
 
                         /**
@@ -67,9 +81,11 @@ namespace uva {
                         inline void set_status(const status_code & code, const string & msg) {
                             LOG_DEBUG << "Setting the sentence status code: " << to_string(code)
                                     << ", message: " << msg << END_LOG;
-                            
-                            m_data_obj->operator[](STAT_CODE_FIELD_NAME) = code.val();
-                            m_data_obj->operator[](STAT_MSG_FIELD_NAME) = msg;
+
+                            m_writer.String(STAT_CODE_FIELD_NAME);
+                            m_writer.Int(code.val());
+                            m_writer.String(STAT_MSG_FIELD_NAME);
+                            m_writer.String(msg.c_str());
                         }
 
                         /**
@@ -78,8 +94,24 @@ namespace uva {
                          */
                         inline void set_trans_text(const string & text) {
                             LOG_DEBUG << "Setting the translated sentence: " << text << END_LOG;
-                            
-                            m_data_obj->operator[](TRANS_TEXT_FIELD_NAME) = text;
+
+                            m_writer.String(TRANS_TEXT_FIELD_NAME);
+                            m_writer.String(text.c_str());
+                        }
+
+                        /**
+                         * Allows to start the loads array section in the sentence data
+                         */
+                        inline void start_loads_arr() {
+                            m_writer.String(STACK_LOAD_FIELD_NAME);
+                            m_writer.StartArray();
+                        }
+
+                        /**
+                         * Allows to end the loads array section in the sentence data
+                         */
+                        inline void end_loads_arr() {
+                            m_writer.EndArray();
                         }
 
                         /**
@@ -88,26 +120,12 @@ namespace uva {
                          */
                         inline void add_stack_load(const float load) {
                             LOG_DEBUG1 << "Adding the stack load: " << to_string(load) << END_LOG;
-                            json & data = m_data_obj->operator[](STACK_LOAD_FIELD_NAME);
-                            LOG_DEBUG2 << "Obtained the container for: " << STACK_LOAD_FIELD_NAME
-                                    << ", content: " << data << END_LOG;
-                            data.push_back(load);
-                            LOG_DEBUG3 << "New content: " << data << END_LOG;
-                        }
-
-                        /**
-                         * Allows to replace a stored reference to a JSON object with a new reference.
-                         * @param data_obj the reference to a new JSON object.
-                         */
-                        inline void set_sent_data(json & data_obj) {
-                            LOG_DEBUG1 << "Setting a new sentence data JSON" << END_LOG;
-                            
-                            m_data_obj = &data_obj;
+                            m_writer.Uint(load);
                         }
 
                     private:
                         //Stores a non NULL pointer to the encapsulated JSON object
-                        json * m_data_obj;
+                        JSONWriter & m_writer;
                     };
 
                 }

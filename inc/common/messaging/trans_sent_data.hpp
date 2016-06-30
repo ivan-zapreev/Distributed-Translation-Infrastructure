@@ -45,9 +45,9 @@ namespace uva {
                     class trans_sent_data : public response_msg {
                     public:
                         //The target data field name
-                        static const string TRANS_TEXT_FIELD_NAME;
+                        static const char * TRANS_TEXT_FIELD_NAME;
                         //The target data field name
-                        static const string STACK_LOAD_FIELD_NAME;
+                        static const char * STACK_LOAD_FIELD_NAME;
 
                         //Typedef the loads array data structure for storing the stack load percent values
                         typedef vector<int64_t> stack_loads;

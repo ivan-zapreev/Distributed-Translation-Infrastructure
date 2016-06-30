@@ -65,7 +65,8 @@ namespace uva {
                          * @return the client-issued job id
                          */
                         inline job_id_type get_job_id() const {
-                            return m_inc_msg->get_value(JOB_ID_FIELD_NAME);
+                            const Document & json = m_inc_msg->get_json();
+                            return json[JOB_ID_FIELD_NAME].GetUint64();
                         }
 
                         /**
@@ -73,7 +74,8 @@ namespace uva {
                          * @return the translation job source language, lowercased
                          */
                         inline string get_source_lang() const {
-                            return m_inc_msg->get_value(SOURCE_LANG_FIELD_NAME);
+                            const Document & json = m_inc_msg->get_json();
+                            return json[SOURCE_LANG_FIELD_NAME].GetString();
                         }
 
                         /**
@@ -81,7 +83,8 @@ namespace uva {
                          * @return the translation job target language, lowercased
                          */
                         inline string get_target_lang() const {
-                            return m_inc_msg->get_value(TARGET_LANG_FIELD_NAME);
+                            const Document & json = m_inc_msg->get_json();
+                            return json[TARGET_LANG_FIELD_NAME].GetString();
                         }
 
                         /**
@@ -89,7 +92,8 @@ namespace uva {
                          * @return true if the translation information is requested, otherwise false
                          */
                         inline bool is_trans_info() const {
-                            return m_inc_msg->get_value(IS_TRANS_INFO_FIELD_NAME);
+                            const Document & json = m_inc_msg->get_json();
+                            return json[IS_TRANS_INFO_FIELD_NAME].GetBool();
                         }
 
                         /**
@@ -98,8 +102,9 @@ namespace uva {
                          * message for the case of failed translation job request.
                          * @return an array of sentences to be translated, encapsulated in a json object
                          */
-                        inline const json & get_source_text() const {
-                            return m_inc_msg->get_value(SOURCE_SENTENCES_FIELD_NAME);
+                        inline const Value & get_source_text() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return json[SOURCE_SENTENCES_FIELD_NAME];
                         }
 
                     private:

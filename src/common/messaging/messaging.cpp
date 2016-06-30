@@ -41,25 +41,25 @@ namespace uva {
                 namespace messaging {
                     
                     constexpr uint32_t msg_base::PROTOCOL_VERSION;
-                    const string msg_base::PROT_VER_FIELD_NAME = "prot_ver";
-                    const string msg_base::MSG_TYPE_FIELD_NAME = "msg_type";
+                    const char * msg_base::PROT_VER_FIELD_NAME = "prot_ver";
+                    const char * msg_base::MSG_TYPE_FIELD_NAME = "msg_type";
 
-                    const string response_msg::STAT_CODE_FIELD_NAME = "stat_code";
-                    const string response_msg::STAT_MSG_FIELD_NAME = "stat_msg";
+                    const char * response_msg::STAT_CODE_FIELD_NAME = "stat_code";
+                    const char * response_msg::STAT_MSG_FIELD_NAME = "stat_msg";
 
-                    const string trans_job_req::JOB_ID_FIELD_NAME = "job_id";
-                    const string trans_job_req::SOURCE_LANG_FIELD_NAME = "source_lang";
-                    const string trans_job_req::TARGET_LANG_FIELD_NAME = "target_lang";
-                    const string trans_job_req::IS_TRANS_INFO_FIELD_NAME = "is_trans_info";
-                    const string trans_job_req::SOURCE_SENTENCES_FIELD_NAME = "source_sent";
+                    const char * trans_job_req::JOB_ID_FIELD_NAME = "job_id";
+                    const char * trans_job_req::SOURCE_LANG_FIELD_NAME = "source_lang";
+                    const char * trans_job_req::TARGET_LANG_FIELD_NAME = "target_lang";
+                    const char * trans_job_req::IS_TRANS_INFO_FIELD_NAME = "is_trans_info";
+                    const char * trans_job_req::SOURCE_SENTENCES_FIELD_NAME = "source_sent";
 
-                    const string supp_lang_resp::LANGUAGES_FIELD_NAME = "langs";
+                    const char * supp_lang_resp::LANGUAGES_FIELD_NAME = "langs";
                     
-                    const string trans_job_resp::JOB_ID_FIELD_NAME = "job_id";
-                    const string trans_job_resp::TARGET_DATA_FIELD_NAME = "target_data";
+                    const char * trans_job_resp::JOB_ID_FIELD_NAME = "job_id";
+                    const char * trans_job_resp::TARGET_DATA_FIELD_NAME = "target_data";
 
-                    const string trans_sent_data::TRANS_TEXT_FIELD_NAME = "trans_text";
-                    const string trans_sent_data::STACK_LOAD_FIELD_NAME = "stack_load";
+                    const char * trans_sent_data::TRANS_TEXT_FIELD_NAME = "trans_text";
+                    const char * trans_sent_data::STACK_LOAD_FIELD_NAME = "stack_load";
                 }
             }
         }

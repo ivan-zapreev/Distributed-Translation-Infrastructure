@@ -30,11 +30,6 @@
 #include <exception>
 #include <stdint.h>
 
-//Disable the assertions in the JSON code
-#define NDEBUG true
-#include <json.hpp>
-#undef NDEBUG
-
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
@@ -42,8 +37,6 @@ using namespace std;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
-
-using json = nlohmann::json;
 
 namespace uva {
     namespace smt {
@@ -78,14 +71,14 @@ namespace uva {
                         //Stores the version of the message protocol
                         static constexpr uint32_t PROTOCOL_VERSION = 1;
                         //Stores the protocol version attribute name
-                        static const string PROT_VER_FIELD_NAME;
+                        static const char * PROT_VER_FIELD_NAME;
                         //Stores the message type attribute name
-                        static const string MSG_TYPE_FIELD_NAME;
+                        static const char * MSG_TYPE_FIELD_NAME;
 
                         /**
                          * The basic constructor
                          */
-                        msg_base() : m_json() {
+                        msg_base() {
                             //Nothing to be done here
                         }
 
@@ -95,10 +88,6 @@ namespace uva {
                         virtual ~msg_base() {
                             //Nothing to be done here
                         }
-
-                    protected:
-                        //Stores the json structure representing the message
-                        json m_json;
                     };
 
                 }

@@ -40,9 +40,9 @@ namespace uva {
                     class trans_job_resp : public response_msg {
                     public:
                         //The job id field name
-                        static const string JOB_ID_FIELD_NAME;
+                        static const char * JOB_ID_FIELD_NAME;
                         //The target data field name
-                        static const string TARGET_DATA_FIELD_NAME;
+                        static const char * TARGET_DATA_FIELD_NAME;
 
                         /**
                          * The basic constructor

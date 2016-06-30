@@ -48,8 +48,6 @@ namespace uva {
                      */
                     class supp_lang_resp_in : public supp_lang_resp {
                     public:
-                        //Typedef the data structure storing the supported languages
-                        typedef map<string, vector<string>> supp_lang_map;
 
                         /**
                          * The basic constructor
@@ -71,8 +69,9 @@ namespace uva {
                          * Allows to retrieve the JSON object storing the supported languages
                          * @return the object storing the JSON supported languages mapping
                          */
-                        inline const json & get_languages() const {
-                            return m_inc_msg->get_value(LANGUAGES_FIELD_NAME);
+                        inline const Value & get_languages() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return json[LANGUAGES_FIELD_NAME];
                         }
 
                     private:

@@ -56,12 +56,42 @@ namespace uva {
                         }
 
                         /**
-                         * Allows to add a pair of supported source-target languages
+                         * Allows to start the supported languages object entry
+                         */
+                        inline void start_supp_lang_obj() {
+                            m_writer.String(LANGUAGES_FIELD_NAME);
+                            m_writer.StartObject();
+                        }
+
+                        /**
+                         * Allows to end the supported languages object entry
+                         */
+                        inline void end_supp_lang_obj() {
+                            m_writer.EndObject();
+                        }
+
+                        /**
+                         * Allows to start the source language entry array
                          * @param source the source language that can be translated into the target language
+                         */
+                        inline void start_source_lang_arr(const string& source) {
+                            m_writer.String(source.c_str());
+                            m_writer.StartArray();
+                        }
+
+                        /**
+                         * Allows to end the source language entry array
+                         */
+                        inline void end_source_lang_arr() {
+                            m_writer.EndArray();
+                        }
+
+                        /**
+                         * Allows to add a target language
                          * @param target the target language that can be translated in to the source language
                          */
-                        inline void add_supp_lang(const string& source, const string& target) {
-                            m_json[LANGUAGES_FIELD_NAME][source].push_back(target);
+                        inline void add_target_lang(const string& target) {
+                            m_writer.String(target.c_str());
                         }
                     };
                 }

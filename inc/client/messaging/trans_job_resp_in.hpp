@@ -51,8 +51,13 @@ namespace uva {
                          * @param inc_msg the pointer to the incoming message, NOT NULL
                          */
                         trans_job_resp_in(incoming_msg * inc_msg)
-                        : trans_job_resp(), m_inc_msg(inc_msg), m_data(NULL), m_iter(), m_sent_data(NULL) {
-                            //Nothing to be done here
+                        : trans_job_resp(), m_inc_msg(inc_msg), m_sent_data() {
+                            //Get the sentence data array
+                            const Value & sent_data_arr = m_inc_msg->get_json()[TARGET_DATA_FIELD_NAME];
+                            //Store the iterator for the beginning of this array
+                            m_sent_data_iter = sent_data_arr.Begin();
+                            //Store the iterator for the end of this array
+                            m_sent_data_end_iter = sent_data_arr.End();
                         }
 
                         /**
@@ -61,10 +66,6 @@ namespace uva {
                         virtual ~trans_job_resp_in() {
                             //Delete the incoming message, it must always be present
                             delete m_inc_msg;
-                            //Delete the sentence data if present
-                            if (m_sent_data != NULL) {
-                                delete m_sent_data;
-                            }
                         }
 
                         /**
@@ -73,49 +74,26 @@ namespace uva {
                          * @return a pointer to the sentence data object or NULL if we reached the end of the list
                          */
                         inline const trans_sent_data_in * next_send_data() {
-                            if (m_data == NULL) {
-                                //If the data was not yet retrieved, do it
-                                m_data = &m_inc_msg->get_value(TARGET_DATA_FIELD_NAME);
-
-                                //Perform a sanity check
-                                ASSERT_SANITY_THROW(!m_data->is_array(), string("The value of '") +
-                                        TARGET_DATA_FIELD_NAME + string("' is not an array!"));
-                                
-                                //Check if the vector size is above zero
-                                if (!m_data->empty()) {
-                                    //Initialize the iterator with the first value
-                                    m_iter = m_data->cbegin();
-                                    //Create the sentence data wrapper
-                                    m_sent_data = new trans_sent_data_in(*m_iter);
-                                    //Move to the next element
-                                    ++m_iter;
-                                }
+                            if (m_sent_data_iter != m_sent_data_end_iter) {
+                                //Set the new object into the sentence data
+                                m_sent_data.set_sent_data(*m_sent_data_iter);
+                                //Increment the iterator for the next retrieval
+                                ++m_sent_data_iter;
+                                //Return the pointer to the wrapper object
+                                return &m_sent_data;
                             } else {
-                                //The data has been retrieved, so this is not the first iteration
-                                if (m_iter == m_data->cend()) {
-                                    //If we have no more elements or thre is not elements left
-                                    if (m_sent_data != NULL) {
-                                        //Delete the sentence data object if it is (still) present
-                                        delete m_sent_data;
-                                        m_sent_data = NULL;
-                                    }
-                                } else {
-                                    //If there is more elements, set them into the sentence data
-                                    m_sent_data->set_sent_data(*m_iter);
-                                    //Move to the next element
-                                    ++m_iter;
-                                }
+                                //We've reached the end so we return NULL.
+                                return NULL;
                             }
-
-                            return m_sent_data;
                         }
 
                         /**
                          * Allows to get the job id
                          * @return the job id
                          */
-                        inline const json & get_job_id() const {
-                            return m_inc_msg->get_value(JOB_ID_FIELD_NAME);
+                        inline job_id_type get_job_id() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return json[JOB_ID_FIELD_NAME].GetUint64();
                         }
 
                         /**
@@ -123,30 +101,30 @@ namespace uva {
                          * @return the translation task result code
                          */
                         inline status_code get_status_code() const {
-                            //Get the status code value
-                            int32_t code_value = m_inc_msg->get_value(STAT_CODE_FIELD_NAME);
-                            //Create the status code class instance
-                            return status_code(code_value);
+                            const Document & json = m_inc_msg->get_json();
+                            return status_code(json[STAT_CODE_FIELD_NAME].GetInt());
                         }
 
                         /**
                          * Allows to get the translation task status message
                          * @return the translation task status message
                          */
-                        inline const json & get_status_msg() const {
-                            return m_inc_msg->get_value(STAT_MSG_FIELD_NAME);
+                        inline string get_status_msg() const {
+                            const Document & json = m_inc_msg->get_json();
+                            
+                            return json[STAT_MSG_FIELD_NAME].GetString();
                         }
 
                     private:
                         //Stores the pointer to the incoming message storing
                         //the response data, this pointer must not be NULL
                         incoming_msg * m_inc_msg;
-                        //Stores the pointer to the translation data
-                        const json * m_data;
-                        //Stores the iterator
-                        json::const_iterator m_iter;
-                        //Stores the pointer to the sentence data
-                        trans_sent_data_in * m_sent_data;
+                        //Stores the sentence data wrapper object
+                        trans_sent_data_in m_sent_data;
+                        //Stores the end iterator for the sentence data array
+                        Value::ConstValueIterator m_sent_data_end_iter;
+                        //Stores the iterator for the sentence data array
+                        Value::ConstValueIterator m_sent_data_iter;
                     };
                 }
             }

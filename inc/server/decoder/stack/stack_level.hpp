@@ -142,12 +142,11 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to fill in the translation info with the stack information
-                             * @param sent_data [in/out] the container object for the translation task info
+                             * Allows to get the level load information into the sentence data
+                             * @param sent_data [in/out] the container object for the load info
                              */
-                            void get_trans_info(trans_sent_data_out & sent_data) const {
-                                //Add the stack level usage percent
-                                sent_data.add_stack_load((m_size * 100.0f) / m_params.m_stack_capacity);
+                            inline float get_level_load() const {
+                                return (m_size * 100.0f) / m_params.m_stack_capacity;
                             }
 
                             /**

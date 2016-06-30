@@ -231,7 +231,12 @@ namespace uva {
                             info_file << "--" << std::endl << "Sentence: " << to_string(fis) << " translation status: '"
                                     << code << "', message: " << sent_data->get_status_msg() << std::endl;
                             if (sent_data->has_stack_load()) {
-                                info_file << "Multi-stack loads: " << sent_data->get_stack_load() << std::endl;
+                                info_file << "Multi-stack loads: [ ";
+                                const Value & loads = sent_data->get_stack_load();
+                                for (auto iter = loads.Begin(); iter != loads.End(); ++iter) {
+                                    info_file << iter->GetUint() << " ";
+                                }
+                                info_file << "]" << std::endl;
                             }
                             //Move to the next sentence if present
                             sent_data = resp->next_send_data();

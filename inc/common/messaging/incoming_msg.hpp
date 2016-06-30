@@ -26,7 +26,11 @@
 #ifndef INCOMING_MSG_HPP
 #define INCOMING_MSG_HPP
 
+#include "rapidjson/document.h"
+
 #include "common/messaging/msg_base.hpp"
+
+using namespace rapidjson;
 
 namespace uva {
     namespace smt {
@@ -43,7 +47,7 @@ namespace uva {
                         /**
                          * The basic constructor
                          */
-                        incoming_msg() : msg_base() {
+                        incoming_msg() : msg_base(), m_json() {
                             //Nothing to be done here
                         }
 
@@ -56,13 +60,17 @@ namespace uva {
 
                         /**
                          * Allows to de-serialize the json request
-                         * @param data
+                         * @param data the json string to be parsed
                          */
                         void de_serialize(const string & data) {
                             //De-serialize the data and catch any exception, convert it into our type
                             try {
-                                stringstream stream_data(data);
-                                stream_data >> m_json;
+                                //Parse the json request
+                                m_json.Parse(data.c_str());
+
+                                //Check if there was an error while parsing
+                                ASSERT_CONDITION_THROW(m_json.HasParseError(),
+                                        string("JSON parse error: ") + to_string(m_json.GetParseError()));
                             } catch (std::exception & ex) {
                                 LOG_ERROR << "An exception when parsing JSON string: " << ex.what() << END_LOG;
                                 THROW_EXCEPTION(ex.what());
@@ -76,78 +84,24 @@ namespace uva {
                          * Allows to get the message type
                          * @return the message type
                          */
-                        msg_type get_type() const {
-                            //Get the integer value stored, and then covert it to an enum
-                            const int32_t value = get_value(MSG_TYPE_FIELD_NAME);
-                            
+                        msg_type get_msg_type() const {
                             //This is a primitive way to cast to the enumeration type 
                             //from an integer. Later we could introduce a fancier way 
                             //with all sorts of checks but this shall do it for now.
-                            return static_cast<msg_type> (value);
+                            return static_cast<msg_type> (m_json[MSG_TYPE_FIELD_NAME].GetInt());
                         }
                         
                         /**
-                         * Allows to check if the json object contains the field with the given name
-                         * @param object the object to be checked
-                         * @param field_name the field name to be checked
-                         * @return true if the field is contained, otherwise false
+                         * Allows to get a reference to a constant json document
+                         * @return the reference to the constant json document.
                          */
-                        static inline bool has_value(const json & object, const string & field_name) {
-                            //Retrieve the value from the JSON object
-                            auto entry = object.find(field_name);
-
-                            //Return the result, true if the field was found
-                            return (entry != object.end());
-                        }
-
-                        /**
-                         * Allows to get the data from the JSON object and
-                         * cast it to the desired result type.
-                         * @param object the json object to get the field value from
-                         * @param field_name the name of the JSON field
-                         * @return the value of the required type of the given field 
-                         */
-                        static inline const json & get_value(const json & object, const string & field_name) {
-                            LOG_DEBUG << "Extracting JSON field: " << field_name << END_LOG;
-
-                            //Retrieve the value from the JSON object
-                            auto entry = object.find(field_name);
-
-                            //Assert sanity, the property must be present
-                            ASSERT_CONDITION_THROW((entry == object.end()),
-                                    string("The JSON field '") + field_name + string("' is not present!"));
-
-                            return *entry;
-                        }
-                        
-                        /**
-                         * Allows to check if the json object contains the field with the given name
-                         * @param field_name the field name to be checked
-                         * @return true if the field is contained, otherwise false
-                         */
-                        inline bool has_value(const string & field_name) const {
-                            return has_value(m_json, field_name);
-                        }
-                        
-                        /**
-                         * Allows to get the data from the JSON object and
-                         * cast it to the desired result type.
-                         * @param field_name the name of the JSON field
-                         * @return the value of the required type of the given field 
-                         */
-                        inline const json & get_value(const string & field_name) const {
-                            return get_value(m_json, field_name);
-                        }
-
-                        /**
-                         * Allows to get a reference to the internally stored json object
-                         * @return the reference to the internally stored json object.
-                         */
-                        inline const json & get_json() const {
+                        const Document & get_json() const {
                             return m_json;
                         }
 
                     protected:
+                        //Stores the json document representing the message
+                        Document m_json;
 
                         /**
                          * Allows to check if the protocol version is fine.
@@ -157,7 +111,7 @@ namespace uva {
                          */
                         void verify_protocol_version() const {
                             //Get the protocol version and check it
-                            const uint32_t prot_ver = get_value(PROT_VER_FIELD_NAME);
+                            const uint32_t prot_ver = m_json[PROT_VER_FIELD_NAME].GetUint();
 
                             LOG_DEBUG << "The request protocol version: " << to_string(prot_ver)
                                     << ", local protocol version: " << to_string(PROTOCOL_VERSION) << END_LOG;

@@ -47,7 +47,7 @@ div#main {
 
 div#from_part {
    display: inline-block;
-   width: 43%;
+   width: 47%;
    vertical-align:top;
 }
 
@@ -61,7 +61,7 @@ div#middle_part {
 
 div#to_part {
    display: inline-block;
-   width: 43%;
+   width: 47%;
    vertical-align:top;
 }
 
@@ -116,14 +116,15 @@ span.target_sent_tag:hover {
 span.target_sent_tag:hover:before {
     content: attr(data-tooltip);
     position: absolute;
-    background: #bb8fce;
-    padding: 3px 7px;
-    color: #e6fd52;
-    border: black, 1px, solid;
-    border-radius: 2px;
+    background: lightblue;
+    padding: 5px;
+    color: firebrick;
+    border: 1px solid;
+    border-color: crimson;
+    border-radius: 5px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    margin-left: 7px;
+    margin-left: 24px;
     margin-top: -24px;
-
+    margin-right: 10px;
 }

@@ -395,6 +395,41 @@
         <in>write_at.hpp</in>
         <in>yield.hpp</in>
       </df>
+      <df name="rapidjson">
+        <df name="error">
+          <in>en.h</in>
+          <in>error.h</in>
+        </df>
+        <df name="internal">
+          <in>biginteger.h</in>
+          <in>diyfp.h</in>
+          <in>dtoa.h</in>
+          <in>ieee754.h</in>
+          <in>itoa.h</in>
+          <in>meta.h</in>
+          <in>pow10.h</in>
+          <in>stack.h</in>
+          <in>strfunc.h</in>
+          <in>strtod.h</in>
+        </df>
+        <df name="msinttypes">
+          <in>inttypes.h</in>
+          <in>stdint.h</in>
+        </df>
+        <in>allocators.h</in>
+        <in>document.h</in>
+        <in>encodedstream.h</in>
+        <in>encodings.h</in>
+        <in>filereadstream.h</in>
+        <in>filewritestream.h</in>
+        <in>memorybuffer.h</in>
+        <in>memorystream.h</in>
+        <in>prettywriter.h</in>
+        <in>rapidjson.h</in>
+        <in>reader.h</in>
+        <in>stringbuffer.h</in>
+        <in>writer.h</in>
+      </df>
       <df name="tclap">
         <in>Arg.h</in>
         <in>ArgException.h</in>
@@ -562,7 +597,6 @@
       </df>
       <in>INI.h</in>
       <in>asio.hpp</in>
-      <in>json.hpp</in>
     </df>
     <df root="inc" name="1">
       <df name="client">

@@ -40,15 +40,15 @@ namespace uva {
                     class trans_job_req : public request_msg {
                     public:
                         //Stores the job id attribute name
-                        static const string JOB_ID_FIELD_NAME;
+                        static const char * JOB_ID_FIELD_NAME;
                         //Stores the source language attribute name
-                        static const string SOURCE_LANG_FIELD_NAME;
+                        static const char * SOURCE_LANG_FIELD_NAME;
                         //Stores the target language attribute name
-                        static const string TARGET_LANG_FIELD_NAME;
+                        static const char * TARGET_LANG_FIELD_NAME;
                         //Stores the translation info flag attribute name
-                        static const string IS_TRANS_INFO_FIELD_NAME;
+                        static const char * IS_TRANS_INFO_FIELD_NAME;
                         //Stores the source sentences attribute name
-                        static const string SOURCE_SENTENCES_FIELD_NAME;
+                        static const char * SOURCE_SENTENCES_FIELD_NAME;
 
                         /**
                          * The basic constructor

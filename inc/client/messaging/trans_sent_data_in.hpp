@@ -50,8 +50,8 @@ namespace uva {
                          * JSON object, but it does not own it.
                          * @param data_obj the reference to the encapsulated JSON object
                          */
-                        trans_sent_data_in(const json & data_obj)
-                        : trans_sent_data(), m_data_obj(&data_obj) {
+                        trans_sent_data_in()
+                        : trans_sent_data(), m_data_obj(NULL) {
                             //Nothing to be done here
                         }
 
@@ -67,34 +67,32 @@ namespace uva {
                          * @return the translation task result code
                          */
                         inline status_code get_status_code() const {
-                            //Get the status code value
-                            int32_t code_value = incoming_msg::get_value(*m_data_obj, STAT_CODE_FIELD_NAME);
                             //Create the status code class instance
-                            return status_code(code_value);
+                            return status_code(m_data_obj->operator [](STAT_CODE_FIELD_NAME).GetInt());
                         }
 
                         /**
                          * Allows to get the translation task status message
                          * @return the translation task status message
                          */
-                        inline const json & get_status_msg() const {
-                            return incoming_msg::get_value(*m_data_obj, STAT_MSG_FIELD_NAME);
+                        inline string get_status_msg() const {
+                            return m_data_obj->operator [](STAT_MSG_FIELD_NAME).GetString();
                         }
 
                         /**
                          * Allows to get a reference to the translated text string.
                          * @return a reference to the translated text string.
                          */
-                        inline const json & get_trans_text() const {
-                            return incoming_msg::get_value(*m_data_obj, TRANS_TEXT_FIELD_NAME);
+                        inline string get_trans_text() const {
+                            return m_data_obj->operator [](TRANS_TEXT_FIELD_NAME).GetString();
                         }
 
                         /**
                          * Allows to get a reference to an array of stack load numbers
                          * @return a reference to an array of stack load numbers
                          */
-                        inline const json & get_stack_load() const {
-                            return incoming_msg::get_value(*m_data_obj, STACK_LOAD_FIELD_NAME);
+                        inline const Value & get_stack_load() const {
+                            return m_data_obj->operator [](STACK_LOAD_FIELD_NAME);
                         }
 
                         /**
@@ -102,20 +100,20 @@ namespace uva {
                          * @return true if the stack loads are present, otherwise false
                          */
                         inline bool has_stack_load() const {
-                            return incoming_msg::has_value(*m_data_obj, STACK_LOAD_FIELD_NAME);
+                            return m_data_obj->HasMember(STACK_LOAD_FIELD_NAME);
                         }
 
                         /**
                          * Allows to replace a stored reference to a JSON object with a new reference.
                          * @param data_obj the reference to a new JSON object
                          */
-                        inline void set_sent_data(const json & data_obj) {
+                        inline void set_sent_data(const Value & data_obj) {
                             m_data_obj = &data_obj;
                         }
 
                     private:
                         //Stores the pointer to the encapsulated JSON object
-                        const json * m_data_obj;
+                        const Value * m_data_obj;
                     };
 
                 }
