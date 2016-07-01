@@ -32,8 +32,8 @@ namespace uva {
                 namespace messaging {
 
                     //Define the status strings
-#define RESULT_UNKNOWN_STR "unknown"
 #define RESULT_UNDEFINED_STR "undefined"
+#define RESULT_UNKNOWN_STR "unknown"
 #define RESULT_OK_STR "good"
 #define RESULT_ERROR_STR "error"
 #define RESULT_CANCELED_STR "canceled"
@@ -42,6 +42,7 @@ namespace uva {
                     //Stores the status to string mappings
                     const char * const status_code::m_code_str[values::size] = {
                         RESULT_UNDEFINED_STR,
+                        RESULT_UNKNOWN_STR
                         RESULT_OK_STR,
                         RESULT_ERROR_STR,
                         RESULT_CANCELED_STR,

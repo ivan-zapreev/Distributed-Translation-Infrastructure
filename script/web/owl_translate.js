@@ -10,6 +10,8 @@ var client_data = {
 
 //The communication protocol version value
 var PROTOCOL_VERSION = 1;
+//The maximum number of sentences per translation job request.
+var MAX_NUM_SENTENCES_PER_JOB = 128;
 //This enumeration stores the available message type values
 var MSG_TYPE_ENUM = {
     //The message type is undefined
@@ -197,10 +199,13 @@ function get_selected_target_lang() {
 
 /**
  * Allows to send a new translation request to the server
- * @param {string} new_source_text the prepared new source text to be sent for translation
+ * @param {array of strings} source_sent an array of prepared sentences to be sent in the translation job
  */
-function send_translation_request(new_source_text) {
+function send_translation_request(source_sent) {
     "use strict";
+    
+    window.console.log("Increment the number of active translation jobs");
+    client_data.active_translations += 1;
     
     //Get the new translation job request id
     client_data.prev_job_req_id += 1;
@@ -221,45 +226,12 @@ function send_translation_request(new_source_text) {
     trans_job_req.is_trans_info = client_data.trans_info_cb.checked;
 
     //Set the source text split line by line
-    trans_job_req.source_sent = new_source_text.split('\n');
+    trans_job_req.source_sent = source_sent;
+    
+    window.console.log("Sentence array to send: [" + source_sent + "]");
     
     //Send a new translation request
     client_data.ws.send(JSON.stringify(trans_job_req));
-}
-
-/**
- * This function is called if a new translation request is to be sent.
- */
-function do_translate() {
-    "use strict";
-    var source_text, new_source_md5;
-    
-    //Get and prepare the new source text
-    source_text = client_data.from_text_area.value.trim();
-    window.console.log("The text to translate is: " + source_text);
-    
-    //Compute the new source md5 value
-    new_source_md5 = client_data.calcMD5(source_text);
-    window.console.log("The new source md5: " + new_source_md5);
-    
-    if ((source_text !== "") && (new_source_md5 !== client_data.prev_source_md5)) {
-        window.console.log("The new text is now empty and is different from the previous");
-        
-        //Remove the visualization of the status
-        remove_status_code_visual();
-
-        //Store the new previous translation request md5
-        client_data.prev_source_md5 = new_source_md5;
-    
-        window.console.log("Increment the number of active translations");
-        client_data.active_translations += 1;
-
-        window.console.log("Update the translation status");
-        update_trans_status();
-        
-        window.console.log("Send the translation request");
-        send_translation_request(source_text);
-    }
 }
 
 /**
@@ -290,6 +262,53 @@ function enable_interface(is_connected) {
         client_data.from_text_area.disabled = false;
         client_data.from_lang_sel.disabled = false;
         client_data.to_lang_sel.disabled = false;
+    }
+}
+
+/**
+ * This function is called if a new translation request is to be sent.
+ */
+function do_translate() {
+    "use strict";
+    var source_text, new_source_md5, sent_array, begin_idx, end_idx;
+    
+    //Get and prepare the new source text
+    source_text = client_data.from_text_area.value.trim();
+    window.console.log("The text to translate is: " + source_text);
+    
+    //First check that the text is not empty
+    if (source_text !== "") {
+        //Compute the new source md5 value
+        new_source_md5 = client_data.calcMD5(source_text);
+        window.console.log("The new source md5: " + new_source_md5);
+        
+        //Now check that the md5 sum has changed
+        if (new_source_md5 !== client_data.prev_source_md5) {
+            window.console.log("The new text is now empty and is different from the previous");
+
+            //Disable the interface
+            disable_interface();
+
+            //Remove the visualization of the status
+            remove_status_code_visual();
+
+            //Store the new previous translation request md5
+            client_data.prev_source_md5 = new_source_md5;
+
+            window.console.log("Update the translation status");
+            update_trans_status();
+        
+            sent_array = source_text.split('\n');
+            window.console.log("Send the translation requests for " + sent_array.length + " sentences");
+            begin_idx = 0;
+            while (begin_idx < sent_array.length) {
+                //Compute the end index
+                end_idx = begin_idx + MAX_NUM_SENTENCES_PER_JOB;
+                window.console.log("Sending sentences [" + begin_idx + "," + end_idx + ")");
+                send_translation_request(sent_array.slice(begin_idx, end_idx));
+                begin_idx = end_idx;
+            }
+        }
     }
 }
 

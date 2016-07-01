@@ -304,12 +304,12 @@ namespace uva {
                             if (m_is_stop) {
                                 //If the translation has been canceled just send back the source
                                 m_status_code = status_code::RESULT_CANCELED;
-                                m_status_msg = "Canceled!";
+                                m_status_msg = "Canceled by the server!";
                                 m_target_text = m_source_text;
                             } else {
                                 //If the translation has been finished send back the target
                                 m_status_code = status_code::RESULT_OK;
-                                m_status_msg = "OK";
+                                m_status_msg = "";
                                 m_target_text = m_target_text;
                             }
                         }
