@@ -42,7 +42,7 @@ namespace uva {
                     //Stores the status to string mappings
                     const char * const status_code::m_code_str[values::size] = {
                         RESULT_UNDEFINED_STR,
-                        RESULT_UNKNOWN_STR
+                        RESULT_UNKNOWN_STR,
                         RESULT_OK_STR,
                         RESULT_ERROR_STR,
                         RESULT_CANCELED_STR,

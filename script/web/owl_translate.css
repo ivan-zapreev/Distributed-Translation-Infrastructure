@@ -87,7 +87,7 @@ input#trans_btn {
    width: 100%;
    margin-top: 5px;
    min-height: 250px;
-   max-height: 750%;
+   max-height: 750px;
    min-width: 180px;
    padding: 8px;
    resize: vertical;
@@ -127,4 +127,12 @@ span.target_sent_tag:hover:before {
     margin-left: 24px;
     margin-top: -24px;
     margin-right: 10px;
+}
+
+div.panel-body {
+    padding: 3px;
+}
+
+div.progress {
+    margin-bottom: 3px;
 }

@@ -1,8 +1,10 @@
 var client_data = {
     "server_url" : "ws://localhost:9002", //The web server url
     "ws" : null,                          //The web socket to the server
-    "active_translations" : 0,            //The number of active translations
-    "prev_job_req_id" : 0,                //Stores the previously send translation job request
+    "active_trans_jobs" : 0,              //The number of active translations
+    "job_responces" : [],                 //Stores the translation job responses
+    "translation_html" : "",              //Stores the translation HTML data
+    "prev_job_req_id" : -1,               //Stores the previously send translation job request id
     "prev_source_md5" : "",               //Stores the previously sent translation job source text
     "calcMD5" : null,                     //The md5 function, to be initialized
     "server_url_inpt" : null              //Stores the server url input
@@ -54,7 +56,6 @@ function require_new_translation() {
 
     client_data.prev_source_md5 = null;
 }
-
 
 /**
  * This function allows to update the current connection status
@@ -144,6 +145,41 @@ function remove_status_code_visual() {
     visualize_status_code(STATUS_CODE_ENUM.RESULT_UNDEFINED, "");
 }
 
+/**
+ * This function allows to disable the interface
+ */
+function disable_interface() {
+    "use strict";
+
+    window.console.log("Disable the controls");
+    
+    client_data.server_url_inpt.disabled = true;
+    client_data.trans_btn.disabled = true;
+    client_data.trans_info_cb.disabled = true;
+    client_data.from_text_area.disabled = true;
+    client_data.from_lang_sel.disabled = true;
+    client_data.to_lang_sel.disabled = true;
+}
+
+/**
+ * This function allows to enable or partially enable the interface
+ * @param {Boolean} is_connected true if we enable the controls when
+ *                  we are connected to a server, otherwise false.
+ */
+function enable_interface(is_connected) {
+    "use strict";
+    
+    window.console.log("Enable the controls");
+    
+    client_data.server_url_inpt.disabled = false;
+    if (is_connected) {
+        client_data.trans_btn.disabled = false;
+        client_data.trans_info_cb.disabled = false;
+        client_data.from_text_area.disabled = false;
+        client_data.from_lang_sel.disabled = false;
+        client_data.to_lang_sel.disabled = false;
+    }
+}
 
 /**
  * This function allows to update the translation progress bar status.
@@ -153,12 +189,144 @@ function remove_status_code_visual() {
  */
 function update_trans_status() {
     "use strict";
+
+    window.console.log("Update the translation status");
     
-    if (client_data.active_translations === 0) {
+    if (client_data.active_trans_jobs === 0) {
         client_data.progress_image.src = "globe32.png";
     } else {
         client_data.progress_image.src = "globe32.gif";
     }
+}
+
+/**
+ * Allows to fill int he single response data into the target data span
+ * @param {Object} trans_response the translation reponse object
+ */
+function fill_in_single_response_data(trans_response, response_idx, trans_responses) {
+    "use strict";
+
+    //Declare the variables to be used
+    var j, target, status;
+    
+    //Set the border color based on the overall status
+    visualize_status_code(trans_response.stat_code, trans_response.stat_msg);
+
+    //Only visualize the results if the target data is present
+    if (trans_response.stat_code !== STATUS_CODE_ENUM.RESULT_ERROR &&
+            trans_response.stat_code !== STATUS_CODE_ENUM.RESULT_CANCELED) { //trans_response.hasOwnProperty('target_data')
+        //Assemble the data
+        for (j = 0; j < trans_response.target_data.length; j += 1) {
+            //Get the target
+            target = trans_response.target_data[j];
+            //Create the status string, to hover
+            status = get_status_code_string(target.stat_code);
+            //Add the message if it is not empty
+            if (target.stat_code !== STATUS_CODE_ENUM.RESULT_OK) {
+                status += ": " + target.stat_msg;
+            } else {
+                //Check if the stack loads are present, if yes, add them
+                if (client_data.trans_info_cb.checked) { //target.hasOwnProperty('stack_load')
+                    status += ", multi-stack loads(%): [" + target.stack_load.join(" ") + "]";
+                }
+            }
+            //Add the translation element to the panel
+            client_data.translation_html += "<span data-tooltip='" + status +
+                "' class='target_sent_tag'>" + target.trans_text + "</span>";
+        }
+    }
+    
+    //Check if this is the last response
+    if (response_idx === (trans_responses.length - 1)) {
+        //Set the translation html into the DOM tree just once, otherwise it is too slow!
+        client_data.to_text_span.innerHTML = client_data.translation_html;
+        client_data.translation_html = "";
+        
+        //Update the translation status
+        update_trans_status();
+
+        //Enable the interface controls
+        enable_interface(true);
+    }
+}
+
+/**
+ * Allows to process a large array in an asynchronous way
+ * @param {array} array of data to process 
+ * @param {function} the call back function to be called per array element
+ * @param {time} the time allowed to be busy per batch, optional
+ * @param {context} context the context, optional
+ */
+function process_array_async(array, fn, maxTimePerChunk, context) {
+    "use strict";
+    
+    context = context || window;
+    maxTimePerChunk = maxTimePerChunk || 200;
+    var index = 0;
+
+    function now() {
+        var time = new Date().getTime();
+        window.console.log("Next iteration time is: " + time);
+        return time;
+    }
+
+    function doChunk() {
+        var startTime = now();
+        while (index < array.length && (now() - startTime) <= maxTimePerChunk) {
+            // callback called with args (value, index, array)
+            fn.call(context, array[index], index, array);
+            index += 1;
+        }
+        if (index < array.length) {
+            // set Timeout for async iteration
+            setTimeout(doChunk, 1);
+        }
+    }
+    doChunk();
+}
+
+/**
+ * Allows to account for a new translation job response
+ */
+function count_trans_job_response() {
+    "use strict";
+    
+    //Decrement the number of active translations
+    client_data.active_trans_jobs -= 1;
+    window.console.log("A new response, remaining #jobs: " + client_data.active_trans_jobs);
+    
+    //If all the responses are received
+    if (client_data.active_trans_jobs === 0) {
+
+        //Get the text element to put the values into
+        client_data.translation_html = "";
+    
+        //Create the response and put it into the text span
+        process_array_async(client_data.job_responces, fill_in_single_response_data);
+    }
+}
+
+/**
+ * Allows to account for a new translation job request
+ */
+function count_trans_job_request() {
+    "use strict";
+    
+    //If this is the first translation jobe request then disable the interface
+    if (client_data.active_trans_jobs === 0) {
+        //Disable the interface
+        disable_interface();
+    }
+    
+    //Increment the number of active translations
+    client_data.active_trans_jobs += 1;
+    window.console.log("A new request, remaining #jobs: " + client_data.active_trans_jobs);
+
+    //Update the translation status
+    update_trans_status();
+
+    //Remove the visualization of the status
+    remove_status_code_visual();
 }
 
 /**
@@ -199,17 +367,20 @@ function get_selected_target_lang() {
 
 /**
  * Allows to send a new translation request to the server
+ * @param {String} source_lang the source language string
+ * @param {String} target_lang the target languaghe string
+ * @param {Bool} is_trans_info true if the translation info is to be requested, otherwise false
  * @param {array of strings} source_sent an array of prepared sentences to be sent in the translation job
  */
-function send_translation_request(source_sent) {
+function send_translation_request(source_lang, target_lang, is_trans_info, source_sent) {
     "use strict";
-    
-    window.console.log("Increment the number of active translation jobs");
-    client_data.active_translations += 1;
+
+    //Count the translation job request
+    count_trans_job_request();
     
     //Get the new translation job request id
     client_data.prev_job_req_id += 1;
-
+    
     //Initialize and construct the json translation job request
     var trans_job_req = TRAN_JOB_REQ_BASE;
     
@@ -217,52 +388,21 @@ function send_translation_request(source_sent) {
     trans_job_req.job_id = client_data.prev_job_req_id;
     
     //Set the source language
-    trans_job_req.source_lang = get_selected_source_lang();
+    trans_job_req.source_lang = source_lang;
 
     //Set the target language
-    trans_job_req.target_lang = get_selected_target_lang();
+    trans_job_req.target_lang = target_lang;
 
-    //ToDo: Get the translation info flag from thecheckox!
-    trans_job_req.is_trans_info = client_data.trans_info_cb.checked;
+    //Get the translation info flag from thecheckox!
+    trans_job_req.is_trans_info = is_trans_info;
 
     //Set the source text split line by line
     trans_job_req.source_sent = source_sent;
     
-    window.console.log("Sentence array to send: [" + source_sent + "]");
+    window.console.log("Sending a sentence array with " + source_sent.length + " sentences");
     
     //Send a new translation request
     client_data.ws.send(JSON.stringify(trans_job_req));
-}
-
-/**
- * This function allows to disable the interface
- */
-function disable_interface() {
-    "use strict";
-    
-    client_data.server_url_inpt.disabled = true;
-    client_data.trans_btn.disabled = true;
-    client_data.trans_info_cb.disabled = true;
-    client_data.from_text_area.disabled = true;
-    client_data.from_lang_sel.disabled = true;
-    client_data.to_lang_sel.disabled = true;
-}
-
-/**
- * This function allows to enable or partially enable the interface
- * @param {Boolean} is_connected true if we enable the controls when
- *                  we are connected to a server, otherwise false.
- */
-function enable_interface(is_connected) {
-    "use strict";
-    client_data.server_url_inpt.disabled = false;
-    if (is_connected) {
-        client_data.trans_btn.disabled = false;
-        client_data.trans_info_cb.disabled = false;
-        client_data.from_text_area.disabled = false;
-        client_data.from_lang_sel.disabled = false;
-        client_data.to_lang_sel.disabled = false;
-    }
 }
 
 /**
@@ -270,11 +410,11 @@ function enable_interface(is_connected) {
  */
 function do_translate() {
     "use strict";
-    var source_text, new_source_md5, sent_array, begin_idx, end_idx;
+    var source_text, new_source_md5, sent_array, begin_idx, end_idx, source_lang, target_lang, is_trans_info;
     
     //Get and prepare the new source text
     source_text = client_data.from_text_area.value.trim();
-    window.console.log("The text to translate is: " + source_text);
+    window.console.log("The text to translate is: " + source_text.substr(0, 128) + "...");
     
     //First check that the text is not empty
     if (source_text !== "") {
@@ -286,18 +426,27 @@ function do_translate() {
         if (new_source_md5 !== client_data.prev_source_md5) {
             window.console.log("The new text is now empty and is different from the previous");
 
-            //Disable the interface
-            disable_interface();
-
-            //Remove the visualization of the status
-            remove_status_code_visual();
-
             //Store the new previous translation request md5
             client_data.prev_source_md5 = new_source_md5;
+            
+            //Re-set the job id value
+            client_data.prev_job_req_id = -1;
 
-            window.console.log("Update the translation status");
-            update_trans_status();
-        
+            //Re-set the job responses array
+            client_data.job_responces = [];
+
+            //Set the source language
+            source_lang = get_selected_source_lang();
+
+            //Set the target language
+            target_lang = get_selected_target_lang();
+
+            //Get the translation info flag from thecheckox!
+            is_trans_info = client_data.trans_info_cb.checked;
+
+            //Clear the current translation text
+            client_data.to_text_span.innerHTML = "";
+
             sent_array = source_text.split('\n');
             window.console.log("Send the translation requests for " + sent_array.length + " sentences");
             begin_idx = 0;
@@ -305,9 +454,10 @@ function do_translate() {
                 //Compute the end index
                 end_idx = begin_idx + MAX_NUM_SENTENCES_PER_JOB;
                 window.console.log("Sending sentences [" + begin_idx + "," + end_idx + ")");
-                send_translation_request(sent_array.slice(begin_idx, end_idx));
+                send_translation_request(source_lang, target_lang, is_trans_info, sent_array.slice(begin_idx, end_idx));
                 begin_idx = end_idx;
             }
+            window.console.log("Finished sending translation request jobs.");
         }
     }
 }
@@ -337,7 +487,7 @@ function on_open() {
     window.console.log("Sending the supported languages request: " + supp_lang_reg_str);
     client_data.ws.send(supp_lang_reg_str);
 
-    window.console.log("Enable the controls after connecting to a new server");
+    //Enable the interface controls
     enable_interface(true);
 }
 
@@ -348,45 +498,12 @@ function on_open() {
  */
 function set_translation(trans_response) {
     "use strict";
-    var i, target, status;
     
-    //Check that the responce is for the most recent job
-    if (trans_response.job_id === client_data.prev_job_req_id) {
-        //Get the text element to put the values into
-        client_data.to_text_span.innerHTML = "";
-        
-        //Set the border color based on the overall status
-        visualize_status_code(trans_response.stat_code, trans_response.stat_msg);
-    
-        //Assemble the data
-        for (i = 0; i < trans_response.target_data.length; i += 1) {
-            //Get the target
-            target = trans_response.target_data[i];
-            //Create the status string, to hover
-            status = get_status_code_string(target.stat_code);
-            //Add the message if it is not empty
-            if (target.stat_code !== STATUS_CODE_ENUM.RESULT_OK) {
-                status += ": " + target.stat_msg;
-            } else {
-                //Check if the stack loads are present, if yes, add them
-                if (target.hasOwnProperty('stack_load')) {
-                    status += ", multi-stack loads(%): [" + target.stack_load.join(" ") + "]";
-                }
-            }
-            //Add the translation element to the panel
-            client_data.to_text_span.innerHTML += "<span data-tooltip='" + status +
-                "' class='target_sent_tag'>" + target.trans_text + "</span>";
-        }
-    } else {
-        window.console.log("Received a translation job response for job: " + trans_response.job_id +
-                           " but the most recent one is " + client_data.prev_job_req_id + ", ignoring!");
-    }
-    
-    window.console.log("Decrement the number of active translations");
-    client_data.active_translations -= 1;
+    //Store the translation response in the array
+    client_data.job_responces[trans_response.job_id] = trans_response;
 
-    window.console.log("Update the translation status");
-    update_trans_status();
+    //Cound the translation job response
+    count_trans_job_response();
 }
 
 /**
@@ -440,9 +557,7 @@ function on_source_lang_select() {
 function set_supported_languages(supp_lang_resp) {
     "use strict";
     var source_lang, num_sources;
-    
-    //ToDo: Check for an error message in the response!
-    
+
     //Store the supported languages
     client_data.language_mapping = supp_lang_resp.langs;
 
@@ -467,7 +582,7 @@ function set_supported_languages(supp_lang_resp) {
             client_data.from_lang_sel.innerHTML += get_select_option(source_lang, source_lang);
         }
     }
-    
+
     if (num_sources === 1) {
         window.console.log("Single source language, set the targets right away");
         on_source_lang_select();
@@ -481,7 +596,7 @@ function set_supported_languages(supp_lang_resp) {
 function on_message(evt) {
     "use strict";
     
-    window.console.log("Message is received: " + evt.data + " parsing to JSON");
+    window.console.log("Message is received, parsing to JSON");
     var resp_obj = JSON.parse(evt.data);
     
     //Check of the message type
@@ -506,13 +621,14 @@ function on_close() {
     update_conn_status(window.WebSocket.CLOSED);
 
     window.console.log("Re-set the counter for the number of running translations to zero");
-    client_data.active_translations = 0;
-    window.console.log("Update the translation status");
+    client_data.active_trans_jobs = 0;
+
+    //Update the translation statis
     update_trans_status();
 
     window.console.log("The connection to: '" + client_data.server_url + "'has failed!");
 
-    window.console.log("Enable the controls after disconnecting from a server");
+    //Enable the interface controls
     enable_interface(false);
 }
 

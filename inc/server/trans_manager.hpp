@@ -286,7 +286,7 @@ namespace uva {
                             //Send the response to the client
                             m_sender_func(hdl, data);
                         } else {
-                            LOG_ERROR << "Could not send the translation response for " << session_id
+                            LOG_DEBUG << "Could not send the translation response for " << session_id
                                     << "/" << job_id << " as the connection handler has expired!" << END_LOG;
                         }
                     }
