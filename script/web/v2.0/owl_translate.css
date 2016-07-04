@@ -9,10 +9,10 @@ div#header {
 }
 
 div#settings {
-   padding-bottom: 5px;
+    padding-bottom: 5px;
     display: flex;
     justify-content: space-between;
-   color: gray;
+    color: gray;
 }
 
 div#server {
@@ -135,4 +135,44 @@ a.target_sent_tag {
 
 div.progress-bar {
     color: black;
+}
+
+div.alert {
+    padding: 2px;
+    margin: 2px;
+}
+
+div#log_panel {
+    max-height: 200px;
+    overflow: auto;
+}
+
+span#lp_info {
+    color: black;
+    background-color: #d9edf7;
+    border: 1px solid #bce8f1;
+}
+
+span#lp_succ {
+    color: black;
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+}
+
+span#lp_warn {
+    color: black;
+    background-color: #fcf8e3;
+    border: 1px solid #faebcc;
+}
+
+span#lp_dang {
+    color: black;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+}
+
+div#log_status_panel {
+    display: inline-block;
+    position: absolute;
+    right: 20px;
 }

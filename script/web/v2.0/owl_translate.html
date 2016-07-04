@@ -52,42 +52,29 @@
                 <div class="panel-body">
                    <div class="progress">
                         <div id="request_progress_bar" class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="0"
-                             aria-valuemin="0" aria-valuemax="100" style="">
+                             aria-valuemin="0" aria-valuemax="50" style="">
                         </div>
-                   </div>
-                   <div class="progress">
                         <div id="response_progress_bar" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0"
-                             aria-valuemin="0" aria-valuemax="100" style="">
+                             aria-valuemin="0" aria-valuemax="50" style="">
                         </div>
                     </div>
                 </div>
                 <div class="v_sep"></div>
                 <div class="panel-footer">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" href="#collapse_logging">Logging <span class="badge">5</span> <span class="caret"></span></a>
+                        <a data-toggle="collapse" href="#collapse_logging">Logging
+                            <span class="caret"></span>
+                        </a>
+                        <div id='log_status_panel'>
+                            <span id="lp_info" class="badge">0</span>
+                            <span id="lp_succ" class="badge">0</span>
+                            <span id="lp_warn" class="badge">0</span>
+                            <span id="lp_dang" class="badge">0</span>
+                        </div>
                     </h4>
                 </div>
                 <div id="collapse_logging" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <div class="alert alert-success fade in">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
-                            <strong>Success!</strong> Indicates a successful or positive action.
-                        </div>
-
-                        <div class="alert alert-info fade in">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
-                            <strong>Info!</strong> Indicates a neutral informative change or action.
-                        </div>
-
-                        <div class="alert alert-warning fade in">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
-                            <strong>Warning!</strong> Indicates a warning that might need attention.
-                        </div>
-
-                        <div class="alert alert-danger fade in">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
-                            <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-                        </div>
+                    <div id="log_panel" class="panel-body">
                     </div>
                 </div>
                 <div class="v_sep"></div>

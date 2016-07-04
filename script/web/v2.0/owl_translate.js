@@ -15,6 +15,10 @@ var client_data = {
 var PROTOCOL_VERSION = 1;
 //The maximum number of sentences per translation job request.
 var MAX_NUM_SENTENCES_PER_JOB = 128;
+//Stores the number of progress bars for the translation process
+var NUM_PROGRESS_BARS = 2;
+//Store the undefined job id value
+var UNDEFINED_JOB_ID = -1;
 //This enumeration stores the available message type values
 var MSG_TYPE_ENUM = {
     //The message type is undefined
@@ -108,28 +112,109 @@ function get_status_code_string(status_code) {
 }
 
 /**
+ * Allows to add a message of a given type to log
+ * @param {Json Object} the badge object to get the data set into
+ * @param {String} type the log entry type
+ * @param {String} message the message to be placed
+ */
+function add_log_message(badge, type, message) {
+    "use strict";
+    
+    var date = new Date(), value;
+    
+    //Increment the number of messages of the given sort
+    value = window.parseInt(badge.html());
+    window.console.log("The " + type + " badge value is: " + value);
+    badge.html(value + 1);
+    
+    client_data.log_panel.prepend(
+        "<div class='alert alert-" + type + " fade in'>" +
+            "<a href='#' class='close' data-dismiss='alert' aria-label='close' title='close'>&times;</a>" +
+            date.toLocaleDateString() + " " + date.toLocaleTimeString() + " <strong>" + type + ":</strong> " + message + "</div>"
+    );
+}
+
+/**
+ * This function is called in case an error message is to be logged.
+ * @param {String} message the message to visualize
+ */
+function danger(message) {
+    "use strict";
+    
+    add_log_message(client_data.lp_dang, "danger", message);
+    
+    window.console.error(message);
+}
+
+/**
+ * This function is called in case a warning message is to be logged
+ * @param {String} message the message to visualize
+ */
+function warning(message) {
+    "use strict";
+    
+    add_log_message(client_data.lp_warn, "warning", message);
+
+    window.console.warn(message);
+}
+
+/**
+ * This function is called in case an info message is to be logged
+ * @param {String} message the message to visualize
+ */
+function info(message) {
+    "use strict";
+    
+    add_log_message(client_data.lp_info, "info", message);
+
+    window.console.log(message);
+}
+
+/**
+ * This function is called in case a success message is to be logged.
+ * @param {String} message the message to visualize
+ */
+function success(message) {
+    "use strict";
+    
+    add_log_message(client_data.lp_succ, "success", message);
+    
+    window.console.info(message);
+}
+
+/**
  * Allows to visualize the status code and message if needed
+ * @param {Number} the job id 
  * @param {Number} stat_code the job response status code
  * @param {String} stat_msg the status message string the status message
  */
-function visualize_status_code(stat_code, stat_msg) {
+function visualize_status_code(job_id, stat_code, stat_msg) {
     "use strict";
     
     switch (stat_code) {
     case STATUS_CODE_ENUM.RESULT_OK:
         client_data.to_text_span.style.boxShadow = "0 0 10px green";
+        if (job_id !== UNDEFINED_JOB_ID) {
+            success("Translation job: " + job_id + " succeeded!");
+        }
         break;
     case STATUS_CODE_ENUM.RESULT_ERROR:
         client_data.to_text_span.style.boxShadow = "0 0 10px red";
-        window.alert("Server status: " + stat_msg);
+        if (job_id !== UNDEFINED_JOB_ID) {
+            danger("Translation job: " + job_id + " failed: " + stat_msg);
+        }
         break;
     case STATUS_CODE_ENUM.RESULT_CANCELED:
-        window.alert("Server status: " + stat_msg);
         client_data.to_text_span.style.boxShadow = "0 0 10px orange";
+        if (job_id !== UNDEFINED_JOB_ID) {
+            warning("Translation job: " + job_id + " was cancelled: " + stat_msg);
+        }
         break;
     case STATUS_CODE_ENUM.RESULT_PARTIAL:
-        window.alert("Server status: " + stat_msg);
         client_data.to_text_span.style.boxShadow = "0 0 10px yellow";
+        if (job_id !== UNDEFINED_JOB_ID) {
+            warning("Translation job: " + job_id + " was partially done: " + stat_msg);
+        }
         break;
     default:
         client_data.to_text_span.style.boxShadow = "none";
@@ -143,7 +228,7 @@ function visualize_status_code(stat_code, stat_msg) {
 function remove_status_code_visual() {
     "use strict";
     
-    visualize_status_code(STATUS_CODE_ENUM.RESULT_UNDEFINED, "");
+    visualize_status_code(UNDEFINED_JOB_ID, STATUS_CODE_ENUM.RESULT_UNDEFINED, "");
 }
 
 /**
@@ -183,51 +268,53 @@ function enable_interface(is_connected) {
 }
 
 /**
- *
- *
- *
- *
+ * Allows to set the progress bar progress
+ * @param {jquery Object} the jquesy object of the progress bar
+ * @param {String} the message to be visualized
+ * @param {Number} the current value for the progress bar
+ * @param {Number} the maximum value for the progress bar
+ * @param {Number} the number of translation process progress bars
  */
-function set_progress_bar(pb, msg, curr_num, max_num) {
+function set_progress_bar(pb, msg, curr_num, max_num, num_prog_bars) {
     "use strict";
     
     window.console.log("The current value: " + curr_num + " max value: " + max_num);
     
-    var percent = window.Math.round((curr_num / max_num) * 100);
-    pb.html(msg + ": " + percent + "%");
-    window.console.log(pb.html());
-    pb.width(percent + "%");
+    var percent = window.Math.round((curr_num / max_num) * 100), space_pb = percent / NUM_PROGRESS_BARS;
     pb.attr("aria-valuenow", percent);
+    pb.width(space_pb + "%");
     
     if (percent === 0) {
         pb.addClass("active");
+        pb.html("");
     } else {
         if (percent === 100) {
             pb.removeClass("active");
         }
+        pb.html(msg + ": " + percent + "%");
     }
 }
 
 /**
- *
- *
- *
+ * Allows to set the new value for the translation responses progress bar
+ * @param {integer} curr the current value
+ * @param {integer} max the maximum value
  */
-function set_response_progress_bar(curr_received, max_received) {
+function set_response_progress_bar(curr, max) {
     "use strict";
     
-    set_progress_bar(client_data.response_progress_bar, "Responses: ", curr_received, max_received);
+    set_progress_bar(client_data.response_progress_bar, "Responses", curr, max);
 }
 
 /**
- *
- *
- *
+ * Allows to set the new value for the translation requests progress bar
+ * @param {integer} curr the current value
+ * @param {integer} max the maximum value
  */
-function set_request_progress_bar(num_sent, max_sent) {
+function set_request_progress_bar(curr, max) {
     "use strict";
     
-    set_progress_bar(client_data.request_progress_bar, "Requests: ", num_sent, max_sent);
+    set_progress_bar(client_data.request_progress_bar, "Requests", curr, max);
 }
 
 /**
@@ -259,7 +346,7 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
     var j, target, status;
     
     //Set the border color based on the overall status
-    visualize_status_code(trans_response.stat_code, trans_response.stat_msg);
+    visualize_status_code(trans_response.job_id, trans_response.stat_code, trans_response.stat_msg);
 
     //Only visualize the results if the target data is present
     if (trans_response.stat_code !== STATUS_CODE_ENUM.RESULT_ERROR &&
@@ -273,6 +360,9 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
             //Add the message if it is not empty
             if (target.stat_code !== STATUS_CODE_ENUM.RESULT_OK) {
                 status += ": " + target.stat_msg;
+                if (target.stat_code === STATUS_CODE_ENUM.RESULT_ERROR) {
+                    danger("Translation job " + trans_response.job_id + "/" + (j + 1) + " failed: " + target.stat_msg);
+                }
             } else {
                 //Check if the stack loads are present, if yes, add them
                 if (client_data.trans_info_cb.checked) { //target.hasOwnProperty('stack_load')
@@ -297,6 +387,9 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
 
         //Enable the interface controls
         enable_interface(true);
+        
+        //Notify the user that everything went fine
+        success("Finished recombining " + trans_responses.length + " translation responses!");
     }
 }
 
@@ -314,6 +407,8 @@ function process_array_async(array, fn, maxTimePerChunk, context) {
     maxTimePerChunk = maxTimePerChunk || 200;
     var index = 0;
 
+    info("Start re-combining " + array.length + " translation response(s)");
+    
     function now() {
         var time = new Date().getTime();
         window.console.log("Next iteration time is: " + time);
@@ -516,20 +611,11 @@ function do_translate() {
                 begin_idx = end_idx;
                 set_request_progress_bar(end_idx, sent_array.length);
             }
+            
+            info("Sent out " + client_data.sent_trans_req + " translation requests");
             window.console.log("Finished sending translation request jobs.");
         }
     }
-}
-
-/**
- * This function is called in case an error has occured
- * in this script and it needs to be reported. The current
- * implementation uses a simple window alert for that.
- */
-function error(message) {
-    "use strict";
-    
-    window.alert("ERROR: " + message);
 }
 
 /**
@@ -538,12 +624,13 @@ function error(message) {
 function on_open() {
     "use strict";
     
-    window.console.log("Connection is open");
+    success("The connection to '" + client_data.server_url + "' is open");
     update_conn_status(window.WebSocket.OPEN);
 
     //Sent the request for the supported languages
     var supp_lang_reg_str = JSON.stringify(SUPPORTED_LANG_REQ);
     window.console.log("Sending the supported languages request: " + supp_lang_reg_str);
+    info("Requesting supported languages from the server!");
     client_data.ws.send(supp_lang_reg_str);
 
     //Enable the interface controls
@@ -617,6 +704,8 @@ function set_supported_languages(supp_lang_resp) {
     "use strict";
     var source_lang, num_sources;
 
+    success("Received a supported languages response from the server!");
+    
     //Store the supported languages
     client_data.language_mapping = supp_lang_resp.langs;
 
@@ -665,7 +754,7 @@ function on_message(evt) {
         if (resp_obj.msg_type === MSG_TYPE_ENUM.MESSAGE_SUPP_LANG_RESP) {
             set_supported_languages(resp_obj);
         } else {
-            error("An unknown server message: " + evt.data);
+            danger("An unknown server message: " + evt.data);
         }
     }
 }
@@ -676,7 +765,7 @@ function on_message(evt) {
 function on_close() {
     "use strict";
     
-    window.console.log("Connection is closed");
+    warning("The connection to '" + client_data.server_url + "' is closed");
     update_conn_status(window.WebSocket.CLOSED);
 
     window.console.log("Re-set the counter for the number of running requests and responses");
@@ -698,20 +787,20 @@ function on_close() {
 function connect_to_server() {
     "use strict";
 
+    window.console.log("Disable the controls before connecting to a new server");
+    disable_interface();
+
     window.console.log("Checking that the web socket connection is available");
     if (window.hasOwnProperty("WebSocket")) {
         window.console.log("Close the web socket connection if there is one");
         if ((client_data.ws !== null) && ((client_data.ws.readyState === window.WebSocket.CONNECTING) ||
                                           (client_data.ws.readyState === window.WebSocket.OPEN))) {
-            window.console.log("Disable the controls before connecting to a new server");
-            disable_interface();
-            
-            window.console.log("Closing the previously opened connection");
+            info("Closing the previously opened connection");
             update_conn_status(window.WebSocket.CLOSING);
             client_data.ws.close();
         }
 
-        window.console.log("Create a new web socket to: " + client_data.server_url);
+        info("Opening a new web socket to the server: " + client_data.server_url);
         client_data.ws = new window.WebSocket(client_data.server_url);
 
         update_conn_status(window.WebSocket.CONNECTING);
@@ -722,7 +811,7 @@ function connect_to_server() {
         client_data.ws.onclose = on_close;
     } else {
         //Disable the web page
-        error("The WebSockets are not supported by your browser!");
+        danger("The WebSockets are not supported by your browser!");
     }
 }
 
@@ -760,12 +849,10 @@ function on_server_change() {
 }
 
 /**
- * This function initializes the client data
+ * Obtains the element references
  */
-function initialize_client_data(callMD5) {
+function obtain_element_references() {
     "use strict";
-    
-    window.console.log("Initial client data: " + client_data);
     
     //Get the references to the needed UI elements
     client_data.trans_btn = document.getElementById("trans_btn");
@@ -778,8 +865,23 @@ function initialize_client_data(callMD5) {
     client_data.progress_image = document.getElementById("progress");
     client_data.conn_status_span = document.getElementById("conn_status");
     client_data.trans_info_cb = document.getElementById("trans_info_cb");
+    
     client_data.request_progress_bar = window.$("#request_progress_bar");
     client_data.response_progress_bar = window.$("#response_progress_bar");
+    client_data.log_panel = window.$("#log_panel");
+    client_data.lp_dang = window.$("#lp_dang");
+    client_data.lp_warn = window.$("#lp_warn");
+    client_data.lp_info = window.$("#lp_info");
+    client_data.lp_succ = window.$("#lp_succ");
+}
+
+/**
+ * This function initializes the client data
+ */
+function initialize_client_data(callMD5) {
+    "use strict";
+    
+    window.console.log("Using the default server url: " + client_data.server_url);
     
     //Set up the server URL
     client_data.server_url_inpt.value = client_data.server_url;
@@ -796,7 +898,8 @@ function initialize_client_data(callMD5) {
 function initialize_translation(callMD5) {
     "use strict";
     
-    window.console.log("Initializing the client data");
+    //Get the references to needed UI elements
+    obtain_element_references();
     
     //Initialize the client data
     initialize_client_data(callMD5);
