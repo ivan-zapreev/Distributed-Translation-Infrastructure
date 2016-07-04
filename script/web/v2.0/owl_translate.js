@@ -112,6 +112,43 @@ function get_status_code_string(status_code) {
 }
 
 /**
+ * ALlows to change the badge value
+ * @param {Jquery Object} badge the badge object to work with
+ * @param {Boolean} is_set if true then the value will be set, otherwise added
+ * @param {Number} factor the factor to add/set to the badge value
+ */
+function change_badge_value(badge, is_set, factor) {
+    "use strict";
+    
+    var value;
+    
+    if (is_set) {
+        //Set the badge value
+        badge.html(factor);
+    } else {
+        //Increment the badge value
+        value = window.parseInt(badge.html());
+        window.console.log("The badge value is: " + value);
+        badge.html(value + factor);
+    }
+}
+
+/**
+ * Allows to clear the log panel and re-set the badges
+ */
+function do_clear_log() {
+    "use strict";
+    
+    //Clear the log panel
+    client_data.log_panel.html("");
+    //Re-set the badges
+    change_badge_value(client_data.lp_dang, true, 0);
+    change_badge_value(client_data.lp_warn, true, 0);
+    change_badge_value(client_data.lp_info, true, 0);
+    change_badge_value(client_data.lp_succ, true, 0);
+}
+
+/**
  * Allows to add a message of a given type to log
  * @param {Json Object} the badge object to get the data set into
  * @param {String} type the log entry type
@@ -123,15 +160,15 @@ function add_log_message(badge, type, message) {
     var date = new Date(), value;
     
     //Increment the number of messages of the given sort
-    value = window.parseInt(badge.html());
-    window.console.log("The " + type + " badge value is: " + value);
-    badge.html(value + 1);
+    change_badge_value(badge, false, +1);
     
-    client_data.log_panel.prepend(
+    client_data.log_panel.append(
         "<div class='alert alert-" + type + " fade in'>" +
-            "<a href='#' class='close' data-dismiss='alert' aria-label='close' title='close'>&times;</a>" +
-            date.toLocaleDateString() + " " + date.toLocaleTimeString() + " <strong>" + type + ":</strong> " + message + "</div>"
+            date.toLocaleDateString() + " " + date.toLocaleTimeString() + " | <strong>" + type + ":</strong> " + message + "</div>"
     );
+    
+    //Scroll down to see let one see the result
+    client_data.log_panel.scrollTop(client_data.log_panel.prop("scrollHeight"));
 }
 
 /**
@@ -245,6 +282,7 @@ function disable_interface() {
     client_data.from_text_area.disabled = true;
     client_data.from_lang_sel.disabled = true;
     client_data.to_lang_sel.disabled = true;
+    client_data.clear_log_btn.disabled = true;
 }
 
 /**
@@ -264,35 +302,50 @@ function enable_interface(is_connected) {
         client_data.from_text_area.disabled = false;
         client_data.from_lang_sel.disabled = false;
         client_data.to_lang_sel.disabled = false;
+        client_data.clear_log_btn.disabled = false;
     }
 }
 
 /**
  * Allows to set the progress bar progress
+ * @param {Boolean} is_init true if this is for (re-)initialization of the progress bar
  * @param {jquery Object} the jquesy object of the progress bar
  * @param {String} the message to be visualized
  * @param {Number} the current value for the progress bar
  * @param {Number} the maximum value for the progress bar
  * @param {Number} the number of translation process progress bars
  */
-function set_progress_bar(pb, msg, curr_num, max_num, num_prog_bars) {
+function set_progress_bar(is_init, pb, msg, curr_num, max_num, num_prog_bars) {
     "use strict";
     
     window.console.log("The current value: " + curr_num + " max value: " + max_num);
     
-    var percent = window.Math.round((curr_num / max_num) * 100), space_pb = percent / NUM_PROGRESS_BARS;
+    var percent = window.Math.round((curr_num / max_num) * 100), span = pb.find("span");
     pb.attr("aria-valuenow", percent);
-    pb.width(space_pb + "%");
-    
-    if (percent === 0) {
-        pb.addClass("active");
-        pb.html("");
+    pb.width((percent / NUM_PROGRESS_BARS) + "%");
+
+    if (is_init) {
+        span.html("");
     } else {
-        if (percent === 100) {
-            pb.removeClass("active");
-        }
-        pb.html(msg + ": " + percent + "%");
+        span.html(msg + ": " + percent + "%");
     }
+    
+    if (percent === 0 && !is_init) {
+        pb.addClass("active");
+    }
+    if (percent === 100 || is_init) {
+        pb.removeClass("active");
+    }
+}
+
+/**
+ * Allows to re-initialize the request/response progress bars
+ */
+function initialize_progress_bars() {
+    "use strict";
+
+    set_progress_bar(true, client_data.response_progress_bar, "Responses", 0, 1);
+    set_progress_bar(true, client_data.request_progress_bar, "Requests", 0, 1);
 }
 
 /**
@@ -303,7 +356,7 @@ function set_progress_bar(pb, msg, curr_num, max_num, num_prog_bars) {
 function set_response_progress_bar(curr, max) {
     "use strict";
     
-    set_progress_bar(client_data.response_progress_bar, "Responses", curr, max);
+    set_progress_bar(false, client_data.response_progress_bar, "Responses", curr, max);
 }
 
 /**
@@ -314,7 +367,7 @@ function set_response_progress_bar(curr, max) {
 function set_request_progress_bar(curr, max) {
     "use strict";
     
-    set_progress_bar(client_data.request_progress_bar, "Requests", curr, max);
+    set_progress_bar(false, client_data.request_progress_bar, "Requests", curr, max);
 }
 
 /**
@@ -600,8 +653,10 @@ function do_translate() {
 
             sent_array = source_text.split('\n');
             window.console.log("Send the translation requests for " + sent_array.length + " sentences");
-            set_request_progress_bar(0, sent_array.length);
-            set_response_progress_bar(0, sent_array.length);
+            
+            //Re-initialize the progress bars
+            initialize_progress_bars();
+            
             begin_idx = 0;
             while (begin_idx < sent_array.length) {
                 //Compute the end index
@@ -611,6 +666,9 @@ function do_translate() {
                 begin_idx = end_idx;
                 set_request_progress_bar(end_idx, sent_array.length);
             }
+            
+            //Make the progress note visible
+            set_response_progress_bar(0, 1);
             
             info("Sent out " + client_data.sent_trans_req + " translation requests");
             window.console.log("Finished sending translation request jobs.");
@@ -865,6 +923,7 @@ function obtain_element_references() {
     client_data.progress_image = document.getElementById("progress");
     client_data.conn_status_span = document.getElementById("conn_status");
     client_data.trans_info_cb = document.getElementById("trans_info_cb");
+    client_data.clear_log_btn = document.getElementById("log_clear_btn");
     
     client_data.request_progress_bar = window.$("#request_progress_bar");
     client_data.response_progress_bar = window.$("#response_progress_bar");
@@ -888,6 +947,9 @@ function initialize_client_data(callMD5) {
     
     //Store the MD5 function
     client_data.calcMD5 = callMD5;
+    
+    //Re-set progress bars
+    initialize_progress_bars();
 }
 
 /**

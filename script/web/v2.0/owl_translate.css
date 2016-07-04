@@ -79,6 +79,7 @@ input#trans_btn {
     font-weight: bold;
     background-color: #7db8fe;
     border-radius: 5px;
+    color: black;
 }
 
 .text_data {
@@ -175,4 +176,13 @@ div#log_status_panel {
     display: inline-block;
     position: absolute;
     right: 20px;
+}
+
+input#log_clear_btn {
+    color:firebrick;
+    border-radius: 5px;
+}
+
+div.progress span {
+    white-space: nowrap;
 }
