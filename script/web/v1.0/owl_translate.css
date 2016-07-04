@@ -1,0 +1,130 @@
+div#title {
+   color: red;
+   font-size: 120%;
+   font-weight: bold;
+   float: left;
+}
+
+div#header {
+}
+
+div#settings {
+   padding-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+   color: gray;
+}
+
+div#server {
+}
+
+input#server_url {
+   width: 150px;
+   color: gray;
+}
+
+input#server_url:focus {
+   color: black;
+}
+
+div#trans_info {
+}
+
+input#trans_info_cb {
+}
+
+div.v_sep {
+   border-bottom-style: solid;
+   border-bottom-color: lightgray;
+   clear: left;
+   margin-bottom: 5px;
+}
+
+div#main {
+   text-align:left;
+   width: 100%;
+}
+
+div#from_part {
+   display: inline-block;
+   width: 45%;
+   vertical-align:top;
+}
+
+div#middle_part {
+   display: inline-block;
+   width: 4%;
+   min-width: 100px;
+   height: 100%;
+   vertical-align:top;
+}
+
+div#to_part {
+   display: inline-block;
+   width: 45%;
+   vertical-align:top;
+}
+
+img#progress {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input#trans_btn {
+    display: block;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+    background-color: #7db8fe;
+    border-radius: 5px;
+}
+
+.text_data {
+   font-family: arial,sans-serif;
+   font-size: 16px;
+   width: 100%;
+   margin-top: 5px;
+   min-height: 250px;
+   max-height: 750px;
+   min-width: 180px;
+   padding: 8px;
+   resize: vertical;
+   box-sizing: border-box;
+}
+
+textarea#from_text {
+}
+
+span#to_text {
+   background-color : #f2f1f1;
+   display : inline-block;
+   border: 1px solid;
+   overflow: auto;
+}
+
+span.target_sent_tag {
+    display: block;
+    border-radius: 3px;
+}
+
+span.target_sent_tag:hover {
+    background-color: #f9e79f;
+}
+
+span.target_sent_tag:hover:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    background: lightblue;
+    padding: 5px;
+    color: firebrick;
+    border: 1px solid;
+    border-color: crimson;
+    border-radius: 5px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    margin-left: 24px;
+    margin-top: -24px;
+    margin-right: 10px;
+}

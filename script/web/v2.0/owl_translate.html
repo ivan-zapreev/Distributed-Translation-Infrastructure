@@ -39,7 +39,7 @@
                     <div id="settings">
                         <div id="server">
                             Server:
-                            <input id="server_url" oninput="on_server_change()" onfocus="on_server_change()" type="text" value="">
+                            <input class="input-sm" id="server_url" oninput="on_server_change()" onfocus="on_server_change()" type="text" value="">
                             <span id="conn_status"></span>
                         </div>
                         <div id="trans_info">
@@ -50,17 +50,50 @@
                 </div>
                 <div class="v_sep"></div>
                 <div class="panel-body">
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40"
-                             aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                            40% Complete (success)
+                   <div class="progress">
+                        <div id="request_progress_bar" class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="0"
+                             aria-valuemin="0" aria-valuemax="100" style="">
+                        </div>
+                   </div>
+                   <div class="progress">
+                        <div id="response_progress_bar" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0"
+                             aria-valuemin="0" aria-valuemax="100" style="">
+                        </div>
+                    </div>
+                </div>
+                <div class="v_sep"></div>
+                <div class="panel-footer">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse_logging">Logging <span class="badge">5</span> <span class="caret"></span></a>
+                    </h4>
+                </div>
+                <div id="collapse_logging" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="alert alert-success fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+                            <strong>Success!</strong> Indicates a successful or positive action.
+                        </div>
+
+                        <div class="alert alert-info fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+                            <strong>Info!</strong> Indicates a neutral informative change or action.
+                        </div>
+
+                        <div class="alert alert-warning fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+                            <strong>Warning!</strong> Indicates a warning that might need attention.
+                        </div>
+
+                        <div class="alert alert-danger fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
+                            <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
                         </div>
                     </div>
                 </div>
                 <div class="v_sep"></div>
                 <div class="panel-body">
                     <div id="from_part">
-                        From: 
+                        Surce: 
                         <select id="from_lang_sel" onchange="on_source_lang_select()" name="from_language" required></select>
                         <textarea id="from_text" class="text_data" value="" spellcheck="false" autocapitalize="off"
                         autocomplete="off" autocorrect="off" wrap="SOFT"></textarea>
@@ -70,33 +103,12 @@
                         <input id="trans_btn" class="btn-sw btn-primary" type="button" value="Translate" onclick="do_translate()">
                     </div>
                     <div id="to_part">
-                        To: 
+                        Target: 
                         <select id="to_lang_sel" name="to_language" onchange="require_new_translation()" required></select>
                         <span id="to_text" class="text_data"></span>
                     </div>
                 </div>
-                <div class="panel-footer">Panel Footer</div>
             </div>
-        </div>
-        
-        <div class="alert alert-success fade in">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
-            <strong>Success!</strong> Indicates a successful or positive action.
-        </div>
-
-        <div class="alert alert-info fade in">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
-            <strong>Info!</strong> Indicates a neutral informative change or action.
-        </div>
-
-        <div class="alert alert-warning fade in">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
-            <strong>Warning!</strong> Indicates a warning that might need attention.
-        </div>
-
-        <div class="alert alert-danger fade in">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">&times;</a>
-            <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
         </div>
     </div>
 </body>

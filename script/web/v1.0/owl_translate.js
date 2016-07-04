@@ -231,8 +231,7 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
                 }
             }
             //Add the translation element to the panel
-            client_data.translation_html += "<span data-tooltip='" + status +
-                "' class='target_sent_tag'>" + target.trans_text + "</span>";
+            client_data.translation_html += "<span data-tooltip='" + status + "' class='target_sent_tag'>" + target.trans_text + "</span>";
         }
     }
     
