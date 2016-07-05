@@ -38,9 +38,9 @@ var STATUS_CODE_ENUM = {
     RESULT_UNDEFINED : 0,
     RESULT_UNKNOWN : 1,
     RESULT_OK : 2,
-    RESULT_ERROR : 3,
+    RESULT_PARTIAL : 3,
     RESULT_CANCELED : 4,
-    RESULT_PARTIAL : 5
+    RESULT_ERROR : 5
 };
 
 //Declare the supported languages request
@@ -228,34 +228,49 @@ function success(message) {
 function visualize_status_code(job_id, stat_code, stat_msg) {
     "use strict";
     
+    //Keen the maximum status code as the higher the more cevere is the error
+    var trans_status = window.Math.max(stat_code, client_data.trans_status);
+    
+    //Log the event
     switch (stat_code) {
     case STATUS_CODE_ENUM.RESULT_OK:
-        client_data.to_text_span.style.boxShadow = "0 0 10px green";
-        if (job_id !== UNDEFINED_JOB_ID) {
-            success("Translation job: " + job_id + " succeeded!");
-        }
+        success("Translation job: " + job_id + " succeeded!");
         break;
     case STATUS_CODE_ENUM.RESULT_ERROR:
-        client_data.to_text_span.style.boxShadow = "0 0 10px red";
-        if (job_id !== UNDEFINED_JOB_ID) {
-            danger("Translation job: " + job_id + " failed: " + stat_msg);
-        }
+        danger("Translation job: " + job_id + " failed: " + stat_msg);
         break;
     case STATUS_CODE_ENUM.RESULT_CANCELED:
-        client_data.to_text_span.style.boxShadow = "0 0 10px orange";
-        if (job_id !== UNDEFINED_JOB_ID) {
-            warning("Translation job: " + job_id + " was cancelled: " + stat_msg);
-        }
+        warning("Translation job: " + job_id + " was cancelled: " + stat_msg);
         break;
     case STATUS_CODE_ENUM.RESULT_PARTIAL:
-        client_data.to_text_span.style.boxShadow = "0 0 10px yellow";
-        if (job_id !== UNDEFINED_JOB_ID) {
-            warning("Translation job: " + job_id + " was partially done: " + stat_msg);
-        }
+        warning("Translation job: " + job_id + " was partially done: " + stat_msg);
         break;
     default:
-        client_data.to_text_span.style.boxShadow = "none";
         break;
+    }
+    
+    //Check if we need to change the visualization
+    if (client_data.trans_status !== trans_status) {
+        //Keep the new status
+        client_data.trans_status = trans_status;
+        //Visualize
+        switch (trans_status) {
+        case STATUS_CODE_ENUM.RESULT_OK:
+            client_data.to_text_span.style.boxShadow = "0 0 10px green";
+            break;
+        case STATUS_CODE_ENUM.RESULT_ERROR:
+            client_data.to_text_span.style.boxShadow = "0 0 10px red";
+            break;
+        case STATUS_CODE_ENUM.RESULT_CANCELED:
+            client_data.to_text_span.style.boxShadow = "0 0 10px orange";
+            break;
+        case STATUS_CODE_ENUM.RESULT_PARTIAL:
+            client_data.to_text_span.style.boxShadow = "0 0 10px yellow";
+            break;
+        default:
+            client_data.to_text_span.style.boxShadow = "none";
+            break;
+        }
     }
 }
 
@@ -264,6 +279,8 @@ function visualize_status_code(job_id, stat_code, stat_msg) {
  */
 function remove_status_code_visual() {
     "use strict";
+    
+    client_data.trans_status = STATUS_CODE_ENUM.RESULT_UNDEFINED;
     
     visualize_status_code(UNDEFINED_JOB_ID, STATUS_CODE_ENUM.RESULT_UNDEFINED, "");
 }
@@ -402,30 +419,44 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
     visualize_status_code(trans_response.job_id, trans_response.stat_code, trans_response.stat_msg);
 
     //Only visualize the results if the target data is present
-    if (trans_response.stat_code !== STATUS_CODE_ENUM.RESULT_ERROR &&
-            trans_response.stat_code !== STATUS_CODE_ENUM.RESULT_CANCELED) { //trans_response.hasOwnProperty('target_data')
+    if (trans_response.hasOwnProperty('target_data')) {
         //Assemble the data
         for (j = 0; j < trans_response.target_data.length; j += 1) {
             //Get the target
             target = trans_response.target_data[j];
             //Create the status string, to hover
             status = get_status_code_string(target.stat_code);
+            
             //Add the message if it is not empty
             if (target.stat_code !== STATUS_CODE_ENUM.RESULT_OK) {
                 status += ": " + target.stat_msg;
-                if (target.stat_code === STATUS_CODE_ENUM.RESULT_ERROR) {
+                switch (target.stat_code) {
+                case STATUS_CODE_ENUM.RESULT_ERROR:
                     danger("Translation job " + trans_response.job_id + "/" + (j + 1) + " failed: " + target.stat_msg);
-                }
-            } else {
-                //Check if the stack loads are present, if yes, add them
-                if (client_data.trans_info_cb.checked) { //target.hasOwnProperty('stack_load')
-                    status += ", multi-stack loads(%): [" + target.stack_load.join(" ") + "]";
+                    break;
+                case STATUS_CODE_ENUM.RESULT_CANCELED:
+                    if (trans_response.stat_code !== STATUS_CODE_ENUM.RESULT_CANCELED) {
+                        warning("Translation job " + trans_response.job_id + "/" + (j + 1) + " cancelled: " + target.stat_msg);
+                    }
+                    break;
                 }
             }
+            
+            //Check if the stack loads are present, if yes, add them
+            if (target.hasOwnProperty('stack_load')) {
+                status += ", multi-stack loads(%): [" + target.stack_load.join(" ") + "]";
+            } else {
+                if (client_data.trans_info_cb.checked) {
+                    window.console.warn("The stack_load field is not present when the translation infos are requested!");
+                }
+            }
+            
             //Add the translation element to the panel
             client_data.translation_html += "<span class='target_sent_tag' title='' data-original-title='" +
                 status + "' data-toggle='tooltip' data-placement='top'>" + target.trans_text + "</span>";
         }
+    } else {
+        window.console.warn("The target_data field is not present in the translation response!");
     }
     
     //Check if this is the last response
@@ -520,6 +551,9 @@ function count_trans_job_request() {
     if (client_data.sent_trans_req === 0) {
         //Disable the interface
         disable_interface();
+
+        //Remove the visualization of the status
+        remove_status_code_visual();
     }
     
     //Increment the number of active translations
@@ -528,9 +562,6 @@ function count_trans_job_request() {
 
     //Update the translation status
     update_trans_status();
-
-    //Remove the visualization of the status
-    remove_status_code_visual();
 }
 
 /**
@@ -706,6 +737,9 @@ function set_translation(trans_response) {
     //Store the translation response in the array
     client_data.job_responces[trans_response.job_id] = trans_response;
 
+    //Log that we received the response into the console
+    info("Received response for a translation job, id: " + trans_response.job_id);
+    
     //Cound the translation job response
     count_trans_job_response();
 }

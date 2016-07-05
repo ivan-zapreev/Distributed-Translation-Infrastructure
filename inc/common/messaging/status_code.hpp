@@ -58,10 +58,10 @@ namespace uva {
                             RESULT_UNDEFINED = 0,
                             RESULT_UNKNOWN = RESULT_UNDEFINED + 1,
                             RESULT_OK = RESULT_UNKNOWN + 1,
-                            RESULT_ERROR = RESULT_OK + 1,
-                            RESULT_CANCELED = RESULT_ERROR + 1,
-                            RESULT_PARTIAL = RESULT_CANCELED + 1,
-                            size = RESULT_PARTIAL + 1
+                            RESULT_PARTIAL = RESULT_OK + 1,
+                            RESULT_CANCELED = RESULT_PARTIAL + 1,
+                            RESULT_ERROR = RESULT_CANCELED + 1,
+                            size = RESULT_ERROR + 1
                         };
 
                         /**

@@ -447,7 +447,19 @@ namespace uva {
 
                                 //If we are finished then retrieve the best 
                                 //translation. If we have stopped then nothing.
-                                stack->get_best_trans(m_target_sent);
+                                try{
+                                    stack->get_best_trans(m_target_sent);
+                                }catch(exception & e) {
+                                    if (m_is_stop) {
+                                        //We are stopping so the exception is most likely
+                                        // due to that i.e. could not finish the translation
+                                        //process. Set the target to be the source sentence.
+                                        m_target_sent = m_source_sent;
+                                    } else {
+                                        //Re-throw an exception
+                                        throw e;
+                                    }
+                                }
                             }
 
                         private:
