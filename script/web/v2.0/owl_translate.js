@@ -442,9 +442,9 @@ function update_trans_status() {
     window.console.log("Update the translation status");
     
     if (client_data.sent_trans_req === client_data.received_trans_resp) {
-        client_data.progress_image.src = "globe32.png";
+        client_data.progress_image.src = "./img/globe32.png";
     } else {
-        client_data.progress_image.src = "globe32.gif";
+        client_data.progress_image.src = "./img/globe32.gif";
     }
 }
 
@@ -1082,7 +1082,12 @@ function download_text_translation(evt) {
     window.console.log("Text: " + text);
 
     //Call the download function from the library
-    client_data.callDownload(text, file_name, "text/html");
+    client_data.callDownload(text, file_name, "text/html; charset=UTF-8");
+    
+    //Reporta a warning
+    if (client_data.sent_trans_req !== client_data.received_trans_resp) {
+        warning("Download file: The translation process is not finished!");
+    }
 }
 
 /**
@@ -1107,7 +1112,12 @@ function download_log_translation(evt) {
     window.console.log("Text: " + text);
 
     //Call the download function from the library
-    client_data.callDownload(text, file_name, "text/html");
+    client_data.callDownload(text, file_name, "text/html; charset=UTF-8");
+    
+    //Reporta a warning
+    if (client_data.sent_trans_req !== client_data.received_trans_resp) {
+        warning("Download file: The translation process is not finished!");
+    }
 }
 
 /**

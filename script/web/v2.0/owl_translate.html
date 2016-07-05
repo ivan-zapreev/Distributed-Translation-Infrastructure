@@ -7,24 +7,24 @@
     <meta name="author" content="Dr. Ivan S. Zapreev">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Include the download javascript-->
+    <script src="./library/download.min.js"></script>
+    
+    <!--Include the jquery javascript-->
+    <script src="./library/jquery/jquery-2.2.4.min.js"></script>
     
     <!--Include the bootstrap css-->
-    <link rel="stylesheet" href="./bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./library/bootstrap/3.3.6/css/bootstrap.min.css">
+    
+    <!--Include the bootstrap javascript-->
+    <script src="./library/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+    <!--Include the md5 sum javascript-->
+    <script src="./library/md5.js" type="text/javascript"></script>
 
     <!--Include our own css-->
     <link rel="stylesheet" href="./owl_translate.css">
-
-    <!--Include the download javascript-->
-    <script src="./download2.js"></script>
-    
-    <!--Include the jquery javascript-->
-    <script src="./jquery/jquery-2.2.4.min.js"></script>
-    
-    <!--Include the bootstrap javascript-->
-    <script src="./bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    
-    <!--Include the md5 sum javascript-->
-    <script src="./md5.js" type="text/javascript"></script>
 
     <!--Include the client side javascript-->
     <script src="./owl_translate.js" type="text/javascript"></script>
@@ -101,7 +101,7 @@
                         autocomplete="off" autocorrect="off" wrap="SOFT"></textarea>
                     </div>
                     <div id="middle_part">
-                        <img class="img-responsive" id="progress" src="globe32.png" alt="Translation status"> 
+                        <img class="img-responsive" id="progress" src="./img/globe32.png" alt="Translation status"> 
                         <input id="trans_btn" class="btn-sw btn-primary" type="button" value="Translate" onclick="do_translate()">
                     </div>
                     <div id="to_part">
@@ -112,11 +112,11 @@
                             </div>
                             <div class="part_menu_right">
                                 <a id="download_text_link" class="download_link" href="#">
-                                    <img class="img-responsive" src="download.png" alt="Download translation">
+                                    <img class="img-responsive" width="24px" src="./img/download.png" alt="Download translation">
                                     Text
                                 </a>
                                 <a id="download_log_link" class="download_link" href="#">
-                                    <img class="img-responsive" src="download.png" alt="Download translation log">
+                                    <img class="img-responsive" width="24px" src="./img/download.png" alt="Download translation log">
                                     Log
                                 </a>
                             </div>
