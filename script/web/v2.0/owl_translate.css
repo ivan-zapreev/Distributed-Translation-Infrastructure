@@ -179,8 +179,9 @@ div#log_status_panel {
 }
 
 input#log_clear_btn {
-    color:firebrick;
+    color: gray;
     border-radius: 5px;
+    font-weight: normal;
 }
 
 div.progress span {
@@ -213,4 +214,5 @@ a.download_link {
 
 a.download_link img {
     display: inline-flex;
+    width: 16px;
 }
