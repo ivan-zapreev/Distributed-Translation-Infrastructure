@@ -14,6 +14,9 @@
     <!--Include our own css-->
     <link rel="stylesheet" href="./owl_translate.css">
 
+    <!--Include the download javascript-->
+    <script src="./download2.js"></script>
+    
     <!--Include the jquery javascript-->
     <script src="./jquery/jquery-2.2.4.min.js"></script>
     
@@ -83,9 +86,17 @@
                 <div class="v_sep"></div>
                 <div class="panel-body">
                     <div id="from_part">
-                        Surce: 
-                        <select id="from_lang_sel" onchange="on_source_lang_select()" name="from_language" required></select>
-                        <input type="file" id="input_file_select" name="Select a file to translate"/>
+                        <div class="part_menu_container">
+                            <div class="part_menu_left">
+                                Surce: 
+                                <select id="from_lang_sel" onchange="on_source_lang_select()" name="from_language" required></select>
+                            </div>
+                            <div class="part_menu_right">
+                                <div id="input_file_sc">
+                                    <input type="file" id="input_file_select" name="Select a file to translate"/>
+                                </div>
+                            </div>
+                        </div>
                         <textarea id="from_text" class="text_data" value="" spellcheck="false" autocapitalize="off"
                         autocomplete="off" autocorrect="off" wrap="SOFT"></textarea>
                     </div>
@@ -94,9 +105,22 @@
                         <input id="trans_btn" class="btn-sw btn-primary" type="button" value="Translate" onclick="do_translate()">
                     </div>
                     <div id="to_part">
-                        Target: 
-                        <select id="to_lang_sel" name="to_language" onchange="require_new_translation()" required></select>
-                        <!--<a href="data:application/octet-stream;charset=utf-16le;base64,//5mAG8AbwAgAGIAYQByAAoA">text file</a>-->
+                        <div class="part_menu_container">
+                            <div class="part_menu_left">
+                                Target: 
+                                <select id="to_lang_sel" name="to_language" onchange="require_new_translation()" required></select>
+                            </div>
+                            <div class="part_menu_right">
+                                <a id="download_text_link" class="download_link" href="#">
+                                    <img class="img-responsive" src="download.png" alt="Download translation">
+                                    Text
+                                </a>
+                                <a id="download_log_link" class="download_link" href="#">
+                                    <img class="img-responsive" src="download.png" alt="Download translation log">
+                                    Log
+                                </a>
+                            </div>
+                        </div>
                         <span id="to_text" class="text_data"></span>
                     </div>
                 </div>
@@ -106,5 +130,5 @@
 </body>
 </html>
 <script>
-    initialize_translation(calcMD5);
+    initialize_translation(calcMD5, download);
 </script>

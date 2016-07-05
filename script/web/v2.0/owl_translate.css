@@ -188,5 +188,29 @@ div.progress span {
 }
 
 input#input_file_select {
+    max-width: 300px;
+    overflow-x: hidden;
+}
+
+div.part_menu_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+div.part_menu_left {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+div.part_menu_right {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+a.download_link {
+    white-space: nowrap;
+}
+
+a.download_link img {
     display: inline-flex;
 }

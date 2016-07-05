@@ -8,6 +8,7 @@ var client_data = {
     "prev_job_req_id" : -1,               //Stores the previously send translation job request id
     "prev_source_md5" : "",               //Stores the previously sent translation job source text
     "calcMD5" : null,                     //The md5 function, to be initialized
+    "callDownload" : null,                //The download function, to be initialized
     "server_url_inpt" : null              //Stores the server url input
 };
 
@@ -19,6 +20,10 @@ var MAX_NUM_SENTENCES_PER_JOB = 128;
 var NUM_PROGRESS_BARS = 2;
 //Store the undefined job id value
 var UNDEFINED_JOB_ID = -1;
+//Stores the number of bytes in one Mb
+var NUMBER_OF_BYTES_IN_MEGABYTE = 1024 * 1024;
+//Stores the maximum file limit for the file upload
+var MAXIMUM_FILE_UPLOAD_SIZE_MB = 3; //Maximum 3mb in bytes
 //This enumeration stores the available message type values
 var MSG_TYPE_ENUM = {
     //The message type is undefined
@@ -165,37 +170,61 @@ function do_clear_log() {
 }
 
 /**
+ * This function allows to get data/time in a short format
+ * @param {String} delim the delimiter between the date and time, default is " "
+ * @return the date string, used for logging and other things
+ */
+function get_date_string(delim) {
+    "use strict";
+    
+    delim = delim || " ";
+    
+    var date = new Date();
+    return date.toLocaleDateString() + delim + date.toLocaleTimeString();
+}
+
+/**
  * Allows to add a message of a given type to log
  * @param {Json Object} the badge object to get the data set into
  * @param {String} type the log entry type
  * @param {String} message the message to be placed
+ * @param {Boolean} is_alert true if an alert box is to be show, otherwise false, optional, default is false
  */
-function add_log_message(badge, type, message) {
+function add_log_message(badge, type, message, is_alert) {
     "use strict";
     
-    var date = new Date(), value;
+    is_alert = is_alert || false;
+    
+    var value;
     
     //Increment the number of messages of the given sort
     change_badge_value(badge, false, +1);
     
     client_data.log_panel.append(
-        "<div class='alert alert-" + type + " fade in'>" +
-            date.toLocaleDateString() + " " + date.toLocaleTimeString() +
+        "<div class='alert alert-" + type + " fade in'>" + get_date_string() +
             " | <strong>" + type + ":</strong> " + escape_html(message) + "</div>"
     );
     
     //Scroll down to see let one see the result
     client_data.log_panel.scrollTop(client_data.log_panel.prop("scrollHeight"));
+    
+    //Do the alert if it is needed
+    if (is_alert) {
+        window.alert(message);
+    }
 }
 
 /**
  * This function is called in case an error message is to be logged.
  * @param {String} message the message to visualize
+ * @param {Boolean} is_alert true if an alert box is to be show, otherwise false, optional, default is false
  */
-function danger(message) {
+function danger(message, is_alert) {
     "use strict";
     
-    add_log_message(client_data.lp_dang, "danger", message);
+    is_alert = is_alert || false;
+    
+    add_log_message(client_data.lp_dang, "danger", message, is_alert);
     
     window.console.error(message);
 }
@@ -973,18 +1002,30 @@ function on_input_file_read(evt) {
 function on_upload_file_select(evt) {
     "use strict";
     
-    var file, reader;
+    var file, reader, size_mb;
     
     //Get the file
     file = evt.target.files[0];
-    info("Selected a file to translate: " + file.name + ", " + file.size + " bytes");
+    size_mb = file.size / NUMBER_OF_BYTES_IN_MEGABYTE;
+    size_mb = window.parseFloat(size_mb.toFixed(1));
+    info("Selected a file to translate: " + file.name + ", " + size_mb + " Mb");
     
-    //Read the file into the text field
-    reader = new window.FileReader();
-    reader.onload = on_input_file_read;
-    
-    info("Start loading the file into memory!");
-    reader.readAsText(file, 'UTF-8');
+    if (size_mb <= MAXIMUM_FILE_UPLOAD_SIZE_MB) {
+        //Read the file into the text field
+        reader = new window.FileReader();
+        reader.onload = on_input_file_read;
+
+        info("Start loading the file into memory!");
+        reader.readAsText(file, 'UTF-8');
+    } else {
+        //Clear the file input by replacing its container's html content 
+        client_data.input_file_sc.html(client_data.input_file_sc.html());
+        client_data.input_file_select = window.$("#input_file_select");
+        client_data.input_file_select.bind('change', on_upload_file_select);
+        danger("The file '" + file.name + "' size is " + size_mb +
+               " Mb, the maximum we allow is " + MAXIMUM_FILE_UPLOAD_SIZE_MB +
+               " Mb!", true);
+    }
 }
 
 /**
@@ -1014,12 +1055,39 @@ function obtain_element_references() {
     client_data.lp_info = window.$("#lp_info");
     client_data.lp_succ = window.$("#lp_succ");
     client_data.input_file_select = window.$("#input_file_select");
+    client_data.input_file_sc = window.$("#input_file_sc");
+    client_data.download_text_link = window.$("#download_text_link");
+    client_data.download_log_link = window.$("#download_log_link");
+}
+
+/**
+ * Will be called when a text download link is clicked
+ * @param {Object} the on click event 
+ */
+function download_text_translation(evt) {
+    "use strict";
+    
+    var text = "ToDo: Add translation text!";
+    client_data.callDownload(text, "translation." + get_date_string('.') + ".txt", "text/html");
+}
+
+/**
+ * Will be called when a log download link is clicked
+ * @param {Object} the on click event 
+ */
+function download_log_translation(evt) {
+    "use strict";
+    
+    var text = "ToDo: Add translation log!";
+    client_data.callDownload(text, "translation." + get_date_string('.') + ".log", "text/html");
 }
 
 /**
  * This function initializes the client data
+ * @param {Object} callMD5 the function to compute MD5
+ * @param {Object} callDownload the function to download file from JavaScript
  */
-function initialize_client_data(callMD5) {
+function initialize_client_data(callMD5, callDownload) {
     "use strict";
     
     window.console.log("Using the default server url: " + client_data.server_url);
@@ -1029,6 +1097,9 @@ function initialize_client_data(callMD5) {
     
     //Store the MD5 function
     client_data.calcMD5 = callMD5;
+    
+    //Store the Download function
+    client_data.callDownload = callDownload;
     
     //Re-set progress bars
     initialize_progress_bars();
@@ -1044,21 +1115,26 @@ function initialize_client_data(callMD5) {
         //Disable the file upload related elements
         client_data.input_file_select.hide();
     }
+    
+    //Add the link download handlers
+    client_data.download_text_link.click(download_text_translation);
+    client_data.download_log_link.click(download_log_translation);
 }
 
 /**
  * This function is called in the beginning just after the DOM tree
  * is parsed and ensures initialization of the web interface.
  * @param {Object} callMD5 the function to compute MD5
+ * @param {Object} callDownload the function to download file from JavaScript
  */
-function initialize_translation(callMD5) {
+function initialize_translation(callMD5, callDownload) {
     "use strict";
     
     //Get the references to needed UI elements
     obtain_element_references();
     
     //Initialize the client data
-    initialize_client_data(callMD5);
+    initialize_client_data(callMD5, callDownload);
 
     window.console.log("Open an initial connection to the server");
 
