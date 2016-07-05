@@ -302,16 +302,16 @@ function visualize_status_code(job_id, stat_code, stat_msg) {
         //Visualize
         switch (trans_status) {
         case STATUS_CODE_ENUM.RESULT_OK:
-            client_data.to_text_span.style.boxShadow = "0 0 10px green";
+            client_data.to_text_span.css("box-shadow", "0 0 10px green");
             break;
         case STATUS_CODE_ENUM.RESULT_ERROR:
-            client_data.to_text_span.style.boxShadow = "0 0 10px red";
+            client_data.to_text_span.css("box-shadow", "0 0 10px red");
             break;
         case STATUS_CODE_ENUM.RESULT_CANCELED:
-            client_data.to_text_span.style.boxShadow = "0 0 10px orange";
+            client_data.to_text_span.css("box-shadow", "0 0 10px orange");
             break;
         case STATUS_CODE_ENUM.RESULT_PARTIAL:
-            client_data.to_text_span.style.boxShadow = "0 0 10px yellow";
+            client_data.to_text_span.css("box-shadow", "0 0 10px yellow");
             break;
         default:
             break;
@@ -327,7 +327,7 @@ function remove_status_code_visual() {
     
     //Re-set the stored status and remove the visual effect
     client_data.trans_status = STATUS_CODE_ENUM.RESULT_UNDEFINED;
-    client_data.to_text_span.style.boxShadow = "none";
+    client_data.to_text_span.css("box-shadow", "none");
 }
 
 /**
@@ -505,7 +505,7 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
     //Check if this is the last response
     if (response_idx === (trans_responses.length - 1)) {
         //Set the translation html into the DOM tree just once, otherwise it is too slow!
-        client_data.to_text_span.innerHTML = client_data.translation_html;
+        client_data.to_text_span.html(client_data.translation_html);
         window.$('[data-toggle="tooltip"]').tooltip();
         client_data.translation_html = "";
         
@@ -723,7 +723,7 @@ function do_translate() {
             is_trans_info = client_data.trans_info_cb.checked;
 
             //Clear the current translation text
-            client_data.to_text_span.innerHTML = "";
+            client_data.to_text_span.html("");
 
             sent_array = source_text.split('\n');
             window.console.log("Send the translation requests for " + sent_array.length + " sentences");
@@ -1038,7 +1038,6 @@ function obtain_element_references() {
     client_data.trans_btn = document.getElementById("trans_btn");
     client_data.trans_info_cb = document.getElementById("trans_info_cb");
     client_data.from_text_area = document.getElementById("from_text");
-    client_data.to_text_span = document.getElementById("to_text");
     client_data.from_lang_sel = document.getElementById("from_lang_sel");
     client_data.to_lang_sel = document.getElementById("to_lang_sel");
     client_data.server_url_inpt = document.getElementById("server_url");
@@ -1046,6 +1045,7 @@ function obtain_element_references() {
     client_data.trans_info_cb = document.getElementById("trans_info_cb");
     client_data.clear_log_btn = document.getElementById("log_clear_btn");
     
+    client_data.to_text_span = window.$("#to_text");
     client_data.conn_status_span = window.$("#conn_status");
     client_data.request_progress_bar = window.$("#request_progress_bar");
     client_data.response_progress_bar = window.$("#response_progress_bar");
@@ -1067,8 +1067,22 @@ function obtain_element_references() {
 function download_text_translation(evt) {
     "use strict";
     
-    var text = "ToDo: Add translation text!";
-    client_data.callDownload(text, "translation." + get_date_string('.') + ".txt", "text/html");
+    var file_name, text;
+    
+    //Construct the file name and do logging
+    file_name = "translation." + get_date_string('.') + ".txt";
+    window.console.log("Downloading: " + file_name);
+    
+    //Get the translations.
+    text = "";
+    window.$(".target_sent_tag").each(function (index) {
+        text += window.$(this).text() + "\n";
+    });
+
+    window.console.log("Text: " + text);
+
+    //Call the download function from the library
+    client_data.callDownload(text, file_name, "text/html");
 }
 
 /**
@@ -1078,8 +1092,22 @@ function download_text_translation(evt) {
 function download_log_translation(evt) {
     "use strict";
     
-    var text = "ToDo: Add translation log!";
-    client_data.callDownload(text, "translation." + get_date_string('.') + ".log", "text/html");
+    var file_name, text;
+    
+    //Construct the file name and do logging
+    file_name = "translation." + get_date_string('.') + ".log";
+    window.console.log("Downloading: " + file_name);
+    
+    //Get the translations.
+    text = "";
+    window.$(".target_sent_tag").each(function (index) {
+        text += window.$(this).attr("data-original-title") + "\n";
+    });
+
+    window.console.log("Text: " + text);
+
+    //Call the download function from the library
+    client_data.callDownload(text, file_name, "text/html");
 }
 
 /**

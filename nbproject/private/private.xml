@@ -23,8 +23,10 @@
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_job.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/sentence/sentence_decoder.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/stack/stack_level.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/sentence/sentence_data_map.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_task.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/decoder/stack/multi_stack.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/common/utils/containers/upp_diag_matrix.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_manager.hpp</file>
         </group>
     </open-files>
