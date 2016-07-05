@@ -186,3 +186,7 @@ input#log_clear_btn {
 div.progress span {
     white-space: nowrap;
 }
+
+input#input_file_select {
+    display: inline-flex;
+}

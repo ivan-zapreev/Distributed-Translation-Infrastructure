@@ -123,6 +123,11 @@ namespace uva {
                             inline void translate() {
                                 //If the reduced source sentence is not empty then do the translation
                                 if (m_source_sent.size() != 0) {
+                                    //Check the sanity, the used number of words can not be larger than the max
+                                    ASSERT_CONDITION_THROW((m_sent_data.get_dim() > MAX_WORDS_PER_SENTENCE),
+                                            string("The number of words in the sentence (") + to_string(m_sent_data.get_dim()) +
+                                            string(") exceeds the maximum allowed number of words per sentence (") +
+                                            to_string(MAX_WORDS_PER_SENTENCE) + string(")"));
 
                                     //Query the translation model
                                     query_translation_model();
@@ -291,12 +296,6 @@ namespace uva {
 
                                 //Compute the number of tokens in the sentence
                                 const size_t num_tokens = std::count(sentence.begin(), sentence.end(), ASCII_SPACE_CHAR) + 1;
-
-                                //Check the sanity, the used number of words can not be larger than the max
-                                ASSERT_CONDITION_THROW((num_tokens > MAX_WORDS_PER_SENTENCE),
-                                        string("The number of words in the sentence (") + to_string(num_tokens) +
-                                        string(") exceeds the maximum allowed number of words per sentence (") +
-                                        to_string(MAX_WORDS_PER_SENTENCE) + string(")"));
 
                                 LOG_DEBUG1 << "The sentence: __" << sentence << "___ has " << num_tokens << " tokens" << END_LOG;
 

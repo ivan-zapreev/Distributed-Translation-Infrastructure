@@ -52,6 +52,22 @@ var TRAN_JOB_REQ_BASE = {"prot_ver" : PROTOCOL_VERSION, "msg_type" : MSG_TYPE_EN
 var PLEASE_SELECT_STRING = "Please select";
 
 /**
+ * Allows to escape the HTML characters
+ * @param {String} the unsafe string
+ * @return the escaped string
+ */
+function escape_html(unsafe) {
+    "use strict";
+
+    return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+}
+
+/**
  * This function must be called in case one needs a new translation when the
  * translation is requests, even if the given text has already been translated.
  * I.e. this function is to be called when some client options change.
@@ -72,19 +88,19 @@ function update_conn_status(ws_status) {
 
     switch (ws_status) {
     case window.WebSocket.CONNECTING:
-        client_data.conn_status_span.innerHTML = "Connecting ...";
+        client_data.conn_status_span.text("Connecting ...");
         break;
     case window.WebSocket.OPEN:
-        client_data.conn_status_span.innerHTML = "Connected";
+        client_data.conn_status_span.text("Connected");
         break;
     case window.WebSocket.CLOSING:
-        client_data.conn_status_span.innerHTML = "Disconnecting ...";
+        client_data.conn_status_span.text("Disconnecting ...");
         break;
     case window.WebSocket.CLOSED:
-        client_data.conn_status_span.innerHTML = "Disconnected";
+        client_data.conn_status_span.text("Disconnected");
         break;
     default:
-        client_data.conn_status_span.innerHTML = "Puzzled :)";
+        client_data.conn_status_span.text("Puzzled :)");
         break;
     }
 }
@@ -164,7 +180,8 @@ function add_log_message(badge, type, message) {
     
     client_data.log_panel.append(
         "<div class='alert alert-" + type + " fade in'>" +
-            date.toLocaleDateString() + " " + date.toLocaleTimeString() + " | <strong>" + type + ":</strong> " + message + "</div>"
+            date.toLocaleDateString() + " " + date.toLocaleTimeString() +
+            " | <strong>" + type + ":</strong> " + escape_html(message) + "</div>"
     );
     
     //Scroll down to see let one see the result
@@ -268,7 +285,6 @@ function visualize_status_code(job_id, stat_code, stat_msg) {
             client_data.to_text_span.style.boxShadow = "0 0 10px yellow";
             break;
         default:
-            client_data.to_text_span.style.boxShadow = "none";
             break;
         }
     }
@@ -280,9 +296,9 @@ function visualize_status_code(job_id, stat_code, stat_msg) {
 function remove_status_code_visual() {
     "use strict";
     
+    //Re-set the stored status and remove the visual effect
     client_data.trans_status = STATUS_CODE_ENUM.RESULT_UNDEFINED;
-    
-    visualize_status_code(UNDEFINED_JOB_ID, STATUS_CODE_ENUM.RESULT_UNDEFINED, "");
+    client_data.to_text_span.style.boxShadow = "none";
 }
 
 /**
@@ -299,7 +315,6 @@ function disable_interface() {
     client_data.from_text_area.disabled = true;
     client_data.from_lang_sel.disabled = true;
     client_data.to_lang_sel.disabled = true;
-    client_data.clear_log_btn.disabled = true;
 }
 
 /**
@@ -319,7 +334,6 @@ function enable_interface(is_connected) {
         client_data.from_text_area.disabled = false;
         client_data.from_lang_sel.disabled = false;
         client_data.to_lang_sel.disabled = false;
-        client_data.clear_log_btn.disabled = false;
     }
 }
 
@@ -344,7 +358,7 @@ function set_progress_bar(is_init, pb, msg, curr_num, max_num, num_prog_bars) {
     if (is_init) {
         span.html("");
     } else {
-        span.html(msg + ": " + percent + "%");
+        span.html(escape_html(msg + ": " + percent + "%"));
     }
     
     if (percent === 0 && !is_init) {
@@ -453,7 +467,7 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
             
             //Add the translation element to the panel
             client_data.translation_html += "<span class='target_sent_tag' title='' data-original-title='" +
-                status + "' data-toggle='tooltip' data-placement='top'>" + target.trans_text + "</span>";
+                escape_html(status) + "' data-toggle='tooltip' data-placement='top'>" + escape_html(target.trans_text) + "</span>";
         }
     } else {
         window.console.warn("The target_data field is not present in the translation response!");
@@ -701,7 +715,7 @@ function do_translate() {
             //Make the progress note visible
             set_response_progress_bar(0, 1);
             
-            info("Sent out " + client_data.sent_trans_req + " translation requests");
+            success("Sent out " + client_data.sent_trans_req + " translation requests");
             window.console.log("Finished sending translation request jobs.");
         }
     }
@@ -941,6 +955,39 @@ function on_server_change() {
 }
 
 /**
+ * This method should handle the finish of file reading event
+ * @param {Object} evt the event that the file has been read
+ */
+function on_input_file_read(evt) {
+    "use strict";
+
+    success("The file is loaded!");
+    
+    client_data.from_text_area.value = evt.target.result;
+}
+
+/**
+ * The function that will be called once the upload file is selected
+ * @param {Object} evt the change event
+ */
+function on_upload_file_select(evt) {
+    "use strict";
+    
+    var file, reader;
+    
+    //Get the file
+    file = evt.target.files[0];
+    info("Selected a file to translate: " + file.name + ", " + file.size + " bytes");
+    
+    //Read the file into the text field
+    reader = new window.FileReader();
+    reader.onload = on_input_file_read;
+    
+    info("Start loading the file into memory!");
+    reader.readAsText(file, 'UTF-8');
+}
+
+/**
  * Obtains the element references
  */
 function obtain_element_references() {
@@ -955,10 +1002,10 @@ function obtain_element_references() {
     client_data.to_lang_sel = document.getElementById("to_lang_sel");
     client_data.server_url_inpt = document.getElementById("server_url");
     client_data.progress_image = document.getElementById("progress");
-    client_data.conn_status_span = document.getElementById("conn_status");
     client_data.trans_info_cb = document.getElementById("trans_info_cb");
     client_data.clear_log_btn = document.getElementById("log_clear_btn");
     
+    client_data.conn_status_span = window.$("#conn_status");
     client_data.request_progress_bar = window.$("#request_progress_bar");
     client_data.response_progress_bar = window.$("#response_progress_bar");
     client_data.log_panel = window.$("#log_panel");
@@ -966,6 +1013,7 @@ function obtain_element_references() {
     client_data.lp_warn = window.$("#lp_warn");
     client_data.lp_info = window.$("#lp_info");
     client_data.lp_succ = window.$("#lp_succ");
+    client_data.input_file_select = window.$("#input_file_select");
 }
 
 /**
@@ -984,6 +1032,18 @@ function initialize_client_data(callMD5) {
     
     //Re-set progress bars
     initialize_progress_bars();
+    
+    //Check for the various File API support.
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+        client_data.is_file_support = true;
+        //Add the selection fuinction handler
+        client_data.input_file_select.bind('change', on_upload_file_select);
+    } else {
+        client_data.is_file_support = false;
+        warning('The File APIs are not (fully) supported in this browser.');
+        //Disable the file upload related elements
+        client_data.input_file_select.hide();
+    }
 }
 
 /**
