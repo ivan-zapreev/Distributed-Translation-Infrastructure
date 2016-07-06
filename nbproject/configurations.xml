@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="CMakeFiles"
                    displayName="CMakeFiles"
@@ -21,38 +21,6 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
-      <df name="client">
-        <df name="messaging">
-          <in>supp_lang_req_out.hpp</in>
-          <in>supp_lang_resp_in.hpp</in>
-          <in>trans_job_req_out.hpp</in>
-          <in>trans_job_resp_in.hpp</in>
-          <in>trans_sent_data_in.hpp</in>
-        </df>
-      </df>
-      <df name="common">
-        <df name="messaging">
-          <in>incoming_msg.hpp</in>
-          <in>msg_base.hpp</in>
-          <in>outgoing_msg.hpp</in>
-          <in>request_msg.hpp</in>
-          <in>response_msg.hpp</in>
-          <in>supp_lang_req.hpp</in>
-          <in>supp_lang_resp.hpp</in>
-          <in>trans_job_req.hpp</in>
-          <in>trans_job_resp.hpp</in>
-          <in>trans_sent_data.hpp</in>
-        </df>
-      </df>
-      <df name="server">
-        <df name="messaging">
-          <in>supp_lang_req_in.hpp</in>
-          <in>supp_lang_resp_out.hpp</in>
-          <in>trans_job_req_in.hpp</in>
-          <in>trans_job_resp_out.hpp</in>
-          <in>trans_sent_data_out.hpp</in>
-        </df>
-      </df>
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -63,6 +31,11 @@
       <itemPath>/usr/share/cmake-3.5/Modules/CMakeCompilerABI.h</itemPath>
     </logicalFolder>
     <df root="src" name="2">
+      <df name="ballancer">
+        <df name="messaging">
+          <in>messaging.cpp</in>
+        </df>
+      </df>
       <df name="client">
         <df name="messaging">
           <in>messaging.cpp</in>
@@ -185,10 +158,6 @@
             <standard>8</standard>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
       <item path="/usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c"
             ex="false"
@@ -247,114 +216,32 @@
           </incDir>
         </ccTool>
       </folder>
-      <item path="inc/client/messaging/supp_lang_req_out.hpp"
+      <item path="src/ballancer/messaging/messaging.cpp"
             ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/client/messaging/supp_lang_resp_in.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/client/messaging/trans_job_req_out.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/client/messaging/trans_job_resp_in.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/client/messaging/trans_sent_data_in.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/incoming_msg.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/msg_base.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/common/messaging/outgoing_msg.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/request_msg.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/response_msg.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/supp_lang_req.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/supp_lang_resp.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/trans_job_req.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/trans_job_resp.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/trans_sent_data.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/messaging/supp_lang_req_in.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/messaging/supp_lang_resp_out.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/messaging/trans_job_req_in.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/messaging/trans_job_resp_out.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/server/messaging/trans_sent_data_out.hpp"
-            ex="false"
-            tool="3"
+            tool="1"
             flavor2="0">
       </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/client/messaging/messaging.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="8">
+      <item path="src/client/messaging/messaging.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/common/messaging/messaging.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
+        </ccTool>
+      </item>
+      <item path="src/common/messaging/messaging.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
+        </ccTool>
       </item>
       <item path="src/common/messaging/trans_job_code.cpp"
             ex="false"
@@ -393,6 +280,9 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/lm/builders/lm_basic_builder.cpp"
@@ -498,7 +388,9 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/server/messaging/messaging.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/server/messaging/messaging.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/server/rm/models/rm_entry.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
@@ -536,16 +428,10 @@
       </item>
       <item path="src/server/trans_task.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/trans_task_pool_worker.cpp"
@@ -553,9 +439,6 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
     </conf>
