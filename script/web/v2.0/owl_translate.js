@@ -206,7 +206,7 @@ function add_log_message(badge, type, message, is_alert) {
     );
     
     //Scroll down to see let one see the result
-    client_data.log_panel.scrollTop(client_data.log_panel.prop("scrollHeight"));
+    //client_data.log_panel.scrollTop(client_data.log_panel.prop("scrollHeight"));
     
     //Do the alert if it is needed
     if (is_alert) {
@@ -344,6 +344,7 @@ function disable_interface() {
     client_data.from_text_area.disabled = true;
     client_data.from_lang_sel.disabled = true;
     client_data.to_lang_sel.disabled = true;
+    client_data.input_file_select.prop("disabled", true);
 }
 
 /**
@@ -363,6 +364,7 @@ function enable_interface(is_connected) {
         client_data.from_text_area.disabled = false;
         client_data.from_lang_sel.disabled = false;
         client_data.to_lang_sel.disabled = false;
+        client_data.input_file_select.prop("disabled", false);
     }
 }
 

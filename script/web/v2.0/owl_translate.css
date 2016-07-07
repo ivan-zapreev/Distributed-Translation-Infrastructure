@@ -216,3 +216,7 @@ a.download_link img {
     display: inline-flex;
     width: 16px;
 }
+
+h3.panel-title img {
+    height: 20px;
+}
