@@ -29,6 +29,8 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+using namespace std;
+
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 

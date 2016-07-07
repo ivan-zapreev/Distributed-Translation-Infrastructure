@@ -21,6 +21,13 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="common">
+        <df name="utils">
+          <df name="cmd">
+            <in>cmd_line_base.hpp</in>
+          </df>
+        </df>
+      </df>
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -220,6 +227,11 @@
           </incDir>
         </ccTool>
       </folder>
+      <item path="inc/common/utils/cmd/cmd_line_base.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/ballancer/messaging/messaging.cpp"
             ex="false"
             tool="1"

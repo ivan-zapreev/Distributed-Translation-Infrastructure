@@ -149,6 +149,9 @@ namespace uva {
 
                                     //Perform the translation
                                     perform_translation();
+                                } else {
+                                    //Report an error for the given sentence, as it is empty
+                                    THROW_EXCEPTION("The source sentence is empty, there is nothing to translate!");
                                 }
                             }
 
@@ -161,7 +164,9 @@ namespace uva {
                                     m_stack_info_prov->get_trans_info(sent_data);
                                 } else {
                                     //Only throw this in the sanity check mode, otherwise just ignore
-                                    ASSERT_SANITY_THROW(true, "Trying to get the translation info but the stack pointer is NULL!");
+                                    ASSERT_SANITY_THROW(true,
+                                            string("Trying to get the translation info for source ___") +
+                                            m_source_sent + string("___ but the stack pointer is NULL!"));
                                 }
                             }
 
@@ -178,7 +183,9 @@ namespace uva {
                                     m_stack_info_prov->dump_search_lattice(lattice_dump, scores_dump);
                                 } else {
                                     //Only throw this in the sanity check mode, otherwise just ignore
-                                    ASSERT_SANITY_THROW(true, "Trying to dump the search lattice but the stack pointer is NULL!");
+                                    ASSERT_SANITY_THROW(true,
+                                            string("Trying to dump the search lattice  for source ___") +
+                                            m_source_sent + string("___ but the stack pointer is NULL!"));
                                 }
                             }
 #endif
@@ -446,9 +453,9 @@ namespace uva {
 
                                 //If we are finished then retrieve the best 
                                 //translation. If we have stopped then nothing.
-                                try{
+                                try {
                                     stack->get_best_trans(m_target_sent);
-                                }catch(exception & e) {
+                                } catch (exception & e) {
                                     if (m_is_stop) {
                                         //We are stopping so the exception is most likely
                                         // due to that i.e. could not finish the translation

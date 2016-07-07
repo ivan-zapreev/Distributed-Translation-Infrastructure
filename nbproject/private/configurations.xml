@@ -643,6 +643,9 @@
           <in>trans_session_id.hpp</in>
         </df>
         <df name="utils">
+          <df name="cmd">
+            <in>cmd_line_base.hpp</in>
+          </df>
           <df name="containers">
             <in>array_utils.hpp</in>
             <in>circular_queue.hpp</in>

@@ -255,7 +255,8 @@ namespace uva {
                                     THROW_EXCEPTION(string("Unsupported request type: ") + to_string(jmsg->get_msg_type()));
                             }
                         } catch (std::exception & e) {
-                            //Send the error response
+                            //Send the error response, NOTE! This is not a JSON we are sending
+                            //back, but just a string, as someone violated the protocol!
                             send_response(hdl, e.what());
                         }
                     }

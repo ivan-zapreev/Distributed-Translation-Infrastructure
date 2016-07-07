@@ -365,8 +365,8 @@ int main(int argc, char** argv) {
         //logger::get_reporting_level() = debug_levels_enum::DEBUG2;
 
         //Wait until the server is stopped by pressing and exit button
-        perform_command_loop(params, server, server_thread);
-
+        cmd_line_handler cmd(params, server, server_thread);
+        cmd.perform_command_loop();
     } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.what() << END_LOG;
