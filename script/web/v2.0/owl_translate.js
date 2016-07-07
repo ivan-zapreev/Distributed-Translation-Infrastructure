@@ -498,7 +498,7 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
             
             //Add the translation element to the panel
             client_data.translation_html += "<span class='target_sent_tag' title='' data-original-title='" +
-                escape_html(status) + "' data-toggle='tooltip' data-placement='top'>" + escape_html(target.trans_text) + "</span>";
+                escape_html(status) + "' data-toggle='tooltip' data-placement='auto'>" + escape_html(target.trans_text) + "</span>";
         }
     } else {
         window.console.warn("The target_data field is not present in the translation response!");

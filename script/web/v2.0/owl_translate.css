@@ -112,6 +112,7 @@ span.target_sent_tag {
 
 span.target_sent_tag:hover {
     background-color: #f9e79f;
+    cursor: pointer;
 }
 div.panel-body {
     padding: 3px;
