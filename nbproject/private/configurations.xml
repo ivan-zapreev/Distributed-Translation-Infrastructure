@@ -816,7 +816,7 @@
       <in>main.hpp</in>
     </df>
     <df root="src" name="2">
-      <df name="ballancer">
+      <df name="balancer">
         <df name="messaging">
           <in>messaging.cpp</in>
         </df>

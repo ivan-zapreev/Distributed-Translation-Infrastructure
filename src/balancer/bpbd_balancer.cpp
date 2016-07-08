@@ -176,9 +176,6 @@ int main(int argc, char** argv) {
         return_code = 1;
     }
 
-    //Disconnect from the used models
-    disconnect_from_models();
-
     //Destroy the command line parameters parser
     destroy_arguments_parser();
 

@@ -64,14 +64,13 @@ namespace uva {
                     static void stop() {
                         //ToDo: Implement
                         THROW_NOT_IMPLEMENTED();
+                    }
 
-                        private:
-                    };
-
-                }
+                private:
+                };
             }
         }
     }
-
+}
 #endif /* TRANSLATION_SERVERS_MANAGER_HPP */
 

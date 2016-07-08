@@ -64,12 +64,11 @@ namespace uva {
                      */
                     void finalize() {
                         //ToDo: Implement
-                        THROW_NOT_IMPLMENTED();
+                        THROW_NOT_IMPLEMENTED();
                     }
 
                 private:
                 };
-
             }
         }
     }

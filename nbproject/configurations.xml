@@ -41,10 +41,7 @@
       <itemPath>/usr/share/cmake-3.5/Modules/CMakeCompilerABI.h</itemPath>
     </logicalFolder>
     <df root="src" name="2">
-      <df name="ballancer">
-        <df name="messaging">
-          <in>messaging.cpp</in>
-        </df>
+      <df name="balancer">
         <in>bpbd_balancer.cpp</in>
       </df>
       <df name="client">
@@ -241,12 +238,7 @@
             tool="3"
             flavor2="0">
       </item>
-      <item path="src/ballancer/bpbd_balancer.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/ballancer/messaging/messaging.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="src/balancer/bpbd_balancer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
