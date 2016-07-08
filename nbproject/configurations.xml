@@ -42,6 +42,7 @@
     </logicalFolder>
     <df root="src" name="2">
       <df name="balancer">
+        <in>balancer_parameters.cpp</in>
         <in>bpbd_balancer.cpp</in>
       </df>
       <df name="client">
@@ -124,9 +125,8 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>CMakeLists.txt</itemPath>
       <itemPath>build/Makefile</itemPath>
-      <itemPath>data/default-1-10.000.cfg</itemPath>
-      <itemPath>data/default-1-3.000.000.cfg</itemPath>
-      <itemPath>default.cfg</itemPath>
+      <itemPath>balancer.cfg</itemPath>
+      <itemPath>server.cfg</itemPath>
       <itemPath>data/tuning.info.txt</itemPath>
     </logicalFolder>
   </logicalFolder>
@@ -236,6 +236,11 @@
       <item path="inc/common/utils/cmd/cmd_line_base.hpp"
             ex="false"
             tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/balancer/balancer_parameters.cpp"
+            ex="false"
+            tool="1"
             flavor2="0">
       </item>
       <item path="src/balancer/bpbd_balancer.cpp" ex="false" tool="1" flavor2="0">

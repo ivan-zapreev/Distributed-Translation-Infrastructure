@@ -44,20 +44,19 @@ namespace uva {
                  * Responsibilities:
                  *      Store the run-time parameters of the balancer application
                  */
-                class balancer_parameters {
-                public:
+                struct balancer_parameters_struct {
+                    //Stores the configuration section name
+                    static const string SE_CONFIG_SECTION_NAME;
+                    //Stores the server port parameter name
+                    static const string SE_SERVER_PORT_PARAM_NAME;
+                    //Stores the number of threads parameter name
+                    static const string SE_NUM_THREADS_PARAM_NAME;
 
-                    /**
-                     * The basic constructor
-                     */
-                    balancer_parameters() {
-                    }
+                    //The port to listen to
+                    uint16_t m_server_port;
 
-                    /**
-                     * The basic destructor
-                     */
-                    virtual ~balancer_parameters() {
-                    }
+                    //The number of the translation threads to run
+                    size_t m_num_threads;
 
                     /**
                      * Allows to finalize the parameters after loading.
@@ -66,9 +65,21 @@ namespace uva {
                         //ToDo: Implement
                         THROW_NOT_IMPLEMENTED();
                     }
-
-                private:
                 };
+
+                //Typedef the structure
+                typedef balancer_parameters_struct balancer_parameters;
+
+                /**
+                 * Allows to output the parameters object to the stream
+                 * @param stream the stream to output into
+                 * @param params the parameters object
+                 * @return the stream that we output into
+                 */
+                static inline std::ostream& operator<<(std::ostream& stream, const balancer_parameters & params) {
+                    return stream << "Server parameters: [ server_port = " << params.m_server_port
+                            << ", num_threads = " << params.m_num_threads << " ]";
+                }
             }
         }
     }

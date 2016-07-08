@@ -111,6 +111,11 @@ static void prepare_config_structures(const uint argc, char const * const * cons
     if (ini.parse()) {
         LOG_INFO << "The configuration file has been parsed!" << END_LOG;
 
+        //Get the configuration options from the file
+        string section = balancer_parameters::SE_CONFIG_SECTION_NAME;
+        params.m_server_port = get_integer<uint16_t>(ini, section, balancer_parameters::SE_SERVER_PORT_PARAM_NAME);
+        params.m_num_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_THREADS_PARAM_NAME);
+
         //ToDo: Implement parameter parsing from the config file
         THROW_NOT_IMPLEMENTED();
 

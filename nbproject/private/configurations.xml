@@ -606,7 +606,6 @@
         <in>balancer_parameters.hpp</in>
         <in>balancer_server.hpp</in>
         <in>dispatcher.hpp</in>
-        <in>load_balancer.hpp</in>
         <in>translation_job.hpp</in>
         <in>translation_manager.hpp</in>
         <in>translation_server_adapter.hpp</in>
@@ -820,6 +819,7 @@
         <df name="messaging">
           <in>messaging.cpp</in>
         </df>
+        <in>balancer_parameters.cpp</in>
         <in>bpbd_balancer.cpp</in>
       </df>
       <df name="client">

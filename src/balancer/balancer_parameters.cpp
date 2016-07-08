@@ -1,5 +1,5 @@
 /* 
- * File:   load_balancer.hpp
+ * File:   balancer_parameters.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,41 +20,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on July 7, 2016, 12:08 PM
+ * Created on July 8, 2016, 10:36 AM
  */
 
-#ifndef LOAD_BALANCER_HPP
-#define LOAD_BALANCER_HPP
-
-#include "common/utils/exceptions.hpp"
-#include "common/utils/logging/logger.hpp"
-
-using namespace std;
-
-using namespace uva::utils::logging;
-using namespace uva::utils::exceptions;
+#include "balancer/balancer_parameters.hpp"
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
-                
-                /**
-                 * This is the main load balancer application class:
-                 * Responsibilities:
-                 *      Reads the configuration file
-                 *      Configures the translation_servers_manager
-                 *      Configures the balancer_server
-                 *      Starts the balancer_server
-                 *      Starts the balancer_console
-                 */
-                class load_balancer {
-                };
-                
+                const string balancer_parameters::SE_CONFIG_SECTION_NAME = "Server Options";
+                const string balancer_parameters::SE_SERVER_PORT_PARAM_NAME = "server_port";
+                const string balancer_parameters::SE_NUM_THREADS_PARAM_NAME = "num_threads";
             }
         }
     }
 }
-
-#endif /* LOAD_BALANCER_HPP */
-

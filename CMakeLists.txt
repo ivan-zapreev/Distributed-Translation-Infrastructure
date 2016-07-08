@@ -85,6 +85,7 @@ set(LOAD_BALANCER_SOURCES
     src/common/utils/logging/logger.cpp
     src/common/utils/monitor/statistics_monitor.cpp 
     src/balancer/messaging/messaging.cpp
+    src/balancer/balancer_parameters.cpp
     src/balancer/bpbd_balancer.cpp
 )
 #Define the server executable
