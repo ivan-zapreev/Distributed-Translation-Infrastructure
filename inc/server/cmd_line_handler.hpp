@@ -88,9 +88,7 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to process the command
-                     * @param command the command sting to handle
-                     * @return true if we need to stop, otherwise false
+                     * @see cmd_line_base
                      */
                     virtual void process_specific_cmd(const string & cmd) {
                         //Set the number of threads
@@ -103,7 +101,7 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to stop the server;
+                     * @see cmd_line_base
                      */
                     virtual void stop() {
                         //Stop the translation server

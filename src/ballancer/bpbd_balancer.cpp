@@ -1,0 +1,187 @@
+/* 
+ * File:   bpbd_balancer.cpp
+ * Author: Dr. Ivan S. Zapreev
+ *
+ * Visit my Linked-in profile:
+ *      <https://nl.linkedin.com/in/zapreevis>
+ * Visit my GitHub:
+ *      <https://github.com/ivan-zapreev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.#
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Created on July 8, 2016, 10:29 AM
+ */
+
+#include <websocketpp/common/thread.hpp>
+#include <tclap/CmdLine.h>
+
+#include "main.hpp"
+
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+
+#include "balancer/balancer_console.hpp"
+#include "balancer/balancer_parameters.hpp"
+#include "balancer/balancer_server.hpp"
+
+using namespace std;
+using namespace TCLAP;
+
+using namespace uva::smt::bpbd::balancer;
+using namespace uva::smt::bpbd::common;
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
+
+/**
+ * This functions does nothing more but printing the program header information
+ */
+static void print_info() {
+    print_info("The translation servers balancer application");
+}
+
+//The pointer to the command line parameters parser
+static CmdLine * p_cmd_args = NULL;
+static ValueArg<string> * p_config_file_arg = NULL;
+static vector<string> debug_levels;
+static ValuesConstraint<string> * p_debug_levels_constr = NULL;
+static ValueArg<string> * p_debug_level_arg = NULL;
+
+/**
+ * Creates and sets up the command line parameters parser
+ */
+void create_arguments_parser() {
+    //Declare the command line arguments parser
+    p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
+
+    //Add the configuration file parameter - compulsory
+    p_config_file_arg = new ValueArg<string>("c", "config", "The configuration file with the balancer options", true, "", "balancer configuration file", *p_cmd_args);
+
+    //Add the -d the debug level parameter - optional, default is e.g. RESULT
+    logger::get_reporting_levels(&debug_levels);
+    p_debug_levels_constr = new ValuesConstraint<string>(debug_levels);
+    p_debug_level_arg = new ValueArg<string>("d", "debug", "The debug level to be used", false, RESULT_PARAM_VALUE, p_debug_levels_constr, *p_cmd_args);
+}
+
+/**
+ * Allows to deallocate the parameters parser if it is needed
+ */
+void destroy_arguments_parser() {
+    SAFE_DESTROY(p_config_file_arg);
+    SAFE_DESTROY(p_debug_levels_constr);
+    SAFE_DESTROY(p_debug_level_arg);
+    SAFE_DESTROY(p_cmd_args);
+}
+
+/**
+ * This function tries to extract the 
+ * @param argc the number of program arguments
+ * @param argv the array of program arguments
+ * @param params the structure that will be filled in with the parsed program arguments
+ * @return the configuration file name
+ */
+static void prepare_config_structures(const uint argc, char const * const * const argv, balancer_parameters & params) {
+    //Parse the arguments
+    try {
+        p_cmd_args->parse(argc, argv);
+    } catch (ArgException &e) {
+        THROW_EXCEPTION(string("Error: ") + e.error() + string(", for argument: ") + e.argId());
+    }
+
+    //Set the logging level right away
+    logger::set_reporting_level(p_debug_level_arg->getValue());
+
+    //Get the configuration file name and read the config values from the file
+    const string config_file_name = p_config_file_arg->getValue();
+    LOG_USAGE << "Loading the server configuration option from: " << config_file_name << END_LOG;
+    INI<> ini(config_file_name, false);
+
+    //Parse the configuration file
+    if (ini.parse()) {
+        LOG_INFO << "The configuration file has been parsed!" << END_LOG;
+
+        //ToDo: Implement parameter parsing from the config file
+        THROW_NOT_IMPLEMENTED();
+
+        //Finalize the parameters
+        params.finalize();
+
+        LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
+    } else {
+        //We could not parse the configuration file, report an error
+        THROW_EXCEPTION(string("Could not find or parse the configuration file: ") + config_file_name);
+    }
+}
+
+/**
+ * Allows to configure the translation servers manager.
+ * This part also starts the process of connecting to the client servers
+ * @param params the balancer parameters
+ */
+static void configure_trans_servers_manager(balancer_parameters & params) {
+    //ToDo: Implement
+    THROW_NOT_IMPLEMENTED();
+}
+
+/**
+ * The main program entry point
+ */
+int main(int argc, char** argv) {
+    //Declare the return code
+    int return_code = 0;
+
+    //Set the uncaught exception handler
+    std::set_terminate(handler);
+
+    //First print the program info
+    print_info();
+
+    //Set up possible program arguments
+    create_arguments_parser();
+
+    try {
+        //Define en empty parameters structure
+        balancer_parameters params;
+
+        //Prepare the configuration structures, parse the config file
+        prepare_config_structures(argc, argv, params);
+
+        //Configure the translations server manager
+        configure_trans_servers_manager(params);
+
+        //Instantiate the translation server
+        balancer_server::configure(params);
+
+        //Run the translation server in a separate thread
+        thread balancer_thread(&balancer_server::run);
+
+        LOG_USAGE << "The balancer is started!" << END_LOG;
+
+        //Wait until the balancer is stopped by pressing and exit button
+        balancer_console cmd(params, balancer_thread);
+        cmd.perform_command_loop();
+    } catch (std::exception & ex) {
+        //The argument's extraction has failed, print the error message and quit
+        LOG_ERROR << ex.what() << END_LOG;
+        return_code = 1;
+    }
+
+    //Disconnect from the used models
+    disconnect_from_models();
+
+    //Destroy the command line parameters parser
+    destroy_arguments_parser();
+
+    return return_code;
+}
+

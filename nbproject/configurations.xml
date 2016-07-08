@@ -21,6 +21,9 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="balancer">
+        <in>balancer_parameters.hpp</in>
+      </df>
       <df name="common">
         <df name="utils">
           <df name="cmd">
@@ -42,6 +45,7 @@
         <df name="messaging">
           <in>messaging.cpp</in>
         </df>
+        <in>bpbd_balancer.cpp</in>
       </df>
       <df name="client">
         <df name="messaging">
@@ -227,10 +231,17 @@
           </incDir>
         </ccTool>
       </folder>
+      <item path="inc/balancer/balancer_parameters.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/common/utils/cmd/cmd_line_base.hpp"
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="src/ballancer/bpbd_balancer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/ballancer/messaging/messaging.cpp"
             ex="false"

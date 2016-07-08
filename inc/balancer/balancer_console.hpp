@@ -30,6 +30,9 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/cmd/cmd_line_base.hpp"
 
+#include "balancer/balancer_server.hpp"
+#include "balancer/translation_servers_manager.hpp"
+
 using namespace std;
 
 using namespace uva::utils::logging;
@@ -50,9 +53,80 @@ namespace uva {
                  *      Allows to change run time settings
                  */
                 class balancer_console : public cmd_line_base {
+                public:
 
-                    balancer_console() : cmd_line_base() {
+                    /**
+                     * The basic constructor
+                     * @param params the balancer parameters
+                     * @param balancer_thread the balancer server main thread
+                     */
+                    balancer_console(balancer_parameters & params, thread &balancer_thread)
+                    : cmd_line_base(), m_params(params), m_balancer_thread(balancer_thread) {
                     }
+
+                    /**
+                     * The basic destructor
+                     */
+                    virtual ~balancer_console() {
+                    }
+
+                protected:
+
+                    /**
+                     * @see cmd_line_base
+                     */
+                    virtual void print_specific_commands() {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
+                     * @see cmd_line_base
+                     */
+                    virtual void report_run_time_info() {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
+                     * @see cmd_line_base
+                     */
+                    virtual void process_specific_cmd(const string & cmd) {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
+                     * @see cmd_line_base
+                     */
+                    virtual void report_program_params() {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
+                     * @see cmd_line_base
+                     */
+                    virtual void stop() {
+                        //Stop the translation server
+                        LOG_USAGE << "Stopping the translation server clients ..." << END_LOG;
+                        translation_servers_manager::stop();
+
+                        //Stop the translation server
+                        LOG_USAGE << "Stopping the balancer server ..." << END_LOG;
+                        balancer_server::stop();
+
+                        //Wait until the server's thread stops
+                        m_balancer_thread.join();
+
+                        LOG_USAGE << "The server has stopped!" << END_LOG;
+                    }
+
+                private:
+                    //Stores the reference to the balancer parameters
+                    balancer_parameters & m_params;
+                    //Stores the reference to the balancer thread
+                    thread & m_balancer_thread;
 
                 };
             }

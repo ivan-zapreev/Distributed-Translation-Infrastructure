@@ -1,5 +1,5 @@
 /* 
- * File:   translation_servers_manager.hpp
+ * File:   balancer_parameters.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,11 +20,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on July 7, 2016, 12:09 PM
+ * Created on July 8, 2016, 10:36 AM
  */
 
-#ifndef TRANSLATION_SERVERS_MANAGER_HPP
-#define TRANSLATION_SERVERS_MANAGER_HPP
+#ifndef BALANCER_PARAMETERS_HPP
+#define BALANCER_PARAMETERS_HPP
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -40,38 +40,40 @@ namespace uva {
             namespace balancer {
 
                 /**
-                 * This is the translation servers manager class:
+                 * This is the storage for balancer parameters:
                  * Responsibilities:
-                 *      Keeps track of the online translation servers
-                 *      Keeps track of languages supported by the servers
-                 *      Keeps track of the known load on the servers
-                 *      Advises translation server for a translation request
+                 *      Store the run-time parameters of the balancer application
                  */
-                class translation_servers_manager {
+                class balancer_parameters {
                 public:
 
                     /**
-                     * The main method to start the translation servers manager
+                     * The basic constructor
                      */
-                    static void start() {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                    balancer_parameters() {
                     }
 
                     /**
-                     * Allows to stop the translation servers manager
+                     * The basic destructor
                      */
-                    static void stop() {
+                    virtual ~balancer_parameters() {
+                    }
+
+                    /**
+                     * Allows to finalize the parameters after loading.
+                     */
+                    void finalize() {
                         //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        THROW_NOT_IMPLMENTED();
+                    }
 
-                        private:
-                    };
+                private:
+                };
 
-                }
             }
         }
     }
+}
 
-#endif /* TRANSLATION_SERVERS_MANAGER_HPP */
+#endif /* BALANCER_PARAMETERS_HPP */
 
