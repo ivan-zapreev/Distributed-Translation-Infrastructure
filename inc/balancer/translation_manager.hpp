@@ -29,6 +29,8 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+#include "balancer/balancer_parameters.hpp"
+
 using namespace std;
 
 using namespace uva::utils::logging;
@@ -38,7 +40,7 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
-                
+
                 /**
                  * This is the translation manager class:
                  * Responsibilities:
@@ -53,8 +55,42 @@ namespace uva {
                  *      Increase/Decrease the number of dispatchers
                  */
                 class translation_manager {
+                public:
+
+                    /**
+                     * Allows to configure the balancer server
+                     * @param params the parameters from which the server will be configured
+                     */
+                    static void configure(const balancer_parameters & params) {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
+                     * The main method to start the translation manager
+                     */
+                    static void start() {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
+                     * Allows to stop the translation manager
+                     */
+                    static void stop() {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                private:
+
+                    /**
+                     * The private constructor to keep the class from being instantiated
+                     */
+                    translation_manager() {
+                    }
                 };
-                
+
             }
         }
     }

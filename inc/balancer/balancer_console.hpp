@@ -31,6 +31,7 @@
 #include "common/utils/cmd/cmd_line_base.hpp"
 
 #include "balancer/balancer_server.hpp"
+#include "balancer/translation_manager.hpp"
 #include "balancer/translation_servers_manager.hpp"
 
 using namespace std;
@@ -108,7 +109,11 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual void stop() {
-                        //Stop the translation server
+                        //Stop the translation manager
+                        LOG_USAGE << "Stopping the translation manager ..." << END_LOG;
+                        translation_manager::stop();
+                        
+                        //Stop the translation servers manager
                         LOG_USAGE << "Stopping the translation server clients ..." << END_LOG;
                         translation_servers_manager::stop();
 

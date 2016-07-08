@@ -34,6 +34,7 @@
 #include "balancer/balancer_console.hpp"
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/balancer_server.hpp"
+#include "balancer/translation_manager.hpp"
 
 using namespace std;
 using namespace TCLAP;
@@ -128,9 +129,15 @@ static void prepare_config_structures(const uint argc, char const * const * cons
  * This part also starts the process of connecting to the client servers
  * @param params the balancer parameters
  */
-static void configure_trans_servers_manager(balancer_parameters & params) {
-    //ToDo: Implement
-    THROW_NOT_IMPLEMENTED();
+static void configure(balancer_parameters & params) {
+        //Configure the translations server manager
+        translation_servers_manager::configure(params);
+
+        //Configure the translation manager
+        translation_manager::configure(params);
+
+        //Instantiate the translation server
+        balancer_server::configure(params);
 }
 
 /**
@@ -155,12 +162,15 @@ int main(int argc, char** argv) {
 
         //Prepare the configuration structures, parse the config file
         prepare_config_structures(argc, argv, params);
+        
+        //Configure the main application entities
+        configure(params);
+        
+        //Start the translation server clients
+        translation_servers_manager::start();
 
-        //Configure the translations server manager
-        configure_trans_servers_manager(params);
-
-        //Instantiate the translation server
-        balancer_server::configure(params);
+        //Start the translation manager
+        translation_manager::start();
 
         //Run the translation server in a separate thread
         thread balancer_thread(&balancer_server::run);

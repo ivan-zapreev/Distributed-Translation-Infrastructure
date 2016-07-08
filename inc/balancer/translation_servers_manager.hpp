@@ -29,6 +29,8 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+#include "balancer/balancer_parameters.hpp"
+
 using namespace std;
 
 using namespace uva::utils::logging;
@@ -49,6 +51,15 @@ namespace uva {
                  */
                 class translation_servers_manager {
                 public:
+                    
+                    /**
+                     * Allows to configure the balancer server
+                     * @param params the parameters from which the server will be configured
+                     */
+                    static void configure(const balancer_parameters & params) {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
 
                     /**
                      * The main method to start the translation servers manager
@@ -67,6 +78,12 @@ namespace uva {
                     }
 
                 private:
+
+                    /**
+                     * The private constructor to keep the class from being instantiated
+                     */
+                    translation_servers_manager() {
+                    }
                 };
             }
         }
