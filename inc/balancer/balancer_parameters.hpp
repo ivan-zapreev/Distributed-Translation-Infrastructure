@@ -26,6 +26,9 @@
 #ifndef BALANCER_PARAMETERS_HPP
 #define BALANCER_PARAMETERS_HPP
 
+#include <map>
+#include <string>
+
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
@@ -39,6 +42,14 @@ namespace uva {
         namespace bpbd {
             namespace balancer {
 
+                /**
+                 * This structure stores the configuration/connection
+                 * parameters of the translation servers.
+                 */
+                typedef struct {
+                    
+                } translator_config;
+                
                 /**
                  * This is the storage for balancer parameters:
                  * Responsibilities:
@@ -58,6 +69,9 @@ namespace uva {
                     //The number of the translation threads to run
                     size_t m_num_threads;
 
+                    //Stores the mapping from the translation server name to its configuration data
+                    map<string, translator_config> translators;
+                    
                     /**
                      * Allows to finalize the parameters after loading.
                      */

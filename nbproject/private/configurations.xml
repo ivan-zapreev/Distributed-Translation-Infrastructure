@@ -669,6 +669,8 @@
           <df name="monitor">
             <in>statistics_monitor.hpp</in>
           </df>
+          <df name="threading">
+          </df>
           <in>exceptions.hpp</in>
           <in>hashing_utils.hpp</in>
           <in>math_utils.hpp</in>
