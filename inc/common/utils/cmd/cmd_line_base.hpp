@@ -40,6 +40,19 @@ namespace uva {
     namespace utils {
         namespace cmd {
 
+            //Declare the program exit command
+            static const string PROGRAM_EXIT_CMD = "q";
+            //Declare the program help command
+            static const string PROGRAM_HELP_CMD = "h";
+            //Declare the program runtime command
+            static const string PROGRAM_RUNTIME_CMD = "r";
+            //Declare the command for parameters logging
+            static const string PROGRAM_PARAMS_CMD = "p";
+            //The log level setting command
+            static const string PROGRAM_SET_LL_CMD = "set ll ";
+            //Declare the program nothing command
+            static const string PROGRAM_NOTHING_CMD = "";
+
             /**
              * This is the baseline class for the command line handlers.
              * It contains some common functionality needed to implement
@@ -73,7 +86,7 @@ namespace uva {
                     LOG_USAGE << "--------------------------------------------------------" << END_LOG;
 
                     //Print the server commands menu
-                    print_server_commands();
+                    print_commands_help();
 
                     //Print the prompt
                     print_the_prompt();
@@ -96,22 +109,45 @@ namespace uva {
             protected:
 
                 /**
-                 * Prints the available commands. Is to be overloaded by the concrete implementation class.
+                 * Allows to print a single command help
+                 * @param cmd the command string
+                 * @param params the command parameters
+                 * @param help the help message
                  */
-                virtual void print_server_commands() = 0;
-
-                /**
-                 * Allows to process the command. Is to be overloaded by the concrete implementation class
-                 * @return true if we need to stop, otherwise false
-                 */
-                virtual bool process_input_cmd(char * command) = 0;
-
-                /**
-                 * Allows to print the prompt
-                 */
-                inline void print_the_prompt() {
-                    cout << ">> ";
+                inline void print_command_help(const string & cmd, const string & params, const string & help) {
+                    LOG_USAGE << "\t'" << cmd << " " << params << (params.empty() ? "" : " ")
+                            << "& <enter>'  - " << help << "." << END_LOG;
                 }
+
+                /**
+                 * Prints the available specific commands
+                 */
+                virtual void print_specific_commands() = 0;
+
+                /**
+                 * Allows to report the program run-time information, 
+                 * is to be implemented by the child class.
+                 */
+                virtual void report_run_time_info() = 0;
+
+                /**
+                 * Allows to handle some specific command, is to be implemented
+                 * by the child class.
+                 * @param cmd the so-far unrecognized command to be processed
+                 */
+                virtual void process_specific_cmd(const string & cmd) = 0;
+
+                /**
+                 * Is to be called when one needs to get the program parameters reported.
+                 * Is to be implemented by the child class.
+                 */
+                virtual void report_program_params() = 0;
+
+                /**
+                 * The stop function that will be called when the application is
+                 * requested to be stopped, is to be implemented by the child class
+                 */
+                virtual void stop() = 0;
 
                 /**
                  * Allows to test if a string begins with a substring
@@ -191,6 +227,78 @@ namespace uva {
 
                     //Throw an exception
                     THROW_EXCEPTION(string("Could not parse boolean: ") + str_val);
+                }
+
+            private:
+
+                /**
+                 * Prints the available commands. Is to be overloaded by the concrete implementation class.
+                 */
+                void print_commands_help() {
+                    LOG_USAGE << "General console commands: " << END_LOG;
+                    print_command_help(PROGRAM_EXIT_CMD, "", "to exit");
+                    print_command_help(PROGRAM_HELP_CMD, "", "print HELP info");
+                    print_command_help(PROGRAM_RUNTIME_CMD, "", "run-time statistics");
+                    print_command_help(PROGRAM_PARAMS_CMD, "", "print program parameters");
+                    print_command_help(PROGRAM_SET_LL_CMD, "<level>", "set log level");
+
+                    LOG_USAGE << "Specific console commands: " << END_LOG;
+                    print_specific_commands();
+                }
+
+                /**
+                 * Allows to process the command
+                 * @param command the command sting to handle
+                 * @return true if we need to stop, otherwise false
+                 */
+                bool process_input_cmd(const char * command) {
+                    //Convert the buffer into string
+                    const string cmd(command);
+
+                    //Stop the server
+                    if (cmd == PROGRAM_EXIT_CMD) {
+                        stop();
+                        return true;
+                    } else {
+                        //We are to print the command prompt
+                        if (cmd == PROGRAM_NOTHING_CMD) {
+                            //Do nothing, just a new command prompt will be printed
+                        } else {
+                            //Print the server commands menu
+                            if (cmd == PROGRAM_HELP_CMD) {
+                                print_commands_help();
+                            } else {
+                                //Report the runtime information to the console
+                                if (cmd == PROGRAM_RUNTIME_CMD) {
+                                    report_run_time_info();
+                                } else {
+                                    //Lor parameters
+                                    if (cmd == PROGRAM_PARAMS_CMD) {
+                                        LOG_USAGE << "Log level: " << logger::get_curr_level_str() << END_LOG;
+                                        report_program_params();
+                                    } else {
+                                        //Set the debug level
+                                        if (begins_with(cmd, PROGRAM_SET_LL_CMD)) {
+                                            set_log_level(cmd, PROGRAM_SET_LL_CMD);
+                                        } else {
+                                            //Process the remaining commands
+                                            process_specific_cmd(cmd);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    //Continue to the next command.
+                    return false;
+                }
+
+                /**
+                 * Allows to print the prompt
+                 */
+                inline void print_the_prompt() {
+                    cout << ">> ";
                 }
 
                 /**

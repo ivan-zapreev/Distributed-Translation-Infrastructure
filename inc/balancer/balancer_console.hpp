@@ -28,17 +28,19 @@
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+#include "common/utils/cmd/cmd_line_base.hpp"
 
 using namespace std;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+using namespace uva::utils::cmd;
 
 namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
-                
+
                 /**
                  * This is the load balancer console class:
                  * Responsibilities:
@@ -47,9 +49,12 @@ namespace uva {
                  *      Allows to get run time information
                  *      Allows to change run time settings
                  */
-                class balancer_console {
+                class balancer_console : public cmd_line_base {
+
+                    balancer_console() : cmd_line_base() {
+                    }
+
                 };
-                
             }
         }
     }

@@ -23,21 +23,8 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace server {
-
-                //Declare the program exit command
-                static const string PROGRAM_EXIT_CMD = "q";
-                //Declare the program help command
-                static const string PROGRAM_HELP_CMD = "h";
-                //Declare the program runtime command
-                static const string PROGRAM_RUNTIME_CMD = "r";
-                //Declare the command for parameters logging
-                static const string PROGRAM_PARAMS_CMD = "p";
-                //Declare the program nothing command
-                static const string PROGRAM_NOTHING_CMD = "";
-                //The number of threads setting command
+                //The number of worker threads - decoders
                 static const string PROGRAM_SET_NT_CMD = "set nt ";
-                //The log level setting command
-                static const string PROGRAM_SET_LL_CMD = "set ll ";
                 //Declare the program "set" commands, NOTE the end spaces are needed!
                 static const string PROGRAM_SET_D_CMD = "set d ";
                 static const string PROGRAM_SET_EDL_CMD = "set edl ";
@@ -72,24 +59,32 @@ namespace uva {
                 protected:
 
                     /**
-                     * Prints the available server commands
+                     * @see cmd_line_base
                      */
-                    virtual void print_server_commands() {
-                        LOG_USAGE << "Available server commands: " << END_LOG;
-                        LOG_USAGE << "\t'" << PROGRAM_EXIT_CMD << " & <enter>'  - to exit." << END_LOG;
-                        LOG_USAGE << "\t'" << PROGRAM_HELP_CMD << " & <enter>'  - print HELP info." << END_LOG;
-                        LOG_USAGE << "\t'" << PROGRAM_RUNTIME_CMD << " & <enter>'  - run-time statistics." << END_LOG;
-                        LOG_USAGE << "\t'" << PROGRAM_PARAMS_CMD << " & <enter>'  - print server parameters." << END_LOG;
-                        LOG_USAGE << "\t'" << PROGRAM_SET_LL_CMD << "<level> & <enter>'  - set log level." << END_LOG;
-                        LOG_USAGE << "\t'" << PROGRAM_SET_NT_CMD << " <positive integer> & <enter>'  - set the number of worker threads." << END_LOG;
-                        LOG_USAGE << "\t'" << PROGRAM_SET_D_CMD << "<integer> & <enter>'  - set the distortion limit." << END_LOG;
-                        LOG_USAGE << "\t'" << PROGRAM_SET_PT_CMD << "<unsigned float> & <enter>'  - set pruning threshold." << END_LOG;
-                        LOG_USAGE << "\t'" << PROGRAM_SET_SC_CMD << "<integer> & <enter>'  - set stack capacity." << END_LOG;
-                        LOG_USAGE << "\t'" << PROGRAM_SET_LDP_CMD << "<float> & <enter>'  - set linear distortion penalty." << END_LOG;
-                        LOG_USAGE << "\t'" << PROGRAM_SET_WP_CMD << "<float> & <enter>'  - set word penalty." << END_LOG;
+                    virtual void print_specific_commands() {
+                        print_command_help(PROGRAM_SET_NT_CMD, "<positive integer>", "set the number of translating threads");
+                        print_command_help(PROGRAM_SET_D_CMD, "<integer>", "set the distortion limit");
+                        print_command_help(PROGRAM_SET_PT_CMD, "<unsigned float>", "set pruning threshold");
+                        print_command_help(PROGRAM_SET_SC_CMD, "<integer>", "set stack capacity");
+                        print_command_help(PROGRAM_SET_LDP_CMD, "<float>", "set linear distortion penalty");
+                        print_command_help(PROGRAM_SET_WP_CMD, "<float>", "set word penalty");
 #if IS_SERVER_TUNING_MODE
-                        LOG_USAGE << "\t'" << PROGRAM_SET_GL_CMD << "<bool> & <enter>'  - enable/disable search lattice generation." << END_LOG;
+                        print_command_help(PROGRAM_SET_GL_CMD, "<bool>", "enable/disable search lattice generation");
 #endif
+                    }
+
+                    /**
+                     * @see cmd_line_base
+                     */
+                    virtual void report_run_time_info() {
+                        m_server.report_run_time_info();
+                    }
+
+                    /**
+                     * @see cmd_line_base
+                     */
+                    virtual void report_program_params() {
+                        LOG_USAGE << m_params << END_LOG;
                     }
 
                     /**
@@ -97,63 +92,20 @@ namespace uva {
                      * @param command the command sting to handle
                      * @return true if we need to stop, otherwise false
                      */
-                    virtual bool process_input_cmd(char * command) {
-                        //Convert the buffer into string
-                        string cmd(command);
-
-                        //We are to print the command prompt
-                        if (cmd == PROGRAM_NOTHING_CMD) {
-                            return false;
-                        }
-
-                        //Stop the server
-                        if (cmd == PROGRAM_EXIT_CMD) {
-                            stop();
-                            return true;
-                        }
-
-                        //Print the server commands menu
-                        if (cmd == PROGRAM_HELP_CMD) {
-                            print_server_commands();
-                            return false;
-                        }
-
-                        //Report the runtime information to the console
-                        if (cmd == PROGRAM_RUNTIME_CMD) {
-                            m_server.report_run_time_info();
-                            return false;
-                        }
-
-                        //Lor parameters
-                        if (cmd == PROGRAM_PARAMS_CMD) {
-                            LOG_USAGE << "Log level: " << logger::get_curr_level_str()
-                                    << ", " << m_params << END_LOG;
-                            return false;
-                        }
-
-                        //Set the debug level
-                        if (begins_with(cmd, PROGRAM_SET_LL_CMD)) {
-                            set_log_level(cmd, PROGRAM_SET_LL_CMD);
-                            return false;
-                        }
-
+                    virtual void process_specific_cmd(const string & cmd) {
                         //Set the number of threads
                         if (begins_with(cmd, PROGRAM_SET_NT_CMD)) {
                             set_num_threads(cmd, PROGRAM_SET_LL_CMD);
-                            return false;
+                        } else {
+                            //Set other decoder parameters
+                            set_decoder_params(cmd, m_params.m_de_params);
                         }
-
-                        //Set other decoder parameters
-                        set_decoder_params(cmd, m_params.m_de_params);
-
-                        //Continue to the next command.
-                        return false;
                     }
 
                     /**
                      * Allows to stop the server;
                      */
-                    void stop() {
+                    virtual void stop() {
                         //Stop the translation server
                         LOG_USAGE << "Stopping the server ..." << END_LOG;
                         m_server.stop();
@@ -163,6 +115,8 @@ namespace uva {
 
                         LOG_USAGE << "The server has stopped!" << END_LOG;
                     }
+
+                private:
 
                     /**
                      * Allows to set the number of worker threads

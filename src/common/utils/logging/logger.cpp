@@ -98,43 +98,44 @@ namespace uva {
              */
             void logger::set_reporting_level(string level) {
                 bool isGoodLevel = true;
+                debug_levels_enum new_debug_level = debug_levels_enum::USAGE;
                 transform(level.begin(), level.end(), level.begin(), ::toupper);
 
                 if (!level.compare(USAGE_PARAM_VALUE)) {
-                    logger::get_reporting_level() = debug_levels_enum::USAGE;
+                    new_debug_level = debug_levels_enum::USAGE;
                 } else {
                     if (!level.compare(RESULT_PARAM_VALUE)) {
-                        logger::get_reporting_level() = debug_levels_enum::RESULT;
+                        new_debug_level = debug_levels_enum::RESULT;
                     } else {
                         if (!level.compare(WARNING_PARAM_VALUE)) {
-                            logger::get_reporting_level() = debug_levels_enum::WARNING;
+                            new_debug_level = debug_levels_enum::WARNING;
                         } else {
                             if (!level.compare(INFO_PARAM_VALUE)) {
-                                logger::get_reporting_level() = debug_levels_enum::INFO;
+                                new_debug_level = debug_levels_enum::INFO;
                             } else {
                                 if (!level.compare(INFO1_PARAM_VALUE)) {
-                                    logger::get_reporting_level() = debug_levels_enum::INFO1;
+                                    new_debug_level = debug_levels_enum::INFO1;
                                 } else {
                                     if (!level.compare(INFO2_PARAM_VALUE)) {
-                                        logger::get_reporting_level() = debug_levels_enum::INFO2;
+                                        new_debug_level = debug_levels_enum::INFO2;
                                     } else {
                                         if (!level.compare(INFO3_PARAM_VALUE)) {
-                                            logger::get_reporting_level() = debug_levels_enum::INFO3;
+                                            new_debug_level = debug_levels_enum::INFO3;
                                         } else {
                                             if (!level.compare(DEBUG_PARAM_VALUE)) {
-                                                logger::get_reporting_level() = debug_levels_enum::DEBUG;
+                                                new_debug_level = debug_levels_enum::DEBUG;
                                             } else {
                                                 if (!level.compare(DEBUG1_PARAM_VALUE)) {
-                                                    logger::get_reporting_level() = debug_levels_enum::DEBUG1;
+                                                    new_debug_level = debug_levels_enum::DEBUG1;
                                                 } else {
                                                     if (!level.compare(DEBUG2_PARAM_VALUE)) {
-                                                        logger::get_reporting_level() = debug_levels_enum::DEBUG2;
+                                                        new_debug_level = debug_levels_enum::DEBUG2;
                                                     } else {
                                                         if (!level.compare(DEBUG3_PARAM_VALUE)) {
-                                                            logger::get_reporting_level() = debug_levels_enum::DEBUG3;
+                                                            new_debug_level = debug_levels_enum::DEBUG3;
                                                         } else {
                                                             if (!level.compare(DEBUG4_PARAM_VALUE)) {
-                                                                logger::get_reporting_level() = debug_levels_enum::DEBUG4;
+                                                                new_debug_level = debug_levels_enum::DEBUG4;
                                                             } else {
                                                                 isGoodLevel = false;
                                                             }
@@ -150,11 +151,20 @@ namespace uva {
                     }
                 }
                 if (isGoodLevel) {
-                    LOG_USAGE << "The requested debug level is: \'" << level
-                            << "\', the maximum build level is '"
-                            << m_debug_level_str[MAXIMUM_LOGGING_LEVEL] << "'"
-                            << " the set level is '" << m_debug_level_str[m_curr_level]
-                            << "'" << END_LOG;
+                    if( new_debug_level <= MAXIMUM_LOGGING_LEVEL  ) {
+                        //Set the new level
+                        m_curr_level = new_debug_level;
+                        //Log the usage info
+                        LOG_USAGE << "The requested debug level is: \'" << level
+                                << "\', the maximum build level is '"
+                                << m_debug_level_str[MAXIMUM_LOGGING_LEVEL] << "'"
+                                << " the set level is '" << m_debug_level_str[m_curr_level]
+                                << "'" << END_LOG;
+                    } else {
+                        LOG_WARNING << "The requested debug level: '" << level
+                                << "' is higher than the maximum build level: "
+                                << m_debug_level_str[MAXIMUM_LOGGING_LEVEL] << ", Ignoring!" << END_LOG;
+                    }
                 } else {
                     LOG_WARNING << "Ignoring an unsupported value of [debug-level] parameter: '" << level << "'" << END_LOG;
                 }

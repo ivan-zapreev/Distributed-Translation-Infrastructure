@@ -884,15 +884,20 @@ function on_message(evt) {
     window.console.log("Message is received, parsing to JSON");
     var resp_obj = JSON.parse(evt.data);
     
-    //Check of the message type
-    if (resp_obj.msg_type === MSG_TYPE_ENUM.MESSAGE_TRANS_JOB_RESP) {
-        set_translation(resp_obj);
-    } else {
-        if (resp_obj.msg_type === MSG_TYPE_ENUM.MESSAGE_SUPP_LANG_RESP) {
-            set_supported_languages(resp_obj);
+    //Check if the message type is detectable
+    if (resp_obj.hasOwnProperty('msg_type')) {
+        //Check of the message type
+        if (resp_obj.msg_type === MSG_TYPE_ENUM.MESSAGE_TRANS_JOB_RESP) {
+            set_translation(resp_obj);
         } else {
-            danger("An unknown server message: " + evt.data);
+            if (resp_obj.msg_type === MSG_TYPE_ENUM.MESSAGE_SUPP_LANG_RESP) {
+                set_supported_languages(resp_obj);
+            } else {
+                danger("An unknown server message type: " + evt.data);
+            }
         }
+    } else {
+        danger("Malformed server message: " + evt.data);
     }
 }
 
