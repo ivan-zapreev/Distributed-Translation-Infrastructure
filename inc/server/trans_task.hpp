@@ -130,7 +130,7 @@ namespace uva {
                     /**
                      * Performs the translation for the given sentence
                      */
-                    void translate() {
+                    void execute() {
                         LOG_DEBUG1 << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
                         //Perform the decoding task

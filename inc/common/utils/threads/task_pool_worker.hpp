@@ -113,7 +113,7 @@ namespace uva {
 
                         //Execute the newly obtained task
                         m_is_busy = true;
-                        task->translate();
+                        task->execute();
                         m_is_busy = false;
                     }
                 }
