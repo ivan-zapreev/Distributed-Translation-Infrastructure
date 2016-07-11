@@ -10,7 +10,7 @@
 
 #include <functional>
 
-#include "common/utils/threads.hpp"
+#include "common/utils/threads/threads.hpp"
 
 #include "server/decoder/sentence/sentence_data_map.hpp"
 #include "server/rm/proxy/rm_query_proxy.hpp"

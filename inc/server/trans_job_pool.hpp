@@ -28,16 +28,17 @@
 
 #include <websocketpp/server.hpp>
 
-#include "trans_task_pool.hpp"
+#include "common/utils/threads/threads.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
 
-#include "common/utils/threads.hpp"
+#include "common/utils/threads/threads.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
-#include "trans_task_id.hpp"
-#include "trans_job.hpp"
-#include "trans_task_pool.hpp"
+#include "common/utils/threads/task_pool.hpp"
+
+#include "server/trans_task_id.hpp"
+#include "server/trans_job.hpp"
 
 using namespace std;
 using namespace std::placeholders;
@@ -135,7 +136,7 @@ namespace uva {
                                     << m_job_count << " running jobs left!" << END_LOG;
                         }
                     }
-                    
+
                     /**
                      * Allows to set the new number of worker threads.
                      * This operation should be safe as the new threads
@@ -309,7 +310,7 @@ namespace uva {
 
                             LOG_DEBUG << "Deleted the job " << trans_job << " from the administration, the jobs count is " << m_job_count << END_LOG;
                         }
-                        
+
                         //Make sure that the job-finished notification is indeed complete
                         trans_job->synch_job_finished();
 
@@ -427,7 +428,7 @@ namespace uva {
 
                 private:
                     //Stores the tasks pool
-                    trans_task_pool m_tasks_pool;
+                    task_pool<trans_task> m_tasks_pool;
 
                     //Stores the synchronization mutex for working with the m_sessions_map
                     recursive_mutex m_all_jobs_lock;

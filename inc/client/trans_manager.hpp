@@ -47,7 +47,7 @@
 #include "client/messaging/trans_job_resp_in.hpp"
 
 #include "common/utils/file/cstyle_file_reader.hpp"
-#include "common/utils/threads.hpp"
+#include "common/utils/threads/threads.hpp"
 #include "common/utils/string_utils.hpp"
 
 using namespace std;

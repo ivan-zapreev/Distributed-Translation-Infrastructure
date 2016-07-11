@@ -598,6 +598,108 @@
       <in>INI.h</in>
       <in>asio.hpp</in>
     </df>
+    <df root="ext" name="3">
+      <df name="asio">
+        <df name="detail">
+          <df name="impl">
+          </df>
+        </df>
+        <df name="generic">
+          <df name="detail">
+            <df name="impl">
+            </df>
+          </df>
+        </df>
+        <df name="impl">
+        </df>
+        <df name="ip">
+          <df name="detail">
+            <df name="impl">
+            </df>
+          </df>
+          <df name="impl">
+          </df>
+        </df>
+        <df name="local">
+          <df name="detail">
+            <df name="impl">
+            </df>
+          </df>
+        </df>
+        <df name="posix">
+        </df>
+        <df name="ssl">
+          <df name="detail">
+            <df name="impl">
+            </df>
+          </df>
+          <df name="impl">
+          </df>
+          <df name="old">
+            <df name="detail">
+            </df>
+          </df>
+        </df>
+        <df name="windows">
+        </df>
+      </df>
+      <df name="rapidjson">
+        <df name="error">
+        </df>
+        <df name="internal">
+        </df>
+        <df name="msinttypes">
+        </df>
+      </df>
+      <df name="tclap">
+      </df>
+      <df name="websocketpp">
+        <df name="base64">
+        </df>
+        <df name="common">
+        </df>
+        <df name="concurrency">
+        </df>
+        <df name="config">
+        </df>
+        <df name="extensions">
+          <df name="permessage_deflate">
+          </df>
+        </df>
+        <df name="http">
+          <df name="impl">
+          </df>
+        </df>
+        <df name="impl">
+        </df>
+        <df name="logger">
+        </df>
+        <df name="message_buffer">
+        </df>
+        <df name="processors">
+        </df>
+        <df name="random">
+        </df>
+        <df name="roles">
+        </df>
+        <df name="sha1">
+        </df>
+        <df name="transport">
+          <df name="asio">
+            <df name="security">
+            </df>
+          </df>
+          <df name="base">
+          </df>
+          <df name="debug">
+          </df>
+          <df name="iostream">
+          </df>
+          <df name="stub">
+          </df>
+        </df>
+      </df>
+    </df>
     <df root="inc" name="1">
       <df name="balancer">
         <df name="messaging">
@@ -669,13 +771,15 @@
           <df name="monitor">
             <in>statistics_monitor.hpp</in>
           </df>
-          <df name="threading">
+          <df name="threads">
+            <in>task_pool.hpp</in>
+            <in>task_pool_worker.hpp</in>
+            <in>threads.hpp</in>
           </df>
           <in>exceptions.hpp</in>
           <in>hashing_utils.hpp</in>
           <in>math_utils.hpp</in>
           <in>string_utils.hpp</in>
-          <in>threads.hpp</in>
         </df>
       </df>
       <df name="server">
@@ -810,11 +914,79 @@
         <in>trans_manager.hpp</in>
         <in>trans_task.hpp</in>
         <in>trans_task_id.hpp</in>
-        <in>trans_task_pool.hpp</in>
-        <in>trans_task_pool_worker.hpp</in>
         <in>translation_server.hpp</in>
       </df>
       <in>main.hpp</in>
+    </df>
+    <df root="inc" name="4">
+      <df name="balancer">
+        <df name="messaging">
+        </df>
+      </df>
+      <df name="client">
+        <df name="messaging">
+        </df>
+      </df>
+      <df name="common">
+        <df name="messaging">
+        </df>
+        <df name="utils">
+          <df name="cmd">
+          </df>
+          <df name="containers">
+          </df>
+          <df name="file">
+          </df>
+          <df name="logging">
+          </df>
+          <df name="monitor">
+          </df>
+          <df name="threads">
+          </df>
+        </df>
+      </df>
+      <df name="server">
+        <df name="common">
+          <df name="models">
+          </df>
+        </df>
+        <df name="decoder">
+          <df name="sentence">
+          </df>
+          <df name="stack">
+          </df>
+        </df>
+        <df name="lm">
+          <df name="builders">
+          </df>
+          <df name="dictionaries">
+          </df>
+          <df name="mgrams">
+          </df>
+          <df name="models">
+          </df>
+          <df name="proxy">
+          </df>
+        </df>
+        <df name="messaging">
+        </df>
+        <df name="rm">
+          <df name="builders">
+          </df>
+          <df name="models">
+          </df>
+          <df name="proxy">
+          </df>
+        </df>
+        <df name="tm">
+          <df name="builders">
+          </df>
+          <df name="models">
+          </df>
+          <df name="proxy">
+          </df>
+        </df>
+      </df>
     </df>
     <df root="src" name="2">
       <df name="balancer">
@@ -894,10 +1066,51 @@
         <in>bpbd_server.cpp</in>
         <in>server_parameters.cpp</in>
         <in>trans_task.cpp</in>
-        <in>trans_task_pool.cpp</in>
-        <in>trans_task_pool_worker.cpp</in>
       </df>
     </df>
+    <df root="src" name="5">
+      <df name="balancer">
+        <df name="messaging">
+        </df>
+      </df>
+      <df name="client">
+        <df name="messaging">
+        </df>
+      </df>
+      <df name="common">
+        <df name="messaging">
+        </df>
+        <df name="utils">
+          <df name="logging">
+          </df>
+          <df name="monitor">
+          </df>
+        </df>
+      </df>
+      <df name="server">
+        <df name="decoder">
+        </df>
+        <df name="lm">
+          <df name="builders">
+          </df>
+          <df name="mgrams">
+          </df>
+          <df name="models">
+          </df>
+        </df>
+        <df name="messaging">
+        </df>
+        <df name="rm">
+          <df name="models">
+          </df>
+        </df>
+        <df name="tm">
+          <df name="models">
+          </df>
+        </df>
+      </df>
+    </df>
+    <itemPath>statistics_monitor.cpp</itemPath>
   </logicalFolder>
   <projectmakefile>build/Makefile</projectmakefile>
   <confs>

@@ -20,6 +20,8 @@
     </logicalFolder>
     <df root="ext" name="0">
     </df>
+    <df root="ext" name="3">
+    </df>
     <df root="inc" name="1">
       <df name="balancer">
         <in>balancer_parameters.hpp</in>
@@ -31,6 +33,8 @@
           </df>
         </df>
       </df>
+    </df>
+    <df root="inc" name="4">
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -115,9 +119,9 @@
         <in>bpbd_server.cpp</in>
         <in>server_parameters.cpp</in>
         <in>trans_task.cpp</in>
-        <in>trans_task_pool.cpp</in>
-        <in>trans_task_pool_worker.cpp</in>
       </df>
+    </df>
+    <df root="src" name="5">
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -129,9 +133,23 @@
       <itemPath>server.cfg</itemPath>
       <itemPath>data/tuning.info.txt</itemPath>
     </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>CMakeLists.txt</itemPath>
+      <itemPath>build/Makefile</itemPath>
+      <itemPath>balancer.cfg</itemPath>
+      <itemPath>server.cfg</itemPath>
+      <itemPath>data/tuning.info.txt</itemPath>
+    </logicalFolder>
+    <itemPath>statistics_monitor.cpp</itemPath>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
+    <Elem>src</Elem>
+    <Elem>inc</Elem>
+    <Elem>ext</Elem>
     <Elem>src</Elem>
     <Elem>inc</Elem>
     <Elem>ext</Elem>
@@ -162,7 +180,7 @@
               <pElem>build/CMakeFiles/CMakeTmp</pElem>
             </incDir>
           </cTool>
-          <ccTool>
+          <ccTool flags="0">
             <standard>8</standard>
           </ccTool>
         </makeTool>
@@ -454,16 +472,7 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/server/trans_task_pool.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="src/server/trans_task_pool_worker.cpp"
-            ex="false"
-            tool="1"
-            flavor2="8">
-        <ccTool flags="0">
-        </ccTool>
+      <item path="statistics_monitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

@@ -40,16 +40,16 @@ add_executable(lm-query ${LM_QUERY_SOURCES})
 
 #Manually add the source files if needed
 set(BPBD_SERVER_SOURCES
-    src/server/bpbd_server.cpp
-    src/server/server_parameters.cpp
-    src/server/trans_task.cpp
     src/common/utils/logging/logger.cpp
+    src/common/utils/monitor/statistics_monitor.cpp 
+    src/common/utils/logging/logger.cpp
+    src/server/server_parameters.cpp
     src/server/decoder/de_parameters.cpp
+    src/server/decoder/de_configurator.cpp
     src/server/lm/lm_parameters.cpp
     src/server/tm/tm_parameters.cpp
     src/server/rm/rm_parameters.cpp
     src/server/rm/models/rm_entry.cpp
-    src/server/decoder/de_configurator.cpp
     src/server/lm/lm_configurator.cpp
     src/server/tm/tm_configurator.cpp
     src/server/rm/rm_configurator.cpp
@@ -67,13 +67,11 @@ set(BPBD_SERVER_SOURCES
     src/server/lm/mgrams/byte_m_gram_id.cpp
     src/server/lm/builders/lm_basic_builder.cpp
     src/server/lm/builders/lm_gram_builder.cpp
-    src/common/utils/monitor/statistics_monitor.cpp 
-    src/common/utils/logging/logger.cpp
     src/common/messaging/trans_job_code.cpp
     src/common/messaging/messaging.cpp
     src/server/messaging/messaging.cpp
-    src/server/trans_task_pool_worker.cpp
-    src/server/trans_task_pool.cpp
+    src/server/trans_task.cpp
+    src/server/bpbd_server.cpp
 )
 #Define the server executable
 add_executable(bpbd-server ${BPBD_SERVER_SOURCES})
