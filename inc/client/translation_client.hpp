@@ -194,6 +194,16 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to get the connection URI
+                     * @return the connection URI
+                     */
+                    const string get_uri() {
+                        return m_uri;
+                    }
+
+                protected:
+
+                    /**
                      * This method is used to receive the job translation messages
                      * @param hdl the connection handler
                      * @param msg the message
@@ -269,16 +279,6 @@ namespace uva {
                             m_notify_conn_close();
                         }
                     }
-
-                    /**
-                     * Allows to get the connection URI
-                     * @return the connection URI
-                     */
-                    const string get_uri() {
-                        return m_uri;
-                    }
-
-                protected:
 
                     /**
                      * Allows to wait until the connection to the server is established.

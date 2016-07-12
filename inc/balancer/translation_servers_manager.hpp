@@ -26,6 +26,8 @@
 #ifndef TRANSLATION_SERVERS_MANAGER_HPP
 #define TRANSLATION_SERVERS_MANAGER_HPP
 
+#include <map>
+
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
@@ -57,28 +59,37 @@ namespace uva {
                      * Allows to configure the balancer server
                      * @param params the parameters from which the server will be configured
                      */
-                    static void configure(const balancer_parameters & params) {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                    static inline void configure(const balancer_parameters & params) {
+                        //Iterate through the list of translation server
+                        //configs and create an adapter for each of them
+                        for(auto iter = params.trans_servers.begin(); iter != params.trans_servers.end(); ++ iter) {
+                            m_server_adaptors[iter->first].configure(iter->second);
+                        }
                     }
 
                     /**
                      * The main method to start the translation servers manager
                      */
-                    static void start() {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                    static inline void start() {
+                        for(auto iter = m_server_adaptors.begin(); iter != m_server_adaptors.end(); ++ iter) {
+                            iter->second.start();
+                        }
                     }
 
                     /**
                      * Allows to stop the translation servers manager
                      */
-                    static void stop() {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                    static inline void stop() {
+                        for(auto iter = m_server_adaptors.begin(); iter != m_server_adaptors.end(); ++ iter) {
+                            iter->second.stop();
+                        }
                     }
 
                 private:
+                    //Stores the mapping from the server names to the server adaptors
+                    static map<string, translation_server_adapter> m_server_adaptors;
+                    
+                    //Stores the mapping from the source/target language pairs to the adaptor sets
 
                     /**
                      * The private constructor to keep the class from being instantiated

@@ -66,7 +66,8 @@ namespace uva {
                     float m_load_weight;
                 };
 
-                typedef translator_config_struct translator_config;
+                //Typedef the structure
+                typedef translator_config_struct trans_server_params;
 
                 /**
                  * This is the storage for balancer parameters:
@@ -103,7 +104,7 @@ namespace uva {
                     size_t m_serv_recon_time_out;
 
                     //Stores the mapping from the translation server name to its configuration data
-                    map<string, translator_config> trans_servers;
+                    map<string, trans_server_params> trans_servers;
 
                     /**
                      * Allows to add a new translator config.
@@ -118,7 +119,7 @@ namespace uva {
                                 string("The server load weight in '") + name +
                                 string("' is negative (") + to_string(load_weight)+(")! "));
                         //Get the data object
-                        translator_config & data = trans_servers[name];
+                        trans_server_params & data = trans_servers[name];
                         //Set the values
                         data.m_name = name;
                         data.m_address = address;
@@ -204,7 +205,7 @@ namespace uva {
                  * @param params the parameters object
                  * @return the stream that we output into
                  */
-                static inline std::ostream& operator<<(std::ostream& stream, const translator_config & params) {
+                static inline std::ostream& operator<<(std::ostream& stream, const trans_server_params & params) {
                     return stream << "{" << params.m_name << ", ws://" << params.m_address << ":"
                             << params.m_port << ", load=" << params.m_load_weight << "%}";
                 }

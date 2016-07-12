@@ -82,8 +82,11 @@ add_executable(bpbd-server ${BPBD_SERVER_SOURCES})
 set(LOAD_BALANCER_SOURCES 
     src/common/utils/logging/logger.cpp
     src/common/utils/monitor/statistics_monitor.cpp 
+    src/common/messaging/messaging.cpp
+    src/client/messaging/messaging.cpp
     src/balancer/messaging/messaging.cpp
     src/balancer/balancer_parameters.cpp
+    src/balancer/translation_managers.cpp
     src/balancer/bpbd_balancer.cpp
 )
 #Define the server executable

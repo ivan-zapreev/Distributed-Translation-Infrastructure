@@ -30,6 +30,7 @@
 #include "common/utils/logging/logger.hpp"
 
 #include "balancer/balancer_parameters.hpp"
+#include "balancer/translation_job.hpp"
 
 using namespace std;
 
@@ -62,8 +63,8 @@ namespace uva {
                      * @param params the parameters from which the server will be configured
                      */
                     static void configure(const balancer_parameters & params) {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        //Save the pointer to the parameters
+                        m_params = &params;
                     }
 
                     /**
@@ -83,6 +84,8 @@ namespace uva {
                     }
 
                 private:
+                    //Stores the pointer to the server parameters
+                    static const balancer_parameters * m_params;
 
                     /**
                      * The private constructor to keep the class from being instantiated

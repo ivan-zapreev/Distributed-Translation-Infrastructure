@@ -13,9 +13,6 @@
                 <sourceRootElem>src</sourceRootElem>
                 <sourceRootElem>inc</sourceRootElem>
                 <sourceRootElem>ext</sourceRootElem>
-                <sourceRootElem>src</sourceRootElem>
-                <sourceRootElem>inc</sourceRootElem>
-                <sourceRootElem>ext</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

@@ -20,8 +20,6 @@
     </logicalFolder>
     <df root="ext" name="0">
     </df>
-    <df root="ext" name="3">
-    </df>
     <df root="inc" name="1">
       <df name="balancer">
         <in>balancer_parameters.hpp</in>
@@ -33,8 +31,6 @@
           </df>
         </df>
       </df>
-    </df>
-    <df root="inc" name="4">
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -48,6 +44,7 @@
       <df name="balancer">
         <in>balancer_parameters.cpp</in>
         <in>bpbd_balancer.cpp</in>
+        <in>translation_managers.cpp</in>
       </df>
       <df name="client">
         <df name="messaging">
@@ -121,8 +118,6 @@
         <in>trans_task.cpp</in>
       </df>
     </df>
-    <df root="src" name="5">
-    </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false"
@@ -147,9 +142,6 @@
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
-    <Elem>src</Elem>
-    <Elem>inc</Elem>
-    <Elem>ext</Elem>
     <Elem>src</Elem>
     <Elem>inc</Elem>
     <Elem>ext</Elem>
@@ -262,6 +254,11 @@
             flavor2="0">
       </item>
       <item path="src/balancer/bpbd_balancer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/balancer/translation_managers.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
