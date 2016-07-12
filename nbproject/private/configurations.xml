@@ -707,7 +707,6 @@
         <in>balancer_console.hpp</in>
         <in>balancer_parameters.hpp</in>
         <in>balancer_server.hpp</in>
-        <in>dispatcher.hpp</in>
         <in>translation_job.hpp</in>
         <in>translation_manager.hpp</in>
         <in>translation_server_adapter.hpp</in>

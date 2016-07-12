@@ -161,7 +161,7 @@ namespace uva {
                         }
 
                         //Report data from the tasks pool
-                        m_tasks_pool.report_run_time_info();
+                        m_tasks_pool.report_run_time_info("Translation tasks pool");
                     }
 
                     /**

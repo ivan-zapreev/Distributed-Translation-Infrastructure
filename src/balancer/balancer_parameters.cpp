@@ -29,9 +29,17 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
+                const string translator_config::TC_ADDRESS_PARAM_NAME = "address";
+                const string translator_config::TC_PORT_PARAM_NAME = "port";
+                const string translator_config::TC_LOAD_WEIGHT_PARAM_NAME = "load_weight";
+                
                 const string balancer_parameters::SE_CONFIG_SECTION_NAME = "Server Options";
                 const string balancer_parameters::SE_SERVER_PORT_PARAM_NAME = "server_port";
-                const string balancer_parameters::SE_NUM_THREADS_PARAM_NAME = "num_threads";
+                const string balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME = "num_req_threads";
+                const string balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME = "num_resp_threads";
+                const string balancer_parameters::SE_TRANSLATION_SERVER_NAMES_PARAM_NAME = "translation_server_names";
+                const string balancer_parameters::TRANS_SERV_NAMES_DELIMITER_STR = "|";
+                const string balancer_parameters::SE_SERVER_RECONNECT_TIME_OUT_PARAM_NAME = "reconnect_time_out_millisec";
             }
         }
     }

@@ -23,6 +23,7 @@
  * Created on July 8, 2016, 10:29 AM
  */
 
+#include <vector>
 #include <websocketpp/common/thread.hpp>
 #include <tclap/CmdLine.h>
 
@@ -30,6 +31,7 @@
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+#include "common/utils/string_utils.hpp"
 
 #include "balancer/balancer_console.hpp"
 #include "balancer/balancer_parameters.hpp"
@@ -39,10 +41,11 @@
 using namespace std;
 using namespace TCLAP;
 
-using namespace uva::smt::bpbd::balancer;
-using namespace uva::smt::bpbd::common;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
+using namespace uva::utils::text;
+using namespace uva::smt::bpbd::balancer;
+using namespace uva::smt::bpbd::common;
 
 /**
  * This functions does nothing more but printing the program header information
@@ -112,15 +115,31 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         LOG_INFO << "The configuration file has been parsed!" << END_LOG;
 
         //Get the configuration options from the file
-        string section = balancer_parameters::SE_CONFIG_SECTION_NAME;
+        const string section = balancer_parameters::SE_CONFIG_SECTION_NAME;
         params.m_server_port = get_integer<uint16_t>(ini, section, balancer_parameters::SE_SERVER_PORT_PARAM_NAME);
-        params.m_num_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_THREADS_PARAM_NAME);
+        params.m_num_req_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME);
+        params.m_num_resp_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME);
+        params.m_serv_recon_time_out = get_integer<size_t>(ini, section, balancer_parameters::SE_SERVER_RECONNECT_TIME_OUT_PARAM_NAME);
 
-        //ToDo: Implement parameter parsing from the config file
-        THROW_NOT_IMPLEMENTED();
+        //Get the translation server names
+        vector<string> server_names;
+        tokenize(get_string(ini, section, balancer_parameters::SE_TRANSLATION_SERVER_NAMES_PARAM_NAME),
+                server_names, balancer_parameters::TRANS_SERV_NAMES_DELIMITER_STR);
+
+        //Read the translation server names configuration data
+        for (auto iter = server_names.begin(); iter != server_names.end(); ++ iter) {
+            const string & tsn = *iter;
+            //Get the data from the translator section and add it to parameters
+            params.add_translator(tsn,
+                    get_string(ini, tsn, translator_config::TC_ADDRESS_PARAM_NAME),
+                    get_integer<uint16_t>(ini, tsn, translator_config::TC_PORT_PARAM_NAME),
+                    get_float(ini, tsn, translator_config::TC_LOAD_WEIGHT_PARAM_NAME));
+        }
 
         //Finalize the parameters
         params.finalize();
+        //Log the server configuration
+        LOG_INFO << params << END_LOG;
 
         LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
     } else {
@@ -135,14 +154,14 @@ static void prepare_config_structures(const uint argc, char const * const * cons
  * @param params the balancer parameters
  */
 static void configure(balancer_parameters & params) {
-        //Configure the translations server manager
-        translation_servers_manager::configure(params);
+    //Configure the translations server manager
+    translation_servers_manager::configure(params);
 
-        //Configure the translation manager
-        translation_manager::configure(params);
+    //Configure the translation manager
+    translation_manager::configure(params);
 
-        //Instantiate the translation server
-        balancer_server::configure(params);
+    //Instantiate the translation server
+    balancer_server::configure(params);
 }
 
 /**
@@ -167,10 +186,10 @@ int main(int argc, char** argv) {
 
         //Prepare the configuration structures, parse the config file
         prepare_config_structures(argc, argv, params);
-        
+
         //Configure the main application entities
         configure(params);
-        
+
         //Start the translation server clients
         translation_servers_manager::start();
 

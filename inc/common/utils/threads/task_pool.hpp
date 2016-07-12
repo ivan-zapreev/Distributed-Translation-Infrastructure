@@ -176,8 +176,9 @@ namespace uva {
 
                 /**
                  * Allows to report the runtime information.
+                 * @param prefix the prefix to be used when reporting the run time information.
                  */
-                inline void report_run_time_info() {
+                inline void report_run_time_info(const string & prefix) {
                     //Add the task to the pool
                     {
                         unique_guard guard(m_queue_mutex);
@@ -190,7 +191,7 @@ namespace uva {
                             }
                         }
 
-                        LOG_USAGE << "#pending tasks: " << m_tasks.size()
+                        LOG_USAGE << prefix << " : #pending tasks: " << m_tasks.size()
                                 << ", #active threads: " << count
                                 << "/" << m_threads.size() << END_LOG;
                     }

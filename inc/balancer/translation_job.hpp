@@ -46,6 +46,14 @@ namespace uva {
                  *      Stores the original job id
                  *      Stores the newly issued job id
                  *      Stores the text to be translated
+                 *      Stores the translation job response
+                 *      Gets the server adapter
+                 *      Notify about a failed job dispatch
+                 *      Send translation request
+                 *      Send the translation response
+                 *      Remember in which state the job is:
+                 *         Waiting for sending request
+                 *         Waiting for receiving reply
                  */
                 class translation_job {
                 };

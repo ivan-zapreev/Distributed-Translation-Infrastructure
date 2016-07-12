@@ -101,8 +101,7 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual void report_program_params() {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        LOG_USAGE << m_params << END_LOG;
                     }
 
                     /**

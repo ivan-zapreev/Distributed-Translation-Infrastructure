@@ -30,6 +30,7 @@
 #include "common/utils/logging/logger.hpp"
 
 #include "balancer/balancer_parameters.hpp"
+#include "balancer/translation_server_adapter.hpp"
 
 using namespace std;
 

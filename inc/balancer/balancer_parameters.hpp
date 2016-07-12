@@ -46,10 +46,28 @@ namespace uva {
                  * This structure stores the configuration/connection
                  * parameters of the translation servers.
                  */
-                typedef struct {
-                    
-                } translator_config;
-                
+                struct translator_config_struct {
+                    //Stores the server address parameter name
+                    static const string TC_ADDRESS_PARAM_NAME;
+                    //Stores the server port parameter name
+                    static const string TC_PORT_PARAM_NAME;
+                    //Stores the load factor parameter name
+                    static const string TC_LOAD_WEIGHT_PARAM_NAME;
+
+                    //Stores the name of the server
+                    string m_name;
+                    //Stores the address of the server
+                    string m_address;
+                    //Stores the server's port
+                    uint16_t m_port;
+                    //Stores the load weight factor for the server,
+                    //should be a value >= 0. If set to 0 then the
+                    //translation server will not be used at all.
+                    float m_load_weight;
+                };
+
+                typedef translator_config_struct translator_config;
+
                 /**
                  * This is the storage for balancer parameters:
                  * Responsibilities:
@@ -60,25 +78,121 @@ namespace uva {
                     static const string SE_CONFIG_SECTION_NAME;
                     //Stores the server port parameter name
                     static const string SE_SERVER_PORT_PARAM_NAME;
-                    //Stores the number of threads parameter name
-                    static const string SE_NUM_THREADS_PARAM_NAME;
+                    //Stores the number of request threads parameter name
+                    static const string SE_NUM_REQ_THREADS_PARAM_NAME;
+                    //Stores the number of response threads parameter name
+                    static const string SE_NUM_RESP_THREADS_PARAM_NAME;
+                    //Stores the translation server names parameter name
+                    static const string SE_TRANSLATION_SERVER_NAMES_PARAM_NAME;
+                    //The delimiter for the translation server names
+                    static const string TRANS_SERV_NAMES_DELIMITER_STR;
+                    //Stores the server reconnection time out parameter name
+                    static const string SE_SERVER_RECONNECT_TIME_OUT_PARAM_NAME;
 
                     //The port to listen to
                     uint16_t m_server_port;
 
-                    //The number of the translation threads to run
-                    size_t m_num_threads;
+                    //The number of the threads handling the request queue
+                    size_t m_num_req_threads;
+
+                    //The number of the threads handling the response queue
+                    size_t m_num_resp_threads;
+
+                    //The number of milliseconds to wait before we attempt to
+                    //reconnect to a disconnected translation server.
+                    size_t m_serv_recon_time_out;
 
                     //Stores the mapping from the translation server name to its configuration data
-                    map<string, translator_config> translators;
+                    map<string, translator_config> trans_servers;
+
+                    /**
+                     * Allows to add a new translator config.
+                     * @param name the server's name
+                     * @param address the server's address
+                     * @param port the server's port
+                     * @param load_weight the lod weight for the given server > 0
+                     */
+                    inline void add_translator(const string & name, const string & address, const uint16_t port, const float load_weight) {
+                        //Check on the load weight
+                        ASSERT_CONDITION_THROW((load_weight < 0),
+                                string("The server load weight in '") + name +
+                                string("' is negative (") + to_string(load_weight)+(")! "));
+                        //Get the data object
+                        translator_config & data = trans_servers[name];
+                        //Set the values
+                        data.m_name = name;
+                        data.m_address = address;
+                        data.m_port = port;
+                        data.m_load_weight = load_weight;
+                        //Increment the total weight
+                        m_total_load += load_weight;
+                    }
                     
+                    /**
+                     * Allows to change the weight of the given translation server
+                     * @param name the name of the server to change
+                     * @param load_weight the new load weight
+                     */
+                    inline void change_weight(const string & name, const float load_weight) {
+                        //Check on the load weight
+                        ASSERT_CONDITION_THROW((load_weight < 0),
+                                string("The server load weight in '") + name +
+                                string("' is negative (") + to_string(load_weight)+(")! "));
+
+                        //Check that the server with this name is there
+                        auto iter = trans_servers.find(name);
+                        ASSERT_CONDITION_THROW((iter == trans_servers.end()),
+                                string("The server: '") + name + string ("' is not found!"));
+                        
+                        //Compute the new total weight and check if the total weight is now 0
+                        float total_load = m_total_load - iter->second.m_load_weight + load_weight;
+                        ASSERT_CONDITION_THROW((total_load <= 0),
+                                string("Invalid total servers' load weight: ") +
+                                to_string(total_load) + string(" must be > 0!"));
+                        
+                        //Set the new load weight and total weight
+                        iter->second.m_load_weight = load_weight;
+                        m_total_load = total_load;
+                        
+                        //Normalize the load weights of the servers
+                        normalize_server_loads();
+                    }
+
                     /**
                      * Allows to finalize the parameters after loading.
                      */
                     void finalize() {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        ASSERT_CONDITION_THROW((m_num_req_threads == 0),
+                                string("The number of request threads: ") +
+                                to_string(m_num_req_threads) +
+                                string(" must be larger than zero! "));
+
+                        ASSERT_CONDITION_THROW((m_num_resp_threads == 0),
+                                string("The number of response threads: ") +
+                                to_string(m_num_resp_threads) +
+                                string(" must be larger than zero! "));
+                        
+                        ASSERT_CONDITION_THROW((m_total_load <= 0),
+                                string("Invalid total servers' load weight: ") +
+                                to_string(m_total_load) + string(" must be > 0!"));
+
+                        //Normalize the load weights of the servers
+                        normalize_server_loads();
                     }
+
+                    /**
+                     * Allows to re-normalize the server loads
+                     */
+                    inline void normalize_server_loads() {
+                        //Normalize the load weights of the servers
+                        for (auto iter = trans_servers.begin(); iter != trans_servers.end(); ++iter) {
+                            iter->second.m_load_weight /= m_total_load;
+                        }
+                    }
+               
+                private:
+                    //Stores the total weight for normalizing the loads
+                    float m_total_load;
                 };
 
                 //Typedef the structure
@@ -90,9 +204,28 @@ namespace uva {
                  * @param params the parameters object
                  * @return the stream that we output into
                  */
+                static inline std::ostream& operator<<(std::ostream& stream, const translator_config & params) {
+                    return stream << "{ " << params.m_name << " > ws://" << params.m_address << ":"
+                            << params.m_port << ", load factor = " << params.m_load_weight << " }";
+                }
+
+                /**
+                 * Allows to output the parameters object to the stream
+                 * @param stream the stream to output into
+                 * @param params the parameters object
+                 * @return the stream that we output into
+                 */
                 static inline std::ostream& operator<<(std::ostream& stream, const balancer_parameters & params) {
-                    return stream << "Server parameters: [ server_port = " << params.m_server_port
-                            << ", num_threads = " << params.m_num_threads << " ]";
+                    //Dump the main server config
+                    stream << "Balancer parameters: [ server_port = " << params.m_server_port
+                            << ", num_req_threads = " << params.m_num_req_threads
+                            << ", num_resp_threads = " << params.m_num_resp_threads << ", translation servers: ";
+                    //Dump the translation server's configs
+                    for (auto iter = params.trans_servers.begin(); iter != params.trans_servers.end(); ++iter) {
+                        stream << iter->second << ", ";
+                    }
+                    //Finish the dump
+                    return stream << " ]";
                 }
             }
         }
