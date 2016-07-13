@@ -84,7 +84,10 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual void report_run_time_info() {
-                        //ToDo: Implement
+                        //Report the translation servers' manager info
+                        translation_servers_manager::report_run_time_info();
+                        //Report the translation manager' info
+                        translation_manager::report_run_time_info();
                     }
 
                     /**

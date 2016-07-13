@@ -173,6 +173,15 @@ namespace uva {
                         return (m_client == NULL) || (!m_client->is_connected());
                     }
 
+                    /**
+                     * Reports the run-time information
+                     */
+                    inline void report_run_time_info() {
+                        recursive_guard guard(m_lock_con);
+                        
+                        LOG_USAGE << "\t" << m_params->m_name << " -> " << (is_enabled() ? (is_disconnected() ? "DISCONNECTED" : "CONNECTED") : "DISABLED" ) << END_LOG;
+                    }
+
                 protected:
 
                     /**

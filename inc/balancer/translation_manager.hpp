@@ -62,7 +62,7 @@ namespace uva {
                      * Allows to configure the balancer server
                      * @param params the parameters from which the server will be configured
                      */
-                    static void configure(const balancer_parameters & params) {
+                    static inline void configure(const balancer_parameters & params) {
                         //Save the pointer to the parameters
                         m_params = &params;
                     }
@@ -70,14 +70,21 @@ namespace uva {
                     /**
                      * The main method to start the translation manager
                      */
-                    static void start() {
+                    static inline void start() {
                         //ToDo: Implement
                     }
 
                     /**
                      * Allows to stop the translation manager
                      */
-                    static void stop() {
+                    static inline void stop() {
+                        //ToDo: Implement
+                    }
+                    
+                    /**
+                     * Reports the run-time information
+                     */
+                    static inline void report_run_time_info() {
                         //ToDo: Implement
                     }
 

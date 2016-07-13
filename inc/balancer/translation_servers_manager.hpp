@@ -108,6 +108,16 @@ namespace uva {
                         
                         LOG_INFO1 << "The translation servers are disabled" << END_LOG; 
                     }
+                    
+                    /**
+                     * Reports the run-time information
+                     */
+                    static inline void report_run_time_info() {
+                        LOG_USAGE << "Translation servers: " << END_LOG;
+                        for (auto iter = m_server_adaptors.begin(); iter != m_server_adaptors.end(); ++iter) {
+                            iter->second.report_run_time_info();
+                        }
+                    }
 
                 protected:
 
