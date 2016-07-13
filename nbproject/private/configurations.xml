@@ -658,10 +658,6 @@
       <df name="balancer">
         <in>balancer_parameters.hpp</in>
       </df>
-      <df name="ballancer">
-        <df name="messaging">
-        </df>
-      </df>
       <df name="client">
         <df name="messaging">
         </df>

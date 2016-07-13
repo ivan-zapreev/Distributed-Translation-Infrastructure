@@ -228,6 +228,9 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/balancer/bpbd_balancer.cpp" ex="false" tool="1" flavor2="8">
@@ -244,6 +247,9 @@
             <pElem>ext</pElem>
             <pElem>build</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/balancer/translation_managers.cpp"

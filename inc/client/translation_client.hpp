@@ -67,16 +67,21 @@ namespace uva {
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
 
                     //Define the function type for the function used to set the translation job result
-                    typedef function<void(trans_job_resp_in * trans_job_resp) > trans_job_resp_setter;
+                    typedef function<void(incoming_msg * json_msg) > server_message_setter;
 
-                    //Define the function type for the function used to notify the caller that the connection is closed
-                    typedef function<void() > conn_close_notifier;
+                    //Define the function type for the function used to notify about the connection status
+                    typedef function<void() > conn_status_notifier;
 
-                    translation_client(const string & host, const uint16_t port, trans_job_resp_setter set_trans_job_resp, conn_close_notifier notify_conn_close)
-                    : m_started(false), m_stopped(false), m_opened(false), m_closed(false), m_set_trans_job_resp(set_trans_job_resp), m_notify_conn_close(notify_conn_close) {
+                    translation_client(const string & host, const uint16_t port,
+                            server_message_setter set_server_msg_func,
+                            conn_status_notifier notify_conn_close,
+                            conn_status_notifier notify_conn_open)
+                    : m_started(false), m_stopped(false), m_opened(false), m_closed(false),
+                    m_set_server_msg_func(set_server_msg_func),
+                    m_notify_conn_close(notify_conn_close),
+                    m_notify_conn_open(notify_conn_open) {
                         //Assert that the notifiers and setter are defined
-                        ASSERT_SANITY_THROW(!m_set_trans_job_resp, "The response setter is NULL!");
-                        ASSERT_SANITY_THROW(!m_notify_conn_close, "The connection close notifier is NULL!");
+                        ASSERT_SANITY_THROW(!m_set_server_msg_func, "The server message setter is NULL!");
 
                         //Initialize the URI to connect to
                         m_uri = string("ws://") + host + string(":") + to_string(port);
@@ -120,7 +125,7 @@ namespace uva {
                         // Grab a handle for this connection so we can talk to it in a thread
                         // safe manor after the event loop starts.
                         m_hdl = con->get_handle();
-                        
+
                         // Queue the connection. No DNS queries or network connections will be
                         // made until the io_service event loop is run.
                         m_client.connect(con);
@@ -141,9 +146,6 @@ namespace uva {
                         LOG_DEBUG << "Stopping the client: m_open = " << to_string(m_opened) << ", m_done = " << to_string(m_closed) << END_LOG;
 
                         if (m_opened && !m_closed) {
-                            //Invalidate the connection close notifier
-                            m_notify_conn_close = NULL;
-
                             LOG_INFO << "Closing the server connection..." << END_LOG;
 
                             //Close the connection to the server
@@ -173,20 +175,20 @@ namespace uva {
                     }
 
                     /**
-                     * Attempts to send the translation job request
-                     * @param request the translation job request
+                     * Attempts to send an outgoing message to the server
+                     * @param message an outgoing message
                      */
-                    inline void send(trans_job_req_out * request) {
+                    inline void send(outgoing_msg * message) {
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
                         //Serialize the message into string
-                        string message = request->serialize();
+                        const string msg_str = message->serialize();
 
-                        LOG_DEBUG << "Serialized translation request: \n" << message << END_LOG;
+                        LOG_DEBUG << "Serialized translation request: \n" << msg_str << END_LOG;
 
                         //Try to send the translation job request
-                        m_client.send(m_hdl, message, websocketpp::frame::opcode::text, ec);
+                        m_client.send(m_hdl, msg_str, websocketpp::frame::opcode::text, ec);
 
                         // The most likely error that we will get is that the connection is
                         // not in the right state. Usually this means we tried to send a
@@ -202,7 +204,7 @@ namespace uva {
                     inline const string get_uri() const {
                         return m_uri;
                     }
-                    
+
                     /**
                      * Allows to check whether the client is connected to the server
                      * @return 
@@ -227,19 +229,11 @@ namespace uva {
                             //De-serialize the message from string
                             json_msg->de_serialize(msg->get_payload());
 
-                            //Check on the message type
-                            switch (json_msg->get_msg_type()) {
-                                case msg_type::MESSAGE_TRANS_JOB_RESP:
-                                    //Set the newly received job response
-                                    m_set_trans_job_resp(new trans_job_resp_in(json_msg));
-                                    break;
-                                default:
-                                    THROW_EXCEPTION(string("Unexpected incoming message type: ") +
-                                            to_string(json_msg->get_msg_type()));
-                            }
+                            //Set the message to the client
+                            m_set_server_msg_func(json_msg);
                         } catch (std::exception & ex) {
-                            LOG_ERROR << "Unexpected message: " << ex.what() << END_LOG;
-                            //Delete the incoming message
+                            LOG_ERROR << ex.what() << END_LOG;
+                            //Delete the message as it was not set
                             delete json_msg;
                         }
                     }
@@ -249,21 +243,32 @@ namespace uva {
                      * @param the connection handler
                      */
                     inline void on_open(websocketpp::connection_hdl hdl) {
-                        scoped_guard guard(m_lock_con);
-
                         LOG_DEBUG << "Connection opened!" << END_LOG;
 
-                        m_opened = true;
+                        //Do not lock the notification, as that might be blocking as well
+                        {
+                            scoped_guard guard(m_lock_con);
+                            m_opened = true;
+                        }
+
+                        //Notify the client that the connection is opened, if the notifier is present!
+                        if (m_notify_conn_open) {
+                            m_notify_conn_open();
+                        }
                     }
-                    
+
                     /**
                      * This function andles the closed connection
                      */
                     inline void handle_closed_connection() {
-                        m_closed = true;
-                        m_opened = false;
+                        //Do not lock the notification, as that might be blocking as well
+                        {
+                            scoped_guard guard(m_lock_con);
+                            m_closed = true;
+                            m_opened = false;
+                        }
 
-                        //Notify the client that the connection is closed, if the notifier is still present!
+                        //Notify the client that the connection is closed, if the notifier is present!
                         if (m_notify_conn_close) {
                             m_notify_conn_close();
                         }
@@ -274,10 +279,8 @@ namespace uva {
                      * @param the connection handler
                      */
                     inline void on_close(websocketpp::connection_hdl hdl) {
-                        scoped_guard guard(m_lock_con);
-
                         LOG_DEBUG << "Connection closed!" << END_LOG;
-                        
+
                         //Handle the closed connection
                         handle_closed_connection();
                     }
@@ -287,10 +290,8 @@ namespace uva {
                      * @param the connection handler
                      */
                     inline void on_fail(websocketpp::connection_hdl hdl) {
-                        scoped_guard guard(m_lock_con);
-
                         LOG_DEBUG << "Connection failed!" << END_LOG;
-                        
+
                         //Handle the closed connection
                         handle_closed_connection();
                     }
@@ -305,7 +306,7 @@ namespace uva {
 
                         LOG_DEBUG << "Connection m_opened: " << to_string(m_opened)
                                 << ", m_closed: " << to_string(m_closed) << END_LOG;
-                        
+
                         //Wait until the connection is established
                         while (true) {
                             //Check the connection status
@@ -352,10 +353,12 @@ namespace uva {
                     atomic<bool> m_opened;
                     atomic<bool> m_closed;
 
-                    //Stores the translation job result setting function
-                    trans_job_resp_setter m_set_trans_job_resp;
+                    //Stores the server message setting function
+                    server_message_setter m_set_server_msg_func;
                     //Stores the connection close notifier
-                    conn_close_notifier m_notify_conn_close;
+                    conn_status_notifier m_notify_conn_close;
+                    //Stores the connection open notifier
+                    conn_status_notifier m_notify_conn_open;
 
                     //Stores the server URI
                     string m_uri;

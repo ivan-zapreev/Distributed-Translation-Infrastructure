@@ -72,7 +72,7 @@ namespace uva {
                          * Allows to serialize the outgoing message into a string
                          * @return the string representation of the message
                          */
-                        inline string serialize() {
+                        virtual string serialize() {
                             //Finish the object
                             m_writer.EndObject();
 

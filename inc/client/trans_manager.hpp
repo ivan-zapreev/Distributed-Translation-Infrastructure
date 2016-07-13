@@ -88,8 +88,8 @@ namespace uva {
                     trans_manager(const client_config & params)
                     : m_params(params),
                     m_client(m_params.m_server, m_params.m_port,
-                    bind(&trans_manager::set_job_response, this, _1),
-                    bind(&trans_manager::notify_conn_closed, this)),
+                    bind(&trans_manager::set_server_message, this, _1),
+                    bind(&trans_manager::notify_conn_closed, this), NULL),
                     m_source_file(params.m_source_file),
                     m_sending_thread_ptr(NULL) {
                         //If the input file could not be opened, we through!
@@ -143,7 +143,7 @@ namespace uva {
                     /**
                      * Allows to start the translation process
                      */
-                    void start() {
+                    inline void start() {
                         if (m_client.connect()) {
                             //Run the translation job sending thread
                             m_sending_thread_ptr = new thread(bind(&trans_manager::send_translation_jobs, this));
@@ -155,7 +155,7 @@ namespace uva {
                     /**
                      * Allows to wait until the translations are done
                      */
-                    void wait() {
+                    inline void wait() {
                         LOG_INFO << "Started creating and sending out jobs!" << END_LOG;
 
                         //Wait until all the jobs are sent
@@ -187,7 +187,7 @@ namespace uva {
                      * This method allows to stop the translation client and
                      * to write the resulting translations into the file.
                      */
-                    void stop() {
+                    inline void stop() {
                         LOG_INFO << "Stopping the translation manager" << END_LOG;
 
                         //Set the stopping flag
@@ -219,7 +219,7 @@ namespace uva {
                      * @param trans_file the file to write the translated text into
                      * @param info_file the file to write the translation info into
                      */
-                    void store_targety_data(uint32_t fis, trans_job_resp_in * resp, ofstream & trans_file, ofstream & info_file) {
+                    inline void store_targety_data(uint32_t fis, trans_job_resp_in * resp, ofstream & trans_file, ofstream & info_file) {
                         //If the result is ok or partial then just put the text into the file
                         const trans_sent_data_in * sent_data = resp->next_send_data();
                         while (sent_data != NULL) {
@@ -253,7 +253,7 @@ namespace uva {
                      * @param trans_file the file to write to
                      * @param info_file the file to write the translation info into
                      */
-                    void write_received_job_result(const uint32_t fis, const uint32_t lis,
+                    inline void write_received_job_result(const uint32_t fis, const uint32_t lis,
                             const trans_job_ptr job, ofstream & trans_file, ofstream & info_file) {
                         //Get the response pointer
                         trans_job_resp_in * resp = job->m_response;
@@ -279,7 +279,7 @@ namespace uva {
                     /**
                      * Allows to generate the translation result file.
                      */
-                    void write_result_to_file() {
+                    inline void write_result_to_file() {
                         //Get the names for the translation and info files
                         const string trans_file_name = m_params.m_target_file;
                         const string info_file_name = m_params.m_target_file + ".log";
@@ -335,7 +335,7 @@ namespace uva {
                     /**
                      * Allows to check if all the jobs are done and then perform a notifying action
                      */
-                    void check_jobs_done_and_notify() {
+                    inline void check_jobs_done_and_notify() {
                         //If we received all the jobs then notify that all the jobs are received!
                         if (m_is_all_jobs_sent && (m_num_done_jobs == m_jobs_list.size())) {
                             notify_jobs_done();
@@ -343,10 +343,37 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to process the server message
+                     * @param json_msg a pointer to the json incoming message, not NULL
+                     */
+                    inline void set_server_message(incoming_msg * json_msg) {
+                        //Check on the message type
+                        switch (json_msg->get_msg_type()) {
+                            case msg_type::MESSAGE_TRANS_JOB_RESP:
+                            {
+                                //Create a new job response message
+                                trans_job_resp_in * job_resp_msg = new trans_job_resp_in(json_msg);
+                                try {
+                                    //Set the newly received job response
+                                    set_job_response(job_resp_msg);
+                                } catch (std::exception & ex) {
+                                    LOG_ERROR << ex.what() << END_LOG;
+                                    //Delete the message as it was not set
+                                    delete job_resp_msg;
+                                }
+                            }
+                                break;
+                            default:
+                                THROW_EXCEPTION(string("Unexpected incoming message type: ") +
+                                        to_string(json_msg->get_msg_type()));
+                        }
+                    }
+
+                    /**
                      * Allows to process the server job request response
                      * @param trans_job_resp a pointer to the translation job response data, not NULL
                      */
-                    void set_job_response(trans_job_resp_in * trans_job_resp) {
+                    inline void set_job_response(trans_job_resp_in * trans_job_resp) {
                         //Increment the number of received jobs
                         m_num_done_jobs++;
 
@@ -391,7 +418,7 @@ namespace uva {
                     /**
                      * This function will be called if the connection is closed during the translation process
                      */
-                    void notify_conn_closed() {
+                    inline void notify_conn_closed() {
                         LOG_WARNING << "The server has closed the connection!" << END_LOG;
 
                         //If the connection is closed we shall be stopping then
@@ -410,7 +437,7 @@ namespace uva {
                     /**
                      * Allows to notify the threads waiting on the translation jobs to be received
                      */
-                    void notify_jobs_done() {
+                    inline void notify_jobs_done() {
                         //Make sure that translation-waiting activity is synchronized
                         unique_guard guard(m_jobs_done_lock);
 
@@ -426,7 +453,7 @@ namespace uva {
                     /**
                      * Allows to notify the threads waiting on the translation jobs to be sent
                      */
-                    void notify_jobs_sent() {
+                    inline void notify_jobs_sent() {
                         //Make sure that translation-waiting activity is synchronized
                         unique_guard guard(m_jobs_sent_lock);
 
@@ -442,7 +469,7 @@ namespace uva {
                     /**
                      * This function shall be run in a separate thread and send a number of translation job requests to the server.
                      */
-                    void send_translation_jobs() {
+                    inline void send_translation_jobs() {
                         LOG_DEBUG << "Sending translation job requests ..." << END_LOG;
 
                         //Send the translation jobs
@@ -478,7 +505,7 @@ namespace uva {
                      * Allows to compute the number of sentences to send with the next request
                      * @return the number of sentences to send with the next request
                      */
-                    uint64_t get_num_of_sentences() {
+                    inline uint64_t get_num_of_sentences() {
                         if (m_params.m_min_sent != m_params.m_max_sent) {
                             return m_params.m_min_sent + rand() % (m_params.m_max_sent - m_params.m_min_sent) + 1;
                         } else {

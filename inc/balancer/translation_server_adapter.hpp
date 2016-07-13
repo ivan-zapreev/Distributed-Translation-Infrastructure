@@ -33,7 +33,10 @@
 
 #include "balancer/balancer_parameters.hpp"
 
+#include "common/messaging/incoming_msg.hpp"
 #include "client/messaging/trans_job_resp_in.hpp"
+#include "client/messaging/supp_lang_resp_in.hpp"
+#include "client/messaging/supp_lang_req_out.hpp"
 #include "client/translation_client.hpp"
 
 using namespace std;
@@ -41,6 +44,8 @@ using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 
+using namespace uva::smt::bpbd::common;
+using namespace uva::smt::bpbd::common::messaging;
 using namespace uva::smt::bpbd::client;
 using namespace uva::smt::bpbd::client::messaging;
 
@@ -119,14 +124,16 @@ namespace uva {
 
                         //Create a new translation client
                         m_client = new translation_client(m_params->m_address, m_params->m_port,
-                                bind(&translation_server_adapter::set_job_response, this, _1),
-                                bind(&translation_server_adapter::notify_conn_closed, this));
+                                bind(&translation_server_adapter::set_server_message, this, _1),
+                                bind(&translation_server_adapter::notify_conn_closed, this),
+                                bind(&translation_server_adapter::notify_conn_opened, this));
 
                         LOG_DEBUG << "Is '" << m_params->m_name << "' connected: "
                                 << to_string(m_client->is_connected()) << END_LOG;
 
                         //If we are not connected to the server
                         if (!m_client->is_connected()) {
+                            LOG_DEBUG << "'" << m_params->m_name << "' is going to be connected" << END_LOG;
                             //Attempt to connect, if we fail then schedule a re-connect
                             if (!m_client->connect()) {
                                 LOG_DEBUG << "Could not connect to: '" << m_params->m_name << "'" << END_LOG;
@@ -178,20 +185,103 @@ namespace uva {
                      */
                     inline void report_run_time_info() {
                         recursive_guard guard(m_lock_con);
-                        
-                        LOG_USAGE << "\t" << m_params->m_name << " -> " << (is_enabled() ? (is_disconnected() ? "DISCONNECTED" : "CONNECTED") : "DISABLED" ) << END_LOG;
+
+                        //Get the connection status
+                        string status = "DISABLED";
+                        if (this->is_enabled()) {
+                            if (this->is_disconnected()) {
+                                status = "DISCONNECTED";
+                            } else {
+                                status = "CONNECTED";
+                            }
+                        }
+
+                        LOG_USAGE << "\t" << m_params->m_name << " -> " << status << END_LOG;
+                    }
+
+                    /**
+                     * Allows to get the name of the server represented by this adapter
+                     * @return the name of the server
+                     */
+                    inline const string & get_name() const {
+                        return m_params->m_name;
                     }
 
                 protected:
 
                     /**
-                     * Allows to process the server job request response
+                     * Allows to process the server message
+                     * @param json_msg a pointer to the json incoming message, not NULL
+                     */
+                    inline void set_server_message(incoming_msg * json_msg) {
+                        LOG_DEBUG << "The server '" << m_params->m_name << "' client got "
+                                << "a server message, type: " << json_msg->get_msg_type() << END_LOG;
+
+                        //Check on the message type
+                        switch (json_msg->get_msg_type()) {
+                            case msg_type::MESSAGE_TRANS_JOB_RESP:
+                            {
+                                //Create a new job response message
+                                trans_job_resp_in * job_resp_msg = new trans_job_resp_in(json_msg);
+                                try {
+                                    //Set the newly received job response
+                                    set_job_response(job_resp_msg);
+                                } catch (std::exception & ex) {
+                                    LOG_ERROR << ex.what() << END_LOG;
+                                    //Delete the message as it was not set
+                                    delete job_resp_msg;
+                                }
+                            }
+                                break;
+                            case msg_type::MESSAGE_SUPP_LANG_RESP:
+                            {
+                                //Create a new languages response message
+                                supp_lang_resp_in * lang_resp_msg = new supp_lang_resp_in(json_msg);
+                                try {
+                                    //Set the newly received job response
+                                    set_lang_response(lang_resp_msg);
+                                } catch (std::exception & ex) {
+                                    LOG_ERROR << ex.what() << END_LOG;
+                                    //Delete the message as it was not set
+                                    delete lang_resp_msg;
+                                }
+                            }
+                                break;
+                            default:
+                                THROW_EXCEPTION(string("Unexpected incoming message type: ") +
+                                        to_string(json_msg->get_msg_type()));
+                        }
+                    }
+
+                    /**
+                     * Allows to process the server translation job response message
                      * @param trans_job_resp a pointer to the translation job response data, not NULL
                      */
-                    void set_job_response(trans_job_resp_in * trans_job_resp) {
-                        LOG_DEBUG << "The server '" << m_params->m_name << "' client got a translation job response!" << END_LOG;
-
+                    inline void set_job_response(trans_job_resp_in * trans_job_resp) {
                         //ToDo: Implement
+                    }
+
+                    /**
+                     * Allows to process the server supported languages response message
+                     * @param trans_job_resp a pointer to the supported languages response data, not NULL
+                     */
+                    inline void set_lang_response(supp_lang_resp_in * lang_resp_msg) {
+                        //ToDo: Implement
+                    }
+
+                    /**
+                     * This function will be called if the connection is opened
+                     */
+                    void notify_conn_opened() {
+                        recursive_guard guard(m_lock_con);
+
+                        LOG_DEBUG << "The server '" << m_params->m_name << "' connection is open!" << END_LOG;
+
+                        //Request the supported languages, if the server is enabled
+                        if (m_is_enabled && m_client->is_connected()) {
+                            supp_lang_req_out req;
+                            m_client->send(&req);
+                        }
                     }
 
                     /**
@@ -212,6 +302,8 @@ namespace uva {
                      * present then nothing is done.
                      */
                     inline void remove_connection_client() {
+                        recursive_guard guard(m_lock_con);
+
                         if (m_client != NULL) {
                             m_client->disconnect();
                             delete m_client;

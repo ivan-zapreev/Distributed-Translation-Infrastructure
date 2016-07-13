@@ -62,58 +62,64 @@ namespace uva {
                      * @param params the parameters from which the server will be configured
                      */
                     static inline void configure(const balancer_parameters & params) {
-                        LOG_INFO3 << "Configuring the translation servers' manager" << END_LOG; 
-                        
+                        LOG_INFO3 << "Configuring the translation servers' manager" << END_LOG;
+
                         //Store the pointer to the parameters
                         m_params = &params;
                         //Iterate through the list of translation server
                         //configs and create an adapter for each of them
                         for (auto iter = params.trans_servers.begin(); iter != params.trans_servers.end(); ++iter) {
+                            LOG_INFO3 << "Configuring '" << iter->second.m_name << "' adapter..." << END_LOG;
                             m_server_adaptors[iter->first].configure(iter->second, translation_servers_manager::notify_disconnected);
+                            LOG_INFO2 << "'" << iter->second.m_name << "' adapter is configured" << END_LOG;
                         }
-                        
-                        LOG_INFO2 << "The translation servers are configured" << END_LOG; 
+
+                        LOG_INFO2 << "The translation servers are configured" << END_LOG;
                     }
 
                     /**
                      * The main method to enable the translation servers manager
                      */
                     static inline void enable() {
-                        LOG_INFO2 << "Enabling the translation servers' manager" << END_LOG; 
-                        
+                        LOG_INFO2 << "Enabling the translation servers' manager" << END_LOG;
+
                         //First begin the reconnection thread
                         start_re_connection_thread();
 
                         //Enable the clients
                         for (auto iter = m_server_adaptors.begin(); iter != m_server_adaptors.end(); ++iter) {
+                            LOG_INFO2 << "Enabling '" << iter->second.get_name() << "' adapter..." << END_LOG;
                             iter->second.enable();
+                            LOG_INFO1 << "'" << iter->second.get_name() << "' adapter is enabled" << END_LOG;
                         }
-                        
-                        LOG_INFO1 << "The translation servers are enabled" << END_LOG; 
+
+                        LOG_INFO1 << "The translation servers are enabled" << END_LOG;
                     }
 
                     /**
                      * Allows to disable the translation servers manager
                      */
                     static inline void disable() {
-                        LOG_INFO2 << "Disabling the translation servers' manager" << END_LOG; 
-                        
+                        LOG_INFO2 << "Disabling the translation servers' manager" << END_LOG;
+
                         //First remove the reconnection thread
                         finish_re_connection_thread();
 
                         //Disable the clients
                         for (auto iter = m_server_adaptors.begin(); iter != m_server_adaptors.end(); ++iter) {
+                            LOG_INFO2 << "Disabling '" << iter->second.get_name() << "' adapter..." << END_LOG;
                             iter->second.disable();
+                            LOG_INFO1 << "'" << iter->second.get_name() << "' adapter is disabled" << END_LOG;
                         }
-                        
-                        LOG_INFO1 << "The translation servers are disabled" << END_LOG; 
+
+                        LOG_INFO1 << "The translation servers are disabled" << END_LOG;
                     }
-                    
+
                     /**
                      * Reports the run-time information
                      */
                     static inline void report_run_time_info() {
-                        LOG_USAGE << "Translation servers: " << END_LOG;
+                        LOG_USAGE << "Translation servers (#" << m_server_adaptors.size() << "): " << END_LOG;
                         for (auto iter = m_server_adaptors.begin(); iter != m_server_adaptors.end(); ++iter) {
                             iter->second.report_run_time_info();
                         }
