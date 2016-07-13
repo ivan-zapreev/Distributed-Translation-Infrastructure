@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="CMakeFiles"
                    displayName="CMakeFiles"
@@ -21,16 +21,6 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
-      <df name="balancer">
-        <in>balancer_parameters.hpp</in>
-      </df>
-      <df name="common">
-        <df name="utils">
-          <df name="cmd">
-            <in>cmd_line_base.hpp</in>
-          </df>
-        </df>
-      </df>
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -138,7 +128,6 @@
       <itemPath>server.cfg</itemPath>
       <itemPath>data/tuning.info.txt</itemPath>
     </logicalFolder>
-    <itemPath>statistics_monitor.cpp</itemPath>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
@@ -176,10 +165,6 @@
             <standard>8</standard>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
       <item path="/usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c"
             ex="false"
@@ -238,27 +223,35 @@
           </incDir>
         </ccTool>
       </folder>
-      <item path="inc/balancer/balancer_parameters.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/utils/cmd/cmd_line_base.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="src/balancer/balancer_parameters.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
-      <item path="src/balancer/bpbd_balancer.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/balancer/bpbd_balancer.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/balancer/messaging/messaging.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>inc</pElem>
+            <pElem>ext</pElem>
+            <pElem>build</pElem>
+          </incDir>
+        </ccTool>
       </item>
       <item path="src/balancer/translation_managers.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/client/bpbd_client.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
@@ -270,16 +263,10 @@
       </item>
       <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/common/messaging/messaging.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/common/messaging/trans_job_code.cpp"
@@ -319,9 +306,6 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/lm/builders/lm_basic_builder.cpp"
@@ -445,9 +429,6 @@
       </item>
       <item path="src/server/server_parameters.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/server/tm/models/tm_target_entry.cpp"
@@ -468,8 +449,6 @@
       <item path="src/server/trans_task.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
-      </item>
-      <item path="statistics_monitor.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>
