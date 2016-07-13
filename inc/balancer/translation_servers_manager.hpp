@@ -32,6 +32,8 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/threads/threads.hpp"
 
+#include "client/messaging/supp_lang_resp_in.hpp"
+
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/translation_server_adapter.hpp"
 
@@ -40,6 +42,8 @@ using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
+
+using namespace uva::smt::bpbd::client::messaging;
 
 namespace uva {
     namespace smt {
@@ -70,7 +74,9 @@ namespace uva {
                         //configs and create an adapter for each of them
                         for (auto iter = params.trans_servers.begin(); iter != params.trans_servers.end(); ++iter) {
                             LOG_INFO3 << "Configuring '" << iter->second.m_name << "' adapter..." << END_LOG;
-                            m_server_adaptors[iter->first].configure(iter->second, translation_servers_manager::notify_disconnected);
+                            m_server_adaptors[iter->first].configure(iter->second,
+                                    translation_servers_manager::notify_ready,
+                                    translation_servers_manager::notify_disconnected);
                             LOG_INFO2 << "'" << iter->second.m_name << "' adapter is configured" << END_LOG;
                         }
 
@@ -128,17 +134,34 @@ namespace uva {
                 protected:
 
                     /**
+                     * Allows to notify the manager that there is an adapter redy to receive translation requests
+                     * @param adapter the pointer to the translation server adapter that got ready, not NULL
+                     * @param lang_resp_msg the supported language pairs message, to be destroyed by this method
+                     */
+                    static inline void notify_ready(const translation_server_adapter * adapter, supp_lang_resp_in * lang_resp_msg) {
+                        LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is connected!" << END_LOG;
+
+                        //ToDo: Register the new ready adapter for the given set of translation pairs
+
+                        //Destroy the message as it is not needed any more
+                        delete lang_resp_msg;
+                    }
+
+                    /**
                      * Allows to notify that there were disconnected servers
                      * so that we could immediately take care of them by trying
                      * to reconnect.
-                     * @param adapter the referene to the translation server adapter that got disconnected
+                     * @param adapter the pointer to the translation server adapter that got disconnected, not NULL
                      */
-                    static inline void notify_disconnected(const translation_server_adapter & adapter) {
-                        //NOTE: Do not really need to wake up the reconnection thread as it
-                        //has a time out and if notified it will keep reconnecting too often
-                        //m_re_connect_condition.notify_all();
+                    static inline void notify_disconnected(const translation_server_adapter * adapter) {
+                        LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is disconnected!" << END_LOG;
+
+                        //NOTE: Do not notify the re-connection thread as otherwise we will
+                        //      be re-connecting too often, just let it work on the time-out
 
                         //ToDo: Cancel the jobs associated with the given translation server
+
+                        //ToDo: Make sure that the corresponding supported language pairs are removed.
                     }
 
                     /**
@@ -160,10 +183,7 @@ namespace uva {
                             if (m_is_reconnect_run) {
                                 //Iterate through all the connectors and check for their activity
                                 for (auto iter = m_server_adaptors.begin(); iter != m_server_adaptors.end(); ++iter) {
-                                    if (iter->second.is_enabled() && iter->second.is_disconnected()) {
-                                        iter->second.disable();
-                                        iter->second.enable();
-                                    }
+                                    iter->second.reconnect();
                                 }
                             }
                         }

@@ -31,20 +31,20 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
-#include "balancer/balancer_parameters.hpp"
-
 #include "common/messaging/incoming_msg.hpp"
 #include "client/messaging/trans_job_resp_in.hpp"
 #include "client/messaging/supp_lang_resp_in.hpp"
 #include "client/messaging/supp_lang_req_out.hpp"
 #include "client/translation_client.hpp"
 
+#include "balancer/balancer_parameters.hpp"
+#include "balancer/translation_manager.hpp"
+
 using namespace std;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 
-using namespace uva::smt::bpbd::common;
 using namespace uva::smt::bpbd::common::messaging;
 using namespace uva::smt::bpbd::client;
 using namespace uva::smt::bpbd::client::messaging;
@@ -68,14 +68,17 @@ namespace uva {
                  */
                 class translation_server_adapter {
                 public:
+                    //Define 
+                    typedef function<void(const translation_server_adapter *, supp_lang_resp_in *) > ready_conn_notifier_type;
                     //Define the function type for the function used to notify about the disconnected server
-                    typedef function<void(const translation_server_adapter &) > closed_conn_notifier_type;
+                    typedef function<void(const translation_server_adapter *) > closed_conn_notifier_type;
 
                     /**
                      * The basic constructor for the adapter class
                      */
                     translation_server_adapter()
                     : m_params(NULL), m_client(NULL), m_is_enabled(false),
+                    m_is_connected(false), m_is_connecting(false),
                     m_lock_con(), m_notify_conn_closed_func() {
                     }
 
@@ -95,7 +98,9 @@ namespace uva {
                      * @param params the translation server parameters
                      * @param notify_conn_closed_func the function to notify about the closed server connection
                      */
-                    inline void configure(const trans_server_params & params, closed_conn_notifier_type notify_conn_closed_func) {
+                    inline void configure(const trans_server_params & params,
+                            ready_conn_notifier_type notify_conn_ready_func,
+                            closed_conn_notifier_type notify_conn_closed_func) {
                         recursive_guard guard(m_lock_con);
 
                         //Check that the adapter is not enabled!
@@ -105,7 +110,8 @@ namespace uva {
                         //Store the reference to the parameters
                         m_params = &params;
 
-                        //Store the function needed to notify about the closed connection
+                        //Store the functions needed to notify about the connection
+                        m_notify_conn_ready_func = notify_conn_ready_func;
                         m_notify_conn_closed_func = notify_conn_closed_func;
 
                         //Remove the previous connection client if any
@@ -122,23 +128,8 @@ namespace uva {
                         //Set the flag to true indicating that we are in the process of working
                         m_is_enabled = true;
 
-                        //Create a new translation client
-                        m_client = new translation_client(m_params->m_address, m_params->m_port,
-                                bind(&translation_server_adapter::set_server_message, this, _1),
-                                bind(&translation_server_adapter::notify_conn_closed, this),
-                                bind(&translation_server_adapter::notify_conn_opened, this));
-
-                        LOG_DEBUG << "Is '" << m_params->m_name << "' connected: "
-                                << to_string(m_client->is_connected()) << END_LOG;
-
-                        //If we are not connected to the server
-                        if (!m_client->is_connected()) {
-                            LOG_DEBUG << "'" << m_params->m_name << "' is going to be connected" << END_LOG;
-                            //Attempt to connect, if we fail then schedule a re-connect
-                            if (!m_client->connect()) {
-                                LOG_DEBUG << "Could not connect to: '" << m_params->m_name << "'" << END_LOG;
-                            }
-                        }
+                        //Create a new client and connect to the server
+                        create_connection_client_connect();
 
                         LOG_DEBUG << "Finished enabling the server adapter for: " << m_params->m_name << END_LOG;
                     }
@@ -161,6 +152,25 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to reconnect the adapter if it is enabled and disconnected.
+                     */
+                    inline void reconnect() {
+                        recursive_guard guard(m_lock_con);
+                        
+                        LOG_DEBUG << "Re-connecting the server adapter for: " << m_params->m_name << END_LOG;
+
+                        //Check if the adapter needs re-connection
+                        if (this->is_enabled() && this->is_disconnected()) {
+                            //Disconnect from the server and remove the client
+                            remove_connection_client();
+                            //Create a new connection client;
+                            create_connection_client_connect();
+                        }
+                        
+                        LOG_DEBUG << "Finished re-connecting the server adapter for " << m_params->m_name << END_LOG;
+                    }
+
+                    /**
                      * Allows to check whether the adaptor is enabled or disabled
                      * @return true if the adaptor is enabled, otherwise false
                      */
@@ -179,6 +189,16 @@ namespace uva {
 
                         return (m_client == NULL) || (!m_client->is_connected());
                     }
+                    
+                    /**
+                     * Allows to check whether the adaptor's client is connecting to the server
+                     * @return true if the adaptor is connecting, otherwise false
+                     */
+                    inline bool is_connecting() {
+                        recursive_guard guard(m_lock_con);
+
+                        return m_is_connecting;
+                    }
 
                     /**
                      * Reports the run-time information
@@ -189,10 +209,14 @@ namespace uva {
                         //Get the connection status
                         string status = "DISABLED";
                         if (this->is_enabled()) {
-                            if (this->is_disconnected()) {
-                                status = "DISCONNECTED";
+                            if (this->is_connecting()) {
+                                status = "CONNECTING";
                             } else {
-                                status = "CONNECTED";
+                                if (this->is_disconnected()) {
+                                    status = "AWAITING RE-CONNECT";
+                                } else {
+                                    status = "CONNECTED";
+                                }
                             }
                         }
 
@@ -214,6 +238,8 @@ namespace uva {
                      * @param json_msg a pointer to the json incoming message, not NULL
                      */
                     inline void set_server_message(incoming_msg * json_msg) {
+                        recursive_guard guard(m_lock_con);
+
                         LOG_DEBUG << "The server '" << m_params->m_name << "' client got "
                                 << "a server message, type: " << json_msg->get_msg_type() << END_LOG;
 
@@ -225,7 +251,7 @@ namespace uva {
                                 trans_job_resp_in * job_resp_msg = new trans_job_resp_in(json_msg);
                                 try {
                                     //Set the newly received job response
-                                    set_job_response(job_resp_msg);
+                                    translation_manager::set_job_response(job_resp_msg);
                                 } catch (std::exception & ex) {
                                     LOG_ERROR << ex.what() << END_LOG;
                                     //Delete the message as it was not set
@@ -239,7 +265,7 @@ namespace uva {
                                 supp_lang_resp_in * lang_resp_msg = new supp_lang_resp_in(json_msg);
                                 try {
                                     //Set the newly received job response
-                                    set_lang_response(lang_resp_msg);
+                                    m_notify_conn_ready_func(this, lang_resp_msg);
                                 } catch (std::exception & ex) {
                                     LOG_ERROR << ex.what() << END_LOG;
                                     //Delete the message as it was not set
@@ -251,22 +277,6 @@ namespace uva {
                                 THROW_EXCEPTION(string("Unexpected incoming message type: ") +
                                         to_string(json_msg->get_msg_type()));
                         }
-                    }
-
-                    /**
-                     * Allows to process the server translation job response message
-                     * @param trans_job_resp a pointer to the translation job response data, not NULL
-                     */
-                    inline void set_job_response(trans_job_resp_in * trans_job_resp) {
-                        //ToDo: Implement
-                    }
-
-                    /**
-                     * Allows to process the server supported languages response message
-                     * @param trans_job_resp a pointer to the supported languages response data, not NULL
-                     */
-                    inline void set_lang_response(supp_lang_resp_in * lang_resp_msg) {
-                        //ToDo: Implement
                     }
 
                     /**
@@ -282,18 +292,36 @@ namespace uva {
                             supp_lang_req_out req;
                             m_client->send(&req);
                         }
+
+                        //Once everything is processed the connection is truly open
+                        m_is_connected = true;
+
+                        //Set the flag indicating that we stopped connecting
+                        m_is_connecting = false;
                     }
 
                     /**
                      * This function will be called if the connection is closed during the translation process
                      */
                     void notify_conn_closed() {
+                        recursive_guard guard(m_lock_con);
+
                         LOG_DEBUG << "The server '" << m_params->m_name << "' has closed the connection!" << END_LOG;
 
-                        //Notify the translation servers manager
-                        m_notify_conn_closed_func(*this);
+                        //Check if the connection was open, as it can be the first time
+                        //we tried to connect or a failed re-connection attempt.
+                        if (m_is_connected) {
+                            //Notify the translation servers manager
+                            m_notify_conn_closed_func(this);
 
-                        //ToDo: Implement, the currently awaiting responses are to be canceled
+                            //ToDo: Implement, the sent translation requests currently awaiting responses are to be canceled
+
+                            //Once everything is processed the connection is truly closed
+                            m_is_connected = false;
+                        }
+
+                        //Set the flag indicating that we stopped connecting
+                        m_is_connecting = false;
                     }
 
                     /**
@@ -311,6 +339,34 @@ namespace uva {
                         }
                     }
 
+                    /**
+                     * Allows to create a new connection client if there is none.
+                     * The method is not synchronized. The precondition is that
+                     * the adapter is configured. 
+                     */
+                    inline void create_connection_client() {
+                        m_client = new translation_client(m_params->m_address, m_params->m_port,
+                                bind(&translation_server_adapter::set_server_message, this, _1),
+                                bind(&translation_server_adapter::notify_conn_closed, this),
+                                bind(&translation_server_adapter::notify_conn_opened, this));
+                    }
+
+                    /**
+                     * Allows to create a new connection client if there is none and request a connect.
+                     * The connection will be done in a non-blocking way. The method is not synchronized.
+                     * The precondition is that the adapter is configured. 
+                     */
+                    inline void create_connection_client_connect() {
+                        //Create a new translation client
+                        create_connection_client();
+
+                        //Set the flag indicating that we started connecting
+                        m_is_connecting = true;
+
+                        //Attempt to connect
+                        m_client->connect_nb();
+                    }
+
                 private:
                     //Stores the pointer to the translation server parameters
                     const trans_server_params * m_params;
@@ -318,9 +374,15 @@ namespace uva {
                     translation_client * m_client;
                     //Stores the boolean flag indicating whether the adapter is enabled
                     atomic<bool> m_is_enabled;
+                    //Stores the boolean flag indicating whether the adapter is connected 
+                    atomic<bool> m_is_connected;
+                    //Stores the boolean flag indicating whether the adapter is connecting 
+                    atomic<bool> m_is_connecting;
                     //Stores the synchronization mutex for connection
                     recursive_mutex m_lock_con;
-                    //Stores the function needed to notify that the connection was closed
+                    //Stores the function needed to notify about ready connection
+                    ready_conn_notifier_type m_notify_conn_ready_func;
+                    //Stores the function needed to notify about closed connection
                     closed_conn_notifier_type m_notify_conn_closed_func;
                 };
 

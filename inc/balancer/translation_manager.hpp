@@ -29,6 +29,8 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+#include "client/messaging/trans_job_resp_in.hpp"
+
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/translation_job.hpp"
 
@@ -36,6 +38,8 @@ using namespace std;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+
+using namespace uva::smt::bpbd::client::messaging;
 
 namespace uva {
     namespace smt {
@@ -86,6 +90,14 @@ namespace uva {
                      */
                     static inline void report_run_time_info() {
                         //ToDo: Implement
+                    }
+
+                    /**
+                     * Allows to process the server translation job response message
+                     * @param trans_job_resp a pointer to the translation job response data, not NULL
+                     */
+                    static inline void set_job_response(trans_job_resp_in * trans_job_resp) {
+                        //ToDo: Implement handling of the translation job response
                     }
 
                 private:

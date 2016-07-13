@@ -111,12 +111,12 @@ namespace uva {
                     }
 
                     /**
-                     * This method will block until the connection is complete
+                     * This method allows to open the connection in a non-blocking way
                      * @param uri the uri to connect to
                      * @return true if the connection has been established
                      * 
                      */
-                    inline bool connect() {
+                    inline void connect_nb() {
                         // Create a new connection to the given URI
                         websocketpp::lib::error_code ec;
                         client::connection_ptr con = m_client.get_connection(m_uri, ec);
@@ -136,9 +136,22 @@ namespace uva {
                         //Set the client as started
                         m_started = true;
 
-                        return wait_connect();
                     }
 
+                    /**
+                     * This method will block until the connection is complete
+                     * @param uri the uri to connect to
+                     * @return true if the connection has been established
+                     * 
+                     */
+                    inline bool connect() {
+                        //Request a non-clocking connection open
+                        connect_nb();
+                        
+                        //Wait until the connection is actually open
+                        return wait_connect();
+                    }
+                    
                     /**
                      * Allows to close the connection and stop the io service thread
                      */
