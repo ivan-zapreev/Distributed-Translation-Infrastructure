@@ -85,10 +85,11 @@ namespace uva {
                     static const string SE_NUM_RESP_THREADS_PARAM_NAME;
                     //Stores the translation server names parameter name
                     static const string SE_TRANSLATION_SERVER_NAMES_PARAM_NAME;
+                    //Stores the server reconnection time out parameter name
+                    static const string SC_RECONNECT_TIME_OUT_PARAM_NAME;
+
                     //The delimiter for the translation server names
                     static const string TRANS_SERV_NAMES_DELIMITER_STR;
-                    //Stores the server reconnection time out parameter name
-                    static const string SE_SERVER_RECONNECT_TIME_OUT_PARAM_NAME;
 
                     //The port to listen to
                     uint16_t m_server_port;
@@ -101,7 +102,7 @@ namespace uva {
 
                     //The number of milliseconds to wait before we attempt to
                     //reconnect to a disconnected translation server.
-                    size_t m_serv_recon_time_out;
+                    uint32_t m_recon_time_out;
 
                     //Stores the mapping from the translation server name to its configuration data
                     map<string, trans_server_params> trans_servers;
@@ -113,22 +114,26 @@ namespace uva {
                      * @param port the server's port
                      * @param load_weight the lod weight for the given server > 0
                      */
-                    inline void add_translator(const string & name, const string & address, const uint16_t port, const float load_weight) {
+                    inline void add_translator(const string & name, const string & address,
+                            const uint16_t port, const float load_weight) {
                         //Check on the load weight
                         ASSERT_CONDITION_THROW((load_weight < 0),
                                 string("The server load weight in '") + name +
                                 string("' is negative (") + to_string(load_weight)+(")! "));
+
                         //Get the data object
                         trans_server_params & data = trans_servers[name];
+
                         //Set the values
                         data.m_name = name;
                         data.m_address = address;
                         data.m_port = port;
                         data.m_load_weight = load_weight;
+
                         //Increment the total weight
                         m_total_load += load_weight;
                     }
-                    
+
                     /**
                      * Allows to change the weight of the given translation server
                      * @param name the name of the server to change
@@ -143,18 +148,18 @@ namespace uva {
                         //Check that the server with this name is there
                         auto iter = trans_servers.find(name);
                         ASSERT_CONDITION_THROW((iter == trans_servers.end()),
-                                string("The server: '") + name + string ("' is not found!"));
-                        
+                                string("The server: '") + name + string("' is not found!"));
+
                         //Compute the new total weight and check if the total weight is now 0
                         float total_load = m_total_load - iter->second.m_load_weight + load_weight;
                         ASSERT_CONDITION_THROW((total_load <= 0),
                                 string("Invalid total servers' load weight: ") +
                                 to_string(total_load) + string(" must be > 0!"));
-                        
+
                         //Set the new load weight and total weight
                         iter->second.m_load_weight = load_weight;
                         m_total_load = total_load;
-                        
+
                         //Normalize the load weights of the servers
                         normalize_server_loads();
                     }
@@ -172,10 +177,14 @@ namespace uva {
                                 string("The number of response threads: ") +
                                 to_string(m_num_resp_threads) +
                                 string(" must be larger than zero! "));
-                        
+
                         ASSERT_CONDITION_THROW((m_total_load <= 0),
                                 string("Invalid total servers' load weight: ") +
                                 to_string(m_total_load) + string(" must be > 0!"));
+
+                        ASSERT_CONDITION_THROW((m_recon_time_out <= 0),
+                                string("Invalid reconnection time out: ") +
+                                to_string(m_recon_time_out) + string(" must be > 0!"));
 
                         //Normalize the load weights of the servers
                         normalize_server_loads();
@@ -190,7 +199,7 @@ namespace uva {
                             iter->second.m_load_weight /= m_total_load;
                         }
                     }
-               
+
                 private:
                     //Stores the total weight for normalizing the loads
                     float m_total_load;

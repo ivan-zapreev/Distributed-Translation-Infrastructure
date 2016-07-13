@@ -58,6 +58,7 @@ namespace uva {
                      * @param params the parameters from which the server will be configured
                      */
                     static void configure(const balancer_parameters & params) {
+                        //ToDo: Implement
                     }
 
                     /**
@@ -65,7 +66,6 @@ namespace uva {
                      */
                     static void run() {
                         //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
                     }
 
                     /**
@@ -73,7 +73,6 @@ namespace uva {
                      */
                     static void stop() {
                         //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
                     }
 
                 private:

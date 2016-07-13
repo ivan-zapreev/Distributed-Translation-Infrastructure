@@ -83,7 +83,9 @@ namespace uva {
 
                         //Set up access channels to only log interesting things
                         m_client.clear_access_channels(alevel::all);
-                        m_client.set_access_channels(alevel::app);
+                        m_client.set_access_channels(alevel::none);
+                        m_client.clear_error_channels(alevel::all);
+                        m_client.set_error_channels(alevel::none);
 
                         // Initialize the Asio transport policy
                         m_client.init_asio();
@@ -109,7 +111,7 @@ namespace uva {
                      * @return true if the connection has been established
                      * 
                      */
-                    bool connect() {
+                    inline bool connect() {
                         // Create a new connection to the given URI
                         websocketpp::lib::error_code ec;
                         client::connection_ptr con = m_client.get_connection(m_uri, ec);
@@ -118,7 +120,7 @@ namespace uva {
                         // Grab a handle for this connection so we can talk to it in a thread
                         // safe manor after the event loop starts.
                         m_hdl = con->get_handle();
-
+                        
                         // Queue the connection. No DNS queries or network connections will be
                         // made until the io_service event loop is run.
                         m_client.connect(con);
@@ -135,7 +137,7 @@ namespace uva {
                     /**
                      * Allows to close the connection and stop the io service thread
                      */
-                    void disconnect() {
+                    inline void disconnect() {
                         LOG_DEBUG << "Stopping the client: m_open = " << to_string(m_opened) << ", m_done = " << to_string(m_closed) << END_LOG;
 
                         if (m_opened && !m_closed) {
@@ -154,7 +156,7 @@ namespace uva {
                         //Check if the client is stopped
                         if (m_started && !m_stopped) {
 
-                            LOG_INFO << "Stopping the IO service thread..." << END_LOG;
+                            LOG_DEBUG << "Stopping the IO service thread..." << END_LOG;
 
                             //Stop the io service thread
                             m_client.stop();
@@ -174,7 +176,7 @@ namespace uva {
                      * Attempts to send the translation job request
                      * @param request the translation job request
                      */
-                    void send(trans_job_req_out * request) {
+                    inline void send(trans_job_req_out * request) {
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
@@ -197,8 +199,16 @@ namespace uva {
                      * Allows to get the connection URI
                      * @return the connection URI
                      */
-                    const string get_uri() {
+                    inline const string get_uri() const {
                         return m_uri;
+                    }
+                    
+                    /**
+                     * Allows to check whether the client is connected to the server
+                     * @return 
+                     */
+                    inline bool is_connected() const {
+                        return m_opened && !m_closed;
                     }
 
                 protected:
@@ -208,7 +218,7 @@ namespace uva {
                      * @param hdl the connection handler
                      * @param msg the message
                      */
-                    void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
+                    inline void on_message(websocketpp::connection_hdl hdl, client::message_ptr msg) {
                         //Create a new incoming message
                         incoming_msg * json_msg = new incoming_msg();
 
@@ -238,58 +248,66 @@ namespace uva {
                      * The open handler will signal that we are ready to start sending translation job(s)
                      * @param the connection handler
                      */
-                    void on_open(websocketpp::connection_hdl hdl) {
+                    inline void on_open(websocketpp::connection_hdl hdl) {
                         scoped_guard guard(m_lock_con);
 
-                        LOG_INFO << "Connection opened!" << END_LOG;
+                        LOG_DEBUG << "Connection opened!" << END_LOG;
 
                         m_opened = true;
+                    }
+                    
+                    /**
+                     * This function andles the closed connection
+                     */
+                    inline void handle_closed_connection() {
+                        m_closed = true;
+                        m_opened = false;
+
+                        //Notify the client that the connection is closed, if the notifier is still present!
+                        if (m_notify_conn_close) {
+                            m_notify_conn_close();
+                        }
                     }
 
                     /**
                      * The close handler will signal that we should stop sending translation job(s)
                      * @param the connection handler
                      */
-                    void on_close(websocketpp::connection_hdl hdl) {
+                    inline void on_close(websocketpp::connection_hdl hdl) {
                         scoped_guard guard(m_lock_con);
 
-                        LOG_INFO << "Connection closed!" << END_LOG;
-
-                        m_closed = true;
-
-                        //Notify the client that the connection is closed, if the notifier is still present!
-                        if (m_notify_conn_close) {
-                            m_notify_conn_close();
-                        }
+                        LOG_DEBUG << "Connection closed!" << END_LOG;
+                        
+                        //Handle the closed connection
+                        handle_closed_connection();
                     }
 
                     /**
                      * The fail handler will signal that we should stop sending translation job(s)
                      * @param the connection handler
                      */
-                    void on_fail(websocketpp::connection_hdl hdl) {
+                    inline void on_fail(websocketpp::connection_hdl hdl) {
                         scoped_guard guard(m_lock_con);
 
-                        LOG_INFO << "Connection failed!" << END_LOG;
-
-                        m_closed = true;
-
-                        //Notify the client that the connection is closed, if the notifier is still present!
-                        if (m_notify_conn_close) {
-                            m_notify_conn_close();
-                        }
+                        LOG_DEBUG << "Connection failed!" << END_LOG;
+                        
+                        //Handle the closed connection
+                        handle_closed_connection();
                     }
 
                     /**
                      * Allows to wait until the connection to the server is established.
                      * @return true if the connection is successfully established
                      */
-                    bool wait_connect() {
+                    inline bool wait_connect() {
                         //Declare the variable to store the local connection status
                         bool is_connecting = false;
 
+                        LOG_DEBUG << "Connection m_opened: " << to_string(m_opened)
+                                << ", m_closed: " << to_string(m_closed) << END_LOG;
+                        
                         //Wait until the connection is established
-                        while (1) {
+                        while (true) {
                             //Check the connection status
                             {
                                 scoped_guard guard(m_lock_con);
@@ -298,10 +316,10 @@ namespace uva {
 
                             //If we we are still connecting then sleep, otherwise move on
                             if (is_connecting) {
-                                LOG_DEBUG << "Going to sleep, m_open = " << to_string(m_opened)
+                                LOG_DEBUG2 << "Going to sleep, m_open = " << to_string(m_opened)
                                         << ", m_done = " << to_string(m_closed) << END_LOG;
                                 sleep(1);
-                                LOG_DEBUG << "Done sleeping!" << END_LOG
+                                LOG_DEBUG2 << "Done sleeping!" << END_LOG
                             } else {
                                 break;
                             }

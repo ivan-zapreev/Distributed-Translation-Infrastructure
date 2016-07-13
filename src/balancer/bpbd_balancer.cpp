@@ -119,7 +119,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         params.m_server_port = get_integer<uint16_t>(ini, section, balancer_parameters::SE_SERVER_PORT_PARAM_NAME);
         params.m_num_req_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME);
         params.m_num_resp_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME);
-        params.m_serv_recon_time_out = get_integer<size_t>(ini, section, balancer_parameters::SE_SERVER_RECONNECT_TIME_OUT_PARAM_NAME);
+        params.m_recon_time_out = get_integer<uint32_t>(ini, section, balancer_parameters::SC_RECONNECT_TIME_OUT_PARAM_NAME);
 
         //Get the translation server names
         vector<string> server_names;
@@ -191,7 +191,7 @@ int main(int argc, char** argv) {
         configure(params);
 
         //Start the translation server clients
-        translation_servers_manager::start();
+        translation_servers_manager::enable();
 
         //Start the translation manager
         translation_manager::start();
@@ -209,6 +209,7 @@ int main(int argc, char** argv) {
         LOG_ERROR << ex.what() << END_LOG;
         return_code = 1;
     }
+    LOG_USAGE << "The balancer is stopped!" << END_LOG;
 
     //Destroy the command line parameters parser
     destroy_arguments_parser();

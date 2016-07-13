@@ -72,7 +72,6 @@ namespace uva {
                      */
                     static void start() {
                         //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
                     }
 
                     /**
@@ -80,7 +79,6 @@ namespace uva {
                      */
                     static void stop() {
                         //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
                     }
 
                 private:

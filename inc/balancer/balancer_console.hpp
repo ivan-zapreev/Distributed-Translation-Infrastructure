@@ -78,7 +78,6 @@ namespace uva {
                      */
                     virtual void print_specific_commands() {
                         //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
                     }
 
                     /**
@@ -86,7 +85,6 @@ namespace uva {
                      */
                     virtual void report_run_time_info() {
                         //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
                     }
 
                     /**
@@ -94,7 +92,6 @@ namespace uva {
                      */
                     virtual void process_specific_cmd(const string & cmd) {
                         //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
                     }
 
                     /**
@@ -114,7 +111,7 @@ namespace uva {
                         
                         //Stop the translation servers manager
                         LOG_USAGE << "Stopping the translation server clients ..." << END_LOG;
-                        translation_servers_manager::stop();
+                        translation_servers_manager::disable();
 
                         //Stop the translation server
                         LOG_USAGE << "Stopping the balancer server ..." << END_LOG;
@@ -123,7 +120,7 @@ namespace uva {
                         //Wait until the server's thread stops
                         m_balancer_thread.join();
 
-                        LOG_USAGE << "The server has stopped!" << END_LOG;
+                        LOG_USAGE << "The balancer server thread is stopped!" << END_LOG;
                     }
 
                 private:

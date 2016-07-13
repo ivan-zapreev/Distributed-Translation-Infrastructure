@@ -30,8 +30,14 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
-                const balancer_parameters * translation_manager::m_params;
+                const balancer_parameters * translation_manager::m_params = NULL;
+                
+                const balancer_parameters * translation_servers_manager::m_params = NULL;
                 map<string, translation_server_adapter> translation_servers_manager::m_server_adaptors;
+                thread * translation_servers_manager::m_re_connect = NULL;
+                mutex translation_servers_manager::m_re_connect_mutex;
+                condition_variable translation_servers_manager::m_re_connect_condition;
+                atomic<bool> translation_servers_manager::m_is_reconnect_run(true);
             }
         }
     }

@@ -91,7 +91,9 @@ namespace uva {
 
                         //Set up access channels to only log interesting things
                         m_server.clear_access_channels(log::alevel::all);
-                        m_server.set_access_channels(log::alevel::app);
+                        m_server.set_access_channels(log::alevel::none);
+                        m_server.clear_error_channels(log::alevel::all);
+                        m_server.set_error_channels(log::alevel::none);
 
                         //Initialize the Asio transport policy
                         m_server.init_asio();
