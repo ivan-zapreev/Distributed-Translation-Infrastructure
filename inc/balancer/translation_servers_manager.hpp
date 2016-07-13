@@ -142,6 +142,20 @@ namespace uva {
                         LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is connected!" << END_LOG;
 
                         //ToDo: Register the new ready adapter for the given set of translation pairs
+                        const Value & languages = lang_resp_msg->get_languages();
+
+                        //Iterate through the supported source and target languages
+                        //to register them as supported by the given server adapter.
+                        for (auto sli = languages.MemberBegin(); sli != languages.MemberEnd(); ++sli) {
+                            LOG_DEBUG1 << "'" << adapter->get_name() << "' source: " << sli->name.GetString() << END_LOG;
+                            for (auto tli = sli->value.Begin(); tli != sli->value.End(); ++tli) {
+                                LOG_DEBUG1 << "'" << adapter->get_name() << "'    target: " << tli->GetString() << END_LOG;
+                                {
+                                    //ToDo: Synchronize
+                                    //ToDo: Register the language pair and the supporting adapter
+                                }
+                            }
+                        }
 
                         //Destroy the message as it is not needed any more
                         delete lang_resp_msg;

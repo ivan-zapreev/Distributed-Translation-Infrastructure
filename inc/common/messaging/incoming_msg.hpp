@@ -63,6 +63,8 @@ namespace uva {
                          * @param data the json string to be parsed
                          */
                         void de_serialize(const string & data) {
+                            LOG_DEBUG << "Incoming JSON message: " << data << END_LOG;
+                            
                             //De-serialize the data and catch any exception, convert it into our type
                             try {
                                 //Parse the json request
