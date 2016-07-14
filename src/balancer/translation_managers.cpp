@@ -33,7 +33,7 @@ namespace uva {
             namespace balancer {
                 /*Translation server adapter*/
                 id_manager<trans_server_uid> translation_server_adapter::m_ids_manager(0);
-                
+
                 /*Translation manager*/
                 const balancer_parameters * translation_manager::m_params = NULL;
 
@@ -46,6 +46,8 @@ namespace uva {
                 a_bool_flag translation_servers_manager::m_is_reconnect_run(true);
                 mutex translation_servers_manager::m_source_mutex;
                 translation_servers_manager::sources_map translation_servers_manager::m_sources;
+                default_random_engine translation_servers_manager::m_generator;
+
             }
         }
     }

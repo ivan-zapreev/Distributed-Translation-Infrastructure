@@ -28,11 +28,15 @@
 
 #include <set>
 #include <map>
+#include <vector>
+#include <random>
 #include <unordered_map>
+#include <algorithm>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/threads/threads.hpp"
+#include "common/utils/string_utils.hpp"
 
 #include "client/messaging/supp_lang_resp_in.hpp"
 
@@ -46,6 +50,7 @@ using namespace std;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
+using namespace uva::utils::text;
 
 using namespace uva::smt::bpbd::client::messaging;
 
@@ -66,7 +71,7 @@ namespace uva {
                 public:
 
                     //Typedef for the set storing the pointers to the adapters
-                    typedef set<translation_server_adapter*> adapters_set;
+                    typedef vector<translation_server_adapter*> adapters_list;
 
                     /**
                      * This structure represents the target language entry
@@ -76,7 +81,9 @@ namespace uva {
                         //The mutex for the targets map of the source language
                         shared_mutex m_adapters_mutex;
                         //The list of the dapters
-                        adapters_set m_adapters;
+                        adapters_list m_adapters;
+                        //Stores the random number generator for the target entry
+                        discrete_distribution<float> m_distribution;
                     } target_entry;
 
                     /**
@@ -257,7 +264,7 @@ namespace uva {
                                     {
                                         exclusive_guard guard(target->m_adapters_mutex);
                                         //Add the adapter pointer to the list
-                                        target->m_adapters.insert(adapter);
+                                        target->m_adapters.push_back(adapter);
                                         //Re-calculate the loads balance
                                         re_calculate_loads(target);
                                     }
@@ -280,7 +287,21 @@ namespace uva {
                      * @param target the pointer to the target entry, not NULL
                      */
                     static inline void re_calculate_loads(target_entry * target) {
-                        //ToDo: Implement
+                        //Initialize an array of weights
+                        vector<float> weights;
+
+                        //Fill in the vector
+                        for (auto iter = target->m_adapters.begin(); iter != target->m_adapters.end(); ++iter) {
+                            weights.push_back((*iter)->get_weight());
+                        }
+
+                        //Re-set the distribution
+                        discrete_distribution<float> new_distribution(weights.begin(), weights.end());
+
+                        //Assign the new distribution to the stored one
+                        target->m_distribution = new_distribution;
+                        
+                        LOG_DEBUG << "The new target weights: " << vector_to_string(weights) << END_LOG;
                     }
 
                     /**
@@ -312,9 +333,9 @@ namespace uva {
                                 {
                                     exclusive_guard guard(target->m_adapters_mutex);
                                     //Get the reference to the set of adapters of the target entry
-                                    adapters_set & adapters = target->m_adapters;
+                                    adapters_list & adapters = target->m_adapters;
                                     //Find the adapter in the set of the target language adapters
-                                    auto adapter_iter = adapters.find(adapter);
+                                    auto adapter_iter = find(adapters.begin(), adapters.end(), adapter);
                                     //Remove the found adapter from this set
                                     if (adapter_iter != adapters.end()) {
                                         adapters.erase(adapter_iter);
@@ -403,6 +424,8 @@ namespace uva {
                     static shared_mutex m_source_mutex;
                     //Stores the language pair mappings to the adapters map
                     static sources_map m_sources;
+                    //Stores the random engine generator to be used
+                    static default_random_engine m_generator;
 
                     //Stores the mapping from the source/target language pairs to the adaptor sets
 

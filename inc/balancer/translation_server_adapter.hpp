@@ -241,6 +241,14 @@ namespace uva {
                     inline const trans_server_uid & get_uid() const {
                         return m_uid;
                     }
+                    
+                    /**
+                     * Allows to get the load weight of the adapter
+                     * @return the load weight of the adapter
+                     */
+                    inline float get_weight() const {
+                        return m_params->m_load_weight;
+                    }
 
                 protected:
 
