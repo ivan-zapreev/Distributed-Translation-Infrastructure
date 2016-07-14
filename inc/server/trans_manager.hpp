@@ -27,6 +27,7 @@
 #define SESSION_MANAGER_HPP
 
 #include <map>
+#include <unordered_map>
 
 #include <websocketpp/server.hpp>
 
@@ -73,7 +74,7 @@ namespace uva {
 
                     //Declare the session to connection handler maps and iterators;
                     typedef std::map<websocketpp::connection_hdl, session_id_type, std::owner_less<websocketpp::connection_hdl>> sessions_map_type;
-                    typedef std::map<session_id_type, websocketpp::connection_hdl> handlers_map_type;
+                    typedef std::unordered_map<session_id_type, websocketpp::connection_hdl> handlers_map_type;
                     typedef handlers_map_type::iterator handlers_map_iter_type;
 
                     /**

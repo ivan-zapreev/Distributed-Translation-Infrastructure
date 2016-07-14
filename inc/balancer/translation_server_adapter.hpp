@@ -56,7 +56,7 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
-                
+
                 /**
                  * This is the translation server adapter class:
                  * Responsibilities:
@@ -159,7 +159,7 @@ namespace uva {
                      */
                     inline void reconnect() {
                         recursive_guard guard(m_lock_con);
-                        
+
                         LOG_DEBUG << "Re-connecting the server adapter for: " << m_params->m_name << END_LOG;
 
                         //Check if the adapter needs re-connection
@@ -169,7 +169,7 @@ namespace uva {
                             //Create a new connection client;
                             create_connection_client_connect();
                         }
-                        
+
                         LOG_DEBUG << "Finished re-connecting the server adapter for " << m_params->m_name << END_LOG;
                     }
 
@@ -192,7 +192,7 @@ namespace uva {
 
                         return (m_client == NULL) || (!m_client->is_connected());
                     }
-                    
+
                     /**
                      * Allows to check whether the adaptor's client is connecting to the server
                      * @return true if the adaptor is connecting, otherwise false
@@ -223,7 +223,7 @@ namespace uva {
                             }
                         }
 
-                        LOG_USAGE << "\t" << m_params->m_name << " -> " << status << END_LOG;
+                        LOG_USAGE << "\t" << m_params->m_name << "(uid: " << to_string(m_uid) << ") -> " << status << END_LOG;
                     }
 
                     /**

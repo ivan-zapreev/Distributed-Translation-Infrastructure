@@ -84,7 +84,7 @@ set(LOAD_BALANCER_SOURCES
     src/common/utils/monitor/statistics_monitor.cpp 
     src/common/messaging/messaging.cpp
     src/client/messaging/messaging.cpp
-    src/balancer/messaging/messaging.cpp
+    src/balancer/language_registry.cpp
     src/balancer/balancer_parameters.cpp
     src/balancer/translation_managers.cpp
     src/balancer/bpbd_balancer.cpp

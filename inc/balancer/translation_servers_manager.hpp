@@ -26,8 +26,9 @@
 #ifndef TRANSLATION_SERVERS_MANAGER_HPP
 #define TRANSLATION_SERVERS_MANAGER_HPP
 
-#include <map>
 #include <set>
+#include <map>
+#include <unordered_map>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -37,6 +38,7 @@
 
 #include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
+#include "balancer/language_registry.hpp"
 #include "balancer/translation_server_adapter.hpp"
 
 using namespace std;
@@ -63,7 +65,7 @@ namespace uva {
                 class translation_servers_manager {
                 public:
 
-                    //Typedef for the vector storing the pointers to the adapters
+                    //Typedef for the set storing the pointers to the adapters
                     typedef set<translation_server_adapter*> adapters_set;
 
                     /**
@@ -95,7 +97,7 @@ namespace uva {
                     typedef map<string, adapter_entry> adapters_map;
 
                     //The typedef for the map for storing target language to target entry mapping;
-                    typedef map<string, target_entry> targets_map;
+                    typedef unordered_map<language_uid, target_entry> targets_map;
 
                     /**
                      * This structure represents the source language entry
@@ -108,7 +110,7 @@ namespace uva {
                         targets_map m_targets;
                     } source_entry;
                     //The typedef for the map for storing source language to source entry mapping
-                    typedef map<string, source_entry> sources_map;
+                    typedef unordered_map<language_uid, source_entry> sources_map;
 
                     /**
                      * Allows to configure the balancer server
@@ -220,10 +222,16 @@ namespace uva {
                             //to register them as supported by the given server adapter.
                             for (auto sli = languages.MemberBegin(); sli != languages.MemberEnd(); ++sli) {
                                 const string source_lang = sli->name.GetString();
-                                LOG_DEBUG1 << "'" << adapter->get_name() << "' source: " << source_lang << END_LOG;
+                                const language_uid source_uid = language_registry::register_uid(source_lang);
+                                LOG_DEBUG1 << "'" << adapter->get_name() << "' source: " << source_lang
+                                        << " uid: " << to_string(source_uid) << END_LOG;
+
+                                //Iterate through the possible multiple targets
                                 for (auto tli = sli->value.Begin(); tli != sli->value.End(); ++tli) {
                                     const string target_lang = tli->GetString();
-                                    LOG_DEBUG1 << "'" << adapter->get_name() << "'    target: " << target_lang << END_LOG;
+                                    const language_uid target_uid = language_registry::register_uid(target_lang);
+                                    LOG_DEBUG1 << "'" << adapter->get_name() << "'    target: " << target_lang
+                                            << " uid: " << to_string(target_uid) << END_LOG;
 
                                     //Get/create a source language entry, note that the entries are
                                     //not removed, until the translation servers' manager is destroyed.
@@ -232,7 +240,7 @@ namespace uva {
                                     {
                                         exclusive_guard guard(m_source_mutex);
                                         //Get the source entry
-                                        source = &m_sources[source_lang];
+                                        source = &m_sources[source_uid];
                                     }
 
                                     //Get/create a target language entry, note that the entries are
@@ -242,7 +250,7 @@ namespace uva {
                                     {
                                         exclusive_guard guard(source->m_target_mutex);
                                         //Get the stored or new list of the adapters
-                                        target = &source->m_targets[target_lang];
+                                        target = &source->m_targets[target_uid];
                                     }
 
                                     //Add the adapter to the list of adapters

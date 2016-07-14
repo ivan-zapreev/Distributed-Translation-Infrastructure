@@ -1,5 +1,5 @@
 /* 
- * File:   messaging.cpp
+ * File:   language_registry.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,16 +20,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on July 6, 2016, 11:58 AM
+ * Created on July 14, 2016, 1:30 PM
  */
+
+#include "balancer/language_registry.hpp"
 
 namespace uva {
     namespace smt {
         namespace bpbd {
-            namespace ballancer {
-                namespace messaging {
-
-                }
+            namespace balancer {
+                    constexpr language_uid language_registry::UNKNONW_LANGUAGE_ID;
+                    constexpr language_uid language_registry::MIN_LANGUAGE_ID;
+                    id_manager<language_uid> language_registry::m_id_mgr(MIN_LANGUAGE_ID);
+                    shared_mutex language_registry::m_lang_mutex;
+                    unordered_map<string, language_uid> language_registry::m_lang_to_id;
+        
             }
         }
     }

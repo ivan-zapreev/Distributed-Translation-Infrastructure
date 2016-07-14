@@ -237,6 +237,8 @@
       </folder>
       <item path="inc/balancer/balancer_consts.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="inc/balancer/language_registry.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/balancer/balancer_parameters.cpp"
             ex="false"
             tool="1"
@@ -250,6 +252,8 @@
       <item path="src/balancer/bpbd_balancer.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/balancer/language_registry.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/balancer/translation_managers.cpp"
             ex="false"

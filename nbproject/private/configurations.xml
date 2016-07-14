@@ -600,8 +600,6 @@
     </df>
     <df root="inc" name="1">
       <df name="balancer">
-        <df name="messaging">
-        </df>
         <in>balancer_console.hpp</in>
         <in>balancer_parameters.hpp</in>
         <in>balancer_server.hpp</in>
@@ -816,9 +814,6 @@
     </df>
     <df root="src" name="2">
       <df name="balancer">
-        <df name="messaging">
-          <in>messaging.cpp</in>
-        </df>
         <in>balancer_parameters.cpp</in>
         <in>bpbd_balancer.cpp</in>
         <in>translation_managers.cpp</in>

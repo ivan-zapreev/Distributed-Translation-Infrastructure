@@ -23,7 +23,7 @@
  * Created on January 20, 2016, 3:01 PM
  */
 
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 #include <websocketpp/server.hpp>
@@ -70,9 +70,9 @@ namespace uva {
                     typedef function<void(trans_job_ptr trans_job) > finished_job_notifier;
 
                     //Define the job id to job and session id to jobs maps and iterators thereof
-                    typedef std::map<job_id_type, trans_job_ptr> jobs_map_type;
+                    typedef std::unordered_map<job_id_type, trans_job_ptr> jobs_map_type;
                     typedef jobs_map_type::iterator jobs_map_iter_type;
-                    typedef std::map<session_id_type, jobs_map_type> sessions_map_type;
+                    typedef std::unordered_map<session_id_type, jobs_map_type> sessions_map_type;
                     typedef sessions_map_type::iterator sessions_map_iter_type;
 
                     //Define the vector of jobs type and its iterator
