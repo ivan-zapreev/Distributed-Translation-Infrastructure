@@ -69,6 +69,11 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~balancer_console() {
+                        //If the user did not do stop, i,e, we are likely to exit because of an exception
+                        if (!m_is_stopped) {
+                            //Stop the thing
+                            stop();
+                        }
                     }
 
                 protected:
@@ -112,7 +117,7 @@ namespace uva {
                         //Stop the translation manager
                         LOG_USAGE << "Stopping the translation manager ..." << END_LOG;
                         translation_manager::stop();
-                        
+
                         //Stop the translation servers manager
                         LOG_USAGE << "Stopping the translation server clients ..." << END_LOG;
                         translation_servers_manager::disable();

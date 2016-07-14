@@ -26,15 +26,32 @@
 #ifndef BALANCER_SERVER_HPP
 #define BALANCER_SERVER_HPP
 
+#include <iostream>
+#include <functional>
+
+#define ASIO_STANDALONE
+#include <websocketpp/config/asio_no_tls.hpp>
+#include <websocketpp/server.hpp>
+
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+
+#include "common/messaging/status_code.hpp"
+#include "common/messaging/incoming_msg.hpp"
 
 #include "balancer/balancer_parameters.hpp"
 
 using namespace std;
+using namespace std::placeholders;
+
+using namespace websocketpp;
+using namespace websocketpp::frame;
+using namespace websocketpp::lib;
+using namespace websocketpp::log;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
     namespace smt {
@@ -52,26 +69,27 @@ namespace uva {
                  */
                 class balancer_server {
                 public:
+                    typedef websocketpp::server<websocketpp::config::asio> server;
 
                     /**
                      * Allows to configure the balancer server
                      * @param params the parameters from which the server will be configured
                      */
-                    static void configure(const balancer_parameters & params) {
+                    static inline void configure(const balancer_parameters & params) {
                         //ToDo: Implement
                     }
 
                     /**
                      * The main method to run in the server thread
                      */
-                    static void run() {
+                    static inline void start() {
                         //ToDo: Implement
                     }
 
                     /**
                      * Allows to stop the balancer server
                      */
-                    static void stop() {
+                    static inline void stop() {
                         //ToDo: Implement
                     }
 

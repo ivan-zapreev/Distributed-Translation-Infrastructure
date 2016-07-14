@@ -54,6 +54,11 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~cmd_line_handler() {
+                        //If the user did not do stop, i,e, we are likely to exit because of an exception
+                        if (!m_is_stopped) {
+                            //Stop the thing
+                            stop();
+                        }
                     }
 
                 protected:

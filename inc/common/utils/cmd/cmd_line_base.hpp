@@ -67,7 +67,7 @@ namespace uva {
                 /**
                  * The basic constructor
                  */
-                cmd_line_base() {
+                cmd_line_base() : m_is_stopped(false) {
                 }
 
                 /**
@@ -107,6 +107,8 @@ namespace uva {
                 }
 
             protected:
+                //Stores the flag indicating if the console was stopped or not
+                bool m_is_stopped;
 
                 /**
                  * Allows to print a single command help
@@ -258,6 +260,9 @@ namespace uva {
 
                     //Stop the server
                     if (cmd == PROGRAM_EXIT_CMD) {
+                        //Set the stop flag
+                        m_is_stopped = true;
+                        //Call the stop function
                         stop();
                         return true;
                     } else {

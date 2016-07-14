@@ -197,7 +197,7 @@ int main(int argc, char** argv) {
         translation_manager::start();
 
         //Run the translation server in a separate thread
-        thread balancer_thread(&balancer_server::run);
+        thread balancer_thread(&balancer_server::start);
 
         LOG_USAGE << "The balancer is started!" << END_LOG;
 
