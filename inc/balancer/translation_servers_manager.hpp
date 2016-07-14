@@ -84,6 +84,31 @@ namespace uva {
                         adapters_list m_adapters;
                         //Stores the random number generator for the target entry
                         discrete_distribution<float> m_distribution;
+
+                        /**
+                         * Allows to get the translation server adapter to do the next translation.
+                         * This function synchronizes the retrieval on the adapters mutex.
+                         * @return the translation server adapter to do the next translation
+                         *         or NULL if the there is no adapters available.
+                         */
+                        inline translation_server_adapter* get_adapter() {
+                            //Add the adapter to the list of adapters
+                            {
+                                shared_guard guard(m_adapters_mutex);
+                                switch (m_adapters.size()) {
+                                    case 0:
+                                        return NULL;
+                                    case 1:
+                                        return m_adapters[0];
+                                    default:
+                                        return m_adapters[m_distribution(m_generator)];
+                                }
+                            }
+                        }
+
+                    private:
+                        //Stores the random engine generator to be used
+                        default_random_engine m_generator;
                     } target_entry;
 
                     /**
@@ -192,16 +217,35 @@ namespace uva {
                     /**
                      * Allows to request a translation servers' manager for the translation server adapter given
                      * the source and target language ids and the job weight.
-                     * @param source_lang_id the source language id
-                     * @param target_lang_id the target language id
-                     * @param weight the weights of the job to be done
+                     * @param source_uid the source language id
+                     * @param target_uid the target language id
                      * @return the pointer to the translation server dataper or NULL
                      * if there is no adapter for the given source/target language pair
                      */
-                    static inline translation_server_adapter * get_server_adapter(const language_uid source_lang_id,
-                            const language_uid target_lang_id, const float weight) {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                    static inline translation_server_adapter * get_server_adapter(
+                            const language_uid source_uid, const language_uid target_uid) {
+                        //Get/create a source language entry, note that the entries are
+                        //not removed, until the translation servers' manager is destroyed.
+                        //Therefore it is safe to store the pointer to the entry.
+                        source_entry * source = NULL;
+                        {
+                            shared_guard guard(m_source_mutex);
+                            //Get the source entry
+                            source = &m_sources[source_uid];
+                        }
+
+                        //Get/create a target language entry, note that the entries are
+                        //not removed, until the translation servers' manager is destroyed.
+                        //Therefore it is safe to store the pointer to the entry.
+                        target_entry * target = NULL;
+                        {
+                            shared_guard guard(source->m_target_mutex);
+                            //Get the stored or new list of the adapters
+                            target = &source->m_targets[target_uid];
+                        }
+
+                        //Return the advised adapter
+                        return target->get_adapter();
                     }
 
                 protected:
@@ -300,7 +344,7 @@ namespace uva {
 
                         //Assign the new distribution to the stored one
                         target->m_distribution = new_distribution;
-                        
+
                         LOG_DEBUG << "The new target weights: " << vector_to_string(weights) << END_LOG;
                     }
 
@@ -424,8 +468,6 @@ namespace uva {
                     static shared_mutex m_source_mutex;
                     //Stores the language pair mappings to the adapters map
                     static sources_map m_sources;
-                    //Stores the random engine generator to be used
-                    static default_random_engine m_generator;
 
                     //Stores the mapping from the source/target language pairs to the adaptor sets
 
