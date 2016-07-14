@@ -127,7 +127,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
                 server_names, balancer_parameters::TRANS_SERV_NAMES_DELIMITER_STR);
 
         //Read the translation server names configuration data
-        for (auto iter = server_names.begin(); iter != server_names.end(); ++ iter) {
+        for (auto iter = server_names.begin(); iter != server_names.end(); ++iter) {
             const string & tsn = *iter;
             //Get the data from the translator section and add it to parameters
             params.add_translator(tsn,
@@ -156,9 +156,6 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 static void configure(balancer_parameters & params) {
     //Configure the translations server manager
     translation_servers_manager::configure(params);
-
-    //Configure the translation manager
-    translation_manager::configure(params);
 
     //Instantiate the translation server
     balancer_server::configure(params);
@@ -192,12 +189,14 @@ int main(int argc, char** argv) {
 
         //Start the translation server clients
         translation_servers_manager::enable();
-
+        
         //Start the translation manager
         translation_manager::start();
 
+        LOG_USAGE << "Running the balancer server ..." << END_LOG;
+
         //Run the translation server in a separate thread
-        thread balancer_thread(&balancer_server::start);
+        thread balancer_thread(&balancer_server::run);
 
         LOG_USAGE << "The balancer is started!" << END_LOG;
 

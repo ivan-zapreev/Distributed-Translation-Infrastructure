@@ -30,6 +30,7 @@
 #include "common/utils/logging/logger.hpp"
 
 #include "client/messaging/trans_job_resp_in.hpp"
+#include "server/messaging/trans_job_req_in.hpp"
 
 #include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
@@ -41,6 +42,7 @@ using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 
 using namespace uva::smt::bpbd::client::messaging;
+using namespace uva::smt::bpbd::server::messaging;
 
 namespace uva {
     namespace smt {
@@ -63,19 +65,27 @@ namespace uva {
                 class translation_manager {
                 public:
 
+                    //Declare the response setting function for the translation job.
+                    typedef function<void(websocketpp::connection_hdl, const string &) > response_sender;
+
                     /**
                      * Allows to configure the balancer server
                      * @param params the parameters from which the server will be configured
+                     * @param sender the s ender functional to be set
                      */
-                    static inline void configure(const balancer_parameters & params) {
+                    static inline void configure(const balancer_parameters & params, response_sender sender) {
                         //Save the pointer to the parameters
                         m_params = &params;
+                        //Store the response sending function
+                        m_sender_func = sender;
                     }
 
                     /**
                      * The main method to start the translation manager
                      */
                     static inline void start() {
+                        LOG_DEBUG << "Starting the translation manager ..." << END_LOG;
+                        
                         //ToDo: Implement
                     }
 
@@ -83,6 +93,8 @@ namespace uva {
                      * Allows to stop the translation manager
                      */
                     static inline void stop() {
+                        LOG_USAGE << "Stopping the translation manager ..." << END_LOG;
+                        
                         //ToDo: Implement
                     }
                     
@@ -94,10 +106,42 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to create and register a new session object, synchronized.
+                     * If for some reason a new session can not be opened, an exception is thrown.
+                     * @param hdl [in] the connection handler to identify the session object.
+                     */
+                    static inline void open_session(websocketpp::connection_hdl hdl) {
+                        LOG_DEBUG << "An open session request!" << END_LOG;
+
+                        //ToDo: Implement
+                    }
+                    
+                    /**
+                     * Allows to erase the session object from the map and return the stored object, synchronized.
+                     * Returns NULL if there was no session object associated with the given handler.
+                     * @param hdl the connection handler to identify the session object.
+                     * @return the session object to be removed, is to be deallocated by the caller.
+                     */
+                    static inline void close_session(websocketpp::connection_hdl hdl) {
+                        LOG_DEBUG << "A closing session request!" << END_LOG;
+
+                        //ToDo: Implement
+                    }
+                    
+                    /**
                      * Allows to process the server translation job response message
                      * @param trans_job_resp a pointer to the translation job response data, not NULL
                      */
-                    static inline void set_job_response(trans_job_resp_in * trans_job_resp) {
+                    static inline void register_translation_response(trans_job_resp_in * trans_job_resp) {
+                        //ToDo: Implement handling of the translation job response
+                    }
+                    
+                    /**
+                     * Allows to process the server translation job request message
+                     * @param hdl the connection handler to identify the session object.
+                     * @param trans_job_req a pointer to the translation job request data, not NULL
+                     */
+                    static inline void register_translation_request(websocketpp::connection_hdl hdl, trans_job_req_in * trans_job_req) {
                         //ToDo: Implement handling of the translation job response
                     }
                     
@@ -114,6 +158,8 @@ namespace uva {
                 private:
                     //Stores the pointer to the server parameters
                     static const balancer_parameters * m_params;
+                    //Stores the reply sender functional
+                    static response_sender m_sender_func;
 
                     /**
                      * The private constructor to keep the class from being instantiated

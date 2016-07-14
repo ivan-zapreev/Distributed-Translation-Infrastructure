@@ -129,4 +129,5 @@ outgoing &gt;</panel_attributes><additional_attributes>10;20;160;20</additional_
 cancel &gt;</panel_attributes><additional_attributes>10;10;10;180</additional_attributes></element><element><id>Relation</id><coordinates><x>1400</x><y>378</y><w>80</w><h>200</h></coordinates><panel_attributes>lt=&lt;.
 delete &gt;</panel_attributes><additional_attributes>10;10;10;180</additional_attributes></element><element><id>Relation</id><coordinates><x>1410</x><y>240</y><w>320</w><h>430</h></coordinates><panel_attributes>lt=&lt;-
 m1=0..n</panel_attributes><additional_attributes>10;10;300;10;300;410</additional_attributes></element><element><id>Relation</id><coordinates><x>1410</x><y>190</y><w>380</w><h>480</h></coordinates><panel_attributes>lt=&lt;.
-&lt; execute</panel_attributes><additional_attributes>10;20;360;20;360;460</additional_attributes></element></diagram>
+&lt; execute</panel_attributes><additional_attributes>10;20;360;20;360;460</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>480</y><w>200</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
+&lt; Get the supported languages</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element></diagram>

@@ -189,10 +189,12 @@ namespace uva {
                      * Allows to disable the translation servers manager
                      */
                     static inline void disable() {
-                        LOG_INFO2 << "Disabling the translation servers' manager" << END_LOG;
+                        LOG_USAGE << "Stopping the translation server clients ..." << END_LOG;
 
                         //First remove the reconnection thread
                         finish_re_connection_thread();
+
+                        LOG_INFO2 << "Disabling the translation servers' manager" << END_LOG;
 
                         //Disable the clients
                         for (auto iter = m_adapters_data.begin(); iter != m_adapters_data.end(); ++iter) {
@@ -248,6 +250,15 @@ namespace uva {
                         return target->get_adapter();
                     }
 
+                    /**
+                     * Allows to get the string storing the serialized supported languages response
+                     * @return the string storing the serialized supported languages response
+                     */
+                    static inline string get_supported_lang_resp_data() {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+                    
                 protected:
 
                     /**

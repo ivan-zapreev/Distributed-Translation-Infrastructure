@@ -99,9 +99,9 @@ namespace uva {
                         m_server.init_asio();
 
                         //Add the handlers for the connection events
-                        m_server.set_open_handler(bind(&translation_server::on_open, this, _1));
-                        m_server.set_close_handler(bind(&translation_server::on_close, this, _1));
-                        m_server.set_fail_handler(bind(&translation_server::on_fail, this, _1));
+                        m_server.set_open_handler(bind(&trans_manager::open_session, &m_manager, _1));
+                        m_server.set_close_handler(bind(&trans_manager::close_session, &m_manager, _1));
+                        m_server.set_fail_handler(bind(&trans_manager::close_session, &m_manager, _1));
 
                         //Bind the handlers we are using
                         m_server.set_message_handler(bind(&translation_server::on_message, this, _1, _2));
@@ -143,11 +143,6 @@ namespace uva {
                      * Allows to stop the translation server
                      */
                     void stop() {
-                        //NOTE: Somehow stopping to listen to the new connections result in errors
-                        //It seems to be an implementation flaw of the library, from what I see in
-                        //the code. The work-around now is that @ stopping the errors are disabled.
-                        m_server.clear_error_channels(log::elevel::all);
-
                         LOG_DEBUG << "Removing the on_close handler." << END_LOG;
                         //Remove the on_close handler
                         m_server.set_close_handler(NULL);
@@ -190,47 +185,11 @@ namespace uva {
                     }
 
                     /**
-                     * Creates a new session object for the new connection/client
-                     * @param hdl
-                     */
-                    void on_open(connection_hdl hdl) {
-                        LOG_DEBUG << "Opening connection!" << END_LOG;
-                        try {
-                            //Create a new session object for the handler
-                            m_manager.open_session(hdl);
-                        } catch (std::exception & ex) {
-                            //Locally report error
-                            string err_msg = ex.what();
-                            LOG_ERROR << err_msg << END_LOG;
-                            m_server.close(hdl, websocketpp::close::status::internal_endpoint_error, err_msg);
-                        }
-                    }
-
-                    /**
-                     * Removes the session object and also stops the processed translation job requests
-                     * @param hdl the connection handler
-                     */
-                    void on_close(connection_hdl hdl) {
-                        LOG_DEBUG << "Closing connection!" << END_LOG;
-
-                        //Destroy the session 
-                        m_manager.close_session(hdl);
-                    }
-
-                    /**
-                     * Is called in case of a websocket error, for now does nothing but logs the error
-                     * @param hdl the connection handler
-                     */
-                    void on_fail(connection_hdl hdl) {
-                        LOG_DEBUG << "Connection failed!" << END_LOG;
-                    }
-
-                    /**
                      * Is called when the message is received by the server
                      * @param hdl the connection handler
                      * @param raw_msg the received message
                      */
-                    void on_message(websocketpp::connection_hdl hdl, server::message_ptr raw_msg) {
+                    inline void on_message(websocketpp::connection_hdl hdl, server::message_ptr raw_msg) {
                         LOG_DEBUG << "Received a message!" << END_LOG;
 
                         //Create an empty json message
@@ -270,7 +229,8 @@ namespace uva {
                      * @param msg a pointer to the JSON object storing the request data, not NULL.
                      */
                     inline void language_request(websocketpp::connection_hdl hdl, const incoming_msg * msg) {
-                        //Create the supported languages request message
+                        //Create the supported languages request message. This is done so that
+                        //once the destructor is called the incoming message is destroyed.
                         supp_lang_req_in supp_lang_req(msg);
 
                         //Send the response supported languages response
@@ -284,7 +244,8 @@ namespace uva {
                      * @param msg a pointer to the JSON object storing the request data, not NULL.
                      */
                     inline void translation_job(websocketpp::connection_hdl hdl, const incoming_msg * msg) {
-                        //Create translation job request, will be deleted by the translation job
+                        //Create translation job request, will be deleted by the translation job. This is
+                        //done so that once the destructor is called the incoming message is destroyed.
                         trans_job_req_in trans_req(msg);
 
                         //Declare the job id for the case of needed error reporting

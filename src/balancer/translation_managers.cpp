@@ -36,6 +36,7 @@ namespace uva {
 
                 /*Translation manager*/
                 const balancer_parameters * translation_manager::m_params = NULL;
+                translation_manager::response_sender translation_manager::m_sender_func = NULL;
 
                 /*Translation servers' manager*/
                 const balancer_parameters * translation_servers_manager::m_params = NULL;

@@ -39,7 +39,14 @@
 #include "common/messaging/status_code.hpp"
 #include "common/messaging/incoming_msg.hpp"
 
+#include "server/messaging/supp_lang_req_in.hpp"
+#include "server/messaging/trans_job_req_in.hpp"
+#include "server/messaging/supp_lang_resp_out.hpp"
+#include "server/messaging/trans_job_resp_out.hpp"
+
 #include "balancer/balancer_parameters.hpp"
+#include "balancer/translation_servers_manager.hpp"
+#include "balancer/translation_manager.hpp"
 
 using namespace std;
 using namespace std::placeholders;
@@ -51,7 +58,10 @@ using namespace websocketpp::log;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+
 using namespace uva::smt::bpbd::common::messaging;
+
+using namespace uva::smt::bpbd::server::messaging;
 
 namespace uva {
     namespace smt {
@@ -76,24 +86,147 @@ namespace uva {
                      * @param params the parameters from which the server will be configured
                      */
                     static inline void configure(const balancer_parameters & params) {
-                        //ToDo: Implement
+                        m_params = &params;
+
+                        //Set up access channels to only log interesting things
+                        m_server.clear_access_channels(log::alevel::all);
+                        m_server.set_access_channels(log::alevel::none);
+                        m_server.clear_error_channels(log::alevel::all);
+                        m_server.set_error_channels(log::alevel::none);
+
+                        //Initialize the Asio transport policy
+                        m_server.init_asio();
+
+                        //Add the handlers for the connection events
+                        m_server.set_open_handler(translation_manager::open_session);
+                        m_server.set_close_handler(translation_manager::close_session);
+                        m_server.set_fail_handler(translation_manager::close_session);
+
+                        //Bind the handlers we are using
+                        m_server.set_message_handler(balancer_server::on_message);
+
+                        //Configure the translation manager
+                        translation_manager::configure(params, balancer_server::send_response);
+
+                        //Set the port that the server will listen to
+                        m_server.listen(params.m_server_port);
                     }
 
                     /**
                      * The main method to run in the server thread
                      */
-                    static inline void start() {
-                        //ToDo: Implement
+                    static inline void run() {
+                        LOG_DEBUG << "Starting the balancer server ..." << END_LOG;
+                        m_server.start_accept();
+                        m_server.run();
+                    }
+                    
+                    /**
+                     * Allows to stop listening to the incoming messages
+                     */
+                    static inline void stop() {
+                        LOG_USAGE << "Stopping the balancer server ..." << END_LOG;
+
+                        LOG_DEBUG << "Removing the on_close handler." << END_LOG;
+                        //Remove the on_close handler
+                        m_server.set_close_handler(NULL);
+
+                        LOG_DEBUG << "Stop listening to the new connections." << END_LOG;
+                        //Stop listening to the (new) connections
+                        m_server.stop_listening();
                     }
 
                     /**
-                     * Allows to stop the balancer server
+                     * Allows to finish the websockets server the balancer server
                      */
-                    static inline void stop() {
-                        //ToDo: Implement
+                    static inline void finish() {
+                        LOG_USAGE << "Stopping the WEBSOCKET server." << END_LOG;
+                        //Stop the server
+                        m_server.stop();
                     }
 
+                protected:
+
+                    /**
+                     * Allows to send the response to the client associated with the given connection handler.
+                     * @param hdl the connection handler to identify the connection
+                     * @param reply_str the response string
+                     */
+                    static inline void send_response(connection_hdl hdl, const string reply_str) {
+                        LOG_DEBUG << "Sending the job response: ____" << reply_str << "____" << END_LOG;
+
+                        //Declare the error code
+                        lib::error_code ec;
+
+                        //Send/schedule the translation job reply
+                        m_server.send(hdl, reply_str, opcode::text, ec);
+
+                        //Locally report sending error
+                        if (ec) {
+                            LOG_ERROR << "Failed sending error '" << reply_str << "' reply: " << ec.message() << END_LOG;
+                        }
+
+                        LOG_DEBUG << "The job response: ____" << reply_str << "____ is sent!" << END_LOG;
+                    }
+
+                    /**
+                     * Is called when the message is received by the server
+                     * @param hdl the connection handler
+                     * @param raw_msg the received message
+                     */
+                    static inline void on_message(websocketpp::connection_hdl hdl, server::message_ptr raw_msg) {
+                        LOG_DEBUG << "Received a message!" << END_LOG;
+
+                        //Create an empty json message
+                        incoming_msg * jmsg = new incoming_msg();
+
+                        //De-serialize the message and then handle based on its type
+                        try {
+                            string raw_msg_str = raw_msg->get_payload();
+
+                            LOG_DEBUG << "Received JSON msg: " << raw_msg_str << END_LOG;
+
+                            //De-serialize the message
+                            jmsg->de_serialize(raw_msg_str);
+
+                            //Handle the request message based on its type
+                            switch (jmsg->get_msg_type()) {
+                                case msg_type::MESSAGE_TRANS_JOB_REQ:
+                                    translation_manager::register_translation_request(hdl, new trans_job_req_in(jmsg));
+                                    break;
+                                case msg_type::MESSAGE_SUPP_LANG_REQ:
+                                    language_request(hdl, jmsg);
+                                    break;
+                                default:
+                                    THROW_EXCEPTION(string("Unsupported request type: ") + to_string(jmsg->get_msg_type()));
+                            }
+                        } catch (std::exception & e) {
+                            //Send the error response, NOTE! This is not a JSON we are sending
+                            //back, but just a string, as someone violated the protocol!
+                            send_response(hdl, e.what());
+                        }
+                    }
+                    
+                    /**
+                     * This method allows to handle the supported-languages request
+                     * This function must not throw!
+                     * @param hdl the connection handler
+                     * @param msg a pointer to the JSON object storing the request data, not NULL.
+                     */
+                    static inline void language_request(websocketpp::connection_hdl hdl, const incoming_msg * msg) {
+                        //Create the supported languages request message. This is done so that
+                        //once the destructor is called the incoming message is destroyed.
+                        supp_lang_req_in supp_lang_req(msg);
+
+                        //Send the response supported languages response
+                        send_response(hdl, translation_servers_manager::get_supported_lang_resp_data());
+                    }
+                    
                 private:
+                    //Stores the pointer to the balancer parameters
+                    static const balancer_parameters * m_params;
+                    //Stores the server object
+                    static server m_server;
 
                     /**
                      * The private constructor to keep the class from being instantiated

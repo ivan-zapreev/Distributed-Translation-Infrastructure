@@ -83,7 +83,7 @@ namespace uva {
                      */
                     virtual void print_specific_commands() {
                         LOG_USAGE << "\t None" << END_LOG;
-                        //ToDo: Implement
+                        //ToDo: Implement setting the number of request and response queue workers and etc.
                     }
 
                     /**
@@ -100,6 +100,7 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual bool process_specific_cmd(const string & cmd) {
+                        //ToDo: Implement setting the number of request and response queue workers and etc.
                         return true;
                     }
 
@@ -114,17 +115,17 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual void stop() {
+                        //Stop the translation servers manager
+                        translation_servers_manager::disable();
+                        
+                        //Stop the translation server
+                        balancer_server::stop();
+
                         //Stop the translation manager
-                        LOG_USAGE << "Stopping the translation manager ..." << END_LOG;
                         translation_manager::stop();
 
-                        //Stop the translation servers manager
-                        LOG_USAGE << "Stopping the translation server clients ..." << END_LOG;
-                        translation_servers_manager::disable();
-
-                        //Stop the translation server
-                        LOG_USAGE << "Stopping the balancer server ..." << END_LOG;
-                        balancer_server::stop();
+                        //Finish the translation server
+                        balancer_server::finish();
 
                         //Wait until the server's thread stops
                         m_balancer_thread.join();

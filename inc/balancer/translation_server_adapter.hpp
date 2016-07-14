@@ -270,7 +270,7 @@ namespace uva {
                                 trans_job_resp_in * job_resp_msg = new trans_job_resp_in(json_msg);
                                 try {
                                     //Set the newly received job response
-                                    translation_manager::set_job_response(job_resp_msg);
+                                    translation_manager::register_translation_response(job_resp_msg);
                                 } catch (std::exception & ex) {
                                     LOG_ERROR << ex.what() << END_LOG;
                                     //Delete the message as it was not set

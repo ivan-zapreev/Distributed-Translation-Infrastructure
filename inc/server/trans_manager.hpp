@@ -139,14 +139,14 @@ namespace uva {
                         session_id_type & session_id = m_sessions[hdl];
 
                         //Do a sanity check, that the session id is yet undefined
-                        ASSERT_SANITY_THROW((session_id != session_id::UNDEFINED_SESSION_ID),
-                                "The same connection handler already exists and has a session!");
-
-                        //Issue a session id to that new connection!
-                        session_id = m_session_id_mgr.get_next_id();
-
-                        //Add the handler to session id mapping
-                        m_handlers[session_id] = hdl;
+                        if (session_id == session_id::UNDEFINED_SESSION_ID) {
+                            //Issue a session id to that new connection!
+                            session_id = m_session_id_mgr.get_next_id();
+                            //Add the handler to session id mapping
+                            m_handlers[session_id] = hdl;
+                        } else {
+                            LOG_WARNING << "The same connection handler already exists and has a session!" << END_LOG;
+                        }
                     }
 
                     /**
@@ -277,10 +277,10 @@ namespace uva {
                         if (!hdl.expired()) {
                             //Create the translation job response
                             trans_job_resp_out response;
-                            
+
                             //Populate the translation job response with the data
                             trans_job->collect_job_results(response);
-                            
+
                             //Serialize the response and do logging
                             const string data = response.serialize();
                             LOG_DEBUG << "Sending translation job response: " << data << END_LOG;
