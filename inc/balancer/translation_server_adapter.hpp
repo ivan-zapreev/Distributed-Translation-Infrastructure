@@ -223,7 +223,7 @@ namespace uva {
                             }
                         }
 
-                        LOG_USAGE << "\t" << m_params->m_name << "(uid: " << to_string(m_uid) << ") -> " << status << END_LOG;
+                        LOG_USAGE << "\t" << m_params->m_name << "(uid:" << to_string(m_uid) << ") -> " << status << END_LOG;
                     }
 
                     /**

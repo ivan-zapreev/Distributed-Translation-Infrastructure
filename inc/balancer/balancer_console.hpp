@@ -77,6 +77,7 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual void print_specific_commands() {
+                        LOG_USAGE << "\t None" << END_LOG;
                         //ToDo: Implement
                     }
 
@@ -93,8 +94,8 @@ namespace uva {
                     /**
                      * @see cmd_line_base
                      */
-                    virtual void process_specific_cmd(const string & cmd) {
-                        //ToDo: Implement
+                    virtual bool process_specific_cmd(const string & cmd) {
+                        return true;
                     }
 
                     /**

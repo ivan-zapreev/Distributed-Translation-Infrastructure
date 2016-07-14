@@ -90,13 +90,14 @@ namespace uva {
                     /**
                      * @see cmd_line_base
                      */
-                    virtual void process_specific_cmd(const string & cmd) {
+                    virtual bool process_specific_cmd(const string & cmd) {
                         //Set the number of threads
                         if (begins_with(cmd, PROGRAM_SET_NT_CMD)) {
                             set_num_threads(cmd, PROGRAM_SET_LL_CMD);
+                            return false;
                         } else {
                             //Set other decoder parameters
-                            set_decoder_params(cmd, m_params.m_de_params);
+                            return set_decoder_params(cmd, m_params.m_de_params);
                         }
                     }
 
@@ -147,15 +148,16 @@ namespace uva {
                      * @param cmd the command to process, if not a command for
                      * setting decoder parameters an error will be reported.
                      * @param m_de_params the reference to the decoder parameters to set with new values.
+                     * @return true if the command could not be recognized, otherwise false!
                      */
-                    inline void set_decoder_params(const string & cmd, de_parameters & de_params) {
+                    inline bool set_decoder_params(const string & cmd, de_parameters & de_params) {
+                        //Stores the boolean flag indicating whether the command was recognized or not.
+                        bool is_recognized = false;
+
                         //Set some of the server runtime parameters
                         try {
                             //Get a copy of current decoder parameters
                             de_parameters de_local = de_params;
-
-                            //Stores the boolean flag indicating whether the command was recognized or not.
-                            bool is_recognized = false;
 
                             if (begins_with(cmd, PROGRAM_SET_D_CMD)) {
                                 de_local.m_dist_limit = get_int_value(cmd, PROGRAM_SET_D_CMD);
@@ -185,19 +187,16 @@ namespace uva {
                             }
 #endif
 
-                            if (!is_recognized) {
-                                THROW_EXCEPTION(string("The command '") + cmd + string("' is unknown!"));
-                            }
-
                             //Finalize the parameters
                             de_local.finalize();
 
                             //Set the parameters back
                             de_params = de_local;
-
                         } catch (std::exception &ex) {
                             LOG_ERROR << ex.what() << " Enter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
                         }
+
+                        return !is_recognized;
                     }
 
                 private:

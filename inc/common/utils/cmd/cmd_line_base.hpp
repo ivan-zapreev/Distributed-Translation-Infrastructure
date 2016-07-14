@@ -134,8 +134,9 @@ namespace uva {
                  * Allows to handle some specific command, is to be implemented
                  * by the child class.
                  * @param cmd the so-far unrecognized command to be processed
+                 * @return true if the command could not be recognized, otherwise false!
                  */
-                virtual void process_specific_cmd(const string & cmd) = 0;
+                virtual bool process_specific_cmd(const string & cmd) = 0;
 
                 /**
                  * Is to be called when one needs to get the program parameters reported.
@@ -282,7 +283,10 @@ namespace uva {
                                             set_log_level(cmd, PROGRAM_SET_LL_CMD);
                                         } else {
                                             //Process the remaining commands
-                                            process_specific_cmd(cmd);
+                                            if (process_specific_cmd(cmd)) {
+                                                LOG_ERROR << "The command '" << cmd << "' is not recognized!" << END_LOG;
+                                                LOG_USAGE << "Enter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
+                                            }
                                         }
                                     }
                                 }
