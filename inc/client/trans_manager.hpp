@@ -34,23 +34,24 @@
 #include <iostream>
 #include <fstream>
 
+#include "common/utils/file/cstyle_file_reader.hpp"
+#include "common/utils/threads/threads.hpp"
+#include "common/utils/string_utils.hpp"
+#include "common/utils/id_manager.hpp"
+
+#include "common/messaging/status_code.hpp"
+#include "common/messaging/trans_job_id.hpp"
+
 #include "client/client_config.hpp"
 #include "client/translation_client.hpp"
 #include "client/trans_job.hpp"
 #include "client/trans_job_status.hpp"
 
-#include "common/messaging/status_code.hpp"
-#include "common/messaging/id_manager.hpp"
-#include "common/messaging/trans_job_id.hpp"
-
 #include "client/messaging/trans_job_req_out.hpp"
 #include "client/messaging/trans_job_resp_in.hpp"
 
-#include "common/utils/file/cstyle_file_reader.hpp"
-#include "common/utils/threads/threads.hpp"
-#include "common/utils/string_utils.hpp"
-
 using namespace std;
+using namespace uva::utils;
 using namespace uva::utils::threads;
 using namespace uva::utils::text;
 using namespace uva::utils::file;
@@ -547,11 +548,11 @@ namespace uva {
                     thread * m_sending_thread_ptr;
 
                     //Stores the boolean that is used to notify that we need to stop
-                    atomic<bool> m_is_stopping;
+                    a_bool_flag m_is_stopping;
                     //Stores a flag indicating that all the translation jobs are sent
-                    atomic<bool> m_is_all_jobs_sent;
+                    a_bool_flag m_is_all_jobs_sent;
                     //Stores a flag indicating that all the translation jobs are received
-                    atomic<bool> m_is_all_jobs_done;
+                    a_bool_flag m_is_all_jobs_done;
 
                     //Store the finished jobs count
                     atomic<uint32_t> m_num_done_jobs;

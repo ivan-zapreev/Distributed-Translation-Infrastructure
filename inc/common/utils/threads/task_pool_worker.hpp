@@ -78,7 +78,7 @@ namespace uva {
                  * Returns the reference to the worker's is_busy flag
                  * @return the worker's is busy flag reference to see if the worker is busy or not.
                  */
-                inline atomic<bool> & is_busy() {
+                inline a_bool_flag & is_busy() {
                     return m_is_busy;
                 }
 
@@ -121,9 +121,9 @@ namespace uva {
             protected:
             private:
                 //Stores the flag indicating if this worker is on duty or not.
-                atomic<bool> m_is_on;
+                a_bool_flag m_is_on;
                 //Stores the flag indicating if this worker is busy working or not.
-                atomic<bool> m_is_busy;
+                a_bool_flag m_is_busy;
                 //Keeps the reference to the pool
                 task_pool<pool_task> & m_pool;
             };

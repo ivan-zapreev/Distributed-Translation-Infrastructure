@@ -122,7 +122,7 @@ namespace uva {
 
                         //This flag is needed for when the server is compiled in the tuning mode.
                         //This flag should allow to set the tuning lattice generation of and off.
-                        atomic<bool> m_is_gen_lattice;
+                        a_bool_flag m_is_gen_lattice;
                         //The server configuration file name, is only set if IS_SERVER_TUNING_MODE == true
                         string m_config_file_name;
                         //The folder where the lattice related files are to be stored

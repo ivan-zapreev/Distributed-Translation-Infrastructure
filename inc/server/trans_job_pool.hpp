@@ -442,7 +442,7 @@ namespace uva {
                     //Stores the synchronization mutex for administering stopping
                     mutex m_stopping_lock;
                     //Stores the flag that indicates that we are stopping, made an atomic just in case
-                    atomic<bool> m_is_stopping;
+                    a_bool_flag m_is_stopping;
                     //Stores the active jobs count, made an atomic just in case
                     atomic<uint64_t> m_job_count;
 

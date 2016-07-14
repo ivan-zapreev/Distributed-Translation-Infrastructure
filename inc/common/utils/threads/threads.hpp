@@ -29,6 +29,7 @@
 #include <atomic>
 #include <thread>
 #include <mutex>
+#include <shared_mutex>
 #include <condition_variable>
 #include <functional>
 
@@ -46,6 +47,23 @@ namespace uva {
 
             //Define the unique lock needed for wait/notify
             typedef unique_lock<mutex> unique_guard;
+
+            //In C++11 which we use now there is no shared lock and
+            //mutex, these are to be introduced in C++14/C++17. So
+            //for now there is just an aliasing we have
+#if _LIBCPP_STD_VER < 14
+            using shared_mutex = mutex;
+#endif
+#if _LIBCPP_STD_VER < 17
+            template<class _Mutex>
+            using shared_lock = unique_lock<_Mutex>;
+#endif
+
+            //Define the exclusive lock needed for shared mutex
+            typedef unique_lock<shared_mutex> exclusive_guard;
+
+            //Define the shared lock needed for shared mutex
+            typedef shared_lock<shared_mutex> shared_guard;
 
             //The atomic read-only boolean flag 
             typedef atomic<bool> a_bool_flag;

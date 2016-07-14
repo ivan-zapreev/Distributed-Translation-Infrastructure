@@ -359,12 +359,12 @@ namespace uva {
                     mutex m_lock_con;
 
                     //Stores the started and stopped flags for the client
-                    atomic<bool> m_started;
-                    atomic<bool> m_stopped;
+                    a_bool_flag m_started;
+                    a_bool_flag m_stopped;
 
                     //Stores the open and done flags for connection
-                    atomic<bool> m_opened;
-                    atomic<bool> m_closed;
+                    a_bool_flag m_opened;
+                    a_bool_flag m_closed;
 
                     //Stores the server message setting function
                     server_message_setter m_set_server_msg_func;

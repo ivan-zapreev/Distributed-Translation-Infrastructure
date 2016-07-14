@@ -27,6 +27,7 @@
 #define TRANSLATION_SERVERS_MANAGER_HPP
 
 #include <map>
+#include <set>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -34,6 +35,7 @@
 
 #include "client/messaging/supp_lang_resp_in.hpp"
 
+#include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/translation_server_adapter.hpp"
 
@@ -61,6 +63,53 @@ namespace uva {
                 class translation_servers_manager {
                 public:
 
+                    //Typedef for the vector storing the pointers to the adapters
+                    typedef set<translation_server_adapter*> adapters_set;
+
+                    /**
+                     * This structure represents the target language entry
+                     * in the map of target to adapter vectors
+                     */
+                    typedef struct {
+                        //The mutex for the targets map of the source language
+                        shared_mutex m_adapters_mutex;
+                        //The list of the dapters
+                        adapters_set m_adapters;
+                    } target_entry;
+
+                    /**
+                     * This class represents an adapter entry storing the
+                     * translation server adapter and supplementary mapping
+                     * information.
+                     */
+                    typedef struct {
+                        //Stores the adapter
+                        translation_server_adapter m_adapter;
+                        //Stores the mutex for accessing the registrations
+                        shared_mutex m_registrations_mutex;
+                        //Stores the set of target entries in which this adaper is used.
+                        set<target_entry*> m_registrations;
+                    } adapter_entry;
+
+                    //The typedef for the map strong the adapters
+                    typedef map<string, adapter_entry> adapters_map;
+
+                    //The typedef for the map for storing target language to target entry mapping;
+                    typedef map<string, target_entry> targets_map;
+
+                    /**
+                     * This structure represents the source language entry
+                     * in the map of source to target language adapters
+                     */
+                    typedef struct {
+                        //The mutex for the targets map of the source language
+                        shared_mutex m_target_mutex;
+                        //The targets to targets' entry map
+                        targets_map m_targets;
+                    } source_entry;
+                    //The typedef for the map for storing source language to source entry mapping
+                    typedef map<string, source_entry> sources_map;
+
                     /**
                      * Allows to configure the balancer server
                      * @param params the parameters from which the server will be configured
@@ -74,7 +123,7 @@ namespace uva {
                         //configs and create an adapter for each of them
                         for (auto iter = params.trans_servers.begin(); iter != params.trans_servers.end(); ++iter) {
                             LOG_INFO3 << "Configuring '" << iter->second.m_name << "' adapter..." << END_LOG;
-                            m_server_adaptors[iter->first].configure(iter->second,
+                            m_adapters_data[iter->first].m_adapter.configure(iter->second,
                                     translation_servers_manager::notify_ready,
                                     translation_servers_manager::notify_disconnected);
                             LOG_INFO2 << "'" << iter->second.m_name << "' adapter is configured" << END_LOG;
@@ -93,10 +142,10 @@ namespace uva {
                         start_re_connection_thread();
 
                         //Enable the clients
-                        for (auto iter = m_server_adaptors.begin(); iter != m_server_adaptors.end(); ++iter) {
-                            LOG_INFO2 << "Enabling '" << iter->second.get_name() << "' adapter..." << END_LOG;
-                            iter->second.enable();
-                            LOG_INFO1 << "'" << iter->second.get_name() << "' adapter is enabled" << END_LOG;
+                        for (auto iter = m_adapters_data.begin(); iter != m_adapters_data.end(); ++iter) {
+                            LOG_INFO2 << "Enabling '" << iter->second.m_adapter.get_name() << "' adapter..." << END_LOG;
+                            iter->second.m_adapter.enable();
+                            LOG_INFO1 << "'" << iter->second.m_adapter.get_name() << "' adapter is enabled" << END_LOG;
                         }
 
                         LOG_INFO1 << "The translation servers are enabled" << END_LOG;
@@ -112,10 +161,10 @@ namespace uva {
                         finish_re_connection_thread();
 
                         //Disable the clients
-                        for (auto iter = m_server_adaptors.begin(); iter != m_server_adaptors.end(); ++iter) {
-                            LOG_INFO2 << "Disabling '" << iter->second.get_name() << "' adapter..." << END_LOG;
-                            iter->second.disable();
-                            LOG_INFO1 << "'" << iter->second.get_name() << "' adapter is disabled" << END_LOG;
+                        for (auto iter = m_adapters_data.begin(); iter != m_adapters_data.end(); ++iter) {
+                            LOG_INFO2 << "Disabling '" << iter->second.m_adapter.get_name() << "' adapter..." << END_LOG;
+                            iter->second.m_adapter.disable();
+                            LOG_INFO1 << "'" << iter->second.m_adapter.get_name() << "' adapter is disabled" << END_LOG;
                         }
 
                         LOG_INFO1 << "The translation servers are disabled" << END_LOG;
@@ -125,10 +174,25 @@ namespace uva {
                      * Reports the run-time information
                      */
                     static inline void report_run_time_info() {
-                        LOG_USAGE << "Translation servers (#" << m_server_adaptors.size() << "): " << END_LOG;
-                        for (auto iter = m_server_adaptors.begin(); iter != m_server_adaptors.end(); ++iter) {
-                            iter->second.report_run_time_info();
+                        LOG_USAGE << "Translation servers (#" << m_adapters_data.size() << "): " << END_LOG;
+                        for (auto iter = m_adapters_data.begin(); iter != m_adapters_data.end(); ++iter) {
+                            iter->second.m_adapter.report_run_time_info();
                         }
+                    }
+
+                    /**
+                     * Allows to request a translation servers' manager for the translation server adapter given
+                     * the source and target language ids and the job weight.
+                     * @param source_lang_id the source language id
+                     * @param target_lang_id the target language id
+                     * @param weight the weights of the job to be done
+                     * @return the pointer to the translation server dataper or NULL
+                     * if there is no adapter for the given source/target language pair
+                     */
+                    static inline translation_server_adapter * get_server_adapter(const language_uid source_lang_id,
+                            const language_uid target_lang_id, const float weight) {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
                     }
 
                 protected:
@@ -138,21 +202,60 @@ namespace uva {
                      * @param adapter the pointer to the translation server adapter that got ready, not NULL
                      * @param lang_resp_msg the supported language pairs message, to be destroyed by this method
                      */
-                    static inline void notify_ready(const translation_server_adapter * adapter, supp_lang_resp_in * lang_resp_msg) {
+                    static inline void notify_ready(translation_server_adapter * adapter, supp_lang_resp_in * lang_resp_msg) {
                         LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is connected!" << END_LOG;
 
-                        //ToDo: Register the new ready adapter for the given set of translation pairs
-                        const Value & languages = lang_resp_msg->get_languages();
+                        //Get the adapter to lock on its registrations
+                        //Note: The adapters are not getting removed from the global
+                        //adapters list for now so it is safe to keep the reference
+                        //and not to synchronize on any mutex for the entire list of adapters.
+                        adapter_entry & adapter_data = m_adapters_data[adapter->get_name()];
+                        {
+                            scoped_guard guard(adapter_data.m_registrations_mutex);
 
-                        //Iterate through the supported source and target languages
-                        //to register them as supported by the given server adapter.
-                        for (auto sli = languages.MemberBegin(); sli != languages.MemberEnd(); ++sli) {
-                            LOG_DEBUG1 << "'" << adapter->get_name() << "' source: " << sli->name.GetString() << END_LOG;
-                            for (auto tli = sli->value.Begin(); tli != sli->value.End(); ++tli) {
-                                LOG_DEBUG1 << "'" << adapter->get_name() << "'    target: " << tli->GetString() << END_LOG;
-                                {
-                                    //ToDo: Synchronize
-                                    //ToDo: Register the language pair and the supporting adapter
+                            //Register the new ready adapter for the given set of translation pairs
+                            const Value & languages = lang_resp_msg->get_languages();
+
+                            //Iterate through the supported source and target languages
+                            //to register them as supported by the given server adapter.
+                            for (auto sli = languages.MemberBegin(); sli != languages.MemberEnd(); ++sli) {
+                                const string source_lang = sli->name.GetString();
+                                LOG_DEBUG1 << "'" << adapter->get_name() << "' source: " << source_lang << END_LOG;
+                                for (auto tli = sli->value.Begin(); tli != sli->value.End(); ++tli) {
+                                    const string target_lang = tli->GetString();
+                                    LOG_DEBUG1 << "'" << adapter->get_name() << "'    target: " << target_lang << END_LOG;
+
+                                    //Get/create a source language entry, note that the entries are
+                                    //not removed, until the translation servers' manager is destroyed.
+                                    //Therefore it is safe to store the pointer to the entry.
+                                    source_entry * source = NULL;
+                                    {
+                                        exclusive_guard guard(m_source_mutex);
+                                        //Get the source entry
+                                        source = &m_sources[source_lang];
+                                    }
+
+                                    //Get/create a target language entry, note that the entries are
+                                    //not removed, until the translation servers' manager is destroyed.
+                                    //Therefore it is safe to store the pointer to the entry.
+                                    target_entry * target = NULL;
+                                    {
+                                        exclusive_guard guard(source->m_target_mutex);
+                                        //Get the stored or new list of the adapters
+                                        target = &source->m_targets[target_lang];
+                                    }
+
+                                    //Add the adapter to the list of adapters
+                                    {
+                                        exclusive_guard guard(target->m_adapters_mutex);
+                                        //Add the adapter pointer to the list
+                                        target->m_adapters.insert(adapter);
+                                        //Re-calculate the loads balance
+                                        re_calculate_loads(target);
+                                    }
+
+                                    //Remember the list in which the adapter was placed
+                                    adapter_data.m_registrations.insert(target);
                                 }
                             }
                         }
@@ -162,20 +265,59 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to notify that there were disconnected servers
-                     * so that we could immediately take care of them by trying
-                     * to reconnect.
+                     * Allows to re-calculate the loads for the target entry.
+                     * Should be called when a new adapter was added/removed.
+                     * Not synchronized, is to be called from a context with
+                     * an exclusive lock on target->m_adapters_mutex
+                     * @param target the pointer to the target entry, not NULL
+                     */
+                    static inline void re_calculate_loads(target_entry * target) {
+                        //ToDo: Implement
+                    }
+
+                    /**
+                     * Allows to notify that there were disconnected servers.
+                     * This is needed to make sure that 
+                     * NOTE: This method does not notify the re-connection thread as otherwise we
+                     *       would be re-connecting too often, just let it work on the time-out
                      * @param adapter the pointer to the translation server adapter that got disconnected, not NULL
                      */
-                    static inline void notify_disconnected(const translation_server_adapter * adapter) {
+                    static inline void notify_disconnected(translation_server_adapter * adapter) {
                         LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is disconnected!" << END_LOG;
 
-                        //NOTE: Do not notify the re-connection thread as otherwise we will
-                        //      be re-connecting too often, just let it work on the time-out
+                        //Get the adapter to lock on its registrations
+                        //Note: The adapters are not getting removed from the global
+                        //adapters list for now so it is safe to keep the reference
+                        //and not to synchronize on any mutex for the entire list of adapters.
+                        adapter_entry & adapter_data = m_adapters_data[adapter->get_name()];
+                        {
+                            scoped_guard guard(adapter_data.m_registrations_mutex);
 
-                        //ToDo: Cancel the jobs associated with the given translation server
+                            //Make sure that the corresponding supported language pairs are removed.
+                            for (auto data_iter = adapter_data.m_registrations.begin();
+                                    data_iter != adapter_data.m_registrations.end(); ++data_iter) {
+                                //Get the target pointer
+                                target_entry * target = *data_iter;
 
-                        //ToDo: Make sure that the corresponding supported language pairs are removed.
+                                //Lock on the adapters list for safe multi-threading
+                                //Remove the adapter from the adapters list and re-calculate the loads
+                                {
+                                    exclusive_guard guard(target->m_adapters_mutex);
+                                    //Get the reference to the set of adapters of the target entry
+                                    adapters_set & adapters = target->m_adapters;
+                                    //Find the adapter in the set of the target language adapters
+                                    auto adapter_iter = adapters.find(adapter);
+                                    //Remove the found adapter from this set
+                                    if (adapter_iter != adapters.end()) {
+                                        adapters.erase(adapter_iter);
+                                    }
+                                    //Re-calculate the loads for the target
+                                    re_calculate_loads(target);
+                                }
+                            }
+                            //Erase all the adapter registrations
+                            adapter_data.m_registrations.clear();
+                        }
                     }
 
                     /**
@@ -196,8 +338,8 @@ namespace uva {
                             //If we were not waken up to stop, then check on the disconnected servers
                             if (m_is_reconnect_run) {
                                 //Iterate through all the connectors and check for their activity
-                                for (auto iter = m_server_adaptors.begin(); iter != m_server_adaptors.end(); ++iter) {
-                                    iter->second.reconnect();
+                                for (auto iter = m_adapters_data.begin(); iter != m_adapters_data.end(); ++iter) {
+                                    iter->second.m_adapter.reconnect();
                                 }
                             }
                         }
@@ -240,15 +382,19 @@ namespace uva {
                 private:
                     //Stores the pointer to the parameters structure 
                     static const balancer_parameters * m_params;
-                    //Stores the mapping from the server names to the server adaptors
-                    static map<string, translation_server_adapter> m_server_adaptors;
+                    //Stores the mapping from the server names to the server adapters
+                    static adapters_map m_adapters_data;
                     //Stores the pointer to the re-connection thread
                     static thread * m_re_connect;
                     //Stores the synchronization primitive instances
                     static mutex m_re_connect_mutex;
                     static condition_variable m_re_connect_condition;
                     //Stores the flag that indicates for how long the reconnection thread needs to run
-                    static atomic<bool> m_is_reconnect_run;
+                    static a_bool_flag m_is_reconnect_run;
+                    //Stores the synchronization mutex for the manager
+                    static shared_mutex m_source_mutex;
+                    //Stores the language pair mappings to the adapters map
+                    static sources_map m_sources;
 
                     //Stores the mapping from the source/target language pairs to the adaptor sets
 

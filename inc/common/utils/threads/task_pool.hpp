@@ -237,7 +237,7 @@ namespace uva {
                 condition_variable m_condition;
 
                 //Stores the stopping flag
-                atomic<bool> m_stop;
+                a_bool_flag m_stop;
 
                 /**
                  * The method that will be called in case a task is canceled

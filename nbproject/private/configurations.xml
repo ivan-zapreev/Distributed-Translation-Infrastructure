@@ -1,58 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="95">
+<configurationDescriptor version="97">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="ext" name="0">
       <df name="asio">
         <df name="detail">
           <df name="impl">
-            <in>buffer_sequence_adapter.ipp</in>
-            <in>descriptor_ops.ipp</in>
             <in>dev_poll_reactor.hpp</in>
-            <in>dev_poll_reactor.ipp</in>
             <in>epoll_reactor.hpp</in>
-            <in>epoll_reactor.ipp</in>
-            <in>eventfd_select_interrupter.ipp</in>
-            <in>handler_tracking.ipp</in>
             <in>kqueue_reactor.hpp</in>
-            <in>kqueue_reactor.ipp</in>
-            <in>pipe_select_interrupter.ipp</in>
-            <in>posix_event.ipp</in>
-            <in>posix_mutex.ipp</in>
-            <in>posix_thread.ipp</in>
-            <in>posix_tss_ptr.ipp</in>
-            <in>reactive_descriptor_service.ipp</in>
-            <in>reactive_serial_port_service.ipp</in>
-            <in>reactive_socket_service_base.ipp</in>
-            <in>resolver_service_base.ipp</in>
             <in>select_reactor.hpp</in>
-            <in>select_reactor.ipp</in>
             <in>service_registry.hpp</in>
-            <in>service_registry.ipp</in>
-            <in>signal_set_service.ipp</in>
-            <in>socket_ops.ipp</in>
-            <in>socket_select_interrupter.ipp</in>
             <in>strand_service.hpp</in>
-            <in>strand_service.ipp</in>
             <in>task_io_service.hpp</in>
-            <in>task_io_service.ipp</in>
-            <in>throw_error.ipp</in>
-            <in>timer_queue_ptime.ipp</in>
-            <in>timer_queue_set.ipp</in>
-            <in>win_event.ipp</in>
-            <in>win_iocp_handle_service.ipp</in>
             <in>win_iocp_io_service.hpp</in>
-            <in>win_iocp_io_service.ipp</in>
-            <in>win_iocp_serial_port_service.ipp</in>
-            <in>win_iocp_socket_service_base.ipp</in>
-            <in>win_mutex.ipp</in>
-            <in>win_object_handle_service.ipp</in>
-            <in>win_static_mutex.ipp</in>
-            <in>win_thread.ipp</in>
-            <in>win_tss_ptr.ipp</in>
-            <in>winrt_ssocket_service_base.ipp</in>
             <in>winrt_timer_scheduler.hpp</in>
-            <in>winrt_timer_scheduler.ipp</in>
-            <in>winsock_init.ipp</in>
           </df>
           <in>addressof.hpp</in>
           <in>array.hpp</in>
@@ -231,7 +192,6 @@
         <df name="generic">
           <df name="detail">
             <df name="impl">
-              <in>endpoint.ipp</in>
             </df>
             <in>endpoint.hpp</in>
           </df>
@@ -245,16 +205,11 @@
           <in>buffered_read_stream.hpp</in>
           <in>buffered_write_stream.hpp</in>
           <in>connect.hpp</in>
-          <in>error.ipp</in>
-          <in>error_code.ipp</in>
-          <in>handler_alloc_hook.ipp</in>
           <in>io_service.hpp</in>
-          <in>io_service.ipp</in>
           <in>read.hpp</in>
           <in>read_at.hpp</in>
           <in>read_until.hpp</in>
           <in>serial_port_base.hpp</in>
-          <in>serial_port_base.ipp</in>
           <in>spawn.hpp</in>
           <in>src.cpp</in>
           <in>src.hpp</in>
@@ -265,20 +220,15 @@
         <df name="ip">
           <df name="detail">
             <df name="impl">
-              <in>endpoint.ipp</in>
             </df>
             <in>endpoint.hpp</in>
             <in>socket_option.hpp</in>
           </df>
           <df name="impl">
             <in>address.hpp</in>
-            <in>address.ipp</in>
             <in>address_v4.hpp</in>
-            <in>address_v4.ipp</in>
             <in>address_v6.hpp</in>
-            <in>address_v6.ipp</in>
             <in>basic_endpoint.hpp</in>
-            <in>host_name.ipp</in>
           </df>
           <in>address.hpp</in>
           <in>address_v4.hpp</in>
@@ -301,7 +251,6 @@
         <df name="local">
           <df name="detail">
             <df name="impl">
-              <in>endpoint.ipp</in>
             </df>
             <in>endpoint.hpp</in>
           </df>
@@ -320,8 +269,6 @@
         <df name="ssl">
           <df name="detail">
             <df name="impl">
-              <in>engine.ipp</in>
-              <in>openssl_init.ipp</in>
             </df>
             <in>buffered_handshake_op.hpp</in>
             <in>engine.hpp</in>
@@ -338,9 +285,6 @@
           </df>
           <df name="impl">
             <in>context.hpp</in>
-            <in>context.ipp</in>
-            <in>error.ipp</in>
-            <in>rfc2818_verification.ipp</in>
             <in>src.hpp</in>
           </df>
           <df name="old">
@@ -656,77 +600,224 @@
     </df>
     <df root="inc" name="1">
       <df name="balancer">
+        <df name="messaging">
+        </df>
+        <in>balancer_console.hpp</in>
         <in>balancer_parameters.hpp</in>
+        <in>balancer_server.hpp</in>
+        <in>translation_job.hpp</in>
+        <in>translation_manager.hpp</in>
+        <in>translation_server_adapter.hpp</in>
+        <in>translation_servers_manager.hpp</in>
       </df>
       <df name="client">
         <df name="messaging">
+          <in>supp_lang_req_out.hpp</in>
+          <in>supp_lang_resp_in.hpp</in>
+          <in>trans_job_req_out.hpp</in>
+          <in>trans_job_resp_in.hpp</in>
+          <in>trans_sent_data_in.hpp</in>
         </df>
+        <in>client_config.hpp</in>
+        <in>trans_job.hpp</in>
+        <in>trans_job_status.hpp</in>
+        <in>trans_manager.hpp</in>
+        <in>translation_client.hpp</in>
       </df>
       <df name="common">
         <df name="messaging">
+          <in>incoming_msg.hpp</in>
+          <in>msg_base.hpp</in>
+          <in>outgoing_msg.hpp</in>
+          <in>request_msg.hpp</in>
+          <in>response_msg.hpp</in>
+          <in>status_code.hpp</in>
+          <in>supp_lang_req.hpp</in>
+          <in>supp_lang_resp.hpp</in>
+          <in>trans_job_id.hpp</in>
+          <in>trans_job_req.hpp</in>
+          <in>trans_job_resp.hpp</in>
+          <in>trans_sent_data.hpp</in>
+          <in>trans_session_id.hpp</in>
         </df>
         <df name="utils">
           <df name="cmd">
             <in>cmd_line_base.hpp</in>
           </df>
           <df name="containers">
+            <in>array_utils.hpp</in>
+            <in>circular_queue.hpp</in>
+            <in>dynamic_memory_arrays.hpp</in>
+            <in>fixed_size_hashmap.hpp</in>
+            <in>greedy_memory_allocator.hpp</in>
+            <in>greedy_memory_storage.hpp</in>
+            <in>ordered_list.hpp</in>
+            <in>upp_diag_matrix.hpp</in>
           </df>
           <df name="file">
+            <in>afile_reader.hpp</in>
+            <in>cstyle_file_reader.hpp</in>
+            <in>file_stream_reader.hpp</in>
+            <in>memory_mapped_file_reader.hpp</in>
+            <in>text_piece_reader.hpp</in>
           </df>
           <df name="logging">
+            <in>logger.hpp</in>
           </df>
           <df name="monitor">
+            <in>statistics_monitor.hpp</in>
           </df>
           <df name="threads">
+            <in>task_pool.hpp</in>
+            <in>task_pool_worker.hpp</in>
+            <in>threads.hpp</in>
           </df>
+          <in>exceptions.hpp</in>
+          <in>hashing_utils.hpp</in>
+          <in>math_utils.hpp</in>
+          <in>string_utils.hpp</in>
         </df>
       </df>
       <df name="server">
         <df name="common">
           <df name="models">
+            <in>phrase_uid.hpp</in>
           </df>
+          <in>feature_id_registry.hpp</in>
         </df>
         <df name="decoder">
           <df name="sentence">
+            <in>sentence_data_map.hpp</in>
+            <in>sentence_decoder.hpp</in>
           </df>
           <df name="stack">
+            <in>multi_stack.hpp</in>
+            <in>stack_data.hpp</in>
+            <in>stack_level.hpp</in>
+            <in>stack_state.hpp</in>
+            <in>state_data.hpp</in>
           </df>
+          <in>de_configs.hpp</in>
+          <in>de_configurator.hpp</in>
+          <in>de_parameters.hpp</in>
         </df>
         <df name="lm">
           <df name="builders">
+            <in>lm_basic_builder.hpp</in>
+            <in>lm_gram_builder.hpp</in>
+            <in>lm_gram_builder_factory.hpp</in>
           </df>
           <df name="dictionaries">
+            <in>aword_index.hpp</in>
+            <in>basic_word_index.hpp</in>
+            <in>counting_word_index.hpp</in>
+            <in>hashing_word_index.hpp</in>
+            <in>optimizing_word_index.hpp</in>
           </df>
           <df name="mgrams">
+            <in>m_gram_id.hpp</in>
+            <in>m_gram_id_tables.hpp</in>
+            <in>m_gram_payload.hpp</in>
+            <in>model_m_gram.hpp</in>
+            <in>query_m_gram.hpp</in>
           </df>
           <df name="models">
+            <in>bitmap_hash_cache.hpp</in>
+            <in>c2d_hybrid_trie.hpp</in>
+            <in>c2d_map_trie.hpp</in>
+            <in>c2w_array_trie.hpp</in>
+            <in>g2d_map_trie.hpp</in>
+            <in>generic_trie_base.hpp</in>
+            <in>h2d_map_trie.hpp</in>
+            <in>layered_trie_base.hpp</in>
+            <in>m_gram_query.hpp</in>
+            <in>w2c_array_trie.hpp</in>
+            <in>w2c_hybrid_trie.hpp</in>
+            <in>w2ch_um_storage.hpp</in>
+            <in>word_index_trie_base.hpp</in>
           </df>
           <df name="proxy">
+            <in>lm_fast_query_proxy.hpp</in>
+            <in>lm_fast_query_proxy_local.hpp</in>
+            <in>lm_proxy.hpp</in>
+            <in>lm_proxy_local.hpp</in>
+            <in>lm_slow_query_proxy.hpp</in>
+            <in>lm_slow_query_proxy_local.hpp</in>
           </df>
+          <in>lm_configs.hpp</in>
+          <in>lm_configurator.hpp</in>
+          <in>lm_consts.hpp</in>
+          <in>lm_executor.hpp</in>
+          <in>lm_parameters.hpp</in>
         </df>
         <df name="messaging">
+          <in>supp_lang_req_in.hpp</in>
+          <in>supp_lang_resp_out.hpp</in>
+          <in>trans_job_req_in.hpp</in>
+          <in>trans_job_resp_out.hpp</in>
+          <in>trans_sent_data_out.hpp</in>
         </df>
         <df name="rm">
           <df name="builders">
+            <in>rm_basic_builder.hpp</in>
           </df>
           <df name="models">
+            <in>rm_basic_model.hpp</in>
+            <in>rm_entry.hpp</in>
+            <in>rm_query.hpp</in>
           </df>
           <df name="proxy">
+            <in>rm_proxy.hpp</in>
+            <in>rm_proxy_local.hpp</in>
+            <in>rm_query_proxy.hpp</in>
+            <in>rm_query_proxy_local.hpp</in>
           </df>
+          <in>rm_configs.hpp</in>
+          <in>rm_configurator.hpp</in>
+          <in>rm_consts.hpp</in>
+          <in>rm_parameters.hpp</in>
         </df>
         <df name="tm">
           <df name="builders">
+            <in>tm_basic_builder.hpp</in>
+            <in>tm_builder.hpp</in>
+            <in>tm_limiting_builder.hpp</in>
           </df>
           <df name="models">
+            <in>tm_basic_model.hpp</in>
+            <in>tm_query.hpp</in>
+            <in>tm_source_entry.hpp</in>
+            <in>tm_target_entry.hpp</in>
           </df>
           <df name="proxy">
+            <in>tm_proxy.hpp</in>
+            <in>tm_proxy_local.hpp</in>
+            <in>tm_query_proxy.hpp</in>
+            <in>tm_query_proxy_local.hpp</in>
           </df>
+          <in>tm_configs.hpp</in>
+          <in>tm_configurator.hpp</in>
+          <in>tm_consts.hpp</in>
+          <in>tm_parameters.hpp</in>
         </df>
+        <in>cmd_line_handler.hpp</in>
+        <in>server_configs.hpp</in>
+        <in>server_consts.hpp</in>
+        <in>server_parameters.hpp</in>
+        <in>trans_info_provider.hpp</in>
+        <in>trans_job.hpp</in>
+        <in>trans_job_pool.hpp</in>
+        <in>trans_manager.hpp</in>
+        <in>trans_task.hpp</in>
+        <in>trans_task_id.hpp</in>
+        <in>translation_server.hpp</in>
       </df>
+      <in>main.hpp</in>
     </df>
     <df root="src" name="2">
       <df name="balancer">
         <df name="messaging">
+          <in>messaging.cpp</in>
         </df>
         <in>balancer_parameters.cpp</in>
         <in>bpbd_balancer.cpp</in>
@@ -810,7 +901,7 @@
     <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <compile>
         <compiledirpicklist>

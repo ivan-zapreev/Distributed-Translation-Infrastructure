@@ -31,6 +31,7 @@
 
 #include "client/messaging/trans_job_resp_in.hpp"
 
+#include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/translation_job.hpp"
 
@@ -98,6 +99,16 @@ namespace uva {
                      */
                     static inline void set_job_response(trans_job_resp_in * trans_job_resp) {
                         //ToDo: Implement handling of the translation job response
+                    }
+                    
+                    /**
+                     * Allows to notify the translations manager that there is a server
+                     * adapter disconnected, so there will be no replies to the sent requests.
+                     * @param uid the unique identifier of the adapter
+                     */
+                    static inline void notify_disconnected_server_adapter(const trans_server_uid & uid) {
+                        //ToDo: Implement cancellation of all the translation requests which have 
+                        //      been sent but the response was not received yet.
                     }
 
                 private:

@@ -23,6 +23,7 @@
  * Created on July 7, 2016, 12:09 PM
  */
 
+#include "balancer/translation_server_adapter.hpp"
 #include "balancer/translation_servers_manager.hpp"
 #include "balancer/translation_manager.hpp"
 
@@ -30,14 +31,21 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
-                const balancer_parameters * translation_manager::m_params = NULL;
+                /*Translation server adapter*/
+                id_manager<trans_server_uid> translation_server_adapter::m_ids_manager(0);
                 
+                /*Translation manager*/
+                const balancer_parameters * translation_manager::m_params = NULL;
+
+                /*Translation servers' manager*/
                 const balancer_parameters * translation_servers_manager::m_params = NULL;
-                map<string, translation_server_adapter> translation_servers_manager::m_server_adaptors;
+                translation_servers_manager::adapters_map translation_servers_manager::m_adapters_data;
                 thread * translation_servers_manager::m_re_connect = NULL;
                 mutex translation_servers_manager::m_re_connect_mutex;
                 condition_variable translation_servers_manager::m_re_connect_condition;
-                atomic<bool> translation_servers_manager::m_is_reconnect_run(true);
+                a_bool_flag translation_servers_manager::m_is_reconnect_run(true);
+                mutex translation_servers_manager::m_source_mutex;
+                translation_servers_manager::sources_map translation_servers_manager::m_sources;
             }
         }
     }

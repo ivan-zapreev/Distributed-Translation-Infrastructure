@@ -31,9 +31,9 @@
 #include "trans_task_id.hpp"
 #include "trans_info_provider.hpp"
 
+#include "common/utils/id_manager.hpp"
 #include "common/utils/threads/threads.hpp"
 #include "common/utils/logging/logger.hpp"
-#include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/status_code.hpp"
@@ -44,6 +44,7 @@
 
 using namespace std;
 
+using namespace uva::utils;
 using namespace uva::utils::threads;
 using namespace uva::utils::logging;
 
@@ -317,7 +318,7 @@ namespace uva {
 
                 private:
                     //Stores the flag that indicates that we need to stop the translation algorithm
-                    atomic<bool> m_is_stop;
+                    a_bool_flag m_is_stop;
 
                     //Stores the translation task session id, is needed for logging
                     const session_id_type m_session_id;

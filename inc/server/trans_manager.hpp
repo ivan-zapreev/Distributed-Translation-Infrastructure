@@ -34,8 +34,8 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/string_utils.hpp"
+#include "common/utils/id_manager.hpp"
 
-#include "common/messaging/id_manager.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
 
@@ -48,6 +48,7 @@
 using namespace std;
 using namespace std::placeholders;
 
+using namespace uva::utils;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;

@@ -30,18 +30,21 @@
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
-
+#include "common/utils/id_manager.hpp"
 #include "common/messaging/incoming_msg.hpp"
+
 #include "client/messaging/trans_job_resp_in.hpp"
 #include "client/messaging/supp_lang_resp_in.hpp"
 #include "client/messaging/supp_lang_req_out.hpp"
 #include "client/translation_client.hpp"
 
+#include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/translation_manager.hpp"
 
 using namespace std;
 
+using namespace uva::utils;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 
@@ -53,7 +56,7 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
-
+                
                 /**
                  * This is the translation server adapter class:
                  * Responsibilities:
@@ -69,15 +72,15 @@ namespace uva {
                 class translation_server_adapter {
                 public:
                     //Define 
-                    typedef function<void(const translation_server_adapter *, supp_lang_resp_in *) > ready_conn_notifier_type;
+                    typedef function<void(translation_server_adapter *, supp_lang_resp_in *) > ready_conn_notifier_type;
                     //Define the function type for the function used to notify about the disconnected server
-                    typedef function<void(const translation_server_adapter *) > closed_conn_notifier_type;
+                    typedef function<void(translation_server_adapter *) > closed_conn_notifier_type;
 
                     /**
                      * The basic constructor for the adapter class
                      */
                     translation_server_adapter()
-                    : m_params(NULL), m_client(NULL), m_is_enabled(false),
+                    : m_uid(m_ids_manager.get_next_id()), m_params(NULL), m_client(NULL), m_is_enabled(false),
                     m_is_connected(false), m_is_connecting(false),
                     m_lock_con(), m_notify_conn_closed_func() {
                     }
@@ -231,6 +234,14 @@ namespace uva {
                         return m_params->m_name;
                     }
 
+                    /**
+                     * Allows to get the unique identifier of the translation server adapter
+                     * @return the name of the server
+                     */
+                    inline const trans_server_uid & get_uid() const {
+                        return m_uid;
+                    }
+
                 protected:
 
                     /**
@@ -311,10 +322,11 @@ namespace uva {
                         //Check if the connection was open, as it can be the first time
                         //we tried to connect or a failed re-connection attempt.
                         if (m_is_connected) {
-                            //Notify the translation servers manager
+                            //Notify the translation servers manager that the server adapter is disconnected
                             m_notify_conn_closed_func(this);
 
-                            //ToDo: Implement, the sent translation requests currently awaiting responses are to be canceled
+                            //Notify the translation manager that there was a translation server connection lost
+                            translation_manager::notify_disconnected_server_adapter(m_uid);
 
                             //Once everything is processed the connection is truly closed
                             m_is_connected = false;
@@ -368,16 +380,20 @@ namespace uva {
                     }
 
                 private:
+                    //Stores the adapter uid manager for issuing the adapter ids
+                    static id_manager<trans_server_uid> m_ids_manager;
+                    //Stores the unique identifier for the given translation adapter
+                    const trans_server_uid m_uid;
                     //Stores the pointer to the translation server parameters
                     const trans_server_params * m_params;
                     //Stores the pointer to the translation client
                     translation_client * m_client;
                     //Stores the boolean flag indicating whether the adapter is enabled
-                    atomic<bool> m_is_enabled;
+                    a_bool_flag m_is_enabled;
                     //Stores the boolean flag indicating whether the adapter is connected 
-                    atomic<bool> m_is_connected;
+                    a_bool_flag m_is_connected;
                     //Stores the boolean flag indicating whether the adapter is connecting 
-                    atomic<bool> m_is_connecting;
+                    a_bool_flag m_is_connecting;
                     //Stores the synchronization mutex for connection
                     recursive_mutex m_lock_con;
                     //Stores the function needed to notify about ready connection
