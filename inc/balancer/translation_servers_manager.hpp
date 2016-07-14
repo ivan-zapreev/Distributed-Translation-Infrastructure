@@ -39,6 +39,7 @@
 #include "common/utils/string_utils.hpp"
 
 #include "client/messaging/supp_lang_resp_in.hpp"
+#include "server/messaging/supp_lang_resp_out.hpp"
 
 #include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
@@ -53,6 +54,7 @@ using namespace uva::utils::threads;
 using namespace uva::utils::text;
 
 using namespace uva::smt::bpbd::client::messaging;
+using namespace uva::smt::bpbd::server::messaging;
 
 namespace uva {
     namespace smt {
@@ -255,10 +257,12 @@ namespace uva {
                      * @return the string storing the serialized supported languages response
                      */
                     static inline string get_supported_lang_resp_data() {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        shared_guard guard(m_supp_lang_mutex);
+
+                        //Return the pre-computed string value
+                        return m_supp_lan_resp_str;
                     }
-                    
+
                 protected:
 
                     /**
@@ -267,6 +271,7 @@ namespace uva {
                      * @param lang_resp_msg the supported language pairs message, to be destroyed by this method
                      */
                     static inline void notify_ready(translation_server_adapter * adapter, supp_lang_resp_in * lang_resp_msg) {
+                        exclusive_guard guard(m_supp_lang_mutex);
                         LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is connected!" << END_LOG;
 
                         //Get the adapter to lock on its registrations
@@ -330,33 +335,11 @@ namespace uva {
                             }
                         }
 
+                        //Re-calculate the supported languages response
+                        update_supp_lang_resp();
+
                         //Destroy the message as it is not needed any more
                         delete lang_resp_msg;
-                    }
-
-                    /**
-                     * Allows to re-calculate the loads for the target entry.
-                     * Should be called when a new adapter was added/removed.
-                     * Not synchronized, is to be called from a context with
-                     * an exclusive lock on target->m_adapters_mutex
-                     * @param target the pointer to the target entry, not NULL
-                     */
-                    static inline void re_calculate_loads(target_entry * target) {
-                        //Initialize an array of weights
-                        vector<float> weights;
-
-                        //Fill in the vector
-                        for (auto iter = target->m_adapters.begin(); iter != target->m_adapters.end(); ++iter) {
-                            weights.push_back((*iter)->get_weight());
-                        }
-
-                        //Re-set the distribution
-                        discrete_distribution<float> new_distribution(weights.begin(), weights.end());
-
-                        //Assign the new distribution to the stored one
-                        target->m_distribution = new_distribution;
-
-                        LOG_DEBUG << "The new target weights: " << vector_to_string(weights) << END_LOG;
                     }
 
                     /**
@@ -367,6 +350,7 @@ namespace uva {
                      * @param adapter the pointer to the translation server adapter that got disconnected, not NULL
                      */
                     static inline void notify_disconnected(translation_server_adapter * adapter) {
+                        exclusive_guard guard(m_supp_lang_mutex);
                         LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is disconnected!" << END_LOG;
 
                         //Get the adapter to lock on its registrations
@@ -402,6 +386,108 @@ namespace uva {
                             //Erase all the adapter registrations
                             adapter_data.m_registrations.clear();
                         }
+
+                        //Re-calculate the supported languages response
+                        update_supp_lang_resp();
+                    }
+
+                private:
+                    //Stores the pointer to the parameters structure 
+                    static const balancer_parameters * m_params;
+                    //Stores the mapping from the server names to the server adapters
+                    static adapters_map m_adapters_data;
+                    //Stores the pointer to the re-connection thread
+                    static thread * m_re_connect;
+                    //Stores the synchronization primitive instances
+                    static mutex m_re_connect_mutex;
+                    static condition_variable m_re_connect_condition;
+                    //Stores the flag that indicates for how long the reconnection thread needs to run
+                    static a_bool_flag m_is_reconnect_run;
+                    //Stores the synchronization mutex for the manager
+                    static shared_mutex m_source_mutex;
+                    //Stores the language pair mappings to the adapters map
+                    static sources_map m_sources;
+                    //Stores the supported languages response
+                    static supp_lang_resp_out m_supp_lan_resp;
+                    //Stores the supported languages response
+                    static string m_supp_lan_resp_str;
+                    //The mutex to synchronize generation of the supported language responses
+                    static shared_mutex m_supp_lang_mutex;
+
+                    /**
+                     * The private constructor to keep the class from being instantiated
+                     */
+                    translation_servers_manager() {
+                    }
+
+                    /**
+                     * This function allows to update the supported languages response
+                     * and must be called from a sychronized context that ensures that
+                     * there are no changes made in between to the source or target entries
+                     * I.e. the supported languages stay the same until the new response is
+                     * fully build and generated.
+                     */
+                    static inline void update_supp_lang_resp() {
+                        //Re-set the response
+                        m_supp_lan_resp.reset();
+
+                        //Start the object
+                        m_supp_lan_resp.start_supp_lang_obj();
+
+                        //Iterate through the languages and build the response
+                        //No need to synchronize here as we must be in a
+                        //thread safe caller's context.
+                        for (auto s_iter = m_sources.begin(); s_iter != m_sources.end(); ++s_iter) {
+                            //Get the targets
+                            targets_map & targets = s_iter->second.m_targets;
+                            //Check if there are currently known targets
+                            if (targets.size() > 0) {
+                                //Start the array
+                                m_supp_lan_resp.start_source_lang_arr(language_registry::get_name(s_iter->first));
+                                for (auto t_iter = targets.begin(); t_iter != targets.end(); ++t_iter) {
+                                    adapters_list & adapters = t_iter->second.m_adapters;
+                                    //Check if the target has ready adapters
+                                    if (adapters.size() > 0) {
+                                        m_supp_lan_resp.add_target_lang(language_registry::get_name(t_iter->first));
+                                    }
+                                }
+                                //End the array
+                                m_supp_lan_resp.end_source_lang_arr();
+                            }
+                        }
+
+                        //End the object
+                        m_supp_lan_resp.end_supp_lang_obj();
+
+                        //Serialize and store the string
+                        m_supp_lan_resp_str = m_supp_lan_resp.serialize();
+
+                        LOG_DEBUG << "Supported languages response: " << m_supp_lan_resp_str << END_LOG;
+                    }
+
+                    /**
+                     * Allows to re-calculate the loads for the target entry.
+                     * Should be called when a new adapter was added/removed.
+                     * Not synchronized, is to be called from a context with
+                     * an exclusive lock on target->m_adapters_mutex
+                     * @param target the pointer to the target entry, not NULL
+                     */
+                    static inline void re_calculate_loads(target_entry * target) {
+                        //Initialize an array of weights
+                        vector<float> weights;
+
+                        //Fill in the vector
+                        for (auto iter = target->m_adapters.begin(); iter != target->m_adapters.end(); ++iter) {
+                            weights.push_back((*iter)->get_weight());
+                        }
+
+                        //Re-set the distribution
+                        discrete_distribution<float> new_distribution(weights.begin(), weights.end());
+
+                        //Assign the new distribution to the stored one
+                        target->m_distribution = new_distribution;
+
+                        LOG_DEBUG << "The new target weights: " << vector_to_string(weights) << END_LOG;
                     }
 
                     /**
@@ -461,31 +547,6 @@ namespace uva {
                             delete m_re_connect;
                             m_re_connect = NULL;
                         }
-                    }
-
-                private:
-                    //Stores the pointer to the parameters structure 
-                    static const balancer_parameters * m_params;
-                    //Stores the mapping from the server names to the server adapters
-                    static adapters_map m_adapters_data;
-                    //Stores the pointer to the re-connection thread
-                    static thread * m_re_connect;
-                    //Stores the synchronization primitive instances
-                    static mutex m_re_connect_mutex;
-                    static condition_variable m_re_connect_condition;
-                    //Stores the flag that indicates for how long the reconnection thread needs to run
-                    static a_bool_flag m_is_reconnect_run;
-                    //Stores the synchronization mutex for the manager
-                    static shared_mutex m_source_mutex;
-                    //Stores the language pair mappings to the adapters map
-                    static sources_map m_sources;
-
-                    //Stores the mapping from the source/target language pairs to the adaptor sets
-
-                    /**
-                     * The private constructor to keep the class from being instantiated
-                     */
-                    translation_servers_manager() {
                     }
                 };
             }

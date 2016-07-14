@@ -29,12 +29,14 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
-                    constexpr language_uid language_registry::UNKNONW_LANGUAGE_ID;
-                    constexpr language_uid language_registry::MIN_LANGUAGE_ID;
-                    id_manager<language_uid> language_registry::m_id_mgr(MIN_LANGUAGE_ID);
-                    shared_mutex language_registry::m_lang_mutex;
-                    unordered_map<string, language_uid> language_registry::m_lang_to_id;
-        
+                constexpr language_uid language_registry::UNKNONW_LANGUAGE_ID;
+                const string language_registry::UNKNONW_LANGUAGE_NAME = "<unknown-language>";
+
+                constexpr language_uid language_registry::MIN_LANGUAGE_ID;
+                id_manager<language_uid> language_registry::m_id_mgr(MIN_LANGUAGE_ID);
+                shared_mutex language_registry::m_lang_mutex;
+                unordered_map<string, language_uid> language_registry::m_lang_to_id;
+                unordered_map<language_uid, string> language_registry::m_id_to_lang;
             }
         }
     }

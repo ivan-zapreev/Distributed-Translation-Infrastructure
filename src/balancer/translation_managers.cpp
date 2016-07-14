@@ -47,6 +47,9 @@ namespace uva {
                 a_bool_flag translation_servers_manager::m_is_reconnect_run(true);
                 mutex translation_servers_manager::m_source_mutex;
                 translation_servers_manager::sources_map translation_servers_manager::m_sources;
+                supp_lang_resp_out translation_servers_manager::m_supp_lan_resp;
+                string translation_servers_manager::m_supp_lan_resp_str;
+                shared_mutex translation_servers_manager::m_supp_lang_mutex;
             }
         }
     }

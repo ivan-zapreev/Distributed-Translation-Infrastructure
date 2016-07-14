@@ -37,11 +37,11 @@ namespace uva {
         namespace bpbd {
             namespace common {
                 namespace messaging {
-                    
+
                     //The JSON writer type, can be configures to use two variants
                     //typedef PrettyWriter<StringBuffer> JSONWriter; //This one is good for testing, to make JSON more readable
                     typedef Writer<StringBuffer> JSONWriter; //This one is good for production, works faster, no extra characters
-                    
+
                     /**
                      * This class represents a JSON message begin sent between the client and the server.
                      */
@@ -52,13 +52,10 @@ namespace uva {
                          * The basic constructor
                          * @param type the message type
                          */
-                        outgoing_msg(msg_type type) : msg_base(), m_string_buf(), m_writer(m_string_buf) {
-                            //Initialize the outgoing message with the protocol version and type data
-                            m_writer.StartObject();
-                            m_writer.String(PROT_VER_FIELD_NAME);
-                            m_writer.Uint(PROTOCOL_VERSION);
-                            m_writer.String(MSG_TYPE_FIELD_NAME);
-                            m_writer.Int(type);
+                        outgoing_msg(msg_type type)
+                        : msg_base(), m_type(type), m_string_buf(), m_writer(m_string_buf) {
+                            //Initialize the outgoing message with the protocol version, type data and etc
+                            initialize_object();
                         }
 
                         /**
@@ -80,13 +77,40 @@ namespace uva {
                             return m_string_buf.GetString();
                         }
 
+                        /**
+                         * Allows to re-set the outgoing messages
+                         */
+                        inline void reset() {
+                            //Clear the buffer
+                            m_string_buf.Clear();
+                            //Re-set the writer to the cleared buffer
+                            m_writer.Reset(m_string_buf);
+
+                            //Initialize the outgoing message with the protocol version, type data and etc
+                            initialize_object();
+                        }
+
                     private:
+                        //Stores the message type
+                        msg_type m_type;
+
                         //Stores the string buffer to where the JSON string will be written
                         StringBuffer m_string_buf;
 
                     protected:
                         //Stores the JSON writer to be used for streaming response.
                         JSONWriter m_writer;
+
+                        /**
+                         * Initialize the outgoing message with the protocol version, type data and etc
+                         */
+                        void initialize_object() {
+                            m_writer.StartObject();
+                            m_writer.String(PROT_VER_FIELD_NAME);
+                            m_writer.Uint(PROTOCOL_VERSION);
+                            m_writer.String(MSG_TYPE_FIELD_NAME);
+                            m_writer.Int(m_type);
+                        }
                     };
 
                 }

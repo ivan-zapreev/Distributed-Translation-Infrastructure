@@ -58,8 +58,31 @@ namespace uva {
                 public:
                     //The id value given to an unknown language
                     static constexpr language_uid UNKNONW_LANGUAGE_ID = 0;
+                    //The id value given to an unknown language
+                    static const string UNKNONW_LANGUAGE_NAME;
                     //The first known language id value
                     static constexpr language_uid MIN_LANGUAGE_ID = UNKNONW_LANGUAGE_ID + 1;
+
+                    /**
+                     * Allows to get the language name for its UID
+                     * @param uid the language uid
+                     * @return the language name, UNKNOWN is returned if the UID is not known.
+                     */
+                    static inline const string & get_name(const language_uid & uid) {
+                        shared_guard read_guard(m_lang_mutex);
+                        
+                        //Search for the language in the map
+                        auto iter = m_id_to_lang.find(uid);
+
+                        //Check if the language is found
+                        if (iter != m_id_to_lang.end()) {
+                            //Return the language name
+                            return iter->second;
+                        } else {
+                            //Return the unknown language name
+                            return UNKNONW_LANGUAGE_NAME;
+                        }
+                    }
 
                     /**
                      * A synchronized function that allows to get a unique id for the given language
@@ -97,6 +120,8 @@ namespace uva {
                         if (ref == UNKNONW_LANGUAGE_ID) {
                             //The language id is not known, issue a new one!
                             ref = m_id_mgr.get_next_id();
+                            //Add the id to language mapping
+                            m_id_to_lang[ref] = name;
                         }
 
                         //Return the id
@@ -110,6 +135,8 @@ namespace uva {
                     static shared_mutex m_lang_mutex;
                     //Stores the map to be synchronized which stores mapping from the language name to its id
                     static unordered_map<string, language_uid> m_lang_to_id;
+                    //Stores the backwards mapping from the id to its string representation
+                    static unordered_map<language_uid, string> m_id_to_lang;
                 };
             }
         }
