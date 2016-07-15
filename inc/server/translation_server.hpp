@@ -26,37 +26,12 @@
 #ifndef TRANSLATION_SERVER_HPP
 #define TRANSLATION_SERVER_HPP
 
-#include <iostream>
-#include <functional>
-
-#define ASIO_STANDALONE
-#include <websocketpp/config/asio_no_tls.hpp>
-#include <websocketpp/server.hpp>
-
-#include "common/utils/exceptions.hpp"
-#include "common/utils/logging/logger.hpp"
-
-#include "common/messaging/status_code.hpp"
-#include "common/messaging/incoming_msg.hpp"
+#include "common/messaging//websocket_server.hpp"
 
 #include "server/trans_manager.hpp"
 #include "server/server_parameters.hpp"
 
-#include "server/messaging/supp_lang_req_in.hpp"
-#include "server/messaging/trans_job_req_in.hpp"
-#include "server/messaging/supp_lang_resp_out.hpp"
-#include "server/messaging/trans_job_resp_out.hpp"
-
 using namespace std;
-using namespace std::placeholders;
-
-using namespace websocketpp;
-using namespace websocketpp::frame;
-using namespace websocketpp::lib;
-using namespace websocketpp::log;
-
-using namespace uva::utils::logging;
-using namespace uva::utils::exceptions;
 using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
@@ -68,16 +43,15 @@ namespace uva {
                  * This is the translation server class implementing the functionality of
                  * receiving the client connections and doing translation jobs for them.
                  */
-                class translation_server {
+                class translation_server : public websocket_server {
                 public:
-                    typedef websocketpp::server<websocketpp::config::asio> server;
 
                     /**
                      * The basic constructor
                      * @param params the server parameters
                      */
                     translation_server(const server_parameters &params)
-                    : m_manager(params.m_num_threads), m_params(params) {
+                    : websocket_server(params.m_server_port), m_manager(params.m_num_threads), m_params(params) {
                         //Initialize the supported languages and store the response for future use
                         supp_lang_resp_out supp_lang_resp;
                         //Add the supported languages
@@ -86,31 +60,11 @@ namespace uva {
                         supp_lang_resp.add_target_lang(params.m_target_lang);
                         supp_lang_resp.end_source_lang_arr();
                         supp_lang_resp.end_supp_lang_obj();
-                        
+
                         m_supp_lang_resp = supp_lang_resp.serialize();
-
-                        //Set up access channels to only log interesting things
-                        m_server.clear_access_channels(log::alevel::all);
-                        m_server.set_access_channels(log::alevel::none);
-                        m_server.clear_error_channels(log::alevel::all);
-                        m_server.set_error_channels(log::alevel::none);
-
-                        //Initialize the Asio transport policy
-                        m_server.init_asio();
-
-                        //Add the handlers for the connection events
-                        m_server.set_open_handler(bind(&trans_manager::open_session, &m_manager, _1));
-                        m_server.set_close_handler(bind(&trans_manager::close_session, &m_manager, _1));
-                        m_server.set_fail_handler(bind(&trans_manager::close_session, &m_manager, _1));
-
-                        //Bind the handlers we are using
-                        m_server.set_message_handler(bind(&translation_server::on_message, this, _1, _2));
 
                         //Set the reply sending function to the translation manager
                         m_manager.set_response_sender(bind(&translation_server::send_response, this, _1, _2));
-
-                        //Set the port that the server will listen to
-                        m_server.listen(params.m_server_port);
                     }
 
                     /**
@@ -131,134 +85,57 @@ namespace uva {
                         m_manager.report_run_time_info();
                     }
 
-                    /**
-                     * Allows to run the server
-                     */
-                    void run() {
-                        m_server.start_accept();
-                        m_server.run();
-                    }
-
-                    /**
-                     * Allows to stop the translation server
-                     */
-                    void stop() {
-                        LOG_DEBUG << "Removing the on_close handler." << END_LOG;
-                        //Remove the on_close handler
-                        m_server.set_close_handler(NULL);
-
-                        LOG_DEBUG << "Stop listening to the new connections." << END_LOG;
-                        //Stop listening to the (new) connections
-                        m_server.stop_listening();
-
-                        LOG_USAGE << "Stopping the session manager." << END_LOG;
-                        //Stop the session manager, this should cancel all the unfinished translation tasks
-                        m_manager.stop();
-
-                        LOG_USAGE << "Stopping the WEBSOCKET server." << END_LOG;
-                        //Stop the server
-                        m_server.stop();
-                    }
-
                 protected:
 
                     /**
-                     * Allows to send the response to the client associated with the given connection handler.
-                     * @param hdl the connection handler to identify the connection
-                     * @param reply_str the response string
+                     * @see websocket_server
                      */
-                    inline void send_response(connection_hdl hdl, const string reply_str) {
-                        LOG_DEBUG << "Sending the job response: ____" << reply_str << "____" << END_LOG;
-
-                        //Declare the error code
-                        lib::error_code ec;
-
-                        //Send/schedule the translation job reply
-                        m_server.send(hdl, reply_str, opcode::text, ec);
-
-                        //Locally report sending error
-                        if (ec) {
-                            LOG_ERROR << "Failed sending error '" << reply_str << "' reply: " << ec.message() << END_LOG;
-                        }
-
-                        LOG_DEBUG << "The job response: ____" << reply_str << "____ is sent!" << END_LOG;
+                    virtual void after_stopped_listening() override {
+                        LOG_USAGE << "Stopping the session manager." << END_LOG;
+                        //Stop the session manager, this should cancel all the unfinished translation tasks
+                        m_manager.stop();
                     }
 
                     /**
-                     * Is called when the message is received by the server
-                     * @param hdl the connection handler
-                     * @param raw_msg the received message
+                     * @see websocket_server
                      */
-                    inline void on_message(websocketpp::connection_hdl hdl, server::message_ptr raw_msg) {
-                        LOG_DEBUG << "Received a message!" << END_LOG;
-
-                        //Create an empty json message
-                        incoming_msg * jmsg = new incoming_msg();
-
-                        //De-serialize the message and then handle based on its type
-                        try {
-                            string raw_msg_str = raw_msg->get_payload();
-
-                            LOG_DEBUG << "Received JSON msg: " << raw_msg_str << END_LOG;
-
-                            //De-serialize the message
-                            jmsg->de_serialize(raw_msg_str);
-
-                            //Handle the request message based on its type
-                            switch (jmsg->get_msg_type()) {
-                                case msg_type::MESSAGE_TRANS_JOB_REQ:
-                                    translation_job(hdl, jmsg);
-                                    break;
-                                case msg_type::MESSAGE_SUPP_LANG_REQ:
-                                    language_request(hdl, jmsg);
-                                    break;
-                                default:
-                                    THROW_EXCEPTION(string("Unsupported request type: ") + to_string(jmsg->get_msg_type()));
-                            }
-                        } catch (std::exception & e) {
-                            //Send the error response, NOTE! This is not a JSON we are sending
-                            //back, but just a string, as someone violated the protocol!
-                            send_response(hdl, e.what());
-                        }
+                    virtual void open_session(websocketpp::connection_hdl hdl) override {
+                        m_manager.open_session(hdl);
                     }
 
                     /**
-                     * This method allows to handle the supported-languages request
-                     * This function must not throw!
-                     * @param hdl the connection handler
-                     * @param msg a pointer to the JSON object storing the request data, not NULL.
+                     * @see websocket_server
                      */
-                    inline void language_request(websocketpp::connection_hdl hdl, const incoming_msg * msg) {
-                        //Create the supported languages request message. This is done so that
-                        //once the destructor is called the incoming message is destroyed.
-                        supp_lang_req_in supp_lang_req(msg);
+                    virtual void close_session(websocketpp::connection_hdl hdl) override {
+                        m_manager.close_session(hdl);
+                    }
 
+                    /**
+                     * @see websocket_server
+                     */
+                    virtual void language_request(websocketpp::connection_hdl hdl, supp_lang_req_in * msg) override {
                         //Send the response supported languages response
                         send_response(hdl, m_supp_lang_resp);
+
+                        //Destroy the message
+                        delete msg;
                     }
 
                     /**
-                     * This method allows to handle the translation job request
-                     * This function must not throw!
-                     * @param hdl the connection handler
-                     * @param msg a pointer to the JSON object storing the request data, not NULL.
+                     * @see websocket_server
                      */
-                    inline void translation_job(websocketpp::connection_hdl hdl, const incoming_msg * msg) {
-                        //Create translation job request, will be deleted by the translation job. This is
-                        //done so that once the destructor is called the incoming message is destroyed.
-                        trans_job_req_in trans_req(msg);
-
+                    virtual void translation_request(websocketpp::connection_hdl hdl, trans_job_req_in * msg) override {
                         //Declare the job id for the case of needed error reporting
                         job_id_type job_id_val = job_id::UNDEFINED_JOB_ID;
                         try {
                             //Check the source and target languages
-                            check_source_target_languages(trans_req.get_source_lang(), trans_req.get_target_lang());
+                            check_source_target_languages(msg->get_source_lang(), msg->get_target_lang());
 
                             //Store the job id in case of an error
-                            job_id_val = trans_req.get_job_id();
+                            job_id_val = msg->get_job_id();
 
                             //Schedule a translation job
-                            m_manager.translate(hdl, trans_req);
+                            m_manager.translate(hdl, *msg);
                         } catch (std::exception & ex) {
                             //Get the error message
                             string error_msg = ex.what();
@@ -272,9 +149,10 @@ namespace uva {
                             //Send the response
                             send_response(hdl, response.serialize());
                         }
-                    }
 
-                protected:
+                        //Delete the request message
+                        delete msg;
+                    }
 
                     /**
                      * Allows to check that the source and target languages are proper,

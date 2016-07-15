@@ -189,9 +189,6 @@ int main(int argc, char** argv) {
 
         //Start the translation server clients
         adapters_manager::enable();
-        
-        //Start the translation manager
-        translation_manager::start();
 
         LOG_USAGE << "Running the balancer server ..." << END_LOG;
 

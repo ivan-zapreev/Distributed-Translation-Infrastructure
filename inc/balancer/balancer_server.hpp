@@ -88,15 +88,6 @@ namespace uva {
                     static inline void configure(const balancer_parameters & params) {
                         m_params = &params;
 
-                        //Set up access channels to only log interesting things
-                        m_server.clear_access_channels(log::alevel::all);
-                        m_server.set_access_channels(log::alevel::none);
-                        m_server.clear_error_channels(log::alevel::all);
-                        m_server.set_error_channels(log::alevel::none);
-
-                        //Initialize the Asio transport policy
-                        m_server.init_asio();
-
                         //Add the handlers for the connection events
                         m_server.set_open_handler(translation_manager::open_session);
                         m_server.set_close_handler(translation_manager::close_session);
@@ -107,6 +98,15 @@ namespace uva {
 
                         //Configure the translation manager
                         translation_manager::configure(params, balancer_server::send_response);
+
+                        //Set up access channels to only log interesting things
+                        m_server.clear_access_channels(log::alevel::all);
+                        m_server.set_access_channels(log::alevel::none);
+                        m_server.clear_error_channels(log::alevel::all);
+                        m_server.set_error_channels(log::alevel::none);
+
+                        //Initialize the Asio transport policy
+                        m_server.init_asio();
 
                         //Set the port that the server will listen to
                         m_server.listen(params.m_server_port);
@@ -134,12 +134,10 @@ namespace uva {
                         LOG_DEBUG << "Stop listening to the new connections." << END_LOG;
                         //Stop listening to the (new) connections
                         m_server.stop_listening();
-                    }
 
-                    /**
-                     * Allows to finish the websockets server the balancer server
-                     */
-                    static inline void finish() {
+                        //Stop the translation manager
+                        translation_manager::stop();
+                        
                         LOG_USAGE << "Stopping the WEBSOCKET server." << END_LOG;
                         //Stop the server
                         m_server.stop();

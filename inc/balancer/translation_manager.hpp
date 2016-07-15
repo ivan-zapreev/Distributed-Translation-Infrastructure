@@ -81,15 +81,6 @@ namespace uva {
                     }
 
                     /**
-                     * The main method to start the translation manager
-                     */
-                    static inline void start() {
-                        LOG_DEBUG << "Starting the translation manager ..." << END_LOG;
-                        
-                        //ToDo: Implement
-                    }
-
-                    /**
                      * Allows to stop the translation manager
                      */
                     static inline void stop() {

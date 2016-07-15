@@ -161,12 +161,12 @@ namespace uva {
                         break;
                     case mem_inc_types_enum::LOG_2:
                         inc_func = [] (const size_t fcap) -> size_t {
-                            return fcap * (1 / log(fcap));
+                            return fcap * (1 / std::log(fcap));
                         };
                         break;
                     case mem_inc_types_enum::LOG_10:
                         inc_func = [] (const size_t fcap) -> size_t {
-                            return fcap * (1 / log10(fcap));
+                            return fcap * (1 / std::log10(fcap));
                         };
                         break;
                     default:

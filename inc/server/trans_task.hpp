@@ -138,7 +138,7 @@ namespace uva {
                         try {
                             LOG_DEBUG1 << "Invoking the sentence translation for task " << m_task_id << END_LOG;
                             m_decoder.translate();
-                        } catch (exception & ex) {
+                        } catch (std::exception & ex) {
                             //Set the response code
                             m_status_code = status_code::RESULT_ERROR;
                             //Set the error message for the client

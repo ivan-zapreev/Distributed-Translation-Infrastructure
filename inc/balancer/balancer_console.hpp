@@ -121,12 +121,6 @@ namespace uva {
                         //Stop the translation server
                         balancer_server::stop();
 
-                        //Stop the translation manager
-                        translation_manager::stop();
-
-                        //Finish the translation server
-                        balancer_server::finish();
-
                         //Wait until the server's thread stops
                         m_balancer_thread.join();
 
