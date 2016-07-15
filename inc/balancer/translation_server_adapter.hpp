@@ -246,7 +246,7 @@ namespace uva {
                      * Allows to get the load weight of the adapter
                      * @return the load weight of the adapter
                      */
-                    inline float get_weight() const {
+                    inline uint32_t get_weight() const {
                         return m_params->m_load_weight;
                     }
 

@@ -85,7 +85,7 @@ namespace uva {
                         //The list of the dapters
                         adapters_list m_adapters;
                         //Stores the random number generator for the target entry
-                        discrete_distribution<float> m_distribution;
+                        discrete_distribution<uint32_t> m_distribution;
 
                         /**
                          * Allows to get the translation server adapter to do the next translation.
@@ -474,7 +474,7 @@ namespace uva {
                      */
                     static inline void re_calculate_loads(target_entry * target) {
                         //Initialize an array of weights
-                        vector<float> weights;
+                        vector<uint32_t> weights;
 
                         //Fill in the vector
                         for (auto iter = target->m_adapters.begin(); iter != target->m_adapters.end(); ++iter) {
@@ -482,7 +482,7 @@ namespace uva {
                         }
 
                         //Re-set the distribution
-                        discrete_distribution<float> new_distribution(weights.begin(), weights.end());
+                        discrete_distribution<uint32_t> new_distribution(weights.begin(), weights.end());
 
                         //Assign the new distribution to the stored one
                         target->m_distribution = new_distribution;

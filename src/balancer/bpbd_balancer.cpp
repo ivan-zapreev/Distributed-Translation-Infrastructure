@@ -133,7 +133,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
             params.add_translator(tsn,
                     get_string(ini, tsn, trans_server_params::TC_ADDRESS_PARAM_NAME),
                     get_integer<uint16_t>(ini, tsn, trans_server_params::TC_PORT_PARAM_NAME),
-                    get_float(ini, tsn, trans_server_params::TC_LOAD_WEIGHT_PARAM_NAME));
+                    get_integer<uint32_t>(ini, tsn, trans_server_params::TC_LOAD_WEIGHT_PARAM_NAME));
         }
 
         //Finalize the parameters

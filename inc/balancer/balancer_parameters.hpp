@@ -63,7 +63,7 @@ namespace uva {
                     //Stores the load weight factor for the server,
                     //should be a value >= 0. If set to 0 then the
                     //translation server will not be used at all.
-                    float m_load_weight;
+                    uint32_t m_load_weight;
                 };
 
                 //Typedef the structure
@@ -115,7 +115,7 @@ namespace uva {
                      * @param load_weight the lod weight for the given server > 0
                      */
                     inline void add_translator(const string & name, const string & address,
-                            const uint16_t port, const float load_weight) {
+                            const uint16_t port, const uint32_t load_weight) {
                         //Check on the load weight
                         ASSERT_CONDITION_THROW((load_weight < 0),
                                 string("The server load weight in '") + name +
@@ -129,9 +129,6 @@ namespace uva {
                         data.m_address = address;
                         data.m_port = port;
                         data.m_load_weight = load_weight;
-
-                        //Increment the total weight
-                        m_total_load += load_weight;
                     }
 
                     /**
@@ -150,18 +147,8 @@ namespace uva {
                         ASSERT_CONDITION_THROW((iter == trans_servers.end()),
                                 string("The server: '") + name + string("' is not found!"));
 
-                        //Compute the new total weight and check if the total weight is now 0
-                        float total_load = m_total_load - iter->second.m_load_weight + load_weight;
-                        ASSERT_CONDITION_THROW((total_load <= 0),
-                                string("Invalid total servers' load weight: ") +
-                                to_string(total_load) + string(" must be > 0!"));
-
                         //Set the new load weight and total weight
                         iter->second.m_load_weight = load_weight;
-                        m_total_load = total_load;
-
-                        //Normalize the load weights of the servers
-                        normalize_server_loads();
                     }
 
                     /**
@@ -178,31 +165,10 @@ namespace uva {
                                 to_string(m_num_resp_threads) +
                                 string(" must be larger than zero! "));
 
-                        ASSERT_CONDITION_THROW((m_total_load <= 0),
-                                string("Invalid total servers' load weight: ") +
-                                to_string(m_total_load) + string(" must be > 0!"));
-
                         ASSERT_CONDITION_THROW((m_recon_time_out <= 0),
                                 string("Invalid reconnection time out: ") +
                                 to_string(m_recon_time_out) + string(" must be > 0!"));
-
-                        //Normalize the load weights of the servers
-                        normalize_server_loads();
                     }
-
-                    /**
-                     * Allows to re-normalize the server loads
-                     */
-                    inline void normalize_server_loads() {
-                        //Normalize the load weights of the servers
-                        for (auto iter = trans_servers.begin(); iter != trans_servers.end(); ++iter) {
-                            iter->second.m_load_weight /= m_total_load;
-                        }
-                    }
-
-                private:
-                    //Stores the total weight for normalizing the loads
-                    float m_total_load;
                 };
 
                 //Typedef the structure
@@ -216,7 +182,7 @@ namespace uva {
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const trans_server_params & params) {
                     return stream << "{" << params.m_name << ", ws://" << params.m_address << ":"
-                            << params.m_port << ", load=" << params.m_load_weight << "%}";
+                            << params.m_port << ", load weight=" << params.m_load_weight << "";
                 }
 
                 /**
