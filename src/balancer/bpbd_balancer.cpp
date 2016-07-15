@@ -155,7 +155,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
  */
 static void configure(balancer_parameters & params) {
     //Configure the translations server manager
-    translation_servers_manager::configure(params);
+    adapters_manager::configure(params);
 
     //Instantiate the translation server
     balancer_server::configure(params);
@@ -188,7 +188,7 @@ int main(int argc, char** argv) {
         configure(params);
 
         //Start the translation server clients
-        translation_servers_manager::enable();
+        adapters_manager::enable();
         
         //Start the translation manager
         translation_manager::start();

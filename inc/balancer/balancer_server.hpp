@@ -45,7 +45,7 @@
 #include "server/messaging/trans_job_resp_out.hpp"
 
 #include "balancer/balancer_parameters.hpp"
-#include "balancer/translation_servers_manager.hpp"
+#include "balancer/adapters_manager.hpp"
 #include "balancer/translation_manager.hpp"
 
 using namespace std;
@@ -219,7 +219,7 @@ namespace uva {
                         supp_lang_req_in supp_lang_req(msg);
 
                         //Send the response supported languages response
-                        send_response(hdl, translation_servers_manager::get_supported_lang_resp_data());
+                        send_response(hdl, adapters_manager::get_supported_lang_resp_data());
                     }
                     
                 private:

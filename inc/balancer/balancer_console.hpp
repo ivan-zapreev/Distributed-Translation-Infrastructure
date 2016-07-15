@@ -32,7 +32,7 @@
 
 #include "balancer/balancer_server.hpp"
 #include "balancer/translation_manager.hpp"
-#include "balancer/translation_servers_manager.hpp"
+#include "balancer/adapters_manager.hpp"
 
 using namespace std;
 
@@ -91,7 +91,7 @@ namespace uva {
                      */
                     virtual void report_run_time_info() {
                         //Report the translation servers' manager info
-                        translation_servers_manager::report_run_time_info();
+                        adapters_manager::report_run_time_info();
                         //Report the translation manager' info
                         translation_manager::report_run_time_info();
                     }
@@ -116,7 +116,7 @@ namespace uva {
                      */
                     virtual void stop() {
                         //Stop the translation servers manager
-                        translation_servers_manager::disable();
+                        adapters_manager::disable();
                         
                         //Stop the translation server
                         balancer_server::stop();

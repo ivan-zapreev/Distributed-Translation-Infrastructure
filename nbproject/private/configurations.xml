@@ -600,13 +600,13 @@
     </df>
     <df root="inc" name="1">
       <df name="balancer">
+        <in>adapters_manager.hpp</in>
         <in>balancer_console.hpp</in>
         <in>balancer_parameters.hpp</in>
         <in>balancer_server.hpp</in>
         <in>translation_job.hpp</in>
         <in>translation_manager.hpp</in>
-        <in>translation_server_adapter.hpp</in>
-        <in>translation_servers_manager.hpp</in>
+        <in>translator_adapter.hpp</in>
       </df>
       <df name="client">
         <df name="messaging">

@@ -26,7 +26,7 @@ Responsibilities:
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>530</x><y>10</y><w>400</w><h>210</h></coordinates><panel_attributes>lw=1.3
 &lt;&lt;thread&gt;&gt;
 &lt;&lt;synchronized&gt;&gt;
-translation_server_adapter
+translator_adapter
 --
 --
 --
@@ -45,7 +45,7 @@ m2=1</panel_attributes><additional_attributes>10;10;10;100;280;100</additional_a
 notify connection status &gt;
 </panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>550</x><y>338</y><w>350</w><h>150</h></coordinates><panel_attributes>&lt;&lt;singleton&gt;&gt;
 &lt;&lt;synchronized&gt;&gt;
-translation_servers_manager
+adapters_manager
 --
 --
 --

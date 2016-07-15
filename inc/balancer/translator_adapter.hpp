@@ -1,5 +1,5 @@
 /* 
- * File:   translation_server_adapter.hpp
+ * File:   translator_adapter.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -23,8 +23,8 @@
  * Created on July 7, 2016, 12:11 PM
  */
 
-#ifndef TRANSLATION_SERVER_ADAPTER_HPP
-#define TRANSLATION_SERVER_ADAPTER_HPP
+#ifndef TRANSLATOR_ADAPTER_HPP
+#define TRANSLATOR_ADAPTER_HPP
 
 #include <future>
 
@@ -69,17 +69,17 @@ namespace uva {
                  *      Send translation requests
                  *      Receive translation responses
                  */
-                class translation_server_adapter {
+                class translator_adapter {
                 public:
                     //Define 
-                    typedef function<void(translation_server_adapter *, supp_lang_resp_in *) > ready_conn_notifier_type;
+                    typedef function<void(translator_adapter *, supp_lang_resp_in *) > ready_conn_notifier_type;
                     //Define the function type for the function used to notify about the disconnected server
-                    typedef function<void(translation_server_adapter *) > closed_conn_notifier_type;
+                    typedef function<void(translator_adapter *) > closed_conn_notifier_type;
 
                     /**
                      * The basic constructor for the adapter class
                      */
-                    translation_server_adapter()
+                    translator_adapter()
                     : m_uid(m_ids_manager.get_next_id()), m_params(NULL), m_client(NULL), m_is_enabled(false),
                     m_is_connected(false), m_is_connecting(false),
                     m_lock_con(), m_notify_conn_closed_func() {
@@ -88,7 +88,7 @@ namespace uva {
                     /**
                      * The basic destructor for the adapter class
                      */
-                    virtual ~translation_server_adapter() {
+                    virtual ~translator_adapter() {
                         //Stop the server if it is not stopped yet
                         disable();
 
@@ -366,9 +366,9 @@ namespace uva {
                      */
                     inline void create_connection_client() {
                         m_client = new translation_client(m_params->m_address, m_params->m_port,
-                                bind(&translation_server_adapter::set_server_message, this, _1),
-                                bind(&translation_server_adapter::notify_conn_closed, this),
-                                bind(&translation_server_adapter::notify_conn_opened, this));
+                                bind(&translator_adapter::set_server_message, this, _1),
+                                bind(&translator_adapter::notify_conn_closed, this),
+                                bind(&translator_adapter::notify_conn_opened, this));
                     }
 
                     /**

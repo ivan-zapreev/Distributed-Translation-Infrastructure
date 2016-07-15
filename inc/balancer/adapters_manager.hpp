@@ -1,5 +1,5 @@
 /* 
- * File:   translation_servers_manager.hpp
+ * File:   adapters_manager.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -23,8 +23,8 @@
  * Created on July 7, 2016, 12:09 PM
  */
 
-#ifndef TRANSLATION_SERVERS_MANAGER_HPP
-#define TRANSLATION_SERVERS_MANAGER_HPP
+#ifndef ADAPTERS_MANAGER_HPP
+#define ADAPTERS_MANAGER_HPP
 
 #include <set>
 #include <map>
@@ -44,7 +44,7 @@
 #include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/language_registry.hpp"
-#include "balancer/translation_server_adapter.hpp"
+#include "balancer/translator_adapter.hpp"
 
 using namespace std;
 
@@ -69,11 +69,11 @@ namespace uva {
                  *      Keeps track of the known load on the servers
                  *      Advises translation server for a translation request
                  */
-                class translation_servers_manager {
+                class adapters_manager {
                 public:
 
                     //Typedef for the set storing the pointers to the adapters
-                    typedef vector<translation_server_adapter*> adapters_list;
+                    typedef vector<translator_adapter*> adapters_list;
 
                     /**
                      * This structure represents the target language entry
@@ -93,7 +93,7 @@ namespace uva {
                          * @return the translation server adapter to do the next translation
                          *         or NULL if the there is no adapters available.
                          */
-                        inline translation_server_adapter* get_adapter() {
+                        inline translator_adapter* get_adapter() {
                             //Add the adapter to the list of adapters
                             {
                                 shared_guard guard(m_adapters_mutex);
@@ -120,7 +120,7 @@ namespace uva {
                      */
                     typedef struct {
                         //Stores the adapter
-                        translation_server_adapter m_adapter;
+                        translator_adapter m_adapter;
                         //Stores the mutex for accessing the registrations
                         shared_mutex m_registrations_mutex;
                         //Stores the set of target entries in which this adaper is used.
@@ -160,8 +160,8 @@ namespace uva {
                         for (auto iter = params.trans_servers.begin(); iter != params.trans_servers.end(); ++iter) {
                             LOG_INFO3 << "Configuring '" << iter->second.m_name << "' adapter..." << END_LOG;
                             m_adapters_data[iter->first].m_adapter.configure(iter->second,
-                                    translation_servers_manager::notify_ready,
-                                    translation_servers_manager::notify_disconnected);
+                                    adapters_manager::notify_ready,
+                                    adapters_manager::notify_disconnected);
                             LOG_INFO2 << "'" << iter->second.m_name << "' adapter is configured" << END_LOG;
                         }
 
@@ -226,7 +226,7 @@ namespace uva {
                      * @return the pointer to the translation server dataper or NULL
                      * if there is no adapter for the given source/target language pair
                      */
-                    static inline translation_server_adapter * get_server_adapter(
+                    static inline translator_adapter * get_server_adapter(
                             const language_uid source_uid, const language_uid target_uid) {
                         //Get/create a source language entry, note that the entries are
                         //not removed, until the translation servers' manager is destroyed.
@@ -270,7 +270,7 @@ namespace uva {
                      * @param adapter the pointer to the translation server adapter that got ready, not NULL
                      * @param lang_resp_msg the supported language pairs message, to be destroyed by this method
                      */
-                    static inline void notify_ready(translation_server_adapter * adapter, supp_lang_resp_in * lang_resp_msg) {
+                    static inline void notify_ready(translator_adapter * adapter, supp_lang_resp_in * lang_resp_msg) {
                         exclusive_guard guard(m_supp_lang_mutex);
                         LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is connected!" << END_LOG;
 
@@ -349,7 +349,7 @@ namespace uva {
                      *       would be re-connecting too often, just let it work on the time-out
                      * @param adapter the pointer to the translation server adapter that got disconnected, not NULL
                      */
-                    static inline void notify_disconnected(translation_server_adapter * adapter) {
+                    static inline void notify_disconnected(translator_adapter * adapter) {
                         exclusive_guard guard(m_supp_lang_mutex);
                         LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is disconnected!" << END_LOG;
 
@@ -417,7 +417,7 @@ namespace uva {
                     /**
                      * The private constructor to keep the class from being instantiated
                      */
-                    translation_servers_manager() {
+                    adapters_manager() {
                     }
 
                     /**
@@ -522,7 +522,7 @@ namespace uva {
                         //Check if the re-connection thread is present, if not then add it
                         if (m_re_connect == NULL) {
                             //Create a thread that will take care of re-connecting
-                            m_re_connect = new thread(translation_servers_manager::re_connect_servers);
+                            m_re_connect = new thread(adapters_manager::re_connect_servers);
                         }
                     }
 
