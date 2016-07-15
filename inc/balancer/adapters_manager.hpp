@@ -150,19 +150,29 @@ namespace uva {
                     /**
                      * The basic constructor
                      * @param params the balancer parameters to configure from
-                     * @param manager the reference to the translation manager
                      */
-                    adapters_manager(const balancer_parameters & params, translation_manager &manager)
+                    adapters_manager(const balancer_parameters & params)
                     : m_params(params), m_adapters_data(), m_re_connect(NULL),
                     m_re_connect_mutex(), m_re_connect_condition(),
                     m_is_reconnect_run(true), m_source_mutex(), m_sources(), m_supp_lan_resp(),
                     m_supp_lan_resp_str(""), m_supp_lang_mutex() {
+                    }
+
+                    /**
+                     * Allows to configure the adapters manager.
+                     * @param trans_resp_func the function to be used to notify about the new translation response.
+                     * @param adapter_disc_func the function to be used to notify about a disconnected adapter
+                     */
+                    inline void set_functionals(trans_resp_notifier trans_resp_func,
+                            adapter_disc_notifier adapter_disc_func) {
                         LOG_INFO3 << "Configuring the translation servers' manager" << END_LOG;
+
                         //Iterate through the list of translation server
                         //configs and create an adapter for each of them
                         for (auto iter = m_params.trans_servers.begin(); iter != m_params.trans_servers.end(); ++iter) {
                             LOG_INFO3 << "Configuring '" << iter->second.m_name << "' adapter..." << END_LOG;
-                            m_adapters_data[iter->first].m_adapter.configure(manager, iter->second,
+                            m_adapters_data[iter->first].m_adapter.configure(iter->second,
+                                    trans_resp_func, adapter_disc_func,
                                     bind(&adapters_manager::notify_ready, this, _1, _2),
                                     bind(&adapters_manager::notify_disconnected, this, _1));
                             LOG_INFO2 << "'" << iter->second.m_name << "' adapter is configured" << END_LOG;

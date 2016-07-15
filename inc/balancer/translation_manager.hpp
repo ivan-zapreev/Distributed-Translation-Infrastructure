@@ -36,6 +36,7 @@
 
 #include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
+#include "balancer/translator_adapter.hpp"
 #include "balancer/translation_job.hpp"
 
 using namespace std;
@@ -67,17 +68,27 @@ namespace uva {
                  */
                 class translation_manager : public session_manager {
                 public:
-
                     //Declare the response setting function for the translation job.
                     typedef function<void(websocketpp::connection_hdl, const string &) > response_sender;
+                    //Declare the function that will be choosing the proper adapter for the translation job
+                    typedef function<translator_adapter *(const language_uid, const language_uid)> adapter_chooser;
 
                     /**
                      * The basic constructor
                      * @param params the parameters from which the server will be configured
-                     * @param sender the s ender functional to be set
                      */
-                    translation_manager(const balancer_parameters & params, response_sender sender)
-                    : m_params(params), m_sender_func(sender) {
+                    translation_manager(const balancer_parameters & params)
+                    : m_params(params), m_sender_func(NULL), m_chooser_func(NULL) {
+                    }
+                    
+                    /**
+                     * Allows to set the functionals needed to communicate to other objects
+                     * @param sender the translation response sender functional to be set
+                     * @param chooser the function needed for getting translation adapters
+                     */
+                    inline void set_functionals(response_sender sender, adapter_chooser chooser) {
+                        m_sender_func = sender;
+                        m_chooser_func = chooser;
                     }
                     
                     /**
@@ -98,7 +109,7 @@ namespace uva {
                      * Allows to process the server translation job response message
                      * @param trans_job_resp a pointer to the translation job response data, not NULL
                      */
-                    inline void register_translation_response(trans_job_resp_in * trans_job_resp) {
+                    inline void notify_translation_response(trans_job_resp_in * trans_job_resp) {
                         //ToDo: Implement handling of the translation job response
                     }
 
@@ -107,7 +118,7 @@ namespace uva {
                      * @param hdl the connection handler to identify the session object.
                      * @param trans_job_req a pointer to the translation job request data, not NULL
                      */
-                    inline void register_translation_request(websocketpp::connection_hdl hdl, trans_job_req_in * trans_job_req) {
+                    inline void notify_translation_request(websocketpp::connection_hdl hdl, trans_job_req_in * trans_job_req) {
                         //ToDo: Implement handling of the translation job response
                     }
 
@@ -135,6 +146,8 @@ namespace uva {
                     const balancer_parameters & m_params;
                     //Stores the reply sender functional
                     response_sender m_sender_func;
+                    //Stores the function for choosing the adapter
+                    adapter_chooser m_chooser_func;
                 };
 
             }

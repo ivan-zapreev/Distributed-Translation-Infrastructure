@@ -40,7 +40,6 @@
 
 #include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
-#include "balancer/translation_manager.hpp"
 
 using namespace std;
 
@@ -56,6 +55,10 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
+                //Define the functional to set the translation response
+                typedef function<void(trans_job_resp_in *) > trans_resp_notifier;
+                //Define the functional to notify about the translator adapter disconnect
+                typedef function<void(const trans_server_uid & uid) > adapter_disc_notifier;
 
                 /**
                  * This is the translation server adapter class:
@@ -71,7 +74,7 @@ namespace uva {
                  */
                 class translator_adapter {
                 public:
-                    //Define 
+                    //Define ready connection notifier function
                     typedef function<void(translator_adapter *, supp_lang_resp_in *) > ready_conn_notifier_type;
                     //Define the function type for the function used to notify about the disconnected server
                     typedef function<void(translator_adapter *) > closed_conn_notifier_type;
@@ -80,8 +83,10 @@ namespace uva {
                      * The basic constructor for the adapter class
                      */
                     translator_adapter()
-                    : m_uid(m_ids_manager.get_next_id()), m_params(NULL), m_manager(NULL), m_client(NULL), m_is_enabled(false),
-                    m_is_connected(false), m_is_connecting(false), m_lock_con(), m_notify_conn_closed_func() {
+                    : m_uid(m_ids_manager.get_next_id()), m_params(NULL),
+                    m_trans_resp_func(NULL), m_adapter_disc_func(NULL),
+                    m_client(NULL), m_is_enabled(false), m_is_connected(false),
+                    m_is_connecting(false), m_lock_con(), m_notify_conn_closed_func() {
                     }
 
                     /**
@@ -97,11 +102,16 @@ namespace uva {
 
                     /**
                      * Allows to configure the adapter with the translation server parameters
-                     * @params the reference to the translation manager
                      * @param params the translation server parameters
+                     * @param trans_resp_func the functional to notify about the translation response
+                     * @param adapter_disc_func the functional to notify about the adapter disconnect
+                     * @param notify_conn_ready_func the functional to notify about the adapter ready
                      * @param notify_conn_closed_func the function to notify about the closed server connection
                      */
-                    inline void configure(translation_manager & manager, const trans_server_params & params,
+                    inline void configure(
+                            const trans_server_params & params,
+                            trans_resp_notifier trans_resp_func,
+                            adapter_disc_notifier adapter_disc_func,
                             ready_conn_notifier_type notify_conn_ready_func,
                             closed_conn_notifier_type notify_conn_closed_func) {
                         recursive_guard guard(m_lock_con);
@@ -110,11 +120,13 @@ namespace uva {
                         ASSERT_CONDITION_THROW(m_is_enabled,
                                 string("Trying to re-configure an enabled adapter for: ") + m_params->m_name);
 
-                        //Store the pointer to the translation manager
-                        m_manager = &manager;
-
                         //Store the reference to the parameters
                         m_params = &params;
+
+                        //Store the functional to notify about the translation response
+                        m_trans_resp_func = trans_resp_func;
+                        //Store the functional to notify about the adapter disconnect
+                        m_adapter_disc_func = adapter_disc_func;
 
                         //Store the functions needed to notify about the connection
                         m_notify_conn_ready_func = notify_conn_ready_func;
@@ -273,7 +285,7 @@ namespace uva {
                                 trans_job_resp_in * job_resp_msg = new trans_job_resp_in(json_msg);
                                 try {
                                     //Set the newly received job response
-                                    m_manager->register_translation_response(job_resp_msg);
+                                    m_trans_resp_func(job_resp_msg);
                                 } catch (std::exception & ex) {
                                     LOG_ERROR << ex.what() << END_LOG;
                                     //Delete the message as it was not set
@@ -337,7 +349,7 @@ namespace uva {
                             m_notify_conn_closed_func(this);
 
                             //Notify the translation manager that there was a translation server connection lost
-                            m_manager->notify_adapter_disconnect(m_uid);
+                            m_adapter_disc_func(m_uid);
 
                             //Once everything is processed the connection is truly closed
                             m_is_connected = false;
@@ -397,8 +409,11 @@ namespace uva {
                     const trans_server_uid m_uid;
                     //Stores the pointer to the translation server parameters
                     const trans_server_params * m_params;
-                    //Stores the pointer to the translation manager
-                    translation_manager * m_manager;
+                    //Stores the functional to notify about the translation response
+                    trans_resp_notifier m_trans_resp_func;
+                    //Stores the functional to notify about the adapter disconnect
+                    adapter_disc_notifier m_adapter_disc_func;
+
                     //Stores the pointer to the translation client
                     translation_client * m_client;
                     //Stores the boolean flag indicating whether the adapter is enabled

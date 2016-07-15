@@ -58,9 +58,18 @@ namespace uva {
                      * @param params the balancer parameters
                      */
                     balancer_server(const balancer_parameters & params)
-                    : websocket_server(params.m_server_port),
-                            m_manager(params, bind(&balancer_server::send_response, this, _1, _2)),
-                            m_adapters(params, m_manager) {
+                    : websocket_server(params.m_server_port), m_manager(params), m_adapters(params) {
+                        //Provide the adapters manager with the functions needed to notify about the
+                        //new translation response and the disconnected translator adapter
+                        m_adapters.set_functionals(
+                                bind(&translation_manager::notify_translation_response, &m_manager, _1),
+                                bind(&translation_manager::notify_adapter_disconnect, &m_manager, _1));
+                        
+                        //Provide the manager with the functional for sending
+                        //the translation response and getting the adapters
+                        m_manager.set_functionals(
+                                bind(&balancer_server::send_response, this, _1, _2),
+                                bind(&adapters_manager::get_server_adapter, &m_adapters, _1, _2));
                     }
 
                     /**
@@ -69,7 +78,7 @@ namespace uva {
                     void report_run_time_info() {
                         //Report the translation servers' manager info
                         m_adapters.report_run_time_info();
-                        
+
                         //Report the translation manager' info
                         m_manager.report_run_time_info();
                     }
@@ -90,7 +99,7 @@ namespace uva {
                     virtual void after_stop_listening() override {
                         //Stop the translation servers manager
                         m_adapters.disable();
-                        
+
                         //Stop the translation manager
                         m_manager.stop();
                     }
@@ -126,7 +135,7 @@ namespace uva {
                     virtual void translation_request(websocketpp::connection_hdl hdl, trans_job_req_in * msg) override {
                         //Register the translation request, the request message
                         //is to be deleted/handled by the translation manager
-                        m_manager.register_translation_request(hdl, msg);
+                        m_manager.notify_translation_request(hdl, msg);
                     }
 
                 private:
