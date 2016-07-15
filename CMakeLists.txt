@@ -87,7 +87,6 @@ set(LOAD_BALANCER_SOURCES
     src/balancer/language_registry.cpp
     src/balancer/balancer_parameters.cpp
     src/balancer/translation_managers.cpp
-    src/balancer/balancer_server.cpp
     src/balancer/bpbd_balancer.cpp
 )
 #Define the server executable

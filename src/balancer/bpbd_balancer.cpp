@@ -149,19 +149,6 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 }
 
 /**
- * Allows to configure the translation servers manager.
- * This part also starts the process of connecting to the client servers
- * @param params the balancer parameters
- */
-static void configure(balancer_parameters & params) {
-    //Configure the translations server manager
-    adapters_manager::configure(params);
-
-    //Instantiate the translation server
-    balancer_server::configure(params);
-}
-
-/**
  * The main program entry point
  */
 int main(int argc, char** argv) {
@@ -184,21 +171,24 @@ int main(int argc, char** argv) {
         //Prepare the configuration structures, parse the config file
         prepare_config_structures(argc, argv, params);
 
-        //Configure the main application entities
-        configure(params);
+        //Configure the translations server manager
+        adapters_manager::configure(params);
 
         //Start the translation server clients
         adapters_manager::enable();
 
+        //Instantiate the balancer server
+        balancer_server server(params);
+
         LOG_USAGE << "Running the balancer server ..." << END_LOG;
 
         //Run the translation server in a separate thread
-        thread balancer_thread(&balancer_server::run);
+        thread balancer_thread(bind(&balancer_server::run, &server));
 
         LOG_USAGE << "The balancer is started!" << END_LOG;
 
         //Wait until the balancer is stopped by pressing and exit button
-        balancer_console cmd(params, balancer_thread);
+        balancer_console cmd(params, server, balancer_thread);
         cmd.perform_command_loop();
     } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit

@@ -59,10 +59,11 @@ namespace uva {
                     /**
                      * The basic constructor
                      * @param params the balancer parameters
+                     * @param server the balancer server
                      * @param balancer_thread the balancer server main thread
                      */
-                    balancer_console(balancer_parameters & params, thread &balancer_thread)
-                    : cmd_line_base(), m_params(params), m_balancer_thread(balancer_thread) {
+                    balancer_console(balancer_parameters & params, balancer_server &server, thread &balancer_thread)
+                    : cmd_line_base(), m_params(params), m_server(server), m_balancer_thread(balancer_thread) {
                     }
 
                     /**
@@ -92,8 +93,9 @@ namespace uva {
                     virtual void report_run_time_info() {
                         //Report the translation servers' manager info
                         adapters_manager::report_run_time_info();
-                        //Report the translation manager' info
-                        translation_manager::report_run_time_info();
+                        
+                        //Report the run time info from the server
+                        m_server.report_run_time_info();
                     }
 
                     /**
@@ -119,7 +121,7 @@ namespace uva {
                         adapters_manager::disable();
                         
                         //Stop the translation server
-                        balancer_server::stop();
+                        m_server.stop();
 
                         //Wait until the server's thread stops
                         m_balancer_thread.join();
@@ -130,6 +132,8 @@ namespace uva {
                 private:
                     //Stores the reference to the balancer parameters
                     balancer_parameters & m_params;
+                    //Stores the reference to the balancer server
+                    balancer_server & m_server;
                     //Stores the reference to the balancer thread
                     thread & m_balancer_thread;
 
