@@ -29,7 +29,6 @@
 #include <atomic>
 #include <thread>
 #include <mutex>
-#include <shared_mutex>
 #include <condition_variable>
 #include <functional>
 
@@ -53,6 +52,8 @@ namespace uva {
             //for now there is just an aliasing we have
 #if _LIBCPP_STD_VER < 14
             using shared_mutex = mutex;
+#else
+#include <shared_mutex>
 #endif
 #if _LIBCPP_STD_VER < 17
             template<class _Mutex>
