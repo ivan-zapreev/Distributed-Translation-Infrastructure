@@ -816,7 +816,7 @@
       <df name="balancer">
         <in>balancer_parameters.cpp</in>
         <in>bpbd_balancer.cpp</in>
-        <in>translation_managers.cpp</in>
+        <in>translator_adapter.cpp</in>
       </df>
       <df name="client">
         <df name="messaging">

@@ -175,19 +175,19 @@ namespace uva {
                      * The main method to enable the translation servers manager
                      */
                     inline void enable() {
-                        LOG_INFO2 << "Enabling the translation servers' manager" << END_LOG;
+                        LOG_DEBUG << "Enabling the translation servers' manager" << END_LOG;
 
                         //First begin the reconnection thread
                         start_re_connection_thread();
 
                         //Enable the clients
                         for (auto iter = m_adapters_data.begin(); iter != m_adapters_data.end(); ++iter) {
-                            LOG_INFO2 << "Enabling '" << iter->second.m_adapter.get_name() << "' adapter..." << END_LOG;
+                            LOG_DEBUG1 << "Enabling '" << iter->second.m_adapter.get_name() << "' adapter..." << END_LOG;
                             iter->second.m_adapter.enable();
-                            LOG_INFO1 << "'" << iter->second.m_adapter.get_name() << "' adapter is enabled" << END_LOG;
+                            LOG_DEBUG1 << "'" << iter->second.m_adapter.get_name() << "' adapter is enabled" << END_LOG;
                         }
 
-                        LOG_INFO1 << "The translation servers are enabled" << END_LOG;
+                        LOG_DEBUG << "The translation servers are enabled" << END_LOG;
                     }
 
                     /**

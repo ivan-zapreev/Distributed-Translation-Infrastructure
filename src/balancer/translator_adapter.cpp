@@ -1,5 +1,5 @@
 /* 
- * File:   adapters_manager.cpp
+ * File:   translator_adapter.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -24,8 +24,6 @@
  */
 
 #include "balancer/translator_adapter.hpp"
-#include "balancer/adapters_manager.hpp"
-#include "balancer/translation_manager.hpp"
 
 namespace uva {
     namespace smt {

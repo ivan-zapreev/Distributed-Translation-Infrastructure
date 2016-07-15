@@ -86,7 +86,7 @@ set(LOAD_BALANCER_SOURCES
     src/client/messaging/messaging.cpp
     src/balancer/language_registry.cpp
     src/balancer/balancer_parameters.cpp
-    src/balancer/translation_managers.cpp
+    src/balancer/translator_adapter.cpp
     src/balancer/bpbd_balancer.cpp
 )
 #Define the server executable

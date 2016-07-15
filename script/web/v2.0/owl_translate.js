@@ -891,7 +891,20 @@ function set_supported_languages(supp_lang_resp) {
     
     //Store the supported languages
     client_data.language_mapping = supp_lang_resp.langs;
-
+    
+    //Filter the source languages without the targets
+    //It can happen that for the soure language there is no targets, then ignore it.
+    //We do it here and not on the server as here it is easier to check and on the
+    //server it will require extra computation effort and will complicate the code.
+    window.console.log("Filter the empty source languages");
+    for (source_lang in client_data.language_mapping) {
+        if (client_data.language_mapping.hasOwnProperty(source_lang)) {
+            if (client_data.language_mapping[source_lang].length === 0) {
+                delete client_data.language_mapping[source_lang];
+            }
+        }
+    }
+    
     window.console.log("Clear the to-select as we are now re-loading the source languages");
     client_data.to_lang_sel.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
 

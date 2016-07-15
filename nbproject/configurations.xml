@@ -34,7 +34,7 @@
       <df name="balancer">
         <in>balancer_parameters.cpp</in>
         <in>bpbd_balancer.cpp</in>
-        <in>translation_managers.cpp</in>
+        <in>translator_adapter.cpp</in>
       </df>
       <df name="client">
         <df name="messaging">
@@ -265,7 +265,7 @@
       </item>
       <item path="src/balancer/language_registry.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/balancer/translation_managers.cpp"
+      <item path="src/balancer/translator_adapter.cpp"
             ex="false"
             tool="1"
             flavor2="8">
