@@ -626,6 +626,41 @@ function get_selected_lang(select) {
 }
 
 /**
+ * Allows to check if a language is selected
+ * @param {Object} the select element to get the selected value from
+ * @param {Boolean} true if a language is selected, otherwise false
+ */
+function is_language_selected(select) {
+    "use strict";
+    
+    //Get the selected language
+    var selected = get_selected_lang(select);
+    
+    //The selected value must not be empty
+    return (selected !== "");
+}
+
+/**
+ * Allows to check if the source language is selected
+ * @param {Boolean} true if a language is selected, otherwise false
+ */
+function is_source_lang_selected() {
+    "use strict";
+
+    return is_language_selected(client_data.from_lang_sel);
+}
+
+/**
+ * Allows to check if the target language is selected
+ * @param {Boolean} true if a language is selected, otherwise false
+ */
+function is_target_lang_selected() {
+    "use strict";
+
+    return is_language_selected(client_data.to_lang_sel);
+}
+
+/**
  * Allows to get the selected language source value
  * @return {string} the value of the selected source language
  */
@@ -715,38 +750,49 @@ function do_translate() {
             //Re-set the job responses array
             client_data.job_responces = [];
 
-            //Set the source language
-            source_lang = get_selected_source_lang();
+            //Check if the source language is selected
+            if (is_source_lang_selected()) {
+                //Set the source language
+                source_lang = get_selected_source_lang();
+                
+                //Check if the target language is selected
+                if (is_target_lang_selected()) {
+                    //Set the target language
+                    target_lang = get_selected_target_lang();
 
-            //Set the target language
-            target_lang = get_selected_target_lang();
+                    //Get the translation info flag from thecheckox!
+                    is_trans_info = client_data.trans_info_cb.checked;
 
-            //Get the translation info flag from thecheckox!
-            is_trans_info = client_data.trans_info_cb.checked;
+                    //Clear the current translation text
+                    client_data.to_text_span.html("");
 
-            //Clear the current translation text
-            client_data.to_text_span.html("");
+                    sent_array = source_text.split('\n');
+                    window.console.log("Send the translation requests for " + sent_array.length + " sentences");
 
-            sent_array = source_text.split('\n');
-            window.console.log("Send the translation requests for " + sent_array.length + " sentences");
-            
-            //Re-initialize the progress bars
-            initialize_progress_bars();
-            
-            begin_idx = 0;
-            while (begin_idx < sent_array.length) {
-                //Compute the end index
-                end_idx = window.Math.min(begin_idx + MAX_NUM_SENTENCES_PER_JOB, sent_array.length);
-                window.console.log("Sending sentences [" + begin_idx + "," + end_idx + ")");
-                send_translation_request(source_lang, target_lang, is_trans_info, sent_array.slice(begin_idx, end_idx));
-                begin_idx = end_idx;
-                set_request_progress_bar(end_idx, sent_array.length);
+                    //Re-initialize the progress bars
+                    initialize_progress_bars();
+
+                    begin_idx = 0;
+                    while (begin_idx < sent_array.length) {
+                        //Compute the end index
+                        end_idx = window.Math.min(begin_idx + MAX_NUM_SENTENCES_PER_JOB, sent_array.length);
+                        window.console.log("Sending sentences [" + begin_idx + "," + end_idx + ")");
+                        send_translation_request(source_lang, target_lang, is_trans_info, sent_array.slice(begin_idx, end_idx));
+                        begin_idx = end_idx;
+                        set_request_progress_bar(end_idx, sent_array.length);
+                    }
+
+                    //Make the progress note visible
+                    set_response_progress_bar(0, 1);
+
+                    success("Sent out " + client_data.sent_trans_req + " translation requests");
+                } else {
+                    danger("Please selecte the target language!", true);
+                }
+            } else {
+                danger("Please selecte the source language!", true);
             }
             
-            //Make the progress note visible
-            set_response_progress_bar(0, 1);
-            
-            success("Sent out " + client_data.sent_trans_req + " translation requests");
             window.console.log("Finished sending translation request jobs.");
         }
     }
@@ -847,7 +893,7 @@ function set_supported_languages(supp_lang_resp) {
     client_data.language_mapping = supp_lang_resp.langs;
 
     window.console.log("Clear the to-select as we are now re-loading the source languages");
-    client_data.to_lang_sel.innerHTML = "";
+    client_data.to_lang_sel.innerHTML = get_select_option("", PLEASE_SELECT_STRING);
 
     //Do not add "Please select" in case there is just one source option possible"
     num_sources = Object.keys(client_data.language_mapping).length;
