@@ -141,7 +141,7 @@ namespace uva {
                      * adapter disconnected, so there will be no replies to the sent requests.
                      * @param uid the unique identifier of the adapter
                      */
-                    static inline void notify_disconnected_server_adapter(const trans_server_uid & uid) {
+                    static inline void notify_adapter_disconnect(const trans_server_uid & uid) {
                         //ToDo: Implement cancellation of all the translation requests which have 
                         //      been sent but the response was not received yet.
                     }

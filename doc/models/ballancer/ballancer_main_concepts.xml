@@ -67,8 +67,8 @@ Responsibilities
 -- Maintain the translation jobs queue
 -- Give job requests new - global job ids
 -- Map local job id to session/trans_job data
--- Increase/Decrease the number of dispatchers</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>700</x><y>478</y><w>440</w><h>100</h></coordinates><panel_attributes>lt=&lt;.
-notify server connection closed &gt;</panel_attributes><additional_attributes>420;80;420;40;10;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>910</x><y>628</y><w>210</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+-- Increase/Decrease the number of dispatchers</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>920</x><y>178</y><w>240</w><h>400</h></coordinates><panel_attributes>lt=&lt;.
+notify server connection closed &gt;</panel_attributes><additional_attributes>200;380;200;340;80;340;80;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>910</x><y>628</y><w>210</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
 m1=1</panel_attributes><additional_attributes>190;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>128</y><w>220</w><h>230</h></coordinates><panel_attributes>lt=&lt;.
 notify supported languages &gt;</panel_attributes><additional_attributes>200;210;200;140;10;140;10;10;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>910</x><y>698</y><w>210</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
 place client request &gt;</panel_attributes><additional_attributes>190;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1100</x><y>148</y><w>320</w><h>240</h></coordinates><panel_attributes>translation_job

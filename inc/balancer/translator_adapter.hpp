@@ -334,7 +334,7 @@ namespace uva {
                             m_notify_conn_closed_func(this);
 
                             //Notify the translation manager that there was a translation server connection lost
-                            translation_manager::notify_disconnected_server_adapter(m_uid);
+                            translation_manager::notify_adapter_disconnect(m_uid);
 
                             //Once everything is processed the connection is truly closed
                             m_is_connected = false;
