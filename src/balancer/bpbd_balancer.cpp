@@ -171,12 +171,6 @@ int main(int argc, char** argv) {
         //Prepare the configuration structures, parse the config file
         prepare_config_structures(argc, argv, params);
 
-        //Configure the translations server manager
-        adapters_manager::configure(params);
-
-        //Start the translation server clients
-        adapters_manager::enable();
-
         //Instantiate the balancer server
         balancer_server server(params);
 

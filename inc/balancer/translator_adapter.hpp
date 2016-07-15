@@ -80,9 +80,8 @@ namespace uva {
                      * The basic constructor for the adapter class
                      */
                     translator_adapter()
-                    : m_uid(m_ids_manager.get_next_id()), m_params(NULL), m_client(NULL), m_is_enabled(false),
-                    m_is_connected(false), m_is_connecting(false),
-                    m_lock_con(), m_notify_conn_closed_func() {
+                    : m_uid(m_ids_manager.get_next_id()), m_params(NULL), m_manager(NULL), m_client(NULL), m_is_enabled(false),
+                    m_is_connected(false), m_is_connecting(false), m_lock_con(), m_notify_conn_closed_func() {
                     }
 
                     /**
@@ -98,10 +97,11 @@ namespace uva {
 
                     /**
                      * Allows to configure the adapter with the translation server parameters
+                     * @params the reference to the translation manager
                      * @param params the translation server parameters
                      * @param notify_conn_closed_func the function to notify about the closed server connection
                      */
-                    inline void configure(const trans_server_params & params,
+                    inline void configure(translation_manager & manager, const trans_server_params & params,
                             ready_conn_notifier_type notify_conn_ready_func,
                             closed_conn_notifier_type notify_conn_closed_func) {
                         recursive_guard guard(m_lock_con);
@@ -109,6 +109,9 @@ namespace uva {
                         //Check that the adapter is not enabled!
                         ASSERT_CONDITION_THROW(m_is_enabled,
                                 string("Trying to re-configure an enabled adapter for: ") + m_params->m_name);
+
+                        //Store the pointer to the translation manager
+                        m_manager = &manager;
 
                         //Store the reference to the parameters
                         m_params = &params;
@@ -241,7 +244,7 @@ namespace uva {
                     inline const trans_server_uid & get_uid() const {
                         return m_uid;
                     }
-                    
+
                     /**
                      * Allows to get the load weight of the adapter
                      * @return the load weight of the adapter
@@ -270,7 +273,7 @@ namespace uva {
                                 trans_job_resp_in * job_resp_msg = new trans_job_resp_in(json_msg);
                                 try {
                                     //Set the newly received job response
-                                    translation_manager::register_translation_response(job_resp_msg);
+                                    m_manager->register_translation_response(job_resp_msg);
                                 } catch (std::exception & ex) {
                                     LOG_ERROR << ex.what() << END_LOG;
                                     //Delete the message as it was not set
@@ -334,7 +337,7 @@ namespace uva {
                             m_notify_conn_closed_func(this);
 
                             //Notify the translation manager that there was a translation server connection lost
-                            translation_manager::notify_adapter_disconnect(m_uid);
+                            m_manager->notify_adapter_disconnect(m_uid);
 
                             //Once everything is processed the connection is truly closed
                             m_is_connected = false;
@@ -394,6 +397,8 @@ namespace uva {
                     const trans_server_uid m_uid;
                     //Stores the pointer to the translation server parameters
                     const trans_server_params * m_params;
+                    //Stores the pointer to the translation manager
+                    translation_manager * m_manager;
                     //Stores the pointer to the translation client
                     translation_client * m_client;
                     //Stores the boolean flag indicating whether the adapter is enabled

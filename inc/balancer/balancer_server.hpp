@@ -58,17 +58,20 @@ namespace uva {
                      * @param params the balancer parameters
                      */
                     balancer_server(const balancer_parameters & params)
-                    : websocket_server(params.m_server_port), m_params(params) {
-                        //Configure the translation manager
-                        translation_manager::configure(m_params, bind(&balancer_server::send_response, this, _1, _2));
+                    : websocket_server(params.m_server_port),
+                            m_manager(params, bind(&balancer_server::send_response, this, _1, _2)),
+                            m_adapters(params, m_manager) {
                     }
 
                     /**
                      * Allows to report the runtime information about the server.
                      */
                     void report_run_time_info() {
+                        //Report the translation servers' manager info
+                        m_adapters.report_run_time_info();
+                        
                         //Report the translation manager' info
-                        translation_manager::report_run_time_info();
+                        m_manager.report_run_time_info();
                     }
 
                 protected:
@@ -76,24 +79,34 @@ namespace uva {
                     /**
                      * @see websocket_server
                      */
-                    virtual void after_stopped_listening() override {
-                        LOG_USAGE << "Stopping the translation manager." << END_LOG;
+                    virtual void before_start_listening() override {
+                        //Start the translation server clients
+                        m_adapters.enable();
+                    }
+
+                    /**
+                     * @see websocket_server
+                     */
+                    virtual void after_stop_listening() override {
+                        //Stop the translation servers manager
+                        m_adapters.disable();
+                        
                         //Stop the translation manager
-                        translation_manager::stop();
+                        m_manager.stop();
                     }
 
                     /**
                      * @see websocket_server
                      */
                     virtual void open_session(websocketpp::connection_hdl hdl) override {
-                        translation_manager::open_session(hdl);
+                        m_manager.open_session(hdl);
                     }
 
                     /**
                      * @see websocket_server
                      */
                     virtual void close_session(websocketpp::connection_hdl hdl) override {
-                        translation_manager::close_session(hdl);
+                        m_manager.close_session(hdl);
                     }
 
                     /**
@@ -101,7 +114,7 @@ namespace uva {
                      */
                     virtual void language_request(websocketpp::connection_hdl hdl, supp_lang_req_in * msg) override {
                         //Send the response supported languages response
-                        send_response(hdl, adapters_manager::get_supported_lang_resp_data());
+                        send_response(hdl, m_adapters.get_supported_lang_resp_data());
 
                         //Destroy the message
                         delete msg;
@@ -113,12 +126,14 @@ namespace uva {
                     virtual void translation_request(websocketpp::connection_hdl hdl, trans_job_req_in * msg) override {
                         //Register the translation request, the request message
                         //is to be deleted/handled by the translation manager
-                        translation_manager::register_translation_request(hdl, msg);
+                        m_manager.register_translation_request(hdl, msg);
                     }
 
                 private:
-                    //Stores the reference to the balancer parameters
-                    const balancer_parameters & m_params;
+                    //Stores the translation manager
+                    translation_manager m_manager;
+                    //Stores the to the adapters manager
+                    adapters_manager m_adapters;
 
                 };
 

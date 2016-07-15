@@ -33,23 +33,6 @@ namespace uva {
             namespace balancer {
                 /*Translation server adapter*/
                 id_manager<trans_server_uid> translator_adapter::m_ids_manager(0);
-
-                /*Translation manager*/
-                const balancer_parameters * translation_manager::m_params = NULL;
-                translation_manager::response_sender translation_manager::m_sender_func = NULL;
-
-                /*Translation servers' manager*/
-                const balancer_parameters * adapters_manager::m_params = NULL;
-                adapters_manager::adapters_map adapters_manager::m_adapters_data;
-                thread * adapters_manager::m_re_connect = NULL;
-                mutex adapters_manager::m_re_connect_mutex;
-                condition_variable adapters_manager::m_re_connect_condition;
-                a_bool_flag adapters_manager::m_is_reconnect_run(true);
-                mutex adapters_manager::m_source_mutex;
-                adapters_manager::sources_map adapters_manager::m_sources;
-                supp_lang_resp_out adapters_manager::m_supp_lan_resp;
-                string adapters_manager::m_supp_lan_resp_str;
-                shared_mutex adapters_manager::m_supp_lang_mutex;
             }
         }
     }

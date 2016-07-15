@@ -32,6 +32,7 @@
 #include <random>
 #include <unordered_map>
 #include <algorithm>
+#include <functional>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -147,21 +148,23 @@ namespace uva {
                     typedef unordered_map<language_uid, source_entry> sources_map;
 
                     /**
-                     * Allows to configure the balancer server
-                     * @param params the parameters from which the server will be configured
+                     * The basic constructor
+                     * @param params the balancer parameters to configure from
+                     * @param manager the reference to the translation manager
                      */
-                    static inline void configure(const balancer_parameters & params) {
+                    adapters_manager(const balancer_parameters & params, translation_manager &manager)
+                    : m_params(params), m_adapters_data(), m_re_connect(NULL),
+                    m_re_connect_mutex(), m_re_connect_condition(),
+                    m_is_reconnect_run(true), m_source_mutex(), m_sources(), m_supp_lan_resp(),
+                    m_supp_lan_resp_str(""), m_supp_lang_mutex() {
                         LOG_INFO3 << "Configuring the translation servers' manager" << END_LOG;
-
-                        //Store the pointer to the parameters
-                        m_params = &params;
                         //Iterate through the list of translation server
                         //configs and create an adapter for each of them
-                        for (auto iter = params.trans_servers.begin(); iter != params.trans_servers.end(); ++iter) {
+                        for (auto iter = m_params.trans_servers.begin(); iter != m_params.trans_servers.end(); ++iter) {
                             LOG_INFO3 << "Configuring '" << iter->second.m_name << "' adapter..." << END_LOG;
-                            m_adapters_data[iter->first].m_adapter.configure(iter->second,
-                                    adapters_manager::notify_ready,
-                                    adapters_manager::notify_disconnected);
+                            m_adapters_data[iter->first].m_adapter.configure(manager, iter->second,
+                                    bind(&adapters_manager::notify_ready, this, _1, _2),
+                                    bind(&adapters_manager::notify_disconnected, this, _1));
                             LOG_INFO2 << "'" << iter->second.m_name << "' adapter is configured" << END_LOG;
                         }
 
@@ -171,7 +174,7 @@ namespace uva {
                     /**
                      * The main method to enable the translation servers manager
                      */
-                    static inline void enable() {
+                    inline void enable() {
                         LOG_INFO2 << "Enabling the translation servers' manager" << END_LOG;
 
                         //First begin the reconnection thread
@@ -190,7 +193,7 @@ namespace uva {
                     /**
                      * Allows to disable the translation servers manager
                      */
-                    static inline void disable() {
+                    inline void disable() {
                         LOG_USAGE << "Stopping the translation server clients ..." << END_LOG;
 
                         //First remove the reconnection thread
@@ -211,7 +214,7 @@ namespace uva {
                     /**
                      * Reports the run-time information
                      */
-                    static inline void report_run_time_info() {
+                    inline void report_run_time_info() {
                         LOG_USAGE << "Translation servers (#" << m_adapters_data.size() << "): " << END_LOG;
                         for (auto iter = m_adapters_data.begin(); iter != m_adapters_data.end(); ++iter) {
                             iter->second.m_adapter.report_run_time_info();
@@ -226,7 +229,7 @@ namespace uva {
                      * @return the pointer to the translation server dataper or NULL
                      * if there is no adapter for the given source/target language pair
                      */
-                    static inline translator_adapter * get_server_adapter(
+                    inline translator_adapter * get_server_adapter(
                             const language_uid source_uid, const language_uid target_uid) {
                         //Get/create a source language entry, note that the entries are
                         //not removed, until the translation servers' manager is destroyed.
@@ -256,7 +259,7 @@ namespace uva {
                      * Allows to get the string storing the serialized supported languages response
                      * @return the string storing the serialized supported languages response
                      */
-                    static inline string get_supported_lang_resp_data() {
+                    inline string get_supported_lang_resp_data() {
                         shared_guard guard(m_supp_lang_mutex);
 
                         //Return the pre-computed string value
@@ -270,7 +273,7 @@ namespace uva {
                      * @param adapter the pointer to the translation server adapter that got ready, not NULL
                      * @param lang_resp_msg the supported language pairs message, to be destroyed by this method
                      */
-                    static inline void notify_ready(translator_adapter * adapter, supp_lang_resp_in * lang_resp_msg) {
+                    inline void notify_ready(translator_adapter * adapter, supp_lang_resp_in * lang_resp_msg) {
                         exclusive_guard guard(m_supp_lang_mutex);
                         LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is connected!" << END_LOG;
 
@@ -349,7 +352,7 @@ namespace uva {
                      *       would be re-connecting too often, just let it work on the time-out
                      * @param adapter the pointer to the translation server adapter that got disconnected, not NULL
                      */
-                    static inline void notify_disconnected(translator_adapter * adapter) {
+                    inline void notify_disconnected(translator_adapter * adapter) {
                         exclusive_guard guard(m_supp_lang_mutex);
                         LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is disconnected!" << END_LOG;
 
@@ -392,33 +395,27 @@ namespace uva {
                     }
 
                 private:
-                    //Stores the pointer to the parameters structure 
-                    static const balancer_parameters * m_params;
+                    //Stores the reference to the parameters structure 
+                    const balancer_parameters & m_params;
                     //Stores the mapping from the server names to the server adapters
-                    static adapters_map m_adapters_data;
+                    adapters_map m_adapters_data;
                     //Stores the pointer to the re-connection thread
-                    static thread * m_re_connect;
+                    thread * m_re_connect;
                     //Stores the synchronization primitive instances
-                    static mutex m_re_connect_mutex;
-                    static condition_variable m_re_connect_condition;
+                    mutex m_re_connect_mutex;
+                    condition_variable m_re_connect_condition;
                     //Stores the flag that indicates for how long the reconnection thread needs to run
-                    static a_bool_flag m_is_reconnect_run;
+                    a_bool_flag m_is_reconnect_run;
                     //Stores the synchronization mutex for the manager
-                    static shared_mutex m_source_mutex;
+                    shared_mutex m_source_mutex;
                     //Stores the language pair mappings to the adapters map
-                    static sources_map m_sources;
+                    sources_map m_sources;
                     //Stores the supported languages response
-                    static supp_lang_resp_out m_supp_lan_resp;
+                    supp_lang_resp_out m_supp_lan_resp;
                     //Stores the supported languages response
-                    static string m_supp_lan_resp_str;
+                    string m_supp_lan_resp_str;
                     //The mutex to synchronize generation of the supported language responses
-                    static shared_mutex m_supp_lang_mutex;
-
-                    /**
-                     * The private constructor to keep the class from being instantiated
-                     */
-                    adapters_manager() {
-                    }
+                    shared_mutex m_supp_lang_mutex;
 
                     /**
                      * This function allows to update the supported languages response
@@ -427,7 +424,7 @@ namespace uva {
                      * I.e. the supported languages stay the same until the new response is
                      * fully build and generated.
                      */
-                    static inline void update_supp_lang_resp() {
+                    inline void update_supp_lang_resp() {
                         //Re-set the response
                         m_supp_lan_resp.reset();
 
@@ -472,7 +469,7 @@ namespace uva {
                      * an exclusive lock on target->m_adapters_mutex
                      * @param target the pointer to the target entry, not NULL
                      */
-                    static inline void re_calculate_loads(target_entry * target) {
+                    inline void re_calculate_loads(target_entry * target) {
                         //Initialize an array of weights
                         vector<uint32_t> weights;
 
@@ -494,9 +491,9 @@ namespace uva {
                      * Is run within a separate thread which allows to periodically
                      * try to re-connect disconnected the servers.
                      */
-                    static inline void re_connect_servers() {
+                    inline void re_connect_servers() {
                         //Get the time to wait 
-                        std::chrono::milliseconds time_to_wait = std::chrono::milliseconds{m_params->m_recon_time_out};
+                        std::chrono::milliseconds time_to_wait = std::chrono::milliseconds{m_params.m_recon_time_out};
 
                         //Run the re-connection loop
                         while (m_is_reconnect_run) {
@@ -518,18 +515,18 @@ namespace uva {
                     /**
                      * Allows to start the re-connection thread.
                      */
-                    static inline void start_re_connection_thread() {
+                    inline void start_re_connection_thread() {
                         //Check if the re-connection thread is present, if not then add it
                         if (m_re_connect == NULL) {
                             //Create a thread that will take care of re-connecting
-                            m_re_connect = new thread(adapters_manager::re_connect_servers);
+                            m_re_connect = new thread(bind(&adapters_manager::re_connect_servers, this));
                         }
                     }
 
                     /**
                      * Allows to finish the re-connection thread.
                      */
-                    static inline void finish_re_connection_thread() {
+                    inline void finish_re_connection_thread() {
                         if (m_re_connect != NULL) {
                             //Make sure that the re-connection thread terminates
                             m_is_reconnect_run = false;

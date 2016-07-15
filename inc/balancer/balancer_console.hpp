@@ -91,9 +91,6 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual void report_run_time_info() {
-                        //Report the translation servers' manager info
-                        adapters_manager::report_run_time_info();
-                        
                         //Report the run time info from the server
                         m_server.report_run_time_info();
                     }
@@ -117,9 +114,6 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual void stop() {
-                        //Stop the translation servers manager
-                        adapters_manager::disable();
-                        
                         //Stop the translation server
                         m_server.stop();
 

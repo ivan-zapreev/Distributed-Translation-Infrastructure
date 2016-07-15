@@ -90,7 +90,7 @@ namespace uva {
                     /**
                      * @see websocket_server
                      */
-                    virtual void after_stopped_listening() override {
+                    virtual void after_stop_listening() override {
                         LOG_USAGE << "Stopping the translation manager." << END_LOG;
                         //Stop the translation manager, this should cancel all the unfinished translation tasks
                         m_manager.stop();

@@ -92,7 +92,7 @@ namespace uva {
 
                             //Bind the handlers we are using
                             m_server.set_message_handler(bind(&websocket_server::on_message, this, _1, _2));
-                            
+
                             //Set the port that the server will listen to
                             m_server.listen(server_port);
                         }
@@ -101,6 +101,9 @@ namespace uva {
                          * Allows to run the server
                          */
                         void run() {
+                            //Do something before the server starts listening.
+                            before_start_listening();
+                            
                             LOG_DEBUG << "Starting the websockets server." << END_LOG;
                             //Start accepting the messages
                             m_server.start_accept();
@@ -120,7 +123,7 @@ namespace uva {
                             m_server.stop_listening();
 
                             //Send the remaining responses after the server stopped listening.
-                            after_stopped_listening();
+                            after_stop_listening();
 
                             LOG_USAGE << "Stopping the WEBSOCKET server." << END_LOG;
                             //Stop the server
@@ -130,13 +133,24 @@ namespace uva {
                     protected:
 
                         /**
+                         * This method is to be called when the server is being started.
+                         * It will be called before the server starts listening to the
+                         * incoming messages.
+                         */
+                        virtual void before_start_listening() {
+                            //An empty implementation so that it is not compulsory to implement it
+                        }
+
+                        /**
                          * This method is to be called when the server is being stopped.
                          * It will be called after the server stopped listening to the
                          * incoming messages but it is still able to send the remaining
                          * reply messages.
                          */
-                        virtual void after_stopped_listening() = 0;
-                        
+                        virtual void after_stop_listening() {
+                            //An empty implementation so that it is not compulsory to implement it
+                        }
+
                         /**
                          * Allows to send the response to the client associated with the given connection handler.
                          * @param hdl the connection handler to identify the connection
