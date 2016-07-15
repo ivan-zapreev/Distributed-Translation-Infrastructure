@@ -28,7 +28,7 @@
 
 #include "common/messaging//websocket_server.hpp"
 
-#include "server/trans_manager.hpp"
+#include "server/translation_manager.hpp"
 #include "server/server_parameters.hpp"
 
 using namespace std;
@@ -91,8 +91,8 @@ namespace uva {
                      * @see websocket_server
                      */
                     virtual void after_stopped_listening() override {
-                        LOG_USAGE << "Stopping the session manager." << END_LOG;
-                        //Stop the session manager, this should cancel all the unfinished translation tasks
+                        LOG_USAGE << "Stopping the translation manager." << END_LOG;
+                        //Stop the translation manager, this should cancel all the unfinished translation tasks
                         m_manager.stop();
                     }
 
@@ -191,8 +191,8 @@ namespace uva {
                 private:
                     //Stores the server object
                     server m_server;
-                    //Stores the session manager object
-                    trans_manager m_manager;
+                    //Stores the translation manager object
+                    translation_manager m_manager;
                     //Stores the reference to the server options
                     const server_parameters &m_params;
                     //Stores the serialized supported languages response string

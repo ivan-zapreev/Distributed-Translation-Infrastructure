@@ -66,7 +66,7 @@ namespace uva {
                  * This is a synchronized translation sessions manager class that stores
                  * that keeps track of the open translation sessions and their objects.
                  */
-                class trans_manager {
+                class translation_manager {
                 public:
 
                     //Declare the response setting function for the translation job.
@@ -85,10 +85,10 @@ namespace uva {
                      * (from one host and the maximum amount of allowed hosts)
                      * This is for later, if the server is put for www access.}
                      */
-                    trans_manager(const size_t num_threads)
+                    translation_manager(const size_t num_threads)
                     : m_job_pool(num_threads), m_session_id_mgr(session_id::MINIMUM_SESSION_ID) {
                         //Set the response sender function into the pool
-                        m_job_pool.set_job_result_setter(bind(&trans_manager::notify_job_finished, this, _1));
+                        m_job_pool.set_job_result_setter(bind(&translation_manager::notify_job_finished, this, _1));
                     }
 
                     /**
@@ -102,7 +102,7 @@ namespace uva {
                     /**
                      * The basic destructor
                      */
-                    virtual ~trans_manager() {
+                    virtual ~translation_manager() {
                         //No need to do anything the manager is destroyed only when the application is stopped.
                         //The scheduled jobs will be canceled by the by the trans_job_pool destructor
                     }

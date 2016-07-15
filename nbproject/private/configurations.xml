@@ -805,9 +805,9 @@
         <in>trans_info_provider.hpp</in>
         <in>trans_job.hpp</in>
         <in>trans_job_pool.hpp</in>
-        <in>trans_manager.hpp</in>
         <in>trans_task.hpp</in>
         <in>trans_task_id.hpp</in>
+        <in>translation_manager.hpp</in>
         <in>translation_server.hpp</in>
       </df>
       <in>main.hpp</in>
