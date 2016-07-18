@@ -603,11 +603,11 @@
         <in>adapters_manager.hpp</in>
         <in>balancer_console.hpp</in>
         <in>balancer_consts.hpp</in>
+        <in>balancer_job.hpp</in>
+        <in>balancer_manager.hpp</in>
         <in>balancer_parameters.hpp</in>
         <in>balancer_server.hpp</in>
         <in>language_registry.hpp</in>
-        <in>translation_job.hpp</in>
-        <in>translation_manager.hpp</in>
         <in>translator_adapter.hpp</in>
       </df>
       <df name="client">

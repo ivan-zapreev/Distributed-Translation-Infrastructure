@@ -30,7 +30,7 @@
 
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/adapters_manager.hpp"
-#include "balancer/translation_manager.hpp"
+#include "balancer/balancer_manager.hpp"
 
 using namespace std;
 using namespace uva::smt::bpbd::common::messaging;
@@ -62,8 +62,8 @@ namespace uva {
                         //Provide the adapters manager with the functions needed to notify about the
                         //new translation response and the disconnected translator adapter
                         m_adapters.set_functionals(
-                                bind(&translation_manager::notify_translation_response, &m_manager, _1),
-                                bind(&translation_manager::notify_adapter_disconnect, &m_manager, _1));
+                                bind(&balancer_manager::notify_translation_response, &m_manager, _1),
+                                bind(&balancer_manager::notify_adapter_disconnect, &m_manager, _1));
                         
                         //Provide the manager with the functional for sending
                         //the translation response and getting the adapters
@@ -140,7 +140,7 @@ namespace uva {
 
                 private:
                     //Stores the translation manager
-                    translation_manager m_manager;
+                    balancer_manager m_manager;
                     //Stores the to the adapters manager
                     adapters_manager m_adapters;
 

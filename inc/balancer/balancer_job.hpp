@@ -1,5 +1,5 @@
 /* 
- * File:   translation_job.hpp
+ * File:   balancer_job.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -23,8 +23,8 @@
  * Created on July 7, 2016, 12:11 PM
  */
 
-#ifndef TRANSLATION_JOB_HPP
-#define TRANSLATION_JOB_HPP
+#ifndef BALANCER_JOB_HPP
+#define BALANCER_JOB_HPP
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -55,7 +55,7 @@ namespace uva {
                  *         Waiting for sending request
                  *         Waiting for receiving reply
                  */
-                class translation_job {
+                class balancer_job {
                 };
                 
             }
@@ -63,5 +63,5 @@ namespace uva {
     }
 }
 
-#endif /* TRANSLATION_JOB_HPP */
+#endif /* BALANCER_JOB_HPP */
 

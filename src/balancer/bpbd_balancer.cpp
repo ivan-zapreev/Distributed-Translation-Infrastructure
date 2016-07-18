@@ -36,7 +36,7 @@
 #include "balancer/balancer_console.hpp"
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/balancer_server.hpp"
-#include "balancer/translation_manager.hpp"
+#include "balancer/balancer_manager.hpp"
 
 using namespace std;
 using namespace TCLAP;

@@ -31,7 +31,7 @@
 #include "common/utils/cmd/cmd_line_base.hpp"
 
 #include "balancer/balancer_server.hpp"
-#include "balancer/translation_manager.hpp"
+#include "balancer/balancer_manager.hpp"
 #include "balancer/adapters_manager.hpp"
 
 using namespace std;

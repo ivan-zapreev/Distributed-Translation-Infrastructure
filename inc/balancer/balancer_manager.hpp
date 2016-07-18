@@ -1,5 +1,5 @@
 /* 
- * File:   translation_manager.hpp
+ * File:   balancer_manager.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -23,8 +23,8 @@
  * Created on July 7, 2016, 12:12 PM
  */
 
-#ifndef TRANSLATION_MANAGER_HPP
-#define TRANSLATION_MANAGER_HPP
+#ifndef BALANCER_MANAGER_HPP
+#define BALANCER_MANAGER_HPP
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -37,7 +37,7 @@
 #include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
 #include "balancer/translator_adapter.hpp"
-#include "balancer/translation_job.hpp"
+#include "balancer/balancer_job.hpp"
 
 using namespace std;
 
@@ -66,7 +66,7 @@ namespace uva {
                  *      Map local job id to session/trans_job data
                  *      Increase/Decrease the number of dispatchers
                  */
-                class translation_manager : public session_manager {
+                class balancer_manager : public session_manager {
                 public:
                     //Declare the response setting function for the translation job.
                     typedef function<void(websocketpp::connection_hdl, const string &) > response_sender;
@@ -77,7 +77,7 @@ namespace uva {
                      * The basic constructor
                      * @param params the parameters from which the server will be configured
                      */
-                    translation_manager(const balancer_parameters & params)
+                    balancer_manager(const balancer_parameters & params)
                     : session_manager(), m_params(params), m_chooser_func(NULL) {
                     }
                     
@@ -153,5 +153,5 @@ namespace uva {
     }
 }
 
-#endif /* TRANSLATION_MANAGER_HPP */
+#endif /* BALANCER_MANAGER_HPP */
 
