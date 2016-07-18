@@ -21,6 +21,11 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="common">
+        <df name="messaging">
+          <in>session_job_pool_base.hpp</in>
+        </df>
+      </df>
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -235,16 +240,7 @@
           </incDir>
         </ccTool>
       </folder>
-      <item path="inc/balancer/balancer_consts.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/balancer/language_registry.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/common/messaging/session_manager.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/websocket_server.hpp"
+      <item path="inc/common/messaging/session_job_pool_base.hpp"
             ex="false"
             tool="3"
             flavor2="0">
@@ -262,8 +258,6 @@
       <item path="src/balancer/bpbd_balancer.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
-      </item>
-      <item path="src/balancer/language_registry.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/balancer/translator_adapter.cpp"
             ex="false"

@@ -602,8 +602,10 @@
       <df name="balancer">
         <in>adapters_manager.hpp</in>
         <in>balancer_console.hpp</in>
+        <in>balancer_consts.hpp</in>
         <in>balancer_parameters.hpp</in>
         <in>balancer_server.hpp</in>
+        <in>language_registry.hpp</in>
         <in>translation_job.hpp</in>
         <in>translation_manager.hpp</in>
         <in>translator_adapter.hpp</in>
@@ -629,6 +631,8 @@
           <in>outgoing_msg.hpp</in>
           <in>request_msg.hpp</in>
           <in>response_msg.hpp</in>
+          <in>session_job_pool_base.hpp</in>
+          <in>session_manager.hpp</in>
           <in>status_code.hpp</in>
           <in>supp_lang_req.hpp</in>
           <in>supp_lang_resp.hpp</in>
@@ -637,6 +641,7 @@
           <in>trans_job_resp.hpp</in>
           <in>trans_sent_data.hpp</in>
           <in>trans_session_id.hpp</in>
+          <in>websocket_server.hpp</in>
         </df>
         <df name="utils">
           <df name="cmd">
@@ -672,6 +677,7 @@
           </df>
           <in>exceptions.hpp</in>
           <in>hashing_utils.hpp</in>
+          <in>id_manager.hpp</in>
           <in>math_utils.hpp</in>
           <in>string_utils.hpp</in>
         </df>
@@ -816,6 +822,7 @@
       <df name="balancer">
         <in>balancer_parameters.cpp</in>
         <in>bpbd_balancer.cpp</in>
+        <in>language_registry.cpp</in>
         <in>translator_adapter.cpp</in>
       </df>
       <df name="client">
