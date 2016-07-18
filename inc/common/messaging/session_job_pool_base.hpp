@@ -53,10 +53,15 @@ namespace uva {
                      * This is the base class for all the session job pools. It stores the
                      * common functionality for scheduling and canceling jobs in a session.
                      * @param job_type the type of the job that will be stored in this pool
+                     * @param notify_job_done_func the setter functional to be set
                      */
                     template<typename job_type>
                     class session_job_pool_base {
                     public:
+
+                        //Define the function type for the function used to set the translation job resut
+                        typedef function<void(job_type* pool_job) > done_job_notifier;
+
                         //Define the job id to job and session id to jobs maps and iterators thereof
                         typedef std::unordered_map<job_id_type, job_type*> jobs_map_type;
                         typedef typename jobs_map_type::iterator jobs_map_iter_type;
@@ -69,10 +74,12 @@ namespace uva {
 
                         /**
                          * The basic constructor, starts the finished jobs processing thread.
+                         * @param notify_job_done_func the setter functional to be set
                          */
-                        session_job_pool_base()
-                        : m_is_stopping(false), m_job_count(0),
-                        m_jobs_thread(bind(&session_job_pool_base::process_finished_jobs, this)) {
+                        session_job_pool_base(done_job_notifier notify_job_done_func)
+                        : m_notify_job_done_func(notify_job_done_func),
+                        m_is_stopping(false), m_job_count(0), m_jobs_thread(
+                        bind(&session_job_pool_base::process_finished_jobs, this)) {
                         }
 
                         /**
@@ -194,13 +201,6 @@ namespace uva {
                          * @param pool_job the pointer to the new job
                          */
                         virtual void process_new_job(job_type* pool_job) = 0;
-
-                        /**
-                         * This function is called after the job is known to be finished
-                         * and before it is deleted from the pool and destroyed.
-                         * @param pool_job the pointer to the finished job
-                         */
-                        virtual void notify_job_finished(job_type* pool_job) = 0;
 
                         /**
                          * Allows to cancel all the currently running translation jobs in the server
@@ -377,8 +377,12 @@ namespace uva {
                                     LOG_DEBUG << "The finished job " << pool_job << " id is " << pool_job->get_job_id() <<
                                             " session id is " << pool_job->get_session_id() << END_LOG;
 
+                                    //Do the sanity check assert
+                                    ASSERT_SANITY_THROW(!m_notify_job_done_func,
+                                            "The job pool's result setting function is not set!");
+
                                     //Notify that the job has been finished
-                                    notify_job_finished(pool_job);
+                                    m_notify_job_done_func(pool_job);
 
                                     LOG_DEBUG << "Erasing the job " << pool_job << " from the done jobs list" << END_LOG;
 
@@ -398,6 +402,9 @@ namespace uva {
                         }
 
                     private:
+                        //Stores the reply sender functional
+                        done_job_notifier m_notify_job_done_func;
+
                         //Stores the synchronization mutex for working with the m_sessions_map
                         recursive_mutex m_all_jobs_lock;
 

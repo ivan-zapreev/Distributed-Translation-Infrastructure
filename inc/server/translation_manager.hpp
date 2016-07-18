@@ -67,9 +67,8 @@ namespace uva {
                      * @param num_threads the number of translation threads to run
                      */
                     translation_manager(const size_t num_threads)
-                    : session_manager(), m_job_pool(num_threads) {
-                        //Set the response sender function into the pool
-                        m_job_pool.set_job_result_setter(bind(&translation_manager::notify_job_finished, this, _1));
+                    : session_manager(), m_job_pool(num_threads,
+                    bind(&translation_manager::notify_job_done, this, _1)) {
                     }
 
                     /**
@@ -160,7 +159,7 @@ namespace uva {
                      * this will also send the response to the client.
                      * @param trans_job the pointer to the finished translation job 
                      */
-                    void notify_job_finished(trans_job_ptr trans_job) {
+                    void notify_job_done(trans_job_ptr trans_job) {
                         //Declare and initialize session and job id for future use
                         const job_id_type job_id = trans_job->get_job_id();
                         const job_id_type session_id = trans_job->get_session_id();

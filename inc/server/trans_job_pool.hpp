@@ -64,15 +64,13 @@ namespace uva {
                 class trans_job_pool : public session_job_pool_base<trans_job> {
                 public:
 
-                    //Define the function type for the function used to set the translation job resut
-                    typedef function<void(trans_job_ptr trans_job) > finished_job_notifier;
-
                     /**
                      * The basic constructor,  starts the finished jobs processing thread.
                      * @param num_threads the number of translation threads to run
+                     * @param notify_job_done_func the setter functional to be set
                      */
-                    trans_job_pool(const size_t num_threads)
-                    : session_job_pool_base(), m_tasks_pool(num_threads) {
+                    trans_job_pool(const size_t num_threads, done_job_notifier notify_job_done_func)
+                    : session_job_pool_base(notify_job_done_func), m_tasks_pool(num_threads) {
                     }
 
                     /**
@@ -104,14 +102,6 @@ namespace uva {
                         m_tasks_pool.report_run_time_info("Translation tasks pool");
                     }
 
-                    /**
-                     * Allows to set the response sender function for sending the replies to the client
-                     * @param notify_job_finished_func the setter functional to be set
-                     */
-                    inline void set_job_result_setter(finished_job_notifier notify_job_finished_func) {
-                        m_notify_job_finished_func = notify_job_finished_func;
-                    }
-
                 protected:
 
                     /**
@@ -125,24 +115,9 @@ namespace uva {
                         }
                     }
 
-                    /**
-                     * @see session_job_pool_base
-                     */
-                    virtual void notify_job_finished(trans_job_ptr trans_job) {
-                        //Do the sanity check assert
-                        ASSERT_SANITY_THROW(!m_notify_job_finished_func,
-                                "The job pool's result setting function is not set!");
-
-                        //Send the job response
-                        m_notify_job_finished_func(trans_job);
-                    }
-
                 private:
                     //Stores the tasks pool
                     task_pool<trans_task> m_tasks_pool;
-
-                    //Stores the reply sender functional
-                    finished_job_notifier m_notify_job_finished_func;
                 };
             }
         }
