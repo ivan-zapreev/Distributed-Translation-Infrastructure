@@ -93,7 +93,7 @@ namespace uva {
                          * Allows to set the response sender function for sending the replies to the client
                          * @param sender the s ender functional to be set
                          */
-                        void set_response_sender(response_sender sender) {
+                        inline void set_response_sender(response_sender sender) {
                             m_sender_func = sender;
                         }
 
@@ -102,7 +102,7 @@ namespace uva {
                          * If for some reason a new session can not be opened, an exception is thrown.
                          * @param hdl [in] the connection handler to identify the session object.
                          */
-                        void open_session(websocketpp::connection_hdl hdl) {
+                        inline void open_session(websocketpp::connection_hdl hdl) {
                             //Use the scoped mutex lock to avoid race conditions
                             scoped_guard guard(m_lock);
 
@@ -126,7 +126,7 @@ namespace uva {
                          * @param hdl the connection handler to identify the session object.
                          * @return the session object to be removed, is to be deallocated by the caller.
                          */
-                        void close_session(websocketpp::connection_hdl hdl) {
+                        inline void close_session(websocketpp::connection_hdl hdl) {
                             LOG_DEBUG << "A closing session request!" << END_LOG;
 
                             //Declare the session id 
@@ -159,15 +159,45 @@ namespace uva {
                         }
 
                     protected:
-                        //Stores the reply sender functional
-                        response_sender m_sender_func;
+
+                        /**
+                         * Allows to send the response from the given session
+                         * @param session_id the session id
+                         * @param data the data to be sent
+                         * @return true if the sent was successful, otherwise false
+                         */
+                        inline bool send_response(const job_id_type session_id, const string & data) {
+                            //Do the sanity check assert
+                            ASSERT_SANITY_THROW(!m_sender_func,
+                                    "The sender function of the translation manager is not set!");
+
+                            //Retrieve the connection handler based on the session id
+                            websocketpp::connection_hdl hdl = get_session_hdl(session_id);
+
+                            //If the sender function is present, and the handler is not expired
+                            if (!hdl.expired()) {
+                                LOG_DEBUG << "Sending translation job response: " << data << END_LOG;
+
+                                //Send the response to the client
+                                m_sender_func(hdl, data);
+
+                                //The send was successful
+                                return true;
+                            } else {
+                                LOG_DEBUG1 << "Could not send the translation response to session "
+                                        << to_string(session_id)
+                                        << " the connection handler has expired!" << END_LOG;
+                                //The send failed
+                                return false;
+                            }
+                        }
 
                         /**
                          * Will be called one the session is closed
                          * @param session_id the id of the closed session
                          */
                         virtual void session_is_closed(session_id_type session_id) = 0;
-                        
+
                         /**
                          * ALlows to get a session id for the given handler
                          * @param hdl the session handler
@@ -179,7 +209,7 @@ namespace uva {
                             //Get what ever it is stored
                             return m_sessions[hdl];
                         }
-                        
+
                         /**
                          * Allows to get the session handler for the given session id
                          * @param session_id the session id
@@ -194,6 +224,8 @@ namespace uva {
                         }
 
                     private:
+                        //Stores the reply sender functional
+                        response_sender m_sender_func;
 
                         //Stores the instance of the id manager
                         id_manager<session_id_type> m_session_id_mgr;

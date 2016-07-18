@@ -78,7 +78,7 @@ namespace uva {
                      * @param params the parameters from which the server will be configured
                      */
                     translation_manager(const balancer_parameters & params)
-                    : m_params(params), m_sender_func(NULL), m_chooser_func(NULL) {
+                    : session_manager(), m_params(params), m_chooser_func(NULL) {
                     }
                     
                     /**
@@ -87,7 +87,7 @@ namespace uva {
                      * @param chooser the function needed for getting translation adapters
                      */
                     inline void set_functionals(response_sender sender, adapter_chooser chooser) {
-                        m_sender_func = sender;
+                        this->set_response_sender(sender);
                         m_chooser_func = chooser;
                     }
                     
@@ -144,8 +144,6 @@ namespace uva {
                 private:
                     //Stores the pointer to the server parameters
                     const balancer_parameters & m_params;
-                    //Stores the reply sender functional
-                    response_sender m_sender_func;
                     //Stores the function for choosing the adapter
                     adapter_chooser m_chooser_func;
                 };

@@ -165,31 +165,16 @@ namespace uva {
                         const job_id_type job_id = trans_job->get_job_id();
                         const job_id_type session_id = trans_job->get_session_id();
 
-                        LOG_DEBUG << "Finished job id: " << trans_job->get_job_id()
-                                << ", session: " << trans_job->get_session_id() << END_LOG;
+                        LOG_DEBUG << "Finished job id: " << job_id << ", session: " << session_id << END_LOG;
 
-                        //Do the sanity check assert
-                        ASSERT_SANITY_THROW(!m_sender_func,
-                                "The sender function of the translation manager is not set!");
+                        //Create the translation job response
+                        trans_job_resp_out response;
 
-                        //Retrieve the connection handler based on the session id
-                        websocketpp::connection_hdl hdl = get_session_hdl(session_id);
+                        //Populate the translation job response with the data
+                        trans_job->collect_job_results(response);
 
-                        //If the sender function is present, and the handler is not expired
-                        if (!hdl.expired()) {
-                            //Create the translation job response
-                            trans_job_resp_out response;
-
-                            //Populate the translation job response with the data
-                            trans_job->collect_job_results(response);
-
-                            //Serialize the response and do logging
-                            const string data = response.serialize();
-                            LOG_DEBUG << "Sending translation job response: " << data << END_LOG;
-
-                            //Send the response to the client
-                            m_sender_func(hdl, data);
-                        } else {
+                        //Attempt to send the serialized response
+                        if (!send_response(session_id, response.serialize())) {
                             LOG_DEBUG << "Could not send the translation response for " << session_id
                                     << "/" << job_id << " as the connection handler has expired!" << END_LOG;
                         }
