@@ -810,7 +810,6 @@
         <in>server_parameters.hpp</in>
         <in>trans_info_provider.hpp</in>
         <in>trans_job.hpp</in>
-        <in>trans_job_pool.hpp</in>
         <in>trans_task.hpp</in>
         <in>trans_task_id.hpp</in>
         <in>translation_manager.hpp</in>
