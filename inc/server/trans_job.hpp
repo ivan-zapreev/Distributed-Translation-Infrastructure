@@ -43,6 +43,7 @@
 using namespace std;
 using namespace std::placeholders;
 
+using namespace uva::smt::bpbd::common::messaging;
 using namespace uva::smt::bpbd::server::messaging;
 
 using namespace uva::utils::threads;
@@ -66,8 +67,8 @@ namespace uva {
                 class trans_job {
                 public:
 
-                    //Define the function type for the function used to set the translation job resut
-                    typedef function<void(trans_job_ptr trans_job) > done_job_notifier;
+                    //Define the function type for the function used to set the translation job result
+                    typedef function<void(trans_job_ptr) > done_job_notifier;
 
                     //Declare the tasks list type and its iterator
                     typedef vector<trans_task_ptr> tasks_list_type;

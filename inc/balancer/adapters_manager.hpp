@@ -151,20 +151,13 @@ namespace uva {
                      * The basic constructor
                      * @param params the balancer parameters to configure from
                      */
-                    adapters_manager(const balancer_parameters & params)
+                    adapters_manager(const balancer_parameters & params,
+                            trans_resp_notifier trans_resp_func,
+                            adapter_disc_notifier adapter_disc_func)
                     : m_params(params), m_adapters_data(), m_re_connect(NULL),
                     m_re_connect_mutex(), m_re_connect_condition(),
                     m_is_reconnect_run(true), m_source_mutex(), m_sources(), m_supp_lan_resp(),
                     m_supp_lan_resp_str(""), m_supp_lang_mutex() {
-                    }
-
-                    /**
-                     * Allows to configure the adapters manager.
-                     * @param trans_resp_func the function to be used to notify about the new translation response.
-                     * @param adapter_disc_func the function to be used to notify about a disconnected adapter
-                     */
-                    inline void set_functionals(trans_resp_notifier trans_resp_func,
-                            adapter_disc_notifier adapter_disc_func) {
                         LOG_INFO3 << "Configuring the translation servers' manager" << END_LOG;
 
                         //Iterate through the list of translation server

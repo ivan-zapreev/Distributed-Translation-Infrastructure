@@ -45,6 +45,7 @@
 using namespace std;
 
 using namespace uva::utils;
+using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
 using namespace uva::utils::logging;
 
@@ -70,7 +71,7 @@ namespace uva {
                     //Define the done job notifier function type
                     typedef function<void(trans_task_ptr) > done_task_notifier;
                     //Define the canceled job notifier function type
-                    typedef function<void(trans_task_ptr) > cancel_task_notifier;
+                    typedef function<void(trans_task_ptr) > task_pool_remover;
 
                     /**
                      * The basic constructor allowing to initialize the main class constants
@@ -98,12 +99,12 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to set the function which must be called by the tasks if it is being cancelled.
-                     * @param notify_task_cancel_func the function to call in case this task is being cancelled.
+                     * Allows to set in the method that shall remove the task from the pool if called
+                     * @param notify_task_cancel_func the function to call in case this task is being canceled.
                      */
-                    void set_cancel_task_notifier(cancel_task_notifier notify_task_cancel_func) {
-                        LOG_DEBUG << "Setting the cancel task notifier function!" << END_LOG;
-                        m_notify_task_cancel_func = notify_task_cancel_func;
+                    void set_from_pool_remover(task_pool_remover pool_task_remove_func) {
+                        LOG_DEBUG << "Setting the task remove function!" << END_LOG;
+                        m_pool_task_remove_func = pool_task_remove_func;
                     }
 
                     /**
@@ -353,8 +354,8 @@ namespace uva {
                     //enter the guarded area
                     recursive_mutex m_end_lock;
 
-                    //Stores the function to be called in case the tasks is cancelled
-                    cancel_task_notifier m_notify_task_cancel_func;
+                    //Stores the function to be called in case the tasks is canceled and we want to remove it from the pool
+                    task_pool_remover m_pool_task_remove_func;
 
                     //Stores the static instance of the id manager
                     static id_manager<task_id_type> m_id_mgr;

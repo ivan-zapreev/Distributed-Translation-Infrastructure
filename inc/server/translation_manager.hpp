@@ -44,7 +44,6 @@
 using namespace std;
 using namespace std::placeholders;
 
-using namespace uva::utils;
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
@@ -61,7 +60,7 @@ namespace uva {
                  * This is a synchronized translation sessions manager class that stores
                  * that keeps track of the open translation sessions and their objects.
                  */
-                class translation_manager : public session_manager, public session_job_pool_base<trans_job> {
+                class translation_manager : public session_manager, private session_job_pool_base<trans_job> {
                 public:
 
                     /**
@@ -104,6 +103,13 @@ namespace uva {
                         m_tasks_pool.report_run_time_info("Translation tasks pool");
                     }
 
+                    /**
+                     * Allows to stop the manager
+                     */
+                    inline void stop() {
+                        session_job_pool_base<trans_job>::stop();
+                    }
+                    
                     /**
                      * Allows to schedule a new translation request, synchronized.
                      * If there is not session associated with the given connection

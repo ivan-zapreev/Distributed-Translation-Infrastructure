@@ -19,9 +19,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/trans_job_pool.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/balancer/translation_manager.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/balancer/balancer_manager.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/balancer/balancer_job.hpp</file>
             <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/server/translation_manager.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Phrase-Based-Decoding/inc/balancer/balancer_server.hpp</file>
         </group>
     </open-files>
 </project-private>

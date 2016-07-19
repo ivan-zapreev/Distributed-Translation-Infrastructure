@@ -37,6 +37,7 @@
     </logicalFolder>
     <df root="src" name="2">
       <df name="balancer">
+        <in>balancer_job.cpp</in>
         <in>balancer_parameters.cpp</in>
         <in>bpbd_balancer.cpp</in>
         <in>translator_adapter.cpp</in>
@@ -244,6 +245,8 @@
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="src/balancer/balancer_job.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/balancer/balancer_parameters.cpp"
             ex="false"

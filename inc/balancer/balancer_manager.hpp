@@ -28,8 +28,10 @@
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+#include "common/utils/threads/task_pool.hpp"
 
 #include "common/messaging/session_manager.hpp"
+#include "common/messaging/session_job_pool_base.hpp"
 
 #include "client/messaging/trans_job_resp_in.hpp"
 #include "server/messaging/trans_job_req_in.hpp"
@@ -43,6 +45,7 @@ using namespace std;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
+using namespace uva::utils::threads;
 
 using namespace uva::smt::bpbd::common::messaging;
 using namespace uva::smt::bpbd::client::messaging;
@@ -66,47 +69,52 @@ namespace uva {
                  *      Map local job id to session/trans_job data
                  *      Increase/Decrease the number of dispatchers
                  */
-                class balancer_manager : public session_manager {
+                class balancer_manager : public session_manager, private session_job_pool_base<balancer_job> {
                 public:
-                    //Declare the response setting function for the translation job.
-                    typedef function<void(websocketpp::connection_hdl, const string &) > response_sender;
                     //Declare the function that will be choosing the proper adapter for the translation job
-                    typedef function<translator_adapter *(const language_uid, const language_uid)> adapter_chooser;
+                    typedef function<translator_adapter *(const language_uid, const language_uid) > adapter_chooser;
 
                     /**
                      * The basic constructor
-                     * @param params the parameters from which the server will be configured
+                     * @param num_threads_incoming the number of thread to work on the incoming pool of jobs
+                     * @param num_threads_outgoing the number of thread to work on the outgoing pool of jobs
                      */
-                    balancer_manager(const balancer_parameters & params)
-                    : session_manager(), m_params(params), m_chooser_func(NULL) {
+                    balancer_manager(const size_t num_threads_incoming, const size_t num_threads_outgoing)
+                    : session_manager(), session_job_pool_base(
+                    bind(&balancer_manager::notify_job_done, this, _1)),
+                    m_chooser_func(NULL), m_incoming_tasks_pool(num_threads_incoming),
+                    m_outgoing_tasks_pool(num_threads_outgoing) {
                     }
-                    
+
                     /**
-                     * Allows to set the functionals needed to communicate to other objects
-                     * @param sender the translation response sender functional to be set
+                     * Allows to set the adapter chooser function
                      * @param chooser the function needed for getting translation adapters
                      */
-                    inline void set_functionals(response_sender sender, adapter_chooser chooser) {
-                        this->set_response_sender(sender);
+                    inline void set_adapter_chooser(adapter_chooser chooser) {
                         m_chooser_func = chooser;
                     }
-                    
-                    /**
-                     * Allows to stop the translation manager
-                     */
-                    inline void stop() {
-                        //ToDo: Implement
-                    }
-                    
+
                     /**
                      * Reports the run-time information
                      */
-                    inline void report_run_time_info() {
-                        //ToDo: Implement
+                    void report_run_time_info() {
+                        //Report the super class info first
+                        session_job_pool_base::report_run_time_info();
+
+                        //Report data from the task pools
+                        m_incoming_tasks_pool.report_run_time_info("Incoming tasks pool");
+                        m_outgoing_tasks_pool.report_run_time_info("Outgoing tasks pool");
+                    }
+
+                    /**
+                     * Allows to stop the manager
+                     */
+                    inline void stop() {
+                        session_job_pool_base<balancer_job>::stop();
                     }
                     
                     /**
-                     * Allows to process the server translation job response message
+                     * Shall be called when a new translation job response arrives from a translation server adapter.
                      * @param trans_job_resp a pointer to the translation job response data, not NULL
                      */
                     inline void notify_translation_response(trans_job_resp_in * trans_job_resp) {
@@ -116,15 +124,40 @@ namespace uva {
                     /**
                      * Allows to process the server translation job request message
                      * @param hdl the connection handler to identify the session object.
-                     * @param trans_job_req a pointer to the translation job request data, not NULL
+                     * @param trans_req a pointer to the translation job request data, not NULL
                      */
-                    inline void notify_translation_request(websocketpp::connection_hdl hdl, trans_job_req_in * trans_job_req) {
-                        //ToDo: Implement handling of the translation job response
+                    inline void translate(websocketpp::connection_hdl hdl, trans_job_req_in * trans_req) {
+                        //Get the session id
+                        session_id_type session_id = get_session_id(hdl);
+
+                        LOG_DEBUG << "Received a translation request from session: " << session_id << END_LOG;
+
+                        //Check that there is a session mapped to this handler
+                        ASSERT_CONDITION_THROW((session_id == session_id::UNDEFINED_SESSION_ID),
+                                "No session object is associated with the connection handler!");
+
+                        //Instantiate a new translation job, it will destroy the translation request in its destructor
+                        bal_job_ptr job = new balancer_job(session_id, trans_req);
+
+                        LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
+
+                        try {
+                            //Schedule a translation job request for the session id
+                            this->plan_new_job(job);
+                        } catch (std::exception & ex) {
+                            //Catch any possible exception and delete the translation job
+                            LOG_ERROR << ex.what() << END_LOG;
+                            if (job != NULL) {
+                                delete job;
+                            }
+                            //Re-throw the exception
+                            throw ex;
+                        }
                     }
 
                     /**
-                     * Allows to notify the translations manager that there is a server
-                     * adapter disconnected, so there will be no replies to the sent requests.
+                     * Shall be called when a server's adapter gets disconnected. In this case all the
+                     * jobs being awaiting response from this adapter are to be canceled.
                      * @param uid the unique identifier of the adapter
                      */
                     inline void notify_adapter_disconnect(const trans_server_uid & uid) {
@@ -135,17 +168,39 @@ namespace uva {
                 protected:
 
                     /**
-                     * @see session_manager
+                     * Will be called once a new job is scheduled. Here we need to perform
+                     * the needed actions with the job. I.e. add it into the incoming tasks pool.
+                     * @see session_job_pool_base
                      */
-                    virtual void session_is_closed(session_id_type session_id) {
+                    virtual void process_new_job(bal_job_ptr bal_job) {
+                        m_incoming_tasks_pool.plan_new_task(bal_job);
+                    }
+                    
+                    /**
+                     * Allows to set the non-error translation result,
+                     * this will also send the response to the client.
+                     * @param bal_job the pointer to the finished translation job 
+                     */
+                    inline void notify_job_done(bal_job_ptr bal_job) {
                         //ToDo: Implement
                     }
 
+                    /**
+                     * Will be called when a session with the given id is closed
+                     * @see session_manager
+                     */
+                    virtual void session_is_closed(session_id_type session_id) {
+                        //Cancel all the jobs from the given session
+                        this->cancel_jobs(session_id);
+                    }
+
                 private:
-                    //Stores the pointer to the server parameters
-                    const balancer_parameters & m_params;
                     //Stores the function for choosing the adapter
                     adapter_chooser m_chooser_func;
+                    //Stores the tasks pool
+                    task_pool<balancer_job> m_incoming_tasks_pool;
+                    //Stores the tasks pool
+                    task_pool<balancer_job> m_outgoing_tasks_pool;
                 };
 
             }
