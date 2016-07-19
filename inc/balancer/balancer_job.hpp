@@ -28,6 +28,7 @@
 
 #include <ostream>
 
+#include "common/utils/id_manager.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/threads/threads.hpp"
@@ -41,8 +42,11 @@
 #include "server/messaging/trans_job_req_in.hpp"
 #include "server/messaging/trans_job_resp_out.hpp"
 
+#include "balancer/translator_adapter.hpp"
+
 using namespace std;
 
+using namespace uva::utils;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
 using namespace uva::utils::logging;
@@ -55,6 +59,8 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
+                //Declare the function that will be choosing the proper adapter for the translation job
+                typedef function<translator_adapter *(const language_uid, const language_uid) > adapter_chooser;
 
                 //Forward class declaration
                 class balancer_job;
@@ -86,12 +92,36 @@ namespace uva {
                     typedef function<void(bal_job_ptr) > task_pool_remover;
 
                     /**
+                     * This enumeration stores the balancer job internal states
+                     */
+                    enum phase {
+                        UNDEFINED_PHASE = 0, //When created the phase is not initialized - undefined
+                        REQUEST_PHASE = 1, //The balancer job is created and initialized, the request is present, waiting to be send to the translator
+                        RESPONSE_PHASE = 2, //The translation request is sent to the translator, waiting for the translator's response
+                        REPLY_PHASE = 3, //The translator's response is received waiting until the reply will be sent to the client
+                        DONE_PHASE = 4, //The reply is sent to the client.
+                    };
+
+                    /**
+                     * This enumeration stores the balancer job internal states
+                     */
+                    enum state {
+                        UNDEFINED_STATE = 0, //When created the state is not initialized - undefined
+                        ACTIVE_STATE = 1, //The state is active, i.e. the job is not canceled an there was not failure
+                        CANCELED_STATE = 5, //The job is canceled, due to a client session disconnect
+                        FAILED_STATE = 6 //The job is failed, due to a translator's adapter disconnect
+                    };
+
+                    /**
                      * The basic constructor allowing to initialize the main class constants
                      * @param session_id the id of the session from which the translation request is received
                      * @param trans_req the reference to the translation job request to get the data from.
+                     * @param chooser_func the function to choose the adapter, not NULL
                      */
-                    balancer_job(const session_id_type session_id, trans_job_req_in * trans_req)
-                    : m_session_id(session_id), m_trans_req(trans_req), m_notify_job_done_func(NULL) {
+                    balancer_job(const session_id_type session_id, trans_job_req_in * trans_req, adapter_chooser chooser_func)
+                    : m_session_id(session_id), m_job_id(trans_req->get_job_id()),
+                    m_trans_req(trans_req), m_notify_job_done_func(NULL), m_chooser_func(chooser_func),
+                    m_phase(phase::REQUEST_PHASE), m_state(state::ACTIVE_STATE) {
                     }
 
                     /**
@@ -117,7 +147,7 @@ namespace uva {
                      * @return the job id
                      */
                     inline job_id_type get_job_id() const {
-                        return m_trans_req->get_job_id();
+                        return m_job_id;
                     }
 
                     /**
@@ -141,36 +171,195 @@ namespace uva {
 
                     /**
                      * Allows to cancel the given translation job by telling all the translation tasks to stop.
+                     * Calling this method indicates that the job is canceled due to the client disconnect
                      */
                     inline void cancel() {
-                        //ToDo: Implement
+                        recursive_guard guard(m_g_lock);
+
+                        //Just mark the job as canceled 
+                        m_state = state::CANCELED_STATE;
+                    }
+
+                    /**
+                     * Allows to cancel the given job.  Calling this method indicates
+                     * that the job is canceled due to the translator's adapter disconnect
+                     * This method is synchronized.
+                     */
+                    inline void fail() {
+                        recursive_guard guard(m_g_lock);
+
+                        //Just mark the job as canceled 
+                        m_state = state::FAILED_STATE;
                     }
 
                     /**
                      * Allows to wait until the job is finished, this
                      * includes the notification of the job pool.
+                     * This method is synchronized.
                      */
                     inline void synch_job_finished() {
-                        //ToDo: Implement
+                        recursive_guard guard(m_f_lock);
                     }
 
                     /**
                      * Performs balancer job actions depending on the internal job state
+                     * The execute is to be called in two phases:
+                     * phase::REQUEST_PHASE - this is when we need to send the request to the translator
+                     * phase::REPLY_PHASE - this is when the translator's response is received and we need to send it to the client.
                      */
                     void execute() {
-                        //ToDo: Implement
+                        recursive_guard guard(m_g_lock);
+
+                        switch (m_phase) {
+                            case phase::REQUEST_PHASE:
+                            {
+                                //Send the request to the translator
+                                send_request();
+                                break;
+                            }
+                            case phase::REPLY_PHASE:
+                            {
+                                //Send the reply to the client
+                                send_reply();
+                                break;
+                            }
+                            default:
+                            {
+                                //This must not be happening it is an internal error
+                                LOG_ERROR << "Executing the balancer job in phase: " << m_phase << END_LOG;
+                            }
+                        }
                     }
 
                 protected:
+
+                    /**
+                     * Is called when it is time to send the request to the translator.
+                     * There is the situations to consider: 
+                     * 1. The job is already canceled due to the client disconnect.
+                     * 2. The translator's adapter is not available.
+                     * 3. The request sending failed.
+                     * 4. Everything went fine.
+                     * This method is not synchronized. It must be called from a thread safe context.
+                     */
+                    inline void send_request() {
+                        //Get the new job id as the job id present in the translation request
+                        //is not unique for the translation server's session any mores 
+                        job_id_type job_id = m_id_mgr.get_next_id();
+
+                        //ToDo: Register the job by the given job id as awaiting response
+
+                        switch (m_state) {
+                            case state::ACTIVE_STATE:
+                            {
+                                //Get the translator's adapter
+                                translator_adapter * adapter = m_chooser_func(m_trans_req->get_source_lang_uid(), m_trans_req->get_target_lang_uid());
+                                //Check if the adapter is present
+                                if (adapter != NULL) {
+                                    //Prepare the request with the new job id
+                                    m_trans_req->set_job_id(job_id);
+                                    //Attempt sending the request through the adapter
+                                    try {
+                                        adapter->send_request(m_trans_req->serialize());
+                                    } catch (std::exception & ex) {
+                                        //ToDo: If the sending is failed, register an error response
+                                    }
+                                } else {
+                                    //ToDo: If the adapter is not present, register an error response
+                                }
+                                break;
+                            }
+                            case state::CANCELED_STATE:
+                            {
+                                //ToDo: Register an error response
+                                break;
+                            }
+                            default:
+                            {
+                                //ToDo: Register an (internal) error response
+                                
+                                //This must not be happening it is an internal error
+                                LOG_ERROR << "Sending the job REQUEST in state: " << m_state << END_LOG;
+                            }
+                        }
+                    }
+
+                    /**
+                     * Is called when it is time to send the request to the translator.
+                     * There is the situations to consider: 
+                     * 1. The job is canceled by the client session disconnect
+                     * 2. The job is canceled by the server session disconnect
+                     * 3. Everything is fine
+                     * This method is partially synchronized. It must be called from a thread safe context.
+                     * The only synchronization available is with the synch_job_finished method.
+                     */
+                    inline void send_reply() {
+                        switch (m_state) {
+                            case state::ACTIVE_STATE:
+                            {
+                                //ToDo: Change the job id in the response to the stored - original - one
+                                //ToDo: Send the response to the client through the sender function
+                                break;
+                            }
+                            case state::CANCELED_STATE:
+                            {
+                                //ToDo: Do nothing, just log an issue 
+                                break;
+                            }
+                            case state::FAILED_STATE:
+                            {
+                                //ToDo: Create a response with the original text and the job id but with an error status
+                                //ToDo: Send the response to the client through the sender function
+                                break;
+                            }
+                            default:
+                            {
+                                //This must not be happening it is an internal error
+                                LOG_ERROR << "Sending the job REPLY in state: " << m_state << END_LOG;
+                            }
+                        }
+                        
+                        //Notify that the job is now finished.
+                        {
+                            recursive_guard guard(m_f_lock);
+
+                            //Notify that this job id done
+                            m_notify_job_done_func(this);
+                        }
+                    }
+
                 private:
+                    //Stores the static instance of the id manager
+                    static id_manager<job_id_type> m_id_mgr;
+
                     //Stores the translation client session id
                     const session_id_type m_session_id;
+
+                    //Stores the original job id of the request
+                    const job_id_type m_job_id;
 
                     //Stores the pointer to the incoming translation job request, not NULL
                     trans_job_req_in * m_trans_req;
 
                     //The done job notifier
                     done_job_notifier m_notify_job_done_func;
+
+                    //Stores the function for choosing the adapter
+                    adapter_chooser m_chooser_func;
+
+                    //Stores the balancer job phase
+                    phase m_phase;
+
+                    //Stores the balancer job state
+                    state m_state;
+
+                    //The global lock needed to guard the job state change and its execution
+                    recursive_mutex m_g_lock;
+
+                    //The final lock needed to guard the job ready notification and
+                    //waiting for it is finished before the job is deleted.
+                    recursive_mutex m_f_lock;
+
                 };
 
                 /**

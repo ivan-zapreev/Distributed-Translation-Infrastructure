@@ -147,11 +147,11 @@ namespace uva {
                     inline bool connect() {
                         //Request a non-clocking connection open
                         connect_nb();
-                        
+
                         //Wait until the connection is actually open
                         return wait_connect();
                     }
-                    
+
                     /**
                      * Allows to close the connection and stop the io service thread
                      */
@@ -189,14 +189,11 @@ namespace uva {
 
                     /**
                      * Attempts to send an outgoing message to the server
-                     * @param message an outgoing message
+                     * @param message an outgoing message string
                      */
-                    inline void send(outgoing_msg * message) {
+                    inline void send(const string & msg_str) {
                         //Declare the error code
                         websocketpp::lib::error_code ec;
-
-                        //Serialize the message into string
-                        const string msg_str = message->serialize();
 
                         LOG_DEBUG << "Serialized translation request: \n" << msg_str << END_LOG;
 
@@ -208,6 +205,15 @@ namespace uva {
                         // message to a connection that was closed or in the process of
                         // closing.
                         ASSERT_CONDITION_THROW(ec, string("Send Error: ") + ec.message());
+                    }
+
+                    /**
+                     * Attempts to send an outgoing message to the server
+                     * @param message an outgoing message
+                     */
+                    inline void send(outgoing_msg * message) {
+                        //Serialize the message into string and send
+                        send(message->serialize());
                     }
 
                     /**

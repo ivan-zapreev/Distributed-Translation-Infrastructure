@@ -30,6 +30,8 @@ namespace uva {
         namespace bpbd {
             namespace balancer {
 
+                id_manager<job_id_type> balancer_job::m_id_mgr(job_id::MINIMUM_JOB_ID);
+
                 /**
                  * Allows to log the balancer job into an output stream
                  * @param stream the output stream

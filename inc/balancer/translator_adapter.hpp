@@ -264,6 +264,14 @@ namespace uva {
                     inline uint32_t get_weight() const {
                         return m_params->m_load_weight;
                     }
+                    
+                    /**
+                     * Allows to send the string message to the server
+                     * @param msg the string message to be send
+                     */
+                    inline void send_request(const string & msg) {
+                        m_client->send(msg);
+                    }
 
                 protected:
 

@@ -92,12 +92,20 @@ namespace uva {
                             //with all sorts of checks but this shall do it for now.
                             return static_cast<msg_type> (m_json[MSG_TYPE_FIELD_NAME].GetInt());
                         }
-                        
+                                                
                         /**
                          * Allows to get a reference to a constant json document
                          * @return the reference to the constant json document.
                          */
-                        const Document & get_json() const {
+                        const Document & get_const_json() const {
+                            return m_json;
+                        }
+
+                        /**
+                         * Allows to get a reference to a constant json document
+                         * @return the reference to the constant json document.
+                         */
+                        Document & get_json() {
                             return m_json;
                         }
 

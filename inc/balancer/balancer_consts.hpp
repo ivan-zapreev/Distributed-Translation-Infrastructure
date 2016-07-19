@@ -34,8 +34,6 @@ namespace uva {
                 //Typedef the translation adapter uid type
                 typedef uint32_t trans_server_uid;
                 
-                //Typedef the language uid type
-                typedef uint32_t language_uid;
             }
         }
     }

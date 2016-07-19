@@ -607,7 +607,6 @@
         <in>balancer_manager.hpp</in>
         <in>balancer_parameters.hpp</in>
         <in>balancer_server.hpp</in>
-        <in>language_registry.hpp</in>
         <in>translator_adapter.hpp</in>
       </df>
       <df name="client">
@@ -627,6 +626,7 @@
       <df name="common">
         <df name="messaging">
           <in>incoming_msg.hpp</in>
+          <in>language_registry.hpp</in>
           <in>msg_base.hpp</in>
           <in>outgoing_msg.hpp</in>
           <in>request_msg.hpp</in>
@@ -822,7 +822,6 @@
         <in>balancer_job.cpp</in>
         <in>balancer_parameters.cpp</in>
         <in>bpbd_balancer.cpp</in>
-        <in>language_registry.cpp</in>
         <in>translator_adapter.cpp</in>
       </df>
       <df name="client">
@@ -834,6 +833,7 @@
       </df>
       <df name="common">
         <df name="messaging">
+          <in>language_registry.cpp</in>
           <in>messaging.cpp</in>
           <in>trans_job_code.cpp</in>
         </df>

@@ -71,8 +71,6 @@ namespace uva {
                  */
                 class balancer_manager : public session_manager, private session_job_pool_base<balancer_job> {
                 public:
-                    //Declare the function that will be choosing the proper adapter for the translation job
-                    typedef function<translator_adapter *(const language_uid, const language_uid) > adapter_chooser;
 
                     /**
                      * The basic constructor
@@ -112,14 +110,6 @@ namespace uva {
                     inline void stop() {
                         session_job_pool_base<balancer_job>::stop();
                     }
-                    
-                    /**
-                     * Shall be called when a new translation job response arrives from a translation server adapter.
-                     * @param trans_job_resp a pointer to the translation job response data, not NULL
-                     */
-                    inline void notify_translation_response(trans_job_resp_in * trans_job_resp) {
-                        //ToDo: Implement handling of the translation job response
-                    }
 
                     /**
                      * Allows to process the server translation job request message
@@ -137,7 +127,7 @@ namespace uva {
                                 "No session object is associated with the connection handler!");
 
                         //Instantiate a new translation job, it will destroy the translation request in its destructor
-                        bal_job_ptr job = new balancer_job(session_id, trans_req);
+                        bal_job_ptr job = new balancer_job(session_id, trans_req, m_chooser_func);
 
                         LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
 
@@ -153,6 +143,14 @@ namespace uva {
                             //Re-throw the exception
                             throw ex;
                         }
+                    }
+
+                    /**
+                     * Shall be called when a new translation job response arrives from a translation server adapter.
+                     * @param trans_job_resp a pointer to the translation job response data, not NULL
+                     */
+                    inline void notify_translation_response(trans_job_resp_in * trans_job_resp) {
+                        //ToDo: Implement handling of the translation job response
                     }
 
                     /**
@@ -172,17 +170,17 @@ namespace uva {
                      * the needed actions with the job. I.e. add it into the incoming tasks pool.
                      * @see session_job_pool_base
                      */
-                    virtual void process_new_job(bal_job_ptr bal_job) {
+                    virtual void schedule_new_job(bal_job_ptr bal_job) {
+                        //Plan the job in to the incoming tasks pool and move on.
                         m_incoming_tasks_pool.plan_new_task(bal_job);
                     }
-                    
+
                     /**
-                     * Allows to set the non-error translation result,
-                     * this will also send the response to the client.
-                     * @param bal_job the pointer to the finished translation job 
+                     * This function will be called once the balancer job is fully done an it is about to be destroyed.
+                     * @param bal_job the balancer job that is fully done
                      */
                     inline void notify_job_done(bal_job_ptr bal_job) {
-                        //ToDo: Implement
+                        //ToDo: Remove the job from the mappings
                     }
 
                     /**

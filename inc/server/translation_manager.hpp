@@ -161,7 +161,7 @@ namespace uva {
                     /**
                      * @see session_job_pool_base
                      */
-                    virtual void process_new_job(trans_job_ptr trans_job) {
+                    virtual void schedule_new_job(trans_job_ptr trans_job) {
                         //Add the job tasks to the tasks' pool
                         const trans_job::tasks_list_type& tasks = trans_job->get_tasks();
                         for (trans_job::tasks_const_iter_type it = tasks.begin(); it != tasks.end(); ++it) {

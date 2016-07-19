@@ -184,7 +184,7 @@ namespace uva {
                                 //The send was successful
                                 return true;
                             } else {
-                                LOG_DEBUG1 << "Could not send the translation response to session "
+                                LOG_DEBUG << "Could not send the translation response to session "
                                         << to_string(session_id)
                                         << " the connection handler has expired!" << END_LOG;
                                 //The send failed

@@ -74,7 +74,8 @@ namespace uva {
 
                         /**
                          * The basic constructor, starts the finished jobs processing thread.
-                         * @param notify_job_done_func the setter functional to be set
+                         * @param notify_job_done_func the function that will be called once the
+                         *                             job is fully done, before the job is deleted.
                          */
                         session_job_pool_base(done_job_notifier notify_job_done_func)
                         : m_notify_job_done_func(notify_job_done_func),
@@ -197,10 +198,11 @@ namespace uva {
                     protected:
 
                         /**
-                         * This function is called once a new job is added to the pool and is registered
+                         * This function is called once a new job is added to the pool and is registered.
+                         * Now one can schedule this job into some third entity, such as tasks pool.
                          * @param pool_job the pointer to the new job
                          */
-                        virtual void process_new_job(job_type* pool_job) = 0;
+                        virtual void schedule_new_job(job_type* pool_job) = 0;
 
                         /**
                          * Allows to cancel all the currently running translation jobs in the server
@@ -250,7 +252,7 @@ namespace uva {
                             m_job_count++;
 
                             //Process the newly added job
-                            process_new_job(pool_job);
+                            schedule_new_job(pool_job);
 
                             LOG_DEBUG << "Adding the job with ptr: " << pool_job << " to the job pool is done!" << END_LOG;
                         }

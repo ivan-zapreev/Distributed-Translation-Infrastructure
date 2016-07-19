@@ -39,12 +39,12 @@
 #include "common/utils/threads/threads.hpp"
 #include "common/utils/string_utils.hpp"
 
+#include "common/messaging/language_registry.hpp"
 #include "client/messaging/supp_lang_resp_in.hpp"
 #include "server/messaging/supp_lang_resp_out.hpp"
 
 #include "balancer/balancer_consts.hpp"
 #include "balancer/balancer_parameters.hpp"
-#include "balancer/language_registry.hpp"
 #include "balancer/translator_adapter.hpp"
 
 using namespace std;
@@ -54,6 +54,7 @@ using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
 using namespace uva::utils::text;
 
+using namespace uva::smt::bpbd::common::messaging;
 using namespace uva::smt::bpbd::client::messaging;
 using namespace uva::smt::bpbd::server::messaging;
 
