@@ -66,7 +66,7 @@ namespace uva {
                         //Provide the manager with the functional for sending
                         //the translation response and getting the adapters
                         m_manager.set_response_sender(bind(&balancer_server::send_response, this, _1, _2));
-                        m_manager.set_adapter_chooser(bind(&adapters_manager::get_server_adapter, &m_adapters, _1, _2));
+                        m_manager.set_adapter_chooser(bind(&adapters_manager::get_translator_adapter, &m_adapters, _1));
                     }
 
                     /**

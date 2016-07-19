@@ -53,7 +53,7 @@ namespace uva {
                          * @param type the message type
                          */
                         outgoing_msg(msg_type type)
-                        : msg_base(), m_type(type), m_string_buf(), m_writer(m_string_buf) {
+                        : msg_base(), m_type(type), m_string_buf(), m_is_slzd(false), m_writer(m_string_buf) {
                             //Initialize the outgoing message with the protocol version, type data and etc
                             initialize_object();
                         }
@@ -69,9 +69,13 @@ namespace uva {
                          * Allows to serialize the outgoing message into a string
                          * @return the string representation of the message
                          */
-                        virtual string serialize() {
-                            //Finish the object
-                            m_writer.EndObject();
+                        virtual string serialize() const override {
+                            if (!m_is_slzd) {
+                                //Finish the object, the const casts are needed
+                                const_cast<JSONWriter&> (m_writer).EndObject();
+                                //Set the serialization flag
+                                const_cast<bool&>(m_is_slzd) = true;
+                            }
 
                             //Return the serialized string
                             return m_string_buf.GetString();
@@ -85,6 +89,8 @@ namespace uva {
                             m_string_buf.Clear();
                             //Re-set the writer to the cleared buffer
                             m_writer.Reset(m_string_buf);
+                            //Clear the serialization flag
+                            m_is_slzd = false;
 
                             //Initialize the outgoing message with the protocol version, type data and etc
                             initialize_object();
@@ -96,6 +102,9 @@ namespace uva {
 
                         //Stores the string buffer to where the JSON string will be written
                         StringBuffer m_string_buf;
+
+                        //Stores the flag indicating whether or not the message was serialized
+                        bool m_is_slzd;
 
                     protected:
                         //Stores the JSON writer to be used for streaming response.

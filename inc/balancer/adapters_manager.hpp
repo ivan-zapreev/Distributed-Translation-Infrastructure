@@ -226,15 +226,18 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to request a translation servers' manager for the translation server adapter given
-                     * the source and target language ids and the job weight.
-                     * @param source_uid the source language id
-                     * @param target_uid the target language id
+                     * Allows to request a translation servers' manager for the
+                     * translation server adapter given translation job request.
+                     * @param trans_req the translation request, not NULL
                      * @return the pointer to the translation server dataper or NULL
                      * if there is no adapter for the given source/target language pair
                      */
-                    inline translator_adapter * get_server_adapter(
-                            const language_uid source_uid, const language_uid target_uid) {
+                    inline translator_adapter * get_translator_adapter(const trans_job_req_in * trans_req) {
+                        //Get the response source language id
+                        const language_uid source_uid = trans_req->get_source_lang_uid();
+                        //Get the response target language id
+                        const language_uid target_uid = trans_req->get_target_lang_uid();
+
                         //Get/create a source language entry, note that the entries are
                         //not removed, until the translation servers' manager is destroyed.
                         //Therefore it is safe to store the pointer to the entry.

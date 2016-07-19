@@ -66,7 +66,7 @@ namespace uva {
                          * @return the client-issued job id
                          */
                         inline job_id_type get_job_id() const {
-                            const Document & json = m_inc_msg->get_const_json();
+                            const Document & json = m_inc_msg->get_json();
                             return json[JOB_ID_FIELD_NAME].GetUint64();
                         }
 
@@ -84,7 +84,7 @@ namespace uva {
                          * @return the translation job source language, lowercased
                          */
                         inline string get_source_lang() const {
-                            const Document & json = m_inc_msg->get_const_json();
+                            const Document & json = m_inc_msg->get_json();
                             return json[SOURCE_LANG_FIELD_NAME].GetString();
                         }
 
@@ -102,7 +102,7 @@ namespace uva {
                          * @return the translation job target language, lowercased
                          */
                         inline string get_target_lang() const {
-                            const Document & json = m_inc_msg->get_const_json();
+                            const Document & json = m_inc_msg->get_json();
                             return json[TARGET_LANG_FIELD_NAME].GetString();
                         }
 
@@ -120,7 +120,7 @@ namespace uva {
                          * @return true if the translation information is requested, otherwise false
                          */
                         inline bool is_trans_info() const {
-                            const Document & json = m_inc_msg->get_const_json();
+                            const Document & json = m_inc_msg->get_json();
                             return json[IS_TRANS_INFO_FIELD_NAME].GetBool();
                         }
 
@@ -131,17 +131,16 @@ namespace uva {
                          * @return an array of sentences to be translated, encapsulated in a json object
                          */
                         inline const Value & get_source_text() const {
-                            const Document & json = m_inc_msg->get_const_json();
+                            const Document & json = m_inc_msg->get_json();
                             return json[SOURCE_SENTENCES_FIELD_NAME];
                         }
-
+                        
                         /**
-                         * Allows to serialize the job request again
-                         * @return the job request serialization
+                         * Allows to retrieve the incoming message
+                         * @return the incoming message
                          */
-                        inline string serialize() const {
-                            const Document & json = m_inc_msg->get_const_json();
-                            return json.GetString();
+                        inline const incoming_msg * get_message() const {
+                            return m_inc_msg;
                         }
 
                     private:

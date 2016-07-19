@@ -42,6 +42,7 @@
 #include "balancer/balancer_job.hpp"
 
 using namespace std;
+using namespace std::placeholders;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
@@ -80,7 +81,10 @@ namespace uva {
                     balancer_manager(const size_t num_threads_incoming, const size_t num_threads_outgoing)
                     : session_manager(), session_job_pool_base(
                     bind(&balancer_manager::notify_job_done, this, _1)),
-                    m_chooser_func(NULL), m_incoming_tasks_pool(num_threads_incoming),
+                    m_choose_adapt_func(NULL),
+                    m_register_wait_func(bind(&balancer_manager::register_awaiting_resp, this, _1)),
+                    m_notify_err_func(bind(&balancer_manager::notify_error_resp, this, _1)),
+                    m_incoming_tasks_pool(num_threads_incoming),
                     m_outgoing_tasks_pool(num_threads_outgoing) {
                     }
 
@@ -89,7 +93,7 @@ namespace uva {
                      * @param chooser the function needed for getting translation adapters
                      */
                     inline void set_adapter_chooser(adapter_chooser chooser) {
-                        m_chooser_func = chooser;
+                        m_choose_adapt_func = chooser;
                     }
 
                     /**
@@ -127,7 +131,8 @@ namespace uva {
                                 "No session object is associated with the connection handler!");
 
                         //Instantiate a new translation job, it will destroy the translation request in its destructor
-                        bal_job_ptr job = new balancer_job(session_id, trans_req, m_chooser_func);
+                        bal_job_ptr job = new balancer_job(session_id, trans_req,
+                                m_choose_adapt_func, m_register_wait_func, m_notify_err_func);
 
                         LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
 
@@ -176,14 +181,6 @@ namespace uva {
                     }
 
                     /**
-                     * This function will be called once the balancer job is fully done an it is about to be destroyed.
-                     * @param bal_job the balancer job that is fully done
-                     */
-                    inline void notify_job_done(bal_job_ptr bal_job) {
-                        //ToDo: Remove the job from the mappings
-                    }
-
-                    /**
                      * Will be called when a session with the given id is closed
                      * @see session_manager
                      */
@@ -192,9 +189,42 @@ namespace uva {
                         this->cancel_jobs(session_id);
                     }
 
+                    /**
+                     * This function will be called once the balancer job is fully done an it is about to be destroyed.
+                     * @param bal_job the balancer job that is fully done
+                     */
+                    inline void notify_job_done(bal_job_ptr bal_job) {
+                        //ToDo: Remove the job from the mappings
+                    }
+
+                    /**
+                     * This function will be called once the balancer job is awaiting
+                     * for a response from the translation server.
+                     * @param bal_job pointer to the constant balancer job
+                     */
+                    inline void register_awaiting_resp(const balancer_job * bal_job) {
+                        //ToDo: Implement
+                    }
+
+                    /**
+                     * This function will be called once the balancer job gets an error response.
+                     * Note that, the precondition for calling this method is that the balancer job
+                     * is registered as one awaiting the translation server response. If it is not
+                     * then an internal error is reported 
+                     * @param bal_job pointer to the constant balancer job
+                     */
+                    inline void notify_error_resp(const balancer_job * bal_job) {
+                        //ToDo: Implement
+                    }
+
                 private:
                     //Stores the function for choosing the adapter
-                    adapter_chooser m_chooser_func;
+                    adapter_chooser m_choose_adapt_func;
+                    //Stores the function for registering a response awaiting function
+                    job_notifier m_register_wait_func;
+                    //Stores the function for notifying about the error response
+                    job_notifier m_notify_err_func;
+
                     //Stores the tasks pool
                     task_pool<balancer_job> m_incoming_tasks_pool;
                     //Stores the tasks pool

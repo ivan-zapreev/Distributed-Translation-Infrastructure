@@ -59,13 +59,17 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
-                //Declare the function that will be choosing the proper adapter for the translation job
-                typedef function<translator_adapter *(const language_uid, const language_uid) > adapter_chooser;
 
                 //Forward class declaration
                 class balancer_job;
                 //Typedef the balancer job pointer
                 typedef balancer_job * bal_job_ptr;
+
+                //Declare the function that will be choosing the proper adapter for the translation job
+                typedef function<translator_adapter *(const trans_job_req_in * ) > adapter_chooser;
+
+                //Declare the function type that is of a general purpose, is used to notify something about the job
+                typedef function<void(const balancer_job *) > job_notifier;
 
                 /**
                  * This is the translation job class:
@@ -117,11 +121,17 @@ namespace uva {
                      * @param session_id the id of the session from which the translation request is received
                      * @param trans_req the reference to the translation job request to get the data from.
                      * @param chooser_func the function to choose the adapter, not NULL
+                     * @param register_wait_func the function to register the job as awaiting response, not NULL
+                     * @param notify_err_func the  to register the job as having received an error response, not NULL
                      */
-                    balancer_job(const session_id_type session_id, trans_job_req_in * trans_req, adapter_chooser chooser_func)
+                    balancer_job(const session_id_type session_id, trans_job_req_in * trans_req,
+                            const adapter_chooser & chooser_func, const job_notifier & register_wait_func,
+                            const job_notifier & notify_err_func)
                     : m_session_id(session_id), m_job_id(trans_req->get_job_id()),
-                    m_trans_req(trans_req), m_notify_job_done_func(NULL), m_chooser_func(chooser_func),
-                    m_phase(phase::REQUEST_PHASE), m_state(state::ACTIVE_STATE) {
+                    m_trans_req(trans_req), m_notify_job_done_func(NULL), m_choose_adapt_func(chooser_func),
+                    m_register_wait_func(register_wait_func), m_notify_err_func(notify_err_func),
+                    m_phase(phase::REQUEST_PHASE), m_state(state::ACTIVE_STATE),
+                    m_bal_job_id(m_id_mgr.get_next_id()) {
                     }
 
                     /**
@@ -148,6 +158,17 @@ namespace uva {
                      */
                     inline job_id_type get_job_id() const {
                         return m_job_id;
+                    }
+
+                    /**
+                     * Allows to retrieve the job id as given by the balancer
+                     * (to be used in the request to the translation server).
+                     * The original job id given by the client is retrieved by
+                     * another method.
+                     * @return the new unique job id issued by the balancer
+                     */
+                    inline job_id_type get_bal_job_id() const {
+                        return m_bal_job_id;
                     }
 
                     /**
@@ -243,41 +264,46 @@ namespace uva {
                      * This method is not synchronized. It must be called from a thread safe context.
                      */
                     inline void send_request() {
-                        //Get the new job id as the job id present in the translation request
-                        //is not unique for the translation server's session any mores 
-                        job_id_type job_id = m_id_mgr.get_next_id();
-
-                        //ToDo: Register the job by the given job id as awaiting response
+                        //Register the job by the given job id as awaiting response
+                        m_register_wait_func(this);
 
                         switch (m_state) {
                             case state::ACTIVE_STATE:
                             {
                                 //Get the translator's adapter
-                                translator_adapter * adapter = m_chooser_func(m_trans_req->get_source_lang_uid(), m_trans_req->get_target_lang_uid());
+                                translator_adapter * adapter = m_choose_adapt_func(m_trans_req);
                                 //Check if the adapter is present
                                 if (adapter != NULL) {
                                     //Prepare the request with the new job id
-                                    m_trans_req->set_job_id(job_id);
+                                    m_trans_req->set_job_id(m_bal_job_id);
                                     //Attempt sending the request through the adapter
                                     try {
-                                        adapter->send_request(m_trans_req->serialize());
+                                        adapter->send(m_trans_req->get_message());
                                     } catch (std::exception & ex) {
-                                        //ToDo: If the sending is failed, register an error response
+                                        //Change the state to failed
+                                        m_state = state::FAILED_STATE;
+                                        //If the sending is failed, register an error response
+                                        m_notify_err_func(this);
                                     }
                                 } else {
-                                    //ToDo: If the adapter is not present, register an error response
+                                    //Change the state to failed
+                                    m_state = state::FAILED_STATE;
+                                    //If the adapter is not present, register an error response
+                                    m_notify_err_func(this);
                                 }
                                 break;
                             }
                             case state::CANCELED_STATE:
                             {
-                                //ToDo: Register an error response
+                                //Register an error response
+                                m_notify_err_func(this);
                                 break;
                             }
                             default:
                             {
-                                //ToDo: Register an (internal) error response
-                                
+                                //Register an (internal) error response
+                                m_notify_err_func(this);
+
                                 //This must not be happening it is an internal error
                                 LOG_ERROR << "Sending the job REQUEST in state: " << m_state << END_LOG;
                             }
@@ -318,7 +344,7 @@ namespace uva {
                                 LOG_ERROR << "Sending the job REPLY in state: " << m_state << END_LOG;
                             }
                         }
-                        
+
                         //Notify that the job is now finished.
                         {
                             recursive_guard guard(m_f_lock);
@@ -344,8 +370,14 @@ namespace uva {
                     //The done job notifier
                     done_job_notifier m_notify_job_done_func;
 
-                    //Stores the function for choosing the adapter
-                    adapter_chooser m_chooser_func;
+                    //Stores the reference to the function for choosing the appropriate translation adapter
+                    const adapter_chooser & m_choose_adapt_func;
+
+                    //Stores the reference to the function for registering that the job is awaiting a response
+                    const job_notifier & m_register_wait_func;
+
+                    //Stores the reference to the function for notifying about the error response
+                    const job_notifier & m_notify_err_func;
 
                     //Stores the balancer job phase
                     phase m_phase;
@@ -359,6 +391,9 @@ namespace uva {
                     //The final lock needed to guard the job ready notification and
                     //waiting for it is finished before the job is deleted.
                     recursive_mutex m_f_lock;
+
+                    //Stores the balancer job id, is initialized once the job is sent
+                    const job_id_type m_bal_job_id;
 
                 };
 

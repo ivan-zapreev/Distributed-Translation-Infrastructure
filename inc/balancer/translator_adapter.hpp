@@ -269,7 +269,7 @@ namespace uva {
                      * Allows to send the string message to the server
                      * @param msg the string message to be send
                      */
-                    inline void send_request(const string & msg) {
+                    inline void send(const msg_base * msg) {
                         m_client->send(msg);
                     }
 

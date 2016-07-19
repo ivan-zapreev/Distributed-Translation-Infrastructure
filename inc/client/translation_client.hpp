@@ -38,6 +38,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+#include "common/messaging/msg_base.hpp"
 #include "common/messaging/incoming_msg.hpp"
 #include "client/messaging/trans_job_req_out.hpp"
 #include "client/messaging/trans_job_resp_in.hpp"
@@ -189,12 +190,15 @@ namespace uva {
 
                     /**
                      * Attempts to send an outgoing message to the server
-                     * @param message an outgoing message string
+                     * @param message a message to be sent, not NULL
                      */
-                    inline void send(const string & msg_str) {
+                    inline void send(const msg_base * message) {
                         //Declare the error code
                         websocketpp::lib::error_code ec;
 
+                        //Serialize the message
+                        const string msg_str = message->serialize();
+                        
                         LOG_DEBUG << "Serialized translation request: \n" << msg_str << END_LOG;
 
                         //Try to send the translation job request
@@ -205,15 +209,6 @@ namespace uva {
                         // message to a connection that was closed or in the process of
                         // closing.
                         ASSERT_CONDITION_THROW(ec, string("Send Error: ") + ec.message());
-                    }
-
-                    /**
-                     * Attempts to send an outgoing message to the server
-                     * @param message an outgoing message
-                     */
-                    inline void send(outgoing_msg * message) {
-                        //Serialize the message into string and send
-                        send(message->serialize());
                     }
 
                     /**

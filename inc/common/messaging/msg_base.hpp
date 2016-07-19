@@ -88,8 +88,13 @@ namespace uva {
                         virtual ~msg_base() {
                             //Nothing to be done here
                         }
+                        
+                        /**
+                         * Allows to serialize the message into a string
+                         * @return the string representation of the message
+                         */
+                        virtual string serialize() const = 0;
                     };
-
                 }
             }
         }

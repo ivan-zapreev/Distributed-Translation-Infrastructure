@@ -62,9 +62,9 @@ namespace uva {
                          * Allows to de-serialize the json request
                          * @param data the json string to be parsed
                          */
-                        void de_serialize(const string & data) {
+                        inline void de_serialize(const string & data) {
                             LOG_DEBUG << "Incoming JSON message: " << data << END_LOG;
-                            
+
                             //De-serialize the data and catch any exception, convert it into our type
                             try {
                                 //Parse the json request
@@ -86,18 +86,18 @@ namespace uva {
                          * Allows to get the message type
                          * @return the message type
                          */
-                        msg_type get_msg_type() const {
+                        inline msg_type get_msg_type() const {
                             //This is a primitive way to cast to the enumeration type 
                             //from an integer. Later we could introduce a fancier way 
                             //with all sorts of checks but this shall do it for now.
                             return static_cast<msg_type> (m_json[MSG_TYPE_FIELD_NAME].GetInt());
                         }
-                                                
+
                         /**
                          * Allows to get a reference to a constant json document
                          * @return the reference to the constant json document.
                          */
-                        const Document & get_const_json() const {
+                        inline const Document & get_json() const {
                             return m_json;
                         }
 
@@ -105,8 +105,15 @@ namespace uva {
                          * Allows to get a reference to a constant json document
                          * @return the reference to the constant json document.
                          */
-                        Document & get_json() {
+                        inline Document & get_json() {
                             return m_json;
+                        }
+
+                        /**
+                         * @see msg_base
+                         */
+                        virtual string serialize() const override {
+                            return m_json.GetString();
                         }
 
                     protected:
