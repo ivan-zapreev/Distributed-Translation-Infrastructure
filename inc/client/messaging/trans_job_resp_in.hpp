@@ -97,6 +97,15 @@ namespace uva {
                         }
 
                         /**
+                         * Allows to get the client-issued job id
+                         * @return the client-issued job id
+                         */
+                        inline void set_job_id(job_id_type job_id) {
+                            Document & json = m_inc_msg->get_json();
+                            json[JOB_ID_FIELD_NAME] = job_id;
+                        }
+
+                        /**
                          * Allows to get the translation task result code
                          * @return the translation task result code
                          */

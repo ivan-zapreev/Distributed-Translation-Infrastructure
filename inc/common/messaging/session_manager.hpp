@@ -36,6 +36,7 @@
 #include "common/utils/id_manager.hpp"
 
 #include "common/messaging/trans_session_id.hpp"
+#include "msg_base.hpp"
 
 using namespace std;
 
@@ -163,14 +164,17 @@ namespace uva {
                         /**
                          * Allows to send the response from the given session
                          * @param session_id the session id
-                         * @param data the data to be sent
+                         * @param msg the message to be sent
                          * @return true if the sent was successful, otherwise false
                          */
-                        inline bool send_response(const job_id_type session_id, const string & data) {
+                        inline bool send_response(const session_id_type session_id, const msg_base & msg) {
                             //Do the sanity check assert
                             ASSERT_SANITY_THROW(!m_sender_func,
                                     "The sender function of the translation manager is not set!");
 
+                            //Serialize the message
+                            const string data = msg.serialize();
+                            
                             //Retrieve the connection handler based on the session id
                             websocketpp::connection_hdl hdl = get_session_hdl(session_id);
 
@@ -184,8 +188,8 @@ namespace uva {
                                 //The send was successful
                                 return true;
                             } else {
-                                LOG_DEBUG << "Could not send the translation response to session "
-                                        << to_string(session_id)
+                                LOG_DEBUG << "ERROR: Could not send the translation "
+                                        << "response to session " << to_string(session_id)
                                         << " the connection handler has expired!" << END_LOG;
                                 //The send failed
                                 return false;

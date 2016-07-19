@@ -33,6 +33,7 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/threads/threads.hpp"
 
+#include "common/messaging/msg_base.hpp"
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/trans_job_id.hpp"
 #include "common/messaging/status_code.hpp"
@@ -64,6 +65,17 @@ namespace uva {
                 class balancer_job;
                 //Typedef the balancer job pointer
                 typedef balancer_job * bal_job_ptr;
+
+                /**
+                 * Allows to log the balancer job into an output stream
+                 * @param stream the output stream
+                 * @param job the job to log
+                 * @return the reference to the same output stream send back for chaining
+                 */
+                ostream & operator<<(ostream & stream, const balancer_job & job);
+
+                //Declare the function that will be used to send the translation response to the client
+                typedef function<bool (const session_id_type, const msg_base &) > session_response_sender;
 
                 //Declare the function that will be choosing the proper adapter for the translation job
                 typedef function<translator_adapter *(const trans_job_req_in *) > adapter_chooser;
@@ -122,25 +134,31 @@ namespace uva {
                      * @param trans_req the reference to the translation job request to get the data from.
                      * @param chooser_func the function to choose the adapter, not NULL
                      * @param register_wait_func the function to register the job as awaiting response, not NULL
-                     * @param notify_err_func the  to register the job as having received an error response, not NULL
+                     * @param notify_err_func the function to register the job as having received an error response, not NULL
+                     * @param resp_send_func the function to send the translation response to the client
                      */
                     balancer_job(const session_id_type session_id, trans_job_req_in * trans_req,
                             const adapter_chooser & chooser_func, const job_notifier & register_wait_func,
-                            const job_notifier & notify_err_func)
+                            const job_notifier & notify_err_func, const session_response_sender & resp_send_func)
                     : m_session_id(session_id), m_job_id(trans_req->get_job_id()),
                     m_trans_req(trans_req), m_trans_resp(NULL),
                     m_notify_job_done_func(NULL), m_choose_adapt_func(chooser_func),
                     m_register_wait_func(register_wait_func), m_notify_err_func(notify_err_func),
-                    m_phase(phase::REQUEST_PHASE), m_state(state::ACTIVE_STATE), m_err_msg(""),
-                    m_bal_job_id(m_id_mgr.get_next_id()) {
+                    m_resp_send_func(resp_send_func), m_phase(phase::REQUEST_PHASE),
+                    m_state(state::ACTIVE_STATE), m_err_msg(""), m_bal_job_id(m_id_mgr.get_next_id()) {
                     }
 
                     /**
                      * The basic constructor
                      */
                     virtual ~balancer_job() {
+                        //Destroy the translation request if present
                         if (m_trans_req != NULL) {
                             delete m_trans_req;
+                        }
+                        //Destroy the translation response if present
+                        if (m_trans_resp != NULL) {
+                            delete m_trans_resp;
                         }
                     }
 
@@ -345,6 +363,33 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to prepare an error reply to the client. The response is filled 
+                     * in with the original text and the job id but with an error status.
+                     * @param resp a reference to the response to be filled in
+                     */
+                    inline void prepare_error_reply(trans_job_resp_out & resp) {
+                        resp.set_job_id(m_job_id);
+                        resp.set_status(status_code::RESULT_ERROR, m_err_msg);
+                        resp.begin_sent_data_arr();
+                        //Get the text that had to be translated
+                        const Value & source_text = m_trans_req->get_source_text();
+                        //Get the sentence data writer
+                        trans_sent_data_out & sent_data = resp.get_sent_data_writer();
+                        //Copy the input sentences but, set the canceled status
+                        for (auto iter = source_text.Begin(); iter != source_text.End(); ++iter) {
+                            //Begin the sentence data
+                            sent_data.begin_sent_data_ent();
+                            //Set the target sentence
+                            sent_data.set_trans_text(iter->GetString());
+                            //Set the sentence status
+                            sent_data.set_status(status_code::RESULT_ERROR, "Failed to translate");
+                            //End the sentence data section
+                            sent_data.end_sent_data_ent();
+                        }
+                        resp.end_sent_data_arr();
+                    }
+
+                    /**
                      * Is called when it is time to send the request to the translator.
                      * There is the situations to consider: 
                      * 1. The job is canceled by the client session disconnect
@@ -357,19 +402,29 @@ namespace uva {
                         switch (m_state) {
                             case state::ACTIVE_STATE:
                             {
-                                //ToDo: Change the job id in the response to the stored - original - one
-                                //ToDo: Send the response to the client through the sender function
+                                //Change the job id in the response to the stored - original - one
+                                m_trans_resp->set_job_id(m_job_id);
+                                //Perform the sanity check
+                                ASSERT_SANITY_THROW((m_trans_resp == NULL), "The translation response is NULL!");
+                                //Send the response to the client through the sender function
+                                m_resp_send_func(m_session_id, *m_trans_resp);
                                 break;
                             }
                             case state::CANCELED_STATE:
                             {
-                                //ToDo: Do nothing, just log an issue 
+                                //Do nothing, the client was disconnected, just log an issue 
+                                LOG_DEBUG << "Could not send the job " << *this
+                                        << " back, the client is disconnected!" << END_LOG;
                                 break;
                             }
                             case state::FAILED_STATE:
                             {
-                                //ToDo: Create a response with the original text and the job id but with an error status
-                                //ToDo: Send the response to the client through the sender function
+                                //Create a response 
+                                trans_job_resp_out resp;
+                                //Fill it in with data
+                                prepare_error_reply(resp);
+                                //Send to the client
+                                m_resp_send_func(m_session_id, resp);
                                 break;
                             }
                             default:
@@ -378,6 +433,9 @@ namespace uva {
                                 LOG_ERROR << "Sending the job REPLY in state: " << m_state << END_LOG;
                             }
                         }
+
+                        //The job has been sent, change the phase
+                        m_phase = phase::DONE_PHASE;
 
                         //Notify that the job is now finished.
                         {
@@ -416,6 +474,9 @@ namespace uva {
                     //Stores the reference to the function for notifying about the error response
                     const job_notifier & m_notify_err_func;
 
+                    //Stores the reference to the function for sending the translation response to the client
+                    const session_response_sender & m_resp_send_func;
+
                     //Stores the balancer job phase
                     phase m_phase;
 
@@ -436,14 +497,6 @@ namespace uva {
                     const job_id_type m_bal_job_id;
 
                 };
-
-                /**
-                 * Allows to log the balancer job into an output stream
-                 * @param stream the output stream
-                 * @param job the job to log
-                 * @return the reference to the same output stream send back for chaining
-                 */
-                ostream & operator<<(ostream & stream, const balancer_job & job);
             }
         }
     }

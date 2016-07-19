@@ -182,13 +182,13 @@ namespace uva {
                         LOG_DEBUG << "Finished job id: " << job_id << ", session: " << session_id << END_LOG;
 
                         //Create the translation job response
-                        trans_job_resp_out response;
+                        trans_job_resp_out resp;
 
                         //Populate the translation job response with the data
-                        trans_job->collect_job_results(response);
+                        trans_job->collect_job_results(resp);
 
                         //Attempt to send the serialized response
-                        if (!this->send_response(session_id, response.serialize())) {
+                        if (!this->send_response(session_id, resp)) {
                             LOG_DEBUG << "Could not send the translation response for " << session_id
                                     << "/" << job_id << " as the connection handler has expired!" << END_LOG;
                         }

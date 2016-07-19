@@ -84,6 +84,7 @@ namespace uva {
                     m_choose_adapt_func(NULL),
                     m_register_wait_func(bind(&balancer_manager::register_awaiting_resp, this, _1)),
                     m_notify_err_func(bind(&balancer_manager::notify_error_resp, this, _1)),
+                    m_resp_send_func(bind(&balancer_manager::send_response, this, _1, _2)),
                     m_incoming_tasks_pool(num_threads_incoming),
                     m_outgoing_tasks_pool(num_threads_outgoing) {
                     }
@@ -131,8 +132,10 @@ namespace uva {
                                 "No session object is associated with the connection handler!");
 
                         //Instantiate a new translation job, it will destroy the translation request in its destructor
-                        bal_job_ptr job = new balancer_job(session_id, trans_req,
-                                m_choose_adapt_func, m_register_wait_func, m_notify_err_func);
+                        bal_job_ptr job = new balancer_job(
+                                session_id, trans_req,
+                                m_choose_adapt_func, m_register_wait_func,
+                                m_notify_err_func, m_resp_send_func);
 
                         LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
 
@@ -221,9 +224,11 @@ namespace uva {
                     //Stores the function for choosing the adapter
                     adapter_chooser m_choose_adapt_func;
                     //Stores the function for registering a response awaiting function
-                    job_notifier m_register_wait_func;
+                    const job_notifier m_register_wait_func;
                     //Stores the function for notifying about the error response
-                    job_notifier m_notify_err_func;
+                    const job_notifier m_notify_err_func;
+                    //Stores the reference to the function for sending the translation response to the client
+                    const session_response_sender m_resp_send_func;
 
                     //Stores the tasks pool
                     task_pool<balancer_job> m_incoming_tasks_pool;
