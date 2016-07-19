@@ -66,7 +66,7 @@ namespace uva {
                 typedef balancer_job * bal_job_ptr;
 
                 //Declare the function that will be choosing the proper adapter for the translation job
-                typedef function<translator_adapter *(const trans_job_req_in * ) > adapter_chooser;
+                typedef function<translator_adapter *(const trans_job_req_in *) > adapter_chooser;
 
                 //Declare the function type that is of a general purpose, is used to notify something about the job
                 typedef function<void(const balancer_job *) > job_notifier;
@@ -128,9 +128,10 @@ namespace uva {
                             const adapter_chooser & chooser_func, const job_notifier & register_wait_func,
                             const job_notifier & notify_err_func)
                     : m_session_id(session_id), m_job_id(trans_req->get_job_id()),
-                    m_trans_req(trans_req), m_notify_job_done_func(NULL), m_choose_adapt_func(chooser_func),
+                    m_trans_req(trans_req), m_trans_resp(NULL),
+                    m_notify_job_done_func(NULL), m_choose_adapt_func(chooser_func),
                     m_register_wait_func(register_wait_func), m_notify_err_func(notify_err_func),
-                    m_phase(phase::REQUEST_PHASE), m_state(state::ACTIVE_STATE),
+                    m_phase(phase::REQUEST_PHASE), m_state(state::ACTIVE_STATE), m_err_msg(""),
                     m_bal_job_id(m_id_mgr.get_next_id()) {
                     }
 
@@ -184,10 +185,27 @@ namespace uva {
                      * Allows to set in the method that shall remove the task from the pool if called
                      * @param notify_task_cancel_func the function to call in case this task is being canceled.
                      */
-                    void set_from_pool_remover(task_pool_remover pool_task_remove_func) {
+                    inline void set_from_pool_remover(task_pool_remover pool_task_remove_func) {
                         //Do not store the function, we do not want to remove it from the pool.
                         //This job, even if canceled will be executed by the pool's worker
                         //and will be removed from the pool by him as well. 
+                    }
+
+                    /**
+                     * Stores the pointer to the incoming translation job response.
+                     * @param the pointer to the received translation job response.
+                     */
+                    inline void set_trans_job_resp(trans_job_resp_in * trans_resp) {
+                        recursive_guard guard(m_g_lock);
+
+                        ASSERT_SANITY_THROW((m_phase = phase::RESPONSE_PHASE),
+                                string("Improper job phase: ") + to_string(m_phase));
+
+                        //Store the translation job reponse
+                        m_trans_resp = trans_resp;
+
+                        //Now we are in the reply phase, the reply is to be sent to the client
+                        m_phase = phase::REPLY_PHASE;
                     }
 
                     /**
@@ -255,6 +273,25 @@ namespace uva {
                 protected:
 
                     /**
+                     * Allows to report the request sending error
+                     * @param state_value the new state value
+                     * @param err_msg the error message
+                     */
+                    inline void report_send_error(const state state_value, const string err_msg) {
+                        //This must not be happening it is an internal error
+                        LOG_DEBUG << "ERROR: " << err_msg << END_LOG;
+
+                        //The job has been sent, change the phase
+                        m_phase = phase::REPLY_PHASE;
+                        //Change the state to the given one
+                        m_state = state_value;
+                        //Store the error message
+                        m_err_msg = err_msg;
+                        //Register an error response
+                        m_notify_err_func(this);
+                    }
+
+                    /**
                      * Is called when it is time to send the request to the translator.
                      * There is the situations to consider: 
                      * 1. The job is already canceled due to the client disconnect.
@@ -279,33 +316,30 @@ namespace uva {
                                     //Attempt sending the request through the adapter
                                     try {
                                         adapter->send(m_trans_req->get_message());
+                                        //The job has been sent, change the phase
+                                        m_phase = phase::RESPONSE_PHASE;
                                     } catch (std::exception & ex) {
-                                        //Change the state to failed
-                                        m_state = state::FAILED_STATE;
                                         //If the sending is failed, register an error response
-                                        m_notify_err_func(this);
+                                        report_send_error(state::FAILED_STATE, ex.what());
                                     }
                                 } else {
-                                    //Change the state to failed
-                                    m_state = state::FAILED_STATE;
                                     //If the adapter is not present, register an error response
-                                    m_notify_err_func(this);
+                                    report_send_error(state::FAILED_STATE,
+                                            "There are no online servers to perform your translation request!");
                                 }
                                 break;
                             }
                             case state::CANCELED_STATE:
                             {
-                                //Register an error response
-                                m_notify_err_func(this);
+                                //The client session was terminated so the request does not need to be sent
+                                report_send_error(state::CANCELED_STATE,
+                                        "The client session was terminated, canceling the request!");
                                 break;
                             }
                             default:
                             {
-                                //Register an (internal) error response
-                                m_notify_err_func(this);
-
-                                //This must not be happening it is an internal error
-                                LOG_ERROR << "Sending the job REQUEST in state: " << m_state << END_LOG;
+                                report_send_error(state::FAILED_STATE,
+                                        string("Internal error while sending request, state: ") + to_string(m_state));
                             }
                         }
                     }
@@ -367,6 +401,9 @@ namespace uva {
                     //Stores the pointer to the incoming translation job request, not NULL
                     trans_job_req_in * m_trans_req;
 
+                    //Stores the pointer to the incoming translation job response, NULL until it is received
+                    trans_job_resp_in * m_trans_resp;
+
                     //The done job notifier
                     done_job_notifier m_notify_job_done_func;
 
@@ -384,6 +421,9 @@ namespace uva {
 
                     //Stores the balancer job state
                     state m_state;
+
+                    //Stores the error message
+                    string m_err_msg;
 
                     //The global lock needed to guard the job state change and its execution
                     recursive_mutex m_g_lock;
