@@ -127,8 +127,8 @@ namespace uva {
                         session_job_pool_base::report_run_time_info();
                         
                         //Report data from the task pools
-                        m_incoming_pool.report_run_time_info("Incoming tasks pool");
-                        m_outgoing_pool.report_run_time_info("Outgoing tasks pool");
+                        m_incoming_pool.report_run_time_info("Incoming jobs pool");
+                        m_outgoing_pool.report_run_time_info("Outgoing jobs pool");
 
                         //Report the number of jobs waiting for reply
                         {
@@ -139,9 +139,9 @@ namespace uva {
                                 {
                                     unique_guard guard(entry.m_awaiting_jobs_lock);
                                     LOG_USAGE << "Server uid: " << to_string(iter->first)
-                                            << ", #waiting responses: "
+                                            << ", waiting for "
                                             << to_string(entry.m_awaiting_jobs.size())
-                                            << END_LOG;
+                                            << " responses" << END_LOG;
                                 }
                             }
                         }
