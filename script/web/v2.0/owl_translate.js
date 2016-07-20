@@ -20,7 +20,9 @@ var MAX_NUM_SENTENCES_PER_JOB = 128;
 //Stores the number of progress bars for the translation process
 var NUM_PROGRESS_BARS = 2;
 //Store the undefined job id value
-var UNDEFINED_JOB_ID = -1;
+var UNDEFINED_JOB_ID = 0;
+//Stores the minimum translation job id
+var MINIMUM_TRANS_JOB_ID = 1;
 //Stores the number of bytes in one Mb
 var NUMBER_OF_BYTES_IN_MEGABYTE = 1024 * 1024;
 //Stores the maximum file limit for the file upload
@@ -529,6 +531,7 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
 
 /**
  * Allows to process a large array in an asynchronous way
+ * @param {integer} min_idx the minimum index value
  * @param {array} array of data to process 
  * @param {function} the call back function to be called per array element
  * @param {time} the time allowed to be busy per batch, optional
@@ -751,7 +754,7 @@ function do_translate() {
             client_data.prev_source_md5 = new_source_md5;
             
             //Re-set the job id value
-            client_data.prev_job_req_id = -1;
+            client_data.prev_job_req_id = UNDEFINED_JOB_ID;
 
             //Re-set the job responses array
             client_data.job_responces = [];
@@ -837,7 +840,7 @@ function set_translation(trans_response) {
     "use strict";
     
     //Store the translation response in the array
-    client_data.job_responces[trans_response.job_id] = trans_response;
+    client_data.job_responces[trans_response.job_id - MINIMUM_TRANS_JOB_ID] = trans_response;
 
     //Log that we received the response into the console
     info("Received response for a translation job, id: " + trans_response.job_id);
