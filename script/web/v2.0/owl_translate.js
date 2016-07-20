@@ -469,6 +469,11 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
     
     //Set the border color based on the overall status
     visualize_status_code(trans_response.job_id, trans_response.stat_code, trans_response.stat_msg);
+    
+    //Allow a new translation in case the job status code is NOT
+    if (trans_response.stat_code !== STATUS_CODE_ENUM.RESULT_OK) {
+        require_new_translation();
+    }
 
     //Only visualize the results if the target data is present
     if (trans_response.hasOwnProperty('target_data')) {
