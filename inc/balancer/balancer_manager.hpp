@@ -26,6 +26,9 @@
 #ifndef BALANCER_MANAGER_HPP
 #define BALANCER_MANAGER_HPP
 
+#include <unordered_map>
+#include <set>
+
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/threads/task_pool.hpp"
@@ -72,6 +75,25 @@ namespace uva {
                  */
                 class balancer_manager : public session_manager, private session_job_pool_base<balancer_job> {
                 public:
+                    //Define the balancer job set
+                    typedef set<bal_job_ptr> jobs_set_type;
+
+                    /**
+                     * Defined the structure storing the jobs set and the mutex to synchronize access to it
+                     */
+                    typedef struct {
+                        //The mutex to synchronize access to the set
+                        mutex m_jobs_lock;
+                        //The set of jobs
+                        jobs_set_type m_jobs;
+                    } jobs_set_entry;
+
+                    //Define the awaiting reply jobs map, this map relates the adapter
+                    //id to the set of jobs awaiting a response from this adapter
+                    typedef unordered_map<server_id_type, jobs_set_entry> awaiting_jobs_map;
+
+                    //Define the map type for storing the relation between the balancer job ids and the balancer jobs
+                    typedef unordered_map<job_id_type, bal_job_ptr> bal_jobs_map;
 
                     /**
                      * The basic constructor
@@ -83,10 +105,10 @@ namespace uva {
                     bind(&balancer_manager::notify_job_done, this, _1)),
                     m_choose_adapt_func(NULL),
                     m_register_wait_func(bind(&balancer_manager::register_awaiting_resp, this, _1)),
-                    m_notify_err_func(bind(&balancer_manager::notify_error_resp, this, _1)),
+                    m_schedule_failed_func(bind(&balancer_manager::schedule_failed_job_response, this, _1)),
                     m_resp_send_func(bind(&balancer_manager::send_response, this, _1, _2)),
-                    m_incoming_tasks_pool(num_threads_incoming),
-                    m_outgoing_tasks_pool(num_threads_outgoing) {
+                    m_incoming_pool(num_threads_incoming),
+                    m_outgoing_pool(num_threads_outgoing) {
                     }
 
                     /**
@@ -105,8 +127,8 @@ namespace uva {
                         session_job_pool_base::report_run_time_info();
 
                         //Report data from the task pools
-                        m_incoming_tasks_pool.report_run_time_info("Incoming tasks pool");
-                        m_outgoing_tasks_pool.report_run_time_info("Outgoing tasks pool");
+                        m_incoming_pool.report_run_time_info("Incoming tasks pool");
+                        m_outgoing_pool.report_run_time_info("Outgoing tasks pool");
                     }
 
                     /**
@@ -135,7 +157,7 @@ namespace uva {
                         bal_job_ptr job = new balancer_job(
                                 session_id, trans_req,
                                 m_choose_adapt_func, m_register_wait_func,
-                                m_notify_err_func, m_resp_send_func);
+                                m_schedule_failed_func, m_resp_send_func);
 
                         LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
 
@@ -158,19 +180,56 @@ namespace uva {
                      * @param trans_job_resp a pointer to the translation job response data, not NULL
                      */
                     inline void notify_translation_response(trans_job_resp_in * trans_job_resp) {
-                        //ToDo: Find the translation job
-                        //ToDo: Set response into it
-                        //ToDo: Put the job into the outging tasks pool
+                        //Declare the balancer job pointer variable
+                        bal_job_ptr bal_job = NULL;
+                        //Get the job id
+                        const job_id_type id = trans_job_resp->get_job_id();
+
+                        //Get the job from the map
+                        {
+                            unique_guard guard(m_awaiting_bi2j_lock);
+
+                            //Search for the job by its id
+                            auto iter = m_awaiting_bi2j.find(id);
+
+                            //Check if the job is found
+                            if (iter != m_awaiting_bi2j.end()) {
+                                //Get the balancer job
+                                bal_job = iter->second;
+                            }
+                        }
+
+                        //Check if the job is found
+                        if (bal_job != NULL) {
+                            //Set the translation response into the job
+                            bal_job->set_trans_job_resp(trans_job_resp);
+
+                            //Just put the job into the outgoing pool.
+                            m_outgoing_pool.plan_new_task(bal_job);
+                        } else {
+                            LOG_DEBUG << "The balancer job: " << to_string(id) << " is no longer "
+                                    << "present, the server response is ignored!" << END_LOG;
+                        }
                     }
 
                     /**
                      * Shall be called when a server's adapter gets disconnected. In this case all the
                      * jobs being awaiting response from this adapter are to be canceled.
-                     * @param uid the unique identifier of the adapter
+                     * @param id the unique identifier of the adapter
                      */
-                    inline void notify_adapter_disconnect(const server_uid_type & uid) {
-                        //ToDo: Get all all the translation jobs handled by this adapter.
-                        //ToDo: Iterate through the jobs and mark them as failed.
+                    inline void notify_adapter_disconnect(const server_id_type & id) {
+                        //Get the server jobs entry
+                        jobs_set_entry& entry = get_server_jobs(id);
+
+                        //Remove the job from the set
+                        {
+                            unique_guard guard(entry.m_jobs_lock);
+
+                            //Iterate through the jobs and mark them as failed.
+                            for (auto iter = entry.m_jobs.begin(); iter != entry.m_jobs.end(); ++iter) {
+                                (*iter)->fail();
+                            }
+                        }
                     }
 
                 protected:
@@ -182,7 +241,7 @@ namespace uva {
                      */
                     virtual void schedule_new_job(bal_job_ptr bal_job) {
                         //Plan the job in to the incoming tasks pool and move on.
-                        m_incoming_tasks_pool.plan_new_task(bal_job);
+                        m_incoming_pool.plan_new_task(bal_job);
                     }
 
                     /**
@@ -195,31 +254,86 @@ namespace uva {
                     }
 
                     /**
-                     * This function will be called once the balancer job is fully done an it is about to be destroyed.
+                     * Allows to get the set of server jobs.
+                     * @param id the server id
+                     * @return the reference to the server jobs entry
+                     */
+                    inline jobs_set_entry& get_server_jobs(server_id_type id) {
+                        unique_guard guard(m_awaiting_a2j_lock);
+
+                        //Get the pointer to the entry
+                        return m_awaiting_a2j[id];
+                    }
+
+                    /**
+                     * This function will be called once the balancer job is fully
+                     * done an it is about to be destroyed. This function can be
+                     * used to remove the job from the internal mappings.
                      * @param bal_job the balancer job that is fully done
                      */
                     inline void notify_job_done(bal_job_ptr bal_job) {
-                        //ToDo: Remove the job from the mappings
+                        //If the server id is set, then let's look for the job in the mappings
+                        if (bal_job->get_server_id() != server_id::UNDEFINED_SERVER_ID) {
+                            //Get the server jobs entry
+                            jobs_set_entry& entry = get_server_jobs(bal_job->get_server_id());
+
+                            //Remove the job from the set
+                            {
+                                unique_guard guard(entry.m_jobs_lock);
+
+                                entry.m_jobs.erase(bal_job);
+                            }
+
+                            //Remove the job from the mapping
+                            {
+                                unique_guard guard(m_awaiting_bi2j_lock);
+
+                                m_awaiting_bi2j.erase(bal_job->get_bal_job_id());
+                            }
+                        } else {
+                            LOG_ERROR << "Trying to unregister a job with no server id: " << *bal_job << END_LOG;
+                        }
                     }
 
                     /**
                      * This function will be called once the balancer job is awaiting
-                     * for a response from the translation server.
+                     * for a response from the translation server. This function is
+                     * called only if the request was successfully sent to the translator. 
                      * @param bal_job pointer to the constant balancer job
                      */
-                    inline void register_awaiting_resp(const balancer_job * bal_job) {
-                        //ToDo: Implement
+                    inline void register_awaiting_resp(balancer_job * bal_job) {
+                        //If the server id is set, then let's look for the job in the mappings
+                        if (bal_job->get_server_id() != server_id::UNDEFINED_SERVER_ID) {
+                            //Get the server jobs entry
+                            jobs_set_entry& entry = get_server_jobs(bal_job->get_server_id());
+
+                            //Add the new job to the set
+                            {
+                                unique_guard guard(entry.m_jobs_lock);
+
+                                entry.m_jobs.insert(bal_job);
+                            }
+
+                            //Register the job under its balancer job id
+                            {
+                                unique_guard guard(m_awaiting_bi2j_lock);
+
+                                m_awaiting_bi2j[bal_job->get_bal_job_id()] = bal_job;
+                            }
+                        } else {
+                            LOG_ERROR << "Trying to register a job with no server id: " << *bal_job << END_LOG;
+                        }
                     }
 
                     /**
-                     * This function will be called once the balancer job gets an error response.
-                     * Note that, the precondition for calling this method is that the balancer job
-                     * is registered as one awaiting the translation server response. If it is not
-                     * then an internal error is reported 
+                     * This function is called once it is clear that the job should
+                     * not be waiting for the server response any more. I.e. it is
+                     * time to just shuffle the job into the outgoing pool
                      * @param bal_job pointer to the constant balancer job
                      */
-                    inline void notify_error_resp(const balancer_job * bal_job) {
-                        //ToDo: Implement
+                    inline void schedule_failed_job_response(balancer_job * bal_job) {
+                        //Just put the job into the outgoing pool.
+                        m_outgoing_pool.plan_new_task(bal_job);
                     }
 
                 private:
@@ -228,14 +342,26 @@ namespace uva {
                     //Stores the function for registering a response awaiting function
                     const job_notifier m_register_wait_func;
                     //Stores the function for notifying about the error response
-                    const job_notifier m_notify_err_func;
+                    const job_notifier m_schedule_failed_func;
                     //Stores the reference to the function for sending the translation response to the client
                     const session_response_sender m_resp_send_func;
 
                     //Stores the tasks pool
-                    task_pool<balancer_job> m_incoming_tasks_pool;
+                    task_pool<balancer_job> m_incoming_pool;
                     //Stores the tasks pool
-                    task_pool<balancer_job> m_outgoing_tasks_pool;
+                    task_pool<balancer_job> m_outgoing_pool;
+
+                    //The map of adapter ids to the awaiting response jobs
+                    awaiting_jobs_map m_awaiting_a2j;
+
+                    //The mutex to synchronize access to the map of adapter ids to the awaiting response jobs
+                    mutex m_awaiting_a2j_lock;
+
+                    //The map for storing the balancer job ids to jobs mapping
+                    bal_jobs_map m_awaiting_bi2j;
+
+                    //The mutex to synchronize access to the map storing the balancer job ids to jobs mapping
+                    mutex m_awaiting_bi2j_lock;
                 };
 
             }

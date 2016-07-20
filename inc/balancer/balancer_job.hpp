@@ -81,7 +81,7 @@ namespace uva {
                 typedef function<translator_adapter *(const trans_job_req_in *) > adapter_chooser;
 
                 //Declare the function type that is of a general purpose, is used to notify something about the job
-                typedef function<void(const balancer_job *) > job_notifier;
+                typedef function<void(balancer_job *) > job_notifier;
 
                 /**
                  * This is the translation job class:
@@ -134,19 +134,19 @@ namespace uva {
                      * @param trans_req the reference to the translation job request to get the data from.
                      * @param chooser_func the function to choose the adapter, not NULL
                      * @param register_wait_func the function to register the job as awaiting response, not NULL
-                     * @param notify_err_func the function to register the job as having received an error response, not NULL
+                     * @param schedule_failed_func the function to register the job as having received an error response, not NULL
                      * @param resp_send_func the function to send the translation response to the client
                      */
                     balancer_job(const session_id_type session_id, trans_job_req_in * trans_req,
                             const adapter_chooser & chooser_func, const job_notifier & register_wait_func,
-                            const job_notifier & notify_err_func, const session_response_sender & resp_send_func)
+                            const job_notifier & schedule_failed_func, const session_response_sender & resp_send_func)
                     : m_session_id(session_id), m_job_id(trans_req->get_job_id()),
                     m_trans_req(trans_req), m_trans_resp(NULL),
                     m_notify_job_done_func(NULL), m_choose_adapt_func(chooser_func),
-                    m_register_wait_func(register_wait_func), m_notify_err_func(notify_err_func),
+                    m_register_wait_func(register_wait_func), m_schedule_failed_func(schedule_failed_func),
                     m_resp_send_func(resp_send_func), m_phase(phase::REQUEST_PHASE),
                     m_state(state::ACTIVE_STATE), m_err_msg(""), m_bal_job_id(m_id_mgr.get_next_id()),
-                    m_adapter_uid(server_uid::UNDEFINED_SERVER_ID) {
+                    m_adapter_uid(server_id::UNDEFINED_SERVER_ID) {
                     }
 
                     /**
@@ -216,7 +216,7 @@ namespace uva {
                      * I.e. after the first execution.
                      * @return the name of the server
                      */
-                    inline const server_uid_type & get_server_uid() const {
+                    inline const server_id_type & get_server_id() const {
                         return m_adapter_uid;
                     }
 
@@ -293,10 +293,10 @@ namespace uva {
                                 //As in this case we already know that there will be no client to reply.
                                 if (m_state == state::CANCELED_STATE) {
                                     //Notify the problem, do not change the state or error message
-                                    report_communication_error(m_state, m_err_msg);
+                                    schedule_failed_job_reply(m_state, m_err_msg);
                                 } else {
                                     //Notify the problem, the translation has failed
-                                    report_communication_error(state::FAILED_STATE,
+                                    schedule_failed_job_reply(state::FAILED_STATE,
                                             "The translation server has dropped connection!");
                                 }
                                 break;
@@ -359,11 +359,11 @@ namespace uva {
                 protected:
 
                     /**
-                     * Allows to report the request sending error
+                     * Allows to schedule a failed job reply to the client.
                      * @param state_value the new state value
                      * @param err_msg the error message
                      */
-                    inline void report_communication_error(const state state_value, const string err_msg) {
+                    inline void schedule_failed_job_reply(const state state_value, const string err_msg) {
                         //This must not be happening it is an internal error
                         LOG_DEBUG << "ERROR: " << err_msg << END_LOG;
 
@@ -374,7 +374,7 @@ namespace uva {
                         //Store the error message
                         m_err_msg = err_msg;
                         //Register an error response
-                        m_notify_err_func(this);
+                        m_schedule_failed_func(this);
                     }
 
                     /**
@@ -396,7 +396,7 @@ namespace uva {
                                 //Check if the adapter is present
                                 if (adapter != NULL) {
                                     //Store the adapter uid
-                                    m_adapter_uid = adapter->get_uid();
+                                    m_adapter_uid = adapter->get_server_id();
                                     //Prepare the request with the new job id
                                     m_trans_req->set_job_id(m_bal_job_id);
                                     //Attempt sending the request through the adapter
@@ -408,11 +408,11 @@ namespace uva {
                                         m_register_wait_func(this);
                                     } catch (std::exception & ex) {
                                         //If the sending is failed, register an error response
-                                        report_communication_error(state::FAILED_STATE, ex.what());
+                                        schedule_failed_job_reply(state::FAILED_STATE, ex.what());
                                     }
                                 } else {
                                     //If the adapter is not present, register an error response
-                                    report_communication_error(state::FAILED_STATE,
+                                    schedule_failed_job_reply(state::FAILED_STATE,
                                             "There are no online servers to perform your translation request!");
                                 }
                                 break;
@@ -420,13 +420,13 @@ namespace uva {
                             case state::CANCELED_STATE:
                             {
                                 //The client session was terminated so the request does not need to be sent
-                                report_communication_error(state::CANCELED_STATE,
+                                schedule_failed_job_reply(state::CANCELED_STATE,
                                         "The client session was terminated, canceling the request!");
                                 break;
                             }
                             default:
                             {
-                                report_communication_error(state::FAILED_STATE,
+                                schedule_failed_job_reply(state::FAILED_STATE,
                                         string("Internal error while sending request, state: ") + to_string(m_state));
                             }
                         }
@@ -535,8 +535,6 @@ namespace uva {
                     //The done job notifier
                     done_job_notifier m_notify_job_done_func;
 
-                    //ToDo: Make the next functions static
-
                     //Stores the reference to the function for choosing the appropriate translation adapter
                     const adapter_chooser & m_choose_adapt_func;
 
@@ -544,7 +542,7 @@ namespace uva {
                     const job_notifier & m_register_wait_func;
 
                     //Stores the reference to the function for notifying about the error response
-                    const job_notifier & m_notify_err_func;
+                    const job_notifier & m_schedule_failed_func;
 
                     //Stores the reference to the function for sending the translation response to the client
                     const session_response_sender & m_resp_send_func;
@@ -569,7 +567,7 @@ namespace uva {
                     const job_id_type m_bal_job_id;
 
                     //Stores the adapter uid, is initialized after the adapter is retrieved
-                    server_uid_type m_adapter_uid;
+                    server_id_type m_adapter_uid;
                 };
             }
         }

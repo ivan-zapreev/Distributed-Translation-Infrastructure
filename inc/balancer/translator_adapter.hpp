@@ -58,7 +58,7 @@ namespace uva {
                 //Define the functional to set the translation response
                 typedef function<void(trans_job_resp_in *) > trans_resp_notifier;
                 //Define the functional to notify about the translator adapter disconnect
-                typedef function<void(const server_uid_type & uid) > adapter_disc_notifier;
+                typedef function<void(const server_id_type & uid) > adapter_disc_notifier;
 
                 /**
                  * This is the translation server adapter class:
@@ -83,7 +83,7 @@ namespace uva {
                      * The basic constructor for the adapter class
                      */
                     translator_adapter()
-                    : m_uid(m_ids_manager.get_next_id()), m_params(NULL),
+                    : m_server_id(m_ids_manager.get_next_id()), m_params(NULL),
                     m_trans_resp_func(NULL), m_adapter_disc_func(NULL),
                     m_client(NULL), m_is_enabled(false), m_is_connected(false),
                     m_is_connecting(false), m_lock_con(), m_notify_conn_closed_func() {
@@ -238,7 +238,7 @@ namespace uva {
                             }
                         }
 
-                        LOG_USAGE << "\t" << m_params->m_name << "(uid:" << to_string(m_uid) << ") -> " << status << END_LOG;
+                        LOG_USAGE << "\t" << m_params->m_name << "(uid:" << to_string(m_server_id) << ") -> " << status << END_LOG;
                     }
 
                     /**
@@ -253,8 +253,8 @@ namespace uva {
                      * Allows to get the unique identifier of the translation server adapter
                      * @return the name of the server
                      */
-                    inline const server_uid_type & get_uid() const {
-                        return m_uid;
+                    inline const server_id_type & get_server_id() const {
+                        return m_server_id;
                     }
 
                     /**
@@ -357,7 +357,7 @@ namespace uva {
                             m_notify_conn_closed_func(this);
 
                             //Notify the translation manager that there was a translation server connection lost
-                            m_adapter_disc_func(m_uid);
+                            m_adapter_disc_func(m_server_id);
 
                             //Once everything is processed the connection is truly closed
                             m_is_connected = false;
@@ -412,9 +412,9 @@ namespace uva {
 
                 private:
                     //Stores the adapter uid manager for issuing the adapter ids
-                    static id_manager<server_uid_type> m_ids_manager;
+                    static id_manager<server_id_type> m_ids_manager;
                     //Stores the unique identifier for the given translation adapter
-                    const server_uid_type m_uid;
+                    const server_id_type m_server_id;
                     //Stores the pointer to the translation server parameters
                     const trans_server_params * m_params;
                     //Stores the functional to notify about the translation response
