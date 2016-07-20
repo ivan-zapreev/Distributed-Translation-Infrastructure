@@ -1,7 +1,7 @@
 var client_data = {
     "server_url" : "ws://localhost:9002", //The web server url
     "ws" : null,                          //The web socket to the server
-    "is_translating" : false,             //Stores the flag indicating whether we are in translating state or not
+    "is_translating" : false,             //Indicates whether we are translating or not
     "sent_trans_req" : 0,                 //The number of sent translation requests
     "received_trans_resp" : 0,            //The number of received translation responses
     "job_responces" : [],                 //Stores the translation job responses
@@ -521,8 +521,10 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
         //Update the translation status
         update_trans_status();
 
-        //Enable the interface controls
-        enable_interface(true);
+        //Enable the interface controls, in case the status
+        //is connected. This method is executed asynchronously
+        //sand thus may be the connection is already lost
+        enable_interface(client_data.ws.readyState === window.WebSocket.OPEN);
         
         //Notify the user that everything went fine
         success("Finished recombining " + trans_responses.length + " translation responses!");

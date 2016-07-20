@@ -103,7 +103,7 @@ namespace uva {
                         void run() {
                             //Do something before the server starts listening.
                             before_start_listening();
-                            
+
                             LOG_DEBUG << "Starting the websockets server." << END_LOG;
                             //Start accepting the messages
                             m_server.start_accept();
@@ -125,9 +125,16 @@ namespace uva {
                             //Send the remaining responses after the server stopped listening.
                             after_stop_listening();
 
-                            LOG_USAGE << "Stopping the WEBSOCKET server." << END_LOG;
+                            LOG_USAGE << "Stopping the WEBSOCKET server " << END_LOG;
                             //Stop the server
                             m_server.stop();
+
+                            //Wait until the server is stopped
+                            while (!m_server.stopped()) {
+                                //Sleep for a second
+                                sleep(1);
+                            }
+                            LOG_INFO << "The WEBSOCKET server is stopped!" << END_LOG;
                         }
 
                     protected:
