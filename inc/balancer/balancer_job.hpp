@@ -388,7 +388,7 @@ namespace uva {
                      */
                     inline void send_request() {
                         //Register the job by the given job id as awaiting response
-                        m_register_wait_func(this, adapter->get_uid());
+                        m_register_wait_func(this);
 
                         switch (m_state) {
                             case state::ACTIVE_STATE:
