@@ -30,7 +30,7 @@ namespace uva {
         namespace bpbd {
             namespace balancer {
                 /*Translation server adapter*/
-                id_manager<trans_server_uid> translator_adapter::m_ids_manager(0);
+                id_manager<server_uid_type> translator_adapter::m_ids_manager(server_uid::MINIMUM_SERVER_ID);
             }
         }
     }

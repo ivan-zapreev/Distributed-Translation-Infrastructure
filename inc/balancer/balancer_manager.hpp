@@ -158,7 +158,9 @@ namespace uva {
                      * @param trans_job_resp a pointer to the translation job response data, not NULL
                      */
                     inline void notify_translation_response(trans_job_resp_in * trans_job_resp) {
-                        //ToDo: Implement handling of the translation job response
+                        //ToDo: Find the translation job
+                        //ToDo: Set response into it
+                        //ToDo: Put the job into the outging tasks pool
                     }
 
                     /**
@@ -166,9 +168,9 @@ namespace uva {
                      * jobs being awaiting response from this adapter are to be canceled.
                      * @param uid the unique identifier of the adapter
                      */
-                    inline void notify_adapter_disconnect(const trans_server_uid & uid) {
-                        //ToDo: Implement cancellation of all the translation requests which have 
-                        //      been sent but the response was not received yet.
+                    inline void notify_adapter_disconnect(const server_uid_type & uid) {
+                        //ToDo: Get all all the translation jobs handled by this adapter.
+                        //ToDo: Iterate through the jobs and mark them as failed.
                     }
 
                 protected:

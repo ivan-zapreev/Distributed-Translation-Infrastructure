@@ -32,8 +32,15 @@ namespace uva {
             namespace balancer {
 
                 //Typedef the translation adapter uid type
-                typedef uint32_t trans_server_uid;
-                
+                typedef uint32_t server_uid_type;
+
+                /**
+                 * The namespace to store the pre-defined values of the server uid type
+                 */
+                namespace server_uid {
+                    static constexpr server_uid_type UNDEFINED_SERVER_ID = 0;
+                    static constexpr server_uid_type MINIMUM_SERVER_ID = 1;
+                }
             }
         }
     }

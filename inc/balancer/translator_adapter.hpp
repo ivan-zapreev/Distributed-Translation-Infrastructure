@@ -58,7 +58,7 @@ namespace uva {
                 //Define the functional to set the translation response
                 typedef function<void(trans_job_resp_in *) > trans_resp_notifier;
                 //Define the functional to notify about the translator adapter disconnect
-                typedef function<void(const trans_server_uid & uid) > adapter_disc_notifier;
+                typedef function<void(const server_uid_type & uid) > adapter_disc_notifier;
 
                 /**
                  * This is the translation server adapter class:
@@ -253,7 +253,7 @@ namespace uva {
                      * Allows to get the unique identifier of the translation server adapter
                      * @return the name of the server
                      */
-                    inline const trans_server_uid & get_uid() const {
+                    inline const server_uid_type & get_uid() const {
                         return m_uid;
                     }
 
@@ -412,9 +412,9 @@ namespace uva {
 
                 private:
                     //Stores the adapter uid manager for issuing the adapter ids
-                    static id_manager<trans_server_uid> m_ids_manager;
+                    static id_manager<server_uid_type> m_ids_manager;
                     //Stores the unique identifier for the given translation adapter
-                    const trans_server_uid m_uid;
+                    const server_uid_type m_uid;
                     //Stores the pointer to the translation server parameters
                     const trans_server_params * m_params;
                     //Stores the functional to notify about the translation response

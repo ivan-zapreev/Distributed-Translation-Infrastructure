@@ -145,7 +145,8 @@ namespace uva {
                     m_notify_job_done_func(NULL), m_choose_adapt_func(chooser_func),
                     m_register_wait_func(register_wait_func), m_notify_err_func(notify_err_func),
                     m_resp_send_func(resp_send_func), m_phase(phase::REQUEST_PHASE),
-                    m_state(state::ACTIVE_STATE), m_err_msg(""), m_bal_job_id(m_id_mgr.get_next_id()) {
+                    m_state(state::ACTIVE_STATE), m_err_msg(""), m_bal_job_id(m_id_mgr.get_next_id()),
+                    m_adapter_uid(server_uid::UNDEFINED_SERVER_ID) {
                     }
 
                     /**
@@ -210,6 +211,16 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to get the unique identifier of the translation server adapter.
+                     * Is only set in case the request was attempted to be sent.
+                     * I.e. after the first execution.
+                     * @return the name of the server
+                     */
+                    inline const server_uid_type & get_server_uid() const {
+                        return m_adapter_uid;
+                    }
+
+                    /**
                      * Stores the pointer to the incoming translation job response.
                      * @param the pointer to the received translation job response.
                      */
@@ -233,20 +244,77 @@ namespace uva {
                     inline void cancel() {
                         recursive_guard guard(m_g_lock);
 
-                        //Just mark the job as canceled 
-                        m_state = state::CANCELED_STATE;
+                        //Depending on the phase
+                        switch (m_phase) {
+                                //Waiting when the reply is sent to the client - are in the outgoing tasks pool
+                            case phase::REPLY_PHASE:
+                                //Waiting when the request is sent to the translator - are in the incoming tasks pool
+                            case phase::REQUEST_PHASE:
+                                //Waiting for the translation response, will be triggered by the translator
+                            case phase::RESPONSE_PHASE:
+                            {
+                                //Just mark the state as canceled the rest will be done by execute
+                                m_state = state::CANCELED_STATE;
+                                break;
+                            }
+                                //The reply is already sent to the client, nothing to be done
+                            case phase::DONE_PHASE:
+                                //The state is undefined, this should not be happening
+                            case phase::UNDEFINED_PHASE:
+                            default:
+                            {
+                                //Log an error as we are in an improper state
+                                LOG_DEBUG << "ERROR: Wrong phase: " << *this << " is canceled!" << END_LOG;
+                                break;
+                            }
+                        }
                     }
 
                     /**
-                     * Allows to cancel the given job.  Calling this method indicates
+                     * Allows to cancel the given job. Calling this method indicates
                      * that the job is canceled due to the translator's adapter disconnect
                      * This method is synchronized.
                      */
                     inline void fail() {
                         recursive_guard guard(m_g_lock);
 
-                        //Just mark the job as canceled 
-                        m_state = state::FAILED_STATE;
+                        //Depending on the phase
+                        switch (m_phase) {
+                                //Waiting when the reply is sent to the client - are in the outgoing tasks pool
+                            case phase::REPLY_PHASE:
+                            {
+                                //Nothing to be done as we already know what to send to the client
+                                break;
+                            }
+                                //Waiting for the translation response
+                            case phase::RESPONSE_PHASE:
+                            {
+                                //Check if the job is not canceled. If it is then it should stay canceled
+                                //As in this case we already know that there will be no client to reply.
+                                if (m_state == state::CANCELED_STATE) {
+                                    //Notify the problem, do not change the state or error message
+                                    report_communication_error(m_state, m_err_msg);
+                                } else {
+                                    //Notify the problem, the translation has failed
+                                    report_communication_error(state::FAILED_STATE,
+                                            "The translation server has dropped connection!");
+                                }
+                                break;
+                            }
+                                //Waiting when the request is sent to the translator,
+                                //can't not fail here, the adapter is not yet chosen.
+                            case phase::REQUEST_PHASE:
+                                //The reply is already sent to the client, nothing to be done
+                            case phase::DONE_PHASE:
+                                //The state is undefined, this should not be happening
+                            case phase::UNDEFINED_PHASE:
+                            default:
+                            {
+                                //Log an error as we are in an improper state
+                                LOG_DEBUG << "ERROR: Wrong phase: " << *this << " is canceled!" << END_LOG;
+                                break;
+                            }
+                        }
                     }
 
                     /**
@@ -295,7 +363,7 @@ namespace uva {
                      * @param state_value the new state value
                      * @param err_msg the error message
                      */
-                    inline void report_send_error(const state state_value, const string err_msg) {
+                    inline void report_communication_error(const state state_value, const string err_msg) {
                         //This must not be happening it is an internal error
                         LOG_DEBUG << "ERROR: " << err_msg << END_LOG;
 
@@ -320,15 +388,18 @@ namespace uva {
                      */
                     inline void send_request() {
                         //Register the job by the given job id as awaiting response
-                        m_register_wait_func(this);
+                        m_register_wait_func(this, adapter->get_uid());
 
                         switch (m_state) {
                             case state::ACTIVE_STATE:
                             {
                                 //Get the translator's adapter
                                 translator_adapter * adapter = m_choose_adapt_func(m_trans_req);
+
                                 //Check if the adapter is present
                                 if (adapter != NULL) {
+                                    //Store the adapter uid
+                                    m_adapter_uid = adapter->get_uid();
                                     //Prepare the request with the new job id
                                     m_trans_req->set_job_id(m_bal_job_id);
                                     //Attempt sending the request through the adapter
@@ -338,11 +409,11 @@ namespace uva {
                                         m_phase = phase::RESPONSE_PHASE;
                                     } catch (std::exception & ex) {
                                         //If the sending is failed, register an error response
-                                        report_send_error(state::FAILED_STATE, ex.what());
+                                        report_communication_error(state::FAILED_STATE, ex.what());
                                     }
                                 } else {
                                     //If the adapter is not present, register an error response
-                                    report_send_error(state::FAILED_STATE,
+                                    report_communication_error(state::FAILED_STATE,
                                             "There are no online servers to perform your translation request!");
                                 }
                                 break;
@@ -350,13 +421,13 @@ namespace uva {
                             case state::CANCELED_STATE:
                             {
                                 //The client session was terminated so the request does not need to be sent
-                                report_send_error(state::CANCELED_STATE,
+                                report_communication_error(state::CANCELED_STATE,
                                         "The client session was terminated, canceling the request!");
                                 break;
                             }
                             default:
                             {
-                                report_send_error(state::FAILED_STATE,
+                                report_communication_error(state::FAILED_STATE,
                                         string("Internal error while sending request, state: ") + to_string(m_state));
                             }
                         }
@@ -465,6 +536,8 @@ namespace uva {
                     //The done job notifier
                     done_job_notifier m_notify_job_done_func;
 
+                    //ToDo: Make the next functions static
+
                     //Stores the reference to the function for choosing the appropriate translation adapter
                     const adapter_chooser & m_choose_adapt_func;
 
@@ -496,6 +569,8 @@ namespace uva {
                     //Stores the balancer job id, is initialized once the job is sent
                     const job_id_type m_bal_job_id;
 
+                    //Stores the adapter uid, is initialized after the adapter is retrieved
+                    server_uid_type m_adapter_uid;
                 };
             }
         }
