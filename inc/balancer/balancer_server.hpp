@@ -72,12 +72,28 @@ namespace uva {
                     /**
                      * Allows to report the runtime information about the server.
                      */
-                    void report_run_time_info() {
+                    inline void report_run_time_info() {
                         //Report the translation servers' manager info
                         m_adapters.report_run_time_info();
 
                         //Report the translation manager' info
                         m_manager.report_run_time_info();
+                    }
+                    
+                    /**
+                     * Allows to set a new number of incoming pool threads
+                     * @param num_threads the new number of threads
+                     */
+                    inline void set_num_inc_threads(const int32_t num_threads) {
+                        m_manager.set_num_inc_threads(num_threads);
+                    }
+                    
+                    /**
+                     * Allows to set a new number of outgoing pool threads
+                     * @param num_threads the new number of threads
+                     */
+                    inline void set_num_out_threads(const int32_t num_threads) {
+                        m_manager.set_num_out_threads(num_threads);
                     }
 
                 protected:

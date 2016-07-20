@@ -122,13 +122,45 @@ namespace uva {
                     /**
                      * Reports the run-time information
                      */
-                    void report_run_time_info() {
+                    inline void report_run_time_info() {
                         //Report the super class info first
                         session_job_pool_base::report_run_time_info();
-
+                        
                         //Report data from the task pools
                         m_incoming_pool.report_run_time_info("Incoming tasks pool");
                         m_outgoing_pool.report_run_time_info("Outgoing tasks pool");
+
+                        //Report the number of jobs waiting for reply
+                        {
+                            unique_guard guard(m_awaiting_a2j_lock);
+                            
+                            for(auto iter = m_awaiting_a2j.begin(); iter != m_awaiting_a2j.end(); ++iter) {
+                                server_jobs_entry_type & entry = iter->second;
+                                {
+                                    unique_guard guard(entry.m_awaiting_jobs_lock);
+                                    LOG_USAGE << "Server uid: " << to_string(iter->first)
+                                            << ", #waiting responses: "
+                                            << to_string(entry.m_awaiting_jobs.size())
+                                            << END_LOG;
+                                }
+                            }
+                        }
+                    }
+                    
+                    /**
+                     * Allows to set a new number of incoming pool threads
+                     * @param num_threads the new number of threads
+                     */
+                    inline void set_num_inc_threads(const int32_t num_threads) {
+                        m_incoming_pool.set_num_threads(num_threads);
+                    }
+                    
+                    /**
+                     * Allows to set a new number of outgoing pool threads
+                     * @param num_threads the new number of threads
+                     */
+                    inline void set_num_out_threads(const int32_t num_threads) {
+                        m_outgoing_pool.set_num_threads(num_threads);
                     }
 
                     /**

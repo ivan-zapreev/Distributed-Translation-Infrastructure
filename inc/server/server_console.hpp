@@ -1,12 +1,12 @@
 /* 
- * File:   cmd_line_handler.hpp
+ * File:   server_console.hpp
  * Author: zapreevis
  *
  * Created on March 9, 2016, 3:42 PM
  */
 
-#ifndef CMD_LINE_HANDLER_HPP
-#define CMD_LINE_HANDLER_HPP
+#ifndef SERVER_CONSOLE_HPP
+#define SERVER_CONSOLE_HPP
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/cmd/cmd_line_base.hpp"
@@ -37,7 +37,7 @@ namespace uva {
                 /**
                  * The command line handler class for the translation server.
                  */
-                class cmd_line_handler : public cmd_line_base {
+                class server_console : public cmd_line_base {
                 public:
 
                     /**
@@ -46,14 +46,14 @@ namespace uva {
                      * @param server the reference to the server
                      * @param server_thread the reference to the server thread
                      */
-                    cmd_line_handler(server_parameters & params, translation_server &server, thread &server_thread)
+                    server_console(server_parameters & params, translation_server &server, thread &server_thread)
                     : cmd_line_base(), m_params(params), m_server(server), m_server_thread(server_thread) {
                     }
 
                     /**
                      * The basic destructor
                      */
-                    virtual ~cmd_line_handler() {
+                    virtual ~server_console() {
                         //If the user did not do stop, i,e, we are likely to exit because of an exception
                         if (!m_is_stopped) {
                             //Stop the thing
@@ -98,7 +98,7 @@ namespace uva {
                     virtual bool process_specific_cmd(const string & cmd) {
                         //Set the number of threads
                         if (begins_with(cmd, PROGRAM_SET_NT_CMD)) {
-                            set_num_threads(cmd, PROGRAM_SET_LL_CMD);
+                            set_num_threads(cmd, PROGRAM_SET_NT_CMD);
                             return false;
                         } else {
                             //Set other decoder parameters

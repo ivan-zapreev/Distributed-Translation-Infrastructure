@@ -45,7 +45,7 @@
 #include "server/common/feature_id_registry.hpp"
 
 #include "server/server_consts.hpp"
-#include "server/cmd_line_handler.hpp"
+#include "server/server_console.hpp"
 #include "server/decoder/de_configurator.hpp"
 #include "server/lm/lm_configurator.hpp"
 #include "server/tm/tm_configurator.hpp"
@@ -365,7 +365,7 @@ int main(int argc, char** argv) {
         //logger::get_reporting_level() = debug_levels_enum::DEBUG2;
 
         //Wait until the server is stopped by pressing and exit button
-        cmd_line_handler cmd(params, server, server_thread);
+        server_console cmd(params, server, server_thread);
         cmd.perform_command_loop();
     } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit

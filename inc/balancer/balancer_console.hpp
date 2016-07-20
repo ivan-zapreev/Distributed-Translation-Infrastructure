@@ -44,6 +44,10 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
+                //The number of worker threads - for the incoming messages pool
+                static const string PROGRAM_SET_INT_CMD = "set int ";
+                //The number of worker threads - for the outgoing messages pool
+                static const string PROGRAM_SET_ONT_CMD = "set ont ";
 
                 /**
                  * This is the load balancer console class:
@@ -83,8 +87,8 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual void print_specific_commands() {
-                        LOG_USAGE << "\t None" << END_LOG;
-                        //ToDo: Implement setting the number of request and response queue workers and etc.
+                        print_command_help(PROGRAM_SET_INT_CMD, "<positive integer>", "set the number of incoming pool threads");
+                        print_command_help(PROGRAM_SET_ONT_CMD, "<positive integer>", "set the number of outgoing pool threads");
                     }
 
                     /**
@@ -99,8 +103,35 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual bool process_specific_cmd(const string & cmd) {
-                        //ToDo: Implement setting the number of request and response queue workers and etc.
-                        return true;
+                        //Set the number of incoming pool threads
+                        if (begins_with(cmd, PROGRAM_SET_INT_CMD)) {
+                            try {
+                                int32_t num_inc_threads = get_int_value(cmd, PROGRAM_SET_INT_CMD);
+                                ASSERT_CONDITION_THROW((num_inc_threads <= 0),
+                                        "The number of worker threads is to be > 0!");
+                                //Set the number of threads
+                                m_server.set_num_inc_threads(num_inc_threads);
+                                //Remember the new number of threads
+                                m_params.m_num_req_threads = num_inc_threads;
+                            } catch (std::exception &ex) {
+                                LOG_ERROR << ex.what() << "\nEnter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
+                            }
+                            return false;
+                        } else {
+                            //Set the number of outgoing pool threads
+                            if (begins_with(cmd, PROGRAM_SET_ONT_CMD)) {
+                                int32_t num_out_threads = get_int_value(cmd, PROGRAM_SET_ONT_CMD);
+                                ASSERT_CONDITION_THROW((num_out_threads <= 0),
+                                        "The number of worker threads is to be > 0!");
+                                //Set the number of threads
+                                m_server.set_num_out_threads(num_out_threads);
+                                //Remember the new number of threads
+                                m_params.m_num_resp_threads = num_out_threads;
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
                     }
 
                     /**

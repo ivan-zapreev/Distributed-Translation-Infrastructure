@@ -804,8 +804,8 @@
           <in>tm_consts.hpp</in>
           <in>tm_parameters.hpp</in>
         </df>
-        <in>cmd_line_handler.hpp</in>
         <in>server_configs.hpp</in>
+        <in>server_console.hpp</in>
         <in>server_consts.hpp</in>
         <in>server_parameters.hpp</in>
         <in>trans_info_provider.hpp</in>
