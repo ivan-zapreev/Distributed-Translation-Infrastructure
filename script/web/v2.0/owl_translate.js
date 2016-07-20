@@ -236,10 +236,12 @@ function danger(message, is_alert) {
  * This function is called in case a warning message is to be logged
  * @param {String} message the message to visualize
  */
-function warning(message) {
+function warning(message, is_alert) {
     "use strict";
     
-    add_log_message(client_data.lp_warn, "warning", message);
+    is_alert = is_alert || false;
+    
+    add_log_message(client_data.lp_warn, "warning", message, is_alert);
 
     window.console.warn(message);
 }
@@ -248,10 +250,12 @@ function warning(message) {
  * This function is called in case an info message is to be logged
  * @param {String} message the message to visualize
  */
-function info(message) {
+function info(message, is_alert) {
     "use strict";
     
-    add_log_message(client_data.lp_info, "info", message);
+    is_alert = is_alert || false;
+    
+    add_log_message(client_data.lp_info, "info", message, is_alert);
 
     window.console.log(message);
 }
@@ -809,8 +813,10 @@ function do_translate() {
             
             window.console.log("Finished sending translation request jobs.");
         } else {
-            warning("The source text did not change!", true);
+            warning("This translation job has already been done!", true);
         }
+    } else {
+        warning("There is no text to translate!", true);
     }
 }
 
