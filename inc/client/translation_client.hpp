@@ -240,8 +240,13 @@ namespace uva {
 
                         //Try parsing the incoming message
                         try {
+                            //Get the message string
+                            string msg_str = msg->get_payload();
+                            
+                            LOG_DEBUG << "Got translation server message: " << msg_str << END_LOG;
+                            
                             //De-serialize the message from string
-                            json_msg->de_serialize(msg->get_payload());
+                            json_msg->de_serialize(msg_str);
 
                             //Set the message to the client
                             m_set_server_msg_func(json_msg);

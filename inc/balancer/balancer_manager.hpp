@@ -75,22 +75,22 @@ namespace uva {
                  */
                 class balancer_manager : public session_manager, private session_job_pool_base<balancer_job> {
                 public:
-                    //Define the balancer job set
-                    typedef set<bal_job_ptr> jobs_set_type;
+                    //Define the map for relating the balancer job ids with the jobs
+                    typedef unordered_map<job_id_type, bal_job_ptr> server_jobs_map_type;
 
                     /**
                      * Defined the structure storing the jobs set and the mutex to synchronize access to it
                      */
                     typedef struct {
+                        //The mapping of the balancer job id to job for the jobs awaiting server reply
+                        server_jobs_map_type m_awaiting_jobs;
                         //The mutex to synchronize access to the set
-                        mutex m_jobs_lock;
-                        //The set of jobs
-                        jobs_set_type m_jobs;
-                    } jobs_set_entry;
+                        mutex m_awaiting_jobs_lock;
+                    } server_jobs_entry_type;
 
                     //Define the awaiting reply jobs map, this map relates the adapter
                     //id to the set of jobs awaiting a response from this adapter
-                    typedef unordered_map<server_id_type, jobs_set_entry> awaiting_jobs_map;
+                    typedef unordered_map<server_id_type, server_jobs_entry_type> awaiting_jobs_map;
 
                     //Define the map type for storing the relation between the balancer job ids and the balancer jobs
                     typedef unordered_map<job_id_type, bal_job_ptr> bal_jobs_map;
@@ -177,23 +177,32 @@ namespace uva {
 
                     /**
                      * Shall be called when a new translation job response arrives from a translation server adapter.
+                     * @param id the id of the server adapter we get the response from.
                      * @param trans_job_resp a pointer to the translation job response data, not NULL
                      */
-                    inline void notify_translation_response(trans_job_resp_in * trans_job_resp) {
+                    inline void notify_translation_response(const server_id_type server_id, trans_job_resp_in * trans_job_resp) {
                         //Declare the balancer job pointer variable
                         bal_job_ptr bal_job = NULL;
                         //Get the job id
-                        const job_id_type id = trans_job_resp->get_job_id();
+                        const job_id_type bal_job_id = trans_job_resp->get_job_id();
 
-                        //Get the job from the map
+                        //ToDo: Pass the server id with the response, then we can remove
+                        //the m_awaiting_bi2j map and only use the m_awaiting_a2j
+
+                        LOG_DEBUG << "Got translation job response: " << to_string(bal_job_id) << END_LOG;
+
+                        //Get the server jobs entry
+                        server_jobs_entry_type& entry = get_server_jobs(server_id);
+
+                        //Remove the job from the set
                         {
-                            unique_guard guard(m_awaiting_bi2j_lock);
+                            unique_guard guard(entry.m_awaiting_jobs_lock);
 
                             //Search for the job by its id
-                            auto iter = m_awaiting_bi2j.find(id);
+                            auto iter = entry.m_awaiting_jobs.find(bal_job_id);
 
                             //Check if the job is found
-                            if (iter != m_awaiting_bi2j.end()) {
+                            if (iter != entry.m_awaiting_jobs.end()) {
                                 //Get the balancer job
                                 bal_job = iter->second;
                             }
@@ -207,8 +216,8 @@ namespace uva {
                             //Just put the job into the outgoing pool.
                             m_outgoing_pool.plan_new_task(bal_job);
                         } else {
-                            LOG_DEBUG << "The balancer job: " << to_string(id) << " is no longer "
-                                    << "present, the server response is ignored!" << END_LOG;
+                            LOG_DEBUG << "The balancer job: " << to_string(bal_job_id) << " is no "
+                                    << "longer present, the server response is ignored!" << END_LOG;
                         }
                     }
 
@@ -219,15 +228,15 @@ namespace uva {
                      */
                     inline void notify_adapter_disconnect(const server_id_type & id) {
                         //Get the server jobs entry
-                        jobs_set_entry& entry = get_server_jobs(id);
+                        server_jobs_entry_type& entry = get_server_jobs(id);
 
                         //Remove the job from the set
                         {
-                            unique_guard guard(entry.m_jobs_lock);
+                            unique_guard guard(entry.m_awaiting_jobs_lock);
 
                             //Iterate through the jobs and mark them as failed.
-                            for (auto iter = entry.m_jobs.begin(); iter != entry.m_jobs.end(); ++iter) {
-                                (*iter)->fail();
+                            for (auto iter = entry.m_awaiting_jobs.begin(); iter != entry.m_awaiting_jobs.end(); ++iter) {
+                                iter->second->fail();
                             }
                         }
                     }
@@ -258,7 +267,7 @@ namespace uva {
                      * @param id the server id
                      * @return the reference to the server jobs entry
                      */
-                    inline jobs_set_entry& get_server_jobs(server_id_type id) {
+                    inline server_jobs_entry_type& get_server_jobs(server_id_type id) {
                         unique_guard guard(m_awaiting_a2j_lock);
 
                         //Get the pointer to the entry
@@ -275,23 +284,16 @@ namespace uva {
                         //If the server id is set, then let's look for the job in the mappings
                         if (bal_job->get_server_id() != server_id::UNDEFINED_SERVER_ID) {
                             //Get the server jobs entry
-                            jobs_set_entry& entry = get_server_jobs(bal_job->get_server_id());
+                            server_jobs_entry_type& entry = get_server_jobs(bal_job->get_server_id());
 
                             //Remove the job from the set
                             {
-                                unique_guard guard(entry.m_jobs_lock);
+                                unique_guard guard(entry.m_awaiting_jobs_lock);
 
-                                entry.m_jobs.erase(bal_job);
-                            }
-
-                            //Remove the job from the mapping
-                            {
-                                unique_guard guard(m_awaiting_bi2j_lock);
-
-                                m_awaiting_bi2j.erase(bal_job->get_bal_job_id());
+                                entry.m_awaiting_jobs.erase(bal_job->get_bal_job_id());
                             }
                         } else {
-                            LOG_ERROR << "Trying to unregister a job with no server id: " << *bal_job << END_LOG;
+                            LOG_DEBUG << "Deleting an unsent translation job: " << bal_job->get_job_id() << END_LOG;
                         }
                     }
 
@@ -305,20 +307,13 @@ namespace uva {
                         //If the server id is set, then let's look for the job in the mappings
                         if (bal_job->get_server_id() != server_id::UNDEFINED_SERVER_ID) {
                             //Get the server jobs entry
-                            jobs_set_entry& entry = get_server_jobs(bal_job->get_server_id());
+                            server_jobs_entry_type& entry = get_server_jobs(bal_job->get_server_id());
 
                             //Add the new job to the set
                             {
-                                unique_guard guard(entry.m_jobs_lock);
+                                unique_guard guard(entry.m_awaiting_jobs_lock);
 
-                                entry.m_jobs.insert(bal_job);
-                            }
-
-                            //Register the job under its balancer job id
-                            {
-                                unique_guard guard(m_awaiting_bi2j_lock);
-
-                                m_awaiting_bi2j[bal_job->get_bal_job_id()] = bal_job;
+                                entry.m_awaiting_jobs[bal_job->get_bal_job_id()] = bal_job;
                             }
                         } else {
                             LOG_ERROR << "Trying to register a job with no server id: " << *bal_job << END_LOG;
@@ -356,12 +351,6 @@ namespace uva {
 
                     //The mutex to synchronize access to the map of adapter ids to the awaiting response jobs
                     mutex m_awaiting_a2j_lock;
-
-                    //The map for storing the balancer job ids to jobs mapping
-                    bal_jobs_map m_awaiting_bi2j;
-
-                    //The mutex to synchronize access to the map storing the balancer job ids to jobs mapping
-                    mutex m_awaiting_bi2j_lock;
                 };
 
             }

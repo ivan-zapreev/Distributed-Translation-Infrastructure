@@ -43,7 +43,7 @@ namespace uva {
                     /**
                      * This class represents an incoming translation job response
                      */
-                    class trans_job_resp_in : public trans_job_resp, public incoming_msg {
+                    class trans_job_resp_in : public trans_job_resp {
                     public:
 
                         /**
@@ -122,6 +122,14 @@ namespace uva {
                             const Document & json = m_inc_msg->get_json();
                             
                             return json[STAT_MSG_FIELD_NAME].GetString();
+                        }
+                        
+                        /**
+                         * Allows to retrieve the incoming message
+                         * @return the incoming message
+                         */
+                        inline const incoming_msg * get_message() const {
+                            return m_inc_msg;
                         }
 
                     private:

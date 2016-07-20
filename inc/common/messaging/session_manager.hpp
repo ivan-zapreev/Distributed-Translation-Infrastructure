@@ -168,6 +168,8 @@ namespace uva {
                          * @return true if the sent was successful, otherwise false
                          */
                         inline bool send_response(const session_id_type session_id, const msg_base & msg) {
+                            LOG_DEBUG << "Sending a message from session: " << to_string(session_id) << END_LOG;
+                            
                             //Do the sanity check assert
                             ASSERT_SANITY_THROW(!m_sender_func,
                                     "The sender function of the translation manager is not set!");

@@ -227,7 +227,9 @@ namespace uva {
                     inline void set_trans_job_resp(trans_job_resp_in * trans_resp) {
                         recursive_guard guard(m_g_lock);
 
-                        ASSERT_SANITY_THROW((m_phase = phase::RESPONSE_PHASE),
+                        LOG_DEBUG << "Got translation job response " << trans_resp->get_job_id() << END_LOG;
+
+                        ASSERT_SANITY_THROW((m_phase != phase::RESPONSE_PHASE),
                                 string("Improper job phase: ") + to_string(m_phase));
 
                         //Store the translation job reponse
@@ -235,6 +237,9 @@ namespace uva {
 
                         //Now we are in the reply phase, the reply is to be sent to the client
                         m_phase = phase::REPLY_PHASE;
+
+                        LOG_DEBUG << "The balancer job " << to_string(m_bal_job_id)
+                                << " is set to phase: " << to_string(m_phase) << END_LOG;
                     }
 
                     /**
@@ -472,12 +477,12 @@ namespace uva {
                         switch (m_state) {
                             case state::ACTIVE_STATE:
                             {
-                                //Change the job id in the response to the stored - original - one
-                                m_trans_resp->set_job_id(m_job_id);
                                 //Perform the sanity check
                                 ASSERT_SANITY_THROW((m_trans_resp == NULL), "The translation response is NULL!");
+                                //Change the job id in the response to the stored - original - one
+                                m_trans_resp->set_job_id(m_job_id);
                                 //Send the response to the client through the sender function
-                                m_resp_send_func(m_session_id, *m_trans_resp);
+                                m_resp_send_func(m_session_id, *m_trans_resp->get_message());
                                 break;
                             }
                             case state::CANCELED_STATE:

@@ -55,10 +55,17 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
+                //Forward class declaration
+                class translator_adapter;
+                
                 //Define the functional to set the translation response
-                typedef function<void(trans_job_resp_in *) > trans_resp_notifier;
+                typedef function<void(const server_id_type, trans_job_resp_in *) > trans_resp_notifier;
                 //Define the functional to notify about the translator adapter disconnect
                 typedef function<void(const server_id_type & uid) > adapter_disc_notifier;
+                //Define ready connection notifier function
+                typedef function<void(translator_adapter *, supp_lang_resp_in *) > ready_conn_notifier_type;
+                //Define the function type for the function used to notify about the disconnected server
+                typedef function<void(translator_adapter *) > closed_conn_notifier_type;
 
                 /**
                  * This is the translation server adapter class:
@@ -74,10 +81,6 @@ namespace uva {
                  */
                 class translator_adapter {
                 public:
-                    //Define ready connection notifier function
-                    typedef function<void(translator_adapter *, supp_lang_resp_in *) > ready_conn_notifier_type;
-                    //Define the function type for the function used to notify about the disconnected server
-                    typedef function<void(translator_adapter *) > closed_conn_notifier_type;
 
                     /**
                      * The basic constructor for the adapter class
@@ -110,10 +113,10 @@ namespace uva {
                      */
                     inline void configure(
                             const trans_server_params & params,
-                            trans_resp_notifier trans_resp_func,
-                            adapter_disc_notifier adapter_disc_func,
-                            ready_conn_notifier_type notify_conn_ready_func,
-                            closed_conn_notifier_type notify_conn_closed_func) {
+                            trans_resp_notifier & trans_resp_func,
+                            adapter_disc_notifier & adapter_disc_func,
+                            ready_conn_notifier_type & notify_conn_ready_func,
+                            closed_conn_notifier_type & notify_conn_closed_func) {
                         recursive_guard guard(m_lock_con);
 
                         //Check that the adapter is not enabled!
@@ -264,7 +267,7 @@ namespace uva {
                     inline uint32_t get_weight() const {
                         return m_params->m_load_weight;
                     }
-                    
+
                     /**
                      * Allows to send the string message to the server
                      * @param msg the string message to be send
@@ -282,7 +285,7 @@ namespace uva {
                     inline void set_server_message(incoming_msg * json_msg) {
                         recursive_guard guard(m_lock_con);
 
-                        LOG_DEBUG << "The server '" << m_params->m_name << "' client got "
+                        LOG_DEBUG << "The translation adapter '" << m_params->m_name << "' got "
                                 << "a server message, type: " << json_msg->get_msg_type() << END_LOG;
 
                         //Check on the message type
@@ -293,14 +296,14 @@ namespace uva {
                                 trans_job_resp_in * job_resp_msg = new trans_job_resp_in(json_msg);
                                 try {
                                     //Set the newly received job response
-                                    m_trans_resp_func(job_resp_msg);
+                                    m_trans_resp_func(m_server_id, job_resp_msg);
                                 } catch (std::exception & ex) {
                                     LOG_ERROR << ex.what() << END_LOG;
                                     //Delete the message as it was not set
                                     delete job_resp_msg;
                                 }
-                            }
                                 break;
+                            }
                             case msg_type::MESSAGE_SUPP_LANG_RESP:
                             {
                                 //Create a new languages response message
@@ -313,8 +316,8 @@ namespace uva {
                                     //Delete the message as it was not set
                                     delete lang_resp_msg;
                                 }
-                            }
                                 break;
+                            }
                             default:
                                 THROW_EXCEPTION(string("Unexpected incoming message type: ") +
                                         to_string(json_msg->get_msg_type()));

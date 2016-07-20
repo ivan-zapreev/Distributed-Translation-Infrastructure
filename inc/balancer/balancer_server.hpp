@@ -61,7 +61,7 @@ namespace uva {
                     : websocket_server(params.m_server_port),
                     m_manager(params.m_num_req_threads, params.m_num_resp_threads),
                     m_adapters(params,
-                    bind(&balancer_manager::notify_translation_response, &m_manager, _1),
+                    bind(&balancer_manager::notify_translation_response, &m_manager, _1, _2),
                     bind(&balancer_manager::notify_adapter_disconnect, &m_manager, _1)) {
                         //Provide the manager with the functional for sending
                         //the translation response and getting the adapters

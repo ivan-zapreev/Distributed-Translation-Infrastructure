@@ -161,14 +161,16 @@ namespace uva {
                     m_supp_lan_resp_str(""), m_supp_lang_mutex() {
                         LOG_INFO3 << "Configuring the translation servers' manager" << END_LOG;
 
+                        //Pre-create the notifier function types
+                        ready_conn_notifier_type ready_conn_func = bind(&adapters_manager::notify_adapter_ready, this, _1, _2);
+                        closed_conn_notifier_type closed_conn_func = bind(&adapters_manager::notify_disconnected, this, _1);
+
                         //Iterate through the list of translation server
                         //configs and create an adapter for each of them
                         for (auto iter = m_params.trans_servers.begin(); iter != m_params.trans_servers.end(); ++iter) {
                             LOG_INFO3 << "Configuring '" << iter->second.m_name << "' adapter..." << END_LOG;
                             m_adapters_data[iter->first].m_adapter.configure(iter->second,
-                                    trans_resp_func, adapter_disc_func,
-                                    bind(&adapters_manager::notify_ready, this, _1, _2),
-                                    bind(&adapters_manager::notify_disconnected, this, _1));
+                                    trans_resp_func, adapter_disc_func, ready_conn_func, closed_conn_func);
                             LOG_INFO2 << "'" << iter->second.m_name << "' adapter is configured" << END_LOG;
                         }
 
@@ -280,7 +282,7 @@ namespace uva {
                      * @param adapter the pointer to the translation server adapter that got ready, not NULL
                      * @param lang_resp_msg the supported language pairs message, to be destroyed by this method
                      */
-                    inline void notify_ready(translator_adapter * adapter, supp_lang_resp_in * lang_resp_msg) {
+                    inline void notify_adapter_ready(translator_adapter * adapter, supp_lang_resp_in * lang_resp_msg) {
                         exclusive_guard guard(m_supp_lang_mutex);
                         LOG_DEBUG << "The server adapter '" << adapter->get_name() << "' is connected!" << END_LOG;
 

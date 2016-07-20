@@ -477,11 +477,11 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
                 status += ": " + target.stat_msg;
                 switch (target.stat_code) {
                 case STATUS_CODE_ENUM.RESULT_ERROR:
-                    danger("Translation job " + trans_response.job_id + "/" + (j + 1) + " failed: " + target.stat_msg);
+                    danger("Translation job " + trans_response.job_id + ", sentence " + (j + 1) + " failed: " + target.stat_msg);
                     break;
                 case STATUS_CODE_ENUM.RESULT_CANCELED:
                     if (trans_response.stat_code !== STATUS_CODE_ENUM.RESULT_CANCELED) {
-                        warning("Translation job " + trans_response.job_id + "/" + (j + 1) + " cancelled: " + target.stat_msg);
+                        warning("Translation job " + trans_response.job_id + ", sentence " + (j + 1) + " cancelled: " + target.stat_msg);
                     }
                     break;
                 }

@@ -27,6 +27,8 @@
 #define INCOMING_MSG_HPP
 
 #include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
 
 #include "common/messaging/msg_base.hpp"
 
@@ -113,7 +115,10 @@ namespace uva {
                          * @see msg_base
                          */
                         virtual string serialize() const override {
-                            return m_json.GetString();
+                            StringBuffer buffer;
+                            Writer<StringBuffer> writer(buffer);
+                            m_json.Accept(writer);
+                            return buffer.GetString();
                         }
 
                     protected:
