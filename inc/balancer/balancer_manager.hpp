@@ -218,9 +218,6 @@ namespace uva {
                         //Get the job id
                         const job_id_type bal_job_id = trans_job_resp->get_job_id();
 
-                        //ToDo: Pass the server id with the response, then we can remove
-                        //the m_awaiting_bi2j map and only use the m_awaiting_a2j
-
                         LOG_DEBUG << "Got translation job response: " << to_string(bal_job_id) << END_LOG;
 
                         //Get the server jobs entry
