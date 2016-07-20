@@ -222,24 +222,57 @@ namespace uva {
 
                     /**
                      * Stores the pointer to the incoming translation job response.
+                     * Note that, the job could have been cancelled by the client
+                     * session drop out, so now it is perhaps already close to its
+                     * end of life. Therefore the function does nothing is the job
+                     * is not awaiting for a responseor has a non-active state.
                      * @param the pointer to the received translation job response.
+                     * @return true if the job is an awaiting the response phase, otherwise false
                      */
-                    inline void set_trans_job_resp(trans_job_resp_in * trans_resp) {
+                    inline bool set_trans_job_resp(trans_job_resp_in * trans_resp) {
                         recursive_guard guard(m_g_lock);
 
                         LOG_DEBUG << "Got translation job response " << trans_resp->get_job_id() << END_LOG;
 
-                        ASSERT_SANITY_THROW((m_phase != phase::RESPONSE_PHASE),
-                                string("Improper job phase: ") + to_string(m_phase));
+                        //If we are in the done or reply phase then we already have something to
+                        //send to the client. I.e we must have had a client session drop down
+                        //(the canceled state). The failed state is not possible as it would
+                        //mean that the server response could not come at all, but here it is!
+                        if ((m_phase == phase::REPLY_PHASE) || (m_phase == phase::DONE_PHASE)) {
+                            if (m_state == state::CANCELED_STATE) {
+                                //If we are not active then it is OK, otherwise it is an
+                                //error situation. Still no need to react on this response.
+                                return false;
+                            }
+                        } else {
+                            //If we are in the response phase then we can be expecting a response
+                            //only if we are active or the canceled by the client session drop-down.
+                            //In case we are active the response is welcome. If we are in the canceled
+                            //state the response is also welcome, although it will never be sent. 
+                            if (m_phase == phase::RESPONSE_PHASE) {
+                                //If we are actively waiting for a response
+                                if ((m_state == state::ACTIVE_STATE) || (m_state == state::CANCELED_STATE)) {
+                                    //Store the translation job response
+                                    m_trans_resp = trans_resp;
+                                    //Now we are in the reply phase, the reply is to be sent to the client
+                                    m_phase = phase::REPLY_PHASE;
+                                    //Return true as the job was awaiting the response
+                                    return true;
+                                }
+                            } else {
+                                //Remaining cases:
+                                //1. If we are in the phase::REQUEST_PHASE phase then the request
+                                //   was not even sent yet, can't be waiting for a response!
+                                //2. The phase::UNDEFINED_PHASE phase must be impossible - not used
+                                //3. Any other (unknown phase) must be impossible, is not there yet!
+                            }
+                        }
 
-                        //Store the translation job reponse
-                        m_trans_resp = trans_resp;
-
-                        //Now we are in the reply phase, the reply is to be sent to the client
-                        m_phase = phase::REPLY_PHASE;
-
-                        LOG_DEBUG << "The balancer job " << to_string(m_bal_job_id)
-                                << " is set to phase: " << to_string(m_phase) << END_LOG;
+                        //If we reached this place then it is some kind of internal error
+                        LOG_ERROR << "The balancer job " << to_string(m_bal_job_id)
+                                << " is in phase: " << to_string(m_phase)
+                                << ", state: " << to_string(m_state) << END_LOG;
+                        return false;
                     }
 
                     /**
@@ -482,7 +515,7 @@ namespace uva {
                      */
                     inline void send_reply() {
                         LOG_DEBUG << "Sending reply for job " << *this << END_LOG;
-                        
+
                         switch (m_state) {
                                 //If we are in the canceled state then only send a response if it is present
                                 //If the response is not present then we send an error 

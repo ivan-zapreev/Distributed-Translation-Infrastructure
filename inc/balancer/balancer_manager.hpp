@@ -125,7 +125,7 @@ namespace uva {
                     inline void report_run_time_info() {
                         //Report the super class info first
                         session_job_pool_base::report_run_time_info();
-                        
+
                         //Report data from the task pools
                         m_incoming_pool.report_run_time_info("Incoming jobs pool");
                         m_outgoing_pool.report_run_time_info("Outgoing jobs pool");
@@ -133,8 +133,8 @@ namespace uva {
                         //Report the number of jobs waiting for reply
                         {
                             unique_guard guard(m_awaiting_a2j_lock);
-                            
-                            for(auto iter = m_awaiting_a2j.begin(); iter != m_awaiting_a2j.end(); ++iter) {
+
+                            for (auto iter = m_awaiting_a2j.begin(); iter != m_awaiting_a2j.end(); ++iter) {
                                 server_jobs_entry_type & entry = iter->second;
                                 {
                                     unique_guard guard(entry.m_awaiting_jobs_lock);
@@ -146,7 +146,7 @@ namespace uva {
                             }
                         }
                     }
-                    
+
                     /**
                      * Allows to set a new number of incoming pool threads
                      * @param num_threads the new number of threads
@@ -154,7 +154,7 @@ namespace uva {
                     inline void set_num_inc_threads(const int32_t num_threads) {
                         m_incoming_pool.set_num_threads(num_threads);
                     }
-                    
+
                     /**
                      * Allows to set a new number of outgoing pool threads
                      * @param num_threads the new number of threads
@@ -213,8 +213,6 @@ namespace uva {
                      * @param trans_job_resp a pointer to the translation job response data, not NULL
                      */
                     inline void notify_translation_response(const server_id_type server_id, trans_job_resp_in * trans_job_resp) {
-                        //Declare the balancer job pointer variable
-                        bal_job_ptr bal_job = NULL;
                         //Get the job id
                         const job_id_type bal_job_id = trans_job_resp->get_job_id();
 
@@ -223,7 +221,11 @@ namespace uva {
                         //Get the server jobs entry
                         server_jobs_entry_type& entry = get_server_jobs(server_id);
 
-                        //Remove the job from the set
+                        //Notify the job about the response. Do it in
+                        //a synchronized way to prevent job deletion.
+                        //if the job is still registered then it is
+                        //not yet deleted. Yet the job might be on its
+                        //way to deletion in case the job was canceled.
                         {
                             unique_guard guard(entry.m_awaiting_jobs_lock);
 
@@ -233,20 +235,23 @@ namespace uva {
                             //Check if the job is found
                             if (iter != entry.m_awaiting_jobs.end()) {
                                 //Get the balancer job
-                                bal_job = iter->second;
+                                bal_job_ptr bal_job = iter->second;
+
+                                //Set the translation response into the job
+                                if (bal_job->set_trans_job_resp(trans_job_resp)) {
+                                    //The job was actively waiting for a response,
+                                    //so put it into the outgoing pool.
+                                    m_outgoing_pool.plan_new_task(bal_job);
+                                } else {
+                                    //The job was not waiting for a response or was not active
+                                    //Therefore it it likely to be close to the deletion state
+                                    LOG_DEBUG << "The balancer job: " << to_string(bal_job_id)
+                                            << " had been canceled or does not expect a response!" << END_LOG;
+                                }
+                            } else {
+                                LOG_DEBUG << "The balancer job: " << to_string(bal_job_id) << " is no "
+                                        << "longer present, the server response is ignored!" << END_LOG;
                             }
-                        }
-
-                        //Check if the job is found
-                        if (bal_job != NULL) {
-                            //Set the translation response into the job
-                            bal_job->set_trans_job_resp(trans_job_resp);
-
-                            //Just put the job into the outgoing pool.
-                            m_outgoing_pool.plan_new_task(bal_job);
-                        } else {
-                            LOG_DEBUG << "The balancer job: " << to_string(bal_job_id) << " is no "
-                                    << "longer present, the server response is ignored!" << END_LOG;
                         }
                     }
 
@@ -311,7 +316,7 @@ namespace uva {
                      */
                     inline void notify_job_done(bal_job_ptr bal_job) {
                         LOG_DEBUG << "Finishing off processed job " << *bal_job << END_LOG;
-                        
+
                         //If the server id is set, then let's look for the job in the mappings
                         if (bal_job->get_server_id() != server_id::UNDEFINED_SERVER_ID) {
                             //Get the server jobs entry
