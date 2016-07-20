@@ -39,7 +39,7 @@ namespace uva {
 
             //Enables all sorts of internal sanity checks,
             //e.g. sets the collision detection on and off.
-            constexpr bool DO_SANITY_CHECKS = true;
+            constexpr bool DO_SANITY_CHECKS = false;
 
 #define THROW_EXCEPTION(text) { \
     stringstream msg; \

@@ -281,6 +281,8 @@ namespace uva {
                      * @param bal_job the balancer job that is fully done
                      */
                     inline void notify_job_done(bal_job_ptr bal_job) {
+                        LOG_DEBUG << "Finishing off processed job " << *bal_job << END_LOG;
+                        
                         //If the server id is set, then let's look for the job in the mappings
                         if (bal_job->get_server_id() != server_id::UNDEFINED_SERVER_ID) {
                             //Get the server jobs entry
@@ -293,7 +295,7 @@ namespace uva {
                                 entry.m_awaiting_jobs.erase(bal_job->get_bal_job_id());
                             }
                         } else {
-                            LOG_DEBUG << "Deleting an unsent translation job: " << bal_job->get_job_id() << END_LOG;
+                            LOG_DEBUG << "Deleting an unregistered translation job: " << bal_job->get_job_id() << END_LOG;
                         }
                     }
 

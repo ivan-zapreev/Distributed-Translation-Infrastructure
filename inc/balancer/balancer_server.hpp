@@ -95,9 +95,11 @@ namespace uva {
                      */
                     virtual void after_stop_listening() override {
                         //Stop the translation servers manager
+                        //Do not wait until all the running job
+                        //replies arrive.
                         m_adapters.disable();
 
-                        //Stop the translation manager
+                        //Stop the translation manager.
                         m_manager.stop();
                     }
 

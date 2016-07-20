@@ -94,8 +94,6 @@ namespace uva {
                          * Allows to stop all the running jobs and try to send all the responses and then exit
                          */
                         inline void stop() {
-                            LOG_DEBUG << "Request stopping the job pool!" << END_LOG;
-
                             //Make sure this does not interfere with any adding new job activity
                             {
                                 scoped_guard guard_stopping(m_stopping_lock);
@@ -109,13 +107,13 @@ namespace uva {
                                 };
                             }
 
-                            LOG_DEBUG << "The stopping flag is set!" << END_LOG;
+                            LOG_USAGE << "Request stopping the translation jobs pool!" << END_LOG;
 
                             //Cancel all the remaining jobs, do that without the stopping lock synchronization
                             //If put inside the above synchronization block will most likely cause a deadlock(?).
                             cancel_all_jobs();
 
-                            LOG_DEBUG << "All the existing jobs are canceled!" << END_LOG;
+                            LOG_INFO << "All the jobs are canceled, waiting replies to be sent!" << END_LOG;
 
                             //Wake up the jobs thread for the case there is no jobs being processed
                             start_processing_finished_jobs();
@@ -123,7 +121,7 @@ namespace uva {
                             //Wait until the job processing thread finishes
                             m_jobs_thread.join();
 
-                            LOG_DEBUG << "The result processing thread is finished!" << END_LOG;
+                            LOG_INFO << "The translation replies have been sent!" << END_LOG;
 
                             //In case that we have stopped with running jobs - report an error
                             if (m_job_count != 0) {

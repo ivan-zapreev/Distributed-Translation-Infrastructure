@@ -255,11 +255,17 @@ namespace uva {
                             case phase::REPLY_PHASE:
                                 //Waiting when the request is sent to the translator - are in the incoming tasks pool
                             case phase::REQUEST_PHASE:
-                                //Waiting for the translation response, will be triggered by the translator
-                            case phase::RESPONSE_PHASE:
                             {
                                 //Just mark the state as canceled the rest will be done by execute
                                 m_state = state::CANCELED_STATE;
+                                break;
+                            }
+                                //Waiting for the translation response, will be triggered by the translator
+                            case phase::RESPONSE_PHASE:
+                            {
+                                //Notify the problem, the translation was canceled
+                                schedule_failed_job_reply(state::CANCELED_STATE,
+                                        "The job was requested to be canceled!");
                                 break;
                             }
                                 //The reply is already sent to the client, nothing to be done
@@ -269,7 +275,8 @@ namespace uva {
                             default:
                             {
                                 //Log an error as we are in an improper state
-                                LOG_DEBUG << "ERROR: Wrong phase: " << *this << " is canceled!" << END_LOG;
+                                LOG_ERROR << "Canceling balancer job in a wrong phase: "
+                                        << *this << ", ignoring!" << END_LOG;
                                 break;
                             }
                         }
@@ -457,7 +464,7 @@ namespace uva {
                             //Set the target sentence
                             sent_data.set_trans_text(iter->GetString());
                             //Set the sentence status
-                            sent_data.set_status(status_code::RESULT_ERROR, "Failed to translate");
+                            sent_data.set_status(status_code::RESULT_ERROR, "");
                             //End the sentence data section
                             sent_data.end_sent_data_ent();
                         }
@@ -474,24 +481,25 @@ namespace uva {
                      * The only synchronization available is with the synch_job_finished method.
                      */
                     inline void send_reply() {
+                        LOG_DEBUG << "Sending reply for job " << *this << END_LOG;
+                        
                         switch (m_state) {
+                                //If we are in the canceled state then only send a response if it is present
+                                //If the response is not present then we send an error 
+                            case state::CANCELED_STATE:
+                                //In the active state we check if the response is present as well
+                                //If the response is not present then we send an error 
                             case state::ACTIVE_STATE:
                             {
-                                //Perform the sanity check
-                                ASSERT_SANITY_THROW((m_trans_resp == NULL), "The translation response is NULL!");
-                                //Change the job id in the response to the stored - original - one
-                                m_trans_resp->set_job_id(m_job_id);
-                                //Send the response to the client through the sender function
-                                m_resp_send_func(m_session_id, *m_trans_resp->get_message());
-                                break;
+                                if (m_trans_resp != NULL) {
+                                    //Change the job id in the response to the stored - original - one
+                                    m_trans_resp->set_job_id(m_job_id);
+                                    //Send the response to the client through the sender function
+                                    m_resp_send_func(m_session_id, *m_trans_resp->get_message());
+                                    break;
+                                }
                             }
-                            case state::CANCELED_STATE:
-                            {
-                                //Do nothing, the client was disconnected, just log an issue 
-                                LOG_DEBUG << "Could not send the job " << *this
-                                        << " back, the client is disconnected!" << END_LOG;
-                                break;
-                            }
+                                //In the failed state we send an error response
                             case state::FAILED_STATE:
                             {
                                 //Create a response 
@@ -502,6 +510,7 @@ namespace uva {
                                 m_resp_send_func(m_session_id, resp);
                                 break;
                             }
+                                //In the default case we only log an error, this is an impossible case
                             default:
                             {
                                 //This must not be happening it is an internal error
@@ -522,6 +531,9 @@ namespace uva {
                     }
 
                 private:
+                    //Make the output operator a friend
+                    friend ostream & operator<<(ostream &, const balancer_job &);
+
                     //Stores the static instance of the id manager
                     static id_manager<job_id_type> m_id_mgr;
 

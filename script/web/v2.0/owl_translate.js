@@ -1,11 +1,12 @@
 var client_data = {
     "server_url" : "ws://localhost:9002", //The web server url
     "ws" : null,                          //The web socket to the server
+    "is_translating" : false,             //Stores the flag indicating whether we are in translating state or not
     "sent_trans_req" : 0,                 //The number of sent translation requests
     "received_trans_resp" : 0,            //The number of received translation responses
     "job_responces" : [],                 //Stores the translation job responses
     "translation_html" : "",              //Stores the translation HTML data
-    "prev_job_req_id" : -1,               //Stores the previously send translation job request id
+    "prev_job_req_id" : 1,                //Stores the previously send translation job request id
     "prev_source_md5" : "",               //Stores the previously sent translation job source text
     "calcMD5" : null,                     //The md5 function, to be initialized
     "callDownload" : null,                //The download function, to be initialized
@@ -477,11 +478,15 @@ function fill_in_single_response_data(trans_response, response_idx, trans_respon
                 status += ": " + target.stat_msg;
                 switch (target.stat_code) {
                 case STATUS_CODE_ENUM.RESULT_ERROR:
-                    danger("Translation job " + trans_response.job_id + ", sentence " + (j + 1) + " failed: " + target.stat_msg);
+                    if (target.stat_msg !== "") {
+                        danger("Translation job " + trans_response.job_id + ", sentence " + (j + 1) + " failed: " + target.stat_msg);
+                    }
                     break;
                 case STATUS_CODE_ENUM.RESULT_CANCELED:
                     if (trans_response.stat_code !== STATUS_CODE_ENUM.RESULT_CANCELED) {
-                        warning("Translation job " + trans_response.job_id + ", sentence " + (j + 1) + " cancelled: " + target.stat_msg);
+                        if (target.stat_msg !== "") {
+                            warning("Translation job " + trans_response.job_id + ", sentence " + (j + 1) + " cancelled: " + target.stat_msg);
+                        }
                     }
                     break;
                 }
@@ -577,6 +582,7 @@ function count_trans_job_response() {
         //We received as many responses as there were requests
         client_data.sent_trans_req = 0;
         client_data.received_trans_resp = 0;
+        client_data.is_translating = false;
 
         //Get the text element to put the values into
         client_data.translation_html = "";
@@ -769,6 +775,9 @@ function do_translate() {
                     sent_array = source_text.split('\n');
                     window.console.log("Send the translation requests for " + sent_array.length + " sentences");
 
+                    //Set the translating flag
+                    client_data.is_translating = true;
+                    
                     //Re-initialize the progress bars
                     initialize_progress_bars();
 
@@ -794,6 +803,8 @@ function do_translate() {
             }
             
             window.console.log("Finished sending translation request jobs.");
+        } else {
+            warning("The source text did not change!", true);
         }
     }
 }
@@ -966,7 +977,16 @@ function on_message(evt) {
 function on_close() {
     "use strict";
     
-    warning("The connection to '" + client_data.server_url + "' is closed");
+    if (client_data.is_translating) {
+        danger("Falied to perform translation the server dropped off!", true);
+        //Set the translating flag back to false
+        client_data.is_translating = false;
+        //Re-initialize the progress bars
+        initialize_progress_bars();
+    } else {
+        warning("The connection to '" + client_data.server_url + "' is closed");
+    }
+    
     update_conn_status(window.WebSocket.CLOSED);
 
     window.console.log("Re-set the counter for the number of running requests and responses");

@@ -39,8 +39,13 @@ namespace uva {
                  * @return the reference to the same output stream send back for chaining
                  */
                 ostream & operator<<(ostream & stream, const balancer_job & job) {
-                    //ToDo: Implement
-                    return stream;
+                    return stream << "{session_id: " << to_string(job.m_session_id)
+                            << ", job_id: " << to_string(job.m_job_id)
+                            << ", bal_job_id: " << to_string(job.m_bal_job_id)
+                            << ", phase: " << to_string(job.m_phase)
+                            << ", state: " << to_string(job.m_state)
+                            << ", adapter_uid: " << to_string(job.m_adapter_uid)
+                            << ", err_msg: \'" << job.m_err_msg << "\'}";
                 }
 
             }
