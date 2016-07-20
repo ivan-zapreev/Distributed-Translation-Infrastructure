@@ -387,9 +387,6 @@ namespace uva {
                      * This method is not synchronized. It must be called from a thread safe context.
                      */
                     inline void send_request() {
-                        //Register the job by the given job id as awaiting response
-                        m_register_wait_func(this);
-
                         switch (m_state) {
                             case state::ACTIVE_STATE:
                             {
@@ -407,6 +404,8 @@ namespace uva {
                                         adapter->send(m_trans_req->get_message());
                                         //The job has been sent, change the phase
                                         m_phase = phase::RESPONSE_PHASE;
+                                        //Register the job by the given job id as awaiting response
+                                        m_register_wait_func(this);
                                     } catch (std::exception & ex) {
                                         //If the sending is failed, register an error response
                                         report_communication_error(state::FAILED_STATE, ex.what());
