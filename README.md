@@ -5,7 +5,7 @@
 **Project pages:** [Git-Hub-Project](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT)
 
 ##Introduction
-This fork from the Back Off Language Model(s) for SMT project is aimed at creating an entire phrase-based statistical machine translation system. The delivered software follows a client/server architecture based on Web Sockets for C++ and consists of the three main applications::
+This fork from the Back Off Language Model(s) for SMT project is aimed at creating an entire phrase-based statistical machine translation infrastructure. The delivered software follows a client/server architecture based on WebSockets for C++ and consists of the following applications:
 
 + **bpbd-client** - a thin client to send the translation job requests to the translation server and obtain results
 + **bpbd-server** - the translation server consisting of the following main components:
@@ -13,7 +13,10 @@ This fork from the Back Off Language Model(s) for SMT project is aimed at creati
     - *LM* - the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities
     - *TM* - the translation model implementation required for providing source to target language phrase translation and the probabilities thereof
     - *RM* - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof
++ **bpbd-balancer** - the load balancer that has the same WebSockets interface as **bpbd-server** and is supposed to distribute load balance berween multiple translation server instances.
 + **lm-query** - a stand-alone language model query tool that allows to perform language model queries and estimate the joint phrase probabilities
+
+###Introduction to phrase-based SMT
 
 To keep a clear view of the used terminology further, we provide some details on the topic of phrase-based SMT, and to illustrate it, the following picture.
 
@@ -30,6 +33,8 @@ Note that, the language model is typically learned from a different corpus in a 
 With these three models at hand one can perform decoding, which is a synonym to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reordering of the source language phrases within one sentence. The purpose of decoding, as indicated by the maximization procedure at the bottom of the figure above, is to find a translation with the largest possible probability.
 
 In order to obtain the best performance of the translation system one can employ Discriminative Training. The latter uses generated word lattice to optimize translation performance by reducing some measure of translation error. This is done by tuning the translation parameters such as feature lambda values of the model feature weights. Our software allows for word lattice generation, as mentioned in sections [Building the project](#building-the-project) and [Using software](#using-software).
+
+###Document structure
  
 The rest of the document is organized as follows:
 
@@ -52,18 +57,21 @@ The rest of the document is organized as follows:
 This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is as follows:
 
 * **`[Project-Folder]`**/
-    * **doc/** - contains the project-related documents including the Doxygen-generated code documentation and images
-    * **ext/** - stores the external header only libraries used in the project
-    * **inc/** - stores the C++ header files of the implementation
-    * **src/** - stores the C++ source files of the implementation
-    * **script/** - stores the various scripts, some of which can only be used in certain environments
-    * **nbproject/** - stores the Netbeans project data, such as makefiles
-    * **data/** - stores the test-related data such as test models and query input files, as well as some experimental results
-    * default.cfg - an example server configuration file
-    * LICENSE - the code license (GPL 2.0)
-    * CMakeLists.txt - the cmake build script for generating the project's make files
-    * README.md - this document
-    * Doxyfile - the Doxygen configuration file
+    * **`doc/`** - project-related documentation
+    * **`ext/`** - external libraries used in the project
+    * **`inc/`** - C++ header files
+    * **`src/`** - C++ source files
+    * **`script/`** - stores the various scripts
+    * **`script/web/v1.0/`** - first version of the Web Client
+    * **`script/web/v2.0/`** - second version of the Web Client
+    * **`nbproject/`** - Netbeans project data
+    * **`data/`** - stores the tests-related data
+    * `server.cfg` - example server configuration file
+    * `balancer.cfg` - example load balancer configuration file
+    * `LICENSE` - code license (GPL 2.0)
+    * `CMakeLists.txt` - cmake build script
+    * `README.md` - this document
+    * `Doxyfile` - Doxygen configuration file
 
 ##Supported platforms
 This project supports two major platforms: Linux and Mac Os X. It has been successfully build and tested on:
@@ -75,7 +83,7 @@ This project supports two major platforms: Linux and Mac Os X. It has been succe
 **Notes:**
 
 1. There was only a limited testing performed on 32-bit systems.
-2. The project must be possible to build on Windows platform under [Cygwin](https://www.cygwin.com/).
+2. The project is not yet possible to build on Windows platform even under [Cygwin](https://www.cygwin.com/).
 
 ##Building the project
 Building this project requires **gcc** version >= *4.9.1* and **cmake** version >= 2.8.12.2.
@@ -101,7 +109,7 @@ The binaries will be generated and placed into *./build/* folder. In order to cl
 ###Project compile-time parameters
 For the sake of performance optimizations, the project has a number of compile-time parameters that are to be set before the project is build and can not be modified in the run time. Let us consider the most important of them and indicate where all of them are to be found.
 
-**Tuning mode:** The software can be compiled in the tuning mode, which supports the word lattice generation for the performance tuning of the translation system. The performance is measured in terms of the translation quality measure such as BLEU. When the software is compiled in the tuning mode, it is a number of times slower than in the regular, i.e. production, mode. Enabling of the tuning mode can be done by setting the value of the `IS_SERVER_TUNING_MODE` macro, in the `./inc/server/server_configs.hpp` file, to `true` and then re-compiling the software. The tuning mode only has impact on the **bpbd-server** executable. The lattice dumping is then not immediately enabled and configured. This is to be done via the server's [Configuration file](#configuration-file). For more details on word lattice see section [Word lattice generation](#word-lattice-generation).
+**Tuning mode:** The software can be compiled in the tuning mode, which supports the word lattice generation for the performance tuning of the translation system. The performance is measured in terms of the translation quality measure such as BLEU. When the software is compiled in the tuning mode, it is a number of times slower than in the regular, i.e. production, mode. Enabling of the tuning mode can be done by setting the value of the `IS_SERVER_TUNING_MODE` macro, in the `./inc/server/server_configs.hpp` file, to `true` and then re-compiling the software. The tuning mode only has impact on the **bpbd-server** executable. The lattice dumping is then not immediately enabled and configured. This is to be done via the server's [Configuration file](#server-config-file). For more details on word lattice see section [Word lattice generation](#word-lattice-generation).
 
 **Logging level:** Logging is important when debugging software or providing an additional user information during the program's run time. Yet additional output actions come at a price and can negatively influence the program's performance. This is why it is important to be able to disable certain logging levels within the program not only during its run time but also at compile time. The possible range of project's logging levels, listed incrementally, is: ERROR, WARNING, USAGE, RESULT, INFO, INFO1, INFO2, INFO3, DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4. One can limit the logging level range available at run time by setting the `LOGER_M_GRAM_LEVEL_MAX` constant value in the `./inc/common/utils/logging/logger.hpp` header file. The default value is INFO3.
 
@@ -154,19 +162,19 @@ Note that not all of the combinations of the `lm_word_index` and `lm_model_type`
 **TM configs:** The Translation-model-specific parameters are located in `./inc/server/tm/tm_configs.hpp`:
 
 * `tm_model_type` - currently there is just one model type available: `tm_basic_model`
-* `tm_model_reader` - the same as `lm_model_reader` for _"LM configs"_, see above
+* `tm_model_reader` - the same as `lm_model_reader` for _"LM configs"_
 * `tm_builder_type` - currently there is just one builder type available: `tm_basic_builder<tm_model_reader>`
 
 **RM configs:** The Reordering-model-specific parameters are located in `./inc/server/rm/rm_configs.hpp`:
 
 * `rm_model_type` - currently there is just one model type available: `rm_basic_model`
-* `rm_model_reader` - the same as `lm_model_reader` for _"LM configs"_, see above
+* `rm_model_reader` - the same as `lm_model_reader` for _"LM configs"_
 * `rm_builder_type` - currently there is just one builder type available: `rm_basic_builder<rm_model_reader>`
 
 ##Using software
-This section briefly covers how the provided software can be used for performing text translations. We begin with the **bpbd-server** and the **bpbd-client** then briefly talk about the **lm-query**. For information on the LM, TM and RM model file formats and others see section [Input file formats](#input-file-formats)
+This section briefly covers how the provided software can be used for performing text translations. We begin with the **bpbd-server** and the **bpbd-balancer**. Next, we talk about the client applications **bpbd-client** and Web UI. Finally, we briefly talk about the **lm-query**. For information on the LM, TM and RM model file formats and others see section [Input file formats](#input-file-formats)
 
-###Translation server: _bpbd-server_ 
+###Translation server: _bpbd-server_
 The translation server is used for two things:
 _(i)_ to load language, translation and reordering models (for a given source/target language pair); 
 _(ii)_ to process the translation requests coming from the translation client.
@@ -185,9 +193,9 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    bpbd-server --help
 ```
-As one can see the only required command-line parameter of the translation server is a configuration file. The latter shall contain the necessary information for loading the models, and running the server. The configuration file content is covered in section [Configuration file](#configuration-file) below. Once the translation server is started there is still a way to change some of its run-time parameters. The latter can be done with a server console explained in the [Server console](#server-console) section below. In addition, for information on the LM, TM and RM model file formats see the [Input file formats](#input-file-formats)
+As one can see the only required command-line parameter of the translation server is a configuration file. The latter shall contain the necessary information for loading the models, and running the server. The configuration file content is covered in section [Configuration file](#server-config-file) below. Once the translation server is started there is still a way to change some of its run-time parameters. The latter can be done with a server console explained in the [Server console](#server-console) section below. In addition, for information on the LM, TM and RM model file formats see the [Input file formats](#input-file-formats)
 
-####Configuration file####
+####Server config file####
 In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the web socket port through which the server will accept requests. An example configuration file can be found in: `[Project-Folder]/default.cfg` and in `[Project-Folder]/data`. The content of this file is self explanatory and contains a significant amount of comments.
 
 When run with a properly formed configuration file, **bpbd-server** gives the following output. Note the `-d info1` option ensuring additional information output during loading the models.
@@ -258,7 +266,7 @@ There is a few important things to note about the configuration file at the mome
 
 Note that, if there number of lambda weights specified in the configuration file is less than the actual number of features in the corresponding model then an error is reported.
 
-####Server console####
+####Server console
 Once the server is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the server. The list of available server console commands is given in the listing below:
 
 ```
@@ -282,10 +290,9 @@ USAGE: 	'set wp <float> & <enter>'  - set word penalty.
 ```
 Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, **bpbd-server** has just one copy of the server run time parameters used from all the translation processes. So in case of active translation process, changing these parameters can cause disruptions thereof starting from an inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not experience any disruptions.
 
+####Word lattice generation
 
-####Word lattice generation####
-
-If the server is compiled in the [Tuning mode](#project-compile-time-parameters), then the word lattice generation can be enabled through the options in the server's [Configuration file](#configuration-file). The options influencing the lattice generation are as follows:
+If the server is compiled in the [Tuning mode](#project-compile-time-parameters), then the word lattice generation can be enabled through the options in the server's [Configuration file](#server-config-file). The options influencing the lattice generation are as follows:
 
 ```
 [Decoding Options]
@@ -336,6 +343,30 @@ Usage: ./combine-lattices.sh <lattice-dir> <result-file-name> <sent-lattice-ext>
     <sent-lattice-ext> - the lattice file extension for a sentence, default is 'lattice'
     <set-scores-ext> - the feature scores file extension for a sentence, default is 'feature_scores'
 ```
+
+###Load balancer: _bpbd-balancer_
+The load balancer server is used for one thing:
+_(i)_ Distribute load between multiple translation servers;
+The use of this executable is straightforward. When started from a command line without any parameters, **bpbd-balancer** reports on the available command-line options:
+
+```
+$ bpbd-balancer
+<...>
+PARSE ERROR:  
+             Required argument missing: config
+
+Brief USAGE: 
+   bpbd-balancer  [-d <error|warn|usage|result|info|info1|info2|info3>] -c
+                  <balancer configuration file> [--] [--version] [-h]
+
+For complete USAGE and HELP type: 
+   bpbd-balancer --help
+```
+As one can see the only required command-line parameter of the translation server is a configuration file. The latter shall contain the necessary information for running the balancer server and connecting to translation servers. The configuration file content is covered in section [Configuration file](#balancer-config-file) below. Once the load balancer is started there is still a way to change some of its run-time parameters. The latter can be done with a balancer console explained in the [Server console](#balancer-console) section below. 
+
+####Balancer config file
+
+####Balancer console
 
 ###Translation client: _bpbd-client_
 The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line without any parameters, **bpbd-client** reports on the available command-line options:

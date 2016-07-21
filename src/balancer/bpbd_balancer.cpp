@@ -51,7 +51,7 @@ using namespace uva::smt::bpbd::common;
  * This functions does nothing more but printing the program header information
  */
 static void print_info() {
-    print_info("The translation servers balancer application");
+    print_info(" The load balancer application    ");
 }
 
 //The pointer to the command line parameters parser
