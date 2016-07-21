@@ -196,7 +196,7 @@ For complete USAGE and HELP type:
 As one can see the only required command-line parameter of the translation server is a configuration file. The latter shall contain the necessary information for loading the models, and running the server. The configuration file content is covered in section [Configuration file](#server-config-file) below. Once the translation server is started there is still a way to change some of its run-time parameters. The latter can be done with a server console explained in the [Server console](#server-console) section below. In addition, for information on the LM, TM and RM model file formats see the [Input file formats](#input-file-formats)
 
 ####Server config file####
-In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the web socket port through which the server will accept requests. An example configuration file can be found in: `[Project-Folder]/default.cfg` and in `[Project-Folder]/data`. The content of this file is self explanatory and contains a significant amount of comments.
+In order to start the server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the translation server. Among other things, this config file specifies the location of the language, translation and reordering models, the number of translation threads, and the web socket port through which the server will accept requests. An example configuration file can be found in: `[Project-Folder]/server.cfg` and in `[Project-Folder]/data`. The content of this file is self explanatory and contains a significant amount of comments.
 
 When run with a properly formed configuration file, **bpbd-server** gives the following output. Note the `-d info1` option ensuring additional information output during loading the models.
 
@@ -365,6 +365,33 @@ For complete USAGE and HELP type:
 As one can see the only required command-line parameter of the translation server is a configuration file. The latter shall contain the necessary information for running the balancer server and connecting to translation servers. The configuration file content is covered in section [Configuration file](#balancer-config-file) below. Once the load balancer is started there is still a way to change some of its run-time parameters. The latter can be done with a balancer console explained in the [Server console](#balancer-console) section below. 
 
 ####Balancer config file
+In order to start the load balancer one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the balancer server. Among other things, this config file specifies the location of the translation servers to connect to. An example configuration file is: `[Project-Folder]/balancer.cfg`. The content of this file is self explanatory and contains a significant amount of comments.
+
+When run with a properly formed configuration file, **bpbd-balancer** gives the following output. Note the `-d info1` option ensuring additional information output during starting up and connecting to translation servers.
+
+```
+$ bpbd-balancer -d info3 -c ../balancer.cfg 
+<...> 
+USAGE: The requested debug level is: 'INFO3', the maximum build level is 'INFO3' the set level is 'INFO3'
+USAGE: Loading the server configuration option from: ../balancer.cfg
+INFO: The configuration file has been parsed!
+INFO: Balancer parameters: [ server_port = 9000, num_req_threads = 10, num_resp_threads = 10, translation servers: [{SERVER_NAME_01, ws://localhost:9001, load weight=1, {SERVER_NAME_02, ws://localhost:9002, load weight=2, {SERVER_NAME_03, ws://localhost:9003, load weight=1, {SERVER_NAME_04, ws://localhost:9004, load weight=1, ] ]
+INFO3: Sanity checks are: OFF !
+INFO3: Configuring the translation servers' manager
+INFO3: Configuring 'SERVER_NAME_01' adapter...
+INFO2: 'SERVER_NAME_01' adapter is configured
+INFO3: Configuring 'SERVER_NAME_02' adapter...
+INFO2: 'SERVER_NAME_02' adapter is configured
+INFO3: Configuring 'SERVER_NAME_03' adapter...
+INFO2: 'SERVER_NAME_03' adapter is configured
+INFO3: Configuring 'SERVER_NAME_04' adapter...
+INFO2: 'SERVER_NAME_04' adapter is configured
+INFO2: The translation servers are configured
+USAGE: Running the balancer server ...
+USAGE: The balancer is started!
+USAGE: --------------------------------------------------------
+<...> 
+```
 
 ####Balancer console
 
