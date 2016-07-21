@@ -128,11 +128,11 @@ namespace uva {
                         //Declare the job id for the case of needed error reporting
                         job_id_type job_id_val = job_id::UNDEFINED_JOB_ID;
                         try {
-                            //Check the source and target languages
-                            check_source_target_languages(msg->get_source_lang(), msg->get_target_lang());
-
                             //Store the job id in case of an error
                             job_id_val = msg->get_job_id();
+
+                            //Check the source and target languages
+                            check_source_target_languages(msg->get_source_lang(), msg->get_target_lang());
 
                             //Schedule a translation job
                             m_manager.translate(hdl, *msg);

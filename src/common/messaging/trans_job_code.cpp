@@ -44,9 +44,9 @@ namespace uva {
                         RESULT_UNDEFINED_STR,
                         RESULT_UNKNOWN_STR,
                         RESULT_OK_STR,
-                        RESULT_ERROR_STR,
+                        RESULT_PARTIAL_STR,
                         RESULT_CANCELED_STR,
-                        RESULT_PARTIAL_STR
+                        RESULT_ERROR_STR
                     };
 
                     const char * const status_code::str() const {

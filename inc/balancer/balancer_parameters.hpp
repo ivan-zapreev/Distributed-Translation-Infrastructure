@@ -182,7 +182,7 @@ namespace uva {
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const trans_server_params & params) {
                     return stream << "{" << params.m_name << ", ws://" << params.m_address << ":"
-                            << params.m_port << ", load weight=" << params.m_load_weight << "";
+                            << params.m_port << ", load weight=" << params.m_load_weight << "}";
                 }
 
                 /**
@@ -193,7 +193,7 @@ namespace uva {
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const balancer_parameters & params) {
                     //Dump the main server config
-                    stream << "Balancer parameters: [ server_port = " << params.m_server_port
+                    stream << "Balancer parameters: {server_port = " << params.m_server_port
                             << ", num_req_threads = " << params.m_num_req_threads
                             << ", num_resp_threads = " << params.m_num_resp_threads << ", translation servers: [";
                     //Dump the translation server's configs
@@ -201,7 +201,7 @@ namespace uva {
                         stream << iter->second << ", ";
                     }
                     //Finish the dump
-                    return stream << "] ]";
+                    return stream << "]}";
                 }
             }
         }

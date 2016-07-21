@@ -223,26 +223,39 @@ namespace uva {
                     inline void store_targety_data(uint32_t fis, trans_job_resp_in * resp, ofstream & trans_file, ofstream & info_file) {
                         //If the result is ok or partial then just put the text into the file
                         const trans_sent_data_in * sent_data = resp->next_send_data();
-                        while (sent_data != NULL) {
-                            //Dump the translated text
-                            trans_file << sent_data->get_trans_text() << std::endl;
-                            //Get the sentence status code
-                            const status_code code = sent_data->get_status_code();
-                            //Dump the status code and message and the translation info such as stack loads
-                            info_file << "--" << std::endl << "Sentence: " << to_string(fis) << " translation status: '"
-                                    << code << "', message: " << sent_data->get_status_msg() << std::endl;
-                            if (sent_data->has_stack_load()) {
-                                info_file << "Multi-stack loads: [ ";
-                                const Value & loads = sent_data->get_stack_load();
-                                for (auto iter = loads.Begin(); iter != loads.End(); ++iter) {
-                                    info_file << iter->GetUint() << " ";
+
+                        //Check if there is sentence data present
+                        if (sent_data != NULL) {
+                            while (sent_data != NULL) {
+                                //Dump the translated text
+                                trans_file << sent_data->get_trans_text() << std::endl;
+                                //Get the sentence status code
+                                const status_code code = sent_data->get_status_code();
+                                //Dump the status code and message and the translation info such as stack loads
+                                info_file << "--" << std::endl << "Sentence: " << to_string(fis)
+                                        << " translation status: '" << code;
+                                //Log the message only if it is present.
+                                if (!sent_data->get_status_msg().empty()) {
+                                    info_file << "', message: " << sent_data->get_status_msg();
                                 }
-                                info_file << "]" << std::endl;
+                                info_file << std::endl;
+                                //Log the stack loads if present
+                                if (sent_data->has_stack_load()) {
+                                    info_file << "Multi-stack loads: [ ";
+                                    const Value & loads = sent_data->get_stack_load();
+                                    for (auto iter = loads.Begin(); iter != loads.End(); ++iter) {
+                                        info_file << iter->GetUint() << "% ";
+                                    }
+                                    info_file << "]" << std::endl;
+                                }
+                                //Move to the next sentence if present
+                                sent_data = resp->next_send_data();
+                                //Increment the sentence number
+                                ++fis;
                             }
-                            //Move to the next sentence if present
-                            sent_data = resp->next_send_data();
-                            //Increment the sentence number
-                            ++fis;
+                        } else {
+                            //There is no sentence data present!
+                            trans_file << "ERROR: Missing target sentences for job: " << resp->get_job_id() << std::endl;
                         }
                     }
 
@@ -267,10 +280,8 @@ namespace uva {
                             info_file << "Server response status: '" << code << "', "
                                     << "message: " << resp->get_status_msg() << std::endl;
 
-                            //Dump the sentences data in case the code is OK or PARTIAL
-                            if ((code == status_code::RESULT_OK) || (code == status_code::RESULT_PARTIAL)) {
-                                store_targety_data(fis, resp, trans_file, info_file);
-                            }
+                            //Dump the sentences data
+                            store_targety_data(fis, resp, trans_file, info_file);
                         } catch (std::exception & e) {
                             LOG_ERROR << "Could not dump data for sentences [" << to_string(fis)
                                     << ":" << to_string(lis) << "]: " << e.what() << END_LOG;

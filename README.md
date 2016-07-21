@@ -13,7 +13,7 @@ This fork from the Back Off Language Model(s) for SMT project is aimed at creati
     - *LM* - the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities
     - *TM* - the translation model implementation required for providing source to target language phrase translation and the probabilities thereof
     - *RM* - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof
-+ **bpbd-balancer** - the load balancer that has the same WebSockets interface as **bpbd-server** and is supposed to distribute load balance berween multiple translation server instances.
++ **bpbd-balancer** - the load balancer that has the same WebSockets interface as **bpbd-server** and is supposed to distribute load balance between multiple translation server instances.
 + **lm-query** - a stand-alone language model query tool that allows to perform language model queries and estimate the joint phrase probabilities
 
 ###Introduction to phrase-based SMT
@@ -274,18 +274,19 @@ $ bpbd-server -c ../data/default-1-10.000.cfg -d info2
 <...>
 USAGE: The server is started!
 USAGE: --------------------------------------------------------
-USAGE: Available server commands: 
+USAGE: General console commands: 
 USAGE: 	'q & <enter>'  - to exit.
 USAGE: 	'h & <enter>'  - print HELP info.
 USAGE: 	'r & <enter>'  - run-time statistics.
-USAGE: 	'p & <enter>'  - print server parameters.
-USAGE: 	'set ll <level> & <enter>'  - set log level.
-USAGE: 	'set nt  <positive integer> & <enter>'  - set the number of worker threads.
-USAGE: 	'set d <integer> & <enter>'  - set the distortion limit.
-USAGE: 	'set pt <unsigned float> & <enter>'  - set pruning threshold.
-USAGE: 	'set sc <integer> & <enter>'  - set stack capacity.
-USAGE: 	'set ldp <float> & <enter>'  - set linear distortion penalty.
-USAGE: 	'set wp <float> & <enter>'  - set word penalty.
+USAGE: 	'p & <enter>'  - print program parameters.
+USAGE: 	'set ll  <level> & <enter>'  - set log level.
+USAGE: Specific console commands: 
+USAGE: 	'set nt  <positive integer> & <enter>'  - set the number of translating threads.
+USAGE: 	'set d  <integer> & <enter>'  - set the distortion limit.
+USAGE: 	'set pt  <unsigned float> & <enter>'  - set pruning threshold.
+USAGE: 	'set sc  <integer> & <enter>'  - set stack capacity.
+USAGE: 	'set ldp  <float> & <enter>'  - set linear distortion penalty.
+USAGE: 	'set wp  <float> & <enter>'  - set word penalty.
 >> 
 ```
 Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, **bpbd-server** has just one copy of the server run time parameters used from all the translation processes. So in case of active translation process, changing these parameters can cause disruptions thereof starting from an inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not experience any disruptions.
@@ -367,7 +368,7 @@ As one can see the only required command-line parameter of the translation serve
 ####Balancer config file
 In order to start the load balancer one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the balancer server. Among other things, this config file specifies the location of the translation servers to connect to. An example configuration file is: `[Project-Folder]/balancer.cfg`. The content of this file is self explanatory and contains a significant amount of comments.
 
-When run with a properly formed configuration file, **bpbd-balancer** gives the following output. Note the `-d info1` option ensuring additional information output during starting up and connecting to translation servers.
+When run with a properly formed configuration file, **bpbd-balancer** gives the following output. Note the `-d info3` option ensuring additional information output during starting up and connecting to translation servers.
 
 ```
 $ bpbd-balancer -d info3 -c ../balancer.cfg 
@@ -375,7 +376,10 @@ $ bpbd-balancer -d info3 -c ../balancer.cfg
 USAGE: The requested debug level is: 'INFO3', the maximum build level is 'INFO3' the set level is 'INFO3'
 USAGE: Loading the server configuration option from: ../balancer.cfg
 INFO: The configuration file has been parsed!
-INFO: Balancer parameters: [ server_port = 9000, num_req_threads = 10, num_resp_threads = 10, translation servers: [{SERVER_NAME_01, ws://localhost:9001, load weight=1, {SERVER_NAME_02, ws://localhost:9002, load weight=2, {SERVER_NAME_03, ws://localhost:9003, load weight=1, {SERVER_NAME_04, ws://localhost:9004, load weight=1, ] ]
+INFO: Balancer parameters: {server_port = 9000, num_req_threads = 10, num_resp_threads = 10,
+translation servers:
+[{SERVER_NAME_01, ws://localhost:9001, load weight=1}, {SERVER_NAME_02, ws://localhost:9002, load weight=2},
+{SERVER_NAME_03, ws://localhost:9003, load weight=1}, {SERVER_NAME_04, ws://localhost:9004, load weight=1}, ]}
 INFO3: Sanity checks are: OFF !
 INFO3: Configuring the translation servers' manager
 INFO3: Configuring 'SERVER_NAME_01' adapter...
@@ -392,8 +396,27 @@ USAGE: The balancer is started!
 USAGE: --------------------------------------------------------
 <...> 
 ```
+Note that for less output one can simply run `bpbd-balancer -c ../balancer.cfg`.
 
 ####Balancer console
+Once the balancer is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the load balancer. The list of available console commands is given in the listing below:
+
+```
+$ bpbd-balancer -d info3 -c ../balancer.cfg 
+<...>
+USAGE: The balancer is started!
+USAGE: --------------------------------------------------------
+USAGE: General console commands: 
+USAGE: 	'q & <enter>'  - to exit.
+USAGE: 	'h & <enter>'  - print HELP info.
+USAGE: 	'r & <enter>'  - run-time statistics.
+USAGE: 	'p & <enter>'  - print program parameters.
+USAGE: 	'set ll  <level> & <enter>'  - set log level.
+USAGE: Specific console commands: 
+USAGE: 	'set int  <positive integer> & <enter>'  - set the number of incoming pool threads.
+USAGE: 	'set ont  <positive integer> & <enter>'  - set the number of outgoing pool threads.
+>> 
+```
 
 ###Translation client: _bpbd-client_
 The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line without any parameters, **bpbd-client** reports on the available command-line options:
@@ -414,19 +437,23 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    bpbd-client --help
 ```
-One of the main required parameters of the translation client is the input file. The latter should contain text in the source language to be translated into the target one. The input file is expected to have one source language sentence per line. The client application does have a basic algorithm for tokenising sentences and putting them into the lower case, i.e. preparing each individual sentence for translation but this algorithm is pretty rudimental. Therefore, it is suggested that the input file should not only contain one sentence per line but each sentence must be provided in a tokenized (space-separated), lower-case format.
+One of the main required parameters of the translation client is the input file. The latter should contain text in the source language to be translated into the target one. The input file is expected to have one source language sentence per line. The client application does have a basic algorithm for tokenising sentences and putting them into the lower case, i.e. preparing each individual sentence for translation but this algorithm is pretty rudimental and will only work for Latin alphabet based languages. Therefore, it is suggested that the input file should not only contain one sentence per line but each sentence must be provided in a tokenized (space-separated), lower-case format.
 
-Once started, the translation client makes a web socket connection to the translation server, reads text from the input file, splits it into a number of translation job requests (which are sent to the translation server) and waits for the reply. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. For more info run: `bpbd-client --help`.
+Once started, the translation client makes a web socket connection to the translation server, reads text from the input file, splits it into a number of translation job requests (which are sent to the translation server) and waits for the reply. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. If not chosen then the splitting is done automatically by the client program. For more info run: `bpbd-client --help`.
 
-Once the translations are performed, and the translation job responses are received, the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. Each output line/sentence also gets prefixed with a translation status having a form: `<status>`. If a translation task was canceled, or an error has occurred then it is indicated by the status and the information about that is also placed in the output file on the corresponding sentence line.
+Once the translations are performed, and the translation job responses are received, the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. The information on the translation process is placed into the logging file that has the same name as the output file, but is suffixed with `.log`. The latter file contains information such as if a job/task was canceled, or an error occurred.
 
-For the sake of better tuning the translation server's parameters, we introduce a special client-side option: `-c`. This optional parameter allows to request supplementary translation-process information per sentence. Currently, we only provide multi-stack level's load factors. For example, when translating from German into English the next sentence: `" wer ist voldemort ? "` with the `-c` option, we get an output:
+For the sake of better tuning the translation server's parameters, we introduce a special client-side option: `-c`. This optional parameter allows to request supplementary translation-process information per sentence. This information is also placed into the `.log` file. Currently, we only provide multi-stack level's load factors. For example, when translating from German into English the next sentence: `" wer ist voldemort ? "` with the `-c` option, we get an output:
 
 ```
-<finished>: "Who is voldemort ?"
-<info>: stack[ 1% 5% 25% 45% 44% 28% 6% 1% ]
+----------------------------------------------------
+Job id: 1, sentences [1:1], client status: 'replied'
+Server response status: 'good', message: The text was fully translated!
+--
+Sentence: 1 translation status: 'good'
+Multi-stack loads: [ 1% 5% 25% 45% 44% 28% 6% 1% ]
 ```
-Where the second line, starting with `<info>`, contains the stack level's load information. Note that, the number of tokens in the German source sentence is *6*. Yet, the number of stack levels is *8*. The latter is due to that the first and the last stack levels corresponds to the sentence's, implicitly introduced, begin and end tags: `<s>` and `</s>`. The latter are added to the sentence during the translation process. Clearly, it is important to tune the server's options in such a way that all the stack levels, except for the first and the last one, are `100%` loaded. If so, then we know that we ensure an exhaustive search through the translation hypothesis, for the given system parameters, thus ensuring for the best translation result.
+Where the line starting with `Multi-stack loads`, contains the stack level's load information, in percent relative to the stack level capacity. Note that, the number of tokens in the German source sentence is *6*. Yet, the number of stack levels is *8*. The latter is due to that the first and the last stack levels corresponds to the sentence's, implicitly introduced, begin and end tags: `<s>` and `</s>`. The latter are added to the sentence during the translation process. Clearly, it is important to tune the server's options in such a way that all the stack levels, except for the first and the last one, are `100%` loaded. If so, then we know that we ensure an exhaustive search through the translation hypothesis, for the given system parameters, thus ensuring for the best translation result.
 
 Remember that, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the **UTF8** encoding.
 
