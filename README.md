@@ -569,7 +569,9 @@ At present this project uses the following external/third-party header-only libr
 |WebSocket++|_Is an open source, header only C++ library implementing RFC6455 (The WebSocket Protocol)._|[link](http://www.zaphoyd.com/websocketpp)|0.6.0|[BSD](http://www.linfo.org/bsdlicense.html)|
 |Asio C++ Library|_A cross-platform C++ library for network and low-level I/O programming_|[link](http://think-async.com/)|1.10.6|[Boost](http://www.boost.org/users/license.html)|
 |Tclap|_A small and flexible library that provides a simple interface for defining and accessing command line arguments_|[link](http://tclap.sourceforge.net/)|1.2.1|[MIT](https://opensource.org/licenses/MIT)|
-|JSON for Modern C++|_An open source, header only C++ library implementing JSON for C++_|[link](https://github.com/nlohmann/json)|1.1.0|[MIT](https://opensource.org/licenses/MIT)|
+|Rapid JSON|_An open source, header only C++ library implementing JSON for C++_|[link](https://github.com/miloyip/rapidjson)|1.0.2|[MIT](https://opensource.org/licenses/MIT)|
+|jQuery|_a fast, small, and feature-rich JavaScript library_|[link](https://jquery.com/)|2.2.4|[MIT](https://opensource.org/licenses/MIT)|
+|Bootstrap|_HTML, CSS, and JS framework for developing responsive, mobile first Web UIs_|[link](http://getbootstrap.com/)|3.3.6|[MIT](https://opensource.org/licenses/MIT)|
 
 ##Performance evaluation
 In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix Tests](#appendix-tests)
