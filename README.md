@@ -456,8 +456,16 @@ Where the line starting with `Multi-stack loads`, contains the stack level's loa
 
 Remember that, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the **UTF8** encoding.
 
-###Web UI Translation client: _script/web/translate.html_
-ToDo: Add text and images/screen shots
+###Web UI Translation client:
+The web client for the translation system is just a web application that uses the WebSockets API of **HTML5** to sent JSON requests to the translation server or communicate with it through a load balancer. The web client can be activated by opening `script/web/translate.html` in a web browser. At the moment the client was tested and proved to work in the following 64-bit browsers under **OS X EI Capitan**:
+
+* Opera 38.0.2220.41,
+* Safari 9.1.1 (11601.6.17)
+* Google Chrome 51.0.2704.103
+* Firefox 47.0.
+
+The web interface looks as follows:
+
 
 ###Language model query tool: _lm-query_
 The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line without any parameters, **lm-query** reports on the available command-line options:
@@ -575,7 +583,7 @@ At present this project uses the following external/third-party header-only libr
 |jQuery|_a fast, small, and feature-rich JavaScript library_|[link](https://jquery.com/)|2.2.4|[MIT](https://opensource.org/licenses/MIT)|
 |Bootstrap|_HTML, CSS, and JS framework for developing responsive, mobile first Web UIs_|[link](http://getbootstrap.com/)|3.3.6|[MIT](https://opensource.org/licenses/MIT)|
 |MD5|_RSA Data Security, Inc. MD5 Message-Digest Algorithm_|[link](http://pajhome.org.uk/crypt/md5/index.html)|1.0|[BSD](https://opensource.org/licenses/BSD-3-Clause)|
-|Download|_A liobrary allowing to trigger a file download from JavaScript_|[link](http://danml.com/download.html)|4.2|[CCA4.0](https://creativecommons.org/licenses/by/4.0/)|
+|Download|_A library allowing to trigger a file download from JavaScript_|[link](http://danml.com/download.html)|4.2|[CCA4.0](https://creativecommons.org/licenses/by/4.0/)|
 
 ##Performance evaluation
 In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix Tests](#appendix-tests)
@@ -745,7 +753,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. 
 * **11.03.2016** - Updated to reflect the latest project status. 
 * **13.06.2016** - Added information on the `-c` option of the client. Introduced the server tuning mode for lattice generation. Updated description of model features and lambda's thereof. Prepared for the release 1.1.
-* **22.07.2016** - Added information about the Web UI client and the Load Balancer. Updated the document with small changes in the existed text.
+* **22.07.2016** - Added information about the Web UI client and the Load Balancer. Updated the document with small changes in the existed text.
 
 ##Appendix Tests
 
