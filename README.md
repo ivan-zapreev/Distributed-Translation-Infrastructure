@@ -467,8 +467,10 @@ The web client for the translation system is just a web application that uses th
 The web interface looks as follows:
 ![Web Client Translation System Image](./doc/images/translator.png "Web Client Translation System")
 
-As one can see its interface is simple and intuitive.
-ToDo: Explain the interface and its function.
+As one can see its interface is simple and intuitive, its main purpose to allow to connect to a translation sever/balancer and to perform translations. Source text can be input into the text area on the left by hand or loaded from a file. The translated (target) text can be found in the text area on the right. It is annotated, per sentence, with a pop-up information. The latter is visualized when a mouse pointer hovers over the sentence translation.
+
+The next image provides more information on the functionality of the interface:
+![Web Client Translation System Annotated Image](./doc/images/translator_annot.png "Web Client Translation System - Annotated")
 
 ###Language model query tool: _lm-query_
 The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line without any parameters, **lm-query** reports on the available command-line options:
