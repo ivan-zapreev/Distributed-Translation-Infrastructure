@@ -62,8 +62,7 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * **`inc/`** - C++ header files
     * **`src/`** - C++ source files
     * **`script/`** - stores the various scripts
-    * **`script/web/v1.0/`** - first version of the Web Client
-    * **`script/web/v2.0/`** - second version of the Web Client
+    * **`script/web/`** - Web client for translation system
     * **`nbproject/`** - Netbeans project data
     * **`data/`** - stores the tests-related data
     * `server.cfg` - example server configuration file
@@ -457,6 +456,9 @@ Where the line starting with `Multi-stack loads`, contains the stack level's loa
 
 Remember that, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the **UTF8** encoding.
 
+###Web UI Translation client: _script/web/translate.html_
+ToDo: Add text and images/screen shots
+
 ###Language model query tool: _lm-query_
 The language model query tool is used for querying stand alone language models to obtain the joint m-gram probabilities. When started from a command line without any parameters, **lm-query** reports on the available command-line options:
 
@@ -572,6 +574,8 @@ At present this project uses the following external/third-party header-only libr
 |Rapid JSON|_An open source, header only C++ library implementing JSON for C++_|[link](https://github.com/miloyip/rapidjson)|1.0.2|[MIT](https://opensource.org/licenses/MIT)|
 |jQuery|_a fast, small, and feature-rich JavaScript library_|[link](https://jquery.com/)|2.2.4|[MIT](https://opensource.org/licenses/MIT)|
 |Bootstrap|_HTML, CSS, and JS framework for developing responsive, mobile first Web UIs_|[link](http://getbootstrap.com/)|3.3.6|[MIT](https://opensource.org/licenses/MIT)|
+|MD5|_RSA Data Security, Inc. MD5 Message-Digest Algorithm_|[link](http://pajhome.org.uk/crypt/md5/index.html)|1.0|[BSD](https://opensource.org/licenses/BSD-3-Clause)|
+|Download|_A liobrary allowing to trigger a file download from JavaScript_|[link](http://danml.com/download.html)|4.2|[CCA4.0](https://creativecommons.org/licenses/by/4.0/)|
 
 ##Performance evaluation
 In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix Tests](#appendix-tests)
@@ -629,15 +633,18 @@ This design's main feature is that it is fully distributed, and consists of thre
 The communication between the layers here is suggested to be done using Web sockets as from industry it is known to be the fastest non-proprietary asynchronous communication protocol over TCP/IP. However, in case of significant network communication overhead the design allows for the system components to be run locally on the same physical computing unit or even to be build into a monolithic application for a complete avoidance of the socket communications. The latter is achieved by simply providing a local implementation of the needed system component. This approach is exactly an taken in the first version of the implemented software discussed in the next section.
 
 ###The current design
-Due to the limited time and as a proof of concept, the first version of the project follows the simplified version of the ultimate design given by the deployment diagram below.
+Below we will describe the configurations in which the translation system can be used at the moment.
+First we begin with the single translation server configuration and then we proceed to the configurations possible with the available load balancer application.
 
+####Single translation server
+Let us consider the most trivial configuration to run our software. This configuration consists of a single translation server and multiple clients, as given on the picture below. 
 ![The current deployment Image](./doc/images/design/deployment_first.png "The current deployment")
 
 As one can notice, in this figure the first layer is removed, i.e. there is no load-balancing entity. Also the Language, Translation, and Reordering models have local interface implementations only and are compiled together  with the decoder component to form a single application. Of course, one can easily extend this design towards the ultimate one by simply providing the remove implementations for the LM, TM and RM models using the existing interfaces and implemented LM, RM and TM libraries.
 
 Let us now briefly consider the two most complicated components of the software, the _Decoder_ and the _Language model_.
 
-####The decoder component
+#####The decoder component
 The class diagram of the decoder component is given below. The decoder has a multi-threaded implementation, where each translation job (_a number of sentences to translate_) gets split into a number of translations tasks (_one task is one sentence_). Every translation task is executed in a separate thread. The number of translation threads is configurable at any moment of time.
 
 ![The decoder Image](./doc/images/design/decoder_component.png "The decoder")
@@ -658,13 +665,16 @@ The _trans\_task_ is a simple wrapper around the sentence translation entity _se
 * Histogram pruning of hypothesis
 * Hypothesis recombination
 
-####The LM component
+#####The LM component
 
 Let us now consider the LM implementation class/package diagram on the figure below:
 
 ![The LM component Image](./doc/images/design/lm_component.png "LM component")
 
 The design of the Language model has not changed much since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we still refer to the [Implementation Details section](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details) of the README.md thereof. For the most recent information on the LM component design please read the project's [Code documentation](#code-documentation).
+
+####Multiple translation servers with load balancer(s)
+ToDo: Add text
 
 ##Software details
 In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.
@@ -735,6 +745,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **21.09.2015** - Updated with the latest developments preparing for the version 1, Owl release. 
 * **11.03.2016** - Updated to reflect the latest project status. 
 * **13.06.2016** - Added information on the `-c` option of the client. Introduced the server tuning mode for lattice generation. Updated description of model features and lambda's thereof. Prepared for the release 1.1.
+* **22.07.2016** - Added information about the Web UI client and the Load Balancer. Updated the document with small changes in the existed text.
 
 ##Appendix Tests
 
