@@ -639,13 +639,15 @@ Consider the deployment diagram below. It shows the ultimate design we are aimin
 
 ![The ultimate deployment Image](./doc/models/deployment/deployment_ideal.png "The ultimate deployment")
 
-This design's main feature is that it is fully distributed, and consists of three, vertical, layers.
+This design's main feature is that it is fully distributed, and consists of at least three, vertical, layers:
 
 1. _The first layer_ - (located on the left side), is the front desk-load balancing piece of software who's responsibility is receiving the translation job requests from one language to another and then forwarding them to the second layer of the design, performing load balancing.
 2. _The second layer_ - (located in the middle), is a number of decoding servers that execute translation jobs. These servers can run decoders performing one-to-one language translations, and there may be multiple instances thereof for the same or different models. To generalize, each decoder might be able to translate from a bunch of languages into a bunch of other languages and then the middle layer servers can run one or more multiple instances of similarly or differently configured decoders, each.
 3. _The third layer_ - (located on the right side), is the layer of various instances of the Language, Translation, and Reordering models. Once again, each server can can run multiple instances of the same or different models to distribute the workload. Any decoder is free to use any number of model instances running in the third layer.
 
-The communication between the layers here is suggested to be done using Web sockets as from industry it is known to be the fastest non-proprietary asynchronous communication protocol over TCP/IP. However, in case of significant network communication overhead the design allows for the system components to be run locally on the same physical computing unit or even to be build into a monolithic application for a complete avoidance of the socket communications. The latter is achieved by simply providing a local implementation of the needed system component. This approach is exactly an taken in the first version of the implemented software discussed in the next section.
+The communication between the layers here is suggested to be done using JSON over WebSockets as JSON  is a wel established industrial format and from practice WebSockets is the fastest non-proprietary asynchronous communication protocol over TCP/IP. However, in case of significant network communication overhead the design allows for the system components to be run locally on the same physical computing unit or even to be build into a monolithic application for a complete avoidance of the socket communications. The latter is achieved by simply providing a local implementation of the needed system component.
+
+Note that, the Load Balancer component has the same interface as the translation services behind it. Therefore, more complex deployment scenarious are possible. There latter are discussed in [Multiple translation servers with load balancers](#multiple_translation_servers_with_load_balancers).
 
 ###The current design
 Below we will describe the configurations in which the translation system can be used at the moment.
@@ -688,7 +690,7 @@ Let us now consider the LM implementation class/package diagram on the figure be
 
 The design of the Language model has not changed much since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we still refer to the [Implementation Details section](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details) of the README.md thereof. For the most recent information on the LM component design please read the project's [Code documentation](#code-documentation).
 
-####Multiple translation servers with load balancer(s)
+####Multiple translation servers with load balancers
 The Load Balancer (**bpbd-balancer**) has the same interface as the translation service (**bpbd-server**) so for the client (**bpbd-client** or **Web UI**) there is no difference with which of those to communicate. The Load Balancer serves two main purposes, it allows to:
 
 * Distribute load between several translation services for the same source-target languages
