@@ -564,16 +564,18 @@ Must have one _tabulation_ symbol after the `<probability>`, single space betwee
 ##Code documentation
 At present the documentation is done in the Java-Doc style that is successfully accepted by Doxygen with the Doxygen option *JAVADOC_AUTOBRIEF* set to *YES*. The generated documentation is located in two folders:
 
-* `[Project-Folder]/doc/html`
-    - Open the _index.html_ file located in this folder with your favorite web browser.
-* `[Project-Folder]/doc/latex`
-    - Open the _refman.pdf_ file located in this folder with your favorite pdf viewer.
+* `[Project-Folder]/doc/html.tar.gz`
+    - Open the _index.html_ file located in the extracted folder with your favorite web browser.
+* `[Project-Folder]/doc/latex.tar.gz`
+    - Open the _refman.pdf_ file located in the extracted folder with your favorite pdf viewer.
 
 The `[Project-Folder]/Doxyfile` can be used to re-generate the documentation at any given time, for more details see [Doxygen](www.doxygen.org/).
 
 * To re-build the Latex documentation run the following commands from the Linux console:
-    + `cd [Project-Folder]/doc/latex`
-    + `make`
+	+ `cd [Project-Folder]/doc`
+	+ `tar -zxvf latex.tar.gz`
+	+ `cd ./latex`
+	+ `make`
 
 ##External libraries
 At present this project uses the following external/third-party header-only libraries:
