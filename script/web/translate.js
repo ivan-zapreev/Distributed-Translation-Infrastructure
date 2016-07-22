@@ -1230,6 +1230,9 @@ function download_log_translation(evt) {
 function initialize_client_data(callMD5, callDownload) {
     "use strict";
     
+    //Initialize tooltips
+    window.$('[data-toggle="tooltip"]').tooltip();
+    
     window.console.log("Using the default server url: " + client_data.server_url);
     
     //Set up the server URL

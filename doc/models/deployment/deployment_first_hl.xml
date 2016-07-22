@@ -1,9 +1,10 @@
-<diagram program="umletino" version="14.1"><zoom_level>10</zoom_level><element><id>UMLDeployment</id><coordinates><x>84</x><y>0</y><w>700</w><h>210</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>UMLDeployment</id><coordinates><x>84</x><y>0</y><w>700</w><h>210</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
 *Server*
 fontsize=18
-bg=#bebebe</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>484</x><y>260</y><w>120</w><h>140</h></coordinates><panel_attributes>*Decoder*
+bg=#bebebe</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>474</x><y>260</y><w>140</w><h>160</h></coordinates><panel_attributes>*Decoder*
 --
 connect
+get_supp_lang
 translate
 disconnect
 bg=#191970
@@ -38,11 +39,11 @@ symbol=component
 bg=#DA70D6
 fontsize=18</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>80</y><w>140</w><h>110</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
 lt=&lt;.
-fontsize=18</panel_attributes><additional_attributes>10;10;10;90;114;90</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>80</y><w>100</w><h>70</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
+fontsize=18</panel_attributes><additional_attributes>10;10;10;90;114;90</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>80</y><w>90</w><h>70</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
 lt=&lt;.
 fontsize=18</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>50</y><w>260</w><h>130</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
 lt=&lt;.
-fontsize=18</panel_attributes><additional_attributes>240;10;90;10;90;110;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>680</x><y>80</y><w>100</w><h>70</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
+fontsize=18</panel_attributes><additional_attributes>240;10;90;10;90;110;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>680</x><y>80</y><w>90</w><h>70</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
 lt=&lt;.
 fontsize=18</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>100</x><y>340</y><w>100</w><h>80</h></coordinates><panel_attributes>&lt;&lt;loads&gt;&gt;
 lt=&lt;.

@@ -469,7 +469,7 @@ The web interface looks as follows:
 
 As one can see its interface is simple and intuitive, its main purpose to allow to connect to a translation sever/balancer and to perform translations. Source text can be input into the text area on the left by hand or loaded from a file. The translated (target) text can be found in the text area on the right. It is annotated, per sentence, with a pop-up information. The latter is visualized when a mouse pointer hovers over the sentence translation.
 
-The next image provides more information on the functionality of the interface:
+Most of the interface controls have tool tips. Yet for the sake of completeness below, we provide an annotated screen shot of the interface:
 ![Web Client Translation System Annotated Image](./doc/images/translator_annot.png "Web Client Translation System - Annotated")
 
 ###Language model query tool: _lm-query_
@@ -635,7 +635,7 @@ The designs were created using [Unified Modeling Language (UML)](http://www.uml.
 ###The ultimate design
 Consider the deployment diagram below. It shows the ultimate design we are aiming at.
 
-![The ultimate deployment Image](./doc/images/design/deployment_ideal.png "The ultimate deployment")
+![The ultimate deployment Image](./doc/models/deployment/deployment_ideal.png "The ultimate deployment")
 
 This design's main feature is that it is fully distributed, and consists of three, vertical, layers.
 
@@ -651,7 +651,7 @@ First we begin with the single translation server configuration and then we proc
 
 ####Single translation server
 Let us consider the most trivial configuration to run our software. This configuration consists of a single translation server and multiple clients, as given on the picture below. 
-![The current deployment Image](./doc/images/design/deployment_first.png "The current deployment")
+![The current deployment Image](./doc/models/deployment/deployment_first.png "The current deployment")
 
 As one can notice, in this figure the first layer is removed, i.e. there is no load-balancing entity. Also the Language, Translation, and Reordering models have local interface implementations only and are compiled together  with the decoder component to form a single application. Of course, one can easily extend this design towards the ultimate one by simply providing the remove implementations for the LM, TM and RM models using the existing interfaces and implemented LM, RM and TM libraries.
 
@@ -660,7 +660,7 @@ Let us now briefly consider the two most complicated components of the software,
 #####The decoder component
 The class diagram of the decoder component is given below. The decoder has a multi-threaded implementation, where each translation job (_a number of sentences to translate_) gets split into a number of translations tasks (_one task is one sentence_). Every translation task is executed in a separate thread. The number of translation threads is configurable at any moment of time.
 
-![The decoder Image](./doc/images/design/decoder_component.png "The decoder")
+![The decoder Image](./doc/models/decoder/decoder_component.png "The decoder")
 
 Let us consider the main classes from the diagram:
 
@@ -682,12 +682,29 @@ The _trans\_task_ is a simple wrapper around the sentence translation entity _se
 
 Let us now consider the LM implementation class/package diagram on the figure below:
 
-![The LM component Image](./doc/images/design/lm_component.png "LM component")
+![The LM component Image](./doc/models/lm/lm_component.png "LM component")
 
 The design of the Language model has not changed much since the split off from the [Back Off Language Model SMT](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT) project. So for more details we still refer to the [Implementation Details section](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT/blob/master/README.md#implementation-details) of the README.md thereof. For the most recent information on the LM component design please read the project's [Code documentation](#code-documentation).
 
 ####Multiple translation servers with load balancer(s)
-ToDo: Add text
+The Load Balancer (**bpbd-balancer**) has the same interface as the translation service (**bpbd-server**) so for the client (**bpbd-client** or **Web UI**) there is no difference with which of those to communicate. The Load Balancer serves two main purposes, it allows to:
+
+* Distribute load between several translation services for the same source-target languages
+* Aggregate services of several translation services for different/same source-target languages
+
+The Figure below shows an example deployment of the multiple translation servers behind the two load balancer instances:
+
+![The deployment with Load Balancer Image ](./doc/models/deployment/deployment_balancer.png "Load Balancer usage example")
+
+Here the client application can be both console or web interface clients. Also a Load balancer can in its turn connect with another load balancer, as if it was a single translation service. This implements the composite design pattern of the distributed deployment.
+
+The internal Load Balancer design is depicted in the Following figure. It's purpose it to introduce the implementation details of the load balancer with its main entities and their roles.
+
+![The Load Balancer internals Image ](./doc/models/balancer/balancer_concepts.png "Load Balancer internals")
+
+An example sequence diagram with several load balancing scenarios can be found below. This Figure shows the process of handling of an incoming translation job request. It also contains several optional scenarios for when s client session is dropped or the translation server closes the connection.
+
+![The Load Balancer sequences Image ](./doc/models/balancer/balancer_sequence.png "Load Balancer sequences")
 
 ##Software details
 In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.
@@ -699,19 +716,28 @@ Additional information about the source code implementation classes can be found
 ###_common packages_
 The project's common packages are located in `[Project-Folder]/inc/common`:
 
-* `/messaging` - web-socket message related classes common for the bpbd server and client
+* `/messaging` - web-socket message related classes common for the bpbd balancer, server and client
 * `/utils` - various utility classes and libraries needed for logging and etc.
+    - `/cmd` - the common classed for the balancer/server console
     - `/containers` - some container type classes
     - `/file` - file-reading related classes
     - `/logging` - logging classes
     - `/monitor` - memory usage and CPU times monitor classes
+    - `/threads` - the common classes used in multi-threading
+
+###_bpbd-balancer_
+All of the *bpbd-balancer* specific implementation classes are located in `[Project-Folder]/inc/balancer`.
+Note that the balancer application, by nature, incorporates features of the client and server. Therefore, it uses the source code base of the _bpbd-client_ and _bpbd-server_, especially their messaging-related classes.
 
 ###_bpbd-client_
 All of the *bpbd-client* specific implementation classes are located in `[Project-Folder]/inc/client`.
 
+* `/messaging` - client-server related communication classes
+
 ###_bpbd-server_
 All of the *bpbd-server* specific implementation classes are located in `[Project-Folder]/inc/server`:
 
+* `/messaging` - client-server related communication classes
 * `/common` - classes common to all server components
     - `/models` - model-related classes common to all server components
 * `/decoder` - classes used in the decoder component

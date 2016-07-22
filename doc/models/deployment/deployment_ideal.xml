@@ -1,4 +1,4 @@
-<diagram program="umletino" version="14.1"><zoom_level>10</zoom_level><element><id>UMLDeployment</id><coordinates><x>130</x><y>380</y><w>190</w><h>110</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>UMLDeployment</id><coordinates><x>130</x><y>380</y><w>190</w><h>110</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
 Front Desk
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>540</x><y>190</y><w>190</w><h>110</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
 Server 1
@@ -45,47 +45,50 @@ bg=#FF8822</panel_attributes><additional_attributes></additional_attributes></el
 Model Server 5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1000</x><y>790</y><w>230</w><h>110</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
 Model Server 6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>990</x><y>460</y><w>230</w><h>110</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
 Model Server 4
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>370</x><y>430</y><w>180</w><h>100</h></coordinates><panel_attributes>Decoder
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>380</x><y>430</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
+get_supp_languages
 translate(source):{target}
-bg=pink</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>470</y><w>100</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;80;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>0</x><y>520</y><w>280</w><h>100</h></coordinates><panel_attributes>Translation System
+bg=pink</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>470</y><w>100</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;80;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>20</x><y>520</y><w>240</w><h>100</h></coordinates><panel_attributes>Translation System
 --
 translate(user_id, from, to, source):target
 bg=green
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>370</x><y>240</y><w>180</w><h>100</h></coordinates><panel_attributes>Decoder
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>380</x><y>240</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
+get_supp_languages
 translate(source):{target}
-bg=pink</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>360</x><y>600</y><w>180</w><h>100</h></coordinates><panel_attributes>Decoder
+bg=pink</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>370</x><y>600</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
+get_supp_languages
 translate(source):{target}
 bg=pink</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>250</y><w>130</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>440</y><w>130</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>610</y><w>140</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;120;10</additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>250</y><w>190</w><h>210</h></coordinates><panel_attributes>lt=&lt;-&gt;</panel_attributes><additional_attributes>170;10;10;190</additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>460</y><w>180</w><h>180</h></coordinates><panel_attributes>lt=&lt;-&gt;</panel_attributes><additional_attributes>160;160;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>440</y><w>190</w><h>30</h></coordinates><panel_attributes>lt=&lt;-&gt;</panel_attributes><additional_attributes>170;10;10;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>720</x><y>0</y><w>160</w><h>40</h></coordinates><panel_attributes>Websockets connection
 in between the nodes
 bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>150</x><y>290</y><w>150</w><h>40</h></coordinates><panel_attributes>Websockets connection
 in between the nodes
-bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>290</x><y>240</y><w>190</w><h>90</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;70;60;10;170;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>750</x><y>60</y><w>260</w><h>100</h></coordinates><panel_attributes>Language Model
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>290</x><y>240</y><w>190</w><h>90</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;70;60;10;170;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>760</x><y>60</y><w>240</w><h>100</h></coordinates><panel_attributes>Language Model
 --
 connect/disconnect
 allocate_query_proxy():lm_query_proxy
-bg=#00FF99</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>760</x><y>202</y><w>260</w><h>100</h></coordinates><panel_attributes>Translation Model
+bg=#00FF99</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>770</x><y>202</y><w>240</w><h>100</h></coordinates><panel_attributes>Translation Model
 --
 connect/disconnnect
 allocate_query_proxy():tm_query_proxy
-bg=#2299FF</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>760</x><y>352</y><w>260</w><h>100</h></coordinates><panel_attributes>Reordering Model
+bg=#2299FF</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>770</x><y>352</y><w>240</w><h>100</h></coordinates><panel_attributes>Reordering Model
 --
 connect/disconnect
 allocate_query_proxy():rm_query_proxy
-bg=#FF8822</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>760</x><y>520</y><w>260</w><h>100</h></coordinates><panel_attributes>Language Model
+bg=#FF8822</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>770</x><y>520</y><w>240</w><h>100</h></coordinates><panel_attributes>Language Model
 --
 connect/disconnect
 allocate_query_proxy():lm_query_proxy
-bg=#00FF99</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>760</x><y>672</y><w>260</w><h>100</h></coordinates><panel_attributes>Translation Model
+bg=#00FF99</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>770</x><y>672</y><w>240</w><h>100</h></coordinates><panel_attributes>Translation Model
 --
 connect/disconnnect
 allocate_query_proxy():tm_query_proxy
-bg=#2299FF</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>760</x><y>842</y><w>260</w><h>100</h></coordinates><panel_attributes>Reordering Model
+bg=#2299FF</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>770</x><y>842</y><w>240</w><h>100</h></coordinates><panel_attributes>Reordering Model
 --
 connect/disconnect
 allocate_query_proxy():rm_query_proxy

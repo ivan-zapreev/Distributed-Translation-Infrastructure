@@ -211,6 +211,7 @@ div.part_menu_right {
 
 a.download_link {
     white-space: nowrap;
+    font-weight: 500;
 }
 
 a.download_link img {
