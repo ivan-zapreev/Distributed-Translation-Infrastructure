@@ -1,5 +1,5 @@
 /* 
- * File:   bpbd_balancer.cpp
+ * File:   bpbd_processor.cpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on July 8, 2016, 10:29 AM
+ * Created on July 25, 2016, 11:42 AM
  */
 
 #include <vector>
@@ -32,11 +32,12 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/string_utils.hpp"
+#include "common/utils/file/utils.hpp"
 
-#include "balancer/balancer_console.hpp"
-#include "balancer/balancer_parameters.hpp"
-#include "balancer/balancer_server.hpp"
-#include "balancer/balancer_manager.hpp"
+#include "processor/processor_console.hpp"
+#include "processor/processor_parameters.hpp"
+#include "processor/processor_server.hpp"
+#include "processor/processor_manager.hpp"
 
 using namespace std;
 using namespace TCLAP;
@@ -44,14 +45,16 @@ using namespace TCLAP;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
 using namespace uva::utils::text;
-using namespace uva::smt::bpbd::balancer;
+using namespace uva::utils::file;
+
+using namespace uva::smt::bpbd::processor;
 using namespace uva::smt::bpbd::common;
 
 /**
  * This functions does nothing more but printing the program header information
  */
 static void print_info() {
-    print_info(" The load balancer application    ");
+    print_info(" The text processor application    ");
 }
 
 //The pointer to the command line parameters parser
@@ -69,7 +72,7 @@ void create_arguments_parser() {
     p_cmd_args = new CmdLine("", ' ', PROGRAM_VERSION_STR);
 
     //Add the configuration file parameter - compulsory
-    p_config_file_arg = new ValueArg<string>("c", "config", "The configuration file with the balancer options", true, "", "balancer configuration file", *p_cmd_args);
+    p_config_file_arg = new ValueArg<string>("c", "config", "The configuration file with the processor options", true, "", "processor configuration file", *p_cmd_args);
 
     //Add the -d the debug level parameter - optional, default is e.g. RESULT
     logger::get_reporting_levels(&debug_levels);
@@ -94,7 +97,7 @@ void destroy_arguments_parser() {
  * @param params the structure that will be filled in with the parsed program arguments
  * @return the configuration file name
  */
-static void prepare_config_structures(const uint argc, char const * const * const argv, balancer_parameters & params) {
+static void prepare_config_structures(const uint argc, char const * const * const argv, processor_parameters & params) {
     //Parse the arguments
     try {
         p_cmd_args->parse(argc, argv);
@@ -107,7 +110,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
 
     //Get the configuration file name and read the config values from the file
     const string config_file_name = p_config_file_arg->getValue();
-    LOG_USAGE << "Loading the server configuration option from: " << config_file_name << END_LOG;
+    LOG_USAGE << "Loading the processor configuration option from: " << config_file_name << END_LOG;
     INI<> ini(config_file_name, false);
 
     //Parse the configuration file
@@ -115,29 +118,34 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         LOG_INFO << "The configuration file has been parsed!" << END_LOG;
 
         //Get the configuration options from the file
-        const string section = balancer_parameters::SE_CONFIG_SECTION_NAME;
-        params.m_server_port = get_integer<uint16_t>(ini, section, balancer_parameters::SE_SERVER_PORT_PARAM_NAME);
-        params.m_num_req_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_REQ_THREADS_PARAM_NAME);
-        params.m_num_resp_threads = get_integer<uint16_t>(ini, section, balancer_parameters::SE_NUM_RESP_THREADS_PARAM_NAME);
-        params.m_recon_time_out = get_integer<uint32_t>(ini, section, balancer_parameters::SC_RECONNECT_TIME_OUT_PARAM_NAME);
-
-        //Get the translation server names
-        vector<string> server_names;
-        tokenize(get_string(ini, section, balancer_parameters::SE_TRANSLATION_SERVER_NAMES_PARAM_NAME),
-                server_names, balancer_parameters::TRANS_SERV_NAMES_DELIMITER_STR);
+        const string section = processor_parameters::CONFIG_SECTION_NAME;
+        params.m_server_port = get_integer<uint16_t>(ini, section, processor_parameters::SERVER_PORT_PARAM_NAME);
+        params.m_num_threads = get_integer<uint16_t>(ini, section, processor_parameters::NUM_THREADS_PARAM_NAME);
+        params.m_work_dir = get_string(ini, section, processor_parameters::WORK_DIR_PARAM_NAME);
+        string def_pre_call_templ = get_string(ini, section, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME);
+        string def_post_call_templ = get_string(ini, section, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME);
+        params.add_language("", def_pre_call_templ, def_post_call_templ);
+         
+        //Get the supported language names
+        vector<string> lang_names;
+        tokenize(get_string(ini, section, processor_parameters::LANG_CONFIGS_PARAM_NAME),
+                lang_names, processor_parameters::LANG_CONFIGS_DELIMITER_STR);
 
         //Read the translation server names configuration data
-        for (auto iter = server_names.begin(); iter != server_names.end(); ++iter) {
-            const string & tsn = *iter;
+        for (auto iter = lang_names.begin(); iter != lang_names.end(); ++iter) {
+            const string & lang_sect = *iter;
             //Get the data from the translator section and add it to parameters
-            params.add_translator(tsn,
-                    get_string(ini, tsn, trans_server_params::TC_ADDRESS_PARAM_NAME),
-                    get_integer<uint16_t>(ini, tsn, trans_server_params::TC_PORT_PARAM_NAME),
-                    get_integer<uint32_t>(ini, tsn, trans_server_params::TC_LOAD_WEIGHT_PARAM_NAME));
+            params.add_language(lang_sect,
+                    get_string(ini, lang_sect, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME),
+                    get_string(ini, lang_sect, processor_parameters::POST_CALL_TEMPL_PARAM_NAME));
         }
 
         //Finalize the parameters
         params.finalize();
+        
+        //Check that the lattices folder does, if not - create.
+        check_create_folder(params.m_work_dir);
+        
         //Log the server configuration
         LOG_INFO << params << END_LOG;
 
@@ -166,33 +174,34 @@ int main(int argc, char** argv) {
 
     try {
         //Define en empty parameters structure
-        balancer_parameters params;
+        processor_parameters params;
 
         //Prepare the configuration structures, parse the config file
         prepare_config_structures(argc, argv, params);
 
         //Instantiate the balancer server
-        balancer_server server(params);
+        processor_server server(params);
 
-        LOG_USAGE << "Running the balancer server ..." << END_LOG;
+        LOG_USAGE << "Running the processor server ..." << END_LOG;
 
         //Run the translation server in a separate thread
-        thread balancer_thread(bind(&balancer_server::run, &server));
+        thread balancer_thread(bind(&processor_server::run, &server));
 
-        LOG_USAGE << "The balancer is started!" << END_LOG;
+        LOG_USAGE << "The processor is started!" << END_LOG;
 
         //Wait until the balancer is stopped by pressing and exit button
-        balancer_console cmd(params, server, balancer_thread);
+        processor_console cmd(params, server, balancer_thread);
         cmd.perform_command_loop();
     } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.what() << END_LOG;
         return_code = 1;
     }
-    LOG_USAGE << "The balancer is stopped!" << END_LOG;
+    LOG_USAGE << "The processor is stopped!" << END_LOG;
 
     //Destroy the command line parameters parser
     destroy_arguments_parser();
 
     return return_code;
 }
+

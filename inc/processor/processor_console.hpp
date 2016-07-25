@@ -1,5 +1,5 @@
 /* 
- * File:   balancer_console.hpp
+ * File:   processor_console.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,18 +20,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on July 7, 2016, 12:08 PM
+ * Created on July 25, 2016, 11:42 AM
  */
 
-#ifndef BALANCER_CONSOLE_HPP
-#define BALANCER_CONSOLE_HPP
+#ifndef PROCESSOR_CONSOLE_HPP
+#define PROCESSOR_CONSOLE_HPP
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/cmd/cmd_line_base.hpp"
 
-#include "balancer/balancer_server.hpp"
-#include "balancer/balancer_manager.hpp"
+#include "processor/processor_server.hpp"
+#include "processor/processor_manager.hpp"
 
 using namespace std;
 
@@ -42,37 +42,35 @@ using namespace uva::utils::cmd;
 namespace uva {
     namespace smt {
         namespace bpbd {
-            namespace balancer {
-                //The number of worker threads - for the incoming messages pool
-                static const string PROGRAM_SET_INT_CMD = "set int ";
-                //The number of worker threads - for the outgoing messages pool
-                static const string PROGRAM_SET_ONT_CMD = "set ont ";
+            namespace processor {
+                //The number of worker threads - for the processor jobs pool
+                static const string PROGRAM_SET_NT_CMD = "set nt ";
 
                 /**
-                 * This is the load balancer console class:
+                 * This is the load processor console class:
                  * Responsibilities:
-                 *      Provides the balancer console
+                 *      Provides the processor console
                  *      Allows to execute commands
                  *      Allows to get run time information
                  *      Allows to change run time settings
                  */
-                class balancer_console : public cmd_line_base {
+                class processor_console : public cmd_line_base {
                 public:
 
                     /**
                      * The basic constructor
-                     * @param params the balancer parameters
-                     * @param server the balancer server
-                     * @param balancer_thread the balancer server main thread
+                     * @param params the processor parameters
+                     * @param server the processor server
+                     * @param processor_thread the processor server main thread
                      */
-                    balancer_console(balancer_parameters & params, balancer_server &server, thread &balancer_thread)
-                    : cmd_line_base(), m_params(params), m_server(server), m_balancer_thread(balancer_thread) {
+                    processor_console(processor_parameters & params, processor_server &server, thread &processor_thread)
+                    : cmd_line_base(), m_params(params), m_server(server), m_processor_thread(processor_thread) {
                     }
 
                     /**
                      * The basic destructor
                      */
-                    virtual ~balancer_console() {
+                    virtual ~processor_console() {
                         //If the user did not do stop, i,e, we are likely to exit because of an exception
                         if (!m_is_stopped) {
                             //Stop the thing
@@ -86,8 +84,7 @@ namespace uva {
                      * @see cmd_line_base
                      */
                     virtual void print_specific_commands() {
-                        print_command_help(PROGRAM_SET_INT_CMD, "<positive integer>", "set the number of incoming pool threads");
-                        print_command_help(PROGRAM_SET_ONT_CMD, "<positive integer>", "set the number of outgoing pool threads");
+                        print_command_help(PROGRAM_SET_NT_CMD, "<positive integer>", "set the number of processor threads");
                     }
 
                     /**
@@ -103,33 +100,21 @@ namespace uva {
                      */
                     virtual bool process_specific_cmd(const string & cmd) {
                         //Set the number of incoming pool threads
-                        if (begins_with(cmd, PROGRAM_SET_INT_CMD)) {
+                        if (begins_with(cmd, PROGRAM_SET_NT_CMD)) {
                             try {
-                                int32_t num_inc_threads = get_int_value(cmd, PROGRAM_SET_INT_CMD);
-                                ASSERT_CONDITION_THROW((num_inc_threads <= 0),
+                                int32_t num_threads = get_int_value(cmd, PROGRAM_SET_NT_CMD);
+                                ASSERT_CONDITION_THROW((num_threads <= 0),
                                         "The number of worker threads is to be > 0!");
                                 //Set the number of threads
-                                m_server.set_num_inc_threads(num_inc_threads);
+                                m_server.set_num_threads(num_threads);
                                 //Remember the new number of threads
-                                m_params.m_num_req_threads = num_inc_threads;
+                                m_params.m_num_threads = num_threads;
                             } catch (std::exception &ex) {
                                 LOG_ERROR << ex.what() << "\nEnter '" << PROGRAM_HELP_CMD << "' for help!" << END_LOG;
                             }
                             return false;
                         } else {
-                            //Set the number of outgoing pool threads
-                            if (begins_with(cmd, PROGRAM_SET_ONT_CMD)) {
-                                int32_t num_out_threads = get_int_value(cmd, PROGRAM_SET_ONT_CMD);
-                                ASSERT_CONDITION_THROW((num_out_threads <= 0),
-                                        "The number of worker threads is to be > 0!");
-                                //Set the number of threads
-                                m_server.set_num_out_threads(num_out_threads);
-                                //Remember the new number of threads
-                                m_params.m_num_resp_threads = num_out_threads;
-                                return false;
-                            } else {
-                                return true;
-                            }
+                            return true;
                         }
                     }
 
@@ -148,18 +133,18 @@ namespace uva {
                         m_server.stop();
 
                         //Wait until the server's thread stops
-                        m_balancer_thread.join();
+                        m_processor_thread.join();
 
-                        LOG_USAGE << "The balancer server thread is stopped!" << END_LOG;
+                        LOG_USAGE << "The processor server thread is stopped!" << END_LOG;
                     }
 
                 private:
-                    //Stores the reference to the balancer parameters
-                    balancer_parameters & m_params;
-                    //Stores the reference to the balancer server
-                    balancer_server & m_server;
-                    //Stores the reference to the balancer thread
-                    thread & m_balancer_thread;
+                    //Stores the reference to the processor parameters
+                    processor_parameters & m_params;
+                    //Stores the reference to the processor server
+                    processor_server & m_server;
+                    //Stores the reference to the processor thread
+                    thread & m_processor_thread;
 
                 };
             }
@@ -167,5 +152,5 @@ namespace uva {
     }
 }
 
-#endif /* BALANCER_CONSOLE_HPP */
+#endif /* PROCESSOR_CONSOLE_HPP */
 

@@ -663,6 +663,7 @@
             <in>file_stream_reader.hpp</in>
             <in>memory_mapped_file_reader.hpp</in>
             <in>text_piece_reader.hpp</in>
+            <in>utils.hpp</in>
           </df>
           <df name="logging">
             <in>logger.hpp</in>
@@ -681,6 +682,13 @@
           <in>math_utils.hpp</in>
           <in>string_utils.hpp</in>
         </df>
+      </df>
+      <df name="processor">
+        <in>processor_console.hpp</in>
+        <in>processor_job.hpp</in>
+        <in>processor_manager.hpp</in>
+        <in>processor_parameters.hpp</in>
+        <in>processor_server.hpp</in>
       </df>
       <df name="server">
         <df name="common">
@@ -845,6 +853,10 @@
             <in>statistics_monitor.cpp</in>
           </df>
         </df>
+      </df>
+      <df name="processor">
+        <in>bpbd_processor.cpp</in>
+        <in>processor_parameters.cpp</in>
       </df>
       <df name="server">
         <df name="decoder">

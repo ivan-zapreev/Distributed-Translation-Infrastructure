@@ -93,6 +93,19 @@ set(LOAD_BALANCER_SOURCES
 #Define the server executable
 add_executable(bpbd-balancer ${LOAD_BALANCER_SOURCES})
 
+########################DEFINE THE LOAD BALANCER EXECUTABLE##########################
+
+#Bring the source files into the project
+set(TEXT_PROCESSOR_SOURCES
+    src/common/utils/logging/logger.cpp
+    src/common/utils/monitor/statistics_monitor.cpp 
+    src/common/messaging/messaging.cpp
+    src/common/messaging/language_registry.cpp
+    src/processor/processor_parameters.cpp
+    src/processor/bpbd_processor.cpp
+)
+#Define the server executable
+add_executable(bpbd-processor ${TEXT_PROCESSOR_SOURCES})
 
 ##############################DEFINE THE CLIENT EXECUTABLE###########################
 

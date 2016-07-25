@@ -29,8 +29,6 @@
 #include <vector>
 #include <utility>
 #include <sys/types.h>
-#include <stdio.h>
-#include <dirent.h>
 #include <cstdlib>
 
 #include <websocketpp/common/thread.hpp>
@@ -38,12 +36,15 @@
 
 #include "main.hpp"
 
-#include "server/server_parameters.hpp"
-#include "server/translation_server.hpp"
 
 #include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+#include "common/utils/file/utils.hpp"
+
 #include "server/common/feature_id_registry.hpp"
 
+#include "server/server_parameters.hpp"
+#include "server/translation_server.hpp"
 #include "server/server_consts.hpp"
 #include "server/server_console.hpp"
 #include "server/decoder/de_configurator.hpp"
@@ -54,6 +55,12 @@
 using namespace std;
 using namespace TCLAP;
 
+using websocketpp::lib::bind;
+
+using namespace uva::utils::exceptions;
+using namespace uva::utils::logging;
+using namespace uva::utils::file;
+
 using namespace uva::smt::bpbd::common;
 using namespace uva::smt::bpbd::server;
 using namespace uva::smt::bpbd::server::common;
@@ -61,10 +68,6 @@ using namespace uva::smt::bpbd::server::decoder;
 using namespace uva::smt::bpbd::server::rm;
 using namespace uva::smt::bpbd::server::lm;
 using namespace uva::smt::bpbd::server::tm;
-
-using namespace uva::utils::exceptions;
-
-using websocketpp::lib::bind;
 
 /**
  * This functions does nothing more but printing the program header information
@@ -104,37 +107,6 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
     SAFE_DESTROY(p_cmd_args);
-}
-
-/**
- * Allows to check/create the lattices folder
- * @param params the decoder parameters storing the needed information
- */
-inline void check_create_lattices_folder(const server_parameters & params) {
-    //Open the specified folder
-    DIR * pdir = opendir(params.m_de_params.m_lattices_folder.c_str());
-
-    LOG_USAGE << "The lattice file folder is: " << params.m_de_params.m_lattices_folder << END_LOG;
-
-    //Check if the directory is present
-    if (pdir == NULL) {
-        //Log the warning that the directory does not exist
-        LOG_WARNING << "The directory: " << params.m_de_params.m_lattices_folder
-                << " does not exist, creating!" << END_LOG;
-
-        //Construct the command to create the directory
-        const string cmd = string("mkdir -p ") + params.m_de_params.m_lattices_folder;
-        //Try to create the directory recursively using shell
-        const int dir_err = system(cmd.c_str());
-
-        //Check that the directory has been created
-        ASSERT_CONDITION_THROW((-1 == dir_err),
-                string("Could not create the directory: ") +
-                params.m_de_params.m_lattices_folder);
-    } else {
-        //Close the directory
-        closedir(pdir);
-    }
 }
 
 /**
@@ -274,7 +246,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         if (params.m_de_params.m_is_gen_lattice) {
             LOG_USAGE << "--------------------------------------------------------" << END_LOG;
             //Check that the lattices folder does, if not - create.
-            check_create_lattices_folder(params);
+            check_create_folder(params.m_de_params.m_lattices_folder);
             //Create global feature to id mapping and dump it into the file
             process_feature_to_id_mappings<true>(config_file_name, params);
         } else {
@@ -360,9 +332,6 @@ int main(int argc, char** argv) {
         thread server_thread(bind(&translation_server::run, &server));
 
         LOG_USAGE << "The server is started!" << END_LOG;
-
-        //Override the reporting level for testing purposes
-        //logger::get_reporting_level() = debug_levels_enum::DEBUG2;
 
         //Wait until the server is stopped by pressing and exit button
         server_console cmd(params, server, server_thread);

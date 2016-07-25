@@ -250,6 +250,23 @@ namespace uva {
             }
 
             /**
+             * Allows to replace one sub-string in a string with another one.
+             * @param str the string to do replacement in
+             * @param from the substring to be found
+             * @param to the substring to be put in place
+             * @return true if the replacement was done, otherwise false
+             */
+            static inline bool replace(std::string& str, const std::string& from, const std::string& to) {
+                size_t start_pos = str.find(from);
+                if (start_pos == std::string::npos) {
+                    return false;
+                } else {
+                    str.replace(start_pos, from.length(), to);
+                    return true;
+                }
+            }
+
+            /**
              * This function can be used to trim the string
              * @param str the string to be trimmed, it is an in/out parameter
              * @param whitespace the white spaces to be trimmed, the default value is UTF8_ASCII_WHITESPACES

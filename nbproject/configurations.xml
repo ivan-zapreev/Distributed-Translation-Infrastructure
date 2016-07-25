@@ -25,6 +25,18 @@
         <df name="messaging">
           <in>session_job_pool_base.hpp</in>
         </df>
+        <df name="utils">
+          <df name="file">
+            <in>utils.hpp</in>
+          </df>
+        </df>
+      </df>
+      <df name="processor">
+        <in>processor_console.hpp</in>
+        <in>processor_job.hpp</in>
+        <in>processor_manager.hpp</in>
+        <in>processor_parameters.hpp</in>
+        <in>processor_server.hpp</in>
       </df>
     </df>
     <logicalFolder name="Modules"
@@ -62,6 +74,10 @@
             <in>statistics_monitor.cpp</in>
           </df>
         </df>
+      </df>
+      <df name="processor">
+        <in>bpbd_processor.cpp</in>
+        <in>processor_parameters.cpp</in>
       </df>
       <df name="server">
         <df name="decoder">
@@ -121,16 +137,7 @@
       <itemPath>CMakeLists.txt</itemPath>
       <itemPath>build/Makefile</itemPath>
       <itemPath>balancer.cfg</itemPath>
-      <itemPath>server.cfg</itemPath>
-      <itemPath>data/tuning.info.txt</itemPath>
-    </logicalFolder>
-    <logicalFolder name="ExternalFiles"
-                   displayName="Important Files"
-                   projectFiles="false"
-                   kind="IMPORTANT_FILES_FOLDER">
-      <itemPath>CMakeLists.txt</itemPath>
-      <itemPath>build/Makefile</itemPath>
-      <itemPath>balancer.cfg</itemPath>
+      <itemPath>processor.cfg</itemPath>
       <itemPath>server.cfg</itemPath>
       <itemPath>data/tuning.info.txt</itemPath>
     </logicalFolder>
@@ -246,6 +253,27 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="inc/common/utils/file/utils.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/processor/processor_console.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/processor/processor_job.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/processor/processor_manager.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/processor/processor_parameters.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/processor/processor_server.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/balancer/balancer_job.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/balancer/balancer_parameters.cpp"
@@ -305,6 +333,13 @@
             flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/processor/bpbd_processor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/processor/processor_parameters.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
