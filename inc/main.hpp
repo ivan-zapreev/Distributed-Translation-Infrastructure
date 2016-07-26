@@ -26,7 +26,7 @@ namespace uva {
         namespace bpbd {
             namespace common {
 
-//Declare the program version string
+                //Declare the program version string
 #define PROGRAM_VERSION_STR "1.2"
 
                 // Check windows
@@ -94,20 +94,19 @@ namespace uva {
                     exit(1);
                 }
 
-                //Declare the default value
-                static const string UNKNOWN_INI_FILE_VALUE = "<UNKNOWN_VALUE>";
-
                 //Allows to get and assert on the given section/key value presence
-#define GET_ASSERT(ini, section, key, value_str) \
-    const string value_str = ini.get(section, key, UNKNOWN_INI_FILE_VALUE); \
-    ASSERT_CONDITION_THROW((value_str == UNKNOWN_INI_FILE_VALUE), \
+#define GET_ASSERT(ini, section, key, value_str, unk_value, is_compulsory) \
+    const string def_value = (is_compulsory ? "<UNKNOWN_VALUE>" : unk_value); \
+    const string value_str = ini.get(section, key, def_value); \
+    ASSERT_CONDITION_THROW(is_compulsory && (value_str == def_value), \
             string("Could not find '[") + section + string("]/") + \
             key + string("' section/key in the configuration file!"));
 
                 template<typename INT_TYPE>
-                INT_TYPE get_integer(INI<> &ini, string section, string key) {
+                INT_TYPE get_integer(INI<> &ini, string section, string key,
+                        string unk_value = "0", bool is_compulsory = true) {
                     //Get the value and assert on its presence
-                    GET_ASSERT(ini, section, key, value_str);
+                    GET_ASSERT(ini, section, key, value_str, unk_value, is_compulsory);
 
                     try {
                         //Parse this value to an integer
@@ -120,17 +119,19 @@ namespace uva {
                     THROW_EXCEPTION(string("Could not parse integer: ") + value_str);
                 }
 
-                string get_string(INI<> &ini, string section, string key) {
+                string get_string(INI<> &ini, string section, string key,
+                        string unk_value = "", bool is_compulsory = true) {
                     //Get the value and assert on its presence
-                    GET_ASSERT(ini, section, key, value_str);
+                    GET_ASSERT(ini, section, key, value_str, unk_value, is_compulsory);
 
                     //Parse this value to an integer
                     return value_str;
                 }
 
-                float get_float(INI<> &ini, string section, string key) {
+                float get_float(INI<> &ini, string section, string key,
+                        string unk_value = "0.0", bool is_compulsory = true) {
                     //Get the value and assert on its presence
-                    GET_ASSERT(ini, section, key, value_str);
+                    GET_ASSERT(ini, section, key, value_str, unk_value, is_compulsory);
 
                     try {
                         //Parse this value to an integer
@@ -143,9 +144,10 @@ namespace uva {
                     THROW_EXCEPTION(string("Could not parse float: ") + value_str);
                 }
 
-                bool get_bool(INI<> &ini, string section, string key) {
+                bool get_bool(INI<> &ini, string section, string key,
+                        string unk_value = "false", bool is_compulsory = true) {
                     //Get the value and assert on its presence
-                    GET_ASSERT(ini, section, key, value_str);
+                    GET_ASSERT(ini, section, key, value_str, unk_value, is_compulsory);
 
                     if (value_str == "true") {
                         return true;

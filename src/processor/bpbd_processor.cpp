@@ -23,6 +23,7 @@
  * Created on July 25, 2016, 11:42 AM
  */
 
+#include <string>
 #include <vector>
 #include <websocketpp/common/thread.hpp>
 #include <tclap/CmdLine.h>
@@ -54,7 +55,7 @@ using namespace uva::smt::bpbd::common;
  * This functions does nothing more but printing the program header information
  */
 static void print_info() {
-    print_info(" The text processor application    ");
+    print_info(" The text processor application   ");
 }
 
 //The pointer to the command line parameters parser
@@ -122,8 +123,8 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         params.m_server_port = get_integer<uint16_t>(ini, section, processor_parameters::SERVER_PORT_PARAM_NAME);
         params.m_num_threads = get_integer<uint16_t>(ini, section, processor_parameters::NUM_THREADS_PARAM_NAME);
         params.m_work_dir = get_string(ini, section, processor_parameters::WORK_DIR_PARAM_NAME);
-        string def_pre_call_templ = get_string(ini, section, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME);
-        string def_post_call_templ = get_string(ini, section, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME);
+        string def_pre_call_templ = get_string(ini, section, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME, "", false);
+        string def_post_call_templ = get_string(ini, section, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME, "", false);
         params.add_language("", def_pre_call_templ, def_post_call_templ);
          
         //Get the supported language names
@@ -136,8 +137,8 @@ static void prepare_config_structures(const uint argc, char const * const * cons
             const string & lang_sect = *iter;
             //Get the data from the translator section and add it to parameters
             params.add_language(lang_sect,
-                    get_string(ini, lang_sect, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME),
-                    get_string(ini, lang_sect, processor_parameters::POST_CALL_TEMPL_PARAM_NAME));
+                    get_string(ini, lang_sect, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME, "", false),
+                    get_string(ini, lang_sect, processor_parameters::POST_CALL_TEMPL_PARAM_NAME, "", false));
         }
 
         //Finalize the parameters

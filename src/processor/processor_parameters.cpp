@@ -31,7 +31,7 @@ namespace uva {
             namespace processor {
 
                 const string language_config::PROC_JOB_ID_TEMPL_PARAM_NAME = "<PROC_JOB_UID>";
-                const string language_config::LANGUAGE_TEMPL_PARAM_NAME = "<TARGET_LANG>";
+                const string language_config::LANGUAGE_TEMPL_PARAM_NAME = "<LANGUAGE>";
 
                 const string processor_parameters::CONFIG_SECTION_NAME = "Server Options";
                 const string processor_parameters::SERVER_PORT_PARAM_NAME = "server_port";
@@ -48,7 +48,7 @@ namespace uva {
 
                         //Output the language if it is not empty
                         if (!config.m_lang.empty()) {
-                            stream << "lang = " << config.m_lang << ", ";
+                            stream << "lang = " << config.m_lang;
                         }
 
                         //Output the call template if it is not empty
