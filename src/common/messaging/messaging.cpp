@@ -33,6 +33,7 @@
 #include "common/messaging/trans_job_req.hpp"
 #include "common/messaging/trans_job_resp.hpp"
 #include "common/messaging/trans_sent_data.hpp"
+#include "common/messaging/proc_req.hpp"
 
 namespace uva {
     namespace smt {
@@ -60,6 +61,14 @@ namespace uva {
 
                     const char * trans_sent_data::TRANS_TEXT_FIELD_NAME = "trans_text";
                     const char * trans_sent_data::STACK_LOAD_FIELD_NAME = "stack_load";
+
+                    const char * proc_req::JOB_ID_FIELD_NAME = "job_id";
+                    const char * proc_req::TASK_ID_FIELD_NAME = "task_id";
+                    const char * proc_req::NUM_TASKS_FIELD_NAME = "num_tasks";
+                    const char * proc_req::LANG_FIELD_NAME = "lang";
+                    const char * proc_req::TEXT_FIELD_NAME = "text";
+                    const char * proc_req::PROC_JOB_UID_FIELD_NAME = "proc_job_uid";
+
                 }
             }
         }

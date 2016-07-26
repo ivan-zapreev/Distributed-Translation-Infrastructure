@@ -26,12 +26,7 @@
 #ifndef POST_PROC_REQ_IN_HPP
 #define	POST_PROC_REQ_IN_HPP
 
-#include "common/messaging/language_registry.hpp"
-#include "common/messaging/incoming_msg.hpp"
-#include "common/messaging/post_proc_req.hpp"
-#include "common/messaging/job_id.hpp"
-
-using namespace uva::smt::bpbd::common::messaging;
+#include "processor/messaging/proc_req_in.hpp"
 
 namespace uva {
     namespace smt {
@@ -42,7 +37,7 @@ namespace uva {
                     /**
                      * This class represents the incoming text post-process request.
                      */
-                    class post_proc_req_in : public post_proc_req {
+                    class post_proc_req_in : public proc_req_in {
                     public:
 
                         /**
@@ -50,20 +45,24 @@ namespace uva {
                          * @param inc_msg the pointer to the incoming message, NOT NULL
                          */
                         post_proc_req_in(const incoming_msg * inc_msg)
-                        : post_proc_req(), m_inc_msg(inc_msg) {
+                        : proc_req_in(inc_msg) {
                         }
 
                         /**
                          * The basic destructor
                          */
                         virtual ~post_proc_req_in() {
-                            //Destroy the incoming message, the pointer must not be NULL
-                            delete m_inc_msg;
+                            //Nothing to be done here
                         }
 
-                    private:
-                        //Stores the pointer to the incoming message
-                        const incoming_msg * m_inc_msg;
+                        /**
+                         * Allows to get the processor job unique identifier
+                         * @return the source text unique identifier
+                         */
+                        inline string get_proc_job_uid() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return json[PROC_JOB_UID_FIELD_NAME].GetString();
+                        }
                     };
                 }
             }

@@ -102,7 +102,6 @@ set(TEXT_PROCESSOR_SOURCES
     src/common/messaging/messaging.cpp
     src/common/messaging/language_registry.cpp
     src/processor/processor_parameters.cpp
-    src/processor/messaging/messaging.cpp
     src/processor/bpbd_processor.cpp
 )
 #Define the server executable

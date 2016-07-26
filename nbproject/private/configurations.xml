@@ -682,9 +682,11 @@
       <df name="common">
         <df name="messaging">
           <in>incoming_msg.hpp</in>
+          <in>job_id.hpp</in>
           <in>language_registry.hpp</in>
           <in>msg_base.hpp</in>
           <in>outgoing_msg.hpp</in>
+          <in>proc_req.hpp</in>
           <in>request_msg.hpp</in>
           <in>response_msg.hpp</in>
           <in>session_job_pool_base.hpp</in>
@@ -740,6 +742,9 @@
       </df>
       <df name="processor">
         <df name="messaging">
+          <in>post_proc_req_in.hpp</in>
+          <in>pre_proc_req_in.hpp</in>
+          <in>proc_req_in.hpp</in>
         </df>
         <in>processor_console.hpp</in>
         <in>processor_job.hpp</in>
@@ -912,8 +917,6 @@
         </df>
       </df>
       <df name="processor">
-        <df name="messaging">
-        </df>
         <in>bpbd_processor.cpp</in>
         <in>processor_parameters.cpp</in>
       </df>

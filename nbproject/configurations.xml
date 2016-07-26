@@ -226,28 +226,6 @@
           </preprocessorList>
         </ccTool>
       </folder>
-      <item path="inc/common/messaging/job_id.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/common/messaging/post_proc_req.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/messaging/pre_proc_req.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/processor/messaging/post_proc_req_in.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/processor/messaging/pre_proc_req_in.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="src/balancer/balancer_job.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
@@ -287,6 +265,9 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/common/messaging/messaging.cpp" ex="false" tool="1" flavor2="8">
@@ -298,6 +279,9 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/common/utils/logging/logger.cpp"
@@ -317,11 +301,6 @@
       <item path="src/processor/bpbd_processor.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
-      </item>
-      <item path="src/processor/messaging/messaging.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
       </item>
       <item path="src/processor/processor_parameters.cpp"
             ex="false"

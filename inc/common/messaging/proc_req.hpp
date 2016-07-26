@@ -1,6 +1,6 @@
 /* 
- * File:   post_proc_req.hpp
- * Author: Dr. Ivan S. Zapreev
+ * File:   pre_proc_req.hpp
+ * Author: zapreevis
  *
  * Visit my Linked-in profile:
  *      <https://nl.linkedin.com/in/zapreevis>
@@ -20,11 +20,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on July 26, 2016, 10:50 AM
+ * Created on July 26, 2016, 11:02 AM
  */
 
-#ifndef POST_PROC_REQ_HPP
-#define	POST_PROC_REQ_HPP
+#ifndef PRE_PROC_REQ_HPP
+#define	PRE_PROC_REQ_HPP
 
 #include <common/messaging/request_msg.hpp>
 
@@ -37,20 +37,32 @@ namespace uva {
                     /**
                      * This is the base class for all the text pre-process request messages
                      */
-                    class post_proc_req : public request_msg {
+                    class proc_req : public request_msg {
                     public:
+                        //Stores the job id field name
+                        static const char * JOB_ID_FIELD_NAME;
+                        //Stores the the task id field name
+                        static const char * TASK_ID_FIELD_NAME;
+                        //Stores the the number of tasks field name
+                        static const char * NUM_TASKS_FIELD_NAME;
+                        //Stores the the language field name
+                        static const char * LANG_FIELD_NAME;
+                        //Stores the the text field name
+                        static const char * TEXT_FIELD_NAME;
+                        //Stores the job id field name
+                        static const char * PROC_JOB_UID_FIELD_NAME;
 
                         /**
                          * The basic constructor
                          */
-                        post_proc_req() : request_msg() {
+                        proc_req() : request_msg() {
                             //Nothing to be done here
                         }
 
                         /**
                          * The basic destructor
                          */
-                        virtual ~post_proc_req() {
+                        virtual ~proc_req() {
                             //Nothing to be done here
                         }
                     };
@@ -60,5 +72,5 @@ namespace uva {
     }
 }
 
-#endif	/* POST_PROC_REQ_HPP */
+#endif	/* PRE_PROC_REQ_HPP */
 
