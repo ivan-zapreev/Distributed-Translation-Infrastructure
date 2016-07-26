@@ -169,14 +169,14 @@ namespace uva {
                          */
                         inline bool send_response(const session_id_type session_id, const msg_base & msg) {
                             LOG_DEBUG << "Sending a message from session: " << to_string(session_id) << END_LOG;
-                            
+
                             //Do the sanity check assert
                             ASSERT_SANITY_THROW(!m_sender_func,
                                     "The sender function of the translation manager is not set!");
 
                             //Serialize the message
                             const string data = msg.serialize();
-                            
+
                             //Retrieve the connection handler based on the session id
                             websocketpp::connection_hdl hdl = get_session_hdl(session_id);
 
@@ -212,8 +212,16 @@ namespace uva {
                         inline session_id_type get_session_id(const websocketpp::connection_hdl hdl) {
                             scoped_guard guard(m_lock);
 
+                            session_id_type session_id = m_sessions[hdl];
+
+                            LOG_DEBUG << "Received a translation request from session: " << session_id << END_LOG;
+
+                            //Check that there is a session mapped to this handler
+                            ASSERT_CONDITION_THROW((session_id == session_id::UNDEFINED_SESSION_ID),
+                                    "No session object is associated with the connection handler!");
+
                             //Get what ever it is stored
-                            return m_sessions[hdl];
+                            return session_id;
                         }
 
                         /**

@@ -146,23 +146,31 @@ namespace uva {
                         /**
                          * Allows to schedule a new translation job.
                          * The execution of the job is deferred and asynchronous.
-                         * @oaram pool_job the translation job to be scheduled
+                         * @oaram pool_job the translation job to be scheduled, not NULL
                          */
                         inline void plan_new_job(job_type* pool_job) {
                             //Make sure that we are not being stopped before or during this method call
                             scoped_guard guard_stopping(m_stopping_lock);
-
+                            
                             LOG_DEBUG << "Request adding a new job " << pool_job << " to the pool!" << END_LOG;
 
-                            //Throw an exception if we are stopping
-                            ASSERT_CONDITION_THROW(m_is_stopping,
-                                    "The server is stopping/stopped, no service!");
+                            try {
+                                //Throw an exception if we are stopping
+                                ASSERT_CONDITION_THROW(m_is_stopping,
+                                        "The server is stopping/stopped, no service!");
 
-                            //Add the notification handler to the job
-                            pool_job->set_done_job_notifier(bind(&session_job_pool_base::notify_job_done, this, _1));
+                                //Add the notification handler to the job
+                                pool_job->set_done_job_notifier(bind(&session_job_pool_base::notify_job_done, this, _1));
 
-                            //Add the translation job into the administration
-                            add_job(pool_job);
+                                //Add the translation job into the administration
+                                add_job(pool_job);
+                            } catch (std::exception & ex) {
+                                //Catch any possible exception and delete the translation job
+                                LOG_ERROR << ex.what() << END_LOG;
+                                delete pool_job;
+                                //Re-throw the exception
+                                throw ex;
+                            }
                         }
 
                         /**

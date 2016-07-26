@@ -38,6 +38,8 @@
 #include "common/messaging/job_id.hpp"
 #include "common/messaging/status_code.hpp"
 
+#include "processor/messaging/pre_proc_req_in.hpp"
+
 using namespace std;
 
 using namespace uva::utils;
@@ -46,6 +48,7 @@ using namespace uva::utils::threads;
 using namespace uva::utils::logging;
 
 using namespace uva::smt::bpbd::common::messaging;
+using namespace uva::smt::bpbd::processor::messaging;
 
 namespace uva {
     namespace smt {
@@ -68,7 +71,7 @@ namespace uva {
                 /**
                  * This is the processor job class:
                  * Responsibilities:
-                 * 
+                 *    - A base class for the pre and post processor jobs
                  */
                 class processor_job {
                 public:
@@ -81,9 +84,13 @@ namespace uva {
                     /**
                      * The basic constructor
                      * @param session_id the id of the session from which the translation request is received
+                     * @param req the pointer to the processor request, not NULL
                      */
-                    processor_job(const session_id_type session_id)
-                    : m_session_id(session_id), m_notify_job_done_func(NULL) {
+                    processor_job(const session_id_type session_id, proc_req_in *req)
+                    : m_session_id(session_id), m_job_id(req->get_job_id()),
+                    m_num_tasks(req->get_num_tasks()), m_notify_job_done_func(NULL) {
+                        //Add the request
+                        add_request(req);
                     }
 
                     /**
@@ -106,8 +113,7 @@ namespace uva {
                      * @return the job id
                      */
                     inline job_id_type get_job_id() const {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        return m_job_id;
                     }
 
                     /**
@@ -131,10 +137,7 @@ namespace uva {
                     /**
                      * Performs the processor job
                      */
-                    inline void execute() {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
-                    }
+                    virtual void execute() = 0;
 
                     /**
                      * Allows to wait until the job is finished, this
@@ -144,7 +147,7 @@ namespace uva {
                         //ToDo: Implement
                         THROW_NOT_IMPLEMENTED();
                     }
-                    
+
                     /**
                      * Allows to cancel the given translation job by telling all the translation tasks to stop.
                      * Calling this method indicates that the job is canceled due to the client disconnect
@@ -154,12 +157,31 @@ namespace uva {
                         THROW_NOT_IMPLEMENTED();
                     }
 
-                protected:
+                    /**
+                     * Allows to add a new pre-processor request to the job
+                     * @param req the pre-processor request
+                     */
+                    inline void add_request(proc_req_in * req) {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
+                     * Allows to check if the job is complete and is ready for execution
+                     * @return true if the job is complete and is ready for execution otherwise false
+                     */
+                    inline bool is_complete() {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
 
                 private:
-
                     //Stores the translation client session id
                     const session_id_type m_session_id;
+                    //Stores the job id for an easy access
+                    const job_id_type m_job_id;
+                    //Stores the number of tasks associated with the job
+                    const uint64_t m_num_tasks;
 
                     //The done job notifier
                     done_job_notifier m_notify_job_done_func;

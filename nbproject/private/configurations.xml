@@ -746,6 +746,8 @@
           <in>pre_proc_req_in.hpp</in>
           <in>proc_req_in.hpp</in>
         </df>
+        <in>post_proc_job.hpp</in>
+        <in>pre_proc_job.hpp</in>
         <in>processor_console.hpp</in>
         <in>processor_job.hpp</in>
         <in>processor_manager.hpp</in>

@@ -179,12 +179,6 @@ namespace uva {
                         //Get the session id
                         session_id_type session_id = get_session_id(hdl);
 
-                        LOG_DEBUG << "Received a translation request from session: " << session_id << END_LOG;
-
-                        //Check that there is a session mapped to this handler
-                        ASSERT_CONDITION_THROW((session_id == session_id::UNDEFINED_SESSION_ID),
-                                "No session object is associated with the connection handler!");
-
                         //Instantiate a new translation job, it will destroy the translation request in its destructor
                         bal_job_ptr job = new balancer_job(
                                 session_id, trans_req,
@@ -193,18 +187,8 @@ namespace uva {
 
                         LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
 
-                        try {
-                            //Schedule a translation job request for the session id
-                            this->plan_new_job(job);
-                        } catch (std::exception & ex) {
-                            //Catch any possible exception and delete the translation job
-                            LOG_ERROR << ex.what() << END_LOG;
-                            if (job != NULL) {
-                                delete job;
-                            }
-                            //Re-throw the exception
-                            throw ex;
-                        }
+                        //Schedule a translation job request for the session id
+                        this->plan_new_job(job);
                     }
 
                     /**

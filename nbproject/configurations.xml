@@ -21,6 +21,10 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="processor">
+        <in>post_proc_job.hpp</in>
+        <in>pre_proc_job.hpp</in>
+      </df>
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -226,6 +230,10 @@
           </preprocessorList>
         </ccTool>
       </folder>
+      <item path="inc/processor/post_proc_job.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/processor/pre_proc_job.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/balancer/balancer_job.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>

@@ -26,19 +26,21 @@
 #ifndef PROCESSOR_MANAGER_HPP
 #define PROCESSOR_MANAGER_HPP
 
-
 #include <unordered_map>
 #include <set>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/threads/task_pool.hpp"
+#include "common/utils/threads/threads.hpp"
 
 #include "common/messaging/session_manager.hpp"
 #include "common/messaging/session_job_pool_base.hpp"
 
 #include "processor/processor_parameters.hpp"
 #include "processor/processor_job.hpp"
+#include "processor/pre_proc_job.hpp"
+#include "processor/post_proc_job.hpp"
 
 #include "processor/messaging/pre_proc_req_in.hpp"
 #include "processor/messaging/post_proc_req_in.hpp"
@@ -69,7 +71,34 @@ namespace uva {
                  */
                 class processor_manager : public session_manager, private session_job_pool_base<processor_job> {
                 public:
-                    
+
+                    /**
+                     * The session entry structure to store the access mutex
+                     * to the jobs map and the session jobs map itself.
+                     */
+                    struct session_data_struct {
+                        //The map storing the mapping from the job id to the job object
+                        unordered_map<job_id_type, proc_job_ptr> m_jobs;
+
+                        /**
+                         * The basic destcutor that shall remove all the jobs
+                         */
+                        virtual ~session_data_struct() {
+                            //Just iterate through the map and delete all the jobs
+                            //Note that there is no need to remove the jobs from mappings
+                            for (auto iter = m_jobs.begin(); iter != m_jobs.end(); ++iter) {
+                                delete iter->second;
+                            }
+                        }
+                    };
+
+                    //Typedef the structure for storing the session data
+                    typedef struct session_data_struct session_data;
+
+                    //Typedef the data structure for storing the mapping
+                    //between the session id and the session data.
+                    typedef unordered_map<session_id_type, session_data> sessions_map;
+
                     /**
                      * The basic constructor
                      * @param num_threads the number of threads to handle the processor jobs
@@ -77,7 +106,8 @@ namespace uva {
                     processor_manager(const processor_parameters & params)
                     : session_manager(), session_job_pool_base(
                     bind(&processor_manager::notify_job_done, this, _1)),
-                    m_params(params), m_proc_pool(params.m_num_threads) {
+                    m_is_stopping(false), m_params(params),
+                    m_proc_pool(params.m_num_threads) {
                     }
 
                     /**
@@ -103,6 +133,17 @@ namespace uva {
                      * Allows to stop the manager
                      */
                     inline void stop() {
+                        recursive_guard guard(m_sessions_lock);
+
+                        //Set the stopping flag
+                        m_is_stopping = true;
+
+                        //Go through all the registered sessions and cancel the incomplete jobs
+                        for (auto iter = m_sessions.begin(); iter != m_sessions.end(); ++iter) {
+                            cancel_incomp_jobs(iter->first);
+                        }
+
+                        //Stop the session job pool
                         session_job_pool_base<processor_job>::stop();
                     }
 
@@ -112,8 +153,7 @@ namespace uva {
                      * @param msg a pointer to the request data, not NULL
                      */
                     inline void pre_process(websocketpp::connection_hdl hdl, pre_proc_req_in * msg) {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        this->template process<pre_proc_req_in, pre_proc_job>(hdl, msg);
                     }
 
                     /**
@@ -122,11 +162,52 @@ namespace uva {
                      * @param msg a pointer to the request data, not NULL
                      */
                     inline void post_process(websocketpp::connection_hdl hdl, post_proc_req_in * msg) {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        this->template process<post_proc_req_in, post_proc_job>(hdl, msg);
                     }
 
                 protected:
+
+                    /**
+                     * Allows to schedule the incoming processor request
+                     * @param hdl the connection handler to identify the session object.
+                     * @param msg a pointer to the request data, not NULL
+                     */
+                    template<typename request_type, typename job_type>
+                    inline void process(websocketpp::connection_hdl hdl, request_type * msg) {
+                        recursive_guard guard(m_sessions_lock);
+
+                        //Throw an exception if we are stopping
+                        ASSERT_CONDITION_THROW(m_is_stopping,
+                                "The server is stopping/stopped, no service!");
+
+                        //Get the session id
+                        session_id_type session_id = get_session_id(hdl);
+                        //Get the session data associated with the session id
+                        session_data & entry = m_sessions[session_id];
+
+                        //Get the job id
+                        job_id_type job_id = msg->get_job_id();
+                        //Check if the given request already has a job associated with it.
+                        proc_job_ptr & job = entry.m_jobs[job_id];
+
+                        //If there is no job create one and add it to the map
+                        if (job == NULL) {
+                            job = new job_type(session_id, msg);
+                            LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
+                        } else {
+                            //Add the request to the job
+                            job->add_request(msg);
+                        }
+
+                        //Check if the job is ready to start
+                        if (job->is_complete()) {
+                            //Remove the job from the mapping
+                            entry.m_jobs.erase(job_id);
+                            //Schedule the complete job for execution
+                            this->plan_new_job(job);
+                        }
+                    }
+
                     /**
                      * Will be called once a new job is scheduled. Here we need to perform
                      * the needed actions with the job. I.e. add it into the incoming tasks pool.
@@ -142,10 +223,13 @@ namespace uva {
                      * @see session_manager
                      */
                     virtual void session_is_closed(session_id_type session_id) {
+                        //Cancel incomplete jobs
+                        cancel_incomp_jobs(session_id);
+
                         //Cancel all the jobs from the given session
                         this->cancel_jobs(session_id);
                     }
-                    
+
                     /**
                      * This function will be called once the processor job is fully
                      * done an it is about to be destroyed. This function can be
@@ -154,17 +238,38 @@ namespace uva {
                      */
                     inline void notify_job_done(proc_job_ptr proc_job) {
                         LOG_DEBUG << "Finishing off processed job " << *proc_job << END_LOG;
+                        
+                        //There is nothing to be done here.
+                    }
 
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                    /**
+                     * Allows to cancel all of the incomplete jobs from the given session
+                     * @param session_id the session to cancel the incomplete jobs for.
+                     */
+                    inline void cancel_incomp_jobs(session_id_type session_id) {
+                        recursive_guard guard(m_sessions_lock);
+
+                        //Get the session data
+                        session_data entry = m_sessions[session_id];
+
+                        //Iterate through the jobs and cancel them
+                        for (auto iter = entry.m_jobs.begin(); iter != entry.m_jobs.end(); ++iter) {
+                            iter->second->cancel();
+                        }
                     }
 
                 private:
+                    //Stores the flag that indicates that we are stopping, made an atomic just in case
+                    a_bool_flag m_is_stopping;
                     //Stores the reference to the set of processor parameters
                     const processor_parameters & m_params;
                     //Stores the tasks pool
                     task_pool<processor_job> m_proc_pool;
-                    
+                    //Stores the mutex for accessing the incomplete jobs map 
+                    recursive_mutex m_sessions_lock;
+                    //Stores the incomplete jobs per session. Once a job
+                    //is complete it shall be scheduled for an execution.
+                    sessions_map m_sessions;
                 };
             }
         }
