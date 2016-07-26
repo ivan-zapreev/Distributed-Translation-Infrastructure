@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="CMakeFiles"
                    displayName="CMakeFiles"
@@ -21,23 +21,6 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
-      <df name="common">
-        <df name="messaging">
-          <in>session_job_pool_base.hpp</in>
-        </df>
-        <df name="utils">
-          <df name="file">
-            <in>utils.hpp</in>
-          </df>
-        </df>
-      </df>
-      <df name="processor">
-        <in>processor_console.hpp</in>
-        <in>processor_job.hpp</in>
-        <in>processor_manager.hpp</in>
-        <in>processor_parameters.hpp</in>
-        <in>processor_server.hpp</in>
-      </df>
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -63,6 +46,7 @@
       </df>
       <df name="common">
         <df name="messaging">
+          <in>language_registry.cpp</in>
           <in>messaging.cpp</in>
           <in>trans_job_code.cpp</in>
         </df>
@@ -181,15 +165,8 @@
               <pElem>ext</pElem>
               <pElem>build</pElem>
             </incDir>
-            <preprocessorList>
-              <Elem>NDEBUG</Elem>
-            </preprocessorList>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
       <item path="/usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c"
             ex="false"
@@ -222,13 +199,8 @@
         <ccTool flags="1">
         </ccTool>
       </item>
-      <folder path="2">
+      <folder path="2/common">
         <ccTool>
-          <incDir>
-            <pElem>inc</pElem>
-            <pElem>ext</pElem>
-            <pElem>build</pElem>
-          </incDir>
           <preprocessorList>
             <Elem>NDEBUG</Elem>
           </preprocessorList>
@@ -239,6 +211,9 @@
           <incDir>
             <pElem>build/CMakeFiles/CMakeTmp</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </folder>
       <folder path="Modules">
@@ -246,44 +221,20 @@
           <incDir>
             <pElem>build/CMakeFiles/CMakeTmp</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </folder>
-      <item path="inc/common/messaging/session_job_pool_base.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/common/utils/file/utils.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/processor/processor_console.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/processor/processor_job.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/processor/processor_manager.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/processor/processor_parameters.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/processor/processor_server.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/balancer/balancer_job.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/balancer/balancer_job.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/balancer/balancer_parameters.cpp"
             ex="false"
             tool="1"
             flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/balancer/bpbd_balancer.cpp" ex="false" tool="1" flavor2="8">
@@ -306,6 +257,13 @@
         </ccTool>
       </item>
       <item path="src/client/trans_job_status.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/common/messaging/language_registry.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
         <ccTool flags="0">
         </ccTool>
       </item>
@@ -334,12 +292,16 @@
         <ccTool flags="0">
         </ccTool>
       </item>
-      <item path="src/processor/bpbd_processor.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/processor/bpbd_processor.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/processor/processor_parameters.cpp"
             ex="false"
             tool="1"
-            flavor2="0">
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/server/bpbd_server.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">

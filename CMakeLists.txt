@@ -129,6 +129,7 @@ if(UNIX AND NOT APPLE)
     target_link_libraries(bpbd-server rt pthread)
     target_link_libraries(bpbd-client rt pthread)
     target_link_libraries(bpbd-balancer rt pthread)
+    target_link_libraries(bpbd-processor rt pthread)
 endif()
 
 #####################################################################################3

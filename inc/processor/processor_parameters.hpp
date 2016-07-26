@@ -285,7 +285,7 @@ namespace uva {
                  * @param config the config object
                  * @return the stream that we output into
                  */
-                inline std::ostream& operator<<(std::ostream& stream, const language_config & config);
+                std::ostream& operator<<(std::ostream& stream, const language_config & config);
 
                 /**
                  * Allows to output the parameters object to the stream

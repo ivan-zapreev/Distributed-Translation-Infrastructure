@@ -42,7 +42,7 @@ namespace uva {
                 const string processor_parameters::LANG_CONFIGS_PARAM_NAME = "land_configs";
                 const string processor_parameters::LANG_CONFIGS_DELIMITER_STR = "|";
 
-                inline std::ostream& operator<<(std::ostream& stream, const language_config & config) {
+                std::ostream& operator<<(std::ostream& stream, const language_config & config) {
                     if (!config.m_lang.empty() || !config.m_call_templ.empty()) {
                         stream << "{";
 

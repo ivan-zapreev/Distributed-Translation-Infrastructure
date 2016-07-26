@@ -377,7 +377,7 @@ namespace uva {
                      * phase::REQUEST_PHASE - this is when we need to send the request to the translator
                      * phase::REPLY_PHASE - this is when the translator's response is received and we need to send it to the client.
                      */
-                    void execute() {
+                    inline void execute() {
                         recursive_guard guard(m_g_lock);
 
                         switch (m_phase) {
