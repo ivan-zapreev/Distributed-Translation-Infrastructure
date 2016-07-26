@@ -31,8 +31,12 @@
 #include "processor/processor_parameters.hpp"
 #include "processor/processor_manager.hpp"
 
+#include "processor/messaging/pre_proc_req_in.hpp"
+#include "processor/messaging/post_proc_req_in.hpp"
+
 using namespace std;
 using namespace uva::smt::bpbd::common::messaging;
+using namespace uva::smt::bpbd::processor::messaging;
 
 namespace uva {
     namespace smt {
@@ -111,21 +115,17 @@ namespace uva {
                     /**
                      * @see websocket_server
                      */
-                    virtual void language_request(websocketpp::connection_hdl hdl, supp_lang_req_in * msg) override {
-                        //Destroy the message
-                        delete msg;
-                        
-                        //ToDo: Throw a non-supported exception
+                    virtual void pre_process_request(websocketpp::connection_hdl hdl, pre_proc_req_in * msg) override {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
                     }
 
                     /**
                      * @see websocket_server
                      */
-                    virtual void translation_request(websocketpp::connection_hdl hdl, trans_job_req_in * msg) override {
-                        //Destroy the message
-                        delete msg;
-                        
-                        //ToDo: Throw a non-supported exception
+                    virtual void post_process_request(websocketpp::connection_hdl hdl, post_proc_req_in * msg) override {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
                     }
 
                 private:

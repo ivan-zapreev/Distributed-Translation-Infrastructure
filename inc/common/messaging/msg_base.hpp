@@ -57,7 +57,15 @@ namespace uva {
                         //The translation job request message
                         MESSAGE_TRANS_JOB_REQ = 3,
                         //The translation job response message
-                        MESSAGE_TRANS_JOB_RESP = 4
+                        MESSAGE_TRANS_JOB_RESP = 4,
+                        //The pre-processor job request message
+                        MESSAGE_PRE_PROC_JOB_REQ = 5,
+                        //The pre-processor job response message
+                        MESSAGE_PRE_PROC_JOB_RESP = 6,
+                        //The post-processor job request message
+                        MESSAGE_POST_PROC_JOB_REQ = 7,
+                        //The post-processor job response message
+                        MESSAGE_POST_PROC_JOB_RESP = 8
                     };
 
                     /**

@@ -41,6 +41,9 @@
 #include "server/messaging/supp_lang_resp_out.hpp"
 #include "server/messaging/trans_job_resp_out.hpp"
 
+#include "processor/messaging/pre_proc_req_in.hpp"
+#include "processor/messaging/post_proc_req_in.hpp"
+
 using namespace std;
 using namespace std::placeholders;
 
@@ -53,6 +56,7 @@ using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 
 using namespace uva::smt::bpbd::server::messaging;
+using namespace uva::smt::bpbd::processor::messaging;
 
 #ifndef WEBSOCKET_SERVER_HPP
 #define WEBSOCKET_SERVER_HPP
@@ -223,6 +227,12 @@ namespace uva {
                                     case msg_type::MESSAGE_SUPP_LANG_REQ:
                                         language_request(hdl, new supp_lang_req_in(jmsg));
                                         break;
+                                    case msg_type::MESSAGE_PRE_PROC_JOB_REQ:
+                                        pre_process_request(hdl, new pre_proc_req_in(jmsg));
+                                        break;
+                                    case msg_type::MESSAGE_POST_PROC_JOB_REQ:
+                                        post_process_request(hdl, new post_proc_req_in(jmsg));
+                                        break;
                                     default:
                                         THROW_EXCEPTION(string("Unsupported request type: ") + to_string(jmsg->get_msg_type()));
                                 }
@@ -234,22 +244,65 @@ namespace uva {
                         }
 
                         /**
-                         * Allows to process a new translation job request. It is the
+                         * Allows to process a new supported languages request. It is the
                          * responsibility of the function implementation to destroy
-                         * the message object.
+                         * the message object. This method is to be overridden. The
+                         * default implementation just throws an unsupported exception.
                          * @param hdl the session handler
                          * @param msg the received message
                          */
-                        virtual void translation_request(websocketpp::connection_hdl hdl, trans_job_req_in * msg) = 0;
+                        virtual void language_request(websocketpp::connection_hdl hdl, supp_lang_req_in * msg) {
+                            //Destroy the message
+                            delete msg;
+                            //Throw a non-supported exception
+                            THROW_NOT_SUPPORTED();
+                        }
+
+                        /**
+                         * Allows to process a new translation job request. It is the
+                         * responsibility of the function implementation to destroy
+                         * the message object. This method is to be overridden. The
+                         * default implementation just throws an unsupported exception.
+                         * @param hdl the session handler
+                         * @param msg the received message
+                         */
+                        virtual void translation_request(websocketpp::connection_hdl hdl, trans_job_req_in * msg) {
+                            //Destroy the message
+                            delete msg;
+                            //Throw a non-supported exception
+                            THROW_NOT_SUPPORTED();
+                        }
 
                         /**
                          * Allows to process a new supported languages request. It is the
                          * responsibility of the function implementation to destroy
-                         * the message object.
+                         * the message object. This method is to be overridden. The
+                         * default implementation just throws an unsupported exception.
                          * @param hdl the session handler
                          * @param msg the received message
                          */
-                        virtual void language_request(websocketpp::connection_hdl hdl, supp_lang_req_in * msg) = 0;
+                        virtual void pre_process_request(websocketpp::connection_hdl hdl, pre_proc_req_in * msg) {
+                            //Destroy the message
+                            delete msg;
+                            //Throw a non-supported exception
+                            THROW_NOT_SUPPORTED();
+                        }
+
+
+                        /**
+                         * Allows to process a new supported languages request. It is the
+                         * responsibility of the function implementation to destroy
+                         * the message object. This method is to be overridden. The
+                         * default implementation just throws an unsupported exception.
+                         * @param hdl the session handler
+                         * @param msg the received message
+                         */
+                        virtual void post_process_request(websocketpp::connection_hdl hdl, post_proc_req_in * msg) {
+                            //Destroy the message
+                            delete msg;
+                            //Throw a non-supported exception
+                            THROW_NOT_SUPPORTED();
+                        }
 
                     private:
                         //Stores the server object

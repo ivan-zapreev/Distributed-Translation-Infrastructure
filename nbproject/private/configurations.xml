@@ -740,6 +740,8 @@
         </df>
       </df>
       <df name="processor">
+        <df name="messaging">
+        </df>
         <in>processor_console.hpp</in>
         <in>processor_job.hpp</in>
         <in>processor_manager.hpp</in>

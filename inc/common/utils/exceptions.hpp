@@ -56,6 +56,7 @@ namespace uva {
 #define THROW_MUST_OVERRIDE() THROW_EXCEPTION("Must be overridden in the sub class!")
 #define THROW_MUST_NOT_CALL() THROW_EXCEPTION("Must not be called, is not needed!")
 #define THROW_NOT_IMPLEMENTED() THROW_EXCEPTION("This functionality is not yet implemented!")
+#define THROW_NOT_SUPPORTED() THROW_EXCEPTION("This functionality is not supported!")
 #define ASSERT_CONDITION_THROW(CONDITION, MESSAGE) \
     if(CONDITION) { \
         THROW_EXCEPTION(MESSAGE); \
