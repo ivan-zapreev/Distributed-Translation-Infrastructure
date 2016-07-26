@@ -40,12 +40,17 @@
 #include "processor/processor_parameters.hpp"
 #include "processor/processor_job.hpp"
 
+#include "processor/messaging/pre_proc_req_in.hpp"
+#include "processor/messaging/post_proc_req_in.hpp"
+
 using namespace std;
 using namespace std::placeholders;
 
 using namespace uva::utils::logging;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
+
+using namespace uva::smt::bpbd::processor::messaging;
 
 namespace uva {
     namespace smt {
@@ -69,10 +74,10 @@ namespace uva {
                      * The basic constructor
                      * @param num_threads the number of threads to handle the processor jobs
                      */
-                    processor_manager(const size_t num_threads)
+                    processor_manager(const processor_parameters & params)
                     : session_manager(), session_job_pool_base(
                     bind(&processor_manager::notify_job_done, this, _1)),
-                    m_proc_pool(num_threads) {
+                    m_params(params), m_proc_pool(params.m_num_threads) {
                     }
 
                     /**
@@ -99,6 +104,26 @@ namespace uva {
                      */
                     inline void stop() {
                         session_job_pool_base<processor_job>::stop();
+                    }
+
+                    /**
+                     * Allows to schedule the incoming pre-processor request
+                     * @param hdl the connection handler to identify the session object.
+                     * @param msg a pointer to the request data, not NULL
+                     */
+                    inline void pre_process(websocketpp::connection_hdl hdl, pre_proc_req_in * msg) {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                    /**
+                     * Allows to schedule the incoming post-processor request
+                     * @param hdl the connection handler to identify the session object.
+                     * @param msg a pointer to the request data, not NULL
+                     */
+                    inline void post_process(websocketpp::connection_hdl hdl, post_proc_req_in * msg) {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
                     }
 
                 protected:
@@ -131,9 +156,12 @@ namespace uva {
                         LOG_DEBUG << "Finishing off processed job " << *proc_job << END_LOG;
 
                         //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
                     }
 
                 private:
+                    //Stores the reference to the set of processor parameters
+                    const processor_parameters & m_params;
                     //Stores the tasks pool
                     task_pool<processor_job> m_proc_pool;
                     

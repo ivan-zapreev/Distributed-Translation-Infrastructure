@@ -35,7 +35,7 @@
 
 #include "common/messaging/msg_base.hpp"
 #include "common/messaging/trans_session_id.hpp"
-#include "common/messaging/trans_job_id.hpp"
+#include "common/messaging/job_id.hpp"
 #include "common/messaging/status_code.hpp"
 
 using namespace std;

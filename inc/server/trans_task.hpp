@@ -35,7 +35,7 @@
 #include "common/utils/threads/threads.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/messaging/trans_session_id.hpp"
-#include "common/messaging/trans_job_id.hpp"
+#include "common/messaging/job_id.hpp"
 #include "common/messaging/status_code.hpp"
 
 #include "server/decoder/de_configurator.hpp"

@@ -1,6 +1,6 @@
 /* 
- * File:   trans_job_id.hpp
- * Author: Dr. Ivan S. Zapreev
+ * File:   messaging.cpp
+ * Author: zapreevis
  *
  * Visit my Linked-in profile:
  *      <https://nl.linkedin.com/in/zapreevis>
@@ -20,11 +20,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on January 22, 2016, 3:53 PM
+ * Created on July 26, 2016, 1:29 PM
  */
 
-#ifndef TRANS_JOB_ID_HPP
-#define TRANS_JOB_ID_HPP
+#include "processor/messaging/pre_proc_req_in.hpp"
+#include "processor/messaging/post_proc_req_in.hpp"
 
 namespace uva {
     namespace smt {
@@ -32,20 +32,14 @@ namespace uva {
             namespace common {
                 namespace messaging {
 
-                    //Make the typedef for the translation job id
-                    typedef uint64_t job_id_type;
-
-                    namespace job_id {
-                        //Stores the undefined value of the translation job id
-                        static constexpr job_id_type UNDEFINED_JOB_ID = 0;
-                        //Stores the minimum allowed translation job id
-                        static constexpr job_id_type MINIMUM_JOB_ID = 1;
-                    }
+                    const char * JOB_ID_FIELD_NAME = "job_id";
+                    const char * TASK_ID_FIELD_NAME = "task_id";
+                    const char * NUM_TASKS_FIELD_NAME = "num_tasks";
+                    const char * SOURCE_LANG_FIELD_NAME = "lang";
+                    const char * SOURCE_TEXT_FIELD_NAME = "text";
+                    const char * DETECT_LANGUAGE_VALUE = "<auto>";
                 }
             }
         }
     }
 }
-
-#endif /* TRANS_JOB_ID_HPP */
-

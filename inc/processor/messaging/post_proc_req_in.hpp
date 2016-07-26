@@ -26,8 +26,10 @@
 #ifndef POST_PROC_REQ_IN_HPP
 #define	POST_PROC_REQ_IN_HPP
 
+#include "common/messaging/language_registry.hpp"
 #include "common/messaging/incoming_msg.hpp"
 #include "common/messaging/post_proc_req.hpp"
+#include "common/messaging/job_id.hpp"
 
 using namespace uva::smt::bpbd::common::messaging;
 

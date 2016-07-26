@@ -692,7 +692,6 @@
           <in>status_code.hpp</in>
           <in>supp_lang_req.hpp</in>
           <in>supp_lang_resp.hpp</in>
-          <in>trans_job_id.hpp</in>
           <in>trans_job_req.hpp</in>
           <in>trans_job_resp.hpp</in>
           <in>trans_sent_data.hpp</in>
@@ -913,6 +912,8 @@
         </df>
       </df>
       <df name="processor">
+        <df name="messaging">
+        </df>
         <in>bpbd_processor.cpp</in>
         <in>processor_parameters.cpp</in>
       </df>

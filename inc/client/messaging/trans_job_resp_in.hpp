@@ -28,7 +28,7 @@
 
 #include "common/messaging/trans_job_resp.hpp"
 #include "common/messaging/incoming_msg.hpp"
-#include "common/messaging/trans_job_id.hpp"
+#include "common/messaging/job_id.hpp"
 
 #include "client/messaging/trans_sent_data_in.hpp"
 

@@ -39,6 +39,19 @@ namespace uva {
                      */
                     class pre_proc_req : public request_msg {
                     public:
+                        //Stores the job id field name
+                        static const char * JOB_ID_FIELD_NAME;
+                        //Stores the the task id field name
+                        static const char * TASK_ID_FIELD_NAME;
+                        //Stores the the number of tasks field name
+                        static const char * NUM_TASKS_FIELD_NAME;
+                        //Stores the the source language field name
+                        static const char * SOURCE_LANG_FIELD_NAME;
+                        //Stores the the source text field name
+                        static const char * SOURCE_TEXT_FIELD_NAME;
+                        //Stores the value to be used in case the
+                        //language is to be automatically detected.
+                        static const char * DETECT_LANGUAGE_VALUE;
 
                         /**
                          * The basic constructor

@@ -35,7 +35,7 @@
 #include "common/utils/threads/task_pool.hpp"
 
 #include "common/messaging/session_manager.hpp"
-#include "common/messaging/trans_job_id.hpp"
+#include "common/messaging/job_id.hpp"
 #include "common/messaging/session_job_pool_base.hpp"
 
 #include "server/messaging/trans_job_req_in.hpp"

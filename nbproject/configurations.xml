@@ -226,6 +226,8 @@
           </preprocessorList>
         </ccTool>
       </folder>
+      <item path="inc/common/messaging/job_id.hpp" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="inc/common/messaging/post_proc_req.hpp"
             ex="false"
             tool="3"
@@ -315,6 +317,11 @@
       <item path="src/processor/bpbd_processor.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/processor/messaging/messaging.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/processor/processor_parameters.cpp"
             ex="false"

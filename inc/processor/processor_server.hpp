@@ -59,7 +59,7 @@ namespace uva {
                      */
                     processor_server(const processor_parameters & params)
                     : websocket_server(params.m_server_port),
-                    m_manager(params.m_num_threads) {
+                    m_manager(params) {
                         //Provide the manager with the functional for sending
                         //the translation response and getting the adapters
                         m_manager.set_response_sender(bind(&processor_server::send_response, this, _1, _2));
@@ -116,16 +116,14 @@ namespace uva {
                      * @see websocket_server
                      */
                     virtual void pre_process_request(websocketpp::connection_hdl hdl, pre_proc_req_in * msg) override {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        m_manager.pre_process(hdl, msg);
                     }
 
                     /**
                      * @see websocket_server
                      */
                     virtual void post_process_request(websocketpp::connection_hdl hdl, post_proc_req_in * msg) override {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        m_manager.post_process(hdl, msg);
                     }
 
                 private:

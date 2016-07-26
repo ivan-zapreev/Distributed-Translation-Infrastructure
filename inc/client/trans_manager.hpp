@@ -40,7 +40,7 @@
 #include "common/utils/id_manager.hpp"
 
 #include "common/messaging/status_code.hpp"
-#include "common/messaging/trans_job_id.hpp"
+#include "common/messaging/job_id.hpp"
 
 #include "client/client_config.hpp"
 #include "client/translation_client.hpp"

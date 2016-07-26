@@ -28,7 +28,7 @@
 
 #include "common/messaging/outgoing_msg.hpp"
 #include "common/messaging/trans_job_req.hpp"
-#include "common/messaging/trans_job_id.hpp"
+#include "common/messaging/job_id.hpp"
 
 using namespace uva::smt::bpbd::common::messaging;
 

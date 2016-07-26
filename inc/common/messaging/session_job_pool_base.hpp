@@ -30,7 +30,7 @@
 #include <vector>
 
 #include "common/messaging/trans_session_id.hpp"
-#include "common/messaging/trans_job_id.hpp"
+#include "common/messaging/job_id.hpp"
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
