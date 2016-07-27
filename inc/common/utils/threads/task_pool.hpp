@@ -204,9 +204,6 @@ namespace uva {
                 inline void plan_new_task(pool_task_ptr task) {
                     LOG_DEBUG << "Request adding a new task " << *task << " to the pool!" << END_LOG;
 
-                    //Set the translation task with the method that should be called on the task cancel
-                    task->set_from_pool_remover(bind(&task_pool::remove_task_from_pool, this, _1));
-
                     //Add the task to the pool
                     {
                         unique_guard guard(m_queue_mutex);
@@ -238,34 +235,6 @@ namespace uva {
 
                 //Stores the stopping flag
                 a_bool_flag m_stop;
-
-                /**
-                 * The method that will be called in case a task is canceled.
-                 * If the tasks is in the pool then it will be removed from it.
-                 * \todo {To improve performance we could try checking if the
-                 * tasks is already running, and if not then search the queue.
-                 * Or use other data structure for a more efficient task removal.
-                 * This is for the future, in case the performance is affected.}
-                 * @param task the task that is to be removed from the pool, if present
-                 */
-                inline void remove_task_from_pool(pool_task_ptr task) {
-                    unique_guard guard(m_queue_mutex);
-
-                    LOG_DEBUG << "Request task  " << *task << " removal from the pool!" << END_LOG;
-
-                    //Check if the task is in the pool, if yes then remove it
-                    for (tasks_queue_iter_type it = m_tasks.begin(); it != m_tasks.end(); ++it) {
-                        if ((*it) == task) {
-                            m_tasks.erase(it);
-                            LOG_DEBUG << "Task  " << *task << " is found and erased" << END_LOG;
-                            break;
-                        }
-                    }
-
-                    LOG_DEBUG << "Task  " << *task << " removal from the pool is done!" << END_LOG;
-
-                    //Note: If the task is already being run then it will be canceled by itself
-                }
 
             private:
 

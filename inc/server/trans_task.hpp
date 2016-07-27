@@ -70,8 +70,6 @@ namespace uva {
                 public:
                     //Define the done job notifier function type
                     typedef function<void(trans_task_ptr) > done_task_notifier;
-                    //Define the canceled job notifier function type
-                    typedef function<void(trans_task_ptr) > task_pool_remover;
 
                     /**
                      * The basic constructor allowing to initialize the main class constants
@@ -99,18 +97,9 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to set in the method that shall remove the task from the pool if called
-                     * @param notify_task_cancel_func the function to call in case this task is being canceled.
-                     */
-                    void set_from_pool_remover(task_pool_remover pool_task_remove_func) {
-                        LOG_DEBUG << "Setting the task remove function!" << END_LOG;
-                        m_pool_task_remove_func = pool_task_remove_func;
-                    }
-
-                    /**
                      * Allows to cancel the translation task
                      */
-                    void cancel() {
+                    inline void cancel() {
                         LOG_DEBUG1 << "Canceling the task " << m_task_id << " translation ..." << END_LOG;
 
                         //Synchronize to avoid canceling the job that is already finished.
@@ -132,7 +121,7 @@ namespace uva {
                     /**
                      * Performs the translation for the given sentence
                      */
-                    void execute() {
+                    inline void execute() {
                         LOG_DEBUG1 << "Starting the task " << m_task_id << " translation ..." << END_LOG;
 
                         //Perform the decoding task
@@ -291,7 +280,7 @@ namespace uva {
                      * This includes sending the notification to the translation job that the task is finished.
                      * NOTE: This method is not thread safe!
                      */
-                    void process_task_result() {
+                    inline void process_task_result() {
                         //Set the task is not canceled then set the result, otherwise set the canceled code.
                         if (m_status_code == status_code::RESULT_ERROR) {
                             //If there was an error during translation send back the original text
@@ -353,9 +342,6 @@ namespace uva {
                     //also collect the translation job result into one, this shall recursively
                     //enter the guarded area
                     recursive_mutex m_end_lock;
-
-                    //Stores the function to be called in case the tasks is canceled and we want to remove it from the pool
-                    task_pool_remover m_pool_task_remove_func;
 
                     //Stores the static instance of the id manager
                     static id_manager<task_id_type> m_id_mgr;

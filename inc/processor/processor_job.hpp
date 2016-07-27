@@ -78,8 +78,6 @@ namespace uva {
 
                     //Define the function type for the function used to set the job result
                     typedef function<void(proc_job_ptr) > done_job_notifier;
-                    //Define the function that is to be called to remove the task from the pool
-                    typedef function<void(proc_job_ptr) > task_pool_remover;
 
                     /**
                      * The basic constructor
@@ -99,6 +97,7 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~processor_job() {
+                        //ToDo: Delete the requests
                     }
 
                     /**
@@ -125,15 +124,6 @@ namespace uva {
                      */
                     inline void set_done_job_notifier(done_job_notifier notify_job_done_func) {
                         m_notify_job_done_func = notify_job_done_func;
-                    }
-
-                    /**
-                     * Allows to set in the method that shall remove the task from the pool if called
-                     * @param notify_task_cancel_func the function to call in case this task is being canceled.
-                     */
-                    inline void set_from_pool_remover(task_pool_remover pool_task_remove_func) {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
                     }
 
                     /**

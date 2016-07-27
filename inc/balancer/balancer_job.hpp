@@ -104,8 +104,6 @@ namespace uva {
 
                     //Define the function type for the function used to set the translation job result
                     typedef function<void(bal_job_ptr) > done_job_notifier;
-                    //Define the function that is to be called to remove the task from the pool
-                    typedef function<void(bal_job_ptr) > task_pool_remover;
 
                     /**
                      * This enumeration stores the balancer job internal states
@@ -198,16 +196,6 @@ namespace uva {
                      */
                     inline void set_done_job_notifier(done_job_notifier notify_job_done_func) {
                         m_notify_job_done_func = notify_job_done_func;
-                    }
-
-                    /**
-                     * Allows to set in the method that shall remove the task from the pool if called
-                     * @param notify_task_cancel_func the function to call in case this task is being canceled.
-                     */
-                    inline void set_from_pool_remover(task_pool_remover pool_task_remove_func) {
-                        //Do not store the function, we do not want to remove it from the pool.
-                        //This job, even if canceled will be executed by the pool's worker
-                        //and will be removed from the pool by him as well. 
                     }
 
                     /**
