@@ -27,6 +27,7 @@
 #define PROCESSOR_JOB_HPP
 
 #include <ostream>
+#include <fstream>
 
 #include "common/utils/id_manager.hpp"
 #include "common/utils/exceptions.hpp"
@@ -87,8 +88,11 @@ namespace uva {
                      */
                     processor_job(const language_config & config,
                             const session_id_type session_id, proc_req_in *req)
-                    : m_config(config), m_session_id(session_id), m_job_id(req->get_job_id()),
-                    m_num_tasks(req->get_num_tasks()), m_notify_job_done_func(NULL) {
+                    : m_config(config), m_session_id(session_id),
+                    m_job_id(req->get_job_id()), m_num_tasks(req->get_num_tasks()),
+                    m_req_tasks(NULL), m_tasks_count(0), m_notify_job_done_func(NULL) {
+                        //Allocate the required-size array for storing the processor requests
+                        m_req_tasks = new proc_req_in_ptr[m_num_tasks]();
                         //Add the request
                         add_request(req);
                     }
@@ -97,7 +101,14 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~processor_job() {
-                        //ToDo: Delete the requests
+                        //Delete the requests, only the received ones, not NULL
+                        for (size_t idx = 0; idx < m_num_tasks; ++idx) {
+                            if (m_req_tasks[idx] != NULL) {
+                                delete m_req_tasks[idx];
+                            }
+                        }
+                        //Delete the array of tasks
+                        delete[] m_req_tasks;
                     }
 
                     /**
@@ -135,27 +146,36 @@ namespace uva {
                      * Allows to wait until the job is finished, this
                      * includes the notification of the job pool.
                      */
-                    inline void synch_job_finished() {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
-                    }
+                    virtual void synch_job_finished() = 0;
 
                     /**
-                     * Allows to cancel the given translation job by telling all the translation tasks to stop.
-                     * Calling this method indicates that the job is canceled due to the client disconnect
+                     * Allows to cancel the given processor job. Calling this method
+                     * indicates that the job is canceled due to the client disconnect.
                      */
-                    inline void cancel() {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
-                    }
+                    virtual void cancel() = 0;
 
                     /**
                      * Allows to add a new pre-processor request to the job
                      * @param req the pre-processor request
                      */
                     inline void add_request(proc_req_in * req) {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        unique_guard guard(m_req_tasks_lock);
+
+                        //Get the task index
+                        uint64_t task_idx = req->get_task_idx();
+
+                        //Assert sanity
+                        ASSERT_SANITY_THROW((m_req_tasks[task_idx] != NULL),
+                                string("The task index ") + to_string(task_idx) +
+                                string(" of the job request ") + to_string(m_job_id) +
+                                string(" from session ") + to_string(m_session_id) +
+                                string(" is already set!"));
+
+                        //Store the task
+                        m_req_tasks[task_idx] = req;
+
+                        //Increment the number of tasks
+                        ++m_tasks_count;
                     }
 
                     /**
@@ -163,6 +183,18 @@ namespace uva {
                      * @return true if the job is complete and is ready for execution otherwise false
                      */
                     inline bool is_complete() {
+                        unique_guard guard(m_req_tasks_lock);
+
+                        return (m_tasks_count == m_num_tasks);
+                    }
+
+                protected:
+
+                    /**
+                     * Allows to dump the request text into the file with the given name.
+                     * @param file_name the file name to dump the file into
+                     */
+                    inline void store_text_to_file(const string & file_name) {
                         //ToDo: Implement
                         THROW_NOT_IMPLEMENTED();
                     }
@@ -176,6 +208,12 @@ namespace uva {
                     const job_id_type m_job_id;
                     //Stores the number of tasks associated with the job
                     const uint64_t m_num_tasks;
+                    //Stores the lock for acessing the tasks array
+                    mutex m_req_tasks_lock;
+                    //Stores the array of pointers to the processor job requests
+                    proc_req_in_ptr * m_req_tasks;
+                    //Stores the current number of received requests
+                    uint64_t m_tasks_count;
 
                     //The done job notifier
                     done_job_notifier m_notify_job_done_func;

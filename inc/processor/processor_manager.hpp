@@ -201,7 +201,7 @@ namespace uva {
 
                                 //If the language is known then use the config
                                 if (iter != mapping.end()) {
-                                    job = new job_type(iter->second, session_id, msg);
+                                    job = new job_type(*iter->second, session_id, msg);
                                 } else {
                                     //If the language is not known use the default
                                     job = new job_type(def_config, session_id, msg);

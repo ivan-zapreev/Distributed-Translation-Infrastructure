@@ -72,10 +72,11 @@ namespace uva {
                         }
 
                         /**
-                         * Allows to get this task id
-                         * @return the client-issued job id
+                         * Allows to get this task index, the task indexes start with
+                         * zero and correspond to the text piece index in the job.
+                         * @return the task index represented by this request
                          */
-                        inline job_id_type get_task_id() const {
+                        inline job_id_type get_task_idx() const {
                             const Document & json = m_inc_msg->get_json();
                             return json[TASK_ID_FIELD_NAME].GetUint64();
                         }
@@ -125,6 +126,9 @@ namespace uva {
                         const incoming_msg * m_inc_msg;
 
                     };
+                    
+                    //Typedef the pointer to the request
+                    typedef proc_req_in * proc_req_in_ptr;
                 }
             }
         }

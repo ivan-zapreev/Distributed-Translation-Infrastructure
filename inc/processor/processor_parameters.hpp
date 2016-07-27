@@ -63,6 +63,15 @@ namespace uva {
                     static const string LANGUAGE_TEMPL_PARAM_NAME;
 
                     /**
+                     * The basic constructor for the structure that allows
+                     * to set the reference to the work directory
+                     * @param work_dir  the reference to the work directory name
+                     */
+                    language_config_struct(const string & work_dir)
+                    : m_work_dir(work_dir), m_lang(""), m_call_templ("") {
+                    }
+
+                    /**
                      * Allows to check if the language configuration is set.
                      * I.e. that there is call template set.
                      * @return true if the call template is set, otherwise false.
@@ -116,7 +125,17 @@ namespace uva {
                         m_call_templ = call_templ;
                     }
 
+                    /**
+                     * Allows to get the work directory name
+                     * @return the work directory name
+                     */
+                    inline const string & get_work_dir() const {
+                        return m_work_dir;
+                    }
+
                 private:
+                    //Stores the reference to the work directory name string
+                    const string & m_work_dir;
                     //Stores the language 
                     string m_lang;
                     //Stores the script call template
@@ -126,9 +145,12 @@ namespace uva {
                     friend std::ostream& operator<<(std::ostream&, const language_config &);
                 };
 
-                //Typedef the language id to configuration map
-                typedef map<language_uid, language_config> lang_to_conf_map;
+                //Typedef the pointer to the language config
+                typedef language_config* language_config_ptr;
                 
+                //Typedef the language id to configuration map
+                typedef map<language_uid, language_config_ptr> lang_to_conf_map;
+
                 /**
                  * This is the storage for processor parameters:
                  * Responsibilities:
@@ -181,6 +203,26 @@ namespace uva {
                     lang_to_conf_map m_post_configs;
 
                     /**
+                     * The basic constructor
+                     */
+                    processor_parameters_struct()
+                    : m_def_pre_config(m_work_dir), m_def_post_config(m_work_dir) {
+                    }
+
+                    /**
+                     * The basic destructor
+                     */
+                    virtual ~processor_parameters_struct() {
+                        //Iterate through the maps and delete the language configuration objects
+                        for (auto iter = m_pre_configs.begin(); iter != m_pre_configs.end(); ++iter) {
+                            delete iter->second;
+                        }
+                        for (auto iter = m_post_configs.begin(); iter != m_post_configs.end(); ++iter) {
+                            delete iter->second;
+                        }
+                    }
+
+                    /**
                      * Allows to add a new translator config.
                      * @param lang the language, if empty then the call templates
                      *        are for the default pre-/post-processors, is trimmed,
@@ -215,12 +257,22 @@ namespace uva {
 
                             //Register the pre script if not empty
                             if (!pre_call_templ.empty()) {
-                                m_pre_configs[uid].set_call_template(lang, pre_call_templ);
+                                //Instantiate a new language config
+                                language_config_ptr conf = new language_config(m_work_dir);
+                                //Set it with the data
+                                conf->set_call_template(lang, pre_call_templ);
+                                //Store it in the mapping
+                                m_pre_configs[uid] = conf;
                             }
 
                             //Register the post script if not empty
                             if (!post_call_templ.empty()) {
-                                m_post_configs[uid].set_call_template(lang, post_call_templ);
+                                //Instantiate a new language config
+                                language_config * conf = new language_config(m_work_dir);
+                                //Set it with the data
+                                conf->set_call_template(lang, post_call_templ);
+                                //Store it in the mapping
+                                m_post_configs[uid] = conf;
                             }
                         }
                     }
@@ -266,8 +318,7 @@ namespace uva {
                      * @return a ready to call string or an empty string if none could be found
                      */
                     static inline string get_lang_call(string proc_job_id, string lang,
-                            const map<language_uid, language_config> & configs,
-                            const language_config & def) {
+                            const lang_to_conf_map & configs, const language_config & def) {
                         //Register the language uid
                         language_uid uid = language_registry::get_uid(lang);
 
@@ -278,9 +329,9 @@ namespace uva {
                         //a string otherwise try the default
                         if (iter != configs.end()) {
                             //Get the entry to work with
-                            const language_config & entry = iter->second;
+                            const language_config_ptr entry = iter->second;
                             //Return the result
-                            return entry.get_call_string(proc_job_id, lang);
+                            return entry->get_call_string(proc_job_id, lang);
                         } else {
                             //Return the default result
                             return def.get_call_string(proc_job_id, lang);
