@@ -24,7 +24,7 @@
  */
 
 #ifndef PRE_PROC_JOB_HPP
-#define	PRE_PROC_JOB_HPP
+#define PRE_PROC_JOB_HPP
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -57,11 +57,13 @@ namespace uva {
 
                     /**
                      * The basic constructor
+                     * @param config the language configuration, might be undefined.
                      * @param session_id the id of the session from which the translation request is received
                      * @param req the pointer to the pre-processor request, not NULL
                      */
-                    pre_proc_job(const session_id_type session_id, pre_proc_req_in * req)
-                    : processor_job(session_id, req) {
+                    pre_proc_job(const language_config & config,
+                            const session_id_type session_id, pre_proc_req_in * req)
+                    : processor_job(config, session_id, req) {
                     }
 
                     /**
@@ -83,5 +85,5 @@ namespace uva {
     }
 }
 
-#endif	/* PRE_PROC_JOB_HPP */
+#endif /* PRE_PROC_JOB_HPP */
 

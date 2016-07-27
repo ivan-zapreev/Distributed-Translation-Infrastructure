@@ -83,11 +83,13 @@ namespace uva {
 
                     /**
                      * The basic constructor
+                     * @param config the language configuration, might be undefined.
                      * @param session_id the id of the session from which the translation request is received
                      * @param req the pointer to the processor request, not NULL
                      */
-                    processor_job(const session_id_type session_id, proc_req_in *req)
-                    : m_session_id(session_id), m_job_id(req->get_job_id()),
+                    processor_job(const language_config & config,
+                            const session_id_type session_id, proc_req_in *req)
+                    : m_config(config), m_session_id(session_id), m_job_id(req->get_job_id()),
                     m_num_tasks(req->get_num_tasks()), m_notify_job_done_func(NULL) {
                         //Add the request
                         add_request(req);
@@ -176,6 +178,8 @@ namespace uva {
                     }
 
                 private:
+                    //Stores the reference to the language config, might be undefined
+                    const language_config & m_config;
                     //Stores the translation client session id
                     const session_id_type m_session_id;
                     //Stores the job id for an easy access

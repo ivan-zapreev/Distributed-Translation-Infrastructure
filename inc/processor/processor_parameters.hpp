@@ -49,7 +49,7 @@ namespace uva {
 
                 //Forward declaration
                 struct language_config_struct;
-                
+
                 //Typedef the structure
                 typedef language_config_struct language_config;
 
@@ -61,6 +61,15 @@ namespace uva {
                     static const string PROC_JOB_ID_TEMPL_PARAM_NAME;
                     //Stores language template parameter name
                     static const string LANGUAGE_TEMPL_PARAM_NAME;
+
+                    /**
+                     * Allows to check if the language configuration is set.
+                     * I.e. that there is call template set.
+                     * @return true if the call template is set, otherwise false.
+                     */
+                    inline bool is_defined() const {
+                        return !m_call_templ.empty();
+                    }
 
                     /**
                      * Allows to get the pre-processor call for the given job id and language.
@@ -117,6 +126,9 @@ namespace uva {
                     friend std::ostream& operator<<(std::ostream&, const language_config &);
                 };
 
+                //Typedef the language id to configuration map
+                typedef map<language_uid, language_config> lang_to_conf_map;
+                
                 /**
                  * This is the storage for processor parameters:
                  * Responsibilities:
@@ -163,10 +175,10 @@ namespace uva {
                     language_config m_def_post_config;
 
                     //Stores the mapping from the language id to its call script template
-                    map<language_uid, language_config> m_pre_configs;
+                    lang_to_conf_map m_pre_configs;
 
                     //Stores the mapping from the language id to its call script template
-                    map<language_uid, language_config> m_post_configs;
+                    lang_to_conf_map m_post_configs;
 
                     /**
                      * Allows to add a new translator config.

@@ -153,7 +153,8 @@ namespace uva {
                      * @param msg a pointer to the request data, not NULL
                      */
                     inline void pre_process(websocketpp::connection_hdl hdl, pre_proc_req_in * msg) {
-                        this->template process<pre_proc_req_in, pre_proc_job>(hdl, msg);
+                        this->template process<pre_proc_req_in, pre_proc_job>(hdl, msg,
+                                m_params.m_pre_configs, m_params.m_def_pre_config);
                     }
 
                     /**
@@ -162,7 +163,8 @@ namespace uva {
                      * @param msg a pointer to the request data, not NULL
                      */
                     inline void post_process(websocketpp::connection_hdl hdl, post_proc_req_in * msg) {
-                        this->template process<post_proc_req_in, post_proc_job>(hdl, msg);
+                        this->template process<post_proc_req_in, post_proc_job>(hdl, msg,
+                                m_params.m_post_configs, m_params.m_def_post_config);
                     }
 
                 protected:
@@ -171,40 +173,58 @@ namespace uva {
                      * Allows to schedule the incoming processor request
                      * @param hdl the connection handler to identify the session object.
                      * @param msg a pointer to the request data, not NULL
+                     * @param mapping the mapping that stores known language id to language configuration relation
+                     * @param def_config the default configuration for the language, might be undefined.
                      */
                     template<typename request_type, typename job_type>
-                    inline void process(websocketpp::connection_hdl hdl, request_type * msg) {
+                    inline void process(websocketpp::connection_hdl hdl, request_type * msg,
+                            const lang_to_conf_map & mapping, const language_config & def_config) {
                         recursive_guard guard(m_sessions_lock);
-
-                        //Throw an exception if we are stopping
-                        ASSERT_CONDITION_THROW(m_is_stopping,
-                                "The server is stopping/stopped, no service!");
 
                         //Get the session id
                         session_id_type session_id = get_session_id(hdl);
-                        //Get the session data associated with the session id
-                        session_data & entry = m_sessions[session_id];
-
                         //Get the job id
                         job_id_type job_id = msg->get_job_id();
-                        //Check if the given request already has a job associated with it.
-                        proc_job_ptr & job = entry.m_jobs[job_id];
 
-                        //If there is no job create one and add it to the map
-                        if (job == NULL) {
-                            job = new job_type(session_id, msg);
-                            LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
+                        //Only process the new request if we are not stopping 
+                        if (!m_is_stopping) {
+                            //Get the session data associated with the session id
+                            session_data & entry = m_sessions[session_id];
+
+                            //Check if the given request already has a job associated with it.
+                            proc_job_ptr & job = entry.m_jobs[job_id];
+
+                            //If there is no job create one and add it to the map
+                            if (job == NULL) {
+                                //Find the pre-processor for the source language
+                                auto iter = mapping.find(msg->get_source_lang_uid());
+
+                                //If the language is known then use the config
+                                if (iter != mapping.end()) {
+                                    job = new job_type(iter->second, session_id, msg);
+                                } else {
+                                    //If the language is not known use the default
+                                    job = new job_type(def_config, session_id, msg);
+                                }
+                                LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
+                            } else {
+                                //Add the request to the job
+                                job->add_request(msg);
+                            }
+
+                            //Check if the job is ready to start
+                            if (job->is_complete()) {
+                                //Remove the job from the mapping
+                                entry.m_jobs.erase(job_id);
+                                //Schedule the complete job for execution
+                                this->plan_new_job(job);
+                            }
                         } else {
-                            //Add the request to the job
-                            job->add_request(msg);
-                        }
-
-                        //Check if the job is ready to start
-                        if (job->is_complete()) {
-                            //Remove the job from the mapping
-                            entry.m_jobs.erase(job_id);
-                            //Schedule the complete job for execution
-                            this->plan_new_job(job);
+                            //If we are stopping then just log a message, the
+                            //client will get disconnected any ways, so no harm.
+                            LOG_DEBUG << "Ignoring a new processor request session_id: "
+                                    << to_string(session_id) << ", job_id: " << to_string(job_id)
+                                    << ", the server is stopping!" << END_LOG;
                         }
                     }
 
@@ -238,7 +258,7 @@ namespace uva {
                      */
                     inline void notify_job_done(proc_job_ptr proc_job) {
                         LOG_DEBUG << "Finishing off processed job " << *proc_job << END_LOG;
-                        
+
                         //There is nothing to be done here.
                     }
 
