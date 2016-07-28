@@ -105,8 +105,8 @@ namespace uva {
                     processor_manager(const processor_parameters & params)
                     : session_manager(), session_job_pool_base(
                     bind(&processor_manager::notify_job_done, this, _1)),
-                    m_is_stopping(false), m_params(params),
-                    m_proc_pool(params.m_num_threads) {
+                    m_is_stopping(false), m_params(params), m_proc_pool(params.m_num_threads),
+                    m_resp_send_func(bind(&processor_manager::send_response, this, _1, _2)){
                     }
 
                     /**
@@ -200,10 +200,10 @@ namespace uva {
 
                                 //If the language is known then use the config
                                 if (iter != mapping.end()) {
-                                    job = new job_type(*iter->second, session_id, msg);
+                                    job = new job_type(*iter->second, session_id, msg, m_resp_send_func);
                                 } else {
                                     //If the language is not known use the default
-                                    job = new job_type(def_config, session_id, msg);
+                                    job = new job_type(def_config, session_id, msg, m_resp_send_func);
                                 }
                                 LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
                             } else {
@@ -284,6 +284,8 @@ namespace uva {
                     const processor_parameters & m_params;
                     //Stores the tasks pool
                     task_pool<processor_job> m_proc_pool;
+                    //Stores the reference to the function for sending the response to the client
+                    const session_response_sender m_resp_send_func;
                     //Stores the mutex for accessing the incomplete jobs map 
                     recursive_mutex m_sessions_lock;
                     //Stores the incomplete jobs per session. Once a job

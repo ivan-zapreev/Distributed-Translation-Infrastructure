@@ -62,6 +62,9 @@ namespace uva {
                 //Typedef the processor job pointer
                 typedef processor_job * proc_job_ptr;
 
+                //Declare the function that will be used to send the translation response to the client
+                typedef function<bool (const session_id_type, const msg_base &) > session_response_sender;
+
                 /**
                  * Allows to log the processor job into an output stream
                  * @param stream the output stream
@@ -86,12 +89,13 @@ namespace uva {
                      * @param config the language configuration, might be undefined.
                      * @param session_id the id of the session from which the translation request is received
                      * @param req the pointer to the processor request, not NULL
+                     * @param resp_send_func the function to send the translation response to the client
                      */
-                    processor_job(const language_config & config,
-                            const session_id_type session_id, proc_req_in *req)
-                    : m_config(config), m_session_id(session_id),
-                    m_job_id(req->get_job_id()), m_num_tasks(req->get_num_tasks()),
-                    m_req_tasks(NULL), m_tasks_count(0), m_notify_job_done_func(NULL) {
+                    processor_job(const language_config & config, const session_id_type session_id,
+                            proc_req_in *req, const session_response_sender & resp_send_func)
+                    : m_config(config), m_session_id(session_id), m_job_id(req->get_job_id()),
+                    m_num_tasks(req->get_num_tasks()), m_req_tasks(NULL), m_tasks_count(0),
+                    m_notify_job_done_func(NULL), m_resp_send_func(resp_send_func) {
                         //Allocate the required-size array for storing the processor requests
                         m_req_tasks = new proc_req_in_ptr[m_num_tasks]();
                         //Add the request
@@ -147,7 +151,9 @@ namespace uva {
                      * Allows to wait until the job is finished, this
                      * includes the notification of the job pool.
                      */
-                    virtual void synch_job_finished() = 0;
+                    void synch_job_finished() {
+                        recursive_guard guard(m_f_lock);
+                    }
 
                     /**
                      * Allows to cancel the given processor job. Calling this method
@@ -197,6 +203,16 @@ namespace uva {
                     }
 
                 protected:
+
+                    /**
+                     * Shall be called once the balancer job is done
+                     */
+                    inline void notify_job_done() {
+                        recursive_guard guard(m_f_lock);
+
+                        //Notify that this job id done
+                        m_notify_job_done_func(this);
+                    }
 
                     /**
                      * Allows to dump the request text into the file with the given name.
@@ -269,6 +285,14 @@ namespace uva {
                         return m_req_tasks[0]->get_language();
                     }
                     
+                    /**
+                     * Allows to send an error response to the server
+                     * @param msg the message
+                     */
+                    inline void send_error_response(const msg_base & msg) {
+                        m_resp_send_func(m_session_id, msg);
+                    }
+
                 private:
                     //Stores the reference to the language config, might be undefined
                     const language_config & m_config;
@@ -285,8 +309,14 @@ namespace uva {
                     //Stores the current number of received requests
                     uint64_t m_tasks_count;
 
+                    //The final lock needed to guard the job ready notification and
+                    //waiting for it is finished before the job is deleted.
+                    recursive_mutex m_f_lock;
                     //The done job notifier
                     done_job_notifier m_notify_job_done_func;
+                    
+                    //Stores the reference to the function for sending the response to the client
+                    const session_response_sender & m_resp_send_func;
                 };
             }
         }

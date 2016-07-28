@@ -358,7 +358,7 @@ namespace uva {
                     const job_notifier m_register_wait_func;
                     //Stores the function for notifying about the error response
                     const job_notifier m_schedule_failed_func;
-                    //Stores the reference to the function for sending the translation response to the client
+                    //Stores the reference to the function for sending the response to the client
                     const session_response_sender m_resp_send_func;
 
                     //Stores the tasks pool

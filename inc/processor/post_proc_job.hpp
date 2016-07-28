@@ -60,10 +60,11 @@ namespace uva {
                      * @param config the language configuration, might be undefined.
                      * @param session_id the id of the session from which the translation request is received
                      * @param req the pointer to the post-processor request, not NULL
+                     * @param resp_send_func the function to send the translation response to the client
                      */
-                    post_proc_job(const language_config & config,
-                            const session_id_type session_id, proc_req_in * req)
-                    : processor_job(config, session_id, req) {
+                    post_proc_job(const language_config & config, const session_id_type session_id,
+                            proc_req_in * req, const session_response_sender & resp_send_func)
+                    : processor_job(config, session_id, req, resp_send_func) {
                     }
 
                     /**
@@ -76,14 +77,6 @@ namespace uva {
                      * @see processor_job
                      */
                     virtual void execute() override {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
-                    }
-
-                    /**
-                     * @see processor_job
-                     */
-                    virtual void synch_job_finished() override {
                         //ToDo: Implement
                         THROW_NOT_IMPLEMENTED();
                     }

@@ -66,10 +66,11 @@ namespace uva {
                      * @param config the language configuration, might be undefined.
                      * @param session_id the id of the session from which the translation request is received
                      * @param req the pointer to the pre-processor request, not NULL
+                     * @param resp_send_func the function to send the translation response to the client
                      */
-                    pre_proc_job(const language_config & config,
-                            const session_id_type session_id, proc_req_in * req)
-                    : processor_job(config, session_id, req) {
+                    pre_proc_job(const language_config & config, const session_id_type session_id,
+                            proc_req_in * req, const session_response_sender & resp_send_func)
+                    : processor_job(config, session_id, req, resp_send_func) {
                     }
 
                     /**
@@ -105,18 +106,52 @@ namespace uva {
                                 } else {
                                     //ToDo: Report an error to the client. The
                                     //output must contain the error message.
+                                    LOG_DEBUG << output.str() << END_LOG;
+                                    //Report an error to the client.
+                                    send_error_response(output);
                                 }
                             } catch (std::exception & ex) {
-                                LOG_ERROR << "Could not pre-process: " << file_name << ", language: " <<
-                                        this->get_language() << ", error: " << ex.what() << END_LOG;
-                                //ToDo: Report an error to the client.
+                                stringstream sstr;
+                                sstr << "Could not pre-process: " << file_name << ", language: " <<
+                                        this->get_language() << ", error: " << ex.what();
+                                LOG_ERROR << sstr.str() << END_LOG;
+                                //Report an error to the client.
+                                send_error_response(sstr);
                             }
                         } else {
-                            LOG_DEBUG << "The language configuration is empty, meaning " <<
+                            stringstream sstr;
+                            sstr << "The language configuration is empty, meaning " <<
                                     "that the language '" << this->get_language() << "' is not " <<
-                                    "supported, and there is not default pre-procesor!" << END_LOG;
-                            //ToDo: Report an error to the client.
+                                    "supported, and there is not default pre-processor!";
+                            LOG_DEBUG << sstr.str() << END_LOG;
+                            //Report an error to the client.
+                            send_error_response(sstr);
                         }
+
+                        //Notify that the job is now finished.
+                        notify_job_done();
+                    }
+
+                    /**
+                     * @see processor_job
+                     */
+                    virtual void cancel() override {
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
+                    }
+
+                private:
+
+                    /**
+                     * Allows to send an error response to the server
+                     * @param msg_str the error message string
+                     */
+                    inline void send_error_response(const stringstream & msg_str) {
+                        //msg = ;
+                        //msg->(status_code::RESULT_ERROR, msg_str);
+                        //send_error_response(msg);
+                        //ToDo: Implement
+                        THROW_NOT_IMPLEMENTED();
                     }
 
                     /**
@@ -155,22 +190,6 @@ namespace uva {
                         } else {
                             THROW_EXCEPTION(string("Failed to call the pre-processor script: ") + call_str);
                         }
-                    }
-
-                    /**
-                     * @see processor_job
-                     */
-                    virtual void synch_job_finished() override {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
-                    }
-
-                    /**
-                     * @see processor_job
-                     */
-                    virtual void cancel() override {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
                     }
 
                 };
