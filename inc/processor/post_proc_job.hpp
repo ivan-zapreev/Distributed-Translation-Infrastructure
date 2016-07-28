@@ -80,14 +80,8 @@ namespace uva {
                         //ToDo: Implement
                         THROW_NOT_IMPLEMENTED();
                     }
-
-                    /**
-                     * @see processor_job
-                     */
-                    virtual void cancel() override {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
-                    }
+                    
+                private:
                 };
             }
         }

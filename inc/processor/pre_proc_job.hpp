@@ -86,126 +86,138 @@ namespace uva {
                      * @see processor_job
                      */
                     virtual void execute() override {
-                        //Check if the provided language configuration is defined
-                        const language_config & conf = this->get_lang_config();
-                        if (conf.is_defined()) {
-                            //Define the job uid string
-                            string job_uid_str;
-                            //Create the file name for the text we need to pre-process.
-                            const string file_name = this->template get_text_file_name<true, true>(job_uid_str);
+                        //Check if the job is not canceled yet
+                        if (!m_is_canceled) {
+                            //Check if the provided language configuration is defined
+                            const language_config & conf = this->get_lang_config();
+                            if (conf.is_defined()) {
+                                //Define the job uid string
+                                string job_uid_str;
+                                //Create the file name for the text we need to pre-process.
+                                const string file_name = this->template get_text_file_name<true, true>(job_uid_str);
 
-                            try {
-                                //Save the file to the disk
-                                this->store_text_to_file(file_name);
+                                try {
+                                    //Save the file to the disk
+                                    this->store_text_to_file(file_name);
 
-                                //Get the string needed to call the pre-processor script
-                                const string call_str = conf.get_call_string(job_uid_str, this->get_language());
+                                    //Get the string needed to call the pre-processor script
+                                    const string call_str = conf.get_call_string(job_uid_str, this->get_language());
 
-                                //Call the pre-processor script
-                                stringstream output;
-                                if (call_pre_processor(call_str, output)) {
-                                    //Send the responses to the client. The
-                                    //output must contain the source language.
-                                    send_success_response(output);
-                                } else {
-                                    //Report an error to the client. The
-                                    //output must contain the error message.
-                                    LOG_DEBUG << output.str() << END_LOG;
+                                    //Call the pre-processor script
+                                    stringstream output;
+                                    if (call_pre_processor(call_str, output)) {
+                                        //Send the responses to the client. The
+                                        //output must contain the source language.
+                                        send_success_response(output);
+                                    } else {
+                                        //Report an error to the client. The
+                                        //output must contain the error message.
+                                        LOG_DEBUG << output.str() << END_LOG;
+                                        //Report an error to the client.
+                                        send_error_response(output.str());
+                                    }
+                                } catch (std::exception & ex) {
+                                    stringstream sstr;
+                                    sstr << "Could not pre-process: " << file_name << ", language: " <<
+                                            this->get_language() << ", error: " << ex.what();
+                                    LOG_ERROR << sstr.str() << END_LOG;
                                     //Report an error to the client.
-                                    send_error_response(output.str());
+                                    send_error_response(sstr.str());
                                 }
-                            } catch (std::exception & ex) {
+                            } else {
                                 stringstream sstr;
-                                sstr << "Could not pre-process: " << file_name << ", language: " <<
-                                        this->get_language() << ", error: " << ex.what();
-                                LOG_ERROR << sstr.str() << END_LOG;
+                                sstr << "The language configuration is empty, meaning " <<
+                                        "that the language '" << this->get_language() << "' is not " <<
+                                        "supported, and there is not default pre-processor!";
+                                LOG_DEBUG << sstr.str() << END_LOG;
                                 //Report an error to the client.
                                 send_error_response(sstr.str());
                             }
-                        } else {
-                            stringstream sstr;
-                            sstr << "The language configuration is empty, meaning " <<
-                                    "that the language '" << this->get_language() << "' is not " <<
-                                    "supported, and there is not default pre-processor!";
-                            LOG_DEBUG << sstr.str() << END_LOG;
-                            //Report an error to the client.
-                            send_error_response(sstr.str());
                         }
 
                         //Notify that the job is now finished.
                         notify_job_done();
                     }
 
-                    /**
-                     * @see processor_job
-                     */
-                    virtual void cancel() override {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
-                    }
-
                 private:
 
                     /**
                      * Allows to send an success response to the server
+                     * This method is synchronized on files lock.
                      * @param msg_str the success message string
                      */
                     inline void send_success_response(const stringstream & msg_str) {
-                        //Get the language from the stream
-                        const string lang = msg_str.str();
+                        recursive_guard guard(m_file_lock);
 
-                        //Get the output file name
-                        string uid;
-                        const string file_name = this->get_text_file_name<true, false>(uid);
+                        if (!m_is_canceled) {
+                            //Get the language from the stream
+                            const string lang = msg_str.str();
 
-                        //Open the input file and read from it in chunks
-                        ifstream file(file_name, ifstream::binary | ios::ate);
+                            //Get the output file name
+                            string uid;
+                            const string file_name = this->get_text_file_name<true, false>(uid);
 
-                        //Assert that the file could be opened!
-                        ASSERT_CONDITION_THROW(!file.is_open(), string("The resulting file: ") +
-                                file_name + string(" could not be opened!"));
+                            //Open the input file and read from it in chunks
+                            ifstream file(file_name, ifstream::binary | ios::ate);
 
-                        //Count the number of text pieces
-                        file.seekg(0, file.end); //Move to the end of file
-                        int length = file.tellg(); //Get the number of bytes
-                        file.seekg(0, file.beg); //Move to begin of file
+                            //Assert that the file could be opened!
+                            ASSERT_CONDITION_THROW(!file.is_open(), string("The resulting file: ") +
+                                    file_name + string(" could not be opened!"));
 
-                        //Assert that the file length could be obtained and it is not zero!
-                        ASSERT_CONDITION_THROW((length <= 0), string("Could not get the ") +
-                                file_name + string(" file size or its size is zero!"));
+                            //Count the number of text pieces
+                            file.seekg(0, file.end); //Move to the end of file
+                            int length = file.tellg(); //Get the number of bytes
+                            file.seekg(0, file.beg); //Move to begin of file
 
-                        //Define the buffer for reading the file in chunks
-                        char buffer[10 * 1024];
+                            //Assert that the file length could be obtained and it is not zero!
+                            ASSERT_CONDITION_THROW((length <= 0), string("Could not get the ") +
+                                    file_name + string(" file size or its size is zero!"));
 
-                        //Compute the number of chunks needed
-                        const size_t num_text_pieces = ceil(((double) length) / sizeof (buffer));
-                        //Define the chunk index variable
-                        size_t text_piece_idx = 0;
+                            //Define the buffer for reading the file in chunks
+                            char buffer[10 * 1024];
 
-                        //Read from file and send response messages
-                        while (file.read(buffer, sizeof (buffer))) {
-                            //Get the error response
-                            proc_resp_out * resp = proc_resp_out::get_pre_proc_resp(
-                                    this->get_job_id(), status_code::RESULT_OK, "");
+                            //Compute the number of chunks needed
+                            const size_t num_text_pieces = ceil(((double) length) / sizeof (buffer));
+                            //Define the chunk index variable
+                            size_t text_piece_idx = 0;
 
-                            //Set the language
-                            resp->set_language(lang);
+                            //Read from file and send response messages
+                            while (file.read(buffer, sizeof (buffer))) {
+                                //Get the error response
+                                proc_resp_out * resp = proc_resp_out::get_pre_proc_resp(
+                                        this->get_job_id(), status_code::RESULT_OK, "");
 
-                            //Set text the text piece index and the number of text pieces
-                            resp->set_text(string(buffer), text_piece_idx, num_text_pieces);
+                                //Set the language
+                                resp->set_language(lang);
 
-                            //Attempt to send the job response
-                            try {
+                                //Set text the text piece index and the number of text pieces
+                                resp->set_text(string(buffer), text_piece_idx, num_text_pieces);
+
+                                //Attempt to send the job response
                                 processor_job::send_response(*resp);
-                            } catch (std::exception &ex) {
+
+                                //Increment the text piece index
+                                ++text_piece_idx;
+
                                 //Delete the response
                                 delete resp;
-                                //Re-throw
-                                throw ex;
                             }
+                        }
+                    }
 
-                            //Increment the text piece index
-                            ++text_piece_idx;
+                    /**
+                     * Allows to send an error response to the server
+                     * This method is NOT synchronized
+                     * @param msg_str the error message string
+                     */
+                    inline void send_error_response(const string & msg_str) {
+                        if (!m_is_canceled) {
+                            //Get the error response
+                            proc_resp_out * resp = proc_resp_out::get_pre_proc_resp(
+                                    this->get_job_id(), status_code::RESULT_ERROR, msg_str);
+
+                            //Attempt to send the job response
+                            processor_job::send_response(*resp);
 
                             //Delete the response
                             delete resp;
@@ -213,63 +225,50 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to send an error response to the server
-                     * @param msg_str the error message string
-                     */
-                    inline void send_error_response(const string & msg_str) {
-                        //Get the error response
-                        proc_resp_out * resp = proc_resp_out::get_pre_proc_resp(
-                                this->get_job_id(), status_code::RESULT_ERROR, msg_str);
-
-                        //Attempt to send the job response
-                        try {
-                            processor_job::send_response(*resp);
-                        } catch (std::exception &ex) {
-                            LOG_ERROR << "Could not send a pre-processor job response: " << ex.what() << END_LOG;
-                        }
-
-                        //Delete the response
-                        delete resp;
-                    }
-
-                    /**
                      * Calls the pre-processor script and reads from its output, the script is expected to do one of:
                      * 1. Execute normally and then to write the source language name into its output
                      * 2. Fail to execute the job - return an error code - and then to write an error into the output
+                     * This method is synchronized on files lock.
                      * @param call_str the call string
                      * @param output the output of the script
                      * @return true if the pre-processor finished the job without errors, otherwise false
                      */
                     inline bool call_pre_processor(const string &call_str, stringstream & output) {
-                        FILE *fp = popen(call_str.c_str(), "r");
-                        if (fp != NULL) {
-                            //The buffer itself
-                            char buffer[1024];
-                            //Read from the pipeline - we shall get the resulting language or an error message
-                            while (fgets(buffer, sizeof (buffer), fp) != NULL) {
-                                output << buffer;
-                            }
+                        recursive_guard guard(m_file_lock);
 
-                            //Wait until the process finishes and analyze its status
-                            int status = pclose(fp);
-                            if (status == -1) {
-                                //Error the process status is not possible to retrieve!
-                                THROW_EXCEPTION(string("Could not get the script ") +
-                                        call_str + (" execution status!"));
-                            } else {
-                                if (WIFEXITED(status) != 0) {
-                                    //The script terminated normally, check if there were errors
-                                    return ((WEXITSTATUS(status) == 0) || (WEXITSTATUS(status) == EXIT_SUCCESS));
-                                } else {
-                                    THROW_EXCEPTION(string("The pre-processor script ") +
-                                            call_str + string(" terminated abnormally!"));
+                        if (!m_is_canceled) {
+                            FILE *fp = popen(call_str.c_str(), "r");
+                            if (fp != NULL) {
+                                //The buffer itself
+                                char buffer[1024];
+                                //Read from the pipeline - we shall get the resulting language or an error message
+                                while (fgets(buffer, sizeof (buffer), fp) != NULL) {
+                                    output << buffer;
                                 }
+
+                                //Wait until the process finishes and analyze its status
+                                int status = pclose(fp);
+                                if (status == -1) {
+                                    //Error the process status is not possible to retrieve!
+                                    THROW_EXCEPTION(string("Could not get the script ") +
+                                            call_str + (" execution status!"));
+                                } else {
+                                    if (WIFEXITED(status) != 0) {
+                                        //The script terminated normally, check if there were errors
+                                        return ((WEXITSTATUS(status) == 0) || (WEXITSTATUS(status) == EXIT_SUCCESS));
+                                    } else {
+                                        THROW_EXCEPTION(string("The pre-processor script ") +
+                                                call_str + string(" terminated abnormally!"));
+                                    }
+                                }
+                            } else {
+                                THROW_EXCEPTION(string("Failed to call the pre-processor script: ") + call_str);
                             }
                         } else {
-                            THROW_EXCEPTION(string("Failed to call the pre-processor script: ") + call_str);
+                            //The job has been canceled
+                            return false;
                         }
                     }
-
                 };
             }
         }

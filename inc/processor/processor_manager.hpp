@@ -247,6 +247,9 @@ namespace uva {
 
                         //Cancel all the jobs from the given session
                         this->cancel_jobs(session_id);
+                        
+                        //Remove the files from the given session
+                        processor_job::delete_session_files(m_params.m_work_dir, session_id);
                     }
 
                     /**

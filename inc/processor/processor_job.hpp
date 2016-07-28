@@ -93,9 +93,10 @@ namespace uva {
                      */
                     processor_job(const language_config & config, const session_id_type session_id,
                             proc_req_in *req, const session_response_sender & resp_send_func)
-                    : m_config(config), m_session_id(session_id), m_job_id(req->get_job_id()),
-                    m_num_tps(req->get_num_text_pieces()), m_req_tasks(NULL), m_tasks_count(0),
-                    m_notify_job_done_func(NULL), m_resp_send_func(resp_send_func) {
+                    : m_is_canceled(false), m_config(config), m_session_id(session_id),
+                    m_job_id(req->get_job_id()), m_num_tps(req->get_num_text_pieces()),
+                    m_req_tasks(NULL), m_tasks_count(0), m_notify_job_done_func(NULL),
+                    m_resp_send_func(resp_send_func) {
                         //Allocate the required-size array for storing the processor requests
                         m_req_tasks = new proc_req_in_ptr[m_num_tps]();
                         //Add the request
@@ -150,6 +151,7 @@ namespace uva {
                     /**
                      * Allows to wait until the job is finished, this
                      * includes the notification of the job pool.
+                     * This method is synchronized on final lock.
                      */
                     void synch_job_finished() {
                         recursive_guard guard(m_f_lock);
@@ -158,9 +160,13 @@ namespace uva {
                     /**
                      * Allows to cancel the given processor job. Calling this method
                      * indicates that the job is canceled due to the client disconnect.
-                     * This method is synchronized on requests.
+                     * This method is synchronized on files lock.
                      */
-                    virtual void cancel() = 0;
+                    inline void cancel() {
+                        recursive_guard guard(m_file_lock);
+
+                        m_is_canceled = true;
+                    }
 
                     /**
                      * Allows to add a new pre-processor request to the job
@@ -201,11 +207,47 @@ namespace uva {
 
                         return (m_tasks_count == m_num_tps);
                     }
+                    
+                    /**
+                     * Allows to construct the text file name, differs depending
+                     * on whether this is a source or target text.
+                     * This method is NOT synchronized.
+                     * @param is_source if true then it is a source text, if false then the target text
+                     * @param is_input if true then it is an input text, if false then the output text
+                     * @param job_uid_str [out] will be set to the job uid string
+                     * @return the name of the text file, should be unique
+                     */
+                    template<bool is_source, bool is_input>
+                    static inline string get_text_file_name(const string & work_dir, const string & job_uid_str) {
+                        return work_dir + "/" + job_uid_str + "." +
+                                (is_source ? "pre" : "post") + "." +
+                                (is_input ? "in" : "out") + ".txt";
+                    }
+                    
+                    /**
+                     * Allows to delete the files from the given session
+                     * @param work_dir the work directory
+                     * @param session_id the session id
+                     */
+                    static inline void delete_session_files(const string & work_dir, const session_id_type session_id) {
+                        //ToDo: Implement
+                    }
 
                 protected:
+                    //This is the file lock which is used when the job is being canceled.
+                    //The file lock makes sure the job can not be canceled when some
+                    //file descriptors of the job or child processes are begin open
+                    //This is done to make sure that if the job is canceled we can
+                    //clean up the files after it.
+                    recursive_mutex m_file_lock;
+                    //Stores the flag indicating whether the job is canceled
+                    //or not. If the job is canceled then there is no need
+                    //to do anything including sending the responses.
+                    a_bool_flag m_is_canceled;
 
                     /**
                      * Shall be called once the balancer job is done
+                     * This method is synchronized on final lock.
                      */
                     inline void notify_job_done() {
                         recursive_guard guard(m_f_lock);
@@ -216,35 +258,39 @@ namespace uva {
 
                     /**
                      * Allows to dump the request text into the file with the given name.
-                     * This method is NOT synchronized.
+                     * This method is synchronized on files lock.
                      * @param file_name the file name to dump the file into
                      * @throws uva_exception if the text could not be saved
                      */
                     inline void store_text_to_file(const string & file_name) {
-                        //Check if the requests complete
-                        ASSERT_SANITY_THROW(!is_complete(),
-                                string("The processor job is not complete, #tasks: ") +
-                                to_string(m_num_tps) + string(", #received: ") +
-                                to_string(m_tasks_count));
+                        recursive_guard guard(m_file_lock);
+                        
+                        if (!m_is_canceled) {
+                            //Check if the requests complete
+                            ASSERT_SANITY_THROW(!is_complete(),
+                                    string("The processor job is not complete, #tasks: ") +
+                                    to_string(m_num_tps) + string(", #received: ") +
+                                    to_string(m_tasks_count));
 
-                        //Open the output stream to the file
-                        ofstream out_file(file_name);
+                            //Open the output stream to the file
+                            ofstream out_file(file_name);
 
-                        //Check that the file is open
-                        ASSERT_CONDITION_THROW(!out_file.is_open(),
-                                string("Could not open: ") +
-                                file_name + string(" for writing"));
+                            //Check that the file is open
+                            ASSERT_CONDITION_THROW(!out_file.is_open(),
+                                    string("Could not open: ") +
+                                    file_name + string(" for writing"));
 
-                        //Iterate and output
-                        for (size_t idx = 0; idx < m_num_tps; ++idx) {
-                            //Output the text to the file, do not add any new lines, put text as it is.
-                            out_file << m_req_tasks[idx]->get_text();
+                            //Iterate and output
+                            for (size_t idx = 0; (idx < m_num_tps); ++idx) {
+                                //Output the text to the file, do not add any new lines, put text as it is.
+                                out_file << m_req_tasks[idx]->get_text();
+                            }
+
+                            //Close the file
+                            out_file.close();
+
+                            LOG_USAGE << "The text is stored into: " << file_name << END_LOG;
                         }
-
-                        //Close the file
-                        out_file.close();
-
-                        LOG_USAGE << "The text is stored into: " << file_name << END_LOG;
                     }
 
                     /**
@@ -271,9 +317,7 @@ namespace uva {
                         //Set the job uid
                         job_uid_str = to_string(m_session_id) + "." + to_string(m_job_id);
                         //Compute the file name
-                        return m_config.get_work_dir() + "/" + job_uid_str + "." +
-                                (is_source ? "pre" : "post") + "." +
-                                (is_source ? "in" : "out") + ".txt";
+                        return get_text_file_name<is_source,is_input>(m_config.get_work_dir(), job_uid_str);
                     }
 
                     /**
@@ -284,13 +328,20 @@ namespace uva {
                     inline const string get_language() {
                         return m_req_tasks[0]->get_language();
                     }
-                    
+
                     /**
                      * Allows to send a response to the server
+                     * This method is NOT synchronized
                      * @param msg the message
                      */
                     inline void send_response(const msg_base & msg) {
-                        m_resp_send_func(m_session_id, msg);
+                        try {
+                            if (!m_is_canceled) {
+                                m_resp_send_func(m_session_id, msg);
+                            }
+                        } catch (std::exception &ex) {
+                            LOG_ERROR << "Could not send a pre-processor job response: " << ex.what() << END_LOG;
+                        }
                     }
 
                 private:
@@ -314,7 +365,7 @@ namespace uva {
                     recursive_mutex m_f_lock;
                     //The done job notifier
                     done_job_notifier m_notify_job_done_func;
-                    
+
                     //Stores the reference to the function for sending the response to the client
                     const session_response_sender & m_resp_send_func;
                 };
