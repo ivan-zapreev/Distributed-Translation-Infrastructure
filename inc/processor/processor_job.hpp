@@ -286,10 +286,10 @@ namespace uva {
                     }
                     
                     /**
-                     * Allows to send an error response to the server
+                     * Allows to send a response to the server
                      * @param msg the message
                      */
-                    inline void send_error_response(const msg_base & msg) {
+                    inline void send_response(const msg_base & msg) {
                         m_resp_send_func(m_session_id, msg);
                     }
 

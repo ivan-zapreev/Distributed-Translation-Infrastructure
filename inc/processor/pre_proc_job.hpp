@@ -26,10 +26,12 @@
 #ifndef PRE_PROC_JOB_HPP
 #define PRE_PROC_JOB_HPP
 
+#include <cmath>
 #include <stdio.h>
 #include <sys/wait.h>
 #include <cstdlib>
 #include <sstream>
+#include <fstream>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -102,14 +104,15 @@ namespace uva {
                                 //Call the pre-processor script
                                 stringstream output;
                                 if (call_pre_processor(call_str, output)) {
-                                    //ToDo: Send the responses to the client. The
+                                    //Send the responses to the client. The
                                     //output must contain the source language.
+                                    send_success_response(output);
                                 } else {
-                                    //ToDo: Report an error to the client. The
+                                    //Report an error to the client. The
                                     //output must contain the error message.
                                     LOG_DEBUG << output.str() << END_LOG;
                                     //Report an error to the client.
-                                    send_error_response(output);
+                                    send_error_response(output.str());
                                 }
                             } catch (std::exception & ex) {
                                 stringstream sstr;
@@ -117,7 +120,7 @@ namespace uva {
                                         this->get_language() << ", error: " << ex.what();
                                 LOG_ERROR << sstr.str() << END_LOG;
                                 //Report an error to the client.
-                                send_error_response(sstr);
+                                send_error_response(sstr.str());
                             }
                         } else {
                             stringstream sstr;
@@ -126,7 +129,7 @@ namespace uva {
                                     "supported, and there is not default pre-processor!";
                             LOG_DEBUG << sstr.str() << END_LOG;
                             //Report an error to the client.
-                            send_error_response(sstr);
+                            send_error_response(sstr.str());
                         }
 
                         //Notify that the job is now finished.
@@ -144,17 +147,83 @@ namespace uva {
                 private:
 
                     /**
+                     * Allows to send an success response to the server
+                     * @param msg_str the success message string
+                     */
+                    inline void send_success_response(const stringstream & msg_str) {
+                        //Get the language from the stream
+                        const string lang = msg_str.str();
+
+                        //Get the output file name
+                        string uid;
+                        const string file_name = this->get_text_file_name<true, false>(uid);
+
+                        //Open the input file and read from it in chunks
+                        ifstream file(file_name, ifstream::binary | ios::ate);
+
+                        //Assert that the file could be opened!
+                        ASSERT_CONDITION_THROW(!file.is_open(), string("The resulting file: ") +
+                                file_name + string(" could not be opened!"));
+
+                        //Count the number of text pieces
+                        file.seekg(0, file.end); //Move to the end of file
+                        int length = file.tellg(); //Get the number of bytes
+                        file.seekg(0, file.beg); //Move to begin of file
+
+                        //Assert that the file length could be obtained and it is not zero!
+                        ASSERT_CONDITION_THROW((length <= 0), string("Could not get the ") +
+                                file_name + string(" file size or its size is zero!"));
+
+                        //Define the buffer for reading the file in chunks
+                        char buffer[10 * 1024];
+
+                        //Compute the number of chunks needed
+                        const size_t num_text_pieces = ceil(((double) length) / sizeof (buffer));
+                        //Define the chunk index variable
+                        size_t text_piece_idx = 0;
+
+                        //Read from file and send response messages
+                        while (file.read(buffer, sizeof (buffer))) {
+                            //Get the error response
+                            proc_resp_out * resp = proc_resp_out::get_pre_proc_resp(
+                                    this->get_job_id(), status_code::RESULT_OK, "");
+
+                            //Set the language
+                            resp->set_language(lang);
+
+                            //Set text the text piece index and the number of text pieces
+                            resp->set_text(string(buffer), text_piece_idx, num_text_pieces);
+
+                            //Attempt to send the job response
+                            try {
+                                processor_job::send_response(*resp);
+                            } catch (std::exception &ex) {
+                                //Delete the response
+                                delete resp;
+                                //Re-throw
+                                throw ex;
+                            }
+
+                            //Increment the text piece index
+                            ++text_piece_idx;
+
+                            //Delete the response
+                            delete resp;
+                        }
+                    }
+
+                    /**
                      * Allows to send an error response to the server
                      * @param msg_str the error message string
                      */
-                    inline void send_error_response(const stringstream & msg_str) {
+                    inline void send_error_response(const string & msg_str) {
                         //Get the error response
                         proc_resp_out * resp = proc_resp_out::get_pre_proc_resp(
-                                this->get_job_id(), status_code::RESULT_ERROR, msg_str.str());
+                                this->get_job_id(), status_code::RESULT_ERROR, msg_str);
 
                         //Attempt to send the job response
                         try {
-                            processor_job::send_error_response(*resp);
+                            processor_job::send_response(*resp);
                         } catch (std::exception &ex) {
                             LOG_ERROR << "Could not send a pre-processor job response: " << ex.what() << END_LOG;
                         }
