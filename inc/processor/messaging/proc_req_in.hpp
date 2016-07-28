@@ -95,7 +95,7 @@ namespace uva {
                          * it should be equal for all the job's tasks
                          * @return the processor job language, lowercased
                          */
-                        inline string get_source_lang() const {
+                        inline string get_language() const {
                             const Document & json = m_inc_msg->get_json();
                             return json[LANG_FIELD_NAME].GetString();
                         }
@@ -107,8 +107,8 @@ namespace uva {
                          *  language_registry::UNKNONW_LANGUAGE_ID
                          * @return the processor job language uid
                          */
-                        inline language_uid get_source_lang_uid() const {
-                            const string lang = get_source_lang();
+                        inline language_uid get_lang_uid() const {
+                            const string lang = get_language();
                             return language_registry::get_uid(lang);
                         }
 
@@ -116,7 +116,7 @@ namespace uva {
                          * Allows to get the processor task text
                          * @return the processor task text
                          */
-                        inline string get_source_text() const {
+                        inline string get_text() const {
                             const Document & json = m_inc_msg->get_json();
                             return json[TEXT_FIELD_NAME].GetString();
                         }

@@ -39,7 +39,8 @@
 #include "common/messaging/job_id.hpp"
 #include "common/messaging/status_code.hpp"
 
-#include "processor/messaging/pre_proc_req_in.hpp"
+#include "processor/messaging/proc_req_in.hpp"
+#include "processor_parameters.hpp"
 
 using namespace std;
 
@@ -151,6 +152,7 @@ namespace uva {
                     /**
                      * Allows to cancel the given processor job. Calling this method
                      * indicates that the job is canceled due to the client disconnect.
+                     * This method is synchronized on requests.
                      */
                     virtual void cancel() = 0;
 
@@ -163,6 +165,11 @@ namespace uva {
 
                         //Get the task index
                         uint64_t task_idx = req->get_task_idx();
+
+                        //Assert sanity
+                        ASSERT_SANITY_THROW((task_idx >= m_num_tasks),
+                                string("Improper tasks index: ") + to_string(task_idx) +
+                                string(", must be <= ") + to_string(m_num_tasks));
 
                         //Assert sanity
                         ASSERT_SANITY_THROW((m_req_tasks[task_idx] != NULL),
@@ -179,7 +186,8 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to check if the job is complete and is ready for execution
+                     * Allows to check if the job is complete and is ready for execution.
+                     * This method is synchronized on requests.
                      * @return true if the job is complete and is ready for execution otherwise false
                      */
                     inline bool is_complete() {
@@ -192,13 +200,75 @@ namespace uva {
 
                     /**
                      * Allows to dump the request text into the file with the given name.
+                     * This method is NOT synchronized.
                      * @param file_name the file name to dump the file into
+                     * @throws uva_exception if the text could not be saved
                      */
                     inline void store_text_to_file(const string & file_name) {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        //Check if the requests complete
+                        ASSERT_SANITY_THROW(!is_complete(),
+                                string("The processor job is not complete, #tasks: ") +
+                                to_string(m_num_tasks) + string(", #received: ") +
+                                to_string(m_tasks_count));
+
+                        //Open the output stream to the file
+                        ofstream out_file(file_name);
+
+                        //Check that the file is open
+                        ASSERT_CONDITION_THROW(!out_file.is_open(),
+                                string("Could not open: ") +
+                                file_name + string(" for writing"));
+
+                        //Iterate and output
+                        for (size_t idx = 0; idx < m_num_tasks; ++idx) {
+                            //Output the text to the file, do not add any new lines, put text as it is.
+                            out_file << m_req_tasks[idx]->get_text();
+                        }
+
+                        //Close the file
+                        out_file.close();
+
+                        LOG_USAGE << "The text is stored into: " << file_name << END_LOG;
                     }
 
+                    /**
+                     * Allows to get the reference to the language config.
+                     * It is possible that the configuration is not defined!
+                     * This method is NOT synchronized.
+                     * @return the reference to the language config
+                     */
+                    inline const language_config & get_lang_config() {
+                        return m_config;
+                    }
+
+                    /**
+                     * Allows to construct the text file name, differs depending
+                     * on whether this is a source or target text.
+                     * This method is NOT synchronized.
+                     * @param is_source if true then it is a source text, if false then the target text
+                     * @param is_input if true then it is an input text, if false then the output text
+                     * @param job_uid_str [out] will be set to the job uid string
+                     * @return the name of the text file, should be unique
+                     */
+                    template<bool is_source, bool is_input>
+                    inline const string get_text_file_name(string & job_uid_str) {
+                        //Set the job uid
+                        job_uid_str = to_string(m_session_id) + "." + to_string(m_job_id);
+                        //Compute the file name
+                        return m_config.get_work_dir() + "/" + job_uid_str + "." +
+                                (is_source ? "pre" : "post") + "." +
+                                (is_source ? "in" : "out") + ".txt";
+                    }
+
+                    /**
+                     * Allows to get the language string from the request.
+                     * This method is NOT synchronized.
+                     * @return the language string from the request.
+                     */
+                    inline const string get_language() {
+                        return m_req_tasks[0]->get_language();
+                    }
+                    
                 private:
                     //Stores the reference to the language config, might be undefined
                     const language_config & m_config;
@@ -208,7 +278,7 @@ namespace uva {
                     const job_id_type m_job_id;
                     //Stores the number of tasks associated with the job
                     const uint64_t m_num_tasks;
-                    //Stores the lock for acessing the tasks array
+                    //Stores the lock for accessing the tasks array
                     mutex m_req_tasks_lock;
                     //Stores the array of pointers to the processor job requests
                     proc_req_in_ptr * m_req_tasks;

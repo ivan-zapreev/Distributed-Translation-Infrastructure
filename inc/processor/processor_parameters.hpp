@@ -57,8 +57,10 @@ namespace uva {
                  * The structure for storing the language config parameters
                  */
                 struct language_config_struct {
-                    //Stores processor job id template parameter name
-                    static const string PROC_JOB_ID_TEMPL_PARAM_NAME;
+                    //Stores working dir tempalate parameter name
+                    static const string WORK_DIR_TEMPL_PARAM_NAME;
+                    //Stores processor job unique id template parameter name
+                    static const string JOB_UID_TEMPL_PARAM_NAME;
                     //Stores language template parameter name
                     static const string LANGUAGE_TEMPL_PARAM_NAME;
 
@@ -88,10 +90,11 @@ namespace uva {
                      * @param lang the source language
                      * @return a ready to call string
                      */
-                    inline string get_call_string(string & proc_job_id, string & lang) const {
+                    inline string get_call_string(const string file_name, const string lang) const {
                         if (!m_call_templ.empty()) {
                             string result = m_call_templ;
-                            replace(result, PROC_JOB_ID_TEMPL_PARAM_NAME, proc_job_id);
+                            replace(result, WORK_DIR_TEMPL_PARAM_NAME, m_work_dir);
+                            replace(result, JOB_UID_TEMPL_PARAM_NAME, file_name);
                             replace(result, LANGUAGE_TEMPL_PARAM_NAME, lang);
                             return result;
                         } else {
@@ -106,23 +109,15 @@ namespace uva {
                      * @param call_templ the call template
                      */
                     inline void set_call_template(string & lang, string & call_templ) {
-                        //Check that the job id template parameter is present.
-                        size_t pos = call_templ.find(PROC_JOB_ID_TEMPL_PARAM_NAME);
-                        ASSERT_CONDITION_THROW(pos == std::string::npos,
-                                string("The call template: '") + call_templ +
-                                string("' does not contain template parameter '") +
-                                PROC_JOB_ID_TEMPL_PARAM_NAME + string("'"));
-                        //Check that the job id template parameter is present.
-                        pos = call_templ.find(LANGUAGE_TEMPL_PARAM_NAME);
-                        ASSERT_CONDITION_THROW(pos == std::string::npos,
-                                string("The call template: '") + call_templ +
-                                string("' does not contain template parameter '") +
-                                LANGUAGE_TEMPL_PARAM_NAME + string("'"));
-
                         //Store the language
                         m_lang = lang;
                         //Store the template
                         m_call_templ = call_templ;
+                        
+                        //Check the presence of the parameters
+                        check_parameter(WORK_DIR_TEMPL_PARAM_NAME);
+                        check_parameter(JOB_UID_TEMPL_PARAM_NAME);
+                        check_parameter(LANGUAGE_TEMPL_PARAM_NAME);
                     }
 
                     /**
@@ -141,13 +136,27 @@ namespace uva {
                     //Stores the script call template
                     string m_call_templ;
 
+                    /**
+                     * Allows to check the presence of the template parameter
+                     * place holder in the script call string.
+                     * @param param parameter name
+                     * @throws uva_exception in case the parameter is not found
+                     */
+                    inline void check_parameter(const string & param) const {
+                        size_t pos = m_call_templ.find(param);
+                        ASSERT_CONDITION_THROW(pos == std::string::npos,
+                                string("The call template: '") + m_call_templ +
+                                string("' does not contain template parameter '") +
+                                param + string("'"));
+                    }
+
                     //Add the output stream class as a friend
                     friend std::ostream& operator<<(std::ostream&, const language_config &);
                 };
 
                 //Typedef the pointer to the language config
                 typedef language_config* language_config_ptr;
-                
+
                 //Typedef the language id to configuration map
                 typedef map<language_uid, language_config_ptr> lang_to_conf_map;
 

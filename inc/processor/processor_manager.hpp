@@ -42,8 +42,7 @@
 #include "processor/pre_proc_job.hpp"
 #include "processor/post_proc_job.hpp"
 
-#include "processor/messaging/pre_proc_req_in.hpp"
-#include "processor/messaging/post_proc_req_in.hpp"
+#include "processor/messaging/proc_req_in.hpp"
 
 using namespace std;
 using namespace std::placeholders;
@@ -152,8 +151,8 @@ namespace uva {
                      * @param hdl the connection handler to identify the session object.
                      * @param msg a pointer to the request data, not NULL
                      */
-                    inline void pre_process(websocketpp::connection_hdl hdl, pre_proc_req_in * msg) {
-                        this->template process<pre_proc_req_in, pre_proc_job>(hdl, msg,
+                    inline void pre_process(websocketpp::connection_hdl hdl, proc_req_in * msg) {
+                        this->template process<pre_proc_job>(hdl, msg,
                                 m_params.m_pre_configs, m_params.m_def_pre_config);
                     }
 
@@ -162,8 +161,8 @@ namespace uva {
                      * @param hdl the connection handler to identify the session object.
                      * @param msg a pointer to the request data, not NULL
                      */
-                    inline void post_process(websocketpp::connection_hdl hdl, post_proc_req_in * msg) {
-                        this->template process<post_proc_req_in, post_proc_job>(hdl, msg,
+                    inline void post_process(websocketpp::connection_hdl hdl, proc_req_in * msg) {
+                        this->template process<post_proc_job>(hdl, msg,
                                 m_params.m_post_configs, m_params.m_def_post_config);
                     }
 
@@ -176,8 +175,8 @@ namespace uva {
                      * @param mapping the mapping that stores known language id to language configuration relation
                      * @param def_config the default configuration for the language, might be undefined.
                      */
-                    template<typename request_type, typename job_type>
-                    inline void process(websocketpp::connection_hdl hdl, request_type * msg,
+                    template<typename job_type>
+                    inline void process(websocketpp::connection_hdl hdl, proc_req_in * msg,
                             const lang_to_conf_map & mapping, const language_config & def_config) {
                         recursive_guard guard(m_sessions_lock);
 
@@ -197,7 +196,7 @@ namespace uva {
                             //If there is no job create one and add it to the map
                             if (job == NULL) {
                                 //Find the pre-processor for the source language
-                                auto iter = mapping.find(msg->get_source_lang_uid());
+                                auto iter = mapping.find(msg->get_lang_uid());
 
                                 //If the language is known then use the config
                                 if (iter != mapping.end()) {

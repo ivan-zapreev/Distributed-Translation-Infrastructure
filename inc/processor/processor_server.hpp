@@ -31,8 +31,7 @@
 #include "processor/processor_parameters.hpp"
 #include "processor/processor_manager.hpp"
 
-#include "processor/messaging/pre_proc_req_in.hpp"
-#include "processor/messaging/post_proc_req_in.hpp"
+#include "processor/messaging/proc_req_in.hpp"
 
 using namespace std;
 using namespace uva::smt::bpbd::common::messaging;
@@ -115,14 +114,14 @@ namespace uva {
                     /**
                      * @see websocket_server
                      */
-                    virtual void pre_process_request(websocketpp::connection_hdl hdl, pre_proc_req_in * msg) override {
+                    virtual void pre_process_request(websocketpp::connection_hdl hdl, proc_req_in * msg) override {
                         m_manager.pre_process(hdl, msg);
                     }
 
                     /**
                      * @see websocket_server
                      */
-                    virtual void post_process_request(websocketpp::connection_hdl hdl, post_proc_req_in * msg) override {
+                    virtual void post_process_request(websocketpp::connection_hdl hdl, proc_req_in * msg) override {
                         m_manager.post_process(hdl, msg);
                     }
 

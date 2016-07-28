@@ -686,8 +686,6 @@
       </df>
       <df name="processor">
         <df name="messaging">
-          <in>post_proc_req_in.hpp</in>
-          <in>pre_proc_req_in.hpp</in>
           <in>proc_req_in.hpp</in>
         </df>
         <in>post_proc_job.hpp</in>
@@ -923,7 +921,7 @@
     <conf name="Default" type="0">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <platform>2</platform>
+        <platform>4</platform>
       </toolsSet>
       <compile>
         <compiledirpicklist>

@@ -41,8 +41,7 @@
 #include "server/messaging/supp_lang_resp_out.hpp"
 #include "server/messaging/trans_job_resp_out.hpp"
 
-#include "processor/messaging/pre_proc_req_in.hpp"
-#include "processor/messaging/post_proc_req_in.hpp"
+#include "processor/messaging/proc_req_in.hpp"
 
 using namespace std;
 using namespace std::placeholders;
@@ -228,10 +227,10 @@ namespace uva {
                                         language_request(hdl, new supp_lang_req_in(jmsg));
                                         break;
                                     case msg_type::MESSAGE_PRE_PROC_JOB_REQ:
-                                        pre_process_request(hdl, new pre_proc_req_in(jmsg));
+                                        pre_process_request(hdl, new proc_req_in(jmsg));
                                         break;
                                     case msg_type::MESSAGE_POST_PROC_JOB_REQ:
-                                        post_process_request(hdl, new post_proc_req_in(jmsg));
+                                        post_process_request(hdl, new proc_req_in(jmsg));
                                         break;
                                     default:
                                         THROW_EXCEPTION(string("Unsupported request type: ") + to_string(jmsg->get_msg_type()));
@@ -281,7 +280,7 @@ namespace uva {
                          * @param hdl the session handler
                          * @param msg the received message
                          */
-                        virtual void pre_process_request(websocketpp::connection_hdl hdl, pre_proc_req_in * msg) {
+                        virtual void pre_process_request(websocketpp::connection_hdl hdl, proc_req_in * msg) {
                             //Destroy the message
                             delete msg;
                             //Throw a non-supported exception
@@ -297,7 +296,7 @@ namespace uva {
                          * @param hdl the session handler
                          * @param msg the received message
                          */
-                        virtual void post_process_request(websocketpp::connection_hdl hdl, post_proc_req_in * msg) {
+                        virtual void post_process_request(websocketpp::connection_hdl hdl, proc_req_in * msg) {
                             //Destroy the message
                             delete msg;
                             //Throw a non-supported exception

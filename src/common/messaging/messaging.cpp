@@ -67,7 +67,6 @@ namespace uva {
                     const char * proc_req::NUM_TASKS_FIELD_NAME = "num_tasks";
                     const char * proc_req::LANG_FIELD_NAME = "lang";
                     const char * proc_req::TEXT_FIELD_NAME = "text";
-                    const char * proc_req::PROC_JOB_UID_FIELD_NAME = "proc_job_uid";
 
                 }
             }

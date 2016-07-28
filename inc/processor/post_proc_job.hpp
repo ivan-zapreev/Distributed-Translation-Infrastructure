@@ -31,7 +31,7 @@
 #include "common/utils/threads/threads.hpp"
 
 #include "processor/processor_job.hpp"
-#include "processor/messaging/post_proc_req_in.hpp"
+#include "processor/messaging/proc_req_in.hpp"
 
 using namespace std;
 using namespace uva::utils::exceptions;
@@ -62,7 +62,7 @@ namespace uva {
                      * @param req the pointer to the post-processor request, not NULL
                      */
                     post_proc_job(const language_config & config,
-                            const session_id_type session_id, post_proc_req_in * req)
+                            const session_id_type session_id, proc_req_in * req)
                     : processor_job(config, session_id, req) {
                     }
 

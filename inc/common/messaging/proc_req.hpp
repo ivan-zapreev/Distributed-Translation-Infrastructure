@@ -49,8 +49,6 @@ namespace uva {
                         static const char * LANG_FIELD_NAME;
                         //Stores the the text field name
                         static const char * TEXT_FIELD_NAME;
-                        //Stores the job id field name
-                        static const char * PROC_JOB_UID_FIELD_NAME;
 
                         /**
                          * The basic constructor

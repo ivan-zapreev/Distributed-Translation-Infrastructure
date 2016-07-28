@@ -31,7 +31,8 @@
 #include "common/utils/threads/threads.hpp"
 
 #include "processor/processor_job.hpp"
-#include "processor/messaging/pre_proc_req_in.hpp"
+#include "processor/messaging/proc_req_in.hpp"
+#include "processor_parameters.hpp"
 
 using namespace std;
 using namespace uva::utils::exceptions;
@@ -62,7 +63,7 @@ namespace uva {
                      * @param req the pointer to the pre-processor request, not NULL
                      */
                     pre_proc_job(const language_config & config,
-                            const session_id_type session_id, pre_proc_req_in * req)
+                            const session_id_type session_id, proc_req_in * req)
                     : processor_job(config, session_id, req) {
                     }
 
@@ -76,8 +77,34 @@ namespace uva {
                      * @see processor_job
                      */
                     virtual void execute() override {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        //Check if the provided language configuration is defined
+                        const language_config & conf = this->get_lang_config();
+                        if (conf.is_defined()) {
+                            //Define the job uid string
+                            string job_uid_str;
+                            //Create the file name for the text we need to pre-process.
+                            const string file_name = this->template get_text_file_name<true, true>(job_uid_str);
+
+                            try {
+                                //Save the file to the disk
+                                this->store_text_to_file(file_name);
+
+                                //Get the string needed to call the pre-processor script
+                                const string call_str = conf.get_call_string(job_uid_str, this->get_language());
+
+                                //ToDo: Call the pre-processor script
+                                
+                            } catch (std::exception & ex) {
+                                LOG_ERROR << "Could not pre-process: " << file_name << ", language: " <<
+                                        this->get_language() << ", error: " << ex.what() << END_LOG;
+                                //ToDo: Report an error to the client.
+                            }
+                        } else {
+                            LOG_DEBUG << "The language configuration is empty, meaning " <<
+                                    "that the language '" << this->get_language() << "' is not " <<
+                                    "supported, and there is not default pre-procesor!" << END_LOG;
+                            //ToDo: Report an error to the client.
+                        }
                     }
 
                     /**
