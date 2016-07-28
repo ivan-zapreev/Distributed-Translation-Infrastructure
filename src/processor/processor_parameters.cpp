@@ -31,7 +31,7 @@ namespace uva {
             namespace processor {
 
                 const string language_config::WORK_DIR_TEMPL_PARAM_NAME = "<WORK_DIR>";
-                const string language_config::JOB_UID_TEMPL_PARAM_NAME = "<FILE_NAME>";
+                const string language_config::JOB_UID_TEMPL_PARAM_NAME = "<JOB_UID>";
                 const string language_config::LANGUAGE_TEMPL_PARAM_NAME = "<LANGUAGE>";
 
                 const string processor_parameters::CONFIG_SECTION_NAME = "Server Options";
