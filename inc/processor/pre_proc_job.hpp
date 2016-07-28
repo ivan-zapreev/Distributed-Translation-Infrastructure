@@ -26,6 +26,11 @@
 #ifndef PRE_PROC_JOB_HPP
 #define PRE_PROC_JOB_HPP
 
+#include <stdio.h>
+#include <sys/wait.h>
+#include <cstdlib>
+#include <sstream>
+
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/threads/threads.hpp"
@@ -92,8 +97,15 @@ namespace uva {
                                 //Get the string needed to call the pre-processor script
                                 const string call_str = conf.get_call_string(job_uid_str, this->get_language());
 
-                                //ToDo: Call the pre-processor script
-                                
+                                //Call the pre-processor script
+                                stringstream output;
+                                if (call_pre_processor(call_str, output)) {
+                                    //ToDo: Send the responses to the client. The
+                                    //output must contain the source language.
+                                } else {
+                                    //ToDo: Report an error to the client. The
+                                    //output must contain the error message.
+                                }
                             } catch (std::exception & ex) {
                                 LOG_ERROR << "Could not pre-process: " << file_name << ", language: " <<
                                         this->get_language() << ", error: " << ex.what() << END_LOG;
@@ -104,6 +116,44 @@ namespace uva {
                                     "that the language '" << this->get_language() << "' is not " <<
                                     "supported, and there is not default pre-procesor!" << END_LOG;
                             //ToDo: Report an error to the client.
+                        }
+                    }
+
+                    /**
+                     * Calls the pre-processor script and reads from its output, the script is expected to do one of:
+                     * 1. Execute normally and then to write the source language name into its output
+                     * 2. Fail to execute the job - return an error code - and then to write an error into the output
+                     * @param call_str the call string
+                     * @param output the output of the script
+                     * @return true if the pre-processor finished the job without errors, otherwise false
+                     */
+                    inline bool call_pre_processor(const string &call_str, stringstream & output) {
+                        FILE *fp = popen(call_str.c_str(), "r");
+                        if (fp != NULL) {
+                            //The buffer itself
+                            char buffer[1024];
+                            //Read from the pipeline - we shall get the resulting language or an error message
+                            while (fgets(buffer, sizeof (buffer), fp) != NULL) {
+                                output << buffer;
+                            }
+
+                            //Wait until the process finishes and analyze its status
+                            int status = pclose(fp);
+                            if (status == -1) {
+                                //Error the process status is not possible to retrieve!
+                                THROW_EXCEPTION(string("Could not get the script ") +
+                                        call_str + (" execution status!"));
+                            } else {
+                                if (WIFEXITED(status) != 0) {
+                                    //The script terminated normally, check if there were errors
+                                    return ((WEXITSTATUS(status) == 0) || (WEXITSTATUS(status) == EXIT_SUCCESS));
+                                } else {
+                                    THROW_EXCEPTION(string("The pre-processor script ") +
+                                            call_str + string(" terminated abnormally!"));
+                                }
+                            }
+                        } else {
+                            THROW_EXCEPTION(string("Failed to call the pre-processor script: ") + call_str);
                         }
                     }
 
