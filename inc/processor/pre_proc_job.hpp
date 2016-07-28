@@ -36,8 +36,9 @@
 #include "common/utils/threads/threads.hpp"
 
 #include "processor/processor_job.hpp"
+#include "processor/processor_parameters.hpp"
 #include "processor/messaging/proc_req_in.hpp"
-#include "processor_parameters.hpp"
+#include "processor/messaging/proc_resp_out.hpp"
 
 using namespace std;
 using namespace uva::utils::exceptions;
@@ -147,11 +148,19 @@ namespace uva {
                      * @param msg_str the error message string
                      */
                     inline void send_error_response(const stringstream & msg_str) {
-                        //msg = ;
-                        //msg->(status_code::RESULT_ERROR, msg_str);
-                        //send_error_response(msg);
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        //Get the error response
+                        proc_resp_out * resp = proc_resp_out::get_pre_proc_resp(
+                                this->get_job_id(), status_code::RESULT_ERROR, msg_str.str());
+
+                        //Attempt to send the job response
+                        try {
+                            processor_job::send_error_response(*resp);
+                        } catch (std::exception &ex) {
+                            LOG_ERROR << "Could not send a pre-processor job response: " << ex.what() << END_LOG;
+                        }
+
+                        //Delete the response
+                        delete resp;
                     }
 
                     /**

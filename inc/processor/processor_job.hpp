@@ -94,10 +94,10 @@ namespace uva {
                     processor_job(const language_config & config, const session_id_type session_id,
                             proc_req_in *req, const session_response_sender & resp_send_func)
                     : m_config(config), m_session_id(session_id), m_job_id(req->get_job_id()),
-                    m_num_tasks(req->get_num_tasks()), m_req_tasks(NULL), m_tasks_count(0),
+                    m_num_tps(req->get_num_text_pieces()), m_req_tasks(NULL), m_tasks_count(0),
                     m_notify_job_done_func(NULL), m_resp_send_func(resp_send_func) {
                         //Allocate the required-size array for storing the processor requests
-                        m_req_tasks = new proc_req_in_ptr[m_num_tasks]();
+                        m_req_tasks = new proc_req_in_ptr[m_num_tps]();
                         //Add the request
                         add_request(req);
                     }
@@ -107,7 +107,7 @@ namespace uva {
                      */
                     virtual ~processor_job() {
                         //Delete the requests, only the received ones, not NULL
-                        for (size_t idx = 0; idx < m_num_tasks; ++idx) {
+                        for (size_t idx = 0; idx < m_num_tps; ++idx) {
                             if (m_req_tasks[idx] != NULL) {
                                 delete m_req_tasks[idx];
                             }
@@ -170,22 +170,22 @@ namespace uva {
                         unique_guard guard(m_req_tasks_lock);
 
                         //Get the task index
-                        uint64_t task_idx = req->get_task_idx();
+                        uint64_t piece_idx = req->get_text_piece_idx();
 
                         //Assert sanity
-                        ASSERT_SANITY_THROW((task_idx >= m_num_tasks),
-                                string("Improper tasks index: ") + to_string(task_idx) +
-                                string(", must be <= ") + to_string(m_num_tasks));
+                        ASSERT_SANITY_THROW((piece_idx >= m_num_tps),
+                                string("Improper tasks index: ") + to_string(piece_idx) +
+                                string(", must be <= ") + to_string(m_num_tps));
 
                         //Assert sanity
-                        ASSERT_SANITY_THROW((m_req_tasks[task_idx] != NULL),
-                                string("The task index ") + to_string(task_idx) +
+                        ASSERT_SANITY_THROW((m_req_tasks[piece_idx] != NULL),
+                                string("The task index ") + to_string(piece_idx) +
                                 string(" of the job request ") + to_string(m_job_id) +
                                 string(" from session ") + to_string(m_session_id) +
                                 string(" is already set!"));
 
                         //Store the task
-                        m_req_tasks[task_idx] = req;
+                        m_req_tasks[piece_idx] = req;
 
                         //Increment the number of tasks
                         ++m_tasks_count;
@@ -199,7 +199,7 @@ namespace uva {
                     inline bool is_complete() {
                         unique_guard guard(m_req_tasks_lock);
 
-                        return (m_tasks_count == m_num_tasks);
+                        return (m_tasks_count == m_num_tps);
                     }
 
                 protected:
@@ -224,7 +224,7 @@ namespace uva {
                         //Check if the requests complete
                         ASSERT_SANITY_THROW(!is_complete(),
                                 string("The processor job is not complete, #tasks: ") +
-                                to_string(m_num_tasks) + string(", #received: ") +
+                                to_string(m_num_tps) + string(", #received: ") +
                                 to_string(m_tasks_count));
 
                         //Open the output stream to the file
@@ -236,7 +236,7 @@ namespace uva {
                                 file_name + string(" for writing"));
 
                         //Iterate and output
-                        for (size_t idx = 0; idx < m_num_tasks; ++idx) {
+                        for (size_t idx = 0; idx < m_num_tps; ++idx) {
                             //Output the text to the file, do not add any new lines, put text as it is.
                             out_file << m_req_tasks[idx]->get_text();
                         }
@@ -300,8 +300,8 @@ namespace uva {
                     const session_id_type m_session_id;
                     //Stores the job id for an easy access
                     const job_id_type m_job_id;
-                    //Stores the number of tasks associated with the job
-                    const uint64_t m_num_tasks;
+                    //Stores the number of text pieces this job consists of
+                    const uint64_t m_num_tps;
                     //Stores the lock for accessing the tasks array
                     mutex m_req_tasks_lock;
                     //Stores the array of pointers to the processor job requests

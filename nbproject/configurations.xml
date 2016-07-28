@@ -21,7 +21,15 @@
     <df root="ext" name="0">
     </df>
     <df root="inc" name="1">
+      <df name="common">
+        <df name="messaging">
+          <in>proc_resp.hpp</in>
+        </df>
+      </df>
       <df name="processor">
+        <df name="messaging">
+          <in>proc_resp_out.hpp</in>
+        </df>
         <in>post_proc_job.hpp</in>
         <in>pre_proc_job.hpp</in>
       </df>
@@ -234,6 +242,13 @@
           </preprocessorList>
         </ccTool>
       </folder>
+      <item path="inc/common/messaging/proc_resp.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/processor/messaging/proc_resp_out.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="inc/processor/post_proc_job.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/processor/pre_proc_job.hpp" ex="false" tool="3" flavor2="0">

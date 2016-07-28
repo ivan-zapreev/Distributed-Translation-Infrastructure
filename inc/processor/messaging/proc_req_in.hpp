@@ -72,22 +72,22 @@ namespace uva {
                         }
 
                         /**
-                         * Allows to get this task index, the task indexes start with
+                         * Allows to get this text piece index, the index starts with
                          * zero and correspond to the text piece index in the job.
                          * @return the task index represented by this request
                          */
-                        inline job_id_type get_task_idx() const {
+                        inline job_id_type get_text_piece_idx() const {
                             const Document & json = m_inc_msg->get_json();
-                            return json[TASK_ID_FIELD_NAME].GetUint64();
+                            return json[TEXT_PIECE_IDX_FIELD_NAME].GetUint64();
                         }
 
                         /**
-                         * Allows to get the number of job's tasks
-                         * @return the number of job's tasks
+                         * Allows to get the number of job's text pieces
+                         * @return the number of job's text pieces
                          */
-                        inline job_id_type get_num_tasks() const {
+                        inline job_id_type get_num_text_pieces() const {
                             const Document & json = m_inc_msg->get_json();
-                            return json[NUM_TASKS_FIELD_NAME].GetUint64();
+                            return json[NUM_TEXT_PIECES_FIELD_NAME].GetUint64();
                         }
 
                         /**
@@ -118,7 +118,7 @@ namespace uva {
                          */
                         inline string get_text() const {
                             const Document & json = m_inc_msg->get_json();
-                            return json[TEXT_FIELD_NAME].GetString();
+                            return json[TEXT_PIECE_FIELD_NAME].GetString();
                         }
 
                     protected:

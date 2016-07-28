@@ -1,6 +1,6 @@
 /* 
- * File:   pre_proc_req.hpp
- * Author: zapreevis
+ * File:   proc_resp.hpp
+ * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
  *      <https://nl.linkedin.com/in/zapreevis>
@@ -20,13 +20,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on July 26, 2016, 11:02 AM
+ * Created on July 28, 2016, 2:57 PM
  */
 
-#ifndef PRE_PROC_REQ_HPP
-#define	PRE_PROC_REQ_HPP
+#ifndef PROC_RESP_HPP
+#define PROC_RESP_HPP
 
-#include <common/messaging/request_msg.hpp>
+#include <common/messaging/response_msg.hpp>
 
 namespace uva {
     namespace smt {
@@ -35,9 +35,9 @@ namespace uva {
                 namespace messaging {
 
                     /**
-                     * This is the base class for all the text process request messages
+                     * This is the base class for all the text process response messages
                      */
-                    class proc_req : public request_msg {
+                    class proc_resp : public response_msg {
                     public:
                         //Stores the job id field name
                         static const char * JOB_ID_FIELD_NAME;
@@ -53,14 +53,14 @@ namespace uva {
                         /**
                          * The basic constructor
                          */
-                        proc_req() : request_msg() {
+                        proc_resp() : response_msg() {
                             //Nothing to be done here
                         }
 
                         /**
                          * The basic destructor
                          */
-                        virtual ~proc_req() {
+                        virtual ~proc_resp() {
                             //Nothing to be done here
                         }
                     };
@@ -70,5 +70,5 @@ namespace uva {
     }
 }
 
-#endif	/* PRE_PROC_REQ_HPP */
+#endif /* PROC_RESP_HPP */
 
