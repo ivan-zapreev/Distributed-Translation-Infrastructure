@@ -57,7 +57,9 @@ static ValueArg<string> * p_source_file_arg = NULL;
 static ValueArg<string> * p_source_lang_arg = NULL;
 static ValueArg<string> * p_target_file_arg = NULL;
 static ValueArg<string> * p_target_lang_arg = NULL;
-static ValueArg<string> * p_server_uri_arg = NULL;
+static ValueArg<string> * p_pre_uri_arg = NULL;
+static ValueArg<string> * p_trans_uri_arg = NULL;
+static ValueArg<string> * p_post_uri_arg = NULL;
 static ValueArg<uint32_t> * p_max_sent = NULL;
 static ValueArg<uint32_t> * p_min_sent = NULL;
 static vector<string> debug_levels;
@@ -90,10 +92,17 @@ void create_arguments_parser() {
     p_target_lang_arg = new ValueArg<string>("o", "output-lang", string("The target language to ") +
             string("translate into, default is 'English'"), false, "English", "target language", *p_cmd_args);
 
+    p_pre_uri_arg = new ValueArg<string>("r", "pre-processor", string("The pre-processor server ") +
+            string("URI to connect to, optional"), false, DEFAULT_PROCESSOR_URI, "pre-processor uri", *p_cmd_args);    
+    
     //Add the the translation server ip address or name parameter - optional, by default is "localhost"
     const string def_server_uri = "ws://localhost:9002";
-    p_server_uri_arg = new ValueArg<string>("s", "server", string("The server URI to connect to, default is '") +
-            def_server_uri + string("'"), false, def_server_uri, "server uri", *p_cmd_args);
+    p_trans_uri_arg = new ValueArg<string>("s", "trans-server", string("The translation server ") +
+            string("URI to connect to, default is '") + def_server_uri + string("'"), false,
+            def_server_uri, "server uri", *p_cmd_args);
+
+    p_post_uri_arg = new ValueArg<string>("p", "post-processor", string("The post-processor server ") +
+            string("URI to connect to, optional"), false, DEFAULT_PROCESSOR_URI, "post-processor uri", *p_cmd_args);    
 
     //Add the maximum number of sentences to send by a job parameter - optional, by default is 100
     p_max_sent = new ValueArg<uint32_t>("u", "upper-size", string("The maximum number of sentences ") +
@@ -101,7 +110,7 @@ void create_arguments_parser() {
 
     //Add the minimum number of sentences to send by a job parameter - optional, by default is 10
     p_min_sent = new ValueArg<uint32_t>("l", "lower-size", string("The minimum number of sentences ") +
-            string("to send per request, default is 10"), false, 10, "min #sentences per request", *p_cmd_args);
+            string("to send per request, default is 100"), false, 100, "min #sentences per request", *p_cmd_args);
 
     //Add the tokenize text switch  parameter - optional, default is true
     p_pre_process_arg = new SwitchArg("t", "tokenize", string("Tokenize the source language lines: ") +
@@ -126,7 +135,9 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_source_lang_arg);
     SAFE_DESTROY(p_target_file_arg);
     SAFE_DESTROY(p_target_lang_arg);
-    SAFE_DESTROY(p_server_uri_arg);
+    SAFE_DESTROY(p_pre_uri_arg);
+    SAFE_DESTROY(p_trans_uri_arg);
+    SAFE_DESTROY(p_post_uri_arg);
     SAFE_DESTROY(p_max_sent);
     SAFE_DESTROY(p_min_sent);
     SAFE_DESTROY(p_pre_process_arg);
@@ -147,7 +158,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     try {
         p_cmd_args->parse(argc, argv);
     } catch (ArgException &e) {
-       THROW_EXCEPTION(string("Error: ") + e.error() + string(", for argument: ") + e.argId());
+        THROW_EXCEPTION(string("Error: ") + e.error() + string(", for argument: ") + e.argId());
     }
 
     //Set the logging level right away
@@ -162,8 +173,22 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     params.m_target_lang = p_target_lang_arg->getValue();
     LOG_USAGE << "Given output file: '" << params.m_target_file << "', language: '" << params.m_target_lang << "'" << END_LOG;
 
-    params.m_uri = p_server_uri_arg->getValue();
-    LOG_USAGE << "Using server URI: " << params.m_uri << END_LOG;
+    params.m_pre_uri = p_pre_uri_arg->getValue();
+    if (params.is_pre_process()) {
+        LOG_USAGE << "Using pre-processor server URI: " << params.m_pre_uri << END_LOG;
+    } else {
+        LOG_WARNING << "No text pre-processing enabled!" << END_LOG;
+    }
+
+    params.m_trans_uri = p_trans_uri_arg->getValue();
+    LOG_USAGE << "Using translation server URI: " << params.m_trans_uri << END_LOG;
+
+    params.m_post_uri = p_post_uri_arg->getValue();
+    if (params.is_post_process()) {
+        LOG_USAGE << "Using post-processor server URI: " << params.m_post_uri << END_LOG;
+    } else {
+        LOG_WARNING << "No text post-processing enabled!" << END_LOG;
+    }
 
     params.m_min_sent = p_min_sent->getValue();
     params.m_max_sent = p_max_sent->getValue();
@@ -174,7 +199,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
     params.m_is_trans_info = p_trans_details_arg->getValue();
     LOG_USAGE << "The translation details is " << (params.m_is_trans_info ? "ON" : "OFF") << END_LOG;
-    
+
     //Finalize the results
     params.finalize();
 }

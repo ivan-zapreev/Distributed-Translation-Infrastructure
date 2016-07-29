@@ -40,6 +40,9 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace client {
+                
+                //Stores the default processor uri
+                static const string DEFAULT_PROCESSOR_URI = "";
 
                 /**
                  * This structure stores the translation client execution parameters
@@ -53,8 +56,12 @@ namespace uva {
                     string m_target_file;
                     //The language to translate into
                     string m_target_lang;
+                    //The pre-processor text server URI to connect to, if empty then no need to post-process
+                    string m_pre_uri;
                     //The server URI to connect to
-                    string m_uri;
+                    string m_trans_uri;
+                    //The post-processor text server URI to connect to, if empty then no need to post-process
+                    string m_post_uri;
                     //The maximum number of source sentences to send per translation request
                     uint64_t m_max_sent;
                     //The minimum number of source sentences to send per translation request
@@ -72,13 +79,43 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to check if pre-processing is needed
+                     * @return true if pre-processing is needed
+                     */
+                    inline bool is_pre_process() const {
+                        return !m_pre_uri.empty();
+                    }
+
+                    /**
+                     * Allows to check if post-processing is needed
+                     * @return true if post-processing is needed
+                     */
+                    inline bool is_post_process() const {
+                        return !m_post_uri.empty();
+                    }
+
+                    /**
                      * Allows to finalize the parameters after loading.
                      */
-                    void finalize() {
-                        //Check the uri format
-                        ASSERT_CONDITION_THROW(!regex_match(m_uri, m_uri_reg_exp),
-                                string("The server uri: '") + m_uri +
+                    inline void finalize() {
+                        //Check the pre-processor server uri format
+                        if (is_pre_process()) {
+                            ASSERT_CONDITION_THROW(!regex_match(m_pre_uri, m_uri_reg_exp),
+                                    string("The pre-processor uri: '") + m_pre_uri +
+                                    string("' does not match the format: ws://<server>:<port>"));
+                        }
+
+                        //Check the translation server uri format
+                        ASSERT_CONDITION_THROW(!regex_match(m_trans_uri, m_uri_reg_exp),
+                                string("The translation server uri: '") + m_trans_uri +
                                 string("' does not match the format: ws://<server>:<port>"));
+
+                        //Check the post-processor server uri format
+                        if (is_post_process()) {
+                            ASSERT_CONDITION_THROW(!regex_match(m_post_uri, m_uri_reg_exp),
+                                    string("The post-processor uri: '") + m_post_uri +
+                                    string("' does not match the format: ws://<server>:<port>"));
+                        }
                     }
 
                 private:
