@@ -64,24 +64,23 @@ namespace uva {
                      */
                     post_proc_job(const language_config & config, const session_id_type session_id,
                             proc_req_in * req, const session_response_sender & resp_send_func)
-                    : processor_job(config, session_id, req, resp_send_func) {
+                    : processor_job(config, session_id, req,
+                    &proc_resp_out::get_post_proc_resp, resp_send_func) {
                     }
 
                     /**
                      * The basic destructor
                      */
                     virtual ~post_proc_job() {
+                        //ToDo: Delete the job files
                     }
 
                     /**
                      * @see processor_job
                      */
                     virtual void execute() override {
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        this->template process<false>();
                     }
-                    
-                private:
                 };
             }
         }

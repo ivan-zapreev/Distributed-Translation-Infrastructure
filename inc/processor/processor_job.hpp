@@ -41,6 +41,7 @@
 #include "common/messaging/status_code.hpp"
 
 #include "processor/messaging/proc_req_in.hpp"
+#include "processor/messaging/proc_resp_out.hpp"
 #include "processor_parameters.hpp"
 
 using namespace std;
@@ -66,6 +67,9 @@ namespace uva {
                 //Declare the function that will be used to send the translation response to the client
                 typedef function<bool (const session_id_type, const msg_base &) > session_response_sender;
 
+                //Declare the function that will be used to create a processor response
+                typedef function<proc_resp_out * (const job_id_type, const status_code, const string &) > response_creator;
+
                 /**
                  * Allows to log the processor job into an output stream
                  * @param stream the output stream
@@ -90,14 +94,16 @@ namespace uva {
                      * @param config the language configuration, might be undefined.
                      * @param session_id the id of the session from which the translation request is received
                      * @param req the pointer to the processor request, not NULL
+                     * @param resp_crt_func the function to create the response
                      * @param resp_send_func the function to send the translation response to the client
                      */
                     processor_job(const language_config & config, const session_id_type session_id,
-                            proc_req_in *req, const session_response_sender & resp_send_func)
+                            proc_req_in *req, const response_creator resp_crt_func,
+                            const session_response_sender & resp_send_func)
                     : m_is_canceled(false), m_config(config), m_session_id(session_id),
                     m_job_id(req->get_job_id()), m_num_tps(req->get_num_text_pieces()),
                     m_req_tasks(NULL), m_tasks_count(0), m_notify_job_done_func(NULL),
-                    m_resp_send_func(resp_send_func) {
+                    m_resp_crt_func(resp_crt_func), m_resp_send_func(resp_send_func) {
                         //Allocate the required-size array for storing the processor requests
                         m_req_tasks = new proc_req_in_ptr[m_num_tps]();
                         //Add the request
@@ -218,10 +224,10 @@ namespace uva {
                         //Create the job_uid wildcard
                         const string wildcard = to_string(session_id) + ".*";
                         //Remove all sorts of files request, response, input, output
-                        remove_files<true,true>(work_dir, wildcard);
-                        remove_files<true,false>(work_dir, wildcard);
-                        remove_files<false,true>(work_dir, wildcard);
-                        remove_files<false,false>(work_dir, wildcard);
+                        remove_files<true, true>(work_dir, wildcard);
+                        remove_files<true, false>(work_dir, wildcard);
+                        remove_files<false, true>(work_dir, wildcard);
+                        remove_files<false, false>(work_dir, wildcard);
                     }
 
                 protected:
@@ -248,7 +254,7 @@ namespace uva {
                         //make the system call
                         const int dir_err = system(cmd.c_str());
                         //Check the execution status
-                        if(-1 == dir_err){
+                        if (-1 == dir_err) {
                             LOG_ERROR << "Could not delete files with command: " << cmd << END_LOG;
                         }
                     }
@@ -368,6 +374,195 @@ namespace uva {
                         }
                     }
 
+                    /**
+                     * Calls the processor script and reads from its output, the script is expected to do one of:
+                     * 1. Execute normally and then to write the detected source language
+                     *    name into its output, for the pre-processor requests
+                     * 2. Fail to execute the job - return an error code - and then to
+                     *    write an error into the output
+                     * This method is synchronized on files lock.
+                     * @param call_str the call string
+                     * @param output the output of the script
+                     * @return true if the processor finished the job without errors, otherwise false
+                     */
+                    inline bool call_processor_script(const string &call_str, stringstream & output) {
+                        recursive_guard guard(m_file_lock);
+
+                        if (!m_is_canceled) {
+                            FILE *fp = popen(call_str.c_str(), "r");
+                            if (fp != NULL) {
+                                //The buffer itself
+                                char buffer[1024];
+                                //Read from the pipeline - we shall get the resulting language or an error message
+                                while (fgets(buffer, sizeof (buffer), fp) != NULL) {
+                                    output << buffer;
+                                }
+
+                                //Wait until the process finishes and analyze its status
+                                int status = pclose(fp);
+                                if (status == -1) {
+                                    //Error the process status is not possible to retrieve!
+                                    THROW_EXCEPTION(string("Could not get the script ") +
+                                            call_str + (" execution status!"));
+                                } else {
+                                    if (WIFEXITED(status) != 0) {
+                                        //The script terminated normally, check if there were errors
+                                        return ((WEXITSTATUS(status) == 0) || (WEXITSTATUS(status) == EXIT_SUCCESS));
+                                    } else {
+                                        THROW_EXCEPTION(string("The processor script ") +
+                                                call_str + string(" terminated abnormally!"));
+                                    }
+                                }
+                            } else {
+                                THROW_EXCEPTION(string("Failed to call the pre-processor script: ") + call_str);
+                            }
+                        } else {
+                            //The job has been canceled
+                            return false;
+                        }
+                    }
+
+                    /**
+                     * Allows to send an error response to the server
+                     * This method is NOT synchronized
+                     * @param msg_str the error message string
+                     */
+                    inline void send_error_response(const string & msg_str) {
+                        if (!m_is_canceled) {
+                            //Get the error response
+                            proc_resp_out * resp = m_resp_crt_func(this->get_job_id(), status_code::RESULT_ERROR, msg_str);
+
+                            //Attempt to send the job response
+                            processor_job::send_response(*resp);
+
+                            //Delete the response
+                            delete resp;
+                        }
+                    }
+
+                    /**
+                     * Allows to send an success response to the server
+                     * This method is synchronized on files lock.
+                     * @param is_source if true then it is a source text, if false then the target text
+                     * @param msg_str the success message string
+                     */
+                    template<bool is_source>
+                    inline void send_success_response(const stringstream & msg_str) {
+                        recursive_guard guard(m_file_lock);
+
+                        if (!m_is_canceled) {
+                            //Get the language from the stream
+                            const string lang = msg_str.str();
+
+                            //Get the output file name
+                            string uid;
+                            const string file_name = this->get_text_file_name<is_source, false>(uid);
+
+                            //Open the input file and read from it in chunks
+                            ifstream file(file_name, ifstream::binary | ios::ate);
+
+                            //Assert that the file could be opened!
+                            ASSERT_CONDITION_THROW(!file.is_open(), string("The resulting file: ") +
+                                    file_name + string(" could not be opened!"));
+
+                            //Count the number of text pieces
+                            file.seekg(0, file.end); //Move to the end of file
+                            int length = file.tellg(); //Get the number of bytes
+                            file.seekg(0, file.beg); //Move to begin of file
+
+                            //Assert that the file length could be obtained and it is not zero!
+                            ASSERT_CONDITION_THROW((length <= 0), string("Could not get the ") +
+                                    file_name + string(" file size or its size is zero!"));
+
+                            //Define the buffer for reading the file in chunks
+                            char buffer[10 * 1024];
+
+                            //Compute the number of chunks needed
+                            const size_t num_text_pieces = ceil(((double) length) / sizeof (buffer));
+                            //Define the chunk index variable
+                            size_t text_piece_idx = 0;
+
+                            //Read from file and send response messages
+                            while (file.read(buffer, sizeof (buffer))) {
+                                //Get the error response
+                                proc_resp_out * resp = m_resp_crt_func(this->get_job_id(), status_code::RESULT_OK, "");
+
+                                //Set the language
+                                resp->set_language(lang);
+
+                                //Set text the text piece index and the number of text pieces
+                                resp->set_text(string(buffer), text_piece_idx, num_text_pieces);
+
+                                //Attempt to send the job response
+                                processor_job::send_response(*resp);
+
+                                //Increment the text piece index
+                                ++text_piece_idx;
+
+                                //Delete the response
+                                delete resp;
+                            }
+                        }
+                    }
+
+                    /**
+                     * Performs the processor job
+                     * @param is_source if true then it is a source text, if false then the target text
+                     */
+                    template<bool is_source>
+                    inline void process() {
+                        //Check if the job is not canceled yet
+                        if (!m_is_canceled) {
+                            //Check if the provided language configuration is defined
+                            const language_config & conf = this->get_lang_config();
+                            if (conf.is_defined()) {
+                                //Define the job uid string
+                                string job_uid_str;
+                                //Create the file name for the text we need to process.
+                                const string file_name = this->template get_text_file_name<is_source, true>(job_uid_str);
+
+                                try {
+                                    //Save the file to the disk
+                                    this->store_text_to_file(file_name);
+
+                                    //Get the string needed to call the processor script
+                                    const string call_str = conf.get_call_string(job_uid_str, this->get_language());
+
+                                    //Call the processor script
+                                    stringstream output;
+                                    if (call_processor_script(call_str, output)) {
+                                        //Send the responses to the client.
+                                        send_success_response<is_source>(output);
+                                    } else {
+                                        //Report an error to the client. The
+                                        //output must contain the error message.
+                                        LOG_DEBUG << output.str() << END_LOG;
+                                        //Report an error to the client.
+                                        send_error_response(output.str());
+                                    }
+                                } catch (std::exception & ex) {
+                                    stringstream sstr;
+                                    sstr << "Could not process: " << file_name << ", language: " <<
+                                            this->get_language() << ", error: " << ex.what();
+                                    LOG_ERROR << sstr.str() << END_LOG;
+                                    //Report an error to the client.
+                                    send_error_response(sstr.str());
+                                }
+                            } else {
+                                stringstream sstr;
+                                sstr << "The language configuration is empty, meaning " <<
+                                        "that the language '" << this->get_language() << "' is not " <<
+                                        "supported, and there is not default processor!";
+                                LOG_DEBUG << sstr.str() << END_LOG;
+                                //Report an error to the client.
+                                send_error_response(sstr.str());
+                            }
+                        }
+
+                        //Notify that the job is now finished.
+                        notify_job_done();
+                    }
+
                 private:
                     //Stores the reference to the language config, might be undefined
                     const language_config & m_config;
@@ -390,7 +585,9 @@ namespace uva {
                     //The done job notifier
                     done_job_notifier m_notify_job_done_func;
 
-                    //Stores the reference to the function for sending the response to the client
+                    //Stores the response creator function
+                    const response_creator m_resp_crt_func;
+                    //Stores the reference to response sending function
                     const session_response_sender & m_resp_send_func;
                 };
             }
