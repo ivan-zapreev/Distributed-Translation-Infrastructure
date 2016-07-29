@@ -391,7 +391,7 @@ namespace uva {
                      * the adapter is configured. 
                      */
                     inline void create_connection_client() {
-                        m_client = new translation_client(m_params->m_address, m_params->m_port,
+                        m_client = new translation_client(m_params->m_uri,
                                 bind(&translator_adapter::set_server_message, this, _1),
                                 bind(&translator_adapter::notify_conn_closed, this),
                                 bind(&translator_adapter::notify_conn_opened, this));

@@ -88,7 +88,7 @@ namespace uva {
                      */
                     trans_manager(const client_config & params)
                     : m_params(params),
-                    m_client(m_params.m_server, m_params.m_port,
+                    m_client(m_params.m_uri,
                     bind(&trans_manager::set_server_message, this, _1),
                     bind(&trans_manager::notify_conn_closed, this), NULL),
                     m_source_file(params.m_source_file),

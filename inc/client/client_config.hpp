@@ -26,6 +26,16 @@
 #ifndef CLIENT_CONFIG_HPP
 #define CLIENT_CONFIG_HPP
 
+#include <regex>
+
+#include "common/utils/exceptions.hpp"
+#include "common/utils/logging/logger.hpp"
+
+using namespace std;
+
+using namespace uva::utils::logging;
+using namespace uva::utils::exceptions;
+
 namespace uva {
     namespace smt {
         namespace bpbd {
@@ -34,7 +44,7 @@ namespace uva {
                 /**
                  * This structure stores the translation client execution parameters
                  */
-                typedef struct {
+                struct client_config_struct {
                     //The source file name with the text to translate
                     string m_source_file;
                     //The language to translate from
@@ -43,10 +53,8 @@ namespace uva {
                     string m_target_file;
                     //The language to translate into
                     string m_target_lang;
-                    //The server to connect to
-                    string m_server;
-                    //The server port to connect through
-                    uint16_t m_port;
+                    //The server URI to connect to
+                    string m_uri;
                     //The maximum number of source sentences to send per translation request
                     uint64_t m_max_sent;
                     //The minimum number of source sentences to send per translation request
@@ -55,8 +63,30 @@ namespace uva {
                     bool m_is_pre_process;
                     //The flag indicating whether the client requests the translation details from the translation server or not.
                     bool m_is_trans_info;
-                } client_config;
 
+                    /**
+                     * The basic constructor
+                     */
+                    client_config_struct()
+                    : m_uri_reg_exp("ws://.*:\\d+") {
+                    }
+
+                    /**
+                     * Allows to finalize the parameters after loading.
+                     */
+                    void finalize() {
+                        //Check the uri format
+                        ASSERT_CONDITION_THROW(!regex_match(m_uri, m_uri_reg_exp),
+                                string("The server uri: '") + m_uri +
+                                string("' does not match the format: ws://<server>:<port>"));
+                    }
+
+                private:
+                    //The regular expression for matching the server uri
+                    const regex m_uri_reg_exp;
+                };
+
+                typedef client_config_struct client_config;
             }
         }
     }

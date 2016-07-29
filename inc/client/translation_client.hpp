@@ -73,19 +73,23 @@ namespace uva {
                     //Define the function type for the function used to notify about the connection status
                     typedef function<void() > conn_status_notifier;
 
-                    translation_client(const string & host, const uint16_t port,
+                    /**
+                     * The basic constructor
+                     * @param uri the server URI
+                     * @param set_server_msg_func the function to set the server message with
+                     * @param notify_conn_close the function to call if the connection is closed
+                     * @param notify_conn_open the function to call if the connection is open
+                     */
+                    translation_client(const string & uri,
                             server_message_setter set_server_msg_func,
                             conn_status_notifier notify_conn_close,
                             conn_status_notifier notify_conn_open)
                     : m_started(false), m_stopped(false), m_opened(false), m_closed(false),
                     m_set_server_msg_func(set_server_msg_func),
                     m_notify_conn_close(notify_conn_close),
-                    m_notify_conn_open(notify_conn_open) {
+                    m_notify_conn_open(notify_conn_open), m_uri(uri) {
                         //Assert that the notifiers and setter are defined
                         ASSERT_SANITY_THROW(!m_set_server_msg_func, "The server message setter is NULL!");
-
-                        //Initialize the URI to connect to
-                        m_uri = string("ws://") + host + string(":") + to_string(port);
 
                         //Set up access channels to only log interesting things
                         m_client.clear_access_channels(alevel::all);

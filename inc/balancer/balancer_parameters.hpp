@@ -28,6 +28,7 @@
 
 #include <map>
 #include <string>
+#include <regex>
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -48,7 +49,7 @@ namespace uva {
                  */
                 struct translator_config_struct {
                     //Stores the server address parameter name
-                    static const string TC_ADDRESS_PARAM_NAME;
+                    static const string TC_URI_PARAM_NAME;
                     //Stores the server port parameter name
                     static const string TC_PORT_PARAM_NAME;
                     //Stores the load factor parameter name
@@ -56,10 +57,8 @@ namespace uva {
 
                     //Stores the name of the server
                     string m_name;
-                    //Stores the address of the server
-                    string m_address;
-                    //Stores the server's port
-                    uint16_t m_port;
+                    //Stores the server URI
+                    string m_uri;
                     //Stores the load weight factor for the server,
                     //should be a value >= 0. If set to 0 then the
                     //translation server will not be used at all.
@@ -108,26 +107,36 @@ namespace uva {
                     map<string, trans_server_params> trans_servers;
 
                     /**
+                     * The basic constructor
+                     */
+                    balancer_parameters_struct()
+                    : m_uri_reg_exp("ws://.*:\\d+") {
+                    }
+
+                    /**
                      * Allows to add a new translator config.
                      * @param name the server's name
                      * @param address the server's address
                      * @param port the server's port
                      * @param load_weight the lod weight for the given server > 0
                      */
-                    inline void add_translator(const string & name, const string & address,
-                            const uint16_t port, const uint32_t load_weight) {
+                    inline void add_translator(const string & name, const string & uri, const uint32_t load_weight) {
                         //Check on the load weight
                         ASSERT_CONDITION_THROW((load_weight < 0),
                                 string("The server load weight in '") + name +
                                 string("' is negative (") + to_string(load_weight)+(")! "));
+
+                        //Check the uri format
+                        ASSERT_CONDITION_THROW(!regex_match(uri, m_uri_reg_exp),
+                                string("The server uri: '") + uri +
+                                string("' does not match the format: ws://<server>:<port>"));
 
                         //Get the data object
                         trans_server_params & data = trans_servers[name];
 
                         //Set the values
                         data.m_name = name;
-                        data.m_address = address;
-                        data.m_port = port;
+                        data.m_uri = uri;
                         data.m_load_weight = load_weight;
                     }
 
@@ -169,6 +178,10 @@ namespace uva {
                                 string("Invalid reconnection time out: ") +
                                 to_string(m_recon_time_out) + string(" must be > 0!"));
                     }
+
+                private:
+                    //The regular expression for matching the server uri
+                    const regex m_uri_reg_exp;
                 };
 
                 //Typedef the structure
@@ -181,8 +194,7 @@ namespace uva {
                  * @return the stream that we output into
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const trans_server_params & params) {
-                    return stream << "{" << params.m_name << ", ws://" << params.m_address << ":"
-                            << params.m_port << ", load weight=" << params.m_load_weight << "}";
+                    return stream << "{" << params.m_name << ", " << params.m_uri << ", load weight=" << params.m_load_weight << "}";
                 }
 
                 /**

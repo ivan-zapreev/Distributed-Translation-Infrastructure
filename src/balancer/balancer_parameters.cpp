@@ -29,8 +29,7 @@ namespace uva {
     namespace smt {
         namespace bpbd {
             namespace balancer {
-                const string trans_server_params::TC_ADDRESS_PARAM_NAME = "address";
-                const string trans_server_params::TC_PORT_PARAM_NAME = "port";
+                const string trans_server_params::TC_URI_PARAM_NAME = "uri";
                 const string trans_server_params::TC_LOAD_WEIGHT_PARAM_NAME = "load_weight";
 
                 const string balancer_parameters::SE_CONFIG_SECTION_NAME = "Server Options";
