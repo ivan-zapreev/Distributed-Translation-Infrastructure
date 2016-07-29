@@ -245,7 +245,9 @@ namespace uva {
                         //Cancel incomplete jobs
                         cancel_incomp_jobs(session_id);
 
-                        //Cancel all the jobs from the given session
+                        //Cancel all the jobs from the given session, will be
+                        //synchronized on the files, so no files shall be
+                        //locked/appearing after this call.
                         this->cancel_jobs(session_id);
                         
                         //Remove the files from the given session
