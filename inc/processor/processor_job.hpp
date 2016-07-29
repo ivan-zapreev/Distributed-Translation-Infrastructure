@@ -26,6 +26,7 @@
 #ifndef PROCESSOR_JOB_HPP
 #define PROCESSOR_JOB_HPP
 
+#include <stdio.h>
 #include <ostream>
 #include <fstream>
 
@@ -207,7 +208,51 @@ namespace uva {
 
                         return (m_tasks_count == m_num_tps);
                     }
-                    
+
+                    /**
+                     * Allows to delete the files from the given session
+                     * @param work_dir the work directory
+                     * @param session_id the session id
+                     */
+                    static inline void delete_session_files(const string & work_dir, const session_id_type session_id) {
+                        //Create the job_uid wildcard
+                        const string wildcard = to_string(session_id) + ".*";
+                        //Remove all sorts of files request, response, input, output
+                        remove_files<true,true>(work_dir, wildcard);
+                        remove_files<true,false>(work_dir, wildcard);
+                        remove_files<false,true>(work_dir, wildcard);
+                        remove_files<false,false>(work_dir, wildcard);
+                    }
+
+                protected:
+                    //This is the file lock which is used when the job is being canceled.
+                    //The file lock makes sure the job can not be canceled when some
+                    //file descriptors of the job or child processes are begin open
+                    //This is done to make sure that if the job is canceled we can
+                    //clean up the files after it.
+                    recursive_mutex m_file_lock;
+                    //Stores the flag indicating whether the job is canceled
+                    //or not. If the job is canceled then there is no need
+                    //to do anything including sending the responses.
+                    a_bool_flag m_is_canceled;
+
+                    /**
+                     * Allows to delete the files from the given wildcard
+                     * @param work_dir the work directory
+                     * @param wildcard the wildcard to remove files
+                     */
+                    template<bool is_source, bool is_input>
+                    static inline void remove_files(const string & work_dir, const string wildcard) {
+                        //Create the command
+                        const string cmd = string("rm -f ") + get_text_file_name<is_source, is_input>(work_dir, wildcard);
+                        //make the system call
+                        const int dir_err = system(cmd.c_str());
+                        //Check the execution status
+                        if(-1 == dir_err){
+                            LOG_ERROR << "Could not delete files with command: " << cmd << END_LOG;
+                        }
+                    }
+
                     /**
                      * Allows to construct the text file name, differs depending
                      * on whether this is a source or target text.
@@ -223,27 +268,6 @@ namespace uva {
                                 (is_source ? "pre" : "post") + "." +
                                 (is_input ? "in" : "out") + ".txt";
                     }
-                    
-                    /**
-                     * Allows to delete the files from the given session
-                     * @param work_dir the work directory
-                     * @param session_id the session id
-                     */
-                    static inline void delete_session_files(const string & work_dir, const session_id_type session_id) {
-                        //ToDo: Implement
-                    }
-
-                protected:
-                    //This is the file lock which is used when the job is being canceled.
-                    //The file lock makes sure the job can not be canceled when some
-                    //file descriptors of the job or child processes are begin open
-                    //This is done to make sure that if the job is canceled we can
-                    //clean up the files after it.
-                    recursive_mutex m_file_lock;
-                    //Stores the flag indicating whether the job is canceled
-                    //or not. If the job is canceled then there is no need
-                    //to do anything including sending the responses.
-                    a_bool_flag m_is_canceled;
 
                     /**
                      * Shall be called once the balancer job is done
@@ -264,7 +288,7 @@ namespace uva {
                      */
                     inline void store_text_to_file(const string & file_name) {
                         recursive_guard guard(m_file_lock);
-                        
+
                         if (!m_is_canceled) {
                             //Check if the requests complete
                             ASSERT_SANITY_THROW(!is_complete(),
@@ -317,7 +341,7 @@ namespace uva {
                         //Set the job uid
                         job_uid_str = to_string(m_session_id) + "." + to_string(m_job_id);
                         //Compute the file name
-                        return get_text_file_name<is_source,is_input>(m_config.get_work_dir(), job_uid_str);
+                        return get_text_file_name<is_source, is_input>(m_config.get_work_dir(), job_uid_str);
                     }
 
                     /**
