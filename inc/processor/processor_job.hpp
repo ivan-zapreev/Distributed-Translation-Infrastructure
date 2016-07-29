@@ -221,13 +221,10 @@ namespace uva {
                      * @param session_id the session id
                      */
                     static inline void delete_session_files(const string & work_dir, const session_id_type session_id) {
-                        //Create the job_uid wildcard
-                        const string wildcard = to_string(session_id) + ".*";
+                        //Create the job_uid wildcard, "session_id.job_id"
+                        const string wildcard = get_job_uid_str(session_id, job_id::UNDEFINED_JOB_ID);
                         //Remove all sorts of files request, response, input, output
-                        remove_files<true, true>(work_dir, wildcard);
-                        remove_files<true, false>(work_dir, wildcard);
-                        remove_files<false, true>(work_dir, wildcard);
-                        remove_files<false, false>(work_dir, wildcard);
+                        delete_files(work_dir, wildcard);
                     }
 
                 protected:
@@ -243,16 +240,44 @@ namespace uva {
                     a_bool_flag m_is_canceled;
 
                     /**
-                     * Allows to delete the files from the given wildcard
+                     * Allows to get the unique job identifier string for the given session id and job id.
+                     * If the session id or job id is not known then a "*" symbol is used in its place.
+                     * @param sid the session id
+                     * @param jid the job id
+                     * @return the job unique identifier
+                     */
+                    static inline string get_job_uid_str(const session_id_type sid, const job_id_type jid) {
+                        return ( sid == session_id::UNDEFINED_SESSION_ID ? "*" : to_string(sid))
+                                + "." +
+                                (jid == job_id::UNDEFINED_JOB_ID ? "*" : to_string(jid));
+                    }
+
+                    /**
+                     * Allows to delete the files from the given job
+                     */
+                    inline void delete_job_files() {
+                        //Create the job_uid wildcard, "session_id.job_id"
+                        const string wildcard = get_job_uid_str(session_id::UNDEFINED_SESSION_ID, m_job_id);
+                        //Remove all sorts of files request, response, input, output
+                        delete_files(m_config.get_work_dir(), wildcard);
+                    }
+
+                    /**
+                     * Allows to delete the files from the given wildcards
                      * @param work_dir the work directory
                      * @param wildcard the wildcard to remove files
                      */
-                    template<bool is_source, bool is_input>
-                    static inline void remove_files(const string & work_dir, const string wildcard) {
+                    static inline void delete_files(const string & work_dir, const string wildcard) {
                         //Create the command
-                        const string cmd = string("rm -f ") + get_text_file_name<is_source, is_input>(work_dir, wildcard);
+                        const string cmd = string("rm -f ") +
+                                get_text_file_name<true, true>(work_dir, wildcard) + " " +
+                                get_text_file_name<true, false>(work_dir, wildcard) + " " +
+                                get_text_file_name<false, true>(work_dir, wildcard) + " " +
+                                get_text_file_name<false, false>(work_dir, wildcard);
+
                         //make the system call
                         const int dir_err = system(cmd.c_str());
+
                         //Check the execution status
                         if (-1 == dir_err) {
                             LOG_ERROR << "Could not delete files with command: " << cmd << END_LOG;
@@ -263,16 +288,16 @@ namespace uva {
                      * Allows to construct the text file name, differs depending
                      * on whether this is a source or target text.
                      * This method is NOT synchronized.
-                     * @param is_source if true then it is a source text, if false then the target text
-                     * @param is_input if true then it is an input text, if false then the output text
+                     * @param is_pnp if true then this is a pre-processor job, if false then a post-processor
+                     * @param is_ino if true then this is for the input file of the job, if false then for the output
                      * @param job_uid_str [out] will be set to the job uid string
                      * @return the name of the text file, should be unique
                      */
-                    template<bool is_source, bool is_input>
+                    template<bool is_pnp, bool is_ino>
                     static inline string get_text_file_name(const string & work_dir, const string & job_uid_str) {
                         return work_dir + "/" + job_uid_str + "." +
-                                (is_source ? "pre" : "post") + "." +
-                                (is_input ? "in" : "out") + ".txt";
+                                (is_pnp ? "pre" : "post") + "." +
+                                (is_ino ? "in" : "out") + ".txt";
                     }
 
                     /**
@@ -337,17 +362,17 @@ namespace uva {
                      * Allows to construct the text file name, differs depending
                      * on whether this is a source or target text.
                      * This method is NOT synchronized.
-                     * @param is_source if true then it is a source text, if false then the target text
-                     * @param is_input if true then it is an input text, if false then the output text
+                     * @param is_pnp if true then this is a pre-processor job, if false then a post-processor
+                     * @param is_ino if true then this is for the input file of the job, if false then for the output
                      * @param job_uid_str [out] will be set to the job uid string
                      * @return the name of the text file, should be unique
                      */
-                    template<bool is_source, bool is_input>
+                    template<bool is_pnp, bool is_ino>
                     inline const string get_text_file_name(string & job_uid_str) {
                         //Set the job uid
-                        job_uid_str = to_string(m_session_id) + "." + to_string(m_job_id);
+                        job_uid_str = get_job_uid_str(m_session_id, m_job_id);
                         //Compute the file name
-                        return get_text_file_name<is_source, is_input>(m_config.get_work_dir(), job_uid_str);
+                        return get_text_file_name<is_pnp, is_ino>(m_config.get_work_dir(), job_uid_str);
                     }
 
                     /**
@@ -443,10 +468,10 @@ namespace uva {
                     /**
                      * Allows to send an success response to the server
                      * This method is synchronized on files lock.
-                     * @param is_source if true then it is a source text, if false then the target text
+                     * @param is_pnp if true then this is a pre-processor job, if false then a post-processor
                      * @param msg_str the success message string
                      */
-                    template<bool is_source>
+                    template<bool is_pnp>
                     inline void send_success_response(const stringstream & msg_str) {
                         recursive_guard guard(m_file_lock);
 
@@ -456,7 +481,7 @@ namespace uva {
 
                             //Get the output file name
                             string uid;
-                            const string file_name = this->get_text_file_name<is_source, false>(uid);
+                            const string file_name = this->get_text_file_name<is_pnp, false>(uid);
 
                             //Open the input file and read from it in chunks
                             ifstream file(file_name, ifstream::binary | ios::ate);
@@ -507,9 +532,9 @@ namespace uva {
 
                     /**
                      * Performs the processor job
-                     * @param is_source if true then it is a source text, if false then the target text
+                     * @param is_pnp if true then this is a pre-processor job, if false then a post-processor
                      */
-                    template<bool is_source>
+                    template<bool is_pnp>
                     inline void process() {
                         //Check if the job is not canceled yet
                         if (!m_is_canceled) {
@@ -519,7 +544,7 @@ namespace uva {
                                 //Define the job uid string
                                 string job_uid_str;
                                 //Create the file name for the text we need to process.
-                                const string file_name = this->template get_text_file_name<is_source, true>(job_uid_str);
+                                const string file_name = this->template get_text_file_name<is_pnp, true>(job_uid_str);
 
                                 try {
                                     //Save the file to the disk
@@ -532,7 +557,7 @@ namespace uva {
                                     stringstream output;
                                     if (call_processor_script(call_str, output)) {
                                         //Send the responses to the client.
-                                        send_success_response<is_source>(output);
+                                        send_success_response<is_pnp>(output);
                                     } else {
                                         //Report an error to the client. The
                                         //output must contain the error message.

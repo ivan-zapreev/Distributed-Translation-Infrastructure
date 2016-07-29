@@ -72,7 +72,8 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~post_proc_job() {
-                        //ToDo: Delete the job files
+                        //Delete the job files
+                        delete_job_files();
                     }
 
                     /**
