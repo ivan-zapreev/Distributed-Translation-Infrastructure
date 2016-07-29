@@ -376,13 +376,13 @@ namespace uva {
                     //Dump the pre-processor configs
                     stream << ", pre_configs: [";
                     for (auto iter = params.m_pre_configs.begin(); iter != params.m_pre_configs.end(); ++iter) {
-                        stream << iter->second << ", ";
+                        stream << *iter->second << ", ";
                     }
 
                     //Dump the post-processor configs
                     stream << "], post_configs: [";
                     for (auto iter = params.m_post_configs.begin(); iter != params.m_post_configs.end(); ++iter) {
-                        stream << iter->second << ", ";
+                        stream << *iter->second << ", ";
                     }
 
                     //Finish the dump
