@@ -29,6 +29,8 @@
 #include "tclap/CmdLine.h"
 
 #include "main.hpp"
+
+#include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
 #include "client/trans_manager.hpp"
 #include "common/utils/exceptions.hpp"
@@ -201,10 +203,31 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 /**
  * Allows to populate the input stream with the source text
  * @param params the client parameters
- * @param input the input stream to put the text into
+ * @param output the stream to put the text into
  */
-void read_input(const client_parameters & params, stringstream_ptr & input) {
-    //ToDo: Implement
+void read_input(const client_parameters & params, stringstream_ptr & output) {
+    //Open the input file with the source text
+    cstyle_file_reader source_file(params.m_source_file);
+
+    //If the input file could not be opened, we through!
+    ASSERT_CONDITION_THROW(!source_file.is_open(),
+            string("Could not open the source text file: ") + params.m_source_file);
+
+    //Log the source file reader info
+    source_file.log_reader_type_info();
+
+    LOG_USAGE << "Reading source text from '" << params.m_source_file << "'" << END_LOG;
+    
+    //Declare the variable to store the sentence line
+    text_piece_reader line;
+
+    //Read the file line by line and place it into the buffer
+    while (source_file.get_first_line(line)) {
+        *output << line.str() << std::endl;
+    }
+
+    //Close the source file
+    source_file.close();
 }
 
 /**
@@ -233,8 +256,7 @@ void pre_process(const client_parameters & params, stringstream_ptr & input, str
  */
 void translate(const client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
     //Create the translation manager
-    //ToDo: Add the input and output stream to the translation manager
-    trans_manager manager(params);
+    trans_manager manager(params, *input, *output);
 
     //Start the translation manager
     LOG_USAGE << "Starting the translation process ..." << END_LOG;
@@ -272,10 +294,26 @@ void post_process(const client_parameters & params, stringstream_ptr & input, st
 /**
  * Allows to write the data from the output stream into the target text
  * @param params the client parameters
- * @param output the output stream to get the text from
+ * @param input the stream to get the text from
  */
-void write_output(const client_parameters & params, stringstream_ptr & output) {
-    //ToDo: Implement
+void write_output(const client_parameters & params, stringstream_ptr & input) {
+    //Open the output file to store the target text
+    ofstream trans_file(params.m_target_file);
+
+    //If the output file could not be opened, we through!
+    ASSERT_CONDITION_THROW(!trans_file.is_open(),
+            string("Could not open: ") + params.m_target_file);
+
+    LOG_USAGE << "Dumping translation into '" << params.m_target_file << "'" << END_LOG;
+
+    //Read the file line by line and place it into the buffer
+    char buffer[LINE_MAX_BYTES_LEN];
+    while (input->getline(buffer, sizeof (buffer))) {
+        trans_file << buffer << std::endl;
+    }
+
+    //Close the source file
+    trans_file.close();
 }
 
 /**

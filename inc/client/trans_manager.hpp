@@ -42,6 +42,7 @@
 #include "common/messaging/status_code.hpp"
 #include "common/messaging/job_id.hpp"
 
+#include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
 #include "client/translation_client.hpp"
 #include "client/trans_job.hpp"
@@ -85,21 +86,15 @@ namespace uva {
                     /**
                      * This is the basic constructor needed to 
                      * @param params the translation client parameters
+                     * @param input the input stream to read the source text from
+                     * @param output the output stream to write the target text into
                      */
-                    trans_manager(const client_parameters & params)
-                    : m_params(params),
+                    trans_manager(const client_parameters & params, stringstream & input, stringstream & output)
+                    : m_params(params), m_input(input), m_output(output),
                     m_client(m_params.m_trans_uri,
                     bind(&trans_manager::set_server_message, this, _1),
                     bind(&trans_manager::notify_conn_closed, this), NULL),
-                    m_source_file(params.m_source_file),
                     m_sending_thread_ptr(NULL) {
-                        //If the input file could not be opened, we through!
-                        ASSERT_CONDITION_THROW(!m_source_file.is_open(),
-                                string("Could not open the source text file: ") + params.m_source_file);
-
-                        //Log the source file reader info
-                        m_source_file.log_reader_type_info();
-
                         //Check that the minimum is not larger than the maximum
                         ASSERT_CONDITION_THROW((m_params.m_max_sent < m_params.m_min_sent),
                                 string("The minimum number of sentences to be sent (") + to_string(m_params.m_min_sent)
@@ -127,9 +122,6 @@ namespace uva {
                      * The basic destructor class
                      */
                     virtual ~trans_manager() {
-                        //Close the source file
-                        m_source_file.close();
-
                         //Clean the internal administration, just delete the translation jobs 
                         for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()); ++it) {
                             delete (*it);
@@ -217,10 +209,11 @@ namespace uva {
                      * Allows to store the response data
                      * @param fis the first sentence number 
                      * @param resp the translation job response
-                     * @param trans_file the file to write the translated text into
+                     * @param output the stream to write the translated text into
                      * @param info_file the file to write the translation info into
                      */
-                    inline void store_targety_data(uint32_t fis, trans_job_resp_in * resp, ofstream & trans_file, ofstream & info_file) {
+                    inline void store_targety_data(uint32_t fis, trans_job_resp_in * resp,
+                            stringstream & output, ofstream & info_file) {
                         //If the result is ok or partial then just put the text into the file
                         const trans_sent_data_in * sent_data = resp->next_send_data();
 
@@ -228,12 +221,12 @@ namespace uva {
                         if (sent_data != NULL) {
                             while (sent_data != NULL) {
                                 //Dump the translated text
-                                trans_file << sent_data->get_trans_text() << std::endl;
+                                output << sent_data->get_trans_text() << std::endl;
                                 //Get the sentence status code
                                 const status_code code = sent_data->get_status_code();
                                 //Dump the status code and message and the translation info such as stack loads
                                 info_file << "--" << std::endl << "Sentence: " << to_string(fis)
-                                        << " translation status: '" << code;
+                                        << " translation status: '" << code << "'";
                                 //Log the message only if it is present.
                                 if (!sent_data->get_status_msg().empty()) {
                                     info_file << "', message: " << sent_data->get_status_msg();
@@ -255,7 +248,9 @@ namespace uva {
                             }
                         } else {
                             //There is no sentence data present!
-                            trans_file << "ERROR: Missing target sentences for job: " << resp->get_job_id() << std::endl;
+                            LOG_ERROR << "ERROR: Missing target sentences for job: " << resp->get_job_id() << END_LOG;
+                            //Make it an empty line
+                            output << std::endl;
                         }
                     }
 
@@ -264,11 +259,11 @@ namespace uva {
                      * @param fis the first sentence number 
                      * @param lis the last sentence number
                      * @param job the translation job data
-                     * @param trans_file the file to write to
+                     * @param output the stream to write the translation result into
                      * @param info_file the file to write the translation info into
                      */
                     inline void write_received_job_result(const uint32_t fis, const uint32_t lis,
-                            const trans_job_ptr job, ofstream & trans_file, ofstream & info_file) {
+                            const trans_job_ptr job, stringstream & output, ofstream & info_file) {
                         //Get the response pointer
                         trans_job_resp_in * resp = job->m_response;
 
@@ -281,7 +276,7 @@ namespace uva {
                                     << "message: " << resp->get_status_msg() << std::endl;
 
                             //Dump the sentences data
-                            store_targety_data(fis, resp, trans_file, info_file);
+                            store_targety_data(fis, resp, output, info_file);
                         } catch (std::exception & e) {
                             LOG_ERROR << "Could not dump data for sentences [" << to_string(fis)
                                     << ":" << to_string(lis) << "]: " << e.what() << END_LOG;
@@ -293,21 +288,16 @@ namespace uva {
                      */
                     inline void write_result_to_file() {
                         //Get the names for the translation and info files
-                        const string trans_file_name = m_params.m_target_file;
                         const string info_file_name = m_params.m_target_file + ".log";
 
                         //Open the report file and the info file
-                        ofstream trans_file, info_file;
-                        trans_file.open(trans_file_name);
-                        info_file.open(info_file_name);
+                        ofstream info_file(info_file_name);
                         //Declare the variable to store the line cursor
                         uint32_t line_cursor = 1;
 
-                        LOG_USAGE << "Dumping translation into '" << trans_file_name << "'" << END_LOG;
                         LOG_INFO << "Storing logging into '" << info_file_name << "'" << END_LOG;
 
                         try {
-                            ASSERT_CONDITION_THROW(!trans_file.is_open(), string("Could not open: ") + trans_file_name);
                             ASSERT_CONDITION_THROW(!info_file.is_open(), string("Could not open: ") + info_file_name);
 
                             //Go through the translation job data and write it into the files
@@ -329,7 +319,7 @@ namespace uva {
 
                                 //If the status is that the response is received, log it
                                 if (status == trans_job_status::STATUS_RES_RECEIVED) {
-                                    write_received_job_result(fis, lis, job, trans_file, info_file);
+                                    write_received_job_result(fis, lis, job, m_output, info_file);
                                 }
 
                                 //Set the line cursor to the next line
@@ -339,8 +329,7 @@ namespace uva {
                             LOG_ERROR << "Could not dump results: " << e.what() << END_LOG;
                         }
 
-                        //Close the report and info files
-                        trans_file.close();
+                        //Close the info file
                         info_file.close();
                     }
 
@@ -532,11 +521,13 @@ namespace uva {
                     //Stores a reference to the translation client parameters
                     const client_parameters & m_params;
 
+                    //Stores the reference to the input stream storing the source text
+                    stringstream & m_input;
+                    //Stores the reference to the output stream for the target text
+                    stringstream & m_output;
+
                     //Stores the translation client
                     translation_client m_client;
-
-                    //Stores the source text
-                    cstyle_file_reader m_source_file;
 
                     //Stores the list of the translation job objects in the
                     //same order as they were created from the input file
@@ -572,9 +563,6 @@ namespace uva {
                      * This function shall be run in a separate thread and create a number of translation jobs.
                      */
                     void create_translation_jobs() {
-                        //Declare the variable to store the sentence line
-                        text_piece_reader line;
-
                         LOG_DEBUG << "Reading text from the source file ..." << END_LOG;
                         bool is_done = false;
                         while (!is_done) {
@@ -586,10 +574,10 @@ namespace uva {
                             vector<string> source_text;
 
                             LOG_DEBUG1 << "Planning to send  " << num_to_sent << " sentences with the next request" << END_LOG;
-
-                            while ((num_read < num_to_sent) && m_source_file.get_first_line(line)) {
+                            char buffer[LINE_MAX_BYTES_LEN];
+                            while ((num_read < num_to_sent) && m_input.getline(buffer, sizeof (buffer))) {
                                 //Obtain the read source sentence
-                                string source_sent = line.str();
+                                string source_sent(buffer);
 
                                 LOG_DEBUG2 << "Read line: '" << source_sent << "'" << END_LOG;
 

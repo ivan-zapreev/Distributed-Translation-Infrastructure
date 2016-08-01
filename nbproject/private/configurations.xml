@@ -617,6 +617,7 @@
           <in>trans_job_resp_in.hpp</in>
           <in>trans_sent_data_in.hpp</in>
         </df>
+        <in>client_consts.hpp</in>
         <in>client_parameters.hpp</in>
         <in>trans_job.hpp</in>
         <in>trans_job_status.hpp</in>
@@ -693,6 +694,7 @@
         <in>post_proc_job.hpp</in>
         <in>pre_proc_job.hpp</in>
         <in>processor_console.hpp</in>
+        <in>processor_consts.hpp</in>
         <in>processor_job.hpp</in>
         <in>processor_manager.hpp</in>
         <in>processor_parameters.hpp</in>

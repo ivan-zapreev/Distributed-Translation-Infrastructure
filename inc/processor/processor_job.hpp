@@ -29,6 +29,8 @@
 #include <stdio.h>
 #include <ostream>
 #include <fstream>
+#include <codecvt>
+#include <clocale>
 
 #include "common/utils/id_manager.hpp"
 #include "common/utils/exceptions.hpp"
@@ -42,7 +44,8 @@
 
 #include "processor/messaging/proc_req_in.hpp"
 #include "processor/messaging/proc_resp_out.hpp"
-#include "processor_parameters.hpp"
+#include "processor/processor_consts.hpp"
+#include "processor/processor_parameters.hpp"
 
 using namespace std;
 
@@ -490,17 +493,22 @@ namespace uva {
                             ASSERT_CONDITION_THROW(!file.is_open(), string("The resulting file: ") +
                                     file_name + string(" could not be opened!"));
 
+                            //Switch to wide locale independent utf-8 characters
+                            std::wbuffer_convert < std::codecvt_utf8<wchar_t>> conv(file.rdbuf());
+                            std::wistream wide_file(&conv);
+                            std::setlocale(LC_ALL, "");
+                            
                             //Count the number of text pieces
-                            file.seekg(0, file.end); //Move to the end of file
-                            int length = file.tellg(); //Get the number of bytes
-                            file.seekg(0, file.beg); //Move to begin of file
+                            wide_file.seekg(0, wide_file.end); //Move to the end of file
+                            int length = wide_file.tellg(); //Get the number of bytes
+                            wide_file.seekg(0, wide_file.beg); //Move to begin of file
 
                             //Assert that the file length could be obtained and it is not zero!
                             ASSERT_CONDITION_THROW((length <= 0), string("Could not get the ") +
                                     file_name + string(" file size or its size is zero!"));
 
                             //Define the buffer for reading the file in chunks
-                            char buffer[10 * 1024];
+                            wchar_t buffer[MESSAGE_MAX_WCHARS_LEN];
 
                             //Compute the number of chunks needed
                             const size_t num_text_pieces = ceil(((double) length) / sizeof (buffer));
@@ -508,7 +516,7 @@ namespace uva {
                             size_t text_piece_idx = 0;
 
                             //Read from file and send response messages
-                            while (file.read(buffer, sizeof (buffer))) {
+                            while (wide_file.read(buffer, sizeof (buffer))) {
                                 //Get the error response
                                 proc_resp_out * resp = m_resp_crt_func(this->get_job_id(), status_code::RESULT_OK, "");
 
@@ -516,7 +524,8 @@ namespace uva {
                                 resp->set_language(lang);
 
                                 //Set text the text piece index and the number of text pieces
-                                resp->set_text(string(buffer), text_piece_idx, num_text_pieces);
+                                wstring ws(buffer);
+                                resp->set_text(string(ws.begin(), ws.end()), text_piece_idx, num_text_pieces);
 
                                 //Attempt to send the job response
                                 processor_job::send_response(*resp);
