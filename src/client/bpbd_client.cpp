@@ -28,7 +28,7 @@
 #include "tclap/CmdLine.h"
 
 #include "main.hpp"
-#include "client/client_config.hpp"
+#include "client/client_parameters.hpp"
 #include "client/trans_manager.hpp"
 #include "common/utils/exceptions.hpp"
 
@@ -65,7 +65,6 @@ static ValueArg<uint32_t> * p_min_sent = NULL;
 static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
 static ValueArg<string> * p_debug_level_arg = NULL;
-static SwitchArg * p_pre_process_arg = NULL;
 static SwitchArg * p_trans_details_arg = NULL;
 
 /**
@@ -112,10 +111,6 @@ void create_arguments_parser() {
     p_min_sent = new ValueArg<uint32_t>("l", "lower-size", string("The minimum number of sentences ") +
             string("to send per request, default is 100"), false, 100, "min #sentences per request", *p_cmd_args);
 
-    //Add the tokenize text switch  parameter - optional, default is true
-    p_pre_process_arg = new SwitchArg("t", "tokenize", string("Tokenize the source language lines: ") +
-            string("to-lowercase, punctuate, reduce"), *p_cmd_args, true);
-
     //Add the translation details switch parameter - ostring(ptional, default is false
     p_trans_details_arg = new SwitchArg("c", "clues", string("Request the server to provide the ") +
             string("translation details"), *p_cmd_args, false);
@@ -140,7 +135,6 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_post_uri_arg);
     SAFE_DESTROY(p_max_sent);
     SAFE_DESTROY(p_min_sent);
-    SAFE_DESTROY(p_pre_process_arg);
     SAFE_DESTROY(p_trans_details_arg);
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
@@ -153,7 +147,7 @@ void destroy_arguments_parser() {
  * @param argv the array of program arguments
  * @param params the structure that will be filled in with the parsed program arguments
  */
-static void extract_arguments(const uint argc, char const * const * const argv, client_config & params) {
+static void extract_arguments(const uint argc, char const * const * const argv, client_parameters & params) {
     //Parse the arguments
     try {
         p_cmd_args->parse(argc, argv);
@@ -192,13 +186,10 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
     params.m_min_sent = p_min_sent->getValue();
     params.m_max_sent = p_max_sent->getValue();
-    LOG_USAGE << "The min/max number of sentences per request: '" << params.m_min_sent << "/" << params.m_max_sent << "'" << END_LOG;
-
-    params.m_is_pre_process = p_pre_process_arg->getValue();
-    LOG_USAGE << "The source sentence pre-processing is " << (params.m_is_pre_process ? "ON" : "OFF") << END_LOG;
+    LOG_USAGE << "Min/max number of sentences per request: '" << params.m_min_sent << "/" << params.m_max_sent << "'" << END_LOG;
 
     params.m_is_trans_info = p_trans_details_arg->getValue();
-    LOG_USAGE << "The translation details is " << (params.m_is_trans_info ? "ON" : "OFF") << END_LOG;
+    LOG_USAGE << "Translation info is " << (params.m_is_trans_info ? "ON" : "OFF") << END_LOG;
 
     //Finalize the results
     params.finalize();
@@ -222,7 +213,7 @@ int main(int argc, char** argv) {
 
     try {
         //Define en empty parameters structure
-        client_config params = {};
+        client_parameters params = {};
 
         //Attempt to extract the program arguments
         extract_arguments(argc, argv, params);

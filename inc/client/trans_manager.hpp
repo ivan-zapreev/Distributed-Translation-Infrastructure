@@ -42,7 +42,7 @@
 #include "common/messaging/status_code.hpp"
 #include "common/messaging/job_id.hpp"
 
-#include "client/client_config.hpp"
+#include "client/client_parameters.hpp"
 #include "client/translation_client.hpp"
 #include "client/trans_job.hpp"
 #include "client/trans_job_status.hpp"
@@ -86,7 +86,7 @@ namespace uva {
                      * This is the basic constructor needed to 
                      * @param params the translation client parameters
                      */
-                    trans_manager(const client_config & params)
+                    trans_manager(const client_parameters & params)
                     : m_params(params),
                     m_client(m_params.m_trans_uri,
                     bind(&trans_manager::set_server_message, this, _1),
@@ -530,7 +530,7 @@ namespace uva {
                     static id_manager<job_id_type> m_id_mgr;
 
                     //Stores a reference to the translation client parameters
-                    const client_config & m_params;
+                    const client_parameters & m_params;
 
                     //Stores the translation client
                     translation_client m_client;
@@ -592,17 +592,6 @@ namespace uva {
                                 string source_sent = line.str();
 
                                 LOG_DEBUG2 << "Read line: '" << source_sent << "'" << END_LOG;
-
-                                //If needed, do the source sentence pre-processing
-                                if (m_params.m_is_pre_process) {
-                                    //Pre-proces the source sentence:
-                                    //1. Lowercase
-                                    to_lower(source_sent);
-                                    //2. Punctuate
-                                    punctuate(source_sent);
-                                    //3. Reduce
-                                    reduce(source_sent);
-                                }
 
                                 //Append the new line to the text to be sent
                                 source_text.push_back(source_sent);

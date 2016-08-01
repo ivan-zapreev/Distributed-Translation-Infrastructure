@@ -617,7 +617,7 @@
           <in>trans_job_resp_in.hpp</in>
           <in>trans_sent_data_in.hpp</in>
         </df>
-        <in>client_config.hpp</in>
+        <in>client_parameters.hpp</in>
         <in>trans_job.hpp</in>
         <in>trans_job_status.hpp</in>
         <in>trans_manager.hpp</in>
