@@ -34,6 +34,8 @@
 #include <unordered_map>
 
 #include "common/utils/id_manager.hpp"
+#include "common/utils/string_utils.hpp"
+#include "common/utils/threads/threads.hpp"
 
 #include "common/messaging/status_code.hpp"
 #include "common/messaging/job_id.hpp"
@@ -50,6 +52,8 @@
 
 using namespace std;
 using namespace uva::utils;
+using namespace uva::utils::text;
+using namespace uva::utils::threads;
 
 namespace uva {
     namespace smt {

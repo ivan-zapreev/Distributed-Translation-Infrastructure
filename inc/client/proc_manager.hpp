@@ -27,6 +27,8 @@
 #define PROC_MANAGER_HPP
 
 #include "common/utils/id_manager.hpp"
+#include "common/utils/string_utils.hpp"
+#include "common/utils/threads/threads.hpp"
 
 #include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
@@ -35,6 +37,8 @@
 
 using namespace std;
 using namespace uva::utils;
+using namespace uva::utils::text;
+using namespace uva::utils::threads;
 
 namespace uva {
     namespace smt {
