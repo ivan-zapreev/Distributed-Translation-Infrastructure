@@ -29,11 +29,10 @@
 #include <stdio.h>
 #include <ostream>
 #include <fstream>
-#include <codecvt>
-#include <clocale>
 
 #include "common/utils/id_manager.hpp"
 #include "common/utils/exceptions.hpp"
+#include "common/utils/string_utils.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/threads/threads.hpp"
 
@@ -42,14 +41,16 @@
 #include "common/messaging/job_id.hpp"
 #include "common/messaging/status_code.hpp"
 
-#include "processor/messaging/proc_req_in.hpp"
-#include "processor/messaging/proc_resp_out.hpp"
 #include "processor/processor_consts.hpp"
 #include "processor/processor_parameters.hpp"
+
+#include "processor/messaging/proc_req_in.hpp"
+#include "processor/messaging/proc_resp_out.hpp"
 
 using namespace std;
 
 using namespace uva::utils;
+using namespace uva::utils::text;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::threads;
 using namespace uva::utils::logging;
@@ -105,7 +106,7 @@ namespace uva {
                             const session_response_sender & resp_send_func)
                     : m_is_canceled(false), m_config(config), m_session_id(session_id),
                     m_job_id(req->get_job_id()), m_num_tps(req->get_num_text_pieces()),
-                    m_req_tasks(NULL), m_tasks_count(0), m_notify_job_done_func(NULL),
+                    m_res_lang(""), m_req_tasks(NULL), m_tasks_count(0), m_notify_job_done_func(NULL),
                     m_resp_crt_func(resp_crt_func), m_resp_send_func(resp_send_func) {
                         //Allocate the required-size array for storing the processor requests
                         m_req_tasks = new proc_req_in_ptr[m_num_tps]();
@@ -420,7 +421,7 @@ namespace uva {
                             FILE *fp = popen(call_str.c_str(), "r");
                             if (fp != NULL) {
                                 //The buffer itself
-                                char buffer[1024];
+                                char buffer[MAX_PROCESSOR_OUTPUT_BYTES];
                                 //Read from the pipeline - we shall get the resulting language or an error message
                                 while (fgets(buffer, sizeof (buffer), fp) != NULL) {
                                     output << buffer;
@@ -469,6 +470,30 @@ namespace uva {
                     }
 
                     /**
+                     * Allows to send a chunk of utf8 characters to the client
+                     * @param buffer the buffer storing the characters
+                     * @param num_chunks the total number of chunks to send 
+                     * @param chunk_idx the current chunk index starting with 0.
+                     */
+                    inline void send_utf8_chunk_msg(wchar_t * buffer, const size_t num_text_pieces, const size_t text_piece_idx) {
+                        //Get the error response
+                        proc_resp_out * resp = m_resp_crt_func(this->get_job_id(), status_code::RESULT_OK, "");
+
+                        //Set the language
+                        resp->set_language(m_res_lang);
+
+                        //Set text the text piece index and the number of text pieces
+                        wstring ws(buffer);
+                        resp->set_text(string(ws.begin(), ws.end()), text_piece_idx, num_text_pieces);
+
+                        //Attempt to send the job response
+                        processor_job::send_response(*resp);
+
+                        //Delete the response
+                        delete resp;
+                    }
+
+                    /**
                      * Allows to send an success response to the server
                      * This method is synchronized on files lock.
                      * @param is_pnp if true then this is a pre-processor job, if false then a post-processor
@@ -480,7 +505,7 @@ namespace uva {
 
                         if (!m_is_canceled) {
                             //Get the language from the stream
-                            const string lang = msg_str.str();
+                            m_res_lang = msg_str.str();
 
                             //Get the output file name
                             string uid;
@@ -493,49 +518,9 @@ namespace uva {
                             ASSERT_CONDITION_THROW(!file.is_open(), string("The resulting file: ") +
                                     file_name + string(" could not be opened!"));
 
-                            //Switch to wide locale independent utf-8 characters
-                            std::wbuffer_convert < std::codecvt_utf8<wchar_t>> conv(file.rdbuf());
-                            std::wistream wide_file(&conv);
-                            std::setlocale(LC_ALL, "");
-                            
-                            //Count the number of text pieces
-                            wide_file.seekg(0, wide_file.end); //Move to the end of file
-                            int length = wide_file.tellg(); //Get the number of bytes
-                            wide_file.seekg(0, wide_file.beg); //Move to begin of file
-
-                            //Assert that the file length could be obtained and it is not zero!
-                            ASSERT_CONDITION_THROW((length <= 0), string("Could not get the ") +
-                                    file_name + string(" file size or its size is zero!"));
-
-                            //Define the buffer for reading the file in chunks
-                            wchar_t buffer[MESSAGE_MAX_WCHARS_LEN];
-
-                            //Compute the number of chunks needed
-                            const size_t num_text_pieces = ceil(((double) length) / sizeof (buffer));
-                            //Define the chunk index variable
-                            size_t text_piece_idx = 0;
-
-                            //Read from file and send response messages
-                            while (wide_file.read(buffer, sizeof (buffer))) {
-                                //Get the error response
-                                proc_resp_out * resp = m_resp_crt_func(this->get_job_id(), status_code::RESULT_OK, "");
-
-                                //Set the language
-                                resp->set_language(lang);
-
-                                //Set text the text piece index and the number of text pieces
-                                wstring ws(buffer);
-                                resp->set_text(string(ws.begin(), ws.end()), text_piece_idx, num_text_pieces);
-
-                                //Attempt to send the job response
-                                processor_job::send_response(*resp);
-
-                                //Increment the text piece index
-                                ++text_piece_idx;
-
-                                //Delete the response
-                                delete resp;
-                            }
+                            //Process the text in chunks
+                            process_utf8_chunks<MESSAGE_MAX_WCHARS_LEN>(file,
+                                    bind(&processor_job::send_utf8_chunk_msg, this, _1, _2, _3));
                         }
                     }
 
@@ -606,6 +591,8 @@ namespace uva {
                     const job_id_type m_job_id;
                     //Stores the number of text pieces this job consists of
                     const uint64_t m_num_tps;
+                    //Stores the resulting language string
+                    string m_res_lang;
                     //Stores the lock for accessing the tasks array
                     mutex m_req_tasks_lock;
                     //Stores the array of pointers to the processor job requests

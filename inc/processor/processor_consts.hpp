@@ -31,10 +31,13 @@ namespace uva {
         namespace bpbd {
             namespace processor {
                 
+                //The maximum length of the processor script output in bytes.
+                static constexpr size_t MAX_PROCESSOR_OUTPUT_BYTES = 1024;
+                
                 //The maximum processor message text size is wide characters
                 //This limits the number of wide characters to send per
                 //processor request
-                static const size_t MESSAGE_MAX_WCHARS_LEN = 10*1024;
+                static constexpr size_t MESSAGE_MAX_WCHARS_LEN = 10*1024;
 
             }
         }

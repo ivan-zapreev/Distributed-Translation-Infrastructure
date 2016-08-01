@@ -33,6 +33,9 @@
 #include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
 #include "client/trans_manager.hpp"
+#include "client/proc_manager.hpp"
+
+#include "common/utils/file/cstyle_file_reader.hpp"
 #include "common/utils/exceptions.hpp"
 
 using namespace std;

@@ -28,13 +28,11 @@
 
 #include <string>
 #include <vector>
-#include <unordered_map>
+#include <fstream>
 #include <cstdlib>
 #include <iostream>
-#include <fstream>
+#include <unordered_map>
 
-#include "common/utils/file/cstyle_file_reader.hpp"
-#include "common/utils/string_utils.hpp"
 #include "common/utils/id_manager.hpp"
 
 #include "common/messaging/status_code.hpp"
@@ -52,9 +50,6 @@
 
 using namespace std;
 using namespace uva::utils;
-using namespace uva::utils::threads;
-using namespace uva::utils::text;
-using namespace uva::utils::file;
 
 namespace uva {
     namespace smt {
@@ -267,11 +262,11 @@ namespace uva {
                     jobs_map_type m_ids_to_jobs_map;
 
                     //Store the actual number of sent requests
-                    atomic<uint32_t> m_act_num_req;
+                    size_t m_act_num_req;
                     //Store the expected number of responses
                     size_t m_exp_num_resp;
                     //Store the actual number of responses
-                    size_t m_act_num_resp;
+                    atomic<uint32_t> m_act_num_resp;
 
                     /**
                      * Allows to compute the number of sentences to send with the next request
