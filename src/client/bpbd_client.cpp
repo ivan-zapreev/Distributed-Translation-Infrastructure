@@ -24,6 +24,7 @@
  */
 
 #include <string>
+#include <sstream>
 
 #include "tclap/CmdLine.h"
 
@@ -43,6 +44,8 @@ using namespace uva::smt::bpbd::client;
 
 using namespace uva::smt::bpbd::common;
 using namespace uva::smt::bpbd::common::messaging;
+
+typedef stringstream * stringstream_ptr;
 
 /**
  * This functions does nothing more but printing the program header information
@@ -92,8 +95,8 @@ void create_arguments_parser() {
             string("translate into, default is 'English'"), false, "English", "target language", *p_cmd_args);
 
     p_pre_uri_arg = new ValueArg<string>("r", "pre-processor", string("The pre-processor server ") +
-            string("URI to connect to, optional"), false, DEFAULT_PROCESSOR_URI, "pre-processor uri", *p_cmd_args);    
-    
+            string("URI to connect to, optional"), false, DEFAULT_PROCESSOR_URI, "pre-processor uri", *p_cmd_args);
+
     //Add the the translation server ip address or name parameter - optional, by default is "localhost"
     const string def_server_uri = "ws://localhost:9002";
     p_trans_uri_arg = new ValueArg<string>("s", "trans-server", string("The translation server ") +
@@ -101,7 +104,7 @@ void create_arguments_parser() {
             def_server_uri, "server uri", *p_cmd_args);
 
     p_post_uri_arg = new ValueArg<string>("p", "post-processor", string("The post-processor server ") +
-            string("URI to connect to, optional"), false, DEFAULT_PROCESSOR_URI, "post-processor uri", *p_cmd_args);    
+            string("URI to connect to, optional"), false, DEFAULT_PROCESSOR_URI, "post-processor uri", *p_cmd_args);
 
     //Add the maximum number of sentences to send by a job parameter - optional, by default is 100
     p_max_sent = new ValueArg<uint32_t>("u", "upper-size", string("The maximum number of sentences ") +
@@ -196,6 +199,86 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 }
 
 /**
+ * Allows to populate the input stream with the source text
+ * @param params the client parameters
+ * @param input the input stream to put the text into
+ */
+void read_input(const client_parameters & params, stringstream_ptr & input) {
+    //ToDo: Implement
+}
+
+/**
+ * Allows to perform the text pre-processing if needed
+ * @param params the client parameters
+ * @param input the input stream storing the text to pre-process
+ * @param output the output stream to write the pre-processed text into
+ */
+void pre_process(const client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
+    if (params.is_pre_process()) {
+        //ToDo: Implement, write the result into the output
+    } else {
+        //There is no need to pre-process. Swap the streams,
+        //as the input is to be "placed" into the output.
+        stringstream_ptr tmp = output;
+        output = input;
+        input = tmp;
+    }
+}
+
+/**
+ * Allows to perform the text translation
+ * @param params the client parameters
+ * @param input the input stream storing the text to translate
+ * @param output the output stream to write the translated text into
+ */
+void translate(const client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
+    //Create the translation manager
+    //ToDo: Add the input and output stream to the translation manager
+    trans_manager manager(params);
+
+    //Start the translation manager
+    LOG_USAGE << "Starting the translation process ..." << END_LOG;
+    manager.start();
+
+    //Wait until the translations are done
+    LOG_USAGE << "Waiting for the translation process to finish ..." << END_LOG;
+    manager.wait();
+
+    //Stop the translation manager
+    LOG_USAGE << "Finishing the translation process ..." << END_LOG;
+    manager.stop();
+
+    LOG_USAGE << "The translation process is finished" << END_LOG;
+}
+
+/**
+ * Allows to perform the text post-processing if needed
+ * @param params the client parameters
+ * @param input the input stream storing the text to post-process
+ * @param output the output stream to write the post-processed text into
+ */
+void post_process(const client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
+    if (params.is_post_process()) {
+        //ToDo: Implement, write the result into the output
+    } else {
+        //There is no need to post-process. Swap the streams,
+        //as the input is to be "placed" into the output.
+        stringstream_ptr tmp = output;
+        output = input;
+        input = tmp;
+    }
+}
+
+/**
+ * Allows to write the data from the output stream into the target text
+ * @param params the client parameters
+ * @param output the output stream to get the text from
+ */
+void write_output(const client_parameters & params, stringstream_ptr & output) {
+    //ToDo: Implement
+}
+
+/**
  * The main program entry point
  */
 int main(int argc, char** argv) {
@@ -211,6 +294,11 @@ int main(int argc, char** argv) {
     //Set up possible program arguments
     create_arguments_parser();
 
+    //Define the string streams for the tasks.
+    stringstream str_a, str_b;
+    stringstream * pipe_a = &str_a;
+    stringstream * pipe_b = &str_b;
+
     try {
         //Define en empty parameters structure
         client_parameters params = {};
@@ -218,22 +306,20 @@ int main(int argc, char** argv) {
         //Attempt to extract the program arguments
         extract_arguments(argc, argv, params);
 
-        //Create the translation manager
-        trans_manager manager(params);
+        //Read from the source file: file -> pipe_a
+        read_input(params, pipe_a);
 
-        //Start the translation manager
-        LOG_USAGE << "Starting the translation process ..." << END_LOG;
-        manager.start();
+        //Pre-process text if requested: pipe_a -> pipe_b
+        pre_process(params, pipe_a, pipe_b);
 
-        //Wait until the translations are done
-        LOG_USAGE << "Waiting for the translation process to finish ..." << END_LOG;
-        manager.wait();
+        //Translate text: pipe_b -> pipe_a
+        translate(params, pipe_b, pipe_a);
 
-        //Stop the translation manager
-        LOG_USAGE << "Finishing the translation process ..." << END_LOG;
-        manager.stop();
+        //Post-process text if requested: pipe_a -> pipe_b
+        post_process(params, pipe_a, pipe_b);
 
-        LOG_USAGE << "The translation process is finished" << END_LOG;
+        //Write the result to target file: pipe_b -> file
+        write_output(params, pipe_b);
     } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.what() << END_LOG;
