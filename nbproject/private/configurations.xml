@@ -619,10 +619,11 @@
         </df>
         <in>client_consts.hpp</in>
         <in>client_parameters.hpp</in>
+        <in>generic_client.hpp</in>
+        <in>proc_manager.hpp</in>
         <in>trans_job.hpp</in>
         <in>trans_job_status.hpp</in>
         <in>trans_manager.hpp</in>
-        <in>translation_client.hpp</in>
       </df>
       <df name="common">
         <df name="messaging">

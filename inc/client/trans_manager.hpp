@@ -44,7 +44,7 @@
 
 #include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
-#include "client/translation_client.hpp"
+#include "client/generic_client.hpp"
 #include "client/trans_job.hpp"
 #include "client/trans_job_status.hpp"
 
@@ -527,7 +527,7 @@ namespace uva {
                     stringstream & m_output;
 
                     //Stores the translation client
-                    translation_client m_client;
+                    generic_client m_client;
 
                     //Stores the list of the translation job objects in the
                     //same order as they were created from the input file

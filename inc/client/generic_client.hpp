@@ -23,8 +23,8 @@
  * Created on January 14, 2016, 2:24 PM
  */
 
-#ifndef TRANSLATION_CLIENT_HPP
-#define TRANSLATION_CLIENT_HPP
+#ifndef GENERIC_CLIENT_HPP
+#define GENERIC_CLIENT_HPP
 
 #include <cstdlib>
 #include <string>
@@ -60,10 +60,10 @@ namespace uva {
             namespace client {
 
                 /**
-                 * This class is responsible for sending the translation
+                 * This class is responsible for sending the 
                  * job request to the server and receiving the result.
                  */
-                class translation_client {
+                class generic_client {
                 public:
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
 
@@ -80,7 +80,7 @@ namespace uva {
                      * @param notify_conn_close the function to call if the connection is closed
                      * @param notify_conn_open the function to call if the connection is open
                      */
-                    translation_client(const string & uri,
+                    generic_client(const string & uri,
                             server_message_setter set_server_msg_func,
                             conn_status_notifier notify_conn_close,
                             conn_status_notifier notify_conn_open)
@@ -101,16 +101,16 @@ namespace uva {
                         m_client.init_asio();
 
                         // Bind the handlers we are using
-                        m_client.set_open_handler(bind(&translation_client::on_open, this, _1));
-                        m_client.set_close_handler(bind(&translation_client::on_close, this, _1));
-                        m_client.set_fail_handler(bind(&translation_client::on_fail, this, _1));
-                        m_client.set_message_handler(bind(&translation_client::on_message, this, _1, _2));
+                        m_client.set_open_handler(bind(&generic_client::on_open, this, _1));
+                        m_client.set_close_handler(bind(&generic_client::on_close, this, _1));
+                        m_client.set_fail_handler(bind(&generic_client::on_fail, this, _1));
+                        m_client.set_message_handler(bind(&generic_client::on_message, this, _1, _2));
                     }
 
                     /**
                      * The basic destructor that also stops the client
                      */
-                    ~translation_client() {
+                    ~generic_client() {
                         //Stope the client
                         disconnect();
                     }
@@ -385,16 +385,11 @@ namespace uva {
 
                     //Stores the server URI
                     string m_uri;
-
-                    //Stores the mapping from the translation job request id to
-                    //the resulting translation job result, if already received.
-                    //The translation jobs without a reply are mapped to NULL
-                    unordered_map<job_id_type, trans_job_resp_in *> m_jobs;
                 };
             }
         }
     }
 }
 
-#endif /* TRANSLATION_CLIENT_HPP */
+#endif /* GENERIC_CLIENT_HPP */
 
