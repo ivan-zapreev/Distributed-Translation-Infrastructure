@@ -98,7 +98,7 @@ namespace uva {
                             LOG_INFO << "Starting creating and sending out " << m_name << " jobs!" << END_LOG;
 
                             //Run the translation job sending thread
-                            m_sending_thread_ptr = new thread(bind(&client_manager::send_job_requests, this));
+                            m_sending_thread_ptr = new thread(bind(&client_manager::send_requests, this));
                         } else {
                             THROW_EXCEPTION(string("Could not open the connection to: ") + m_client.get_uri());
                         }
@@ -118,7 +118,7 @@ namespace uva {
                             }
                         }
 
-                        LOG_INFO << "Sent out " << get_actual_num_req() << " " << m_name << " jobs, waiting for results." << END_LOG;
+                        LOG_INFO << "Sent out " << get_act_num_req() << " " << m_name << " jobs, waiting for results." << END_LOG;
 
                         //Wait until all the jobs are finished or the connection is closed
                         {
@@ -162,33 +162,33 @@ namespace uva {
                 protected:
 
                     /**
+                     * Allows to get the actual number of job requests sent to the server
+                     * @return the actual number of job requests sent to the server
+                     */
+                    virtual size_t get_act_num_req() = 0;
+
+                    /**
+                     * Allows to get the expected number of server responses
+                     * @return the expected number of server responses
+                     */
+                    virtual size_t get_exp_num_resp() = 0;
+
+                    /**
                      * Will be called to send the job requests to the server via the provided client
                      * @return 
                      */
                     virtual void send_job_requests(generic_client & client) = 0;
 
                     /**
-                     * Allows to get the actual number of job requests sent to the server
-                     * @return the actual number of job requests sent to the server
+                     * Will be called when the message of the expected type arrives from the server.
+                     * @param job_resp_msg the received job response message
                      */
-                    virtual size_t get_actual_num_req() = 0;
-
-                    /**
-                     * Allows to get the expected number of server responses
-                     * @return the expected number of server responses
-                     */
-                    virtual size_t get_expected_num_resp() = 0;
+                    virtual void set_job_response(RESPONSE_TYPE * job_resp_msg) = 0;
 
                     /**
                      * Will be called when all job responses are received.
                      */
                     virtual void process_results() = 0;
-
-                    /**
-                     * Will be called when the message of the expected type arrives from the server.
-                     * @param job_resp_msg the received job response message
-                     */
-                    virtual void set_job_response(RESPONSE_TYPE * job_resp_msg) = 0;
 
                     /**
                      * This function will be called if the connection is closed during the process
@@ -230,7 +230,7 @@ namespace uva {
                      */
                     inline void check_jobs_done_and_notify() {
                         //If we received all the jobs then notify that all the jobs are received!
-                        if (m_is_all_jobs_sent && (m_num_done_jobs == get_expected_num_resp())) {
+                        if (m_is_all_jobs_sent && (m_num_done_jobs == get_exp_num_resp())) {
                             notify_jobs_done();
                         }
                     }
@@ -292,7 +292,7 @@ namespace uva {
                     /**
                      * This function shall be run in a separate thread and send a number of translation job requests to the server.
                      */
-                    inline void send_job_requests() {
+                    inline void send_requests() {
                         LOG_DEBUG << "Sending the job requests ..." << END_LOG;
 
                         //Send the translation jobs
@@ -305,6 +305,14 @@ namespace uva {
 
                         //For the case when all jobs failed, we need to check if the jobs are notified
                         check_jobs_done_and_notify();
+                    }
+                    
+                    /**
+                     * Allows to check if the client is stopping
+                     * @return true if the client is stopping, otherwise false.
+                     */
+                    inline bool is_stopping() {
+                        return m_is_stopping;
                     }
 
                 private:

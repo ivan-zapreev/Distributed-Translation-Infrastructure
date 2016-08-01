@@ -30,12 +30,10 @@
 #include <vector>
 #include <unordered_map>
 #include <cstdlib>
-#include <chrono>
 #include <iostream>
 #include <fstream>
 
 #include "common/utils/file/cstyle_file_reader.hpp"
-#include "common/utils/threads/threads.hpp"
 #include "common/utils/string_utils.hpp"
 #include "common/utils/id_manager.hpp"
 
@@ -45,6 +43,7 @@
 #include "client/client_consts.hpp"
 #include "client/client_parameters.hpp"
 #include "client/generic_client.hpp"
+#include "client/client_manager.hpp"
 #include "client/trans_job.hpp"
 #include "client/trans_job_status.hpp"
 
@@ -70,7 +69,7 @@ namespace uva {
                  * and once all of them are finished the resulting text is written
                  * into the output file.
                  */
-                class trans_manager {
+                class trans_manager : public client_manager<msg_type::MESSAGE_TRANS_JOB_RESP, trans_job_resp_in> {
                 public:
                     //Stores the absolute allowed minimum of sentences to be sent by translation request.
                     //Note that if the translation text is smaller then this value is overruled.
@@ -90,31 +89,10 @@ namespace uva {
                      * @param output the output stream to write the target text into
                      */
                     trans_manager(const client_parameters & params, stringstream & input, stringstream & output)
-                    : m_params(params), m_input(input), m_output(output),
-                    m_client(m_params.m_trans_uri,
-                    bind(&trans_manager::notify_new_msg, this, _1),
-                    bind(&trans_manager::notify_conn_closed, this), NULL),
-                    m_sending_thread_ptr(NULL) {
-                        //Check that the minimum is not larger than the maximum
-                        ASSERT_CONDITION_THROW((m_params.m_max_sent < m_params.m_min_sent),
-                                string("The minimum number of sentences to be sent (") + to_string(m_params.m_min_sent)
-                                + string(") is larger that the maximum (") + to_string(m_params.m_max_sent) + string(")!"));
-
-                        //Check that the minimum is not too small
-                        ASSERT_CONDITION_THROW((m_params.m_min_sent < MIN_SENTENCES_PER_REQUEST),
-                                string("The minimum number of sentences to be sent (") + to_string(m_params.m_min_sent)
-                                + string(") should be larger or equal than ") + to_string(MIN_SENTENCES_PER_REQUEST));
-
-                        //Set the stopping flag to false
-                        m_is_stopping = false;
-                        //Set the sending flag to false
-                        m_is_all_jobs_sent = false;
-                        //Set the receiving flag to false
-                        m_is_all_jobs_done = false;
-                        //Set the nuber of done jobs
-                        m_num_done_jobs = 0;
-
-                        //Create the list of translation jobs by reading from the source file
+                    : client_manager(params.m_trans_uri, "translation"),
+                    m_params(params), m_input(input), m_output(output),
+                    m_act_num_req(0), m_exp_num_resp(0), m_act_num_resp(0) {
+                        //Create the list of translation jobs
                         create_translation_jobs();
                     }
 
@@ -126,167 +104,103 @@ namespace uva {
                         for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()); ++it) {
                             delete (*it);
                         }
-
-                        //Destroy the translation jobs sending thread
-                        if (m_sending_thread_ptr != NULL) {
-                            delete m_sending_thread_ptr;
-                        }
                     }
 
                     /**
                      * Allows to start the translation process
                      */
                     inline void start() {
-                        if (m_client.connect()) {
-                            //Run the translation job sending thread
-                            m_sending_thread_ptr = new thread(bind(&trans_manager::send_all_jobs, this));
-                        } else {
-                            THROW_EXCEPTION(string("Could not open the connection to: ") + m_client.get_uri());
-                        }
+                        //Check that the minimum is not larger than the maximum
+                        ASSERT_CONDITION_THROW((m_params.m_max_sent < m_params.m_min_sent),
+                                string("The minimum number of sentences to be sent (") + to_string(m_params.m_min_sent)
+                                + string(") is larger that the maximum (") + to_string(m_params.m_max_sent) + string(")!"));
+
+                        //Check that the minimum is not too small
+                        ASSERT_CONDITION_THROW((m_params.m_min_sent < MIN_SENTENCES_PER_REQUEST),
+                                string("The minimum number of sentences to be sent (") + to_string(m_params.m_min_sent)
+                                + string(") should be larger or equal than ") + to_string(MIN_SENTENCES_PER_REQUEST));
+
+                        //Call the client manager's method
+                        client_manager::start();
                     }
-
-                    /**
-                     * Allows to wait until the translations are done
-                     */
-                    inline void wait() {
-                        LOG_INFO << "Started creating and sending out jobs!" << END_LOG;
-
-                        //Wait until all the jobs are sent
-                        {
-                            //Make sure that translation-waiting activity is synchronized
-                            unique_guard guard(m_jobs_sent_lock);
-
-                            //Wait for the translations jobs to be sent, use the time out to prevent missing notification
-                            while (!m_is_all_jobs_sent && (m_jobs_sent_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
-                            }
-                        }
-
-                        LOG_INFO << "Sent out " << m_jobs_list.size() << " jobs, waiting for results." << END_LOG;
-
-                        //Wait until all the jobs are finished or the connection is closed
-                        {
-                            //Make sure that translation-waiting activity is synchronized
-                            unique_guard guard(m_jobs_done_lock);
-
-                            //Wait for the translations jobs to be received, use the time out to prevent missing notification
-                            while (!m_is_all_jobs_done && (m_jobs_done_cond.wait_for(guard, chrono::seconds(1)) == cv_status::timeout)) {
-                            }
-                        }
-
-                        LOG_INFO << "All translation job responses are received!" << END_LOG;
-                    }
-
-                    /**
-                     * This method allows to stop the translation client and
-                     * to write the resulting translations into the file.
-                     */
-                    inline void stop() {
-                        LOG_INFO << "Stopping the translation manager" << END_LOG;
-
-                        //Set the stopping flag
-                        m_is_stopping = true;
-
-                        //Wait until the request sending thread is stopped.
-                        if (m_sending_thread_ptr != NULL && m_sending_thread_ptr->joinable()) {
-                            LOG_DEBUG << "Joining the sending thread" << END_LOG;
-                            m_sending_thread_ptr->join();
-                        }
-
-                        LOG_INFO << "Disconnecting the client ... " << END_LOG;
-
-                        //Disconnect from the server
-                        m_client.disconnect();
-
-                        LOG_INFO << "The client is disconnected" << END_LOG;
-
-                        //Write the translations we have so far into the file
-                        process_results();
-                    };
 
                 protected:
 
                     /**
-                     * Allows to store the response data
-                     * @param fis the first sentence number 
-                     * @param resp the translation job response
-                     * @param output the stream to write the translated text into
-                     * @param info_file the file to write the translation info into
+                     * @see client_manager
                      */
-                    inline void process_task_result(uint32_t fis, trans_job_resp_in * resp,
-                            stringstream & output, ofstream & info_file) {
-                        //If the result is ok or partial then just put the text into the file
-                        const trans_sent_data_in * sent_data = resp->next_send_data();
+                    virtual size_t get_act_num_req() override {
+                        return m_act_num_req;
+                    }
 
-                        //Check if there is sentence data present
-                        if (sent_data != NULL) {
-                            while (sent_data != NULL) {
-                                //Dump the translated text
-                                output << sent_data->get_trans_text() << std::endl;
-                                //Get the sentence status code
-                                const status_code code = sent_data->get_status_code();
-                                //Dump the status code and message and the translation info such as stack loads
-                                info_file << "--" << std::endl << "Sentence: " << to_string(fis)
-                                        << " translation status: '" << code << "'";
-                                //Log the message only if it is present.
-                                if (!sent_data->get_status_msg().empty()) {
-                                    info_file << "', message: " << sent_data->get_status_msg();
-                                }
-                                info_file << std::endl;
-                                //Log the stack loads if present
-                                if (sent_data->has_stack_load()) {
-                                    info_file << "Multi-stack loads: [ ";
-                                    const Value & loads = sent_data->get_stack_load();
-                                    for (auto iter = loads.Begin(); iter != loads.End(); ++iter) {
-                                        info_file << iter->GetUint() << "% ";
-                                    }
-                                    info_file << "]" << std::endl;
-                                }
-                                //Move to the next sentence if present
-                                sent_data = resp->next_send_data();
-                                //Increment the sentence number
-                                ++fis;
+                    /**
+                     * @see client_manager
+                     */
+                    virtual size_t get_exp_num_resp() override {
+                        return m_exp_num_resp;
+                    }
+
+                    /**
+                     * @see client_manager
+                     */
+                    virtual void send_job_requests(generic_client & client) override {
+                        //Send the translation jobs
+                        for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()) && !is_stopping(); ++it) {
+                            //Get the pointer to the translation job data
+                            trans_job_ptr data = *it;
+                            try {
+                                //Send the translation job request
+                                client.send(data->m_request);
+                                //Mark the job sending as good in the administration
+                                data->m_status = trans_job_status::STATUS_REQ_SENT_GOOD;
+                                //Increment the number of sent requests
+                                ++m_act_num_req;
+                            } catch (std::exception & e) {
+                                //Log the error message
+                                LOG_ERROR << "Error when sending a translation request "
+                                        << data->m_request->get_job_id() << ": " << e.what() << END_LOG;
+                                //Mark the job sending as failed in the administration
+                                data->m_status = trans_job_status::STATUS_REQ_SENT_FAIL;
                             }
+
+                            //The number of expected responses is equal to the number of actual requests
+                            m_exp_num_resp = m_act_num_req;
+                        }
+                    }
+
+                    /**
+                     * @see client_manager
+                     */
+                    virtual void set_job_response(trans_job_resp_in * trans_job_resp) override {
+                        //Get the job id to work with
+                        const job_id_type job_id = trans_job_resp->get_job_id();
+
+                        LOG_DEBUG << "Got the translation job response for job id: " << to_string(job_id) << END_LOG;
+
+                        //Check if the job with the given id is known
+                        if (m_ids_to_jobs_map.find(job_id) != m_ids_to_jobs_map.end()) {
+                            //Register the job in the administration
+                            m_ids_to_jobs_map[job_id]->m_response = trans_job_resp;
+
+                            //Set the translation job status as received 
+                            m_ids_to_jobs_map[job_id]->m_status = trans_job_status::STATUS_RES_RECEIVED;
+
+                            //Increment the number of actual responses
+                            ++m_act_num_resp;
+
+                            LOG_INFO1 << "The job " << job_id << " is finished, "
+                                    << m_act_num_resp << "/" << m_exp_num_resp
+                                    << "." << END_LOG;
                         } else {
-                            //There is no sentence data present!
-                            LOG_ERROR << "ERROR: Missing target sentences for job: " << resp->get_job_id() << END_LOG;
-                            //Make it an empty line
-                            output << std::endl;
+                            THROW_EXCEPTION(string("The received job response id ") +
+                                    to_string(job_id) + string(" is not known!"));
                         }
                     }
 
                     /**
-                     * Allows to write the received translation job replies into the file
-                     * @param fis the first sentence number 
-                     * @param lis the last sentence number
-                     * @param job the translation job data
-                     * @param output the stream to write the translation result into
-                     * @param info_file the file to write the translation info into
+                     * @see client_manager
                      */
-                    inline void process_job_result(const uint32_t fis, const uint32_t lis,
-                            const trans_job_ptr job, stringstream & output, ofstream & info_file) {
-                        //Get the response pointer
-                        trans_job_resp_in * resp = job->m_response;
-
-                        try {
-                            //The job response is received but it can still be fully or partially canceled or be an error
-                            const status_code code = resp->get_status_code();
-
-                            //Dump the server response info
-                            info_file << "Server response status: '" << code << "', "
-                                    << "message: " << resp->get_status_msg() << std::endl;
-
-                            //Dump the sentences data
-                            process_task_result(fis, resp, output, info_file);
-                        } catch (std::exception & e) {
-                            LOG_ERROR << "Could not dump data for sentences [" << to_string(fis)
-                                    << ":" << to_string(lis) << "]: " << e.what() << END_LOG;
-                        }
-                    }
-
-                    /**
-                     * Allows to generate the translation result file.
-                     */
-                    inline void process_results() {
+                    virtual void process_results() override {
                         //Get the names for the translation and info files
                         const string info_file_name = m_params.m_target_file + ".log";
 
@@ -333,189 +247,17 @@ namespace uva {
                         info_file.close();
                     }
 
-                    /**
-                     * Allows to check if all the jobs are done and then perform a notifying action
-                     */
-                    inline void check_jobs_done_and_notify() {
-                        //If we received all the jobs then notify that all the jobs are received!
-                        if (m_is_all_jobs_sent && (m_num_done_jobs == m_jobs_list.size())) {
-                            notify_jobs_done();
-                        }
-                    }
-
-                    /**
-                     * Allows to process the server message
-                     * @param json_msg a pointer to the json incoming message, not NULL
-                     */
-                    inline void notify_new_msg(incoming_msg * json_msg) {
-                        //Check on the message type
-                        switch (json_msg->get_msg_type()) {
-                            case msg_type::MESSAGE_TRANS_JOB_RESP:
-                            {
-                                //Create a new job response message
-                                trans_job_resp_in * job_resp_msg = new trans_job_resp_in(json_msg);
-                                try {
-                                    //Set the newly received job response
-                                    set_job_response(job_resp_msg);
-                                } catch (std::exception & ex) {
-                                    LOG_ERROR << ex.what() << END_LOG;
-                                    //Delete the message as it was not set
-                                    delete job_resp_msg;
-                                }
-                            }
-                                break;
-                            default:
-                                THROW_EXCEPTION(string("Unexpected incoming message type: ") +
-                                        to_string(json_msg->get_msg_type()));
-                        }
-                    }
-
-                    /**
-                     * Allows to process the server job request response
-                     * @param trans_job_resp a pointer to the translation job response data, not NULL
-                     */
-                    inline void set_job_response(trans_job_resp_in * trans_job_resp) {
-                        //Increment the number of received jobs
-                        m_num_done_jobs++;
-
-                        //If we are not stopping then set the response
-                        if (!m_is_stopping) {
-                            try {
-                                //Get the job id to work with
-                                const job_id_type job_id = trans_job_resp->get_job_id();
-
-                                LOG_DEBUG << "Got the translation job response for job id: " << to_string(job_id) << END_LOG;
-
-                                //Check if the job with the given id is known
-                                if (m_ids_to_jobs_map.find(job_id) != m_ids_to_jobs_map.end()) {
-                                    //Register the job in the administration
-                                    m_ids_to_jobs_map[job_id]->m_response = trans_job_resp;
-
-                                    //Set the translation job status as received 
-                                    m_ids_to_jobs_map[job_id]->m_status = trans_job_status::STATUS_RES_RECEIVED;
-
-                                    LOG_INFO1 << "The job " << job_id << " is finished, "
-                                            << m_num_done_jobs << "/" << m_jobs_list.size()
-                                            << "." << END_LOG;
-                                } else {
-                                    THROW_EXCEPTION(string("The received job response id ") +
-                                            to_string(job_id) + string(" is not known!"));
-                                }
-                            } catch (std::exception & ex) {
-                                //Log the error
-                                LOG_ERROR << "Failed to parse a job response: " << ex.what() << END_LOG;
-                                //Delete the translation job response
-                                delete trans_job_resp;
-                            }
-
-                            //Check if the jobs are done and notify
-                            check_jobs_done_and_notify();
-                        } else {
-                            //Discard the translation job response
-                            delete trans_job_resp;
-                        }
-                    }
-
-                    /**
-                     * This function will be called if the connection is closed during the translation process
-                     */
-                    inline void notify_conn_closed() {
-                        LOG_WARNING << "The server has closed the connection!" << END_LOG;
-
-                        //If the connection is closed we shall be stopping then
-                        //The basic client does not support any connection recovery
-                        m_is_stopping = true;
-
-                        //Wait until the request sending thread is stopped.
-                        if (m_sending_thread_ptr != NULL && m_sending_thread_ptr->joinable()) {
-                            m_sending_thread_ptr->join();
-                        }
-
-                        //Notify that we are done with the jobs
-                        notify_jobs_done();
-                    }
-
-                    /**
-                     * Allows to notify the threads waiting on the translation jobs to be received
-                     */
-                    inline void notify_jobs_done() {
-                        //Make sure that translation-waiting activity is synchronized
-                        unique_guard guard(m_jobs_done_lock);
-
-                        LOG_DEBUG << "Notifying that all the translation job replies are received ..." << END_LOG;
-
-                        //Setting the translation jobs done flag 
-                        m_is_all_jobs_done = true;
-
-                        //Notify that the translation is finished
-                        m_jobs_done_cond.notify_all();
-                    }
-
-                    /**
-                     * Allows to notify the threads waiting on the translation jobs to be sent
-                     */
-                    inline void notify_jobs_sent() {
-                        //Make sure that translation-waiting activity is synchronized
-                        unique_guard guard(m_jobs_sent_lock);
-
-                        LOG_DEBUG << "Notifying that all the translation job requests are sent ..." << END_LOG;
-
-                        //Setting the translation jobs sent flag 
-                        m_is_all_jobs_sent = true;
-
-                        //Notify that the translation is finished
-                        m_jobs_sent_cond.notify_all();
-                    }
-
-                    /**
-                     * This function shall be run in a separate thread and send a number of translation job requests to the server.
-                     */
-                    inline void send_all_jobs() {
-                        LOG_DEBUG << "Sending translation job requests ..." << END_LOG;
-
-                        //Send the translation jobs
-                        for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()) && !m_is_stopping; ++it) {
-                            //Get the pointer to the translation job data
-                            trans_job_ptr data = *it;
-                            try {
-                                //Send the translation job request
-                                m_client.send(data->m_request);
-                                //Mark the job sending as good in the administration
-                                data->m_status = trans_job_status::STATUS_REQ_SENT_GOOD;
-                            } catch (std::exception & e) {
-                                //Log the error message
-                                LOG_ERROR << "Error when sending a translation request "
-                                        << data->m_request->get_job_id() << ": " << e.what() << END_LOG;
-                                //Mark the job sending as failed in the administration
-                                data->m_status = trans_job_status::STATUS_REQ_SENT_FAIL;
-                                //Increments the done jobs count
-                                m_num_done_jobs++;
-                            }
-                        }
-
-                        LOG_DEBUG << "Finished sending translation job requests ..." << END_LOG;
-
-                        //The translation jobs have been sent!
-                        notify_jobs_sent();
-
-                        //For the case when all jobs failed, we need to check if the jobs are notified
-                        check_jobs_done_and_notify();
-                    }
-
                 private:
                     //Stores the static instance of the id manager
                     static id_manager<job_id_type> m_id_mgr;
 
-                    //Stores a reference to the translation client parameters
+                    //Stores the reference to the client parameters
                     const client_parameters & m_params;
 
                     //Stores the reference to the input stream storing the source text
                     stringstream & m_input;
                     //Stores the reference to the output stream for the target text
                     stringstream & m_output;
-
-                    //Stores the translation client
-                    generic_client m_client;
 
                     //Stores the list of the translation job objects in the
                     //same order as they were created from the input file
@@ -524,28 +266,12 @@ namespace uva {
                     //Stores the mapping from the job id to the job data objects
                     jobs_map_type m_ids_to_jobs_map;
 
-                    //Stores the synchronization mutex for notifying that all the translation jobs were sent
-                    mutex m_jobs_sent_lock;
-                    //The conditional variable for tracking that all the translation jobs were sent
-                    condition_variable m_jobs_sent_cond;
-
-                    //Stores the synchronization mutex for notifying that all the translation jobs got responces
-                    mutex m_jobs_done_lock;
-                    //The conditional variable for tracking that all the translation jobs got responces
-                    condition_variable m_jobs_done_cond;
-
-                    //Stores the translation request sending thread
-                    thread * m_sending_thread_ptr;
-
-                    //Stores the boolean that is used to notify that we need to stop
-                    a_bool_flag m_is_stopping;
-                    //Stores a flag indicating that all the translation jobs are sent
-                    a_bool_flag m_is_all_jobs_sent;
-                    //Stores a flag indicating that all the translation jobs are received
-                    a_bool_flag m_is_all_jobs_done;
-
-                    //Store the finished jobs count
-                    atomic<uint32_t> m_num_done_jobs;
+                    //Store the actual number of sent requests
+                    atomic<uint32_t> m_act_num_req;
+                    //Store the expected number of responses
+                    size_t m_exp_num_resp;
+                    //Store the actual number of responses
+                    size_t m_act_num_resp;
 
                     /**
                      * Allows to compute the number of sentences to send with the next request
@@ -617,6 +343,84 @@ namespace uva {
                         }
 
                         LOG_DEBUG << "Finished reading text from the source file!" << END_LOG;
+                    }
+
+                    /**
+                     * Allows to store the response data
+                     * @param fis the first sentence number 
+                     * @param resp the translation job response
+                     * @param output the stream to write the translated text into
+                     * @param info_file the file to write the translation info into
+                     */
+                    inline void process_task_result(uint32_t fis, trans_job_resp_in * resp,
+                            stringstream & output, ofstream & info_file) {
+                        //If the result is ok or partial then just put the text into the file
+                        const trans_sent_data_in * sent_data = resp->next_send_data();
+
+                        //Check if there is sentence data present
+                        if (sent_data != NULL) {
+                            while (sent_data != NULL) {
+                                //Dump the translated text
+                                output << sent_data->get_trans_text() << std::endl;
+                                //Get the sentence status code
+                                const status_code code = sent_data->get_status_code();
+                                //Dump the status code and message and the translation info such as stack loads
+                                info_file << "--" << std::endl << "Sentence: " << to_string(fis)
+                                        << " translation status: '" << code << "'";
+                                //Log the message only if it is present.
+                                if (!sent_data->get_status_msg().empty()) {
+                                    info_file << ", message: " << sent_data->get_status_msg();
+                                }
+                                info_file << std::endl;
+                                //Log the stack loads if present
+                                if (sent_data->has_stack_load()) {
+                                    info_file << "Multi-stack loads: [ ";
+                                    const Value & loads = sent_data->get_stack_load();
+                                    for (auto iter = loads.Begin(); iter != loads.End(); ++iter) {
+                                        info_file << iter->GetUint() << "% ";
+                                    }
+                                    info_file << "]" << std::endl;
+                                }
+                                //Move to the next sentence if present
+                                sent_data = resp->next_send_data();
+                                //Increment the sentence number
+                                ++fis;
+                            }
+                        } else {
+                            //There is no sentence data present!
+                            LOG_ERROR << "ERROR: Missing target sentences for job: " << resp->get_job_id() << END_LOG;
+                            //Make it an empty line
+                            output << std::endl;
+                        }
+                    }
+
+                    /**
+                     * Allows to write the received translation job replies into the file
+                     * @param fis the first sentence number 
+                     * @param lis the last sentence number
+                     * @param job the translation job data
+                     * @param output the stream to write the translation result into
+                     * @param info_file the file to write the translation info into
+                     */
+                    inline void process_job_result(const uint32_t fis, const uint32_t lis,
+                            const trans_job_ptr job, stringstream & output, ofstream & info_file) {
+                        //Get the response pointer
+                        trans_job_resp_in * resp = job->m_response;
+
+                        try {
+                            //The job response is received but it can still be fully or partially canceled or be an error
+                            const status_code code = resp->get_status_code();
+
+                            //Dump the server response info
+                            info_file << "Server response status: '" << code << "', "
+                                    << "message: " << resp->get_status_msg() << std::endl;
+
+                            //Dump the sentences data
+                            process_task_result(fis, resp, output, info_file);
+                        } catch (std::exception & e) {
+                            LOG_ERROR << "Could not dump data for sentences [" << to_string(fis)
+                                    << ":" << to_string(lis) << "]: " << e.what() << END_LOG;
+                        }
                     }
                 };
 
