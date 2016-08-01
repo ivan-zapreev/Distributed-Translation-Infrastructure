@@ -618,6 +618,7 @@
           <in>trans_sent_data_in.hpp</in>
         </df>
         <in>client_consts.hpp</in>
+        <in>client_manager.hpp</in>
         <in>client_parameters.hpp</in>
         <in>generic_client.hpp</in>
         <in>proc_manager.hpp</in>

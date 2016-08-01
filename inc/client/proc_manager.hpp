@@ -26,7 +26,23 @@
 #ifndef PROC_MANAGER_HPP
 #define PROC_MANAGER_HPP
 
+namespace uva {
+    namespace smt {
+        namespace bpbd {
+            namespace processor {
 
+                /**
+                 * This is the client side processor manager class. It's task
+                 * is to send the pre/post- processor requests to the server
+                 * and to receive them back.
+                 */
+                class proc_manager {
+                public:
+                };
+            }
+        }
+    }
+}
 
 #endif /* PROC_MANAGER_HPP */
 

@@ -92,7 +92,7 @@ namespace uva {
                     trans_manager(const client_parameters & params, stringstream & input, stringstream & output)
                     : m_params(params), m_input(input), m_output(output),
                     m_client(m_params.m_trans_uri,
-                    bind(&trans_manager::set_server_message, this, _1),
+                    bind(&trans_manager::notify_new_msg, this, _1),
                     bind(&trans_manager::notify_conn_closed, this), NULL),
                     m_sending_thread_ptr(NULL) {
                         //Check that the minimum is not larger than the maximum
@@ -139,7 +139,7 @@ namespace uva {
                     inline void start() {
                         if (m_client.connect()) {
                             //Run the translation job sending thread
-                            m_sending_thread_ptr = new thread(bind(&trans_manager::send_translation_jobs, this));
+                            m_sending_thread_ptr = new thread(bind(&trans_manager::send_all_jobs, this));
                         } else {
                             THROW_EXCEPTION(string("Could not open the connection to: ") + m_client.get_uri());
                         }
@@ -200,7 +200,7 @@ namespace uva {
                         LOG_INFO << "The client is disconnected" << END_LOG;
 
                         //Write the translations we have so far into the file
-                        write_result_to_file();
+                        process_results();
                     };
 
                 protected:
@@ -212,7 +212,7 @@ namespace uva {
                      * @param output the stream to write the translated text into
                      * @param info_file the file to write the translation info into
                      */
-                    inline void store_targety_data(uint32_t fis, trans_job_resp_in * resp,
+                    inline void process_task_result(uint32_t fis, trans_job_resp_in * resp,
                             stringstream & output, ofstream & info_file) {
                         //If the result is ok or partial then just put the text into the file
                         const trans_sent_data_in * sent_data = resp->next_send_data();
@@ -262,7 +262,7 @@ namespace uva {
                      * @param output the stream to write the translation result into
                      * @param info_file the file to write the translation info into
                      */
-                    inline void write_received_job_result(const uint32_t fis, const uint32_t lis,
+                    inline void process_job_result(const uint32_t fis, const uint32_t lis,
                             const trans_job_ptr job, stringstream & output, ofstream & info_file) {
                         //Get the response pointer
                         trans_job_resp_in * resp = job->m_response;
@@ -276,7 +276,7 @@ namespace uva {
                                     << "message: " << resp->get_status_msg() << std::endl;
 
                             //Dump the sentences data
-                            store_targety_data(fis, resp, output, info_file);
+                            process_task_result(fis, resp, output, info_file);
                         } catch (std::exception & e) {
                             LOG_ERROR << "Could not dump data for sentences [" << to_string(fis)
                                     << ":" << to_string(lis) << "]: " << e.what() << END_LOG;
@@ -286,7 +286,7 @@ namespace uva {
                     /**
                      * Allows to generate the translation result file.
                      */
-                    inline void write_result_to_file() {
+                    inline void process_results() {
                         //Get the names for the translation and info files
                         const string info_file_name = m_params.m_target_file + ".log";
 
@@ -319,7 +319,7 @@ namespace uva {
 
                                 //If the status is that the response is received, log it
                                 if (status == trans_job_status::STATUS_RES_RECEIVED) {
-                                    write_received_job_result(fis, lis, job, m_output, info_file);
+                                    process_job_result(fis, lis, job, m_output, info_file);
                                 }
 
                                 //Set the line cursor to the next line
@@ -347,7 +347,7 @@ namespace uva {
                      * Allows to process the server message
                      * @param json_msg a pointer to the json incoming message, not NULL
                      */
-                    inline void set_server_message(incoming_msg * json_msg) {
+                    inline void notify_new_msg(incoming_msg * json_msg) {
                         //Check on the message type
                         switch (json_msg->get_msg_type()) {
                             case msg_type::MESSAGE_TRANS_JOB_RESP:
@@ -470,7 +470,7 @@ namespace uva {
                     /**
                      * This function shall be run in a separate thread and send a number of translation job requests to the server.
                      */
-                    inline void send_translation_jobs() {
+                    inline void send_all_jobs() {
                         LOG_DEBUG << "Sending translation job requests ..." << END_LOG;
 
                         //Send the translation jobs
@@ -500,18 +500,6 @@ namespace uva {
 
                         //For the case when all jobs failed, we need to check if the jobs are notified
                         check_jobs_done_and_notify();
-                    }
-
-                    /**
-                     * Allows to compute the number of sentences to send with the next request
-                     * @return the number of sentences to send with the next request
-                     */
-                    inline uint64_t get_num_of_sentences() {
-                        if (m_params.m_min_sent != m_params.m_max_sent) {
-                            return m_params.m_min_sent + rand() % (m_params.m_max_sent - m_params.m_min_sent) + 1;
-                        } else {
-                            return m_params.m_min_sent;
-                        }
                     }
 
                 private:
@@ -558,6 +546,18 @@ namespace uva {
 
                     //Store the finished jobs count
                     atomic<uint32_t> m_num_done_jobs;
+
+                    /**
+                     * Allows to compute the number of sentences to send with the next request
+                     * @return the number of sentences to send with the next request
+                     */
+                    inline uint64_t get_num_of_sentences() {
+                        if (m_params.m_min_sent != m_params.m_max_sent) {
+                            return m_params.m_min_sent + rand() % (m_params.m_max_sent - m_params.m_min_sent) + 1;
+                        } else {
+                            return m_params.m_min_sent;
+                        }
+                    }
 
                     /**
                      * This function shall be run in a separate thread and create a number of translation jobs.

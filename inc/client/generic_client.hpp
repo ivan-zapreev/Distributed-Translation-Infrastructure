@@ -68,7 +68,7 @@ namespace uva {
                     typedef websocketpp::client<websocketpp::config::asio_client> client;
 
                     //Define the function type for the function used to set the translation job result
-                    typedef function<void(incoming_msg * json_msg) > server_message_setter;
+                    typedef function<void(incoming_msg * json_msg) > new_msg_notifier;
 
                     //Define the function type for the function used to notify about the connection status
                     typedef function<void() > conn_status_notifier;
@@ -76,20 +76,20 @@ namespace uva {
                     /**
                      * The basic constructor
                      * @param uri the server URI
-                     * @param set_server_msg_func the function to set the server message with
+                     * @param notify_new_msg the function to call in case of a new incoming message
                      * @param notify_conn_close the function to call if the connection is closed
                      * @param notify_conn_open the function to call if the connection is open
                      */
                     generic_client(const string & uri,
-                            server_message_setter set_server_msg_func,
+                            new_msg_notifier notify_new_msg,
                             conn_status_notifier notify_conn_close,
                             conn_status_notifier notify_conn_open)
                     : m_started(false), m_stopped(false), m_opened(false), m_closed(false),
-                    m_set_server_msg_func(set_server_msg_func),
+                    m_notify_new_msg(notify_new_msg),
                     m_notify_conn_close(notify_conn_close),
                     m_notify_conn_open(notify_conn_open), m_uri(uri) {
                         //Assert that the notifiers and setter are defined
-                        ASSERT_SANITY_THROW(!m_set_server_msg_func, "The server message setter is NULL!");
+                        ASSERT_SANITY_THROW(!m_notify_new_msg, "The server message setter is NULL!");
 
                         //Set up access channels to only log interesting things
                         m_client.clear_access_channels(alevel::all);
@@ -253,7 +253,7 @@ namespace uva {
                             json_msg->de_serialize(msg_str);
 
                             //Set the message to the client
-                            m_set_server_msg_func(json_msg);
+                            m_notify_new_msg(json_msg);
                         } catch (std::exception & ex) {
                             LOG_ERROR << ex.what() << END_LOG;
                             //Delete the message as it was not set
@@ -377,7 +377,7 @@ namespace uva {
                     a_bool_flag m_closed;
 
                     //Stores the server message setting function
-                    server_message_setter m_set_server_msg_func;
+                    new_msg_notifier m_notify_new_msg;
                     //Stores the connection close notifier
                     conn_status_notifier m_notify_conn_close;
                     //Stores the connection open notifier
