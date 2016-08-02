@@ -67,25 +67,26 @@ namespace uva {
                      * @param params the translation client parameters
                      * @param name the name we instantiate this client for, is used for logging.
                      * @param input the input stream to read the source text from
-                     * @param input_lang the reference to a string to get the input language
                      * @param output the output stream to write the target text into
-                     * @param output_lang the reference to a string to store the output language
+                     * @param lang the reference to a string thaty stores the language
+                     *        is to be updated with the language coming from the server
                      * @param req_crt_func the reference to the request creator function
-                    ;
                      */
                     proc_manager(const client_parameters & params, const string name,
-                            stringstream & input, const string & input_lang,
-                            stringstream & output, string & output_lang, const request_creator &req_crt_func)
+                            stringstream & input, stringstream & output, string & lang,
+                            const request_creator &req_crt_func)
                     : client_manager<MSG_TYPE, proc_resp_in>(params.m_trans_uri, name),
-                    m_params(params), m_input(input), m_input_lang(input_lang),
-                    m_output(output), m_output_lang(output_lang), m_req_crt_func(req_crt_func),
-                    m_act_num_req(0), m_exp_num_resp(0), m_act_num_resp(0) {
+                    m_params(params), m_input(input), m_output(output), m_lang(lang),
+                    m_req_crt_func(req_crt_func), m_responses(NULL), m_act_num_req(0),
+                    m_exp_num_resp(0), m_act_num_resp(0) {
                     }
 
                     /**
                      * The basic destructor class
                      */
                     virtual ~proc_manager() {
+                        //Delete the responses
+                        delete_responses();
                     }
 
                 protected:
@@ -118,7 +119,7 @@ namespace uva {
                             //Process the text in chunks
                             process_utf8_chunks<MESSAGE_MAX_WCHARS_LEN>(m_input,
                                     bind(&proc_manager::send_utf8_chunk_msg, this, _1, _2, _3));
-                            
+
                             //Set the expected number of responses to be the
                             //actual number of requests. This value will change
                             //once the first response is received, and we get
@@ -131,10 +132,51 @@ namespace uva {
                      * @see client_manager
                      */
                     virtual void set_job_response(proc_resp_in * job_resp_msg) override {
-                        //Get the number of chunks -> update the number of expected responses
-                        
-                        //ToDo: Implement
-                        THROW_NOT_IMPLEMENTED();
+                        //If this is the first response then get the language, the number of
+                        //expected responses and allocate an array to store the responses in. 
+                        if (m_responses == NULL) {
+                            //Update the language
+                            m_lang = job_resp_msg->get_language();
+                            //Update the number of chunks
+                            m_exp_num_resp = job_resp_msg->get_num_chunks();
+                            //Allocate the chunks array
+                            m_responses = new proc_resp_in_ptr[m_exp_num_resp]();
+                        }
+
+                        //Get the job id
+                        const job_id_type job_id = job_resp_msg->get_job_id();
+
+                        //Check if the job id is the same as for the sent jobs.
+                        //There will actually be just one job at a time, no parallel jobs.
+                        ASSERT_CONDITION_THROW((m_job_id == job_id),
+                                string("Received processor response job id: ") + to_string(m_job_id) +
+                                string(" received: ") + to_string(job_id) + string(", ignoring!"));
+
+                        //Get the chunk index
+                        const size_t chunk_idx = job_resp_msg->get_chunk_idx();
+
+                        //Check that the chunk idx is within the bounds
+
+                        ASSERT_CONDITION_THROW((chunk_idx >= m_exp_num_resp),
+                                string("Processor response job id: ") + to_string(m_job_id) + string(" has") +
+                                string(" chunk idx: ") + to_string(chunk_idx) + string(", the max expected") +
+                                string(" chunk idx is ") + to_string(m_exp_num_resp - 1) +
+                                string(", ignoring!"));
+
+                        //Check that the chunk is not yet received
+                        ASSERT_CONDITION_THROW((m_responses[chunk_idx] != NULL),
+                                string("Processor response job id: ") + to_string(m_job_id) +
+                                string(" has chunk idx: ") + to_string(chunk_idx) +
+                                string(", already ") + string("received, ignoring!"));
+
+                        //Store the response under the chunk index
+                        m_responses[chunk_idx] = job_resp_msg;
+
+                        //Increment the actual number of response
+                        ++m_act_num_resp;
+
+                        LOG_INFO1 << "The job " << job_id << " response chunk " << m_act_num_resp
+                                << "/" << m_exp_num_resp << " is received." << END_LOG;
                     }
 
                     /**
@@ -142,7 +184,11 @@ namespace uva {
                      */
                     virtual void process_results() override {
                         //ToDo: Implement
+
                         THROW_NOT_IMPLEMENTED();
+
+                        //Delete responses
+                        delete_responses();
                     }
 
                 private:
@@ -154,16 +200,18 @@ namespace uva {
 
                     //Stores the reference to the input stream storing the source text
                     stringstream & m_input;
-                    //Stores the reference to a string to get the input language
-                    const string & m_input_lang;
-
                     //Stores the reference to the output stream for the target text
                     stringstream & m_output;
-                    //Stores the reference to a string to store the output language
-                    string & m_output_lang;
+
+                    //Stores the reference to a string storing the language, is
+                    //to be updated by the language coming from the server.
+                    string & m_lang;
 
                     //Stores the request creator function
                     const request_creator m_req_crt_func;
+
+                    //Stores the pointer to the array of responses
+                    proc_resp_in * m_responses;
 
                     //Store the actual number of sent requests
                     size_t m_act_num_req;
@@ -178,6 +226,23 @@ namespace uva {
                     generic_client * m_client;
 
                     /**
+                     * Allows to delete responses
+                     */
+                    inline void delete_responses() {
+                        if (m_responses != NULL) {
+                            //Iterate through the responses and delete the non-null ones
+                            for (size_t idx = 0; idx < m_exp_num_resp; ++idx) {
+                                if (m_responses[idx] != NULL) {
+
+                                    delete m_responses[idx];
+                                }
+                            }
+                            //Delete the array
+                            delete[] m_responses;
+                        }
+                    }
+
+                    /**
                      * Allows to send a chunk of utf8 characters to the server.
                      * Does nothing if the client is stopping.
                      * @param buffer the buffer storing the characters
@@ -190,7 +255,7 @@ namespace uva {
                             proc_req_out * req = m_req_crt_func(m_job_id);
 
                             //Set the language
-                            req->set_language(m_input_lang);
+                            req->set_language(m_lang);
 
                             //Set text the text piece index and the number of text pieces
                             wstring ws(buffer);
@@ -201,6 +266,10 @@ namespace uva {
                                 m_client->send(req);
                                 //Increment the number of sent requests
                                 ++m_act_num_req;
+
+                                LOG_INFO1 << "The job " << m_job_id << " response chunk "
+                                        << m_act_num_req << "/" << m_exp_num_resp << " is sent." << END_LOG;
+
                             } catch (std::exception & e) {
                                 //Log the error message
                                 LOG_ERROR << "Error when sending a processor request job " << m_job_id << "("

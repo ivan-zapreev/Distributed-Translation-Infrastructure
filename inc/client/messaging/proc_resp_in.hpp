@@ -61,6 +61,53 @@ namespace uva {
                             delete m_inc_msg;
                         }
 
+                        /**
+                         * Allows to get the client-issued job id
+                         * @return the client-issued job id
+                         */
+                        inline job_id_type get_job_id() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return json[JOB_ID_FIELD_NAME].GetUint64();
+                        }
+
+                        /**
+                         * Allows to get this text piece index, the index starts with
+                         * zero and correspond to the text piece index in the job.
+                         * @return the task index represented by this request
+                         */
+                        inline job_id_type get_chunk_idx() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return json[CHUNK_IDX_FIELD_NAME].GetUint64();
+                        }
+
+                        /**
+                         * Allows to get the number of job's text pieces
+                         * @return the number of job's text pieces
+                         */
+                        inline job_id_type get_num_chunks() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return json[NUM_CHUNKS_FIELD_NAME].GetUint64();
+                        }
+
+                        /**
+                         * Allows to get the language for the task,
+                         * it should be equal for all the job's tasks
+                         * @return the processor job language, lowercased
+                         */
+                        inline string get_language() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return json[LANG_FIELD_NAME].GetString();
+                        }
+
+                        /**
+                         * Allows to get the processor task text
+                         * @return the processor task text
+                         */
+                        inline string get_chunk() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return json[CHUNK_FIELD_NAME].GetString();
+                        }
+
                     protected:
                         //Stores the pointer to the incoming message
                         const incoming_msg * m_inc_msg;
