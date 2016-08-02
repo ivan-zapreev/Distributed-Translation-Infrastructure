@@ -118,6 +118,12 @@ namespace uva {
                             //Process the text in chunks
                             process_utf8_chunks<MESSAGE_MAX_WCHARS_LEN>(m_input,
                                     bind(&proc_manager::send_utf8_chunk_msg, this, _1, _2, _3));
+                            
+                            //Set the expected number of responses to be the
+                            //actual number of requests. This value will change
+                            //once the first response is received, and we get
+                            //the number of chunks from the job response.
+                            m_exp_num_resp = m_act_num_req;
                         }
                     }
 
@@ -125,6 +131,8 @@ namespace uva {
                      * @see client_manager
                      */
                     virtual void set_job_response(proc_resp_in * job_resp_msg) override {
+                        //Get the number of chunks -> update the number of expected responses
+                        
                         //ToDo: Implement
                         THROW_NOT_IMPLEMENTED();
                     }
@@ -188,8 +196,16 @@ namespace uva {
                             wstring ws(buffer);
                             req->set_chunk(string(ws.begin(), ws.end()), chunk_idx, num_chunks);
 
-                            //Send the translation job request
-                            m_client->send(req);
+                            try {
+                                //Send the translation job request
+                                m_client->send(req);
+                                //Increment the number of sent requests
+                                ++m_act_num_req;
+                            } catch (std::exception & e) {
+                                //Log the error message
+                                LOG_ERROR << "Error when sending a processor request job " << m_job_id << "("
+                                        << chunk_idx << "/" << num_chunks << "): " << e.what() << END_LOG;
+                            }
 
                             //Delete the response
                             delete req;
