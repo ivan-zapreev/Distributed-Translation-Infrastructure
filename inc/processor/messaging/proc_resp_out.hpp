@@ -75,12 +75,12 @@ namespace uva {
                          * @param num_chunks the number of text pieces
                          */
                         inline void set_chunk(const string & chunk, const uint64_t chunk_idx, const uint64_t num_chunks) {
-                            m_writer.String(CHUNK_IDX_FIELD_NAME);
-                            m_writer.String(chunk.c_str());
-                            m_writer.String(CHUNK_FIELD_NAME);
-                            m_writer.Int(chunk_idx);
                             m_writer.String(NUM_CHUNKS_FIELD_NAME);
                             m_writer.Int(num_chunks);
+                            m_writer.String(CHUNK_IDX_FIELD_NAME);
+                            m_writer.Int(chunk_idx);
+                            m_writer.String(CHUNK_FIELD_NAME);
+                            m_writer.String(chunk.c_str());
                         }
                         
                         /**
