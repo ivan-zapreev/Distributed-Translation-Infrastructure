@@ -183,9 +183,20 @@ namespace uva {
                      * @see client_manager
                      */
                     virtual void process_results() override {
-                        //ToDo: Implement
+                        //Check that the responses are set
+                        ASSERT_CONDITION_THROW((m_responses == NULL),
+                                "There is no responses in the processor manager!");
 
-                        THROW_NOT_IMPLEMENTED();
+                        //Iterate through the responses and delete the non-null ones
+                        for (size_t idx = 0; idx < m_exp_num_resp; ++idx) {
+                            //Check that the chunk data is present!
+                            ASSERT_CONDITION_THROW((m_responses[idx] == NULL),
+                                    string("The response chunk: ") + to_string(idx) +
+                                    string(" is missing, failed processor job!"));
+
+                            //Put the chunk text into the output stream
+                            m_output << m_responses[idx]->get_chunk();
+                        }
 
                         //Delete responses
                         delete_responses();
@@ -233,12 +244,14 @@ namespace uva {
                             //Iterate through the responses and delete the non-null ones
                             for (size_t idx = 0; idx < m_exp_num_resp; ++idx) {
                                 if (m_responses[idx] != NULL) {
-
+                                    //Delete the request
                                     delete m_responses[idx];
                                 }
                             }
                             //Delete the array
                             delete[] m_responses;
+                            //Set the responses to NULL
+                            m_responses = NULL;
                         }
                     }
 

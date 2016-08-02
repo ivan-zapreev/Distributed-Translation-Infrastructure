@@ -162,19 +162,22 @@ namespace uva {
                     virtual size_t get_exp_num_resp() = 0;
 
                     /**
-                     * Will be called to send the job requests to the server via the provided client
+                     * Will be called to send the job requests to the server via the provided client.
+                     * If could not send, MUST NOT THROW!
                      * @return 
                      */
                     virtual void send_job_requests(generic_client & client) = 0;
 
                     /**
                      * Will be called when the message of the expected type arrives from the server.
+                     * If could not set the response MUST THROW!
                      * @param job_resp_msg the received job response message
                      */
                     virtual void set_job_response(RESPONSE_TYPE * job_resp_msg) = 0;
 
                     /**
                      * Will be called when all job responses are received.
+                     * If could not process the results MUST THROW!
                      */
                     virtual void process_results() = 0;
 
