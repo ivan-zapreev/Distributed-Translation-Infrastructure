@@ -242,7 +242,7 @@ void read_input(const client_parameters & params, stringstream_ptr & output) {
 void pre_process(client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
     if (params.is_pre_process()) {
         //Create the pre-processor manager
-        pre_proc_manager manager(params, "Pre-processor", *input, *output, params.m_source_lang);
+        pre_proc_manager manager(params, *input, *output, params.m_source_lang);
 
         //Start the pre-processor manager
         LOG_USAGE << "Starting the pre-processor process ..." << END_LOG;
@@ -300,7 +300,7 @@ void translate(const client_parameters & params, stringstream_ptr & input, strin
 void post_process(client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
     if (params.is_post_process()) {
         //Create the post-processor manager
-        pre_proc_manager manager(params, "Post-processor", *input, *output, params.m_target_lang);
+        pre_proc_manager manager(params, *input, *output, params.m_target_lang);
 
         //Start the post-processor manager
         LOG_USAGE << "Starting the post-processor process ..." << END_LOG;

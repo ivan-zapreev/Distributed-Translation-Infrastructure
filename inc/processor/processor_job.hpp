@@ -575,7 +575,7 @@ namespace uva {
                                     stringstream sstr;
                                     sstr << "Could not process: " << file_name << ", language: " <<
                                             this->get_language() << ", error: " << ex.what();
-                                    LOG_ERROR << sstr.str() << END_LOG;
+                                    LOG_DEBUG << sstr.str() << END_LOG;
                                     //Report an error to the client.
                                     send_error_response(sstr.str());
                                 }

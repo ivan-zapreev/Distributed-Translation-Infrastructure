@@ -151,7 +151,7 @@ namespace uva {
 
                             //Check if the job id is the same as for the sent jobs.
                             //There will actually be just one job at a time, no parallel jobs.
-                            ASSERT_CONDITION_THROW((m_job_id == job_id),
+                            ASSERT_CONDITION_THROW((m_job_id != job_id),
                                     string("Received processor response job id: ") + to_string(m_job_id) +
                                     string(" received: ") + to_string(job_id) + string(", ignoring!"));
 
@@ -292,12 +292,12 @@ namespace uva {
                                 ++m_act_num_req;
 
                                 LOG_INFO1 << "The job " << m_job_id << " request chunk "
-                                        << (chunk_idx+1) << "/" << num_chunks << " is sent." << END_LOG;
+                                        << (chunk_idx + 1) << "/" << num_chunks << " is sent." << END_LOG;
 
                             } catch (std::exception & e) {
                                 //Log the error message
                                 LOG_ERROR << "Error when sending a processor request job " << m_job_id << "("
-                                        << (chunk_idx+1) << "/" << num_chunks << "): " << e.what() << END_LOG;
+                                        << (chunk_idx + 1) << "/" << num_chunks << "): " << e.what() << END_LOG;
                             }
 
                             //Delete the response
@@ -318,15 +318,15 @@ namespace uva {
                     /**
                      * This is the basic constructor needed to 
                      * @param params the translation client parameters
-                     * @param name the name we instantiate this client for, is used for logging.
                      * @param input the input stream to read the source text from
                      * @param output the output stream to write the target text into
                      * @param lang the reference to a string thaty stores the language
                      *        is to be updated with the language coming from the server
                      */
-                    pre_proc_manager(const client_parameters & params, const string name,
-                            stringstream & input, stringstream & output, string & lang)
-                    : proc_manager(params.m_pre_uri, name, input, output, lang, &proc_req_out::get_pre_proc_req) {
+                    pre_proc_manager(const client_parameters & params, stringstream & input,
+                            stringstream & output, string & lang)
+                    : proc_manager(params.m_pre_uri, "pre-processor", input,
+                    output, lang, &proc_req_out::get_pre_proc_req) {
                     }
                 };
 
@@ -339,15 +339,15 @@ namespace uva {
                     /**
                      * This is the basic constructor needed to 
                      * @param params the translation client parameters
-                     * @param name the name we instantiate this client for, is used for logging.
                      * @param input the input stream to read the source text from
                      * @param output the output stream to write the target text into
                      * @param lang the reference to a string thaty stores the language
                      *        is to be updated with the language coming from the server
                      */
-                    post_proc_manager(const client_parameters & params, const string name,
-                            stringstream & input, stringstream & output, string & lang)
-                    : proc_manager(params.m_post_uri, name, input, output, lang, &proc_req_out::get_post_proc_req) {
+                    post_proc_manager(const client_parameters & params, stringstream & input,
+                            stringstream & output, string & lang)
+                    : proc_manager(params.m_post_uri, "post-processor", input,
+                    output, lang, &proc_req_out::get_post_proc_req) {
                     }
                 };
             }

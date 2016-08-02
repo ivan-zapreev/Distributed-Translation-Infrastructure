@@ -385,7 +385,7 @@ namespace uva {
                             }
                         } else {
                             //There is no sentence data present!
-                            LOG_ERROR << "ERROR: Missing target sentences for job: " << resp->get_job_id() << END_LOG;
+                            LOG_ERROR << "Missing target sentences for job: " << resp->get_job_id() << END_LOG;
                             //Make it an empty line
                             output << std::endl;
                         }
