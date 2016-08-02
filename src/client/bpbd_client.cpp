@@ -220,7 +220,7 @@ void read_input(const client_parameters & params, stringstream_ptr & output) {
     source_file.log_reader_type_info();
 
     LOG_USAGE << "Reading source text from '" << params.m_source_file << "'" << END_LOG;
-    
+
     //Declare the variable to store the sentence line
     text_piece_reader line;
 
@@ -239,9 +239,24 @@ void read_input(const client_parameters & params, stringstream_ptr & output) {
  * @param input the input stream storing the text to pre-process
  * @param output the output stream to write the pre-processed text into
  */
-void pre_process(const client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
+void pre_process(client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
     if (params.is_pre_process()) {
-        //ToDo: Implement, write the result into the output
+        //Create the pre-processor manager
+        pre_proc_manager manager(params, "Pre-processor", *input, *output, params.m_source_lang);
+
+        //Start the pre-processor manager
+        LOG_USAGE << "Starting the pre-processor process ..." << END_LOG;
+        manager.start();
+
+        //Wait until the pre-processor are done
+        LOG_USAGE << "Waiting for the pre-processor process to finish ..." << END_LOG;
+        manager.wait();
+
+        //Stop the pre-processor manager
+        LOG_USAGE << "Finishing the pre-processor process ..." << END_LOG;
+        manager.stop();
+
+        LOG_USAGE << "The pre-processor process is finished" << END_LOG;
     } else {
         //There is no need to pre-process. Swap the streams,
         //as the input is to be "placed" into the output.
@@ -282,9 +297,24 @@ void translate(const client_parameters & params, stringstream_ptr & input, strin
  * @param input the input stream storing the text to post-process
  * @param output the output stream to write the post-processed text into
  */
-void post_process(const client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
+void post_process(client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
     if (params.is_post_process()) {
-        //ToDo: Implement, write the result into the output
+        //Create the post-processor manager
+        pre_proc_manager manager(params, "Post-processor", *input, *output, params.m_target_lang);
+
+        //Start the post-processor manager
+        LOG_USAGE << "Starting the post-processor process ..." << END_LOG;
+        manager.start();
+
+        //Wait until the post-processor are done
+        LOG_USAGE << "Waiting for the post-processor process to finish ..." << END_LOG;
+        manager.wait();
+
+        //Stop the post-processor manager
+        LOG_USAGE << "Finishing the post-processor process ..." << END_LOG;
+        manager.stop();
+
+        LOG_USAGE << "The post-processor process is finished" << END_LOG;
     } else {
         //There is no need to post-process. Swap the streams,
         //as the input is to be "placed" into the output.

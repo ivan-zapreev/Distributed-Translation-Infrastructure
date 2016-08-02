@@ -132,6 +132,9 @@ namespace uva {
                      * @see client_manager
                      */
                     virtual void set_job_response(proc_resp_in * job_resp_msg) override {
+                        //Synchronize with sending to prevent resources overlap
+                        unique_guard guard(m_sr_lock);
+                        
                         //If this is the first response then get the language, the number of
                         //expected responses and allocate an array to store the responses in. 
                         if (m_responses == NULL) {
@@ -222,7 +225,7 @@ namespace uva {
                     const request_creator m_req_crt_func;
 
                     //Stores the pointer to the array of responses
-                    proc_resp_in * m_responses;
+                    proc_resp_in_ptr * m_responses;
 
                     //Store the actual number of sent requests
                     size_t m_act_num_req;
@@ -230,6 +233,8 @@ namespace uva {
                     size_t m_exp_num_resp;
                     //Store the actual number of responses
                     atomic<uint32_t> m_act_num_resp;
+                    //Stores the synchronization mutex for synchronizing sending and receiving code
+                    mutex m_sr_lock;
 
                     //Stores the issued job id to be used. Is initialized before sending the job.
                     job_id_type m_job_id;
@@ -263,6 +268,9 @@ namespace uva {
                      * @param chunk_idx the current chunk index starting with 0.
                      */
                     inline void send_utf8_chunk_msg(wchar_t * buffer, const size_t num_chunks, const size_t chunk_idx) {
+                        //Synchronize with receiving to prevent resources overlap
+                        unique_guard guard(m_sr_lock);
+                        
                         if (!client_manager<MSG_TYPE, proc_resp_in>::is_stopping()) {
                             //Get the error response
                             proc_req_out * req = m_req_crt_func(m_job_id);
@@ -297,6 +305,48 @@ namespace uva {
 
                 template<msg_type MSG_TYPE>
                 id_manager<job_id_type> proc_manager<MSG_TYPE>::m_id_mgr(job_id::MINIMUM_JOB_ID);
+
+                /**
+                 * Define the class for the pre-processor manager
+                 */
+                class pre_proc_manager : public proc_manager<msg_type::MESSAGE_PRE_PROC_JOB_RESP> {
+                public:
+
+                    /**
+                     * This is the basic constructor needed to 
+                     * @param params the translation client parameters
+                     * @param name the name we instantiate this client for, is used for logging.
+                     * @param input the input stream to read the source text from
+                     * @param output the output stream to write the target text into
+                     * @param lang the reference to a string thaty stores the language
+                     *        is to be updated with the language coming from the server
+                     */
+                    pre_proc_manager(const client_parameters & params, const string name,
+                            stringstream & input, stringstream & output, string & lang)
+                    : proc_manager(params, name, input, output, lang, &proc_req_out::get_pre_proc_req) {
+                    }
+                };
+
+                /**
+                 * Define the class for the post-processor manager
+                 */
+                class post_proc_manager : public proc_manager<msg_type::MESSAGE_POST_PROC_JOB_RESP> {
+                public:
+
+                    /**
+                     * This is the basic constructor needed to 
+                     * @param params the translation client parameters
+                     * @param name the name we instantiate this client for, is used for logging.
+                     * @param input the input stream to read the source text from
+                     * @param output the output stream to write the target text into
+                     * @param lang the reference to a string thaty stores the language
+                     *        is to be updated with the language coming from the server
+                     */
+                    post_proc_manager(const client_parameters & params, const string name,
+                            stringstream & input, stringstream & output, string & lang)
+                    : proc_manager(params, name, input, output, lang, &proc_req_out::get_post_proc_req) {
+                    }
+                };
             }
         }
     }

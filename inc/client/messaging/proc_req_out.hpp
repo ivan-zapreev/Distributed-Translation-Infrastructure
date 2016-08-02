@@ -49,7 +49,7 @@ namespace uva {
                          * @param job_id the client-issued id of the job 
                          * @return a new instance of the processor request for the pre-processing task.
                          */
-                        static inline proc_req_out * get_pre_proc_resp(const job_id_type job_id) {
+                        static inline proc_req_out * get_pre_proc_req(const job_id_type job_id) {
                             return new proc_req_out(msg_type::MESSAGE_PRE_PROC_JOB_REQ, job_id);
                         }
 
@@ -58,7 +58,7 @@ namespace uva {
                          * @param job_id the client-issued id of the job 
                          * @return a new instance of the processor request for the post-processing task.
                          */
-                        static inline proc_req_out * get_post_proc_resp(const job_id_type job_id) {
+                        static inline proc_req_out * get_post_proc_req(const job_id_type job_id) {
                             return new proc_req_out(msg_type::MESSAGE_POST_PROC_JOB_REQ, job_id);
                         }
 
