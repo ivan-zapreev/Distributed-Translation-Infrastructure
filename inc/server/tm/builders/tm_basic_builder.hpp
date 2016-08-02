@@ -34,7 +34,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 #include "server/server_consts.hpp"
 

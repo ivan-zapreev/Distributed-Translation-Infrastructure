@@ -31,7 +31,7 @@
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 #include "server/lm/lm_configurator.hpp"
 #include "server/rm/proxy/rm_query_proxy.hpp"

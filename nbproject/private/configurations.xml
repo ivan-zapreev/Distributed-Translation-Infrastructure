@@ -678,6 +678,10 @@
           <df name="monitor">
             <in>statistics_monitor.hpp</in>
           </df>
+          <df name="text">
+            <in>string_utils.hpp</in>
+            <in>utf8_utils.hpp</in>
+          </df>
           <df name="threads">
             <in>task_pool.hpp</in>
             <in>task_pool_worker.hpp</in>
@@ -687,7 +691,6 @@
           <in>hashing_utils.hpp</in>
           <in>id_manager.hpp</in>
           <in>math_utils.hpp</in>
-          <in>string_utils.hpp</in>
         </df>
       </df>
       <df name="processor">

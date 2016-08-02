@@ -31,7 +31,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 #include "server/tm/tm_configurator.hpp"
 #include "server/tm/proxy/tm_query_proxy.hpp"

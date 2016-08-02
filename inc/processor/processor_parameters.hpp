@@ -32,7 +32,7 @@
 #include "common/messaging/language_registry.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 using namespace std;
 

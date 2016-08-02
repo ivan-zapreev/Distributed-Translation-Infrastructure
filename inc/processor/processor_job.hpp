@@ -32,7 +32,7 @@
 
 #include "common/utils/id_manager.hpp"
 #include "common/utils/exceptions.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/utf8_utils.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/threads/threads.hpp"
 
@@ -348,7 +348,7 @@ namespace uva {
                             //Close the file
                             out_file.close();
 
-                            LOG_USAGE << "The text is stored into: " << file_name << END_LOG;
+                            LOG_DEBUG << "The text is stored into: " << file_name << END_LOG;
                         }
                     }
 
@@ -417,23 +417,31 @@ namespace uva {
                     inline bool call_processor_script(const string &call_str, stringstream & output) {
                         recursive_guard guard(m_file_lock);
 
+                        //Check if the job is not being cancelled
                         if (!m_is_canceled) {
+                            LOG_DEBUG << "Trying to call the script: " << call_str << END_LOG;
                             FILE *fp = popen(call_str.c_str(), "r");
+                            LOG_DEBUG << "Checking on the script's pipeline file status" << END_LOG;
                             if (fp != NULL) {
                                 //The buffer itself
                                 char buffer[MAX_PROCESSOR_OUTPUT_BYTES];
+
                                 //Read from the pipeline - we shall get the resulting language or an error message
+                                LOG_DEBUG << "Reading from the script's pipeline file" << END_LOG;
                                 while (fgets(buffer, sizeof (buffer), fp) != NULL) {
                                     output << buffer;
                                 }
 
+                                LOG_DEBUG << "Closing the script's pipeline" << END_LOG;
                                 //Wait until the process finishes and analyze its status
                                 int status = pclose(fp);
+                                LOG_DEBUG << "Checking if we can get the script exit status" << END_LOG;
                                 if (status == -1) {
                                     //Error the process status is not possible to retrieve!
                                     THROW_EXCEPTION(string("Could not get the script ") +
                                             call_str + (" execution status!"));
                                 } else {
+                                    LOG_DEBUG << "Checking checking on the script exit status" << END_LOG;
                                     if (WIFEXITED(status) != 0) {
                                         //The script terminated normally, check if there were errors
                                         return ((WEXITSTATUS(status) == 0) || (WEXITSTATUS(status) == EXIT_SUCCESS));
@@ -471,11 +479,11 @@ namespace uva {
 
                     /**
                      * Allows to send a chunk of utf8 characters to the client
-                     * @param buffer the buffer storing the characters
+                     * @param chunk the string storing the read chunk
                      * @param num_chunks the total number of chunks to send 
                      * @param chunk_idx the current chunk index starting with 0.
                      */
-                    inline void send_utf8_chunk_msg(wchar_t * buffer, const size_t num_chunks, const size_t chunk_idx) {
+                    inline void send_utf8_chunk_msg(const string & chunk, const size_t num_chunks, const size_t chunk_idx) {
                         //Get the error response
                         proc_resp_out * resp = m_resp_crt_func(this->get_job_id(), status_code::RESULT_OK, "");
 
@@ -483,8 +491,7 @@ namespace uva {
                         resp->set_language(m_res_lang);
 
                         //Set text the text piece index and the number of text pieces
-                        wstring ws(buffer);
-                        resp->set_chunk(string(ws.begin(), ws.end()), chunk_idx, num_chunks);
+                        resp->set_chunk(chunk, chunk_idx, num_chunks);
 
                         //Attempt to send the job response
                         processor_job::send_response(*resp);
@@ -553,9 +560,14 @@ namespace uva {
                                         //Send the responses to the client.
                                         send_success_response<is_pnp>(output);
                                     } else {
+                                        //In case there is an empty error create one
+                                        if (output.str().empty()) {
+                                            output << "Failed to execute: '" << call_str << "': "
+                                                    << "An internal script error or a missing script!";
+                                        }
                                         //Report an error to the client. The
                                         //output must contain the error message.
-                                        LOG_DEBUG << output.str() << END_LOG;
+                                        LOG_DEBUG << "Processor script error: " << output.str() << END_LOG;
                                         //Report an error to the client.
                                         send_error_response(output.str());
                                     }

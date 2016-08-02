@@ -77,6 +77,7 @@ namespace uva {
                                         string("JSON parse error: ") + to_string(m_json.GetParseError()));
                             } catch (std::exception & ex) {
                                 LOG_ERROR << "An exception when parsing JSON string: " << ex.what() << END_LOG;
+                                LOG_ERROR << "Received JSON message data: ___" << data << "___" << END_LOG;
                                 THROW_EXCEPTION(ex.what());
                             }
 

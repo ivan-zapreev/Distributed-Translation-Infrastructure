@@ -29,7 +29,7 @@
 #include <algorithm> //std::fill
 
 #include "common/utils/logging/logger.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 #include "server/lm/dictionaries/basic_word_index.hpp"
 #include "server/lm/dictionaries/counting_word_index.hpp"

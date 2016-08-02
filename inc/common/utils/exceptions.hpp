@@ -45,9 +45,9 @@ namespace uva {
     stringstream msg; \
     if (logger::get_reporting_level() >= debug_levels_enum::INFO3) { \
         msg << __FILENAME__ << "::" << __FUNCTION__ \
-            << "(...) " << __LINE__ << " : " << (text); \
+            << "(...):" << __LINE__ << ": " << (text); \
     } else { \
-        msg << __FILENAME__ << ": " << (text); \
+        msg << __FILENAME__ << ":" << __LINE__ << ": " << (text); \
     } \
     LOG_DEBUG << "<THROWING> " << msg.str() << END_LOG; \
     throw uva_exception(msg.str()); \

@@ -30,7 +30,7 @@
 #include <algorithm> // std::min
 
 #include "common/utils/logging/logger.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 #include "common/utils/exceptions.hpp"
 
 #include "server/lm/dictionaries/basic_word_index.hpp"

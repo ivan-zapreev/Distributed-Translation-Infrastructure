@@ -24,7 +24,7 @@
  */
 
 #include "server/lm/mgrams/query_m_gram.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 using namespace uva::utils::text;
 

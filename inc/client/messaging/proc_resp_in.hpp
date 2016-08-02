@@ -62,6 +62,25 @@ namespace uva {
                         }
 
                         /**
+                         * Allows to get the translation task result code
+                         * @return the translation task result code
+                         */
+                        inline status_code get_status_code() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return status_code(json[STAT_CODE_FIELD_NAME].GetInt());
+                        }
+
+                        /**
+                         * Allows to get the translation task status message
+                         * @return the translation task status message
+                         */
+                        inline string get_status_msg() const {
+                            const Document & json = m_inc_msg->get_json();
+                            
+                            return json[STAT_MSG_FIELD_NAME].GetString();
+                        }
+
+                        /**
                          * Allows to get the client-issued job id
                          * @return the client-issued job id
                          */

@@ -34,7 +34,7 @@
 #include <unordered_map>
 
 #include "common/utils/id_manager.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 #include "common/utils/threads/threads.hpp"
 
 #include "common/messaging/status_code.hpp"

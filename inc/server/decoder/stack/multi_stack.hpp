@@ -30,7 +30,7 @@
 #include <sstream>
 #include <functional>
 
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 #include "common/utils/threads/threads.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"

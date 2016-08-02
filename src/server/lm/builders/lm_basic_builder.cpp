@@ -26,7 +26,7 @@
 #include <string>
 
 #include "common/utils/logging/logger.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 #include "common/utils/file/cstyle_file_reader.hpp"
 #include "common/utils/file/file_stream_reader.hpp"
 #include "common/utils/file/memory_mapped_file_reader.hpp"

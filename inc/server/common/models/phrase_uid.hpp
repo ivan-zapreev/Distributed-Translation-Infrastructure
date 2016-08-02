@@ -33,7 +33,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/hashing_utils.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 #include "server/server_configs.hpp"
 

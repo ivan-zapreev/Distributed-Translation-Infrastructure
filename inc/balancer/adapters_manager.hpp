@@ -37,7 +37,7 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/threads/threads.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 #include "common/messaging/language_registry.hpp"
 #include "client/messaging/supp_lang_resp_in.hpp"

@@ -221,7 +221,7 @@ namespace uva {
                      */
                     inline void check_jobs_done_and_notify() {
                         //If we received all the jobs then notify that all the jobs are received!
-                        if (m_is_all_jobs_sent && (m_num_done_jobs == get_exp_num_resp())) {
+                        if (m_is_all_jobs_sent && (m_num_done_jobs >= get_exp_num_resp())) {
                             notify_jobs_done();
                         }
                     }

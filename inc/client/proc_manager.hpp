@@ -27,7 +27,7 @@
 #define PROC_MANAGER_HPP
 
 #include "common/utils/id_manager.hpp"
-#include "common/utils/string_utils.hpp"
+#include "common/utils/text/utf8_utils.hpp"
 #include "common/utils/threads/threads.hpp"
 
 #include "client/client_consts.hpp"
@@ -64,7 +64,7 @@ namespace uva {
 
                     /**
                      * This is the basic constructor needed to 
-                     * @param params the translation client parameters
+                     * @param proc_uri the uri of the processing server
                      * @param name the name we instantiate this client for, is used for logging.
                      * @param input the input stream to read the source text from
                      * @param output the output stream to write the target text into
@@ -72,13 +72,12 @@ namespace uva {
                      *        is to be updated with the language coming from the server
                      * @param req_crt_func the reference to the request creator function
                      */
-                    proc_manager(const client_parameters & params, const string name,
+                    proc_manager(const string & proc_uri, const string name,
                             stringstream & input, stringstream & output, string & lang,
                             const request_creator &req_crt_func)
-                    : client_manager<MSG_TYPE, proc_resp_in>(params.m_trans_uri, name),
-                    m_params(params), m_input(input), m_output(output), m_lang(lang),
-                    m_req_crt_func(req_crt_func), m_responses(NULL), m_act_num_req(0),
-                    m_exp_num_resp(0), m_act_num_resp(0) {
+                    : client_manager<MSG_TYPE, proc_resp_in>(proc_uri, name),
+                    m_input(input), m_output(output), m_lang(lang), m_req_crt_func(req_crt_func),
+                    m_responses(NULL), m_act_num_req(0), m_exp_num_resp(0), m_act_num_resp(0) {
                     }
 
                     /**
@@ -134,61 +133,68 @@ namespace uva {
                     virtual void set_job_response(proc_resp_in * job_resp_msg) override {
                         //Synchronize with sending to prevent resources overlap
                         unique_guard guard(m_sr_lock);
-                        
-                        //If this is the first response then get the language, the number of
-                        //expected responses and allocate an array to store the responses in. 
-                        if (m_responses == NULL) {
-                            //Update the language
-                            m_lang = job_resp_msg->get_language();
-                            //Update the number of chunks
-                            m_exp_num_resp = job_resp_msg->get_num_chunks();
-                            //Allocate the chunks array
-                            m_responses = new proc_resp_in_ptr[m_exp_num_resp]();
+
+                        if (job_resp_msg->get_status_code() == status_code::RESULT_OK) {
+                            //If this is the first response then get the language, the number of
+                            //expected responses and allocate an array to store the responses in. 
+                            if (m_responses == NULL) {
+                                //Update the language
+                                m_lang = job_resp_msg->get_language();
+                                //Update the number of chunks
+                                m_exp_num_resp = job_resp_msg->get_num_chunks();
+                                //Allocate the chunks array
+                                m_responses = new proc_resp_in_ptr[m_exp_num_resp]();
+                            }
+
+                            //Get the job id
+                            const job_id_type job_id = job_resp_msg->get_job_id();
+
+                            //Check if the job id is the same as for the sent jobs.
+                            //There will actually be just one job at a time, no parallel jobs.
+                            ASSERT_CONDITION_THROW((m_job_id == job_id),
+                                    string("Received processor response job id: ") + to_string(m_job_id) +
+                                    string(" received: ") + to_string(job_id) + string(", ignoring!"));
+
+                            //Get the chunk index
+                            const size_t chunk_idx = job_resp_msg->get_chunk_idx();
+
+                            //Check that the chunk idx is within the bounds
+
+                            ASSERT_CONDITION_THROW((chunk_idx >= m_exp_num_resp),
+                                    string("Processor response job id: ") + to_string(m_job_id) + string(" has") +
+                                    string(" chunk idx: ") + to_string(chunk_idx) + string(", the max expected") +
+                                    string(" chunk idx is ") + to_string(m_exp_num_resp - 1) +
+                                    string(", ignoring!"));
+
+                            //Check that the chunk is not yet received
+                            ASSERT_CONDITION_THROW((m_responses[chunk_idx] != NULL),
+                                    string("Processor response job id: ") + to_string(m_job_id) +
+                                    string(" has chunk idx: ") + to_string(chunk_idx) +
+                                    string(", already ") + string("received, ignoring!"));
+
+                            //Store the response under the chunk index
+                            m_responses[chunk_idx] = job_resp_msg;
+
+                            //Increment the actual number of response
+                            ++m_act_num_resp;
+
+                            LOG_INFO1 << "The job " << job_id << " response chunk " << m_act_num_resp
+                                    << "/" << m_exp_num_resp << " is received." << END_LOG;
+                        } else {
+                            THROW_EXCEPTION(string("Failed processor job: ") + job_resp_msg->get_status_msg());
                         }
-
-                        //Get the job id
-                        const job_id_type job_id = job_resp_msg->get_job_id();
-
-                        //Check if the job id is the same as for the sent jobs.
-                        //There will actually be just one job at a time, no parallel jobs.
-                        ASSERT_CONDITION_THROW((m_job_id == job_id),
-                                string("Received processor response job id: ") + to_string(m_job_id) +
-                                string(" received: ") + to_string(job_id) + string(", ignoring!"));
-
-                        //Get the chunk index
-                        const size_t chunk_idx = job_resp_msg->get_chunk_idx();
-
-                        //Check that the chunk idx is within the bounds
-
-                        ASSERT_CONDITION_THROW((chunk_idx >= m_exp_num_resp),
-                                string("Processor response job id: ") + to_string(m_job_id) + string(" has") +
-                                string(" chunk idx: ") + to_string(chunk_idx) + string(", the max expected") +
-                                string(" chunk idx is ") + to_string(m_exp_num_resp - 1) +
-                                string(", ignoring!"));
-
-                        //Check that the chunk is not yet received
-                        ASSERT_CONDITION_THROW((m_responses[chunk_idx] != NULL),
-                                string("Processor response job id: ") + to_string(m_job_id) +
-                                string(" has chunk idx: ") + to_string(chunk_idx) +
-                                string(", already ") + string("received, ignoring!"));
-
-                        //Store the response under the chunk index
-                        m_responses[chunk_idx] = job_resp_msg;
-
-                        //Increment the actual number of response
-                        ++m_act_num_resp;
-
-                        LOG_INFO1 << "The job " << job_id << " response chunk " << m_act_num_resp
-                                << "/" << m_exp_num_resp << " is received." << END_LOG;
                     }
 
                     /**
                      * @see client_manager
                      */
                     virtual void process_results() override {
+                        //Synchronize with sending and receiving to prevent resources overlap
+                        unique_guard guard(m_sr_lock);
+
                         //Check that the responses are set
                         ASSERT_CONDITION_THROW((m_responses == NULL),
-                                "There is no responses in the processor manager!");
+                                "There are no responses to process!");
 
                         //Iterate through the responses and delete the non-null ones
                         for (size_t idx = 0; idx < m_exp_num_resp; ++idx) {
@@ -208,9 +214,6 @@ namespace uva {
                 private:
                     //Stores the static instance of the id manager
                     static id_manager<job_id_type> m_id_mgr;
-
-                    //Stores the reference to the client parameters
-                    const client_parameters & m_params;
 
                     //Stores the reference to the input stream storing the source text
                     stringstream & m_input;
@@ -263,14 +266,14 @@ namespace uva {
                     /**
                      * Allows to send a chunk of utf8 characters to the server.
                      * Does nothing if the client is stopping.
-                     * @param buffer the buffer storing the characters
+                     * @param chunk the string storing the read chunk
                      * @param num_chunks the total number of chunks to send 
                      * @param chunk_idx the current chunk index starting with 0.
                      */
-                    inline void send_utf8_chunk_msg(wchar_t * buffer, const size_t num_chunks, const size_t chunk_idx) {
+                    inline void send_utf8_chunk_msg(const string & chunk, const size_t num_chunks, const size_t chunk_idx) {
                         //Synchronize with receiving to prevent resources overlap
                         unique_guard guard(m_sr_lock);
-                        
+
                         if (!client_manager<MSG_TYPE, proc_resp_in>::is_stopping()) {
                             //Get the error response
                             proc_req_out * req = m_req_crt_func(m_job_id);
@@ -279,22 +282,22 @@ namespace uva {
                             req->set_language(m_lang);
 
                             //Set text the text piece index and the number of text pieces
-                            wstring ws(buffer);
-                            req->set_chunk(string(ws.begin(), ws.end()), chunk_idx, num_chunks);
+                            req->set_chunk(chunk, chunk_idx, num_chunks);
 
                             try {
                                 //Send the translation job request
                                 m_client->send(req);
+
                                 //Increment the number of sent requests
                                 ++m_act_num_req;
 
-                                LOG_INFO1 << "The job " << m_job_id << " response chunk "
-                                        << m_act_num_req << "/" << m_exp_num_resp << " is sent." << END_LOG;
+                                LOG_INFO1 << "The job " << m_job_id << " request chunk "
+                                        << (chunk_idx+1) << "/" << num_chunks << " is sent." << END_LOG;
 
                             } catch (std::exception & e) {
                                 //Log the error message
                                 LOG_ERROR << "Error when sending a processor request job " << m_job_id << "("
-                                        << chunk_idx << "/" << num_chunks << "): " << e.what() << END_LOG;
+                                        << (chunk_idx+1) << "/" << num_chunks << "): " << e.what() << END_LOG;
                             }
 
                             //Delete the response
@@ -323,7 +326,7 @@ namespace uva {
                      */
                     pre_proc_manager(const client_parameters & params, const string name,
                             stringstream & input, stringstream & output, string & lang)
-                    : proc_manager(params, name, input, output, lang, &proc_req_out::get_pre_proc_req) {
+                    : proc_manager(params.m_pre_uri, name, input, output, lang, &proc_req_out::get_pre_proc_req) {
                     }
                 };
 
@@ -344,7 +347,7 @@ namespace uva {
                      */
                     post_proc_manager(const client_parameters & params, const string name,
                             stringstream & input, stringstream & output, string & lang)
-                    : proc_manager(params, name, input, output, lang, &proc_req_out::get_post_proc_req) {
+                    : proc_manager(params.m_post_uri, name, input, output, lang, &proc_req_out::get_post_proc_req) {
                     }
                 };
             }

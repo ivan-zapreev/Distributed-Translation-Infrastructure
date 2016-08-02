@@ -194,7 +194,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
 
     params.m_min_sent = p_min_sent->getValue();
     params.m_max_sent = p_max_sent->getValue();
-    LOG_USAGE << "Min/max number of sentences per request: '" << params.m_min_sent << "/" << params.m_max_sent << "'" << END_LOG;
+    LOG_USAGE << "Min/max sentences per translation request: '" << params.m_min_sent << "/" << params.m_max_sent << "'" << END_LOG;
 
     params.m_is_trans_info = p_trans_details_arg->getValue();
     LOG_USAGE << "Translation info is " << (params.m_is_trans_info ? "ON" : "OFF") << END_LOG;

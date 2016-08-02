@@ -26,13 +26,11 @@
 #ifndef STRINGUTILS_HPP
 #define STRINGUTILS_HPP
 
-#include <locale>  // std::tolower std::setlocale std::wbuffer_convert
+#include <locale>  // std::tolower
 #include <string>  // std::string
 #include <vector>  // std::vector
 #include <limits>  // std::numeric_limits
-#include <cmath> // std::ceil
 #include <cstring> // std::memchr
-#include <codecvt> // std::codecvt_utf8
 #include <sstream> // std::stringstream
 #include <cstddef> // std::size_t
 
@@ -470,56 +468,6 @@ namespace uva {
                 }
 
                 return true;
-            }
-
-            /**
-             * Define the function type for the utf8 chunk processor
-             * @param buffer the buffer storing the characters
-             * @param num_chunks the total number of chunks to send 
-             * @param chunk_idx the current chunk index starting with 0.
-             */
-            typedef function<void(wchar_t * buffer, const size_t num_chunks, const size_t chunk_idx) > utf8_chunk_processor;
-
-            /**
-             * Allows to read from the stream in utf8 character chunks and process the text.
-             * This function begins reading from the beginning of the stream. It throws if
-             * the stream is empty or the stream length could not be determined.
-             * @param NUM_UTF8_CHARS the maximum number of utf8 characters to read per chunk
-             * @param m_input the input stream to read utf8 from. In case of a file stream
-             *                must have been opened with "ios::ate" to allow for the file
-             *                length computation.
-             * @param process the processor function to be called on each read chunk
-             */
-            template<size_t NUM_UTF8_CHARS>
-            static inline void process_utf8_chunks(istream & stream, utf8_chunk_processor process_func) {
-                //Switch to wide locale independent utf-8 characters
-                wbuffer_convert < codecvt_utf8<wchar_t>> conv(stream.rdbuf());
-                wistream wide_stream(&conv);
-                setlocale(LC_ALL, "C");
-
-                //Count the number of text pieces
-                wide_stream.seekg(0, wide_stream.end); //Move to the end of file
-                int length = wide_stream.tellg(); //Get the number of bytes
-                wide_stream.seekg(0, wide_stream.beg); //Move to begin of file
-
-                //Assert that the file length could be obtained and it is not zero!
-                ASSERT_CONDITION_THROW((length <= 0), string("Could not get the stream size or its size is zero!"));
-
-                //Define the buffer for reading the file in chunks
-                wchar_t buffer[NUM_UTF8_CHARS];
-
-                //Compute the number of chunks needed
-                const size_t num_chunks = ceil(((double) length) / NUM_UTF8_CHARS);
-                //Define the chunk index variable
-                size_t chunk_idx = 0;
-
-                //Read from file and send response messages
-                while (wide_stream.read(buffer, NUM_UTF8_CHARS)) {
-                    //Process the red chunk
-                    process_func(buffer, num_chunks, chunk_idx);
-                    //Increment the text piece index
-                    ++chunk_idx;
-                }
             }
         }
     }
