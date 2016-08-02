@@ -22,6 +22,10 @@
     </df>
     <df root="inc" name="1">
       <df name="client">
+        <df name="messaging">
+          <in>proc_req_out.hpp</in>
+          <in>proc_resp_in.hpp</in>
+        </df>
         <in>client_consts.hpp</in>
         <in>client_manager.hpp</in>
         <in>proc_manager.hpp</in>
@@ -251,6 +255,16 @@
       <item path="inc/client/client_consts.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="inc/client/client_manager.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="inc/client/messaging/proc_req_out.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="inc/client/messaging/proc_resp_in.hpp"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="inc/client/proc_manager.hpp" ex="false" tool="3" flavor2="0">
       </item>

@@ -102,10 +102,10 @@ namespace uva {
                      * @param resp_send_func the function to send the translation response to the client
                      */
                     processor_job(const language_config & config, const session_id_type session_id,
-                            proc_req_in *req, const response_creator resp_crt_func,
+                            proc_req_in *req, const response_creator & resp_crt_func,
                             const session_response_sender & resp_send_func)
                     : m_is_canceled(false), m_config(config), m_session_id(session_id),
-                    m_job_id(req->get_job_id()), m_num_tps(req->get_num_text_pieces()),
+                    m_job_id(req->get_job_id()), m_num_tps(req->get_num_chunks()),
                     m_res_lang(""), m_req_tasks(NULL), m_tasks_count(0), m_notify_job_done_func(NULL),
                     m_resp_crt_func(resp_crt_func), m_resp_send_func(resp_send_func) {
                         //Allocate the required-size array for storing the processor requests
@@ -187,7 +187,7 @@ namespace uva {
                         unique_guard guard(m_req_tasks_lock);
 
                         //Get the task index
-                        uint64_t piece_idx = req->get_text_piece_idx();
+                        uint64_t piece_idx = req->get_chunk_idx();
 
                         //Assert sanity
                         ASSERT_SANITY_THROW((piece_idx >= m_num_tps),
@@ -342,7 +342,7 @@ namespace uva {
                             //Iterate and output
                             for (size_t idx = 0; (idx < m_num_tps); ++idx) {
                                 //Output the text to the file, do not add any new lines, put text as it is.
-                                out_file << m_req_tasks[idx]->get_text();
+                                out_file << m_req_tasks[idx]->get_chunk();
                             }
 
                             //Close the file
@@ -475,7 +475,7 @@ namespace uva {
                      * @param num_chunks the total number of chunks to send 
                      * @param chunk_idx the current chunk index starting with 0.
                      */
-                    inline void send_utf8_chunk_msg(wchar_t * buffer, const size_t num_text_pieces, const size_t text_piece_idx) {
+                    inline void send_utf8_chunk_msg(wchar_t * buffer, const size_t num_chunks, const size_t chunk_idx) {
                         //Get the error response
                         proc_resp_out * resp = m_resp_crt_func(this->get_job_id(), status_code::RESULT_OK, "");
 
@@ -484,7 +484,7 @@ namespace uva {
 
                         //Set text the text piece index and the number of text pieces
                         wstring ws(buffer);
-                        resp->set_text(string(ws.begin(), ws.end()), text_piece_idx, num_text_pieces);
+                        resp->set_chunk(string(ws.begin(), ws.end()), chunk_idx, num_chunks);
 
                         //Attempt to send the job response
                         processor_job::send_response(*resp);

@@ -42,13 +42,13 @@ namespace uva {
                         //Stores the job id field name
                         static const char * JOB_ID_FIELD_NAME;
                         //Stores the the text piece idx field name
-                        static const char * TEXT_PIECE_IDX_FIELD_NAME;
+                        static const char * CHUNK_IDX_FIELD_NAME;
                         //Stores the the number of text pieces field name
-                        static const char * NUM_TEXT_PIECES_FIELD_NAME;
+                        static const char * NUM_CHUNKS_FIELD_NAME;
                         //Stores the the language field name
                         static const char * LANG_FIELD_NAME;
                         //Stores the the text field name
-                        static const char * TEXT_PIECE_FIELD_NAME;
+                        static const char * CHUNK_FIELD_NAME;
 
                         /**
                          * The basic constructor

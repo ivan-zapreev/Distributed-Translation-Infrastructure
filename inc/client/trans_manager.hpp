@@ -76,10 +76,8 @@ namespace uva {
 
                     //Define the type for the list of the translation data objects
                     typedef vector<trans_job_ptr> jobs_list_type;
-                    typedef jobs_list_type::iterator jobs_list_iter_type;
                     //Define the type for the map from job id to job data
                     typedef unordered_map<job_id_type, trans_job_ptr> jobs_map_type;
-                    typedef jobs_map_type::iterator jobs_map_iter_type;
 
                     /**
                      * This is the basic constructor needed to 
@@ -100,7 +98,7 @@ namespace uva {
                      */
                     virtual ~trans_manager() {
                         //Clean the internal administration, just delete the translation jobs 
-                        for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()); ++it) {
+                        for (auto it = m_jobs_list.begin(); (it != m_jobs_list.end()); ++it) {
                             delete (*it);
                         }
                     }
@@ -144,7 +142,7 @@ namespace uva {
                      */
                     virtual void send_job_requests(generic_client & client) override {
                         //Send the translation jobs
-                        for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()) && !is_stopping(); ++it) {
+                        for (auto it = m_jobs_list.begin(); (it != m_jobs_list.end()) && !is_stopping(); ++it) {
                             //Get the pointer to the translation job data
                             trans_job_ptr data = *it;
                             try {
@@ -214,7 +212,7 @@ namespace uva {
                             ASSERT_CONDITION_THROW(!info_file.is_open(), string("Could not open: ") + info_file_name);
 
                             //Go through the translation job data and write it into the files
-                            for (jobs_list_iter_type it = m_jobs_list.begin(); (it != m_jobs_list.end()); ++it) {
+                            for (auto it = m_jobs_list.begin(); (it != m_jobs_list.end()); ++it) {
                                 //Get the translation job data
                                 const trans_job_ptr job = *it;
 

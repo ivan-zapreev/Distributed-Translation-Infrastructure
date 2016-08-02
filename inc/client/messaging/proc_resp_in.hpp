@@ -1,5 +1,5 @@
 /* 
- * File:   proc_resp.hpp
+ * File:   proc_resp_in.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,55 +20,60 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on July 28, 2016, 2:57 PM
+ * Created on August 2, 2016, 9:19 AM
  */
 
-#ifndef PROC_RESP_HPP
-#define PROC_RESP_HPP
+#ifndef PROC_RESP_IN_HPP
+#define PROC_RESP_IN_HPP
 
-#include <common/messaging/response_msg.hpp>
+#include "common/messaging/proc_resp.hpp"
+#include "common/messaging/incoming_msg.hpp"
+#include "common/messaging/job_id.hpp"
+
+using namespace uva::smt::bpbd::common::messaging;
 
 namespace uva {
     namespace smt {
         namespace bpbd {
-            namespace common {
+            namespace client {
                 namespace messaging {
-
+                    
                     /**
-                     * This is the base class for all the text process response messages
+                     * This class represents the incoming text processor response.
                      */
-                    class proc_resp : public response_msg {
+                    class proc_resp_in : public proc_resp {
                     public:
-                        //Stores the job id field name
-                        static const char * JOB_ID_FIELD_NAME;
-                        //Stores the the text piece idx field name
-                        static const char * CHUNK_IDX_FIELD_NAME;
-                        //Stores the the number of text pieces field name
-                        static const char * NUM_CHUNKS_FIELD_NAME;
-                        //Stores the the language field name
-                        static const char * LANG_FIELD_NAME;
-                        //Stores the the text field name
-                        static const char * CHUNK_FIELD_NAME;
 
                         /**
                          * The basic constructor
+                         * @param inc_msg the pointer to the incoming message, NOT NULL
                          */
-                        proc_resp() : response_msg() {
+                        proc_resp_in(const incoming_msg * inc_msg)
+                        : proc_resp(), m_inc_msg(inc_msg) {
                             //Nothing to be done here
                         }
 
                         /**
                          * The basic destructor
                          */
-                        virtual ~proc_resp() {
-                            //Nothing to be done here
+                        virtual ~proc_resp_in() {
+                            //Destroy the incoming message, the pointer must not be NULL
+                            delete m_inc_msg;
                         }
+
+                    protected:
+                        //Stores the pointer to the incoming message
+                        const incoming_msg * m_inc_msg;
+
                     };
+                    
+                    //Typedef the pointer to the request
+                    typedef proc_resp_in * proc_resp_in_ptr;
                 }
             }
         }
     }
 }
 
-#endif /* PROC_RESP_HPP */
+#endif /* PROC_RESP_IN_HPP */
 

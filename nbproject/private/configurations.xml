@@ -611,6 +611,8 @@
       </df>
       <df name="client">
         <df name="messaging">
+          <in>proc_req_out.hpp</in>
+          <in>proc_resp_in.hpp</in>
           <in>supp_lang_req_out.hpp</in>
           <in>supp_lang_resp_in.hpp</in>
           <in>trans_job_req_out.hpp</in>

@@ -1,5 +1,5 @@
 /* 
- * File:   proc_resp_out.hpp
+ * File:   proc_req_out.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,14 +20,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on July 28, 2016, 2:56 PM
+ * Created on August 2, 2016, 9:19 AM
  */
 
-#ifndef PROC_RESP_OUT_HPP
-#define PROC_RESP_OUT_HPP
+#ifndef PROC_REQ_OUT_HPP
+#define PROC_REQ_OUT_HPP
 
 #include "common/messaging/outgoing_msg.hpp"
-#include "common/messaging/proc_resp.hpp"
+#include "common/messaging/proc_req.hpp"
 #include "common/messaging/job_id.hpp"
 
 using namespace uva::smt::bpbd::common::messaging;
@@ -35,37 +35,31 @@ using namespace uva::smt::bpbd::common::messaging;
 namespace uva {
     namespace smt {
         namespace bpbd {
-            namespace server {
+            namespace client {
                 namespace messaging {
 
                     /**
-                     * This class represents a processor job response message.
+                     * This class represents a processor job request message.
                      */
-                    class proc_resp_out : public outgoing_msg, public proc_resp {
+                    class proc_req_out : public outgoing_msg, public proc_req {
                     public:
 
                         /**
-                         * Allows to get a new instance of the processor response for the pre-processing task.
+                         * Allows to get a new instance of the processor request for the pre-processing task.
                          * @param job_id the client-issued id of the job 
-                         * @param status_code the job's result code
-                         * @param status_msg the job's status message
-                         * @return a new instance of the processor response for the pre-processing task.
+                         * @return a new instance of the processor request for the pre-processing task.
                          */
-                        static inline proc_resp_out * get_pre_proc_resp(const job_id_type job_id,
-                                const status_code code, const string & msg) {
-                            return new proc_resp_out(msg_type::MESSAGE_PRE_PROC_JOB_RESP, job_id, code, msg);
+                        static inline proc_req_out * get_pre_proc_resp(const job_id_type job_id) {
+                            return new proc_req_out(msg_type::MESSAGE_PRE_PROC_JOB_REQ, job_id);
                         }
 
                         /**
-                         * Allows to get a new instance of the processor response for the post-processing task.
+                         * Allows to get a new instance of the processor request for the post-processing task.
                          * @param job_id the client-issued id of the job 
-                         * @param status_code the job's result code
-                         * @param status_msg the job's status message
-                         * @return a new instance of the processor response for the post-processing task.
+                         * @return a new instance of the processor request for the post-processing task.
                          */
-                        static inline proc_resp_out * get_post_proc_resp(const job_id_type job_id,
-                                const status_code code, const string & msg) {
-                            return new proc_resp_out(msg_type::MESSAGE_POST_PROC_JOB_RESP, job_id, code, msg);
+                        static inline proc_req_out * get_post_proc_resp(const job_id_type job_id) {
+                            return new proc_req_out(msg_type::MESSAGE_POST_PROC_JOB_REQ, job_id);
                         }
 
                         /**
@@ -95,18 +89,6 @@ namespace uva {
                     protected:
 
                         /**
-                         * Allows to set the message status: code and message
-                         * @param code the status code
-                         * @param msg the status message
-                         */
-                        inline void set_status(const status_code & code, const string & msg) {
-                            m_writer.String(STAT_CODE_FIELD_NAME);
-                            m_writer.Int(code.val());
-                            m_writer.String(STAT_MSG_FIELD_NAME);
-                            m_writer.String(msg.c_str());
-                        }
-
-                        /**
                          * Allows to get the client-issued job id
                          * @return the client-issued job id
                          */
@@ -114,25 +96,20 @@ namespace uva {
                             m_writer.String(JOB_ID_FIELD_NAME);
                             m_writer.Uint64(job_id);
                         }
-
+                        
                     private:
 
                         /**
                          * This is the basic class constructor that accepts the
-                         * processor job id, the result code and the status message.
-                         * It is made private because the first argument should
-                         * not be set by the user.
+                         * processor job id. It is made private because the first
+                         * argument should not be set by the user.
                          * @param type the message type
                          * @param job_id the client-issued id of the job 
-                         * @param status_code the job's result code
-                         * @param status_msg the job's status message
                          */
-                        proc_resp_out(const msg_type type, const job_id_type job_id,
-                                const status_code code, const string & msg)
-                        : outgoing_msg(type), proc_resp() {
+                        proc_req_out(const msg_type type, const job_id_type job_id)
+                        : outgoing_msg(type), proc_req() {
                             //Set the values using the setter methods
                             set_job_id(job_id);
-                            set_status(code, msg);
                         }
                     };
                 }
@@ -141,5 +118,5 @@ namespace uva {
     }
 }
 
-#endif /* PROC_RESP_OUT_HPP */
+#endif /* PROC_REQ_OUT_HPP */
 
