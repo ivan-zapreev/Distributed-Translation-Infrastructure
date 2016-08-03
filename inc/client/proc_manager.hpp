@@ -181,7 +181,10 @@ namespace uva {
                             LOG_INFO1 << "The job " << job_id << " response chunk " << m_act_num_resp
                                     << "/" << m_exp_num_resp << " is received." << END_LOG;
                         } else {
-                            THROW_EXCEPTION(string("Failed processor job: ") + job_resp_msg->get_status_msg());
+                            //To stop the process set the number of expected jobs to zero
+                            m_exp_num_resp = 0;
+                            //Throw an exception
+                            THROW_EXCEPTION(job_resp_msg->get_status_msg());
                         }
                     }
 
