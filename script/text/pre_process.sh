@@ -117,11 +117,15 @@ if [ "${LANGUAGE}" = "auto" ]; then
    LANGUAGE="German"
 fi
 
+#ToDo: Call the pre-processor specific script, if present,
+#otherwise use default, if present, else fail with an error.
+
 #Output the "detected" language
 echo ${LANGUAGE}
 
 #Copy the input file into the output file
 cat ${INPUT_FILE} > ${OUTPUT_FILE}
 
-cp ${INPUT_FILE} ${INPUT_FILE}.tmp
-cp ${OUTPUT_FILE} ${OUTPUT_FILE}.tmp
+#Temporary for checking the file content.
+#cp ${INPUT_FILE} ${INPUT_FILE}.tmp
+#cp ${OUTPUT_FILE} ${OUTPUT_FILE}.tmp
