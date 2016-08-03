@@ -28,7 +28,6 @@
 
 #include "common/messaging/proc_req.hpp"
 #include "common/messaging/incoming_msg.hpp"
-#include "common/messaging/language_registry.hpp"
 #include "common/messaging/job_id.hpp"
 
 using namespace uva::smt::bpbd::common::messaging;
@@ -98,18 +97,6 @@ namespace uva {
                         inline string get_language() const {
                             const Document & json = m_inc_msg->get_json();
                             return json[LANG_FIELD_NAME].GetString();
-                        }
-
-                        /**
-                         * Allows to get the job language uid.
-                         * In case the language is unknown to the local language
-                         * registry then an unknown language id is returned:
-                         *  language_registry::UNKNONW_LANGUAGE_ID
-                         * @return the processor job language uid
-                         */
-                        inline language_uid get_lang_uid() const {
-                            const string lang = get_language();
-                            return language_registry::get_uid(lang);
                         }
 
                         /**

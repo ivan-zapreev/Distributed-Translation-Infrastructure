@@ -113,7 +113,7 @@ namespace uva {
                         m_lang = lang;
                         //Store the template
                         m_call_templ = call_templ;
-                        
+
                         //Check the presence of the parameters
                         check_parameter(WORK_DIR_TEMPL_PARAM_NAME);
                         check_parameter(JOB_UID_TEMPL_PARAM_NAME);
@@ -243,7 +243,7 @@ namespace uva {
                      */
                     inline void add_language(string lang, string pre_call_templ, string post_call_templ) {
                         //Trim the string
-                        trim(lang);
+                        to_lower(trim(lang));
                         trim(pre_call_templ);
                         trim(post_call_templ);
 
@@ -297,37 +297,38 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to get the pre-processor call for the given job id and language.
-                     * @param proc_job_id the job id
+                     * Allows to get the pre-processor config for the given job id and language.
                      * @param lang the source language
-                     * @return a ready to call string or an empty string if none could be found
+                     * @return the language config
                      */
-                    inline string get_lang_pre_call(string proc_job_id, string lang) {
-                        return get_lang_call(proc_job_id, lang, m_pre_configs, m_def_pre_config);
+                    inline const language_config & get_lang_pre_conf(string lang) const {
+                        return get_lang_call(lang, m_pre_configs, m_def_pre_config);
                     }
 
                     /**
-                     * Allows to get the post-processor call for the given job id and language.
-                     * @param proc_job_id the job id
+                     * Allows to get the post-processor config for the given job id and language.
                      * @param lang the source language
-                     * @return a ready to call string or an empty string if none could be found
+                     * @return the language config
                      */
-                    inline string get_lang_post_call(string proc_job_id, string lang) {
-                        return get_lang_call(proc_job_id, lang, m_post_configs, m_def_post_config);
+                    inline const language_config & get_lang_post_conf(string lang) const {
+                        return get_lang_call(lang, m_post_configs, m_def_post_config);
                     }
 
                 private:
 
                     /**
-                     * Allows to get the pre-processor call for the given job id and language.
-                     * @param proc_job_id the job id
+                     * Allows to get the processor config for the given job id and language.
                      * @param lang the source language
                      * @param configs the map of known configs
                      * @param def the default config
-                     * @return a ready to call string or an empty string if none could be found
+                     * @return the language config
                      */
-                    static inline string get_lang_call(string proc_job_id, string lang,
-                            const lang_to_conf_map & configs, const language_config & def) {
+                    static inline const language_config & get_lang_call(string lang,
+                            const lang_to_conf_map & configs,
+                            const language_config & def){
+                        //Put the language into the lower case
+                        to_lower(lang);
+
                         //Register the language uid
                         language_uid uid = language_registry::get_uid(lang);
 
@@ -338,12 +339,10 @@ namespace uva {
                         //a string otherwise try the default
                         if (iter != configs.end()) {
                             //Get the entry to work with
-                            const language_config_ptr entry = iter->second;
-                            //Return the result
-                            return entry->get_call_string(proc_job_id, lang);
+                            return *iter->second;
                         } else {
                             //Return the default result
-                            return def.get_call_string(proc_job_id, lang);
+                            return def;
                         }
                     }
                 };

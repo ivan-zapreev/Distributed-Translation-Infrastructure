@@ -106,7 +106,7 @@ namespace uva {
                     : session_manager(), session_job_pool_base(
                     bind(&processor_manager::notify_job_done, this, _1)),
                     m_is_stopping(false), m_params(params), m_proc_pool(params.m_num_threads),
-                    m_resp_send_func(bind(&processor_manager::send_response, this, _1, _2)){
+                    m_resp_send_func(bind(&processor_manager::send_response, this, _1, _2)) {
                     }
 
                     /**
@@ -153,7 +153,7 @@ namespace uva {
                      */
                     inline void pre_process(websocketpp::connection_hdl hdl, proc_req_in * msg) {
                         this->template process<pre_proc_job>(hdl, msg,
-                                m_params.m_pre_configs, m_params.m_def_pre_config);
+                                m_params.get_lang_pre_conf(msg->get_language()));
                     }
 
                     /**
@@ -163,7 +163,7 @@ namespace uva {
                      */
                     inline void post_process(websocketpp::connection_hdl hdl, proc_req_in * msg) {
                         this->template process<post_proc_job>(hdl, msg,
-                                m_params.m_post_configs, m_params.m_def_post_config);
+                                m_params.get_lang_post_conf(msg->get_language()));
                     }
 
                 protected:
@@ -172,12 +172,11 @@ namespace uva {
                      * Allows to schedule the incoming processor request
                      * @param hdl the connection handler to identify the session object.
                      * @param msg a pointer to the request data, not NULL
-                     * @param mapping the mapping that stores known language id to language configuration relation
-                     * @param def_config the default configuration for the language, might be undefined.
+                     * @param lang_config the configuration for the language, might be undefined.
                      */
                     template<typename job_type>
                     inline void process(websocketpp::connection_hdl hdl, proc_req_in * msg,
-                            const lang_to_conf_map & mapping, const language_config & def_config) {
+                            const language_config & lang_config) {
                         recursive_guard guard(m_sessions_lock);
 
                         //Get the session id
@@ -195,16 +194,8 @@ namespace uva {
 
                             //If there is no job create one and add it to the map
                             if (job == NULL) {
-                                //Find the pre-processor for the source language
-                                auto iter = mapping.find(msg->get_lang_uid());
-
-                                //If the language is known then use the config
-                                if (iter != mapping.end()) {
-                                    job = new job_type(*iter->second, session_id, msg, m_resp_send_func);
-                                } else {
-                                    //If the language is not known use the default
-                                    job = new job_type(def_config, session_id, msg, m_resp_send_func);
-                                }
+                                //If the language is not known use the default
+                                job = new job_type(lang_config, session_id, msg, m_resp_send_func);
                                 LOG_DEBUG << "Got the new job: " << job << " to translate." << END_LOG;
                             } else {
                                 //Add the request to the job
@@ -249,7 +240,7 @@ namespace uva {
                         //synchronized on the files, so no files shall be
                         //locked/appearing after this call.
                         this->cancel_jobs(session_id);
-                        
+
                         //Remove the files from the given session
                         processor_job::delete_session_files(m_params.m_work_dir, session_id);
                     }
