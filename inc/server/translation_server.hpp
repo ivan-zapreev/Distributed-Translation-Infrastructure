@@ -141,7 +141,7 @@ namespace uva {
                             string error_msg = ex.what();
 
                             //Locally report error
-                            LOG_ERROR << "job " << job_id_val << ": " << error_msg << END_LOG;
+                            LOG_DEBUG << "job " << job_id_val << ": " << error_msg << END_LOG;
 
                             //Create the reply message, with or without job id
                             trans_job_resp_out response(job_id_val, status_code::RESULT_ERROR, error_msg);
@@ -164,10 +164,12 @@ namespace uva {
                     void check_source_target_languages(string source_lang, string target_lang) {
                         //Check for an exact match
                         if (m_params.m_source_lang != source_lang) {
+                            LOG_DEBUG1 << m_params.m_source_lang << " != " << source_lang << END_LOG;
                             //If no exact match then lowercase
                             (void) to_lower(source_lang);
                             //Check for a match again
                             if (m_params.m_source_lang_lower != source_lang) {
+                                LOG_DEBUG1 << m_params.m_source_lang_lower << " != " << source_lang << END_LOG;
                                 //If there is still no match then throw 
                                 THROW_EXCEPTION(string("Unsupported source language: '") + source_lang +
                                         string("' the server only supports: '") + m_params.m_source_lang +
@@ -176,10 +178,12 @@ namespace uva {
                         }
                         //Check for an exact match
                         if (m_params.m_target_lang != target_lang) {
+                            LOG_DEBUG1 << m_params.m_target_lang << " != " << target_lang << END_LOG;
                             //If no exact match then lowercase
                             (void) to_lower(target_lang);
                             //Check for a match again
                             if (m_params.m_target_lang_lower != target_lang) {
+                                LOG_DEBUG1 << m_params.m_target_lang_lower << " != " << target_lang << END_LOG;
                                 //If there is still no match then throw 
                                 THROW_EXCEPTION(string("Unsupported target language: '") + target_lang +
                                         string("' the server only supports: '") + m_params.m_target_lang +

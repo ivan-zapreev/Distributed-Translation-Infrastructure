@@ -52,7 +52,7 @@ function info() {
   echo "NOTES:"
   echo "------"
   echo "   This is a dummy script that only emulates the real behavior, therefore:"
-  echo "      * The auto detected language returned by this script is always \"german\""
+  echo "      * The auto detected language returned by this script is always \"German\""
   echo "      * The script only copies the input file into the output."
   usage ${0}
 }
@@ -114,7 +114,7 @@ export LANGUAGE=${3}
 
 #Check if the language is to be auto detected
 if [ "${LANGUAGE}" = "auto" ]; then
-   LANGUAGE="german"
+   LANGUAGE="German"
 fi
 
 #Output the "detected" language

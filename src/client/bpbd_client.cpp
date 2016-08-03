@@ -227,6 +227,7 @@ void read_input(const client_parameters & params, stringstream_ptr & output) {
     //Read the file line by line and place it into the buffer
     while (source_file.get_first_line(line)) {
         *output << line.str() << std::endl;
+        LOG_DEBUG1 << "Source text line: " << line.str() << END_LOG;
     }
 
     //Close the source file
@@ -300,7 +301,7 @@ void translate(const client_parameters & params, stringstream_ptr & input, strin
 void post_process(client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
     if (params.is_post_process()) {
         //Create the post-processor manager
-        pre_proc_manager manager(params, *input, *output, params.m_target_lang);
+        post_proc_manager manager(params, *input, *output, params.m_target_lang);
 
         //Start the post-processor manager
         LOG_USAGE << "Starting the post-processor process ..." << END_LOG;

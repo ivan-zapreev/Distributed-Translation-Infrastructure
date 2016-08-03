@@ -105,11 +105,12 @@ namespace uva {
                             proc_req_in *req, const response_creator & resp_crt_func,
                             const session_response_sender & resp_send_func)
                     : m_is_canceled(false), m_config(config), m_session_id(session_id),
-                    m_job_id(req->get_job_id()), m_num_tps(req->get_num_chunks()),
-                    m_res_lang(""), m_req_tasks(NULL), m_tasks_count(0), m_notify_job_done_func(NULL),
+                    m_job_id(req->get_job_id()), m_exp_num_chunks(req->get_num_chunks()),
+                    m_res_lang(""), m_req_tasks(NULL), m_act_num_chunks(0), m_notify_job_done_func(NULL),
                     m_resp_crt_func(resp_crt_func), m_resp_send_func(resp_send_func) {
+                        LOG_DEBUG << "Creating a processor job with " << m_exp_num_chunks << " chunks" << END_LOG;
                         //Allocate the required-size array for storing the processor requests
-                        m_req_tasks = new proc_req_in_ptr[m_num_tps]();
+                        m_req_tasks = new proc_req_in_ptr[m_exp_num_chunks]();
                         //Add the request
                         add_request(req);
                     }
@@ -119,7 +120,7 @@ namespace uva {
                      */
                     virtual ~processor_job() {
                         //Delete the requests, only the received ones, not NULL
-                        for (size_t idx = 0; idx < m_num_tps; ++idx) {
+                        for (size_t idx = 0; idx < m_exp_num_chunks; ++idx) {
                             if (m_req_tasks[idx] != NULL) {
                                 delete m_req_tasks[idx];
                             }
@@ -187,25 +188,28 @@ namespace uva {
                         unique_guard guard(m_req_tasks_lock);
 
                         //Get the task index
-                        uint64_t piece_idx = req->get_chunk_idx();
+                        uint64_t chunk_idx = req->get_chunk_idx();
 
                         //Assert sanity
-                        ASSERT_SANITY_THROW((piece_idx >= m_num_tps),
-                                string("Improper tasks index: ") + to_string(piece_idx) +
-                                string(", must be <= ") + to_string(m_num_tps));
+                        ASSERT_SANITY_THROW((chunk_idx >= m_exp_num_chunks),
+                                string("Improper chunk index: ") + to_string(chunk_idx) +
+                                string(", must be <= ") + to_string(m_exp_num_chunks));
 
                         //Assert sanity
-                        ASSERT_SANITY_THROW((m_req_tasks[piece_idx] != NULL),
-                                string("The task index ") + to_string(piece_idx) +
+                        ASSERT_SANITY_THROW((m_req_tasks[chunk_idx] != NULL),
+                                string("The chunk index ") + to_string(chunk_idx) +
                                 string(" of the job request ") + to_string(m_job_id) +
                                 string(" from session ") + to_string(m_session_id) +
                                 string(" is already set!"));
 
+                        LOG_DEBUG << "Storing the job: " << req->get_job_id()
+                                << " chunk: " << chunk_idx << END_LOG;
+
                         //Store the task
-                        m_req_tasks[piece_idx] = req;
+                        m_req_tasks[chunk_idx] = req;
 
                         //Increment the number of tasks
-                        ++m_tasks_count;
+                        ++m_act_num_chunks;
                     }
 
                     /**
@@ -216,7 +220,7 @@ namespace uva {
                     inline bool is_complete() {
                         unique_guard guard(m_req_tasks_lock);
 
-                        return (m_tasks_count == m_num_tps);
+                        return (m_act_num_chunks == m_exp_num_chunks);
                     }
 
                     /**
@@ -328,8 +332,8 @@ namespace uva {
                             //Check if the requests complete
                             ASSERT_SANITY_THROW(!is_complete(),
                                     string("The processor job is not complete, #tasks: ") +
-                                    to_string(m_num_tps) + string(", #received: ") +
-                                    to_string(m_tasks_count));
+                                    to_string(m_exp_num_chunks) + string(", #received: ") +
+                                    to_string(m_act_num_chunks));
 
                             //Open the output stream to the file
                             ofstream out_file(file_name);
@@ -340,9 +344,11 @@ namespace uva {
                                     file_name + string(" for writing"));
 
                             //Iterate and output
-                            for (size_t idx = 0; (idx < m_num_tps); ++idx) {
+                            for (size_t idx = 0; (idx < m_exp_num_chunks); ++idx) {
                                 //Output the text to the file, do not add any new lines, put text as it is.
                                 out_file << m_req_tasks[idx]->get_chunk();
+                                //Log the chunks for info
+                                LOG_DEBUG << m_req_tasks[idx]->get_chunk() << END_LOG;
                             }
 
                             //Close the file
@@ -411,10 +417,10 @@ namespace uva {
                      *    write an error into the output
                      * This method is synchronized on files lock.
                      * @param call_str the call string
-                     * @param output the output of the script
+                     * @param output[out] the string to put the output of the script into
                      * @return true if the processor finished the job without errors, otherwise false
                      */
-                    inline bool call_processor_script(const string &call_str, stringstream & output) {
+                    inline bool call_processor_script(const string &call_str, string & output) {
                         recursive_guard guard(m_file_lock);
 
                         //Check if the job is not being cancelled
@@ -429,8 +435,11 @@ namespace uva {
                                 //Read from the pipeline - we shall get the resulting language or an error message
                                 LOG_DEBUG << "Reading from the script's pipeline file" << END_LOG;
                                 while (fgets(buffer, sizeof (buffer), fp) != NULL) {
-                                    output << buffer;
+                                    output += string(buffer);
                                 }
+                                
+                                //Reduce the string to remove new lines and other whitespaces
+                                (void) reduce(output);
 
                                 LOG_DEBUG << "Closing the script's pipeline" << END_LOG;
                                 //Wait until the process finishes and analyze its status
@@ -504,22 +513,24 @@ namespace uva {
                      * Allows to send an success response to the server
                      * This method is synchronized on files lock.
                      * @param is_pnp if true then this is a pre-processor job, if false then a post-processor
-                     * @param msg_str the success message string
+                     * @param res_lang the "detected" file language
                      */
                     template<bool is_pnp>
-                    inline void send_success_response(const stringstream & msg_str) {
+                    inline void send_success_response(const string & res_lang) {
                         recursive_guard guard(m_file_lock);
 
                         if (!m_is_canceled) {
                             //Get the language from the stream
-                            m_res_lang = msg_str.str();
+                            m_res_lang = res_lang;
 
                             //Get the output file name
                             string uid;
                             const string file_name = this->get_text_file_name<is_pnp, false>(uid);
 
+                            LOG_DEBUG << "Opening the job output file: " << file_name << END_LOG;
+
                             //Open the input file and read from it in chunks
-                            ifstream file(file_name, ifstream::binary | ios::ate);
+                            ifstream file(file_name, ifstream::binary);
 
                             //Assert that the file could be opened!
                             ASSERT_CONDITION_THROW(!file.is_open(), string("The resulting file: ") +
@@ -537,6 +548,8 @@ namespace uva {
                      */
                     template<bool is_pnp>
                     inline void process() {
+                        LOG_DEBUG << "is_pnp = " << is_pnp << END_LOG;
+
                         //Check if the job is not canceled yet
                         if (!m_is_canceled) {
                             //Check if the provided language configuration is defined
@@ -555,21 +568,21 @@ namespace uva {
                                     const string call_str = conf.get_call_string(job_uid_str, this->get_language());
 
                                     //Call the processor script
-                                    stringstream output;
+                                    string output;
                                     if (call_processor_script(call_str, output)) {
                                         //Send the responses to the client.
                                         send_success_response<is_pnp>(output);
                                     } else {
                                         //In case there is an empty error create one
-                                        if (output.str().empty()) {
-                                            output << "Failed to execute: '" << call_str << "': "
-                                                    << "An internal script error or a missing script!";
+                                        if (output.empty()) {
+                                            output += string("Failed to execute: '") + call_str + string("': ") +
+                                                    string("An internal script error or a missing script!");
                                         }
                                         //Report an error to the client. The
                                         //output must contain the error message.
-                                        LOG_DEBUG << "Processor script error: " << output.str() << END_LOG;
+                                        LOG_DEBUG << "Processor script error: " << output << END_LOG;
                                         //Report an error to the client.
-                                        send_error_response(output.str());
+                                        send_error_response(output);
                                     }
                                 } catch (std::exception & ex) {
                                     stringstream sstr;
@@ -602,7 +615,7 @@ namespace uva {
                     //Stores the job id for an easy access
                     const job_id_type m_job_id;
                     //Stores the number of text pieces this job consists of
-                    const uint64_t m_num_tps;
+                    const uint64_t m_exp_num_chunks;
                     //Stores the resulting language string
                     string m_res_lang;
                     //Stores the lock for accessing the tasks array
@@ -610,7 +623,7 @@ namespace uva {
                     //Stores the array of pointers to the processor job requests
                     proc_req_in_ptr * m_req_tasks;
                     //Stores the current number of received requests
-                    uint64_t m_tasks_count;
+                    uint64_t m_act_num_chunks;
 
                     //The final lock needed to guard the job ready notification and
                     //waiting for it is finished before the job is deleted.
