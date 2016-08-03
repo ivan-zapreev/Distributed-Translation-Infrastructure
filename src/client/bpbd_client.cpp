@@ -368,8 +368,8 @@ int main(int argc, char** argv) {
 
     //Define the string streams for the tasks.
     stringstream str_a, str_b;
-    stringstream * pipe_a = &str_a;
-    stringstream * pipe_b = &str_b;
+    stringstream_ptr pipe_a = &str_a;
+    stringstream_ptr pipe_b = &str_b;
 
     try {
         //Define en empty parameters structure

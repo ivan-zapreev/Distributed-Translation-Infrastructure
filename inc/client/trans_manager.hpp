@@ -357,6 +357,7 @@ namespace uva {
                         //Check if there is sentence data present
                         if (sent_data != NULL) {
                             while (sent_data != NULL) {
+                                LOG_DEBUG3 << "Translation: " << sent_data->get_trans_text() << END_LOG;
                                 //Dump the translated text
                                 output << sent_data->get_trans_text() << std::endl;
                                 //Get the sentence status code
@@ -385,9 +386,7 @@ namespace uva {
                             }
                         } else {
                             //There is no sentence data present!
-                            LOG_DEBUG << "Missing target sentences for job: " << resp->get_job_id() << END_LOG;
-                            //Make it an empty line
-                            output << std::endl;
+                            LOG_ERROR << "Missing target sentences for job: " << resp->get_job_id() << END_LOG;
                         }
                     }
 

@@ -59,7 +59,7 @@ namespace uva {
                 wchar_t buffer[NUM_UTF8_CHARS];
                 int64_t num_chars;
             };
-            
+
             /**
              * Allows to convert a wide string into a simple string, using utf8
              * @param wstr the wide string
@@ -68,11 +68,11 @@ namespace uva {
             static inline string wstring_to_utf8_string(wstring & wstr) {
                 //Setup the converter to convert from wide to simple string
                 wstring_convert<utf8_codec, wchar_t> utf8_string_converter;
-                
+
                 //Do the conversion
                 return utf8_string_converter.to_bytes(wstr);
             }
-            
+
             /**
              * Allows to convert a null character terminated buffer of
              * wide characters into a utf8 encoded simple string.
@@ -80,10 +80,10 @@ namespace uva {
              * @return a utf8 encoded simple string
              */
             static inline string wchar_buff_to_utf8_str(wchar_t * buffer) {
-                    //Convert from the wide string to a simple string
-                    wstring wchunk(buffer);
-                    
-                   return wstring_to_utf8_string(wchunk);
+                //Convert from the wide string to a simple string
+                wstring wchunk(buffer);
+
+                return wstring_to_utf8_string(wchunk);
             }
 
             /**
@@ -96,7 +96,6 @@ namespace uva {
              */
             template<size_t NUM_UTF8_CHARS>
             static inline void process_utf8_chunks(istream & stream, utf8_chunk_processor process_func) {
-
                 //Switch to wide locale independent utf-8 characters
                 wbuffer_convert < utf8_codec> buffer_converver(stream.rdbuf());
                 wistream wstream(&buffer_converver);
@@ -146,10 +145,10 @@ namespace uva {
                     //Convert from the wide character buffer to a simple string
                     string chunk = wchar_buff_to_utf8_str((*iter)->buffer);
                     LOG_DEBUG1 << "Chunk: " << chunk_idx << " > " << chunk << END_LOG;
-                    
+
                     //Process the read chunk
                     process_func(chunk, num_chunks, chunk_idx);
-                    
+
                     //Increment the text piece index
                     ++chunk_idx;
                     //Delete the buffer
