@@ -34,10 +34,9 @@ namespace uva {
                 //The maximum line length is bytes
                 static constexpr size_t LINE_MAX_BYTES_LEN = 1024*1024;
                 
-                //The maximum processor message text size is wide characters
-                //This limits the number of wide characters to send per
-                //processor request
-                static constexpr size_t MESSAGE_MAX_WCHARS_LEN = 10*1024;
+                //The maximum processor message text size is characters. This limits
+                //the number of characters to send per processor request.
+                static constexpr size_t MESSAGE_MAX_CHAR_LEN = 10*1024;
                 
             }
         }

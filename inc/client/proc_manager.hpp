@@ -116,7 +116,7 @@ namespace uva {
                             m_client = &client;
 
                             //Process the text in chunks
-                            process_utf8_chunks<MESSAGE_MAX_WCHARS_LEN>(m_input,
+                            process_utf8_chunks<MESSAGE_MAX_CHAR_LEN>(m_input,
                                     bind(&proc_manager::send_utf8_chunk_msg, this, _1, _2, _3));
 
                             //Set the expected number of responses to be the

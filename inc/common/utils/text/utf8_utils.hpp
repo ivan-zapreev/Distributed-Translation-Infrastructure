@@ -26,11 +26,8 @@
 #ifndef UTF8_UTILS_HPP
 #define UTF8_UTILS_HPP
 
-#include <locale>  // std::setlocale std::wbuffer_convert
-#include <codecvt> // std::codecvt_utf8
 #include <string>  // std::string
 #include <vector>  // std::vector
-#include <cmath>   // std::ceil
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"

@@ -437,7 +437,7 @@ namespace uva {
                                 while (fgets(buffer, sizeof (buffer), fp) != NULL) {
                                     output += string(buffer);
                                 }
-                                
+
                                 //Reduce the string to remove new lines and other whitespaces
                                 (void) reduce(output);
 
@@ -537,7 +537,7 @@ namespace uva {
                                     file_name + string(" could not be opened!"));
 
                             //Process the text in chunks
-                            process_utf8_chunks<MESSAGE_MAX_WCHARS_LEN>(file,
+                            process_utf8_chunks<MESSAGE_MAX_CHAR_LEN>(file,
                                     bind(&processor_job::send_utf8_chunk_msg, this, _1, _2, _3));
                         }
                     }
@@ -566,6 +566,7 @@ namespace uva {
 
                                     //Get the string needed to call the processor script
                                     const string call_str = conf.get_call_string(job_uid_str, this->get_language());
+                                    LOG_DEBUG << "call_str = " << call_str << END_LOG;
 
                                     //Call the processor script
                                     string output;

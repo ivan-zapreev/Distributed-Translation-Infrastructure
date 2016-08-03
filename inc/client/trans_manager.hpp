@@ -386,7 +386,7 @@ namespace uva {
                             }
                         } else {
                             //There is no sentence data present!
-                            LOG_ERROR << "Missing target sentences for job: " << resp->get_job_id() << END_LOG;
+                            LOG_DEBUG << "Missing target sentences for job: " << resp->get_job_id() << END_LOG;
                         }
                     }
 
@@ -406,6 +406,11 @@ namespace uva {
                         try {
                             //The job response is received but it can still be fully or partially canceled or be an error
                             const status_code code = resp->get_status_code();
+                            
+                            //Log the error to the screen
+                            if(code == status_code::RESULT_ERROR) {
+                                LOG_ERROR << resp->get_status_msg() << END_LOG;
+                            }
 
                             //Dump the server response info
                             info_file << "Server response status: '" << code << "', "

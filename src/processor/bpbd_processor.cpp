@@ -124,7 +124,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         params.m_num_threads = get_integer<uint16_t>(ini, section, processor_parameters::NUM_THREADS_PARAM_NAME);
         params.m_work_dir = get_string(ini, section, processor_parameters::WORK_DIR_PARAM_NAME);
         string def_pre_call_templ = get_string(ini, section, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME, "", false);
-        string def_post_call_templ = get_string(ini, section, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME, "", false);
+        string def_post_call_templ = get_string(ini, section, processor_parameters::POST_CALL_TEMPL_PARAM_NAME, "", false);
         params.add_language("", def_pre_call_templ, def_post_call_templ);
          
         //Get the supported language names

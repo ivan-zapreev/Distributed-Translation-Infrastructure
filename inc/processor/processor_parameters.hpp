@@ -247,8 +247,8 @@ namespace uva {
                         trim(pre_call_templ);
                         trim(post_call_templ);
 
-                        LOG_DEBUG << "Registering: " << lang << " pre: " << pre_call_templ
-                                << ", post: " << post_call_templ << END_LOG;
+                        LOG_DEBUG << "Registering: '" << lang << "' pre: '" << pre_call_templ
+                                << "', post: '" << post_call_templ << "'" << END_LOG;
 
                         //Check if the language is given, if not then it is for the default one
                         if (lang.empty()) {
