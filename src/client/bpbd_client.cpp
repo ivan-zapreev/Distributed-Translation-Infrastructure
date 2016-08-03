@@ -258,6 +258,9 @@ void pre_process(client_parameters & params, stringstream_ptr & input, stringstr
         manager.stop();
 
         LOG_USAGE << "The pre-processor process is finished" << END_LOG;
+
+        //Re-set the stream as we are going to use it
+        input->clear();
     } else {
         //There is no need to pre-process. Swap the streams,
         //as the input is to be "placed" into the output.
@@ -290,6 +293,9 @@ void translate(const client_parameters & params, stringstream_ptr & input, strin
     manager.stop();
 
     LOG_USAGE << "The translation process is finished" << END_LOG;
+
+    //Re-set the stream as we are going to use it
+    input->clear();
 }
 
 /**
@@ -316,6 +322,9 @@ void post_process(client_parameters & params, stringstream_ptr & input, stringst
         manager.stop();
 
         LOG_USAGE << "The post-processor process is finished" << END_LOG;
+
+        //Re-set the stream as we are going to use it
+        input->clear();
     } else {
         //There is no need to post-process. Swap the streams,
         //as the input is to be "placed" into the output.
