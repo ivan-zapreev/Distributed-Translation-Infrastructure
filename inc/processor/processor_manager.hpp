@@ -77,7 +77,7 @@ namespace uva {
                      */
                     struct session_data_struct {
                         //The map storing the mapping from the job id to the job object
-                        unordered_map<job_id_type, proc_job_ptr> m_jobs;
+                        unordered_map<string, proc_job_ptr> m_jobs;
 
                         /**
                          * The basic destcutor that shall remove all the jobs
@@ -182,7 +182,7 @@ namespace uva {
                         //Get the session id
                         session_id_type session_id = get_session_id(hdl);
                         //Get the job id
-                        job_id_type job_id = msg->get_job_id();
+                        const string job_token = msg->get_job_token();
 
                         //Only process the new request if we are not stopping 
                         if (!m_is_stopping) {
@@ -190,7 +190,7 @@ namespace uva {
                             session_data & entry = m_sessions[session_id];
 
                             //Check if the given request already has a job associated with it.
-                            proc_job_ptr & job = entry.m_jobs[job_id];
+                            proc_job_ptr & job = entry.m_jobs[job_token];
 
                             //If there is no job create one and add it to the map
                             if (job == NULL) {
@@ -205,7 +205,7 @@ namespace uva {
                             //Check if the job is ready to start
                             if (job->is_complete()) {
                                 //Remove the job from the mapping
-                                entry.m_jobs.erase(job_id);
+                                entry.m_jobs.erase(job_token);
                                 //Schedule the complete job for execution
                                 this->plan_new_job(job);
                             }
@@ -213,7 +213,7 @@ namespace uva {
                             //If we are stopping then just log a message, the
                             //client will get disconnected any ways, so no harm.
                             LOG_DEBUG << "Ignoring a new processor request session_id: "
-                                    << to_string(session_id) << ", job_id: " << to_string(job_id)
+                                    << to_string(session_id) << ", job_token: " << job_token
                                     << ", the server is stopping!" << END_LOG;
                         }
                     }
@@ -236,13 +236,11 @@ namespace uva {
                         //Cancel incomplete jobs
                         cancel_incomp_jobs(session_id);
 
-                        //Cancel all the jobs from the given session, will be
-                        //synchronized on the files, so no files shall be
-                        //locked/appearing after this call.
+                        //Cancel all the jobs from the given session, is not
+                        //synchronized on the job files, the job files are not
+                        //deleted then as the pre processor might get a different
+                        //session than the post-processor.
                         this->cancel_jobs(session_id);
-
-                        //Remove the files from the given session
-                        processor_job::delete_session_files(m_params.m_work_dir, session_id);
                     }
 
                     /**

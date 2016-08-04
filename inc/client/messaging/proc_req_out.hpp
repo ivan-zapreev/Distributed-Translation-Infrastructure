@@ -28,7 +28,6 @@
 
 #include "common/messaging/outgoing_msg.hpp"
 #include "common/messaging/proc_req.hpp"
-#include "common/messaging/job_id.hpp"
 
 using namespace uva::smt::bpbd::common::messaging;
 
@@ -46,20 +45,20 @@ namespace uva {
 
                         /**
                          * Allows to get a new instance of the processor request for the pre-processing task.
-                         * @param job_id the client-issued id of the job 
+                         * @param job_token the job token string
                          * @return a new instance of the processor request for the pre-processing task.
                          */
-                        static inline proc_req_out * get_pre_proc_req(const job_id_type job_id) {
-                            return new proc_req_out(msg_type::MESSAGE_PRE_PROC_JOB_REQ, job_id);
+                        static inline proc_req_out * get_pre_proc_req(const string & job_token) {
+                            return new proc_req_out(msg_type::MESSAGE_PRE_PROC_JOB_REQ, job_token);
                         }
 
                         /**
                          * Allows to get a new instance of the processor request for the post-processing task.
-                         * @param job_id the client-issued id of the job 
+                         * @param job_token the job token string
                          * @return a new instance of the processor request for the post-processing task.
                          */
-                        static inline proc_req_out * get_post_proc_req(const job_id_type job_id) {
-                            return new proc_req_out(msg_type::MESSAGE_POST_PROC_JOB_REQ, job_id);
+                        static inline proc_req_out * get_post_proc_req(const string & job_token) {
+                            return new proc_req_out(msg_type::MESSAGE_POST_PROC_JOB_REQ, job_token);
                         }
 
                         /**
@@ -76,7 +75,7 @@ namespace uva {
                             m_writer.String(CHUNK_FIELD_NAME);
                             m_writer.String(chunk.c_str());
                         }
-                        
+
                         /**
                          * Allows to set the language of the text piece
                          * @param lang the language of the text piece
@@ -85,31 +84,29 @@ namespace uva {
                             m_writer.String(LANG_FIELD_NAME);
                             m_writer.String(lang.c_str());
                         }
-                        
+
                     protected:
 
                         /**
-                         * Allows to get the client-issued job id
-                         * @return the client-issued job id
+                         * Allows to set the job token
+                         * @param job_token the job token
                          */
-                        inline void set_job_id(const job_id_type job_id) {
-                            m_writer.String(JOB_ID_FIELD_NAME);
-                            m_writer.Uint64(job_id);
+                        inline void set_job_uid(const string & job_token) {
+                            m_writer.String(JOB_TOKEN_FIELD_NAME);
+                            m_writer.String(job_token.c_str());
                         }
-                        
+
                     private:
 
                         /**
                          * This is the basic class constructor that accepts the
-                         * processor job id. It is made private because the first
+                         * source text md5 sum. It is made private because the first
                          * argument should not be set by the user.
                          * @param type the message type
-                         * @param job_id the client-issued id of the job 
                          */
-                        proc_req_out(const msg_type type, const job_id_type job_id)
+                        proc_req_out(const msg_type type, const string & job_token)
                         : outgoing_msg(type), proc_req() {
-                            //Set the values using the setter methods
-                            set_job_id(job_id);
+                            set_job_uid(job_token);
                         }
                     };
                 }

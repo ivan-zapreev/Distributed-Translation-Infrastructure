@@ -27,6 +27,7 @@
 #include <sstream>
 
 #include "tclap/CmdLine.h"
+#include "md5.hpp"
 
 #include "main.hpp"
 
@@ -235,15 +236,35 @@ void read_input(const client_parameters & params, stringstream_ptr & output) {
 }
 
 /**
+ * Allows to compute the initial job token to be the md5 sum of the source file.
+ * @param params [in] the parameters from which the input file is to be detected
+ * @param job_token [out] the string storing the md5 sum of the source file
+ */
+void get_job_token(const client_parameters & params, string & job_token) {
+    //Declare the md5 class instance
+    MD5 md5;
+
+    //Compute the md5 sum of the file
+    char * sum = md5.digestFile(params.m_source_file.c_str());
+
+    //Set the resulting md5 sum
+    job_token = string(sum);
+}
+
+/**
  * Allows to perform the text pre-processing if needed
  * @param params the client parameters
  * @param input the input stream storing the text to pre-process
  * @param output the output stream to write the pre-processed text into
+ * @param job_token [in/out] the job token will be updated by the server
  */
-void pre_process(client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
+void pre_process(client_parameters & params, stringstream_ptr & input,
+        stringstream_ptr & output, string & job_token) {
+    //Check if pre-processing is needed
     if (params.is_pre_process()) {
         //Create the pre-processor manager
-        pre_proc_manager manager(params, *input, *output, params.m_source_lang);
+        pre_proc_manager manager(params, *input, *output,
+                params.m_source_lang, job_token);
 
         //Start the pre-processor manager
         LOG_USAGE << "Starting the pre-processor process ..." << END_LOG;
@@ -276,7 +297,8 @@ void pre_process(client_parameters & params, stringstream_ptr & input, stringstr
  * @param input the input stream storing the text to translate
  * @param output the output stream to write the translated text into
  */
-void translate(const client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
+void translate(const client_parameters & params, stringstream_ptr & input,
+        stringstream_ptr & output) {
     //Create the translation manager
     trans_manager manager(params, *input, *output);
 
@@ -303,11 +325,15 @@ void translate(const client_parameters & params, stringstream_ptr & input, strin
  * @param params the client parameters
  * @param input the input stream storing the text to post-process
  * @param output the output stream to write the post-processed text into
+ * @param job_token [in/out] the job token can be updated by the server
  */
-void post_process(client_parameters & params, stringstream_ptr & input, stringstream_ptr & output) {
+void post_process(client_parameters & params, stringstream_ptr & input,
+        stringstream_ptr & output, string & job_token) {
+    //Check if post-processing is needed
     if (params.is_post_process()) {
         //Create the post-processor manager
-        post_proc_manager manager(params, *input, *output, params.m_target_lang);
+        post_proc_manager manager(params, *input, *output,
+                params.m_target_lang, job_token);
 
         //Start the post-processor manager
         LOG_USAGE << "Starting the post-processor process ..." << END_LOG;
@@ -380,6 +406,10 @@ int main(int argc, char** argv) {
     stringstream_ptr pipe_a = &str_a;
     stringstream_ptr pipe_b = &str_b;
 
+    //Define the string job uid that is first issued
+    //by the client and is then updated by the server.
+    string job_uid;
+
     try {
         //Define en empty parameters structure
         client_parameters params = {};
@@ -390,14 +420,17 @@ int main(int argc, char** argv) {
         //Read from the source file: file -> pipe_a
         read_input(params, pipe_a);
 
+        //Compute ghe first job uid for the pre-procrssor requrst
+        get_job_token(params, job_uid);
+
         //Pre-process text if requested: pipe_a -> pipe_b
-        pre_process(params, pipe_a, pipe_b);
+        pre_process(params, pipe_a, pipe_b, job_uid);
 
         //Translate text: pipe_b -> pipe_a
         translate(params, pipe_b, pipe_a);
 
         //Post-process text if requested: pipe_a -> pipe_b
-        post_process(params, pipe_a, pipe_b);
+        post_process(params, pipe_a, pipe_b, job_uid);
 
         //Write the result to target file: pipe_b -> file
         write_output(params, pipe_b);

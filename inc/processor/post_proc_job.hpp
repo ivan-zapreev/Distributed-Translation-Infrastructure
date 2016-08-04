@@ -64,7 +64,7 @@ namespace uva {
                      */
                     post_proc_job(const language_config & config, const session_id_type session_id,
                             proc_req_in * req, const session_response_sender & resp_send_func)
-                    : processor_job(config, session_id, req,
+                    : processor_job(config, session_id, req->get_job_token(), req,
                     &proc_resp_out::get_post_proc_resp, resp_send_func) {
                     }
 

@@ -62,6 +62,15 @@ namespace uva {
                  *    - Send the results back to the client 
                  */
                 class pre_proc_job : public processor_job {
+                private:
+
+                    /**
+                     * The job uid for the pre-processing job request is build
+                     * from the source text md5 plus the session identifier
+                     */
+                    static inline string update_job_token(proc_req_in * req, const session_id_type session_id) {
+                        return req->get_job_token() + string(".") + to_string(session_id);
+                    }
                 public:
 
                     /**
@@ -73,8 +82,8 @@ namespace uva {
                      */
                     pre_proc_job(const language_config & config, const session_id_type session_id,
                             proc_req_in * req, const session_response_sender & resp_send_func)
-                    : processor_job(config, session_id, req,
-                    &proc_resp_out::get_pre_proc_resp, resp_send_func) {
+                    : processor_job(config, session_id, update_job_token(req, session_id),
+                    req, &proc_resp_out::get_pre_proc_resp, resp_send_func) {
                     }
 
                     /**

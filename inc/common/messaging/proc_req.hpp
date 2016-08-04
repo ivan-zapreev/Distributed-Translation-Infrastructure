@@ -39,8 +39,8 @@ namespace uva {
                      */
                     class proc_req : public request_msg {
                     public:
-                        //Stores the job id field name
-                        static const char * JOB_ID_FIELD_NAME;
+                        //Stores the job uid field name
+                        static const char * JOB_TOKEN_FIELD_NAME;
                         //Stores the the text piece idx field name
                         static const char * CHUNK_IDX_FIELD_NAME;
                         //Stores the the number of text pieces field name

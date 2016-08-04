@@ -597,6 +597,7 @@
       </df>
       <in>INI.h</in>
       <in>asio.hpp</in>
+      <in>md5.hpp</in>
     </df>
     <df root="inc" name="1">
       <df name="balancer">

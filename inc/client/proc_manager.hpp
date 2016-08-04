@@ -26,7 +26,6 @@
 #ifndef PROC_MANAGER_HPP
 #define PROC_MANAGER_HPP
 
-#include "common/utils/id_manager.hpp"
 #include "common/utils/text/utf8_utils.hpp"
 #include "common/utils/threads/threads.hpp"
 
@@ -60,7 +59,7 @@ namespace uva {
                 public:
 
                     //Declare the function that will be used to create a processor request
-                    typedef function<proc_req_out * (const job_id_type) > request_creator;
+                    typedef function<proc_req_out * (const string) > request_creator;
 
                     /**
                      * This is the basic constructor needed to 
@@ -70,14 +69,16 @@ namespace uva {
                      * @param output the output stream to write the target text into
                      * @param lang the reference to a string thaty stores the language
                      *        is to be updated with the language coming from the server
+                     * @param job_token [in/out] the job token can be updated by the server
                      * @param req_crt_func the reference to the request creator function
                      */
                     proc_manager(const string & proc_uri, const string name,
                             stringstream & input, stringstream & output, string & lang,
-                            const request_creator &req_crt_func)
+                            string & job_token, const request_creator &req_crt_func)
                     : client_manager<MSG_TYPE, proc_resp_in>(proc_uri, name),
-                    m_input(input), m_output(output), m_lang(lang), m_req_crt_func(req_crt_func),
-                    m_responses(NULL), m_act_num_req(0), m_exp_num_resp(0), m_act_num_resp(0) {
+                    m_input(input), m_output(output), m_lang(lang), m_job_token(job_token),
+                    m_req_crt_func(req_crt_func), m_responses(NULL), m_act_num_req(0),
+                    m_exp_num_resp(0), m_act_num_resp(0) {
                     }
 
                     /**
@@ -109,9 +110,6 @@ namespace uva {
                      */
                     virtual void send_job_requests(generic_client & client) override {
                         if (!client_manager<MSG_TYPE, proc_resp_in>::is_stopping()) {
-                            //Issue a new job id
-                            m_job_id = m_id_mgr.get_next_id();
-
                             //Store the reference to the client
                             m_client = &client;
 
@@ -146,14 +144,8 @@ namespace uva {
                                 m_responses = new proc_resp_in_ptr[m_exp_num_resp]();
                             }
 
-                            //Get the job id
-                            const job_id_type job_id = job_resp_msg->get_job_id();
-
-                            //Check if the job id is the same as for the sent jobs.
-                            //There will actually be just one job at a time, no parallel jobs.
-                            ASSERT_CONDITION_THROW((m_job_id != job_id),
-                                    string("Received processor response job id: ") + to_string(m_job_id) +
-                                    string(" received: ") + to_string(job_id) + string(", ignoring!"));
+                            //Get/update the job token
+                            m_job_token = job_resp_msg->get_job_token();
 
                             //Get the chunk index
                             const size_t chunk_idx = job_resp_msg->get_chunk_idx();
@@ -161,14 +153,14 @@ namespace uva {
                             //Check that the chunk idx is within the bounds
 
                             ASSERT_CONDITION_THROW((chunk_idx >= m_exp_num_resp),
-                                    string("Processor response job id: ") + to_string(m_job_id) + string(" has") +
+                                    string("Processor response job token: ") + m_job_token + string(" has") +
                                     string(" chunk idx: ") + to_string(chunk_idx) + string(", the max expected") +
                                     string(" chunk idx is ") + to_string(m_exp_num_resp - 1) +
                                     string(", ignoring!"));
 
                             //Check that the chunk is not yet received
                             ASSERT_CONDITION_THROW((m_responses[chunk_idx] != NULL),
-                                    string("Processor response job id: ") + to_string(m_job_id) +
+                                    string("Processor response job token: ") + m_job_token +
                                     string(" has chunk idx: ") + to_string(chunk_idx) +
                                     string(", already ") + string("received, ignoring!"));
 
@@ -178,7 +170,7 @@ namespace uva {
                             //Increment the actual number of response
                             ++m_act_num_resp;
 
-                            LOG_INFO1 << "The job " << job_id << " response chunk " << m_act_num_resp
+                            LOG_INFO1 << "The processor job response chunk " << m_act_num_resp
                                     << "/" << m_exp_num_resp << " is received." << END_LOG;
                         } else {
                             //To stop the process set the number of expected jobs to zero
@@ -215,9 +207,6 @@ namespace uva {
                     }
 
                 private:
-                    //Stores the static instance of the id manager
-                    static id_manager<job_id_type> m_id_mgr;
-
                     //Stores the reference to the input stream storing the source text
                     stringstream & m_input;
                     //Stores the reference to the output stream for the target text
@@ -226,6 +215,11 @@ namespace uva {
                     //Stores the reference to a string storing the language, is
                     //to be updated by the language coming from the server.
                     string & m_lang;
+
+                    //Stores the reference to the job token string which is to be sent
+                    //to the server with the processor job and the processor response
+                    //might contain a new token to set.
+                    string & m_job_token;
 
                     //Stores the request creator function
                     const request_creator m_req_crt_func;
@@ -242,8 +236,6 @@ namespace uva {
                     //Stores the synchronization mutex for synchronizing sending and receiving code
                     mutex m_sr_lock;
 
-                    //Stores the issued job id to be used. Is initialized before sending the job.
-                    job_id_type m_job_id;
                     //Stores the pointer to the client. Is initialized before sending the job.
                     generic_client * m_client;
 
@@ -278,8 +270,8 @@ namespace uva {
                         unique_guard guard(m_sr_lock);
 
                         if (!client_manager<MSG_TYPE, proc_resp_in>::is_stopping()) {
-                            //Get the error response
-                            proc_req_out * req = m_req_crt_func(m_job_id);
+                            //Get the request message
+                            proc_req_out * req = m_req_crt_func(m_job_token);
 
                             //Set the language
                             req->set_language(m_lang);
@@ -294,13 +286,13 @@ namespace uva {
                                 //Increment the number of sent requests
                                 ++m_act_num_req;
 
-                                LOG_INFO1 << "The job " << m_job_id << " request chunk "
-                                        << (chunk_idx + 1) << "/" << num_chunks << " is sent." << END_LOG;
+                                LOG_INFO1 << "The processor job request chunk " << (chunk_idx + 1)
+                                        << "/" << num_chunks << " is sent." << END_LOG;
 
                             } catch (std::exception & e) {
                                 //Log the error message
-                                LOG_ERROR << "Error when sending a processor request job " << m_job_id << "("
-                                        << (chunk_idx + 1) << "/" << num_chunks << "): " << e.what() << END_LOG;
+                                LOG_ERROR << "Failed sending the processor job chunk " << (chunk_idx + 1)
+                                        << "/" << num_chunks << ": " << e.what() << END_LOG;
                             }
 
                             //Delete the response
@@ -308,9 +300,6 @@ namespace uva {
                         }
                     }
                 };
-
-                template<msg_type MSG_TYPE>
-                id_manager<job_id_type> proc_manager<MSG_TYPE>::m_id_mgr(job_id::MINIMUM_JOB_ID);
 
                 /**
                  * Define the class for the pre-processor manager
@@ -325,11 +314,12 @@ namespace uva {
                      * @param output the output stream to write the target text into
                      * @param lang the reference to a string thaty stores the language
                      *        is to be updated with the language coming from the server
+                     * @param job_token [in/out] the job token can be updated by the server
                      */
                     pre_proc_manager(const client_parameters & params, stringstream & input,
-                            stringstream & output, string & lang)
+                            stringstream & output, string & lang, string & job_token)
                     : proc_manager(params.m_pre_uri, "pre-processor", input,
-                    output, lang, &proc_req_out::get_pre_proc_req) {
+                    output, lang, job_token, &proc_req_out::get_pre_proc_req) {
                     }
                 };
 
@@ -346,11 +336,12 @@ namespace uva {
                      * @param output the output stream to write the target text into
                      * @param lang the reference to a string thaty stores the language
                      *        is to be updated with the language coming from the server
+                     * @param job_token [in/out] the job token can be updated by the server
                      */
                     post_proc_manager(const client_parameters & params, stringstream & input,
-                            stringstream & output, string & lang)
+                            stringstream & output, string & lang, string & job_token)
                     : proc_manager(params.m_post_uri, "post-processor", input,
-                    output, lang, &proc_req_out::get_post_proc_req) {
+                    output, lang, job_token, &proc_req_out::get_post_proc_req) {
                     }
                 };
             }

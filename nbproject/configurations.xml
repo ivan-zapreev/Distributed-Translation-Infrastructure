@@ -19,6 +19,7 @@
       <itemPath>build/CMakeFiles/feature_tests.cxx</itemPath>
     </logicalFolder>
     <df root="ext" name="0">
+      <in>md5.hpp</in>
     </df>
     <df root="inc" name="1">
       <df name="client">
@@ -229,6 +230,8 @@
             flavor2="11">
         <ccTool flags="1">
         </ccTool>
+      </item>
+      <item path="ext/md5.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <folder path="2/common">
         <ccTool>

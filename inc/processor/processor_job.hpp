@@ -38,7 +38,6 @@
 
 #include "common/messaging/msg_base.hpp"
 #include "common/messaging/trans_session_id.hpp"
-#include "common/messaging/job_id.hpp"
 #include "common/messaging/status_code.hpp"
 
 #include "processor/processor_consts.hpp"
@@ -72,7 +71,7 @@ namespace uva {
                 typedef function<bool (const session_id_type, const msg_base &) > session_response_sender;
 
                 //Declare the function that will be used to create a processor response
-                typedef function<proc_resp_out * (const job_id_type, const status_code, const string &) > response_creator;
+                typedef function<proc_resp_out * (const string &, const status_code, const string &) > response_creator;
 
                 /**
                  * Allows to log the processor job into an output stream
@@ -90,6 +89,9 @@ namespace uva {
                 class processor_job {
                 public:
 
+                    //Define the job id type for this job
+                    typedef string job_id_type;
+
                     //Define the function type for the function used to set the job result
                     typedef function<void(proc_job_ptr) > done_job_notifier;
 
@@ -97,15 +99,16 @@ namespace uva {
                      * The basic constructor
                      * @param config the language configuration, might be undefined.
                      * @param session_id the id of the session from which the translation request is received
+                     * @param job_token a unique server wide job identifier
                      * @param req the pointer to the processor request, not NULL
                      * @param resp_crt_func the function to create the response
                      * @param resp_send_func the function to send the translation response to the client
                      */
                     processor_job(const language_config & config, const session_id_type session_id,
-                            proc_req_in *req, const response_creator & resp_crt_func,
+                            const string job_token, proc_req_in *req, const response_creator & resp_crt_func,
                             const session_response_sender & resp_send_func)
                     : m_is_canceled(false), m_config(config), m_session_id(session_id),
-                    m_job_id(req->get_job_id()), m_exp_num_chunks(req->get_num_chunks()),
+                    m_job_token(job_token), m_exp_num_chunks(req->get_num_chunks()),
                     m_res_lang(""), m_req_tasks(NULL), m_act_num_chunks(0), m_notify_job_done_func(NULL),
                     m_resp_crt_func(resp_crt_func), m_resp_send_func(resp_send_func) {
                         LOG_DEBUG << "Creating a processor job with " << m_exp_num_chunks << " chunks" << END_LOG;
@@ -138,12 +141,11 @@ namespace uva {
                     }
 
                     /**
-                     * Allows to retrieve the job id as given by the client.
-                     * The job id given by the balancer is retrieved by another method.
-                     * @return the job id
+                     * Allows to retrieve the unique server-wide job identifier
+                     * @return the unique server-wide job identifier
                      */
-                    inline job_id_type get_job_id() const {
-                        return m_job_id;
+                    inline const string & get_job_id() const {
+                        return m_job_token;
                     }
 
                     /**
@@ -172,11 +174,11 @@ namespace uva {
                     /**
                      * Allows to cancel the given processor job. Calling this method
                      * indicates that the job is canceled due to the client disconnect.
-                     * This method is synchronized on files lock.
+                     * This method is NOT synchronized on files lock. So the job might
+                     * be in progress but we still mark it as canceled and move on.
                      */
                     inline void cancel() {
-                        recursive_guard guard(m_file_lock);
-
+                        //recursive_guard guard(m_file_lock);
                         m_is_canceled = true;
                     }
 
@@ -198,11 +200,11 @@ namespace uva {
                         //Assert sanity
                         ASSERT_SANITY_THROW((m_req_tasks[chunk_idx] != NULL),
                                 string("The chunk index ") + to_string(chunk_idx) +
-                                string(" of the job request ") + to_string(m_job_id) +
+                                string(" of the job request ") + m_job_token +
                                 string(" from session ") + to_string(m_session_id) +
                                 string(" is already set!"));
 
-                        LOG_DEBUG << "Storing the job: " << req->get_job_id()
+                        LOG_DEBUG << "Storing the job: " << req->get_job_token()
                                 << " chunk: " << chunk_idx << END_LOG;
 
                         //Store the task
@@ -223,18 +225,6 @@ namespace uva {
                         return (m_act_num_chunks == m_exp_num_chunks);
                     }
 
-                    /**
-                     * Allows to delete the files from the given session
-                     * @param work_dir the work directory
-                     * @param session_id the session id
-                     */
-                    static inline void delete_session_files(const string & work_dir, const session_id_type session_id) {
-                        //Create the job_uid wildcard, "session_id.job_id"
-                        const string wildcard = get_job_uid_str(session_id, job_id::UNDEFINED_JOB_ID);
-                        //Remove all sorts of files request, response, input, output
-                        delete_files(work_dir, wildcard);
-                    }
-
                 protected:
                     //This is the file lock which is used when the job is being canceled.
                     //The file lock makes sure the job can not be canceled when some
@@ -248,40 +238,24 @@ namespace uva {
                     a_bool_flag m_is_canceled;
 
                     /**
-                     * Allows to get the unique job identifier string for the given session id and job id.
-                     * If the session id or job id is not known then a "*" symbol is used in its place.
-                     * @param sid the session id
-                     * @param jid the job id
-                     * @return the job unique identifier
-                     */
-                    static inline string get_job_uid_str(const session_id_type sid, const job_id_type jid) {
-                        return ( sid == session_id::UNDEFINED_SESSION_ID ? "*" : to_string(sid))
-                                + "." +
-                                (jid == job_id::UNDEFINED_JOB_ID ? "*" : to_string(jid));
-                    }
-
-                    /**
                      * Allows to delete the files from the given job
                      */
                     inline void delete_job_files() {
-                        //Create the job_uid wildcard, "session_id.job_id"
-                        const string wildcard = get_job_uid_str(session_id::UNDEFINED_SESSION_ID, m_job_id);
-                        //Remove all sorts of files request, response, input, output
-                        delete_files(m_config.get_work_dir(), wildcard);
+                        delete_files(m_config.get_work_dir(), m_job_token);
                     }
 
                     /**
                      * Allows to delete the files from the given wildcards
                      * @param work_dir the work directory
-                     * @param wildcard the wildcard to remove files
+                     * @param job_token the job token
                      */
-                    static inline void delete_files(const string & work_dir, const string wildcard) {
+                    static inline void delete_files(const string & work_dir, const string & job_token) {
                         //Create the command
                         const string cmd = string("rm -f ") +
-                                get_text_file_name<true, true>(work_dir, wildcard) + " " +
-                                get_text_file_name<true, false>(work_dir, wildcard) + " " +
-                                get_text_file_name<false, true>(work_dir, wildcard) + " " +
-                                get_text_file_name<false, false>(work_dir, wildcard);
+                                get_text_file_name<true, true>(work_dir, job_token) + " " +
+                                get_text_file_name<true, false>(work_dir, job_token) + " " +
+                                get_text_file_name<false, true>(work_dir, job_token) + " " +
+                                get_text_file_name<false, false>(work_dir, job_token);
 
                         //make the system call
                         const int dir_err = system(cmd.c_str());
@@ -298,12 +272,12 @@ namespace uva {
                      * This method is NOT synchronized.
                      * @param is_pnp if true then this is a pre-processor job, if false then a post-processor
                      * @param is_ino if true then this is for the input file of the job, if false then for the output
-                     * @param job_uid_str [out] will be set to the job uid string
+                     * @param job_token the job token
                      * @return the name of the text file, should be unique
                      */
                     template<bool is_pnp, bool is_ino>
-                    static inline string get_text_file_name(const string & work_dir, const string & job_uid_str) {
-                        return work_dir + "/" + job_uid_str + "." +
+                    static inline string get_text_file_name(const string & work_dir, const string & job_token) {
+                        return work_dir + "/" + job_token + "." +
                                 (is_pnp ? "pre" : "post") + "." +
                                 (is_ino ? "in" : "out") + ".txt";
                     }
@@ -378,11 +352,9 @@ namespace uva {
                      * @return the name of the text file, should be unique
                      */
                     template<bool is_pnp, bool is_ino>
-                    inline const string get_text_file_name(string & job_uid_str) {
-                        //Set the job uid
-                        job_uid_str = get_job_uid_str(m_session_id, m_job_id);
+                    inline const string get_text_file_name(string & job_uid) {
                         //Compute the file name
-                        return get_text_file_name<is_pnp, is_ino>(m_config.get_work_dir(), job_uid_str);
+                        return get_text_file_name<is_pnp, is_ino>(m_config.get_work_dir(), m_job_token);
                     }
 
                     /**
@@ -476,7 +448,7 @@ namespace uva {
                     inline void send_error_response(const string & msg_str) {
                         if (!m_is_canceled) {
                             //Get the error response
-                            proc_resp_out * resp = m_resp_crt_func(this->get_job_id(), status_code::RESULT_ERROR, msg_str);
+                            proc_resp_out * resp = m_resp_crt_func(m_job_token, status_code::RESULT_ERROR, msg_str);
 
                             //Attempt to send the job response
                             processor_job::send_response(*resp);
@@ -494,7 +466,7 @@ namespace uva {
                      */
                     inline void send_utf8_chunk_msg(const string & chunk, const size_t num_chunks, const size_t chunk_idx) {
                         //Get the error response
-                        proc_resp_out * resp = m_resp_crt_func(this->get_job_id(), status_code::RESULT_OK, "");
+                        proc_resp_out * resp = m_resp_crt_func(m_job_token, status_code::RESULT_OK, "");
 
                         //Set the language
                         resp->set_language(m_res_lang);
@@ -524,8 +496,7 @@ namespace uva {
                             m_res_lang = res_lang;
 
                             //Get the output file name
-                            string uid;
-                            const string file_name = this->get_text_file_name<is_pnp, false>(uid);
+                            const string file_name = get_text_file_name<is_pnp, false>(m_config.get_work_dir(), m_job_token);
 
                             LOG_DEBUG << "Opening the job output file: " << file_name << END_LOG;
 
@@ -555,17 +526,14 @@ namespace uva {
                             //Check if the provided language configuration is defined
                             const language_config & conf = this->get_lang_config();
                             if (conf.is_defined()) {
-                                //Define the job uid string
-                                string job_uid_str;
-                                //Create the file name for the text we need to process.
-                                const string file_name = this->template get_text_file_name<is_pnp, true>(job_uid_str);
+                                const string file_name = get_text_file_name<is_pnp, true>(m_config.get_work_dir(), m_job_token);
 
                                 try {
                                     //Save the file to the disk
                                     this->store_text_to_file(file_name);
 
                                     //Get the string needed to call the processor script
-                                    const string call_str = conf.get_call_string(job_uid_str, this->get_language());
+                                    const string call_str = conf.get_call_string(m_job_token, this->get_language());
                                     LOG_DEBUG << "call_str = " << call_str << END_LOG;
 
                                     //Call the processor script
@@ -613,8 +581,8 @@ namespace uva {
                     const language_config & m_config;
                     //Stores the translation client session id
                     const session_id_type m_session_id;
-                    //Stores the job id for an easy access
-                    const job_id_type m_job_id;
+                    //Stores the job unique identifier.
+                    const string m_job_token;
                     //Stores the number of text pieces this job consists of
                     const uint64_t m_exp_num_chunks;
                     //Stores the resulting language string

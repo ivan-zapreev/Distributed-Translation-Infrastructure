@@ -30,7 +30,6 @@
 #include <vector>
 
 #include "common/messaging/trans_session_id.hpp"
-#include "common/messaging/job_id.hpp"
 
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
@@ -63,7 +62,7 @@ namespace uva {
                         typedef function<void(job_type* pool_job) > done_job_notifier;
 
                         //Define the job id to job and session id to jobs maps and iterators thereof
-                        typedef std::unordered_map<job_id_type, job_type*> jobs_map_type;
+                        typedef std::unordered_map<typename job_type::job_id_type, job_type*> jobs_map_type;
                         typedef typename jobs_map_type::iterator jobs_map_iter_type;
                         typedef std::unordered_map<session_id_type, jobs_map_type> sessions_map_type;
                         typedef typename sessions_map_type::iterator sessions_map_iter_type;
@@ -244,12 +243,15 @@ namespace uva {
                             //Get the session id for future use
                             const session_id_type session_id = pool_job->get_session_id();
                             //Get the job id for future use
-                            const job_id_type job_id = pool_job->get_job_id();
+                            const typename job_type::job_id_type job_id = pool_job->get_job_id();
 
                             //Check that the job with the same id does not exist
-                            ASSERT_CONDITION_THROW((m_sessions_map[session_id][job_id] != NULL),
-                                    string("The job with id ") + to_string(job_id) + (" for session ") +
-                                    to_string(session_id) + (" already exists!"));
+                            if(m_sessions_map[session_id][job_id] != NULL) {
+                                stringstream str;
+                                str << "The job with id " << job_id << " for session "
+                                        << session_id << " already exists!";
+                                THROW_EXCEPTION(str.str());
+                            }
 
                             //The session is present, so we need to add it into the pool
                             m_sessions_map[session_id][job_id] = pool_job;
@@ -271,7 +273,7 @@ namespace uva {
                         inline void delete_job(job_type* pool_job) {
                             //Get and store the session and job ids for later use
                             const session_id_type session_id = pool_job->get_session_id();
-                            const job_id_type job_id = pool_job->get_job_id();
+                            const typename job_type::job_id_type job_id = pool_job->get_job_id();
 
                             LOG_DEBUG << "Requested the job " << pool_job << " deletion from the administration" << END_LOG;
 

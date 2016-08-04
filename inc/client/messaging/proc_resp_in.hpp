@@ -28,7 +28,6 @@
 
 #include "common/messaging/proc_resp.hpp"
 #include "common/messaging/incoming_msg.hpp"
-#include "common/messaging/job_id.hpp"
 
 using namespace uva::smt::bpbd::common::messaging;
 
@@ -81,12 +80,12 @@ namespace uva {
                         }
 
                         /**
-                         * Allows to get the client-issued job id
-                         * @return the client-issued job id
+                         * Allows to get the job token
+                         * @return the job token
                          */
-                        inline job_id_type get_job_id() const {
+                        inline string get_job_token() const {
                             const Document & json = m_inc_msg->get_json();
-                            return json[JOB_ID_FIELD_NAME].GetUint64();
+                            return json[JOB_TOKEN_FIELD_NAME].GetString();
                         }
 
                         /**
@@ -94,7 +93,7 @@ namespace uva {
                          * zero and correspond to the text piece index in the job.
                          * @return the task index represented by this request
                          */
-                        inline job_id_type get_chunk_idx() const {
+                        inline size_t get_chunk_idx() const {
                             const Document & json = m_inc_msg->get_json();
                             return json[CHUNK_IDX_FIELD_NAME].GetUint64();
                         }
@@ -103,7 +102,7 @@ namespace uva {
                          * Allows to get the number of job's text pieces
                          * @return the number of job's text pieces
                          */
-                        inline job_id_type get_num_chunks() const {
+                        inline size_t get_num_chunks() const {
                             const Document & json = m_inc_msg->get_json();
                             return json[NUM_CHUNKS_FIELD_NAME].GetUint64();
                         }

@@ -66,6 +66,8 @@ namespace uva {
                  */
                 class trans_job {
                 public:
+                    //Define the job id type
+                    typedef uva::smt::bpbd::common::messaging::job_id_type job_id_type;
 
                     //Define the function type for the function used to set the translation job result
                     typedef function<void(trans_job_ptr) > done_job_notifier;

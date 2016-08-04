@@ -71,33 +71,28 @@ function fail() {
 
 #Perform error checks of the input data
 if [ "$#" -eq 0 ]; then
-   error ${0} "Improper number of arguments!"
+   error "Improper number of arguments!"
    info ${0}
    fail
 fi
 if [ -z "${1}" ]; then
-   error ${0} "<work-dir> is not defined"
-   usage ${0}
+   error "<work-dir> is not defined"
    fail
 fi
 if [ -z "${2}" ]; then
-   error ${0} "<job-uid> is not defined"
-   usage ${0}
+   error "<job-uid> is not defined"
    fail
 fi
 if [ -z "${3}" ]; then
-   error ${0} "<language> is not defined"
-   usage ${0}
+   error "<language> is not defined"
    fail
 fi
 if ! [ -e "${1}" ]; then
-   error ${0} "${1} not found!"
-   usage ${0}
+   error "${1} not found!"
    fail
 fi
 if ! [ -d "${1}" ]; then
-   error ${0} "${1} is not a directory!"
-   usage ${0}
+   error "${1} is not a directory!"
    fail
 fi
 

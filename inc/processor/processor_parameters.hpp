@@ -87,15 +87,15 @@ namespace uva {
                      * Note: This is not very optimal to search each time, can be optimized by
                      * not searching for at least one of the template parameters
                      * @param proc_job_id the job id
-                     * @param lang the source language
+                     * @param lang the source language, will be lowercased
                      * @return a ready to call string
                      */
-                    inline string get_call_string(const string file_name, const string lang) const {
+                    inline string get_call_string(const string file_name, string lang) const {
                         if (!m_call_templ.empty()) {
                             string result = m_call_templ;
                             replace(result, WORK_DIR_TEMPL_PARAM_NAME, m_work_dir);
                             replace(result, JOB_UID_TEMPL_PARAM_NAME, file_name);
-                            replace(result, LANGUAGE_TEMPL_PARAM_NAME, lang);
+                            replace(result, LANGUAGE_TEMPL_PARAM_NAME, to_lower(lang));
                             return result;
                         } else {
                             return "";
