@@ -152,8 +152,7 @@ namespace uva {
                      * @param msg a pointer to the request data, not NULL
                      */
                     inline void pre_process(websocketpp::connection_hdl hdl, proc_req_in * msg) {
-                        this->template process<pre_proc_job>(hdl, msg,
-                                m_params.get_lang_pre_conf(msg->get_language()));
+                        this->template process<pre_proc_job>(hdl, msg, m_params.m_pre_script_config);
                     }
 
                     /**
@@ -162,8 +161,7 @@ namespace uva {
                      * @param msg a pointer to the request data, not NULL
                      */
                     inline void post_process(websocketpp::connection_hdl hdl, proc_req_in * msg) {
-                        this->template process<post_proc_job>(hdl, msg,
-                                m_params.get_lang_post_conf(msg->get_language()));
+                        this->template process<post_proc_job>(hdl, msg, m_params.m_post_script_config);
                     }
 
                 protected:

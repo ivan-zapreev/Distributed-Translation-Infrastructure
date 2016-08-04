@@ -8,13 +8,12 @@ function usage(){
   echo "------"
   echo " $0 <work-dir> <job-uid> <language>"
   echo "    <work-dir> - the work directory to read/write files from/into"
-  echo "    <job-uid> - the unique identifier of the pre-processor job."
+  echo "    <job-uid> - the unique identifier of the post-processor job."
   echo "               The job input file should have name:"
-  echo "                   <job-uid>.pre.in.txt"
+  echo "                   <job-uid>.post.in.txt"
   echo "               The job output file will get name:"
-  echo "                   <job-uid>.pre.out.txt"
-  echo "    <language> - the pre-processor input text language."
-  echo "                 If set to \"auto\", the language is to be detected."
+  echo "                   <job-uid>.post.out.txt"
+  echo "    <language> - the post-processor input text language."
 }
 
 #Prints the program info
@@ -23,49 +22,51 @@ function info() {
   echo "------"
   echo "SHORT:"
   echo "------"
-  echo "   This is a dummy script for pre-processing of a text in a given language."
+  echo "   This is a dummy script for post-processing of a text in a given language."
   usage ${0}
   echo "------"
   echo "PURPOSE:"
   echo "------"
-  echo "   Perform pre-processing of the given utf-8 text. Is to be called from"
+  echo "   Perform post-processing of the given utf-8 text. Is to be called from"
   echo "   the bpbd-processor server application. The script must work as follows:"
   echo "      1. if <language> == \"auto\":"
-  echo "        1.1. True: if language detection is enabled"
-  echo "           1.1.1. True: detect a language:"
-  echo "              1.1.1.1. Detected: remember the source language"
-  echo "              1.1.1.2. Failed: report an error to the standard output and finish"
-  echo "           1.1.2. False: report an error to the standard output and finish"
+  echo "        1.1. True: report an error to the standard output and finish"
   echo "        1.2. False: nothing"
-  echo "      2. Check if the language pre-processor is available"
-  echo "        2.1. Available: call the language pre-processor"
+  echo "      2. Check if the language post-processor is available"
+  echo "        2.1. Available: call the language post-processor"
   echo "           2.1. Success: output the language string to the standard output"
   echo "           2.1. Fail: report an error to the standard output and finish"
-  echo "        2.1. Not available: check if the default pre-processor is available"
-  echo "           2.1.1. Available: call the default pre-processor"
+  echo "        2.1. Not available: check if the default post-processor is available"
+  echo "           2.1.1. Available: call the default post-processor"
   echo "              2.1.1.1. Success: output the language string to the standard output"
   echo "              2.1.1.2. Fail: report an error to the standard output and finish"
   echo "           2.1.2. Not available: report an error to the standard output and finish"
-  echo "   Pre-processing might include, but is not limited by: "
-  echo "      * language detection - detecting the language in which the text is written"
-  echo "      * tokenization - splitting the language words and punctuation marks with spaces"
-  echo "      * lowercasing  - turning the text into the lowercase"
-  echo "      * unification  - unifying the text by substituting longer utf-8 symbols with shorter ones"
-  echo "   In addition to mentioned above, the result of this script must be two fold:"
-  echo "      * If the pre-processing went without errors:"
+  echo "   Post-processing includes, but is not limited by: "
+  echo "      * de-tokenization - removing unnecessry whitespaces"
+  echo "      * de-lowercasing  - restoring the capital letters in the wext where needed"
+  echo "      * restoring structure - making the translated text to have structure similar"
+  echo "                              to that of the original. Note that the script might,"
+  echo "                              does not have to, be able to find the original source"
+  echo "                              texts under the names:"
+  echo "              				     <work-dir>/<job-uid>.pre.in.txt"
+  echo "              				     <work-dir>/<job-uid>.pre.out.txt"
+  echo "              				  This is if the same preprocessing server was used to"
+  echo "              				  perform the source text pre- processing."
+  echo "   In addition to mentioned above, the output of this script must be two fold:"
+  echo "      * If the post-processing went without errors:"
   echo "         - The exit code must be 0"
   echo "         - The only data written to standard output must be the <language>"
-  echo "         - The pre-processed text must be written into the file:"
-  echo "              <work-dir>/<job-uid>.pre.out.txt"
-  echo "      * If the pre-processing failed:"
+  echo "         - The post-processed text must be written into the file:"
+  echo "              <work-dir>/<job-uid>.post.out.txt"
+  echo "      * If the post-processing failed:"
   echo "         - The exit code must be 1"
-  echo "         - The only data written to standard output must be the error message, max 1023 characters long"
+  echo "         - The only data written to standard output must be the error message,"
+  echo "           max 1023 characters long"
   echo "------"
   echo "NOTES:"
   echo "------"
   echo "   This is a dummy script that only emulates the real behavior, therefore:"
-  echo "      * The script only detects the input language to be \"german\""
-  echo "      * The script only copies the input file into the output"
+  echo "      * The script only copies the input file into the output."
 }
 
 #Reports an error, does not exit
@@ -118,8 +119,8 @@ export WORK_DIR=${1}
 
 #Read the job id and check on it, create input output file names
 export JOB_UID=${2}
-export INPUT_FILE=${WORK_DIR}/${JOB_UID}.pre.in.txt
-export OUTPUT_FILE=${WORK_DIR}/${JOB_UID}.pre.out.txt
+export INPUT_FILE=${WORK_DIR}/${JOB_UID}.post.in.txt
+export OUTPUT_FILE=${WORK_DIR}/${JOB_UID}.post.out.txt
 
 if ! [ -e "${INPUT_FILE}" ]; then
    error "${INPUT_FILE} could not be found!"
@@ -131,7 +132,8 @@ export LANGUAGE=${3}
 
 #Check if the language is to be auto detected
 if [ "${LANGUAGE}" = "auto" ]; then
-   LANGUAGE="german";
+   error "The language auto detection is not allowed!"
+   fail
 fi
 
 #Copy the input file into the output file

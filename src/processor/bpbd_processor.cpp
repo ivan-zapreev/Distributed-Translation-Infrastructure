@@ -125,21 +125,7 @@ static void prepare_config_structures(const uint argc, char const * const * cons
         params.m_work_dir = get_string(ini, section, processor_parameters::WORK_DIR_PARAM_NAME);
         string def_pre_call_templ = get_string(ini, section, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME, "", false);
         string def_post_call_templ = get_string(ini, section, processor_parameters::POST_CALL_TEMPL_PARAM_NAME, "", false);
-        params.add_language("", def_pre_call_templ, def_post_call_templ);
-         
-        //Get the supported language names
-        vector<string> lang_names;
-        tokenize(get_string(ini, section, processor_parameters::LANG_CONFIGS_PARAM_NAME),
-                lang_names, processor_parameters::LANG_CONFIGS_DELIMITER_STR);
-
-        //Read the translation server names configuration data
-        for (auto iter = lang_names.begin(); iter != lang_names.end(); ++iter) {
-            const string & lang_sect = *iter;
-            //Get the data from the translator section and add it to parameters
-            params.add_language(lang_sect,
-                    get_string(ini, lang_sect, processor_parameters::PRE_CALL_TEMPL_PARAM_NAME, "", false),
-                    get_string(ini, lang_sect, processor_parameters::POST_CALL_TEMPL_PARAM_NAME, "", false));
-        }
+        params.set_processors(def_pre_call_templ, def_post_call_templ);
 
         //Finalize the parameters
         params.finalize();

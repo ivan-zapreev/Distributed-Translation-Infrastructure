@@ -70,7 +70,7 @@ namespace uva {
                      * @param work_dir  the reference to the work directory name
                      */
                     language_config_struct(const string & work_dir)
-                    : m_work_dir(work_dir), m_lang(""), m_call_templ("") {
+                    : m_work_dir(work_dir), m_call_templ("") {
                     }
 
                     /**
@@ -105,12 +105,9 @@ namespace uva {
                     /**
                      * Allows to set the call template, throws in case the
                      * template parameters are not found!
-                     * @param lang the language
                      * @param call_templ the call template
                      */
-                    inline void set_call_template(string & lang, string & call_templ) {
-                        //Store the language
-                        m_lang = lang;
+                    inline void set_call_template(string & call_templ) {
                         //Store the template
                         m_call_templ = call_templ;
 
@@ -131,8 +128,6 @@ namespace uva {
                 private:
                     //Stores the reference to the work directory name string
                     const string & m_work_dir;
-                    //Stores the language 
-                    string m_lang;
                     //Stores the script call template
                     string m_call_templ;
 
@@ -177,12 +172,6 @@ namespace uva {
                     //Stores the work directory parameter name
                     static const string WORK_DIR_PARAM_NAME;
 
-                    //Stores the language configurations parameter name
-                    static const string LANG_CONFIGS_PARAM_NAME;
-
-                    //The delimiter for the language configuration names
-                    static const string LANG_CONFIGS_DELIMITER_STR;
-
                     //Stores the pre-processor script call template parameter name
                     static const string PRE_CALL_TEMPL_PARAM_NAME;
                     //Stores the post-processor script call template parameter name
@@ -197,92 +186,51 @@ namespace uva {
                     //The work directory for storing input and output files
                     string m_work_dir;
 
-                    //The default pre script call template, if
-                    //empty then there is no default script given
-                    language_config m_def_pre_config;
+                    //The pre-processor script call template, if
+                    //empty then there is no script given
+                    language_config m_pre_script_config;
 
-                    //The default post script call template, if
-                    //empty then there is no default script given
-                    language_config m_def_post_config;
-
-                    //Stores the mapping from the language id to its call script template
-                    lang_to_conf_map m_pre_configs;
-
-                    //Stores the mapping from the language id to its call script template
-                    lang_to_conf_map m_post_configs;
+                    //The post-processor script call template, if
+                    //empty then there is no script given
+                    language_config m_post_script_config;
 
                     /**
                      * The basic constructor
                      */
                     processor_parameters_struct()
-                    : m_def_pre_config(m_work_dir), m_def_post_config(m_work_dir) {
+                    : m_pre_script_config(m_work_dir), m_post_script_config(m_work_dir) {
                     }
 
                     /**
                      * The basic destructor
                      */
                     virtual ~processor_parameters_struct() {
-                        //Iterate through the maps and delete the language configuration objects
-                        for (auto iter = m_pre_configs.begin(); iter != m_pre_configs.end(); ++iter) {
-                            delete iter->second;
-                        }
-                        for (auto iter = m_post_configs.begin(); iter != m_post_configs.end(); ++iter) {
-                            delete iter->second;
-                        }
                     }
 
                     /**
-                     * Allows to add a new translator config.
-                     * @param lang the language, if empty then the call templates
-                     *        are for the default pre-/post-processors, is trimmed,
-                     *        is converted to lower case.
+                     * Allows set the pre and post processor scriptcall templates.
                      * @param pre_call_templ the pre-processor script call template,
-                     *                        if empty then ignored, is trimmed.
+                     *                        if empty then ignored: no pre-processor,
+                     *                        is trimmed.
                      * @param post_call_templ the post-processor script call template,
-                     *                        if empty then ignored, is trimmed.
+                     *                        if empty then ignored: no post-processor,
+                     *                        is trimmed.
                      */
-                    inline void add_language(string lang, string pre_call_templ, string post_call_templ) {
+                    inline void set_processors(string pre_call_templ, string post_call_templ) {
                         //Trim the string
-                        to_lower(trim(lang));
                         trim(pre_call_templ);
                         trim(post_call_templ);
 
-                        LOG_DEBUG << "Registering: '" << lang << "' pre: '" << pre_call_templ
-                                << "', post: '" << post_call_templ << "'" << END_LOG;
+                        LOG_DEBUG << "Registering: pre-processor script call: '" << pre_call_templ
+                                << "', post-processor script call: '" << post_call_templ << "'" << END_LOG;
 
-                        //Check if the language is given, if not then it is for the default one
-                        if (lang.empty()) {
-                            //Register the pre script if not empty
-                            if (!pre_call_templ.empty()) {
-                                m_def_pre_config.set_call_template(lang, pre_call_templ);
-                            }
-                            //Register the post script if not empty
-                            if (!post_call_templ.empty()) {
-                                m_def_post_config.set_call_template(lang, post_call_templ);
-                            }
-                        } else {
-                            //Register the language uid
-                            language_uid uid = language_registry::register_uid(lang);
-
-                            //Register the pre script if not empty
-                            if (!pre_call_templ.empty()) {
-                                //Instantiate a new language config
-                                language_config_ptr conf = new language_config(m_work_dir);
-                                //Set it with the data
-                                conf->set_call_template(lang, pre_call_templ);
-                                //Store it in the mapping
-                                m_pre_configs[uid] = conf;
-                            }
-
-                            //Register the post script if not empty
-                            if (!post_call_templ.empty()) {
-                                //Instantiate a new language config
-                                language_config * conf = new language_config(m_work_dir);
-                                //Set it with the data
-                                conf->set_call_template(lang, post_call_templ);
-                                //Store it in the mapping
-                                m_post_configs[uid] = conf;
-                            }
+                        //Register the pre script if not empty
+                        if (!pre_call_templ.empty()) {
+                            m_pre_script_config.set_call_template(pre_call_templ);
+                        }
+                        //Register the post script if not empty
+                        if (!post_call_templ.empty()) {
+                            m_post_script_config.set_call_template(post_call_templ);
                         }
                     }
 
@@ -290,60 +238,13 @@ namespace uva {
                      * Allows to finalize the parameters after loading.
                      */
                     inline void finalize() {
+                        ASSERT_CONDITION_THROW((!m_pre_script_config.is_defined() && !m_post_script_config.is_defined()),
+                                "Neither the pre-processor nor the post-processor are configured!");
+
                         ASSERT_CONDITION_THROW((m_num_threads == 0),
                                 string("The number of request threads: ") +
                                 to_string(m_num_threads) +
                                 string(" must be larger than zero! "));
-                    }
-
-                    /**
-                     * Allows to get the pre-processor config for the given job id and language.
-                     * @param lang the source language
-                     * @return the language config
-                     */
-                    inline const language_config & get_lang_pre_conf(string lang) const {
-                        return get_lang_call(lang, m_pre_configs, m_def_pre_config);
-                    }
-
-                    /**
-                     * Allows to get the post-processor config for the given job id and language.
-                     * @param lang the source language
-                     * @return the language config
-                     */
-                    inline const language_config & get_lang_post_conf(string lang) const {
-                        return get_lang_call(lang, m_post_configs, m_def_post_config);
-                    }
-
-                private:
-
-                    /**
-                     * Allows to get the processor config for the given job id and language.
-                     * @param lang the source language
-                     * @param configs the map of known configs
-                     * @param def the default config
-                     * @return the language config
-                     */
-                    static inline const language_config & get_lang_call(string lang,
-                            const lang_to_conf_map & configs,
-                            const language_config & def){
-                        //Put the language into the lower case
-                        to_lower(lang);
-
-                        //Register the language uid
-                        language_uid uid = language_registry::get_uid(lang);
-
-                        //Search for the uid
-                        auto iter = configs.find(uid);
-
-                        //If the language was found then we have
-                        //a string otherwise try the default
-                        if (iter != configs.end()) {
-                            //Get the entry to work with
-                            return *iter->second;
-                        } else {
-                            //Return the default result
-                            return def;
-                        }
                     }
                 };
 
@@ -366,26 +267,11 @@ namespace uva {
                  */
                 static inline std::ostream& operator<<(std::ostream& stream, const processor_parameters & params) {
                     //Dump the main server config
-                    stream << "Processor parameters: {server_port = " << params.m_server_port
+                    return stream << "Processor parameters: {server_port = " << params.m_server_port
                             << ", num_threads = " << params.m_num_threads
                             << ", work_dir = " << params.m_work_dir
-                            << ", def_pre_conf = " << params.m_def_pre_config
-                            << ", def_post_conf = " << params.m_def_post_config;
-
-                    //Dump the pre-processor configs
-                    stream << ", pre_configs: [";
-                    for (auto iter = params.m_pre_configs.begin(); iter != params.m_pre_configs.end(); ++iter) {
-                        stream << *iter->second << ", ";
-                    }
-
-                    //Dump the post-processor configs
-                    stream << "], post_configs: [";
-                    for (auto iter = params.m_post_configs.begin(); iter != params.m_post_configs.end(); ++iter) {
-                        stream << *iter->second << ", ";
-                    }
-
-                    //Finish the dump
-                    return stream << "]}";
+                            << ", pre_script_conf = " << params.m_pre_script_config
+                            << ", post_script_conf = " << params.m_post_script_config << "}";
                 }
             }
         }

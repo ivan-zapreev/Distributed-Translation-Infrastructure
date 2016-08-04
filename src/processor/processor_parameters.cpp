@@ -40,32 +40,9 @@ namespace uva {
                 const string processor_parameters::WORK_DIR_PARAM_NAME = "work_dir";
                 const string processor_parameters::PRE_CALL_TEMPL_PARAM_NAME = "pre_call_templ";
                 const string processor_parameters::POST_CALL_TEMPL_PARAM_NAME = "post_call_templ";
-                const string processor_parameters::LANG_CONFIGS_PARAM_NAME = "land_configs";
-                const string processor_parameters::LANG_CONFIGS_DELIMITER_STR = "|";
 
                 std::ostream& operator<<(std::ostream& stream, const language_config & config) {
-                    if (!config.m_lang.empty() || !config.m_call_templ.empty()) {
-                        stream << "{";
-
-                        //Output the language if it is not empty
-                        if (!config.m_lang.empty()) {
-                            stream << "lang = " << config.m_lang;
-                        }
-
-                        //Output the call template if it is not empty
-                        if (!config.m_call_templ.empty()) {
-                            if (!config.m_lang.empty()) {
-                                stream << ", ";
-                            }
-                            stream << "call_templ = " << config.m_call_templ;
-                        }
-
-                        stream << "}";
-                    } else {
-                        stream << "NONE";
-                    }
-
-                    return stream;
+                    return stream << "{" << "call_templ = " << (!config.m_call_templ.empty() ? config.m_call_templ : "NONE") << "}";
                 }
 
             }
