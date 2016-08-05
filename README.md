@@ -443,9 +443,14 @@ For complete USAGE and HELP type:
 As one can see the only required command-line parameter of the server is a configuration file. The latter shall contain the necessary information for running the processor server. The configuration file content is covered in section [Configuration file](#processor-config-file) below. Once the processor server is started there is still a way to change some of its run-time parameters. The latter can be done with a balancer console explained in the [Processor console](#processor-console) section below. 
 
 ####Processor config file
-In order to start the processor server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the server. Among other things, this config file specifies the pre/post-processor scripts to be used. An example configuration file is: `[Project-Folder]/processor.cfg`. The dummy versions of the, used in this configuration file, pre/post-processor scripts are located in: `[Project-Folder]/script/text/`. Run these scripts to get more details on their expected functionality. Generally speaking, the content of the text processor configuration file is self explanatory and contains a significant amount of comments.
+In order to start the processor server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the server. Among other things, this config file specifies the pre/post-processor scripts to be used. An example configuration file is: `[Project-Folder]/processor.cfg`. The dummy versions of the, used in this configuration file, pre/post-processor scripts are located in: `[Project-Folder]/script/text/`:
 
-When run with a properly formed configuration file, **bpbd-processor** gives the following output. Note the `-d info3` option ensuring additional information output during starting up and connecting to translation servers.
+   * `pre_process.sh` - the dummy example pre-processor script
+   * `post_process.sh` - the dummy example post-processor script
+
+Note that, the pre/post- processor scripts do not need to be bash scripts. They can be anything command-line executable that satisfies the scripts' interface. Run these scripts to get more details on their expected interface and functionality. 
+
+The content of the text processor configuration file is self explanatory and contains a significant amount of comments. When run with a properly formed configuration file, **bpbd-processor** gives the following output. Note the `-d info3` option ensuring additional information output during starting up and connecting to translation servers.
 
 ```
 $ bpbd-processor -d info3 -c ../processor.cfg 
@@ -701,14 +706,12 @@ The results show that the developed LM model trie representations are highly com
 ##General design
 This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software.
 
-Note that, the design of the system with text pre/post-processing is given at the very end of this section and is not reflected in the ultimate design diagram. The latter is done due to the fact that the text pre/post-processing, although an important part of the translation process, is currently considered to be an optional task.
-
-We first provide the ultimate design we are going to work for and then give some insights into the currently implemented version thereof.
+Further, in [The ultimate design](#the-ultimate-design) section, we first provide the ultimate design we are going to work for. Next, in [The current design](#the-current-design) section, we give some insights into the currently implemented version of the ultimate design. At last, in [The text processing](#the-text-processing) section we give several examples of the deployments with text pre/post-processing server(s).
 
 The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
 
 ###The ultimate design
-Consider the deployment diagram below. It shows the ultimate design we are aiming at.
+Consider the deployment diagram below. It shows the ultimate design we are aiming at. Note that, this design does not employ text pre/post-processing servers as this task, although an important part of the translation process, is currently considered to be optional.
 
 ![The ultimate deployment Image](./doc/models/deployment/deployment_ideal.png "The ultimate deployment")
 
@@ -783,9 +786,13 @@ An example sequence diagram with several load balancing scenarios can be found b
 
 ![The Load Balancer sequences Image ](./doc/models/balancer/balancer_sequence.png "Load Balancer sequences")
 
-####Text pre/post-processing servers
-There can be multiple instances of the text pre/post- processing servers and the configurations in which the system can be run are given on the image below. Note that, any pre/post-processing server might support multiple languages and even language detection for pre-processing.
+###The text processing
+There can be multiple instances of the text pre/post- processing servers and some example of configurations in which the system can be run are given in the Figure below. Note that, any pre/post-processing server might support multiple languages and even language detection for pre-processing. Also, the decoder can be substituted with a load balancer spreading the load between multiple decoders.
+
 ![The Text Processor deployments Image ](./doc/models/deployment/processor_first.png "Text Processor deployments")
+
+The reason why there is no load balancer capability for the pre/post-processing server at the moment is that these tasks are expected to be sufficiently less computation intensive, and also optional, when compared to the text translation task.
+
 Further we shall briefly describe some of the possible translation system deployment configurations, employing the pre/post- processor.
 
 ##### Type - 01: Only pre-processing, different physical servers
