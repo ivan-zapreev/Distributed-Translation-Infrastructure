@@ -73,7 +73,7 @@ namespace uva {
                      */
                     virtual ~post_proc_job() {
                         //Delete the job files
-                        delete_job_files();
+                        delete_files<false>();
                     }
 
                     /**

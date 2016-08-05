@@ -90,9 +90,8 @@ namespace uva {
                      * The basic destructor
                      */
                     virtual ~pre_proc_job() {
-                        //Nothing to be done, do not delete the files yet, they
-                        //will be deleted if the session is closed or once the
-                        //post-processor job is done.
+                        //Delete the job files
+                        delete_files<true>();
                     }
 
                     /**

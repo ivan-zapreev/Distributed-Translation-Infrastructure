@@ -46,12 +46,15 @@ function info() {
   echo "      * de-lowercasing  - restoring the capital letters in the wext where needed"
   echo "      * restoring structure - making the translated text to have structure similar"
   echo "                              to that of the original. Note that the script might,"
-  echo "                              does not have to, be able to find the original source"
-  echo "                              texts under the names:"
+  echo "                              but does not have to, want to have access to the original"
+  echo "                              text(s) of the pre-processor job, used to be stored as:"
   echo "              				     <work-dir>/<job-uid>.pre.in.txt"
   echo "              				     <work-dir>/<job-uid>.pre.out.txt"
-  echo "              				  This is if the same preprocessing server was used to"
-  echo "              				  perform the source text pre- processing."
+  echo "              				  If not backup is done by the pre-processor script then"
+  echo "                              these files are already deleted by the bpbd-processor"
+  echo "                              and not available by itself. Also note that, the pre-"
+  echo "                              processor server, used by the client, does not have to"
+  echo "                              be the same as the server used for post-processoring."
   echo "   In addition to mentioned above, the output of this script must be two fold:"
   echo "      * If the post-processing went without errors:"
   echo "         - The exit code must be 0"
@@ -138,6 +141,12 @@ fi
 
 #Copy the input file into the output file
 cat ${INPUT_FILE} > ${OUTPUT_FILE}
+
+#NOTE: In case the data is needed for the post-processor script -
+#move the input file to a new name and copy the output file, as
+#it is still to be read by the server, thus no move.
+#mv  ${INPUT_FILE} ${INPUT_FILE}.backup
+#cp  ${OUTPUT_FILE} ${OUTPUT_FILE}.backup
 
 #Output the "detected" language
 echo ${LANGUAGE}

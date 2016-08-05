@@ -107,7 +107,7 @@ namespace uva {
                     processor_job(const language_config & config, const session_id_type session_id,
                             const string job_token, proc_req_in *req, const response_creator & resp_crt_func,
                             const session_response_sender & resp_send_func)
-                    : m_is_canceled(false), m_config(config), m_session_id(session_id),
+                    : m_is_canceled(false), m_is_file_gen(false), m_config(config), m_session_id(session_id),
                     m_job_token(job_token), m_exp_num_chunks(req->get_num_chunks()),
                     m_res_lang(""), m_req_tasks(NULL), m_act_num_chunks(0), m_notify_job_done_func(NULL),
                     m_resp_crt_func(resp_crt_func), m_resp_send_func(resp_send_func) {
@@ -236,26 +236,40 @@ namespace uva {
                     //or not. If the job is canceled then there is no need
                     //to do anything including sending the responses.
                     a_bool_flag m_is_canceled;
+                    //Stores the flag indicating whether there were files generated to the disk
+                    a_bool_flag m_is_file_gen;
 
                     /**
-                     * Allows to delete the files from the given job
+                     * Allows to delete the files from the given job.
+                     * Note that the files will only be attempted to
+                     * be deleted if some files were generated to the disk.
+                     * The method is synchronized on the files lock.
+                     * @param is_pnp if true then we delete the pre-processing
+                     *               files if false the post processing ones.
                      */
-                    inline void delete_job_files() {
-                        delete_files(m_config.get_work_dir(), m_job_token);
+                    template<bool is_pnp>
+                    inline void delete_files() {
+                        recursive_guard guard(m_file_lock);
+
+                        //Delete the files only if the script was called
+                        if (m_is_file_gen) {
+                            delete_files<is_pnp>(m_config.get_work_dir(), m_job_token);
+                        }
                     }
 
                     /**
                      * Allows to delete the files from the given wildcards
+                     * @param is_pnp if true then we delete the pre-processing
+                     *               files if false the post processing ones.
                      * @param work_dir the work directory
                      * @param job_token the job token
                      */
+                    template<bool is_pnp>
                     static inline void delete_files(const string & work_dir, const string & job_token) {
                         //Create the command
                         const string cmd = string("rm -f ") +
-                                get_text_file_name<true, true>(work_dir, job_token) + " " +
-                                get_text_file_name<true, false>(work_dir, job_token) + " " +
-                                get_text_file_name<false, true>(work_dir, job_token) + " " +
-                                get_text_file_name<false, false>(work_dir, job_token);
+                                get_text_file_name<is_pnp, true>(work_dir, job_token) + " " +
+                                get_text_file_name<is_pnp, false>(work_dir, job_token);
 
                         //make the system call
                         const int dir_err = system(cmd.c_str());
@@ -318,7 +332,7 @@ namespace uva {
                                     file_name + string(" for writing"));
 
                             //Iterate and output
-                            for (size_t idx = 0; (idx < m_exp_num_chunks); ++idx) {
+                            for (size_t idx = 0; (idx < m_exp_num_chunks) && !m_is_canceled; ++idx) {
                                 //Output the text to the file, do not add any new lines, put text as it is.
                                 out_file << m_req_tasks[idx]->get_chunk();
                                 //Log the chunks for info
@@ -327,6 +341,9 @@ namespace uva {
 
                             //Close the file
                             out_file.close();
+
+                            //Set the flag to true, the file was generated
+                            m_is_file_gen = true;
 
                             LOG_DEBUG << "The text is stored into: " << file_name << END_LOG;
                         }
@@ -416,6 +433,10 @@ namespace uva {
                                 LOG_DEBUG << "Closing the script's pipeline" << END_LOG;
                                 //Wait until the process finishes and analyze its status
                                 int status = pclose(fp);
+
+                                //Set the flag to true, the file was generated
+                                m_is_file_gen = true;
+
                                 LOG_DEBUG << "Checking if we can get the script exit status" << END_LOG;
                                 if (status == -1) {
                                     //Error the process status is not possible to retrieve!
