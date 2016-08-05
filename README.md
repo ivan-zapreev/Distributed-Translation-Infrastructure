@@ -699,7 +699,11 @@ The results show that the developed LM model trie representations are highly com
 * **h2dm** following the intuitions of the KenLM implementation, realizes the hash-map based trie using the linear probing hash map which turns to be the fastest trie with one of the best memory consumption. This tries type is used as a default one
 
 ##General design
-This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software. We first provide the ultimate design we are going to work for and then give some insights into the currently implemented version thereof.
+This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software.
+
+Note that, the design of the system with text pre/post-processing is given at the very end of this section and is not reflected in the ultimate design diagram. The latter is done due to the fact that the text pre/post-processing, although an important part of the translation proces, is currently considered to be an optional task.
+
+We first provide the ultimate design we are going to work for and then give some insights into the currently implemented version thereof.
 
 The designs were created using [Unified Modeling Language (UML)](http://www.uml.org/) with the help of the online UML tool called [UMLetino](http://www.umletino.com/).
 
@@ -778,6 +782,27 @@ The internal Load Balancer design is depicted in the Following figure. It's purp
 An example sequence diagram with several load balancing scenarios can be found below. This Figure shows the process of handling of an incoming translation job request. It also contains several optional scenarios for when s client session is dropped or the translation server closes the connection.
 
 ![The Load Balancer sequences Image ](./doc/models/balancer/balancer_sequence.png "Load Balancer sequences")
+
+####Text pre/post-processing servers
+There can be multiple instances of the text pre/post- processing servers and the configurations in which the system can be run are given on the image below. Note that, any pre/post-processing server might support multiple languages and even language detecton for pre-processing.
+![The Text Processor deployments Image ](./doc/models/deployment/processor_first.png "Text Processor deployments")
+Further we shall briefly describe some of the possible translation system deployment configurations, employing the pre/post- processor.
+
+##### Type - 01: No pre/post-processing
+The translation system can be run as is, without any pre- or post- processor. In this case the provided source text is supposed to be tokenized (splitting the language words and punctuation marks with ASCII spaces), lower cased (turning the text into the lowercase), unifyied (unifying the text by substituting longer utf-8 symbols with shorter ones), and there must be just one sentence per source text file line. The resulting target text will be also tokenized and lowercased with just one sentence per line.
+
+##### Type - 02: Only pre-processing
+This is the situation when only the pre-processing is enabled. Whether the pre-processing script supports language detection will depend on the concrete pre-processing script implementation. If not, and it is requested, then an error will be reported by the processing server. The resulting target text will be tokenized and lowercased with just one sentence per line.
+
+##### Type - 03: Only post-processing
+This is the situation when only the post-processing is enabled. In this case the provided source text is supposed to be tokenized (splitting the language words and punctuation marks with ASCII spaces), lower cased (turning the text into the lowercase), unifyied (unifying the text by substituting longer utf-8 symbols with shorter ones), and there must be just one sentence per source text file line. The resulting target text will de untokenized and uppercased but one can still expect to get one target sentence per line in the output.
+
+##### Type - 04: Single pre/post-processing application and server
+This is the situation when both pre- and post-processing are enabled, and both are run within the same application on a server separate.
+
+##### Type - 05: 
+
+##### Type - 06: 
 
 ##Software details
 In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.
