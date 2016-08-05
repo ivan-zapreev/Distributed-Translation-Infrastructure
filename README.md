@@ -787,28 +787,31 @@ An example sequence diagram with several load balancing scenarios can be found b
 ![The Load Balancer sequences Image ](./doc/models/balancer/balancer_sequence.png "Load Balancer sequences")
 
 ###The text processing
-There can be multiple instances of the text pre/post- processing servers and some example of configurations in which the system can be run are given in the Figure below. Note that, any pre/post-processing server might support multiple languages and even language detection for pre-processing. Also, the decoder can be substituted with a load balancer spreading the load between multiple decoders.
+This section shows some deployment configurations in which the translation system, with text pre/post-processing, can be run. Note that, any pre/post-processing server in the figure below might support multiple languages and even language detection for pre-processing. Also, the decoders can be substituted with load balancer instances, spreading the translation load between multiple decoders.
 
 ![The Text Processor deployments Image ](./doc/models/deployment/processor_first.png "Text Processor deployments")
 
-The reason why there is no load balancer capability for the pre/post-processing server at the moment is that these tasks are expected to be sufficiently less computation intensive, and also optional, when compared to the text translation task.
+The reason why there is no load balancer capability for the pre/post-processing server at the moment is that these tasks are expected to be sufficiently less computation intensive, and are also optional, when compared to the text translation task itself.
 
-Further we shall briefly describe some of the possible translation system deployment configurations, employing the pre/post- processor.
+Further, we shall briefly describe the possible translation system deployment configurations, specified on the figure above.
 
 ##### Type - 01: Only pre-processing, different physical servers
-This is the situation when only the pre-processing is enabled. Whether the pre-processing script supports language detection will depend on the concrete pre-processing script implementation. If not, and it is requested, then an error will be reported by the processing server. The resulting target text will be tokenized and lower cased with just one sentence per line.
+This is the situation when only the pre-processing is enabled. Whether the pre-processing script supports language identification or not will depend on the concrete pre-processing script implementation. If not, and it is requested, then an error is to be reported by the processing server. Since there is no post-processor, the resulting target text will be output by the translation system "as is", i.e. it will be tokenized and lower cased, and with just one sentence per line. This configuration can be recommended for systems with large load from the pre-processing script.
 
 ##### Type - 02: Only post-processing, different physical servers
-This is the situation when only the post-processing is enabled. In this case the provided source text is supposed to be tokenized (splitting the language words and punctuation marks with ASCII spaces), lower cased (turning the text into the lowercase), unified (unifying the text by substituting longer UTF-8 symbols with shorter ones), and there must be just one sentence per source text file line. The resulting target text will de untokenized and upper cased but one can still expect to get one target sentence per line in the output.
+This is the situation when only the post-processing is enabled. In this case the provided source text is supposed to be tokenized (words and punctuation marks are to be separated with single ASCII spaces), lower cased (all letters must be in lower case), unified (the longer UTF-8 character sequences are to be substituted with the equivalent but shorter ones), and there must be just one sentence per line in the source text file. The resulting target text will de untokenized and upper cased but one can still expect to get one target sentence per line in the output as there is no source text available to restore the original text structure. This configuration can be recommended for systems with large load from the post-processing scripts.
 
 ##### Type - 03: Pre- and post-processing, different physical servers
-This is the situation when both pre- and post-processing are enabled, and both are run within the same application on a server separate.
+This is the situation when both pre- and post-processing are enabled. Yet, all of the servers are run on different physical computation nodes. Please note that, this complicates the situation when the post-processor script needs the source text for restoring the text structure. The complication comes from the fact that, even if the pre-processor script makes and stores a copy of the source text file, it is yet to be communicated to the server doing post-processing. This configuration can be recommended for systems with large load from the pre/post-processing scripts.
 
 ##### Type - 04: Pre- and post-processing, one physical server
+This is the situation when both pre- and post-processing are enabled and are run together on one physical server. In this case, internal - temporary file sharing between the pre- and post-processing scripts becomes simpler. This configuration can be recommended for servers with multiple processors and shared hard drives or if the pre- and post- processing have low performance impact on the system. In the latter case, it might be easier to just run the configuration of *Type - 06*.
 
-##### Type - 05: All on one server
+##### Type - 05: Separate applications on one physical server
+This is the situation when both pre- and post-processing are enabled and are run together on one physical server with the translation system. In this case, internal - temporary file sharing between the pre- and post-processing scripts becomes simpler. This configuration can be recommended for servers with multiple processors and multiple shared hard drives or if the pre- and post- processing have low performance impact on the system or as a test configuration.
 
 ##### Type - 06: Pre- and post-processing, one application, one physical server
+This is the situation when both pre- and post-processing are enabled and are run together within one application on one physical server. In this case, internal - temporary file sharing between the pre- and post-processing scripts becomes simpler. This configuration can be recommended for servers with multiple processors and multiple shared hard drives or if the pre- and post- processing have low performance impact on the system.
 
 ##Software details
 In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.
@@ -820,18 +823,24 @@ Additional information about the source code implementation classes can be found
 ###_common packages_
 The project's common packages are located in `[Project-Folder]/inc/common`:
 
-* `/messaging` - web-socket message related classes common for the bpbd balancer, server and client
+* `/messaging` - web-socket message related classes common for the bpbd balancer, server, processor, and client applications
 * `/utils` - various utility classes and libraries needed for logging and etc.
     - `/cmd` - the common classed for the balancer/server console
     - `/containers` - some container type classes
     - `/file` - file-reading related classes
     - `/logging` - logging classes
     - `/monitor` - memory usage and CPU times monitor classes
+    - `/text` - text utility classes and functions
     - `/threads` - the common classes used in multi-threading
 
 ###_bpbd-balancer_
 All of the *bpbd-balancer* specific implementation classes are located in `[Project-Folder]/inc/balancer`.
 Note that the balancer application, by nature, incorporates features of the client and server. Therefore, it uses the source code base of the _bpbd-client_ and _bpbd-server_, especially their messaging-related classes.
+
+###_bpbd-processor_
+All of the *bpbd-processor* specific implementation classes are located in `[Project-Folder]/inc/processor`.
+
+* `/messaging` - client-server related communication classes
 
 ###_bpbd-client_
 All of the *bpbd-client* specific implementation classes are located in `[Project-Folder]/inc/client`.
@@ -889,6 +898,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **11.03.2016** - Updated to reflect the latest project status. 
 * **13.06.2016** - Added information on the `-c` option of the client. Introduced the server tuning mode for lattice generation. Updated description of model features and lambda's thereof. Prepared for the release 1.1.
 * **22.07.2016** - Added information about the Web UI client and the Load Balancer. Updated the document with small changes in the existed text.
+* **05.08.2016** - Added the description of the *bpbd-processor* and related script. Made the corresponding changes in the sections on the console client.
 
 ##Appendix Tests
 
