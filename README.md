@@ -1,19 +1,21 @@
-#**The Basic Phrase-Based Statistical Machine Translation Tool**
+#**Basic Translation Infrastructure**
 
 **Author:** [Dr. Ivan S. Zapreev](https://nl.linkedin.com/in/zapreevis)
 
-**Project pages:** [Git-Hub-Project](https://github.com/ivan-zapreev/Back-Off-Language-Model-SMT)
+**Project pages:** [Git-Hub-Project](https://github.com/ivan-zapreev/Basic-Translation-Infrastructure)
 
 ##Introduction
-This fork from the Back Off Language Model(s) for SMT project is aimed at creating an entire phrase-based statistical machine translation infrastructure. The delivered software follows a client/server architecture based on WebSockets for C++ and consists of the following applications:
+This project is aimed at creating a basic phrase-based statistical machine translation infrastructure. The delivered software follows a client/server architecture based on JSON over WebSockets for C++ and consists of the following applications:
 
-+ **bpbd-client** - a thin client to send the translation job requests to the translation server and obtain results
 + **bpbd-server** - the translation server consisting of the following main components:
     - *Decoder* - the decoder component responsible for translating text from one language into another
     - *LM* - the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities
     - *TM* - the translation model implementation required for providing source to target language phrase translation and the probabilities thereof
     - *RM* - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof
 + **bpbd-balancer** - the load balancer that has the same WebSockets interface as **bpbd-server** and is supposed to distribute load balance between multiple translation server instances.
++ **bpbd-processor** - the text pre/post-processing server that allows to employ various third party text processing tools for different languages. Its purpose is to prepare text for translation and to post process the translated text to make it more readable.
++ **bpbd-client** - a thin client to send the translation job requests to the translation server and obtain results
++ **translate.html** - a thin web client to send the translation job requests to the translation server and obtain results
 + **lm-query** - a stand-alone language model query tool that allows to perform language model queries and estimate the joint phrase probabilities
 
 ###Introduction to phrase-based SMT
@@ -63,6 +65,7 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * **`src/`** - C++ source files
     * **`script/`** - stores the various scripts
     * **`script/web/`** - Web client for translation system
+    * **`script/text/`** - Dummy pre/post-processing scripts
     * **`nbproject/`** - Netbeans project data
     * **`data/`** - stores the tests-related data
     * `server.cfg` - example server configuration file
@@ -82,7 +85,7 @@ This project supports two major platforms: Linux and Mac Os X. It has been succe
 **Notes:**
 
 1. There was only a limited testing performed on 32-bit systems.
-2. The project is not yet possible to build on Windows platform even under [Cygwin](https://www.cygwin.com/).
+2. The project is **not possible** to build on Windows platform even under [Cygwin](https://www.cygwin.com/).
 
 ##Building the project
 Building this project requires **gcc** version >= *4.9.1* and **cmake** version >= 2.8.12.2.
@@ -171,7 +174,7 @@ Note that not all of the combinations of the `lm_word_index` and `lm_model_type`
 * `rm_builder_type` - currently there is just one builder type available: `rm_basic_builder<rm_model_reader>`
 
 ##Using software
-This section briefly covers how the provided software can be used for performing text translations. We begin with the **bpbd-server** and the **bpbd-balancer**. Next, we talk about the client applications **bpbd-client** and Web UI. Finally, we briefly talk about the **lm-query**. For information on the LM, TM and RM model file formats and others see section [Input file formats](#input-file-formats)
+This section briefly covers how the provided software can be used for performing text translations. We begin with **bpbd-server**, **bpbd-balancer** and **bpbd-processor**. Next, we talk about the client applications **bpbd-client** and Web UI. Finally, we briefly talk about the **lm-query**. For information on the LM, TM and RM model file formats and others see section [Input file formats](#input-file-formats)
 
 ###Translation server: _bpbd-server_
 The translation server is used for two things:
@@ -362,7 +365,7 @@ Brief USAGE:
 For complete USAGE and HELP type: 
    bpbd-balancer --help
 ```
-As one can see the only required command-line parameter of the translation server is a configuration file. The latter shall contain the necessary information for running the balancer server and connecting to translation servers. The configuration file content is covered in section [Configuration file](#balancer-config-file) below. Once the load balancer is started there is still a way to change some of its run-time parameters. The latter can be done with a balancer console explained in the [Server console](#balancer-console) section below. 
+As one can see the only required command-line parameter of the server is a configuration file. The latter shall contain the necessary information for running the balancer server and connecting to translation servers. The configuration file content is covered in section [Configuration file](#balancer-config-file) below. Once the load balancer is started there is still a way to change some of its run-time parameters. The latter can be done with a balancer console explained in the [Balancer console](#balancer-console) section below. 
 
 ####Balancer config file
 In order to start the load balancer one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the balancer server. Among other things, this config file specifies the location of the translation servers to connect to. An example configuration file is: `[Project-Folder]/balancer.cfg`. The content of this file is self explanatory and contains a significant amount of comments.
@@ -417,6 +420,69 @@ USAGE: 	'set ont  <positive integer> & <enter>'  - set the number of outgoing po
 >> 
 ```
 
+###Text processor: _bpbd-processor_
+The text processor server can be used for the following things:
+_(i)_ Pre-process text for translation;
+_(ii)_ Detect the source language;
+_(iii)_ Post-process text after translation;
+The use of this executable is straightforward. When started from a command line without any parameters, **bpbd-processor** reports on the available command-line options:
+
+```
+$ bpbd-processor
+<...>
+PARSE ERROR:  
+             Required argument missing: config
+
+Brief USAGE: 
+   bpbd-processor  [-d <error|warn|usage|result|info|info1|info2|info3>] -c
+                   <processor configuration file> [--] [--version] [-h]
+
+For complete USAGE and HELP type: 
+   bpbd-processor --help
+```
+As one can see the only required command-line parameter of the server is a configuration file. The latter shall contain the necessary information for running the processor server. The configuration file content is covered in section [Configuration file](#processor-config-file) below. Once the processor server is started there is still a way to change some of its run-time parameters. The latter can be done with a balancer console explained in the [Processor console](#processor-console) section below. 
+
+####Processor config file
+In order to start the processor server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the server. Among other things, this config file specifies the pre/post-processor scripts to be used. An example configuration file is: `[Project-Folder]/processor.cfg`. The dummy versions of the, used in this configuration file, pre/post-processor scripts are located in: `[Project-Folder]/script/text/`. Run these scripts to get more details on their expected functionality. Generally speaking, the content of the text processor configuration file is self explanatory and contains a significant amount of comments.
+
+When run with a properly formed configuration file, **bpbd-processor** gives the following output. Note the `-d info3` option ensuring additional information output during starting up and connecting to translation servers.
+
+```
+$ bpbd-processor -d info3 -c ../processor.cfg 
+<...> 
+USAGE: The requested debug level is: 'INFO3', the maximum build level is 'INFO3' the set level is 'INFO3'
+USAGE: Loading the processor configuration option from: ../processor.cfg
+INFO: The configuration file has been parsed!
+USAGE: The lattice file folder is: ./proc_text
+WARN: The directory: ./proc_text does not exist, creating!
+INFO: Processor parameters: {server_port = 9000, num_threads = 20, work_dir = ./proc_text, pre_script_conf = {call_templ = ../script/text/pre_process.sh <WORK_DIR> <JOB_UID> <LANGUAGE>}, post_script_conf = {call_templ = ../script/text/post_process.sh <WORK_DIR> <JOB_UID> <LANGUAGE>}}
+INFO3: Sanity checks are: OFF !
+USAGE: Running the processor server ...
+USAGE: The processor is started!
+USAGE: --------------------------------------------------------
+<...> 
+```
+Note that for less output one can simply run `bpbd-processor -c ../balancer.cfg`.
+
+####Processor console
+Once the processor is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the text processor. The list of available console commands is given in the listing below:
+
+```
+$ bpbd-processor -d info3 -c ../balancer.cfg 
+<...>
+USAGE: The processor is started!
+USAGE: --------------------------------------------------------
+USAGE: General console commands: 
+USAGE: 	'q & <enter>'  - to exit.
+USAGE: 	'h & <enter>'  - print HELP info.
+USAGE: 	'r & <enter>'  - run-time statistics.
+USAGE: 	'p & <enter>'  - print program parameters.
+USAGE: 	'set ll  <level> & <enter>'  - set log level.
+USAGE: Specific console commands: 
+USAGE: 	'set nt  <positive integer> & <enter>'  - set the number of processor threads.
+>> 
+```
+
 ###Translation client: _bpbd-client_
 The translation client is used to communicate with the server by sending translation job requests and receiving the translation results. When started from a command line without any parameters, **bpbd-client** reports on the available command-line options:
 
@@ -428,19 +494,18 @@ PARSE ERROR:
 
 Brief USAGE: 
    bpbd-client  [-d <error|warn|usage|result|info|info1|info2|info3>] [-c]
-                [-t] [-l <min #sentences per request>] [-u <max #sentences
-                per request>] [-p <server port>] [-s <server address>] [-o
-                <target language>] -O <target file name> -i <source
-                language> -I <source file name> [--] [--version] [-h]
+                [-l <min #sentences per request>] [-u <max #sentences per
+                request>] [-p <post-processor uri>] [-s <server uri>] [-r
+                <pre-processor uri>] [-o <target language>] -O <target file
+                name> -i <source language> -I <source file name> [--]
+                [--version] [-h]
 
 For complete USAGE and HELP type: 
    bpbd-client --help
 ```
-One of the main required parameters of the translation client is the input file. The latter should contain text in the source language to be translated into the target one. The input file is expected to have one source language sentence per line. The client application does have a basic algorithm for tokenising sentences and putting them into the lower case, i.e. preparing each individual sentence for translation but this algorithm is pretty rudimental and will only work for Latin alphabet based languages. Therefore, it is suggested that the input file should not only contain one sentence per line but each sentence must be provided in a tokenized (space-separated), lower-case format.
+One of the main required parameters of the translation client is the input file. The latter should contain text, in **UTF8** encoding - not checked upon, to be translated. In case no pre-processing is requested, *see the [-r] option*, the text is sent to the translation server as is. In that case it is expected that, the text contains one sentence per line and the sentences are lower-cased and tokenized (space-separated).
 
-Once started, the translation client makes a web socket connection to the translation server, reads text from the input file, splits it into a number of translation job requests (which are sent to the translation server) and waits for the reply. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. If not chosen then the splitting is done automatically by the client program. For more info run: `bpbd-client --help`.
-
-Once the translations are performed, and the translation job responses are received, the resulting text is written to the output file. Each translated sentence is put on a separate line in the same order it was seen in the input file. The information on the translation process is placed into the logging file that has the same name as the output file, but is suffixed with `.log`. The latter file contains information such as if a job/task was canceled, or an error occurred.
+Once started, if pre-processing server is specified (the `-r` option), the source text is sent for pre-processing. In case the source language is to be detected, the value of the `-i` parameter must be set to `auto`. If pre-processing went without errors, the translation client makes a web socket connection to the translation server, reads text from the input file, splits it into a number of translation job requests (which are sent to the translation server) and waits for the reply. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. After the text is translated, the information on the translation process is placed into the logging file that has the same name as the output file, but is suffixed with `.log`. The latter contains information such as: if a job/task was canceled, or an error occurred. Next, if post-processing server is specified (the `-p` option), the text is sent to post-processing. After the post-processed text is received, the result is written to the output file. If the post-processing server was not specified then the target text is saved "as is". For more info run: `bpbd-client --help`.
 
 For the sake of better tuning the translation server's parameters, we introduce a special client-side option: `-c`. This optional parameter allows to request supplementary translation-process information per sentence. This information is also placed into the `.log` file. Currently, we only provide multi-stack level's load factors. For example, when translating from German into English the next sentence: `" wer ist voldemort ? "` with the `-c` option, we get an output:
 
