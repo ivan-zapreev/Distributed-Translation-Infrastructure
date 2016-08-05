@@ -701,7 +701,7 @@ The results show that the developed LM model trie representations are highly com
 ##General design
 This section describes the ultimate and the current designs of the provided software. Note that the designs below are schematic only and the actual implementation might deviate. Yet, they are sufficient to reflect the overall structure of the software.
 
-Note that, the design of the system with text pre/post-processing is given at the very end of this section and is not reflected in the ultimate design diagram. The latter is done due to the fact that the text pre/post-processing, although an important part of the translation proces, is currently considered to be an optional task.
+Note that, the design of the system with text pre/post-processing is given at the very end of this section and is not reflected in the ultimate design diagram. The latter is done due to the fact that the text pre/post-processing, although an important part of the translation process, is currently considered to be an optional task.
 
 We first provide the ultimate design we are going to work for and then give some insights into the currently implemented version thereof.
 
@@ -784,25 +784,24 @@ An example sequence diagram with several load balancing scenarios can be found b
 ![The Load Balancer sequences Image ](./doc/models/balancer/balancer_sequence.png "Load Balancer sequences")
 
 ####Text pre/post-processing servers
-There can be multiple instances of the text pre/post- processing servers and the configurations in which the system can be run are given on the image below. Note that, any pre/post-processing server might support multiple languages and even language detecton for pre-processing.
+There can be multiple instances of the text pre/post- processing servers and the configurations in which the system can be run are given on the image below. Note that, any pre/post-processing server might support multiple languages and even language detection for pre-processing.
 ![The Text Processor deployments Image ](./doc/models/deployment/processor_first.png "Text Processor deployments")
 Further we shall briefly describe some of the possible translation system deployment configurations, employing the pre/post- processor.
 
-##### Type - 01: No pre/post-processing
-The translation system can be run as is, without any pre- or post- processor. In this case the provided source text is supposed to be tokenized (splitting the language words and punctuation marks with ASCII spaces), lower cased (turning the text into the lowercase), unifyied (unifying the text by substituting longer utf-8 symbols with shorter ones), and there must be just one sentence per source text file line. The resulting target text will be also tokenized and lowercased with just one sentence per line.
+##### Type - 01: Only pre-processing, different physical servers
+This is the situation when only the pre-processing is enabled. Whether the pre-processing script supports language detection will depend on the concrete pre-processing script implementation. If not, and it is requested, then an error will be reported by the processing server. The resulting target text will be tokenized and lower cased with just one sentence per line.
 
-##### Type - 02: Only pre-processing
-This is the situation when only the pre-processing is enabled. Whether the pre-processing script supports language detection will depend on the concrete pre-processing script implementation. If not, and it is requested, then an error will be reported by the processing server. The resulting target text will be tokenized and lowercased with just one sentence per line.
+##### Type - 02: Only post-processing, different physical servers
+This is the situation when only the post-processing is enabled. In this case the provided source text is supposed to be tokenized (splitting the language words and punctuation marks with ASCII spaces), lower cased (turning the text into the lowercase), unified (unifying the text by substituting longer UTF-8 symbols with shorter ones), and there must be just one sentence per source text file line. The resulting target text will de untokenized and upper cased but one can still expect to get one target sentence per line in the output.
 
-##### Type - 03: Only post-processing
-This is the situation when only the post-processing is enabled. In this case the provided source text is supposed to be tokenized (splitting the language words and punctuation marks with ASCII spaces), lower cased (turning the text into the lowercase), unifyied (unifying the text by substituting longer utf-8 symbols with shorter ones), and there must be just one sentence per source text file line. The resulting target text will de untokenized and uppercased but one can still expect to get one target sentence per line in the output.
-
-##### Type - 04: Single pre/post-processing application and server
+##### Type - 03: Pre- and post-processing, different physical servers
 This is the situation when both pre- and post-processing are enabled, and both are run within the same application on a server separate.
 
-##### Type - 05: 
+##### Type - 04: Pre- and post-processing, one physical server
 
-##### Type - 06: 
+##### Type - 05: All on one server
+
+##### Type - 06: Pre- and post-processing, one application, one physical server
 
 ##Software details
 In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.
