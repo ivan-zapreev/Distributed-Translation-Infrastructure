@@ -61,11 +61,10 @@ namespace uva {
                      * @param name the client name
                      */
                     client_manager(const string uri, const string name)
-                    : m_client(uri, bind(&client_manager::notify_new_msg, this, _1),
-                    bind(&client_manager::notify_conn_closed, this), NULL), m_name(name),
+                    : m_uri(uri), m_name(name),
                     m_sending_thread_ptr(NULL), m_is_stopping(false),
                     m_is_all_jobs_sent(false), m_is_all_jobs_done(false),
-                    m_num_done_jobs(0) {
+                    m_num_done_jobs(0), m_client(NULL) {
                     }
 
                     /**
@@ -76,6 +75,8 @@ namespace uva {
                         if (m_sending_thread_ptr != NULL) {
                             delete m_sending_thread_ptr;
                         }
+                        //Destroy the client
+                        delete_client();
                     }
 
                     /**
@@ -87,8 +88,10 @@ namespace uva {
 
                         //Make several re-connection attempts 
                         while (true) {
+                            //Create a new client
+                            create_client();
                             LOG_INFO << "Attempting to connect to the server!" << END_LOG;
-                            if (m_client.connect()) {
+                            if (m_client->connect()) {
                                 LOG_INFO << "Starting creating and sending out " << m_name << " jobs!" << END_LOG;
 
                                 //Run the translation job sending thread
@@ -99,8 +102,7 @@ namespace uva {
                             } else {
                                 if (attempt >= MAX_NUM_CONNECTION_ATTEMPTS) {
                                     THROW_EXCEPTION(string("Tried ") + to_string(attempt) +
-                                            string(" times but could not open the connection to: ") +
-                                            m_client.get_uri());
+                                            string(" times but could not open the connection to: ") + m_uri);
                                 } else {
                                     LOG_INFO << "Could not connect, attempt: " << attempt << "/"
                                             << MAX_NUM_CONNECTION_ATTEMPTS << ", timeout: "
@@ -161,7 +163,9 @@ namespace uva {
                         LOG_INFO << "Disconnecting the " << m_name << " client ... " << END_LOG;
 
                         //Disconnect from the server
-                        m_client.disconnect();
+                        if (m_client != NULL) {
+                            m_client->disconnect();
+                        }
 
                         LOG_INFO << "The " << m_name << " client is disconnected" << END_LOG;
 
@@ -312,7 +316,7 @@ namespace uva {
                         LOG_DEBUG << "Sending the job requests ..." << END_LOG;
 
                         //Send the translation jobs
-                        send_job_requests(m_client);
+                        send_job_requests(*m_client);
 
                         LOG_DEBUG << "Finished sending the job requests ..." << END_LOG;
 
@@ -331,9 +335,29 @@ namespace uva {
                         return m_is_stopping;
                     }
 
+                    /**
+                     * Allows to create a new client
+                     */
+                    inline void create_client() {
+                        //Delete the previous client if any
+                        delete_client();
+                        //Create a new client
+                        m_client = new generic_client(m_uri, bind(&client_manager::notify_new_msg, this, _1),
+                                bind(&client_manager::notify_conn_closed, this), NULL);
+                    }
+
+                    /**
+                     * Allows to delete a client if any
+                     */
+                    inline void delete_client() {
+                        if (m_client != NULL) {
+                            delete m_client;
+                        }
+                    }
+
                 private:
-                    //Stores the translation client
-                    generic_client m_client;
+                    //Stores the server uri
+                    const string m_uri;
                     //Stores the client's name, is used for logging
                     const string m_name;
 
@@ -359,6 +383,9 @@ namespace uva {
 
                     //Store the finished jobs count
                     atomic<uint32_t> m_num_done_jobs;
+
+                    //Stores the pointer to the translation client
+                    generic_client * m_client;
                 };
             }
         }

@@ -156,23 +156,9 @@ namespace uva {
                     inline bool connect() {
                         //Request a non-clocking connection open
                         connect_nb();
-
-                        //Wait until the connection is actually open
-                        bool is_connected = wait_connect();
                         
-                        //If not connected, then re-set the flags
-                        if(!is_connected) {
-                            //Make it fully disconnect
-                            disconnect();
-                            //Re-set the flags
-                            m_started = false;
-                            m_stopped = false;
-                            m_opened = false;
-                            m_closed = false;
-                        }
-                        
-                        //Return the connected value
-                        return is_connected;
+                        //Wait until started
+                        return wait_connect();
                     }
 
                     /**
