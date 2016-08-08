@@ -276,7 +276,7 @@ namespace uva {
 
                         //Check the execution status
                         if (-1 == dir_err) {
-                            LOG_ERROR << "Could not delete files with command: " << cmd << END_LOG;
+                            LOG_DEBUG << "Failed to delete files with command: " << cmd << END_LOG;
                         }
                     }
 
