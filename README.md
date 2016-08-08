@@ -657,7 +657,7 @@ At present this project uses the following external/third-party header-only libr
 | Library Name | Purpose | Website | Version | License |
 |:------------|:--------:|:-------:|:-------:|:-------:|
 |Feather ini parser|_Fast, lightweight, header, portable INI/configuration file parser for ANSI C++._|[link](https://github.com/Turbine1991/feather-ini-parser)|1.40|[MIT](https://opensource.org/licenses/MIT)|
-|WebSocket++|_Is an open source, header only C++ library implementing RFC6455 (The WebSocket Protocol)._|[link](http://www.zaphoyd.com/websocketpp)|0.6.0|[BSD](http://www.linfo.org/bsdlicense.html)|
+|WebSocket++|_Is an open source, header only C++ library implementing RFC6455 (The WebSocket Protocol)._|[link](http://www.zaphoyd.com/websocketpp)|0.7.0|[BSD](http://www.linfo.org/bsdlicense.html)|
 |Asio C++ Library|_A cross-platform C++ library for network and low-level I/O programming_|[link](http://think-async.com/)|1.10.6|[Boost](http://www.boost.org/users/license.html)|
 |Tclap|_A small and flexible library that provides a simple interface for defining and accessing command line arguments_|[link](http://tclap.sourceforge.net/)|1.2.1|[MIT](https://opensource.org/licenses/MIT)|
 |Rapid JSON|_An open source, header only C++ library implementing JSON for C++_|[link](https://github.com/miloyip/rapidjson)|1.0.2|[MIT](https://opensource.org/licenses/MIT)|

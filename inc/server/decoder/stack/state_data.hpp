@@ -104,10 +104,10 @@ namespace uva {
                             //Add the sentence begin tag uid to the target, since this is for the begin state
                             m_trans_frame(1, &m_stack_data.m_lm_query.get_begin_tag_uid()),
                             m_begin_lm_level(M_GRAM_LEVEL_1),
-                            m_covered(), m_partial_score(0.0), m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA {
+                            m_covered(), m_partial_score(0.0), m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA{
                                 LOG_DEBUG1 << "New BEGIN state data: " << this << ", translating [" << m_s_begin_word_idx
-                                        << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
-                                        << ", lm_level=" << m_begin_lm_level << ", target = ___<s>___" << END_LOG;
+                                << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
+                                << ", lm_level=" << m_begin_lm_level << ", target = ___<s>___" << END_LOG;
 
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
                                 LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
@@ -134,10 +134,10 @@ namespace uva {
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             //The coverage vector stays the same, nothing new is added, we take over the partial score
                             m_covered(prev_state_data.m_covered), m_partial_score(prev_state_data.m_partial_score),
-                            m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA {
+                            m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA{
                                 LOG_DEBUG1 << "New END state data: " << this << " translating [" << m_s_begin_word_idx
-                                        << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
-                                        << ", lm_level=" << m_begin_lm_level << ", target = ___</s>___" << END_LOG;
+                                << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
+                                << ", lm_level=" << m_begin_lm_level << ", target = ___</s>___" << END_LOG;
 
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
                                 LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
@@ -169,11 +169,11 @@ namespace uva {
                             m_trans_frame(prev_state_data.m_trans_frame, m_target->get_num_words(), m_target->get_word_ids()),
                             m_begin_lm_level(prev_state_data.m_begin_lm_level),
                             m_covered(covered), m_partial_score(prev_state_data.m_partial_score),
-                            m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA {
+                            m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA{
                                 LOG_DEBUG1 << "New state data: " << this << ", translating [" << m_s_begin_word_idx
-                                        << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
-                                        << ", lm_level=" << m_begin_lm_level << ", target = ___"
-                                        << m_target->get_target_phrase() << "___" << END_LOG;
+                                << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
+                                << ", lm_level=" << m_begin_lm_level << ", target = ___"
+                                << m_target->get_target_phrase() << "___" << END_LOG;
 
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
                                 LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
@@ -260,6 +260,15 @@ namespace uva {
                                     //Add the space after the new phrase, if needed
                                     if (!is_lattice) {
                                         storage += UTF8_SPACE_STRING;
+                                    }
+                                } else {
+                                    if (is_lattice) {
+                                        //Check if this is the first state, with a null target 
+                                        if (m_s_begin_word_idx == UNDEFINED_WORD_IDX) {
+                                            storage = "<s>";
+                                        } else {
+                                            storage = "</s>";
+                                        }
                                     }
                                 }
 
