@@ -90,7 +90,7 @@ export FILTER='s/.res.*.txt/.res.N.txt/g'
 
 #Run the control
 echo "Performing a control run ..."
-bpbd-client -I ${4} -i ${5} -O ./output.res.0.txt -o ${6} -s ${2} -c -r ${3} -p ${3} | sed -e ${FILTER}  > ./proc.0.log
+bpbd-client -I ${4} -i ${5} -O ./output.res.0.txt -o ${6} -s ${2} -r ${3} -p ${3} | sed -e ${FILTER}  > ./proc.0.log
 
 #Run the process instances
 echo "Starting ${1} parallel clients ..."
