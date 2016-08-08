@@ -89,7 +89,7 @@ fi
 #Run the process instances
 for i in `seq 1 ${1}`; do
   echo "Starting process: ${i}"
-  bpbd-client -I ${4} -i ${5} -O ./output.res.${i}.txt -o ${6} -s ${2} -c -r ${3} -p ${3} > proc.${i}.log &
+  bpbd-client -I ${4} -i ${5} -O ./output.res.${i}.txt -o ${6} -s ${2} -c -r ${3} -p ${3} | sed -e 's/.res.*.txt/.res.N.txt/g' > ./proc.${i}.log &
 done
 
 echo "Waiting for the processes to finish..."
@@ -97,12 +97,26 @@ wait
 
 #Run the diffs to check that thre results are overall the same
 for i in `seq 1 ${1}`; do
-  echo "------------------------------------------------"
-  echo "| Diff run logs: 1 vs. ${i}:"
-  diff ./proc.1.log ./proc.${i}.log
-  echo "| Diff target texts: 1 vs. ${i}:"
-  diff ./output.res.1.txt ./output.res.${i}.txt
-  echo "|Diff text logs: 1 vs. ${i}:"
-  diff ./output.res.1.txt.log ./output.res.${i}.txt.log
+  export DIFF_RESULT=`diff ./proc.1.log ./proc.${i}.log`
+  if [ ! -z "${DIFF_RESULT}" -a "${DIFF_RESULT}" != "" ]; then
+     echo "------------------------------------------------"
+     echo "| Diff run logs: 1 vs. ${i}:"
+     echo ${DIFF_RESULT}
+     echo "------------------------------------------------"
+  fi
+  export DIFF_RESULT=`diff ./output.res.1.txt ./output.res.${i}.txt`
+  if [ ! -z "${DIFF_RESULT}" -a "${DIFF_RESULT}" != "" ]; then
+     echo "------------------------------------------------"
+     echo "| Diff target texts: 1 vs. ${i}:"
+     echo ${DIFF_RESULT}
+     echo "------------------------------------------------"
+  fi
+  export DIFF_RESULT=`diff ./output.res.1.txt.log ./output.res.${i}.txt.log`
+  if [ ! -z "${DIFF_RESULT}" -a "${DIFF_RESULT}" != "" ]; then
+     echo "------------------------------------------------"
+     echo "| Diff text logs: 1 vs. ${i}:"
+     echo ${DIFF_RESULT}
+     echo "------------------------------------------------"
+  fi
 done
 echo "Done!"
