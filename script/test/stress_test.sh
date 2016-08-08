@@ -86,36 +86,44 @@ if [ -z "${6}" ]; then
    fail
 fi
 
+export FILTER='s/.res.*.txt/.res.N.txt/g'
+
+#Run the control
+echo "Performing a control run ..."
+bpbd-client -I ${4} -i ${5} -O ./output.res.0.txt -o ${6} -s ${2} -c -r ${3} -p ${3} | sed -e ${FILTER}  > ./proc.0.log
+
 #Run the process instances
+echo "Starting ${1} parallel clients ..."
 for i in `seq 1 ${1}`; do
   echo "Starting process: ${i}"
-  bpbd-client -I ${4} -i ${5} -O ./output.res.${i}.txt -o ${6} -s ${2} -c -r ${3} -p ${3} | sed -e 's/.res.*.txt/.res.N.txt/g' > ./proc.${i}.log &
+  bpbd-client -I ${4} -i ${5} -O ./output.res.${i}.txt -o ${6} -s ${2} -c -r ${3} -p ${3} | sed -e ${FILTER} > ./proc.${i}.log &
 done
 
-echo "Waiting for the processes to finish..."
+echo "Waiting for the client processes to finish..."
 wait
 
 #Run the diffs to check that thre results are overall the same
+echo "Analysing the differences..."
 for i in `seq 1 ${1}`; do
-  export DIFF_RESULT=`diff ./proc.1.log ./proc.${i}.log`
+  export DIFF_RESULT=`diff ./proc.0.log ./proc.${i}.log`
   if [ ! -z "${DIFF_RESULT}" -a "${DIFF_RESULT}" != "" ]; then
      echo "------------------------------------------------"
-     echo "| Diff run logs: 1 vs. ${i}:"
-     diff ./proc.1.log ./proc.${i}.log
+     echo "| Diff run logs: 0 vs. ${i}:"
+     diff ./proc.0.log ./proc.${i}.log
      echo "------------------------------------------------"
   fi
-  export DIFF_RESULT=`diff ./output.res.1.txt ./output.res.${i}.txt`
+  export DIFF_RESULT=`diff ./output.res.0.txt ./output.res.${i}.txt`
   if [ ! -z "${DIFF_RESULT}" -a "${DIFF_RESULT}" != "" ]; then
      echo "------------------------------------------------"
-     echo "| Diff target texts: 1 vs. ${i}:"
-     diff ./output.res.1.txt ./output.res.${i}.txt
+     echo "| Diff target texts: 0 vs. ${i}:"
+     diff ./output.res.0.txt ./output.res.${i}.txt
      echo "------------------------------------------------"
   fi
-  export DIFF_RESULT=`diff ./output.res.1.txt.log ./output.res.${i}.txt.log`
+  export DIFF_RESULT=`diff ./output.res.0.txt.log ./output.res.${i}.txt.log`
   if [ ! -z "${DIFF_RESULT}" -a "${DIFF_RESULT}" != "" ]; then
      echo "------------------------------------------------"
-     echo "| Diff text logs: 1 vs. ${i}:"
-     diff ./output.res.1.txt.log ./output.res.${i}.txt.log
+     echo "| Diff text logs: 0 vs. ${i}:"
+     diff ./output.res.0.txt.log ./output.res.${i}.txt.log
      echo "------------------------------------------------"
   fi
 done
