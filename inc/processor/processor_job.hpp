@@ -273,7 +273,8 @@ namespace uva {
 
                         //Try to execute the action a number of times,
                         //report an error only if failed multiple times.
-                        int dir_err = 0, attempts = 0;
+                        int dir_err = 0;
+                        size_t attempts = 0;
                         while (true) {
                             //Make the system call
                             dir_err = system(cmd.c_str());
