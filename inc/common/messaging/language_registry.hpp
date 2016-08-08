@@ -32,6 +32,7 @@
 #include "common/utils/threads/threads.hpp"
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 using namespace std;
 
@@ -39,6 +40,7 @@ using namespace uva::utils;
 using namespace uva::utils::threads;
 using namespace uva::utils::exceptions;
 using namespace uva::utils::logging;
+using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {
@@ -54,7 +56,9 @@ namespace uva {
                      * unique ids to the language strings. In this way each language
                      * gets a unique identifier which is to be used within the balancer
                      * in the internal hash maps for fast re-routing messages to the
-                     * appropriate translation servers.
+                     * appropriate translation servers. For each language a lower case
+                     * version is registered, if the original language name is not in
+                     * lower case. The lower-cased version has the same id as the original.
                      */
                     class language_registry {
                     public:
@@ -87,7 +91,8 @@ namespace uva {
                         }
 
                         /**
-                         * A synchronized function that allows to get a unique id for the given language
+                         * A synchronized function that allows to get a unique
+                         * id for the given language.
                          * @param name the language name
                          * @return the language id or UNKNONW_LANGUAGE_ID if the language is not known
                          */
@@ -108,20 +113,29 @@ namespace uva {
                         }
 
                         /**
-                         * Allows to register a new language, if the language is known then no registration is done.
+                         * Allows to register a new language, if the language
+                         * is known then no registration is done.
                          * @param name the language name
                          * @return the id issued to the given language
                          */
                         static inline language_uid register_uid(const string & name) {
                             exclusive_guard write_guard(m_lang_mutex);
 
-                            //Get the storage reference
+                            //Get the storage references
                             language_uid & ref = m_lang_to_id[name];
 
                             //Check if the value is unknown
                             if (ref == UNKNONW_LANGUAGE_ID) {
                                 //The language id is not known, issue a new one!
                                 ref = m_id_mgr.get_next_id();
+
+                                //Set the same id for the lower version, if needed
+                                string lower_name = name;
+                                to_lower(lower_name);
+                                if (lower_name != name) {
+                                    m_lang_to_id[lower_name] = ref;
+                                }
+
                                 //Add the id to language mapping
                                 m_id_to_lang[ref] = name;
                             }

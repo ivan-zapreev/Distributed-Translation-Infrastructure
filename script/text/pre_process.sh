@@ -71,7 +71,7 @@ function info() {
   echo "     So, if these files are to be kept for, e.g. post-processing,"
   echo "     it is the responsibility of the script to do so."
   echo "   * This is a dummy script that only emulates the real behavior, therefore:"
-  echo "      * The script only detects the input language to be \"german\""
+  echo "      * The script only detects the input language to be \"German\""
   echo "      * The script only copies the input file into the output"
 }
 
@@ -138,7 +138,7 @@ export LANGUAGE=${3}
 
 #Check if the language is to be auto detected
 if [ "${LANGUAGE}" = "auto" ]; then
-   LANGUAGE="german";
+   LANGUAGE="German";
 fi
 
 #Copy the input file into the output file
