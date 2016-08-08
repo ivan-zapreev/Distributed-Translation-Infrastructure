@@ -101,21 +101,21 @@ for i in `seq 1 ${1}`; do
   if [ ! -z "${DIFF_RESULT}" -a "${DIFF_RESULT}" != "" ]; then
      echo "------------------------------------------------"
      echo "| Diff run logs: 1 vs. ${i}:"
-     echo ${DIFF_RESULT}
+     diff ./proc.1.log ./proc.${i}.log
      echo "------------------------------------------------"
   fi
   export DIFF_RESULT=`diff ./output.res.1.txt ./output.res.${i}.txt`
   if [ ! -z "${DIFF_RESULT}" -a "${DIFF_RESULT}" != "" ]; then
      echo "------------------------------------------------"
      echo "| Diff target texts: 1 vs. ${i}:"
-     echo ${DIFF_RESULT}
+     diff ./output.res.1.txt ./output.res.${i}.txt
      echo "------------------------------------------------"
   fi
   export DIFF_RESULT=`diff ./output.res.1.txt.log ./output.res.${i}.txt.log`
   if [ ! -z "${DIFF_RESULT}" -a "${DIFF_RESULT}" != "" ]; then
      echo "------------------------------------------------"
      echo "| Diff text logs: 1 vs. ${i}:"
-     echo ${DIFF_RESULT}
+     diff ./output.res.1.txt.log ./output.res.${i}.txt.log
      echo "------------------------------------------------"
   fi
 done
