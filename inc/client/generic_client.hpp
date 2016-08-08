@@ -162,6 +162,9 @@ namespace uva {
                         
                         //If not connected, then re-set the flags
                         if(!is_connected) {
+                            //Make it fully disconnect
+                            disconnect();
+                            //Re-set the flags
                             m_started = false;
                             m_stopped = false;
                             m_opened = false;
