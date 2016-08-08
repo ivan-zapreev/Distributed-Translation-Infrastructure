@@ -82,13 +82,33 @@ namespace uva {
                      * Allows to start the translation process
                      */
                     inline void start() {
-                        if (m_client.connect()) {
-                            LOG_INFO << "Starting creating and sending out " << m_name << " jobs!" << END_LOG;
+                        //Define and initialize the attempt counter
+                        size_t attempt = 0;
 
-                            //Run the translation job sending thread
-                            m_sending_thread_ptr = new thread(bind(&client_manager::send_requests, this));
-                        } else {
-                            THROW_EXCEPTION(string("Could not open the connection to: ") + m_client.get_uri());
+                        //Make several re-connection attempts 
+                        while (true) {
+                            if (m_client.connect()) {
+                                LOG_INFO << "Starting creating and sending out " << m_name << " jobs!" << END_LOG;
+
+                                //Run the translation job sending thread
+                                m_sending_thread_ptr = new thread(bind(&client_manager::send_requests, this));
+                                
+                                //Stop the loop as we did connect.
+                                break;
+                            } else {
+                                if (attempt >= MAX_NUM_CONNECTION_ATTEMPTS) {
+                                    THROW_EXCEPTION(string("Tried ") + to_string(attempt) +
+                                            string(" times but could not open the connection to: ") +
+                                            m_client.get_uri());
+                                } else {
+                                    //Disconnect the client
+                                    m_client.disconnect();
+                                    //Increment the attempts counter
+                                    ++attempt;
+                                    //Sleep some time before trying to re-connect
+                                    sleep(RE_CONNECTION_TIME_OUT_MILLISEC);
+                                }
+                            }
                         }
                     }
 
@@ -297,7 +317,7 @@ namespace uva {
                         //For the case when all jobs failed, we need to check if the jobs are notified
                         check_jobs_done_and_notify();
                     }
-                    
+
                     /**
                      * Allows to check if the client is stopping
                      * @return true if the client is stopping, otherwise false.
@@ -311,7 +331,7 @@ namespace uva {
                     generic_client m_client;
                     //Stores the client's name, is used for logging
                     const string m_name;
-                    
+
                     //Stores the synchronization mutex for notifying that all the translation jobs were sent
                     mutex m_jobs_sent_lock;
                     //The conditional variable for tracking that all the translation jobs were sent

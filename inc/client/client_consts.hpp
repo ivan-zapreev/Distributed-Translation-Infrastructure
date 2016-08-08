@@ -38,6 +38,11 @@ namespace uva {
                 //the number of characters to send per processor request.
                 static constexpr size_t MESSAGE_MAX_CHAR_LEN = 10*1024;
                 
+                //Stores the number of attempts the client must try to connect to the server
+                static constexpr size_t MAX_NUM_CONNECTION_ATTEMPTS = 10;
+                
+                //Stores the number of milliseconds the client shall wait until a re-connection attempt.
+                static constexpr size_t RE_CONNECTION_TIME_OUT_MILLISEC = 100;
             }
         }
     }

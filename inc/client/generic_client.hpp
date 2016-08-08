@@ -122,25 +122,29 @@ namespace uva {
                      * 
                      */
                     inline void connect_nb() {
-                        // Create a new connection to the given URI
-                        websocketpp::lib::error_code ec;
-                        client::connection_ptr con = m_client.get_connection(m_uri, ec);
-                        ASSERT_CONDITION_THROW(ec, string("Get Connection (") + m_uri + string(") Error: ") + ec.message());
+                        //Check that the client is not started
+                        if (!m_started) {
+                            // Create a new connection to the given URI
+                            websocketpp::lib::error_code ec;
+                            client::connection_ptr con = m_client.get_connection(m_uri, ec);
+                            ASSERT_CONDITION_THROW(ec, string("Get Connection (") + m_uri + string(") Error: ") + ec.message());
 
-                        // Grab a handle for this connection so we can talk to it in a thread
-                        // safe manor after the event loop starts.
-                        m_hdl = con->get_handle();
+                            // Grab a handle for this connection so we can talk to it in a thread
+                            // safe manor after the event loop starts.
+                            m_hdl = con->get_handle();
 
-                        // Queue the connection. No DNS queries or network connections will be
-                        // made until the io_service event loop is run.
-                        m_client.connect(con);
+                            // Queue the connection. No DNS queries or network connections will be
+                            // made until the io_service event loop is run.
+                            m_client.connect(con);
 
-                        // Create a thread to run the ASIO io_service event loop
-                        m_asio_thread = thread(&client::run, &m_client);
+                            // Create a thread to run the ASIO io_service event loop
+                            m_asio_thread = thread(&client::run, &m_client);
 
-                        //Set the client as started
-                        m_started = true;
-
+                            //Set the client as started
+                            m_started = true;
+                        } else {
+                            THROW_EXCEPTION("The client is beging started, first disconnect!");
+                        }
                     }
 
                     /**
@@ -202,7 +206,7 @@ namespace uva {
 
                         //Serialize the message
                         const string msg_str = message->serialize();
-                        
+
                         LOG_DEBUG << "Serialized translation request: \n" << msg_str << END_LOG;
 
                         //Try to send the translation job request
@@ -246,9 +250,9 @@ namespace uva {
                         try {
                             //Get the message string
                             string msg_str = msg->get_payload();
-                            
+
                             LOG_DEBUG << "Got translation server message: " << msg_str << END_LOG;
-                            
+
                             //De-serialize the message from string
                             json_msg->de_serialize(msg_str);
 
