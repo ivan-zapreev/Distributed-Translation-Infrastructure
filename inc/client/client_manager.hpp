@@ -92,7 +92,7 @@ namespace uva {
 
                                 //Run the translation job sending thread
                                 m_sending_thread_ptr = new thread(bind(&client_manager::send_requests, this));
-                                
+
                                 //Stop the loop as we did connect.
                                 break;
                             } else {
@@ -203,19 +203,22 @@ namespace uva {
                      * This function will be called if the connection is closed during the process
                      */
                     inline void notify_conn_closed() {
-                        LOG_WARNING << "The " << m_name << " server has closed the connection!" << END_LOG;
+                        //If the thread was created, I.e. we did establish a connection once!
+                        if (m_sending_thread_ptr != NULL) {
+                            LOG_WARNING << "The " << m_name << " server has closed the connection!" << END_LOG;
 
-                        //If the connection is closed we shall be stopping then
-                        //The basic client does not support any connection recovery
-                        m_is_stopping = true;
+                            //If the connection is closed we shall be stopping then
+                            //The basic client does not support any connection recovery
+                            m_is_stopping = true;
 
-                        //Wait until the request sending thread is stopped.
-                        if (m_sending_thread_ptr != NULL && m_sending_thread_ptr->joinable()) {
-                            m_sending_thread_ptr->join();
+                            //Wait until the request sending thread is stopped.
+                            if (m_sending_thread_ptr->joinable()) {
+                                m_sending_thread_ptr->join();
+                            }
+
+                            //Notify that we are done with the jobs
+                            notify_jobs_done();
                         }
-
-                        //Notify that we are done with the jobs
-                        notify_jobs_done();
                     }
 
                     /**
