@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="97">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="CMakeFiles"
                    displayName="CMakeFiles"
@@ -19,36 +19,8 @@
       <itemPath>build/CMakeFiles/feature_tests.cxx</itemPath>
     </logicalFolder>
     <df root="ext" name="0">
-      <in>md5.hpp</in>
     </df>
     <df root="inc" name="1">
-      <df name="client">
-        <df name="messaging">
-          <in>proc_req_out.hpp</in>
-          <in>proc_resp_in.hpp</in>
-        </df>
-        <in>client_consts.hpp</in>
-        <in>client_manager.hpp</in>
-        <in>proc_manager.hpp</in>
-      </df>
-      <df name="common">
-        <df name="messaging">
-          <in>proc_resp.hpp</in>
-        </df>
-        <df name="utils">
-          <df name="text">
-            <in>utf8_utils.hpp</in>
-          </df>
-        </df>
-      </df>
-      <df name="processor">
-        <df name="messaging">
-          <in>proc_resp_out.hpp</in>
-        </df>
-        <in>post_proc_job.hpp</in>
-        <in>pre_proc_job.hpp</in>
-        <in>processor_consts.hpp</in>
-      </df>
     </df>
     <logicalFolder name="Modules"
                    displayName="Modules"
@@ -195,10 +167,6 @@
             </incDir>
           </ccTool>
         </makeTool>
-        <preBuild>
-          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
-          <preBuildCommand></preBuildCommand>
-        </preBuild>
       </makefileType>
       <item path="/usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c"
             ex="false"
@@ -231,8 +199,6 @@
         <ccTool flags="1">
         </ccTool>
       </item>
-      <item path="ext/md5.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <folder path="2/common">
         <ccTool>
           <preprocessorList>
@@ -260,40 +226,6 @@
           </preprocessorList>
         </ccTool>
       </folder>
-      <item path="inc/client/client_consts.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/client/client_manager.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/client/messaging/proc_req_out.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/client/messaging/proc_resp_in.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/client/proc_manager.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/common/messaging/proc_resp.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/common/utils/text/utf8_utils.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/processor/messaging/proc_resp_out.hpp"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="inc/processor/post_proc_job.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/processor/pre_proc_job.hpp" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="inc/processor/processor_consts.hpp" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/balancer/balancer_job.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
@@ -333,13 +265,13 @@
             tool="1"
             flavor2="8">
         <ccTool flags="0">
-          <preprocessorList>
-            <Elem>NDEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/common/messaging/messaging.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
+          <preprocessorList>
+            <Elem>NDEBUG</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/common/messaging/trans_job_code.cpp"

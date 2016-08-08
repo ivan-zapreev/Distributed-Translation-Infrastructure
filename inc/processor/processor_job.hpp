@@ -278,13 +278,13 @@ namespace uva {
                         while (true) {
                             //Make the system call
                             dir_err = system(cmd.c_str());
-                            
+
                             //If the result is bad and we still have attempts, then re-try
                             if ((-1 == dir_err) && (attempts < MAX_NUM_CONSOLE_ATTEMPTS)) {
                                 //Increment the number of attempts
                                 ++attempts;
                                 //Sleep for the requested number of milliseconds
-                                sleep(CONSOLE_RE_TRY_TIME_OUT_MILLISEC);
+                                std::this_thread::sleep_for(std::chrono::milliseconds(CONSOLE_RE_TRY_TIME_OUT_MILLISEC));
                             } else {
                                 //Either the result is good or we exceeded
                                 //the maximum number of attempts - stop.

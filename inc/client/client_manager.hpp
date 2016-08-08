@@ -87,6 +87,7 @@ namespace uva {
 
                         //Make several re-connection attempts 
                         while (true) {
+                            LOG_INFO << "Attempting to connect to the server!" << END_LOG;
                             if (m_client.connect()) {
                                 LOG_INFO << "Starting creating and sending out " << m_name << " jobs!" << END_LOG;
 
@@ -101,10 +102,13 @@ namespace uva {
                                             string(" times but could not open the connection to: ") +
                                             m_client.get_uri());
                                 } else {
+                                    LOG_INFO << "Could not connect, attempt: " << attempt << "/"
+                                            << MAX_NUM_CONNECTION_ATTEMPTS << ", timeout: "
+                                            << RE_CONNECTION_TIME_OUT_MILLISEC << " milliseconds" << END_LOG;
                                     //Increment the attempts counter
                                     ++attempt;
                                     //Sleep some time before trying to re-connect
-                                    sleep(RE_CONNECTION_TIME_OUT_MILLISEC);
+                                    std::this_thread::sleep_for(std::chrono::milliseconds(RE_CONNECTION_TIME_OUT_MILLISEC));
                                 }
                             }
                         }
