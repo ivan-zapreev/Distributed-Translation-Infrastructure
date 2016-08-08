@@ -90,7 +90,7 @@ namespace uva {
                         while (true) {
                             //Create a new client
                             create_client();
-                            LOG_INFO << "Attempting to connect to the server!" << END_LOG;
+                            LOG_INFO1 << "Attempting to connect to the server!" << END_LOG;
                             if (m_client->connect()) {
                                 LOG_INFO << "Starting creating and sending out " << m_name << " jobs!" << END_LOG;
 
@@ -104,7 +104,7 @@ namespace uva {
                                     THROW_EXCEPTION(string("Tried ") + to_string(attempt) +
                                             string(" times but could not open the connection to: ") + m_uri);
                                 } else {
-                                    LOG_INFO << "Could not connect, attempt: " << attempt << "/"
+                                    LOG_INFO2 << "Could not connect, attempt: " << attempt << "/"
                                             << MAX_NUM_CONNECTION_ATTEMPTS << ", timeout: "
                                             << RE_CONNECTION_TIME_OUT_MILLISEC << " milliseconds" << END_LOG;
                                     //Increment the attempts counter
