@@ -200,8 +200,12 @@ namespace uva {
                              * @param this_dump the lattice output stream to dump the data into
                              * @param covers_dump the dump stream to dump the to-from covers
                              * @param to_state the to state
+                             * @param main_to_state the main to state, i.e. in case the to_state
+                             * was recombined into another state, we shall use that as a main
+                             * state-carrying the state id for the lattice
                              */
-                            inline void dump_to_from_state_data(ostream & this_dump, ostream & covers_dump, const stack_state & to_state) const {
+                            inline void dump_to_from_state_data(ostream & this_dump, ostream & covers_dump,
+                                    const stack_state & to_state, const stack_state & main_to_state) const {
                                 LOG_DEBUG1 << "Dumping the FROM state " << m_state_id << " to the search lattice" << END_LOG;
 
                                 //Extract the target translation string.
@@ -213,7 +217,7 @@ namespace uva {
                                         << to_string(to_state.m_state_data.m_partial_score - m_state_data.m_partial_score);
 
                                 //Dump the cover vector for the to state
-                                covers_dump << to_string(to_state.m_state_id) << "-" << to_string(m_state_id)
+                                covers_dump << to_string(main_to_state.m_state_id) << "-" << to_string(m_state_id)
                                         << ":" << to_string(to_state.m_state_data.m_s_begin_word_idx)
                                         << ":" << to_string(to_state.m_state_data.m_s_end_word_idx) << " ";
 
@@ -246,7 +250,7 @@ namespace uva {
                                     stringstream parents_dump;
 
                                     //Dump the state's parent as its from state 
-                                    m_parent->dump_to_from_state_data(this_dump, covers_dump, *this);
+                                    m_parent->dump_to_from_state_data(this_dump, covers_dump, *this, *this);
                                     //Dump as a to state into the parent dump
                                     m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
 
@@ -256,7 +260,7 @@ namespace uva {
                                         //Add an extra space before the new element in the lattice dump
                                         this_dump << " ";
                                         //Dump as a from state
-                                        rec_from->m_parent->dump_to_from_state_data(this_dump, covers_dump, *rec_from);
+                                        rec_from->m_parent->dump_to_from_state_data(this_dump, covers_dump, *rec_from, *this);
                                         //Dump as a to state into the parent dump
                                         rec_from->m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
                                         //Move to the next recombined from state

@@ -282,6 +282,9 @@ void pre_process(client_parameters & params, stringstream_ptr & input,
 
         //Re-set the stream as we are going to use it
         input->clear();
+
+        //Log the source language
+        LOG_INFO1 << "The source language is: '" << params.m_source_lang << "'" << END_LOG;
     } else {
         //There is no need to pre-process. Swap the streams,
         //as the input is to be "placed" into the output.
