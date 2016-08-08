@@ -143,7 +143,7 @@ namespace uva {
                             //Set the client as started
                             m_started = true;
                         } else {
-                            THROW_EXCEPTION("The client is beging started, first disconnect!");
+                            THROW_EXCEPTION("The client is being started, first disconnect!");
                         }
                     }
 
@@ -158,7 +158,18 @@ namespace uva {
                         connect_nb();
 
                         //Wait until the connection is actually open
-                        return wait_connect();
+                        bool is_connected = wait_connect();
+                        
+                        //If not connected, then re-set the flags
+                        if(!is_connected) {
+                            m_started = false;
+                            m_stopped = false;
+                            m_opened = false;
+                            m_closed = false;
+                        }
+                        
+                        //Return the connected value
+                        return is_connected;
                     }
 
                     /**

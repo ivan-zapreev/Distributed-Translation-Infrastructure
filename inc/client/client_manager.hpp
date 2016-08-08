@@ -101,8 +101,6 @@ namespace uva {
                                             string(" times but could not open the connection to: ") +
                                             m_client.get_uri());
                                 } else {
-                                    //Disconnect the client
-                                    m_client.disconnect();
                                     //Increment the attempts counter
                                     ++attempt;
                                     //Sleep some time before trying to re-connect

@@ -271,12 +271,29 @@ namespace uva {
                                 get_text_file_name<is_pnp, true>(work_dir, job_token) + " " +
                                 get_text_file_name<is_pnp, false>(work_dir, job_token);
 
-                        //make the system call
-                        const int dir_err = system(cmd.c_str());
+                        //Try to execute the action a number of times,
+                        //report an error only if failed multiple times.
+                        int dir_err = 0, attempts = 0;
+                        while (true) {
+                            //Make the system call
+                            dir_err = system(cmd.c_str());
+                            
+                            //If the result is bad and we still have attempts, then re-try
+                            if ((-1 == dir_err) && (attempts < MAX_NUM_CONSOLE_ATTEMPTS)) {
+                                //Increment the number of attempts
+                                ++attempts;
+                                //Sleep for the requested number of milliseconds
+                                sleep(CONSOLE_RE_TRY_TIME_OUT_MILLISEC);
+                            } else {
+                                //Either the result is good or we exceeded
+                                //the maximum number of attempts - stop.
+                                break;
+                            }
+                        }
 
-                        //Check the execution status
+                        //Check the execution status and report an error
                         if (-1 == dir_err) {
-                            LOG_DEBUG << "Failed to delete files with command: " << cmd << END_LOG;
+                            LOG_ERROR << "Could not delete files with command: " << cmd << END_LOG;
                         }
                     }
 

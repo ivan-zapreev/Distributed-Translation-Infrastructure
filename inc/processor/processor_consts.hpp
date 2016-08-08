@@ -37,6 +37,12 @@ namespace uva {
                 //The maximum processor message text size is characters. This limits
                 //the number of characters to send per processor request.
                 static constexpr size_t MESSAGE_MAX_CHAR_LEN = 10*1024;
+                
+                //Stores the number of attempts the client must try to do something through console
+                static constexpr size_t MAX_NUM_CONSOLE_ATTEMPTS = 10;
+                
+                //Stores the number of milliseconds the client shall wait until a re-do the console action
+                static constexpr size_t CONSOLE_RE_TRY_TIME_OUT_MILLISEC = 100;
 
             }
         }
