@@ -294,7 +294,7 @@ namespace uva {
 
                         //Check the execution status and report an error
                         if (-1 == dir_err) {
-                            LOG_ERROR << "Could not delete files with command: " << cmd << END_LOG;
+                            LOG_ERROR << "Failed to delete files cmd: " << cmd << END_LOG;
                         }
                     }
 
@@ -436,46 +436,59 @@ namespace uva {
                             FILE *fp = popen(call_str.c_str(), "r");
                             LOG_DEBUG << "Checking on the script's pipeline file status" << END_LOG;
                             if (fp != NULL) {
-                                //The buffer itself
-                                char buffer[MAX_PROCESSOR_OUTPUT_BYTES];
-
-                                //Read from the pipeline - we shall get the resulting language or an error message
-                                LOG_DEBUG << "Reading from the script's pipeline file" << END_LOG;
-                                while (fgets(buffer, sizeof (buffer), fp) != NULL) {
-                                    output += string(buffer);
-                                }
-
-                                //Reduce the string to remove new lines and other whitespaces
-                                (void) reduce(output);
-
-                                LOG_DEBUG << "Closing the script's pipeline" << END_LOG;
-                                //Wait until the process finishes and analyze its status
-                                int status = pclose(fp);
-
-                                //Set the flag to true, the file was generated
-                                m_is_file_gen = true;
-
-                                LOG_DEBUG << "Checking if we can get the script exit status" << END_LOG;
-                                if (status == -1) {
-                                    //Error the process status is not possible to retrieve!
-                                    THROW_EXCEPTION(string("Could not get the script ") +
-                                            call_str + (" execution status!"));
-                                } else {
-                                    LOG_DEBUG << "Checking checking on the script exit status" << END_LOG;
-                                    if (WIFEXITED(status) != 0) {
-                                        //The script terminated normally, check if there were errors
-                                        return ((WEXITSTATUS(status) == 0) || (WEXITSTATUS(status) == EXIT_SUCCESS));
-                                    } else {
-                                        THROW_EXCEPTION(string("The processor script ") +
-                                                call_str + string(" terminated abnormally!"));
-                                    }
-                                }
+                                //The script was successfully called, process its results
+                                return process_script_results(call_str, fp, output);
                             } else {
-                                THROW_EXCEPTION(string("Failed to call the pre-processor script: ") + call_str);
+                                THROW_EXCEPTION(string("Failed to call the processor script: ") + call_str);
                             }
                         } else {
                             //The job has been canceled
                             return false;
+                        }
+                    }
+
+                    /**
+                     * Allows to process the results of successfully started processor script
+                     * @param call_str the call string for logging
+                     * @param fp the opened pipeline from the script to the program to read from
+                     * @param output the output string to write into
+                     * @return true if the script executed successfully, otherwise false
+                     */
+                    inline bool process_script_results(const string &call_str, FILE *fp, string & output) {
+                        //The buffer itself
+                        char buffer[MAX_PROCESSOR_OUTPUT_BYTES];
+
+                        //Read from the pipeline - we shall get the resulting language or an error message
+                        LOG_DEBUG << "Reading from the script's pipeline file" << END_LOG;
+                        while (fgets(buffer, sizeof (buffer), fp) != NULL) {
+                            output += string(buffer);
+                        }
+
+                        //Reduce the string to remove new lines and other whitespaces
+                        (void) reduce(output);
+
+                        LOG_DEBUG << "Closing the script's pipeline" << END_LOG;
+                        //Wait until the process finishes and analyze its status
+                        int status = pclose(fp);
+
+                        //Set the flag to true, the file was generated
+                        m_is_file_gen = true;
+
+                        LOG_DEBUG << "Checking if we can get the script exit status" << END_LOG;
+                        if (status == -1) {
+                            //Error the process status is not possible to retrieve!
+                            THROW_EXCEPTION(string("Could not get the script ") +
+                                    call_str + (" execution status!"));
+                        } else {
+                            LOG_DEBUG << "Checking checking on the script exit status" << END_LOG;
+                            if (WIFEXITED(status) != 0) {
+                                //The script terminated normally, check if there were errors
+                                return ((WEXITSTATUS(status) == 0) || (WEXITSTATUS(status) == EXIT_SUCCESS));
+                            } else {
+                                //This is a situation in which the script crashed
+                                THROW_EXCEPTION(string("The processor script ") +
+                                        call_str + string(" terminated abnormally!"));
+                            }
                         }
                     }
 

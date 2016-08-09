@@ -6,10 +6,13 @@
             <name>Basic-Translation-Infrastructure</name>
             <c-extensions>c</c-extensions>
             <cpp-extensions>cpp,cxx</cpp-extensions>
-            <header-extensions>h,hpp,ipp</header-extensions>
+            <header-extensions>h,hpp</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
+                <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>inc</sourceRootElem>
+                <sourceRootElem>ext</sourceRootElem>
                 <sourceRootElem>src</sourceRootElem>
                 <sourceRootElem>inc</sourceRootElem>
                 <sourceRootElem>ext</sourceRootElem>
