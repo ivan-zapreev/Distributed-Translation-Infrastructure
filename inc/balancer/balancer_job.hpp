@@ -346,7 +346,8 @@ namespace uva {
                             default:
                             {
                                 //Log an error as we are in an improper state
-                                LOG_DEBUG << "ERROR: Wrong phase: " << *this << " is canceled!" << END_LOG;
+                                LOG_ERROR << "Failing balancer job in a wrong phase: "
+                                        << *this << ", ignoring!" << END_LOG;
                                 break;
                             }
                         }
@@ -386,7 +387,8 @@ namespace uva {
                             default:
                             {
                                 //This must not be happening it is an internal error
-                                LOG_ERROR << "Executing the balancer job in phase: " << m_phase << END_LOG;
+                                LOG_ERROR << "Executing balancer job in a wrong phase: "
+                                        << *this << ", ignoring!" << END_LOG;
                             }
                         }
                     }
@@ -400,7 +402,7 @@ namespace uva {
                      */
                     inline void schedule_failed_job_reply(const state state_value, const string err_msg) {
                         //This must not be happening it is an internal error
-                        LOG_DEBUG << "ERROR: " << err_msg << END_LOG;
+                        LOG_DEBUG << "Failed job: " << err_msg << END_LOG;
 
                         //The job has been sent, change the phase
                         m_phase = phase::REPLY_PHASE;
