@@ -328,11 +328,14 @@ If the server is compiled in the [Tuning mode](#project-compile-time-parameters)
     de_lattice_file_ext=lattice
 ```
 
-The lattice generation will be enabled if the value of the `de_is_gen_lattice` parameter is set to `true`. The word lattice is generated per source sentence and consists of a translation hypothesis graph and employed feature weights. The word lattice format is conformant to that of the Oister translation system. The lattice files, are dumped into the folder specified by the `de_lattices_folder` parameter. A global *id-to-feature-name* file mapping is generated, when server is started, and is placed next to the produced lattice files. Each sentence gets a unique *sentence-id*, starting from *1*, corresponding to its position in the test source file. Each sentence lattice consists of two files with the name begin the sentence id and the extensions defined by the `de_feature_scores_file_ext` and `de_lattice_file_ext` parameters:
+The lattice generation will be enabled if the value of the `de_is_gen_lattice` parameter is set to `true`. The word lattice is generated per source sentence and consists of a translation hypothesis graph and employed feature weights. The word lattice format is conformant to that of the Oister translation system. The lattice files, are dumped into the folder specified by the `de_lattices_folder` parameter.
+
+The lattice files employ internal feature ids to identify the features used to compute a score of each hypothesis. To map these ids to the feature names found in the server config file, a global *id-to-feature-name* file mapping can be generated. This file is placed in the same folder where the translation server is being run. Also, the mapping is only generated if the server is started with the `-f` command line option/flag. The latter is exclusively enabled if the server is compiled in the tuning mode. If started with this flag, the server exits right after the mapping is generated and does not load the models or attempts to start the WebSockets server. The name of the *id-to-feature-name* file is defined by the server config file name, with the extension by the config file parameter: `de_lattice_id2name_file_ext`.
+
+In the lattice files, each sentence gets a unique *sentence-id*, corresponding to its position in the test source file. The sentence ids start from *1*. Each sentence's lattice consists of two files with the name begin the sentence id and the extensions defined by the `de_feature_scores_file_ext` and `de_lattice_file_ext` parameters:
  
 1. *\<sentence-id\>.*`de_lattice_file_ext` - stores the graph of the translation process: the partial hypothesis and the transitions between them attributed with source and target phrases and added costs.
 2. *\<sentence-id\.*`de_feature_scores_file_ext`  - stores information about the feature weights values (without lambdas coefficients) that were used in the hypothesis expansion process.
-3. *\<config-file-name\>.feature_id2name* - this one maps the feature name to the feature id and is used to identify the features within the feature scores file. The name of the mapping file is formed as the name of the configuration file suffixed with `.feature_id2name`.
 
 For additional information on the lattice file formats see Section [Word lattice files](#word-lattice-files).
 
@@ -1117,14 +1120,14 @@ TO_NODE_ID_1   FROM_NODE_ID_1|||TARGET_PHRASE|||SCORE_DELTA FROM_NODE_ID_2|||TAR
 ...
 <COVERVECS>TO_NODE_ID_1-FROM_NODE_ID_1:BEGIN_SOURCE_PHRASE_IDX:END_SOURCE_PHRASE_IDX TO_NODE_ID_1-FROM_NODE_ID_2:BEGIN_SOURCE_PHRASE_IDX:END_SOURCE_PHRASE_IDX …</COVERVECS>
 ```
-The file consists of two distinct parts: the list of hypothesis nodes-to-node transitions, defining the translation graph, and the set of source phrase word cover indexes, enclosed in the single-line `<COVERVECS>` tag. Each nodes-to-node line begins with the id of the node we come to by an expansion, followed by the list of the hypothesis nodes from which we expand to the given one. Clearly, this list must contain at least one node and more nodes are possible in case of the to-node begin recombined with other nodes in the corresponding stack level.
+The file consists of two distinct parts: the list of hypothesis nodes-to-node transitions, defining the translation graph, and the set of source phrase word cover indexes, enclosed in the single-line `<COVERVECS>` tag. Each nodes-to-node line begins with the id of the node we come to by an expansion, followed by the list of the hypothesis nodes from which we expand to the given one. Clearly, this list must contain at least one node and more nodes are possible in case of the to-node begin recombined with other nodes in the corresponding stack level. Note that, the `TO_NODE_ID_*` of the nodes that were recombined into another one are substituted with the id of the nodes they were recombined into.
 
 More specifically, in the above:
 
 * `TO_NODE_ID_*` - is a translation hypothesis node id for the hypothesis we expand into (a child hypothesis).
 * `FROM_NODE_ID_*` - is a translation hypothesis node id for the hypothesis we expand from (a parent hypothesis).
 * A three (3) space separated pair `TO_NODE_ID_*   FROM_NODE_ID_*` forms the begin of each graph transition line.
-* `TARGET_PHRASE` - is a target translation phrase added to the translation result when expanding from one hypothesis to another.
+* `TARGET_PHRASE` - is a target translation phrase added to the translation result when expanding from one hypothesis to another. It can only be empty for the last dummy translation state, listed as first, in the first line of the sentence's  lattice file.
 * `SCORE_DELTA` - the translation cost added to the translation result when expanding from one hypothesis to another.
 * Each subsequent from-node in the list is single (1) space separated from the previous.
 * The single-line `<COVERVECS>` tag contains a single (1) space separated list of the to- and from- node pairs attributed with the translated source phrase begin and end index.
