@@ -42,7 +42,7 @@ namespace uva {
                 static constexpr size_t MAX_NUM_CONSOLE_ATTEMPTS = 10;
                 
                 //Stores the number of milliseconds the client shall wait until a re-do the console action
-                static constexpr size_t CONSOLE_RE_TRY_TIME_OUT_MILLISEC = 100;
+                static constexpr size_t CONSOLE_RE_TRY_TIME_OUT_MILLISEC = 10;
 
             }
         }
