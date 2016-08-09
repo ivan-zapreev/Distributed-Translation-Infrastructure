@@ -345,7 +345,7 @@ namespace uva {
                             case phase::UNDEFINED_PHASE:
                             default:
                             {
-                                //Log an error as we are in an improper state
+                                //This must not be happening it is an internal error
                                 LOG_ERROR << "Failing balancer job in a wrong phase: "
                                         << *this << ", ignoring!" << END_LOG;
                                 break;
@@ -539,7 +539,8 @@ namespace uva {
                             default:
                             {
                                 //This must not be happening it is an internal error
-                                LOG_ERROR << "Sending the job REPLY in state: " << m_state << END_LOG;
+                                LOG_ERROR << "Sending the job REPLY in a wrong state: "
+                                        << *this << ", ignoring!" << END_LOG;
                             }
                         }
 
