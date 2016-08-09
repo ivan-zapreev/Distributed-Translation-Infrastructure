@@ -120,7 +120,7 @@ void create_arguments_parser() {
     p_min_sent = new ValueArg<uint32_t>("l", "lower-size", string("The minimum number of sentences ") +
             string("to send per request, default is 100"), false, 100, "min #sentences per request", *p_cmd_args);
 
-    //Add the translation details switch parameter - ostring(ptional, default is false
+    //Add the translation details switch parameter - ostring(optional, default is false
     p_trans_details_arg = new SwitchArg("c", "clues", string("Request the server to provide the ") +
             string("translation details"), *p_cmd_args, false);
 

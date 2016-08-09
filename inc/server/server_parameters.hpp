@@ -67,6 +67,10 @@ namespace uva {
                     //Stores the target language parameter name
                     static const string SE_TARGET_LANG_PARAM_NAME;
 
+                    //Stores the flag indicating that this run is only
+                    //for generating the feature to id mapping file.
+                    bool m_is_only_f2id;
+
                     //The source language name
                     string m_source_lang;
                     //The source language name, lowercased
@@ -98,16 +102,18 @@ namespace uva {
                      * Allows to verify the parameters to be correct.
                      */
                     void finalize() {
-                        ASSERT_CONDITION_THROW((m_num_threads == 0),
-                                string("The number of decoding threads: ") +
-                                to_string(m_num_threads) +
-                                string(" must be larger than zero! "));
-                        
-                        //Create the lowercase versions of the source and target languages
-                        m_source_lang_lower = m_source_lang;
-                        (void) to_lower(m_source_lang_lower);
-                        m_target_lang_lower = m_target_lang;
-                        (void) to_lower(m_target_lang_lower);
+                        if (!m_is_only_f2id) {
+                            ASSERT_CONDITION_THROW((m_num_threads == 0),
+                                    string("The number of decoding threads: ") +
+                                    to_string(m_num_threads) +
+                                    string(" must be larger than zero! "));
+
+                            //Create the lowercase versions of the source and target languages
+                            m_source_lang_lower = m_source_lang;
+                            (void) to_lower(m_source_lang_lower);
+                            m_target_lang_lower = m_target_lang;
+                            (void) to_lower(m_target_lang_lower);
+                        }
                     }
                 };
 

@@ -82,6 +82,9 @@ static ValueArg<string> * p_config_file_arg = NULL;
 static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
 static ValueArg<string> * p_debug_level_arg = NULL;
+#if IS_SERVER_TUNING_MODE
+static SwitchArg * p_gen_fmap_arg = NULL;
+#endif
 
 /**
  * Creates and sets up the command line parameters parser
@@ -97,6 +100,12 @@ void create_arguments_parser() {
     logger::get_reporting_levels(&debug_levels);
     p_debug_levels_constr = new ValuesConstraint<string>(debug_levels);
     p_debug_level_arg = new ValueArg<string>("d", "debug", "The debug level to be used", false, RESULT_PARAM_VALUE, p_debug_levels_constr, *p_cmd_args);
+
+#if IS_SERVER_TUNING_MODE
+    //Add the translation details switch parameter - ostring(optional, default is false
+    p_gen_fmap_arg = new SwitchArg("f", "feature", string("Only generate the feature id to name mapping file for the search lattice") +
+            string("Only feature id file"), *p_cmd_args, false);
+#endif
 }
 
 /**
@@ -106,6 +115,9 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_config_file_arg);
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
+#if IS_SERVER_TUNING_MODE
+    SAFE_DESTROY(p_gen_fmap_arg);
+#endif
     SAFE_DESTROY(p_cmd_args);
 }
 
@@ -114,12 +126,11 @@ void destroy_arguments_parser() {
  * for the search lattice. As a part of this process we will need to
  * dump the id to feature weight name into the file and also set up
  * the parameters.
- * @param dump_file if true then the id to feature mapping file will be dumped, otherwise not.
  * @param params the server parameters
+ * @param dump_file if true then the id to feature mapping file will be dumped, otherwise not.
  * @param cfg_file_name the configuration file name
  */
-template<bool dump_file = true >
-inline void process_feature_to_id_mappings(const string & cfg_file_name, server_parameters & params) {
+inline void process_feature_to_id_mappings(server_parameters & params, const bool dump_file, const string & cfg_file_name) {
     //Declare the feature id registry
     feature_id_registry registry;
 
@@ -139,10 +150,9 @@ inline void process_feature_to_id_mappings(const string & cfg_file_name, server_
         if (last_pos != string::npos) {
             cfg_name = cfg_name.substr(last_pos + 1);
         }
-        
+
         //Construct the feature weight to id file name
-        const string file_name = params.m_de_params.m_lattices_folder + "/" +
-                cfg_name + "." + params.m_de_params.m_li2n_file_ext;
+        const string file_name = "./" + cfg_name + "." + params.m_de_params.m_li2n_file_ext;
 
         //Dump the mapping into the file
         registry.dump_feature_to_id_file(file_name);
@@ -150,6 +160,102 @@ inline void process_feature_to_id_mappings(const string & cfg_file_name, server_
 
     //Set the number of features
     params.m_de_params.m_num_features = registry.size();
+}
+
+/**
+ * Allows to parse the server config file and inialize the parameters
+ * @param config_file_name the config file name
+ * @param params the parameters to be initialized
+ */
+static void parse_confiog_file(const string & config_file_name, server_parameters & params) {
+    LOG_USAGE << "Loading the server configuration option from: " << config_file_name << END_LOG;
+    INI<> ini(config_file_name, false);
+    //Parse the configuration file
+    if (ini.parse()) {
+        LOG_INFO << "The configuration file has been parsed!" << END_LOG;
+
+        //Get the configuration options from the file
+        string section = server_parameters::SE_CONFIG_SECTION_NAME;
+        params.m_server_port = get_integer<uint16_t>(ini, section, server_parameters::SE_SERVER_PORT_PARAM_NAME);
+        params.m_num_threads = get_integer<uint16_t>(ini, section, server_parameters::SE_NUM_THREADS_PARAM_NAME);
+        params.m_source_lang = get_string(ini, section, server_parameters::SE_SOURCE_LANG_PARAM_NAME);
+        params.m_target_lang = get_string(ini, section, server_parameters::SE_TARGET_LANG_PARAM_NAME);
+
+        section = lm_parameters::LM_CONFIG_SECTION_NAME;
+        params.m_lm_params.m_conn_string = get_string(ini, section, lm_parameters::LM_CONN_STRING_PARAM_NAME);
+        tokenize_s_t_f<MAX_NUM_LM_FEATURES>(lm_parameters::LM_WEIGHTS_PARAM_NAME,
+                get_string(ini, section, lm_parameters::LM_WEIGHTS_PARAM_NAME),
+                params.m_lm_params.m_lambdas,
+                params.m_lm_params.m_num_lambdas,
+                LM_FEATURE_WEIGHTS_DELIMITER_STR);
+
+        section = tm_parameters::TM_CONFIG_SECTION_NAME;
+        params.m_tm_params.m_conn_string = get_string(ini, section, tm_parameters::TM_CONN_STRING_PARAM_NAME);
+        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(tm_parameters::TM_WEIGHTS_PARAM_NAME,
+                get_string(ini, section, tm_parameters::TM_WEIGHTS_PARAM_NAME),
+                params.m_tm_params.m_lambdas,
+                params.m_tm_params.m_num_lambdas,
+                TM_FEATURE_WEIGHTS_DELIMITER_STR);
+        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(tm_parameters::TM_UNK_FEATURE_PARAM_NAME,
+                get_string(ini, section, tm_parameters::TM_UNK_FEATURE_PARAM_NAME),
+                params.m_tm_params.m_unk_features,
+                params.m_tm_params.m_num_unk_features,
+                TM_FEATURE_WEIGHTS_DELIMITER_STR);
+        params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, tm_parameters::TM_TRANS_LIM_PARAM_NAME);
+        params.m_tm_params.m_min_tran_prob = get_float(ini, section, tm_parameters::TM_MIN_TRANS_PROB_PARAM_NAME);
+
+        section = rm_parameters::RM_CONFIG_SECTION_NAME;
+        params.m_rm_params.m_conn_string = get_string(ini, section, rm_parameters::RM_CONN_STRING_PARAM_NAME);
+        tokenize_s_t_f<MAX_NUM_RM_FEATURES>(rm_parameters::RM_WEIGHTS_PARAM_NAME,
+                get_string(ini, section, rm_parameters::RM_WEIGHTS_PARAM_NAME),
+                params.m_rm_params.m_lambdas,
+                params.m_rm_params.m_num_lambdas,
+                RM_FEATURE_WEIGHTS_DELIMITER_STR);
+
+        section = de_parameters::DE_CONFIG_SECTION_NAME;
+        params.m_de_params.m_pruning_threshold = get_float(ini, section, de_parameters::DE_PRUNING_THRESHOLD_PARAM_NAME);
+        params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, de_parameters::DE_STACK_CAPACITY_PARAM_NAME);
+        params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section, de_parameters::DE_MAX_SP_LEN_PARAM_NAME);
+        params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, de_parameters::DE_MAX_TP_LEN_PARAM_NAME);
+        params.m_de_params.m_word_penalty = get_float(ini, section, de_parameters::DE_WORD_PENALTY_PARAM_NAME);
+        params.m_de_params.m_lin_dist_penalty = get_float(ini, section, de_parameters::DE_LD_PENALTY_PARAM_NAME);
+        params.m_de_params.m_dist_limit = get_integer<int32_t>(ini, section, de_parameters::DE_DIST_LIMIT_PARAM_NAME);
+        params.m_de_params.m_is_gen_lattice = get_bool(ini, section, de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME);
+#if IS_SERVER_TUNING_MODE
+        params.m_de_params.m_li2n_file_ext = get_string(ini, section, de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME);
+        //If the lattice dumping is enabled then
+        if (params.m_de_params.m_is_gen_lattice) {
+            LOG_USAGE << "--------------------------------------------------------" << END_LOG;
+            params.m_de_params.m_lattices_folder = get_string(ini, section, de_parameters::DE_LATTICES_FOLDER_PARAM_NAME);
+            params.m_de_params.m_scores_file_ext = get_string(ini, section, de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME);
+            params.m_de_params.m_lattice_file_ext = get_string(ini, section, de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME);
+            //Check that the lattices folder does, if not - create.
+            check_create_folder(params.m_de_params.m_lattices_folder);
+        }
+        //Create global feature to id mapping, dump the file if needed
+        process_feature_to_id_mappings(params, params.m_is_only_f2id, config_file_name);
+#endif
+
+        //Only finalize and log parameters if we are not only here to generate the feature to id mapping
+        if (!params.m_is_only_f2id) {
+            params.m_lm_params.finalize();
+            LOG_INFO << params.m_lm_params << END_LOG;
+            params.m_tm_params.finalize();
+            LOG_INFO << params.m_tm_params << END_LOG;
+            params.m_rm_params.finalize();
+            LOG_INFO << params.m_rm_params << END_LOG;
+            params.m_de_params.finalize();
+            LOG_INFO << params.m_de_params << END_LOG;
+            LOG_USAGE << "Translation server from '" << params.m_source_lang << "' into '"
+                    << params.m_target_lang << "' on port: '" << params.m_server_port
+                    << "' translation threads: '" << params.m_num_threads << "'" << END_LOG;
+            params.finalize();
+            LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
+        }
+    } else {
+        //We could not parse the configuration file, report an error
+        THROW_EXCEPTION(string("Could not find or parse the configuration file: ") + config_file_name);
+    }
 }
 
 /**
@@ -170,98 +276,16 @@ static void prepare_config_structures(const uint argc, char const * const * cons
     //Set the logging level right away
     logger::set_reporting_level(p_debug_level_arg->getValue());
 
+    //Get the flag value or use the default
+#if IS_SERVER_TUNING_MODE
+    params.m_is_only_f2id = p_gen_fmap_arg->getValue();
+#else
+    params.m_is_only_f2id = false;
+#endif
+
     //Get the configuration file name and read the config values from the file
     const string config_file_name = p_config_file_arg->getValue();
-    LOG_USAGE << "Loading the server configuration option from: " << config_file_name << END_LOG;
-    INI<> ini(config_file_name, false);
-
-    //Parse the configuration file
-    if (ini.parse()) {
-        LOG_INFO << "The configuration file has been parsed!" << END_LOG;
-
-        //Get the configuration options from the file
-        string section = server_parameters::SE_CONFIG_SECTION_NAME;
-        params.m_server_port = get_integer<uint16_t>(ini, section, server_parameters::SE_SERVER_PORT_PARAM_NAME);
-        params.m_num_threads = get_integer<uint16_t>(ini, section, server_parameters::SE_NUM_THREADS_PARAM_NAME);
-        params.m_source_lang = get_string(ini, section, server_parameters::SE_SOURCE_LANG_PARAM_NAME);
-        params.m_target_lang = get_string(ini, section, server_parameters::SE_TARGET_LANG_PARAM_NAME);
-        params.finalize();
-
-        LOG_USAGE << "Translation server from '" << params.m_source_lang << "' into '"
-                << params.m_target_lang << "' on port: '" << params.m_server_port
-                << "' translation threads: '" << params.m_num_threads << "'" << END_LOG;
-
-        section = lm_parameters::LM_CONFIG_SECTION_NAME;
-        params.m_lm_params.m_conn_string = get_string(ini, section, lm_parameters::LM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<MAX_NUM_LM_FEATURES>(lm_parameters::LM_WEIGHTS_PARAM_NAME,
-                get_string(ini, section, lm_parameters::LM_WEIGHTS_PARAM_NAME),
-                params.m_lm_params.m_lambdas,
-                params.m_lm_params.m_num_lambdas,
-                LM_FEATURE_WEIGHTS_DELIMITER_STR);
-        params.m_lm_params.finalize();
-        LOG_INFO << params.m_lm_params << END_LOG;
-
-        section = tm_parameters::TM_CONFIG_SECTION_NAME;
-        params.m_tm_params.m_conn_string = get_string(ini, section, tm_parameters::TM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(tm_parameters::TM_WEIGHTS_PARAM_NAME,
-                get_string(ini, section, tm_parameters::TM_WEIGHTS_PARAM_NAME),
-                params.m_tm_params.m_lambdas,
-                params.m_tm_params.m_num_lambdas,
-                TM_FEATURE_WEIGHTS_DELIMITER_STR);
-        tokenize_s_t_f<MAX_NUM_TM_FEATURES>(tm_parameters::TM_UNK_FEATURE_PARAM_NAME,
-                get_string(ini, section, tm_parameters::TM_UNK_FEATURE_PARAM_NAME),
-                params.m_tm_params.m_unk_features,
-                params.m_tm_params.m_num_unk_features,
-                TM_FEATURE_WEIGHTS_DELIMITER_STR);
-        params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, tm_parameters::TM_TRANS_LIM_PARAM_NAME);
-        params.m_tm_params.m_min_tran_prob = get_float(ini, section, tm_parameters::TM_MIN_TRANS_PROB_PARAM_NAME);
-        params.m_tm_params.finalize();
-        LOG_INFO << params.m_tm_params << END_LOG;
-
-        section = rm_parameters::RM_CONFIG_SECTION_NAME;
-        params.m_rm_params.m_conn_string = get_string(ini, section, rm_parameters::RM_CONN_STRING_PARAM_NAME);
-        tokenize_s_t_f<MAX_NUM_RM_FEATURES>(rm_parameters::RM_WEIGHTS_PARAM_NAME,
-                get_string(ini, section, rm_parameters::RM_WEIGHTS_PARAM_NAME),
-                params.m_rm_params.m_lambdas,
-                params.m_rm_params.m_num_lambdas,
-                RM_FEATURE_WEIGHTS_DELIMITER_STR);
-        params.m_rm_params.finalize();
-        LOG_INFO << params.m_rm_params << END_LOG;
-
-        section = de_parameters::DE_CONFIG_SECTION_NAME;
-        params.m_de_params.m_pruning_threshold = get_float(ini, section, de_parameters::DE_PRUNING_THRESHOLD_PARAM_NAME);
-        params.m_de_params.m_stack_capacity = get_integer<uint32_t>(ini, section, de_parameters::DE_STACK_CAPACITY_PARAM_NAME);
-        params.m_de_params.m_max_s_phrase_len = get_integer<phrase_length>(ini, section, de_parameters::DE_MAX_SP_LEN_PARAM_NAME);
-        params.m_de_params.m_max_t_phrase_len = get_integer<phrase_length>(ini, section, de_parameters::DE_MAX_TP_LEN_PARAM_NAME);
-        params.m_de_params.m_word_penalty = get_float(ini, section, de_parameters::DE_WORD_PENALTY_PARAM_NAME);
-        params.m_de_params.m_lin_dist_penalty = get_float(ini, section, de_parameters::DE_LD_PENALTY_PARAM_NAME);
-        params.m_de_params.m_dist_limit = get_integer<int32_t>(ini, section, de_parameters::DE_DIST_LIMIT_PARAM_NAME);
-        params.m_de_params.m_is_gen_lattice = get_bool(ini, section, de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME);
-#if IS_SERVER_TUNING_MODE
-        params.m_de_params.m_lattices_folder = get_string(ini, section, de_parameters::DE_LATTICES_FOLDER_PARAM_NAME);
-        params.m_de_params.m_li2n_file_ext = get_string(ini, section, de_parameters::DE_LI2N_FILE_EXT_PARAM_NAME);
-        params.m_de_params.m_scores_file_ext = get_string(ini, section, de_parameters::DE_SCORES_FILE_EXT_PARAM_NAME);
-        params.m_de_params.m_lattice_file_ext = get_string(ini, section, de_parameters::DE_LATTICE_FILE_EXT_PARAM_NAME);
-        //If the lattice dumping is enabled then
-        if (params.m_de_params.m_is_gen_lattice) {
-            LOG_USAGE << "--------------------------------------------------------" << END_LOG;
-            //Check that the lattices folder does, if not - create.
-            check_create_folder(params.m_de_params.m_lattices_folder);
-            //Create global feature to id mapping and dump it into the file
-            process_feature_to_id_mappings<true>(config_file_name, params);
-        } else {
-            //Only create the global feature to id mapping
-            process_feature_to_id_mappings<false>(config_file_name, params);
-        }
-#endif
-        params.m_de_params.finalize();
-        LOG_INFO << params.m_de_params << END_LOG;
-
-        LOG_INFO3 << "Sanity checks are: " << (DO_SANITY_CHECKS ? "ON" : "OFF") << " !" << END_LOG;
-    } else {
-        //We could not parse the configuration file, report an error
-        THROW_EXCEPTION(string("Could not find or parse the configuration file: ") + config_file_name);
-    }
+    parse_confiog_file(config_file_name, params);
 }
 
 /**
@@ -322,20 +346,26 @@ int main(int argc, char** argv) {
         //Prepare the configuration structures, parse the config file
         prepare_config_structures(argc, argv, params);
 
-        //Initialize connections to the used models
-        connect_to_models(params);
+        //Run the server only if we are not requested
+        //to only generate the feature to id mapping
+        if (!params.m_is_only_f2id) {
+            //Initialize connections to the used models
+            connect_to_models(params);
 
-        //Instantiate the translation server
-        translation_server server(params);
+            //Instantiate the translation server
+            translation_server server(params);
 
-        //Run the translation server in a separate thread
-        thread server_thread(bind(&translation_server::run, &server));
+            //Run the translation server in a separate thread
+            thread server_thread(bind(&translation_server::run, &server));
 
-        LOG_USAGE << "The server is started!" << END_LOG;
+            LOG_USAGE << "The server is started!" << END_LOG;
 
-        //Wait until the server is stopped by pressing and exit button
-        server_console cmd(params, server, server_thread);
-        cmd.perform_command_loop();
+            //Wait until the server is stopped by pressing and exit button
+            server_console cmd(params, server, server_thread);
+            cmd.perform_command_loop();
+        } else {
+            LOG_USAGE << "We were only requested to generate the feature to id mapping, exiting!" << END_LOG;
+        }
     } catch (std::exception & ex) {
         //The argument's extraction has failed, print the error message and quit
         LOG_ERROR << ex.what() << END_LOG;
