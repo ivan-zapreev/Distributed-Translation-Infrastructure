@@ -433,13 +433,24 @@ namespace uva {
                         //Check if the job is not being cancelled
                         if (!m_is_canceled) {
                             LOG_DEBUG << "Trying to call the script: " << call_str << END_LOG;
-                            FILE *fp = popen(call_str.c_str(), "r");
-                            LOG_DEBUG << "Checking on the script's pipeline file status" << END_LOG;
-                            if (fp != NULL) {
-                                //The script was successfully called, process its results
-                                return process_script_results(call_str, fp, output);
-                            } else {
-                                THROW_EXCEPTION(string("Failed to call the processor script: ") + call_str);
+                            size_t attempts = 0;
+                            while (true) {
+                                FILE *fp = popen(call_str.c_str(), "r");
+                                LOG_DEBUG << "Checking on the script's pipeline file status" << END_LOG;
+                                if (fp != NULL) {
+                                    //The script was successfully called, process its results
+                                    return process_script_results(call_str, fp, output);
+                                } else {
+                                    //Check if we shall stop or re-try
+                                    if (attempts < MAX_NUM_CONSOLE_ATTEMPTS) {
+                                        //Increment the number of attempts
+                                        ++attempts;
+                                        //Sleep for the requested number of milliseconds
+                                        std::this_thread::sleep_for(std::chrono::milliseconds(CONSOLE_RE_TRY_TIME_OUT_MILLISEC));
+                                    } else {
+                                        THROW_EXCEPTION(string("Failed to call the processor script: ") + call_str);
+                                    }
+                                }
                             }
                         } else {
                             //The job has been canceled
