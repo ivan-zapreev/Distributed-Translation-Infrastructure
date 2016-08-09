@@ -294,7 +294,8 @@ namespace uva {
 
                         //Check the execution status and report an error
                         if (-1 == dir_err) {
-                            LOG_ERROR << "Failed to delete files cmd: " << cmd << END_LOG;
+                            THROW_EXCEPTION(string("Tried ") + to_string(attempts) +
+                                    string(" times but failed to execute: ") + cmd);
                         }
                     }
 
@@ -448,7 +449,8 @@ namespace uva {
                                         //Sleep for the requested number of milliseconds
                                         std::this_thread::sleep_for(std::chrono::milliseconds(CONSOLE_RE_TRY_TIME_OUT_MILLISEC));
                                     } else {
-                                        THROW_EXCEPTION(string("Failed to call the processor script: ") + call_str);
+                                        THROW_EXCEPTION(string("Tried ") + to_string(attempts) +
+                                                string(" times but failed to execute: ") + call_str);
                                     }
                                 }
                             }
