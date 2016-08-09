@@ -293,6 +293,11 @@ namespace uva {
                             }
                                 //The reply is already sent to the client, nothing to be done
                             case phase::DONE_PHASE:
+                            {
+                                //This can happen, e.g. if we are too slow deleting the finished
+                                //job and the client has already disconnected, so just ignore.
+                                break;
+                            }
                                 //The state is undefined, this should not be happening
                             case phase::UNDEFINED_PHASE:
                             default:
