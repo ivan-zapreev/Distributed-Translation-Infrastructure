@@ -90,7 +90,7 @@ export FILTER='s/.res.*.txt/.res.N.txt/g'
 
 #Clearing the previous logs
 echo "Clearing the previous logs ..."
-rm ./proc.*.log ./output.res.*.txt ./output.res.*.txt.log
+rm -f ./proc.*.log ./output.res.*.txt ./output.res.*.txt.log
 
 #Run the control
 echo "Performing a control run ..."
