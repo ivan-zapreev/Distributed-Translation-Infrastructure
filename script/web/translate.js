@@ -96,19 +96,29 @@ function update_conn_status(ws_status) {
 
     switch (ws_status) {
     case window.WebSocket.CONNECTING:
-        client_data.conn_status_span.text("Connecting ...");
+        client_data.trans_server_cs_img.attr("src", "./img/changing.png");
+        client_data.trans_server_cs_img.attr("alt", "Connecting ...");
+        client_data.trans_server_cs_img.attr("data-original-title", "Connecting ...");
         break;
     case window.WebSocket.OPEN:
-        client_data.conn_status_span.text("Connected");
+        client_data.trans_server_cs_img.attr("src", "./img/connected.png");
+        client_data.trans_server_cs_img.attr("alt", "Connected");
+        client_data.trans_server_cs_img.attr("data-original-title", "Connected");
         break;
     case window.WebSocket.CLOSING:
-        client_data.conn_status_span.text("Disconnecting ...");
+        client_data.trans_server_cs_img.attr("src", "./img/changing.png");
+        client_data.trans_server_cs_img.attr("alt", "Disconnecting ...");
+        client_data.trans_server_cs_img.attr("data-original-title", "Disconnecting ...");
         break;
     case window.WebSocket.CLOSED:
-        client_data.conn_status_span.text("Disconnected");
+        client_data.trans_server_cs_img.attr("src", "./img/disconnected.png");
+        client_data.trans_server_cs_img.attr("alt", "Disconnected");
+        client_data.trans_server_cs_img.attr("data-original-title", "Disconnected");
         break;
     default:
-        client_data.conn_status_span.text("Puzzled :)");
+        client_data.trans_server_cs_img.attr("src", "./img/puzzled.png");
+        client_data.trans_server_cs_img.attr("alt", "Puzzled :)");
+        client_data.trans_server_cs_img.attr("data-original-title", "Puzzled :)");
         break;
     }
 }
@@ -1148,7 +1158,7 @@ function obtain_element_references() {
     client_data.clear_log_btn = document.getElementById("log_clear_btn");
     
     client_data.to_text_span = window.$("#to_text");
-    client_data.conn_status_span = window.$("#conn_status");
+    client_data.trans_server_cs_img = window.$("#trans_server_cs");
     client_data.request_progress_bar = window.$("#request_progress_bar");
     client_data.response_progress_bar = window.$("#response_progress_bar");
     client_data.log_panel = window.$("#log_panel");

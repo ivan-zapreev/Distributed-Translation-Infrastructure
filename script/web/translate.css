@@ -222,3 +222,9 @@ a.download_link img {
 h3.panel-title img {
     height: 20px;
 }
+
+img#trans_server_cs {
+    display: inline;
+    height: 24px;
+    width: 24px;
+}
