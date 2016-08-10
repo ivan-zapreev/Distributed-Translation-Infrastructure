@@ -92,15 +92,17 @@ export FILTER='s/.res.*.txt/.res.N.txt/g'
 echo "Clearing the previous logs ..."
 rm -f ./proc.*.log ./output.res.*.txt ./output.res.*.txt.log
 
+BASEDIR=$(dirname "$0")/../../build/
+
 #Run the control
 echo "Performing a control run ..."
-bpbd-client -I ${4} -i ${5} -O ./output.res.0.txt -o ${6} -s ${2} -r ${3} -p ${3} | sed -e ${FILTER}  > ./proc.0.log
+${BASEDIR}/bpbd-client -I ${BASEDIR}/${4} -i ${5} -O ./output.res.0.txt -o ${6} -s ${2} -r ${3} -p ${3} | sed -e ${FILTER}  > ./proc.0.log
 
 #Run the process instances
 echo "Starting ${1} parallel clients ..."
 for i in `seq 1 ${1}`; do
   #echo "Starting process: ${i}"
-  bpbd-client -I ${4} -i ${5} -O ./output.res.${i}.txt -o ${6} -s ${2} -r ${3} -p ${3} | sed -e ${FILTER} > ./proc.${i}.log &
+  ${BASEDIR}/bpbd-client -I ${BASEDIR}/${4} -i ${5} -O ./output.res.${i}.txt -o ${6} -s ${2} -r ${3} -p ${3} | sed -e ${FILTER} > ./proc.${i}.log &
 done
 
 echo "Waiting for the client processes to finish..."
