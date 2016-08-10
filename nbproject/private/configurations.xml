@@ -599,7 +599,7 @@
       <in>asio.hpp</in>
       <in>md5.hpp</in>
     </df>
-    <df root="ext" name="3">
+    <df root="ext" name="1">
       <df name="asio">
         <df name="detail">
           <df name="impl">
@@ -701,7 +701,7 @@
         </df>
       </df>
     </df>
-    <df root="inc" name="1">
+    <df root="inc" name="2">
       <df name="balancer">
         <in>adapters_manager.hpp</in>
         <in>balancer_console.hpp</in>
@@ -945,7 +945,7 @@
       </df>
       <in>main.hpp</in>
     </df>
-    <df root="inc" name="4">
+    <df root="inc" name="3">
       <df name="balancer">
       </df>
       <df name="client">
@@ -1019,7 +1019,7 @@
         </df>
       </df>
     </df>
-    <df root="src" name="2">
+    <df root="src" name="4">
       <df name="balancer">
         <in>balancer_job.cpp</in>
         <in>balancer_parameters.cpp</in>

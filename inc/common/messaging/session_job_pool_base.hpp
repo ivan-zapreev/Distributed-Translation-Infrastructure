@@ -117,6 +117,8 @@ namespace uva {
                             //Wake up the jobs thread for the case there is no jobs being processed
                             start_processing_finished_jobs();
 
+                            LOG_INFO << "Waiting for the jobs thread to finish!" << END_LOG;
+
                             //Wait until the job processing thread finishes
                             m_jobs_thread.join();
 
