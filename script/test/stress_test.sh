@@ -95,7 +95,7 @@ bpbd-client -I ${4} -i ${5} -O ./output.res.0.txt -o ${6} -s ${2} -r ${3} -p ${3
 #Run the process instances
 echo "Starting ${1} parallel clients ..."
 for i in `seq 1 ${1}`; do
-  echo "Starting process: ${i}"
+  #echo "Starting process: ${i}"
   bpbd-client -I ${4} -i ${5} -O ./output.res.${i}.txt -o ${6} -s ${2} -r ${3} -p ${3} | sed -e ${FILTER} > ./proc.${i}.log &
 done
 
