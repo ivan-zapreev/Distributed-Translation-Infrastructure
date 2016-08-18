@@ -18,12 +18,12 @@ div#settings {
 div#server {
 }
 
-input#server_url {
+input#trans_server_url {
    width: 150px;
    color: gray;
 }
 
-input#server_url:focus {
+input#trans_server_url:focus {
    color: black;
 }
 

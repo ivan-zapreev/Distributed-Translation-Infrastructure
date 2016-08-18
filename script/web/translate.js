@@ -1037,28 +1037,32 @@ function connect_to_server() {
     window.console.log("Disable the controls before connecting to a new server");
     disable_interface();
 
-    window.console.log("Checking that the web socket connection is available");
-    if (window.hasOwnProperty("WebSocket")) {
-        window.console.log("Close the web socket connection if there is one");
-        if ((client_data.ws !== null) && ((client_data.ws.readyState === window.WebSocket.CONNECTING) ||
-                                          (client_data.ws.readyState === window.WebSocket.OPEN))) {
-            info("Closing the previously opened connection");
-            update_conn_status(window.WebSocket.CLOSING);
-            client_data.ws.close();
+    try {
+        window.console.log("Checking that the web socket connection is available");
+        if (window.hasOwnProperty("WebSocket")) {
+            window.console.log("Close the web socket connection if there is one");
+            if ((client_data.ws !== null) && ((client_data.ws.readyState === window.WebSocket.CONNECTING) ||
+                                              (client_data.ws.readyState === window.WebSocket.OPEN))) {
+                info("Closing the previously opened connection");
+                update_conn_status(window.WebSocket.CLOSING);
+                client_data.ws.close();
+            }
+
+            info("Opening a new web socket to the server: " + client_data.server_url);
+            client_data.ws = new window.WebSocket(client_data.server_url);
+
+            update_conn_status(window.WebSocket.CONNECTING);
+
+            window.console.log("Set up the socket handler functions");
+            client_data.ws.onopen = on_open;
+            client_data.ws.onmessage = on_message;
+            client_data.ws.onclose = on_close;
+        } else {
+            //Disable the web page
+            danger("The WebSockets are not supported by your browser!");
         }
-
-        info("Opening a new web socket to the server: " + client_data.server_url);
-        client_data.ws = new window.WebSocket(client_data.server_url);
-
-        update_conn_status(window.WebSocket.CONNECTING);
-
-        window.console.log("Set up the socket handler functions");
-        client_data.ws.onopen = on_open;
-        client_data.ws.onmessage = on_message;
-        client_data.ws.onclose = on_close;
-    } else {
-        //Disable the web page
-        danger("The WebSockets are not supported by your browser!");
+    } catch (err) {
+        enable_interface(false);
     }
 }
 
@@ -1068,23 +1072,23 @@ function connect_to_server() {
  */
 function on_server_change() {
     "use strict";
-    var new_server_url;
+    var server_url;
     
     //Get the current value and trim it
-    new_server_url = client_data.server_url_inpt.value.trim();
+    server_url = client_data.server_url_inpt.value.trim();
     //Put the trimmed value back into the input
-    client_data.server_url_inpt.value = new_server_url;
+    client_data.server_url_inpt.value = server_url;
     
-    window.console.log("The new server url is: " + new_server_url);
+    window.console.log("The new server url is: " + server_url);
 
     if ((client_data.ws.readyState !== window.WebSocket.OPEN) ||
-            (client_data.server_url !== new_server_url)) {
+            (client_data.server_url !== server_url)) {
         
         //A new server means new translation
         require_new_translation();
         
         window.console.log("Storing the new server url value");
-        client_data.server_url = new_server_url;
+        client_data.server_url = server_url;
     
         if (client_data.server_url !== "") {
             window.console.log("Connecting to the new server url");
@@ -1152,7 +1156,7 @@ function obtain_element_references() {
     client_data.from_text_area = document.getElementById("from_text");
     client_data.from_lang_sel = document.getElementById("from_lang_sel");
     client_data.to_lang_sel = document.getElementById("to_lang_sel");
-    client_data.server_url_inpt = document.getElementById("server_url");
+    client_data.server_url_inpt = document.getElementById("trans_server_url");
     client_data.progress_image = document.getElementById("progress");
     client_data.trans_info_cb = document.getElementById("trans_info_cb");
     client_data.clear_log_btn = document.getElementById("log_clear_btn");
@@ -1243,7 +1247,7 @@ function initialize_client_data(callMD5, callDownload) {
     //Initialize tooltips
     window.$('[data-toggle="tooltip"]').tooltip();
     
-    window.console.log("Using the default server url: " + client_data.server_url);
+    window.console.log("Using the default translation server url: " + client_data.server_url);
     
     //Set up the server URL
     client_data.server_url_inpt.value = client_data.server_url;
@@ -1289,7 +1293,7 @@ function initialize_translation(callMD5, callDownload) {
     //Initialize the client data
     initialize_client_data(callMD5, callDownload);
 
-    window.console.log("Open an initial connection to the server");
+    window.console.log("Open an initial connection to the translation server");
 
     //Connect to the server - open websocket connection
     connect_to_server();

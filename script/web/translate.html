@@ -26,6 +26,9 @@
     <!--Include our own css-->
     <link rel="stylesheet" href="./translate.css">
 
+    <!--Include the web socket client module javascript-->
+    <script src="./ws_client.js" type="text/javascript"></script>
+
     <!--Include the client side javascript-->
     <script src="./translate.js" type="text/javascript"></script>
 </head>
@@ -41,8 +44,8 @@
                 <div class="panel-body">
                     <div id="settings">
                         <div id="server">
-                            Server:
-                            <input data-original-title='If disconnected, click here to re-connect' data-toggle='tooltip' data-placement='auto' class="input-sm" id="server_url" oninput="on_server_change()" onfocus="on_server_change()" type="text" value="">
+                            Translator:
+                            <input data-original-title='If disconnected, click here to re-connect' data-toggle='tooltip' data-placement='auto' class="input-sm" id="trans_server_url" oninput="on_server_change()" onfocus="on_server_change()" type="text" value="">
                             <img id="trans_server_cs" data-toggle='tooltip' data-original-title='Disconnected' class="img-responsive" src="./img/disconnected.png" alt="Disconnected">
                         </div>
                         <div id="trans_info">
