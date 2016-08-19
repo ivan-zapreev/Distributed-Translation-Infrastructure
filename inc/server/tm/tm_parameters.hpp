@@ -134,7 +134,7 @@ namespace uva {
                                     string(" != ") + TM_UNK_FEATURE_PARAM_NAME +
                                     string(":") + to_string(m_num_unk_features));
 
-                            //Check that the UNK features are not zero - this will result in a -inf log10 weights!
+                            //Check that the UNK features are not zero - this will result in a -inf log_e weights!
                             for (size_t idx = 0; idx < m_num_lambdas; ++idx) {
                                 ASSERT_CONDITION_THROW((m_unk_features[idx] == 0.0),
                                         string("Translation parameters ") +

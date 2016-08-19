@@ -223,7 +223,7 @@ namespace uva {
                                 //Compute the next minimum level to consider, it is either one level higher or we are at the maximum
                                 min_level = std::min<phrase_length>(max_m_gram_level + 1, LM_M_GRAM_LEVEL_MAX);
 
-                                LOG_DEBUG << "Computed log10(Prob(" << m_query << ")) = " << m_joint_prob << ", next min_level:  " << min_level << END_LOG;
+                                LOG_DEBUG << "Computed log_e(Prob(" << m_query << ")) = " << m_joint_prob << ", next min_level:  " << min_level << END_LOG;
 
 #if IS_SERVER_TUNING_MODE
                                 //Report the feature scores, here we do it outside the model - for
@@ -304,7 +304,7 @@ namespace uva {
                                     if (MAXIMUM_LOGGING_LEVEL >= debug_levels_enum::DEBUG) {
                                         const string gram_str = get_m_gram_str(begin_word_idx, end_word_idx);
 
-                                        LOG_DEBUG << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                        LOG_DEBUG << "  log_e( Prob( " << gram_str
                                                 << " ) ) = " << SSTR(m_query.m_probs[end_word_idx]) << END_LOG;
                                         LOG_DEBUG1 << "  Prob( " << gram_str << " ) = "
                                                 << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_query.m_probs[end_word_idx])) << END_LOG;
@@ -325,7 +325,7 @@ namespace uva {
                                     LOG_DEBUG << "---" << END_LOG;
                                     //Print the total cumulative probability if needed
                                     const string gram_str = get_query_str();
-                                    LOG_DEBUG << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                    LOG_DEBUG << "  log_e( Prob( " << gram_str
                                             << " ) ) = " << SSTR(m_joint_prob) << END_LOG;
                                     LOG_DEBUG1 << "  Prob( " << gram_str << " ) = "
                                             << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_joint_prob)) << END_LOG;

@@ -141,7 +141,7 @@ namespace uva {
                                     LOG_DEBUG2 << token << " -> " << to_string(weight) << END_LOG;
 
                                     //Now convert to the log probability and multiply with the appropriate weight
-                                    entry.set_weight(idx, log10(weight), m_params.m_lambdas[idx]);
+                                    entry.set_weight(idx, std::log(weight), m_params.m_lambdas[idx]);
 
                                     //Increment the index 
                                     ++idx;

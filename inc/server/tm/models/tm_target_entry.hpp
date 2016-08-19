@@ -202,7 +202,7 @@ namespace uva {
 
                             /**
                              * Allows to get the total weight of the entry, the sum
-                             * of features that are turned into log10 scale.
+                             * of features that are turned into log_e scale.
                              * @param is_consider_scores if true then the scores will be considered in the tuning mode
                              * @param scores the pointer to the array of feature scores that is to 
                              *               be filled in, unless the provided pointer is NULL.
@@ -226,8 +226,8 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to get the value of the third feature which is the log10(p(e|f))
-                             * @return  the value of the third feature which is the log10(p(e|f))
+                             * Allows to get the value of the third feature which is the log_e(p(e|f))
+                             * @return  the value of the third feature which is the log_e(p(e|f))
                              */
                             inline const prob_weight get_t_c_s() const {
                                 LOG_DEBUG << "m_t_cond_s : " << m_t_cond_s << END_LOG;

@@ -28,7 +28,6 @@
 
 #include <string>       // std::string
 #include <cstdlib>      // std::calloc std::realloc std::free
-#include <cmath>        // std::log std::log10
 #include <algorithm>    // std::max
 
 #include "server/lm/lm_consts.hpp"

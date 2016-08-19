@@ -144,20 +144,20 @@ namespace uva {
 
                             /**
                              * Allows to post-process a single feature, i.e. do:
-                             *         log10(feature)*lambda
+                             *         log_e(feature)*lambda
                              * @param raw_feature the feature to post-process
-                             * @param lambda the lambda weight to multiply the log10 feature with
+                             * @param lambda the lambda weight to multiply the log_e feature with
                              * @param feature the out parameter into which the resulting value will be placed: log_10(raw_feature)*lambda
                              * @return the log_10 of the provided raw_feature
                              */
                             inline prob_weight post_process_feature(const prob_weight raw_feature, const prob_weight lambda, prob_weight & feature) {
                                 //Convert the feature into the log scale
-                                const prob_weight log_feature = log10(raw_feature);
+                                const prob_weight log_feature = std::log(raw_feature);
 
                                 //Multiply the log-scale feature weight with the appropriate lambda
                                 feature = log_feature * lambda;
 
-                                LOG_DEBUG << "log10(" << raw_feature << ") * " << lambda << " = " << feature << END_LOG;
+                                LOG_DEBUG << "log_e(" << raw_feature << ") * " << lambda << " = " << feature << END_LOG;
 
                                 //Return the log scale of the raw features
                                 return log_feature;

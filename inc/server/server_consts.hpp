@@ -48,7 +48,7 @@ namespace uva {
                 typedef uint64_t word_uid;
 
                 //The base of the logarithm for stored probabilities/back-off weights
-                static constexpr prob_weight LOG_PROB_WEIGHT_BASE = 10.0;
+                static constexpr prob_weight LOG_PROB_WEIGHT_BASE = 2.71828182845904523536;
 
                 //Stores the word hash for an undefined phrase, is 0
                 //WARNING! MUST BE 0 as this is the value of a default initialized integer!

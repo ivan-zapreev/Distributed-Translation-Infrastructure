@@ -37,10 +37,10 @@ namespace uva {
         namespace bpbd {
             namespace server {
 
-                //Stores the zero log probability for the partial score or future cost
-                static constexpr prob_weight UNKNOWN_LOG_PROB_WEIGHT = -1000.0;
-                //The zero like value for log probability weight
-                static constexpr prob_weight ZERO_LOG_PROB_WEIGHT = -100.0f;
+                //Stores the zero log_e probability for the partial score or future cost
+                static constexpr prob_weight UNKNOWN_LOG_PROB_WEIGHT = -2300.0f; //This is the log_e (ln) weight
+                //The zero like value for log_e probability weight
+                static constexpr prob_weight ZERO_LOG_PROB_WEIGHT = -230.0f; //This is the log_e (ln) weight
 
                 //This macro defines whether or not the software is to be compiled
                 //in the tuning mode or not. The tuning mode allows to dump the
@@ -69,8 +69,8 @@ namespace uva {
                     //The considered maximum length of the N-gram query
                     static constexpr uint16_t LM_MAX_QUERY_LEN = tm::TM_MAX_TARGET_PHRASE_LEN + LM_HISTORY_LEN_MAX;
 
-                    //The default value of the unknown word probability weight
-                    const prob_weight DEF_UNK_WORD_LOG_PROB_WEIGHT = -10.0f;
+                    //The default value of the unknown word log_e probability weight
+                    const prob_weight DEF_UNK_WORD_LOG_PROB_WEIGHT = -25.0f; //This is the log_e (ln) weight
                 }
 
                 namespace rm {

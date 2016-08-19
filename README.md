@@ -119,15 +119,15 @@ For the sake of performance optimizations, the project has a number of compile-t
 
 **Server configs:** There is a number of translation server common parameters used in decoding, translation, reordering and language models. Those are to be found in the `./inc/server/server_configs.hpp`:
 
-* `UNKNOWN_LOG_PROB_WEIGHT` - The value used for the unknown probability weight _(log10 scale)_
-* `ZERO_LOG_PROB_WEIGHT` - The value used for the 'zero' probability weight _(log10 scale)_
+* `UNKNOWN_LOG_PROB_WEIGHT` - The value used for the unknown probability weight _(log\_e scale)_
+* `ZERO_LOG_PROB_WEIGHT` - The value used for the 'zero' probability weight _(log\_e scale)_
 * `tm::MAX_NUM_TM_FEATURES` - Defines the maximum allowed number of the translation model features to be read, per translation target, from the model input file
 * `tm::TM_MAX_TARGET_PHRASE_LEN` - The maximum length of the target phrase to be considered, this defines the maximum number of tokens to be stored per translation entry
 * `lm::MAX_NUM_LM_FEATURES` - The maximum allowed number of language model features, the program currently supports only one value: `1`, which is also the minimum allowed number of features
 * `lm::LM_M_GRAM_LEVEL_MAX` - The language model maximum level, the maximum number of words in the language model phrase
 * `lm::LM_HISTORY_LEN_MAX` - **do not change** this parameter 
 * `lm::LM_MAX_QUERY_LEN` - **do not change** this parameter 
-* `lm::DEF_UNK_WORD_LOG_PROB_WEIGHT` - The default unknown word probability weight, for the case the `<unk>` entry is not present in the language model file _(log10 scale)_
+* `lm::DEF_UNK_WORD_LOG_PROB_WEIGHT` - The default unknown word probability weight, for the case the `<unk>` entry is not present in the language model file _(log\_e scale)_
 * `rm::MAX_NUM_RM_FEATURES` - Defines the maximum allowed number of the reordering model features to be read, per reordering entry, from the model input file. The number of features must be even, the maximum supported number of features is currently `8`.
 
 **Decoder configs:** The decoder-specific parameters are located in `./inc/server/decoder/de_configs.hpp`:

@@ -154,7 +154,7 @@ namespace uva {
                                     if (MAXIMUM_LOGGING_LEVEL >= debug_levels_enum::RESULT) {
                                         const string gram_str = get_m_gram_str(begin_word_idx, end_word_idx);
 
-                                        LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                        LOG_RESULT << "  log_e( Prob( " << gram_str
                                                 << " ) ) = " << SSTR(m_query.m_probs[end_word_idx]) << END_LOG;
                                         LOG_INFO << "  Prob( " << gram_str << " ) = "
                                                 << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_query.m_probs[end_word_idx])) << END_LOG;
@@ -174,7 +174,7 @@ namespace uva {
                                     LOG_RESULT << "---" << END_LOG;
                                     //Print the total cumulative probability if needed
                                     const string gram_str = get_query_str();
-                                    LOG_RESULT << "  log_" << LOG_PROB_WEIGHT_BASE << "( Prob( " << gram_str
+                                    LOG_RESULT << "  log_e( Prob( " << gram_str
                                             << " ) ) = " << SSTR(m_joint_prob) << END_LOG;
                                     LOG_INFO << "  Prob( " << gram_str << " ) = "
                                             << SSTR(pow(LOG_PROB_WEIGHT_BASE, m_joint_prob)) << END_LOG;

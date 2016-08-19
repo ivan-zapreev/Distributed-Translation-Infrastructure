@@ -96,7 +96,7 @@ function update_conn_status(ws_status) {
 
     switch (ws_status) {
     case window.WebSocket.CONNECTING:
-        client_data.trans_server_cs_img.attr("src", "./img/changing.png");
+        client_data.trans_server_cs_img.attr("src", "./img/changing.gif");
         client_data.trans_server_cs_img.attr("alt", "Connecting ...");
         client_data.trans_server_cs_img.attr("data-original-title", "Connecting ...");
         break;
@@ -106,7 +106,7 @@ function update_conn_status(ws_status) {
         client_data.trans_server_cs_img.attr("data-original-title", "Connected");
         break;
     case window.WebSocket.CLOSING:
-        client_data.trans_server_cs_img.attr("src", "./img/changing.png");
+        client_data.trans_server_cs_img.attr("src", "./img/changing.gif");
         client_data.trans_server_cs_img.attr("alt", "Disconnecting ...");
         client_data.trans_server_cs_img.attr("data-original-title", "Disconnecting ...");
         break;
