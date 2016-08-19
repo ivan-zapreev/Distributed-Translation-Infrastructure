@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Owl online translator</title>
+    <meta name="description" content="Web interface for the Owl translation system.">
+    <meta name="keywords" content="Online, Translation, System">
+    <meta name="author" content="Dr. Ivan S. Zapreev">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Include the download javascript-->
+    <script src="./library/download.min.js"></script>
+    
+    <!--Include the jquery javascript-->
+    <script src="./library/jquery/jquery-2.2.4.min.js"></script>
+    
+    <!--Include the bootstrap css-->
+    <link rel="stylesheet" href="./library/bootstrap/3.3.6/css/bootstrap.min.css">
+    
+    <!--Include the bootstrap javascript-->
+    <script src="./library/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+    <!--Include the md5 sum javascript-->
+    <script src="./library/md5.js" type="text/javascript"></script>
+
+    <!--Include our own css-->
+    <link rel="stylesheet" href="./translate.css">
+
+    <!--Include the client side javascript-->
+    <script src="./translate.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="panel-group">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <img src="img/owl.png" alt="Owl translate logo"/>&nbsp;Translate
+                    </h3>
+                </div>
+                <div class="v_sep"></div>
+                <div class="panel-body">
+                    <h4 class="panel-title">
+                        <span  data-original-title='The client settings panel' data-toggle='tooltip' data-placement='auto'>
+                        <a data-toggle="collapse" href="#collapse_settings">Connections
+                            <span class="caret"></span>
+                        </a>
+                        </span>
+                        <div class='status_panel'>
+                            <span id="lp_pre" data-original-title='Pre-processor' data-toggle='tooltip' data-placement='auto' class="badge">P</span>
+                            <span id="lp_trans" data-original-title='Translator' data-toggle='tooltip' data-placement='auto' class="badge">T</span>
+                            <span id="lp_post" data-original-title='Post-processor' data-toggle='tooltip' data-placement='auto' class="badge">P</span>
+                        </div>
+                    </h4>
+                </div>
+                <div id="collapse_settings" class="panel-collapse collapse">
+                    <div id="settings_panel" class="panel-body">
+                        <div class="panel-body blocks">
+                            <div class="block">
+                                <span class="server_name">Pre-processor:</span>
+                                <input data-original-title='If disconnected, click here to re-connect' data-toggle='tooltip' data-placement='auto' class="input-sm server_url" id="pre_server_url" oninput="on_pre_server_change()" onfocus="on_pre_server_change()" type="text" value="">
+                                <img id="pre_server_cs" data-toggle='tooltip' data-original-title='Disconnected' class="img-responsive server_cs" src="./img/disconnected.png" alt="Disconnected">
+                            </div>
+                            <div class="block">
+                                <div id="pre_req_pb" class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="0"
+                                     aria-valuemin="0" aria-valuemax="50" style="">
+                                    <span></span>
+                                </div>
+                                <div id="pre_resp_pb" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0"
+                                     aria-valuemin="0" aria-valuemax="50" style="">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="block option_block">
+                            </div>
+                        </div>
+                        <div class="v_sep"></div>
+                        <div class="panel-body blocks">
+                            <div class="block">
+                                <span class="server_name">Translator:</span>
+                                <input data-original-title='If disconnected, click here to re-connect' data-toggle='tooltip' data-placement='auto' class="input-sm server_url" id="trans_server_url" oninput="on_trans_server_change()" onfocus="on_trans_server_change()" type="text" value="">
+                                <img id="trans_server_cs" data-toggle='tooltip' data-original-title='Disconnected' class="img-responsive server_cs" src="./img/disconnected.png" alt="Disconnected">
+                            </div>
+                            <div class="block">
+                                <div id="trans_req_pb" class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="0"
+                                     aria-valuemin="0" aria-valuemax="50" style="">
+                                    <span></span>
+                                </div>
+                                <div id="trans_resp_pb" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0"
+                                     aria-valuemin="0" aria-valuemax="50" style="">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="block option_block">
+                                <span data-original-title='Request additional information on translation process' data-toggle='tooltip' data-placement='auto'>
+                                    Translation info
+                                    <input type="checkbox" name="trans_info_cb" onchange="require_new_translation()" id="trans_info_cb">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="v_sep"></div>
+                        <div class="panel-body blocks">
+                            <div class="block">
+                                <span class="server_name">Post-processor:</span>
+                                <input data-original-title='If disconnected, click here to re-connect' data-toggle='tooltip' data-placement='auto' class="input-sm server_url" id="post_server_url" oninput="on_post_server_change()" onfocus="on_post_server_change()" type="text" value="">
+                                <img id="post_server_cs" data-toggle='tooltip' data-original-title='Disconnected' class="img-responsive server_cs" src="./img/disconnected.png" alt="Disconnected">
+                            </div>
+                            <div class="block">
+                                <div id="post_req_pb" class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="0"
+                                     aria-valuemin="0" aria-valuemax="50" style="">
+                                    <span></span>
+                                </div>
+                                <div id="post_resp_pb" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0"
+                                     aria-valuemin="0" aria-valuemax="50" style="">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="block option_block">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="v_sep"></div>
+                <div class="panel-body">
+                    <h4 class="panel-title">
+                        <span  data-original-title='The client log panel' data-toggle='tooltip' data-placement='auto'>
+                        <a data-toggle="collapse" href="#collapse_logging">Logging
+                            <span class="caret"></span>
+                        </a>
+                        </span>
+                        <div class='status_panel'>
+                            <span id="lp_info" data-original-title='#Info messages' data-toggle='tooltip' data-placement='auto' class="badge">0</span>
+                            <span id="lp_succ" data-original-title='#Success messages' data-toggle='tooltip' data-placement='auto' class="badge">0</span>
+                            <span id="lp_warn" data-original-title='#Warning messages' data-toggle='tooltip' data-placement='auto' class="badge">0</span>
+                            <span id="lp_dang" data-original-title='#Danger messages' data-toggle='tooltip' data-placement='auto' class="badge">0</span>
+                            <input id="log_clear_btn" data-original-title='Clear client log' data-toggle='tooltip' data-placement='auto' class="btn-sw btn-info" type="button" value="Clear" onclick="do_clear_log()">
+                        </div>
+                    </h4>
+                </div>
+                <div id="collapse_logging" class="panel-collapse collapse">
+                    <div id="log_panel" class="panel-body">
+                    </div>
+                </div>
+                <div class="v_sep"></div>
+                <div class="panel-body">
+                    <div id="from_part">
+                        <div class="part_menu_container">
+                            <div class="part_menu_left">
+                                Source: 
+                                <select id="from_lang_sel" onchange="on_source_lang_select()" name="from_language" required></select>
+                            </div>
+                            <div class="part_menu_right">
+                                <div id="input_file_sc">
+                                    <input type="file" id="input_file_select" name="Select a file to translate"/>
+                                </div>
+                            </div>
+                        </div>
+                        <textarea id="from_text" class="text_data" value="" spellcheck="false" autocapitalize="off"
+                        autocomplete="off" autocorrect="off" wrap="SOFT"></textarea>
+                    </div>
+                    <div id="middle_part">
+                        <img class="img-responsive" id="progress" src="./img/globe32.png" alt="Translation status"> 
+                        <input id="trans_btn" class="btn-sw btn-primary" type="button" value="Translate" onclick="do_translate()">
+                    </div>
+                    <div id="to_part">
+                        <div class="part_menu_container">
+                            <div class="part_menu_left">
+                                Target: 
+                                <select id="to_lang_sel" name="to_language" onchange="require_new_translation()" required></select>
+                            </div>
+                            <div class="part_menu_right">
+                                <span data-original-title='Click to download the resulting translation' data-toggle='tooltip' data-placement='auto'>
+                                    <a id="download_text_link" class="download_link" href="#">
+                                        <img class="img-responsive" src="./img/download.png" alt="Download translation">
+                                        Text
+                                    </a>
+                                </span>
+                                &nbsp;
+                                <span data-original-title='Click to download the translation information' data-toggle='tooltip' data-placement='auto'>
+                                    <a id="download_log_link" class="download_link" href="#">
+                                        <img class="img-responsive" src="./img/download.png" alt="Download translation log">
+                                        Log
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                        <span id="to_text" class="text_data"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    //ToDo: Initialize web client
+</script>
