@@ -27,6 +27,27 @@
     <link rel="stylesheet" href="./translate.css">
 
     <!--Include the client side javascript-->
+    <script src="./logger.js" type="text/javascript"></script>
+
+    <!--Include the client side javascript-->
+    <script src="./file_up_down.js" type="text/javascript"></script>
+
+    <!--Include the client side javascript-->
+    <script src="./ws_client.js" type="text/javascript"></script>
+
+    <!--Include the client side javascript-->
+    <script src="./languages.js" type="text/javascript"></script>
+
+    <!--Include the client side javascript-->
+    <script src="./pre_proc_client.js" type="text/javascript"></script>
+
+    <!--Include the client side javascript-->
+    <script src="./translation_client.js" type="text/javascript"></script>
+
+    <!--Include the client side javascript-->
+    <script src="./post_proc_client.js" type="text/javascript"></script>
+
+    <!--Include the client side javascript-->
     <script src="./translate.js" type="text/javascript"></script>
 </head>
 <body>
@@ -47,9 +68,9 @@
                         </a>
                         </span>
                         <div class='status_panel'>
-                            <span id="lp_pre" data-original-title='Pre-processor' data-toggle='tooltip' data-placement='auto' class="badge">P</span>
-                            <span id="lp_trans" data-original-title='Translator' data-toggle='tooltip' data-placement='auto' class="badge">T</span>
-                            <span id="lp_post" data-original-title='Post-processor' data-toggle='tooltip' data-placement='auto' class="badge">P</span>
+                            <span id="pre_sb" data-original-title='Pre-processor connection status' data-toggle='tooltip' data-placement='auto' class="badge offline">Prep</span>
+                            <span id="trans_sb" data-original-title='Translator connection status' data-toggle='tooltip' data-placement='auto' class="badge offline">Trans</span>
+                            <span id="post_sb" data-original-title='Post-processor connection status' data-toggle='tooltip' data-placement='auto' class="badge offline">Post</span>
                         </div>
                     </h4>
                 </div>
@@ -58,7 +79,7 @@
                         <div class="panel-body blocks">
                             <div class="block">
                                 <span class="server_name">Pre-processor:</span>
-                                <input data-original-title='If disconnected, click here to re-connect' data-toggle='tooltip' data-placement='auto' class="input-sm server_url" id="pre_server_url" oninput="on_pre_server_change()" onfocus="on_pre_server_change()" type="text" value="">
+                                <input data-original-title='If disconnected, click here to re-connect' data-toggle='tooltip' data-placement='auto' class="input-sm server_url" id="pre_server_url" type="text" value="">
                                 <img id="pre_server_cs" data-toggle='tooltip' data-original-title='Disconnected' class="img-responsive server_cs" src="./img/disconnected.png" alt="Disconnected">
                             </div>
                             <div class="block">
@@ -72,13 +93,14 @@
                                 </div>
                             </div>
                             <div class="block option_block">
+                                <!--Place holder-->
                             </div>
                         </div>
                         <div class="v_sep"></div>
                         <div class="panel-body blocks">
                             <div class="block">
                                 <span class="server_name">Translator:</span>
-                                <input data-original-title='If disconnected, click here to re-connect' data-toggle='tooltip' data-placement='auto' class="input-sm server_url" id="trans_server_url" oninput="on_trans_server_change()" onfocus="on_trans_server_change()" type="text" value="">
+                                <input data-original-title='If disconnected, click here to re-connect' data-toggle='tooltip' data-placement='auto' class="input-sm server_url" id="trans_server_url" type="text" value="">
                                 <img id="trans_server_cs" data-toggle='tooltip' data-original-title='Disconnected' class="img-responsive server_cs" src="./img/disconnected.png" alt="Disconnected">
                             </div>
                             <div class="block">
@@ -94,7 +116,7 @@
                             <div class="block option_block">
                                 <span data-original-title='Request additional information on translation process' data-toggle='tooltip' data-placement='auto'>
                                     Translation info
-                                    <input type="checkbox" name="trans_info_cb" onchange="require_new_translation()" id="trans_info_cb">
+                                    <input type="checkbox" name="trans_info_cb" id="trans_info_cb">
                                 </span>
                             </div>
                         </div>
@@ -102,7 +124,7 @@
                         <div class="panel-body blocks">
                             <div class="block">
                                 <span class="server_name">Post-processor:</span>
-                                <input data-original-title='If disconnected, click here to re-connect' data-toggle='tooltip' data-placement='auto' class="input-sm server_url" id="post_server_url" oninput="on_post_server_change()" onfocus="on_post_server_change()" type="text" value="">
+                                <input data-original-title='If disconnected, click here to re-connect' data-toggle='tooltip' data-placement='auto' class="input-sm server_url" id="post_server_url" type="text" value="">
                                 <img id="post_server_cs" data-toggle='tooltip' data-original-title='Disconnected' class="img-responsive server_cs" src="./img/disconnected.png" alt="Disconnected">
                             </div>
                             <div class="block">
@@ -116,6 +138,7 @@
                                 </div>
                             </div>
                             <div class="block option_block">
+                                <!--Place holder-->
                             </div>
                         </div>
                     </div>
@@ -133,7 +156,7 @@
                             <span id="lp_succ" data-original-title='#Success messages' data-toggle='tooltip' data-placement='auto' class="badge">0</span>
                             <span id="lp_warn" data-original-title='#Warning messages' data-toggle='tooltip' data-placement='auto' class="badge">0</span>
                             <span id="lp_dang" data-original-title='#Danger messages' data-toggle='tooltip' data-placement='auto' class="badge">0</span>
-                            <input id="log_clear_btn" data-original-title='Clear client log' data-toggle='tooltip' data-placement='auto' class="btn-sw btn-info" type="button" value="Clear" onclick="do_clear_log()">
+                            <input id="log_clear_btn" data-original-title='Clear client log' data-toggle='tooltip' data-placement='auto' class="btn-sw btn-info" type="button" value="Clear">
                         </div>
                     </h4>
                 </div>
@@ -147,7 +170,7 @@
                         <div class="part_menu_container">
                             <div class="part_menu_left">
                                 Source: 
-                                <select id="from_lang_sel" onchange="on_source_lang_select()" name="from_language" required></select>
+                                <select id="from_lang_sel" name="from_language" required></select>
                             </div>
                             <div class="part_menu_right">
                                 <div id="input_file_sc">
@@ -160,13 +183,13 @@
                     </div>
                     <div id="middle_part">
                         <img class="img-responsive" id="progress" src="./img/globe32.png" alt="Translation status"> 
-                        <input id="trans_btn" class="btn-sw btn-primary" type="button" value="Translate" onclick="do_translate()">
+                        <input id="trans_btn" class="btn-sw btn-primary" type="button" value="Translate">
                     </div>
                     <div id="to_part">
                         <div class="part_menu_container">
                             <div class="part_menu_left">
                                 Target: 
-                                <select id="to_lang_sel" name="to_language" onchange="require_new_translation()" required></select>
+                                <select id="to_lang_sel" name="to_language" required></select>
                             </div>
                             <div class="part_menu_right">
                                 <span data-original-title='Click to download the resulting translation' data-toggle='tooltip' data-placement='auto'>
@@ -193,5 +216,7 @@
 </body>
 </html>
 <script>
-    //ToDo: Initialize web client
+    //Run the translation client
+    create_client(calcMD5, download, init_file_ud, create_logger, create_languages, create_ws_client,
+                 create_pre_proc_client, create_translation_client, create_post_proc_client);
 </script>

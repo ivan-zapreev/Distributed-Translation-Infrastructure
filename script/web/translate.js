@@ -7,7 +7,7 @@ var client_data = {
     "job_responces" : [],                 //Stores the translation job responses
     "translation_html" : "",              //Stores the translation HTML data
     "prev_job_req_id" : 1,                //Stores the previously send translation job request id
-    "prev_source_md5" : "",               //Stores the previously sent translation job source text
+    "prev_source_md5" : "",               //Stores the previously ranslated source text md5 sum
     "calcMD5" : null,                     //The md5 function, to be initialized
     "callDownload" : null,                //The download function, to be initialized
     "server_url_inpt" : null              //Stores the server url input
@@ -1264,7 +1264,7 @@ function initialize_client_data(callMD5, callDownload) {
     //Check for the various File API support.
     if (window.File && window.FileReader && window.FileList && window.Blob) {
         client_data.is_file_support = true;
-        //Add the selection fuinction handler
+        //Add the selection function handler
         client_data.input_file_select.bind('change', on_upload_file_select);
     } else {
         client_data.is_file_support = false;

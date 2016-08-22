@@ -154,6 +154,30 @@ div#log_panel {
     overflow: auto;
 }
 
+span.online {
+    color: black;
+    background-color: #77ff77;
+    border: 1px solid #d6e9c6;
+}
+
+span.changing {
+    color: black;
+    background-color: #ffff77;
+    border: 1px solid #faebcc;
+}
+
+span.offline {
+    color: black;
+    background-color: #ff7777;
+    border: 1px solid #ebccd1;
+}
+
+span.puzzled {
+    color: black;
+    background-color: #7777ff;
+    border: 1px solid #faebcc;
+}
+
 span#lp_info {
     color: black;
     background-color: #d9edf7;
