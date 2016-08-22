@@ -45,13 +45,15 @@ function escape_html(unsafe) {
 /**
  * This function is called in the beginning just after the DOM tree
  * is parsed and ensures starting up and runnning the web interface.
+ * @param config {Object} the configuration object
  * @param md5_fn {Function} the function to compute MD5
  * @param download_fn {Function} the function to download file from JavaScript
  * @param init_file_ud_fn {Function} the function to initialize the file upload/download capabilities
  * @param create_logger_fn {Function} the function to create a logger module instance
  * @param create_ws_client_fn {Function} the function to create a web socket client module instance
  */
-function create_client(md5_fn, download_fn, init_file_ud_fn, create_logger_fn, create_lang_fn, create_ws_client_fn,
+function create_client(config, md5_fn, download_fn, init_file_ud_fn,
+                       create_logger_fn, create_lang_fn, create_ws_client_fn,
                        create_pre_proc_client_fn, create_translation_client_fn, create_post_proc_client_fn) {
     "use strict";
     
@@ -164,7 +166,7 @@ function create_client(md5_fn, download_fn, init_file_ud_fn, create_logger_fn, c
         
         client_module.pre_serv_mdl = create_pre_proc_client_fn(client_module.logger_mdl,
                                                                client_module.dom.pre_url_input,
-                                                               'ws://localhost:9005',
+                                                               config.pre_proc_url,
                                                                server_cs_img, server_cs_bage,
                                                                needs_new_trans, disable_interface,
                                                                enable_interface, create_ws_client_fn);
@@ -180,7 +182,7 @@ function create_client(md5_fn, download_fn, init_file_ud_fn, create_logger_fn, c
         client_module.trans_serv_mdl = create_translation_client_fn(client_module.logger_mdl,
                                                                     client_module.language_mdl,
                                                                     client_module.dom.trans_url_input,
-                                                                    'ws://localhost:9000',
+                                                                    config.translate_url,
                                                                     server_cs_img, server_cs_bage,
                                                                     needs_new_trans, disable_interface,
                                                                     enable_interface, create_ws_client_fn);
@@ -195,7 +197,7 @@ function create_client(md5_fn, download_fn, init_file_ud_fn, create_logger_fn, c
         
         client_module.post_serv_mdl = create_post_proc_client_fn(client_module.logger_mdl,
                                                                  client_module.dom.post_url_input,
-                                                                 'ws://localhost:9005',
+                                                                 config.post_proc_url,
                                                                  server_cs_img, server_cs_bage,
                                                                  needs_new_trans, disable_interface,
                                                                  enable_interface, create_ws_client_fn);

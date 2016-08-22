@@ -216,7 +216,16 @@
 </body>
 </html>
 <script>
+    //Define the urls for connecting to the pre-/trans/post-services
+    var config = {
+        pre_proc_url : 'ws://localhost:9005',
+        translate_url : 'ws://localhost:9000',
+        post_proc_url : 'ws://localhost:9005'
+    };
+    
     //Run the translation client
-    create_client(calcMD5, download, init_file_ud, create_logger, create_languages, create_ws_client,
-                 create_pre_proc_client, create_translation_client, create_post_proc_client);
+    create_client(config, calcMD5, download, init_file_ud,
+                  create_logger, create_languages,
+                  create_ws_client, create_pre_proc_client,
+                  create_translation_client, create_post_proc_client);
 </script>

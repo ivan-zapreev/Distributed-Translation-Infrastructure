@@ -1,5 +1,9 @@
 //Declare the "Please select" string for the srouce/target language select boxes
-var PLEASE_SELECT_STRING = "Please select";
+var PLEASE_SELECT_STRING = "...";
+//The detect option string for automatic language detection 
+var AUTO_DETECT_STRING = "--detect--";
+//The auto string to be sent to the pre-processor
+var AUTO_DETECT_OPTION = "auto";
 
 /**
  * Allows to create a new languages module
@@ -131,7 +135,7 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
      * @param {Object} supp_lang_resp the supported languages response message
      */
     function set_supported_languages(supp_lang_resp) {
-        var source_lang, num_sources;
+        var source_lang, num_sources, all_targets;
 
         logger_mdl.success("Received a supported languages response from the server!");
 
@@ -158,10 +162,10 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
         num_sources = Object.keys(module.language_mapping).length;
         window.console.log("The number of source languages is: " + num_sources);
 
-        //Only add the 'Please select' in case there is multiple source languages
+        //Only add the 'auto detection' in case there is multiple source languages
         if (num_sources > 1) {
-            window.console.log("Multiple source languages: Adding 'Please select'");
-            from_lang_sel.html(get_select_option("", PLEASE_SELECT_STRING));
+            window.console.log("Multiple source languages: Adding 'auto detection'");
+            from_lang_sel.html(get_select_option(AUTO_DETECT_OPTION, AUTO_DETECT_STRING));
         } else {
             //Re-set the source select to no options
             from_lang_sel.html("");
@@ -174,10 +178,20 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
             }
         }
 
-        if (num_sources === 1) {
-            window.console.log("Single source language, set the targets right away");
-            on_source_lang_select();
+        if (num_sources > 1) {
+            //Add the option for the language we want to translate the auto into
+            all_targets = [];
+            for (source_lang in module.language_mapping) {
+                if (module.language_mapping.hasOwnProperty(source_lang)) {
+                    all_targets.push.apply(all_targets, module.language_mapping[source_lang]);
+                }
+            }
+            //Set the all targets for the auto detection option
+            module.language_mapping[AUTO_DETECT_STRING] = all_targets;
         }
+        
+        //Set the appropriate target languages
+        on_source_lang_select();
     }
     
     //Set the function for setting the language pairs
