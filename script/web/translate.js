@@ -468,7 +468,7 @@ function update_trans_status() {
 }
 
 /**
- * Allows to fill int he single response data into the target data span
+ * Allows to fill in the single response data into the target data span
  * @param {Object} trans_response the translation reponse object
  */
 function fill_in_single_response_data(trans_response, response_idx, trans_responses) {

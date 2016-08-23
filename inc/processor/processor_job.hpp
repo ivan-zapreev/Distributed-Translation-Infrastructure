@@ -669,6 +669,9 @@ namespace uva {
                     const response_creator m_resp_crt_func;
                     //Stores the reference to response sending function
                     const session_response_sender & m_resp_send_func;
+                    
+                    //Make a friend of the output operator
+                    friend ostream & operator<<(ostream & stream, const processor_job & job);
                 };
             }
         }

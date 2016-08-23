@@ -67,6 +67,7 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
     client_module.dom.from_lang_sel = window.$("#from_lang_sel");
     client_module.dom.to_lang_sel = window.$("#to_lang_sel");
     client_module.dom.input_file_select = window.$("#input_file_select");
+    client_module.dom.progress_image = window.$("#progress");
 
     //Instantiate the logger module
     (function () {
@@ -124,60 +125,89 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
      */
     function disable_interface() {
         window.console.log("Disable the controls");
-
-        client_module.dom.pre_url_input.disabled = true;
-        client_module.dom.trans_url_input.disabled = true;
-        client_module.dom.post_url_input.disabled = true;
-        client_module.dom.trans_btn.disabled = true;
-        client_module.dom.trans_info_cb.disabled = true;
-        client_module.dom.from_text_area.disabled = true;
-        client_module.dom.from_lang_sel.disabled = true;
-        client_module.dom.to_lang_sel.disabled = true;
+        
+        client_module.dom.pre_url_input.prop("disabled", true);
+        client_module.dom.trans_url_input.prop("disabled", true);
+        client_module.dom.post_url_input.prop("disabled", true);
+        client_module.dom.trans_btn.prop("disabled", true);
+        client_module.dom.trans_info_cb.prop("disabled", true);
+        client_module.dom.from_text_area.prop("disabled", true);
+        client_module.dom.from_lang_sel.prop("disabled", true);
+        client_module.dom.to_lang_sel.prop("disabled", true);
         client_module.dom.input_file_select.prop("disabled", true);
     }
 
     /**
      * This function allows to enable or partially enable the interface
-     * @param {Boolean} is_connected true if we enable the controls when
-     *                  we are connected to a server, otherwise false.
      */
-    function enable_interface(is_connected) {
+    function enable_interface() {
         window.console.log("Enable the controls");
 
-        client_module.dom.pre_url_input.disabled = false;
-        client_module.dom.trans_url_input.disabled = false;
-        client_module.dom.post_url_input.disabled = false;
-        if (is_connected) {
-            client_module.dom.trans_btn.disabled = false;
-            client_module.dom.trans_info_cb.disabled = false;
-            client_module.dom.from_text_area.disabled = false;
-            client_module.dom.from_lang_sel.disabled = false;
-            client_module.dom.to_lang_sel.disabled = false;
-            client_module.dom.input_file_select.prop("disabled", false);
-        }
+        client_module.dom.pre_url_input.prop("disabled", false);
+        client_module.dom.trans_url_input.prop("disabled", false);
+        client_module.dom.post_url_input.prop("disabled", false);
+        //if (client_module.trans_serv_mdl.is_connected_fn()) {
+        client_module.dom.trans_btn.prop("disabled", false);
+        client_module.dom.trans_info_cb.prop("disabled", false);
+        client_module.dom.from_text_area.prop("disabled", false);
+        client_module.dom.from_lang_sel.prop("disabled", false);
+        client_module.dom.to_lang_sel.prop("disabled", false);
+        client_module.dom.input_file_select.prop("disabled", false);
+        //}
     }
 
+    /**
+     * This function allows to disable the interface start the translation progress rotation.
+     */
+    function process_start() {
+        //Disable the interface
+        disable_interface();
+        //Start the progress image
+        client_module.dom.progress_image.attr('src', './img/globe32.gif');
+    }
+
+    /**
+     * This function allows to enable the interface and report on an error, if any, also stops the progress rotation
+     * @param is_error {Boolean} true if we stop in case of an error, false if we stop because we are finished
+     * @param message {String} the message string to be used in case we stop in an error case
+     */
+    function process_stop(is_error, message) {
+        //Enable the interface
+        enable_interface();
+        //Stop the progress image
+        client_module.dom.progress_image.attr('src', './img/globe32.png');
+        //Check if there was an error
+        if (is_error) {
+            client_module.logger_mdl.danger(message, true);
+        }
+    }
+    
     //Instantiate the pre-processor module
     (function () {
-        var url_input, server_cs_img, server_cs_bage;
+        var url_input, server_cs_img, server_cs_bage, req_bp, resp_pb;
         
         server_cs_img = window.$("#pre_server_cs");
         server_cs_bage = window.$("#pre_sb");
+        req_bp = window.$("#pre_req_pb");
+        resp_pb = window.$("#pre_resp_pb");
         
         client_module.pre_serv_mdl = create_pre_proc_client_fn(client_module.logger_mdl,
                                                                client_module.dom.pre_url_input,
                                                                config.pre_proc_url,
                                                                server_cs_img, server_cs_bage,
                                                                needs_new_trans, disable_interface,
-                                                               enable_interface, create_ws_client_fn);
+                                                               enable_interface, create_ws_client_fn,
+                                                               escape_html, req_bp, resp_pb, process_stop);
     }());
     
     //Instantiate the translator module
     (function () {
-        var url_input, server_cs_img, server_cs_bage;
+        var url_input, server_cs_img, server_cs_bage, req_bp, resp_pb;
         
         server_cs_img = window.$("#trans_server_cs");
         server_cs_bage = window.$("#trans_sb");
+        req_bp = window.$("#trans_req_pb");
+        resp_pb = window.$("#trans_resp_pb");
         
         client_module.trans_serv_mdl = create_translation_client_fn(client_module.logger_mdl,
                                                                     client_module.language_mdl,
@@ -185,22 +215,26 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
                                                                     config.translate_url,
                                                                     server_cs_img, server_cs_bage,
                                                                     needs_new_trans, disable_interface,
-                                                                    enable_interface, create_ws_client_fn);
+                                                                    enable_interface, create_ws_client_fn,
+                                                                    escape_html, req_bp, resp_pb, process_stop);
     }());
     
     //Instantiate the post-processor module
     (function () {
-        var url_input, server_cs_img, server_cs_bage;
+        var url_input, server_cs_img, server_cs_bage, req_bp, resp_pb;
         
         server_cs_img = window.$("#post_server_cs");
         server_cs_bage = window.$("#post_sb");
+        req_bp = window.$("#post_req_pb");
+        resp_pb = window.$("#post_resp_pb");
         
         client_module.post_serv_mdl = create_post_proc_client_fn(client_module.logger_mdl,
                                                                  client_module.dom.post_url_input,
                                                                  config.post_proc_url,
                                                                  server_cs_img, server_cs_bage,
                                                                  needs_new_trans, disable_interface,
-                                                                 enable_interface, create_ws_client_fn);
+                                                                 enable_interface, create_ws_client_fn,
+                                                                 escape_html, req_bp, resp_pb, process_stop);
     }());
     
     //Set the tranlate button handler
@@ -224,9 +258,11 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
                 //Store the new previous translation request md5
                 client_module.source_md5 = source_md5;
 
-                //ToDo: Pre-process
-                //ToDo: Translate
-                //ToDo: Post-process
+                //Start the process
+                process_start();
+                
+                //Start the process by calling the pre-processor module
+                client_module.pre_serv_mdl.pre_process_fn();
             } else {
                 client_module.logger_mdl.warning("This translation job has already been done!", true);
             }
@@ -234,6 +270,10 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
             client_module.logger_mdl.warning("There is no text to translate!", true);
         }
     });
+    
+    //Connect the pipeline
+    client_module.pre_serv_mdl.trans_serv_mdl = client_module.trans_serv_mdl;
+    client_module.trans_serv_mdl.post_serv_mdl = client_module.post_serv_mdl;
     
     //Connect to the clients
     client_module.pre_serv_mdl.connect_fn();

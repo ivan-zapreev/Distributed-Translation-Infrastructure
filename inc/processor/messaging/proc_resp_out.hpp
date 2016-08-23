@@ -34,7 +34,7 @@ using namespace uva::smt::bpbd::common::messaging;
 namespace uva {
     namespace smt {
         namespace bpbd {
-            namespace server {
+            namespace processor {
                 namespace messaging {
 
                     /**

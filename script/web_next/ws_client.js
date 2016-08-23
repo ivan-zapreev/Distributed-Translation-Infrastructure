@@ -1,3 +1,6 @@
+//Stores the number of progress bars for the translation process
+var NUM_PROGRESS_BARS = 2;
+
 /**
  * Allows to create a new web socket server client
  * @param logger_mdl {Object} the logger module
@@ -7,7 +10,8 @@
  */
 function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_bage,
                            needs_new_trans_fn, disable_interface_fn, enable_interface_fn,
-                           on_open_fn, on_message_fn, on_close_fn) {
+                           on_open_fn, on_message_fn, on_close_fn, escape_html_fn,
+                          request_progress_bar, response_progress_bar) {
     "use strict";
     
     //Create the first prototype of the client module
@@ -41,6 +45,67 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
     
     //Set the url into the server input
     url_input.val(url);
+
+    /**
+     * Allows to set the progress bar progress
+     * @param {Boolean} is_init true if this is for (re-)initialization of the progress bar
+     * @param {jquery Object} the jquesy object of the progress bar
+     * @param {String} the message to be visualized
+     * @param {Number} the current value for the progress bar
+     * @param {Number} the maximum value for the progress bar
+     * @param {Number} the number of translation process progress bars
+     */
+    function set_progress_bar(is_init, pb, msg, curr_num, max_num, num_prog_bars) {
+        window.console.log("The current value: " + curr_num + " max value: " + max_num);
+
+        var percent = window.Math.round((curr_num / max_num) * 100), span = pb.find("span");
+        pb.attr("aria-valuenow", percent);
+        pb.width((percent / NUM_PROGRESS_BARS) + "%");
+
+        if (is_init) {
+            span.html("");
+        } else {
+            span.html(escape_html_fn(msg + ": " + percent + "%"));
+        }
+
+        if (percent === 0 && !is_init) {
+            pb.addClass("active");
+        }
+        if (percent === 100 || is_init) {
+            pb.removeClass("active");
+        }
+    }
+
+    /**
+     * Allows to re-initialize the request/response progress bars
+     */
+    function initialize_progress_bars() {
+        set_progress_bar(true, response_progress_bar, "Responses", 0, 1);
+        set_progress_bar(true, request_progress_bar, "Requests", 0, 1);
+    }
+
+    /**
+     * Allows to set the new value for the translation responses progress bar
+     * @param {integer} curr the current value
+     * @param {integer} max the maximum value
+     */
+    function set_response_progress_bar(curr, max) {
+        set_progress_bar(false, response_progress_bar, "Responses", curr, max);
+    }
+
+    /**
+     * Allows to set the new value for the translation requests progress bar
+     * @param {integer} curr the current value
+     * @param {integer} max the maximum value
+     */
+    function set_request_progress_bar(curr, max) {
+        set_progress_bar(false, request_progress_bar, "Requests", curr, max);
+    }
+    
+    //Export the request/response progress bar setters, initiaalizers
+    client.set_response_pb_fn = set_response_progress_bar;
+    client.set_request_pb_fn = set_request_progress_bar;
+    client.init_req_resp_pb_fn = initialize_progress_bars;
 
     /**
      * This function allows to update the current connection status
@@ -120,7 +185,7 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
                     }
 
                     //Enable the interface controls
-                    enable_interface_fn(true);
+                    enable_interface_fn();
                 };
                 
                 //Set the on message handler
@@ -154,16 +219,18 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
                     } else {
                         logger_mdl.warning("The on-close handler for server " + url + " is not set!");
                     }
+                    //Re-initialize the progress bars
+                    initialize_progress_bars();
 
                     //Enable the interface controls
-                    enable_interface_fn(false);
+                    enable_interface_fn();
                 };
             } else {
                 //Disable the web page
                 logger_mdl.danger("The WebSockets are not supported by your browser!");
             }
         } catch (err) {
-            enable_interface_fn(false);
+            enable_interface_fn();
         }
     }
         
@@ -202,8 +269,14 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
     url_input.change(on_url_change);
     url_input.focus(on_url_change);
     
-    //Set the server connection function
+    //Set the server connection functions
     client.connect_fn = connect_to_server;
+    client.is_connected_fn = function () {
+        return ((client.ws !== null) && (client.ws.readyState === window.WebSocket.OPEN));
+    };
+    
+    //Re-set progress bars
+    initialize_progress_bars();
 
     return client;
 }

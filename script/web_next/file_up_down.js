@@ -55,7 +55,10 @@ function init_file_ud(logger_mdl, from_text_area, input_file_sc, input_file_sele
         file_name = "translation." + get_date_fn('.') + ".log";
         window.console.log("Downloading: " + file_name);
 
-        //Get the translations.
+        //ToDo: Change the way the logging is obtained,
+        //      needs to be requested from the translation
+        //      client as the post-processor does not allow
+        //      to visualize the logging data, does it ?!
         text = "";
         window.$(".target_sent_tag").each(function (index) {
             text += window.$(this).attr("data-original-title") + "\n";

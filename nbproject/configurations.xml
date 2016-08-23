@@ -61,6 +61,7 @@
       </df>
       <df name="processor">
         <in>bpbd_processor.cpp</in>
+        <in>processor_job.cpp</in>
         <in>processor_parameters.cpp</in>
       </df>
       <df name="server">
@@ -305,6 +306,8 @@
       <item path="src/processor/bpbd_processor.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
         </ccTool>
+      </item>
+      <item path="src/processor/processor_job.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/processor/processor_parameters.cpp"
             ex="false"

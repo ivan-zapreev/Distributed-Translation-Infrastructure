@@ -874,6 +874,7 @@
       </df>
       <df name="processor">
         <in>bpbd_processor.cpp</in>
+        <in>processor_job.cpp</in>
         <in>processor_parameters.cpp</in>
       </df>
       <df name="server">
