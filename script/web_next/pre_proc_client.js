@@ -5,8 +5,8 @@
  * @param ...
  * @return the pre-processor server client module
  */
-function create_pre_proc_client(logger_mdl, url_input, url, server_cs_img,
-                                 server_cs_bage, needs_new_trans_fn,
+function create_pre_proc_client(logger_mdl, language_mdl, trans_serv_mdl, url_input, url,
+                                 server_cs_img, server_cs_bage, needs_new_trans_fn,
                                  disable_interface_fn, enable_interface_fn,
                                  create_ws_client_fn, escape_html_fn,
                                  request_progress_bar, response_progress_bar,
@@ -50,25 +50,6 @@ function create_pre_proc_client(logger_mdl, url_input, url, server_cs_img,
 
         window.console.log("The connection to: '" + module.url + "'has failed!");
     }
-
-    /**
-     * This function is called when the translation process needs to begin
-     */
-    function pre_process() {
-        window.console.log("");
-        
-        //ToDo: Get the text to be translated
-
-        //Check if the processor is connected or not
-        if (module.is_connected_fn()) {
-            //If connected then get the source language and start sending the data
-            window.console.log("The pre-processing module is connected!");
-        } else {
-            window.console.log("The pre-processing module is disconnected!");
-            //If the pre-processor is not present then check
-            //if the language is selected and is not auto-detect.
-        }
-    }
     
     //Instantiate the module base
     module = create_ws_client_fn(logger_mdl, url_input, url, server_cs_img,
@@ -77,8 +58,31 @@ function create_pre_proc_client(logger_mdl, url_input, url, server_cs_img,
                                  null, on_message, on_close, escape_html_fn,
                                  request_progress_bar, response_progress_bar);
 
-    //Add a field that will store the translation module
-    module.trans_serv_mdl = null;
+    /**
+     * This function is called when the translation process needs to begin
+     * @param source_text the source text to work with
+     */
+    function pre_process(source_text) {
+        window.console.log("Starting pre-processing text: " + source_text);
+
+        //Check if the processor is connected or not
+        if (module.is_connected_fn()) {
+            //If connected then get the source language and start sending the data
+            window.console.log("The pre-processing module is connected!");
+            
+            //ToDo: Implement sending the text in UTF8 chunks
+        } else {
+            window.console.log("The pre-processing module is disconnected!");
+            //Check if the language is selected, i.e. also not autodetect.
+            if (language_mdl.is_source_lang_sel_fn()) {
+                window.console.log("The source language is selected to: " + language_mdl.get_sel_source_lang_fn());
+                trans_serv_mdl.translate_fn(source_text);
+            } else {
+                process_stop_fn(true, "The pre-processor is not connected, the language detection is not possible!");
+            }
+        }
+    }
+    
     //Store the pre-processing function pointer
     module.pre_process_fn = pre_process;
     

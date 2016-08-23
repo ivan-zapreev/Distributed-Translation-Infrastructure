@@ -181,44 +181,7 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
             client_module.logger_mdl.danger(message, true);
         }
     }
-    
-    //Instantiate the pre-processor module
-    (function () {
-        var url_input, server_cs_img, server_cs_bage, req_bp, resp_pb;
         
-        server_cs_img = window.$("#pre_server_cs");
-        server_cs_bage = window.$("#pre_sb");
-        req_bp = window.$("#pre_req_pb");
-        resp_pb = window.$("#pre_resp_pb");
-        
-        client_module.pre_serv_mdl = create_pre_proc_client_fn(client_module.logger_mdl,
-                                                               client_module.dom.pre_url_input,
-                                                               config.pre_proc_url,
-                                                               server_cs_img, server_cs_bage,
-                                                               needs_new_trans, disable_interface,
-                                                               enable_interface, create_ws_client_fn,
-                                                               escape_html, req_bp, resp_pb, process_stop);
-    }());
-    
-    //Instantiate the translator module
-    (function () {
-        var url_input, server_cs_img, server_cs_bage, req_bp, resp_pb;
-        
-        server_cs_img = window.$("#trans_server_cs");
-        server_cs_bage = window.$("#trans_sb");
-        req_bp = window.$("#trans_req_pb");
-        resp_pb = window.$("#trans_resp_pb");
-        
-        client_module.trans_serv_mdl = create_translation_client_fn(client_module.logger_mdl,
-                                                                    client_module.language_mdl,
-                                                                    client_module.dom.trans_url_input,
-                                                                    config.translate_url,
-                                                                    server_cs_img, server_cs_bage,
-                                                                    needs_new_trans, disable_interface,
-                                                                    enable_interface, create_ws_client_fn,
-                                                                    escape_html, req_bp, resp_pb, process_stop);
-    }());
-    
     //Instantiate the post-processor module
     (function () {
         var url_input, server_cs_img, server_cs_bage, req_bp, resp_pb;
@@ -235,6 +198,46 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
                                                                  needs_new_trans, disable_interface,
                                                                  enable_interface, create_ws_client_fn,
                                                                  escape_html, req_bp, resp_pb, process_stop);
+    }());
+    
+    //Instantiate the translator module
+    (function () {
+        var url_input, server_cs_img, server_cs_bage, req_bp, resp_pb;
+        
+        server_cs_img = window.$("#trans_server_cs");
+        server_cs_bage = window.$("#trans_sb");
+        req_bp = window.$("#trans_req_pb");
+        resp_pb = window.$("#trans_resp_pb");
+        
+        client_module.trans_serv_mdl = create_translation_client_fn(client_module.logger_mdl,
+                                                                    client_module.language_mdl,
+                                                                    client_module.post_serv_mdl,
+                                                                    client_module.dom.trans_url_input,
+                                                                    config.translate_url,
+                                                                    server_cs_img, server_cs_bage,
+                                                                    needs_new_trans, disable_interface,
+                                                                    enable_interface, create_ws_client_fn,
+                                                                    escape_html, req_bp, resp_pb, process_stop);
+    }());
+    
+    //Instantiate the pre-processor module
+    (function () {
+        var url_input, server_cs_img, server_cs_bage, req_bp, resp_pb;
+        
+        server_cs_img = window.$("#pre_server_cs");
+        server_cs_bage = window.$("#pre_sb");
+        req_bp = window.$("#pre_req_pb");
+        resp_pb = window.$("#pre_resp_pb");
+        
+        client_module.pre_serv_mdl = create_pre_proc_client_fn(client_module.logger_mdl,
+                                                               client_module.language_mdl,
+                                                               client_module.trans_serv_mdl,
+                                                               client_module.dom.pre_url_input,
+                                                               config.pre_proc_url,
+                                                               server_cs_img, server_cs_bage,
+                                                               needs_new_trans, disable_interface,
+                                                               enable_interface, create_ws_client_fn,
+                                                               escape_html, req_bp, resp_pb, process_stop);
     }());
     
     //Set the tranlate button handler
@@ -262,7 +265,7 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
                 process_start();
                 
                 //Start the process by calling the pre-processor module
-                client_module.pre_serv_mdl.pre_process_fn();
+                client_module.pre_serv_mdl.pre_process_fn(source_text);
             } else {
                 client_module.logger_mdl.warning("This translation job has already been done!", true);
             }
@@ -270,10 +273,6 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
             client_module.logger_mdl.warning("There is no text to translate!", true);
         }
     });
-    
-    //Connect the pipeline
-    client_module.pre_serv_mdl.trans_serv_mdl = client_module.trans_serv_mdl;
-    client_module.trans_serv_mdl.post_serv_mdl = client_module.post_serv_mdl;
     
     //Connect to the clients
     client_module.pre_serv_mdl.connect_fn();

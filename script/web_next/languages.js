@@ -28,14 +28,14 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
     function get_selected_lang(select) {
         var selected_lang;
 
-        selected_lang = select.find('option:selected').text();
+        selected_lang = select.find('option:selected').val();
         window.console.log("The selected '" + select + "' language is: " + selected_lang);
 
         return selected_lang.trim();
     }
 
     /**
-     * Allows to check if a language is selected
+     * Allows to check if a language is selected, i.e. is also not auto
      * @param {Object} the select element to get the selected value from
      * @param {Boolean} true if a language is selected, otherwise false
      */
@@ -44,7 +44,7 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
         var selected = get_selected_lang(select);
 
         //The selected value must not be empty
-        return (selected !== "");
+        return (selected !== "") && (selected !== AUTO_DETECT_OPTION);
     }
 
     /**
@@ -196,6 +196,12 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
     
     //Set the function for setting the language pairs
     module.set_supp_langs_fn = set_supported_languages;
+    //Set the language selected checking functions
+    module.is_source_lang_sel_fn = is_source_lang_selected;
+    module.is_target_lang_sel_fn = is_target_lang_selected;
+    //Set the selected language retrieval functions
+    module.get_sel_source_lang_fn = get_selected_source_lang;
+    module.get_sel_target_lang_fn = get_selected_target_lang;
     
     return module;
 }
