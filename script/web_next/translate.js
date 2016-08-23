@@ -54,7 +54,8 @@ function escape_html(unsafe) {
  */
 function create_client(config, md5_fn, download_fn, init_file_ud_fn,
                        create_logger_fn, create_lang_fn, create_ws_client_fn,
-                       create_pre_proc_client_fn, create_translation_client_fn, create_post_proc_client_fn) {
+                       create_proc_client_fn, create_pre_proc_client_fn,
+                       create_trans_client_fn, create_post_proc_client_fn) {
     "use strict";
     
     //Get the main dom element references and store them
@@ -191,13 +192,17 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
         req_bp = window.$("#post_req_pb");
         resp_pb = window.$("#post_resp_pb");
         
-        client_module.post_serv_mdl = create_post_proc_client_fn(client_module.logger_mdl,
-                                                                 client_module.dom.post_url_input,
-                                                                 config.post_proc_url,
-                                                                 server_cs_img, server_cs_bage,
-                                                                 needs_new_trans, disable_interface,
-                                                                 enable_interface, create_ws_client_fn,
-                                                                 escape_html, req_bp, resp_pb, process_stop);
+        //Create the processor client module
+        client_module.post_serv_mdl = create_proc_client_fn(client_module.logger_mdl,
+                                                            client_module.language_mdl,
+                                                            client_module.dom.post_url_input,
+                                                            config.post_proc_url,
+                                                            server_cs_img, server_cs_bage,
+                                                            needs_new_trans, disable_interface,
+                                                            enable_interface, create_ws_client_fn,
+                                                            escape_html, req_bp, resp_pb, process_stop);
+        //Upgrade to the post processor module
+        create_post_proc_client_fn(client_module.post_serv_mdl);
     }());
     
     //Instantiate the translator module
@@ -209,15 +214,15 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
         req_bp = window.$("#trans_req_pb");
         resp_pb = window.$("#trans_resp_pb");
         
-        client_module.trans_serv_mdl = create_translation_client_fn(client_module.logger_mdl,
-                                                                    client_module.language_mdl,
-                                                                    client_module.post_serv_mdl,
-                                                                    client_module.dom.trans_url_input,
-                                                                    config.translate_url,
-                                                                    server_cs_img, server_cs_bage,
-                                                                    needs_new_trans, disable_interface,
-                                                                    enable_interface, create_ws_client_fn,
-                                                                    escape_html, req_bp, resp_pb, process_stop);
+        client_module.trans_serv_mdl = create_trans_client_fn(client_module.logger_mdl,
+                                                              client_module.language_mdl,
+                                                              client_module.post_serv_mdl,
+                                                              client_module.dom.trans_url_input,
+                                                              config.translate_url,
+                                                              server_cs_img, server_cs_bage,
+                                                              needs_new_trans, disable_interface,
+                                                              enable_interface, create_ws_client_fn,
+                                                              escape_html, req_bp, resp_pb, process_stop);
     }());
     
     //Instantiate the pre-processor module
@@ -229,15 +234,17 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
         req_bp = window.$("#pre_req_pb");
         resp_pb = window.$("#pre_resp_pb");
         
-        client_module.pre_serv_mdl = create_pre_proc_client_fn(client_module.logger_mdl,
-                                                               client_module.language_mdl,
-                                                               client_module.trans_serv_mdl,
-                                                               client_module.dom.pre_url_input,
-                                                               config.pre_proc_url,
-                                                               server_cs_img, server_cs_bage,
-                                                               needs_new_trans, disable_interface,
-                                                               enable_interface, create_ws_client_fn,
-                                                               escape_html, req_bp, resp_pb, process_stop);
+        //Create the processor client module
+        client_module.pre_serv_mdl = create_proc_client_fn(client_module.logger_mdl,
+                                                           client_module.language_mdl,
+                                                           client_module.dom.pre_url_input,
+                                                           config.pre_proc_url,
+                                                           server_cs_img, server_cs_bage,
+                                                           needs_new_trans, disable_interface,
+                                                           enable_interface, create_ws_client_fn,
+                                                           escape_html, req_bp, resp_pb, process_stop);
+        //Upgrade to the post processor module
+        create_pre_proc_client_fn(client_module.pre_serv_mdl, client_module.trans_serv_mdl);
     }());
     
     //Set the tranlate button handler
@@ -265,7 +272,7 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
                 process_start();
                 
                 //Start the process by calling the pre-processor module
-                client_module.pre_serv_mdl.pre_process_fn(source_text);
+                client_module.pre_serv_mdl.process_fn(source_md5, source_text);
             } else {
                 client_module.logger_mdl.warning("This translation job has already been done!", true);
             }

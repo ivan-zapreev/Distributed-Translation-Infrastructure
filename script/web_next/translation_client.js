@@ -10,12 +10,12 @@ var MINIMUM_TRANS_JOB_ID = 1;
  * @param ...
  * @return the translation server client module
  */
-function create_translation_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
-                                    url, server_cs_img, server_cs_bage,
-                                    needs_new_trans_fn, disable_interface_fn,
-                                    enable_interface_fn, create_ws_client_fn,
-                                    escape_html_fn, request_progress_bar,
-                                    response_progress_bar, process_stop_fn) {
+function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
+                             url, server_cs_img, server_cs_bage,
+                             needs_new_trans_fn, disable_interface_fn,
+                             enable_interface_fn, create_ws_client_fn,
+                             escape_html_fn, request_progress_bar,
+                             response_progress_bar, process_stop_fn) {
     "use strict";
     
     var SUPPORTED_LANG_REQ, TRAN_JOB_REQ_BASE, is_working, sent_requests, received_responces, job_responces, module;
@@ -130,7 +130,7 @@ function create_translation_client(logger_mdl, lang_mdl, post_serv_mdl, url_inpu
     TRAN_JOB_REQ_BASE = {"prot_ver" : module.PROTOCOL_VERSION, "msg_type" : module.MSG_TYPE_ENUM.MESSAGE_TRANS_JOB_REQ};
     
     //Set the translation function
-    module.translate_fn = function (source_text) {
+    module.process_fn = function (source_text) {
         //Check that the translation server is online, otherwise it does not make sence to proceed
         if (module.is_connected_fn()) {
             window.console.log("The translation server is connected!");

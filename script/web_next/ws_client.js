@@ -181,7 +181,7 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
                     if (on_open_fn) {
                         on_open_fn();
                     } else {
-                        logger_mdl.warning("The on-open handler for server " + url + " is not set!");
+                        window.console.warn("The on-open handler for server " + url + " is not set!");
                     }
 
                     //Enable the interface controls
@@ -202,7 +202,7 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
                         if (on_message_fn) {
                             on_message_fn(resp_obj);
                         } else {
-                            logger_mdl.warning("The on-message handler for server " + url + " is not set!");
+                            window.console.warn("The on-message handler for server " + url + " is not set!");
                         }
                     } else {
                         logger_mdl.danger("Malformed server message: " + evt.data);
@@ -217,7 +217,7 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
                     if (on_close_fn) {
                         on_close_fn();
                     } else {
-                        logger_mdl.warning("The on-close handler for server " + url + " is not set!");
+                        window.console.warn("The on-close handler for server " + url + " is not set!");
                     }
                     //Re-initialize the progress bars
                     initialize_progress_bars();

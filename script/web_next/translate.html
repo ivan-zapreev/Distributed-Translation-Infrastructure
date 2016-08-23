@@ -39,6 +39,9 @@
     <script src="./languages.js" type="text/javascript"></script>
 
     <!--Include the client side javascript-->
+    <script src="./proc_client.js" type="text/javascript"></script>
+
+    <!--Include the client side javascript-->
     <script src="./pre_proc_client.js" type="text/javascript"></script>
 
     <!--Include the client side javascript-->
@@ -226,6 +229,7 @@
     //Run the translation client
     create_client(config, calcMD5, download, init_file_ud,
                   create_logger, create_languages,
-                  create_ws_client, create_pre_proc_client,
-                  create_translation_client, create_post_proc_client);
+                  create_ws_client, create_proc_client,
+                  create_pre_proc_client, create_trans_client,
+                  create_post_proc_client);
 </script>
