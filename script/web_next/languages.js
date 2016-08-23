@@ -187,7 +187,7 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
                 }
             }
             //Set the all targets for the auto detection option
-            module.language_mapping[AUTO_DETECT_STRING] = all_targets;
+            module.language_mapping[AUTO_DETECT_OPTION] = all_targets;
         }
         
         //Set the appropriate target languages
