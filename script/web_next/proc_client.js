@@ -17,13 +17,32 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
                             process_stop_fn) {
     "use strict";
     
-    var is_working, expected_responces, received_responces, job_responces, module;
+    var is_working, expected_responces, received_responces,
+        job_responces, job_token, resp_language, module;
     
     //Default initialize the variables
     is_working = false;
-    expected_responces = 0;
-    received_responces = 0;
-    job_responces = [];
+    
+    /**
+     * Allows to re-set the client constants
+     * @param is_wk {Boolean} true if we are doing processing, default is false
+     * @param exp_resp {Number} the number of expected responses default is 0
+     */
+    function re_set_client(is_wk, exp_resp) {
+        is_working = is_wk || false;
+        expected_responces = exp_resp || 0;
+        received_responces = 0;
+        job_responces = [];
+        job_token = "";
+        resp_language = "";
+        
+        window.console.log("Re-setting the internal variables" +
+                           ", is_working: " + is_working +
+                           ", expected_responces: " + expected_responces);
+    }
+    
+    //Re-set the local variables
+    re_set_client();
     
     /**
      * This function is called when a message is received from the processor server
@@ -32,7 +51,42 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
     function on_message(resp_obj) {
         window.console.log("A processor server message is received");
         
-        //ToDo: Implement
+        //Check of the message type
+        if ((resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_PRE_PROC_JOB_RESP)
+                || (resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_POST_PROC_JOB_RESP)) {
+            //Check if the job token has changed
+            if (job_token !== resp_obj.job_token) {
+                //Store the new job token
+                job_token = resp_obj.job_token;
+                //Store the number of expected responses
+                expected_responces = resp_obj.num_chs;
+                //Store the language
+                resp_language = resp_obj.lang;
+                //Log the data
+                window.console.log("Got a new processor response job token: " + job_token +
+                                   ", expected_responces: " + expected_responces +
+                                   ", resp_language: " + resp_language);
+            }
+            
+            //Place the token into the response array
+            job_responces[resp_obj.ch_idx] = resp_obj;
+            
+            //Increase the number of received responses
+            received_responces += 1;
+            
+            //Update the progress bar
+            module.set_response_pb_fn(received_responces, expected_responces);
+            
+            //Check if all the responces have been received, then process
+            if (received_responces === expected_responces) {
+                module.logger_mdl.success("Received all of the " + expected_responces +
+                                          " processor responses, language: " + resp_language);
+                
+                //ToDo: Combine the responces into on text and call the subsequent
+            }
+        } else {
+            module.logger_mdl.danger("An unsupported server message type: " + resp_obj.msg_type);
+        }
     }
 
     /**
@@ -47,10 +101,8 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
             logger_mdl.warning("The connection to '" + module.url + "' is closed");
         }
 
-        window.console.log("Re-set the internal variables");
-        expected_responces = 0;
-        received_responces = 0;
-        job_responces = [];
+        //Re-set the client
+        re_set_client();
 
         window.console.log("The connection to: '" + module.url + "'has failed!");
     }
@@ -69,6 +121,10 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
      * @param lang {String} the language
      */
     function create_job_req_base(msg_type, job_token, lang) {
+        //Log the data
+        window.console.log("Creating a new processor job type: " + msg_type +
+                           ", job token: " + job_token + ", language: " + lang);
+        
         return {prot_ver : module.PROTOCOL_VERSION,
                 msg_type : msg_type, job_token : job_token,
                 lang : lang};
@@ -94,6 +150,9 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
         
         //Set the number of chunks into the job request base
         job_req_base.num_chs = num_chunks;
+        
+        //Re-set the client
+        re_set_client(true, num_chunks);
 
         //Re-initialize the progress bars
         module.init_req_resp_pb_fn();
