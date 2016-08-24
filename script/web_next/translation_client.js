@@ -13,7 +13,8 @@ var MAX_NUM_SENTENCES_PER_JOB = 128;
  * @return the translation server client module
  */
 function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
-                             url, server_cs_img, server_cs_bage, trans_info_cb,
+                             url, server_cs_img, server_cs_bage,
+                             trans_info_cb, to_text_span,
                              needs_new_trans_fn, disable_interface_fn,
                              enable_interface_fn, create_ws_client_fn,
                              escape_html_fn, request_progress_bar,
@@ -22,7 +23,7 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
     
     var SUPPORTED_LANG_REQ, TRAN_JOB_REQ_BASE, prev_job_req_id, is_working,
         sent_trans_req, received_trans_resp, job_responces, job_token,
-        result_text, module;
+        result_text, trans_status, translation_html, module;
 
     /**
      * Allows to re-set the client constants
@@ -35,7 +36,9 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
         job_responces = [];
         job_token = "";
         result_text = "";
-        prev_job_req_id = MINIMUM_TRANS_JOB_ID;
+        prev_job_req_id = UNDEFINED_JOB_ID;
+        trans_status = 0;
+        translation_html = "";
         
         window.console.log("Re-setting the internal variables" +
                            ", is_working: " + is_working);
@@ -43,6 +46,150 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
         
     //Do default initializations
     re_set_client();
+
+    /**
+     * Allows to visualize the status code and message if needed
+     * @param {Number} the job id 
+     * @param {Number} stat_code the job response status code
+     * @param {String} stat_msg the status message string the status message
+     */
+    function visualize_status_code(job_id, stat_code, stat_msg) {
+        //Keen the maximum status code as the higher the more cevere is the error
+        var new_ts = window.Math.max(stat_code, trans_status);
+
+        //Log the event
+        switch (stat_code) {
+        case module.STATUS_CODE_ENUM.RESULT_OK:
+            logger_mdl.success("Translation job: " + job_id + " succeeded!");
+            break;
+        case module.STATUS_CODE_ENUM.RESULT_ERROR:
+            logger_mdl.danger("Translation job: " + job_id + " failed: " + stat_msg);
+            break;
+        case module.STATUS_CODE_ENUM.RESULT_CANCELED:
+            logger_mdl.warning("Translation job: " + job_id + " was cancelled: " + stat_msg);
+            break;
+        case module.STATUS_CODE_ENUM.RESULT_PARTIAL:
+            logger_mdl.warning("Translation job: " + job_id + " was partially done: " + stat_msg);
+            break;
+        default:
+            break;
+        }
+
+        //Check if we need to change the visualization
+        if (trans_status !== new_ts) {
+            //Keep the new status
+            trans_status = new_ts;
+            //Visualize
+            switch (trans_status) {
+            case module.STATUS_CODE_ENUM.RESULT_OK:
+                to_text_span.css("box-shadow", "0 0 10px green");
+                break;
+            case module.STATUS_CODE_ENUM.RESULT_ERROR:
+                to_text_span.css("box-shadow", "0 0 10px red");
+                break;
+            case module.STATUS_CODE_ENUM.RESULT_CANCELED:
+                to_text_span.css("box-shadow", "0 0 10px orange");
+                break;
+            case module.STATUS_CODE_ENUM.RESULT_PARTIAL:
+                to_text_span.css("box-shadow", "0 0 10px yellow");
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    /**
+     * Allows to re-set the status code visualization
+     */
+    function remove_status_code_visual() {
+        //Re-set the stored status and remove the visual effect
+        trans_status = module.STATUS_CODE_ENUM.RESULT_UNDEFINED;
+        to_text_span.css("box-shadow", "none");
+    }
+
+    /**
+     * Allows to fill in the single response data into the target data span
+     * @param {Object} response the translation reponse object
+     */
+    function process_response_data(responses, idx) {
+        //Declare the variables to be used
+        var response, j, target, status;
+        
+        window.console.log("Processing translation response number: " + idx);
+        
+        //Get the current reponse
+        response = responses[idx];
+
+        //Set the border color based on the overall status
+        visualize_status_code(response.job_id, response.stat_code, response.stat_msg);
+
+        //Allow a new translation in case the job status code is NOT
+        if (response.stat_code !== module.STATUS_CODE_ENUM.RESULT_OK) {
+            needs_new_trans_fn();
+        }
+
+        //Only visualize the results if the target data is present
+        if (response.hasOwnProperty('target_data')) {
+            //Assemble the data
+            for (j = 0; j < response.target_data.length; j += 1) {
+                //Get the target
+                target = response.target_data[j];
+                //Create the status string, to hover
+                status = module.get_status_code_str_fn(target.stat_code);
+
+                //Add the message if it is not empty
+                if (target.stat_code !== module.STATUS_CODE_ENUM.RESULT_OK) {
+                    status += ": " + target.stat_msg;
+                    switch (target.stat_code) {
+                    case module.STATUS_CODE_ENUM.RESULT_ERROR:
+                        if (target.stat_msg !== "") {
+                            logger_mdl.danger("Translation job " + response.job_id + ", sentence " + (j + 1) + " failed: " + target.stat_msg);
+                        }
+                        break;
+                    case module.STATUS_CODE_ENUM.RESULT_CANCELED:
+                        if (response.stat_code !== module.STATUS_CODE_ENUM.RESULT_CANCELED) {
+                            if (target.stat_msg !== "") {
+                                logger_mdl.warning("Translation job " + response.job_id + ", sentence " + (j + 1) + " cancelled: " + target.stat_msg);
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                //Check if the stack loads are present, if yes, add them
+                if (target.hasOwnProperty('stack_load')) {
+                    status += ", multi-stack loads(%): [" + target.stack_load.join(" ") + "]";
+                } else {
+                    if (trans_info_cb.is(':checked')) {
+                        window.console.warn("The stack_load field is not present when the translation infos are requested!");
+                    }
+                }
+
+                //Add the translation element to the panel
+                translation_html += "<span class='target_sent_tag' title='' data-original-title='" +
+                    escape_html_fn(status) + "' data-toggle='tooltip' data-placement='auto'>" + escape_html_fn(target.trans_text) + "</span>";
+            }
+        } else {
+            window.console.warn("The target_data field is not present in the translation response!");
+        }
+
+        //Check if this is the last response
+        if (idx === (responses.length - 1)) {
+            //Set the translation html into the DOM tree just once, otherwise it is too slow!
+            to_text_span.html(translation_html);
+            window.$('[data-toggle="tooltip"]').tooltip();
+            translation_html = "";
+            
+            //Notify the user that everything went fine
+            logger_mdl.success("Finished recombining " + responses.length + " translation responses!");
+            
+            //ToDo: Send the resulting text to post-processing
+            
+            //Re-set the module
+            re_set_client();
+        }
+    }
     
     /**
      * Allows to account for a new translation job response
@@ -57,10 +204,11 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
 
         //If all the responses are received
         if (sent_trans_req === received_trans_resp) {
-            module.logger_mdl.success("Received all of the " + sent_trans_req +
-                                      " translation server responses");
+            logger_mdl.success("Received all of the " + sent_trans_req +
+                               " translation server responses");
 
-            //ToDo: Process the job responses, give them to post-processor.
+            //Process the translation responses
+            module.process_responses_fn(job_responces, process_response_data);
             
             //Re-set the client
             re_set_client();
@@ -70,14 +218,14 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
     /**
      * This function is called when a translation response is to be set into the interface
      * Note that the translation response will not be set if it is outdated.
-     * @param {String} trans_response the serialized translation job response
+     * @param {String} response the serialized translation job response
      */
-    function set_translation(trans_response) {
+    function set_translation(response) {
         //Store the translation response in the array
-        job_responces[trans_response.job_id - MINIMUM_TRANS_JOB_ID] = trans_response;
+        job_responces[response.job_id - MINIMUM_TRANS_JOB_ID] = response;
 
         //Log that we received the response into the console
-        logger_mdl.info("Received response for a translation job, id: " + trans_response.job_id);
+        window.console.log("Received response for a translation job, id: " + response.job_id);
 
         //Cound the translation job response
         count_trans_job_response();
@@ -88,10 +236,7 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
      */
     function on_open() {
         //Sent the request for the supported languages
-        var supp_lang_reg_str = JSON.stringify(SUPPORTED_LANG_REQ);
-        window.console.log("Sending the supported languages request: " + supp_lang_reg_str);
-        logger_mdl.info("Requesting supported languages from the server!");
-        module.ws.send(supp_lang_reg_str);
+        module.send_request_fn(SUPPORTED_LANG_REQ);
     }
 
     /**
@@ -121,8 +266,6 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
     function on_close() {
         if (is_working) {
             logger_mdl.danger("Failed to perform translation the server dropped off!", true);
-            //Set the translating flag back to false
-            is_working = false;
         } else {
             logger_mdl.warning("The connection to '" + module.url + "' is closed");
         }
@@ -131,6 +274,9 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
 
         //Re-set the client
         re_set_client();
+        
+        //Report and error and stop
+        module.process_stop_fn(true, "The translation servr connection is dropped!");
 
         window.console.log("The connection to: '" + module.url + "'has failed!");
     }

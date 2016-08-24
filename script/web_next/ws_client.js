@@ -193,6 +193,26 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
     }
 
     /**
+     * Allows to translate the status code number into a value
+     * @param {Number} status_code the status code received from the server
+     * @return {String} the string representation of the status code
+     */
+    function get_status_code_string(status_code) {
+        switch (status_code) {
+        case client.STATUS_CODE_ENUM.RESULT_OK:
+            return "FULLY TRANSLATED";
+        case client.STATUS_CODE_ENUM.RESULT_ERROR:
+            return "FAILED TO TRANSLATE";
+        case client.STATUS_CODE_ENUM.RESULT_CANCELED:
+            return "CANCELED TRANSLATION";
+        case client.STATUS_CODE_ENUM.RESULT_PARTIAL:
+            return "PARTIALY TRANSLATED";
+        default:
+            return "oooOPS, unknown";
+        }
+    }
+
+    /**
      * This function is called if one needs to connect or re-connect to the translation server.
      */
     function connect_to_server() {
@@ -334,6 +354,7 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
     };
     client.send_request_fn = send_request_to_server;
     client.process_responses_fn = process_responses_async;
+    client.get_status_code_str_fn = get_status_code_string;
     
     //Re-set progress bars
     initialize_progress_bars();

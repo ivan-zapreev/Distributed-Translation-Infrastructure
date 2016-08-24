@@ -221,6 +221,7 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
                                                               client_module.dom.trans_url_input,
                                                               config.translate_url,
                                                               server_cs_img, server_cs_bage, client_module.dom.trans_info_cb,
+                                                              client_module.dom.to_text_span,
                                                               needs_new_trans, disable_interface,
                                                               enable_interface, create_ws_client_fn,
                                                               escape_html, req_bp, resp_pb, process_stop);

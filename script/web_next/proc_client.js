@@ -154,14 +154,15 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
     function on_close() {
         if (is_working) {
             logger_mdl.danger("Failed to perform processing the server dropped off!", true);
-            //Set the translating flag back to false
-            is_working = false;
         } else {
             logger_mdl.warning("The connection to '" + module.url + "' is closed");
         }
 
         //Re-set the client
         re_set_client();
+        
+        //Report and error and stop
+        module.process_stop_fn(true, "The processor server connection is dropped!");
 
         window.console.log("The connection to: '" + module.url + "'has failed!");
     }
