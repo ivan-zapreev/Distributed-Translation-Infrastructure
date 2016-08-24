@@ -431,7 +431,7 @@ namespace uva {
                     inline bool call_processor_script(const string &call_str, string & output) {
                         recursive_guard guard(m_file_lock);
 
-                        //Check if the job is not being cancelled
+                        //Check if the job is not being canceled
                         if (!m_is_canceled) {
                             LOG_DEBUG << "Trying to call the script: " << call_str << END_LOG;
                             size_t attempts = 0;

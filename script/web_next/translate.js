@@ -268,11 +268,16 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
                 //Store the new previous translation request md5
                 client_module.source_md5 = source_md5;
 
-                //Start the process
-                process_start();
-                
-                //Start the process by calling the pre-processor module
-                client_module.pre_serv_mdl.process_fn(source_md5, source_text);
+                //Check if the target language is selected
+                if (client_module.language_mdl.is_target_lang_sel_fn()) {
+                    //Start the process
+                    process_start();
+                    
+                    //Start the process by calling the pre-processor module
+                    client_module.pre_serv_mdl.process_fn(source_md5, source_text);
+                } else {
+                    client_module.logger_mdl.danger("Please selecte the target language!", true);
+                }
             } else {
                 client_module.logger_mdl.warning("This translation job has already been done!", true);
             }

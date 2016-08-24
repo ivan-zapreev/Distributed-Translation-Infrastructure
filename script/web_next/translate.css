@@ -12,22 +12,31 @@ div.blocks {
     padding-bottom: 5px;
     color: gray;
     align-items: center;
-    display: table;
     width: 100%;
 }
 
 div.block {
-    display: table-cell;
+    display: flex;
+    width: auto;
+}
+
+span.block {
+    display: inline-flex;
+    float: left;
+    white-space: nowrap;
+    margin-right: 4px;
 }
 
 div.option_block {
     width: 140px;
     text-align: right;
+    float:right;
 }
 
 span.server_name {
     display: inline-block;
     width: 100px;
+    margin-right: 4px;
 }
 
 input.server_url {

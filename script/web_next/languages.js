@@ -194,6 +194,42 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
         on_source_lang_select();
     }
     
+    /**
+     * Checks if the source language is set to auto detect, if it is then
+     * remembers the selected target language. Checks if the source language
+     * is supported by the translator, if not then returns false. If it is then
+     * checks if the target language for the given source languahe is supported
+     * by the server if yes return true else false.
+     * @param source_lang {String} the source language
+     * @return true if the source/target language pair is valid, otherwise false
+     */
+    function set_detected_source_lang(source_lang) {
+        window.console.log("Trying to set the 'auto-detected' source language: " + source_lang);
+        if (module.language_mapping.hasOwnProperty(source_lang)) {
+            var target_lang, targets;
+            window.console.log("The source language: " + source_lang + " is supported.");
+            target_lang = get_selected_target_lang();
+            window.console.log("The currently selected target language: " + target_lang);
+            targets = module.language_mapping[source_lang];
+            //Check if the target language is supported for the given source one
+            if ($.inArray(target_lang, targets) >= 0) {
+                //The target language is present
+                from_lang_sel.val(source_lang);
+                //The language was successfully set
+                return true;
+            } else {
+                //The target language is not present
+                logger_mdl.danger("The translation server does not support: " + source_lang +
+                                  " -> " + target_lang + " language pair." , true);
+                return false;
+            }
+        } else {
+            //The soure language is not present
+            logger_mdl.danger("The translation server does not support: " + source_lang, true);
+            return false;
+        }
+    }
+    
     //Set the function for setting the language pairs
     module.set_supp_langs_fn = set_supported_languages;
     //Set the language selected checking functions
@@ -202,6 +238,8 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
     //Set the selected language retrieval functions
     module.get_sel_source_lang_fn = get_selected_source_lang;
     module.get_sel_target_lang_fn = get_selected_target_lang;
+    //Set the function for setting the source language
+    module.set_detected_source_lang_fn = set_detected_source_lang;
     
     return module;
 }

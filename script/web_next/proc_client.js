@@ -18,7 +18,7 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
     "use strict";
     
     var is_working, expected_responces, received_responces,
-        job_responces, job_token, resp_language, module;
+        job_responces, job_token, resp_language, result_text, module;
     
     //Default initialize the variables
     is_working = false;
@@ -35,6 +35,7 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
         job_responces = [];
         job_token = "";
         resp_language = "";
+        result_text = "";
         
         window.console.log("Re-setting the internal variables" +
                            ", is_working: " + is_working +
@@ -43,6 +44,79 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
     
     //Re-set the local variables
     re_set_client();
+
+    /**
+     * Allows to fill in the single response data into the target data span
+     * @param responses {Object} the responses object
+     * @param idx {Object} the index of the current response
+     */
+    function process_response_data(responses, idx) {
+        //Decalare local variables
+        var response;
+        
+        window.console.log("Processing processor response number: " + idx);
+        
+        //Get the current reponse
+        response = responses[idx];
+        
+        //Only visualize the results if the target data is present
+        if (response.hasOwnProperty('text')) {
+            //Append the result text
+            result_text += response.text;
+        } else {
+            window.console.error("The text field is not present in the processor response!");
+        }
+        
+        //In case this is the last response that has to be processed
+        if (idx === (responses.length - 1)) {
+            //Call the next module
+            module.notify_processor_ready_fn(result_text, job_token, resp_language);
+            
+            //Forget the result text
+            result_text = "";
+            
+            //Set the working flag to false
+            is_working = false;
+        }
+    }
+    
+    /**
+     * Allows to process a valid non-error processor job response, that come on time
+     * @param resp_obj {Object} a valid non-error processor job response, that comes on time
+     */
+    function process_response(resp_obj) {
+        //Check if the job token has changed
+        if (job_token !== resp_obj.job_token) {
+            //Store the new job token
+            job_token = resp_obj.job_token;
+            //Store the number of expected responses
+            expected_responces = resp_obj.num_chs;
+            //Store the language
+            resp_language = resp_obj.lang;
+            //Log the data
+            window.console.log("Got a new processor response job token: " + job_token +
+                               ", expected_responces: " + expected_responces +
+                               ", resp_language: " + resp_language);
+        }
+
+        //Place the token into the response array
+        job_responces[resp_obj.ch_idx] = resp_obj;
+
+        //Increase the number of received responses
+        received_responces += 1;
+
+        //Update the progress bar
+        module.set_response_pb_fn(received_responces, expected_responces);
+
+        //Check if all the responces have been received, then process
+        if (received_responces === expected_responces) {
+            module.logger_mdl.success("Received all of the " + expected_responces +
+                                      " processor responses, language: " + resp_language);
+
+            //Combine the responces into on text and call the subsequent
+            module.process_responses_fn(job_responces, process_response_data);
+        }
+    }
     
     /**
      * This function is called when a message is received from the processor server
@@ -51,41 +125,26 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
     function on_message(resp_obj) {
         window.console.log("A processor server message is received");
         
-        //Check of the message type
-        if ((resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_PRE_PROC_JOB_RESP)
-                || (resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_POST_PROC_JOB_RESP)) {
-            //Check if the job token has changed
-            if (job_token !== resp_obj.job_token) {
-                //Store the new job token
-                job_token = resp_obj.job_token;
-                //Store the number of expected responses
-                expected_responces = resp_obj.num_chs;
-                //Store the language
-                resp_language = resp_obj.lang;
-                //Log the data
-                window.console.log("Got a new processor response job token: " + job_token +
-                                   ", expected_responces: " + expected_responces +
-                                   ", resp_language: " + resp_language);
-            }
-            
-            //Place the token into the response array
-            job_responces[resp_obj.ch_idx] = resp_obj;
-            
-            //Increase the number of received responses
-            received_responces += 1;
-            
-            //Update the progress bar
-            module.set_response_pb_fn(received_responces, expected_responces);
-            
-            //Check if all the responces have been received, then process
-            if (received_responces === expected_responces) {
-                module.logger_mdl.success("Received all of the " + expected_responces +
-                                          " processor responses, language: " + resp_language);
-                
-                //ToDo: Combine the responces into on text and call the subsequent
+        //Process the message only if we are working
+        if(is_working) {
+            //Check of the message type
+            if ((resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_PRE_PROC_JOB_RESP)
+                    || (resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_POST_PROC_JOB_RESP)) {
+                //Check on the error status!
+                if (resp_obj.stat_code === module.STATUS_CODE_ENUM.RESULT_OK) {
+                    //If the status is ok - process it
+                    process_response(resp_obj);
+                } else {
+                    //If the status is not OK then report an error and stop
+                    process_stop_fn(true,resp_obj.stat_msg);
+                    //Re-set the client - as we stop
+                    re_set_client();
+                }
+            } else {
+                module.logger_mdl.danger("An unsupported server message type: " + resp_obj.msg_type);
             }
         } else {
-            module.logger_mdl.danger("An unsupported server message type: " + resp_obj.msg_type);
+            window.console.warning("Received a processor message when NOT working!");
         }
     }
 
@@ -184,6 +243,8 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
     module.process_stop_fn = process_stop_fn;
     module.send_requests_fn = send_requests;
     module.create_jr_base_fn = create_job_req_base;
+    //Add the processor ready notification function, to be set by a child module.
+    module.notify_processor_ready_fn = null;
     
     return module;
 }

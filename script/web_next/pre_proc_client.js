@@ -40,15 +40,35 @@ function create_pre_proc_client(module, trans_serv_mdl) {
             //Check if the language is selected, i.e. also not autodetect.
             if (module.language_mdl.is_source_lang_sel_fn()) {
                 window.console.log("The source language is selected to: " + source_lang);
-                trans_serv_mdl.process_fn(source_text);
+                trans_serv_mdl.process_fn(source_text, source_md5, source_lang);
             } else {
                 module.process_stop_fn(true, "The pre-processor is not connected, the language detection is not possible!");
             }
         }
     }
     
+    /**
+     * Will be called once the pre-processor job is finished.
+     * @param result_text {String} the resulting text
+     * @param job_token {String} the resulting job token
+     * @param res_language {String} the resulting language
+     */
+    function notify_processor_ready(source_text, job_token, source_lang) {
+        if(module.language_mdl.set_detected_source_lang_fn(source_lang)) {
+            window.console.log("The source language: " + source_lang + " is set.");
+            
+            //Call the translator
+            trans_serv_mdl.process_fn(source_text, job_token, source_lang);
+        } else {
+            //Could not set the source/target languages
+            module.process_stop_fn(false,"");
+        }
+    }
+    
     //Store the pre-processing function pointer
     module.process_fn = process;
+    //Set the ready notifier function
+    module.notify_processor_ready_fn = notify_processor_ready;
     
     return module;
 }

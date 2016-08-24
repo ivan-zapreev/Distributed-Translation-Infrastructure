@@ -95,7 +95,7 @@ namespace uva {
                             string result = m_call_templ;
                             replace(result, WORK_DIR_TEMPL_PARAM_NAME, m_work_dir);
                             replace(result, JOB_UID_TEMPL_PARAM_NAME, file_name);
-                            replace(result, LANGUAGE_TEMPL_PARAM_NAME, to_lower(lang));
+                            replace(result, LANGUAGE_TEMPL_PARAM_NAME, lang);
                             return result;
                         } else {
                             return "";

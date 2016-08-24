@@ -130,7 +130,7 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
     TRAN_JOB_REQ_BASE = {"prot_ver" : module.PROTOCOL_VERSION, "msg_type" : module.MSG_TYPE_ENUM.MESSAGE_TRANS_JOB_REQ};
     
     //Set the translation function
-    module.process_fn = function (source_text) {
+    module.process_fn = function (source_text, job_token, source_lang) {
         //Check that the translation server is online, otherwise it does not make sence to proceed
         if (module.is_connected_fn()) {
             window.console.log("The translation server is connected!");

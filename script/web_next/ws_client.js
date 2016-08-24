@@ -55,6 +55,42 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
     url_input.val(url);
 
     /**
+     * Allows to process a large array in an asynchronous way
+     * @param {integer} min_idx the minimum index value
+     * @param {array} array of data to process 
+     * @param {function} the call back function to be called per array element
+     * @param {time} the time allowed to be busy per batch, optional
+     * @param {context} context the context, optional
+     */
+    function process_responses_async(array, fn, maxTimePerChunk, context) {
+        context = context || window;
+        maxTimePerChunk = maxTimePerChunk || 200;
+        var index = 0;
+
+        logger_mdl.info("Start processing " + array.length + " response(s)");
+
+        function now() {
+            var time = new Date().getTime();
+            window.console.log("Next iteration time is: " + time);
+            return time;
+        }
+
+        function doChunk() {
+            var startTime = now();
+            while (index < array.length && (now() - startTime) <= maxTimePerChunk) {
+                // callback called with args (value, index, array)
+                fn.call(context, array, index);
+                index += 1;
+            }
+            if (index < array.length) {
+                // set Timeout for async iteration
+                setTimeout(doChunk, 1);
+            }
+        }
+        doChunk();
+    }
+
+    /**
      * Allows to set the progress bar progress
      * @param {Boolean} is_init true if this is for (re-)initialization of the progress bar
      * @param {jquery Object} the jquesy object of the progress bar
@@ -287,12 +323,13 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
     url_input.change(on_url_change);
     url_input.focus(on_url_change);
     
-    //Set the server connection functions
+    //Set the exported functions
     client.connect_fn = connect_to_server;
     client.is_connected_fn = function () {
         return ((client.ws !== null) && (client.ws.readyState === window.WebSocket.OPEN));
     };
     client.send_request_fn = send_request_to_server;
+    client.process_responses_fn = process_responses_async;
     
     //Re-set progress bars
     initialize_progress_bars();
