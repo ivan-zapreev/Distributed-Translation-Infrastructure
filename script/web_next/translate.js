@@ -66,6 +66,7 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
     client_module.dom.trans_info_cb = window.$("#trans_info_cb");
     client_module.dom.from_text_area = window.$("#from_text");
     client_module.dom.from_lang_sel = window.$("#from_lang_sel");
+    client_module.dom.to_text_span = window.$("#to_text");
     client_module.dom.to_lang_sel = window.$("#to_lang_sel");
     client_module.dom.input_file_select = window.$("#input_file_select");
     client_module.dom.progress_image = window.$("#progress");
@@ -219,7 +220,7 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
                                                               client_module.post_serv_mdl,
                                                               client_module.dom.trans_url_input,
                                                               config.translate_url,
-                                                              server_cs_img, server_cs_bage,
+                                                              server_cs_img, server_cs_bage, client_module.dom.trans_info_cb,
                                                               needs_new_trans, disable_interface,
                                                               enable_interface, create_ws_client_fn,
                                                               escape_html, req_bp, resp_pb, process_stop);
@@ -270,6 +271,9 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
 
                 //Check if the target language is selected
                 if (client_module.language_mdl.is_target_lang_sel_fn()) {
+                    //Clear the current translation text
+                    client_module.dom.to_text_span.html("");
+                    
                     //Start the process
                     process_start();
                     

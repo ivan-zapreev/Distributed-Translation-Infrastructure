@@ -126,7 +126,7 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
         window.console.log("A processor server message is received");
         
         //Process the message only if we are working
-        if(is_working) {
+        if (is_working) {
             //Check of the message type
             if ((resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_PRE_PROC_JOB_RESP)
                     || (resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_POST_PROC_JOB_RESP)) {
@@ -136,7 +136,7 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
                     process_response(resp_obj);
                 } else {
                     //If the status is not OK then report an error and stop
-                    process_stop_fn(true,resp_obj.stat_msg);
+                    process_stop_fn(true, resp_obj.stat_msg);
                     //Re-set the client - as we stop
                     re_set_client();
                 }

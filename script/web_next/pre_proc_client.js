@@ -54,14 +54,14 @@ function create_pre_proc_client(module, trans_serv_mdl) {
      * @param res_language {String} the resulting language
      */
     function notify_processor_ready(source_text, job_token, source_lang) {
-        if(module.language_mdl.set_detected_source_lang_fn(source_lang)) {
+        if (module.language_mdl.set_detected_source_lang_fn(source_lang)) {
             window.console.log("The source language: " + source_lang + " is set.");
             
             //Call the translator
             trans_serv_mdl.process_fn(source_text, job_token, source_lang);
         } else {
             //Could not set the source/target languages
-            module.process_stop_fn(false,"");
+            module.process_stop_fn(false, "");
         }
     }
     
