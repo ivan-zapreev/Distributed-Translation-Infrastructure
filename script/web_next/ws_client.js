@@ -27,7 +27,15 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
             //The translation job request message
             MESSAGE_TRANS_JOB_REQ : 3,
             //The translation job response message
-            MESSAGE_TRANS_JOB_RESP : 4
+            MESSAGE_TRANS_JOB_RESP : 4,
+            //The pre-processor job request message
+            MESSAGE_PRE_PROC_JOB_REQ : 5,
+            //The pre-processor job response message
+            MESSAGE_PRE_PROC_JOB_RESP : 6,
+            //The post-processor job request message
+            MESSAGE_POST_PROC_JOB_REQ : 7,
+            //The post-processor job response message
+            MESSAGE_POST_PROC_JOB_RESP : 8
         },
         STATUS_CODE_ENUM : {
             RESULT_UNDEFINED : 0,
@@ -80,8 +88,9 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
      * Allows to re-initialize the request/response progress bars
      */
     function initialize_progress_bars() {
-        set_progress_bar(true, response_progress_bar, "Responses", 0, 1);
-        set_progress_bar(true, request_progress_bar, "Requests", 0, 1);
+        window.console.log("Initializing progress bards!");
+        set_progress_bar(true, response_progress_bar, "Responses", 0, 100);
+        set_progress_bar(true, request_progress_bar, "Requests", 0, 100);
     }
 
     /**
@@ -233,6 +242,15 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
             enable_interface_fn();
         }
     }
+    
+    /**
+     * Allows to send the job request to the server
+     * @param job_req {Object} the JSON format jov request to be sent to the server
+     */
+    function send_request_to_server(job_req) {
+        //Send a new job request
+        client.ws.send(JSON.stringify(job_req));
+    }
         
     /**
      * This function is called if the server URL change event is fired,
@@ -274,6 +292,7 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
     client.is_connected_fn = function () {
         return ((client.ws !== null) && (client.ws.readyState === window.WebSocket.OPEN));
     };
+    client.send_request_fn = send_request_to_server;
     
     //Re-set progress bars
     initialize_progress_bars();

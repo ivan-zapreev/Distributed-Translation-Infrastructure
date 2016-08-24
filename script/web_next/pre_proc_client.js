@@ -15,16 +15,26 @@ function create_pre_proc_client(module, trans_serv_mdl) {
     function process(source_md5, source_text) {
         window.console.log("Starting pre-processing text: " + source_text);
 
+        //Pre-declare variables
+        var source_lang, job_req_base;
+        
         //Get the source text language
-        var source_lang = module.language_mdl.get_sel_source_lang_fn();
+        source_lang = module.language_mdl.get_sel_source_lang_fn();
         
         //Check if the processor is connected or not
         if (module.is_connected_fn()) {
             //If connected then get the source language and start sending the data
             window.console.log("The pre-processing module is connected!");
             
+            //The job request base
+            job_req_base = module.create_jr_base_fn(
+                module.MSG_TYPE_ENUM.MESSAGE_PRE_PROC_JOB_REQ,
+                source_md5,
+                source_lang
+            );
+            
             //Send the processor request in chunks
-            module.send_requests_fn(source_md5, source_text, source_lang);
+            module.send_requests_fn(job_req_base, source_text);
         } else {
             window.console.log("The pre-processing module is disconnected!");
             //Check if the language is selected, i.e. also not autodetect.
