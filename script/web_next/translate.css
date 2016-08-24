@@ -27,10 +27,9 @@ span.block {
     margin-right: 4px;
 }
 
-div.option_block {
-    width: 140px;
-    text-align: right;
-    float:right;
+span#trans_info {
+    color: gray;
+    font-size: 80%;
 }
 
 span.server_name {

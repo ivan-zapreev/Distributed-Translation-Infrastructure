@@ -236,7 +236,7 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
                 //Set the on message handler
                 client.ws.onmessage = function (evt) {
                     //log the json data
-                    window.console.log("Received message:" + evt.data);
+                    window.console.log("Received message: " + evt.data);
 
                     window.console.log("Parsing to JSON");
                     var resp_obj = JSON.parse(evt.data);
@@ -284,8 +284,12 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
      * @param job_req {Object} the JSON format jov request to be sent to the server
      */
     function send_request_to_server(job_req) {
+        var data = JSON.stringify(job_req);
+        
+        window.console.log("Sending the server request: " + data);
+        
         //Send a new job request
-        client.ws.send(JSON.stringify(job_req));
+        client.ws.send(data);
     }
         
     /**

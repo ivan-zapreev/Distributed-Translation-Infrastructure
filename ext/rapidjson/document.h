@@ -16,7 +16,7 @@
 #define RAPIDJSON_DOCUMENT_H_
 
 /*! \file document.h */
-
+#include <iostream>
 #include "reader.h"
 #include "internal/meta.h"
 #include "internal/strfunc.h"
@@ -836,6 +836,7 @@ public:
         if (member != MemberEnd())
             return member->value;
         else {
+            std::cout << "Missing name: " << name.GetString() << std::endl;
             RAPIDJSON_ASSERT(false);    // see above note
             static GenericValue NullValue;
             return NullValue;

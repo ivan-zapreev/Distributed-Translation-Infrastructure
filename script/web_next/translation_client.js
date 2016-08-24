@@ -57,6 +57,9 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
 
         //If all the responses are received
         if (sent_trans_req === received_trans_resp) {
+            module.logger_mdl.success("Received all of the " + sent_trans_req +
+                                      " translation server responses");
+
             //ToDo: Process the job responses, give them to post-processor.
             
             //Re-set the client
@@ -204,7 +207,7 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
             target_lang = lang_mdl.get_sel_target_lang_fn();
 
             //Get the translation info flag from thecheckox!
-            is_trans_info = trans_info_cb.checked;
+            is_trans_info = trans_info_cb.is(':checked');
 
             sent_array = source_text.split('\n');
             window.console.log("Send the translation requests for " + sent_array.length + " sentences");
@@ -228,7 +231,7 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
             //Make the progress note visible
             module.set_response_pb_fn(0, 1);
 
-            module.logger_mdl.success("Sent out " + sent_trans_req + " translation requests");
+            logger_mdl.success("Sent out " + sent_trans_req + " translation requests");
         } else {
             process_stop_fn(true, "The translation server is not connected!");
         }
