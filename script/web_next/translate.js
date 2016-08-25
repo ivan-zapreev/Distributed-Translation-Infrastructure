@@ -214,7 +214,7 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
         translator.post_serv_mdl = create_proc_client_fn(translator.common_mdl,
                                                          translator.dom.post_url_input,
                                                          config.post_proc_url, server_cs_img,
-                                                         server_cs_bage, req_bp, resp_pb);
+                                                         server_cs_bage, req_bp, resp_pb, "Post");
         //Upgrade to the post processor module
         create_post_proc_client_fn(translator.post_serv_mdl);
     }());
@@ -250,7 +250,7 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
         translator.pre_serv_mdl = create_proc_client_fn(translator.common_mdl,
                                                         translator.dom.pre_url_input,
                                                         config.pre_proc_url, server_cs_img,
-                                                        server_cs_bage, req_bp, resp_pb);
+                                                        server_cs_bage, req_bp, resp_pb, "Pre");
         //Upgrade to the post processor module
         create_pre_proc_client_fn(translator.pre_serv_mdl, translator.trans_serv_mdl);
     }());
@@ -288,7 +288,7 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
                     process_start();
                     
                     //Start the process by calling the pre-processor module
-                    translator.pre_serv_mdl.process_fn(source_md5, source_text);
+                    translator.pre_serv_mdl.process_fn(source_text, source_md5);
                 } else {
                     translator.logger_mdl.danger("Please selecte the target language!", true);
                 }

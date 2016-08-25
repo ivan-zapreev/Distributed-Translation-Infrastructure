@@ -20,7 +20,7 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
     
     var SUPPORTED_LANG_REQ, TRAN_JOB_REQ_BASE, prev_job_req_id, is_working,
         sent_trans_req, received_trans_resp, job_responces, job_token,
-        result_text, translation_html, module;
+        result_text, target_status, target_text, target_html, module;
 
     /**
      * Allows to re-set the client constants
@@ -34,7 +34,9 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
         job_token = "";
         result_text = "";
         prev_job_req_id = UNDEFINED_JOB_ID;
-        translation_html = "";
+        target_status = "";
+        target_text = "";
+        target_html = "";
         
         window.console.log("Re-setting the internal variables" +
                            ", is_working: " + is_working);
@@ -102,9 +104,12 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
                 }
 
                 //Add the translation element to the panel
-                translation_html += "<span class='target_sent_tag' title='' data-original-title='" +
+                target_html += "<span class='target_sent_tag' title='' data-original-title='" +
                     common_mdl.escape_html_fn(status) + "' data-toggle='tooltip' data-placement='auto'>" +
                     common_mdl.escape_html_fn(target.trans_text) + "</span>";
+                //Store the target translation text and status for logging
+                target_text += target.trans_text + "\n";
+                target_status += status + "\n";
             }
         } else {
             window.console.warn("The target_data field is not present in the translation response!");
@@ -113,14 +118,15 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
         //Check if this is the last response
         if (idx === (responses.length - 1)) {
             //Set the translation html into the DOM tree just once, otherwise it is too slow!
-            common_mdl.to_text_span.html(translation_html);
+            common_mdl.to_text_span.html(target_html);
             window.$('[data-toggle="tooltip"]').tooltip();
-            translation_html = "";
+            target_html = "";
             
             //Notify the user that everything went fine
             common_mdl.logger_mdl.success("Finished recombining " + responses.length + " translation responses!");
             
-            //ToDo: Send the resulting text to post-processing
+            //Send the resulting text to post-processing
+            post_serv_mdl.process_fn(target_text, job_token);
             
             //Re-set the module
             re_set_client();

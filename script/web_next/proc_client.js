@@ -11,7 +11,8 @@ var MESSAGE_MAX_CHAR_LEN = 10 * 1024;
  * @return the processor server client module
  */
 function create_proc_client(common_mdl, url_input, url, server_cs_img,
-                            server_cs_bage, request_pb, response_pb) {
+                            server_cs_bage, request_pb, response_pb,
+                            pre_post_txt) {
     "use strict";
     
     var is_working, expected_responces, received_responces,
@@ -41,6 +42,30 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
     
     //Re-set the local variables
     re_set_client();
+    
+    /**
+     * This function allows to visualize the resulting text into the to_text_span
+     * @param result_text {String} the text to visualize
+     */
+    function visualize_text(result_text) {
+        //Declare the variables
+        var j, target_html, par_array;
+        
+        //Split the text into paragraphs
+        par_array = result_text.split('\n');
+
+        //Create the html
+        target_html = "";
+        for (j = 0; j < par_array.length; j += 1) {
+            target_html += "<span class='target_sent_tag' title='' data-original-title='" +
+                pre_post_txt + "-processed text' data-toggle='tooltip' data-placement='auto'>" + common_mdl.escape_html_fn(par_array[j]) + "</span>";
+        }
+        
+        //Set the data into the html
+        common_mdl.to_text_span.html(target_html);
+        //Enable tool-tipls
+        window.$('[data-toggle="tooltip"]').tooltip();
+    }
 
     /**
      * Allows to fill in the single response data into the target data span
@@ -66,6 +91,9 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
         
         //In case this is the last response that has to be processed
         if (idx === (responses.length - 1)) {
+            //Visualize the current stage text
+            visualize_text(result_text);
+            
             //Call the next module
             module.notify_processor_ready_fn(result_text, job_token, resp_language);
             
@@ -127,8 +155,9 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
             //Check of the message type
             if ((resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_PRE_PROC_JOB_RESP)
                     || (resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_POST_PROC_JOB_RESP)) {
-                //Update the visual status 
-                common_mdl.visualize_sc_fn(resp_obj.job_id, resp_obj.stat_code, resp_obj.stat_msg);
+                //Update the visual status
+                var job_id = resp_obj.job_token + "/" + resp_obj.ch_idx;
+                common_mdl.visualize_sc_fn(job_id, resp_obj.stat_code, resp_obj.stat_msg);
                 
                 //Check on the error status!
                 if (resp_obj.stat_code === common_mdl.STATUS_CODE_ENUM.RESULT_OK) {

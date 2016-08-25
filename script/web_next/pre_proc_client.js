@@ -12,7 +12,7 @@ function create_pre_proc_client(module, trans_serv_mdl) {
      * @patam source_md5 {String} the source text md5 sum to be used as a job token
      * @param source_text {String} the source text to work with
      */
-    function process(source_md5, source_text) {
+    function process(source_text, source_md5) {
         window.console.log("Starting pre-processing text: " + source_text);
 
         //Pre-declare variables
@@ -57,7 +57,7 @@ function create_pre_proc_client(module, trans_serv_mdl) {
         if (module.common_mdl.lang_mdl.set_detected_source_lang_fn(source_lang)) {
             window.console.log("The source language: " + source_lang + " is set.");
             
-            //Call the translator
+            //Call the translator, the output is done by the base module.
             trans_serv_mdl.process_fn(source_text, job_token, source_lang);
         } else {
             //Could not set the source/target languages
