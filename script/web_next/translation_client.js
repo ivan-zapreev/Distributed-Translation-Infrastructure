@@ -362,8 +362,10 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
             job_token = token;
             window.console.log("Setting the job token: " + job_token);
             
-            //Send the requests
-            send_trans_requests(source_text, source_lang);
+            //Send the requests, asynchronously
+            setTimeout(function () {
+                send_trans_requests(source_text, source_lang);
+            }, 1);
         } else {
             common_mdl.process_stop_fn(true, "The translation server is not connected!");
         }
