@@ -3,19 +3,23 @@ var NUM_PROGRESS_BARS = 2;
 
 /**
  * Allows to create a new web socket server client
- * @param logger_mdl {Object} the logger module
- * @param url {String} the server url to work with
+ * @param common_mdl {Object} the common module
+ * @param url_input {Object} the url input dom object
+ * @param init_url {String} the server's initial url to work with
  * @param ...
  * @return the web socket client module
  */
-function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_bage,
-                           needs_new_trans_fn, disable_interface_fn, enable_interface_fn,
-                           on_open_fn, on_message_fn, on_close_fn, escape_html_fn,
-                          request_progress_bar, response_progress_bar) {
+function create_ws_client(common_mdl, url_input, init_url,
+                          server_cs_img, server_cs_bage,
+                          on_open_fn, on_message_fn, on_close_fn,
+                          request_pb, response_pb) {
     "use strict";
     
+    //Declare the variables
+    var is_requested_close, client;
+    
     //Create the first prototype of the client module
-    var client = {
+    client = {
         PROTOCOL_VERSION : 1,
         MSG_TYPE_ENUM : {
             //The message type is undefined
@@ -37,22 +41,17 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
             //The post-processor job response message
             MESSAGE_POST_PROC_JOB_RESP : 8
         },
-        STATUS_CODE_ENUM : {
-            RESULT_UNDEFINED : 0,
-            RESULT_UNKNOWN : 1,
-            RESULT_OK : 2,
-            RESULT_PARTIAL : 3,
-            RESULT_CANCELED : 4,
-            RESULT_ERROR : 5
-        },
-        url : url,               //The web server url
-        ws : null               //The web socket to the server
+        url : init_url,          //The web server url
+        ws : null                //The web socket to the server
     };
     
-    window.console.log("Creating a new ws client for the server: " + url);
+    //Set the close requested flag to false
+    is_requested_close = false;
+    
+    window.console.log("Creating a new ws client for the server: " + client.url);
     
     //Set the url into the server input
-    url_input.val(url);
+    url_input.val(init_url);
 
     /**
      * Allows to process a large array in an asynchronous way
@@ -67,7 +66,7 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
         maxTimePerChunk = maxTimePerChunk || 200;
         var index = 0;
 
-        logger_mdl.info("Start processing " + array.length + " response(s)");
+        common_mdl.logger_mdl.info("Start processing " + array.length + " response(s)");
 
         function now() {
             var time = new Date().getTime();
@@ -109,7 +108,7 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
         if (is_init) {
             span.html("");
         } else {
-            span.html(escape_html_fn(msg + ": " + percent + "%"));
+            span.html(common_mdl.escape_html_fn(msg + ": " + percent + "%"));
         }
 
         if (percent === 0 && !is_init) {
@@ -125,8 +124,8 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
      */
     function initialize_progress_bars() {
         window.console.log("Initializing progress bards!");
-        set_progress_bar(true, response_progress_bar, "Responses", 0, 100);
-        set_progress_bar(true, request_progress_bar, "Requests", 0, 100);
+        set_progress_bar(true, response_pb, "Responses", 0, 100);
+        set_progress_bar(true, request_pb, "Requests", 0, 100);
     }
 
     /**
@@ -134,8 +133,8 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
      * @param {integer} curr the current value
      * @param {integer} max the maximum value
      */
-    function set_response_progress_bar(curr, max) {
-        set_progress_bar(false, response_progress_bar, "Responses", curr, max);
+    function set_response_pb(curr, max) {
+        set_progress_bar(false, response_pb, "Responses", curr, max);
     }
 
     /**
@@ -143,13 +142,13 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
      * @param {integer} curr the current value
      * @param {integer} max the maximum value
      */
-    function set_request_progress_bar(curr, max) {
-        set_progress_bar(false, request_progress_bar, "Requests", curr, max);
+    function set_request_pb(curr, max) {
+        set_progress_bar(false, request_pb, "Requests", curr, max);
     }
     
     //Export the request/response progress bar setters, initiaalizers
-    client.set_response_pb_fn = set_response_progress_bar;
-    client.set_request_pb_fn = set_request_progress_bar;
+    client.set_response_pb_fn = set_response_pb;
+    client.set_request_pb_fn = set_request_pb;
     client.init_req_resp_pb_fn = initialize_progress_bars;
 
     /**
@@ -193,109 +192,134 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
     }
 
     /**
-     * Allows to translate the status code number into a value
-     * @param {Number} status_code the status code received from the server
-     * @return {String} the string representation of the status code
+     * The function that allows to open a new connection the the WS server
+     * @param url {String} the url to connec to
      */
-    function get_status_code_string(status_code) {
-        switch (status_code) {
-        case client.STATUS_CODE_ENUM.RESULT_OK:
-            return "FULLY TRANSLATED";
-        case client.STATUS_CODE_ENUM.RESULT_ERROR:
-            return "FAILED TO TRANSLATE";
-        case client.STATUS_CODE_ENUM.RESULT_CANCELED:
-            return "CANCELED TRANSLATION";
-        case client.STATUS_CODE_ENUM.RESULT_PARTIAL:
-            return "PARTIALY TRANSLATED";
-        default:
-            return "oooOPS, unknown";
+    function open_new_connection(url) {
+        //The soccet was not requested to be closed or is already closed
+        window.console.log("Storing the new server url value: " + url);
+        client.url = url;
+
+        common_mdl.logger_mdl.info("Opening a new web socket to the server: " + client.url);
+        client.ws = new window.WebSocket(client.url);
+
+        update_conn_status(window.WebSocket.CONNECTING);
+
+        window.console.log("Set up the socket handler functions");
+
+        //Set the on connection open handler
+        client.ws.onopen = function () {
+            common_mdl.logger_mdl.success("The connection to '" + client.url + "' is open");
+            update_conn_status(window.WebSocket.OPEN);
+
+            //Call the on open connection handler
+            if (on_open_fn) {
+                on_open_fn();
+            } else {
+                window.console.warn("The on-open handler for server " + client.url + " is not set!");
+            }
+
+            //Enable the interface controls
+            common_mdl.enable_interface_fn();
+        };
+
+        //Set the on message handler
+        client.ws.onmessage = function (evt) {
+            //log the json data
+            window.console.log("Received message: " + evt.data);
+
+            window.console.log("Parsing to JSON");
+            var resp_obj = JSON.parse(evt.data);
+
+            //Check if the message type is detectable
+            if (resp_obj.hasOwnProperty('msg_type')) {
+                //Call the on message handler with the json object
+                if (on_message_fn) {
+                    on_message_fn(resp_obj);
+                } else {
+                    window.console.warn("The on-message handler for server " + client.url + " is not set!");
+                }
+            } else {
+                common_mdl.logger_mdl.danger("Malformed server message: " + evt.data);
+            }
+        };
+
+        //Set the on connection close handler
+        client.ws.onclose = function () {
+            update_conn_status(window.WebSocket.CLOSED);
+
+            //Check if we requested the connection to be closed
+            if (is_requested_close) {
+                window.console.warn("The connection to " + client.url + " is closed");
+
+                //Call the on closed connection handler
+                if (on_close_fn) {
+                    on_close_fn();
+                } else {
+                    window.console.warn("The on-close handler for server " + client.url + " is not set!");
+                }
+                is_requested_close = false;
+            }
+
+            //Re-initialize the progress bars
+            initialize_progress_bars();
+
+            //Enable the interface controls
+            common_mdl.enable_interface_fn();
+        };
+    }
+    
+    /**
+     * Allows to connect to the new websocket only after the previous connection was closed
+     * @param url {String} the url to connect to
+     */
+    function reconnect_when_closed(url) {
+        /**
+         * The waiting function set on timer.
+         */
+        function wait_closed() {
+            //Check if we are requesting the close of the socket
+            if (is_requested_close) {
+                //Set Timeout for async iteration
+                setTimeout(wait_closed, 1);
+            } else {
+                open_new_connection(url);
+            }
         }
+        wait_closed();
     }
 
     /**
      * This function is called if one needs to connect or re-connect to the translation server.
+     * @param new_url {String} the new url to connect to or nothing, the default is client.url
      */
-    function connect_to_server() {
+    function connect_to_server(new_url) {
         window.console.log("Disable the controls before connecting to a new server");
-        disable_interface_fn();
+        common_mdl.disable_interface_fn();
+        
+        //Use the new url if provided or the current one
+        var url = new_url || client.url;
 
         try {
             window.console.log("Checking that the web socket connection is available");
             if (window.hasOwnProperty("WebSocket")) {
-                window.console.log("Close the web socket connection if there is one");
+                window.console.log("Check if we are currently connected.");
                 if ((client.ws !== null) && ((client.ws.readyState === window.WebSocket.CONNECTING) ||
                                             (client.ws.readyState === window.WebSocket.OPEN))) {
-                    logger_mdl.info("Closing the previously opened connection");
+                    common_mdl.logger_mdl.info("Closing the previously opened connection to: " + client.url);
                     update_conn_status(window.WebSocket.CLOSING);
+                    is_requested_close = true;
                     client.ws.close();
                 }
 
-                logger_mdl.info("Opening a new web socket to the server: " + client.url);
-                client.ws = new window.WebSocket(client.url);
-
-                update_conn_status(window.WebSocket.CONNECTING);
-
-                window.console.log("Set up the socket handler functions");
-                
-                //Set the on connection open handler
-                client.ws.onopen = function () {
-                    logger_mdl.success("The connection to '" + client.url + "' is open");
-                    update_conn_status(window.WebSocket.OPEN);
-
-                    //Call the on open connection handler
-                    if (on_open_fn) {
-                        on_open_fn();
-                    } else {
-                        window.console.warn("The on-open handler for server " + url + " is not set!");
-                    }
-
-                    //Enable the interface controls
-                    enable_interface_fn();
-                };
-                
-                //Set the on message handler
-                client.ws.onmessage = function (evt) {
-                    //log the json data
-                    window.console.log("Received message: " + evt.data);
-
-                    window.console.log("Parsing to JSON");
-                    var resp_obj = JSON.parse(evt.data);
-
-                    //Check if the message type is detectable
-                    if (resp_obj.hasOwnProperty('msg_type')) {
-                        //Call the on message handler with the json object
-                        if (on_message_fn) {
-                            on_message_fn(resp_obj);
-                        } else {
-                            window.console.warn("The on-message handler for server " + url + " is not set!");
-                        }
-                    } else {
-                        logger_mdl.danger("Malformed server message: " + evt.data);
-                    }
-                };
-                
-                //Set the on connection close handler
-                client.ws.onclose = function () {
-                    update_conn_status(window.WebSocket.CLOSED);
-                    
-                    //Call the on closed connection handler
-                    if (on_close_fn) {
-                        on_close_fn();
-                    } else {
-                        window.console.warn("The on-close handler for server " + url + " is not set!");
-                    }
-                    //Re-initialize the progress bars
-                    initialize_progress_bars();
-
-                    //Enable the interface controls
-                    enable_interface_fn();
-                };
+                //Re-connect to the another server then whis connection is cosed
+                reconnect_when_closed(url);
             } else {
                 //Disable the web page
-                logger_mdl.danger("The WebSockets are not supported by your browser!");
+                common_mdl.logger_mdl.danger("The WebSockets are not supported by your browser!");
             }
         } catch (err) {
-            enable_interface_fn();
+            common_mdl.enable_interface_fn();
         }
     }
     
@@ -316,30 +340,31 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
      * This function is called if the server URL change event is fired,
      * so we need to check if we need to (re-)connect.
      */
-    function on_url_change() {
-        var url;
+    function on_url_change(evt) {
+        var new_url;
+        
+        window.console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
         //Get the current value and trim it
-        url = url_input.val().trim();
+        new_url = url_input.val().trim();
         //Put the trimmed value back into the input
-        url_input.val(url);
+        url_input.val(new_url);
 
-        window.console.log("The new server url is: " + url);
+        window.console.log("The new server url is: " + new_url);
 
-        if ((client.ws === null) || (client.ws.readyState !== window.WebSocket.OPEN) || (client.url !== url)) {
+        if ((client.ws === null) || (client.ws.readyState !== window.WebSocket.OPEN) || (client.url !== new_url)) {
 
             //A new server means new translation
-            needs_new_trans_fn();
+            common_mdl.needs_new_trans_fn();
 
-            window.console.log("Storing the new server url value");
-            client.url = url;
-
-            if (client.url !== "") {
-                window.console.log("Connecting to the new server url");
-                connect_to_server();
+            if (new_url !== "") {
+                window.console.log("Connecting to the new server url: " + new_url);
+                connect_to_server(new_url);
+            } else {
+                window.console.log("The server url is an empty string, doing nothing!");
             }
         } else {
-            window.console.log("The server url has not changed");
+            window.console.log("The server url: " + client.url + " did not change");
         }
     }
 
@@ -347,14 +372,14 @@ function create_ws_client(logger_mdl, url_input, url, server_cs_img, server_cs_b
     url_input.change(on_url_change);
     url_input.focus(on_url_change);
     
-    //Set the exported functions
+    //Set the exported functions and modules
+    client.common_mdl = common_mdl;
     client.connect_fn = connect_to_server;
     client.is_connected_fn = function () {
         return ((client.ws !== null) && (client.ws.readyState === window.WebSocket.OPEN));
     };
     client.send_request_fn = send_request_to_server;
     client.process_responses_fn = process_responses_async;
-    client.get_status_code_str_fn = get_status_code_string;
     
     //Re-set progress bars
     initialize_progress_bars();

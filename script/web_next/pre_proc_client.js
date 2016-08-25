@@ -19,7 +19,7 @@ function create_pre_proc_client(module, trans_serv_mdl) {
         var source_lang, job_req_base;
         
         //Get the source text language
-        source_lang = module.language_mdl.get_sel_source_lang_fn();
+        source_lang = module.common_mdl.lang_mdl.get_sel_source_lang_fn();
         
         //Check if the processor is connected or not
         if (module.is_connected_fn()) {
@@ -38,11 +38,11 @@ function create_pre_proc_client(module, trans_serv_mdl) {
         } else {
             window.console.log("The pre-processing module is disconnected!");
             //Check if the language is selected, i.e. also not autodetect.
-            if (module.language_mdl.is_source_lang_sel_fn()) {
+            if (module.common_mdl.lang_mdl.is_source_lang_sel_fn()) {
                 window.console.log("The source language is selected to: " + source_lang);
                 trans_serv_mdl.process_fn(source_text, source_md5, source_lang);
             } else {
-                module.process_stop_fn(true, "The pre-processor is not connected, the language detection is not possible!");
+                module.common_mdl.process_stop_fn(true, "The pre-processor is not connected, the language detection is not possible!");
             }
         }
     }
@@ -54,14 +54,14 @@ function create_pre_proc_client(module, trans_serv_mdl) {
      * @param res_language {String} the resulting language
      */
     function notify_processor_ready(source_text, job_token, source_lang) {
-        if (module.language_mdl.set_detected_source_lang_fn(source_lang)) {
+        if (module.common_mdl.lang_mdl.set_detected_source_lang_fn(source_lang)) {
             window.console.log("The source language: " + source_lang + " is set.");
             
             //Call the translator
             trans_serv_mdl.process_fn(source_text, job_token, source_lang);
         } else {
             //Could not set the source/target languages
-            module.process_stop_fn(false, "");
+            module.common_mdl.process_stop_fn(false, "");
         }
     }
     

@@ -1,15 +1,16 @@
 /**
  * Define an empty client module, global variable
  */
-var client_module = {
-    pre_serv_mdl : null,     //The pre-processor server module object
-    trans_serv_mdl : null,   //The translation server module object
-    post_serv_mdl : null,    //The post-processor server module object
-    logger_mdl : null,       //The logger server module object
-    file_ud_mdl : null,      //The file upload/download module
-    language_mdl : null,     //The source/target languages selection module
-    source_md5 : null,       //Stores the previously translated source text md5 sum
-    dom : {}                 //Stores the references to the main dom elements
+var translator = {
+    logger_mdl : null,        //The logger server module object
+    language_mdl : null,      //The source/target languages selection module
+    file_ud_mdl : null,       //The file upload/download module
+    common_mdl : null,        //The common module shared by all the server modules
+    pre_serv_mdl : null,      //The pre-processor server module object
+    trans_serv_mdl : null,    //The translation server module object
+    post_serv_mdl : null,     //The post-processor server module object
+    source_md5 : null,        //Stores the previously translated source text md5 sum
+    dom : {}                  //Stores the references to the main dom elements
 };
 
 /**
@@ -52,25 +53,30 @@ function escape_html(unsafe) {
  * @param create_logger_fn {Function} the function to create a logger module instance
  * @param create_ws_client_fn {Function} the function to create a web socket client module instance
  */
-function create_client(config, md5_fn, download_fn, init_file_ud_fn,
-                       create_logger_fn, create_lang_fn, create_ws_client_fn,
-                       create_proc_client_fn, create_pre_proc_client_fn,
-                       create_trans_client_fn, create_post_proc_client_fn) {
+function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
+                               create_logger_fn, create_lang_fn,
+                               create_client_common_fn, create_ws_client_fn,
+                               create_proc_client_fn, create_pre_proc_client_fn,
+                               create_trans_client_fn, create_post_proc_client_fn) {
     "use strict";
     
     //Get the main dom element references and store them
-    client_module.dom.pre_url_input = window.$("#pre_server_url");
-    client_module.dom.trans_url_input = window.$("#trans_server_url");
-    client_module.dom.post_url_input = window.$("#post_server_url");
-    client_module.dom.trans_btn = window.$("#trans_btn");
-    client_module.dom.trans_info_cb = window.$("#trans_info_cb");
-    client_module.dom.from_text_area = window.$("#from_text");
-    client_module.dom.from_lang_sel = window.$("#from_lang_sel");
-    client_module.dom.to_text_span = window.$("#to_text");
-    client_module.dom.to_lang_sel = window.$("#to_lang_sel");
-    client_module.dom.input_file_select = window.$("#input_file_select");
-    client_module.dom.progress_image = window.$("#progress");
+    translator.dom.pre_url_input = window.$("#pre_server_url");
+    translator.dom.trans_url_input = window.$("#trans_server_url");
+    translator.dom.post_url_input = window.$("#post_server_url");
+    translator.dom.trans_btn = window.$("#trans_btn");
+    translator.dom.trans_info_cb = window.$("#trans_info_cb");
+    translator.dom.from_text_area = window.$("#from_text");
+    translator.dom.from_lang_sel = window.$("#from_lang_sel");
+    translator.dom.to_text_span = window.$("#to_text");
+    translator.dom.to_lang_sel = window.$("#to_lang_sel");
+    translator.dom.input_file_select = window.$("#input_file_select");
+    translator.dom.progress_image = window.$("#progress");
 
+    //Declare the translation status variable that
+    //will store the comulative translation status
+    var trans_status = 0;
+    
     //Instantiate the logger module
     (function () {
         var log_panel, lp_dang, lp_warn, lp_info, lp_succ;
@@ -81,11 +87,11 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
         lp_info = window.$("#lp_info");
         lp_succ = window.$("#lp_succ");
         
-        client_module.logger_mdl = create_logger_fn(log_panel, lp_dang, lp_warn, lp_info,
+        translator.logger_mdl = create_logger_fn(log_panel, lp_dang, lp_warn, lp_info,
                                                     lp_succ, get_date_string, escape_html);
     }());
     //Set the log clearing button handler
-    window.$("#log_clear_btn").click(client_module.logger_mdl.clear_log);
+    window.$("#log_clear_btn").click(translator.logger_mdl.clear_log);
     
     //Initialize the file upload/download capabilities
     (function () {
@@ -95,8 +101,8 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
         download_text_link = window.$("#download_text_link");
         download_log_link = window.$("#download_log_link");
     
-        init_file_ud_fn(client_module.logger_mdl, client_module.dom.from_text_area,
-                        input_file_sc, client_module.dom.input_file_select,
+        init_file_ud_fn(translator.logger_mdl, translator.dom.from_text_area,
+                        input_file_sc, translator.dom.input_file_select,
                         download_text_link, download_log_link, download_fn,
                         get_date_string);
     }());
@@ -107,18 +113,18 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
      * I.e. this function is to be called when some client options change.
      */
     function needs_new_trans() {
-        client_module.source_md5 = null;
+        translator.source_md5 = null;
     }
     
     //Set the function for change handlers
-    client_module.dom.trans_info_cb.change(needs_new_trans);
-    client_module.dom.to_lang_sel.change(needs_new_trans);
+    translator.dom.trans_info_cb.change(needs_new_trans);
+    translator.dom.to_lang_sel.change(needs_new_trans);
     
     //Initialize the languages module
     (function () {
-        client_module.language_mdl = create_lang_fn(client_module.logger_mdl,
-                                                    client_module.dom.from_lang_sel,
-                                                    client_module.dom.to_lang_sel,
+        translator.language_mdl = create_lang_fn(translator.logger_mdl,
+                                                    translator.dom.from_lang_sel,
+                                                    translator.dom.to_lang_sel,
                                                     needs_new_trans);
     }());
     
@@ -128,15 +134,15 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
     function disable_interface() {
         window.console.log("Disable the controls");
         
-        client_module.dom.pre_url_input.prop("disabled", true);
-        client_module.dom.trans_url_input.prop("disabled", true);
-        client_module.dom.post_url_input.prop("disabled", true);
-        client_module.dom.trans_btn.prop("disabled", true);
-        client_module.dom.trans_info_cb.prop("disabled", true);
-        client_module.dom.from_text_area.prop("disabled", true);
-        client_module.dom.from_lang_sel.prop("disabled", true);
-        client_module.dom.to_lang_sel.prop("disabled", true);
-        client_module.dom.input_file_select.prop("disabled", true);
+        translator.dom.pre_url_input.prop("disabled", true);
+        translator.dom.trans_url_input.prop("disabled", true);
+        translator.dom.post_url_input.prop("disabled", true);
+        translator.dom.trans_btn.prop("disabled", true);
+        translator.dom.trans_info_cb.prop("disabled", true);
+        translator.dom.from_text_area.prop("disabled", true);
+        translator.dom.from_lang_sel.prop("disabled", true);
+        translator.dom.to_lang_sel.prop("disabled", true);
+        translator.dom.input_file_select.prop("disabled", true);
     }
 
     /**
@@ -145,16 +151,16 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
     function enable_interface() {
         window.console.log("Enable the controls");
 
-        client_module.dom.pre_url_input.prop("disabled", false);
-        client_module.dom.trans_url_input.prop("disabled", false);
-        client_module.dom.post_url_input.prop("disabled", false);
-        //if (client_module.trans_serv_mdl.is_connected_fn()) {
-        client_module.dom.trans_btn.prop("disabled", false);
-        client_module.dom.trans_info_cb.prop("disabled", false);
-        client_module.dom.from_text_area.prop("disabled", false);
-        client_module.dom.from_lang_sel.prop("disabled", false);
-        client_module.dom.to_lang_sel.prop("disabled", false);
-        client_module.dom.input_file_select.prop("disabled", false);
+        translator.dom.pre_url_input.prop("disabled", false);
+        translator.dom.trans_url_input.prop("disabled", false);
+        translator.dom.post_url_input.prop("disabled", false);
+        //if (translator.trans_serv_mdl.is_connected_fn()) {
+        translator.dom.trans_btn.prop("disabled", false);
+        translator.dom.trans_info_cb.prop("disabled", false);
+        translator.dom.from_text_area.prop("disabled", false);
+        translator.dom.from_lang_sel.prop("disabled", false);
+        translator.dom.to_lang_sel.prop("disabled", false);
+        translator.dom.input_file_select.prop("disabled", false);
         //}
     }
 
@@ -165,7 +171,7 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
         //Disable the interface
         disable_interface();
         //Start the progress image
-        client_module.dom.progress_image.attr('src', './img/globe32.gif');
+        translator.dom.progress_image.attr('src', './img/globe32.gif');
     }
 
     /**
@@ -177,13 +183,24 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
         //Enable the interface
         enable_interface();
         //Stop the progress image
-        client_module.dom.progress_image.attr('src', './img/globe32.png');
+        translator.dom.progress_image.attr('src', './img/globe32.png');
         //Check if there was an error
         if (is_error) {
-            client_module.logger_mdl.danger(message, true);
+            translator.logger_mdl.danger(message, true);
         }
     }
-        
+    
+    //Instantiate the client common module
+    (function () {
+        //Create the processor client module
+        translator.common_mdl = create_client_common_fn(translator.logger_mdl,
+                                                        translator.language_mdl,
+                                                        translator.dom.to_text_span,
+                                                        create_ws_client_fn, needs_new_trans,
+                                                        enable_interface, disable_interface,
+                                                        escape_html, process_stop);
+    }());
+     
     //Instantiate the post-processor module
     (function () {
         var url_input, server_cs_img, server_cs_bage, req_bp, resp_pb;
@@ -194,16 +211,12 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
         resp_pb = window.$("#post_resp_pb");
         
         //Create the processor client module
-        client_module.post_serv_mdl = create_proc_client_fn(client_module.logger_mdl,
-                                                            client_module.language_mdl,
-                                                            client_module.dom.post_url_input,
-                                                            config.post_proc_url,
-                                                            server_cs_img, server_cs_bage,
-                                                            needs_new_trans, disable_interface,
-                                                            enable_interface, create_ws_client_fn,
-                                                            escape_html, req_bp, resp_pb, process_stop);
+        translator.post_serv_mdl = create_proc_client_fn(translator.common_mdl,
+                                                         translator.dom.post_url_input,
+                                                         config.post_proc_url, server_cs_img,
+                                                         server_cs_bage, req_bp, resp_pb);
         //Upgrade to the post processor module
-        create_post_proc_client_fn(client_module.post_serv_mdl);
+        create_post_proc_client_fn(translator.post_serv_mdl);
     }());
     
     //Instantiate the translator module
@@ -215,16 +228,13 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
         req_bp = window.$("#trans_req_pb");
         resp_pb = window.$("#trans_resp_pb");
         
-        client_module.trans_serv_mdl = create_trans_client_fn(client_module.logger_mdl,
-                                                              client_module.language_mdl,
-                                                              client_module.post_serv_mdl,
-                                                              client_module.dom.trans_url_input,
-                                                              config.translate_url,
-                                                              server_cs_img, server_cs_bage, client_module.dom.trans_info_cb,
-                                                              client_module.dom.to_text_span,
-                                                              needs_new_trans, disable_interface,
-                                                              enable_interface, create_ws_client_fn,
-                                                              escape_html, req_bp, resp_pb, process_stop);
+        translator.trans_serv_mdl = create_trans_client_fn(translator.common_mdl,
+                                                           translator.post_serv_mdl,
+                                                           translator.dom.trans_url_input,
+                                                           config.translate_url,
+                                                           server_cs_img, server_cs_bage,
+                                                           translator.dom.trans_info_cb,
+                                                           req_bp, resp_pb);
     }());
     
     //Instantiate the pre-processor module
@@ -237,24 +247,20 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
         resp_pb = window.$("#pre_resp_pb");
         
         //Create the processor client module
-        client_module.pre_serv_mdl = create_proc_client_fn(client_module.logger_mdl,
-                                                           client_module.language_mdl,
-                                                           client_module.dom.pre_url_input,
-                                                           config.pre_proc_url,
-                                                           server_cs_img, server_cs_bage,
-                                                           needs_new_trans, disable_interface,
-                                                           enable_interface, create_ws_client_fn,
-                                                           escape_html, req_bp, resp_pb, process_stop);
+        translator.pre_serv_mdl = create_proc_client_fn(translator.common_mdl,
+                                                        translator.dom.pre_url_input,
+                                                        config.pre_proc_url, server_cs_img,
+                                                        server_cs_bage, req_bp, resp_pb);
         //Upgrade to the post processor module
-        create_pre_proc_client_fn(client_module.pre_serv_mdl, client_module.trans_serv_mdl);
+        create_pre_proc_client_fn(translator.pre_serv_mdl, translator.trans_serv_mdl);
     }());
     
     //Set the tranlate button handler
-    client_module.dom.trans_btn.click(function () {
+    translator.dom.trans_btn.click(function () {
         var source_text, source_md5, sent_array, begin_idx, end_idx, source_lang, target_lang, is_trans_info;
 
         //Get and prepare the new source text
-        source_text = client_module.dom.from_text_area.val().trim();
+        source_text = translator.dom.from_text_area.val().trim();
         window.console.log("The text to translate is: " + source_text.substr(0, 128) + "...");
 
         //First check that the text is not empty
@@ -264,35 +270,38 @@ function create_client(config, md5_fn, download_fn, init_file_ud_fn,
             window.console.log("The new source md5: " + source_md5);
 
             //Now check that the md5 sum has changed
-            if (source_md5 !== client_module.source_md5) {
+            if (source_md5 !== translator.source_md5) {
                 window.console.log("The new text is now empty and is different from the previous");
 
                 //Store the new previous translation request md5
-                client_module.source_md5 = source_md5;
+                translator.source_md5 = source_md5;
 
                 //Check if the target language is selected
-                if (client_module.language_mdl.is_target_lang_sel_fn()) {
+                if (translator.language_mdl.is_target_lang_sel_fn()) {
                     //Clear the current translation text
-                    client_module.dom.to_text_span.html("");
+                    translator.dom.to_text_span.html("");
+                    
+                    //Re-set the translation status
+                    translator.common_mdl.remove_cs_visual_fn();
                     
                     //Start the process
                     process_start();
                     
                     //Start the process by calling the pre-processor module
-                    client_module.pre_serv_mdl.process_fn(source_md5, source_text);
+                    translator.pre_serv_mdl.process_fn(source_md5, source_text);
                 } else {
-                    client_module.logger_mdl.danger("Please selecte the target language!", true);
+                    translator.logger_mdl.danger("Please selecte the target language!", true);
                 }
             } else {
-                client_module.logger_mdl.warning("This translation job has already been done!", true);
+                translator.logger_mdl.warning("This translation job has already been done!", true);
             }
         } else {
-            client_module.logger_mdl.warning("There is no text to translate!", true);
+            translator.logger_mdl.warning("There is no text to translate!", true);
         }
     });
     
     //Connect to the clients
-    client_module.pre_serv_mdl.connect_fn();
-    client_module.trans_serv_mdl.connect_fn();
-    client_module.post_serv_mdl.connect_fn();
+    translator.pre_serv_mdl.connect_fn();
+    translator.trans_serv_mdl.connect_fn();
+    translator.post_serv_mdl.connect_fn();
 }

@@ -4,17 +4,14 @@ var MESSAGE_MAX_CHAR_LEN = 10 * 1024;
 
 /**
  * Allows to create a new processor server client
- * @param logger_mdl {Object} the logger module
+ * @param common_mdl {Object} the common module
+ * @param url_input {Object} the url input dom object
  * @param url {String} the server url to work with
  * @param ...
  * @return the processor server client module
  */
-function create_proc_client(logger_mdl, language_mdl, url_input, url,
-                            server_cs_img, server_cs_bage, needs_new_trans_fn,
-                            disable_interface_fn, enable_interface_fn,
-                            create_ws_client_fn, escape_html_fn,
-                            request_progress_bar, response_progress_bar,
-                            process_stop_fn) {
+function create_proc_client(common_mdl, url_input, url, server_cs_img,
+                            server_cs_bage, request_pb, response_pb) {
     "use strict";
     
     var is_working, expected_responces, received_responces,
@@ -110,7 +107,7 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
 
         //Check if all the responces have been received, then process
         if (received_responces === expected_responces) {
-            module.logger_mdl.success("Received all of the " + expected_responces +
+            common_mdl.logger_mdl.success("Received all of the " + expected_responces +
                                       " processor responses, language: " + resp_language);
 
             //Combine the responces into on text and call the subsequent
@@ -130,18 +127,21 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
             //Check of the message type
             if ((resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_PRE_PROC_JOB_RESP)
                     || (resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_POST_PROC_JOB_RESP)) {
+                //Update the visual status 
+                common_mdl.visualize_sc_fn(resp_obj.job_id, resp_obj.stat_code, resp_obj.stat_msg);
+                
                 //Check on the error status!
-                if (resp_obj.stat_code === module.STATUS_CODE_ENUM.RESULT_OK) {
+                if (resp_obj.stat_code === common_mdl.STATUS_CODE_ENUM.RESULT_OK) {
                     //If the status is ok - process it
                     process_response(resp_obj);
                 } else {
                     //If the status is not OK then report an error and stop
-                    process_stop_fn(true, resp_obj.stat_msg);
+                    common_mdl.process_stop_fn(true, resp_obj.stat_msg);
                     //Re-set the client - as we stop
                     re_set_client();
                 }
             } else {
-                module.logger_mdl.danger("An unsupported server message type: " + resp_obj.msg_type);
+                common_mdl.logger_mdl.danger("An unsupported server message type: " + resp_obj.msg_type);
             }
         } else {
             window.console.warning("Received a processor message when NOT working!");
@@ -153,26 +153,25 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
      */
     function on_close() {
         if (is_working) {
-            logger_mdl.danger("Failed to perform processing the server dropped off!", true);
+            common_mdl.logger_mdl.danger("Failed to perform processing the server dropped off!", true);
+            
+            //Report and error and stop
+            common_mdl.process_stop_fn(true, "The connection to: '" + module.url + "'has failed!");
         } else {
-            logger_mdl.warning("The connection to '" + module.url + "' is closed");
+            common_mdl.logger_mdl.warning("The connection to '" + module.url + "' is closed");
         }
 
         //Re-set the client
         re_set_client();
-        
-        //Report and error and stop
-        module.process_stop_fn(true, "The processor server connection is dropped!");
 
         window.console.log("The connection to: '" + module.url + "'has failed!");
     }
     
     //Instantiate the module base
-    module = create_ws_client_fn(logger_mdl, url_input, url, server_cs_img,
-                                 server_cs_bage, needs_new_trans_fn,
-                                 disable_interface_fn, enable_interface_fn,
-                                 null, on_message, on_close, escape_html_fn,
-                                 request_progress_bar, response_progress_bar);
+    module = common_mdl.create_ws_client_fn(common_mdl, url_input, url,
+                                            server_cs_img, server_cs_bage,
+                                            null, on_message, on_close,
+                                            request_pb, response_pb);
     
     /**
      * Allows to create a processor job request base object
@@ -235,13 +234,10 @@ function create_proc_client(logger_mdl, language_mdl, url_input, url,
         module.set_response_pb_fn(0, num_chunks);
         
         //Logthe success message
-        module.logger_mdl.success("Sent out " + num_chunks + " processor requests");
+        common_mdl.logger_mdl.success("Sent out " + num_chunks + " processor requests");
     }
     
     //Define some exported elements
-    module.logger_mdl = logger_mdl;
-    module.language_mdl = language_mdl;
-    module.process_stop_fn = process_stop_fn;
     module.send_requests_fn = send_requests;
     module.create_jr_base_fn = create_job_req_base;
     //Add the processor ready notification function, to be set by a child module.

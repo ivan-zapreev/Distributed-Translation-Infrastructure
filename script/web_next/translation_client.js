@@ -7,23 +7,20 @@ var MAX_NUM_SENTENCES_PER_JOB = 128;
 
 /**
  * Allows to create a new translation server client
- * @param logger_mdl {Object} the logger module
+ * @param common_mdl {Object} the common module
+ * @param url_input {Object} the url input dom object
  * @param url {String} the server url to work with
  * @param ...
  * @return the translation server client module
  */
-function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
+function create_trans_client(common_mdl, post_serv_mdl, url_input,
                              url, server_cs_img, server_cs_bage,
-                             trans_info_cb, to_text_span,
-                             needs_new_trans_fn, disable_interface_fn,
-                             enable_interface_fn, create_ws_client_fn,
-                             escape_html_fn, request_progress_bar,
-                             response_progress_bar, process_stop_fn) {
+                             trans_info_cb, request_pb, response_pb) {
     "use strict";
     
     var SUPPORTED_LANG_REQ, TRAN_JOB_REQ_BASE, prev_job_req_id, is_working,
         sent_trans_req, received_trans_resp, job_responces, job_token,
-        result_text, trans_status, translation_html, module;
+        result_text, translation_html, module;
 
     /**
      * Allows to re-set the client constants
@@ -37,7 +34,6 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
         job_token = "";
         result_text = "";
         prev_job_req_id = UNDEFINED_JOB_ID;
-        trans_status = 0;
         translation_html = "";
         
         window.console.log("Re-setting the internal variables" +
@@ -46,67 +42,6 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
         
     //Do default initializations
     re_set_client();
-
-    /**
-     * Allows to visualize the status code and message if needed
-     * @param {Number} the job id 
-     * @param {Number} stat_code the job response status code
-     * @param {String} stat_msg the status message string the status message
-     */
-    function visualize_status_code(job_id, stat_code, stat_msg) {
-        //Keen the maximum status code as the higher the more cevere is the error
-        var new_ts = window.Math.max(stat_code, trans_status);
-
-        //Log the event
-        switch (stat_code) {
-        case module.STATUS_CODE_ENUM.RESULT_OK:
-            logger_mdl.success("Translation job: " + job_id + " succeeded!");
-            break;
-        case module.STATUS_CODE_ENUM.RESULT_ERROR:
-            logger_mdl.danger("Translation job: " + job_id + " failed: " + stat_msg);
-            break;
-        case module.STATUS_CODE_ENUM.RESULT_CANCELED:
-            logger_mdl.warning("Translation job: " + job_id + " was cancelled: " + stat_msg);
-            break;
-        case module.STATUS_CODE_ENUM.RESULT_PARTIAL:
-            logger_mdl.warning("Translation job: " + job_id + " was partially done: " + stat_msg);
-            break;
-        default:
-            break;
-        }
-
-        //Check if we need to change the visualization
-        if (trans_status !== new_ts) {
-            //Keep the new status
-            trans_status = new_ts;
-            //Visualize
-            switch (trans_status) {
-            case module.STATUS_CODE_ENUM.RESULT_OK:
-                to_text_span.css("box-shadow", "0 0 10px green");
-                break;
-            case module.STATUS_CODE_ENUM.RESULT_ERROR:
-                to_text_span.css("box-shadow", "0 0 10px red");
-                break;
-            case module.STATUS_CODE_ENUM.RESULT_CANCELED:
-                to_text_span.css("box-shadow", "0 0 10px orange");
-                break;
-            case module.STATUS_CODE_ENUM.RESULT_PARTIAL:
-                to_text_span.css("box-shadow", "0 0 10px yellow");
-                break;
-            default:
-                break;
-            }
-        }
-    }
-
-    /**
-     * Allows to re-set the status code visualization
-     */
-    function remove_status_code_visual() {
-        //Re-set the stored status and remove the visual effect
-        trans_status = module.STATUS_CODE_ENUM.RESULT_UNDEFINED;
-        to_text_span.css("box-shadow", "none");
-    }
 
     /**
      * Allows to fill in the single response data into the target data span
@@ -122,11 +57,11 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
         response = responses[idx];
 
         //Set the border color based on the overall status
-        visualize_status_code(response.job_id, response.stat_code, response.stat_msg);
+        common_mdl.visualize_sc_fn(response.job_id, response.stat_code, response.stat_msg);
 
         //Allow a new translation in case the job status code is NOT
-        if (response.stat_code !== module.STATUS_CODE_ENUM.RESULT_OK) {
-            needs_new_trans_fn();
+        if (response.stat_code !== common_mdl.STATUS_CODE_ENUM.RESULT_OK) {
+            common_mdl.needs_new_trans_fn();
         }
 
         //Only visualize the results if the target data is present
@@ -136,21 +71,21 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
                 //Get the target
                 target = response.target_data[j];
                 //Create the status string, to hover
-                status = module.get_status_code_str_fn(target.stat_code);
+                status = common_mdl.get_status_code_str_fn(target.stat_code);
 
                 //Add the message if it is not empty
-                if (target.stat_code !== module.STATUS_CODE_ENUM.RESULT_OK) {
+                if (target.stat_code !== common_mdl.STATUS_CODE_ENUM.RESULT_OK) {
                     status += ": " + target.stat_msg;
                     switch (target.stat_code) {
-                    case module.STATUS_CODE_ENUM.RESULT_ERROR:
+                    case common_mdl.STATUS_CODE_ENUM.RESULT_ERROR:
                         if (target.stat_msg !== "") {
-                            logger_mdl.danger("Translation job " + response.job_id + ", sentence " + (j + 1) + " failed: " + target.stat_msg);
+                            common_mdl.logger_mdl.danger("Translation job " + response.job_id + ", sentence " + (j + 1) + " failed: " + target.stat_msg);
                         }
                         break;
-                    case module.STATUS_CODE_ENUM.RESULT_CANCELED:
-                        if (response.stat_code !== module.STATUS_CODE_ENUM.RESULT_CANCELED) {
+                    case common_mdl.STATUS_CODE_ENUM.RESULT_CANCELED:
+                        if (response.stat_code !== common_mdl.STATUS_CODE_ENUM.RESULT_CANCELED) {
                             if (target.stat_msg !== "") {
-                                logger_mdl.warning("Translation job " + response.job_id + ", sentence " + (j + 1) + " cancelled: " + target.stat_msg);
+                                common_mdl.logger_mdl.warning("Translation job " + response.job_id + ", sentence " + (j + 1) + " cancelled: " + target.stat_msg);
                             }
                         }
                         break;
@@ -168,7 +103,8 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
 
                 //Add the translation element to the panel
                 translation_html += "<span class='target_sent_tag' title='' data-original-title='" +
-                    escape_html_fn(status) + "' data-toggle='tooltip' data-placement='auto'>" + escape_html_fn(target.trans_text) + "</span>";
+                    common_mdl.escape_html_fn(status) + "' data-toggle='tooltip' data-placement='auto'>" +
+                    common_mdl.escape_html_fn(target.trans_text) + "</span>";
             }
         } else {
             window.console.warn("The target_data field is not present in the translation response!");
@@ -177,12 +113,12 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
         //Check if this is the last response
         if (idx === (responses.length - 1)) {
             //Set the translation html into the DOM tree just once, otherwise it is too slow!
-            to_text_span.html(translation_html);
+            common_mdl.to_text_span.html(translation_html);
             window.$('[data-toggle="tooltip"]').tooltip();
             translation_html = "";
             
             //Notify the user that everything went fine
-            logger_mdl.success("Finished recombining " + responses.length + " translation responses!");
+            common_mdl.logger_mdl.success("Finished recombining " + responses.length + " translation responses!");
             
             //ToDo: Send the resulting text to post-processing
             
@@ -204,7 +140,7 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
 
         //If all the responses are received
         if (sent_trans_req === received_trans_resp) {
-            logger_mdl.success("Received all of the " + sent_trans_req +
+            common_mdl.logger_mdl.success("Received all of the " + sent_trans_req +
                                " translation server responses");
 
             //Process the translation responses
@@ -253,9 +189,9 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
         } else {
             if (resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_SUPP_LANG_RESP) {
                 //Set the supported languages
-                lang_mdl.set_supp_langs_fn(resp_obj);
+                common_mdl.lang_mdl.set_supp_langs_fn(resp_obj);
             } else {
-                logger_mdl.danger("An unknown server message type: " + resp_obj.msg_type);
+                common_mdl.logger_mdl.danger("An unknown server message type: " + resp_obj.msg_type);
             }
         }
     }
@@ -265,28 +201,27 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
      */
     function on_close() {
         if (is_working) {
-            logger_mdl.danger("Failed to perform translation the server dropped off!", true);
+            common_mdl.logger_mdl.danger("Failed to perform translation the server dropped off!", true);
+            
+            //Report and error and stop
+            common_mdl.process_stop_fn(true, "The connection to '" + module.url + "' is closed");
         } else {
-            logger_mdl.warning("The connection to '" + module.url + "' is closed");
+            common_mdl.logger_mdl.warning("The connection to '" + module.url + "' is closed");
         }
 
         window.console.log("Re-set the counter for the number of running requests and responses");
 
         //Re-set the client
         re_set_client();
-        
-        //Report and error and stop
-        module.process_stop_fn(true, "The translation servr connection is dropped!");
 
         window.console.log("The connection to: '" + module.url + "'has failed!");
     }
     
     //Create the client module
-    module = create_ws_client_fn(logger_mdl, url_input, url, server_cs_img,
-                                 server_cs_bage, needs_new_trans_fn,
-                                 disable_interface_fn, enable_interface_fn,
-                                 on_open, on_message, on_close, escape_html_fn,
-                                 request_progress_bar, response_progress_bar);
+    module = common_mdl.create_ws_client_fn(common_mdl, url_input, url,
+                                            server_cs_img, server_cs_bage,
+                                            on_open, on_message, on_close,
+                                            request_pb, response_pb);
     
     //Declare the supported languages request
     SUPPORTED_LANG_REQ = {"prot_ver" : module.PROTOCOL_VERSION, "msg_type" : module.MSG_TYPE_ENUM.MESSAGE_SUPP_LANG_REQ};
@@ -350,7 +285,7 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
             job_token = token;
             
             //Get the target language
-            target_lang = lang_mdl.get_sel_target_lang_fn();
+            target_lang = common_mdl.lang_mdl.get_sel_target_lang_fn();
 
             //Get the translation info flag from thecheckox!
             is_trans_info = trans_info_cb.is(':checked');
@@ -377,9 +312,9 @@ function create_trans_client(logger_mdl, lang_mdl, post_serv_mdl, url_input,
             //Make the progress note visible
             module.set_response_pb_fn(0, 1);
 
-            logger_mdl.success("Sent out " + sent_trans_req + " translation requests");
+            common_mdl.logger_mdl.success("Sent out " + sent_trans_req + " translation requests");
         } else {
-            process_stop_fn(true, "The translation server is not connected!");
+            common_mdl.process_stop_fn(true, "The translation server is not connected!");
         }
     }
     
