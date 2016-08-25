@@ -55,6 +55,7 @@ div.v_sep {
    border-bottom-color: lightgray;
    clear: left;
    margin-bottom: 0px;
+   margin-top: 4px;
 }
 
 div#main {

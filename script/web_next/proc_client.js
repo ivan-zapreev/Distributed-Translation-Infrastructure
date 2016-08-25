@@ -125,7 +125,8 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
             //Store the language
             resp_language = resp_obj.lang;
             //Log the data
-            window.console.log("Got a new processor response job token: " + job_token +
+            window.console.log("Got a new " + pre_post_txt + "-processor response " +
+                               "job token: " + job_token +
                                ", num_exp_resp: " + num_exp_resp +
                                ", resp_language: " + resp_language);
         }
@@ -141,8 +142,9 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
 
         //Check if all the responces have been received, then process
         if (num_act_resp === num_exp_resp) {
-            common_mdl.logger_mdl.success("Received " + num_exp_resp + " processor" +
-                                      " responses, language: " + resp_language);
+            common_mdl.logger_mdl.success("Received " + num_exp_resp + " " +
+                                          pre_post_txt + "-processor" +
+                                          " responses, language: " + resp_language);
 
             //Combine the responces into on text and call the subsequent
             module.process_responses_fn(job_responces, process_response_data);
@@ -188,7 +190,8 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
      */
     function on_close() {
         if (is_working) {
-            common_mdl.logger_mdl.danger("Failed to perform processing the server dropped off!", true);
+            common_mdl.logger_mdl.danger("Failed to perform " + pre_post_txt +
+                                         "-processing, the server dropped off!", true);
             
             //Report and error and stop
             common_mdl.process_stop_fn(true, "The connection to: '" + module.url + "'has failed!");
@@ -269,7 +272,8 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
         module.set_response_pb_fn(0, num_chunks);
         
         //Logthe success message
-        common_mdl.logger_mdl.success("Sent out " + num_chunks + " processor requests");
+        common_mdl.logger_mdl.success("Sent out " + num_chunks + " " +
+                                      pre_post_txt + "-processor requests");
     }
     
     //Define some exported elements
