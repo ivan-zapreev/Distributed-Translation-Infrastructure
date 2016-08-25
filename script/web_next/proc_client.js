@@ -15,8 +15,8 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
                             pre_post_txt) {
     "use strict";
     
-    var is_working, expected_responces, received_responces,
-        job_responces, job_token, resp_language, result_text, module;
+    var is_working, num_exp_resp, num_act_resp, job_responces,
+        job_token, resp_language, result_text, module;
     
     //Default initialize the variables
     is_working = false;
@@ -28,8 +28,8 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
      */
     function re_set_client(is_wk, exp_resp) {
         is_working = is_wk || false;
-        expected_responces = exp_resp || 0;
-        received_responces = 0;
+        num_exp_resp = exp_resp || 0;
+        num_act_resp = 0;
         job_responces = [];
         job_token = "";
         resp_language = "";
@@ -37,7 +37,7 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
         
         window.console.log("Re-setting the internal variables" +
                            ", is_working: " + is_working +
-                           ", expected_responces: " + expected_responces);
+                           ", num_exp_resp: " + num_exp_resp);
     }
     
     //Re-set the local variables
@@ -76,7 +76,8 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
         //Decalare local variables
         var response;
         
-        window.console.log("Processing processor response number: " + idx);
+        window.console.log("Processing " + pre_post_txt + "-processor " +
+                           "response number: " + idx);
         
         //Get the current reponse
         response = responses[idx];
@@ -86,13 +87,18 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
             //Append the result text
             result_text += response.text;
         } else {
-            window.console.error("The text field is not present in the processor response!");
+            window.console.error("The text field is not present in the " +
+                                 pre_post_txt + "-processor response!");
         }
         
         //In case this is the last response that has to be processed
         if (idx === (responses.length - 1)) {
             //Visualize the current stage text
             visualize_text(result_text);
+            
+            //Log the success
+            common_mdl.logger_mdl.success("Processed " + responses.length + " " +
+                                          pre_post_txt + "-processor responses.");
             
             //Call the next module
             module.notify_processor_ready_fn(result_text, job_token, resp_language);
@@ -115,28 +121,28 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
             //Store the new job token
             job_token = resp_obj.job_token;
             //Store the number of expected responses
-            expected_responces = resp_obj.num_chs;
+            num_exp_resp = resp_obj.num_chs;
             //Store the language
             resp_language = resp_obj.lang;
             //Log the data
             window.console.log("Got a new processor response job token: " + job_token +
-                               ", expected_responces: " + expected_responces +
+                               ", num_exp_resp: " + num_exp_resp +
                                ", resp_language: " + resp_language);
         }
-
+        
         //Place the token into the response array
         job_responces[resp_obj.ch_idx] = resp_obj;
 
         //Increase the number of received responses
-        received_responces += 1;
+        num_act_resp += 1;
 
         //Update the progress bar
-        module.set_response_pb_fn(received_responces, expected_responces);
+        module.set_response_pb_fn(num_act_resp, num_exp_resp);
 
         //Check if all the responces have been received, then process
-        if (received_responces === expected_responces) {
-            common_mdl.logger_mdl.success("Received all of the " + expected_responces +
-                                      " processor responses, language: " + resp_language);
+        if (num_act_resp === num_exp_resp) {
+            common_mdl.logger_mdl.success("Received " + num_exp_resp + " processor" +
+                                      " responses, language: " + resp_language);
 
             //Combine the responces into on text and call the subsequent
             module.process_responses_fn(job_responces, process_response_data);
@@ -156,8 +162,8 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
             if ((resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_PRE_PROC_JOB_RESP)
                     || (resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_POST_PROC_JOB_RESP)) {
                 //Update the visual status
-                var job_id = resp_obj.job_token + "/" + resp_obj.ch_idx;
-                common_mdl.visualize_sc_fn(job_id, resp_obj.stat_code, resp_obj.stat_msg);
+                var job_id = resp_obj.job_token + "/" + resp_obj.ch_idx + "/" + resp_obj.num_chs;
+                window.console.info(job_id, resp_obj.stat_code, resp_obj.stat_msg);
                 
                 //Check on the error status!
                 if (resp_obj.stat_code === common_mdl.STATUS_CODE_ENUM.RESULT_OK) {

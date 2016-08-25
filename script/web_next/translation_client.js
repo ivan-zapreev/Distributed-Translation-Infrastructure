@@ -20,7 +20,7 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
     
     var SUPPORTED_LANG_REQ, TRAN_JOB_REQ_BASE, prev_job_req_id, is_working,
         sent_trans_req, received_trans_resp, job_responces, job_token,
-        result_text, target_status, target_text, target_html, module;
+        result_text, target_text, target_html, module;
 
     /**
      * Allows to re-set the client constants
@@ -34,7 +34,6 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
         job_token = "";
         result_text = "";
         prev_job_req_id = UNDEFINED_JOB_ID;
-        target_status = "";
         target_text = "";
         target_html = "";
         
@@ -51,7 +50,7 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
      */
     function process_response_data(responses, idx) {
         //Declare the variables to be used
-        var response, j, target, status;
+        var response, j, target, status, escaped_text, escaped_status;
         
         window.console.log("Processing translation response number: " + idx);
         
@@ -103,13 +102,21 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
                     }
                 }
 
+                //Escape the text and status before adding them to the span
+                escaped_text = common_mdl.escape_html_fn(target.trans_text);
+                escaped_status = common_mdl.escape_html_fn(status);
+                
                 //Add the translation element to the panel
                 target_html += "<span class='target_sent_tag' title='' data-original-title='" +
-                    common_mdl.escape_html_fn(status) + "' data-toggle='tooltip' data-placement='auto'>" +
-                    common_mdl.escape_html_fn(target.trans_text) + "</span>";
-                //Store the target translation text and status for logging
+                     escaped_status + "' data-toggle='tooltip' data-placement='auto'>" +
+                     escaped_text + "</span>";
+                
+                //Store the target translation text as is, no need to escape.
                 target_text += target.trans_text + "\n";
-                target_status += status + "\n";
+                
+                //Log the status of the translated sentence, no need to escape
+                common_mdl.logger_mdl.info("Job id: " + response.job_id + ", sentence #" +
+                                           (j + 1) + " translation info: " + status);
             }
         } else {
             window.console.warn("The target_data field is not present in the translation response!");
@@ -127,9 +134,6 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
             
             //Send the resulting text to post-processing
             post_serv_mdl.process_fn(target_text, job_token);
-            
-            //Re-set the module
-            re_set_client();
         }
     }
     
@@ -148,12 +152,9 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
         if (sent_trans_req === received_trans_resp) {
             common_mdl.logger_mdl.success("Received all of the " + sent_trans_req +
                                " translation server responses");
-
+            
             //Process the translation responses
             module.process_responses_fn(job_responces, process_response_data);
-            
-            //Re-set the client
-            re_set_client();
         }
     }
 
@@ -276,7 +277,7 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
     /**
      * Allows to translate the given source text from the given source language
      * @param source_text {String} the source text to translate
-     * @param job_token {String} the pre-processed source text to translate
+     * @param token {String} the job token issues by the pre-processor
      * @param source_lang {String} the source language name
      */
     function do_translate(source_text, token, source_lang) {
@@ -287,8 +288,12 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
             //Declare the local variables
             var sent_array, begin_idx, end_idx, target_lang, is_trans_info;
             
+            //Re-set the module
+            re_set_client();
+            
             //Store the job token
             job_token = token;
+            window.console.log("Setting the job token: " + job_token);
             
             //Get the target language
             target_lang = common_mdl.lang_mdl.get_sel_target_lang_fn();

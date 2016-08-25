@@ -42,10 +42,10 @@ function create_logger(log_panel, lp_dang, lp_warn, lp_info, lp_succ, get_date_f
 
         //Increment the number of messages of the given sort
         change_badge_value(badge, false, +1);
-
+        
         log_panel.append(
-            "<div class='alert alert-" + type + " fade in'>" + get_date_fn() +
-                " | <strong>" + type + ":</strong> " + escape_html_fn(message) + "</div>"
+            "<div class='log_msg alert alert-" + type + " fade in'>" + get_date_fn() +
+                ", <strong>" + type + ":</strong> " + escape_html_fn(message) + "</div>"
         );
 
         //Scroll down to see let one see the result

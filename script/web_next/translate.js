@@ -186,7 +186,10 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
         translator.dom.progress_image.attr('src', './img/globe32.png');
         //Check if there was an error
         if (is_error) {
+            //Log the message and notify the user
             translator.logger_mdl.danger(message, true);
+            //The new translation is needed, as there as an error
+            needs_new_trans();
         }
     }
     
@@ -283,6 +286,11 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
                     
                     //Re-set the translation status
                     translator.common_mdl.remove_cs_visual_fn();
+                    
+                    //Re-set the progress bars of the modules
+                    translator.pre_serv_mdl.init_req_resp_pb_fn();
+                    translator.trans_serv_mdl.init_req_resp_pb_fn();
+                    translator.post_serv_mdl.init_req_resp_pb_fn();
                     
                     //Start the process
                     process_start();

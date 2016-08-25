@@ -13,6 +13,7 @@ function create_post_proc_client(module) {
      */
     function process(target_text, job_token) {
         window.console.log("Starting post-processing text: " + target_text);
+        window.console.log("The post-processing text job_token is: " + job_token);
 
         //Pre-declare variables
         var target_lang, job_req_base;
