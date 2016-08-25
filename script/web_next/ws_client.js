@@ -54,19 +54,19 @@ function create_ws_client(common_mdl, url_input, init_url,
     url_input.val(init_url);
 
     /**
-     * Allows to process a large array in an asynchronous way
+     * Allows to process large data in an asynchronous way
      * @param {integer} min_idx the minimum index value
-     * @param {array} array of data to process 
+     * @param {data} the data to process , must have the length property
      * @param {function} the call back function to be called per array element
      * @param {time} the time allowed to be busy per batch, optional
      * @param {context} context the context, optional
      */
-    function process_responses_async(array, fn, maxTimePerChunk, context) {
+    function process_data_async(data, fn, maxTimePerChunk, context) {
         context = context || window;
         maxTimePerChunk = maxTimePerChunk || 200;
         var index = 0;
 
-        common_mdl.logger_mdl.info("Start processing " + array.length + " response(s)");
+        common_mdl.logger_mdl.info("Start processing " + data.length + " elements");
 
         function now() {
             var time = new Date().getTime();
@@ -76,12 +76,12 @@ function create_ws_client(common_mdl, url_input, init_url,
 
         function doChunk() {
             var startTime = now();
-            while (index < array.length && (now() - startTime) <= maxTimePerChunk) {
-                // callback called with args (value, index, array)
-                fn.call(context, array, index);
+            while (index < data.length && (now() - startTime) <= maxTimePerChunk) {
+                // callback called with args (value, index, data)
+                fn.call(context, data, index);
                 index += 1;
             }
-            if (index < array.length) {
+            if (index < data.length) {
                 // set Timeout for async iteration
                 setTimeout(doChunk, 1);
             }
@@ -379,7 +379,7 @@ function create_ws_client(common_mdl, url_input, init_url,
         return ((client.ws !== null) && (client.ws.readyState === window.WebSocket.OPEN));
     };
     client.send_request_fn = send_request_to_server;
-    client.process_responses_fn = process_responses_async;
+    client.process_data_async_fn = process_data_async;
     
     //Re-set progress bars
     initialize_progress_bars();

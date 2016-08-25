@@ -15,8 +15,9 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
                             pre_post_txt) {
     "use strict";
     
-    var is_working, num_exp_resp, num_act_resp, job_responces,
-        job_token, resp_language, result_text, module;
+    var is_working, num_exp_resp, num_act_resp,
+        job_responces, job_token, resp_language,
+        result_text, par_array, target_html, module;
     
     //Default initialize the variables
     is_working = false;
@@ -34,6 +35,8 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
         job_token = "";
         resp_language = "";
         result_text = "";
+        par_array = [];
+        target_html = "";
         
         window.console.log("Re-setting the internal variables" +
                            ", is_working: " + is_working +
@@ -47,24 +50,35 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
      * This function allows to visualize the resulting text into the to_text_span
      * @param result_text {String} the text to visualize
      */
-    function visualize_text(result_text) {
-        //Declare the variables
-        var j, target_html, par_array;
+    function visualize_and_proceed(par_array, idx) {
+        //Add the paragraph as an html span
+        target_html += "<span class='target_sent_tag' title='' data-original-title='" +
+            pre_post_txt + "-processed text' data-toggle='tooltip' data-placement='auto'>" + common_mdl.escape_html_fn(par_array[idx]) + "</span>";
         
-        //Split the text into paragraphs
-        par_array = result_text.split('\n');
+        //Check if this is the last element
+        if (idx === (par_array.length - 1)) {
+            //Set the data into the html
+            common_mdl.to_text_span.html(target_html);
+            //Enable tool-tipls
+            window.$('[data-toggle="tooltip"]').tooltip();
 
-        //Create the html
-        target_html = "";
-        for (j = 0; j < par_array.length; j += 1) {
-            target_html += "<span class='target_sent_tag' title='' data-original-title='" +
-                pre_post_txt + "-processed text' data-toggle='tooltip' data-placement='auto'>" + common_mdl.escape_html_fn(par_array[j]) + "</span>";
+            //Log the success
+            common_mdl.logger_mdl.success("Processed " + job_responces.length + " " +
+                                          pre_post_txt + "-processor responses.");
+            
+            //Set the working flag to false
+            is_working = false;
+            
+            //Call the next module
+            module.notify_processor_ready_fn(result_text, job_token, resp_language);
+
+            //Now we have finished all the work, can get to 100%
+            module.set_response_pb_fn(num_exp_resp, num_exp_resp);
+            
+            //Forget the result text and html
+            result_text = "";
+            target_html = "";
         }
-        
-        //Set the data into the html
-        common_mdl.to_text_span.html(target_html);
-        //Enable tool-tipls
-        window.$('[data-toggle="tooltip"]').tooltip();
     }
 
     /**
@@ -93,21 +107,11 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
         
         //In case this is the last response that has to be processed
         if (idx === (responses.length - 1)) {
-            //Visualize the current stage text
-            visualize_text(result_text);
+            //Split the text into paragraphs
+            par_array = result_text.split('\n');
             
-            //Log the success
-            common_mdl.logger_mdl.success("Processed " + responses.length + " " +
-                                          pre_post_txt + "-processor responses.");
-            
-            //Call the next module
-            module.notify_processor_ready_fn(result_text, job_token, resp_language);
-            
-            //Forget the result text
-            result_text = "";
-            
-            //Set the working flag to false
-            is_working = false;
+            //Visualize text and proceed to the next phase
+            module.process_data_async_fn(par_array, visualize_and_proceed);
         }
     }
     
@@ -137,8 +141,8 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
         //Increase the number of received responses
         num_act_resp += 1;
 
-        //Update the progress bar
-        module.set_response_pb_fn(num_act_resp, num_exp_resp);
+        //Update the progress bar. Note that the last 10% will be for post processing the responses
+        module.set_response_pb_fn(num_act_resp, num_exp_resp * 1.1);
 
         //Check if all the responces have been received, then process
         if (num_act_resp === num_exp_resp) {
@@ -147,7 +151,7 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
                                           " responses, language: " + resp_language);
 
             //Combine the responces into on text and call the subsequent
-            module.process_responses_fn(job_responces, process_response_data);
+            module.process_data_async_fn(job_responces, process_response_data);
         }
     }
     
@@ -165,7 +169,7 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
                     || (resp_obj.msg_type === module.MSG_TYPE_ENUM.MESSAGE_POST_PROC_JOB_RESP)) {
                 //Update the visual status
                 var job_id = resp_obj.job_token + "/" + resp_obj.ch_idx + "/" + resp_obj.num_chs;
-                window.console.info(job_id, resp_obj.stat_code, resp_obj.stat_msg);
+                common_mdl.visualize_sc_fn(job_id, resp_obj.stat_code, resp_obj.stat_msg);
                 
                 //Check on the error status!
                 if (resp_obj.stat_code === common_mdl.STATUS_CODE_ENUM.RESULT_OK) {
@@ -236,7 +240,7 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
      */
     function send_requests(job_req_base, text) {
         //Declare variables
-        var ch_idx, num_chunks, job_req, log_ch_idx;
+        var num_chunks, data;
         
         //Compute the number of chunks we will split the text into
         num_chunks = Math.ceil(text.length / MESSAGE_MAX_CHAR_LEN);
@@ -254,8 +258,11 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
         //Re-initialize the progress bars
         module.init_req_resp_pb_fn();
         
-        //Send the chunks
-        for (ch_idx = 0; ch_idx < num_chunks; ch_idx += 1) {
+        /**
+         * The function to send the processor requests to the server
+         */
+        function send_processor_requests(data, ch_idx) {
+            var log_ch_idx;
             //Fill in the chunk index and the text to send
             job_req_base.ch_idx = ch_idx;
             job_req_base.text = text.substr(ch_idx * MESSAGE_MAX_CHAR_LEN, MESSAGE_MAX_CHAR_LEN);
@@ -265,15 +272,26 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
             log_ch_idx = (ch_idx + 1);
             window.console.log("Sending processor request chunk: " + log_ch_idx +
                               ", text length: " + job_req_base.text.length);
-            module.set_request_pb_fn(log_ch_idx, num_chunks);
+            module.set_request_pb_fn(log_ch_idx, data.length);
+            
+            //Report the success after the last one is sent
+            if (log_ch_idx === data.length) {
+                //Logthe success message
+                common_mdl.logger_mdl.success("Sent out " + data.length + " " +
+                                              pre_post_txt + "-processor requests");
+            }
         }
+
+        //Process the input text, split it into pieces and send to the server
+        data = {
+            length : num_chunks
+        };
+        module.process_data_async_fn(data, send_processor_requests);
         
         //Make the response progress bar note visible
+        //We add one so that we are not in 100% before
+        //everything is done!
         module.set_response_pb_fn(0, num_chunks);
-        
-        //Logthe success message
-        common_mdl.logger_mdl.success("Sent out " + num_chunks + " " +
-                                      pre_post_txt + "-processor requests");
     }
     
     //Define some exported elements

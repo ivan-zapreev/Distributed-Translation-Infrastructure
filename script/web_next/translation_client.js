@@ -134,6 +134,9 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
             
             //Send the resulting text to post-processing
             post_serv_mdl.process_fn(target_text, job_token);
+            
+            //Now we have finished all the work, can get to 100%
+            module.set_response_pb_fn(sent_trans_req, sent_trans_req);
         }
     }
     
@@ -146,7 +149,8 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
         window.console.log("A new response, remaining #jobs: " + (sent_trans_req - received_trans_resp));
 
         //Set the current value for the responses, the maximum is equal to the number of requests
-        module.set_response_pb_fn(received_trans_resp, sent_trans_req);
+        //The additional 10% will be for the post-processing of the responses
+        module.set_response_pb_fn(received_trans_resp, sent_trans_req * 1.1);
 
         //If all the responses are received
         if (sent_trans_req === received_trans_resp) {
@@ -154,7 +158,7 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
                                " translation responses");
             
             //Process the translation responses
-            module.process_responses_fn(job_responces, process_response_data);
+            module.process_data_async_fn(job_responces, process_response_data);
         }
     }
 
@@ -275,6 +279,72 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
     }
     
     /**
+     * Asynchronously sends the translation requests to the server
+     * @param source_text {String} the source text to translate
+     * @param source_lang {String} the source language name
+     */
+    function send_trans_requests(source_text, source_lang) {
+        //Declare the local variables
+        var sent_array, num_jobs, target_lang, is_trans_info, data;
+
+        //Get the target language
+        target_lang = common_mdl.lang_mdl.get_sel_target_lang_fn();
+
+        //Get the translation info flag from thecheckox!
+        is_trans_info = trans_info_cb.is(':checked');
+
+        sent_array = source_text.split('\n');
+        window.console.log("Send the translation requests for " + sent_array.length + " sentences");
+
+        //Compute the number of jobs we will split the text into
+        num_jobs = Math.ceil(sent_array.length / MAX_NUM_SENTENCES_PER_JOB);
+
+        //Set the translating flag
+        is_working = true;
+
+        //Re-initialize the progress bars
+        module.init_req_resp_pb_fn();
+
+        /**
+         * The function to send the translation requests to the server
+         */
+        function send_translation_requests(data, job_idx) {
+            //Declare the sentence begin end index variables
+            var begin_idx, end_idx;
+            
+            //Compute the sentence begin index
+            begin_idx = job_idx * MAX_NUM_SENTENCES_PER_JOB;
+            
+            //Compute the sentence end index
+            end_idx = window.Math.min(begin_idx + MAX_NUM_SENTENCES_PER_JOB, sent_array.length);
+            
+            //Log the sentence index interval
+            window.console.log("Sending sentences [" + begin_idx + "," + end_idx + ")");
+            
+            //Send the translation request
+            send_translation_request(source_lang, target_lang, is_trans_info,
+                                     sent_array.slice(begin_idx, end_idx));
+            
+            //Update the progress bar
+            module.set_request_pb_fn((job_idx + 1), data.length);
+            
+            //If this is the last job that was send then report a success
+            if (job_idx === (data.lenght - 1)) {
+                common_mdl.logger_mdl.success("Sent out " + data.lenght + " translation requests");
+            }
+        }
+
+        //Visualize text and proceed to the next phase
+        data = {
+            length : num_jobs
+        };
+        module.process_data_async_fn(data, send_translation_requests);
+
+        //Make the progress note visible
+        module.set_response_pb_fn(0, sent_array.length);
+    }
+    
+    /**
      * Allows to translate the given source text from the given source language
      * @param source_text {String} the source text to translate
      * @param token {String} the job token issues by the pre-processor
@@ -285,9 +355,6 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
         if (module.is_connected_fn()) {
             window.console.log("The translation server is connected!");
             
-            //Declare the local variables
-            var sent_array, begin_idx, end_idx, target_lang, is_trans_info;
-            
             //Re-set the module
             re_set_client();
             
@@ -295,35 +362,8 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
             job_token = token;
             window.console.log("Setting the job token: " + job_token);
             
-            //Get the target language
-            target_lang = common_mdl.lang_mdl.get_sel_target_lang_fn();
-
-            //Get the translation info flag from thecheckox!
-            is_trans_info = trans_info_cb.is(':checked');
-
-            sent_array = source_text.split('\n');
-            window.console.log("Send the translation requests for " + sent_array.length + " sentences");
-
-            //Set the translating flag
-            is_working = true;
-
-            //Re-initialize the progress bars
-            module.init_req_resp_pb_fn();
-
-            begin_idx = 0;
-            while (begin_idx < sent_array.length) {
-                //Compute the end index
-                end_idx = window.Math.min(begin_idx + MAX_NUM_SENTENCES_PER_JOB, sent_array.length);
-                window.console.log("Sending sentences [" + begin_idx + "," + end_idx + ")");
-                send_translation_request(source_lang, target_lang, is_trans_info, sent_array.slice(begin_idx, end_idx));
-                begin_idx = end_idx;
-                module.set_request_pb_fn(end_idx, sent_array.length);
-            }
-
-            //Make the progress note visible
-            module.set_response_pb_fn(0, 1);
-
-            common_mdl.logger_mdl.success("Sent out " + sent_trans_req + " translation requests");
+            //Send the requests
+            send_trans_requests(source_text, source_lang);
         } else {
             common_mdl.process_stop_fn(true, "The translation server is not connected!");
         }
