@@ -150,8 +150,8 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
 
         //If all the responses are received
         if (sent_trans_req === received_trans_resp) {
-            common_mdl.logger_mdl.success("Received all of the " + sent_trans_req +
-                               " translation server responses");
+            common_mdl.logger_mdl.success("Received, expected " + sent_trans_req +
+                               " translation responses");
             
             //Process the translation responses
             module.process_responses_fn(job_responces, process_response_data);
