@@ -168,8 +168,10 @@ inline void process_feature_to_id_mappings(server_parameters & params, const boo
  * @param params the parameters to be initialized
  */
 static void parse_confiog_file(const string & config_file_name, server_parameters & params) {
-    LOG_USAGE << "Loading the server configuration option from: " << config_file_name << END_LOG;
+    LOG_USAGE << "Loading the server configuration options from: " << config_file_name << END_LOG;
     INI<> ini(config_file_name, false);
+    
+    LOG_DEBUG << "Start parsing the configuration options from: " << config_file_name << END_LOG;
     //Parse the configuration file
     if (ini.parse()) {
         LOG_INFO << "The configuration file has been parsed!" << END_LOG;
