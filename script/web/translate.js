@@ -72,6 +72,8 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
     translator.dom.to_lang_sel = window.$("#to_lang_sel");
     translator.dom.input_file_select = window.$("#input_file_select");
     translator.dom.progress_image = window.$("#progress");
+    //Enable tool-tipls
+    window.$('[data-toggle="tooltip"]').tooltip();
 
     //Declare the translation status variable that
     //will store the comulative translation status
