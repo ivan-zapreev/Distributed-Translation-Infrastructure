@@ -27,7 +27,7 @@ namespace uva {
             namespace common {
 
                 //Declare the program version string
-#define PROGRAM_VERSION_STR "1.3"
+#define PROGRAM_VERSION_STR "1.4"
 
                 // Check windows
 #if _WIN32 || _WIN64
