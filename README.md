@@ -902,6 +902,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **13.06.2016** - Added information on the `-c` option of the client. Introduced the server tuning mode for lattice generation. Updated description of model features and lambda's thereof. Prepared for the release 1.1.
 * **22.07.2016** - Added information about the Web UI client and the Load Balancer. Updated the document with small changes in the existed text.
 * **05.08.2016** - Added the description of the *bpbd-processor* and related script. Made the corresponding changes in the sections on the console client.
+* **26.08.2016** - Updating the Web UI information, the interface was extended with the pre and post processor servers.
 
 ##Appendix Tests
 
