@@ -162,6 +162,15 @@ namespace uva {
                             delete m_trans_resp;
                         }
                     }
+                    
+                    /**
+                     * Allows to get the task priority
+                     * @return the priority of this task
+                     */
+                    inline int32_t get_priority() {
+                        //ToDo: Implement
+                        return 0;
+                    }
 
                     /**
                      * Allows to retrieve the session id

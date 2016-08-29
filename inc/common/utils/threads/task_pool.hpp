@@ -70,9 +70,8 @@ namespace uva {
                      * @param right the task on the right of the less operator
                      * @return true if the priority of the left task is lower than that of the right task, otherwise false.
                      */
-                    bool operator()(pool_task_ptr left, pool_task_ptr right) const {
-                        //ToDo: Implement
-                        return true;
+                    inline bool operator()(pool_task_ptr left, pool_task_ptr right) const {
+                        return left->get_priority() < right->get_priority();
                     }
                 };
 
