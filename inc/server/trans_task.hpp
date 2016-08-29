@@ -75,11 +75,13 @@ namespace uva {
                      * The basic constructor allowing to initialize the main class constants
                      * @param session_id the session id of the task, is used for logging
                      * @param job_id the job id of the task, is used for logging
+                     * @param priority the translation task priority
                      * @param source_text the sentence to be translated
                      */
                     trans_task(const session_id_type session_id, const job_id_type job_id,
-                            const string & source_text, done_task_notifier notify_task_done_func)
-                    : m_is_stop(false), m_session_id(session_id), m_job_id(job_id),
+                            const int32_t priority, const string & source_text,
+                            done_task_notifier notify_task_done_func)
+                    : m_is_stop(false), m_session_id(session_id), m_job_id(job_id), m_priority(priority),
                     m_task_id(m_id_mgr.get_next_id()), m_status_code(status_code::RESULT_UNDEFINED),
                     m_status_msg(""), m_source_text(source_text),
                     m_notify_task_done_func(notify_task_done_func), m_target_text(""),
@@ -158,7 +160,7 @@ namespace uva {
                                 dump_search_lattice(de_params);
                             }
 #endif
-                            
+
                         }
 
                         LOG_DEBUG1 << "The task " << m_task_id << " translation is done, notifying!" << END_LOG;
@@ -168,14 +170,13 @@ namespace uva {
 
                         LOG_DEBUG1 << "The task " << m_task_id << " translation is done!" << END_LOG;
                     }
-                    
+
                     /**
                      * Allows to get the task priority
                      * @return the priority of this task
                      */
                     inline int32_t get_priority() const {
-                        //ToDo: Implement
-                        return 0;
+                        return m_priority;
                     }
 
                     /**
@@ -325,6 +326,9 @@ namespace uva {
                     //Stores the translation task job id, is needed for logging
                     const job_id_type m_job_id;
 
+                    //Stores the translation task priority
+                    const int32_t m_priority;
+
                     //Stores the translation task id
                     const task_id_type m_task_id;
 
@@ -354,7 +358,7 @@ namespace uva {
 
                     //Stores the static instance of the id manager
                     static id_manager<task_id_type> m_id_mgr;
-                    
+
                     friend ostream & operator<<(ostream & stream, const trans_task & taks);
                 };
 

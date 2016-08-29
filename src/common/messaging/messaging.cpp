@@ -50,6 +50,7 @@ namespace uva {
                     const char * response_msg::STAT_MSG_FIELD_NAME = "stat_msg";
 
                     const char * trans_job_req::JOB_ID_FIELD_NAME = "job_id";
+                    const char * trans_job_req::PRIORITY_NAME = "priority";
                     const char * trans_job_req::SOURCE_LANG_FIELD_NAME = "source_lang";
                     const char * trans_job_req::TARGET_LANG_FIELD_NAME = "target_lang";
                     const char * trans_job_req::IS_TRANS_INFO_FIELD_NAME = "is_trans_info";

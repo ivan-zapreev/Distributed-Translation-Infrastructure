@@ -41,6 +41,8 @@ namespace uva {
                     public:
                         //Stores the job id attribute name
                         static const char * JOB_ID_FIELD_NAME;
+                        //Stores the priority name
+                        static const char * PRIORITY_NAME;
                         //Stores the source language attribute name
                         static const char * SOURCE_LANG_FIELD_NAME;
                         //Stores the target language attribute name

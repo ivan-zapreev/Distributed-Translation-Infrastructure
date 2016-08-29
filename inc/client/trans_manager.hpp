@@ -324,8 +324,9 @@ namespace uva {
                                 trans_job_ptr data = new trans_job();
 
                                 //Create the translation job request 
-                                data->m_request = new trans_job_req_out(job_id, m_params.m_source_lang,
-                                        source_text, m_params.m_target_lang, m_params.m_is_trans_info);
+                                data->m_request = new trans_job_req_out(job_id, m_params.m_priority,
+                                        m_params.m_source_lang, source_text, m_params.m_target_lang,
+                                        m_params.m_is_trans_info);
                                 //Store the number of sentences in the translation request
                                 data->m_num_sentences = num_read;
                                 //Mark the job sending as good in the administration
@@ -406,9 +407,9 @@ namespace uva {
                         try {
                             //The job response is received but it can still be fully or partially canceled or be an error
                             const status_code code = resp->get_status_code();
-                            
+
                             //Log the error to the screen
-                            if(code == status_code::RESULT_ERROR) {
+                            if (code == status_code::RESULT_ERROR) {
                                 LOG_ERROR << resp->get_status_msg() << END_LOG;
                             }
 

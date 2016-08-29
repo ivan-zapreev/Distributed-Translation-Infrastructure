@@ -78,6 +78,15 @@ namespace uva {
                             Document & json = m_inc_msg->get_json();
                             json[JOB_ID_FIELD_NAME] = job_id;
                         }
+                        
+                        /**
+                         * Allows to get the translation job priority
+                         * @return the translation job priority
+                         */
+                        inline int32_t get_priority() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return json[PRIORITY_NAME].GetInt();
+                        }
 
                         /**
                          * Allows to get the translation job source language

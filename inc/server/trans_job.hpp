@@ -91,11 +91,14 @@ namespace uva {
 
                         //Get the text to be translated
                         const Value & source_text = trans_req.get_source_text();
+                        
+                        //Obtain the translation job priority
+                        const int32_t priority = trans_req.get_priority();
 
                         //Read the text line by line, each line must be one sentence
                         //to translate. For each read line create a translation task.
                         for (auto iter = source_text.Begin(); iter != source_text.End(); ++iter) {
-                            m_tasks.push_back(new trans_task(m_session_id, m_job_id,
+                            m_tasks.push_back(new trans_task(m_session_id, m_job_id, priority,
                                     iter->GetString(), bind(&trans_job::notify_task_done, this, _1)));
                         }
                     }

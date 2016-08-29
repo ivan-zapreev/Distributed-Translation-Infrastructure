@@ -164,12 +164,11 @@ namespace uva {
                     }
                     
                     /**
-                     * Allows to get the task priority
-                     * @return the priority of this task
+                     * Allows to get the job priority as specified in the translation job request
+                     * @return the priority of this job
                      */
                     inline int32_t get_priority() const {
-                        //ToDo: Implement
-                        return 0;
+                        return m_trans_req->get_priority();
                     }
 
                     /**

@@ -50,16 +50,19 @@ namespace uva {
                          * translation job id, the translation text and source
                          * and target language strings.
                          * @param job_id the translation job id
+                         * @param priority the translation job priority
                          * @param source_lang the source language string
                          * @param source_text the text in the source language to translate
                          * @param target_lang the target language string
                          * @param is_trans_info true if the client should requests the translation info from the server
                          */
-                        trans_job_req_out(const job_id_type job_id, const string & source_lang,
+                        trans_job_req_out(const job_id_type job_id, const int32_t priority, const string & source_lang,
                                 vector<string> & source_text, const string & target_lang, const bool is_trans_info)
                         : outgoing_msg(msg_type::MESSAGE_TRANS_JOB_REQ), trans_job_req(), m_job_id(job_id) {
                             m_writer.String(JOB_ID_FIELD_NAME);
                             m_writer.Uint64(job_id);
+                            m_writer.String(PRIORITY_NAME);
+                            m_writer.Int(priority);
                             m_writer.String(SOURCE_LANG_FIELD_NAME);
                             m_writer.String(source_lang.c_str());
                             m_writer.String(TARGET_LANG_FIELD_NAME);
