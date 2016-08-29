@@ -106,8 +106,8 @@ namespace uva {
                                 return;
                             } else {
                                 //There is a task to be processed, retrieve it
-                                task = m_pool.m_tasks.front();
-                                m_pool.m_tasks.pop_front();
+                                task = m_pool.m_tasks.top();
+                                m_pool.m_tasks.pop();
                             }
                         }
 

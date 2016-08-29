@@ -26,6 +26,7 @@
 #ifndef TASK_POOL_HPP
 #define TASK_POOL_HPP
 
+#include <queue>
 #include <deque>
 #include <vector>
 #include <functional>
@@ -57,9 +58,26 @@ namespace uva {
                 //Typedef the pointer to the pool task
                 typedef pool_task * pool_task_ptr;
 
+                /**
+                 * This structure encapsulates the priority comparison operator
+                 */
+                struct less_task_priority {
+
+                    /**
+                     * Allows to check whether the left task has lower priority than the right one.
+                     * I.e. this method implements the predicate (left < right)
+                     * @param left the task on the left of the less operator
+                     * @param right the task on the right of the less operator
+                     * @return true if the priority of the left task is lower than that of the right task, otherwise false.
+                     */
+                    bool operator()(pool_task_ptr left, pool_task_ptr right) const {
+                        //ToDo: Implement
+                        return true;
+                    }
+                };
+
                 //Define the tasks queue type and its iterator
-                typedef deque<pool_task_ptr> tasks_queue_type;
-                typedef typename tasks_queue_type::iterator tasks_queue_iter_type;
+                typedef priority_queue<pool_task_ptr, deque<pool_task_ptr>, less_task_priority > tasks_queue_type;
 
                 //Define the thread list type
                 typedef vector<thread> threads_list_type;
@@ -211,7 +229,7 @@ namespace uva {
                         LOG_DEBUG << "Pushing the task " << *task << " to the list of translation tasks." << END_LOG;
 
                         //Add the translation task to the queue
-                        m_tasks.push_back(task);
+                        m_tasks.push(task);
                     }
 
                     LOG_DEBUG << "Notifying threads that there is a translation task present!" << END_LOG;
