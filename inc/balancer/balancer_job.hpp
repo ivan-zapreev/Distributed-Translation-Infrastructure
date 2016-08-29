@@ -123,7 +123,7 @@ namespace uva {
                      */
                     enum state {
                         UNDEFINED_STATE = 0, //When created the state is not initialized - undefined
-                        ACTIVE_STATE = 1, //The state is active, i.e. the job is not canceled an there was not failure
+                        ACTIVE_STATE = 1, //The state is active, i.e. the job is not canceled and there was no failure
                         CANCELED_STATE = 5, //The job is canceled, due to a client session disconnect
                         FAILED_STATE = 6 //The job is failed, due to a translator's adapter disconnect
                     };
@@ -162,7 +162,7 @@ namespace uva {
                             delete m_trans_resp;
                         }
                     }
-                    
+
                     /**
                      * Allows to get the job priority as specified in the translation job request
                      * @return the priority of this job
@@ -349,11 +349,16 @@ namespace uva {
                                 }
                                 break;
                             }
+                                //The reply is already sent to the client
+                            case phase::DONE_PHASE:
+                            {
+                                //This can happen, e.g. if we are too slow deleting the finished
+                                //job the reply is sent but the adapter disconnected right after that.
+                                break;
+                            }
                                 //Waiting when the request is sent to the translator,
                                 //can't not fail here, the adapter is not yet chosen.
                             case phase::REQUEST_PHASE:
-                                //The reply is already sent to the client, nothing to be done
-                            case phase::DONE_PHASE:
                                 //The state is undefined, this should not be happening
                             case phase::UNDEFINED_PHASE:
                             default:

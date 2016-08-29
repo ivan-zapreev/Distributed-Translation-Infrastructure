@@ -178,17 +178,18 @@ namespace uva {
                     inline void reconnect() {
                         recursive_guard guard(m_lock_con);
 
-                        LOG_DEBUG << "Re-connecting the server adapter for: " << m_params->m_name << END_LOG;
-
                         //Check if the adapter needs re-connection
                         if (this->is_enabled() && this->is_disconnected()) {
+                            LOG_DEBUG << "Re-connecting the server adapter for: " << m_params->m_name << END_LOG;
+
                             //Disconnect from the server and remove the client
                             remove_connection_client();
+                            
                             //Create a new connection client;
                             create_connection_client_connect();
+                            
+                            LOG_DEBUG << "Finished re-connecting the server adapter for " << m_params->m_name << END_LOG;
                         }
-
-                        LOG_DEBUG << "Finished re-connecting the server adapter for " << m_params->m_name << END_LOG;
                     }
 
                     /**
