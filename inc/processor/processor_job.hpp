@@ -108,7 +108,7 @@ namespace uva {
                             const string job_token, proc_req_in *req, const response_creator & resp_crt_func,
                             const session_response_sender & resp_send_func)
                     : m_is_canceled(false), m_is_file_gen(false), m_config(config), m_session_id(session_id),
-                    m_job_token(job_token), m_exp_num_chunks(req->get_num_chunks()),
+                    m_job_token(job_token), m_priority(req->get_priority()), m_exp_num_chunks(req->get_num_chunks()),
                     m_res_lang(""), m_req_tasks(NULL), m_act_num_chunks(0), m_notify_job_done_func(NULL),
                     m_resp_crt_func(resp_crt_func), m_resp_send_func(resp_send_func) {
                         LOG_DEBUG << "Creating a processor job with " << m_exp_num_chunks << " chunks" << END_LOG;
@@ -136,9 +136,8 @@ namespace uva {
                      * Allows to get the task priority
                      * @return the priority of this task
                      */
-                    inline int32_t get_priority() {
-                        //ToDo: Implement
-                        return 0;
+                    inline int32_t get_priority() const {
+                        return m_priority;
                     }
 
                     /**
@@ -657,6 +656,8 @@ namespace uva {
                     const session_id_type m_session_id;
                     //Stores the job unique identifier.
                     const string m_job_token;
+                    //Stores the job priority
+                    const int32_t m_priority;
                     //Stores the number of text pieces this job consists of
                     const uint64_t m_exp_num_chunks;
                     //Stores the resulting language string

@@ -71,6 +71,9 @@ namespace uva {
                     uint64_t m_max_sent;
                     //The minimum number of source sentences to send per translation request
                     uint64_t m_min_sent;
+                    
+                    //Stores the priority to be used for this client
+                    int32_t m_priority;
 
                     /**
                      * The basic constructor

@@ -59,7 +59,7 @@ namespace uva {
                 public:
 
                     //Declare the function that will be used to create a processor request
-                    typedef function<proc_req_out * (const string) > request_creator;
+                    typedef function<proc_req_out * (const string, const int32_t) > request_creator;
 
                     /**
                      * This is the basic constructor needed to 
@@ -70,15 +70,17 @@ namespace uva {
                      * @param lang the reference to a string thaty stores the language
                      *        is to be updated with the language coming from the server
                      * @param job_token [in/out] the job token can be updated by the server
+                     * @param priority the job priority
                      * @param req_crt_func the reference to the request creator function
                      */
                     proc_manager(const string & proc_uri, const string name,
                             stringstream & input, stringstream & output, string & lang,
-                            string & job_token, const request_creator &req_crt_func)
+                            string & job_token, const int32_t priority,
+                            const request_creator &req_crt_func)
                     : client_manager<MSG_TYPE, proc_resp_in>(proc_uri, name),
                     m_input(input), m_output(output), m_lang(lang), m_job_token(job_token),
-                    m_req_crt_func(req_crt_func), m_responses(NULL), m_act_num_req(0),
-                    m_exp_num_resp(0), m_act_num_resp(0) {
+                    m_priority(priority), m_req_crt_func(req_crt_func), m_responses(NULL),
+                    m_act_num_req(0), m_exp_num_resp(0), m_act_num_resp(0) {
                     }
 
                     /**
@@ -221,6 +223,9 @@ namespace uva {
                     //might contain a new token to set.
                     string & m_job_token;
 
+                    //Stores the priority to be used for the processor requests
+                    const int32_t m_priority;
+
                     //Stores the request creator function
                     const request_creator m_req_crt_func;
 
@@ -271,7 +276,7 @@ namespace uva {
 
                         if (!client_manager<MSG_TYPE, proc_resp_in>::is_stopping()) {
                             //Get the request message
-                            proc_req_out * req = m_req_crt_func(m_job_token);
+                            proc_req_out * req = m_req_crt_func(m_job_token, m_priority);
 
                             //Set the language
                             req->set_language(m_lang);
@@ -319,7 +324,7 @@ namespace uva {
                     pre_proc_manager(const client_parameters & params, stringstream & input,
                             stringstream & output, string & lang, string & job_token)
                     : proc_manager(params.m_pre_uri, "pre-processor", input,
-                    output, lang, job_token, &proc_req_out::get_pre_proc_req) {
+                    output, lang, job_token, params.m_priority, &proc_req_out::get_pre_proc_req) {
                     }
                 };
 
@@ -341,7 +346,7 @@ namespace uva {
                     post_proc_manager(const client_parameters & params, stringstream & input,
                             stringstream & output, string & lang, string & job_token)
                     : proc_manager(params.m_post_uri, "post-processor", input,
-                    output, lang, job_token, &proc_req_out::get_post_proc_req) {
+                    output, lang, job_token, params.m_priority, &proc_req_out::get_post_proc_req) {
                     }
                 };
             }

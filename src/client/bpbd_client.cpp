@@ -71,6 +71,7 @@ static ValueArg<string> * p_trans_uri_arg = NULL;
 static ValueArg<string> * p_post_uri_arg = NULL;
 static ValueArg<uint32_t> * p_max_sent = NULL;
 static ValueArg<uint32_t> * p_min_sent = NULL;
+static ValueArg<int32_t> * p_priority = NULL;
 static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
 static ValueArg<string> * p_debug_level_arg = NULL;
@@ -105,7 +106,7 @@ void create_arguments_parser() {
 
     //Add the the translation server ip address or name parameter - optional, by default is "localhost"
     const string def_server_uri = "ws://localhost:9002";
-    p_trans_uri_arg = new ValueArg<string>("s", "trans-server", string("The translation server ") +
+    p_trans_uri_arg = new ValueArg<string>("t", "trans-server", string("The translation server ") +
             string("URI to connect to, default is '") + def_server_uri + string("'"), false,
             def_server_uri, "server uri", *p_cmd_args);
 
@@ -120,6 +121,10 @@ void create_arguments_parser() {
     p_min_sent = new ValueArg<uint32_t>("l", "lower-size", string("The minimum number of sentences ") +
             string("to send per request, default is 100"), false, 100, "min #sentences per request", *p_cmd_args);
 
+    //Add the translation priority optional parameter
+    p_priority = new ValueArg<int32_t>("s", "seniority", string("The priority of the translation task ") +
+            string("is a 32 bit integer, the default is 0"), false, 0, "the translation priority", *p_cmd_args);
+    
     //Add the translation details switch parameter - ostring(optional, default is false
     p_trans_details_arg = new SwitchArg("c", "clues", string("Request the server to provide the ") +
             string("translation details"), *p_cmd_args, false);
@@ -144,6 +149,7 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_post_uri_arg);
     SAFE_DESTROY(p_max_sent);
     SAFE_DESTROY(p_min_sent);
+    SAFE_DESTROY(p_priority);
     SAFE_DESTROY(p_trans_details_arg);
     SAFE_DESTROY(p_debug_levels_constr);
     SAFE_DESTROY(p_debug_level_arg);
@@ -197,6 +203,9 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     params.m_max_sent = p_max_sent->getValue();
     LOG_USAGE << "Min/max sentences per translation request: '" << params.m_min_sent << "/" << params.m_max_sent << "'" << END_LOG;
 
+    params.m_priority = p_priority->getValue();
+    LOG_USAGE << "The translation request priority is: '" << params.m_priority << "'" << END_LOG;
+    
     params.m_is_trans_info = p_trans_details_arg->getValue();
     LOG_USAGE << "Translation info is " << (params.m_is_trans_info ? "ON" : "OFF") << END_LOG;
 

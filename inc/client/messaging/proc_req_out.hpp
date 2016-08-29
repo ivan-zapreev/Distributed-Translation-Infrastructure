@@ -46,19 +46,21 @@ namespace uva {
                         /**
                          * Allows to get a new instance of the processor request for the pre-processing task.
                          * @param job_token the job token string
+                         * @param priority the job priority
                          * @return a new instance of the processor request for the pre-processing task.
                          */
-                        static inline proc_req_out * get_pre_proc_req(const string & job_token) {
-                            return new proc_req_out(msg_type::MESSAGE_PRE_PROC_JOB_REQ, job_token);
+                        static inline proc_req_out * get_pre_proc_req(const string & job_token, const int32_t priority) {
+                            return new proc_req_out(msg_type::MESSAGE_PRE_PROC_JOB_REQ, job_token, priority);
                         }
 
                         /**
                          * Allows to get a new instance of the processor request for the post-processing task.
                          * @param job_token the job token string
+                         * @param priority the job priority
                          * @return a new instance of the processor request for the post-processing task.
                          */
-                        static inline proc_req_out * get_post_proc_req(const string & job_token) {
-                            return new proc_req_out(msg_type::MESSAGE_POST_PROC_JOB_REQ, job_token);
+                        static inline proc_req_out * get_post_proc_req(const string & job_token, const int32_t priority) {
+                            return new proc_req_out(msg_type::MESSAGE_POST_PROC_JOB_REQ, job_token, priority);
                         }
 
                         /**
@@ -95,6 +97,15 @@ namespace uva {
                             m_writer.String(JOB_TOKEN_FIELD_NAME);
                             m_writer.String(job_token.c_str());
                         }
+                        
+                        /**
+                         * Allows to get the job priority as specified by the client
+                         * @return the job priority as specified by the client
+                         */
+                        inline void set_priority(const int32_t priority) {
+                            m_writer.String(PRIORITY_NAME);
+                            m_writer.Int(priority);
+                        }
 
                     private:
 
@@ -103,10 +114,13 @@ namespace uva {
                          * source text md5 sum. It is made private because the first
                          * argument should not be set by the user.
                          * @param type the message type
+                         * @param job_token the job token
+                         * @param priority the job priority
                          */
-                        proc_req_out(const msg_type type, const string & job_token)
+                        proc_req_out(const msg_type type, const string & job_token, const int32_t priority)
                         : outgoing_msg(type), proc_req() {
                             set_job_uid(job_token);
+                            set_priority(priority);
                         }
                     };
                 }

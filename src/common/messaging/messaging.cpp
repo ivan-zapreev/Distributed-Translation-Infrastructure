@@ -64,6 +64,7 @@ namespace uva {
                     const char * trans_sent_data::STACK_LOAD_FIELD_NAME = "stack_load";
 
                     const char * proc_req::JOB_TOKEN_FIELD_NAME = "job_token";
+                    const char * proc_req::PRIORITY_NAME = "priority";
                     const char * proc_req::CHUNK_IDX_FIELD_NAME = "ch_idx";
                     const char * proc_req::NUM_CHUNKS_FIELD_NAME = "num_chs";
                     const char * proc_req::LANG_FIELD_NAME = "lang";

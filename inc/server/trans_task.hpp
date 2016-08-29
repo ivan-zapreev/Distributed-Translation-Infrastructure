@@ -173,7 +173,7 @@ namespace uva {
                      * Allows to get the task priority
                      * @return the priority of this task
                      */
-                    inline int32_t get_priority() {
+                    inline int32_t get_priority() const {
                         //ToDo: Implement
                         return 0;
                     }

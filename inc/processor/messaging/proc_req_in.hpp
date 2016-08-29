@@ -68,6 +68,15 @@ namespace uva {
                             const Document & json = m_inc_msg->get_json();
                             return json[JOB_TOKEN_FIELD_NAME].GetString();
                         }
+                        
+                        /**
+                         * Allows to get the job priority as specified by the client
+                         * @return the job priority as specified by the client
+                         */
+                        inline int32_t get_priority() const {
+                            const Document & json = m_inc_msg->get_json();
+                            return json[PRIORITY_NAME].GetInt();
+                        }
 
                         /**
                          * Allows to get this text piece index, the index starts with
