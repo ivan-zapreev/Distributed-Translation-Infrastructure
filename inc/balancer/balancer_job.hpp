@@ -232,45 +232,59 @@ namespace uva {
 
                         LOG_DEBUG << "Got translation job response " << trans_resp->get_job_id() << END_LOG;
 
-                        //If we are in the done or reply phase then we already have something to
-                        //send to the client. I.e we must have had a client session drop down
-                        //(the canceled state). The failed state is not possible as it would
-                        //mean that the server response could not come at all, but here it is!
-                        if ((m_phase == phase::REPLY_PHASE) || (m_phase == phase::DONE_PHASE)) {
-                            if (m_state == state::CANCELED_STATE) {
-                                //If we are not active then it is OK, otherwise it is an
-                                //error situation. Still no need to react on this response.
+                        //Check on the phase and state types
+                        switch (m_phase) {
+                                //We are in the response phase i.e. we are
+                                //potentially awaiting for a server response
+                            case phase::RESPONSE_PHASE:
+                            {
+                                //Check on the current state
+                                switch (m_state) {
+                                        //We are not awaiting for the server response any more 
+                                        //as the client disconnected, but the response may come.
+                                    case state::CANCELED_STATE:
+                                        //We are actively awaiting for the server response
+                                    case state::ACTIVE_STATE:
+                                    {
+                                        //Store the translation job response
+                                        m_trans_resp = trans_resp;
+                                        //Now we are in the reply phase, the reply is to be sent to the client
+                                        m_phase = phase::REPLY_PHASE;
+                                        //Return true as the job was awaiting the response
+                                        return true;
+                                    }
+                                        //The server was disconnected so we can not be getting any responses
+                                    case state::FAILED_STATE:
+                                    default:
+                                    {
+                                        //If we reached this place then it is some kind of internal error
+                                        LOG_ERROR << "The balancer job " << to_string(m_bal_job_id)
+                                                << " is in phase: " << to_string(m_phase)
+                                                << ", state: " << to_string(m_state) << END_LOG;
+                                        return false;
+                                    }
+                                }
+                            }
+                                //The request phase is when the job request is not
+                                //even sent yet, there should be no response coming
+                            case phase::REQUEST_PHASE:
+                                //The translation request has been sent and the
+                                //response must have been received, there should
+                                //be no other response coming
+                            case phase::REPLY_PHASE:
+                                //The translation request has been sent and the
+                                //response must have been received, there should
+                                //be no other response coming
+                            case phase::DONE_PHASE:
+                            default:
+                            {
+                                //If we reached this place then it is some kind of internal error
+                                LOG_ERROR << "The balancer job " << to_string(m_bal_job_id)
+                                        << " is in phase: " << to_string(m_phase)
+                                        << ", state: " << to_string(m_state) << END_LOG;
                                 return false;
                             }
-                        } else {
-                            //If we are in the response phase then we can be expecting a response
-                            //only if we are active or the canceled by the client session drop-down.
-                            //In case we are active the response is welcome. If we are in the canceled
-                            //state the response is also welcome, although it will never be sent. 
-                            if (m_phase == phase::RESPONSE_PHASE) {
-                                //If we are actively waiting for a response
-                                if ((m_state == state::ACTIVE_STATE) || (m_state == state::CANCELED_STATE)) {
-                                    //Store the translation job response
-                                    m_trans_resp = trans_resp;
-                                    //Now we are in the reply phase, the reply is to be sent to the client
-                                    m_phase = phase::REPLY_PHASE;
-                                    //Return true as the job was awaiting the response
-                                    return true;
-                                }
-                            } else {
-                                //Remaining cases:
-                                //1. If we are in the phase::REQUEST_PHASE phase then the request
-                                //   was not even sent yet, can't be waiting for a response!
-                                //2. The phase::UNDEFINED_PHASE phase must be impossible - not used
-                                //3. Any other (unknown phase) must be impossible, is not there yet!
-                            }
                         }
-
-                        //If we reached this place then it is some kind of internal error
-                        LOG_ERROR << "The balancer job " << to_string(m_bal_job_id)
-                                << " is in phase: " << to_string(m_phase)
-                                << ", state: " << to_string(m_state) << END_LOG;
-                        return false;
                     }
 
                     /**
@@ -377,7 +391,12 @@ namespace uva {
                      * This method is synchronized.
                      */
                     inline void synch_job_finished() {
-                        recursive_guard guard(m_f_lock);
+                        //Synchronize on the global lock to make sure the
+                        //execute and other related functions are exited
+                        recursive_guard guard_g(m_g_lock);
+                        //Synchronize on the final lock to make sure that
+                        //The job is properly finished.
+                        recursive_guard guard_f(m_f_lock);
                     }
 
                     /**
