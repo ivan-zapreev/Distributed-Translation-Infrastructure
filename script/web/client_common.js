@@ -7,7 +7,7 @@
  * @param ...
  * @return the web socket client module
  */
-function create_client_common(logger_mdl, lang_mdl, to_text_span,
+function create_client_common(logger_mdl, lang_mdl, to_text_span, priority_select,
                               create_ws_client_fn, needs_new_trans_fn,
                               enable_interface_fn, disable_interface_fn,
                               escape_html_fn, process_stop_fn) {
@@ -108,6 +108,14 @@ function create_client_common(logger_mdl, lang_mdl, to_text_span,
         to_text_span.css("box-shadow", "none");
     }
     
+    /**
+     * Allows to get the selected translation priority value
+     * @return {Integer} the priority value
+     */
+    function get_priority() {
+        return parseInt(priority_select.find('option:selected').val(), 10);
+    }
+    
     //Fill in the module
     module = {
         STATUS_CODE_ENUM : STATUS_CODE_ENUM,
@@ -122,7 +130,8 @@ function create_client_common(logger_mdl, lang_mdl, to_text_span,
         process_stop_fn : process_stop_fn,
         visualize_sc_fn : visualize_status_code,
         remove_cs_visual_fn : remove_status_code_visual,
-        get_status_code_str_fn : get_status_code_string
+        get_status_code_str_fn : get_status_code_string,
+        get_priority_fn : get_priority
     };
     
     return module;

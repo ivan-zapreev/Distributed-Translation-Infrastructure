@@ -26,11 +26,11 @@
 #ifndef INCOMING_MSG_HPP
 #define INCOMING_MSG_HPP
 
+#include "common/messaging/msg_base.hpp"
+
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
-
-#include "common/messaging/msg_base.hpp"
 
 using namespace rapidjson;
 

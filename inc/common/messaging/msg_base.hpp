@@ -33,6 +33,8 @@
 #include "common/utils/exceptions.hpp"
 #include "common/utils/logging/logger.hpp"
 
+#define RAPIDJSON_ASSERT(x) ASSERT_CONDITION_THROW(!(x), "Rapid JSON exception, broken protocol or missing attributes!"); 
+
 using namespace std;
 
 using namespace uva::utils::logging;

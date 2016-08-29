@@ -228,19 +228,26 @@ function create_ws_client(common_mdl, url_input, init_url,
             //log the json data
             window.console.log("Received message: " + evt.data);
 
-            window.console.log("Parsing to JSON");
-            var resp_obj = JSON.parse(evt.data);
+            try {
+                window.console.log("Parsing to JSON");
+                var resp_obj = JSON.parse(evt.data);
 
-            //Check if the message type is detectable
-            if (resp_obj.hasOwnProperty('msg_type')) {
-                //Call the on message handler with the json object
-                if (on_message_fn) {
-                    on_message_fn(resp_obj);
+                //Check if the message type is detectable
+                if (resp_obj.hasOwnProperty('msg_type')) {
+                    //Call the on message handler with the json object
+                    if (on_message_fn) {
+                        on_message_fn(resp_obj);
+                    } else {
+                        window.console.warn("The on-message handler for server " +
+                                            client.url + " is not set!");
+                    }
                 } else {
-                    window.console.warn("The on-message handler for server " + client.url + " is not set!");
+                    common_mdl.logger_mdl.danger("Malformed server message: " + evt.data);
                 }
-            } else {
-                common_mdl.logger_mdl.danger("Malformed server message: " + evt.data);
+            } catch (err) {
+                //If the status is not OK then report an error and stop
+                common_mdl.process_stop_fn(true, "Could nog parse JSON: '" + evt.data +
+                                           "', please re-load the interface!");
             }
         };
 
@@ -256,7 +263,8 @@ function create_ws_client(common_mdl, url_input, init_url,
                 if (on_close_fn) {
                     on_close_fn();
                 } else {
-                    window.console.warn("The on-close handler for server " + client.url + " is not set!");
+                    window.console.warn("The on-close handler for server " +
+                                        client.url + " is not set!");
                 }
                 is_requested_close = false;
             }

@@ -26,9 +26,9 @@
 #ifndef OUTGOING_MSG_HPP
 #define OUTGOING_MSG_HPP
 
-#include "rapidjson/prettywriter.h" // for stringify JSON
-
 #include "common/messaging/msg_base.hpp"
+
+#include "rapidjson/prettywriter.h" // for stringify JSON
 
 using namespace rapidjson;
 

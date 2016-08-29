@@ -72,6 +72,7 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
     translator.dom.to_lang_sel = window.$("#to_lang_sel");
     translator.dom.input_file_select = window.$("#input_file_select");
     translator.dom.progress_image = window.$("#progress");
+    translator.dom.priority_select = window.$("#priority_select");
     //Enable tool-tipls
     window.$('[data-toggle="tooltip"]').tooltip();
 
@@ -145,6 +146,7 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
         translator.dom.from_lang_sel.prop("disabled", true);
         translator.dom.to_lang_sel.prop("disabled", true);
         translator.dom.input_file_select.prop("disabled", true);
+        translator.dom.priority_select.prop("disabled", true);
     }
 
     /**
@@ -163,6 +165,7 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
         translator.dom.from_lang_sel.prop("disabled", false);
         translator.dom.to_lang_sel.prop("disabled", false);
         translator.dom.input_file_select.prop("disabled", false);
+        translator.dom.priority_select.prop("disabled", false);
         //}
     }
 
@@ -201,6 +204,7 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
         translator.common_mdl = create_client_common_fn(translator.logger_mdl,
                                                         translator.language_mdl,
                                                         translator.dom.to_text_span,
+                                                        translator.dom.priority_select,
                                                         create_ws_client_fn, needs_new_trans,
                                                         enable_interface, disable_interface,
                                                         escape_html, process_stop);

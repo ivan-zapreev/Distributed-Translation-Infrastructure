@@ -245,8 +245,9 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
      * @param {String} target_lang the target languaghe string
      * @param {Bool} is_trans_info true if the translation info is to be requested, otherwise false
      * @param {array of strings} source_sent an array of prepared sentences to be sent in the translation job
+     * @param {Integer} the job priority value
      */
-    function send_translation_request(source_lang, target_lang, is_trans_info, source_sent) {
+    function send_translation_request(source_lang, target_lang, is_trans_info, source_sent, priority) {
         //Increment the number of active translations
         sent_trans_req += 1;
         window.console.log("A new request, #jobs: " + sent_trans_req);
@@ -259,6 +260,9 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
 
         //Set the translation job id
         trans_job_req.job_id = prev_job_req_id;
+        
+        //Set the priority
+        trans_job_req.priority = priority;
 
         //Set the source language
         trans_job_req.source_lang = source_lang;
@@ -285,7 +289,7 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
      */
     function send_trans_requests(source_text, source_lang) {
         //Declare the local variables
-        var sent_array, num_jobs, target_lang, is_trans_info, data;
+        var sent_array, num_jobs, target_lang, is_trans_info, data, priority;
 
         //Get the target language
         target_lang = common_mdl.lang_mdl.get_sel_target_lang_fn();
@@ -304,6 +308,9 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
 
         //Re-initialize the progress bars
         module.init_req_resp_pb_fn();
+        
+        //Get the priority value
+        priority = common_mdl.get_priority_fn();
 
         /**
          * The function to send the translation requests to the server
@@ -323,7 +330,7 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
             
             //Send the translation request
             send_translation_request(source_lang, target_lang, is_trans_info,
-                                     sent_array.slice(begin_idx, end_idx));
+                                     sent_array.slice(begin_idx, end_idx), priority);
             
             //Update the progress bar
             module.set_request_pb_fn((job_idx + 1), data.length);
@@ -361,7 +368,7 @@ function create_trans_client(common_mdl, post_serv_mdl, url_input,
             //Store the job token
             job_token = token;
             window.console.log("Setting the job token: " + job_token);
-            
+
             //Send the requests, asynchronously
             setTimeout(function () {
                 send_trans_requests(source_text, source_lang);

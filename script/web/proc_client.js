@@ -226,9 +226,12 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
         window.console.log("Creating a new processor job type: " + msg_type +
                            ", job token: " + job_token + ", language: " + lang);
         
+        //Get the priority value
+        var priority = common_mdl.get_priority_fn();
+        
         return {prot_ver : module.PROTOCOL_VERSION,
                 msg_type : msg_type, job_token : job_token,
-                lang : lang};
+                lang : lang, priority : priority};
     }
     
     /**

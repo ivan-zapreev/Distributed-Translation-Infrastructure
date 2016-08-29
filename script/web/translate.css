@@ -27,9 +27,12 @@ span.block {
     margin-right: 4px;
 }
 
-span#trans_info {
+span#trans_info, span#priority {
     color: gray;
     font-size: 80%;
+    border-left: 1px solid lightgray;
+    margin-left: 3px;
+    padding-left: 3px;
 }
 
 span.server_name {
