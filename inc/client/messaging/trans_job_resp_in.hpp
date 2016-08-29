@@ -52,12 +52,14 @@ namespace uva {
                          */
                         trans_job_resp_in(incoming_msg * inc_msg)
                         : trans_job_resp(), m_inc_msg(inc_msg), m_sent_data() {
-                            //Get the sentence data array
-                            const Value & sent_data_arr = m_inc_msg->get_json()[TARGET_DATA_FIELD_NAME];
-                            //Store the iterator for the beginning of this array
-                            m_sent_data_iter = sent_data_arr.Begin();
-                            //Store the iterator for the end of this array
-                            m_sent_data_end_iter = sent_data_arr.End();
+                            if (m_inc_msg->get_json().HasMember(TARGET_DATA_FIELD_NAME)) {
+                                //Get the sentence data array
+                                const Value & sent_data_arr = m_inc_msg->get_json()[TARGET_DATA_FIELD_NAME];
+                                //Store the iterator for the beginning of this array
+                                m_sent_data_iter = sent_data_arr.Begin();
+                                //Store the iterator for the end of this array
+                                m_sent_data_end_iter = sent_data_arr.End();
+                            }
                         }
 
                         /**
@@ -120,10 +122,10 @@ namespace uva {
                          */
                         inline string get_status_msg() const {
                             const Document & json = m_inc_msg->get_json();
-                            
+
                             return json[STAT_MSG_FIELD_NAME].GetString();
                         }
-                        
+
                         /**
                          * Allows to retrieve the incoming message
                          * @return the incoming message
