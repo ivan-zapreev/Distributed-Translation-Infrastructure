@@ -176,7 +176,7 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
         //Disable the interface
         disable_interface();
         //Start the progress image
-        translator.dom.progress_image.attr('src', './img/globe32.gif');
+        translator.dom.progress_image.attr('src', './img/globe32.gif?x=' + Date.now());
     }
 
     /**
