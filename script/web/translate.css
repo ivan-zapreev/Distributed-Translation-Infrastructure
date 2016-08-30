@@ -267,7 +267,7 @@ a.download_link img {
     width: 16px;
 }
 
-h3.panel-title img {
+img#page-logo {
     height: 20px;
 }
 
@@ -281,8 +281,13 @@ div.progress-bar {
     min-width:200px;
 }
 
-h4.panel-title {
+div.panel-heading div.panel-title {
+    margin-bottom: -5px;
+}
+
+div.panel-title {
     margin-bottom: 4px;
+    font-weight: 500;
 }
 
 div.log_msg {

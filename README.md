@@ -43,7 +43,7 @@ The rest of the document is organized as follows:
 1. [Project structure](#project-structure) - Gives the file and folder structure of the project
 2. [Supported platforms](#supported-platforms) - Indicates the project supported platforms
 3. [Building the project](#building-the-project) - Describes the process of building the project
-4. [Using software](#using-software) - Explain how the software is to be used
+4. [Using software](#using-software) - Explains how the software is to be used
 5. [Input file formats](#input-file-formats) - Provides examples of the input file formats
 6. [Code documentation](#code-documentation) - Refers to the project documentation
 7. [External libraries](#external-libraries) - Lists the included external libraries
@@ -66,10 +66,12 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * **`script/`** - stores the various scripts
     * **`script/web/`** - Web client for translation system
     * **`script/text/`** - Dummy pre/post-processing scripts
+    * **`script/test/`** - Scripts used for testing
     * **`nbproject/`** - Netbeans project data
     * **`data/`** - stores the tests-related data
     * `server.cfg` - example server configuration file
     * `balancer.cfg` - example load balancer configuration file
+    * `processor.cfg` - example processor configuration file
     * `LICENSE` - code license (GPL 2.0)
     * `CMakeLists.txt` - cmake build script
     * `README.md` - this document

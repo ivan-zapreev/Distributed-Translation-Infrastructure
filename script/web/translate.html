@@ -61,13 +61,13 @@
         <div class="panel-group">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <img src="img/owl.png" alt="Owl translate logo"/>&nbsp;Translate
-                    </h3>
+                    <div class="panel-title">
+                        <img id="page-logo" src="img/owl.png" alt="Owl translate logo"/>&nbsp;Translate
+                    </div>
                 </div>
                 <div class="v_sep"></div>
                 <div class="panel-body">
-                    <h4 class="panel-title">
+                    <div class="panel-title">
                         <span  data-original-title='The client settings panel' data-toggle='tooltip' data-placement='auto'>
                         <a data-toggle="collapse" href="#collapse_settings">Connections
                             <span class="caret"></span>
@@ -96,7 +96,7 @@
                                 </select>             
                             </span>
                         </div>
-                    </h4>
+                    </div>
                 </div>
                 <div id="collapse_settings" class="panel-collapse collapse">
                     <div id="settings_panel" class="panel-body">
@@ -157,7 +157,7 @@
                 </div>
                 <div class="v_sep"></div>
                 <div class="panel-body">
-                    <h4 class="panel-title">
+                    <div class="panel-title">
                         <span  data-original-title='The client log panel' data-toggle='tooltip' data-placement='auto'>
                         <a data-toggle="collapse" href="#collapse_logging">Logging
                             <span class="caret"></span>
@@ -170,7 +170,7 @@
                             <span id="lp_dang" data-original-title='#Danger messages' data-toggle='tooltip' data-placement='auto' class="badge">0</span>
                             <input id="log_clear_btn" data-original-title='Clear client log' data-toggle='tooltip' data-placement='auto' class="btn-sw btn-info" type="button" value="Clear">
                         </div>
-                    </h4>
+                    </div>
                 </div>
                 <div id="collapse_logging" class="panel-collapse collapse">
                     <div id="log_panel" class="panel-body">
@@ -182,7 +182,7 @@
                         <div class="part_menu_container">
                             <div class="part_menu_left">
                                 Source: 
-                                <select id="from_lang_sel" name="from_language" required></select>
+                                <select id="from_lang_sel" name="from_language"></select>
                             </div>
                             <div class="part_menu_right">
                                 <div id="input_file_sc">
@@ -190,8 +190,7 @@
                                 </div>
                             </div>
                         </div>
-                        <textarea id="from_text" class="text_data" value="" spellcheck="false" autocapitalize="off"
-                        autocomplete="off" autocorrect="off" wrap="SOFT"></textarea>
+                        <textarea id="from_text" class="text_data" spellcheck="false" autocomplete="off" wrap="SOFT"></textarea>
                     </div>
                     <div id="middle_part">
                         <img class="img-responsive" id="progress" src="./img/globe32.png" alt="Translation status"> 
@@ -201,7 +200,7 @@
                         <div class="part_menu_container">
                             <div class="part_menu_left">
                                 Target: 
-                                <select id="to_lang_sel" name="to_language" required></select>
+                                <select id="to_lang_sel" name="to_language"></select>
                             </div>
                             <div class="part_menu_right">
                                 <span data-original-title='Click to download the resulting translation' data-toggle='tooltip' data-placement='auto'>
@@ -225,20 +224,20 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        //Define the urls for connecting to the pre-/trans/post-services
+        var config = {
+            pre_proc_url : 'ws://localhost:9005',
+            translate_url : 'ws://localhost:9000',
+            post_proc_url : 'ws://localhost:9005'
+        };
+
+        //Run the translation client
+        initialize_translator(config, calcMD5, download, init_file_ud,
+                              create_logger, create_languages,
+                              create_client_common, create_ws_client,
+                              create_proc_client, create_pre_proc_client,
+                              create_trans_client, create_post_proc_client);
+    </script>
 </body>
 </html>
-<script>
-    //Define the urls for connecting to the pre-/trans/post-services
-    var config = {
-        pre_proc_url : 'ws://localhost:9005',
-        translate_url : 'ws://localhost:9000',
-        post_proc_url : 'ws://localhost:9005'
-    };
-    
-    //Run the translation client
-    initialize_translator(config, calcMD5, download, init_file_ud,
-                          create_logger, create_languages,
-                          create_client_common, create_ws_client,
-                          create_proc_client, create_pre_proc_client,
-                          create_trans_client, create_post_proc_client);
-</script>
