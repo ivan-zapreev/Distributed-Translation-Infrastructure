@@ -105,6 +105,11 @@ input#trans_btn {
     color: black;
 }
 
+input#trans_btn:disabled {
+    background-color: lightgray;
+    color: gray;
+}
+
 .text_data {
    font-family: arial,sans-serif;
    font-size: 16px;
