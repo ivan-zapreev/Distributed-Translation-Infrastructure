@@ -502,16 +502,19 @@ PARSE ERROR:
 
 Brief USAGE: 
    bpbd-client  [-d <error|warn|usage|result|info|info1|info2|info3>] [-c]
-                [-l <min #sentences per request>] [-u <max #sentences per
-                request>] [-p <post-processor uri>] [-s <server uri>] [-r
-                <pre-processor uri>] [-o <target language>] -O <target file
-                name> -i <source language> -I <source file name> [--]
-                [--version] [-h]
+                [-s <the translation priority>] [-l <min #sentences per
+                request>] [-u <max #sentences per request>] [-p
+                <post-processor uri>] [-t <server uri>] [-r <pre-processor
+                uri>] [-o <target language>] -O <target file name> -i
+                <source language> -I <source file name> [--] [--version]
+                [-h]
 
 For complete USAGE and HELP type: 
    bpbd-client --help
 ```
 One of the main required parameters of the translation client is the input file. The latter should contain text, in **UTF8** encoding - not checked upon, to be translated. In case no pre-processing is requested, *see the [-r] option*, the text is sent to the translation server as is. In that case it is expected that, the text contains one sentence per line and the sentences are lower-cased and tokenized (space-separated).
+
+Each translation can be given a priority with the optional `-s` parameter. The higher the priority the sooner it will be processed by the server(s). This rule includes the translation, the balancer, and the pre/post-processor servers. The default priority value is zero - indicating normal or neutral priority. Jobs with equal priorities are handled at the first-come-first-serve basis. The translation jobs of a given priority are not served until all the jobs of the higher priorities are taken care of.
 
 Once started, if pre-processing server is specified (the `-r` option), the source text is sent for pre-processing. In case the source language is to be detected, the value of the `-i` parameter must be set to `auto`. If pre-processing went without errors, the translation client makes a WebSocket connection to the translation server, reads text from the input file, splits it into a number of translation job requests (which are sent to the translation server) and waits for the reply. Each translation job sent to the server consists of a number of sentences called translation tasks. The maximum and minimum number of translation tasks per a translation job is configurable via additional client parameters. After the text is translated, the information on the translation process is placed into the logging file that has the same name as the output file, but is suffixed with `.log`. The latter contains information such as: if a job/task was canceled, or an error occurred. Next, if post-processing server is specified (the `-p` option), the text is sent to post-processing. After the post-processed text is received, the result is written to the output file. If the post-processing server was not specified then the target text is saved "as is". For more info run: `bpbd-client --help`.
 
@@ -542,7 +545,7 @@ The web client for the translation system is just a web application that uses th
 The web interface looks as follows:
 ![Web Client Translation System Image](./doc/images/translator.png "Web Client Translation System")
 
-As one can see its interface is simple and intuitive, its main purpose to allow to connect to a translation sever/balancer and to perform translations. Source text can be input into the text area on the left by hand or loaded from a file. The translated (target) text can be found in the text area on the right. It is annotated, with a pop-up information. The latter is visualized when a mouse pointer hovers over the sentence translation.
+As one can see its interface is simple and intuitive, its main purpose to allow to connect to a translation sever/balancer and to perform translations. Source text can be input into the text area on the left by hand or loaded from a file. The translated (target) text can be found in the text area on the right. It is annotated, with a pop-up information. The latter is visualized when a mouse pointer hovers over the sentence translation. Note that, the translation priorities in the web interface have the same meaning and functionality as in the command line translation client, see section [Translation client](#translation-client).
 
 Most of the interface controls have tool tips. Yet for the sake of completeness below, we provide an annotated screen shot of the interface:
 ![Web Client Translation System Annotated Image](./doc/images/translator_annot.png "Web Client Translation System - Annotated")
@@ -903,6 +906,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **22.07.2016** - Added information about the Web UI client and the Load Balancer. Updated the document with small changes in the existed text.
 * **05.08.2016** - Added the description of the *bpbd-processor* and related script. Made the corresponding changes in the sections on the console client.
 * **26.08.2016** - Updating the Web UI information, the interface was extended with the pre and post processor servers.
+* **30.08.2016** - The information on translation clients was extended with translation priorities.
 
 ##Appendix Tests
 
