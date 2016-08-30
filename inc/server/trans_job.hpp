@@ -91,7 +91,7 @@ namespace uva {
 
                         //Get the text to be translated
                         const Value & source_text = trans_req.get_source_text();
-                        
+
                         //Obtain the translation job priority
                         const int32_t priority = trans_req.get_priority();
 
@@ -200,45 +200,43 @@ namespace uva {
                      * @param task the translation task that is finished
                      */
                     inline void notify_task_done(const trans_task_ptr task) {
+                        recursive_guard guard_tasks(m_tasks_lock);
+
                         LOG_DEBUG1 << "The task " << *task << " is done!" << END_LOG;
 
-                        {
-                            recursive_guard guard_tasks(m_tasks_lock);
+                        //Get the translation task status and count
+                        const status_code status = task->get_status_code();
 
-                            //Get the translation task status and count
-                            const status_code status = task->get_status_code();
+                        //Count the number of CANCELLED/ERROR tasks
+                        switch (status) {
+                            case status_code::RESULT_ERROR:
+                                m_num_error_tasks++;
+                                break;
+                            case status_code::RESULT_CANCELED:
+                                m_num_cancel_tasks++;
+                                break;
+                            default:
+                                break;
+                        }
 
-                            //Count the number of CANCELLED/ERROR tasks
-                            switch (status) {
-                                case status_code::RESULT_ERROR:
-                                    m_num_error_tasks++;
-                                    break;
-                                case status_code::RESULT_CANCELED:
-                                    m_num_cancel_tasks++;
-                                    break;
-                                default:
-                                    break;
-                            }
+                        //Increment the finished tasks count
+                        m_done_tasks_count++;
 
-                            //Increment the finished tasks count
-                            m_done_tasks_count++;
+                        LOG_DEBUG1 << "The number of finished tasks of job " << this << " is "
+                                << m_done_tasks_count << "/" << m_tasks.size() << END_LOG;
 
-                            LOG_DEBUG1 << "The number of finished tasks of job " << this << " is "
-                                    << m_done_tasks_count << "/" << m_tasks.size() << END_LOG;
+                        //If all the tasks are translated
+                        if (is_job_finished()) {
+                            LOG_DEBUG << "The translation job " << this << " is finished!" << END_LOG;
 
-                            //If all the tasks are translated
-                            if (is_job_finished()) {
-                                LOG_DEBUG << "The translation job " << this << " is finished!" << END_LOG;
+                            //Do the sanity check assert
+                            ASSERT_SANITY_THROW(!m_notify_job_done_func,
+                                    "The translation job's result setting function is not set!");
 
-                                //Do the sanity check assert
-                                ASSERT_SANITY_THROW(!m_notify_job_done_func,
-                                        "The translation job's result setting function is not set!");
+                            LOG_DEBUG << "Notifying the manager that the job " << this << " is finished!" << END_LOG;
 
-                                LOG_DEBUG << "Notifying the manager that the job " << this << " is finished!" << END_LOG;
-
-                                //Notify that this job id done
-                                m_notify_job_done_func(this);
-                            }
+                            //Notify that this job id done
+                            m_notify_job_done_func(this);
                         }
                     }
 

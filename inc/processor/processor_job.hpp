@@ -131,7 +131,7 @@ namespace uva {
                         //Delete the array of tasks
                         delete[] m_req_tasks;
                     }
-                    
+
                     /**
                      * Allows to get the task priority
                      * @return the priority of this task
@@ -175,7 +175,7 @@ namespace uva {
                      * includes the notification of the job pool.
                      * This method is synchronized on final lock.
                      */
-                    void synch_job_finished() {
+                    inline void synch_job_finished() {
                         recursive_guard guard(m_f_lock);
                     }
 
@@ -321,17 +321,6 @@ namespace uva {
                         return work_dir + "/" + job_token + "." +
                                 (is_pnp ? "pre" : "post") + "." +
                                 (is_ino ? "in" : "out") + ".txt";
-                    }
-
-                    /**
-                     * Shall be called once the balancer job is done
-                     * This method is synchronized on final lock.
-                     */
-                    inline void notify_job_done() {
-                        recursive_guard guard(m_f_lock);
-
-                        //Notify that this job id done
-                        m_notify_job_done_func(this);
                     }
 
                     /**
@@ -592,6 +581,10 @@ namespace uva {
                      */
                     template<bool is_pnp>
                     inline void process() {
+                        //Notify that the job is now finished. Synchronize on
+                        //final lock to prevent premature object destruction.
+                        recursive_guard guard(m_f_lock);
+
                         LOG_DEBUG << "is_pnp = " << is_pnp << END_LOG;
 
                         //Check if the job is not canceled yet
@@ -645,8 +638,8 @@ namespace uva {
                             }
                         }
 
-                        //Notify that the job is now finished.
-                        notify_job_done();
+                        //Notify that this job id done
+                        m_notify_job_done_func(this);
                     }
 
                 private:
@@ -679,7 +672,7 @@ namespace uva {
                     const response_creator m_resp_crt_func;
                     //Stores the reference to response sending function
                     const session_response_sender & m_resp_send_func;
-                    
+
                     //Make a friend of the output operator
                     friend ostream & operator<<(ostream & stream, const processor_job & job);
                 };

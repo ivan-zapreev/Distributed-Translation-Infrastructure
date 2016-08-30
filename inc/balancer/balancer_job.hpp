@@ -394,9 +394,6 @@ namespace uva {
                         //Synchronize on the global lock to make sure the
                         //execute and other related functions are exited
                         recursive_guard guard_g(m_g_lock);
-                        //Synchronize on the final lock to make sure that
-                        //The job is properly finished.
-                        recursive_guard guard_f(m_f_lock);
                     }
 
                     /**
@@ -585,12 +582,7 @@ namespace uva {
                         m_phase = phase::DONE_PHASE;
 
                         //Notify that the job is now finished.
-                        {
-                            recursive_guard guard(m_f_lock);
-
-                            //Notify that this job id done
-                            m_notify_job_done_func(this);
-                        }
+                        m_notify_job_done_func(this);
                     }
 
                 private:
@@ -638,10 +630,6 @@ namespace uva {
 
                     //The global lock needed to guard the job state change and its execution
                     recursive_mutex m_g_lock;
-
-                    //The final lock needed to guard the job ready notification and
-                    //waiting for it is finished before the job is deleted.
-                    recursive_mutex m_f_lock;
 
                     //Stores the balancer job id, is initialized once the job is sent
                     const job_id_type m_bal_job_id;
