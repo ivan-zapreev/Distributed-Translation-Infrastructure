@@ -17,7 +17,6 @@ bpbd_balancer
 --
 Responsibilities:
 -- Reads the configuration file
--- Configures the translation_servers_manager
 -- Configures the balancer_server
 -- Starts up the balancer_server
 -- Starts the balancer_console

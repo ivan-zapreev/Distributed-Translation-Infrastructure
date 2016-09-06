@@ -353,8 +353,10 @@ Usage: ./combine-lattices.sh <lattice-dir> <result-file-name> <sent-lattice-ext>
 ```
 
 ###Load balancer: _bpbd-balancer_
-The load balancer server is used for one thing:
-_(i)_ Distribute load between multiple translation servers;
+The load balancer server can be used for the next purposes:
+_(i)_ Distribute load between multiple translation servers, for the same source-target language pair;
+_(ii)_ Aggregate multiple translation servers for different source-target language pairs;
+_(ii)_ Aggregate various balancer and translation servers ensuring a single client-communication point;
 The use of this executable is straightforward. When started from a command line without any parameters, **bpbd-balancer** reports on the available command-line options:
 
 ```
@@ -537,7 +539,7 @@ Where the line starting with `Multi-stack loads`, contains the stack level's loa
 Remember that, running **bpbd-client** with higher logging levels will give more insight into the translation process and functioning of the client. It is also important to note that, the source-language text in the input file is must be provided in the **UTF8** encoding.
 
 ###Web UI Translation client:
-The web client for the translation system is just a web application that uses the WebSockets API of **HTML5** to sent JSON requests to the translation server or communicate with it through a load balancer. The web client can be activated by opening `script/web/translate.html` in a web browser. At the moment the client was tested and proved to work in the following 64-bit browsers under **OS X EI Capitan**:
+The web client for the translation system is just a web application that uses the WebSockets API of **HTML5** to sent JSON requests to the text processor, translation server or to a load balancer. The web client can be activated by opening `script/web/translate.html` in a web browser. At the moment the client was tested and proved to work in the following 64-bit browsers under **OS X EI Capitan**:
 
 * Opera 38.0.2220.41,
 * Safari 9.1.1 (11601.6.17)
