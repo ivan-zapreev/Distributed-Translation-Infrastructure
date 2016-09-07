@@ -21,14 +21,14 @@ function info() {
   echo "------"
   echo "SHORT:"
   echo "------"
-  echo "   This is a stress loading script for the translation sytem."
+  echo "   This is a stress loading script for the translation system."
   echo "   It's purpose is to run multiple translation clients in parallel"
   usage ${0}
   echo "------"
   echo "PURPOSE:"
   echo "------"
   echo "   The main purpose of the script is to stress load the infrastructure "
-  echo "   and see if there is any errors or deadlocks or alike are occuring."
+  echo "   and see if there is any errors or deadlocks or alike are occurring."
 }
 
 #Reports an error, does not exit
