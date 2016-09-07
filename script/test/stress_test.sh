@@ -28,7 +28,7 @@ function info() {
   echo "PURPOSE:"
   echo "------"
   echo "   The main purpose of the script is to stress load the infrastructure "
-  echo "   and see if there is any errors or deadlocks or alike are occurring."
+  echo "   and see if any errors or deadlocks or alike are occurring."
 }
 
 #Reports an error, does not exit
