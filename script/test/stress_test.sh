@@ -6,13 +6,13 @@ function usage(){
   echo "------"
   echo "USAGE:"
   echo "------"
-  echo " $0 <num-processes> <trans-uri> <proc-uri>"
-  echo "    <num-proc> - the number of processes to run in parallel"
+  echo " $0 <num-processes> <trans-uri> <proc-uri> <source-file> <source-lang> <target-lang>"
+  echo "    <num-proc> - the number of bpbd-clients to run in parallel"
   echo "    <trans-uri> - the URL of the translation server, with the port"
   echo "    <proc-uri> - the URL of the text processor server, with the port"
   echo "    <source-file> - the source text file"
   echo "    <source-lang> - the source language or auto"
-  echo "    <target-lang> - the target language or auto"
+  echo "    <target-lang> - the target language"
 }
 
 #Prints the program info
@@ -21,7 +21,7 @@ function info() {
   echo "------"
   echo "SHORT:"
   echo "------"
-  echo "   This is a stress loading script forfor the translation sytem."
+  echo "   This is a stress loading script for the translation sytem."
   echo "   It's purpose is to run multiple translation clients in parallel"
   usage ${0}
   echo "------"
