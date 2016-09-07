@@ -21,7 +21,7 @@ function info() {
   echo "------"
   echo "SHORT:"
   echo "------"
-  echo "   This is a stress loading script for the translation system."
+  echo "   This is a stress testing script for the translation system."
   echo "   It's purpose is to run multiple translation clients in parallel"
   usage ${0}
   echo "------"
