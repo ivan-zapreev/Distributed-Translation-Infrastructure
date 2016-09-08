@@ -272,6 +272,12 @@ namespace uva {
                                     }
                                 }
 
+                                ASSERT_CONDITION_THROW(trim(storage) == "",
+                                        string("Empty translation string, target: ") +
+                                        (m_target != NULL ?
+                                        (m_target->is_unk_trans() ? string("UNK") : m_target->get_target_phrase())
+                                        : string("NULL")));
+
                                 LOG_DEBUG1 << "The END storage value is: ___" << storage << "___" << END_LOG;
                             }
 
