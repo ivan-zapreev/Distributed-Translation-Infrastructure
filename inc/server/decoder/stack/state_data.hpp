@@ -276,11 +276,12 @@ namespace uva {
                                 if (is_lattice && (trim(storage) == "")) {
                                     LOG_ERROR << "Empty translation string, target: " <<
                                             (m_target != NULL ?
-                                            (m_target->is_unk_trans() ? string("UNK[") +
+                                            (m_target->is_unk_trans() ? string("UNK wd[") +
+                                            to_string(m_s_begin_word_idx) + string(",") + to_string(m_s_end_word_idx) + string("] ch(") +
                                             to_string(m_stack_data.m_sent_data[m_s_begin_word_idx][m_s_begin_word_idx].m_begin_ch_idx)
                                             + string(",") +
                                             to_string(m_stack_data.m_sent_data[m_s_end_word_idx][m_s_end_word_idx].m_end_ch_idx) +
-                                            string("], text: '") + m_stack_data.m_source_sent + string("'") :
+                                            string("), text: '") + m_stack_data.m_source_sent + string("'") :
                                             m_target->get_target_phrase())
                                             : "NULL") << END_LOG;
                                 }
