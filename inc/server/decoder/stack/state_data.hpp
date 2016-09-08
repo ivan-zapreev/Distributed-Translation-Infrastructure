@@ -272,11 +272,18 @@ namespace uva {
                                     }
                                 }
 
-                                ASSERT_CONDITION_THROW(trim(storage) == "",
-                                        string("Empty translation string, target: ") +
-                                        (m_target != NULL ?
-                                        (m_target->is_unk_trans() ? string("UNK") : m_target->get_target_phrase())
-                                        : string("NULL")));
+                                //Temporary error logging
+                                if (trim(storage) == "") {
+                                    LOG_ERROR << "Empty translation string, target: " <<
+                                            (m_target != NULL ?
+                                            (m_target->is_unk_trans() ? string("UNK[") +
+                                            to_string(m_stack_data.m_sent_data[m_s_begin_word_idx][m_s_begin_word_idx].m_begin_ch_idx)
+                                            + string(",") +
+                                            to_string(m_stack_data.m_sent_data[m_s_end_word_idx][m_s_end_word_idx].m_end_ch_idx) + string("], ")
+                                            + string(", text: ") + m_stack_data.m_source_sent :
+                                            m_target->get_target_phrase())
+                                            : "NULL") << END_LOG;
+                                }
 
                                 LOG_DEBUG1 << "The END storage value is: ___" << storage << "___" << END_LOG;
                             }
