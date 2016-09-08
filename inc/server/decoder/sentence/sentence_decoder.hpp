@@ -366,7 +366,9 @@ namespace uva {
                                         //Get the phrase for logging
                                         const string phrase = m_source_sent.substr(new_entry.m_begin_ch_idx, new_entry.m_end_ch_idx - new_entry.m_begin_ch_idx);
 
-                                        LOG_DEBUG1 << "The phrase [" << begin_wd_idx << ", " << end_wd_idx << "] is ___" << phrase << "___" << END_LOG;
+                                        LOG_USAGE << "The phrase word indexes: [" << begin_wd_idx << ", " << end_wd_idx
+                                                << "], character indexes: (" << new_entry.m_begin_ch_idx << ","
+                                                << new_entry.m_end_ch_idx << ") is ___" << phrase << "___" << END_LOG;
 
                                         //Compute the phrase uid
                                         new_entry.m_phrase_uid = combine_phrase_uids(prev_entry.m_phrase_uid, end_word_data.m_phrase_uid);
