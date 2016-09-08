@@ -325,7 +325,7 @@ namespace uva {
                                     //Get the token from the source phrase
                                     const string token = m_source_sent.substr(ch_b_idx, ch_e_idx - ch_b_idx);
 
-                                    LOG_DEBUG1 << "Found the new token @ [" << ch_b_idx << ","
+                                    LOG_USAGE << "Found the new token @ [" << ch_b_idx << ","
                                             << ch_e_idx << "): ___" << token << "___" << END_LOG;
 
                                     //Store the phrase begin and end character indexes
@@ -335,15 +335,15 @@ namespace uva {
                                     //Compute the phrase id and store it as well
                                     end_word_data.m_phrase_uid = get_phrase_uid<true>(token);
 
-                                    LOG_DEBUG1 << "The token ___" << token << "___ @ [" << ch_b_idx << ","
+                                    LOG_USAGE << "The token ___" << token << "___ @ [" << ch_b_idx << ","
                                             << ch_e_idx << ") uid is: " << end_word_data.m_phrase_uid << END_LOG;
 
-                                    LOG_DEBUG1 << "Considering the token [" << end_wd_idx << ", " << end_wd_idx << "] translation." << END_LOG;
+                                    LOG_USAGE << "Considering the token [" << end_wd_idx << ", " << end_wd_idx << "] translation." << END_LOG;
 
                                     //Get the uni-gram phrase (word) translations
                                     m_tm_query.execute(end_word_data.m_phrase_uid, end_word_data.m_source_entry);
 
-                                    LOG_DEBUG1 << "The token ___" << token << "___ @ [" << ch_b_idx << ","
+                                    LOG_USAGE << "The token ___" << token << "___ @ [" << ch_b_idx << ","
                                             << ch_e_idx << ") HAS" << (end_word_data.m_source_entry->has_translations() ? "" : " NO")
                                             << " translation(s), num entries: " << end_word_data.m_source_entry->num_targets() << END_LOG;
 
@@ -352,7 +352,7 @@ namespace uva {
                                     //decoding parameters. It is the end word plus several previous.
                                     int32_t begin_wd_idx = max(MIN_SENT_WORD_INDEX, end_wd_idx - m_de_params.m_max_s_phrase_len + 1);
                                     for (; (begin_wd_idx < end_wd_idx); ++begin_wd_idx) {
-                                        LOG_DEBUG1 << "Considering the phrase [" << begin_wd_idx << ", " << end_wd_idx << "] translation." << END_LOG;
+                                        LOG_USAGE << "Considering the phrase [" << begin_wd_idx << ", " << end_wd_idx << "] translation." << END_LOG;
 
                                         //Get the previous column entry
                                         phrase_data_entry & prev_entry = m_sent_data[begin_wd_idx][end_wd_idx - 1];
@@ -379,7 +379,7 @@ namespace uva {
                                         //Add the m-gram phrase to the query
                                         m_tm_query.execute(new_entry.m_phrase_uid, new_entry.m_source_entry);
 
-                                        LOG_DEBUG1 << "Phrase: ___" << phrase << "___ uid: " << new_entry.m_phrase_uid << " HAS"
+                                        LOG_USAGE << "Phrase: ___" << phrase << "___ uid: " << new_entry.m_phrase_uid << " HAS"
                                                 << (new_entry.m_source_entry->has_translations() ? "" : " NO") << " translation(s),"
                                                 << " num entries: " << new_entry.m_source_entry->num_targets() << END_LOG;
 
