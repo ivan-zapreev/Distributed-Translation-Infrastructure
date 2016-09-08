@@ -32,6 +32,7 @@
 #include "server/trans_task.hpp"
 
 #include "common/utils/threads/threads.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 #include "common/messaging/trans_session_id.hpp"
 #include "common/messaging/job_id.hpp"
@@ -47,6 +48,7 @@ using namespace uva::smt::bpbd::common::messaging;
 using namespace uva::smt::bpbd::server::messaging;
 
 using namespace uva::utils::threads;
+using namespace uva::utils::text;
 
 namespace uva {
     namespace smt {
@@ -98,8 +100,9 @@ namespace uva {
                         //Read the text line by line, each line must be one sentence
                         //to translate. For each read line create a translation task.
                         for (auto iter = source_text.Begin(); iter != source_text.End(); ++iter) {
+                            string sentence = iter->GetString();
                             m_tasks.push_back(new trans_task(m_session_id, m_job_id, priority,
-                                    iter->GetString(), bind(&trans_job::notify_task_done, this, _1)));
+                                    trim(sentence), bind(&trans_job::notify_task_done, this, _1)));
                         }
                     }
 
