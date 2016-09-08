@@ -279,8 +279,8 @@ namespace uva {
                                             (m_target->is_unk_trans() ? string("UNK[") +
                                             to_string(m_stack_data.m_sent_data[m_s_begin_word_idx][m_s_begin_word_idx].m_begin_ch_idx)
                                             + string(",") +
-                                            to_string(m_stack_data.m_sent_data[m_s_end_word_idx][m_s_end_word_idx].m_end_ch_idx) + string("], ")
-                                            + string(", text: ") + m_stack_data.m_source_sent :
+                                            to_string(m_stack_data.m_sent_data[m_s_end_word_idx][m_s_end_word_idx].m_end_ch_idx) +
+                                            string("], text: '") + m_stack_data.m_source_sent + string("'") :
                                             m_target->get_target_phrase())
                                             : "NULL") << END_LOG;
                                 }
