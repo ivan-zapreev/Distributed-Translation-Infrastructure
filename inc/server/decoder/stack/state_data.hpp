@@ -273,7 +273,7 @@ namespace uva {
                                 }
 
                                 //Temporary error logging
-                                if (trim(storage) == "") {
+                                if (is_lattice && (trim(storage) == "")) {
                                     LOG_ERROR << "Empty translation string, target: " <<
                                             (m_target != NULL ?
                                             (m_target->is_unk_trans() ? string("UNK[") +
