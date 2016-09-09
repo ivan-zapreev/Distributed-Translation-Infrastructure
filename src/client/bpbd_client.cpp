@@ -38,6 +38,7 @@
 
 #include "common/utils/file/cstyle_file_reader.hpp"
 #include "common/utils/exceptions.hpp"
+#include "common/utils/text/string_utils.hpp"
 
 using namespace std;
 
@@ -45,6 +46,7 @@ using namespace TCLAP;
 
 using namespace uva::utils::exceptions;
 using namespace uva::utils::file;
+using namespace uva::utils::text;
 
 using namespace uva::smt::bpbd::client;
 
@@ -236,8 +238,11 @@ void read_input(const client_parameters & params, stringstream_ptr & output) {
 
     //Read the file line by line and place it into the buffer
     while (source_file.get_first_line(line)) {
-        *output << line.str() << std::endl;
-        LOG_DEBUG1 << "Source text line: " << line.str() << END_LOG;
+        //Reduce the string as there can be occasionally
+        //improper white spaces or too many!
+        string sent = line.str();
+        *output << reduce(sent) << std::endl;
+        LOG_DEBUG1 << "Source text line: " << sent << END_LOG;
     }
 
     //Close the source file
