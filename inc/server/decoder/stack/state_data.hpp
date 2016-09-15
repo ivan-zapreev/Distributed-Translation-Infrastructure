@@ -372,7 +372,8 @@ namespace uva {
                                 //Store the lin dist cost feature value without the lambda, so just the distance
                                 ADD_TUNING_FEATURE_SCORE(de_parameters::DE_LD_PENALTY_GLOBAL_ID, distance);
 
-                                return m_stack_data.m_params.m_lin_dist_penalty * distance;
+                                //Make linear distortion to be taken into account with the negative sign to match the Oyster
+                                return -(m_stack_data.m_params.m_lin_dist_penalty * distance);
                             }
 
                             /**
@@ -422,7 +423,8 @@ namespace uva {
                                 //It will be the number of words with the negative sign
                                 ADD_TUNING_FEATURE_SCORE(de_parameters::DE_WORD_PENALTY_GLOBAL_ID, m_target->get_num_words());
 
-                                return m_stack_data.m_params.m_word_penalty * m_target->get_num_words();
+                                //Make word penalty to be taken into account with the negative sign to match the Oyster
+                                return -(m_stack_data.m_params.m_word_penalty * m_target->get_num_words());
                             }
 
                             /**
