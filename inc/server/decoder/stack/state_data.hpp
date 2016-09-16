@@ -369,11 +369,13 @@ namespace uva {
                                     distance = m_stack_data.m_params.m_dist_limit;
                                 }
 
-                                //Store the lin dist cost feature value without the lambda, so just the distance
-                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_LD_PENALTY_GLOBAL_ID, distance);
+                                //Make the distance into a negative linear distortion penalty
+                                int32_t lin_dist_penalty = -1.0 * distance;
 
-                                //Make linear distortion to be taken into account with the negative sign to match the Oyster
-                                return -(m_stack_data.m_params.m_lin_dist_penalty * distance);
+                                //Store the lin dist cost feature value without the lambda, so just the distance
+                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_LD_PENALTY_GLOBAL_ID, lin_dist_penalty);
+
+                                return m_stack_data.m_params.m_lin_dist_penalty * lin_dist_penalty;
                             }
 
                             /**
@@ -419,12 +421,14 @@ namespace uva {
                              * @return the word penalty costs
                              */
                             inline prob_weight get_word_cost() {
+                                //Make the word penalty a negative value as it is a penalty by default
+                                int32_t word_penalty = -1 * m_target->get_num_words();
+
                                 //Store the word penalty feature value without the lambda
                                 //It will be the number of words with the negative sign
-                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_WORD_PENALTY_GLOBAL_ID, m_target->get_num_words());
+                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_WORD_PENALTY_GLOBAL_ID, word_penalty);
 
-                                //Make word penalty to be taken into account with the negative sign to match the Oyster
-                                return -(m_stack_data.m_params.m_word_penalty * m_target->get_num_words());
+                                return m_stack_data.m_params.m_word_penalty * word_penalty;
                             }
 
                             /**
