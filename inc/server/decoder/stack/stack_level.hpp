@@ -407,24 +407,9 @@ namespace uva {
                                 ASSERT_SANITY_THROW((m_first_state == NULL), "Bad pointer m_first_state == NULL");
                                 //Get the best state score
                                 const float best_score = m_first_state->m_state_data.m_total_score;
-                                //Compute the score lower bound
-                                if (best_score < 0.0) {
-                                    //If the best score is a negative value, which must be the most common
-                                    //case then just use the negative score multiplier for the threshold
-                                    m_score_bound = best_score * m_params.m_pruning_mult_neg;
-                                } else {
-                                    if (best_score > 0.0) {
-                                        //If the best score is a positive value then it is not very nice
-                                        //as the score is supposed to reflect the log_10 probability value,
-                                        //but it is still possible. Then we use a positive threshold multiplier
-                                        m_score_bound = best_score * m_params.m_pruning_mult_pos;
-                                    } else {
-                                        //If the best score is actually zero then we use the threshold as
-                                        //is, by this we will most likely make it just big and so the
-                                        //pruning will be done by the stack capacity mostly.
-                                        m_score_bound = -m_params.m_pruning_threshold;
-                                    }
-                                }
+                                
+                                //Compute the score lower bound, remember that we are in the log space
+                                m_score_bound = best_score + m_params.m_pruning_threshold_log;
 
                                 LOG_DEBUG1 << "new best state: " << m_first_state
                                         << ", new max score: " << best_score

@@ -30,6 +30,7 @@
 #include <ostream>
 #include <map>
 #include <utility>
+#include <cmath>
 
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/exceptions.hpp"
@@ -93,7 +94,7 @@ namespace uva {
                         static size_t DE_LD_PENALTY_GLOBAL_ID;
                         //The global id of the word penalty feature
                         static size_t DE_WORD_PENALTY_GLOBAL_ID;
-                        
+
                         //The distortion limit to use; <integer>
                         //The the number of words to the right and left
                         //from the last phrase end word to consider
@@ -107,12 +108,8 @@ namespace uva {
                         //The pruning threshold is to be a <positive float> it is 
                         //the %/100 deviation from the best hypothesis score. 
                         atomic<float> m_pruning_threshold;
-                        //The pruning multiplier for positive costs, is computed from the 
-                        //m_pruning_threshold automatically in the finalization function
-                        atomic<float> m_pruning_mult_neg;
-                        //The pruning multiplier for negative costs, is computed from the 
-                        //m_pruning_threshold automatically in the finalization function
-                        atomic<float> m_pruning_mult_pos;
+                        //The logarithm value of the pruning threshold
+                        atomic<float> m_pruning_threshold_log;
                         //The stack capacity for stack pruning
                         atomic<uint32_t> m_stack_capacity;
                         //Stores the word penalty - the cost of each target word
@@ -176,8 +173,7 @@ namespace uva {
                                 this->m_max_s_phrase_len = other.m_max_s_phrase_len;
                                 this->m_max_t_phrase_len = other.m_max_t_phrase_len;
                                 this->m_pruning_threshold = other.m_pruning_threshold.load();
-                                this->m_pruning_mult_neg = other.m_pruning_mult_neg.load();
-                                this->m_pruning_mult_pos = other.m_pruning_mult_pos.load();
+                                this->m_pruning_threshold_log = other.m_pruning_threshold_log.load();
                                 this->m_stack_capacity = other.m_stack_capacity.load();
                                 this->m_word_penalty = other.m_word_penalty.load();
                                 this->m_lin_dist_penalty = other.m_lin_dist_penalty.load();
@@ -217,14 +213,12 @@ namespace uva {
                                     string("The ") + DE_MAX_TP_LEN_PARAM_NAME + string(" must not be <= ") +
                                     to_string(tm::TM_MAX_TARGET_PHRASE_LEN));
 
-                            ASSERT_CONDITION_THROW((m_pruning_threshold <= 0.0),
+                            ASSERT_CONDITION_THROW(((m_pruning_threshold <= 0.0) || (m_pruning_threshold >= 1.0)),
                                     string("The ") + DE_PRUNING_THRESHOLD_PARAM_NAME +
-                                    string(" must be > 0.0!"));
+                                    string(" must be within an open interval (0.0, 1.0)!"));
 
-                            //Set the multiplier for the negative value
-                            m_pruning_mult_neg = 1.0 + m_pruning_threshold;
-                            //Set the multiplier for the positive value
-                            m_pruning_mult_pos = 1.0 - m_pruning_threshold;
+                            //Compute the log value of the pruning threshold
+                            m_pruning_threshold_log = std::log(m_pruning_threshold);
 
                             ASSERT_CONDITION_THROW((m_stack_capacity <= 0),
                                     string("The ") + DE_STACK_CAPACITY_PARAM_NAME +
