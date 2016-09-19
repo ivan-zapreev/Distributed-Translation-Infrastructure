@@ -243,8 +243,8 @@ namespace uva {
                                 LOG_DEBUG1 << "Starting to initialize the FROM and TO positions array" << END_LOG;
 
                                 //Compute the from and to position of the monotone move feature
-                                FROM_POSITIONS[0] = 0;
-                                TO_POSITIONS[0] = HALF_NUMBER_OF_FEATURES;
+                                TO_POSITIONS[0] = 0; //The to features are the first half of the vector
+                                FROM_POSITIONS[0] = HALF_NUMBER_OF_FEATURES; //The to features are the second
 
                                 //Initialize the from and to positions in the loop
                                 for (int8_t idx = 1; idx < HALF_MAX_NUM_RM_FEATURES; ++idx) {
