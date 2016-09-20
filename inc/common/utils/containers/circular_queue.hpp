@@ -168,11 +168,13 @@ namespace uva {
                     if ((m_size >= num_elems) && (other.m_size >= num_elems)) {
                         //Compare the last num_elems elements
                         return (memcmp((m_elems + (m_size - num_elems)),
-                                (other.m_elems + (other.m_size - num_elems)), num_elems) == 0);
+                                (other.m_elems + (other.m_size - num_elems)),
+                                num_elems * sizeof(elem_type)) == 0);
                     } else {
                         if (m_size == other.m_size) {
                             //The number of elements is equal so compare the last m_size elements
-                            return (memcmp(m_elems, other.m_elems, m_size) == 0);
+                            return (memcmp(m_elems, other.m_elems,
+                                    m_size * sizeof(elem_type)) == 0);
                         } else {
                             //The number of last elements is different and
                             //at least one queue has less than num_elems

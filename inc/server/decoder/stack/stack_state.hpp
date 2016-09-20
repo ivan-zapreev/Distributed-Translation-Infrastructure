@@ -378,9 +378,8 @@ namespace uva {
                                 //Compute the comparison result
                                 const bool is_equal = (m_state_data.m_s_end_word_idx == other_data.m_s_end_word_idx) &&
                                         (m_state_data.m_trans_frame.is_equal_last(other_data.m_trans_frame, MAX_HISTORY_LENGTH)) &&
-                                        (m_state_data.m_covered == other_data.m_covered) &&
-                                        (m_state_data.rm_entry_data == other_data.rm_entry_data);   //Is needed for lexicolized reordering model
-
+                                        (m_state_data.m_covered == other_data.m_covered);
+                                
                                 //Log the comparison result
                                 LOG_DEBUG3 << "Result, state: " << this << (is_equal ? " == " : " != ") << &other << END_LOG;
 
