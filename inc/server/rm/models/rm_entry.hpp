@@ -156,6 +156,22 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to check if the from feature weight entries of this
+                             * reordering entry are the same as that of the other one.
+                             * This method is to be used e.g. in recombination, when checking
+                             * for two hypothesis state equivalence
+                             * @param other the other reordering entry
+                             * @return true if the from feature weights of this entry are equal to the
+                             *              from feature weights of the other entry, otherwise false.
+                             */
+                            inline bool is_equal_from_weights(const rm_entry & other) const {
+                                return (memcmp((this->m_weights + HALF_NUMBER_OF_FEATURES),
+                                        (other.m_weights + HALF_NUMBER_OF_FEATURES),
+                                        HALF_NUMBER_OF_FEATURES * sizeof (prob_weight)) == 0);
+
+                            }
+
+                            /**
                              * The comparison operator, allows to compare entries
                              * @param phrase_uid the unique identifier of the source/target phrase pair entry to compare with
                              * @return true if the provided uid is equal to the uid of this entry, otherwise false 
@@ -236,9 +252,8 @@ namespace uva {
 
                                 //Store the number of features
                                 NUMBER_OF_FEATURES = num_features;
-
                                 //Compute the number of feature types
-                                const int8_t HALF_NUMBER_OF_FEATURES = NUMBER_OF_FEATURES / 2;
+                                HALF_NUMBER_OF_FEATURES = NUMBER_OF_FEATURES / 2;
 
                                 LOG_DEBUG1 << "Starting to initialize the FROM and TO positions array" << END_LOG;
 
@@ -265,6 +280,8 @@ namespace uva {
                             //Stores the number of weights constant for the reordering entry
                             //This value is initialized before the RM model is loaded
                             static int8_t NUMBER_OF_FEATURES;
+                            //Stores the half number of features
+                            static int8_t HALF_NUMBER_OF_FEATURES;
                             //Stores the difference move position indexes in the feature array
                             //These values are initialized before the RM model is loaded
                             static int8_t FROM_POSITIONS[HALF_MAX_NUM_RM_FEATURES];
