@@ -422,13 +422,13 @@ namespace uva {
                              */
                             inline prob_weight get_word_cost() {
                                 //Make the word penalty a negative value as it is a penalty by default
-                                int32_t word_penalty = -1 * m_target->get_num_words();
+                                int32_t word_cost = -1 * m_target->get_num_words();
 
                                 //Store the word penalty feature value without the lambda
                                 //It will be the number of words with the negative sign
-                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_WORD_PENALTY_GLOBAL_ID, word_penalty);
+                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_WORD_PENALTY_GLOBAL_ID, word_cost);
 
-                                return m_stack_data.m_params.m_word_penalty * word_penalty;
+                                return m_stack_data.m_params.m_word_penalty * word_cost;
                             }
 
                             /**
@@ -532,27 +532,27 @@ namespace uva {
                                 //Iterate through all the non-translated phrase spans and add the future costs thereof
                                 phrase_length begin_idx = m_stack_data.m_sent_data.m_min_idx;
                                 while (begin_idx <= m_stack_data.m_sent_data.m_max_idx) {
-                                    LOG_DEBUG3 << "m_covered[" << begin_idx << "] = "
+                                    LOG_DEBUG2 << "m_covered[" << begin_idx << "] = "
                                             << (m_covered[begin_idx] ? "true" : "false") << END_LOG;
 
                                     if (!m_covered[begin_idx]) {
                                         //Start from the begin word, as may be this is the only uncovered word left.
                                         phrase_length end_idx = begin_idx;
 
-                                        LOG_DEBUG3 << "first end_idx: " << end_idx << END_LOG;
+                                        LOG_DEBUG2 << "first end_idx: " << end_idx << END_LOG;
 
                                         //Iterate until we are beyond the last word or the word is covered
                                         while ((end_idx <= m_stack_data.m_sent_data.m_max_idx) && !m_covered[end_idx]) {
                                             ++end_idx;
-                                            LOG_DEBUG3 << "Considering end_idx: " << end_idx << END_LOG;
+                                            LOG_DEBUG2 << "Considering end_idx: " << end_idx << END_LOG;
                                         }
 
-                                        LOG_DEBUG3 << "First bad end_idx: " << end_idx << " the previous was good!" << END_LOG;
+                                        LOG_DEBUG2 << "First bad end_idx: " << end_idx << " the previous was good!" << END_LOG;
 
                                         //The previous end word was the last good one, add the span's costs
                                         total_score += m_stack_data.m_sent_data[begin_idx][end_idx - 1].future_cost;
 
-                                        LOG_DEBUG3 << "total score + future_cost[" << begin_idx << ", "
+                                        LOG_DEBUG2 << "total score + future_cost[" << begin_idx << ", "
                                                 << (end_idx - 1) << "]: " << total_score << END_LOG;
 
                                         //Start searching further from the first word after the bad one we just found
@@ -562,7 +562,7 @@ namespace uva {
                                         ++begin_idx;
                                     }
 
-                                    LOG_DEBUG3 << "next begin_idx: " << begin_idx << END_LOG;
+                                    LOG_DEBUG2 << "next begin_idx: " << begin_idx << END_LOG;
                                 }
 
                                 LOG_DEBUG1 << "Total score: " << total_score << END_LOG;
