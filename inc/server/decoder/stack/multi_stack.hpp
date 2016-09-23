@@ -153,6 +153,7 @@ namespace uva {
 
                                     //Iterate through the levels and delete them
                                     for (int32_t level = MIN_STACK_LEVEL; level < m_num_levels; ++level) {
+                                        LOG_DEBUG1 << "Destructing level " << this << " (" << level << ")" << END_LOG;
                                         delete m_levels[level];
                                     }
 

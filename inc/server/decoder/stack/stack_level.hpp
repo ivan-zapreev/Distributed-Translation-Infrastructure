@@ -126,7 +126,7 @@ namespace uva {
                              * The basic destructor, this implementation is iterative.
                              */
                             ~stack_level_templ() {
-                                LOG_DEBUG1 << "Destructing level" << this << ", # states: " << m_size << END_LOG;
+                                LOG_DEBUG1 << "Destructing level " << this << ", # states: " << m_size << END_LOG;
 
                                 //Delete the states one by one
                                 stack_state_ptr curr_state = m_first_state;

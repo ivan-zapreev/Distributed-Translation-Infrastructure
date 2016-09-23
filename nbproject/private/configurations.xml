@@ -612,29 +612,86 @@
       </df>
       <df name="client">
         <df name="messaging">
+          <in>proc_req_out.hpp</in>
+          <in>proc_resp_in.hpp</in>
+          <in>supp_lang_req_out.hpp</in>
+          <in>supp_lang_resp_in.hpp</in>
+          <in>trans_job_req_out.hpp</in>
+          <in>trans_job_resp_in.hpp</in>
+          <in>trans_sent_data_in.hpp</in>
         </df>
         <in>client_consts.hpp</in>
+        <in>client_manager.hpp</in>
+        <in>client_parameters.hpp</in>
+        <in>generic_client.hpp</in>
         <in>proc_manager.hpp</in>
         <in>trans_job.hpp</in>
+        <in>trans_job_status.hpp</in>
+        <in>trans_manager.hpp</in>
       </df>
       <df name="common">
         <df name="messaging">
+          <in>incoming_msg.hpp</in>
+          <in>job_id.hpp</in>
+          <in>language_registry.hpp</in>
+          <in>msg_base.hpp</in>
+          <in>outgoing_msg.hpp</in>
+          <in>proc_req.hpp</in>
+          <in>proc_resp.hpp</in>
+          <in>request_msg.hpp</in>
+          <in>response_msg.hpp</in>
+          <in>session_job_pool_base.hpp</in>
+          <in>session_manager.hpp</in>
+          <in>status_code.hpp</in>
+          <in>supp_lang_req.hpp</in>
+          <in>supp_lang_resp.hpp</in>
+          <in>trans_job_req.hpp</in>
+          <in>trans_job_resp.hpp</in>
+          <in>trans_sent_data.hpp</in>
+          <in>trans_session_id.hpp</in>
+          <in>websocket_server.hpp</in>
         </df>
         <df name="utils">
           <df name="cmd">
+            <in>cmd_line_base.hpp</in>
           </df>
           <df name="containers">
+            <in>array_utils.hpp</in>
+            <in>circular_queue.hpp</in>
+            <in>dynamic_memory_arrays.hpp</in>
+            <in>fixed_size_hashmap.hpp</in>
+            <in>greedy_memory_allocator.hpp</in>
+            <in>greedy_memory_storage.hpp</in>
+            <in>ordered_list.hpp</in>
+            <in>upp_diag_matrix.hpp</in>
           </df>
           <df name="file">
+            <in>afile_reader.hpp</in>
+            <in>cstyle_file_reader.hpp</in>
+            <in>file_stream_reader.hpp</in>
+            <in>memory_mapped_file_reader.hpp</in>
+            <in>text_piece_reader.hpp</in>
+            <in>utils.hpp</in>
           </df>
           <df name="logging">
+            <in>logger.hpp</in>
           </df>
           <df name="monitor">
+            <in>statistics_monitor.hpp</in>
           </df>
           <df name="text">
+            <in>string_utils.hpp</in>
+            <in>utf8_utils.hpp</in>
           </df>
           <df name="threads">
+            <in>task_pool.hpp</in>
+            <in>task_pool_worker.hpp</in>
+            <in>threads.hpp</in>
           </df>
+          <in>exceptions.hpp</in>
+          <in>hashing_utils.hpp</in>
+          <in>id_manager.hpp</in>
+          <in>math_utils.hpp</in>
         </df>
       </df>
       <df name="processor">

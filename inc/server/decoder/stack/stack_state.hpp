@@ -187,12 +187,14 @@ namespace uva {
                              * @param this_dump the stream to dump the from state into
                              */
                             inline void dump_to_from_se_state_data(ostream & this_dump) const {
-                                LOG_DEBUG1 << "Dumping the SE FROM state " << m_state_id << " to the search lattice" << END_LOG;
+                                LOG_DEBUG1 << "Dumping the SE FROM state " << this << " ("
+                                        << m_state_id << ") to the search lattice" << END_LOG;
 
                                 //Dump the data into the lattice
                                 this_dump << to_string(m_state_id) << "||||||0";
 
-                                LOG_DEBUG1 << "Dumping the SE FROM state " << m_state_id << " to the lattice is done" << END_LOG;
+                                LOG_DEBUG1 << "Dumping the SE FROM state " << this << " ("
+                                        << m_state_id << ") to the lattice is done" << END_LOG;
                             }
 
                             /**
@@ -206,7 +208,8 @@ namespace uva {
                              */
                             inline void dump_to_from_state_data(ostream & this_dump, ostream & covers_dump,
                                     const stack_state & to_state, const stack_state & main_to_state) const {
-                                LOG_DEBUG1 << "Dumping the FROM state " << m_state_id << " to the search lattice" << END_LOG;
+                                LOG_DEBUG1 << "Dumping the FROM state " << this << " ("
+                                        << m_state_id << ") to the search lattice" << END_LOG;
 
                                 //Extract the target translation string.
                                 string target = "";
@@ -221,7 +224,8 @@ namespace uva {
                                         << ":" << to_string(to_state.m_state_data.m_s_begin_word_idx)
                                         << ":" << to_string(to_state.m_state_data.m_s_end_word_idx) << " ";
 
-                                LOG_DEBUG1 << "Dumping the FROM state " << m_state_id << " to the lattice is done" << END_LOG;
+                                LOG_DEBUG1 << "Dumping the FROM state " << this << " ("
+                                        << m_state_id << ") to the lattice is done" << END_LOG;
                             }
 
                             /**
@@ -231,6 +235,9 @@ namespace uva {
                              * @param covers_dump the stream for dumping the cover vectors
                              */
                             inline void dump_to_state_data(ostream & this_dump, ostream & scores_dump, ostream & covers_dump) const {
+                                LOG_DEBUG1 << "Dumping the TO state " << this << " ("
+                                        << m_state_id << ") to the search lattice" << END_LOG;
+                                
                                 //Assert sanity that the only state with no parent is the rood one with the zero id.
                                 ASSERT_SANITY_THROW((m_parent != NULL)&&(m_state_id == INITIAL_STATE_ID),
                                         string("The parent is present but the root state id is ") + to_string(INITIAL_STATE_ID));
@@ -273,7 +280,10 @@ namespace uva {
                                     //Mark the state as dumped 
                                     const_cast<bool &> (m_is_not_dumped) = false;
                                 }
-                            }
+
+                                LOG_DEBUG1 << "Dumping the TO state " << this << " ("
+                                        << m_state_id << ") to the lattice is done" << END_LOG;
+                             }
 #endif
 
                             /**
@@ -378,9 +388,9 @@ namespace uva {
                                 //Compute the comparison result
                                 const bool is_equal = (m_state_data.m_s_end_word_idx == other_data.m_s_end_word_idx) &&
                                         m_state_data.m_trans_frame.is_equal_last(other_data.m_trans_frame, MAX_HISTORY_LENGTH) &&
-                                        (m_state_data.m_covered == other_data.m_covered) && 
+                                        (m_state_data.m_covered == other_data.m_covered) &&
                                         m_state_data.rm_entry_data.is_equal_from_weights(other_data.rm_entry_data);
-                                
+
                                 //Log the comparison result
                                 LOG_DEBUG3 << "Result, state: " << this << (is_equal ? " == " : " != ") << &other << END_LOG;
 
@@ -454,17 +464,17 @@ namespace uva {
                                     //we need to append the two lists together, the order is not important
                                     //We assume that the other state we are recombining into this one has
                                     //fewer recombined-from states, so we put it as a first one
-                                    
+
                                     //First skip worward untill the last one
                                     stack_state_ptr cursor = other_state;
-                                    while(cursor->m_next != NULL){
+                                    while (cursor->m_next != NULL) {
                                         cursor = cursor->m_next;
                                     }
-                                    
+
                                     //Set the current recombined from as the last one
                                     cursor->m_next = m_recomb_from;
                                     m_recomb_from->m_prev = cursor;
-                                    
+
                                     //Set the other state as the first in the list
                                     m_recomb_from = other_state;
                                 }
