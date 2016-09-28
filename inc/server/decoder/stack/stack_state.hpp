@@ -255,12 +255,18 @@ namespace uva {
 
                                     //Declare the stream to store the parent's data
                                     stringstream parents_dump;
+                                    
+                                    LOG_DEBUG1 << "Dumping the PARENT state of state "
+                                            << this << " (" << m_state_id << ")" << END_LOG;
 
                                     //Dump the state's parent as its from state 
                                     m_parent->dump_to_from_state_data(this_dump, covers_dump, *this, *this);
                                     //Dump as a to state into the parent dump
                                     m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
-
+                                    
+                                    LOG_DEBUG1 << "Dumping the RECOPMBINED FROM states of the TO state "
+                                            << this << " (" << m_state_id << ")" << END_LOG;
+                                    
                                     //Dump the parents of the recombined from states, if any
                                     stack_state_ptr rec_from = m_recomb_from;
                                     while (rec_from != NULL) {
