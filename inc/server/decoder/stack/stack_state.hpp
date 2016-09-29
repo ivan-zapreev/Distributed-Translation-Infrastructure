@@ -471,7 +471,7 @@ namespace uva {
                                     //We assume that the other state we are recombining into this one has
                                     //fewer recombined-from states, so we put it as a first one
 
-                                    //First skip worward untill the last one
+                                    //First skip forward until the last one
                                     stack_state_ptr cursor = other_state;
                                     while (cursor->m_next != NULL) {
                                         cursor = cursor->m_next;
