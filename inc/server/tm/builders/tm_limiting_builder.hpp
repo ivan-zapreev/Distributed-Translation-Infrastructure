@@ -182,7 +182,7 @@ namespace uva {
                                 }
 
                                 //Set the unk features to the model
-                                m_model.set_unk_entry(UNKNOWN_WORD_ID, unk_features,
+                                m_model.set_unk_entry(UNKNOWN_WORD_ID, unk_features, m_params.m_wp_lambda,
                                         m_lm_query.get_unk_word_prob(), pure_unk_features);
                             }
 
@@ -294,7 +294,7 @@ namespace uva {
                                     entry = new tm_target_entry();
                                     entry->set_data(source_uid, target_str, target_uid,
                                             tmp_features, m_tmp_num_words, m_tmp_word_ids,
-                                            tmp_pure_features);
+                                            m_params.m_wp_lambda, tmp_pure_features);
 
                                     LOG_DEBUG1 << "The source/target (" << source_uid
                                             << "/" << target_uid << ") entry was created!" << END_LOG;

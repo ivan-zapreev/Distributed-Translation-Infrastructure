@@ -297,7 +297,7 @@ namespace uva {
                                     //Initiate a new target entry
                                     source_entry->add_target(target_str, target_uid,
                                             tmp_features, m_tmp_num_words, m_tmp_word_ids,
-                                            lm_weight, tmp_pure_features);
+                                            m_params.m_wp_lambda, lm_weight, tmp_pure_features);
 
                                     //Reduce the counter
                                     count_ref--;
@@ -487,7 +487,7 @@ namespace uva {
                                 }
 
                                 //Set the unk features to the model
-                                m_model.set_unk_entry(UNKNOWN_WORD_ID, unk_features,
+                                m_model.set_unk_entry(UNKNOWN_WORD_ID, unk_features, m_params.m_wp_lambda,
                                         m_lm_query.get_unk_word_prob(), pure_unk_features);
                             }
 

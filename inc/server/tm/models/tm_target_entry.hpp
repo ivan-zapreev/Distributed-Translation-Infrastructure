@@ -73,8 +73,8 @@ namespace uva {
                              * The basic constructor
                              */
                             tm_target_entry()
-                            : m_target_phrase(""), m_num_words(0), m_word_ids(NULL), m_st_uid(UNDEFINED_PHRASE_ID),
-                            m_t_cond_s(UNKNOWN_LOG_PROB_WEIGHT), m_total_weight(UNKNOWN_LOG_PROB_WEIGHT) {
+                            : m_target_phrase(""), m_num_words(0), m_word_ids(NULL),
+                            m_st_uid(UNDEFINED_PHRASE_ID), m_total_weight(UNKNOWN_LOG_PROB_WEIGHT) {
                                 //Check that the number of features is set
                                 ASSERT_SANITY_THROW((NUMBER_OF_FEATURES == 0),
                                         "The NUMBER_OF_FEATURES has not been set!");
@@ -106,7 +106,7 @@ namespace uva {
                              * @return true if the total weight of this entry is smaller than the total weight of the other entry
                              */
                             inline bool operator<(const tm_target_entry & other) const {
-                                return get_total_weight<false>() < other.get_total_weight<false>();
+                                return get_tm_cost<false>() < other.get_tm_cost<false>();
                             }
 
                             /**
@@ -118,13 +118,15 @@ namespace uva {
                              * @param features the weights to be set into the entry
                              * @param num_words the number of words in the target translation
                              * @param word_ids the LM word ids for the target phrase 
+                             * @param wp_lambda the word penalty lambda weight
                              * @param pure_features the feature values without the lambda weights,
                              *        to be stored for server tuning mode, default is NULL
                              */
                             inline void set_data(const phrase_uid source_uid,
                                     const string & target_phrase, const phrase_uid target_uid,
                                     const prob_weight * features, const phrase_length num_words,
-                                    const word_uid * word_ids, const prob_weight * pure_features = NULL) {
+                                    const word_uid * word_ids, const prob_weight wp_lambda,
+                                    const prob_weight * pure_features = NULL) {
                                 //Store the target phrase
                                 m_target_phrase = target_phrase;
 
@@ -137,7 +139,7 @@ namespace uva {
                                 m_st_uid = combine_phrase_uids(source_uid, target_uid);
 
                                 //Set the features 
-                                set_features(features, pure_features);
+                                set_features(features, wp_lambda, pure_features);
 
                                 LOG_DEBUG1 << "Adding the source/target (" << source_uid << "/"
                                         << target_uid << ") entry with id" << m_st_uid << END_LOG;
@@ -163,8 +165,6 @@ namespace uva {
 
                                 //Copy the source/target uid
                                 m_st_uid = other.m_st_uid;
-                                //Copy the features[2] = p(e|f);
-                                m_t_cond_s = other.m_t_cond_s;
                                 //Copy the total weight
                                 m_total_weight = other.m_total_weight;
 
@@ -201,15 +201,15 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to get the total weight of the entry, the sum
-                             * of features that are turned into log_e scale.
+                             * Allows to get the total weight of the entry, the sum of features 
+                             * that are turned into log_e scale and the word penalty.
                              * @param is_consider_scores if true then the scores will be considered in the tuning mode
                              * @param scores the pointer to the array of feature scores that is to 
                              *               be filled in, unless the provided pointer is NULL.
                              * @return the total weight of the entry, the sum of feature weights
                              */
                             template<bool is_consider_scores = true>
-                            inline const prob_weight get_total_weight(prob_weight * scores = NULL) const {
+                            inline const prob_weight get_tm_cost(prob_weight * scores = NULL) const {
 #if IS_SERVER_TUNING_MODE
                                 if (is_consider_scores) {
                                     ASSERT_SANITY_THROW((NUMBER_OF_FEATURES == 0), string("The number of features is zero!"));
@@ -221,17 +221,11 @@ namespace uva {
                                         LOG_DEBUG2 << tm_parameters::TM_WEIGHT_NAMES[idx] << " = " << m_pure_features[idx] << END_LOG;
                                     }
                                 }
+
+                                //Store the pure word penalty
+                                scores[tm_parameters::TM_WP_LAMBDA_GLOBAL_ID] = -1 * m_num_words;
 #endif
                                 return m_total_weight;
-                            }
-
-                            /**
-                             * Allows to get the value of the third feature which is the log_e(p(e|f))
-                             * @return  the value of the third feature which is the log_e(p(e|f))
-                             */
-                            inline const prob_weight get_t_c_s() const {
-                                LOG_DEBUG << "m_t_cond_s : " << m_t_cond_s << END_LOG;
-                                return m_t_cond_s;
                             }
 
                             /**
@@ -282,6 +276,7 @@ namespace uva {
                              * Allows to set the weights into the target entry.
                              * \todo Get rid of magic constants in this function!
                              * @param features the weights to be set into the entry
+                             * @param wp_lambda the word penalty lambda weight
                              * @param pure_features the feature values without the lambda weights,
                              *        to be stored for server tuning mode, default is NULL
                              * This is an array of translation weights, as we have here:
@@ -291,7 +286,7 @@ namespace uva {
                              * features[3] = lex(p(e|f));
                              * features[4] = phrase penalty;
                              */
-                            inline void set_features(const prob_weight * features, const prob_weight * pure_features = NULL) {
+                            inline void set_features(const prob_weight * features, const prob_weight wp_lambda, const prob_weight * pure_features = NULL) {
 #if IS_SERVER_TUNING_MODE
                                 //Check that the pure features list is present
                                 ASSERT_SANITY_THROW((pure_features == NULL), "The pure_features is NULL!");
@@ -310,15 +305,15 @@ namespace uva {
                                 for (int8_t idx = 0; idx < NUMBER_OF_FEATURES; ++idx) {
                                     m_total_weight += features[idx];
                                 }
+                                
+                                //Add the word penalty to the total score!
+                                m_total_weight -= wp_lambda * m_num_words;
 
                                 //Check that we have enough features
                                 //ToDo: Why 3 and 2, later on? We shall change this into
                                 //      a constant and this kind of check is also bogus ...
                                 ASSERT_SANITY_THROW((NUMBER_OF_FEATURES < 3),
                                         "The must be at least 3 features, p(e|f) is not known!");
-
-                                //Store the target conditioned on source probability
-                                m_t_cond_s = features[2];
                             }
 
                         private:
@@ -335,9 +330,6 @@ namespace uva {
 
                             //Stores the source/target phrase id
                             phrase_uid m_st_uid;
-
-                            //Stores the features[2] = p(e|f);
-                            prob_weight m_t_cond_s;
 
                             //Stores the total features weight of the entity
                             prob_weight m_total_weight;

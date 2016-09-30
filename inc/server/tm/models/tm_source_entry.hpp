@@ -152,7 +152,7 @@ namespace uva {
                                 entry.move_from(target);
 
                                 //Compute the minimum cost which in log space is a maximum value
-                                m_min_cost = max(m_min_cost, (entry.get_t_c_s() + lm_weight));
+                                update_minimum_cost(entry, lm_weight);
                             }
 
                             /**
@@ -162,14 +162,15 @@ namespace uva {
                              * @param weights the features to put into the entry
                              * @param num_words the number of words in the target translation
                              * @param word_ids the LM word ids for the target phrase
+                             * @param wp_lambda the word penalty lambda weight
                              * @param lm_weight the cost of the target translation from the LM model
                              * @param pure_features the feature values without the lambda weights,
                              *        to be stored for server tuning mode, default is NULL
                              */
                             inline void add_target(const string & target, const phrase_uid target_uid,
                                     const prob_weight * features, const phrase_length num_words,
-                                    const word_uid * word_ids, const prob_weight lm_weight,
-                                    const prob_weight * pure_features = NULL) {
+                                    const word_uid * word_ids, const prob_weight wp_lambda,
+                                    const prob_weight lm_weight, const prob_weight * pure_features = NULL) {
                                 //Perform a sanity check
                                 ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
                                         string("Exceeding the source entry capacity: ") + to_string(m_capacity));
@@ -179,10 +180,11 @@ namespace uva {
 
                                 //Set the entry's target phrase and its id
                                 entry.set_data(m_source_uid, target, target_uid,
-                                        features, num_words, word_ids, pure_features);
+                                        features, num_words, word_ids,
+                                        wp_lambda, pure_features);
 
                                 //Compute the minimum cost which in log space is a maximum value
-                                m_min_cost = max(m_min_cost, (entry.get_t_c_s() + lm_weight));
+                                update_minimum_cost(entry, lm_weight);
                             }
 
                             /**
@@ -286,6 +288,17 @@ namespace uva {
                             size_t m_next_idx;
                             //Stores the maximum cost of all translations
                             prob_weight m_min_cost;
+
+                            /**
+                             * Allows to compute/estimate the minimum translation cost of the given source entry.
+                             * We use the total weight (including the phrase penalty) the language model cost of
+                             * the target phrase, and the word penalty
+                             * @param entry the target entry to consider
+                             * @param lm_weight the language model weight of the given target entry
+                             */
+                            inline void update_minimum_cost(tm_target_entry & entry, const prob_weight lm_weight) {
+                                m_min_cost = max(m_min_cost, (entry.get_tm_cost<false>() + lm_weight));
+                            }
                         };
 
                         //Define the constant source entry

@@ -94,11 +94,12 @@ namespace uva {
                              * Should be called to add the unk entry to the model
                              * @param unk_word_id the unknown word id from the Language Model
                              * @param unk_features the unk entry features
+                             * @param wp_lambda the word penalty lambda weight
                              * @param lm_weight the cost of the target (UNK) translation from the LM model
                              * @param pure_features the feature values without the lambda weights,
                              *        to be stored for server tuning mode, default is NULL
                              */
-                            void set_unk_entry(word_uid unk_word_id, feature_array unk_features,
+                            void set_unk_entry(word_uid unk_word_id, feature_array unk_features, const prob_weight wp_lambda,
                                     const prob_weight lm_weight, const prob_weight * pure_features = NULL) {
                                 //Initialize the UNK entry
                                 m_unk_entry = new tm_source_entry();
@@ -119,13 +120,13 @@ namespace uva {
                                 //Add the translation entry
                                 m_unk_entry->add_target(
                                         tm::TM_UNKNOWN_TARGET_STR, UNKNOWN_PHRASE_ID,
-                                        unk_features, num_words, word_ids,
+                                        unk_features, num_words, word_ids, wp_lambda,
                                         lm_weight, pure_features);
 
                                 //Finalize the source entry
                                 m_unk_entry->finalize();
 
-                                LOG_DEBUG << "The UNK translation total weight is: " << m_unk_entry->get_targets()[0].get_total_weight() << END_LOG;
+                                LOG_DEBUG << "The UNK translation total weight is: " << m_unk_entry->get_targets()[0].get_tm_cost() << END_LOG;
                             }
 
                             /**

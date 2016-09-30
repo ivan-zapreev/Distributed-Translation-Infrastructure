@@ -71,6 +71,10 @@ namespace uva {
                         static const string TM_WEIGHT_NAMES[MAX_NUM_TM_FEATURES];
                         //The feature weight names
                         static size_t TM_WEIGHT_GLOBAL_IDS[MAX_NUM_TM_FEATURES];
+                        //The word penalty weight parameter name
+                        static const string TM_WP_LAMBDA_PARAM_NAME;
+                        //The global id of the word penalty feature
+                        static size_t TM_WP_LAMBDA_GLOBAL_ID;
 
                         //The the connection string needed to connect to the model
                         string m_conn_string;
@@ -96,6 +100,9 @@ namespace uva {
                         //model, this is not log probability, and also is used for
                         //without feature weights
                         float m_min_tran_prob;
+                        
+                        //Stores the word penalty lambda - the cost of each target word
+                        float m_wp_lambda;
 
                         /**
                          * Allows to get the features weights used in the corresponding model.
@@ -109,6 +116,8 @@ namespace uva {
                                 //Add the feature global id to its name mapping
                                 registry.add_feature(source, TM_WEIGHT_NAMES[idx], TM_WEIGHT_GLOBAL_IDS[idx]);
                             }
+                            //Add the word penalty feature
+                            registry.add_feature(source, TM_WP_LAMBDA_PARAM_NAME, TM_WP_LAMBDA_GLOBAL_ID);
                         }
 
                         /**
@@ -163,6 +172,7 @@ namespace uva {
                                 params.m_unk_features, TM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << ", " << tm_parameters::TM_TRANS_LIM_PARAM_NAME << " = " << params.m_trans_limit
                                 << ", " << tm_parameters::TM_MIN_TRANS_PROB_PARAM_NAME << " = " << params.m_min_tran_prob
+                                << ", " << tm_parameters::TM_WP_LAMBDA_PARAM_NAME << " = " << params.m_wp_lambda
                                 << " ]";
                     }
                 }

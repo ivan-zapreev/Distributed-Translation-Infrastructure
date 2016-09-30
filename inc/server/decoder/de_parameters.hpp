@@ -71,9 +71,6 @@ namespace uva {
                         static const string DE_MAX_SP_LEN_PARAM_NAME;
                         //The maximum target phrase length parameter name
                         static const string DE_MAX_TP_LEN_PARAM_NAME;
-
-                        //The word penalty weight parameter name
-                        static const string DE_WORD_PENALTY_PARAM_NAME;
                         //The linear distortion weight parameter name
                         static const string DE_DIST_LIMIT_PARAM_NAME;
                         //The distortion limit parameter name
@@ -92,8 +89,6 @@ namespace uva {
 
                         //The global id of the linear distortion feature
                         static size_t DE_LD_PENALTY_GLOBAL_ID;
-                        //The global id of the word penalty feature
-                        static size_t DE_WORD_PENALTY_GLOBAL_ID;
 
                         //The distortion limit to use; <integer>
                         //The the number of words to the right and left
@@ -112,8 +107,6 @@ namespace uva {
                         atomic<float> m_pruning_threshold_log;
                         //The stack capacity for stack pruning
                         atomic<uint32_t> m_stack_capacity;
-                        //Stores the word penalty - the cost of each target word
-                        atomic<float> m_word_penalty;
                         //Stores the linear distortion lambda parameter value
                         atomic<float> m_lin_dist_penalty;
 
@@ -153,7 +146,6 @@ namespace uva {
                             const string source = __FILENAME__;
                             //Add the feature weight names and increment the weight count
                             registry.add_feature(source, DE_LD_PENALTY_PARAM_NAME, DE_LD_PENALTY_GLOBAL_ID);
-                            registry.add_feature(source, DE_WORD_PENALTY_PARAM_NAME, DE_WORD_PENALTY_GLOBAL_ID);
                         }
 
                         /**
@@ -175,7 +167,6 @@ namespace uva {
                                 this->m_pruning_threshold = other.m_pruning_threshold.load();
                                 this->m_pruning_threshold_log = other.m_pruning_threshold_log.load();
                                 this->m_stack_capacity = other.m_stack_capacity.load();
-                                this->m_word_penalty = other.m_word_penalty.load();
                                 this->m_lin_dist_penalty = other.m_lin_dist_penalty.load();
                                 this->m_is_gen_lattice = other.m_is_gen_lattice.load();
                                 this->m_lattices_folder = other.m_lattices_folder;
@@ -287,7 +278,6 @@ namespace uva {
                         //Log simple value parameters
                         stream << ", " << de_parameters::DE_PRUNING_THRESHOLD_PARAM_NAME << " = " << params.m_pruning_threshold
                                 << ", " << de_parameters::DE_STACK_CAPACITY_PARAM_NAME << " = " << params.m_stack_capacity
-                                << ", " << de_parameters::DE_WORD_PENALTY_PARAM_NAME << " = " << params.m_word_penalty
                                 << ", " << de_parameters::DE_MAX_SP_LEN_PARAM_NAME << " = " << to_string(params.m_max_s_phrase_len)
                                 << ", " << de_parameters::DE_MAX_TP_LEN_PARAM_NAME << " = " << to_string(params.m_max_t_phrase_len)
                                 << ", " << de_parameters::DE_IS_GEN_LATTICE_PARAM_NAME << " = " << (params.m_is_gen_lattice ? "true" : "false");

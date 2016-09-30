@@ -30,7 +30,6 @@ namespace uva {
                 static const string PROGRAM_SET_EDL_CMD = "set edl ";
                 static const string PROGRAM_SET_PT_CMD = "set pt ";
                 static const string PROGRAM_SET_SC_CMD = "set sc ";
-                static const string PROGRAM_SET_WP_CMD = "set wp ";
                 static const string PROGRAM_SET_LDP_CMD = "set ldp ";
                 static const string PROGRAM_SET_GL_CMD = "set gl ";
 
@@ -72,7 +71,6 @@ namespace uva {
                         print_command_help(PROGRAM_SET_PT_CMD, "<unsigned float>", "set pruning threshold");
                         print_command_help(PROGRAM_SET_SC_CMD, "<integer>", "set stack capacity");
                         print_command_help(PROGRAM_SET_LDP_CMD, "<float>", "set linear distortion penalty");
-                        print_command_help(PROGRAM_SET_WP_CMD, "<float>", "set word penalty");
 #if IS_SERVER_TUNING_MODE
                         print_command_help(PROGRAM_SET_GL_CMD, "<bool>", "enable/disable search lattice generation");
 #endif
@@ -174,10 +172,6 @@ namespace uva {
                             }
                             if (begins_with(cmd, PROGRAM_SET_SC_CMD)) {
                                 de_local.m_stack_capacity = get_int_value(cmd, PROGRAM_SET_SC_CMD);
-                                is_recognized = true;
-                            }
-                            if (begins_with(cmd, PROGRAM_SET_WP_CMD)) {
-                                de_local.m_word_penalty = get_float_value(cmd, PROGRAM_SET_WP_CMD);
                                 is_recognized = true;
                             }
                             if (begins_with(cmd, PROGRAM_SET_LDP_CMD)) {

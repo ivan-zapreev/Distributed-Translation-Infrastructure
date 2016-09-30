@@ -413,22 +413,7 @@ namespace uva {
                              */
                             inline prob_weight get_tm_cost() {
                                 //Get the translation model costs
-                                return m_target->get_total_weight(PASS_TUNING_FEATURES_MAP);
-                            }
-
-                            /**
-                             * Allows to obtain the word penalty costs
-                             * @return the word penalty costs
-                             */
-                            inline prob_weight get_word_cost() {
-                                //Make the word penalty a negative value as it is a penalty by default
-                                int32_t word_cost = -1 * m_target->get_num_words();
-
-                                //Store the word penalty feature value without the lambda
-                                //It will be the number of words with the negative sign
-                                ADD_TUNING_FEATURE_SCORE(de_parameters::DE_WORD_PENALTY_GLOBAL_ID, word_cost);
-
-                                return m_stack_data.m_params.m_word_penalty * word_cost;
+                                return m_target->get_tm_cost(PASS_TUNING_FEATURES_MAP);
                             }
 
                             /**
@@ -479,11 +464,6 @@ namespace uva {
                                 partial_score += get_lm_cost();
 
                                 LOG_DEBUG1 << "partial score + LM is: " << partial_score << END_LOG;
-
-                                //Add the word penalty
-                                partial_score += get_word_cost();
-
-                                LOG_DEBUG1 << "partial score + word penalty is: " << partial_score << END_LOG;
 
                                 //Add the distance based reordering penalty
                                 partial_score += get_lin_dist_cost(prev_state_data);
