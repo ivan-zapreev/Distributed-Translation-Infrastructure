@@ -220,10 +220,9 @@ namespace uva {
                                         scores[tm_parameters::TM_WEIGHT_GLOBAL_IDS[idx]] = m_pure_features[idx];
                                         LOG_DEBUG2 << tm_parameters::TM_WEIGHT_NAMES[idx] << " = " << m_pure_features[idx] << END_LOG;
                                     }
+                                    //Store the pure word penalty
+                                    scores[tm_parameters::TM_WP_LAMBDA_GLOBAL_ID] = -1 * m_num_words;
                                 }
-
-                                //Store the pure word penalty
-                                scores[tm_parameters::TM_WP_LAMBDA_GLOBAL_ID] = -1 * m_num_words;
 #endif
                                 return m_total_weight;
                             }
