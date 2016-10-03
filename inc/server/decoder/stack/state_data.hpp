@@ -525,7 +525,7 @@ namespace uva {
                                 //Set the total score to the current partial score and then add the future costs
                                 total_score = m_partial_score;
 
-                                LOG_DEBUG1 << "Initial total score: " << total_score << END_LOG;
+                                LOG_DEBUG2 << "Initial total score: " << total_score << END_LOG;
 
                                 //Iterate through all the non-translated phrase spans and add the future costs thereof
                                 phrase_length begin_idx = m_stack_data.m_sent_data.m_min_idx;
@@ -550,8 +550,8 @@ namespace uva {
                                         //The previous end word was the last good one, add the span's costs
                                         total_score += m_stack_data.m_sent_data[begin_idx][end_idx - 1].future_cost;
 
-                                        LOG_DEBUG2 << "total score + future_cost[" << begin_idx << ", "
-                                                << (end_idx - 1) << "]: " << total_score << END_LOG;
+                                        LOG_DEBUG1 << "total future_cost[" << begin_idx << ", " << (end_idx - 1) << "]: "
+                                                << m_stack_data.m_sent_data[begin_idx][end_idx - 1].future_cost << END_LOG;
 
                                         //Start searching further from the first word after the bad one we just found
                                         begin_idx = end_idx + 1;
