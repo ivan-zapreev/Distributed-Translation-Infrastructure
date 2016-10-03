@@ -384,16 +384,18 @@ namespace uva {
                             inline bool operator==(const stack_state & other) const {
                                 //Get the shorthand for the other state data
                                 const state_data & other_data = other.m_state_data;
+                                //Define the history length to compare with the last word included
+                                constexpr size_t RECOMBINATION_HISTORY_LEN = MAX_HISTORY_LENGTH + 1;
 
                                 LOG_DEBUG3 << "Checking state " << this << " ==? " << &other << END_LOG;
-                                LOG_DEBUG3 << m_state_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << " ==? "
-                                        << other_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << END_LOG;
+                                LOG_DEBUG3 << m_state_data.m_trans_frame.tail_to_string(RECOMBINATION_HISTORY_LEN) << " ==? "
+                                        << other_data.m_trans_frame.tail_to_string(RECOMBINATION_HISTORY_LEN) << END_LOG;
                                 LOG_DEBUG3 << m_state_data.covered_to_string() << " ==? "
                                         << other_data.covered_to_string() << END_LOG;
 
                                 //Compute the comparison result
                                 const bool is_equal = (m_state_data.m_s_end_word_idx == other_data.m_s_end_word_idx) &&
-                                        m_state_data.m_trans_frame.is_equal_last(other_data.m_trans_frame, MAX_HISTORY_LENGTH) &&
+                                        m_state_data.m_trans_frame.is_equal_last(other_data.m_trans_frame, RECOMBINATION_HISTORY_LEN) &&
                                         (m_state_data.m_covered == other_data.m_covered) &&
                                         m_state_data.rm_entry_data.is_equal_from_weights(other_data.rm_entry_data);
 
