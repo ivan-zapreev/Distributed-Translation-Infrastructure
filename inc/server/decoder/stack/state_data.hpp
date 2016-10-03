@@ -353,9 +353,11 @@ namespace uva {
                                         << array_to_string<word_uid>(num_query_words, query_word_ids) << END_LOG;
 
                                 //Execute the query and return the value
-                                return m_stack_data.m_lm_query.execute(
+                                prob_weight cost = m_stack_data.m_lm_query.execute(
                                         num_query_words, query_word_ids,
                                         m_begin_lm_level, PASS_TUNING_FEATURES_MAP);
+                                LOG_DEBUG1 << "LM costs: " << cost << END_LOG;
+                                return cost;
                             }
 
                             /**
@@ -375,7 +377,10 @@ namespace uva {
                                 //Store the lin dist cost feature value without the lambda, so just the distance
                                 ADD_TUNING_FEATURE_SCORE(de_parameters::DE_LD_PENALTY_GLOBAL_ID, lin_dist_penalty);
 
-                                return m_stack_data.m_params.m_lin_dist_penalty * lin_dist_penalty;
+                                //Compute the linear distortion cost
+                                prob_weight cost = m_stack_data.m_params.m_lin_dist_penalty * lin_dist_penalty;
+                                LOG_DEBUG1 << "Lin RM costs: " << cost << END_LOG;
+                                return cost;
                             }
 
                             /**
@@ -390,8 +395,8 @@ namespace uva {
                                         prev_state_data.m_s_end_word_idx,
                                         m_s_begin_word_idx, m_s_end_word_idx);
                                 //Compute the reordering costs
-                                return prev_state_data.template get_weight<true>(orient, PASS_TUNING_FEATURES_MAP) +
-                                        this->template get_weight<false>(orient, PASS_TUNING_FEATURES_MAP);
+                                return prev_state_data.template get_lex_rm_cost<true>(orient, PASS_TUNING_FEATURES_MAP) +
+                                        this->template get_lex_rm_cost<false>(orient, PASS_TUNING_FEATURES_MAP);
                             }
 
                             /**
@@ -403,8 +408,11 @@ namespace uva {
                              * @return the weight for the given distortion value
                              */
                             template<bool is_from>
-                            inline const prob_weight get_weight(const reordering_orientation orient, prob_weight * scores = NULL) const {
-                                return rm_entry_data.template get_weight<is_from>(orient, scores);
+                            inline const prob_weight get_lex_rm_cost(const reordering_orientation orient, prob_weight * scores = NULL) const {
+                                //Get the lexicolized reordering cost
+                                prob_weight cost = rm_entry_data.template get_weight<is_from>(orient, scores);
+                                LOG_DEBUG1 << "Lex RM <" << (is_from ? "from" : "to") << "> costs: " << cost << END_LOG;
+                                return cost;
                             }
 
                             /**
@@ -413,7 +421,9 @@ namespace uva {
                              */
                             inline prob_weight get_tm_cost() {
                                 //Get the translation model costs
-                                return m_target->get_tm_cost(PASS_TUNING_FEATURES_MAP);
+                                prob_weight cost = m_target->get_tm_cost(PASS_TUNING_FEATURES_MAP);
+                                LOG_DEBUG1 << "TM costs: " << cost << END_LOG;
+                                return cost;
                             }
 
                             /**
@@ -440,7 +450,7 @@ namespace uva {
                                 //Add the lexicolized reordering costs
                                 partial_score += get_lex_rm_cost(prev_state_data);
 
-                                LOG_DEBUG1 << "end-state score + RM lexicolized is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "End-state Partial score: " << partial_score << END_LOG;
                             }
 
                             /**
@@ -458,22 +468,22 @@ namespace uva {
                                 //Add the phrase translation probability
                                 partial_score += get_tm_cost();
 
-                                LOG_DEBUG1 << "partial score + TM is: " << partial_score << END_LOG;
+                                LOG_DEBUG2 << "partial score + TM is: " << partial_score << END_LOG;
 
                                 //Add the language model probability
                                 partial_score += get_lm_cost();
 
-                                LOG_DEBUG1 << "partial score + LM is: " << partial_score << END_LOG;
+                                LOG_DEBUG2 << "partial score + LM is: " << partial_score << END_LOG;
 
                                 //Add the distance based reordering penalty
                                 partial_score += get_lin_dist_cost(prev_state_data);
 
-                                LOG_DEBUG1 << "partial score + RM discrete is: " << partial_score << END_LOG;
+                                LOG_DEBUG2 << "partial score + RM discrete is: " << partial_score << END_LOG;
 
                                 //Add the lexicolized reordering costs
                                 partial_score += get_lex_rm_cost(prev_state_data);
 
-                                LOG_DEBUG1 << "partial score + RM lexicolized is: " << partial_score << END_LOG;
+                                LOG_DEBUG1 << "Partial score: " << partial_score << END_LOG;
                             }
 
                             /**
