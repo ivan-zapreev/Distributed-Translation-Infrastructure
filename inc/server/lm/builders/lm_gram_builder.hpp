@@ -160,10 +160,15 @@ namespace uva {
                              * @param weight [in/out] the value to work with
                              */
                             static inline void log_10_to_log_e_scale(prob_weight & weight) {
+                                LOG_USAGE << "10^" << weight << "=" << END_LOG;
                                 //Convert the log_10 probability into the regular probability
                                 weight = std::pow(ARPA_PROB_WEIGHT_LOG_10_BASE, weight);
+                                LOG_USAGE << weight << END_LOG;
+
+                                LOG_USAGE << "log_e(" << weight << ")=" << END_LOG;
                                 //Convert the regular probability into the log_e probability
                                 weight = std::log(weight);
+                                LOG_USAGE << weight << END_LOG;
                             }
                         };
                     }

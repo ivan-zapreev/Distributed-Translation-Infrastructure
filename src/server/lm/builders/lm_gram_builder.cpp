@@ -175,6 +175,8 @@ namespace uva {
                                 m_m_gram.template prepare_for_adding<WordIndexType>(m_word_idx);
 
                                 LOG_USAGE << "Adding a " << SSTR(CURR_LEVEL) << "-Gram " << m_m_gram << END_LOG;
+                                
+                                ASSERT_CONDITION_THROW(isinf(m_m_gram.m_payload.m_prob), "Infinity in m-gram probability!");
 
                                 //Add the obtained N-gram data to the Trie
                                 m_add_garm_func(m_m_gram);
