@@ -98,11 +98,11 @@ namespace uva {
 
                                 //Retrieve the begin tag uid value
                                 get_tag_uid(BEGIN_SENTENCE_TAG_STR, m_begin_tag_uid);
-                                LOG_DEBUG << BEGIN_SENTENCE_TAG_STR << " tag uid: " << m_begin_tag_uid << END_LOG;
+                                LOG_USAGE << BEGIN_SENTENCE_TAG_STR << " tag uid: " << m_begin_tag_uid << END_LOG;
                                 
                                 //Retrieve the end tag uid value
                                 get_tag_uid(END_SENTENCE_TAG_STR, m_end_tag_uid);
-                                LOG_DEBUG << END_SENTENCE_TAG_STR << " tag uid: " << m_end_tag_uid << END_LOG;
+                                LOG_USAGE << END_SENTENCE_TAG_STR << " tag uid: " << m_end_tag_uid << END_LOG;
                             }
 
                             /**
