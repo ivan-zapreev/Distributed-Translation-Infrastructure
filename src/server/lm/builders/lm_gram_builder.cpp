@@ -81,11 +81,10 @@ namespace uva {
                                     LOG_DEBUG2 << "Parsed the N-gram log_10 probability: " << m_m_gram.m_payload.m_prob << END_LOG;
 
                                     //Convert the log_10 probability into the log_e probability weight
-                                    m_m_gram.m_payload.m_prob = std::pow(ARPA_PROB_WEIGHT_LOG_BASE, m_m_gram.m_payload.m_prob);
-                                    m_m_gram.m_payload.m_prob = std::log(m_m_gram.m_payload.m_prob);
-                                    
+                                    log_10_to_log_e_scale(m_m_gram.m_payload.m_prob);
+
                                     LOG_DEBUG2 << "Converted the N-gram log_e probability: " << m_m_gram.m_payload.m_prob << END_LOG;
-                                    
+
                                     //In case we need to multiply with the lambda weight do it now;
                                     if (is_mult_weight) {
                                         m_m_gram.m_payload.m_prob *= m_params.get_0_lm_weight();
@@ -124,7 +123,11 @@ namespace uva {
                                             //The first token was not a float, need to skip to another N-Gram section(?)
                                             return false;
                                         }
-                                        LOG_DEBUG2 << "Parsed the N-gram back-off weight: " << m_m_gram.m_payload.m_back << END_LOG;
+
+                                        //Convert the log_10 probability into the log_e probability weight
+                                        log_10_to_log_e_scale(m_m_gram.m_payload.m_back);
+
+                                        LOG_DEBUG2 << "Parsed the N-gram log_e back-off weight: " << m_m_gram.m_payload.m_back << END_LOG;
 
                                         //In case we need to multiply with the lambda weight do it now;
                                         if (is_mult_weight) {

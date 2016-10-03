@@ -119,12 +119,14 @@ namespace uva {
                             }
 
                             virtual ~lm_gram_builder();
+
+
                         protected:
                             //Stores the  reference to the language model parameters
                             const lm_parameters & m_params;
                             //Stores the reference to the word index
                             WordIndexType & m_word_idx;
-                            
+
                             //The function that is to be used to add an N-gram to a trie
                             typename TAddGramFunct<WordIndexType>::func m_add_garm_func;
 
@@ -150,7 +152,19 @@ namespace uva {
                              * @param orig the other builder to copy
                              */
                             lm_gram_builder(const lm_gram_builder & orig);
+                            
+                        private:
 
+                            /**
+                             * Allows to convert the log_10 probability into the log_e probability value 
+                             * @param weight [in/out] the value to work with
+                             */
+                            static inline void log_10_to_log_e_scale(prob_weight & weight) {
+                                //Convert the log_10 probability into the regular probability
+                                weight = std::pow(ARPA_PROB_WEIGHT_LOG_10_BASE, weight);
+                                //Convert the regular probability into the log_e probability
+                                weight = std::log(weight);
+                            }
                         };
                     }
                 }

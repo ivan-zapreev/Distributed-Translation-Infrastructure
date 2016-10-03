@@ -51,7 +51,7 @@ namespace uva {
                 namespace lm {
 
                     //The base of the logarithm of the probability weights in the ARPA file
-                    static constexpr prob_weight ARPA_PROB_WEIGHT_LOG_BASE = 10;
+                    static constexpr prob_weight ARPA_PROB_WEIGHT_LOG_10_BASE = 10;
 
                     namespace dictionary {
 
