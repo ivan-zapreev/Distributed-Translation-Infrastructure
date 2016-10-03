@@ -140,6 +140,9 @@ namespace uva {
                                         LOG_DEBUG2 << "The parsed N-gram '" << line.str()
                                                 << "' does not have back-off using: " << m_m_gram.m_payload.m_back << END_LOG;
                                     }
+                                    
+                                    LOG_USAGE << "Got an m-gram: " << m_m_gram << END_LOG;
+                                    
                                     return true;
                                 } else {
                                     //NOTE: Do it as a debug3 level and not a warning because 
