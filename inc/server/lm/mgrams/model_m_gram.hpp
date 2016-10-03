@@ -62,12 +62,6 @@ namespace uva {
                             //Stores the m-gram payload i.e. its probability and back-off weight
                             m_gram_payload m_payload;
 
-                            //Stores the m-gram probability, the log_e probability of the N-Gram Must be a negative value
-                            prob_weight m_prob;
-
-                            //Stores the m-gram log_e back-off weight (probability) of the N-gram can be 0 is the probability is not available
-                            prob_weight m_back_off;
-
                             /**
                              * The basic constructor, is to be used when the M-gram level
                              * is known beforehand. Allows to set the actual M-gram level

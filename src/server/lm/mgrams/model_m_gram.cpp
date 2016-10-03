@@ -51,7 +51,7 @@ namespace uva {
                                     tokens_to_string<MODEL_M_GRAM_MAX_LEN>(gram.m_tokens,
                                     gram.get_first_word_idx(), gram.get_last_word_idx()) << ", word ids " <<
                                     array_to_string<word_uid>(gram.get_num_words(), gram.word_ids()) <<
-                                    ", prob: " << gram.m_prob << ", back_off: " << gram.m_back_off;
+                                    ", payload " << gram.m_payload;
                         };
                     }
                 }
