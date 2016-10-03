@@ -140,9 +140,7 @@ namespace uva {
                                         LOG_DEBUG2 << "The parsed N-gram '" << line.str()
                                                 << "' does not have back-off using: " << m_m_gram.m_payload.m_back << END_LOG;
                                     }
-                                    
-                                    LOG_USAGE << "Got an m-gram: " << m_m_gram << END_LOG;
-                                    
+
                                     return true;
                                 } else {
                                     //NOTE: Do it as a debug3 level and not a warning because 
@@ -176,8 +174,7 @@ namespace uva {
                                 //Prepare the N-gram and for being added to the trie
                                 m_m_gram.template prepare_for_adding<WordIndexType>(m_word_idx);
 
-                                LOG_DEBUG << "Adding a " << SSTR(CURR_LEVEL) << "-Gram "
-                                        << m_m_gram << " to the Trie" << END_LOG;
+                                LOG_USAGE << "Adding a " << SSTR(CURR_LEVEL) << "-Gram " << m_m_gram << END_LOG;
 
                                 //Add the obtained N-gram data to the Trie
                                 m_add_garm_func(m_m_gram);
