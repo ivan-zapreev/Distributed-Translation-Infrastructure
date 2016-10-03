@@ -290,7 +290,6 @@ USAGE: 	'set d  <integer> & <enter>'  - set the distortion limit.
 USAGE: 	'set pt  <unsigned float> & <enter>'  - set pruning threshold.
 USAGE: 	'set sc  <integer> & <enter>'  - set stack capacity.
 USAGE: 	'set ldp  <float> & <enter>'  - set linear distortion penalty.
-USAGE: 	'set wp  <float> & <enter>'  - set word penalty.
 >> 
 ```
 Note that, the commands allowing to change the translation process, e.g. the stack capacity, are to be used with great care. For the sake of memory optimization, **bpbd-server** has just one copy of the server run time parameters used from all the translation processes. So in case of active translation process, changing these parameters can cause disruptions thereof starting from an inability to perform translation and ending with memory leaks. All newly scheduled or finished translation tasks however will not experience any disruptions.
