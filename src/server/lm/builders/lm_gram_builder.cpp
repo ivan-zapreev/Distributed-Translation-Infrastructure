@@ -174,9 +174,15 @@ namespace uva {
                                 //Prepare the N-gram and for being added to the trie
                                 m_m_gram.template prepare_for_adding<WordIndexType>(m_word_idx);
 
-                                LOG_USAGE << "Adding a " << SSTR(CURR_LEVEL) << "-Gram " << m_m_gram << END_LOG;
+                                //Check if we are adding an <s> tag, then set the probability to zero
+                                if(CURR_LEVEL == M_GRAM_LEVEL_1) {
+                                    if(m_m_gram.is_sentence_begin()) {
+                                        m_m_gram.m_payload.m_prob = 0.0;
+                                    }
+                                }
                                 
-                                ASSERT_CONDITION_THROW(isinf(m_m_gram.m_payload.m_prob), "Infinity in m-gram probability!");
+                                LOG_DEBUG << "Adding a " << SSTR(CURR_LEVEL) << "-Gram " << m_m_gram << END_LOG;
+                                ASSERT_SANITY_THROW(isinf(m_m_gram.m_payload.m_prob), "Infinity in m-gram probability!");
 
                                 //Add the obtained N-gram data to the Trie
                                 m_add_garm_func(m_m_gram);

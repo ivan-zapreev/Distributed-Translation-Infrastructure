@@ -102,6 +102,14 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to detect whether the given m-gram starts with an <s> tag.
+                             * @return true starts with an <s> tag
+                             */
+                            inline bool is_sentence_begin() const {
+                                return (m_tokens[BASE::get_first_word_idx()] == BEGIN_SENTENCE_TAG_STR);
+                            }
+
+                            /**
                              * Allows to prepare the M-gram for being used for adding it to the trie
                              * This includes registering the one gram in the word index
                              * @param word_index the word index to be used
