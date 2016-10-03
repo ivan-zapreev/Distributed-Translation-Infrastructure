@@ -110,7 +110,7 @@ namespace uva {
                                 << ", lm_level=" << m_begin_lm_level << ", target = ___<s>___" << END_LOG;
 
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
-                                LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
+                                LOG_DEBUG1 << "Covered: " << covered_to_string() << END_LOG;
                                 LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
                             }
 
@@ -140,7 +140,7 @@ namespace uva {
                                 << ", lm_level=" << m_begin_lm_level << ", target = ___</s>___" << END_LOG;
 
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
-                                LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
+                                LOG_DEBUG1 << "Covered: " << covered_to_string() << END_LOG;
                                 LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
                                 
                                 LOG_DEBUG1 << "------------------------------------------------------------------" << END_LOG;
@@ -180,7 +180,7 @@ namespace uva {
                                 << m_target->get_target_phrase() << "___" << END_LOG;
 
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
-                                LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
+                                LOG_DEBUG1 << "Covered: " << covered_to_string() << END_LOG;
                                 LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
                                 
                                 LOG_DEBUG1 << "------------------------------------------------------------------" << END_LOG;
