@@ -142,12 +142,16 @@ namespace uva {
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
                                 LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
                                 LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
+                                
+                                LOG_DEBUG1 << "------------------------------------------------------------------" << END_LOG;
 
                                 //Compute the end state final score, the new partial score is then the same as the total score
                                 compute_partial_score_final(prev_state_data);
 
                                 //Compute the total score
                                 compute_total_score_final();
+                                
+                                LOG_DEBUG1 << "------------------------------------------------------------------" << END_LOG;
                             }
 
                             /**
@@ -178,12 +182,16 @@ namespace uva {
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
                                 LOG_DEBUG2 << "Covered: " << covered_to_string() << END_LOG;
                                 LOG_DEBUG2 << "Reordering: " << rm_entry_data << END_LOG;
+                                
+                                LOG_DEBUG1 << "------------------------------------------------------------------" << END_LOG;
 
                                 //Update the partial score;
                                 compute_partial_score(prev_state_data);
 
                                 //Compute the total score;
                                 compute_total_score();
+                                
+                                LOG_DEBUG1 << "------------------------------------------------------------------" << END_LOG;
                             }
 
                             /**

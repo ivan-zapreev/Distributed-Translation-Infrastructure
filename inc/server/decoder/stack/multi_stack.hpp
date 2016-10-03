@@ -285,7 +285,7 @@ namespace uva {
                              * @param new_state the new stack state, not NULL
                              */
                             inline void add_stack_state(stack_state_ptr new_state) {
-                                LOG_DEBUG2 << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
+                                LOG_DEBUG1 << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
 
                                 //Perform a NULL pointer sanity check
                                 ASSERT_SANITY_THROW((new_state == NULL), "A NULL pointer stack state!");
@@ -316,7 +316,7 @@ namespace uva {
 
                                 LOG_DEBUG << "The state (" << new_state << ") is added to level " << level << END_LOG;
 
-                                LOG_DEBUG2 << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
+                                LOG_DEBUG1 << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
                             }
 
                         private:
