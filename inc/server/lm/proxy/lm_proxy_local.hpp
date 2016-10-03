@@ -96,9 +96,13 @@ namespace uva {
                                 //Retrieve the unknown word probability
                                 get_unk_word_prob();
 
-                                //Retrieve the begin and end tag uid values
+                                //Retrieve the begin tag uid value
                                 get_tag_uid(BEGIN_SENTENCE_TAG_STR, m_begin_tag_uid);
+                                LOG_USAGE << BEGIN_SENTENCE_TAG_STR << " tag uid: " << m_begin_tag_uid << END_LOG;
+                                
+                                //Retrieve the end tag uid value
                                 get_tag_uid(END_SENTENCE_TAG_STR, m_end_tag_uid);
+                                LOG_USAGE << END_SENTENCE_TAG_STR << " tag uid: " << m_end_tag_uid << END_LOG;
                             }
 
                             /**

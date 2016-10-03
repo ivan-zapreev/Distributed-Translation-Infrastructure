@@ -107,7 +107,7 @@ namespace uva {
                             m_covered(), m_partial_score(0.0), m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA{
                                 LOG_DEBUG1 << "New BEGIN state data: " << this << ", translating [" << m_s_begin_word_idx
                                 << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
-                                << ", lm_level=" << m_begin_lm_level << ", target = ___<s>___" << END_LOG;
+                                << ", lm_level=" << m_begin_lm_level << ", target = ___" << BEGIN_SENTENCE_TAG_STR << "___" << END_LOG;
 
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
                                 LOG_DEBUG1 << "Covered: " << covered_to_string() << END_LOG;
@@ -137,7 +137,7 @@ namespace uva {
                             m_total_score(0.0) INIT_STATE_DATA_TUNING_DATA{
                                 LOG_DEBUG1 << "New END state data: " << this << " translating [" << m_s_begin_word_idx
                                 << ", " << m_s_end_word_idx << "], stack_level=" << m_stack_level
-                                << ", lm_level=" << m_begin_lm_level << ", target = ___</s>___" << END_LOG;
+                                << ", lm_level=" << m_begin_lm_level << ", target = ___" << END_SENTENCE_TAG_STR << "___" << END_LOG;
 
                                 LOG_DEBUG2 << "Trans frame: " << m_trans_frame << END_LOG;
                                 LOG_DEBUG1 << "Covered: " << covered_to_string() << END_LOG;
@@ -273,9 +273,9 @@ namespace uva {
                                     if (is_lattice) {
                                         //Check if this is the first state, with a null target 
                                         if (m_s_begin_word_idx == UNDEFINED_WORD_IDX) {
-                                            storage = "<s>";
+                                            storage = BEGIN_SENTENCE_TAG_STR;
                                         } else {
-                                            storage = "</s>";
+                                            storage = END_SENTENCE_TAG_STR;
                                         }
                                     }
                                 }
