@@ -150,7 +150,7 @@ namespace uva {
                     //Get the actual number of elements in the tail
                     const size_t tail_size = min(m_size, num_elems);
 
-                    //get the string representation
+                    //Get the string representation
                     return array_to_string<elem_type>(tail_size, m_elems + (m_size - tail_size));
                 }
 
