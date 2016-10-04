@@ -384,25 +384,22 @@ namespace uva {
                             inline bool operator==(const stack_state & other) const {
                                 //Get the shorthand for the other state data
                                 const state_data & other_data = other.m_state_data;
-                                //Define the history length to compare with the last word included
-                                //constexpr size_t RECOMBINATION_HISTORY_LEN = MAX_HISTORY_LENGTH + 1;
 
+                                //Log the state data that will be compared
+                                LOG_DEBUG1 << "State " << this << " =?= " << &other << END_LOG;
+                                LOG_DEBUG1 << m_state_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << " =?= "
+                                        << other_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << END_LOG;
+                                LOG_DEBUG1 << m_state_data.covered_to_string() << " =?= " << other_data.covered_to_string() << END_LOG;
+                                LOG_DEBUG1 << m_state_data.rm_entry_data << " =(second 1/2)?= " << other_data.rm_entry_data << END_LOG;
+                                
                                 //Compute the comparison result
                                 const bool is_equal = (m_state_data.m_s_end_word_idx == other_data.m_s_end_word_idx) &&
                                         m_state_data.m_trans_frame.is_equal_last(other_data.m_trans_frame, MAX_HISTORY_LENGTH) &&
                                         (m_state_data.m_covered == other_data.m_covered) &&
                                         m_state_data.rm_entry_data.is_equal_from_weights(other_data.rm_entry_data);
 
-                                //Log data in case the states are equal
-                                if (is_equal) {
-                                    LOG_DEBUG1 << "State " << this << " == " << &other << END_LOG;
-                                    LOG_DEBUG1 << m_state_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << " == "
-                                            << other_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << END_LOG;
-                                    LOG_DEBUG1 << m_state_data.covered_to_string() << " == " << other_data.covered_to_string() << END_LOG;
-                                    LOG_DEBUG1 << m_state_data.rm_entry_data << " =(second 1/2)= " << other_data.rm_entry_data << END_LOG;
-                                } else {
-                                    LOG_DEBUG1 << "State: " << this << " != " << &other << END_LOG;
-                                }
+                                //Log the equality comparison result
+                                LOG_DEBUG1 << "State: " << this << (is_equal ? " == " : " != " ) << &other << END_LOG;
 
                                 //Return the comparison result
                                 return is_equal;
