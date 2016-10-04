@@ -910,6 +910,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **05.08.2016** - Added the description of the *bpbd-processor* and related script. Made the corresponding changes in the sections on the console client.
 * **26.08.2016** - Updating the Web UI information, the interface was extended with the pre and post processor servers.
 * **30.08.2016** - The information on translation clients was extended with translation priorities.
+* **03.10.2016** - Removed an obsolete server console parameter description.
 
 ##Appendix Tests
 
