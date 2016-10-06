@@ -128,7 +128,7 @@ namespace uva {
                             void build() {
                                 //Set the number of TM features
                                 tm_target_entry::set_num_features(m_params.m_num_lambdas);
-                                
+
                                 //Load the model data into memory and filter
                                 load_tm_data();
 
@@ -219,8 +219,9 @@ namespace uva {
 
                                     LOG_DEBUG3 << "parsed: " << token << " -> " << raw_feature << END_LOG;
 
-                                    //Check the probabilities at the indexes for the bound
-                                    if (((idx == 0) || (idx == 2)) && (raw_feature < m_params.m_min_tran_prob)) {
+                                    //Check that the probabilities before the phrase penalty match the threshold
+                                    if ((idx < tm_parameters::TM_PHRASE_PENALTY_LAMBDA_IDX) &&
+                                            (raw_feature < m_params.m_min_tran_prob)) {
                                         LOG_DEBUG1 << "The feature[" << idx << "] = " << raw_feature
                                                 << " < " << m_params.m_min_tran_prob << END_LOG;
                                         return false;
@@ -237,7 +238,7 @@ namespace uva {
                                     //Increment the index 
                                     ++idx;
                                 }
-                                
+
                                 //Check that the number of weights is good
                                 ASSERT_CONDITION_THROW(!weights.get_rest_str().empty(),
                                         string("The TM model contains more features than ") +
@@ -270,7 +271,7 @@ namespace uva {
 
                                 //Read the target phrase, it is surrounded by spaces
                                 rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
-                                
+
                                 //Read the weights
                                 rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
 

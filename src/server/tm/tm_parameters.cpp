@@ -53,6 +53,7 @@ namespace uva {
                     size_t tm_parameters_struct::TM_WEIGHT_GLOBAL_IDS[MAX_NUM_TM_FEATURES] = {};
                     const string tm_parameters_struct::TM_WP_LAMBDA_PARAM_NAME = "tm_wp_lambda";
                     size_t tm_parameters_struct::TM_WP_LAMBDA_GLOBAL_ID = 0;
+                    size_t tm_parameters_struct::TM_PHRASE_PENALTY_LAMBDA_IDX = 4;
                 }
             }
         }

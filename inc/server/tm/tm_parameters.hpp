@@ -75,6 +75,8 @@ namespace uva {
                         static const string TM_WP_LAMBDA_PARAM_NAME;
                         //The global id of the word penalty feature
                         static size_t TM_WP_LAMBDA_GLOBAL_ID;
+                        //The index of the word penalty parameter lambda
+                        static size_t TM_PHRASE_PENALTY_LAMBDA_IDX;
 
                         //The the connection string needed to connect to the model
                         string m_conn_string;
