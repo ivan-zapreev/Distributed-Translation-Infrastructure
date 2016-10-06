@@ -192,7 +192,6 @@ namespace uva {
                                     LOG_DEBUG1 << "parsed: " << token << " -> " << raw_feature << END_LOG;
 
                                     //Check the probabilities at the indexes for the bound
-                                    //ToDo: Why it is 0 and 2? What if we have more features??? Change 0 and 2 into concrete names?
                                     if (((idx == 0) || (idx == 2)) && (raw_feature < m_params.m_min_tran_prob)) {
                                         LOG_DEBUG1 << "The feature[" << idx << "] = " << raw_feature
                                                 << " < " << m_params.m_min_tran_prob << END_LOG;
