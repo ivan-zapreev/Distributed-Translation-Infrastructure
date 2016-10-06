@@ -811,7 +811,6 @@
           <df name="builders">
             <in>tm_basic_builder.hpp</in>
             <in>tm_builder.hpp</in>
-            <in>tm_limiting_builder.hpp</in>
           </df>
           <df name="models">
             <in>tm_basic_model.hpp</in>

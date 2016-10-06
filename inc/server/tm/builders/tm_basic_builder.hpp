@@ -1,5 +1,5 @@
 /* 
- * File:   tm_builder.hpp
+ * File:   tm_limiting_builder.hpp
  * Author: Dr. Ivan S. Zapreev
  *
  * Visit my Linked-in profile:
@@ -20,11 +20,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on February 8, 2016, 9:55 AM
+ * Created on May 4, 2016, 12:02 PM
  */
 
-#ifndef TM_BASIC_BUILDER_HPP
-#define TM_BASIC_BUILDER_HPP
+#ifndef TM_LIMITING_BUILDER_HPP
+#define TM_LIMITING_BUILDER_HPP
 
 #include <cmath>
 #include <unordered_map>
@@ -35,6 +35,7 @@
 #include "common/utils/logging/logger.hpp"
 #include "common/utils/file/text_piece_reader.hpp"
 #include "common/utils/text/string_utils.hpp"
+#include "common/utils/containers/ordered_list.hpp"
 
 #include "server/server_consts.hpp"
 
@@ -65,23 +66,30 @@ namespace uva {
             namespace server {
                 namespace tm {
                     namespace builders {
-
+                        //The typedef for the list of targets
+                        typedef ordered_list<tm_target_entry> targets_list;
+                        //The typedef for the pointer to the list of targets
+                        typedef ordered_list<tm_target_entry>* targets_list_ptr;
                         //Define the map storing the source phrase ids and the number of translations per phrase
-                        typedef unordered_map<phrase_uid, size_t> sizes_map;
+                        typedef unordered_map<phrase_uid, targets_list_ptr> tm_data_map;
 
                         /**
-                         * This class represents a basic builder of the translation model.
+                         * This class represents a builder of the translation model.
                          * It allows to read a text-formatted translation model and to put
                          * it into the given instance of the model class. It assumes the
                          * simple text model format as used by Oyster or Moses.
                          * See http://www.statmt.org/moses/?n=Moses.Tutorial for some info.
                          * The translation model is also commonly known as a phrase table.
-                         * This class does not support translation limit but is fast loading
-                         * the unlimited phrase table.
+                         * This implementation is slow on loading the models when the 
+                         * translation limit is too large or is not set.
                          */
                         template< typename model_type, typename reader_type>
                         class tm_basic_builder {
                         public:
+                            //Stores the best-translations threshold for the builder.
+                            //If the requested best trans. is less or equal to this
+                            //value then the translation limit is ignored with a warning.
+                            constexpr static uint32_t BEST_TRANS_THRESHOLD = targets_list::CAPACITY_THRESHOLD;
 
                             /**
                              * The basic constructor of the builder object
@@ -90,12 +98,13 @@ namespace uva {
                              * @param reader the reader to read the data from
                              */
                             tm_basic_builder(const tm_parameters & params, model_type & model, reader_type & reader)
-                            : m_params(params), m_model(model), m_reader(reader),
-                            m_lm_query(lm_configurator::allocate_fast_query_proxy()),
-                            m_tmp_num_words(0) {
-                                if (m_params.m_trans_limit > 0) {
-                                    LOG_WARNING << "The translation limit (" << m_params.m_trans_limit
-                                            << ") is not supported, ignoring!" << END_LOG;
+                            : m_params(params), m_data(NULL), m_model(model), m_reader(reader),
+                            m_lm_query(lm_configurator::allocate_fast_query_proxy()), m_tmp_num_words(0) {
+                                if (m_params.m_trans_limit <= BEST_TRANS_THRESHOLD) {
+                                    LOG_WARNING << "The translation limit: " << m_params.m_trans_limit
+                                            << " is too small, will be ignored!" << END_LOG;
+                                    LOG_INFO << "The translation limit must be > " << BEST_TRANS_THRESHOLD
+                                            << " to be taken into account." << END_LOG;
                                 }
                             }
 
@@ -105,6 +114,10 @@ namespace uva {
                             ~tm_basic_builder() {
                                 //Dispose the query proxy
                                 lm_configurator::dispose_fast_query_proxy(m_lm_query);
+                                //Destroy the data container if it is not destroyed yet
+                                if (m_data != NULL) {
+                                    delete m_data;
+                                }
                             }
 
                             /**
@@ -115,16 +128,15 @@ namespace uva {
                             void build() {
                                 //Set the number of TM features
                                 tm_target_entry::set_num_features(m_params.m_num_lambdas);
+                                
+                                //Load the model data into memory and filter
+                                load_tm_data();
 
-                                //Count and set the number of source phrases if needed
-                                if (m_model.is_num_entries_needed()) {
-                                    count_source_phrases();
-                                }
+                                //Convert the loaded data into the
+                                //model and delete the temporary data
+                                convert_tm_data();
 
-                                //Process the translations
-                                process_source_entries();
-
-                                //Add the unk entry
+                                //Add the unk (unknown translation) entry
                                 add_unk_translation();
                             }
 
@@ -134,9 +146,9 @@ namespace uva {
                              * Allows to post-process a single feature, i.e. do:
                              *         log_e(feature)*lambda
                              * @param raw_feature the feature to post-process
-                             * @param lambda the lambda weight to multiply the loge feature with
-                             * @param feature the out parameter into which the resulting value will be placed: log_e(raw_feature)*lambda
-                             * @return the log_e of the provided raw_feature
+                             * @param lambda the lambda weight to multiply the log_e feature with
+                             * @param feature the out parameter into which the resulting value will be placed: log_10(raw_feature)*lambda
+                             * @return the log_10 of the provided raw_feature
                              */
                             inline prob_weight post_process_feature(const prob_weight raw_feature, const prob_weight lambda, prob_weight & feature) {
                                 //Convert the feature into the log scale
@@ -147,324 +159,8 @@ namespace uva {
 
                                 LOG_DEBUG << "log_e(" << raw_feature << ") * " << lambda << " = " << feature << END_LOG;
 
-                                //Return the log scale of the raw feature
+                                //Return the log scale of the raw features
                                 return log_feature;
-                            }
-
-                            /**
-                             * Allows to extract the features from the text piece and to
-                             * check that they are valid with respect to the option bound
-                             * If needed the weights will be converted to log scale and
-                             * multiplied with the lambda factors
-                             * \todo Get rid of magic constants in this function!
-                             * @param is_get_weights if the weights are to be retrieved or just checked
-                             * @param rest [in] the text piece with weights and other TM stuff, that starts with a space!
-                             * @param storage [out] the read and post-processed features features if they satisfy on the constraints
-                             * @return true if the features satisfy the constraints, otherwise false
-                             */
-                            template<bool is_get_weights>
-                            inline bool process_features(text_piece_reader rest, prob_weight * features,
-                                    prob_weight * pure_features = NULL) {
-                                //Declare the token and weights text piece readers
-                                text_piece_reader token, weights;
-
-                                //Store the read probability weight
-                                size_t idx = 0;
-                                //Store the read weight value
-                                prob_weight raw_feature;
-
-                                LOG_DEBUG << "BB Reading the features from: ____" << rest.get_rest_str() << "____" << END_LOG;
-
-                                //Read the weights
-                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
-
-                                //Skip the first space
-                                weights.get_first_space(token);
-
-                                LOG_DEBUG << "TM features to parse: ____" << weights << "____" << END_LOG;
-
-                                //Read the subsequent weights, check that the number of weights is as expected
-                                while (weights.get_first_space(token) && (idx < m_params.m_num_lambdas)) {
-                                    //Parse the token into the entry weight
-                                    ASSERT_CONDITION_THROW(!fast_s_to_f(raw_feature, token.str().c_str()),
-                                            string("Could not parse the token: ") + token.str());
-
-                                    LOG_DEBUG1 << "parsed: " << token << " -> " << raw_feature << END_LOG;
-
-                                    //Check the probabilities at the indexes for the bound
-                                    if (((idx == 0) || (idx == 2)) && (raw_feature < m_params.m_min_tran_prob)) {
-                                        LOG_DEBUG1 << "The feature[" << idx << "] = " << raw_feature
-                                                << " < " << m_params.m_min_tran_prob << END_LOG;
-                                        return false;
-                                    } else {
-                                        if (is_get_weights) {
-                                            //Now convert to the log probability and multiply with the appropriate weight
-#if IS_SERVER_TUNING_MODE
-                                            ASSERT_SANITY_THROW((pure_features == NULL), "The pure_features is NULL!");
-                                            pure_features[idx] = post_process_feature(raw_feature, m_params.m_lambdas[idx], features[idx]);
-#else
-                                            (void) post_process_feature(raw_feature, m_params.m_lambdas[idx], features[idx]);
-#endif
-                                        }
-                                    }
-
-                                    //Increment the index 
-                                    ++idx;
-                                }
-
-                                //Check that the number of weights is good
-                                ASSERT_CONDITION_THROW(!weights.get_rest_str().empty(),
-                                        string("The TM model contains more features than ") +
-                                        string("the specified lambda values (") +
-                                        to_string(m_params.m_num_lambdas)+(") in the config file"));
-
-                                LOG_DEBUG1 << "Got " << idx << " good features!" << END_LOG;
-
-                                return true;
-                            }
-
-                            /**
-                             * Allows to check if whether the probability weights satisfy the filtering thresholds.
-                             * @param rest the part of the source entry containing the target and the weights
-                             * @param tmp_features the temporary weights storage
-                             * @return true if the conditions are satisfied, otherwise false
-                             */
-                            inline bool is_good_features(text_piece_reader rest, prob_weight * tmp_features) {
-                                text_piece_reader target;
-
-                                //Skip the target phrase with its end delimiter
-                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
-
-                                //Process the weights
-                                return process_features<false>(rest, tmp_features);
-                            }
-
-                            /**
-                             * The line format assumes source to target and then at least four weights as given by:
-                             *     http://www.statmt.org/moses/?n=FactoredTraining.ScorePhrases
-                             * Currently, four different phrase translation scores are computed:
-                             *    inverse phrase translation probability phi(f|e)
-                             *    inverse lexical weighting lex(f|e)
-                             *    direct phrase translation probability phi(e|f)
-                             *    direct lexical weighting lex(e|f) 
-                             * Previously, there was another score:
-                             *    phrase penalty (always exp(1) = 2.718) 
-                             * The latter is considered optional, all the other elements
-                             * followed on the translation line are now skipped.
-                             * @param source_entry the pointer to the source entry for which this translation is
-                             * @param rest stores the line to be parsed into a translation entry
-                             * @param count_ref [in/out] the number of remaining entries
-                             * @param tmp_features the temporary feature storage
-                             */
-                            inline void process_target_entry(tm_source_entry * source_entry, text_piece_reader &rest,
-                                    size_t & count_ref, prob_weight * tmp_features) {
-                                LOG_DEBUG2 << "Got translation line to parse: ___" << rest << "___" << END_LOG;
-
-                                //Declare the target entry storing reader
-                                text_piece_reader target;
-
-                                //Skip the first space symbol that follows the delimiter with the source
-                                rest.get_first_space(target);
-
-                                //Read the target phrase, it is surrounded by spaces
-                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
-
-                                //Declare an array of weights for temporary use
-                                feature_array tmp_pure_features = {};
-
-                                //Check that the weights are good and retrieve them if they are
-                                if (process_features<true>(rest, tmp_features, tmp_pure_features)) {
-                                    LOG_DEBUG2 << "The target phrase is: " << target << END_LOG;
-                                    //Add the translation entry to the model
-                                    string target_str = target.str();
-                                    trim(target_str);
-                                    //Compute the target phrase and its uid
-                                    const phrase_uid target_uid = get_phrase_uid<true>(target_str);
-
-                                    //Use the language model to get the target translation word ids
-                                    m_lm_query.get_word_ids(target, m_tmp_num_words, m_tmp_word_ids);
-
-                                    LOG_DEBUG << "The phrase: ___" << target << "__ got "
-                                            << m_tmp_num_words << " word ids: " <<
-                                            array_to_string<word_uid>(m_tmp_num_words, m_tmp_word_ids) << END_LOG;
-
-                                    //Get the language model weights for the target translation
-                                    const prob_weight lm_weight = m_lm_query.execute(m_tmp_num_words, m_tmp_word_ids);
-
-                                    LOG_DEBUG << "The phrase: ___" << target << "__ lm-weight: " << lm_weight << END_LOG;
-
-                                    //Initiate a new target entry
-                                    source_entry->add_target(target_str, target_uid,
-                                            tmp_features, m_tmp_num_words, m_tmp_word_ids,
-                                            m_params.m_wp_lambda, lm_weight, tmp_pure_features);
-
-                                    //Reduce the counter
-                                    count_ref--;
-
-                                    LOG_DEBUG1 << "The source/target (" << source_entry->get_source_uid()
-                                            << "/" << target_uid << ") counter is " << count_ref << END_LOG;
-                                }
-                            }
-
-                            /**
-                             * Allows to parse the TM model file and do two things depending on the value of the template parameter:
-                             * 1. Count the number of valid entries
-                             * 2. Build the TM model
-                             * NOTE: This two pass parsing is not optimal but we have to do it as we need to know
-                             *       the number of valid entries beforehand, an optimization might be needed!
-                             * @param count_or_build if true then count if false then build
-                             */
-                            template<bool count_or_build>
-                            inline void parse_tm_file() {
-
-                                //Declare the text piece reader for storing the read line and source phrase
-                                text_piece_reader line, source;
-
-                                //Store the source entry
-                                tm_source_entry * source_entry = NULL;
-
-                                //Store the cached source string and its uid values
-                                string source_str = "";
-                                phrase_uid source_uid = UNDEFINED_PHRASE_ID;
-                                bool is_good_source = false;
-
-                                //Declare an array of weights for temporary use
-                                feature_array tmp_features;
-
-                                //Start reading the translation model file line by line
-                                while (m_reader.get_first_line(line)) {
-                                    //Read the source phrase
-                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
-
-                                    //Get the current source phrase uid
-                                    string next_source_str = source.str();
-                                    trim(next_source_str);
-
-                                    LOG_DEBUG << "Got the source phrase: ___" << next_source_str << "___" << END_LOG;
-
-                                    if (source_str != next_source_str) {
-                                        size_t size_val = m_sizes[source_uid];
-                                        if (count_or_build) {
-                                            //Remove the previous entry if the count is zero
-                                            if (size_val == 0) {
-                                                m_sizes.erase(source_uid);
-                                            }
-                                        } else {
-                                            //Finalize the previous entry if there was one
-                                            if (is_good_source && (source_uid != UNDEFINED_PHRASE_ID)) {
-                                                LOG_DEBUG1 << "Finishing a source entry for: ___" << source_str
-                                                        << "___ uid: " << source_uid << ", count: " << size_val << END_LOG;
-
-                                                m_model.finalize_entry(source_uid);
-                                            }
-                                        }
-
-                                        //Store the new source string
-                                        source_str = next_source_str;
-
-                                        //Compute the new source string uid
-                                        source_uid = get_phrase_uid(source_str);
-
-                                        //Get the current value for the new source id
-                                        size_val = m_sizes[source_uid];
-
-                                        LOG_DEBUG1 << "The new source ___" << source_str << "___ id is: "
-                                                << source_uid << ", count is: " << size_val << END_LOG;
-
-                                        if (count_or_build) {
-                                            //Nothing to be done here when counting entries
-                                            LOG_DEBUG1 << "Counting the valid translations for " << source_uid << END_LOG;
-                                        } else {
-                                            //Check if the new entry is to be entirely skipped
-                                            is_good_source = (size_val != 0);
-
-                                            LOG_DEBUG << "TM source: " << source_uid << ", #targets: " << size_val << END_LOG;
-
-                                            if (is_good_source) {
-                                                //Open the new source entry
-                                                source_entry = m_model.begin_entry(source_uid, size_val);
-
-                                                LOG_DEBUG1 << "Starting a new source entry for: ___" << source_str
-                                                        << "___ uid: " << source_uid << ", count: " << size_val << END_LOG;
-                                            } else {
-                                                //This source is skipped and if it is the
-                                                //last one then we do not need to finalize it
-                                                source_uid = UNDEFINED_PHRASE_ID;
-                                            }
-                                        }
-                                    }
-
-                                    //Get the reference to the current size
-                                    size_t & size_ref = m_sizes[source_uid];
-                                    if (count_or_build) {
-                                        //Check that the filter conditions hold
-                                        if (is_good_features(line, tmp_features)) {
-                                            //Increment the count for the given source uid
-                                            ++size_ref;
-                                        }
-                                        LOG_DEBUG1 << "The new source " << source_uid << " targets count is " << size_ref << END_LOG;
-                                    } else {
-                                        //If the source entry is not to be skipped, parse 
-                                        if (is_good_source && (size_ref > 0)) {
-                                            //Parse the rest of the target entry
-                                            process_target_entry(source_entry, line, size_ref, tmp_features);
-                                        } else {
-                                            LOG_DEBUG << "Source " << source_uid << ", skipping the target entry: " << line << END_LOG;
-                                        }
-                                    }
-
-                                    //Update the progress bar status
-                                    logger::update_progress_bar();
-                                }
-
-                                if (count_or_build) {
-                                    //Check if the last entry resulted in zero score, if yes then remove it
-                                    if (m_sizes[source_uid] == 0) {
-                                        m_sizes.erase(source_uid);
-                                    }
-                                } else {
-                                    //Finalize the previous entry if there was one
-                                    if (source_uid != UNDEFINED_PHRASE_ID) {
-                                        m_model.finalize_entry(source_uid);
-                                    }
-
-                                    //Finalize the model
-                                    m_model.finalize();
-                                }
-                            }
-
-                            /**
-                             * Allows to count and set the number of source phrases
-                             */
-                            inline void count_source_phrases() {
-                                logger::start_progress_bar(string("Counting phrase translations"));
-
-                                //Count the good entries
-                                parse_tm_file<true>();
-
-                                //Set the number of entries into the model
-                                m_model.set_num_entries(m_sizes.size());
-
-                                //Re-set the reader to start all over again
-                                m_reader.reset();
-
-                                //Stop the progress bar in case of no exception
-                                logger::stop_progress_bar();
-
-                                LOG_INFO << "The number of valid TM source entries is: " << m_sizes.size() << END_LOG;
-                            }
-
-                            /**
-                             * Allows to process translations.
-                             */
-                            inline void process_source_entries() {
-                                logger::start_progress_bar(string("Building translation model"));
-
-                                //Build the model
-                                parse_tm_file<false>();
-
-                                //Stop the progress bar in case of no exception
-                                logger::stop_progress_bar();
                             }
 
                             /**
@@ -490,28 +186,315 @@ namespace uva {
                                         m_lm_query.get_unk_word_prob(), pure_unk_features);
                             }
 
+                            /**
+                             * Allows to extract the features from the text piece and to
+                             * check that they are valid with respect to the option bound
+                             * If needed the weights will be converted to log scale and
+                             * multiplied with the lambda factors
+                             * @param weights [in] the text piece with weights, that starts with a space!
+                             * @param storage [out] the read and post-processed features features if they satisfy on the constraints
+                             * @return true if the features satisfy the constraints, otherwise false
+                             */
+                            inline bool process_features(text_piece_reader weights,
+                                    prob_weight * features, prob_weight * pure_features = NULL) {
+                                //Declare the token
+                                text_piece_reader token;
+                                //Store the read probability weight
+                                size_t idx = 0;
+                                //Store the read weight value
+                                prob_weight raw_feature;
+
+                                LOG_DEBUG << "LB Reading the features from: " << weights << END_LOG;
+
+                                //Skip the first space
+                                weights.get_first_space(token);
+
+                                LOG_DEBUG3 << "TM features to parse: " << weights << END_LOG;
+
+                                //Read the subsequent weights, check that the number of weights is as expected
+                                while (weights.get_first_space(token) && (idx < m_params.m_num_lambdas)) {
+                                    //Parse the token into the entry weight
+                                    ASSERT_CONDITION_THROW(!fast_s_to_f(raw_feature, token.str().c_str()),
+                                            string("Could not parse the token: ") + token.str());
+
+                                    LOG_DEBUG3 << "parsed: " << token << " -> " << raw_feature << END_LOG;
+
+                                    //Check the probabilities at the indexes for the bound
+                                    if (((idx == 0) || (idx == 2)) && (raw_feature < m_params.m_min_tran_prob)) {
+                                        LOG_DEBUG1 << "The feature[" << idx << "] = " << raw_feature
+                                                << " < " << m_params.m_min_tran_prob << END_LOG;
+                                        return false;
+                                    } else {
+                                        //Now convert to the log probability and multiply with the appropriate weight
+#if IS_SERVER_TUNING_MODE
+                                        ASSERT_SANITY_THROW((pure_features == NULL), "The pure_features is NULL!");
+                                        pure_features[idx] = post_process_feature(raw_feature, m_params.m_lambdas[idx], features[idx]);
+#else
+                                        (void) post_process_feature(raw_feature, m_params.m_lambdas[idx], features[idx]);
+#endif
+                                    }
+
+                                    //Increment the index 
+                                    ++idx;
+                                }
+                                
+                                //Check that the number of weights is good
+                                ASSERT_CONDITION_THROW(!weights.get_rest_str().empty(),
+                                        string("The TM model contains more features than ") +
+                                        string("the specified lambda values (") +
+                                        to_string(m_params.m_num_lambdas)+(") in the config file"));
+
+                                LOG_DEBUG1 << "Got " << idx << " good features!" << END_LOG;
+
+                                return true;
+                            }
+
+                            /**
+                             * Allows to create a new target entry in case the 
+                             * @param rest the text piece reader to parse the target entry from
+                             * @param source_uid the if of the source phrase
+                             * @param entry [out] the reference to the entry pointer
+                             * @return true if the entry was created, otherwise false
+                             */
+                            inline bool get_target_entry(text_piece_reader &rest, phrase_uid source_uid, tm_target_entry *&entry) {
+                                LOG_DEBUG2 << "Got translation line to parse: ___" << rest << "___" << END_LOG;
+
+                                //Declare an array of weights for temporary use
+                                feature_array tmp_features = {}, tmp_pure_features = {};
+
+                                //Declare the target and weights entry reader
+                                text_piece_reader target, weights;
+
+                                //Skip the first space symbol that follows the delimiter with the source
+                                rest.get_first_space(target);
+
+                                //Read the target phrase, it is surrounded by spaces
+                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(target);
+                                
+                                //Read the weights
+                                rest.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(weights);
+
+                                //Check that the weights are good and retrieve them if they are
+                                if (process_features(weights, tmp_features, tmp_pure_features)) {
+                                    LOG_DEBUG2 << "The target phrase is: " << target << END_LOG;
+                                    //Add the translation entry to the model
+                                    string target_str = target.str();
+                                    trim(target_str);
+                                    //Compute the target phrase and its uid
+                                    const phrase_uid target_uid = get_phrase_uid<true>(target_str);
+
+                                    //Use the language model to get the target translation word ids
+                                    m_lm_query.get_word_ids(target, m_tmp_num_words, m_tmp_word_ids);
+
+                                    LOG_DEBUG << "The phrase: ___" << target << "__ got "
+                                            << m_tmp_num_words << " word ids: " <<
+                                            array_to_string<word_uid>(m_tmp_num_words, m_tmp_word_ids) << END_LOG;
+
+                                    //Initiate a new target entry
+                                    entry = new tm_target_entry();
+                                    entry->set_data(source_uid, target_str, target_uid,
+                                            tmp_features, m_tmp_num_words, m_tmp_word_ids,
+                                            m_params.m_wp_lambda, tmp_pure_features);
+
+                                    LOG_DEBUG1 << "The source/target (" << source_uid
+                                            << "/" << target_uid << ") entry was created!" << END_LOG;
+
+                                    return true;
+                                } else {
+                                    LOG_DEBUG1 << "The target entry for the source "
+                                            << source_uid << " was filtered out!" << END_LOG;
+                                    return false;
+                                }
+                            }
+
+                            /**
+                             * Parses the tm file and loads the data
+                             */
+                            inline void parse_tm_file() {
+                                //Declare the text piece reader for storing the read line and source phrase
+                                text_piece_reader line, source;
+
+                                //Store the cached source string and its uid values
+                                string source_str = "";
+                                phrase_uid source_uid = UNDEFINED_PHRASE_ID;
+
+                                //The pointers to the current targets list
+                                targets_list_ptr targets = NULL;
+                                //Declare the pointer variable for the target entry
+                                tm_target_entry * entry = NULL;
+
+                                LOG_DEBUG << "Start parsing the TM file" << END_LOG;
+
+                                //Instantiate the data map container
+                                m_data = new tm_data_map();
+
+                                //Start reading the translation model file line by line
+                                while (m_reader.get_first_line(line)) {
+                                    //Read the source phrase
+                                    line.get_first<TM_DELIMITER, TM_DELIMITER_CDTY>(source);
+
+                                    //Get the current source phrase uid
+                                    string next_source_str = source.str();
+                                    trim(next_source_str);
+
+                                    LOG_DEBUG << "Got the source phrase: ___" << next_source_str << "___" << END_LOG;
+
+                                    //If we are now reading the new source entry
+                                    if (source_str != next_source_str) {
+                                        //Delete the empty targets of the previous source entry
+                                        //and erase the entry as it got no translations
+                                        if (targets != NULL && (targets->get_size() == 0)) {
+                                            LOG_DEBUG << "Deleting the previous source entry "
+                                                    << source_uid << ", as it has no targets!" << END_LOG;
+                                            delete targets;
+                                            m_data->erase(source_uid);
+                                        }
+
+                                        //Store the new source string
+                                        source_str = next_source_str;
+                                        //Compute the new source string uid
+                                        source_uid = get_phrase_uid(source_str);
+
+                                        LOG_DEBUG1 << "The NEW source ___" << source_str << "___ id is: " << source_uid << END_LOG;
+
+                                        //Create a new list of targets, or retrieve an existing one
+                                        tm_data_map::iterator iter = m_data->find(source_uid);
+                                        if (iter == m_data->end()) {
+                                            targets = new targets_list(m_params.m_trans_limit);
+                                            m_data->operator[](source_uid) = targets;
+                                        } else {
+                                            targets = iter->second;
+                                        }
+                                    }
+
+                                    //Get the target entry if it is passes
+                                    if (get_target_entry(line, source_uid, entry)) {
+                                        LOG_DEBUG1 << "Adding the new target entry to the source " << source_uid << END_LOG;
+                                        //Add the translation entry to the list
+                                        targets->add_elemenent(entry);
+                                    }
+                                    LOG_DEBUG1 << "The source " << source_uid << " targets count is " << targets->get_size() << END_LOG;
+
+                                    //Update the progress bar status
+                                    logger::update_progress_bar();
+                                }
+                            }
+
+                            /**
+                             * Loads the translation model data into memory and filters is
+                             */
+                            inline void load_tm_data() {
+                                logger::start_progress_bar(string("Pre-loading phrase translations"));
+
+                                //Count the good entries
+                                parse_tm_file();
+
+                                //Stop the progress bar in case of no exception
+                                logger::stop_progress_bar();
+
+                                LOG_INFO << "The number of loaded TM source entries is: " << m_data->size() << END_LOG;
+                            }
+
+                            /**
+                             * Loads the translation model data into memory and filters is
+                             */
+                            inline void convert_tm_data() {
+                                logger::start_progress_bar(string("Storing the pre-loaded phrase translations"));
+
+                                //Set the number of entries into the model
+                                m_model.set_num_entries(m_data->size());
+
+                                //Iterate through the map elements and do conversion
+                                for (tm_data_map::iterator it = m_data->begin(); it != m_data->end(); ++it) {
+                                    //The current source id
+                                    phrase_uid source_uid = it->first;
+                                    //The pointers to the current targets list
+                                    targets_list_ptr targets = it->second;
+
+                                    //Add the source entry and the translation entries
+                                    if (targets->get_size() != 0) {
+                                        //Open the new source entry
+                                        tm_source_entry * source_entry = m_model.begin_entry(source_uid, targets->get_size());
+
+                                        ASSERT_SANITY_THROW((m_params.m_trans_limit > 0) &&
+                                                (targets->get_size() > m_params.m_trans_limit),
+                                                string("The COUNTED targets size ") + to_string(targets->get_size()) +
+                                                string(" is exceeding the trans limit ") + to_string(m_params.m_trans_limit));
+
+                                        LOG_DEBUG << "TM source: " << source_uid << ", #targets: " << targets->get_size() << END_LOG;
+
+                                        //The pointer variable for the target entry container
+                                        targets_list::elem_container * entry = targets->get_first();
+
+                                        //Add the translation entries
+                                        while (entry != NULL) {
+                                            //Get the reference to the target entry
+                                            tm_target_entry & target = **entry;
+
+                                            //Get the language model weight for the target translation
+                                            const prob_weight lm_weight = m_lm_query.execute(target.get_num_words(), target.get_word_ids());
+                                            LOG_DEBUG << "The phrase: ___" << target.get_target_phrase() << "__ lm-weight: " << lm_weight << END_LOG;
+
+                                            source_entry->emplace_target(target, lm_weight);
+
+                                            //Move on to the next entry
+                                            entry = entry->m_next;
+                                        }
+
+                                        ASSERT_SANITY_THROW((m_params.m_trans_limit > 0) &&
+                                                (source_entry->num_targets() > m_params.m_trans_limit),
+                                                string("The ACTUAL targets size ") + to_string(source_entry->num_targets()) +
+                                                string(" is exceeding the trans limit ") + to_string(m_params.m_trans_limit));
+
+                                        //Finalize the source entry
+                                        m_model.finalize_entry(source_uid);
+                                    }
+
+                                    //Delete the entry
+                                    delete targets;
+
+                                    //Update the progress bar status
+                                    logger::update_progress_bar();
+                                }
+
+                                //Erase the map as we do not need it any more
+                                delete m_data;
+                                m_data = NULL;
+
+                                //Stop the progress bar in case of no exception
+                                logger::stop_progress_bar();
+
+                                LOG_INFO << "The phrase-translations table is created and loaded" << END_LOG;
+                            }
+
+
                         private:
-                            //The map storing the model sizes
-                            sizes_map m_sizes;
                             //Stores the reference to the model parameters
                             const tm_parameters & m_params;
+
+                            //The map storing the model sizes
+                            tm_data_map * m_data;
+
                             //Stores the reference to the model
                             model_type & m_model;
+
                             //Stores the reference to the builder;
                             reader_type & m_reader;
+
                             //Stores the reference to the LM query proxy
                             lm_fast_query_proxy & m_lm_query;
+
                             //The temporary variable to store the number of words in the target translation phrase
                             phrase_length m_tmp_num_words;
                             //The temporary variable to store word ids for the target translation phrase LM word ids
                             word_uid m_tmp_word_ids[TM_MAX_TARGET_PHRASE_LEN];
                         };
-                    }
+                    };
                 }
             }
         }
     }
 }
 
-#endif /* TM_BUILDER_HPP */
+#endif /* TM_LIMITING_BUILDER_HPP */
 

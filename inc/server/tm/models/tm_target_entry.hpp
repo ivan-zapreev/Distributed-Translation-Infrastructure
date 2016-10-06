@@ -279,11 +279,11 @@ namespace uva {
                              * @param pure_features the feature values without the lambda weights,
                              *        to be stored for server tuning mode, default is NULL
                              * This is an array of translation weights, as we have here:
-                             * features[0] = p(f|e);
-                             * features[1] = lex(p(f|e));
-                             * features[2] = p(e|f);
-                             * features[3] = lex(p(e|f));
-                             * features[4] = phrase penalty;
+                             * features[0] = lambda_0 * p(f|e);
+                             * features[1] = lambda_1 * lex(p(f|e));
+                             * features[2] = lambda_2 * p(e|f);
+                             * features[3] = lambda_3 * lex(p(e|f));
+                             * features[4] = lambda_4 * phrase penalty;
                              */
                             inline void set_features(const prob_weight * features, const prob_weight wp_lambda, const prob_weight * pure_features = NULL) {
 #if IS_SERVER_TUNING_MODE
