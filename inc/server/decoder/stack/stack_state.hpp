@@ -386,7 +386,7 @@ namespace uva {
                                 const state_data & other_data = other.m_state_data;
 
                                 //Log the state data that will be compared
-                                LOG_DEBUG1 << "State " << this << " =?= " << &other << END_LOG;
+                                LOG_DEBUG1 << "State recombination check: " << this << " =?= " << &other << END_LOG;
                                 LOG_DEBUG1 << m_state_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << " =?= "
                                         << other_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << END_LOG;
                                 LOG_DEBUG1 << m_state_data.covered_to_string() << " =?= " << other_data.covered_to_string() << END_LOG;
