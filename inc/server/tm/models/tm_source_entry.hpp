@@ -138,9 +138,8 @@ namespace uva {
                              * Allows to add a new translation to the source entry for the given target phrase
                              * @param target [in/out] the translation target entry to be moved into the internal data storage
                              * all the dynamically allocated memory of the entry will be moved to internal storage and set to NULL in the original entry.
-                             * @param lm_weight the lm weight for the given translation entry
                              */
-                            inline void emplace_target(tm_target_entry & target, const prob_weight lm_weight) {
+                            inline void emplace_target(tm_tmp_target_entry & target) {
                                 //Perform a sanity check
                                 ASSERT_SANITY_THROW((m_next_idx >= m_capacity),
                                         string("Exceeding the source entry capacity: ") + to_string(m_capacity));
@@ -152,7 +151,7 @@ namespace uva {
                                 entry.move_from(target);
 
                                 //Compute the minimum cost which in log space is a maximum value
-                                update_minimum_cost(entry, lm_weight);
+                                update_minimum_cost(entry, target.get_lm_weight());
                             }
 
                             /**

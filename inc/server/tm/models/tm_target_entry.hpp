@@ -101,15 +101,6 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to compare two target entries based on their total weight
-                             * @param other the other entry to compare with
-                             * @return true if the total weight of this entry is smaller than the total weight of the other entry
-                             */
-                            inline bool operator<(const tm_target_entry & other) const {
-                                return get_tm_cost<false>() < other.get_tm_cost<false>();
-                            }
-
-                            /**
                              * Allows to set the target phrase and its id
                              * @param source_uid store the source uid for being combined with the
                              *                   target phrase into the source/target pair uid
@@ -208,7 +199,7 @@ namespace uva {
                              *               be filled in, unless the provided pointer is NULL.
                              * @return the total weight of the entry, the sum of feature weights
                              */
-                            template<bool is_consider_scores = true>
+                            template<bool is_consider_scores = true >
                             inline const prob_weight get_tm_cost(prob_weight * scores = NULL) const {
 #if IS_SERVER_TUNING_MODE
                                 if (is_consider_scores) {
@@ -304,7 +295,7 @@ namespace uva {
                                 for (int8_t idx = 0; idx < NUMBER_OF_FEATURES; ++idx) {
                                     m_total_weight += features[idx];
                                 }
-                                
+
                                 //Add the word penalty to the total score!
                                 m_total_weight -= wp_lambda * m_num_words;
 
@@ -344,6 +335,65 @@ namespace uva {
 
                         //Typedef an array of weights
                         typedef prob_weight feature_array[MAX_NUM_TM_FEATURES];
+
+                        /**
+                         * This class defines the temporary target entry 
+                         */
+                        class tm_tmp_target_entry : public tm_target_entry {
+                        public:
+
+                            /**
+                             * The basic constructor
+                             */
+                            tm_tmp_target_entry() : tm_target_entry() {
+                                //Nothing to be done here
+                            }
+                            
+                            /**
+                             * The basic destructor
+                             */
+                            virtual ~tm_tmp_target_entry() {
+                                //Nothing to be done here
+                            }
+
+                            /**
+                             * Allows to compare two temporary target entries based on their total weight
+                             * @param other the other entry to compare with
+                             * @return true if the total weight of this entry is smaller than the total weight of the other entry
+                             */
+                            inline bool operator<(const tm_tmp_target_entry & other) const {
+                                return m_total_weight_plus < other.m_total_weight_plus;
+                            }
+
+                            /**
+                             * Allows to set the language model weight of the target
+                             * @param lm_target_weight the language model weight of the target
+                             */
+                            inline void set_lm_weight(const prob_weight lm_target_weight) {
+                                //Store the lambda weight
+                                m_lm_weight = lm_target_weight;
+                                //Compute the local total weight based on the tm weight
+                                //of the super class and the lm target weight as given
+                                m_total_weight_plus = this->get_tm_cost<false>() + m_lm_weight;
+                            }
+                            
+                            /**
+                             * Allows to retrieve the lm model weight of the target 
+                             * @return  the lm model weight of the target 
+                             */
+                            inline prob_weight get_lm_weight() const {
+                                return m_lm_weight;
+                            }
+                            
+                        private:
+                            //Stores the total weight of the entity which is: 
+                            //The total weight of the translation entry plus
+                            //the language model joint probability of the target
+                            prob_weight m_total_weight_plus;
+                            
+                            //Stores the language model weight of the target
+                            prob_weight m_lm_weight;
+                        };
                     }
                 }
             }

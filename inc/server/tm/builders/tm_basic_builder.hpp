@@ -67,9 +67,9 @@ namespace uva {
                 namespace tm {
                     namespace builders {
                         //The typedef for the list of targets
-                        typedef ordered_list<tm_target_entry> targets_list;
+                        typedef ordered_list<tm_tmp_target_entry> targets_list;
                         //The typedef for the pointer to the list of targets
-                        typedef ordered_list<tm_target_entry>* targets_list_ptr;
+                        typedef ordered_list<tm_tmp_target_entry>* targets_list_ptr;
                         //Define the map storing the source phrase ids and the number of translations per phrase
                         typedef unordered_map<phrase_uid, targets_list_ptr> tm_data_map;
 
@@ -257,7 +257,7 @@ namespace uva {
                              * @param entry [out] the reference to the entry pointer
                              * @return true if the entry was created, otherwise false
                              */
-                            inline bool get_target_entry(text_piece_reader &rest, phrase_uid source_uid, tm_target_entry *&entry) {
+                            inline bool get_target_entry(text_piece_reader &rest, phrase_uid source_uid, tm_tmp_target_entry *&entry) {
                                 LOG_DEBUG2 << "Got translation line to parse: ___" << rest << "___" << END_LOG;
 
                                 //Declare an array of weights for temporary use
@@ -290,12 +290,23 @@ namespace uva {
                                     LOG_DEBUG << "The phrase: ___" << target << "__ got "
                                             << m_tmp_num_words << " word ids: " <<
                                             array_to_string<word_uid>(m_tmp_num_words, m_tmp_word_ids) << END_LOG;
-
-                                    //Initiate a new target entry
-                                    entry = new tm_target_entry();
+                                    
+                                    //Initiate a new temporary target entry
+                                    entry = new tm_tmp_target_entry();
+                                    
+                                    //Set the target entry data first, to make it distinguishable
                                     entry->set_data(source_uid, target_str, target_uid,
                                             tmp_features, m_tmp_num_words, m_tmp_word_ids,
                                             m_params.m_wp_lambda, tmp_pure_features);
+
+                                    //Get the Language Model weight for the target translation
+                                    const prob_weight lm_weight = m_lm_query.execute(m_tmp_num_words, m_tmp_word_ids);
+                                    LOG_DEBUG << "The phrase: ___" << target_str << "__ lm-weight: " << lm_weight << END_LOG;
+                                    
+                                    //Set the LM target weight, is needed to compute the temporary total
+                                    //weight for ordering the entries and is also later needed to compute
+                                    //the minimum translation cost of the source entry
+                                    entry->set_lm_weight(lm_weight);
 
                                     LOG_DEBUG1 << "The source/target (" << source_uid
                                             << "/" << target_uid << ") entry was created!" << END_LOG;
@@ -322,7 +333,7 @@ namespace uva {
                                 //The pointers to the current targets list
                                 targets_list_ptr targets = NULL;
                                 //Declare the pointer variable for the target entry
-                                tm_target_entry * entry = NULL;
+                                tm_tmp_target_entry * entry = NULL;
 
                                 LOG_DEBUG << "Start parsing the TM file" << END_LOG;
 
@@ -430,13 +441,9 @@ namespace uva {
                                         //Add the translation entries
                                         while (entry != NULL) {
                                             //Get the reference to the target entry
-                                            tm_target_entry & target = **entry;
+                                            tm_tmp_target_entry & target = **entry;
 
-                                            //Get the language model weight for the target translation
-                                            const prob_weight lm_weight = m_lm_query.execute(target.get_num_words(), target.get_word_ids());
-                                            LOG_DEBUG << "The phrase: ___" << target.get_target_phrase() << "__ lm-weight: " << lm_weight << END_LOG;
-
-                                            source_entry->emplace_target(target, lm_weight);
+                                            source_entry->emplace_target(target);
 
                                             //Move on to the next entry
                                             entry = entry->m_next;
