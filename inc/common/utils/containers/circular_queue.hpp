@@ -140,6 +140,14 @@ namespace uva {
                 }
 
                 /**
+                 * Allows to get a string representation of the queue.
+                 * @return the string representation of the queue
+                 */
+                string to_string() const {
+                    return array_to_string<elem_type>(m_size, m_elems);
+                }
+
+                /**
                  * Allows to get a string representation of the the specified
                  * number of tail elements. If there is less elements present
                  * in the queue then we represent as many as there are:

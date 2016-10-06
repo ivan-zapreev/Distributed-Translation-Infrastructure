@@ -386,11 +386,12 @@ namespace uva {
                                 const state_data & other_data = other.m_state_data;
 
                                 //Log the state data that will be compared
-                                LOG_DEBUG1 << "State recombination check: " << this << " =?= " << &other << END_LOG;
-                                LOG_DEBUG1 << m_state_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << " =?= "
-                                        << other_data.m_trans_frame.tail_to_string(MAX_HISTORY_LENGTH) << END_LOG;
-                                LOG_DEBUG1 << m_state_data.covered_to_string() << " =?= " << other_data.covered_to_string() << END_LOG;
-                                LOG_DEBUG1 << m_state_data.rm_entry_data << " =(second 1/2)?= " << other_data.rm_entry_data << END_LOG;
+                                LOG_DEBUG1 << "--- State recombination check: " << this << " =?= " << &other << END_LOG;
+                                LOG_DEBUG1 << "--- " << m_state_data.m_s_end_word_idx << " =?= " << other_data.m_s_end_word_idx << END_LOG;
+                                LOG_DEBUG1 << "--- Checking tail history of " << MAX_HISTORY_LENGTH << " elements" << END_LOG;
+                                LOG_DEBUG1 << "--- " << m_state_data.m_trans_frame.to_string() << " =?= " << other_data.m_trans_frame.to_string() << END_LOG;
+                                LOG_DEBUG1 << "--- " << m_state_data.covered_to_string() << " =?= " << other_data.covered_to_string() << END_LOG;
+                                LOG_DEBUG1 << "--- " << m_state_data.rm_entry_data << " =(second 1/2)?= " << other_data.rm_entry_data << END_LOG;
                                 
                                 //Compute the comparison result
                                 const bool is_equal = (m_state_data.m_s_end_word_idx == other_data.m_s_end_word_idx) &&
@@ -399,7 +400,7 @@ namespace uva {
                                         m_state_data.rm_entry_data.is_equal_from_weights(other_data.rm_entry_data);
 
                                 //Log the equality comparison result
-                                LOG_DEBUG1 << "State: " << this << (is_equal ? " == " : " != " ) << &other << END_LOG;
+                                LOG_DEBUG1 << "--- State: " << this << (is_equal ? " == " : " != " ) << &other << END_LOG;
 
                                 //Return the comparison result
                                 return is_equal;
