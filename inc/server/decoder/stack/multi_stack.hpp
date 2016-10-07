@@ -206,11 +206,11 @@ namespace uva {
                                 typename stack_level::const_iterator iter = end_level->begin();
                                 stringstream parents_dump, covers_dump;
                                 while (iter != end_level->end()) {
-                                    //Dump as a FROM state content
-                                    (*iter)->dump_to_from_se_state_data(lattice_dump);
+                                    //Dump the state as the FROM state
+                                    (*iter)->dump_from_end_state_state_data(lattice_dump);
 
-                                    //Dump as a TO state content
-                                    (*iter)->dump_to_state_data(parents_dump, scores_dump, covers_dump);
+                                    //Dump the state as a TO state
+                                    (*iter)->dump_to_end_state_state_data(parents_dump, scores_dump, covers_dump);
 
                                     //Move on to the next state
                                     ++iter;

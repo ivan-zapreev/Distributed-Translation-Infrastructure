@@ -182,18 +182,36 @@ namespace uva {
                             }
 
                             /**
-                             * Allows to dump the end level states as if they were the
-                             * from states for the super-end state of the lattice
+                             * Allows to dump the end-state (</s>) data to the lattice as a FROM state.
+                             * Here we go through all the states coming into this </s> state and dump 
+                             * them as the FROM states with zero score instead. This is to match
+                             * the way Oister dumps its lattice, there the </s> state is not dumped
+                             * and is combined with the last actual translation state.
                              * @param this_dump the stream to dump the from state into
                              */
-                            inline void dump_to_from_se_state_data(ostream & this_dump) const {
-                                LOG_DEBUG1 << "Dumping the SE FROM state " << this << " ("
+                            inline void dump_from_end_state_state_data(ostream & this_dump) const {
+                                LOG_DEBUG1 << "Dumping the END STATE AS FROM state " << this << " ("
                                         << m_state_id << ") to the search lattice" << END_LOG;
 
-                                //Dump the data into the lattice
-                                this_dump << to_string(m_state_id) << "||||||0";
-
-                                LOG_DEBUG1 << "Dumping the SE FROM state " << this << " ("
+                                //If the state does not have a parent then it is the
+                                //root of translation tree, so no need to dump it
+                                if (m_parent != NULL) {
+                                    //Dump the parent as the from state into the lattice
+                                    this_dump << to_string(m_parent->m_state_id) << "||||||0";
+                                    
+                                    //Dump the parents of the recombined from states, if any
+                                    stack_state_ptr rec_from = m_recomb_from;
+                                    while (rec_from != NULL) {
+                                        //Add an extra space before the new element in the lattice dump
+                                        this_dump << " ";
+                                        //Dump the parent of the recombined from state
+                                        this_dump << to_string(rec_from->m_parent->m_state_id) << "||||||0";
+                                        //Move to the next recombined from state
+                                        rec_from = rec_from->m_next;
+                                    }
+                                }
+                                
+                                LOG_DEBUG1 << "Dumping the END STATE AS FROM state " << this << " ("
                                         << m_state_id << ") to the lattice is done" << END_LOG;
                             }
 
@@ -206,7 +224,7 @@ namespace uva {
                              * was recombined into another state, we shall use that as a main
                              * state-carrying the state id for the lattice
                              */
-                            inline void dump_to_from_state_data(ostream & this_dump, ostream & covers_dump,
+                            inline void dump_from_state_data(ostream & this_dump, ostream & covers_dump,
                                     const stack_state & to_state, const stack_state & main_to_state) const {
                                 LOG_DEBUG1 << "Dumping the FROM state " << this << " ("
                                         << m_state_id << ") to the search lattice" << END_LOG;
@@ -228,6 +246,49 @@ namespace uva {
                                         << m_state_id << ") to the lattice is done" << END_LOG;
                             }
 
+                            /**
+                             * Allows to dump the end-state (</s>) data to the lattice as a TO state.
+                             * Here we go through all the states coming into this </s> state and dump 
+                             * them as the FROM states with zero score instead. This is to match
+                             * the way Oister dumps its lattice, there the </s> state is not dumped
+                             * and is combined with the last actual translation state.
+                             * @param this_dump the stream where the current state is to be dumped right away
+                             * @param scores_dump the stream for dumping the used model features per state
+                             * @param covers_dump the stream for dumping the cover vectors
+                             */
+                            inline void dump_to_end_state_state_data(ostream & this_dump, ostream & scores_dump, ostream & covers_dump) const {
+                                LOG_DEBUG1 << "Dumping the END STATE AS TO state " << this << " ("
+                                        << m_state_id << ") to the search lattice" << END_LOG;
+
+                                //If the state does not have a parent then it is the
+                                //root of translation tree, so no need to dump it
+                                if ((m_parent != NULL) && m_is_not_dumped) {
+                                    //Declare the stream to store the parent's data
+                                    stringstream parents_dump;
+                                    
+                                    //Dump the parent state as to state
+                                    m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
+                                    
+                                    //Dump the parents of the recombined from states, if any
+                                    stack_state_ptr rec_from = m_recomb_from;
+                                    while (rec_from != NULL) {
+                                        //Dump the recombined state parent
+                                        rec_from->m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
+                                        //Move to the next recombined from state
+                                        rec_from = rec_from->m_next;
+                                    }
+
+                                    //Finish this entry and add the parents
+                                    this_dump << std::endl << parents_dump.str();
+
+                                    //Mark the state as dumped 
+                                    const_cast<bool &> (m_is_not_dumped) = false;
+                                }
+                                
+                                LOG_DEBUG1 << "Dumping the END SYAYE AS TO state " << this << " ("
+                                        << m_state_id << ") to the lattice is done" << END_LOG;
+                            }
+                            
                             /**
                              * Allows to dump the stack state data to the lattice as a TO state
                              * @param this_dump the stream where the current state is to be dumped right away
@@ -260,7 +321,7 @@ namespace uva {
                                             << this << " (" << m_state_id << ")" << END_LOG;
 
                                     //Dump the state's parent as its from state 
-                                    m_parent->dump_to_from_state_data(this_dump, covers_dump, *this, *this);
+                                    m_parent->dump_from_state_data(this_dump, covers_dump, *this, *this);
                                     //Dump as a to state into the parent dump
                                     m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
 
@@ -273,7 +334,7 @@ namespace uva {
                                         //Add an extra space before the new element in the lattice dump
                                         this_dump << " ";
                                         //Dump as a from state
-                                        rec_from->m_parent->dump_to_from_state_data(this_dump, covers_dump, *rec_from, *this);
+                                        rec_from->m_parent->dump_from_state_data(this_dump, covers_dump, *rec_from, *this);
                                         //Dump as a to state into the parent dump
                                         rec_from->m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
                                         //Move to the next recombined from state
