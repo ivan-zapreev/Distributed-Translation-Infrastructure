@@ -198,7 +198,7 @@ namespace uva {
                                 if (m_parent != NULL) {
                                     //Dump the parent as the from state into the lattice
                                     this_dump << to_string(m_parent->m_state_id) << "||||||0";
-                                    
+
                                     //Dump the parents of the recombined from states, if any
                                     stack_state_ptr rec_from = m_recomb_from;
                                     while (rec_from != NULL) {
@@ -210,7 +210,7 @@ namespace uva {
                                         rec_from = rec_from->m_next;
                                     }
                                 }
-                                
+
                                 LOG_DEBUG1 << "Dumping the END STATE AS FROM state " << this << " ("
                                         << m_state_id << ") to the lattice is done" << END_LOG;
                             }
@@ -265,30 +265,32 @@ namespace uva {
                                 if ((m_parent != NULL) && m_is_not_dumped) {
                                     //Declare the stream to store the parent's data
                                     stringstream parents_dump;
-                                    
+
                                     //Dump the parent state as to state
+                                    //ToDo: Pass this state as we will need its feature scores and partial score
                                     m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
-                                    
+
                                     //Dump the parents of the recombined from states, if any
                                     stack_state_ptr rec_from = m_recomb_from;
                                     while (rec_from != NULL) {
                                         //Dump the recombined state parent
+                                        //ToDo: Pass this state as we will need its feature scores and partial score
                                         rec_from->m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
                                         //Move to the next recombined from state
                                         rec_from = rec_from->m_next;
                                     }
 
                                     //Finish this entry and add the parents
-                                    this_dump << std::endl << parents_dump.str();
+                                    this_dump << parents_dump.str();
 
                                     //Mark the state as dumped 
                                     const_cast<bool &> (m_is_not_dumped) = false;
                                 }
-                                
-                                LOG_DEBUG1 << "Dumping the END SYAYE AS TO state " << this << " ("
+
+                                LOG_DEBUG1 << "Dumping the END STATE AS TO state " << this << " ("
                                         << m_state_id << ") to the lattice is done" << END_LOG;
                             }
-                            
+
                             /**
                              * Allows to dump the stack state data to the lattice as a TO state
                              * @param this_dump the stream where the current state is to be dumped right away
@@ -453,7 +455,7 @@ namespace uva {
                                 LOG_DEBUG1 << "--- " << m_state_data.m_trans_frame.to_string() << " =?= " << other_data.m_trans_frame.to_string() << END_LOG;
                                 LOG_DEBUG1 << "--- " << m_state_data.covered_to_string() << " =?= " << other_data.covered_to_string() << END_LOG;
                                 LOG_DEBUG1 << "--- " << m_state_data.rm_entry_data << " =(second 1/2)?= " << other_data.rm_entry_data << END_LOG;
-                                
+
                                 //Compute the comparison result
                                 const bool is_equal = (m_state_data.m_s_end_word_idx == other_data.m_s_end_word_idx) &&
                                         m_state_data.m_trans_frame.is_equal_last(other_data.m_trans_frame, MAX_HISTORY_LENGTH) &&
@@ -461,7 +463,7 @@ namespace uva {
                                         m_state_data.rm_entry_data.is_equal_from_weights(other_data.rm_entry_data);
 
                                 //Log the equality comparison result
-                                LOG_DEBUG1 << "--- State: " << this << (is_equal ? " == " : " != " ) << &other << END_LOG;
+                                LOG_DEBUG1 << "--- State: " << this << (is_equal ? " == " : " != ") << &other << END_LOG;
 
                                 //Return the comparison result
                                 return is_equal;
