@@ -72,7 +72,7 @@ namespace uva {
                         //The feature weight names
                         static size_t TM_WEIGHT_GLOBAL_IDS[MAX_NUM_TM_FEATURES];
                         //The word penalty weight parameter name
-                        static const string TM_WP_LAMBDA_PARAM_NAME;
+                        static const string TM_WORD_PENALTY_PARAM_NAME;
                         //The global id of the word penalty feature
                         static size_t TM_WP_LAMBDA_GLOBAL_ID;
                         //The index of the word penalty parameter lambda
@@ -119,7 +119,7 @@ namespace uva {
                                 registry.add_feature(source, TM_WEIGHT_NAMES[idx], TM_WEIGHT_GLOBAL_IDS[idx]);
                             }
                             //Add the word penalty feature
-                            registry.add_feature(source, TM_WP_LAMBDA_PARAM_NAME, TM_WP_LAMBDA_GLOBAL_ID);
+                            registry.add_feature(source, TM_WORD_PENALTY_PARAM_NAME, TM_WP_LAMBDA_GLOBAL_ID);
                         }
 
                         /**
@@ -174,7 +174,7 @@ namespace uva {
                                 params.m_unk_features, TM_FEATURE_WEIGHTS_DELIMITER_STR)
                                 << ", " << tm_parameters::TM_TRANS_LIM_PARAM_NAME << " = " << params.m_trans_limit
                                 << ", " << tm_parameters::TM_MIN_TRANS_PROB_PARAM_NAME << " = " << params.m_min_tran_prob
-                                << ", " << tm_parameters::TM_WP_LAMBDA_PARAM_NAME << " = " << params.m_wp_lambda
+                                << ", " << tm_parameters::TM_WORD_PENALTY_PARAM_NAME << " = " << params.m_wp_lambda
                                 << " ]";
                     }
                 }

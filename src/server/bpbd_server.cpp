@@ -205,7 +205,7 @@ static void parse_confiog_file(const string & config_file_name, server_parameter
                 TM_FEATURE_WEIGHTS_DELIMITER_STR);
         params.m_tm_params.m_trans_limit = get_integer<size_t>(ini, section, tm_parameters::TM_TRANS_LIM_PARAM_NAME);
         params.m_tm_params.m_min_tran_prob = get_float(ini, section, tm_parameters::TM_MIN_TRANS_PROB_PARAM_NAME);
-        params.m_tm_params.m_wp_lambda = get_float(ini, section, tm_parameters::TM_WP_LAMBDA_PARAM_NAME);
+        params.m_tm_params.m_wp_lambda = get_float(ini, section, tm_parameters::TM_WORD_PENALTY_PARAM_NAME);
 
         section = rm_parameters::RM_CONFIG_SECTION_NAME;
         params.m_rm_params.m_conn_string = get_string(ini, section, rm_parameters::RM_CONN_STRING_PARAM_NAME);
