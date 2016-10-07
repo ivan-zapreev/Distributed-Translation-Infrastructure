@@ -223,9 +223,13 @@ namespace uva {
                              * @param main_to_state the main to state, i.e. in case the to_state
                              * was recombined into another state, we shall use that as a main
                              * state-carrying the state id for the lattice
+                             * @param end_state the end </s> state in case the child of this
+                             * state has just the </s> expansion possible, default is NULL
                              */
+                            template<bool is_end_state>
                             inline void dump_from_state_data(ostream & this_dump, ostream & covers_dump,
-                                    const stack_state & to_state, const stack_state & main_to_state) const {
+                                    const stack_state & to_state, const stack_state & main_to_state,
+                                    const stack_state * end_state = NULL) const {
                                 LOG_DEBUG1 << "Dumping the FROM state " << this << " ("
                                         << m_state_id << ") to the search lattice" << END_LOG;
 
@@ -233,9 +237,14 @@ namespace uva {
                                 string target = "";
                                 to_state.m_state_data.template get_target_phrase<true>(target);
 
+                                //If the end state is present then use it to compute the delta
+                                //score relative to it, instead of the actual to state.
+                                const prob_weight to_state_partial_score = (is_end_state ?
+                                        end_state->m_state_data.m_partial_score : to_state.m_state_data.m_partial_score);
+                                
                                 //Dump the data into the lattice
                                 this_dump << to_string(m_state_id) << "|||" << target << "|||"
-                                        << to_string(to_state.m_state_data.m_partial_score - m_state_data.m_partial_score);
+                                        << to_string(to_state_partial_score - m_state_data.m_partial_score);
 
                                 //Dump the cover vector for the to state
                                 covers_dump << to_string(main_to_state.m_state_id) << "-" << to_string(m_state_id)
@@ -267,15 +276,15 @@ namespace uva {
                                     stringstream parents_dump;
 
                                     //Dump the parent state as to state
-                                    //ToDo: Pass this state as we will need its feature scores and partial score
-                                    m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
+                                    //Pass this state as we will need its feature scores and partial score
+                                    m_parent->template dump_to_state_data<true>(parents_dump, scores_dump, covers_dump, this, this);
 
                                     //Dump the parents of the recombined from states, if any
                                     stack_state_ptr rec_from = m_recomb_from;
                                     while (rec_from != NULL) {
                                         //Dump the recombined state parent
-                                        //ToDo: Pass this state as we will need its feature scores and partial score
-                                        rec_from->m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
+                                        //Pass this state as we will need its feature scores and partial score
+                                        rec_from->m_parent->template dump_to_state_data<true>(parents_dump, scores_dump, covers_dump, rec_from, this);
                                         //Move to the next recombined from state
                                         rec_from = rec_from->m_next;
                                     }
@@ -296,8 +305,13 @@ namespace uva {
                              * @param this_dump the stream where the current state is to be dumped right away
                              * @param scores_dump the stream for dumping the used model features per state
                              * @param covers_dump the stream for dumping the cover vectors
+                             * @param ce_state the end state (</s>) in case it is the direct child of this state, the default is NULL
+                             * @param main_ce_state the end state (</s>) in case it is the direct child of this state, the default is NULL
+                             *        the main_pe_state is different from pe_state in case pe_state was recombined into main_pe_state
                              */
-                            inline void dump_to_state_data(ostream & this_dump, ostream & scores_dump, ostream & covers_dump) const {
+                            template<bool is_end_state = false >
+                            inline void dump_to_state_data(ostream & this_dump, ostream & scores_dump, ostream & covers_dump,
+                                    const stack_state * end_state = NULL, const stack_state * main_end_state = NULL) const {
                                 LOG_DEBUG1 << "Dumping the TO state " << this << " ("
                                         << m_state_id << ") to the search lattice" << END_LOG;
 
@@ -314,7 +328,7 @@ namespace uva {
                                     this_dump << to_string(m_state_id) << "\t";
 
                                     //Dump the scores
-                                    dump_state_scores(scores_dump);
+                                    dump_state_scores<is_end_state>(scores_dump, main_end_state);
 
                                     //Declare the stream to store the parent's data
                                     stringstream parents_dump;
@@ -323,7 +337,7 @@ namespace uva {
                                             << this << " (" << m_state_id << ")" << END_LOG;
 
                                     //Dump the state's parent as its from state 
-                                    m_parent->dump_from_state_data(this_dump, covers_dump, *this, *this);
+                                    m_parent->template dump_from_state_data<is_end_state>(this_dump, covers_dump, *this, *this, end_state);
                                     //Dump as a to state into the parent dump
                                     m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
 
@@ -336,7 +350,7 @@ namespace uva {
                                         //Add an extra space before the new element in the lattice dump
                                         this_dump << " ";
                                         //Dump as a from state
-                                        rec_from->m_parent->dump_from_state_data(this_dump, covers_dump, *rec_from, *this);
+                                        rec_from->m_parent->template dump_from_state_data<is_end_state>(this_dump, covers_dump, *rec_from, *this, end_state);
                                         //Dump as a to state into the parent dump
                                         rec_from->m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
                                         //Move to the next recombined from state
@@ -799,13 +813,25 @@ namespace uva {
 
                             /**
                              * Allows to dump the feature scores to the scores output stream
-                             * @param scores_dump the output stream for the featrue scores
+                             * @param scores_dump the output stream for the feature scores
+                             * @param add_state the additional state to add scores from
                              */
-                            inline void dump_state_scores(ostream & scores_dump) const {
+                            template<bool is_add_state = false >
+                            inline void dump_state_scores(ostream & scores_dump, const stack_state * add_state = NULL) const {
                                 scores_dump << to_string(m_state_id);
+
+                                //Dump the lattice scores, adding the additional state scores if needed
+                                prob_weight lattice_score = 0.0;
                                 for (size_t idx = 0; idx < m_state_data.m_stack_data.get_num_features(); ++idx) {
-                                    if (m_state_data.m_lattice_scores[idx] != 0.0) {
-                                        scores_dump << " " << to_string(idx) << "=" << m_state_data.m_lattice_scores[idx];
+                                    //The this state's score
+                                    lattice_score = m_state_data.m_lattice_scores[idx];
+                                    //Add the additional state score if needed
+                                    if (is_add_state) {
+                                        lattice_score += add_state->m_state_data.m_lattice_scores[idx];
+                                    }
+                                    //If the resulting score is not zero then log it
+                                    if (lattice_score != 0.0) {
+                                        scores_dump << " " << to_string(idx) << "=" << lattice_score;
                                     }
                                 }
                                 scores_dump << std::endl;
