@@ -223,13 +223,13 @@ namespace uva {
                              * @param main_to_state the main to state, i.e. in case the to_state
                              * was recombined into another state, we shall use that as a main
                              * state-carrying the state id for the lattice
-                             * @param end_state the end </s> state in case the child of this
-                             * state has just the </s> expansion possible, default is NULL
+                             * @param score_delta the score delta to log, in case this state is
+                             * recombined into another one this is the delta for that other state,
+                             * as required for oister tuning algorithm.
                              */
-                            template<bool is_end_state>
                             inline void dump_from_state_data(ostream & this_dump, ostream & covers_dump,
                                     const stack_state & to_state, const stack_state & main_to_state,
-                                    const stack_state * end_state = NULL) const {
+                                    const prob_weight score_delta) const {
                                 LOG_DEBUG1 << "Dumping the FROM state " << this << " ("
                                         << m_state_id << ") to the search lattice" << END_LOG;
 
@@ -237,14 +237,8 @@ namespace uva {
                                 string target = "";
                                 to_state.m_state_data.template get_target_phrase<true>(target);
 
-                                //If the end state is present then use it to compute the delta
-                                //score relative to it, instead of the actual to state.
-                                const prob_weight to_state_partial_score = (is_end_state ?
-                                        end_state->m_state_data.m_partial_score : to_state.m_state_data.m_partial_score);
-                                
                                 //Dump the data into the lattice
-                                this_dump << to_string(m_state_id) << "|||" << target << "|||"
-                                        << to_string(to_state_partial_score - m_state_data.m_partial_score);
+                                this_dump << to_string(m_state_id) << "|||" << target << "|||" << to_string(score_delta);
 
                                 //Dump the cover vector for the to state
                                 covers_dump << to_string(main_to_state.m_state_id) << "-" << to_string(m_state_id)
@@ -336,8 +330,11 @@ namespace uva {
                                     LOG_DEBUG1 << "Dumping the PARENT state of state "
                                             << this << " (" << m_state_id << ")" << END_LOG;
 
+                                    //Compute the partial score delta for the state
+                                    const prob_weight score_delta = m_parent->template compute_partial_score_delta<is_end_state>(*this, end_state);
+
                                     //Dump the state's parent as its from state 
-                                    m_parent->template dump_from_state_data<is_end_state>(this_dump, covers_dump, *this, *this, end_state);
+                                    m_parent->dump_from_state_data(this_dump, covers_dump, *this, *this, score_delta);
                                     //Dump as a to state into the parent dump
                                     m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
 
@@ -350,7 +347,7 @@ namespace uva {
                                         //Add an extra space before the new element in the lattice dump
                                         this_dump << " ";
                                         //Dump as a from state
-                                        rec_from->m_parent->template dump_from_state_data<is_end_state>(this_dump, covers_dump, *rec_from, *this, end_state);
+                                        rec_from->m_parent->dump_from_state_data(this_dump, covers_dump, *rec_from, *this, score_delta);
                                         //Dump as a to state into the parent dump
                                         rec_from->m_parent->dump_to_state_data(parents_dump, scores_dump, covers_dump);
                                         //Move to the next recombined from state
@@ -835,6 +832,26 @@ namespace uva {
                                     }
                                 }
                                 scores_dump << std::endl;
+                            }
+
+                            /**
+                             * Allows to compute the partial score delta between this state, as the parent state and the to_state.
+                             * In case the end state is given, the to_state is the </s> tag state which is to be eliminated from the
+                             * lattice and this is why then we compute the partial score delta relative to the given end_state.
+                             * @param is_end_state if true indicates the presence of the end state
+                             * @param to_state the child state of this state
+                             * @param end_state the end state following the child state in case the to_state is an </s> state
+                             * @return the partial score delta, should ne null if and only if is_end_state is false
+                             */
+                            template<bool is_end_state = false >
+                            inline prob_weight compute_partial_score_delta(const stack_state & to_state, const stack_state * end_state = NULL) {
+                                //If the end state is present then use it to compute the delta
+                                //score relative to it, instead of the actual to state.
+                                const prob_weight to_state_partial_score = (is_end_state ?
+                                        end_state->m_state_data.m_partial_score : to_state.m_state_data.m_partial_score);
+
+                                //Return the partial score delta
+                                return (to_state_partial_score - m_state_data.m_partial_score);
                             }
 #endif
 
