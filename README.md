@@ -49,10 +49,11 @@ The rest of the document is organized as follows:
 7. [External libraries](#external-libraries) - Lists the included external libraries
 8. [Performance evaluation](#performance-evaluation) - Contains performance evaluation results
 9. [General design](#general-design) - Outlines the general software design
-10. [Software details](#software-details) - Goes about some of the software details
-11. [Literature and references](#literature-and-references) - Presents the list of used literature
-12. [Licensing](#licensing) - States the licensing strategy of the project
-13. [History](#history) - Stores a short history of this document
+10. [Communication protocols](#communication-protocols]) - Describes the application's communications
+11. [Software details](#software-details) - Goes about some of the software details
+12. [Literature and references](#literature-and-references) - Presents the list of used literature
+13. [Licensing](#licensing) - States the licensing strategy of the project
+14. [History](#history) - Stores a short history of this document
 
 
 ##Project structure
@@ -821,6 +822,45 @@ This is the situation when both pre- and post-processing are enabled and are run
 
 ##### Type - 06: Pre- and post-processing, one application, one physical server
 This is the situation when both pre- and post-processing are enabled and are run together within one application on one physical server. In this case, internal - temporary file sharing between the pre- and post-processing scripts becomes simpler. This configuration can be recommended for servers with multiple processors and multiple shared hard drives or if the pre- and post- processing have low performance impact on the system.
+
+##Communication protocols
+In this section we shall describe the communication protocol between the system applications mentioned in the section on [General design](#general-design). As has already been noted, all the communications between the *bpbd-client*, *bpbd-server*, *bpbd-balancer*, *bpbd-processor*, and *translate.html* are done using the WebSockets communication protocol. The latter is a rather low-level messaging protocol allowing for asynchronous interaction between applications. So in our framework it is used as a data transfer protocol we build our communications upon. We chose the message's payload to be formed using JSON - [JavaScript Object Notation](http://www.json.org/) which is a lightweight human-readable data-interchange format.
+
+In general there is just three types of communications (request-response messages) present in the system at the moment:
+
+* **Supported languages - (SL)**: is used when one application needs to retrieve the supported translation source/target language pairs from another application
+* **Translation - (T)**: is used when one application requires another application to perform some text translation.
+* **Pre-/Post-processing - (PP)**: is used when one application needs to pre/post-process some text before/after translation.
+
+In the list above, we did not mention concrete application names as some of the communication types are common for multiple applications. To get a better insight into which communications are possible, consider the table below.
+
+               | bpbd-client | translate.html | bpbd-server | bpbd-balancer | bpbd-processor |
+---------------|-------------|----------------|-------------|---------------|----------------|
+bpbd-client    |             |                |  (SL), (T)  |  (SL), (T)    |      (PP)      |
+translate.html |             |                |  (SL), (T)  |  (SL), (T)    |      (PP)      |
+bpbd-server    |  (SL), (T)  |  (SL), (T)     |             |  (SL), (T)    |                |
+bpbd-balancer  |  (SL), (T)  |  (SL), (T)     |  (SL), (T)  |  (SL), (T)    |                |
+bpbd-processor |     (PP)    |      (PP)      |             |               |                |
+
+
+
+###Supported languages
+
+####Request
+
+####Response
+
+###Translation
+
+####Request
+
+####Response
+
+###Pre-/Post-processing
+
+####Request
+
+####Response
 
 ##Software details
 In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.
