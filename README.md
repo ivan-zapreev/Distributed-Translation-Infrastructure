@@ -1009,7 +1009,7 @@ enum stat_code {
 Note that **stat_code** and **stat_msg**, storing the translation status, are given at the top level of a translation job  - indicating the overall status - and also at the level of each sentence. Also, **stack_load**, storing an array of stack loads in percent, is only present for a translated sentence if a translation info was requested. The latter is done by setting the **is_trans_info** flag in the corresponding translation job request. The order of translated sentence objects in the **target_data** array shall be the same as the order of the corresponding source sentences in the **source_sent** array of the translation job request.
 
 ###(PP) - Pre/Post processing
-Text processing requests and responses are used to communicate the source/target texts to the text processing service for pre and post processing. Clearly the source and target texts can be large and therefore our protocol supports splitting those texts into multiple (PP) requests and responses. In case of text processing, we can not split a text in an arbitrary language into sentences at the client side. This would be too computationally intensive and would also require the corresponding language's model. Therefore, it has been decided to split text into UTF-8 character chunks of some fixed length. Let us consider the (PP) requests and responses in more details.
+Text processing requests and responses are used to communicate the source/target texts to the text processing service for pre and post processing. Clearly the source and target texts can be large and therefore our protocol supports splitting those texts into multiple (PP) requests and responses. In case of text processing, we can not split a text in an arbitrary language into sentences at the client side. This would be too computationally intensive and would also require presence of corresponding language models at the client. Therefore, it has been decided to split text into UTF-8 character chunks of some fixed length. Let us consider the (PP) requests and responses in more details.
 
 ####JSON Request format
 An example (PP) request is given below. Here we give the pre-processor job request as indicated by the value of **msg_type**.
@@ -1023,7 +1023,7 @@ An example (PP) request is given below. Here we give the pre-processor job reque
 	"num_chs" : 5,
 	"ch_idx" : 1,
 	"lang" : "auto",
-	"text" : "學而時習之，不亦說乎？有朋自遠方來，不亦樂乎？人不知而不慍，不亦君子乎？"
+	"text" : "學而時習之，不亦說乎？有朋自遠方來，不亦樂乎？人不知而不慍，不亦"
 }
 ~~~
 
@@ -1049,7 +1049,7 @@ An example (PP) response is given below. Here we give the pre-processor job resp
 	"num_chs" : 7,
 	"ch_idx" : 1,
 	"lang" : "chinese",
-	"text" : "學而時習之 ，不亦說乎 ？有朋自遠方來 ，不亦樂乎 ？人不知而不慍 ，不亦君子乎 ？"
+	"text" : "學而時習之 ，不亦說乎 ？有朋自遠方來 ，不亦樂乎 ？人不知而不"
 }
 ~~~
 
