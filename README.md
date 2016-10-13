@@ -917,9 +917,9 @@ The (SL) response is supposed to return the list of supported language pairs. Cl
 }
 ~~~
 
-In this example, we see that *msg_type* is set to 2, indicating the this is an (SL) response and also there is an additional field **langs** which is *an object* storing the source to target language mappings. There, the object's field name indicates the source language and its value - which has to be *an array of strings* - stores the list of target languages. If the source language can not be translated in any language then it should not be present. In other word, an empty array of target languages is not supported.
+In this example, we see that *msg_type* is set to 2, indicating the this is an (SL) response and also there is an additional field **langs** which is *an object* storing the source to target language mappings. There, the object's field name indicates the source language and its value - which has to be *an array of strings* - stores the list of target languages. If the source language can not be translated in any language then it should not be present. In other words, an empty array of target languages is not supported.
 
-Note that, the (SL) response does not support returning an error. This might be introduces in the latter protocol versions, but for now it is expected that each (SL) request should be handled properly. There is just two possibilities when it can fail:
+Note that, the (SL) response does not support returning an error. This might be introduced in the latter protocol versions, but for now it is expected that each (SL) request should be handled properly. There is just two possibilities when it can fail:
 
 1. The service does not support this type of request;
 2. The service does support this type of requests but it is down;
@@ -948,16 +948,16 @@ Each source text to be translated is split into a number of translation jobs, co
 In the example above we have:
 
 * **job_id** - *an unsigned integer* indicating the translation job id unique for the given client;
-* **priority** - *an integer* storing the job priority where 0 means neutral and the higher value means higher priority;
+* **priority** - *an integer* storing the job priority where 0 means neutral and higher values mean higher priority;
 * **source_lang** - *a string* with the source language;
 * **target_lang** - *a string*  with the target language;
-* **is_trans_info** - *a boolean flag* indicating whether we need to get an additional translation information with the job response. Such an information includes the translation stack loads and is visible in the translation log;
+* **is_trans_info** - *a boolean flag* indicating whether we need to get an additional translation information with the job response. Such information includes but is not limited by the multi-stack loads and gets dumped into the translation log;
 * **source_sent** - *an array of strings* which are sentences to be translated, appearing in the same order as they are present in the original text;
 
-Note that, there is no limit on the number of sentences to be sent per request. However, the provided client implementations split the original text into a number of requests to facilitate the system throughput in the multi-client environment.
+Note that, there is no limit on the number of sentences to be sent per request. However, the provided client implementations split the original text into a number of requests to improve the system's throughput in the multi-client environment.
 
 ####JSON Response format
-The translation job response message is supposed to indicate which job it relates to, contain the overall request status and the translated text - consisting of target sentences. The latter are attributed with translation status and (optionally) translation info, giving some insight into the translation process. Let us consider an example translation response below.
+The translation job response message is supposed to indicate which translation request it corresponds to, contain the overall request status and the translated text - consisting of target sentences. The latter are attributed with translation status and (optionally) translation info, giving some insight into the translation process. Let us consider an example translation response below.
 
 ~~~json
 {
@@ -1009,7 +1009,7 @@ enum stat_code {
 Note that **stat_code** and **stat_msg**, storing the translation status, are given at the top level of a translation job  - indicating the overall status - and also at the level of each sentence. Also, **stack_load**, storing an array of stack loads in percent, is only present for a translated sentence if a translation info was requested. The latter is done by setting the **is_trans_info** flag in the corresponding translation job request. The order of translated sentence objects in the **target_data** array shall be the same as the order of the corresponding source sentences in the **source_sent** array of the translation job request.
 
 ###(PP) - Pre/Post processing
-Text processing requests and responses are used to communicate the source/target texts to the text processing service for pre and post processing. Clearly the source and target texts can be large and therefore our protocol supports splitting those texts into multiple (PP) requests and responses. In case of text processing, we can not split a text in an arbitrary language into sentences at the client side. The latter would be too computation intensive and would also require the corresponding language's model. Therefore, it has been decided to split text into UTF-8 character chunks of some fixed length. Let us consider the (PP) requests and responses in more details.
+Text processing requests and responses are used to communicate the source/target texts to the text processing service for pre and post processing. Clearly the source and target texts can be large and therefore our protocol supports splitting those texts into multiple (PP) requests and responses. In case of text processing, we can not split a text in an arbitrary language into sentences at the client side. This would be too computationally intensive and would also require the corresponding language's model. Therefore, it has been decided to split text into UTF-8 character chunks of some fixed length. Let us consider the (PP) requests and responses in more details.
 
 ####JSON Request format
 An example (PP) request is given below. Here we give the pre-processor job request as indicated by the value of **msg_type**.
