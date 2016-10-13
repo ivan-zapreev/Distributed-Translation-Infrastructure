@@ -842,17 +842,116 @@ Request \ Response   | bpbd-server | bpbd-balancer | bpbd-processor |
 
 Clearly, **bpbd-client** and **translate.html** can only initiate requests, whereas **bpbd-server** and **bpbd-processor** can only produce responses. At the same time, **bpbd-balancer** produces responses for **bpbd-client** and **translate.html**, but can initiate requests for other instances of **bpbd-balancer** or **bpbd-server** applications.
 
+Below we consider each of the aforementioned communication types in more details. We shall also provide the JSON format for each of them to facilitate development of/communication to the third-party client and/or server applications. First, we describe the common elements of each communication message.
+
+###Common base class
+All of the request and response messages used in our applications are based on (inherit from) the same message class. An example of such a class instance is given below:
+
+~~~json
+{
+	"prot_ver" : 0,
+	"msg_type" : 5
+}
+~~~
+
+As one can see this base class has just two compulsory fields which are:
+
+* **prot_ver** - *an unsigned integer* indicating the protocol version;
+* **msg_type** - *an integer* indicating the message type;
+
+The currently available message types are specified by the following enumeration values:
+
+~~~cpp
+enum msg_type {
+    //The message type is undefined
+    MESSAGE_UNDEFINED = 0,
+    //The supported languages request message
+    MESSAGE_SUPP_LANG_REQ = 1,
+    //The supported languages response message
+    MESSAGE_SUPP_LANG_RESP = 2,
+    //The translation job request message
+    MESSAGE_TRANS_JOB_REQ = 3,
+    //The translation job response message
+    MESSAGE_TRANS_JOB_RESP = 4,
+    //The pre-processor job request message
+    MESSAGE_PRE_PROC_JOB_REQ = 5,
+    //The pre-processor job response message
+    MESSAGE_PRE_PROC_JOB_RESP = 6,
+    //The post-processor job request message
+    MESSAGE_POST_PROC_JOB_REQ = 7,
+    //The post-processor job response message
+    MESSAGE_POST_PROC_JOB_RESP = 8
+};
+~~~
+
 ###(SL) - Supported languages
+The supported languages request is used to retrieve the list of the supported source and target language pairs. Each **bpbd-server** at present supports only one language pair. Being an aggregator of multiple translation services, each **bpbd-balancer** can support multiple language pairs.
 
 ####JSON Request format
+The request for supported languages does not extend the common base class explained in section (Common base class)[#common-base-class] with any new fields. All it takes to create an (SL) request is to instantiate the base class object with the proper value of its fields. See the example below which has the *msg_type* set to 1, which is the message type for all (SL) requests.
+
+~~~json
+{
+	"prot_ver" : 0,
+	"msg_type" : 1
+}
+~~~
 
 ####JSON Response format
+The (SL) response is supposed to return the list of supported language pairs. Clearly one source language can be translated into multiple target languages. This is illustrated with the following (SL) response example object.
+
+~~~json
+{
+	"prot_ver" : 0,
+	"msg_type" : 2,
+	"langs" : {
+               "german" : [ "french", "english"],
+               "chinese" : [ "english" ]
+             }
+}
+~~~
+
+In this example, we see that *msg_type* is set to 2, indicating the this is an (SL) response and also there is an additional field **langs** which is *an object* storing the source to target language mappings. There, the object's field name indicates the source language and its value - which has to be *an array of strings* - stores the list of target languages. If the source language can not be translated in any language then it should not be present. In other word, an empty array of target languages is not supported.
+
+Note that, the (SL) response does not support returning an error. This might be introduces in the latter protocol versions, but for now it is expected that each (SL) request should be handled properly. There is just two possibilities when it can fail:
+
+1. The service does not support this type of request;
+2. The service does support this type of requests but it is down;
+
+Both of the above cases are currently considered as exceptional and only occur during development or setting up the infrastructure. Thus they are handled by simply returning a text error message through the WebSocket.
 
 ###(T) - Translation
+Translation requests and responses are used to communicate the source text to the translation service and the resulting target text to its client. Clearly the source and target texts can be large and therefore our protocol supports splitting those texts into multiple translation requests and responses correspondingly.
 
 ####JSON Request format
+Each source text to be translated is split into a number of translation jobs, consisting of a number of translation tasks - being sentences. Within the client and server applications it is important to be able to keep track of all individual translation job requests, per client, to be able to identify which of them has been replied or not. There is also other things that need to be in the (T) request, such as: the request priority, the source and target language pair and etc. To see them all let us consider the (T) request example object below:
+
+~~~json
+{
+	"prot_ver" : 0,
+	"msg_type" : 3,
+	"job_id" : 1,
+	"priority" : 10,
+	"source_lang" : "english",
+	"target_lang" : "chinese",
+	"is_trans_info" : true,
+	"source_sent" : [ "How are you?", " I was glad to see your" , "Let's meet again!"]
+}
+~~~
+
+In the example above we have:
+
+* **job_id** - *an unsigned integer* indicating the translation job id unique for the given client;
+* **priority** - *an integer* storing the job priority where 0 means neutral and the higher value means higher priority;
+* **source_lang** - *a string* with the source language;
+* **target_lang** - *a string*  with the target language;
+* **is_trans_info** - *a boolean flag* indicating whether we need to get an additional translation information with the job response. Such an information includes the translation stack loads and is visible in the translation log;
+* **source_sent** - *an array of strings* which are sentences to be translated, appearing in the same order as they are present in the original text;
+
+Note that, there is no limit on the number of sentences to be sent per request. However, the provided client implementations split the original text into a number of requests to facilitate the system throughput in the multi-client environment.
 
 ####JSON Response format
+
 
 ###(PP) - Pre/Post processing
 
