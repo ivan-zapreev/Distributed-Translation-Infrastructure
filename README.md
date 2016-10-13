@@ -1152,6 +1152,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **26.08.2016** - Updating the Web UI information, the interface was extended with the pre and post processor servers.
 * **30.08.2016** - The information on translation clients was extended with translation priorities.
 * **03.10.2016** - Removed an obsolete server console parameter description.
+* **13.10.2016** - Added section about the communication protocols.
 
 ##Appendix Tests
 
