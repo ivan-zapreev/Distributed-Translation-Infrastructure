@@ -1029,8 +1029,8 @@ An example (PP) request is given below. Here we give the pre-processor job reque
 
 In the example object above we have the following fields:
 
-* **job_token** - *a string* representing a semi-unique token specific for the text to be processed for the given client. For the pre-processor request (*msg_type == 5*) the initial value of **job_token** is chosen to be the MD5 sum of the entire text to be pre-processed. The pre-processor server can update the token to make it client-session specific. In this case, the updated token is returned with the pre-processor response. This new value is to be used for any eventual post-processing request of the target text corresponding to the given source text.
-* **priority** - *an integer* job priority value, the same meaning as for the (T) requests;
+* **job_token** - *a string* representing a semi-unique token specific for the text to be processed for the given client. For the pre-processor request (*msg_type == 5*) the initial value of **job_token** is chosen to be the MD5 sum of the entire text to be pre-processed. The pre-processor server can update the token to make it client-session specific. The (updated) token is always returned with the corresponding processor response. This new value is to be used for any subsequent post-processing request of the target text corresponding to the given source text.
+* **priority** - *an integer* value of the job priority, the same meaning as for the (T) requests;
 * **num_chs** - *an unsigned integer* giving the number of chunks the text is split into;
 * **ch_idx** - *an unsigned integer* indicating the index of the current chunk, start from zero;
 * **lang** - *a string* storing the language of the text, or "**auto**" for the language auto detection. The latter is only allowed in case of the pre-processor job request, i.e. when *msg_type == 5*;
