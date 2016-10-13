@@ -887,6 +887,8 @@ enum msg_type {
     MESSAGE_POST_PROC_JOB_RESP = 8
 };
 ~~~
+All of the message classes discussed below inherit the **prot_ver** and **msg_type** fields.
+
 
 ###(SL) - Supported languages
 The supported languages request is used to retrieve the list of the supported source and target language pairs. Each **bpbd-server** at present supports only one language pair. Being an aggregator of multiple translation services, each **bpbd-balancer** can support multiple language pairs.
