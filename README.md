@@ -1032,7 +1032,7 @@ In the example object above we have the following fields:
 * **job_token** - *a string* representing a semi-unique token specific for the text to be processed for the given client. For the pre-processor request (*msg_type == 5*) the initial value of **job_token** is chosen to be the MD5 sum of the entire text to be pre-processed. The pre-processor server can update the token to make it client-session specific. The (updated) token is always returned with the corresponding processor response. This new value is to be used for any subsequent post-processing request of the target text corresponding to the given source text.
 * **priority** - *an integer* value of the job priority, the same meaning as for the (T) requests;
 * **num_chs** - *an unsigned integer* giving the number of chunks the text is split into;
-* **ch_idx** - *an unsigned integer* indicating the index of the current chunk, start from zero;
+* **ch_idx** - *an unsigned integer* indicating the index of the current chunk, starts from zero;
 * **lang** - *a string* storing the language of the text, or "**auto**" for the language auto detection. The latter is only allowed in case of the pre-processor job request, i.e. when *msg_type == 5*;
 * **text** - *a string* storing text characters of the given chunk;
 
@@ -1059,8 +1059,8 @@ In the example object above we have the following fields:
 * **stat_msg** - *a string* storing the response status message, the same meaning as for (T) responses;
 * **job_token** - *a string* containing the job token. For the pre-processor response, it is updated by the text processing service: The original job token sent with the pre-processor request is made unique to the user session. This updated tokes is then to be used for any subsequent post-processing requests of the target text corresponding to this source text. For the post-processor response, the value of the job token does not change and is the same as sent with the post-processor request;
 * **num_chs** - *an unsigned integer* indicating the number of chunks in which the pre/post-processed text is split for being sent back to the client;
-* **ch_idx** - *an unsigned integer* index value of the current chunk, starts with zero;
-* **lang** - *a string* storing the text language. In case the pre-processor request was sent with the **lang** field value set to "auto" and the pre-processor service supports language detection, this field will contains the name of the detected source language;
+* **ch_idx** - *an unsigned integer* value of the current chunk index, starts from zero;
+* **lang** - *a string* storing the text's language. In case the pre-processor request was sent with the **lang** field value set to "auto", the pre-processor service supports language detection, and the language was successfully detected, this field will contains the name of the detected source language;
 * **text** -  *a string* storing text characters of the given chunk;
 
 ##Software details
