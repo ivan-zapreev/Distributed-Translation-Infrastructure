@@ -859,7 +859,7 @@ As one can see this base class has just two compulsory fields which are:
 * **prot_ver** - *an unsigned integer* indicating the protocol version;
 * **msg_type** - *an integer* indicating the message type;
 
-The currently available message types are specified by the following enumeration values:
+The currently available message types are specified by the following C++ enumeration values:
 
 ~~~cpp
 enum msg_type {
@@ -930,12 +930,12 @@ Each source text to be translated is split into a number of translation jobs, co
 {
 	"prot_ver" : 0,
 	"msg_type" : 3,
-	"job_id" : 1,
+	"job_id" : 101,
 	"priority" : 10,
 	"source_lang" : "english",
 	"target_lang" : "chinese",
 	"is_trans_info" : true,
-	"source_sent" : [ "How are you?", " I was glad to see your" , "Let's meet again!"]
+	"source_sent" : [ "how are you ?", "i was glad to see you ." , "let us meet again !"]
 }
 ~~~
 
@@ -951,13 +951,111 @@ In the example above we have:
 Note that, there is no limit on the number of sentences to be sent per request. However, the provided client implementations split the original text into a number of requests to facilitate the system throughput in the multi-client environment.
 
 ####JSON Response format
+The translation job response message is supposed to indicate which job it relates to, contain the overall request status and the translated text - consisting of target sentences. The latter are attributed with translation status and (optionally) translation info, giving some insight into the translation process. Let us consider an example translation response below.
 
+~~~json
+{
+	"prot_ver" : 0,
+	"msg_type" : 4,
+	"job_id" : 101,
+	"stat_code" : 3,
+	"stat_msg" : "Some translation tasks were canceled",
+	"target_data" : [
+							{
+								"stat_code" : 2,
+								"stat_msg" : "OK",
+								"trans_text" : "你好吗 ？",
+								"stack_load" : [ 3, 67, 90, 78, 40, 1 ]
+							},
+							{
+								"stat_code" : 4,
+								"stat_msg" : "The service is going down",
+								"trans_text" : "i was glad to see you ."
+							},
+							{
+								"stat_code" : 2,
+								"stat_msg" : "OK",
+								"trans_text" : "让我们再见面！",
+								"stack_load" : [ 7, 76, 98, 90, 56, 47, 3 ]
+							}
+						]
+}
+~~~
+
+In the example above, the status code is defined by the following C++ enumeration values:
+
+~~~cpp
+enum stat_code {
+    //The status is not defined
+    RESULT_UNDEFINED = 0,
+    //The status is unknown
+    RESULT_UNKNOWN = 1,
+    //The translation was fully done
+    RESULT_OK = 2,
+    //Some sentences in the translation job were not translated
+    RESULT_PARTIAL = 3,
+    //The entire translation job/task was canceled
+    RESULT_CANCELED = 4,
+    //We failed to translate this entire translation job/task
+    RESULT_ERROR = 5
+};
+~~~
+Note that **stat_code** and **stat_msg**, storing the translation status, are given at the top level of a translation job  - indicating the overall status - and also at the level of each sentence. Also, **stack_load**, storing an array of stack loads in percent, is only present for a translated sentence if a translation info was requested. The latter is done by setting the **is_trans_info** flag in the corresponding translation job request. The order of translated sentence objects in the **target_data** array shall be the same as the order of the corresponding source sentences in the **source_sent** array of the translation job request.
 
 ###(PP) - Pre/Post processing
+Text processing requests and responses are used to communicate the source/target texts to the text processing service for pre and post processing. Clearly the source and target texts can be large and therefore our protocol supports splitting those texts into multiple (PP) requests and responses. In case of text processing, we can not split a text in an arbitrary language into sentences at the client side. The latter would be too computation intensive and would also require the corresponding language's model. Therefore, it has been decided to split text into UTF-8 character chunks of some fixed length. Let us consider the (PP) requests and responses in more details.
 
 ####JSON Request format
+An example (PP) request is given below. Here we give the pre-processor job request as indicated by the value of **msg_type**.
+
+~~~json
+{
+	"prot_ver" : 0,
+	"msg_type" : 5,
+	"job_token" : "176393e9aae9b108767fafda109f4620",
+	"priority" : 0,
+	"num_chs" : 5,
+	"ch_idx" : 1,
+	"lang" : "auto",
+	"text" : "學而時習之，不亦說乎？有朋自遠方來，不亦樂乎？人不知而不慍，不亦君子乎？"
+}
+~~~
+
+In the example object above we have the following fields:
+
+* **job_token** - *a string* representing a semi-unique token specific for the text to be processed for the given client. For the pre-processor request (*msg_type == 5*) the initial value of **job_token** is chosen to be the MD5 sum of the entire text to be pre-processed. The pre-processor server can update the token to make it client-session specific. In this case, the updated token is returned with the pre-processor response. This new value is to be used for any eventual post-processing request of the target text corresponding to the given source text.
+* **priority** - *an integer* job priority value, the same meaning as for the (T) requests;
+* **num_chs** - *an unsigned integer* giving the number of chunks the text is split into;
+* **ch_idx** - *an unsigned integer* indicating the index of the current chunk, start from zero;
+* **lang** - *a string* storing the language of the text, or "**auto**" for the language auto detection. The latter is only allowed in case of the pre-processor job request, i.e. when *msg_type == 5*;
+* **text** - *a string* storing text characters of the given chunk;
 
 ####JSON Response format
+An example (PP) response is given below. Here we give the pre-processor job response as indicated by the value of **msg_type**.
+
+~~~json
+{
+	"prot_ver" : 0,
+	"msg_type" : 6,
+	"stat_code" : 2,
+	"stat_msg" : "Fully pre-processed", 
+	"job_token" : "176393e9aae9b108767fafda109f4620.1456",
+	"num_chs" : 7,
+	"ch_idx" : 1,
+	"lang" : "chinese",
+	"text" : "學而時習之 ，不亦說乎 ？有朋自遠方來 ，不亦樂乎 ？人不知而不慍 ，不亦君子乎 ？"
+}
+~~~
+
+In the example object above we have the following fields:
+
+* **stat_code** - *an unsigned integer* indicating the status code of the response, the same meaning as for (T) responses;
+* **stat_msg** - *a string* storing the response status message, the same meaning as for (T) responses;
+* **job_token** - *a string* containing the job token. For the pre-processor response, it is updated by the text processing service: The original job token sent with the pre-processor request is made unique to the user session. This updated tokes is then to be used for any subsequent post-processing requests of the target text corresponding to this source text. For the post-processor response, the value of the job token does not change and is the same as sent with the post-processor request;
+* **num_chs** - *an unsigned integer* indicating the number of chunks in which the pre/post-processed text is split for being sent back to the client;
+* **ch_idx** - *an unsigned integer* index value of the current chunk, starts with zero;
+* **lang** - *a string* storing the text language. In case the pre-processor request was sent with the **lang** field value set to "auto" and the pre-processor service supports language detection, this field will contains the name of the detected source language;
+* **text** -  *a string* storing text characters of the given chunk;
 
 ##Software details
 In this section we provide some additional details on the structure of the provided software. We shall begin with the common packages and then move on to the binary specific ones. The discussion will not go into details and will be kept at the level of source file folder, explaining their content.
