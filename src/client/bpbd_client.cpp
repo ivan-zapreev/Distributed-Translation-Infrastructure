@@ -437,7 +437,7 @@ int main(int argc, char** argv) {
         //Read from the source file: file -> pipe_a
         read_input(params, pipe_a);
 
-        //Compute ghe first job uid for the pre-procrssor requrst
+        //Compute the first job uid for the pre-processor request
         get_job_token(params, job_uid);
 
         //Pre-process text if requested: pipe_a -> pipe_b
