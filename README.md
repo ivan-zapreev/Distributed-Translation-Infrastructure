@@ -840,12 +840,16 @@ Request \ Response   | bpbd-server | bpbd-balancer | bpbd-processor |
 **translate.html**   |  (SL), (T)  |  (SL), (T)    |      (PP)      |
 **bpbd-balancer**    |  (SL), (T)  |  (SL), (T)    |                |
 
-Clearly, **bpbd-client** and **translate.html** can only initiate requests, whereas **bpbd-server** and **bpbd-processor** can only produce responses. At the same time, **bpbd-balancer** produces responses for **bpbd-client** and **translate.html**, but can initiate requests for other instances of **bpbd-balancer** or **bpbd-server** applications.
+As indicated by the table above, **bpbd-client** and **translate.html** can only initiate requests, whereas **bpbd-server** and **bpbd-processor** can only produce responses. At the same time, **bpbd-balancer** does not only produce responses for **bpbd-client** and **translate.html**, but can also initiate requests for other instances of **bpbd-balancer** or **bpbd-server** applications.
 
-Below we consider each of the aforementioned communication types in more details. We shall also provide the JSON format for each of them to facilitate development of/communication to the third-party client and/or server applications. First, we describe the common elements of each communication message.
+Below we consider each of the aforementioned communication types in more details. We shall also provide the JSON format for each of them to facilitate development of/communication to the third-party client and/or server applications. We start by describing the common base class used for all communication messages.
 
 ###Common base class
-All of the request and response messages used in our applications are based on (inherit from) the same message class. An example of such a class instance is given below:
+In the actual C++ code design given below, one can see that the request and response message classes we have use intricate multiple inheritance.
+
+![Messaging classes](./doc/models/messaging/messaging-3.0.png "Messaging classes")
+
+Yet, when serialized into the JSON format the situation is much simpler. Consider the JSON object given below. It shall be seen as an instance of the common base class of all the communication messages we use in our software:
 
 ~~~json
 {
@@ -854,7 +858,7 @@ All of the request and response messages used in our applications are based on (
 }
 ~~~
 
-As one can see this base class has just two compulsory fields which are:
+Clearly, this base class has just two compulsory fields which are:
 
 * **prot_ver** - *an unsigned integer* indicating the protocol version;
 * **msg_type** - *an integer* indicating the message type;
