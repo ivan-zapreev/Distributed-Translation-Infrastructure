@@ -891,10 +891,10 @@ All of the message classes discussed below inherit the **prot_ver** and **msg_ty
 
 
 ###(SL) - Supported languages
-The supported languages request is used to retrieve the list of the supported source and target language pairs. Each **bpbd-server** at present supports only one language pair. Being an aggregator of multiple translation services, each **bpbd-balancer** can support multiple language pairs.
+The supported-languages request is used to retrieve the list of the supported source and target language pairs. At present, each **bpbd-server** only supports one source/target language pair. Being an aggregator of multiple translation services, each **bpbd-balancer** can support multiple language pairs.
 
 ####JSON Request format
-The request for supported languages does not extend the common base class explained in section (Common base class)[#common-base-class] with any new fields. All it takes to create an (SL) request is to instantiate the base class object with the proper value of its fields. See the example below which has the *msg_type* set to 1, which is the message type for all (SL) requests.
+The request for supported languages does not extend the common base class, explained in section [Common base class](#common-base-class), with any new fields. All it takes to create an (SL) request is to instantiate the base class object with the proper value of its fields. See the example below which has the *msg_type* set to 1, being the message type of (SL) requests.
 
 ~~~json
 {
