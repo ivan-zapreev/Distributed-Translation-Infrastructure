@@ -49,7 +49,7 @@ The rest of the document is organized as follows:
 7. [External libraries](#external-libraries) - Lists the included external libraries
 8. [Performance evaluation](#performance-evaluation) - Contains performance evaluation results
 9. [General design](#general-design) - Outlines the general software design
-10. [Communication protocols](#communication-protocols]) - Describes the application's communications
+10. [Communication protocols](#communication-protocols) - Describes the application's communications
 11. [Software details](#software-details) - Goes about some of the software details
 12. [Literature and references](#literature-and-references) - Presents the list of used literature
 13. [Licensing](#licensing) - States the licensing strategy of the project
