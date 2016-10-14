@@ -374,10 +374,8 @@ namespace uva {
                              * @return the linear distortion penalty value
                              */
                             inline prob_weight get_lin_dist_cost(const state_data_templ & prev_state_data) {
+                                //Compute the distance
                                 int32_t distance = abs(m_s_begin_word_idx - prev_state_data.m_s_end_word_idx - 1);
-                                if (is_dist && (distance > m_stack_data.m_params.m_dist_limit)) {
-                                    distance = m_stack_data.m_params.m_dist_limit;
-                                }
 
                                 //Make the distance into a negative linear distortion penalty
                                 int32_t lin_dist_penalty = -1.0 * distance;
