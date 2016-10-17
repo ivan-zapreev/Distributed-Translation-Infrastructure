@@ -666,12 +666,8 @@ namespace uva {
 
                                         //Iterate through the allowed positions and try the length expansions
                                         while (curr_pos <= max_pos) {
-                                            //Stores the number of expansions made
-                                            size_t num_exp = 0;
                                             //Expand the lengths from the last position
-                                            expand_length_if_not_covered(curr_pos, num_exp);
-                                            //Log the current number of expansions
-                                            LOG_DEBUG << "Number of done expansions from position :" << curr_pos << " is: " << num_exp << END_LOG;
+                                            expand_length(curr_pos);
                                             //Increment the current position
                                             ++curr_pos;
                                         }
@@ -790,7 +786,9 @@ namespace uva {
                                 size_t end_pos = start_pos;
                                 //Just expand the single word, this is always needed and possible
                                 expand_trans<true>(start_pos, end_pos);
-
+                                
+                                LOG_DEBUG1 << "Expanded the single word @ [" << start_pos << ", " << end_pos << "]" << END_LOG;
+                                
                                 //Iterate through lengths > 1 until the maximum possible source phrase length is 
                                 //reached or we hit the end of the sentence or the end of the uncovered region
                                 for (size_t len = 2; len <= m_state_data.m_stack_data.m_params.m_max_s_phrase_len; ++len) {
@@ -801,7 +799,7 @@ namespace uva {
                                         //Expand the source phrase which is not a single word
                                         expand_trans<false>(start_pos, end_pos);
                                     } else {
-                                        //We've hit the end possible length here
+                                        //We've hit the last possible length here, time to stop
                                         break;
                                     }
                                 }
