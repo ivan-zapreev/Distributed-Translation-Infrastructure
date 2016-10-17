@@ -422,7 +422,7 @@ namespace uva {
                              */
                             inline void perform_translation() {
                                 //Depending on the stack template parameters do the thing
-                                if (m_de_params.m_dist_limit != 0) {
+                                if (m_de_params.m_dist_limit >= 0) {
                                     perform_translation<true>();
                                 } else {
                                     perform_translation<false>();

@@ -191,9 +191,6 @@ namespace uva {
                          * Allows to verify the parameters to be correct.
                          */
                         void finalize() {
-                            ASSERT_CONDITION_THROW((m_dist_limit < 0),
-                                    string("The ") + DE_DIST_LIMIT_PARAM_NAME + string(" must not be >= 0!"));
-
                             ASSERT_CONDITION_THROW((m_max_s_phrase_len == 0),
                                     string("The ") + DE_MAX_SP_LEN_PARAM_NAME + string(" must not be 0!"));
 
@@ -266,7 +263,7 @@ namespace uva {
 
                         //Log the distortion limit parameter
                         stream << de_parameters::DE_DIST_LIMIT_PARAM_NAME << " = ";
-                        if (params.m_dist_limit != 0) {
+                        if (params.m_dist_limit >= 0) {
                             stream << params.m_dist_limit;
                         } else {
                             stream << "none (help)";
