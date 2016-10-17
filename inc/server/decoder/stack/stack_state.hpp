@@ -644,6 +644,8 @@ namespace uva {
 
                                 //Search for the first not covered element
                                 for (int32_t curr_pos = MIN_WORD_IDX; curr_pos < MAX_WORD_IDX; ++curr_pos) {
+                                    LOG_DEBUG1 << "Considering " << m_state_data.covered_to_string() << " @ "
+                                            << curr_pos << " = " << m_state_data.m_covered[curr_pos] << END_LOG;
                                     //Check if the last position is not covered,
                                     //if not then we can expand starting from here.
                                     if (!m_state_data.m_covered[curr_pos]) {
