@@ -661,17 +661,20 @@ namespace uva {
                                             //The maximum position is the same as the maximum word index.
                                             max_pos = MAX_WORD_IDX;
                                         }
-                                        
+
                                         LOG_DEBUG1 << "The maximum end position = " << max_pos << END_LOG;
 
                                         //Iterate through the allowed positions and try the length expansions
                                         while (curr_pos <= max_pos) {
-                                            //Expand the lengths from the last position
-                                            expand_length(curr_pos);
+                                            //If the position is not covered then expand the lengths
+                                            if (!m_state_data.m_covered[curr_pos]) {
+                                                //Expand the lengths from the last position
+                                                expand_length(curr_pos);
+                                            }
                                             //Increment the current position
                                             ++curr_pos;
                                         }
-                                        
+
                                         LOG_DEBUG1 << "Finished all possible expansions in the state." << END_LOG;
                                         //Once we finish the expansions we shall break from the outer cycle
                                         break;
@@ -786,9 +789,9 @@ namespace uva {
                                 size_t end_pos = start_pos;
                                 //Just expand the single word, this is always needed and possible
                                 expand_trans<true>(start_pos, end_pos);
-                                
+
                                 LOG_DEBUG1 << "Expanded the single word @ [" << start_pos << ", " << end_pos << "]" << END_LOG;
-                                
+
                                 //Iterate through lengths > 1 until the maximum possible source phrase length is 
                                 //reached or we hit the end of the sentence or the end of the uncovered region
                                 for (size_t len = 2; len <= m_state_data.m_stack_data.m_params.m_max_s_phrase_len; ++len) {
