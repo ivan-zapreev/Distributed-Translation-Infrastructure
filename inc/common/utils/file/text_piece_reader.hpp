@@ -188,7 +188,7 @@ namespace uva {
                         msg << "Unable to copy the string data to the target, "
                                 << "maximum copy length is " << LEN_LIMIT
                                 << ", the source length is " << other.m_len << "!";
-                        throw uva_exception(msg.str());
+                        THROW_EXCEPTION(msg.str());
                     } else {
                         //Copy the data
                         (void) strncpy(const_cast<char *> (m_begin_ptr),
@@ -407,7 +407,7 @@ namespace uva {
                         stringstream msg;
                         msg << "The improper index '" << idx
                                 << "' must be within [0, " << m_len << "]!";
-                        throw uva_exception(msg.str());
+                        THROW_EXCEPTION(msg.str());
                     } else {
 
                         return m_begin_ptr[idx];

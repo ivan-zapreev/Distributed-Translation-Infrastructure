@@ -83,7 +83,7 @@ namespace uva {
                              */
                             inline void pre_allocate(const size_t num_elems, const uint8_t buckets_factor) {
                                 if (DO_SANITY_CHECKS && (m_data_ptr != NULL)) {
-                                    throw uva_exception("The bitset is already pre-allocated!");
+                                    THROW_EXCEPTION("The bitset is already pre-allocated!");
                                 }
 
                                 if (num_elems != 0) {
@@ -99,7 +99,7 @@ namespace uva {
                                     m_data_ptr = new uint8_t[num_bytes];
                                     fill_n(m_data_ptr, num_bytes, 0u);
                                 } else {
-                                    throw uva_exception("Trying to pre-allocate 0 elements for a BitmaphashCache!");
+                                    THROW_EXCEPTION("Trying to pre-allocate 0 elements for a BitmaphashCache!");
                                 }
                             }
 

@@ -298,7 +298,7 @@ namespace uva {
                         msg << "Impossible binary search parameters, l_idx = "
                                 << SSTR(l_idx) << ", u_idx = "
                                 << SSTR(u_idx) << "!";
-                        throw uva_exception(msg.str());
+                        THROW_EXCEPTION(msg.str());
                     }
 
                     //Do the binary search

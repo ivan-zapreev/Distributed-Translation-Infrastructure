@@ -172,7 +172,7 @@ namespace uva {
                     default:
                         stringstream msg;
                         msg << "Unrecognized memory allocation strategy: " << stype;
-                        throw uva_exception(msg.str());
+                        THROW_EXCEPTION(msg.str());
                 }
 
                 //return the result object

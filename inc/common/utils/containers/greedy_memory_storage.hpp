@@ -86,7 +86,7 @@ namespace uva {
                 _pBuffer(source._pBuffer),
                 _numBytes(source._numBytes),
                 _allocBytes(source._allocBytes) {
-                    throw uva_exception("The GreedyMemoryStorage is not to be copied!");
+                    THROW_EXCEPTION("The GreedyMemoryStorage is not to be copied!");
                 }
 
                 /**

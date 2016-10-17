@@ -71,7 +71,7 @@ namespace uva {
                  * throws an exception.
                  */
                 virtual void reset() {
-                    throw uva_exception("Not implemented for this File reader type!");
+                    THROW_EXCEPTION("Not implemented for this File reader type!");
                 };
 
                 /**

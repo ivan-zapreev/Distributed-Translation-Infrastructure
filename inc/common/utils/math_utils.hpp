@@ -163,7 +163,7 @@ if(sizeof(value_type) == 2) { \
         if(sizeof(value_type) == 8) { \
             (value) = __builtin_bswap64((value)); \
         } else { \
-            throw uva_exception("HANDLE_ENDIAN(value_type, value): Unsupported value type!"); \
+            THROW_EXCEPTION("HANDLE_ENDIAN(value_type, value): Unsupported value type!"); \
         } \
     } \
 }
@@ -171,7 +171,7 @@ if(sizeof(value_type) == 2) { \
                 //This should work fine, no inversions or transformations are needed
 #define HANDLE_ENDIAN(value_type, value) ;
 #elif __BYTE_ORDER__ == __ORDER_PDP_ENDIAN__
-#define HANDLE_ENDIAN(value_type, value) throw uva_exception("copy_end_bytes_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
+#define HANDLE_ENDIAN(value_type, value) THROW_EXCEPTION("copy_end_bytes_to_pos: Unsupported endian possibly __ORDER_PDP_ENDIAN__?");
 #endif
 
                 /*

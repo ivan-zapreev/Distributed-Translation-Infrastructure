@@ -170,7 +170,7 @@ namespace uva {
                                         msg << "Incorrect ARPA format: Got '" << builder.m_line
                                                 << "' instead of '" << END_OF_ARPA_FILE
                                                 << "' when reading " << LM_M_GRAM_LEVEL_MAX << "-grams section!";
-                                        throw uva_exception(msg.str());
+                                        THROW_EXCEPTION(msg.str());
                                     }
                                 }
                             };

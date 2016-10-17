@@ -77,13 +77,13 @@ namespace uva {
                 len = 128;
 
                 f = fopen("/proc/self/status", "r");
-                if (!f) throw uva_exception("Unable to open /proc/self/status for reading!");
+                if (!f) THROW_EXCEPTION("Unable to open /proc/self/status for reading!");
 
                 /* Read memory size data from /proc/self/status */
                 while (!vmsize || !vmpeak || !vmrss || !vmhwm) {
                     if (getline(&line, &len, f) == -1) {
                         /* Some of the information isn't there, die */
-                        throw uva_exception("Unable to read memory statistics data from /proc/self/status");
+                        THROW_EXCEPTION("Unable to read memory statistics data from /proc/self/status");
                     }
 
                     /* Find VmPeak */

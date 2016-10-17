@@ -631,8 +631,7 @@ namespace uva {
                              * result will be better than with the our version of expansions, we will optimize speed.
                              */
                             inline void expand_from_first_non_covered() {
-                                LOG_DEBUG1 << ">>>>> [" << m_state_data.m_s_begin_word_idx
-                                        << "," << m_state_data.m_s_end_word_idx << "]" << END_LOG;
+                                LOG_DEBUG1 << ">>>>> starting expansions" << END_LOG;
 
                                 //Store the shorthand to the minimum possible word index
                                 const int32_t & MIN_WORD_IDX = m_state_data.m_stack_data.m_sent_data.m_min_idx;
@@ -640,11 +639,16 @@ namespace uva {
                                 //Store the shorthand to the minimum possible word index
                                 const int32_t & MAX_WORD_IDX = m_state_data.m_stack_data.m_sent_data.m_max_idx;
 
+                                LOG_DEBUG1 << "Searching for the first uncovered position between ["
+                                        << MIN_WORD_IDX << ", " << MAX_WORD_IDX << "]" << END_LOG;
+
                                 //Search for the first not covered element
                                 for (int32_t curr_pos = MIN_WORD_IDX; curr_pos < MAX_WORD_IDX; ++curr_pos) {
                                     //Check if the last position is not covered,
                                     //if not then we can expand starting from here.
                                     if (!m_state_data.m_covered[curr_pos]) {
+                                        LOG_DEBUG1 << "Found an uncovered position @ " << curr_pos << END_LOG;
+
                                         //Compute the maximum allowed position to consider
                                         int32_t max_pos;
                                         //If the distortion limit is present
@@ -652,12 +656,14 @@ namespace uva {
                                             //Get the distortion limit and store it locally
                                             const int32_t & d_limit = m_state_data.m_stack_data.m_params.m_dist_limit;
                                             //Compute the maximum position in such a way they we do not exceed the max
-                                            max_pos = min(MAX_WORD_IDX, curr_pos + d_limit - 1);
+                                            max_pos = min(MAX_WORD_IDX, curr_pos + d_limit);
                                         } else {
                                             //The maximum position is the same as the maximum word index.
                                             max_pos = MAX_WORD_IDX;
                                         }
                                         
+                                        LOG_DEBUG1 << "The maximum end position = " << max_pos << END_LOG;
+
                                         //Iterate through the allowed positions and try the length expansions
                                         while (curr_pos <= max_pos) {
                                             //Stores the number of expansions made
@@ -669,6 +675,8 @@ namespace uva {
                                             //Increment the current position
                                             ++curr_pos;
                                         }
+                                        
+                                        LOG_DEBUG1 << "Finished all possible expansions in the state." << END_LOG;
                                         //Once we finish the expansions we shall break from the outer cycle
                                         break;
                                     }
@@ -794,7 +802,6 @@ namespace uva {
                                         expand_trans<false>(start_pos, end_pos);
                                     } else {
                                         //We've hit the end possible length here
-
                                         break;
                                     }
                                 }

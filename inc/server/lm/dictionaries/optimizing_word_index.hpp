@@ -111,7 +111,7 @@ namespace uva {
                                 } else {
                                     //The reserve is called at stage of data preallocation
                                     //At that moment the disposable word index must still be present.
-                                    throw uva_exception("OptimizingWordIndex::reserve: Un-timed request!");
+                                    THROW_EXCEPTION("OptimizingWordIndex::reserve: Un-timed request!");
                                 }
 
                                 //Store the number of words as indicated by the disposable word index
@@ -133,7 +133,7 @@ namespace uva {
                                 } else {
                                     //The number of words is now typically needed only at stage of data preallocation
                                     //At that moment the disposable word index must still be present.
-                                    throw uva_exception("OptimizingWordIndex::get_number_of_words: Un-timed request!");
+                                    THROW_EXCEPTION("OptimizingWordIndex::get_number_of_words: Un-timed request!");
                                 }
                             };
 

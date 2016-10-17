@@ -95,7 +95,7 @@ namespace uva {
                                     msg << "The requested N-gram level is '" << CURR_LEVEL
                                             << "', but it must be within [" << M_GRAM_LEVEL_1
                                             << ", " << LM_M_GRAM_LEVEL_MAX << "]!";
-                                    throw uva_exception(msg.str());
+                                    THROW_EXCEPTION(msg.str());
                                 } else {
                                     //Here we are to get the builder instance
                                     LOG_DEBUG1 << "Instantiating the " << CURR_LEVEL << "-Gram builder.." << END_LOG;

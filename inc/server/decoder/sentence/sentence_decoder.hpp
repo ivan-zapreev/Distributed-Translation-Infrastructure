@@ -455,15 +455,17 @@ namespace uva {
                                 //translation. If we have stopped then nothing.
                                 try {
                                     stack->get_best_trans(m_target_sent);
-                                } catch (std::exception & e) {
+                                } catch (...) {
+                                    //In case of any exception catch it and do handling as it can be due to us being asked to stop.
                                     if (m_is_stop) {
                                         //We are stopping so the exception is most likely
                                         //due to that i.e. could not finish the translation
                                         //process. Set the target to be the source sentence.
                                         m_target_sent = m_source_sent;
                                     } else {
-                                        //Re-throw an exception
-                                        throw e;
+                                        //Re-throw an exception, do not use the exception object as it would
+                                        //create a copy of it loosing all needed additional information.
+                                        throw;
                                     }
                                 }
                             }

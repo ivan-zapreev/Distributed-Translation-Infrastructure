@@ -136,7 +136,7 @@ namespace uva {
                             //Set the error message for the client
                             m_status_msg = ex.what();
                             //Do local logging
-                            LOG_DEBUG << "SERVER ERROR: " << m_target_text << END_LOG;
+                            LOG_DEBUG << "SERVER ERROR: '" << m_status_msg << "'" << END_LOG;
                         }
 
                         LOG_DEBUG1 << "The task " << m_task_id << " translation part is over." << END_LOG;
@@ -277,8 +277,9 @@ namespace uva {
                             //Close the lattice files
                             LOG_ERROR << ex.what() << END_LOG;
                             close_lattice_files(scores_file, lattice_file);
-                            //Re-throw the exception
-                            throw ex;
+                            //Re-throw an exception, do not use the exception object as it would
+                            //create a copy of it loosing all needed additional information.
+                            throw;
                         }
                         //Close the lattice files
                         close_lattice_files(scores_file, lattice_file);

@@ -246,7 +246,7 @@ namespace uva {
                             basic_word_index(const basic_word_index & other)
                             : m_word_index_alloc_ptr(NULL), m_word_index_map_ptr(NULL),
                             m_next_new_word_id(MIN_KNOWN_WORD_ID), m_word_index_mem_factor(0.0) {
-                                throw uva_exception("HashMapWordIndex copy constructor is not to be used, unless implemented!");
+                                THROW_EXCEPTION("HashMapWordIndex copy constructor is not to be used, unless implemented!");
                             }
                             //This is the pointer to the fixed memory allocator used to allocate the map's memory
                             TWordIndexAllocator * m_word_index_alloc_ptr;

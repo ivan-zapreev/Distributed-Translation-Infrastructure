@@ -97,7 +97,7 @@ namespace uva {
 
                                 //Read the next line from the file if it is there
                                 if (!m_file.get_first_line(m_line)) {
-                                    throw uva_exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA headers!");
+                                    THROW_EXCEPTION("Incorrect ARPA format: An unexpected end of file while reading the ARPA headers!");
                                 }
                             }
 
@@ -166,7 +166,7 @@ namespace uva {
                                                     msg << "Incorrect ARPA format: Can not parse the "
                                                             << level << "-gram amount: '" << amount
                                                             << "' from string: '" << m_line << "'";
-                                                    throw uva_exception(msg.str());
+                                                    THROW_EXCEPTION(msg.str());
                                                 }
                                             } else {
                                                 LOG_DEBUG1 << "Is something other than n-gram amount, moving to n-gram sections!" << END_LOG;
@@ -176,7 +176,7 @@ namespace uva {
                                             LOG_DEBUG1 << "Is an empty line, skipping forward" << END_LOG;
                                         }
                                     } else {
-                                        throw uva_exception("Incorrect ARPA format: An unexpected end of file while reading the ARPA data section!");
+                                        THROW_EXCEPTION("Incorrect ARPA format: An unexpected end of file while reading the ARPA data section!");
                                     }
                                     level++;
                                 }
@@ -184,7 +184,7 @@ namespace uva {
                                 stringstream msg;
                                 msg << "Incorrect ARPA format: Got '" << m_line << "' instead of '"
                                         << END_OF_ARPA_FILE << "' when starting on the data section!";
-                                throw uva_exception(msg.str());
+                                THROW_EXCEPTION(msg.str());
                             }
 
                             LOG_DEBUG << "Finished reading ARPA data." << END_LOG;
@@ -227,13 +227,14 @@ namespace uva {
                                         //If the next line does not exist then it an error as we expect the end of data section any way
                                         stringstream msg;
                                         msg << "Incorrect ARPA format: Unexpected end of file, missing the '" << END_OF_ARPA_FILE << "' tag!";
-                                        throw uva_exception(msg.str());
+                                        THROW_EXCEPTION(msg.str());
                                     }
                                 }
                             } catch (...) {
                                 //Free the allocated N-gram builder in case of an exception 
                                 delete gram_builder_ptr;
-                                //Re-throw the exception
+                                //Re-throw an exception, do not use the exception object as it would
+                                //create a copy of it loosing all needed additional information.
                                 throw;
                             }
                             //Free the allocated N-gram builder in case of no exception 
