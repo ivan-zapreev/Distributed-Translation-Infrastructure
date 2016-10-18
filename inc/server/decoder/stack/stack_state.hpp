@@ -95,40 +95,44 @@ namespace uva {
 #endif                        
 
                             /**
-                             * The basic constructor for the BEGIN stack state
+                             * The basic constructor for the BEGIN stack state, corresponding to the <s> tag.
                              * @param data the shared data container
                              */
                             stack_state_templ(const stack_data & data)
-                            : m_parent(NULL), m_state_data(data),
-                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL) INIT_STACK_STATE_TUNING_DATA{
+                            : m_parent(NULL), m_state_data(data), m_prev(NULL), m_next(NULL),
+                            m_fncs_pos(m_state_data.m_stack_data.m_sent_data.m_min_idx),
+                            m_recomb_from(NULL) INIT_STACK_STATE_TUNING_DATA{
                                 LOG_DEBUG1 << "New BEGIN state: " << this << ", parent: " << m_parent << END_LOG;
                             }
 
                             /**
-                             * The basic constructor for the END stack state
+                             * The basic constructor for the END stack state, corresponding to the </s> tag.
                              * @param parent the parent state pointer, NOT NULL!
                              * @param prev_history the previous translation history
                              */
                             stack_state_templ(stack_state_ptr parent) :
-                            m_parent(parent), m_state_data(parent->m_state_data),
-                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL) INIT_STACK_STATE_TUNING_DATA{
+                            m_parent(parent), m_state_data(parent->m_state_data), m_prev(NULL), m_next(NULL),
+                            m_fncs_pos(m_state_data.m_stack_data.m_sent_data.m_max_idx),
+                            m_recomb_from(NULL) INIT_STACK_STATE_TUNING_DATA{
                                 LOG_DEBUG1 << "New END state: " << this << ", parent: " << m_parent << END_LOG;
                             }
 
                             /**
-                             * The basic constructor for the non-begin/end stack state
+                             * The basic constructor for the non-begin/end (<s>/</s>) stack state.
                              * @param parent the parent state pointer, NOT NULL!
+                             * @param fncs_pos the position which will be used for searching for the 
+                             *                 first non-covered words in this new state expansions.
                              * @param begin_pos this state translated source phrase begin position
                              * @param end_pos this state translated source phrase end position
                              * @param covered the pre-cooked covered vector, for efficiency reasons.
                              * @param target the new translation target
                              */
-                            stack_state_templ(stack_state_ptr parent,
+                            stack_state_templ(stack_state_ptr parent, const int32_t fncs_pos,
                                     const int32_t begin_pos, const int32_t end_pos,
                                     const typename state_data::covered_info & covered,
                                     tm_const_target_entry* target)
                             : m_parent(parent), m_state_data(parent->m_state_data, begin_pos, end_pos, covered, target),
-                            m_prev(NULL), m_next(NULL), m_recomb_from(NULL) INIT_STACK_STATE_TUNING_DATA{
+                            m_prev(NULL), m_next(NULL), m_fncs_pos(fncs_pos), m_recomb_from(NULL) INIT_STACK_STATE_TUNING_DATA{
                                 LOG_DEBUG1 << "New state: " << this << ", parent: " << m_parent
                                 << ", source[" << begin_pos << "," << end_pos << "], target ___"
                                 << target->get_target_phrase() << "___" << END_LOG;
@@ -603,22 +607,22 @@ namespace uva {
                                 LOG_DEBUG1 << ">>>>> starting expansions" << END_LOG;
 
                                 //Store the shorthand to the minimum possible word index
-                                const int32_t & MIN_WORD_IDX = m_state_data.m_stack_data.m_sent_data.m_min_idx;
-
-                                //Store the shorthand to the minimum possible word index
                                 const int32_t & MAX_WORD_IDX = m_state_data.m_stack_data.m_sent_data.m_max_idx;
 
                                 LOG_DEBUG1 << "Searching for the first uncovered position between ["
-                                        << MIN_WORD_IDX << ", " << MAX_WORD_IDX << "]" << END_LOG;
+                                        << m_fncs_pos << ", " << MAX_WORD_IDX << "]" << END_LOG;
 
                                 //Search for the first not covered element
-                                for (int32_t curr_pos = MIN_WORD_IDX; curr_pos <= MAX_WORD_IDX; ++curr_pos) {
+                                for (int32_t curr_pos = m_fncs_pos; curr_pos <= MAX_WORD_IDX; ++curr_pos) {
                                     LOG_DEBUG2 << "Considering " << m_state_data.covered_to_string() << " @ "
                                             << curr_pos << " = " << m_state_data.m_covered[curr_pos] << END_LOG;
                                     //Check if the last position is not covered,
                                     //if not then we can expand starting from here.
                                     if (!m_state_data.m_covered[curr_pos]) {
                                         LOG_DEBUG1 << "Found an uncovered position @ " << curr_pos << END_LOG;
+
+                                        //Store the index of the first non-covered word position
+                                        const int32_t first_nc_pos = curr_pos;
 
                                         //Compute the maximum allowed position to consider
                                         int32_t max_pos;
@@ -640,7 +644,7 @@ namespace uva {
                                             //If the position is not covered then expand the lengths
                                             if (!m_state_data.m_covered[curr_pos]) {
                                                 //Expand the lengths from the last position
-                                                expand_length(curr_pos);
+                                                expand_length(first_nc_pos, curr_pos);
                                             }
                                             //Increment the current position
                                             ++curr_pos;
@@ -658,14 +662,14 @@ namespace uva {
                             /**
                              * Allows to expand for all the possible phrase lengths
                              */
-                            inline void expand_length(const size_t start_pos) {
+                            inline void expand_length(const int32_t first_nc_pos, const int32_t start_pos) {
                                 LOG_DEBUG1 << ">>>>> [start_pos] = [" << start_pos << "]" << END_LOG;
 
                                 //Always take the one word translation even if
                                 //It is an unknown entry.
-                                size_t end_pos = start_pos;
+                                int32_t end_pos = start_pos;
                                 //Just expand the single word, this is always needed and possible
-                                expand_trans<true>(start_pos, end_pos);
+                                expand_trans<true>(first_nc_pos, start_pos, end_pos);
 
                                 LOG_DEBUG1 << "Expanded the single word @ [" << start_pos << ", " << end_pos << "]" << END_LOG;
 
@@ -677,7 +681,7 @@ namespace uva {
                                     //Check if we are in a good state
                                     if ((end_pos < m_state_data.m_stack_data.m_sent_data.get_dim()) && (!m_state_data.m_covered[end_pos])) {
                                         //Expand the source phrase which is not a single word
-                                        expand_trans<false>(start_pos, end_pos);
+                                        expand_trans<false>(first_nc_pos, start_pos, end_pos);
                                     } else {
                                         //We've hit the last possible length here, time to stop
                                         break;
@@ -691,7 +695,7 @@ namespace uva {
                              * Allows to expand for all the possible translations
                              */
                             template<bool single_word>
-                            inline void expand_trans(const size_t start_pos, const size_t end_pos) {
+                            inline void expand_trans(const int32_t first_nc_pos, const int32_t start_pos, const int32_t end_pos) {
                                 LOG_DEBUG1 << ">>>>> [start_pos, end_pos] = [" << start_pos << ", " << end_pos << "]" << END_LOG;
 
                                 //Obtain the source entry for the currently considered source phrase
@@ -709,14 +713,20 @@ namespace uva {
 
                                     //Initialize the new covered vector, take the old one plus enable the new states
                                     typename state_data::covered_info covered(m_state_data.m_covered);
-                                    for (phrase_length idx = start_pos; idx <= end_pos; ++idx) {
+                                    for (int32_t idx = start_pos; idx <= end_pos; ++idx) {
                                         covered.set(idx);
                                     }
+
+                                    //Compute the first non-covered word start search position for the subsequent states
+                                    //In case the first not-covered position is the same as the start position of the
+                                    //phrase we expand then the next not-covered position will be after the end of this phrase.
+                                    //Otherwise, there is a possible gap of not-covered positions starting from the given one.
+                                    const int32_t fncs_pos = ((first_nc_pos == start_pos) ? (end_pos + 1) : first_nc_pos);
 
                                     //Iterate through all the available target translations
                                     for (size_t idx = 0; idx < entry->num_targets(); ++idx) {
                                         //Add a new hypothesis state to the multi-stack
-                                        m_state_data.m_stack_data.m_add_state(new stack_state(this, start_pos, end_pos, covered, &targets[idx]));
+                                        m_state_data.m_stack_data.m_add_state(new stack_state(this, fncs_pos, start_pos, end_pos, covered, &targets[idx]));
                                     }
                                 } else {
                                     //Do nothing we have an unknown phrase of length > 1
@@ -742,6 +752,11 @@ namespace uva {
                             //1. In the stack level or NULL if it is the last one
                             //2. In the list of recombined from states
                             stack_state_ptr m_next;
+
+                            //This variable stores the first non-covered word search from position
+                            //This is an optimization parameter that allows to track the fully
+                            //covered/translated prefix of the sentence.
+                            const int32_t m_fncs_pos;
 
                             //This double-linked list stores the list of states recombined into this state
                             stack_state_ptr m_recomb_from;
