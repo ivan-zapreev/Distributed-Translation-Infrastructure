@@ -673,13 +673,16 @@ namespace uva {
 
                                 LOG_DEBUG1 << "Expanded the single word @ [" << start_pos << ", " << end_pos << "]" << END_LOG;
 
+                                //Get the maximum position
+                                const int32_t & MAX_WORD_IDX = m_state_data.m_stack_data.m_sent_data.m_max_idx;
+                                
                                 //Iterate through lengths > 1 until the maximum possible source phrase length is 
                                 //reached or we hit the end of the sentence or the end of the uncovered region
                                 for (size_t len = 2; len <= m_state_data.m_stack_data.m_params.m_max_s_phrase_len; ++len) {
                                     //Move to the next end position
                                     ++end_pos;
                                     //Check if we are in a good state
-                                    if ((end_pos < m_state_data.m_stack_data.m_sent_data.get_dim()) && (!m_state_data.m_covered[end_pos])) {
+                                    if ((end_pos <= MAX_WORD_IDX) && (!m_state_data.m_covered[end_pos])) {
                                         //Expand the source phrase which is not a single word
                                         expand_trans<false>(first_nc_pos, start_pos, end_pos);
                                     } else {
