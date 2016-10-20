@@ -613,42 +613,39 @@ namespace uva {
                                         << m_fncs_pos << ", " << MAX_WORD_IDX << "]" << END_LOG;
 
                                 //Search for the first not covered element
-                                for (int32_t curr_pos = m_fncs_pos; curr_pos <= MAX_WORD_IDX; ++curr_pos) {
+                                for (int32_t first_nc_pos = m_fncs_pos; first_nc_pos <= MAX_WORD_IDX; ++first_nc_pos) {
                                     LOG_DEBUG2 << "Considering " << m_state_data.covered_to_string() << " @ "
-                                            << curr_pos << " = " << m_state_data.m_covered[curr_pos] << END_LOG;
+                                            << first_nc_pos << " = " << m_state_data.m_covered[first_nc_pos] << END_LOG;
                                     //Check if the last position is not covered,
                                     //if not then we can expand starting from here.
-                                    if (!m_state_data.m_covered[curr_pos]) {
-                                        LOG_DEBUG1 << "Found an uncovered position @ " << curr_pos << END_LOG;
+                                    if (!m_state_data.m_covered[first_nc_pos]) {
+                                        LOG_DEBUG1 << "Found an uncovered position @ " << first_nc_pos << END_LOG;
 
-                                        //Store the index of the first non-covered word position
-                                        const int32_t first_nc_pos = curr_pos;
+                                        //We shall not expand in two direction to the left and to the right
+                                        //of the last phrase, but the expansion to the left is only limited
+                                        //by the number of uncovered positions on the left and the expansions
+                                        //to the right is limited by the first non-covered position and the
+                                        //distortion limit given in the parameters So here we shall first compute
+                                        //the left and right boundaries for the expansions we are to make
 
-                                        //Compute the maximum allowed position to consider
-                                        int32_t max_pos;
-                                        //If the distortion limit is present
-                                        if (is_dist) {
-                                            //Get the distortion limit and store it locally
-                                            const int32_t & d_limit = m_state_data.m_stack_data.m_params.m_dist_limit;
-                                            //Compute the maximum position in such a way they we do not exceed the max
-                                            max_pos = min(MAX_WORD_IDX, curr_pos + d_limit);
-                                        } else {
-                                            //The maximum position is the same as the maximum word index.
-                                            max_pos = MAX_WORD_IDX;
-                                        }
+                                        //The maximum position to consider to the left is the
+                                        //first non-covered word position in the sentence.
+                                        const int32_t max_left_pos = first_nc_pos;
+                                        //Get the distortion limit and store it locally
+                                        const int32_t & d_limit = m_state_data.m_stack_data.m_params.m_dist_limit;
+                                        //The maximum position to consider to the right is the
+                                        //first non-covered word position in the sentence plus
+                                        //the distortion limit, if it is set, otherwise the
+                                        //end position of the sentence.
+                                        const int32_t max_right_pos = (is_dist) ? min(MAX_WORD_IDX, first_nc_pos + d_limit) : MAX_WORD_IDX;
 
-                                        LOG_DEBUG1 << "The maximum end position = " << max_pos << END_LOG;
+                                        LOG_DEBUG1 << "Max [Left, Right] = [" << max_left_pos << ", " << max_right_pos << "]" << END_LOG;
+                                        LOG_DEBUG1 << "Last phrase [Left, Right] = [" << m_state_data.m_s_begin_word_idx
+                                                << ", " << m_state_data.m_s_end_word_idx << "]" << END_LOG;
 
-                                        //Iterate through the allowed positions and try the length expansions
-                                        while (curr_pos <= max_pos) {
-                                            //If the position is not covered then expand the lengths
-                                            if (!m_state_data.m_covered[curr_pos]) {
-                                                //Expand the lengths from the last position
-                                                expand_length(first_nc_pos, curr_pos);
-                                            }
-                                            //Increment the current position
-                                            ++curr_pos;
-                                        }
+                                        //Expand the states to the right first and then to the left
+                                        expand_states_right(first_nc_pos, m_state_data.m_s_end_word_idx + 1, max_right_pos);
+                                        expand_states_left(first_nc_pos, m_state_data.m_s_begin_word_idx - 1, max_left_pos);
 
                                         LOG_DEBUG1 << "Finished all possible expansions in the state." << END_LOG;
                                         //Once we finish the expansions we shall break from the outer cycle
@@ -660,7 +657,51 @@ namespace uva {
                             }
 
                             /**
+                             * Allows to expand to the right from the last expanded phrase, if possible.
+                             * We expand from the positions closest to the last phrase and then move away.
+                             * @param first_nc_pos the first non-covered word index in the current hypothesis
+                             * @param begin_pos the first position to attempt an expansion for
+                             * @param end_pos the last position to attempt an expansion for
+                             */
+                            inline void expand_states_right(const int32_t & first_nc_pos, int32_t begin_pos, const int32_t end_pos) {
+                                //Iterate through the allowed positions and try the length expansions
+                                // begin_pos ----- > ---- end_pos
+                                while (begin_pos <= end_pos) {
+                                    //If the position is not covered then expand the lengths
+                                    if (!m_state_data.m_covered[begin_pos]) {
+                                        //Expand the lengths from the last position
+                                        expand_length(first_nc_pos, begin_pos);
+                                    }
+                                    //Increment the current position - moving to the right
+                                    ++begin_pos;
+                                }
+                            }
+
+                            /**
+                             * Allows to expand to the left from the last expanded phrase, if possible
+                             * We expand from the positions closest to the last phrase and then move away.
+                             * @param first_nc_pos the first non-covered word index in the current hypothesis
+                             * @param begin_pos the first position to attempt an expansion for
+                             * @param end_pos the last position to attempt an expansion for
+                             */
+                            inline void expand_states_left(const int32_t & first_nc_pos, int32_t begin_pos, const int32_t end_pos) {
+                                //Iterate through the allowed positions and try the length expansions
+                                // end_pos ----- < ---- begin_pos
+                                while (begin_pos >= end_pos) {
+                                    //If the position is not covered then expand the lengths
+                                    if (!m_state_data.m_covered[begin_pos]) {
+                                        //Expand the lengths from the last position
+                                        expand_length(first_nc_pos, begin_pos);
+                                    }
+                                    //Decrement the current position - moving to the left
+                                    begin_pos--;
+                                }
+                            }
+
+                            /**
                              * Allows to expand for all the possible phrase lengths
+                             * @param first_nc_pos the index of the first non-covered word in the given hypothesis
+                             * @param start_pos the position to start the word expansions from.
                              */
                             inline void expand_length(const int32_t first_nc_pos, const int32_t start_pos) {
                                 LOG_DEBUG1 << ">>>>> [start_pos] = [" << start_pos << "]" << END_LOG;
@@ -675,7 +716,7 @@ namespace uva {
 
                                 //Get the maximum position
                                 const int32_t & MAX_WORD_IDX = m_state_data.m_stack_data.m_sent_data.m_max_idx;
-                                
+
                                 //Iterate through lengths > 1 until the maximum possible source phrase length is 
                                 //reached or we hit the end of the sentence or the end of the uncovered region
                                 for (size_t len = 2; len <= m_state_data.m_stack_data.m_params.m_max_s_phrase_len; ++len) {
