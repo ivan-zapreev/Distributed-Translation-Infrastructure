@@ -136,7 +136,7 @@ namespace uva {
                                     if (m_is_stop) return;
 
                                     //Compute the future costs
-                                    compute_futue_costs();
+                                    compute_future_costs();
 
                                     //Return in case we need to stop translating
                                     if (m_is_stop) return;
@@ -240,7 +240,7 @@ namespace uva {
                             /**
                              * Allows to compute the future costs for the sentence.
                              */
-                            inline void compute_futue_costs() {
+                            inline void compute_future_costs() {
                                 //Obtain the number of words/tokens in the phrase it is equal to the number of dimensions
                                 const phrase_length num_words = m_sent_data.get_dim();
 
