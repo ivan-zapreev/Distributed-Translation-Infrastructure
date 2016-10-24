@@ -132,6 +132,9 @@ namespace uva {
                                 //Load the model data into memory and filter
                                 load_tm_data();
 
+                                //Temporary logging, thus so specific
+                                LOG_USAGE << "+++++++++++++++++++++++++++++++++++++++++++++++++++++" << END_LOG;
+                                
                                 //Convert the loaded data into the
                                 //model and delete the temporary data
                                 convert_tm_data();

@@ -297,6 +297,13 @@ namespace uva {
                              */
                             inline void update_minimum_cost(tm_target_entry & entry, const prob_weight lm_weight) {
                                 m_min_cost = max(m_min_cost, (entry.get_tm_cost<false>() + lm_weight));
+
+                                //Temporary logging, thus so specific
+                                if (m_source_uid == 865183982113710974) {
+                                    LOG_USAGE << "target __" << entry.get_target_phrase() << "__, new min_cost: "
+                                            << m_min_cost << ", tm cost: " << entry.get_tm_cost<false>()
+                                            << ", lm cost: " << lm_weight << END_LOG;
+                                }
                             }
                         };
 
