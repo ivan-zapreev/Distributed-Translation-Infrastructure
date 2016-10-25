@@ -76,8 +76,8 @@ namespace uva {
                             : m_target_phrase(""), m_num_words(0), m_word_ids(NULL),
                             m_st_uid(UNDEFINED_PHRASE_ID), m_total_weight(UNKNOWN_LOG_PROB_WEIGHT) {
                                 //Check that the number of features is set
-                                ASSERT_SANITY_THROW((NUMBER_OF_FEATURES == 0),
-                                        "The NUMBER_OF_FEATURES has not been set!");
+                                ASSERT_SANITY_THROW((NUMBER_OF_TM_FEATURES == 0),
+                                        "The NUMBER_OF_TM_FEATURES has not been set!");
 #if IS_SERVER_TUNING_MODE
                                 m_pure_features = NULL;
 #endif                        
@@ -203,11 +203,11 @@ namespace uva {
                             inline const prob_weight get_tm_cost(prob_weight * scores = NULL) const {
 #if IS_SERVER_TUNING_MODE
                                 if (is_consider_scores) {
-                                    ASSERT_SANITY_THROW((NUMBER_OF_FEATURES == 0), string("The number of features is zero!"));
+                                    ASSERT_SANITY_THROW((NUMBER_OF_TM_FEATURES == 0), string("The number of features is zero!"));
                                     LOG_DEBUG1 << this << ": The features: "
-                                            << array_to_string<prob_weight>(NUMBER_OF_FEATURES, m_pure_features) << END_LOG;
+                                            << array_to_string<prob_weight>(NUMBER_OF_TM_FEATURES, m_pure_features) << END_LOG;
                                     ASSERT_SANITY_THROW((scores == NULL), string("The scores pointer is NULL!"));
-                                    for (int8_t idx = 0; idx != NUMBER_OF_FEATURES; ++idx) {
+                                    for (int8_t idx = 0; idx != NUMBER_OF_TM_FEATURES; ++idx) {
                                         scores[tm_parameters::TM_WEIGHT_GLOBAL_IDS[idx]] = m_pure_features[idx];
                                         LOG_DEBUG2 << tm_parameters::TM_WEIGHT_NAMES[idx] << " = " << m_pure_features[idx] << END_LOG;
                                     }
@@ -239,10 +239,10 @@ namespace uva {
                              * @return the number of features
                              */
                             static size_t get_num_features() {
-                                ASSERT_CONDITION_THROW((NUMBER_OF_FEATURES == 0),
+                                ASSERT_CONDITION_THROW((NUMBER_OF_TM_FEATURES == 0),
                                         string("The number of features has not been set!"));
 
-                                return NUMBER_OF_FEATURES;
+                                return NUMBER_OF_TM_FEATURES;
                             }
 
                             /**
@@ -257,7 +257,7 @@ namespace uva {
                                         string(" must be a positive value!"));
 
                                 //Store the number of features
-                                NUMBER_OF_FEATURES = num_features;
+                                NUMBER_OF_TM_FEATURES = num_features;
                             }
 
                         protected:
@@ -282,17 +282,17 @@ namespace uva {
                                 ASSERT_SANITY_THROW((pure_features == NULL), "The pure_features is NULL!");
 
                                 //Allocate the features storage
-                                m_pure_features = new prob_weight[NUMBER_OF_FEATURES]();
+                                m_pure_features = new prob_weight[NUMBER_OF_TM_FEATURES]();
                                 //Store the individual feature weights
-                                memcpy(m_pure_features, pure_features, sizeof (prob_weight) * NUMBER_OF_FEATURES);
+                                memcpy(m_pure_features, pure_features, sizeof (prob_weight) * NUMBER_OF_TM_FEATURES);
 
                                 LOG_DEBUG1 << this << ": The features: "
-                                        << array_to_string<prob_weight>(NUMBER_OF_FEATURES, m_pure_features) << END_LOG;
+                                        << array_to_string<prob_weight>(NUMBER_OF_TM_FEATURES, m_pure_features) << END_LOG;
 #endif
 
                                 //Compute the total weight
                                 m_total_weight = 0.0; //First re-set to zero
-                                for (int8_t idx = 0; idx < NUMBER_OF_FEATURES; ++idx) {
+                                for (int8_t idx = 0; idx < NUMBER_OF_TM_FEATURES; ++idx) {
                                     m_total_weight += features[idx];
                                 }
 
@@ -302,14 +302,14 @@ namespace uva {
                                 //Check that we have enough features
                                 //ToDo: Why 3 and 2, later on? We shall change this into
                                 //      a constant and this kind of check is also bogus ...
-                                ASSERT_SANITY_THROW((NUMBER_OF_FEATURES < 3),
+                                ASSERT_SANITY_THROW((NUMBER_OF_TM_FEATURES < 3),
                                         "The must be at least 3 features, p(e|f) is not known!");
                             }
 
                         private:
                             //Stores the number of weights constant for the reordering entry
                             //This value is initialized before the RM model is loaded
-                            static int8_t NUMBER_OF_FEATURES;
+                            static int8_t NUMBER_OF_TM_FEATURES;
 
                             //Stores the target phrase of the translation which a key value
                             string m_target_phrase;

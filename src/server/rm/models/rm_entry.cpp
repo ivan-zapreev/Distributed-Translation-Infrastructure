@@ -32,14 +32,14 @@ namespace uva {
                 namespace rm {
                     namespace models {
                         //Default initialize with zero and negative values
-                        int8_t rm_entry::NUMBER_OF_FEATURES = 0;
+                        int8_t rm_entry::NUMBER_OF_RM_FEATURES = 0;
                         int8_t rm_entry::HALF_NUMBER_OF_FEATURES = 0;
                         int8_t rm_entry::FROM_POSITIONS[HALF_MAX_NUM_RM_FEATURES] = {};
                         int8_t rm_entry::TO_POSITIONS[HALF_MAX_NUM_RM_FEATURES] = {};
 
                         ostream & operator<<(ostream & stream, const rm_entry & entry) {
                             return stream << "[ uid: " << entry.m_uid << ", weights: "
-                                    << array_to_string<prob_weight>(rm_entry::NUMBER_OF_FEATURES, entry.m_weights) << " ]";
+                                    << array_to_string<prob_weight>(rm_entry::NUMBER_OF_RM_FEATURES, entry.m_weights) << " ]";
                         }
                     }
                 }

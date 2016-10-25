@@ -75,12 +75,12 @@ namespace uva {
                              */
                             rm_entry() : m_uid(UNDEFINED_PHRASE_ID) {
                                 //Check that the number of features is set
-                                ASSERT_SANITY_THROW((NUMBER_OF_FEATURES == 0),
-                                        "The NUMBER_OF_FEATURES has not been set!");
+                                ASSERT_SANITY_THROW((NUMBER_OF_RM_FEATURES == 0),
+                                        "The NUMBER_OF_RM_FEATURES has not been set!");
 
-                                m_weights = new prob_weight[NUMBER_OF_FEATURES]();
+                                m_weights = new prob_weight[NUMBER_OF_RM_FEATURES]();
 #if IS_SERVER_TUNING_MODE
-                                m_pure_features = new prob_weight[NUMBER_OF_FEATURES]();
+                                m_pure_features = new prob_weight[NUMBER_OF_RM_FEATURES]();
 #endif
                             }
 
@@ -233,10 +233,10 @@ namespace uva {
                              * @return the number of features
                              */
                             static size_t get_num_features() {
-                                ASSERT_CONDITION_THROW((NUMBER_OF_FEATURES == 0),
+                                ASSERT_CONDITION_THROW((NUMBER_OF_RM_FEATURES == 0),
                                         string("The number of features has not been set!"));
 
-                                return NUMBER_OF_FEATURES;
+                                return NUMBER_OF_RM_FEATURES;
                             }
 
                             /**
@@ -251,9 +251,9 @@ namespace uva {
                                         string(" must be a positive value!"));
 
                                 //Store the number of features
-                                NUMBER_OF_FEATURES = num_features;
+                                NUMBER_OF_RM_FEATURES = num_features;
                                 //Compute the number of feature types
-                                HALF_NUMBER_OF_FEATURES = NUMBER_OF_FEATURES / 2;
+                                HALF_NUMBER_OF_FEATURES = NUMBER_OF_RM_FEATURES / 2;
 
                                 LOG_DEBUG1 << "Starting to initialize the FROM and TO positions array" << END_LOG;
 
@@ -279,7 +279,7 @@ namespace uva {
                         private:
                             //Stores the number of weights constant for the reordering entry
                             //This value is initialized before the RM model is loaded
-                            static int8_t NUMBER_OF_FEATURES;
+                            static int8_t NUMBER_OF_RM_FEATURES;
                             //Stores the half number of features
                             static int8_t HALF_NUMBER_OF_FEATURES;
                             //Stores the difference move position indexes in the feature array

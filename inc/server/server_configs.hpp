@@ -70,7 +70,7 @@ namespace uva {
                     static constexpr uint16_t LM_MAX_QUERY_LEN = tm::TM_MAX_TARGET_PHRASE_LEN + LM_HISTORY_LEN_MAX;
 
                     //The default value of the unknown word log_e probability weight
-                    const prob_weight DEF_UNK_WORD_LOG_PROB_WEIGHT = -25.0f; //This is the log_e (ln) weight
+                    const prob_weight DEF_UNK_WORD_LOG_PROB_WEIGHT = -10.0f; //This is the log_e (ln) weight
                 }
 
                 namespace rm {
