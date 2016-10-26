@@ -435,15 +435,17 @@ namespace uva {
 
                         template<typename TrieType, typename TFileReaderModel>
                         void lm_basic_builder<TrieType, TFileReaderModel>::set_def_unk_word_prob() {
-                            LOG_DEBUG << "LM default UNK word prob weight: "
-                                    << DEF_UNK_WORD_LOG_PROB_WEIGHT << END_LOG;
-
                             //Set the default unk word probability weight
-                            prob_weight unk_prob = DEF_UNK_WORD_LOG_PROB_WEIGHT;
+                            prob_weight unk_prob = m_params.m_unk_word_log_e_prob;
+
+                            LOG_DEBUG << "LM default UNK word prob weight: " << unk_prob << END_LOG;
+
+                            //Check if there is a lambda to multiply with
                             if (m_params.m_is_0_lm_weight) {
                                 LOG_DEBUG << "LM weight: " << m_params.get_0_lm_weight() << END_LOG;
                                 unk_prob *= m_params.get_0_lm_weight();
                             }
+                            
                             //Set the probability weight
                             m_trie.set_def_unk_word_prob(unk_prob);
                         }

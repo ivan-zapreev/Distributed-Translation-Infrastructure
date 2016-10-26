@@ -73,6 +73,7 @@ static vector<string> debug_levels;
 static ValuesConstraint<string> * p_debug_levels_constr = NULL;
 static ValueArg<string> * p_debug_level_arg = NULL;
 static ValueArg<float> * p_lm_lambda = NULL;
+static ValueArg<float> * p_lm_unk_word_log_e_prob = NULL;
 
 /**
  * Creates and sets up the command line parameters parser
@@ -92,8 +93,11 @@ void create_arguments_parser() {
     p_debug_levels_constr = new ValuesConstraint<string>(debug_levels);
     p_debug_level_arg = new ValueArg<string>("d", "debug", "The debug level to be used", false, RESULT_PARAM_VALUE, p_debug_levels_constr, *p_cmd_args);
 
-    //Add the -l0 the optional LM lambda parameter
+    //Add the -l the optional LM lambda parameter
     p_lm_lambda = new ValueArg<float>("l", "lambda", "The Language Model probability lambda weight", false, 1.0, "lm lambda weight", *p_cmd_args);
+
+    //Add the -l the optional LM lambda parameter
+    p_lm_unk_word_log_e_prob = new ValueArg<float>("u", "unk", "The Language Model probability for the unknown word in a log_e space", false, -10.0, "lm unk word log_e prob", *p_cmd_args);
 }
 
 /**
@@ -107,6 +111,8 @@ void destroy_arguments_parser() {
     SAFE_DESTROY(p_debug_level_arg);
 
     SAFE_DESTROY(p_lm_lambda);
+    
+    SAFE_DESTROY(p_lm_unk_word_log_e_prob);
 
     SAFE_DESTROY(p_cmd_args);
 }
@@ -135,6 +141,9 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
     //Get the lambda weight
     params.m_lm_params.m_num_lambdas = 1;
     params.m_lm_params.m_lambdas[0] = p_lm_lambda->getValue();
+    
+    //Get the unknown word log_e probability
+    params.m_lm_params.m_unk_word_log_e_prob = p_lm_unk_word_log_e_prob->getValue();
 
     //Finalize the LM parameters
     params.m_lm_params.finalize();

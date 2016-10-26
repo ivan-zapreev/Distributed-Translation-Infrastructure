@@ -65,6 +65,8 @@ namespace uva {
                         static const string LM_WEIGHT_NAMES[MAX_NUM_LM_FEATURES];
                         //The feature weight names
                         static size_t LM_WEIGHT_GLOBAL_IDS[MAX_NUM_LM_FEATURES];
+                        //The unknown word log_e probability parameter name
+                        static const string LM_UNK_WORD_LOG_E_PROB_PARAM_NAME;
 
                         //The the connection string needed to connect to the model
                         string m_conn_string;
@@ -75,6 +77,8 @@ namespace uva {
                         float m_lambdas[MAX_NUM_LM_FEATURES];
                         //Stores the flag indicating whether the lm flag is to be used
                         bool m_is_0_lm_weight;
+                        //Stores the unknown word probability in the log_e space
+                        float m_unk_word_log_e_prob;
 
                         /**
                          * Allows to get the features weights used in the corresponding model.
@@ -131,6 +135,8 @@ namespace uva {
                                 << ", " << lm_parameters::LM_WEIGHTS_PARAM_NAME << "[" << params.m_num_lambdas
                                 << "] = " << array_to_string<float>(params.m_num_lambdas,
                                 params.m_lambdas, LM_FEATURE_WEIGHTS_DELIMITER_STR)
+                                << ", " << lm_parameters::LM_UNK_WORD_LOG_E_PROB_PARAM_NAME
+                                << " = " << params.m_unk_word_log_e_prob
                                 << " ]";
                     }
                 }

@@ -190,6 +190,7 @@ static void parse_confiog_file(const string & config_file_name, server_parameter
                 params.m_lm_params.m_lambdas,
                 params.m_lm_params.m_num_lambdas,
                 LM_FEATURE_WEIGHTS_DELIMITER_STR);
+        params.m_lm_params.m_unk_word_log_e_prob = get_float(ini, section, lm_parameters::LM_UNK_WORD_LOG_E_PROB_PARAM_NAME);
 
         section = tm_parameters::TM_CONFIG_SECTION_NAME;
         params.m_tm_params.m_conn_string = get_string(ini, section, tm_parameters::TM_CONN_STRING_PARAM_NAME);

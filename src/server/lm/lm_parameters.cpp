@@ -37,6 +37,7 @@ namespace uva {
                         LM_WEIGHTS_PARAM_NAME + string("[0]")
                     };
                     size_t lm_parameters_struct::LM_WEIGHT_GLOBAL_IDS[MAX_NUM_LM_FEATURES] = {};
+                    const string lm_parameters_struct::LM_UNK_WORD_LOG_E_PROB_PARAM_NAME = "unk_word_log_e_prob";
                 }
             }
         }
