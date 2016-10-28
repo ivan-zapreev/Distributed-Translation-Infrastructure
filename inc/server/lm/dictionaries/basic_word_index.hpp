@@ -88,7 +88,7 @@ namespace uva {
                                         numWords, "WordIndex", m_word_index_mem_factor);
 
                                 //Register the unknown word with the first available hash value
-                                word_uid& word_id = m_word_index_map_ptr->operator[](UNKNOWN_WORD_STR);
+                                word_uid& word_id = m_word_index_map_ptr->operator[](LM_UNKNOWN_WORD_STR);
                                 word_id = UNKNOWN_WORD_ID;
                             };
 
@@ -101,7 +101,7 @@ namespace uva {
                                 TWordIndexMapConstIter result = m_word_index_map_ptr->find(token.str());
                                 if (result == m_word_index_map_ptr->end()) {
                                     LOG_DEBUG << "Word: '" << token << "' is not known! Mapping it to: '"
-                                            << UNKNOWN_WORD_STR << "', id: "
+                                            << LM_UNKNOWN_WORD_STR << "', id: "
                                             << SSTR(UNKNOWN_WORD_ID) << END_LOG;
                                     return UNKNOWN_WORD_ID;
                                 } else {

@@ -98,7 +98,7 @@ namespace uva {
                              */
                             inline bool is_unk_unigram() const {
                                 return ((BASE::get_num_words() == M_GRAM_LEVEL_1) &&
-                                        (m_tokens[BASE::get_first_word_idx()] == UNKNOWN_WORD_STR));
+                                        (m_tokens[BASE::get_first_word_idx()] == LM_UNKNOWN_WORD_STR));
                             }
 
                             /**

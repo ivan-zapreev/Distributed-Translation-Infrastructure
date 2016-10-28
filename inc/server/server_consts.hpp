@@ -103,7 +103,7 @@ namespace uva {
                     static const string LM_FEATURE_WEIGHTS_DELIMITER_STR = "|";
 
                     //Stores the unknown word string, should be configurable
-                    static const string UNKNOWN_WORD_STR = u8"<unk>";
+                    static const string LM_UNKNOWN_WORD_STR = u8"<unk>";
 
                     //Stores the start of the sentence symbol
                     static const string BEGIN_SENTENCE_TAG_STR = u8"<s>";

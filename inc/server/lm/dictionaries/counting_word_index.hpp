@@ -154,7 +154,7 @@ namespace uva {
 
                                         //00. Remove the <unk> word from the Map as it must get fixed index
                                         LOG_DEBUG2 << "Remove the <unk> word from the Map as it must get fixed index" << END_LOG;
-                                        basic_word_index::m_word_index_map_ptr->erase(UNKNOWN_WORD_STR);
+                                        basic_word_index::m_word_index_map_ptr->erase(LM_UNKNOWN_WORD_STR);
 
                                         //01. Create an array of words info objects from BasicWordIndex::_pWordIndexMap
                                         LOG_DEBUG2 << "Create an array of words info objects from BasicWordIndex::_pWordIndexMap" << END_LOG;
@@ -195,7 +195,7 @@ namespace uva {
 
                                         //06. Put back the <unk> word with its fixed index into the map
                                         LOG_DEBUG2 << "Put back the <unk> word with its fixed index into the map" << END_LOG;
-                                        basic_word_index::m_word_index_map_ptr->operator[](UNKNOWN_WORD_STR) = UNKNOWN_WORD_ID;
+                                        basic_word_index::m_word_index_map_ptr->operator[](LM_UNKNOWN_WORD_STR) = UNKNOWN_WORD_ID;
 
                                         LOG_DEBUG1 << "Finished the post word counting actions!" << END_LOG;
                             };
