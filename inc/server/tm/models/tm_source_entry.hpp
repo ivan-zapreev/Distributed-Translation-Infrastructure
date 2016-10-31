@@ -301,13 +301,6 @@ namespace uva {
                                 
                                 //Take the minimum of the two costs
                                 m_min_cost = max(m_min_cost, new_cost);
-                                
-                                //Temporary logging, thus so specific
-                                //if (m_source_uid == 865183982113710974) {
-                                //    LOG_USAGE << "target __" << entry.get_target_phrase() << "__, new cost: "
-                                //            << new_cost << ", tm cost: " << entry.get_tm_cost<false>()
-                                //            << ", lm cost: " << lm_weight << END_LOG;
-                                //}
                             }
                         };
 
