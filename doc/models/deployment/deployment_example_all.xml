@@ -1,0 +1,116 @@
+<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>Relation</id><coordinates><x>322</x><y>288</y><w>340</w><h>110</h></coordinates><panel_attributes>lt=&lt;-&gt;
+pre-process &gt;
+</panel_attributes><additional_attributes>10;90;150;90;150;10;320;10</additional_attributes></element><element><id>Relation</id><coordinates><x>322</x><y>398</y><w>170</w><h>140</h></coordinates><panel_attributes>lt=&lt;-&gt;
+post-process &gt;</panel_attributes><additional_attributes>10;20;150;20;150;120</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>590</x><y>278</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
+--
+connect/disconnect
+pre_process
+post_process
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>652</x><y>288</y><w>120</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;100;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>540</x><y>488</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
+*Processor*
+bg=#F5DA81
+group=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>750</x><y>268</y><w>140</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
+*Processor*
+bg=#F5DA81
+group=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>730</x><y>218</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server 6
+group=10</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>520</x><y>438</y><w>180</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server 7
+group=11</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>472</x><y>518</y><w>90</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>410</x><y>508</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
+--
+connect/disconnect
+pre_process
+post_process
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>554</x><y>678</y><w>140</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
+*Load Balancer*
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>534</x><y>628</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server 1</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>454</x><y>708</y><w>120</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;100;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>374</x><y>698</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+--
+connect/disconnect
+get_supp_languages
+translate(source):{target}
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>744</x><y>468</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+--
+connect/disconnect
+get_supp_languages
+translate(source):{target}
+bg=green
+group=4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>914</x><y>408</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server 2
+group=4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>934</x><y>458</y><w>140</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
+*Load Balancer*
+bg=green
+group=4</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>824</x><y>478</y><w>130</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.
+group=4</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>194</x><y>318</y><w>160</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+PC 03
+group=3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>204</x><y>368</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;application&gt;&gt;
+*Console client*
+bg=#00FFFF
+group=3</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>324</x><y>378</y><w>520</w><h>120</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;</panel_attributes><additional_attributes>10;20;500;20;500;100</additional_attributes></element><element><id>Relation</id><coordinates><x>664</x><y>478</y><w>170</w><h>220</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>150;10;70;10;70;120;10;120;10;200</additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>854</x><y>658</y><w>200</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server 5
+group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>884</x><y>708</y><w>140</w><h>60</h></coordinates><panel_attributes>&lt;&lt;service&gt;&gt;
+symbol=component
+*Decoder 3*
+*Germn -&gt; English*
+bg=#819FF7
+group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>774</x><y>738</y><w>130</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.
+group=14</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>694</x><y>728</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+--
+connect/disconnect
+get_supp_languages
+translate(source):{target}
+bg=pink
+group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>684</x><y>708</y><w>110</w><h>50</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>90;30;90;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>684</x><y>558</y><w>370</w><h>150</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>350;10;260;10;260;60;90;60;90;130;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>1034</x><y>508</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>10;50;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>944</x><y>248</y><w>110</w><h>230</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>90;20;10;20;10;210</additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1124</x><y>318</y><w>200</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server 3
+group=15</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1154</x><y>368</y><w>140</w><h>60</h></coordinates><panel_attributes>&lt;&lt;service&gt;&gt;
+symbol=component
+*Decoder 1*
+*Germn -&gt; French*
+bg=#F781BE
+group=15</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1044</x><y>258</y><w>150</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;130;10;130;110</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>964</x><y>248</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+--
+connect/disconnect
+get_supp_languages
+translate(source):{target}
+bg=pink</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1124</x><y>478</y><w>200</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server 4
+group=13</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1154</x><y>528</y><w>140</w><h>60</h></coordinates><panel_attributes>&lt;&lt;service&gt;&gt;
+symbol=component
+*Decoder 2*
+*Germn -&gt; French*
+bg=#F781BE
+group=13</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1044</x><y>558</y><w>130</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.
+group=13</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>964</x><y>548</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+--
+connect/disconnect
+get_supp_languages
+translate(source):{target}
+bg=pink
+group=13</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>194</x><y>613</y><w>160</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+PC 01
+group=8</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>204</x><y>663</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;application&gt;&gt;
+*Console client*
+bg=#00FFFF
+group=8</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>194</x><y>463</y><w>160</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+PC 02
+group=9</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>204</x><y>513</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;application&gt;&gt;
+*Web client*
+bg=#00FFFF
+group=9</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>324</x><y>693</y><w>140</w><h>40</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element><element><id>Relation</id><coordinates><x>274</x><y>563</y><w>200</w><h>170</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;</panel_attributes><additional_attributes>10;10;10;40;120;40;120;110;180;110;180;150</additional_attributes></element><element><id>Relation</id><coordinates><x>322</x><y>508</y><w>160</w><h>50</h></coordinates><panel_attributes>lt=&lt;-&gt;
+pre-process &gt;
+</panel_attributes><additional_attributes>10;20;140;20</additional_attributes></element></diagram>

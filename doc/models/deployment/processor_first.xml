@@ -3,184 +3,192 @@
 connect/disconnect
 pre_process
 post_process
-bg=yellow</help_text><element><id>UMLInterface</id><coordinates><x>260</x><y>190</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+bg=yellow</help_text><element><id>UMLInterface</id><coordinates><x>260</x><y>220</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
 get_supp_languages
 translate(source):{target}
-bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1210</x><y>670</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1210</x><y>700</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
 get_supp_languages
 translate(source):{target}
-bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>740</x><y>190</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>740</x><y>220</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
 get_supp_languages
 translate(source):{target}
-bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>580</x><y>0</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>100</x><y>0</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1060</x><y>0</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>100</x><y>480</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>580</x><y>480</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1060</x><y>480</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>280</x><y>80</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>580</x><y>30</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>100</x><y>30</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1060</x><y>30</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>100</x><y>510</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>580</x><y>510</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1060</x><y>510</y><w>480</w><h>480</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>280</x><y>110</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Decoder
-bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>270</x><y>30</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>760</x><y>80</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>270</x><y>60</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>760</x><y>110</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Decoder
-bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>750</x><y>30</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1240</x><y>560</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>750</x><y>60</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1240</x><y>590</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Decoder
-bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1230</x><y>510</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>760</x><y>560</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1230</x><y>540</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>760</x><y>590</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Decoder
-bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>332</x><y>130</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>812</x><y>130</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>472</x><y>610</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>730</x><y>670</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>332</x><y>160</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>812</x><y>160</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>472</x><y>640</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>730</x><y>700</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
 get_supp_languages
 translate(source):{target}
-bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1282</x><y>620</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>910</x><y>190</y><w>120</w><h>100</h></coordinates><panel_attributes>Processor
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1282</x><y>650</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>910</x><y>220</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
 --
 connect/disconnect
-post_process
-bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>962</x><y>130</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>910</x><y>80</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+/pre_process/
+*post_process*
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>962</x><y>160</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>910</x><y>110</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Processor
-bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>900</x><y>30</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1080</x><y>670</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
+bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>900</x><y>60</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1080</x><y>700</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
 --
 connect/disconnect
-pre_process
-post_process
-bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1132</x><y>620</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1080</x><y>560</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+*pre_process*
+*post_process*
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1132</x><y>650</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1080</x><y>590</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Processor
-bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1070</x><y>510</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>600</x><y>670</y><w>120</w><h>100</h></coordinates><panel_attributes>Processor
+bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1070</x><y>540</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>600</x><y>700</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
 --
 connect/disconnect
-post_process
-bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>172</x><y>610</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>600</x><y>560</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+*pre_process*
+/post_process/
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>172</x><y>640</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>600</x><y>590</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Processor
-bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>590</x><y>510</y><w>460</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>910</x><y>670</y><w>120</w><h>100</h></coordinates><panel_attributes>Processor
+bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>590</x><y>540</y><w>460</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>910</x><y>700</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
 --
 connect/disconnect
-pre_process
-bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>312</x><y>610</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>910</x><y>560</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+/pre_process/
+*post_process*
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>312</x><y>640</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>910</x><y>590</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Processor
-bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>120</x><y>190</y><w>120</w><h>100</h></coordinates><panel_attributes>Processor
+bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>120</x><y>220</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
 --
 connect/disconnect
-pre_process
-bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>172</x><y>130</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>120</x><y>80</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+*pre_process*
+/post_process/
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>172</x><y>160</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>120</x><y>110</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Processor
-bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>110</x><y>30</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>750</x><y>400</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>110</x><y>60</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>750</x><y>430</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;application&gt;&gt;
 Translation client
 bg=#00FFFF
-group=3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>720</x><y>350</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>632</x><y>200</y><w>200</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
-translate &gt;</panel_attributes><additional_attributes>120;230;10;230;10;10;180;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>270</x><y>400</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+group=3</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>720</x><y>380</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>632</x><y>230</y><w>200</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;</panel_attributes><additional_attributes>120;230;10;230;10;10;180;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>270</x><y>430</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;application&gt;&gt;
 Translation client
 bg=#00FFFF
-group=4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>240</x><y>350</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>342</x><y>200</y><w>240</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
-translate &gt;</panel_attributes><additional_attributes>50;230;160;230;160;10;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1220</x><y>880</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+group=4</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>240</x><y>380</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>342</x><y>230</y><w>240</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;</panel_attributes><additional_attributes>50;230;160;230;160;10;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1220</x><y>910</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;application&gt;&gt;
 Translation client
 bg=#00FFFF
-group=5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1190</x><y>830</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1292</x><y>680</y><w>240</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
-translate &gt;</panel_attributes><additional_attributes>50;230;160;230;160;10;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>740</x><y>880</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+group=5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1190</x><y>860</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1292</x><y>710</y><w>240</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;</panel_attributes><additional_attributes>50;230;160;230;160;10;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>740</x><y>910</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;application&gt;&gt;
 Translation client
 bg=#00FFFF
-group=6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>710</x><y>830</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>812</x><y>680</y><w>110</w><h>220</h></coordinates><panel_attributes>lt=&lt;-&gt;
-translate &gt;</panel_attributes><additional_attributes>20;200;20;130;90;130;90;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>142</x><y>200</y><w>150</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
-pre-process &gt;</panel_attributes><additional_attributes>130;230;10;230;10;120;110;120;110;10;50;10</additional_attributes></element><element><id>Relation</id><coordinates><x>862</x><y>200</y><w>200</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
-post-process &gt;</panel_attributes><additional_attributes>10;230;80;230;80;130;180;130;180;10;120;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1092</x><y>680</y><w>150</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+group=6</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>710</x><y>860</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>812</x><y>710</y><w>110</w><h>220</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;</panel_attributes><additional_attributes>20;200;20;130;90;130;90;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>142</x><y>230</y><w>150</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+pre-process &gt;</panel_attributes><additional_attributes>130;230;10;230;10;120;110;120;110;10;50;10</additional_attributes></element><element><id>Relation</id><coordinates><x>862</x><y>230</y><w>200</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+post-process &gt;</panel_attributes><additional_attributes>10;230;80;230;80;130;180;130;180;10;120;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1092</x><y>710</y><w>150</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
 pre-process &gt;
-post-process &gt;</panel_attributes><additional_attributes>130;230;10;230;10;130;110;130;110;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>612</x><y>680</y><w>130</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+post-process &gt;</panel_attributes><additional_attributes>130;230;10;230;10;130;110;130;110;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>612</x><y>710</y><w>130</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
 pre-process &gt;
-</panel_attributes><additional_attributes>100;230;10;230;10;130;110;130;110;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>852</x><y>680</y><w>200</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
-post-process &gt;</panel_attributes><additional_attributes>10;230;80;230;80;130;180;130;180;10;130;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>500</x><y>920</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 04*
-bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>500</x><y>440</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 01*
-bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>980</x><y>440</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 02*
-bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>1460</x><y>440</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 03*
-bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>980</x><y>920</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 05*
-bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>260</x><y>880</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+</panel_attributes><additional_attributes>100;230;10;230;10;130;110;130;110;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>852</x><y>710</y><w>200</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+post-process &gt;</panel_attributes><additional_attributes>10;230;80;230;80;130;180;130;180;10;130;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>500</x><y>950</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 04*
+bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>500</x><y>470</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 01*
+bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>980</x><y>470</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 02*
+bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>1460</x><y>470</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 03*
+bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>980</x><y>950</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 05*
+bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>260</x><y>910</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;application&gt;&gt;
 Translation client
 bg=#00FFFF
-group=8</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>230</x><y>830</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>120</x><y>560</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+group=8</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>230</x><y>860</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>120</x><y>590</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Processor
-bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>110</x><y>510</y><w>290</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>430</x><y>560</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>110</x><y>540</y><w>290</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>430</x><y>590</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Decoder
-bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>420</x><y>510</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>260</x><y>560</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>420</x><y>540</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>260</x><y>590</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Processor
-bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>312</x><y>610</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>260</x><y>670</y><w>120</w><h>100</h></coordinates><panel_attributes>Processor
+bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>312</x><y>640</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>260</x><y>700</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
 --
 connect/disconnect
-pre_process
-bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>400</x><y>670</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+/pre_process/
+*post_process*
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>400</x><y>700</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
 get_supp_languages
 translate(source):{target}
-bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>120</x><y>670</y><w>120</w><h>100</h></coordinates><panel_attributes>Processor
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>120</x><y>700</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
 --
 connect/disconnect
-post_process
-bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>172</x><y>610</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>472</x><y>610</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>272</x><y>680</y><w>130</w><h>220</h></coordinates><panel_attributes>lt=&lt;-&gt;
+*pre_process*
+/post_process/
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>172</x><y>640</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>472</x><y>640</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>272</x><y>710</y><w>130</w><h>220</h></coordinates><panel_attributes>lt=&lt;-&gt;
 post-process &gt;
-</panel_attributes><additional_attributes>10;200;10;130;110;130;110;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>132</x><y>680</y><w>150</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>10;200;10;130;110;130;110;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>132</x><y>710</y><w>150</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
 pre-process &gt;
-</panel_attributes><additional_attributes>130;230;10;230;10;130;110;130;110;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>372</x><y>680</y><w>220</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
-translate &gt;</panel_attributes><additional_attributes>10;230;80;230;80;130;200;130;200;10;120;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>1460</x><y>920</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 06*
-bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>652</x><y>610</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>802</x><y>610</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>962</x><y>610</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1220</x><y>400</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+</panel_attributes><additional_attributes>130;230;10;230;10;130;110;130;110;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>372</x><y>710</y><w>220</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;</panel_attributes><additional_attributes>10;230;80;230;80;130;200;130;200;10;120;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>1460</x><y>950</y><w>70</w><h>30</h></coordinates><panel_attributes>*Type - 06*
+bg=#00ff55</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>652</x><y>640</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>802</x><y>640</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>962</x><y>640</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1220</x><y>430</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;application&gt;&gt;
 Translation client
 bg=#00FFFF
-group=9</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1190</x><y>350</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1092</x><y>200</y><w>130</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+group=9</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1190</x><y>380</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1092</x><y>230</y><w>130</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
 pre-process &gt;
-</panel_attributes><additional_attributes>100;230;10;230;10;130;110;130;110;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1292</x><y>200</y><w>110</w><h>220</h></coordinates><panel_attributes>lt=&lt;-&gt;
-translate &gt;</panel_attributes><additional_attributes>20;200;20;130;90;130;90;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1332</x><y>200</y><w>200</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
-post-process &gt;</panel_attributes><additional_attributes>10;230;80;230;80;130;180;130;180;10;130;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1210</x><y>190</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+</panel_attributes><additional_attributes>100;230;10;230;10;130;110;130;110;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1292</x><y>230</y><w>110</w><h>220</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;</panel_attributes><additional_attributes>20;200;20;130;90;130;90;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1332</x><y>230</y><w>200</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+post-process &gt;</panel_attributes><additional_attributes>10;230;80;230;80;130;180;130;180;10;130;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1210</x><y>220</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
 get_supp_languages
 translate(source):{target}
-bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1080</x><y>190</y><w>120</w><h>100</h></coordinates><panel_attributes>Processor
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1080</x><y>220</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
 --
 connect/disconnect
-post_process
-bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1132</x><y>130</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1282</x><y>130</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1390</x><y>80</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+*pre_process*
+/post_process/
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1132</x><y>160</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1282</x><y>160</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1390</x><y>110</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Processor
-bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1240</x><y>80</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1240</x><y>110</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Decoder
-bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1080</x><y>80</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
+bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1080</x><y>110</y><w>120</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
 Processor
-bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1070</x><y>30</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1230</x><y>30</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1380</x><y>30</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1442</x><y>130</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1390</x><y>190</y><w>120</w><h>100</h></coordinates><panel_attributes>Processor
+bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1070</x><y>60</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1230</x><y>60</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>1380</x><y>60</y><w>150</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1442</x><y>160</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1390</x><y>220</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
 --
 connect/disconnect
-pre_process
+/pre_process/
+*post_process*
 bg=yellow</panel_attributes><additional_attributes></additional_attributes></element></diagram>

@@ -1,0 +1,73 @@
+<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>Relation</id><coordinates><x>352</x><y>245</y><w>290</w><h>70</h></coordinates><panel_attributes>lt=&lt;-&gt;
+pre-process &gt;
+m2=0..1</panel_attributes><additional_attributes>10;50;10;10;270;10</additional_attributes></element><element><id>Relation</id><coordinates><x>352</x><y>245</y><w>370</w><h>220</h></coordinates><panel_attributes>lt=&lt;-&gt;
+post-process &gt;
+m2=0..1</panel_attributes><additional_attributes>10;110;10;200;350;200;350;10;290;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>454</x><y>295</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+--
+connect/disconnect
+get_supp_languages
+translate(source):{target}
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>294</x><y>295</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;application&gt;&gt;
+*Console client*
+bg=#00FFFF</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>414</x><y>295</y><w>130</w><h>50</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;
+m2=1</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>Relation</id><coordinates><x>834</x><y>435</y><w>80</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;60;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1064</x><y>595</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+--
+connect/disconnect
+get_supp_languages
+translate(source):{target}
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>570</x><y>235</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
+--
+connect/disconnect
+pre_process
+post_process
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>294</x><y>555</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;application&gt;&gt;
+*Web client*
+bg=#00FFFF</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>454</x><y>555</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+--
+connect/disconnect
+get_supp_languages
+translate(source):{target}
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>570</x><y>495</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
+--
+connect/disconnect
+pre_process
+post_process
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>352</x><y>505</y><w>290</w><h>70</h></coordinates><panel_attributes>lt=&lt;-&gt;
+pre-process &gt;
+m2=0..1</panel_attributes><additional_attributes>10;50;10;10;270;10</additional_attributes></element><element><id>Relation</id><coordinates><x>414</x><y>555</y><w>130</w><h>50</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;
+m2=1</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>Relation</id><coordinates><x>352</x><y>505</y><w>370</w><h>220</h></coordinates><panel_attributes>lt=&lt;-&gt;
+post-process &gt;
+m2=0..1</panel_attributes><additional_attributes>10;110;10;200;350;200;350;10;290;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>890</x><y>235</y><w>140</w><h>70</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
+*Processor*
+*Sources / Targets*
+bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>780</x><y>255</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
+--
+connect/disconnect
+pre_process
+post_process
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>842</x><y>265</y><w>70</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;50;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>754</x><y>425</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+--
+connect/disconnect
+get_supp_languages
+translate(source):{target}
+bg=pink</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>894</x><y>405</y><w>140</w><h>70</h></coordinates><panel_attributes>&lt;&lt;service&gt;&gt;
+symbol=component
+*Decoder 1*
+*Source -&gt; Target*
+bg=#F781BE</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>754</x><y>595</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+--
+connect/disconnect
+get_supp_languages
+translate(source):{target}
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>894</x><y>575</y><w>140</w><h>70</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;service&gt;&gt;
+*Load Balancer*
+*Sources-&gt;Targets*
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>834</x><y>605</y><w>80</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1024</x><y>595</y><w>130</w><h>50</h></coordinates><panel_attributes>lt=&lt;-&gt;
+translate &gt;
+m2=0..*</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>190</y><w>30</w><h>580</h></coordinates><panel_attributes>lt=..</panel_attributes><additional_attributes>10;560;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>540</y><w>500</w><h>30</h></coordinates><panel_attributes>lt=..</panel_attributes><additional_attributes>10;10;480;10</additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>370</y><w>500</w><h>30</h></coordinates><panel_attributes>lt=..</panel_attributes><additional_attributes>10;10;480;10</additional_attributes></element><element><id>Relation</id><coordinates><x>250</x><y>470</y><w>500</w><h>30</h></coordinates><panel_attributes>lt=..</panel_attributes><additional_attributes>10;10;480;10</additional_attributes></element></diagram>
