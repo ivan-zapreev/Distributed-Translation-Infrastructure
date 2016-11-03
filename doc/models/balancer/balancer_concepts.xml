@@ -1,4 +1,4 @@
-<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>260</x><y>560</y><w>400</w><h>150</h></coordinates><panel_attributes>lw=1.3
+<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>320</x><y>490</y><w>300</w><h>150</h></coordinates><panel_attributes>lw=1.3
 &lt;&lt;thread&gt;&gt;
 *balancer_server*
 --
@@ -9,7 +9,7 @@ Responsibilities:
 -- Sends the supported languages responses.
 -- Receives the translation requests
 -- Places the received requests into dispatching queue 
--- Sends the translation responses.</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>400</y><w>200</w><h>150</h></coordinates><panel_attributes>lw=1.3
+-- Sends the translation responses.</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>80</x><y>340</y><w>190</w><h>150</h></coordinates><panel_attributes>lw=1.3
 &lt;&lt;application&gt;&gt;
 *bpbd_balancer*
 --
@@ -20,7 +20,7 @@ Responsibilities:
 -- Configures the balancer_server
 -- Starts up the balancer_server
 -- Starts the balancer_console
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>0</y><w>400</w><h>210</h></coordinates><panel_attributes>lw=1.3
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>300</x><y>0</y><w>330</w><h>210</h></coordinates><panel_attributes>lw=1.3
 &lt;&lt;thread&gt;&gt;
 &lt;&lt;synchronized&gt;&gt;
 *translator_adapter*
@@ -36,11 +36,11 @@ Responsibilities:
 -- Re-connects to the disconnected server
 -- Send translation requests
 -- Receive translation responses
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>410</x><y>200</y><w>50</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
-m2=0..n</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>90</x><y>540</y><w>190</w><h>160</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
-m2=1</panel_attributes><additional_attributes>10;10;10;130;170;130</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>198</y><w>170</w><h>150</h></coordinates><panel_attributes>lt=&lt;.
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>390</x><y>200</y><w>50</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m2=0..n</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>170</x><y>480</y><w>170</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m2=1</panel_attributes><additional_attributes>10;10;10;120;150;120</additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>198</y><w>170</w><h>90</h></coordinates><panel_attributes>lt=&lt;.
 notify connection status &gt;
-</panel_attributes><additional_attributes>10;130;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>290</x><y>328</y><w>350</w><h>150</h></coordinates><panel_attributes>&lt;&lt;synchronized&gt;&gt;
+</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>320</x><y>268</y><w>300</w><h>150</h></coordinates><panel_attributes>&lt;&lt;synchronized&gt;&gt;
 *adapters_manager*
 --
 --
@@ -49,8 +49,8 @@ Responsibilities
 -- Keeps track of the online translation servers
 -- Keeps track of languages supported by the servers
 -- Keeps track of the known load on the servers
--- Advises translation server for a translation request</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>150</x><y>538</y><w>130</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
-create &gt;</panel_attributes><additional_attributes>110;90;10;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>840</x><y>548</y><w>320</w><h>230</h></coordinates><panel_attributes>&lt;&lt;synchronized&gt;&gt;
+-- Advises translation server for a translation request</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>478</y><w>130</w><h>100</h></coordinates><panel_attributes>lt=&lt;.
+create &gt;</panel_attributes><additional_attributes>110;80;10;80;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>770</x><y>478</y><w>270</w><h>210</h></coordinates><panel_attributes>&lt;&lt;synchronized&gt;&gt;
 *balancer_manager*
 --
 --
@@ -64,11 +64,11 @@ Responsibilities
 -- Maintain the translation jobs queue
 -- Give job requests new - global job ids
 -- Map local job id to session/trans_job data
--- Increase/Decrease the number of dispatchers</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>660</x><y>168</y><w>240</w><h>400</h></coordinates><panel_attributes>lt=&lt;.
-notify server connection closed &gt;</panel_attributes><additional_attributes>200;380;200;340;80;340;80;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>650</x><y>618</y><w>210</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
-m2=1</panel_attributes><additional_attributes>10;10;190;10</additional_attributes></element><element><id>Relation</id><coordinates><x>160</x><y>118</y><w>220</w><h>230</h></coordinates><panel_attributes>lt=&lt;.
-notify supported languages &gt;</panel_attributes><additional_attributes>200;210;200;140;10;140;10;10;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>650</x><y>688</y><w>210</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
-place client request &gt;</panel_attributes><additional_attributes>190;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>840</x><y>138</y><w>320</w><h>240</h></coordinates><panel_attributes>*balancer_job*
+-- Increase/Decrease the number of dispatchers</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>620</x><y>168</y><w>230</w><h>330</h></coordinates><panel_attributes>lt=&lt;.
+notify server connection closed &gt;</panel_attributes><additional_attributes>170;310;170;280;90;280;90;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>548</y><w>180</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m2=1</panel_attributes><additional_attributes>10;10;160;10</additional_attributes></element><element><id>Relation</id><coordinates><x>190</x><y>118</y><w>190</w><h>220</h></coordinates><panel_attributes>lt=&lt;.
+notify supported languages &gt;</panel_attributes><additional_attributes>130;200;10;200;10;10;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>618</y><w>180</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+place client request &gt;</panel_attributes><additional_attributes>160;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>790</x><y>138</y><w>220</w><h>240</h></coordinates><panel_attributes>*balancer_job*
 --
 --
 --
@@ -84,14 +84,14 @@ Responsibilities:
 -- Send the translation response
 -- Remember in which state the job is:
   -- Waiting for sending request
-  -- Waiting for receiving reply</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>380</x><y>858</y><w>150</w><h>50</h></coordinates><panel_attributes>*trans_job_request_in*</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>368</y><w>80</w><h>200</h></coordinates><panel_attributes>lt=&lt;.
-create &gt;</panel_attributes><additional_attributes>10;10;10;180</additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>698</y><w>80</w><h>180</h></coordinates><panel_attributes>lt=&lt;.
-creates &gt;</panel_attributes><additional_attributes>10;160;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>470</y><w>40</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
-m2=1</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>510</x><y>468</y><w>80</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
-create &gt;</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>203</y><w>80</w><h>140</h></coordinates><panel_attributes>lt=&lt;.
-create &gt;</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>770</y><w>500</w><h>130</h></coordinates><panel_attributes>lt=&lt;.
-&lt; gets the request data from</panel_attributes><additional_attributes>10;110;480;110;480;10</additional_attributes></element><element><id>Relation</id><coordinates><x>30</x><y>540</y><w>40</w><h>200</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
-m2=1</panel_attributes><additional_attributes>10;10;10;180</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>718</y><w>220</w><h>120</h></coordinates><panel_attributes>*balancer_console*
+  -- Waiting for receiving reply</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>698</y><w>150</w><h>50</h></coordinates><panel_attributes>*trans_job_request_in*</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>930</x><y>368</y><w>80</w><h>130</h></coordinates><panel_attributes>lt=&lt;.
+create &gt;</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>628</y><w>80</w><h>90</h></coordinates><panel_attributes>lt=&lt;.
+creates &gt;</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>410</y><w>40</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m2=1</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>408</y><w>80</w><h>100</h></coordinates><panel_attributes>lt=&lt;.
+create &gt;</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>203</y><w>80</w><h>80</h></coordinates><panel_attributes>lt=&lt;.
+create &gt;</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>680</y><w>380</w><h>60</h></coordinates><panel_attributes>lt=&lt;.
+&lt; gets the request data from</panel_attributes><additional_attributes>10;40;360;40;360;10</additional_attributes></element><element><id>Relation</id><coordinates><x>110</x><y>480</y><w>40</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+m2=1</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>UMLClass</id><coordinates><x>90</x><y>628</y><w>210</w><h>120</h></coordinates><panel_attributes>*balancer_console*
 --
 --
 --
@@ -99,17 +99,17 @@ Responsibilities
 -- Provides the balancer console
 -- Allows to execute commands
 -- Allows to get run time information
--- Allows to change run time settings</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>708</y><w>150</w><h>90</h></coordinates><panel_attributes>lt=&lt;-
-m1=1</panel_attributes><additional_attributes>120;10;120;70;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>940</x><y>370</y><w>80</w><h>200</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+-- Allows to change run time settings</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>290</x><y>628</y><w>100</w><h>80</h></coordinates><panel_attributes>lt=&lt;-
+m1=1</panel_attributes><additional_attributes>70;10;70;60;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>870</x><y>370</y><w>80</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
 m2=0..n
-active &gt;</panel_attributes><additional_attributes>10;180;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>333</y><w>230</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
-get server adapter &gt;</panel_attributes><additional_attributes>10;20;210;20</additional_attributes></element><element><id>Relation</id><coordinates><x>660</x><y>128</y><w>280</w><h>440</h></coordinates><panel_attributes>lt=&lt;.
-notify translation response &gt;</panel_attributes><additional_attributes>240;420;240;340;130;340;130;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>660</x><y>53</y><w>350</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
-send translation request &gt;</panel_attributes><additional_attributes>10;20;330;20;330;90</additional_attributes></element><element><id>Relation</id><coordinates><x>1150</x><y>290</y><w>250</w><h>310</h></coordinates><panel_attributes>lt=&lt;.
-notify failed job dispatch &gt;</panel_attributes><additional_attributes>10;290;90;290;90;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>650</x><y>648</y><w>210</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
-&lt; send client response</panel_attributes><additional_attributes>10;20;190;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1150</x><y>650</y><w>180</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+active &gt;</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>333</y><w>200</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+get server adapter &gt;</panel_attributes><additional_attributes>10;20;180;20</additional_attributes></element><element><id>Relation</id><coordinates><x>620</x><y>128</y><w>260</w><h>370</h></coordinates><panel_attributes>lt=&lt;.
+notify translation response &gt;</panel_attributes><additional_attributes>230;350;230;290;110;290;110;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>620</x><y>53</y><w>290</w><h>100</h></coordinates><panel_attributes>lt=&lt;.
+send translation request &gt;</panel_attributes><additional_attributes>10;20;270;20;270;80</additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>290</y><w>320</w><h>270</h></coordinates><panel_attributes>lt=&lt;.
+notify failed job dispatch &gt;</panel_attributes><additional_attributes>40;250;160;250;160;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>578</y><w>180</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+&lt; send client response</panel_attributes><additional_attributes>10;20;160;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1030</x><y>580</y><w>130</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
 m2=1
-incoming &gt;</panel_attributes><additional_attributes>10;20;160;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1310</x><y>630</y><w>290</w><h>140</h></coordinates><panel_attributes>template=translation_job
+incoming &gt;</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1140</x><y>560</y><w>280</w><h>120</h></coordinates><panel_attributes>template=translation_job
 *task_pool*
 --
 --
@@ -117,12 +117,12 @@ incoming &gt;</panel_attributes><additional_attributes>10;20;160;20</additional_
 Responsibilities
  -- Is the task pool for the tasks.
  -- Manages a number of worker threads.
- -- Keeps the list of tasks for the workers.</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1150</x><y>720</y><w>180</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
+ -- Keeps the list of tasks for the workers.</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1030</x><y>650</y><w>130</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-&gt;
 m2=1
-outgoing &gt;</panel_attributes><additional_attributes>10;20;160;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1070</x><y>368</y><w>80</w><h>200</h></coordinates><panel_attributes>lt=&lt;.
-cancel &gt;</panel_attributes><additional_attributes>10;10;10;180</additional_attributes></element><element><id>Relation</id><coordinates><x>1140</x><y>368</y><w>80</w><h>200</h></coordinates><panel_attributes>lt=&lt;.
-delete &gt;</panel_attributes><additional_attributes>10;10;10;180</additional_attributes></element><element><id>Relation</id><coordinates><x>1150</x><y>230</y><w>280</w><h>430</h></coordinates><panel_attributes>lt=&lt;-
-m1=0..n</panel_attributes><additional_attributes>10;10;260;10;260;410</additional_attributes></element><element><id>Relation</id><coordinates><x>1150</x><y>180</y><w>340</w><h>480</h></coordinates><panel_attributes>lt=&lt;.
-&lt; execute</panel_attributes><additional_attributes>10;20;320;20;320;460</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>470</y><w>200</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
-&lt; Get the supported languages</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>650</x><y>558</y><w>210</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
-create &gt;</panel_attributes><additional_attributes>190;20;10;20</additional_attributes></element></diagram>
+outgoing &gt;</panel_attributes><additional_attributes>10;20;110;20</additional_attributes></element><element><id>Relation</id><coordinates><x>990</x><y>368</y><w>80</w><h>130</h></coordinates><panel_attributes>lt=&lt;.
+cancel &gt;</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>348</y><w>160</w><h>160</h></coordinates><panel_attributes>lt=&lt;.
+delete &gt;</panel_attributes><additional_attributes>10;10;90;10;90;140;40;140</additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>230</y><w>350</w><h>360</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes><additional_attributes>10;10;330;10;330;230;230;230;230;340</additional_attributes></element><element><id>Relation</id><coordinates><x>1000</x><y>190</y><w>440</w><h>400</h></coordinates><panel_attributes>lt=&lt;.
+&lt; execute</panel_attributes><additional_attributes>10;10;360;10;360;300;320;300;320;380</additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>380</y><w>200</w><h>160</h></coordinates><panel_attributes>lt=&lt;.
+&lt; Get the supported languages</panel_attributes><additional_attributes>40;10;10;10;10;140;40;140</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>488</y><w>180</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+create &gt;</panel_attributes><additional_attributes>160;20;10;20</additional_attributes></element></diagram>

@@ -1,126 +1,111 @@
-<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>UMLDeployment</id><coordinates><x>430</x><y>333</y><w>190</w><h>140</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+<diagram program="umletino" version="14.2"><zoom_level>10</zoom_level><element><id>UMLDeployment</id><coordinates><x>420</x><y>333</y><w>190</w><h>140</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
 PC 03
-group=16</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>740</x><y>303</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+group=16</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>680</x><y>303</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
 get_supp_languages
 translate(source):{target}
-bg=green
-group=5</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>820</x><y>313</y><w>80</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.
-group=5</panel_attributes><additional_attributes>10;10;60;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>880</x><y>273</y><w>140</w><h>60</h></coordinates><panel_attributes>symbol=component
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>313</y><w>110</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>850</x><y>273</y><w>110</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;service&gt;&gt;
 *Load Balancer*
-bg=green
-group=5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>860</x><y>223</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-SMT08
-group=5</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>750</x><y>63</y><w>140</w><h>60</h></coordinates><panel_attributes>&lt;&lt;service&gt;&gt;
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>830</x><y>223</y><w>160</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+SMT08</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>710</x><y>63</y><w>120</w><h>60</h></coordinates><panel_attributes>&lt;&lt;service&gt;&gt;
 symbol=component
 *Decoder 1*
 Germn -&gt; English
-bg=#819FF7
-group=20</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>880</x><y>83</y><w>140</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>930</x><y>73</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+bg=#819FF7</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>820</x><y>73</y><w>110</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>90;40;90;10;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>830</x><y>103</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
 get_supp_languages
 translate(source):{target}
-bg=pink
-group=20</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>720</x><y>13</y><w>200</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-SMT09
-group=20</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>760</x><y>523</y><w>140</w><h>60</h></coordinates><panel_attributes>&lt;&lt;service&gt;&gt;
+bg=pink</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>690</x><y>13</y><w>170</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+SMT09</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>720</x><y>513</y><w>110</w><h>60</h></coordinates><panel_attributes>&lt;&lt;service&gt;&gt;
 symbol=component
 *Decoder 2*
 Germn -&gt; English
-bg=#819FF7
-group=19</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>890</x><y>543</y><w>140</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.
-group=19</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>940</x><y>533</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
+bg=#819FF7</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>830</x><y>553</y><w>160</w><h>120</h></coordinates><panel_attributes>Decoder
 --
 connect/disconnect
 get_supp_languages
 translate(source):{target}
-bg=pink
-group=19</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>730</x><y>473</y><w>200</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-SMT10
-group=19</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>200</x><y>331</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
+bg=pink</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>700</x><y>463</y><w>160</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+SMT10</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>200</x><y>331</y><w>120</w><h>120</h></coordinates><panel_attributes>Processor
 --
 connect/disconnect
 pre_process
 post_process
-bg=yellow
-group=21</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>152</x><y>341</y><w>120</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.
-group=21</panel_attributes><additional_attributes>100;10;10;10</additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>0</x><y>271</y><w>190</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
-SMT07
-group=21</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>20</x><y>321</y><w>140</w><h>60</h></coordinates><panel_attributes>symbol=component
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>182</x><y>341</y><w>90</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>70;10;10;10</additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>60</x><y>251</y><w>160</w><h>120</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+SMT07</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>80</x><y>301</y><w>110</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;service&gt;&gt;
 *Processor*
-bg=#F5DA81
-group=21</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>460</x><y>533</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+bg=#F5DA81</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>450</x><y>533</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;application&gt;&gt;
 bg=#00FFFF
 transparency=0
-group=17</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>450</x><y>543</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+group=17</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>440</x><y>543</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;application&gt;&gt;
 bg=#00FFFF
 transparency=0
-group=17</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>440</x><y>553</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
-&lt;&lt;application&gt;&gt;
-*Translation client*
-bg=#00FFFF
-transparency=0
-group=17</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>460</x><y>383</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
-bg=#00FFFF
-transparency=0
-group=16</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>450</x><y>393</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
-bg=#00FFFF
-transparency=0
-group=16</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>440</x><y>403</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+group=17</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>430</x><y>553</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;application&gt;&gt;
 *Translation client*
 bg=#00FFFF
 transparency=0
-group=16</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>460</x><y>233</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+group=17</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>450</x><y>383</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
 bg=#00FFFF
 transparency=0
-group=15</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>450</x><y>243</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+group=16</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>440</x><y>393</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
 bg=#00FFFF
 transparency=0
-group=15</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>440</x><y>253</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+group=16</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>430</x><y>403</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;application&gt;&gt;
 *Translation client*
 bg=#00FFFF
 transparency=0
-group=15</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>460</x><y>83</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+group=16</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>450</x><y>233</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
 bg=#00FFFF
 transparency=0
-group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>450</x><y>93</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+group=15</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>440</x><y>243</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
 bg=#00FFFF
 transparency=0
-group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>440</x><y>103</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+group=15</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>430</x><y>253</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
 &lt;&lt;application&gt;&gt;
 *Translation client*
 bg=#00FFFF
 transparency=0
-group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>430</x><y>183</y><w>190</w><h>140</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+group=15</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>450</x><y>83</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+bg=#00FFFF
+transparency=0
+group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>440</x><y>93</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+bg=#00FFFF
+transparency=0
+group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>430</x><y>103</y><w>130</w><h>60</h></coordinates><panel_attributes>symbol=component
+&lt;&lt;application&gt;&gt;
+*Translation client*
+bg=#00FFFF
+transparency=0
+group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>420</x><y>183</y><w>190</w><h>140</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
 PC 02
-group=15</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>430</x><y>33</y><w>190</w><h>140</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+group=15</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>420</x><y>33</y><w>190</w><h>140</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
 PC 01
-group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>430</x><y>483</y><w>190</w><h>140</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
+group=14</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLDeployment</id><coordinates><x>420</x><y>483</y><w>190</w><h>140</h></coordinates><panel_attributes>&lt;&lt;device&gt;&gt;
 PC 04
-group=17</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1014</x><y>301</y><w>100</w><h>270</h></coordinates><panel_attributes>lt=&lt;-&gt;
-</panel_attributes><additional_attributes>20;250;80;250;80;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1014</x><y>81</y><w>100</w><h>230</h></coordinates><panel_attributes>lt=&lt;-&gt;
-</panel_attributes><additional_attributes>10;10;80;10;80;210;10;210</additional_attributes></element><element><id>Relation</id><coordinates><x>252</x><y>101</y><w>210</w><h>260</h></coordinates><panel_attributes>lt=&lt;-&gt;
+group=17</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>914</x><y>301</y><w>110</w><h>290</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>10;270;90;270;90;10;50;10</additional_attributes></element><element><id>Relation</id><coordinates><x>914</x><y>111</y><w>110</w><h>200</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>10;10;90;10;90;180;50;180</additional_attributes></element><element><id>Relation</id><coordinates><x>252</x><y>101</y><w>200</w><h>260</h></coordinates><panel_attributes>lt=&lt;-&gt;
 &lt; pre/post-process
-</panel_attributes><additional_attributes>190;20;10;20;10;240</additional_attributes></element><element><id>Relation</id><coordinates><x>262</x><y>261</y><w>200</w><h>110</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>180;20;40;20;10;240</additional_attributes></element><element><id>Relation</id><coordinates><x>252</x><y>261</y><w>200</w><h>100</h></coordinates><panel_attributes>lt=&lt;-&gt;
 &lt; pre/post-process
-</panel_attributes><additional_attributes>180;20;30;20;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>262</x><y>351</y><w>200</w><h>110</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>180;20;40;20;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>252</x><y>351</y><w>200</w><h>110</h></coordinates><panel_attributes>lt=&lt;-&gt;
 &lt; pre/post-process
-</panel_attributes><additional_attributes>180;80;40;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>252</x><y>351</y><w>210</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>180;80;40;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>252</x><y>351</y><w>200</w><h>250</h></coordinates><panel_attributes>lt=&lt;-&gt;
 &lt; pre/post-process
-</panel_attributes><additional_attributes>190;220;10;220;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>582</x><y>101</y><w>260</w><h>230</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>180;220;50;220;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>572</x><y>101</y><w>210</w><h>230</h></coordinates><panel_attributes>lt=&lt;-&gt;
 translate &gt;
-</panel_attributes><additional_attributes>240;210;70;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>582</x><y>241</y><w>250</w><h>100</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>190;210;60;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>572</x><y>241</y><w>200</w><h>100</h></coordinates><panel_attributes>lt=&lt;-&gt;
 translate &gt;
-</panel_attributes><additional_attributes>230;80;80;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>582</x><y>321</y><w>250</w><h>130</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>180;80;70;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>572</x><y>321</y><w>200</w><h>130</h></coordinates><panel_attributes>lt=&lt;-&gt;
 translate &gt;
-</panel_attributes><additional_attributes>230;10;80;110;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>582</x><y>321</y><w>260</w><h>280</h></coordinates><panel_attributes>lt=&lt;-&gt;
+</panel_attributes><additional_attributes>180;10;70;110;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>572</x><y>321</y><w>210</w><h>280</h></coordinates><panel_attributes>lt=&lt;-&gt;
 translate &gt;
-</panel_attributes><additional_attributes>240;10;70;260;10;260</additional_attributes></element></diagram>
+</panel_attributes><additional_attributes>190;10;60;260;10;260</additional_attributes></element><element><id>Relation</id><coordinates><x>820</x><y>523</y><w>110</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>90;40;90;10;10;10</additional_attributes></element></diagram>
