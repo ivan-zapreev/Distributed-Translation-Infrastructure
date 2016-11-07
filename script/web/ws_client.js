@@ -247,6 +247,7 @@ function create_ws_client(common_mdl, url_input, init_url,
             } catch (err) {
                 //If the status is not OK then report an error and stop
                 common_mdl.process_stop_fn(true, "Could nog parse JSON: '" + evt.data +
+                                           "', error: '" + err.message +
                                            "', please re-load the interface!");
             }
         };

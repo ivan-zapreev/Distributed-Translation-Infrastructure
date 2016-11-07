@@ -29,6 +29,13 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
         var selected_lang;
 
         selected_lang = select.find('option:selected').val();
+        
+        //The value can be undefined if, e.g., the
+        //supported languages list is yet empty.
+        if (typeof selected_lang === 'undefined') {
+            selected_lang = "";
+        }
+        
         window.console.log("The selected '" + select + "' language is: " + selected_lang);
 
         return selected_lang.trim();
@@ -220,7 +227,7 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
             } else {
                 //The target language is not present
                 logger_mdl.danger("The translation server does not support: " + source_lang +
-                                  " -> " + target_lang + " language pair." , true);
+                                  " -> " + target_lang + " language pair.", true);
                 return false;
             }
         } else {
