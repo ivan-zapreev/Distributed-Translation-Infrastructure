@@ -164,6 +164,10 @@ namespace uva {
                         //Pre-create the notifier function types
                         ready_conn_notifier_type ready_conn_func = bind(&adapters_manager::notify_adapter_ready, this, _1, _2);
                         closed_conn_notifier_type closed_conn_func = bind(&adapters_manager::notify_disconnected, this, _1);
+                        
+                        //Initialize the supported languages response, do it before
+                        //instantiating the adapters to avoid race conditions.
+                        update_supp_lang_resp();
 
                         //Iterate through the list of translation server
                         //configs and create an adapter for each of them
