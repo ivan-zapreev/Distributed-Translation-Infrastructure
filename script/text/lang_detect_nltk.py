@@ -5,14 +5,17 @@
 # Derived: From http://blog.alejandronolla.com/2013/05/15/detecting-text-language-with-python-and-nltk/
 # Created: 09/10/16
 
-import sys
+import codecs
+from sys import exit
+from sys import argv
+from itertools import islice
 
 try:
     from nltk import wordpunct_tokenize
     from nltk.corpus import stopwords
 except ImportError:
     print '[!] You need to install nltk (http://nltk.org/index.html)'
-    sys.exit(1)
+    exit(1)
 
 #----------------------------------------------------------------------
 def _calculate_languages_ratios(text):
@@ -36,7 +39,7 @@ def _calculate_languages_ratios(text):
     ['That', "'", 's', 'thirty', 'minutes', 'away', '.', 'I', "'", 'll', 'be', 'there', 'in', 'ten', '.']
     '''
 
-    tokens = wordpunct_tokenize(unicode(text, 'utf-8'))
+    tokens = wordpunct_tokenize(text)
     words = [word.lower() for word in tokens]
 
     # Compute per language included in nltk number of unique stopwords appearing in analyzed text
@@ -74,17 +77,20 @@ def detect_language(text):
     #Check if the language was indeed dected
     if ratios[most_rated_language] == 0:
         print 'Could not detect the source language'
-        sys.exit(1)
+        exit(1)
 
     return most_rated_language
 
 
 if __name__=='__main__':
 
+    """
+    Only read a small buffer of 1024 UTF-8 characters to do
+    language detection, no need to do it on an entire file.
+    """
     text = ''
-    with open(sys.argv[1], "r") as ins:
-        for line in ins:
-            text += line + '\n'
+    with codecs.open(argv[1], "r", "utf-8") as file:
+        text = file.read(1024)
     
     language = detect_language(text)
 
