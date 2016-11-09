@@ -1,22 +1,5 @@
 #!/bin/sh
 
-#Prints the program usage
-# ${0} - the program name
-function usage(){
-  echo "------"
-  echo "USAGE:"
-  echo "------"
-  echo " $0 <work-dir> <job-uid> <language>"
-  echo "    <work-dir> - the work directory to read/write files from/into"
-  echo "    <job-uid> - the unique identifier of the pre-processor job."
-  echo "               The job input file should have name:"
-  echo "                   <job-uid>.pre.in.txt"
-  echo "               The job output file will get name:"
-  echo "                   <job-uid>.pre.out.txt"
-  echo "    <language> - the pre-processor input text language."
-  echo "                 If set to \"auto\", the language is to be detected."
-}
-
 #Prints the program info
 # ${0} - the program name
 function info() {
@@ -24,7 +7,7 @@ function info() {
   echo "SHORT:"
   echo "------"
   echo "   This is a dummy script for pre-processing of a text in a given language."
-  usage ${0}
+  usage_pre ${0}
   echo "------"
   echo "PURPOSE:"
   echo "------"

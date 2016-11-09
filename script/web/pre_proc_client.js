@@ -61,6 +61,9 @@ function create_pre_proc_client(module, trans_serv_mdl) {
             trans_serv_mdl.process_fn(source_text, job_token, source_lang);
         } else {
             //Could not set the source/target languages
+            module.common_mdl.visualize_sc_fn(job_token,
+                                              module.common_mdl.STATUS_CODE_ENUM.RESULT_ERROR,
+                                              "The detected source language: " + source_lang + " is not supported!");
             module.common_mdl.process_stop_fn(false, "");
         }
     }
