@@ -118,7 +118,7 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
 
             //Check if the list of target languages is present
             if (targets !== undefined) {
-                //Do not add "Please select" in case there is just one target option possible
+                //Add "Please select" in case there is more than one target option available
                 if (targets.length > 1) {
                     to_lang_sel.html(get_select_option("", PLEASE_SELECT_STRING));
                 }
@@ -142,7 +142,7 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
      * @param {Object} supp_lang_resp the supported languages response message
      */
     function set_supported_languages(supp_lang_resp) {
-        var source_lang, num_sources, all_targets;
+        var source_lang, num_sources, all_targets, all_targets_uni;
 
         logger_mdl.success("Received a supported languages response from the server!");
 
@@ -185,6 +185,7 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
             }
         }
 
+        //Check if the auto detection might be needed, i.e. there is more than one source language
         if (num_sources > 1) {
             //Add the option for the language we want to translate the auto into
             all_targets = [];
@@ -193,8 +194,15 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
                     all_targets.push.apply(all_targets, module.language_mapping[source_lang]);
                 }
             }
+            //Filter out the duplicates
+            all_targets_uni = [];
+            window.$.each(all_targets, function (i, el) {
+                if (window.$.inArray(el, all_targets_uni) === -1) {
+                    all_targets_uni.push(el);
+                }
+            });
             //Set the all targets for the auto detection option
-            module.language_mapping[AUTO_DETECT_OPTION] = all_targets;
+            module.language_mapping[AUTO_DETECT_OPTION] = all_targets_uni;
         }
         
         //Set the appropriate target languages
@@ -219,7 +227,7 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
             window.console.log("The currently selected target language: " + target_lang);
             targets = module.language_mapping[source_lang];
             //Check if the target language is supported for the given source one
-            if ($.inArray(target_lang, targets) >= 0) {
+            if (window.$.inArray(target_lang, targets) >= 0) {
                 //The target language is present
                 from_lang_sel.val(source_lang);
                 //The language was successfully set
