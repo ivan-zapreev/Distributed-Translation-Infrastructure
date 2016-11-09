@@ -2,6 +2,13 @@
 #coding:utf-8
 # Author:  Dr. Ivan S. Zapreev
 # Purpose: Detecting language using a stopwords based approach
+#          This script requires one parameter:
+#             ${1} - is the input file name with a UTF-8 text
+#          This script tries to detect the language of the text 
+#          based on the first 1024 UTF-8 characters thereof. The
+#          detected text language name (ASCII) is printed to the
+#          standard output. If the language is not detected then
+#          the script exits with an error code.
 # Derived: From http://blog.alejandronolla.com/2013/05/15/detecting-text-language-with-python-and-nltk/
 # Created: 09/10/16
 
@@ -10,8 +17,12 @@ from sys import exit
 from sys import argv
 from itertools import islice
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 try:
-    from nltk import wordpunct_tokenize
+    from nltk.tokenize import word_tokenize
     from nltk.corpus import stopwords
 except ImportError:
     print '[!] You need to install nltk (http://nltk.org/index.html)'
@@ -32,14 +43,9 @@ def _calculate_languages_ratios(text):
 
     languages_ratios = {}
 
-    '''
-    nltk.wordpunct_tokenize() splits all punctuations into separate tokens
-    
-    >>> wordpunct_tokenize("That's thirty minutes away. I'll be there in ten.")
-    ['That', "'", 's', 'thirty', 'minutes', 'away', '.', 'I', "'", 'll', 'be', 'there', 'in', 'ten', '.']
-    '''
-
-    tokens = wordpunct_tokenize(text)
+    #Tokenize into words
+    tokens = word_tokenize(text)
+    #Lowercase the words
     words = [word.lower() for word in tokens]
 
     # Compute per language included in nltk number of unique stopwords appearing in analyzed text

@@ -38,8 +38,13 @@ else
     DETECTED_LANG=${LANGUAGE}
 fi
 
-#Copy the input file into the output file
-cat ${INPUT_FILE} > ${OUTPUT_FILE}
+#Run the pre-processing script
+python ${BASEDIR}/pre_process_nltk.py ${INPUT_FILE} ${DETECTED_LANG} > ${OUTPUT_FILE}
+rc=$?
+if [[ $rc != 0 ]]; then
+    echo `cat ${OUTPUT_FILE}`
+    exit $rc;
+fi
 
 #Output the "detected" language
 echo ${DETECTED_LANG}
