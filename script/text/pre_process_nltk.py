@@ -28,7 +28,7 @@ except ImportError:
 def _pre_process_sentence(sent, lang):
     """
     This function is used to pre-process a single sentence.
-    I.e. tokenized and lowercased.
+    I.e. tokenize and lowercase.
     
     @param sent: the sentence string
     @type sent: str
@@ -44,7 +44,34 @@ def _pre_process_sentence(sent, lang):
     words = [word.lower() for word in tokens]
     #Return the space-separated tokens
     return u" ".join(words)
+    
 
+#----------------------------------------------------------------------
+def _pre_process_text(text, lang):
+    """
+    This function is used to pre-process a text.
+    I.e. tokenize and lowercase.
+    
+    @param text: the text string
+    @type sent: str
+    
+    @param lang: the language name
+    @type lang: str
+    
+    @return: the pre-processed text string
+    """
+    #Tokenize text into sentences
+    sent_list = sent_tokenize(text, language=lang)
+
+    #Iterate over sentences and tokenize them into lower-cased words
+    for sent in sent_list[:-1]:
+        #Pre-process sentences and output, with a new line at the end
+        print _pre_process_sentence(sent, lang)
+
+    #Pre-process the last sentence, it is to be printed with no new-line at the end
+    sys.stdout.write(_pre_process_sentence(sent_list[-1], lang))
+    
+    
 if __name__=='__main__':
     
     #Get the input file name
@@ -56,14 +83,9 @@ if __name__=='__main__':
     with codecs.open(input_file_name, "r", "utf-8") as file:
         #Read the file into the text variable
         text = file.read()
-        #Tokenize text into sentences
-        sent_list = sent_tokenize(text, language=input_language)
-        
-        #Iterate over sentences and tokenize them into lower-cased words
-        for sent in sent_list[:-1]:
-            #Pre-process sentences and output, with a new line at the end
-            print _pre_process_sentence(sent, input_language)
-
-        #Pre-process the last sentence, it is to be printed with no new-line at the end
-        sys.stdout.write(_pre_process_sentence(sent_list[-1], input_language))
-        
+        try:
+            #Pre-process the text
+            _pre_process_text(text, input_language)
+        except LookupError:
+            print 'The NLTK pre-processor does not dupport \'', input_language.capitalize(), '\' language!'
+            exit(1)
