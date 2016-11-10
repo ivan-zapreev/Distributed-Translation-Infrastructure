@@ -26,7 +26,7 @@ except ImportError:
 
 #----------------------------------------------------------------------
 def _pre_process_sentence(sent, lang):
-    """
+    """\
     This function is used to pre-process a single sentence.
     I.e. tokenize and lowercase.
     
@@ -48,7 +48,7 @@ def _pre_process_sentence(sent, lang):
 
 #----------------------------------------------------------------------
 def _pre_process_text(text, lang):
-    """
+    """\
     This function is used to pre-process a text.
     I.e. tokenize and lowercase.
     
@@ -87,5 +87,5 @@ if __name__=='__main__':
             #Pre-process the text
             _pre_process_text(text, input_language)
         except LookupError:
-            print 'The NLTK pre-processor does not dupport \'', input_language.capitalize(), '\' language!'
+            print 'The NLTK pre-processor does not support \'', input_language.capitalize(), '\' language!'
             exit(1)

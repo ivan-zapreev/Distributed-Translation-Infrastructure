@@ -17,6 +17,7 @@ from sys import exit
 from sys import argv
 from itertools import islice
 
+#Make sure we only work with the UTF-8 strings
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -30,7 +31,7 @@ except ImportError:
 
 #----------------------------------------------------------------------
 def _calculate_languages_ratios(text):
-    """
+    """\
     Calculate probability of given text to be written in several languages and
     return a dictionary that looks like {'french': 2, 'spanish': 4, 'english': 0}
     
@@ -61,7 +62,7 @@ def _calculate_languages_ratios(text):
 
 #----------------------------------------------------------------------
 def detect_language(text):
-    """
+    """\
     Calculate probability of given text to be written in several languages and
     return the highest scored. In case the language can not be detected the
     script exits with an error code.
