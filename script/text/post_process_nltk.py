@@ -6,13 +6,27 @@
 #   Post-process text in some languages such as:
 #       'english', 'french', 'spanish', 'italian', and 'czech'
 #   The process inclused de-tokenization and upper casing.
+#   The true casing is done using NLTK POS parser or the truecaser of
+#   Nils Reimers located at: https://github.com/nreimers/truecaser
+#   in case the language model is available. The language model is to
+#   be located in the same folder with the script and must have a name:
+#      <language-name>.obj  for example english.obj
+#   The original truecase project also contains the model generation script.
 # The original scrit is obtained from:
 #   https://github.com/ufal/mtmonkey
+# Created: 10/10/16
 
 """
 A simple post-process for MT, it de-tokenizes the sentences and upper cases them
 trying to use the NLTK POS tagging. This script supports languages such as:
     'english', 'french', 'spanish', 'italian', and 'czech'
+The process inclused de-tokenization and upper casing.
+The true casing is done using NLTK POS parser or the truecaser of
+Nils Reimers located at: https://github.com/nreimers/truecaser
+in case the language model is available. The language model is to
+be located in the same folder with the script and must have a name:
+    <language-name>.obj  for example english.obj
+The original truecase project also contains the model generation script.
 
 Command-line usage:
 
@@ -28,12 +42,14 @@ Command-line usage:
 
 from __future__ import unicode_literals
 from regex import Regex, UNICODE, IGNORECASE
+from truecaser import getTrueCase
 
+import cPickle
+import os.path
 import sys
 import logging
 import getopt
 import codecs
-import nltk
 
 reload(sys)
 DEFAULT_ENCODING = 'utf-8'
@@ -74,6 +90,23 @@ class PostProcessor(object):
         self.moses_deescape = True if options.get('moses_deescape') else False
         self.language = options.get('language', 'english')
         self.capitalize_sents = True if options.get('capitalize_sents') else False
+        
+        #If the sentence is to be capitalized try loading the model
+        self.is_model = False
+        if self.capitalize_sents:
+            model_file_name = self.language + ".obj"
+            if os.path.isfile(model_file_name):
+                #Read the model file
+                f = open(model_file_name, 'rb')
+                self.uniDist = cPickle.load(f)
+                self.backwardBiDist = cPickle.load(f)
+                self.forwardBiDist = cPickle.load(f)
+                self.trigramDist = cPickle.load(f)
+                self.wordCasingLookup = cPickle.load(f)
+                f.close()
+                #Set the flag that the model is present
+                self.is_model = True
+        
         # compile regexes
         self.__currency_or_init_punct = Regex(r'^[\p{Sc}\(\[\{\¿\¡]+$')
         self.__noprespace_punct = Regex(r'^[\,\.\?\!\:\;\\\%\}\]\)]+$')
@@ -94,13 +127,23 @@ class PostProcessor(object):
         True case the sentence using the NLTP POS tagging.
         It shall capitalize NNP and NNPS entries
         """
+        #Tokenize the sentence for the given language
+        tokens = word_tokenize(sentence, language=lang)
+
+        #Check if we have a model for truecaser
+        if self.is_model:
+            #Infer capitalization from the model
+            tokens_truecase = getTrueCase(tokens, "as-is", self.wordCasingLookup,
+                                          self.uniDist, self.backwardBiDist,
+                                          self.forwardBiDist, self.trigramDist)
+        else:
+            #Apply POS-tagging
+            tagged_sent = pos_tag(tokens)
+            #Infer capitalization from POS-tags
+            tokens_truecase = [w.capitalize() if t in ["NNP", "NNPS"] else w for (w,t) in tagged_sent]
         
-        #Apply POS-tagging
-        tagged_sent = pos_tag(word_tokenize(sentence, language=lang))
-        #Infer capitalization from POS-tags
-        normalized_sent = [w.capitalize() if t in ["NNP", "NNPS"] else w for (w,t) in tagged_sent]
         #Return the result
-        return ' '.join(normalized_sent)
+        return ' '.join(tokens_truecase)
 
     
     def post_process(self, text):
