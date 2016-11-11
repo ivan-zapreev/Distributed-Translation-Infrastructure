@@ -45,6 +45,7 @@ from regex import Regex, UNICODE, IGNORECASE
 from truecaser import getTrueCase
 
 import cPickle
+import os
 import os.path
 import sys
 import logging
@@ -94,7 +95,7 @@ class PostProcessor(object):
         #If the sentence is to be capitalized try loading the model
         self.is_model = False
         if self.capitalize_sents:
-            model_file_name = self.language + ".obj"
+            model_file_name = os.path.dirname(os.path.realpath(__file__)) + "/" + self.language + ".obj"
             if os.path.isfile(model_file_name):
                 #Read the model file
                 f = open(model_file_name, 'rb')
