@@ -143,11 +143,6 @@ class PostProcessor(object):
             tokens_truecase = getTrueCase(tokens, "as-is", self.wordCasingLookup,
                                           self.uniDist, self.backwardBiDist,
                                           self.forwardBiDist, self.trigramDist)
-        else:
-            #Apply POS-tagging
-            tagged_sent = pos_tag(tokens)
-            #Infer capitalization from POS-tags
-            tokens_truecase = [w.capitalize() if t in ["NNP", "NNPS"] else w for (w,t) in tagged_sent]
         
         #Return the result
         return ' '.join(tokens_truecase)
