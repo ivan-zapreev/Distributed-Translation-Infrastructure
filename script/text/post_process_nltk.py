@@ -3,7 +3,7 @@
 # Originator:  Ondrej Dusek
 # Adapted by: Dr. Ivan S. Zapreev
 # Purpose: 
-#   Post-process text in some languages such as:
+#   Post-process sentence in some languages such as:
 #       'english', 'french', 'spanish', 'italian', and 'czech'
 #   The process inclused de-tokenization and upper casing.
 #   The true casing is done using NLTK POS parser or the truecaser of
@@ -34,8 +34,9 @@ Command-line usage:
     
     -e = use the given encoding (default: UTF-8)
     -l = use rules for the given language: a full english name
-    -c = capitalize the sentences, first words, NNP and NNPS tagged words
-    -m = the folder to search the true caser models in, if not found an NLTK POS tagging is used
+    -c = capitalize sentences
+    -t = true case using the truecaser, requires the model(s)
+    -m = the folder to search the truecaser models in
       
     If no input and output files are given, the de-tokenizer will read
     STDIN and write to STDOUT.
@@ -91,12 +92,14 @@ class PostProcessor(object):
         # process options
         self.moses_deescape = True if options.get('moses_deescape') else False
         self.language = options.get('language', 'english')
-        self.models_dir = options.get('models_dir', '.')
         self.capitalize_sents = True if options.get('capitalize_sents') else False
+        self.true_case = True if options.get('true_case') else False
+        # in case the true casing is requested get the models folder
+        if self.true_case:
+            self.models_dir = options.get('models_dir', '.')
         
         #If the sentence is to be capitalized try loading the model
-        self.is_model = False
-        if self.capitalize_sents:
+        if self.true_case:
             model_file_name = self.models_dir + "/" + self.language + ".obj"
             if os.path.isfile(model_file_name):
                 #Read the model file
@@ -107,8 +110,9 @@ class PostProcessor(object):
                 self.trigramDist = cPickle.load(f)
                 self.wordCasingLookup = cPickle.load(f)
                 f.close()
-                #Set the flag that the model is present
-                self.is_model = True
+            else:
+                print "Unable to find the truecaser model for: ", self.language
+                exit(1)
         
         # compile regexes
         self.__currency_or_init_punct = Regex(r'^[\p{Sc}\(\[\{\¿\¡]+$')
@@ -134,7 +138,7 @@ class PostProcessor(object):
         tokens = word_tokenize(sentence, language=lang)
 
         #Check if we have a model for truecaser
-        if self.is_model:
+        if self.true_case:
             #Infer capitalization from the model
             tokens_truecase = getTrueCase(tokens, "as-is", self.wordCasingLookup,
                                           self.uniDist, self.backwardBiDist,
@@ -149,49 +153,49 @@ class PostProcessor(object):
         return ' '.join(tokens_truecase)
 
     
-    def post_process(self, text):
+    def post_process(self, sentence):
         """\
-        Detokenize the given text using current settings.
+        Detokenize the given sentence using current settings.
         """
 
         # strip leading/trailing space
-        text = text.strip()
+        sentence = sentence.strip()
         
         # check if we need to perform capitalization
         if self.capitalize_sents:
             #capitalize, if the sentence ends with a final punctuation
-            if self.__final_punct.search(text):
-                text = text[0].upper() + text[1:]
+            if self.__final_punct.search(sentence):
+                sentence = sentence[0].upper() + sentence[1:]
             # capitalize the rest based on the part of speach
-            text = self.truecase(text, self.language);
+            sentence = self.truecase(sentence, self.language);
         
-        # split text
-        words = text.split(' ')
-        # paste text back, omitting spaces where needed 
-        text = ''
+        # split sentence
+        words = sentence.split(' ')
+        # paste sentence back, omitting spaces where needed 
+        sentence = ''
         pre_spc = ' '
         quote_count = {'\'': 0, '"': 0, '`': 0}
         for pos, word in enumerate(words):
             # remove spaces in between CJK chars
-            if self.__cjk_chars.match(text[-1:]) and \
+            if self.__cjk_chars.match(sentence[-1:]) and \
                     self.__cjk_chars.match(word[:1]):
-                text += word
+                sentence += word
                 pre_spc = ' '
             # no space after currency and initial punctuation
             elif self.__currency_or_init_punct.match(word):
-                text += pre_spc + word
+                sentence += pre_spc + word
                 pre_spc = ''
             # no space before commas etc. (exclude some punctuation for French)
             elif self.__noprespace_punct.match(word) and \
                     (self.language != 'french' or not
                      self.__fr_prespace_punct.match(word)):
-                text += word
+                sentence += word
                 pre_spc = ' '
             # contractions with comma or hyphen 
             elif word in "'-–" and pos > 0 and pos < len(words) - 1 \
                     and self.__contract is not None \
                     and self.__contract.match(''.join(words[pos - 1:pos + 2])):
-                text += word
+                sentence += word
                 pre_spc = ''
             # handle quoting
             elif word in '\'"„“”‚‘’`':
@@ -208,32 +212,32 @@ class PostProcessor(object):
                 elif self.language in ['czech', 'german'] and word in '“‘':
                     quote_count[quote_type] = 1
                 # special case: possessives in English ("Jones'" etc.)                    
-                if self.language == 'english' and text.endswith('s'):
-                    text += word
+                if self.language == 'english' and sentence.endswith('s'):
+                    sentence += word
                     pre_spc = ' '
                 # really a quotation mark
                 else:
                     # opening quote
                     if quote_count[quote_type] % 2 == 0:
-                        text += pre_spc + word
+                        sentence += pre_spc + word
                         pre_spc = ''
                     # closing quote
                     else:
-                        text += word
+                        sentence += word
                         pre_spc = ' '
                     quote_count[quote_type] += 1
             # keep spaces around normal words
             else:
-                text += pre_spc + word
+                sentence += pre_spc + word
                 pre_spc = ' '
         # de-escape chars that are special to Moses
         if self.moses_deescape:
             for char, repl in self.ESCAPES:
-                text = text.replace(char, repl)
+                sentence = sentence.replace(char, repl)
         # strip leading/trailing space
-        text = text.strip()
+        sentence = sentence.strip()
         
-        return text
+        return sentence
 
 
 def display_usage():
@@ -282,7 +286,7 @@ if __name__ == '__main__':
         sys.exit(1)
     
     # parse options
-    opts, filenames = getopt.getopt(sys.argv[1:], 'e:hcl:m:')
+    opts, filenames = getopt.getopt(sys.argv[1:], 'e:hctl:m:')
     options = {}
     help = False
     encoding = DEFAULT_ENCODING
@@ -295,6 +299,8 @@ if __name__ == '__main__':
             options['models_dir'] = arg;
         elif opt == '-c':
             options['capitalize_sents'] = True
+        elif opt == '-t':
+            options['true_case'] = True
         elif opt == '-h':
             help = True
     

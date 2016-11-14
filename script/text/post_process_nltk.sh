@@ -32,7 +32,7 @@ if ! [ -z "${4}" ]; then
 fi
 
 #Run the post-processing script
-python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}
+python ${BASEDIR}/post_process_nltk.py -c -t -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}
 rc=$?
 if [[ $rc != 0 ]]; then
     echo `cat ${OUTPUT_FILE}`
