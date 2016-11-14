@@ -15,12 +15,13 @@ function info() {
   echo "   is no need to download them again. The script DOES NOT, and "
   echo "   never will, support language detection as it is not needed."
   
-  help1="    <true_caser_type> - the true casing software to use, optional:"
-  help2="        'truecaser' - https://github.com/nreimers/truecaser"
-  help3="        'moses' - https://github.com/moses-smt/mosesdecoder"
-  help4="    <models-dir> - The location of the true-caser model files,\n"
-  help5="                   optional, default is '.'"
-  usage_pre ${0} "<true_caser_type> <models-dir>" "${help1}${help2}${help3}${help4}${help5}"
+  help1="    <true_caser_type> - the true casing software to use:"
+  help2="        'none' - there will be no truecasing done"
+  help3="        'truecaser' - https://github.com/nreimers/truecaser"
+  help4="        'moses' - https://github.com/moses-smt/mosesdecoder"
+  help5="    <models-dir> - The location of the true-caser model files,\n"
+  help6="                   optional, default is '.'"
+  usage_pre ${0} "<true_caser_type> <models-dir>" "${help1}${help2}${help3}${help4}${help5}${help6}"
 }
 
 #Get this script actual location to find utility scripts
@@ -38,8 +39,8 @@ export SCRIPT_TYPE="post"
 
 #Check if the true caser is even requested
 if [ -z "${4}" ]; then
-    #The true caser is not requested, also no capitalization
-    python ${BASEDIR}/post_process_nltk.py -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}
+    error "The truecaser option is not defined!"
+    fail
 else
     #Set the models folder to the present dir if it is not defined
     export MODELS_DIR="."
@@ -49,15 +50,26 @@ else
     
     #Check on the truecaser type, since it is present
     case "${4}" in
+        none)
+            #Run the post-processing script NO truecasing
+            python ${BASEDIR}/post_process_nltk.py -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}
+        ;;
         truecaser)
             #Run the post-processing script with truecaser
             python ${BASEDIR}/post_process_nltk.py -c -t -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}
         ;;
         moses)
+            #First just do detokenization and capitalization
+            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}.tmp
+            
+            #ToDo: Add moses true casing
+            
+            #Remove the tmp file
+            rm -f ${OUTPUT_FILE}.tmp
         ;;
         *)
-        echo "Unrecognized truecaser option: '${4}', needs one of: {truecaser, moses}"
-        exit 1
+        error "Unrecognized truecaser option: '${4}'!"
+        fail
     esac
 fi
 
