@@ -36,6 +36,7 @@ Command-line usage:
     -l = use rules for the given language: a full english name
     -c = capitalize sentences
     -t = true case using the truecaser, requires the model(s)
+        will use the truecaser from: https://github.com/nreimers/truecaser
     -m = the folder to search the truecaser models in
       
     If no input and output files are given, the de-tokenizer will read
