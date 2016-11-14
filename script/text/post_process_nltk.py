@@ -30,11 +30,12 @@ The original truecase project also contains the model generation script.
 
 Command-line usage:
 
-    ./detokenize.py [-c] [-l LANG] [-e ENCODING] [input-file output-file]
+    ./post_process_nltk.py [-c] [-l LANG] [-m MODELS_DIR] [-e ENCODING] [input-file output-file]
     
     -e = use the given encoding (default: UTF-8)
     -l = use rules for the given language: a full english name
     -c = capitalize the sentences, first words, NNP and NNPS tagged words
+    -m = the folder to search the true caser models in, if not found an NLTK POS tagging is used
       
     If no input and output files are given, the de-tokenizer will read
     STDIN and write to STDOUT.
@@ -90,12 +91,13 @@ class PostProcessor(object):
         # process options
         self.moses_deescape = True if options.get('moses_deescape') else False
         self.language = options.get('language', 'english')
+        self.models_dir = options.get('models_dir', '.')
         self.capitalize_sents = True if options.get('capitalize_sents') else False
         
         #If the sentence is to be capitalized try loading the model
         self.is_model = False
         if self.capitalize_sents:
-            model_file_name = os.path.dirname(os.path.realpath(__file__)) + "/" + self.language + ".obj"
+            model_file_name = self.models_dir + "/" + self.language + ".obj"
             if os.path.isfile(model_file_name):
                 #Read the model file
                 f = open(model_file_name, 'rb')
@@ -274,8 +276,13 @@ def process_sentences(func, filenames, encoding):
     fh_out.write(func(sentences[-1]))
     
 if __name__ == '__main__':
+    # check on the number of arguments
+    if len(sys.argv) == 0:
+        display_usage()
+        sys.exit(1)
+    
     # parse options
-    opts, filenames = getopt.getopt(sys.argv[1:], 'e:hcl:')
+    opts, filenames = getopt.getopt(sys.argv[1:], 'e:hcl:m:')
     options = {}
     help = False
     encoding = DEFAULT_ENCODING
@@ -284,13 +291,21 @@ if __name__ == '__main__':
             encoding = arg
         elif opt == '-l':
             options['language'] = arg.lower();
+        elif opt == '-m':
+            options['models_dir'] = arg;
         elif opt == '-c':
             options['capitalize_sents'] = True
         elif opt == '-h':
             help = True
+    
     # display help
-    if len(filenames) > 2 or help:
+    if help:
         display_usage()
+        sys.exit(1)
+        
+    # the number of file names it too large
+    if len(filenames) > 2:
+        print "Improper list of arguments: ", sys.argv[1:]
         sys.exit(1)
         
     try:
