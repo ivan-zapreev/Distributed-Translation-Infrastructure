@@ -8,6 +8,19 @@
 #          This script prints the resulted text to standard output
 # Created: 09/10/16
 
+"""
+A simple pre-process for MT, it tokenizes text into sentences and sentences
+into words and lower-cases them. The script is NLTK based and thus supports
+the same list of languages. This script performs the language detection based
+on the stop words analysis.
+
+Command-line usage:
+
+    ./pre_process_nltk.py [input-file-name] [language]
+    
+    The pre-processed text will be written to STDOUT
+"""
+
 import codecs
 from sys import exit
 from sys import argv
