@@ -45,15 +45,22 @@ Command-line usage:
 
 from __future__ import unicode_literals
 from regex import Regex, UNICODE, IGNORECASE
-from truecaser import getTrueCase
 
 import cPickle
 import os
 import os.path
 import sys
+import inspect
 import logging
 import getopt
 import codecs
+
+#Include the sub-folder into the system path for module import
+cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],"truecase/truecaser")))
+if cmd_subfolder not in sys.path:
+    sys.path.insert(0, cmd_subfolder)
+
+from Truecaser import getTrueCase
 
 reload(sys)
 DEFAULT_ENCODING = 'utf-8'
@@ -141,12 +148,12 @@ class PostProcessor(object):
         #Check if we have a model for truecaser
         if self.true_case:
             #Infer capitalization from the model
-            tokens_truecase = getTrueCase(tokens, "as-is", self.wordCasingLookup,
-                                          self.uniDist, self.backwardBiDist,
-                                          self.forwardBiDist, self.trigramDist)
-        
+            tokens = getTrueCase(tokens, "as-is", self.wordCasingLookup,
+                                 self.uniDist, self.backwardBiDist,
+                                 self.forwardBiDist, self.trigramDist)
+            
         #Return the result
-        return ' '.join(tokens_truecase)
+        return ' '.join(tokens)
 
     
     def post_process(self, sentence):

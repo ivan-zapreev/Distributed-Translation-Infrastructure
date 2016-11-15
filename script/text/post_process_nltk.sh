@@ -48,27 +48,41 @@ else
         MODELS_DIR=${5}
     fi
     
+    #Extract the truecaser type
+    TRUE_CASE_TYPE=${4}
+    
     #Check on the truecaser type, since it is present
-    case "${4}" in
+    case "${TRUE_CASE_TYPE}" in
         none)
             #Run the post-processing script NO truecasing
-            python ${BASEDIR}/post_process_nltk.py -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}
+            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}
         ;;
         truecaser)
             #Run the post-processing script with truecaser
             python ${BASEDIR}/post_process_nltk.py -c -t -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}
         ;;
         moses)
-            #First just do detokenization and capitalization
-            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}.tmp
+            #Define the intermediate output file
+            INTERM_FILE=${OUTPUT_FILE}.tmp
+
+            #Check for the model file to exist
+            MODEL_FILE=${MODELS_DIR}/${LANGUAGE}.tcm
+            if ! [ -e "${MODEL_FILE}" ]; then
+               error "Language '${LANGUAGE}' is not supported by the truecaser!"
+               fail
+            fi
             
-            #ToDo: Add moses true casing
+            #Add moses true casing
+            perl ${BASEDIR}/truecase/moses/truecase.perl --model ${MODEL_FILE} < ${INPUT_FILE} > ${INTERM_FILE}
+            
+            #Do detokenization and capitalization
+            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} ${INTERM_FILE} ${OUTPUT_FILE}
             
             #Remove the tmp file
-            rm -f ${OUTPUT_FILE}.tmp
+            rm -f ${INTERM_FILE}
         ;;
         *)
-        error "Unrecognized truecaser option: '${4}'!"
+        error "Unrecognized truecaser option: '${TRUE_CASE_TYPE}'!"
         fail
     esac
 fi
