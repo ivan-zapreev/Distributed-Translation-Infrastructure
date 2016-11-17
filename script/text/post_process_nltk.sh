@@ -1,4 +1,27 @@
 #!/bin/sh
+#
+# File:   post_process_nltk.sh
+# Author: Dr. Ivan S. Zapreev
+# Visit my Linked-in profile:
+#      <https://nl.linkedin.com/in/zapreevis>
+# Visit my GitHub:
+#      <https://github.com/ivan-zapreev>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Created on November 14, 2016, 11:07 AM
+#
 
 #Prints the program info
 # ${0} - the program name
@@ -15,10 +38,10 @@ function info() {
   echo "   is no need to download them again. The script DOES NOT, and "
   echo "   never will, support language detection as it is not needed."
   
-  help1="    <true_caser_type> - the true casing software to use:"
-  help2="        'none' - there will be no truecasing done"
-  help3="        'truecaser' - https://github.com/nreimers/truecaser"
-  help4="        'moses' - https://github.com/moses-smt/mosesdecoder"
+  help1="    <true_caser_type> - the true casing software to use:\n"
+  help2="        'none' - there will be no truecasing done\n"
+  help3="        'truecaser' - https://github.com/nreimers/truecaser\n"
+  help4="        'moses' - https://github.com/moses-smt/mosesdecoder\n"
   help5="    <models-dir> - The location of the true-caser model files,\n"
   help6="                   optional, default is '.'"
   usage_pre ${0} "<true_caser_type> <models-dir>" "${help1}${help2}${help3}${help4}${help5}${help6}"

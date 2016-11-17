@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #coding:utf-8
+# File:    lang_detect_nltk.py
 # Author:  Dr. Ivan S. Zapreev
 # Purpose: Detecting language using a stopwords based approach
 #          This script requires one parameter:
@@ -9,8 +10,29 @@
 #          detected text language name (ASCII) is printed to the
 #          standard output. If the language is not detected then
 #          the script exits with an error code.
-# Derived: From http://blog.alejandronolla.com/2013/05/15/detecting-text-language-with-python-and-nltk/
-# Created: 09/10/16
+# Derived: From
+#          http://blog.alejandronolla.com/2013/05/15/detecting-text-language-with-python-and-nltk/
+#
+# Visit my Linked-in profile:
+#      <https://nl.linkedin.com/in/zapreevis>
+# Visit my GitHub:
+#      <https://github.com/ivan-zapreev>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Created on November 14, 2016, 11:07 AM
+#
 
 import codecs
 from sys import exit

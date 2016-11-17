@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # coding=utf-8
-# Originator:  Ondrej Dusek
-# Adapted by: Dr. Ivan S. Zapreev
+# File:         post_process_nltk.py
+# Originator:   Ondrej Dusek, Charles University in Prague
+# Adapted by:   Dr. Ivan S. Zapreev
 # Purpose: 
 #   Post-process sentence in some languages such as:
 #       'english', 'french', 'spanish', 'italian', and 'czech'
@@ -14,7 +15,39 @@
 #   The original truecase project also contains the model generation script.
 # The original scrit is obtained from:
 #   https://github.com/ufal/mtmonkey
-# Created: 10/10/16
+# And it was licensed as:
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+# Visit my Linked-in profile:
+#      <https://nl.linkedin.com/in/zapreevis>
+# Visit my GitHub:
+#      <https://github.com/ivan-zapreev>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Created on November 14, 2016, 11:07 AM
+#
 
 """
 A simple post-process for MT, it de-tokenizes the sentences and upper cases them

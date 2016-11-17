@@ -46,7 +46,7 @@ The rest of the document is organized as follows:
 4. [Using software](#using-software) - Explains how the software is to be used
 5. [Input file formats](#input-file-formats) - Provides examples of the input file formats
 6. [Code documentation](#code-documentation) - Refers to the project documentation
-7. [External libraries](#external-libraries) - Lists the included external libraries
+7. [Third-party software](#third-party-software) - Lists the included third party software
 8. [Performance evaluation](#performance-evaluation) - Contains performance evaluation results
 9. [General design](#general-design) - Outlines the general software design
 10. [Communication protocols](#communication-protocols) - Describes the application's communications
@@ -66,7 +66,10 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * **`src/`** - C++ source files
     * **`script/`** - stores the various scripts
     * **`script/web/`** - Web client for translation system
-    * **`script/text/`** - Dummy pre/post-processing scripts
+    * **`script/text/`** - Pre/post-processing scripts
+    * **`script/text/truecase`** - True-casing scripts
+    * **`script/text/truecase/moses`** - True-casing scripts from Moses
+    * **`script/text/truecase/truecaser`** - True-casing scripts from Truecaser
     * **`script/test/`** - Scripts used for testing
     * **`nbproject/`** - Netbeans project data
     * **`data/`** - stores the tests-related data
@@ -450,12 +453,14 @@ For complete USAGE and HELP type:
 As one can see the only required command-line parameter of the server is a configuration file. The latter shall contain the necessary information for running the processor server. The configuration file content is covered in section [Configuration file](#processor-config-file) below. Once the processor server is started there is still a way to change some of its run-time parameters. The latter can be done with a balancer console explained in the [Processor console](#processor-console) section below. 
 
 ####Processor config file
-In order to start the processor server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the server. Among other things, this config file specifies the pre/post-processor scripts to be used. An example configuration file is: `[Project-Folder]/processor.cfg`. The dummy versions of the, used in this configuration file, pre/post-processor scripts are located in: `[Project-Folder]/script/text/`:
+In order to start the processor server one must have a valid configuration file for it. The latter stores the minimum set of parameter values needed to run the server. Among other things, this config file specifies the pre/post-processor scripts to be used. An example configuration file is: `[Project-Folder]/processor.cfg`. This file uses dummy versions of the pre/post-processor scripts located in: `[Project-Folder]/script/text/`:
 
-   * `pre_process.sh` - the dummy example pre-processor script
-   * `post_process.sh` - the dummy example post-processor script
+   * `pre_process.sh` - copies input file to output, detects any text as German
+   * `post_process.sh` - copies input file to output
 
-Note that, the pre/post- processor scripts do not need to be bash scripts. They can be anything command-line executable that satisfies the scripts' interface. Run these scripts to get more details on their expected interface and functionality. 
+Note that, the pre/post- processor scripts do not need to be bash scripts. They can be anything command-line executable that satisfies the scripts' interface. Run these scripts to get more details on the expected interface and functionality of the pre/post-processing scripts.
+
+We also provide pre-integrated third-party pre/post-processing software that can be invoked by using the `pre_process_nltk.sh` and  `post_process_nltk.sh` scripts. Please note that these have a richer interface than the dummy scripts. Run them with no parameters to get more info. More details on these scripts will be provided in the next section.
 
 The content of the text processor configuration file is self explanatory and contains a significant amount of comments. When run with a properly formed configuration file, **bpbd-processor** gives the following output. Note the `-d info3` option ensuring additional information output during starting up and connecting to translation servers.
 
@@ -475,6 +480,33 @@ USAGE: --------------------------------------------------------
 <...> 
 ```
 Note that for less output one can simply run `bpbd-processor -c ../balancer.cfg`.
+
+####Pre-integrated third-party pre/post-processing scripts
+To make our software complete and also to show how third-party pre/post-processing software can be integrated into our project we have created example pre/post-processing scripts, both of which are [Natural Language Toolkit (NLTK)](http://www.nltk.org/) based, and thus require NLTK for python to be installed. The installation instructions are simple and are to be found on the toolkit's website. Let's consider the created scripts:
+
+   * `./script/text/pre_process_nltk.sh:`
+      * Uses [stop-words analysis](https://en.wikipedia.org/wiki/Stop_words) to detect languages.
+      * Allows language auto detection for NLTK known stop-word sets.
+      * Supports text template generation for text structure restoration.
+      * Supports text tekenization and lowercasing as provided by NLTK.
+   * `./script/text/post_process_nltk.sh:`
+      * Supports sentence capitalization as a separate option.
+      * Provides text de-tokenization based on [MTMonkey scripts](https://github.com/ufal/mtmonkey)
+      * Allows text true-casing based on Moses or Truecaser scripts.
+      * Supports text structure restoration from a pre-generated template.
+
+These scripts call on python or Perl scripts delivered with the distribution. The latter are configurable by their command-line parameters which are typically well documented. In order to change the default scripts' behavior we expect our users to edit these parameters inside the `pre_process_nltk.sh` and `post_process_nltk.sh` scripts. It is also important to note that:
+
+   * The text structure restoration is per default enabled but it is then expected that both pre- and post- processing scripts are to be run on the same file system with the same work directory.
+   * The text structure restoration can be disabled by not providing `pre_process_nltk.py` and `post_process_nltk.py` with the `[-t TEMPL]` command-line parameter.
+   * The interface of `pre_process_nltk.sh` script is the same as that of ``pre_process.sh``.
+   * The list of `post_process_nltk.sh` script parameters is richer than that of ``post_process.sh``. The former requires the `<true_caser_type>` parameter to be specified and also has an optional parameter `<models-dir>`. Run `post_process_nltk.sh` with no parameters to get more info.
+   * The `<true_caser_type>` parameter of `post_process_nltk.sh` allows to enable one of the two true-caser scripts: [`Moses`](https://github.com/moses-smt/mosesdecoder) or [`Truecaser`](https://github.com/nreimers/truecaser).
+   * The  `<models-dir>` parameter of `post_process_nltk.sh` is optional but defines the folder where the true-caser model files are to be found. If not specified then `<models-dir>` is set to `.`.
+   * The true-casing models are supposed to have file names as the lower-cased english names of the corresponding languages. The model file extensions are supposed to be `*.tcm` for Moses and `*.obj` for Truecaser, e.g.: `english.tcm` or `chinese.obj`.
+   * Our project does not provide any default true caser models neither for Moses nor for Truecaser. So for `post_process_nltk.sh` to be used with the parameter `<true_caser_type>` other than `none` one needs to obtain such model(s) for used target language(s).
+   * In order to generate new true-caser models, one can use the corresponding training software scripts provided with the distribution: `./script/text/truecase/moses/train-truecaser.perl` for Moses and `./script/text/truecase/truecaser/TrainTruecaser.py` for Truecaser. These scripts are taken "as-is" from the corresponding software sources. `TrainTruecaser.py` expects the training corpus to be located in the `train.txt` file.
+   * Although `Truecaser` perhaps allows for better accuracy, its training script generates much larger models than those of `Moses`. Therefore if true-casing is needed, to minimize post-processing times, we suggest using `post_process_nltk.sh` with `<true_caser_type>` set to `moses`. 
 
 ####Processor console
 Once the processor is started it is not run as a Linux daemon but is a simple multi-threaded application that has its own interactive console allowing to manage some of the configuration file parameters and obtain some run-time information about the text processor. The list of available console commands is given in the listing below:
@@ -661,8 +693,8 @@ The `[Project-Folder]/Doxyfile` can be used to re-generate the documentation at 
 	+ `cd ./latex`
 	+ `make`
 
-##External libraries
-At present this project uses the following external/third-party header-only libraries:
+##Third-party software
+At present this project includes the following external/third-party software:
 
 | Library Name | Purpose | Website | Version | License |
 |:------------|:--------:|:-------:|:-------:|:-------:|
@@ -675,6 +707,9 @@ At present this project uses the following external/third-party header-only libr
 |Bootstrap|_HTML, CSS, and JS framework for developing responsive, mobile first Web UIs_|[link](http://getbootstrap.com/)|3.3.6|[MIT](https://opensource.org/licenses/MIT)|
 |MD5|_RSA Data Security, Inc. MD5 Message-Digest Algorithm_|[link](http://pajhome.org.uk/crypt/md5/index.html)|1.0|[BSD](https://opensource.org/licenses/BSD-3-Clause)|
 |Download|_A library allowing to trigger a file download from JavaScript_|[link](http://danml.com/download.html)|4.2|[CCA4.0](https://creativecommons.org/licenses/by/4.0/)|
+|MT Monkey|An adapted de-tokenization script from the "Infrastructure for Machine Translation web services" project|[link](https://github.com/ufal/mtmonkey/blob/master/worker/src/util/detokenize.py)|1.0|[Apache2.0](https://www.apache.org/licenses/LICENSE-2.0)|
+|Moses|Adapted true-casing scripts from the "Statistical machine translation system" project|[link](https://github.com/moses-smt/mosesdecoder/tree/master/scripts/recaser)|0.12.1|[GPL2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html#SEC1)|
+|Truecaser|The "Language Independent Truecaser for Python" project|[link](https://github.com/nreimers/truecaser)|1.0|[Apache2.0](https://www.apache.org/licenses/LICENSE-2.0)|
 
 ##Performance evaluation
 In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix Tests](#appendix-tests)
