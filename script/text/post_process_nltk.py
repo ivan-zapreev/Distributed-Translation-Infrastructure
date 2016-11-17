@@ -30,14 +30,17 @@ The original truecase project also contains the model generation script.
 
 Command-line usage:
 
-    ./post_process_nltk.py [-c] [-l LANG] [-m MODELS_DIR] [-e ENCODING] [input-file output-file]
+    ./post_process_nltk.py [-h] [-c] [-u] [-l LANG] [-m MODELS_DIR] [-e ENCODING] [-t TEMPL] [input-file output-file]
     
+    -h = the help message
     -e = use the given encoding (default: UTF-8)
     -l = use rules for the given language: a full english name
     -c = capitalize sentences
-    -t = true case using the truecaser, requires the model(s)
-        will use the truecaser from: https://github.com/nreimers/truecaser
+    -u = upper case using the truecaser, requires the model
+         will use the truecaser from:
+             https://github.com/nreimers/truecaser
     -m = the folder to search the truecaser models in
+    -t = the name of the template file to be generated, optional
       
     If no input and output files are given, the de-tokenizer will read
     STDIN and write to STDOUT.
@@ -100,15 +103,16 @@ class PostProcessor(object):
         # process options
         self.moses_deescape = True if options.get('moses_deescape') else False
         self.language = options.get('language', 'english')
-        self.capitalize_sents = True if options.get('capitalize_sents') else False
-        self.true_case = True if options.get('true_case') else False
-        # in case the true casing is requested get the models folder
-        if self.true_case:
-            self.models_dir = options.get('models_dir', '.')
+        self.is_capitalize = True if options.get('is_capitalize') else False
+        self.is_true_case = True if options.get('is_true_case') else False
         
         #If the sentence is to be capitalized try loading the model
-        if self.true_case:
+        if self.is_true_case:
+            # get the models folder
+            self.models_dir = options.get('models_dir', '.')
+            # create the model file name
             model_file_name = self.models_dir + "/" + self.language + ".obj"
+            # check that the model file exists
             if os.path.isfile(model_file_name):
                 #Read the model file
                 f = open(model_file_name, 'rb')
@@ -142,15 +146,13 @@ class PostProcessor(object):
         True case the sentence using the NLTP POS tagging.
         It shall capitalize NNP and NNPS entries
         """
-        #Tokenize the sentence for the given language
+        # tokenize the sentence for the given language
         tokens = word_tokenize(sentence, language=lang)
 
-        #Check if we have a model for truecaser
-        if self.true_case:
-            #Infer capitalization from the model
-            tokens = getTrueCase(tokens, "as-is", self.wordCasingLookup,
-                                 self.uniDist, self.backwardBiDist,
-                                 self.forwardBiDist, self.trigramDist)
+        # infer capitalization from the model
+        tokens = getTrueCase(tokens, "as-is", self.wordCasingLookup,
+                             self.uniDist, self.backwardBiDist,
+                             self.forwardBiDist, self.trigramDist)
             
         #Return the result
         return ' '.join(tokens)
@@ -165,11 +167,14 @@ class PostProcessor(object):
         sentence = sentence.strip()
         
         # check if we need to perform capitalization
-        if self.capitalize_sents:
+        if self.is_capitalize:
             #capitalize, if the sentence ends with a final punctuation
             if self.__final_punct.search(sentence):
                 sentence = sentence[0].upper() + sentence[1:]
-            # capitalize the rest based on the part of speach
+                
+        # check if we need to do true casing
+        if self.is_true_case:
+            # call the sentence true casing
             sentence = self.truecase(sentence, self.language);
         
         # split sentence
@@ -265,7 +270,7 @@ def open_handles(filenames, encoding):
     return fh_in, fh_out
 
 
-def process_sentences(func, filenames, encoding):
+def process_sentences(func, filenames, encoding, options):
     """\
     Stream process given files or STDIN/STDOUT with the given function
     and encoding.
@@ -275,13 +280,33 @@ def process_sentences(func, filenames, encoding):
     #Red file sentences, there is one sentence per line
     sentences = fh_in.readlines()
     
-    #Process all the sentences but the last one
-    for sentence in sentences[:-1]:
-        print >> fh_out, func(sentence)
-    
-    #Process the last line but make sure we do not print it with the new line ending
-    fh_out.write(func(sentences[-1]))
-    
+    #Check of we need to restore the text structure
+    if options.get('is_templ'):
+        #Open the template file for reading
+        with codecs.open(options['templ_file_name'], "r", encoding) as templ:
+            #Get the text from the template file
+            text = templ.read()
+            #Declare the sentence index variable
+            idx = 0
+            #Process all the sentences but the last one
+            for sentence in sentences:
+                #Post-process the sentence
+                sentence = func(sentence)
+                #Remplace the placeholder with the sentence
+                text = text.replace("{"+str(idx)+"}", sentence.strip(), 1)
+                #Increment the index
+                idx += 1
+
+            #Put the text into the output file
+            fh_out.write(text)
+    else:
+        #Process all the sentences but the last one
+        for sentence in sentences[:-1]:
+            print >> fh_out, func(sentence)
+
+        #Process the last line but make sure we do not print it with the new line ending
+        fh_out.write(func(sentences[-1]))
+
 if __name__ == '__main__':
     # check on the number of arguments
     if len(sys.argv) == 0:
@@ -289,7 +314,7 @@ if __name__ == '__main__':
         sys.exit(1)
     
     # parse options
-    opts, filenames = getopt.getopt(sys.argv[1:], 'e:hctl:m:')
+    opts, filenames = getopt.getopt(sys.argv[1:], 'e:hcul:m:t:')
     options = {}
     help = False
     encoding = DEFAULT_ENCODING
@@ -301,16 +326,19 @@ if __name__ == '__main__':
         elif opt == '-m':
             options['models_dir'] = arg;
         elif opt == '-c':
-            options['capitalize_sents'] = True
+            options['is_capitalize'] = True
+        elif opt == '-u':
+            options['is_true_case'] = True
         elif opt == '-t':
-            options['true_case'] = True
+            options['is_templ'] = True
+            options['templ_file_name'] = arg
         elif opt == '-h':
             help = True
     
     # display help
     if help:
         display_usage()
-        sys.exit(1)
+        sys.exit(0)
         
     # the number of file names it too large
     if len(filenames) > 2:
@@ -320,7 +348,7 @@ if __name__ == '__main__':
     try:
         # process the input
         detok = PostProcessor(options)
-        process_sentences(detok.post_process, filenames, encoding)
+        process_sentences(detok.post_process, filenames, encoding, options)
     except LookupError:
         print 'The NLTK post-processor does not support \'', options['language'].capitalize(), '\' language!'
         exit(1)

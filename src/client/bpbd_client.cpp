@@ -220,6 +220,7 @@ static void extract_arguments(const uint argc, char const * const * const argv, 
  * @param params the client parameters
  * @param output the stream to put the text into
  */
+template<bool IS_PRE_PROCESS = false>
 void read_input(const client_parameters & params, stringstream_ptr & output) {
     //Open the input file with the source text
     cstyle_file_reader source_file(params.m_source_file);
@@ -235,14 +236,18 @@ void read_input(const client_parameters & params, stringstream_ptr & output) {
 
     //Declare the variable to store the sentence line
     text_piece_reader line;
-
+    
     //Read the file line by line and place it into the buffer
     while (source_file.get_first_line(line)) {
-        //Reduce the string as there can be occasionally
-        //improper white spaces or too many!
-        string sent = line.str();
-        *output << reduce(sent) << std::endl;
-        LOG_DEBUG1 << "Source text line: " << sent << END_LOG;
+        //Get the line to work with
+        string text = line.has_more() ? line.str() : "";
+
+        //Log the read line
+        LOG_DEBUG1 << "Source text line: '" << text << "'" << END_LOG;
+
+        //If no pre-processor is specified then try to reduce the string as
+        //there can be occasionally improper white spaces or too many!
+        *output << (IS_PRE_PROCESS ? text : reduce(text)) << std::endl;
     }
 
     //Close the source file
@@ -435,7 +440,11 @@ int main(int argc, char** argv) {
         extract_arguments(argc, argv, params);
 
         //Read from the source file: file -> pipe_a
-        read_input(params, pipe_a);
+        if(params.is_pre_process()) {
+            read_input<true>(params, pipe_a);
+        } else {
+            read_input<false>(params, pipe_a);
+        }
 
         //Compute the first job uid for the pre-processor request
         get_job_token(params, job_uid);

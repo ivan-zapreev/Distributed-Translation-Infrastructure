@@ -51,9 +51,17 @@ function create_proc_client(common_mdl, url_input, url, server_cs_img,
      * @param result_text {String} the text to visualize
      */
     function visualize_and_proceed(par_array, idx) {
+        //Declare the text variable
+        var text = par_array[idx];
+        
+        //Check if the text is empty then make it a single space as it is an empty line then
+        if (text === "") {
+            text = " ";
+        }
+        
         //Add the paragraph as an html span
         target_html += "<span class='target_sent_tag' title='' data-original-title='" +
-            pre_post_txt + "-processed text' data-toggle='tooltip' data-placement='auto'>" + common_mdl.escape_html_fn(par_array[idx]) + "</span>";
+            pre_post_txt + "-processed text' data-toggle='tooltip' data-placement='auto'>" + common_mdl.escape_html_fn(text) + "</span>";
         
         //Check if this is the last element
         if (idx === (par_array.length - 1)) {

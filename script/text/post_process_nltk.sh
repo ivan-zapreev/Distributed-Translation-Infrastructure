@@ -24,6 +24,14 @@ function info() {
   usage_pre ${0} "<true_caser_type> <models-dir>" "${help1}${help2}${help3}${help4}${help5}${help6}"
 }
 
+#Clean up after the script before existing
+function clean() {
+    #Remove the tmp file
+    rm -f ${INTERM_FILE}
+    #Remove the template file
+    rm -f ${TEMPL_FILE}
+}
+
 #Get this script actual location to find utility scripts
 SCRIPT=$(readlink "${0}")
 BASEDIR=$(dirname "${SCRIPT}}")
@@ -55,11 +63,11 @@ else
     case "${TRUE_CASE_TYPE}" in
         none)
             #Run the post-processing script NO truecasing
-            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}
+            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} -t ${TEMPL_FILE} ${INPUT_FILE} ${OUTPUT_FILE}
         ;;
         truecaser)
             #Run the post-processing script with truecaser
-            python ${BASEDIR}/post_process_nltk.py -c -t -l ${LANGUAGE} -m ${MODELS_DIR} ${INPUT_FILE} ${OUTPUT_FILE}
+            python ${BASEDIR}/post_process_nltk.py -c -u -l ${LANGUAGE} -m ${MODELS_DIR} -t ${TEMPL_FILE} ${INPUT_FILE} ${OUTPUT_FILE}
         ;;
         moses)
             #Define the intermediate output file
@@ -74,13 +82,18 @@ else
             
             #Add moses true casing
             perl ${BASEDIR}/truecase/moses/truecase.perl --model ${MODEL_FILE} < ${INPUT_FILE} > ${INTERM_FILE}
+
+            #Check on the scripts' result
+            rc=$?
+            if [[ $rc != 0 ]]; then
+                echo `cat ${OUTPUT_FILE}`
+                clean
+                exit $rc;
+            fi
             
             #Do detokenization and capitalization
-            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} ${INTERM_FILE} ${OUTPUT_FILE}
-            
-            #Remove the tmp file
-            rm -f ${INTERM_FILE}
-        ;;
+            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} -t ${TEMPL_FILE} ${INTERM_FILE} ${OUTPUT_FILE}
+            ;;
         *)
         error "Unrecognized truecaser option: '${TRUE_CASE_TYPE}'!"
         fail
@@ -91,8 +104,18 @@ fi
 rc=$?
 if [[ $rc != 0 ]]; then
     echo `cat ${OUTPUT_FILE}`
+    clean
     exit $rc;
 fi
+
+#DEBUG: Create back files for ananlysis
+#cp ${INPUT_FILE} ${INPUT_FILE}.bak
+#cp ${INTERM_FILE} ${INTERM_FILE}.bak
+#cp ${OUTPUT_FILE} ${OUTPUT_FILE}.bak
+
+#Clean before exiting, the intefmediate
+#and template files are no longer needed
+clean
 
 #Output the "detected" language
 echo ${LANGUAGE}

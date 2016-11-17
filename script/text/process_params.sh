@@ -35,8 +35,10 @@ fi
 export WORK_DIR=${1}
 
 #Read the job id and check on it, create input output file names
+#and the template file name for the text structure preservation
 export JOB_UID=${2}
 export INPUT_FILE=${WORK_DIR}/${JOB_UID}.${SCRIPT_TYPE}.in.txt
+export TEMPL_FILE=${WORK_DIR}/${JOB_UID}.templ
 export OUTPUT_FILE=${WORK_DIR}/${JOB_UID}.${SCRIPT_TYPE}.out.txt
 
 if ! [ -e "${INPUT_FILE}" ]; then

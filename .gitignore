@@ -4,6 +4,7 @@
 *.o
 *.obj
 *.pyc
+*.tcm
 
 # Precompiled Headers
 *.gch

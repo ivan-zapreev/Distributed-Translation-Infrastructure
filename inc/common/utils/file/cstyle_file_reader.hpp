@@ -117,8 +117,9 @@ namespace uva {
                     ssize_t length = getline(&m_buff_ptr, &m_buff_size, m_file_ptr);
 
                     if (length != -1) {
-                        //Remove the new line symbol, we do not need it!
-                        if ((length != 0) && (m_buff_ptr[length - 1] == '\n')) {
+                        //Remove the new line symbols, we do not need them!
+                        while ((length != 0) &&
+                                ((m_buff_ptr[length - 1] == '\n') || (m_buff_ptr[length - 1] == '\r'))) {
                             length = length - 1;
                         }
 

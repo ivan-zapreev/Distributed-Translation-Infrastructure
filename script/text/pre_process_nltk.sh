@@ -11,6 +11,12 @@ function info() {
   usage_pre ${0}
 }
 
+#Clean up after the script before existing
+function clean() {
+    #Remove the template file
+    rm -f ${TEMPL_FILE}
+}
+
 #Get this script actual location to find utility scripts
 SCRIPT=$(readlink "${0}")
 BASEDIR=$(dirname "${SCRIPT}}")
@@ -32,6 +38,7 @@ if [ "${LANGUAGE}" = "auto" ]; then
     rc=$?
     if [[ $rc != 0 ]]; then
         echo ${DETECTED_LANG}
+        clean
         exit $rc;
     fi
 else
@@ -39,12 +46,18 @@ else
 fi
 
 #Run the pre-processing script
-python ${BASEDIR}/pre_process_nltk.py ${INPUT_FILE} ${DETECTED_LANG} > ${OUTPUT_FILE}
+python ${BASEDIR}/pre_process_nltk.py -l ${DETECTED_LANG} -t ${TEMPL_FILE} ${INPUT_FILE} > ${OUTPUT_FILE}
 rc=$?
 if [[ $rc != 0 ]]; then
     echo `cat ${OUTPUT_FILE}`
+    clean
     exit $rc;
 fi
+
+#DEBUG: Create back files for ananlysis
+#cp ${INPUT_FILE} ${INPUT_FILE}.bak
+#cp ${TEMPL_FILE} ${TEMPL_FILE}.bak
+#cp ${OUTPUT_FILE} ${OUTPUT_FILE}.bak
 
 #Output the "detected" language
 echo ${DETECTED_LANG}

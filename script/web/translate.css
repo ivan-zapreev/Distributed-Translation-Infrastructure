@@ -136,12 +136,18 @@ span#to_text {
 span.target_sent_tag {
     display: block;
     border-radius: 3px;
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
 span.target_sent_tag:hover {
     background-color: #f9e79f;
     cursor: pointer;
 }
+
 div.panel-body {
     padding: 3px;
 }

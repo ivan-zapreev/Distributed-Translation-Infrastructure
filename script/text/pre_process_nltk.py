@@ -16,19 +16,25 @@ on the stop words analysis.
 
 Command-line usage:
 
-    ./pre_process_nltk.py [input-file-name] [language]
+    ./pre_process_nltk.py [-h] [-l LANG] [-t TEMPL] [input-file]
+    
+    -h = the help message
+    -l = the english name of the language in which the text of the input file is written
+    -t = the name of the template file to be generated, optional
     
     The pre-processed text will be written to STDOUT
 """
 
 import codecs
+import getopt
 from sys import exit
 from sys import argv
 
 #Make sure we only work with the UTF-8 strings
 import sys
 reload(sys)
-sys.setdefaultencoding('utf-8')
+DEFAULT_ENCODING = 'utf-8'
+sys.setdefaultencoding(DEFAULT_ENCODING)
 
 try:
     from nltk.tokenize import sent_tokenize
@@ -36,6 +42,13 @@ try:
 except ImportError:
     print '[!] You need to install nltk (http://nltk.org/index.html)'
     exit(1)
+
+#----------------------------------------------------------------------
+def display_usage():
+    """\
+    Display program usage information.
+    """
+    print >> sys.stderr, __doc__
 
 #----------------------------------------------------------------------
 def _pre_process_sentence(sent, lang):
@@ -57,48 +70,106 @@ def _pre_process_sentence(sent, lang):
     words = [word.lower() for word in tokens]
     #Return the space-separated tokens
     return u" ".join(words)
-    
 
 #----------------------------------------------------------------------
-def _pre_process_text(text, lang):
+def _pre_process_text(text, options):
     """\
     This function is used to pre-process a text.
     I.e. tokenize and lowercase.
     
     @param text: the text string
-    @type sent: str
+    @type text: str
     
-    @param lang: the language name
-    @type lang: str
+    @param options: tje parameters dictionary
+    @type options: dictionary
     
     @return: the pre-processed text string
     """
+    
+    #Get the language
+    lang = options.get('language')
+    
     #Tokenize text into sentences
     sent_list = sent_tokenize(text, language=lang)
 
-    #Iterate over sentences and tokenize them into lower-cased words
-    for sent in sent_list[:-1]:
-        #Pre-process sentences and output, with a new line at the end
-        print _pre_process_sentence(sent, lang)
+    #Check if we need to generate a template
+    if options.get('is_templ'):
+        #Declare the sentence index
+        idx=0
+        #Iterate over sentences and tokenize them into lower-cased words
+        #In parallel generate the text template and put it into a file
+        for sent in sent_list[:-1]:
+            #Replace the sentence with its placeholder
+            text = text.replace(sent.strip(), "{"+str(idx)+"}", 1)
+            idx +=1
+            #Pre-process sentences and output, with a new line at the end
+            print _pre_process_sentence(sent, lang)
+        
+        #Get the last sentence
+        last_sent = sent_list[-1]
+        #Replace the last sentence with its placeholder
+        text = text.replace(last_sent.strip(), "{"+str(idx)+"}", 1)
+        #Pre-process the last sentence, it is to be printed with no new-line at the end
+        sys.stdout.write(_pre_process_sentence(last_sent, lang))
+            
+        #Open the template file for writing
+        with codecs.open(options['templ_file_name'], "w", DEFAULT_ENCODING) as templ:
+            #Output the resulting text
+            templ.write(text);
+    else:
+        #Iterate over sentences and tokenize them into lower-cased words
+        for sent in sent_list[:-1]:
+            #Pre-process sentences and output, with a new line at the end
+            print _pre_process_sentence(sent, lang)
 
-    #Pre-process the last sentence, it is to be printed with no new-line at the end
-    sys.stdout.write(_pre_process_sentence(sent_list[-1], lang))
-    
+        #Pre-process the last sentence, it is to be printed with no new-line at the end
+        sys.stdout.write(_pre_process_sentence(sent_list[-1], lang))
     
 if __name__=='__main__':
+    # check on the number of arguments
+    if len(argv) == 0:
+        display_usage()
+        exit(1)
+    
+    # parse options
+    opts, filenames = getopt.getopt(argv[1:], 'hl:t:')
+    options = {}
+    help = False
+    for opt, arg in opts:
+        if opt == '-l':
+            options['language'] = arg.lower();
+        elif opt == '-t':
+            options['is_templ'] = True
+            options['templ_file_name'] = arg
+        elif opt == '-h':
+            help = True
+    
+    # display help
+    if help:
+        display_usage()
+        exit(0)
+        
+    # the number of file names it too large
+    if len(filenames) > 1:
+        print "ERROR: Improper list of arguments: ", argv[1:]
+        exit(1)
     
     #Get the input file name
     input_file_name = argv[1]
-    #Lowercase the language parameter
-    input_language = argv[2].lower()
+    
+    #Check that the language is defined, it is compulsory
+    if not 'language' in options:
+        print "ERROR: Please specify the input file's language"
+        display_usage()
+        exit(1)
     
     #Open the file with UTF-8 text
-    with codecs.open(input_file_name, "r", "utf-8") as file:
+    with codecs.open(filenames[0], "r", DEFAULT_ENCODING) as file:
         #Read the file into the text variable
         text = file.read()
         try:
             #Pre-process the text
-            _pre_process_text(text, input_language)
+            _pre_process_text(text, options)
         except LookupError:
-            print 'The NLTK pre-processor does not support \'', input_language.capitalize(), '\' language!'
+            print 'ERROR: The NLTK pre-processor does not support \'', language.capitalize(), '\' language!'
             exit(1)

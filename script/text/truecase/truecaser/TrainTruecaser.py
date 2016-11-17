@@ -2,6 +2,7 @@
 This script trains the TrueCase System
 """
 import nltk
+import sys
 import nltk.corpus
 from nltk.corpus import brown
 from nltk.corpus import reuters
@@ -14,6 +15,10 @@ import nltk.data
 
 from TrainFunctions import *
 from EvaluateTruecaser import defaultTruecaserEvaluation
+
+reload(sys)
+DEFAULT_ENCODING = 'utf-8'
+sys.setdefaultencoding(DEFAULT_ENCODING)
 
 uniDist = nltk.FreqDist()
 backwardBiDist = nltk.FreqDist() 
