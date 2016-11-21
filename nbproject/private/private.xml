@@ -19,11 +19,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/messaging/supp_lang_resp_out.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/processor/processor_job.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/server/decoder/sentence/sentence_decoder.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/processor/pre_proc_job.hpp</file>
-            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/balancer/adapters_manager.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/common/utils/file/cstyle_file_reader.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/src/client/bpbd_client.cpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/client/client_parameters.hpp</file>
+            <file>file:/Users/zapreevis/Projects/Basic-Translation-Infrastructure/inc/common/utils/file/text_piece_reader.hpp</file>
         </group>
     </open-files>
 </project-private>
