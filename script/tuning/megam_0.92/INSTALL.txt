@@ -2,15 +2,19 @@ How to install MegaM (https://www.umiacs.umd.edu/~hal/megam/index.html) on Mac O
 Mega M is a Model Optimization Package based on maximum entropy models. It is used in lambda parameter
 tuning scripts for the translation system decoder.
 
+Installing MegaM on Mac OS X can be tricky, so here is the Google group where possible installation
+issues are discussed: https://groups.google.com/forum/#!topic/nltk-users/loKBj0eCgZs
+Below we present the installation steps proven to work in ours machine set-up.
+
 1. Download and install the latest ocam compiler.
    1.1. Linux (CentOS 6.8) we downloaded and installed from sources.
         The compiler installed via yum could not compile the code.
-        The ocam version we tested it with was 4.04:
+        The Ocam version we tested it with was 4.04:
            http://www.ocaml.org/releases/4.04.html
-   1.2 Max OS X we installed Ocam via Brew:
-      1.2.1 Install Brew via:
+   1.2 Max OS X we installed Ocam via HomeBrew (http://brew.sh/):
+      1.2.1 Install HomeBrew via:
          sudo /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-      1.2.2 Install Ocam as:
+      1.2.2 Install Ocam via HomeBrew:
          brew install ocaml
    In both cases the ocaml is to be installed into:
       ls /usr/local/lib/ocaml
@@ -22,4 +26,4 @@ tuning scripts for the translation system decoder.
     $ patch < ${Project}/scripts/tuning/megam_0.92/Makefile.patch
     $ make
 4. In case the ocaml is not installed into '/usr/local/lib/ocaml' but is located elsewhere,
-   modify the OCAML_HOME variable of the Makefile to point to the right directory.
+   modify the OCAML_HOME variable within the Makefile to point to the right directory.
