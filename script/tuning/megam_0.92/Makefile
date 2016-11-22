@@ -12,6 +12,12 @@
 
 EXEC = megam
 
+#Define the libraries relative to the ocaml home
+OCAML_HOME=/usr/local/lib/ocaml
+WITHSTR=${OCAML_HOME}/str.cma
+WITHUNIX=${OCAML_HOME}/unix.cma
+WITHBIGARRAY=${OCAML_HOME}/bigarray.cma
+
 # If you need special libraries provided with the Caml system,
 # (graphics, arbitrary precision numbers, regular expression on strings, ...),
 # you must set the variable LIBS to the proper set of libraries. For
@@ -59,7 +65,7 @@ WITHGRAPHICS =graphics.cma -cclib -lgraphics -cclib -L/usr/X11R6/lib -cclib -lX1
 
 WITHUNIX =unix.cma -cclib -lunix
 
-WITHSTR =str.cma -cclib -lstr
+WITHSTR =str.cma -cclib -lcamlstr
 
 WITHBIGARRAY =bigarray.cma -cclib -lbigarray
 
@@ -69,8 +75,7 @@ WITHTHREADS =threads.cma -cclib -lthreads
 
 WITHDBM =dbm.cma -cclib -lmldbm -cclib -lndbm
 
-#WITHCLIBS =-I /usr/lib/ocaml/3.09.2/caml
-WITHCLIBS =-I /usr/lib/ocaml/caml
+WITHCLIBS =-I ${OCAML_HOME}/caml
 
 ################ End of user's variables #####################
 
