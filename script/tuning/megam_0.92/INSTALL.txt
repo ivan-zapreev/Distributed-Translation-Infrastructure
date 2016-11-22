@@ -1,29 +1,39 @@
-How to install MegaM (https://www.umiacs.umd.edu/~hal/megam/index.html) on Mac OS and or Linux system:
-Mega M is a Model Optimization Package based on maximum entropy models. It is used in lambda parameter
-tuning scripts for the translation system decoder.
+MegaM (https://www.umiacs.umd.edu/~hal/megam/index.html) is a Model Optimization Package based on
+maximum entropy models. It is used in lambda parameter tuning scripts for the translation system decoder.
 
-Installing MegaM on Mac OS X can be tricky, so here is the Google group where possible installation
-issues are discussed: https://groups.google.com/forum/#!topic/nltk-users/loKBj0eCgZs
+MegaM is written using Ocam programming language and is a third party tool included in our distribution,
+version 0.92 downloaded from http://hal3.name/megam/megam_src.tgz, for the sake of completeness. Another
+reason is that the tool's last version 0.92 was released in 2007 so we do not want to risk the chance of
+the tool being extinct.
+
+Further we provide some installation instructions for the MegaM on Linux and Max OS. This process can
+be tricky, so here is the Google group where some of the possible installation issues are discussed:
+     https://groups.google.com/forum/#!topic/nltk-users/loKBj0eCgZs
 Below we present the installation steps proven to work in ours machine set-up.
 
-1. Download and install the latest ocam compiler.
-   1.1. Linux (CentOS 6.8) we downloaded and installed from sources.
-        The compiler installed via yum could not compile the code.
-        The Ocam version we tested it with was 4.04:
+Note that, to simplify the building process, we have modified the project's original Makefile presented as
+Makefile.original with the changes listed in the patch file, known as Makefile.patch.
+
+Installation steps for Linux and Max OS X platforms are listed below, the latter were successfully tested
+on CentOS 6.8 and OS X EI Capitan version 10.11.6 respectively. Alternatives are possible but were not
+considered. For example on different platforms, installing Ocaml can be possible via several alternative
+sources, as described here: http://www.ocaml.org/docs/install.html
+
+1. Download and install the latest Ocam compiler.
+   1.1. Linux: Downloaded and installed from sources (requires root rights).
+        Note 1: The compiler installed via yum on CentOS may fail to compile the code.
+        Note 2: The Ocam version we worked with is the latest known: v4.04 downloadable from:
            http://www.ocaml.org/releases/4.04.html
-   1.2 Max OS X we installed Ocam via HomeBrew (http://brew.sh/):
+   1.2 Max OS X: Install Ocam via HomeBrew (http://brew.sh/):
       1.2.1 Install HomeBrew via:
-         sudo /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+         $sudo /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
       1.2.2 Install Ocam via HomeBrew:
-         brew install ocaml
-   In both cases the ocaml is to be installed into:
+         $brew install ocaml
+   In both cases, Linux and Mac OS, the Ocaml is to be installed into:
       ls /usr/local/lib/ocaml
-   If it is installed in some other location then the Makefile of MegaM is to be modified, see point 3.
-2. Download the MegaM source code, we used version 0.92 from:
-   http://hal3.name/megam/megam_src.tgz
-3. Patch the makefile of the MegaM by the Makefile patch we created
-    $ cd megam_0.92
-    $ patch < ${Project}/scripts/tuning/megam_0.92/Makefile.patch
-    $ make
-4. In case the ocaml is not installed into '/usr/local/lib/ocaml' but is located elsewhere,
+   If it is installed into some other location then the Makefile of MegaM is to be modified, see point 3.
+2. Move to the MegaM folder and build the project
+   $ cd ${REMEDI_HOME}/scripts/tuning/megam_0.92
+   $ make
+3. In case the Ocaml is not present at its expected location: '/usr/local/lib/ocaml',
    modify the OCAML_HOME variable within the Makefile to point to the right directory.
