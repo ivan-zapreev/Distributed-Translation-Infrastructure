@@ -707,10 +707,10 @@ At present this project includes the following external/third-party software:
 |Bootstrap|_HTML, CSS, and JS framework for developing responsive, mobile first Web UIs_|[link](http://getbootstrap.com/)|3.3.6|[MIT](https://opensource.org/licenses/MIT)|
 |MD5|_RSA Data Security, Inc. MD5 Message-Digest Algorithm_|[link](http://pajhome.org.uk/crypt/md5/index.html)|1.0|[BSD](https://opensource.org/licenses/BSD-3-Clause)|
 |Download|_A library allowing to trigger a file download from JavaScript_|[link](http://danml.com/download.html)|4.2|[CCA4.0](https://creativecommons.org/licenses/by/4.0/)|
-|MT Monkey|An adapted de-tokenization script from the "Infrastructure for Machine Translation web services" project|[link](https://github.com/ufal/mtmonkey/blob/master/worker/src/util/detokenize.py)|1.0|[Apache2.0](https://www.apache.org/licenses/LICENSE-2.0)|
-|Moses|Adapted true-casing scripts from the "Statistical machine translation system" project|[link](https://github.com/moses-smt/mosesdecoder/tree/master/scripts/recaser)|0.12.1|[GPL2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html#SEC1)|
-|Truecaser|The "Language Independent Truecaser for Python" project|[link](https://github.com/nreimers/truecaser)|1.0|[Apache2.0](https://www.apache.org/licenses/LICENSE-2.0)|
-|MegaM|MEGA Model Optimization Package|[link](https://www.umiacs.umd.edu/~hal/megam/index.html)|0.92|[Free](./script/tuning/megam_0.92/README)|
+|MT Monkey|_An adapted de-tokenization script from the "Infrastructure for Machine Translation web services" project_|[link](https://github.com/ufal/mtmonkey/blob/master/worker/src/util/detokenize.py)|1.0|[Apache2.0](https://www.apache.org/licenses/LICENSE-2.0)|
+|Moses|_Adapted true-casing scripts from the "Statistical machine translation system" project_|[link](https://github.com/moses-smt/mosesdecoder/tree/master/scripts/recaser)|0.12.1|[GPL2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html#SEC1)|
+|Truecaser|_The "Language Independent Truecaser for Python" project_|[link](https://github.com/nreimers/truecaser)|1.0|[Apache2.0](https://www.apache.org/licenses/LICENSE-2.0)|
+|MegaM|_MEGA Model Optimization Package_|[link](https://www.umiacs.umd.edu/~hal/megam/index.html)|0.92|[Free](./script/tuning/megam_0.92/README)|
 
 ##Performance evaluation
 In this section we provide an empirical comparison of the developed LM query tool with two other well known tools, namely [SRILM](http://www.speech.sri.com/projects/srilm/) and [KenLM](https://kheafield.com/code/kenlm/), both of which provide language model implementations that can be queried.  The additional information on the compared tools is to be found in [Appendix Tests](#appendix-tests)
