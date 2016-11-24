@@ -26,25 +26,25 @@
 #Prints the program info
 # ${0} - the program name
 function info() {
-  echo "------"
-  echo "SHORT:"
-  echo "------"
-  echo "   This is a NLTK and MTMonkey based script for post-processing "
-  echo "   of a text in a given language. The true casing is done here"
-  echo "   in two possible ways, with: "
-  echo "      (i) Truecaser https://github.com/nreimers/truecaser"
-  echo "      (ii) Moses https://github.com/moses-smt/mosesdecoder"
-  echo "   the required scripts are included into this project, so there"
-  echo "   is no need to download them again. The script DOES NOT, and "
-  echo "   never will, support language detection as it is not needed."
-  
-  help1="    <true_caser_type> - the true casing software to use:\n"
-  help2="        'none' - there will be no truecasing done\n"
-  help3="        'truecaser' - https://github.com/nreimers/truecaser\n"
-  help4="        'moses' - https://github.com/moses-smt/mosesdecoder\n"
-  help5="    <models-dir> - The location of the true-caser model files,\n"
-  help6="                   optional, default is '.'"
-  usage_pre ${0} "<true_caser_type> <models-dir>" "${help1}${help2}${help3}${help4}${help5}${help6}"
+    echo "------"
+    echo "SHORT:"
+    echo "------"
+    echo "   This is a NLTK and MTMonkey based script for post-processing "
+    echo "   of a text in a given language. The true casing is done here"
+    echo "   in two possible ways, with: "
+    echo "      (i) Truecaser https://github.com/nreimers/truecaser"
+    echo "      (ii) Moses https://github.com/moses-smt/mosesdecoder"
+    echo "   the required scripts are included into this project, so there"
+    echo "   is no need to download them again. The script DOES NOT, and "
+    echo "   never will, support language detection as it is not needed."
+
+    help1="    <true_caser_type> - the true casing software to use:\n"
+    help2="        'none' - there will be no truecasing done\n"
+    help3="        'truecaser' - https://github.com/nreimers/truecaser\n"
+    help4="        'moses' - https://github.com/moses-smt/mosesdecoder\n"
+    help5="    <models-dir> - The location of the true-caser model files,\n"
+    help6="                   optional, default is '.'"
+    usage_pre ${0} "<true_caser_type> <models-dir>" "${help1}${help2}${help3}${help4}${help5}${help6}"
 }
 
 #Clean up after the script before existing

@@ -192,5 +192,5 @@ if __name__=='__main__':
             #Pre-process the text
             _pre_process_text(text, options)
         except LookupError:
-            print 'ERROR: The NLTK pre-processor does not support \'', language.capitalize(), '\' language!'
+            print 'ERROR: The NLTK pre-processor does not support \'', options['language'].capitalize(), '\' language!'
             exit(1)
