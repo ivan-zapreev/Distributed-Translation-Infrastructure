@@ -175,9 +175,6 @@ if __name__=='__main__':
         print "ERROR: Improper list of arguments: ", argv[1:]
         exit(1)
     
-    #Get the input file name
-    input_file_name = argv[1]
-    
     #Check that the language is defined, it is compulsory
     if not 'language' in options:
         print "ERROR: Please specify the input file's language"

@@ -81,16 +81,22 @@ else
     
     #Extract the truecaser type
     TRUE_CASE_TYPE=${4}
-    
+
+    #Check if the template file exists, then pass it on to the scripts
+    TEMPLATE_OPTION=""
+    if [ -e ${TEMPL_FILE} ]; then
+        TEMPLATE_OPTION = "-t ${TEMPL_FILE}"
+    fi
+
     #Check on the truecaser type, since it is present
     case "${TRUE_CASE_TYPE}" in
         none)
             #Run the post-processing script NO truecasing
-            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} -t ${TEMPL_FILE} ${INPUT_FILE} ${OUTPUT_FILE}
+            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} ${TEMPLATE_OPTION} ${INPUT_FILE} ${OUTPUT_FILE}
         ;;
         truecaser)
             #Run the post-processing script with truecaser
-            python ${BASEDIR}/post_process_nltk.py -c -u -l ${LANGUAGE} -m ${MODELS_DIR} -t ${TEMPL_FILE} ${INPUT_FILE} ${OUTPUT_FILE}
+            python ${BASEDIR}/post_process_nltk.py -c -u -l ${LANGUAGE} -m ${MODELS_DIR} ${TEMPLATE_OPTION} ${INPUT_FILE} ${OUTPUT_FILE}
         ;;
         moses)
             #Define the intermediate output file
@@ -115,7 +121,7 @@ else
             fi
             
             #Do detokenization and capitalization
-            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} -t ${TEMPL_FILE} ${INTERM_FILE} ${OUTPUT_FILE}
+            python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} ${TEMPLATE_OPTION} ${INTERM_FILE} ${OUTPUT_FILE}
             ;;
         *)
         error "Unrecognized truecaser option: '${TRUE_CASE_TYPE}'!"

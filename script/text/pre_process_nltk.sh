@@ -119,28 +119,44 @@ else
 fi
 
 #Lowercase the language
-DETECTED_LANG=`echo ${LANGUAGE}| tr A-Z a-z`
+DETECTED_LANG_LC=`echo ${DETECTED_LANG}| tr A-Z a-z`
 
 #Run the pre-processing script, which one depends on
 #the concrete language. Some are supported by NLTK
 #some are to be done with Stanford Core NLP. Here we
 #pre-build in support for chinese CBT and arabic 
-case "${DETECTED_LANG}" in
+case "${DETECTED_LANG_LC}" in
     chinese)
         #Check that the Stanford Core NLP is configured
         check_java_and_dir "1.8" ${SC_NLP_DIR}
         #Call the client and make it do the work
-        java -cp "${SC_NLP_DIR}/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLPClient -props StanfordCoreNLP-${DETECTED_LANG}.properties -annotators tokenize,ssplit -file ${INPUT_FILE} -outputDirectory ${WORK_DIR} -outputFormat text ${SC_NLP_BACKENDS} 2>&1 1>${OUTPUT_FILE}
-        #Check on the returned code
-        rc=$?
-        if [[ $rc != 0 ]]; then
-            echo `cat ${OUTPUT_FILE}`
-            clean
-            exit $rc;
-        fi
-        #ToDo: Post-process the CoreNLP output into the text file
-        #For now just rename the output file, give the right name
-        mv -f ${INPUT_FILE}.out ${OUTPUT_FILE}
+        java -cp "${SC_NLP_DIR}/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLPClient -props StanfordCoreNLP-${DETECTED_LANG_LC}.properties -annotators tokenize,ssplit -file ${INPUT_FILE} -outputDirectory ${WORK_DIR} -outputFormat text ${SC_NLP_BACKENDS} 1>/dev/null 2>${OUTPUT_FILE} &
+        #Remember the java process id
+        JAVA_PROCESS_ID=$!
+        
+        #Wait until the file is created and then terminate the java process
+        #ToDo: Note that this is a workaround for the client bug that prevents
+        #the client of being terminated after the file is annotated
+        SNLP_OUTPUT_FILE=${INPUT_FILE}.out
+        while ! [ -e ${SNLP_OUTPUT_FILE} ]; do
+            sleep 1
+        done
+        #Kill the java process now and wait until it terminates
+        kill -9 ${JAVA_PROCESS_ID}
+        wait ${JAVA_PROCESS_ID}
+        
+        #ToDo: Check on the returned code, when
+        #we do not need to kill java any more!
+        #rc=$?
+        #if [[ $rc != 0 ]]; then
+        #    echo `cat ${OUTPUT_FILE}`
+        #    clean
+        #    exit $rc;
+        #fi
+        
+        #Post-process the CoreNLP output into the text file
+        #Create a template file for the originl text
+        python ${BASEDIR}/pre_process_snlp.py -t ${TEMPL_FILE} -s ${INPUT_FILE} ${SNLP_OUTPUT_FILE} > ${OUTPUT_FILE}
         ;;
     *)
         #Call the NLTK based pre-processing script
