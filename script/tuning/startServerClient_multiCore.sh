@@ -1,5 +1,7 @@
 #!/bin/bash
 
+BASEDIR=$(dirname "$0")
+BUILDPATH="$BASEDIR/../../build"
 for i in "$@"
 do
     case $i in
@@ -49,20 +51,20 @@ rm -f $expDir/lattices/*
 
 if [ "$createFeatureMapping" = true ] 
 then
-    ./bpbd-server -c $configFile -f >& /dev/null
+    $BUILDPATH/bpbd-server -c $configFile -f >& /dev/null
 else
     pids=$(pidof bpbd-server)
     pidsArray=($pids)
     if [ -z "$pids" ]
     then
-        ./bpbd-server -c $configFile -d error > /dev/null &
+        $BUILDPATH/bpbd-server -c $configFile -d error > /dev/null &
     else
         for i in "${pidsArray[@]}"
         do
             #echo pid:$i
             kill -9 $i
         done
-        ./bpbd-server -c $configFile -d error > /dev/null &
+        $BUILDPATH/bpbd-server -c $configFile -d error > /dev/null &
     fi
 
     clientMessage=''
@@ -70,13 +72,13 @@ else
     counter=0
     while [ -z "$clientMessage" -o "$res" -eq 1 ]; do
         sleep 10s
-        clientMessage=$(./bpbd-client -I $srcFile -i $srcLang -O $trgFile -o $trgLang)
+        clientMessage=$($BUILDPATH/bpbd-client -I $srcFile -i $srcLang -O $trgFile -o $trgLang)
         res=$?
         cat "$clientMessage" >& client.log
         let counter=counter+1
         echo attempt number $counter >> client.log
     done
-    ../combine-lattices.sh $expDir/lattices ../$trgFile lattices feature_scores $no_parallel >& combine.log
+    $BASEDIR/../combine-lattices.sh $expDir/lattices ../$trgFile lattices feature_scores $no_parallel >& combine.log
 fi
 
 
