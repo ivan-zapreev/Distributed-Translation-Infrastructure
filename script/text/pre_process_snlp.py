@@ -71,6 +71,28 @@ def display_usage():
 
 
 #----------------------------------------------------------------------
+def output_sentence(is_first_sent, sentence):
+    """\
+    Allows to output the sentence to the standard output, if it is not empty
+    also checks whether it is the first sentence being output or not, if not
+    then it is being preceeded with a new line.
+    """
+    #Strip the sentence to remove unneded whitespaces
+    sentence = sentence.strip()
+    #If this is not the first sentence we read
+    if sentence != "":
+        #If this is the first sentence we dump no starting
+        #new line, otherwise start at a new line.
+        if is_first_sent:
+            sys.stdout.write(sentence)
+            is_first_sent = False
+        else:
+            sys.stdout.write("\n" + sentence.strip())
+    #Return the first sentence flag and re-set sentence value
+    return is_first_sent, ""
+
+
+#----------------------------------------------------------------------
 def convert_data(snlp_file, options):
     """\
     Converts the text from file and outputs it to STDOUT
@@ -101,19 +123,8 @@ def convert_data(snlp_file, options):
     for line in lines:
         #Chek if we have a new sentence start
         if sent_reg_ex.match(line):
-            #Strip the sentence to remove unneded whitespaces
-            sentence = sentence.strip()
-            #If this is not the first sentence we read
-            if sentence != "":
-                #If this is the first sentence we dump no starting
-                #new line, otherwise start at a new line.
-                if is_first_sent:
-                    sys.stdout.write(sentence)
-                    is_first_sent = False
-                else:
-                    sys.stdout.write("\n" + sentence.strip())
-                #Set the sentence to empty
-                sentence = ""
+            #Output the sentence there is up till now, if any
+            is_first_sent, sentence = output_sentence(is_first_sent, sentence)
         #Check if we have a new token start
         else:
             #Try to match the token line
@@ -129,6 +140,9 @@ def convert_data(snlp_file, options):
                     #Replace the sentence with its placeholder
                     text = text.replace(line.strip(), "{"+str(idx)+"}", 1)
                     idx += 1
+    
+    #Output the last sentence that was read in the loop, if any
+    is_first_sent, sentence = output_sentence(is_first_sent, sentence)
     
     #Write the template file bacl
     if is_templ:
