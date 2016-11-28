@@ -85,7 +85,7 @@ else
     #Check if the template file exists, then pass it on to the scripts
     TEMPLATE_OPTION=""
     if [ -e ${TEMPL_FILE} ]; then
-        TEMPLATE_OPTION = "-t ${TEMPL_FILE}"
+        TEMPLATE_OPTION="-t ${TEMPL_FILE}"
     fi
 
     #Check on the truecaser type, since it is present
@@ -93,10 +93,14 @@ else
         none)
             #Run the post-processing script NO truecasing
             python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} ${TEMPLATE_OPTION} ${INPUT_FILE} ${OUTPUT_FILE}
+            #Check clean and fail if NOK
+            check_clean_fail $?
         ;;
         truecaser)
             #Run the post-processing script with truecaser
             python ${BASEDIR}/post_process_nltk.py -c -u -l ${LANGUAGE} -m ${MODELS_DIR} ${TEMPLATE_OPTION} ${INPUT_FILE} ${OUTPUT_FILE}
+            #Check clean and fail if NOK
+            check_clean_fail $?
         ;;
         moses)
             #Define the intermediate output file
@@ -111,30 +115,18 @@ else
             
             #Add moses true casing
             perl ${BASEDIR}/truecase/moses/truecase.perl --model ${MODEL_FILE} < ${INPUT_FILE} > ${INTERM_FILE}
-
-            #Check on the scripts' result
-            rc=$?
-            if [[ $rc != 0 ]]; then
-                echo `cat ${OUTPUT_FILE}`
-                clean
-                exit $rc;
-            fi
+            #Check clean and fail if NOK
+            check_clean_fail $?
             
             #Do detokenization and capitalization
             python ${BASEDIR}/post_process_nltk.py -c -l ${LANGUAGE} -m ${MODELS_DIR} ${TEMPLATE_OPTION} ${INTERM_FILE} ${OUTPUT_FILE}
+            #Check clean and fail if NOK
+            check_clean_fail $?
             ;;
         *)
         error "Unrecognized truecaser option: '${TRUE_CASE_TYPE}'!"
         fail
     esac
-fi
-
-#Check on the scripts' result
-rc=$?
-if [[ $rc != 0 ]]; then
-    echo `cat ${OUTPUT_FILE}`
-    clean
-    exit $rc;
 fi
 
 #DEBUG: Create back files for ananlysis

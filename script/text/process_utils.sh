@@ -54,3 +54,18 @@ function error() {
 function fail() {
    exit 1
 }
+
+#Allows to check on the exit code fiven as a
+#parameter and fail calling on the clean function.
+#This script also cats the output file as it shall
+#then store the error message
+# ${0} - the script name
+# ${1} - the exit code of a process
+function check_clean_fail() {
+    rc=$1
+    if [[ $rc != 0 ]]; then
+        cat ${OUTPUT_FILE}
+        clean
+        exit $rc;
+    fi
+}
