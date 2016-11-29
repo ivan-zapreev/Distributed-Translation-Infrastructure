@@ -472,7 +472,7 @@ USAGE: Loading the processor configuration option from: ../processor.cfg
 INFO: The configuration file has been parsed!
 USAGE: The lattice file folder is: ./proc_text
 WARN: The directory: ./proc_text does not exist, creating!
-INFO: Processor parameters: {server_port = 9000, num_threads = 20, work_dir = ./proc_text, pre_script_conf = {call_templ = ../script/text/pre_process.sh <WORK_DIR> <JOB_UID> <LANGUAGE>}, post_script_conf = {call_templ = ../script/text/post_process.sh <WORK_DIR> <JOB_UID> <LANGUAGE>}}
+INFO: Processor parameters: {server_port = 9000, num_threads = 20, work_dir = ./proc_text, pre_script_conf = {call_templ = ../script/text/pre_process.sh --work-dir=<WORK_DIR> --job-uid=<JOB_UID> --lang=<LANGUAGE>}, post_script_conf = {call_templ = ../script/text/post_process.sh --work-dir=<WORK_DIR> --job-uid=<JOB_UID> --lang=<LANGUAGE>}}
 INFO3: Sanity checks are: OFF !
 USAGE: Running the processor server ...
 USAGE: The processor is started!

@@ -114,7 +114,9 @@ def convert_data(snlp_file, options):
     sent_reg_ex = Regex(r'^Sentence\s\#\d+\s\(\d+\stokens\)\:$')
     token_reg_ex = Regex(r'^\[Text=(.*)\sCharacterOffsetBegin=\d+\sCharacterOffsetEnd=\d+\]$')
     #Declare sentence variable for storing the tokenized sentence
-    sentence = ""
+    tok_sent = ""
+    #Declare sentence variable for storing the original sentence
+    raw_sent = ""
     #Declare the flag indicating that this is the first sentence we output
     is_first_sent = True
     #Declare the sentence index
@@ -124,7 +126,7 @@ def convert_data(snlp_file, options):
         #Chek if we have a new sentence start
         if sent_reg_ex.match(line):
             #Output the sentence there is up till now, if any
-            is_first_sent, sentence = output_sentence(is_first_sent, sentence)
+            is_first_sent, tok_sent = output_sentence(is_first_sent, tok_sent)
         #Check if we have a new token start
         else:
             #Try to match the token line
@@ -132,17 +134,27 @@ def convert_data(snlp_file, options):
             #If we have matched the line
             if match:
                 #Append the token to the sentence and add a space character
-                sentence += match.group(1) + " "
+                tok_sent += match.group(1) + " "
+                #If the template is to be generated
+                if is_templ & (raw_sent != ""):
+                    #Replace the sentence with its placeholder
+                    text = text.replace(raw_sent.strip(), "{"+str(idx)+"}", 1)
+                    idx += 1
+                    #Re-set the raw sentence
+                    raw_sent = ""
+
             #In this case we have an original sentence for templating
             else:   
                 #If the template is to be generated
                 if is_templ:
-                    #Replace the sentence with its placeholder
-                    text = text.replace(line.strip(), "{"+str(idx)+"}", 1)
-                    idx += 1
+                    #Build up the raw sentence, possibly multi-line
+                    if raw_sent == "":
+                        raw_sent += line
+                    else:
+                        raw_sent += line
     
     #Output the last sentence that was read in the loop, if any
-    is_first_sent, sentence = output_sentence(is_first_sent, sentence)
+    is_first_sent, tok_sent = output_sentence(is_first_sent, tok_sent)
     
     #Write the template file bacl
     if is_templ:

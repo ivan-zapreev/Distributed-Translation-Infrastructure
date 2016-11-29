@@ -33,7 +33,7 @@ function info() {
     echo "   a given language. The script supports language detection"
 
     help1="    <core-nlp-dir> - the directory with Stanford Core NLP\n"
-    help2="                     as obtained from:\n"
+    help2="                     as obtained from, default is '.':\n"
     help3="                        http://stanfordnlp.github.io/CoreNLP\n"
     help4="                     Optional, is only needed for Chinese.\n"
 
@@ -44,7 +44,7 @@ function info() {
     help9="                   If not specified, defaults to: \n"
     help10="                        localhost:9000\n"
 
-    usage_pre ${0} "<core-nlp-dir> <back-ends>" "${help1}${help2}${help3}${help4}${help5}${help6}${help7}${help8}${help9}${help10}"
+    usage_pre ${0} "--cnlp-dir=<core-nlp-dir> --back-ends=<back-ends>" "${help1}${help2}${help3}${help4}${help5}${help6}${help7}${help8}${help9}${help10}"
 }
 
 #Clean up after the script failed before existing
@@ -63,19 +63,31 @@ function clean() {
 function check_java_and_dir() {
     #Check if the java is present
     JAVA=`which java | head -n 1`
-    if [ -z "${JAVA}" ]; then
+    if [[ -z "${JAVA}" ]]; then
         error "Could not find Java, can not run Stanford Core NLP!"
-        fail        
+        fail
     fi
     #Check that the java version 
     JAVA_VERSION=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}')
     if [[ "${JAVA_VERSION}" < "${1}" ]]; then
         error "Stanford Core NLP requires java version ${1}+, found ${JAVA_VERSION}!"
-        fail        
+        fail
     fi
     #Check that the Stanford Core NLP path does exist
-    if ! [ -d "${2}" ]; then
-       error "The specified Stanford Core NLP path: ${2} is not a directory!"
+    if ! [[ -d "${2}" ]]; then
+       error "The specified Stanford Core NLP path: '${2}' is not a directory!"
+       fail
+    fi
+    #Check that the jars are present
+    CORE_NLP_JARS=`ls ${2}/stanford-corenlp-*.jar`
+    if [[ -z "${CORE_NLP_JARS}" ]]; then
+       error "The specified Stanford Core NLP path: '${2}' does not contain the Core NLP jars!"
+       fail
+    fi
+    #Check that the chinese model jar is present
+    CORE_NLP_JARS=`ls ${2}/stanford-chinese-corenlp-*-models.jar`
+    if [[ -z "${CORE_NLP_JARS}" ]]; then
+       error "The specified Stanford Core NLP path: '${2}' does not contain the Chinese models jar!"
        fail
     fi
 }
@@ -93,21 +105,39 @@ export SCRIPT_TYPE="pre"
 #Process the script parameters
 . ${BASEDIR}/process_params.sh
 
-#Check if the stanford core nlp home parameter is given
-export SC_NLP_DIR="."
-if ! [ -z "${4}" ]; then
-    SC_NLP_DIR=${4}
-fi
+#################################################################
+#Define and initialize the additional script parameter values
+SC_NLP_DIR="."
+SC_NLP_BACKENDS=""
 
-#Check if the stanford core nlp backends list is specified
-export SC_NLP_BACKENDS=""
-if ! [ -z "${5}" ]; then
-    SC_NLP_BACKENDS="-backends ${5}"
-fi
+#Parse the additional parameters of the post-processing script
+for i in "$@"
+do
+    case $i in
+        --cnlp-dir=*)
+            #Store the true caser type
+            SC_NLP_DIR="${i#*=}"
+            shift
+            ;;
+        --back-ends=*)
+            #Store the true caser models directory
+            SC_NLP_BACKENDS="-backends ${i#*=}"
+            shift
+            ;;
+        *)
+            #Do nothing, this is some other parameter to be parsed elsewhere
+            shift
+            ;;
+    esac
+done
 
+#Resolve the home paths and others if any
+eval SC_NLP_DIR=${SC_NLP_DIR}
+
+#################################################################
 #Check if the language is to be auto detected
-export DETECTED_LANG=""
-if [ "${LANGUAGE}" = "auto" ]; then
+DETECTED_LANG=""
+if [[ "${LANGUAGE}" = "auto" ]]; then
     #Execute the language detection script there is and return an error if needed
     python ${BASEDIR}/lang_detect_nltk.py ${INPUT_FILE}>${OUTPUT_FILE}
     #Check clean and fail if NOK
@@ -118,9 +148,9 @@ else
     DETECTED_LANG=${LANGUAGE}
 fi
 
+#################################################################
 #Lowercase the language
 DETECTED_LANG_LC=`echo ${DETECTED_LANG}| tr A-Z a-z`
-
 #Run the pre-processing script, which one depends on
 #the concrete language. Some are supported by NLTK
 #some are to be done with Stanford Core NLP. Here we
@@ -128,7 +158,7 @@ DETECTED_LANG_LC=`echo ${DETECTED_LANG}| tr A-Z a-z`
 case "${DETECTED_LANG_LC}" in
     chinese)
         #Check that the Stanford Core NLP is configured
-        check_java_and_dir "1.8" ${SC_NLP_DIR}
+        check_java_and_dir "1.8" "${SC_NLP_DIR}"
         #Call the client and make it do the work
         #ToDo: When the client termination bug is fixed remove " &" at the end of the invocation command!
         java -cp "${SC_NLP_DIR}/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLPClient -props StanfordCoreNLP-${DETECTED_LANG_LC}.properties -annotators tokenize,ssplit -file ${INPUT_FILE} -outputDirectory ${WORK_DIR} -outputFormat text ${SC_NLP_BACKENDS} 1>/dev/null 2>${OUTPUT_FILE} &
@@ -165,7 +195,7 @@ case "${DETECTED_LANG_LC}" in
         check_clean_fail $?
         
         #DEBUG: Create back files for analysis
-        #cp ${SNLP_OUTPUT_FILE} ${SNLP_OUTPUT_FILE}.bak
+        #cp -f ${SNLP_OUTPUT_FILE} ${SNLP_OUTPUT_FILE}.bak
         
         #Remove the Stanford Core NLP output file
         rm -f ${SNLP_OUTPUT_FILE}
@@ -175,12 +205,13 @@ case "${DETECTED_LANG_LC}" in
         python ${BASEDIR}/pre_process_nltk.py -l ${DETECTED_LANG} -t ${TEMPL_FILE} ${INPUT_FILE} > ${OUTPUT_FILE}
         #Check clean and fail if NOK
         check_clean_fail $?
+        ;;
 esac
 
 #DEBUG: Create back files for ananlysis
-#cp ${INPUT_FILE} ${INPUT_FILE}.bak
-#cp ${TEMPL_FILE} ${TEMPL_FILE}.bak
-#cp ${OUTPUT_FILE} ${OUTPUT_FILE}.bak
+#cp -f ${INPUT_FILE} ${INPUT_FILE}.bak
+#cp -f ${TEMPL_FILE} ${TEMPL_FILE}.bak
+#cp -f ${OUTPUT_FILE} ${OUTPUT_FILE}.bak
 
 #Output the "detected" language
 echo ${DETECTED_LANG}

@@ -5,54 +5,92 @@ if [ "$#" -eq 0 ]; then
    fail
 fi
 
-#Check if the work directory param is defined and the directory is present
-if [ -z "${1}" ]; then
-   error "<work-dir> is not defined"
-   fail
+#Initialize the variables
+WORK_DIR=""
+JOB_UID=""
+LANGUAGE=""
+
+#Save the parameters, so that they can be parsed again later
+SCRIPT_PARAMS=("$@")
+
+#Process the standard input parameters one by one
+for i in "$@"
+do
+    case $i in
+        --work-dir=*)
+            #Store the directory in which the processor files reside
+            WORK_DIR="${i#*=}"
+            shift
+            ;;
+        --job-uid=*)
+            #Get the job uid parameter
+            JOB_UID="${i#*=}"
+            shift
+            ;;
+        --lang=*)
+            #Get the language
+            LANGUAGE="${i#*=}"
+            shift
+            ;;
+        *)
+            #Do nothing, this is some other parameter to be parsed elsewhere
+            shift
+            ;;
+    esac
+done
+
+#############################################################
+#Check if the work directory param is well defined
+if [ -z "${WORK_DIR}" ]; then
+    info
+    error "The <work-dir> parameter is not defined!"
+    fail
 fi
-if ! [ -e "${1}" ]; then
-   error "${1} not found!"
-   fail
+if ! [ -e "${WORK_DIR}" ]; then
+    info
+    error "The work directory ${WORK_DIR} is not found!"
+    fail
 fi
-if ! [ -d "${1}" ]; then
-   error "${1} is not a directory!"
-   fail
+if ! [ -d "${WORK_DIR}" ]; then
+    info
+    error "${WORK_DIR} is not a directory!"
+    fail
 fi
 
-#Check if the job uid param is defined
-if [ -z "${2}" ]; then
-   error "<job-uid> is not defined"
-   fail
+#############################################################
+#Check if the job uid param is well defined
+if [ -z "${JOB_UID}" ]; then
+    info
+    error "The <job-uid> parameter is not defined!"
+    fail
 fi
-
-#Check if the language param is defined
-if [ -z "${3}" ]; then
-   error "<language> is not defined"
-   fail
-fi
-
-#Store the directory in which the processor files reside
-export WORK_DIR=${1}
-
-#Read the job id and check on it, create input output file names
-#and the template file name for the text structure preservation
-export JOB_UID=${2}
-export INPUT_FILE=${WORK_DIR}/${JOB_UID}.${SCRIPT_TYPE}.in.txt
-export TEMPL_FILE=${WORK_DIR}/${JOB_UID}.templ
-export OUTPUT_FILE=${WORK_DIR}/${JOB_UID}.${SCRIPT_TYPE}.out.txt
-
+#Define the input, output and template file
+#names for the text structure preservation
+INPUT_FILE=${WORK_DIR}/${JOB_UID}.${SCRIPT_TYPE}.in.txt
+TEMPL_FILE=${WORK_DIR}/${JOB_UID}.templ
+OUTPUT_FILE=${WORK_DIR}/${JOB_UID}.${SCRIPT_TYPE}.out.txt
+#Check that the input file does exist
 if ! [ -e "${INPUT_FILE}" ]; then
-   error "${INPUT_FILE} could not be found!"
-   fail
+    info
+    error "The input file ${INPUT_FILE} could not be found!"
+    fail
 fi
 
-#Get the language
-export LANGUAGE=${3}
-
+#############################################################
+#Check if the language param is well defined
+if [ -z "${LANGUAGE}" ]; then
+    info
+    error "The <language> parameter is not defined!"
+    fail
+fi
 #Check if the language can be auto detected
 if [ "${SCRIPT_TYPE}" = "post" ]; then
-   if [ "${LANGUAGE}" = "auto" ]; then
-      error "The language auto detection is not allowed!"
-      fail
-   fi
+    if [ "${LANGUAGE}" = "auto" ]; then
+        info
+        error "The language auto detection is not allowed!"
+        fail
+    fi
 fi
+
+#Restore the parameters, as they might be parsed again later
+set -- ${SCRIPT_PARAMS[@]}
