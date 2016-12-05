@@ -108,7 +108,7 @@ export SCRIPT_TYPE="pre"
 #################################################################
 #Define and initialize the additional script parameter values
 SC_NLP_DIR="."
-SC_NLP_BACKENDS=""
+SC_NLP_BACKENDS="-backends localhost:9000"
 
 #Parse the additional parameters of the post-processing script
 for i in "$@"
