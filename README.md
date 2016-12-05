@@ -9,7 +9,7 @@ This project is aimed at creating a basic phrase-based statistical machine trans
 
 + **bpbd-server** - the translation server consisting of the following main components:
     - *Decoder* - the decoder component responsible for translating text from one language into another
-    - *LM* - the language model implementation allowing for seven different trie implementations and responsible for estimating the target language phrase probabilities
+    - *LM* - the language model implementation allowing for seven different three implementations and responsible for estimating the target language phrase probabilities
     - *TM* - the translation model implementation required for providing source to target language phrase translation and the probabilities thereof
     - *RM* - the reordering model implementation required for providing the possible translation order changes and the probabilities thereof
 + **bpbd-balancer** - the load balancer that has the same WebSockets interface as **bpbd-server** and is supposed to distribute load balance between multiple translation server instances.
@@ -460,7 +460,13 @@ In order to start the processor server one must have a valid configuration file 
 
 Note that, the pre/post- processor scripts do not need to be bash scripts. They can be anything command-line executable that satisfies the scripts' interface. Run these scripts to get more details on the expected interface and functionality of the pre/post-processing scripts.
 
-We also provide pre-integrated third-party pre/post-processing software that can be invoked by using the `pre_process_nltk.sh` and  `post_process_nltk.sh` scripts. Please note that these have a richer interface than the dummy scripts. Run them with no parameters to get more info. More details on these scripts will be provided in the next section.
+For convenience and the sake of example, we also provide pre-integrated third-party pre/post-processing software that can be invoked by using the `pre_process_nltk.sh` and  `post_process_nltk.sh` scripts. Please note that, these have a richer interface than the dummy scripts. Run them with no parameters to get more info. These two scripts require [python NLTK](http://www.nltk.org/) to be installed. At present `pre_process_nltk.sh`, with NLTK installed, supports languages such as: Dutch, Finnish, Greek, Polish, Spanish, Czech, English, French, Italian, Portuguese, Swedish, Danish, Estonian, German, Norwegian, Slovene, and Turkish. In case [Stanford Core NLP](http://stanfordnlp.github.io/CoreNLP/download.html) is also installed and the Chinese models jar is present, then `pre_process_nltk.sh` supports Chinese as well. Support for post processing, via `post_process_nltk.sh`, is twofold. For de-tokenization it is by default ensured for languages such as: English, French, Spanish, Italian, and Czech. True-casing is only supported for the languages with provided true-caser models. At present we support two true-caseing scripts: [`Moses`](https://github.com/moses-smt/mosesdecoder) and [`Truecaser`](https://github.com/nreimers/truecaser). Both of these are included in the distribution and are located under: `./scripts/text/truecaser`. Note that, the true-caser model training scripts are included in this distribution and are located the corresponding true-casing script folders:
+
+  * For Moses: `./scripts/text/truecaser/moses/`
+  * For Truecaser: `./scripts/text/truecaser/truecaser/`
+
+More details on these scripts will be provided in the next section. 
+
 
 The content of the text processor configuration file is self explanatory and contains a significant amount of comments. When run with a properly formed configuration file, **bpbd-processor** gives the following output. Note the `-d info3` option ensuring additional information output during starting up and connecting to translation servers.
 
@@ -486,13 +492,13 @@ To make our software complete and also to show how third-party pre/post-processi
 
    * `./script/text/pre_process_nltk.sh:`
       * Uses [stop-words analysis](https://en.wikipedia.org/wiki/Stop_words) to detect languages.
-      * Allows language auto detection for NLTK known stop-word sets.
+      * Allows language auto detection for [NLTK](http://www.nltk.org/) known stop-word sets.
       * Supports text template generation for text structure restoration.
-      * Supports text tekenization and lowercasing as provided by NLTK.
+      * Supports text tekenization and lowercasing as provided by [NLTK](http://www.nltk.org/).
    * `./script/text/post_process_nltk.sh:`
       * Supports sentence capitalization as a separate option.
       * Provides text de-tokenization based on [MTMonkey scripts](https://github.com/ufal/mtmonkey)
-      * Allows text true-casing based on Moses or Truecaser scripts.
+      * Allows text true-casing based on [`Moses`](https://github.com/moses-smt/mosesdecoder) or [`Truecaser`](https://github.com/nreimers/truecaser) scripts.
       * Supports text structure restoration from a pre-generated template.
 
 These scripts call on python or Perl scripts delivered with the distribution. The latter are configurable by their command-line parameters which are typically well documented. In order to change the default scripts' behavior we expect our users to edit these parameters inside the `pre_process_nltk.sh` and `post_process_nltk.sh` scripts. It is also important to note that:
@@ -503,7 +509,7 @@ These scripts call on python or Perl scripts delivered with the distribution. Th
    * The list of `post_process_nltk.sh` script parameters is richer than that of ``post_process.sh``. The former requires the `<true_caser_type>` parameter to be specified and also has an optional parameter `<models-dir>`. Run `post_process_nltk.sh` with no parameters to get more info.
    * The `<true_caser_type>` parameter of `post_process_nltk.sh` allows to enable one of the two true-caser scripts: [`Moses`](https://github.com/moses-smt/mosesdecoder) or [`Truecaser`](https://github.com/nreimers/truecaser).
    * The  `<models-dir>` parameter of `post_process_nltk.sh` is optional but defines the folder where the true-caser model files are to be found. If not specified then `<models-dir>` is set to `.`.
-   * The true-casing models are supposed to have file names as the lower-cased english names of the corresponding languages. The model file extensions are supposed to be `*.tcm` for Moses and `*.obj` for Truecaser, e.g.: `english.tcm` or `chinese.obj`.
+   * The true-casing models are supposed to have file names as the lower-cased English names of the corresponding languages. The model file extensions are supposed to be `*.tcm` for Moses and `*.obj` for Truecaser, e.g.: `english.tcm` or `chinese.obj`.
    * Our project does not provide any default true caser models neither for Moses nor for Truecaser. So for `post_process_nltk.sh` to be used with the parameter `<true_caser_type>` other than `none` one needs to obtain such model(s) for used target language(s).
    * In order to generate new true-caser models, one can use the corresponding training software scripts provided with the distribution: `./script/text/truecase/moses/train-truecaser.perl` for Moses and `./script/text/truecase/truecaser/TrainTruecaser.py` for Truecaser. These scripts are taken "as-is" from the corresponding software sources. `TrainTruecaser.py` expects the training corpus to be located in the `train.txt` file.
    * Although `Truecaser` perhaps allows for better accuracy, its training script generates much larger models than those of `Moses`. Therefore if true-casing is needed, to minimize post-processing times, we suggest using `post_process_nltk.sh` with `<true_caser_type>` set to `moses`. 
@@ -1093,7 +1099,7 @@ In the example object above we have the following fields:
 
 * **stat_code** - *an unsigned integer* indicating the status code of the response, the same meaning as for (T) responses;
 * **stat_msg** - *a string* storing the response status message, the same meaning as for (T) responses;
-* **job_token** - *a string* containing the job token. For the pre-processor response, it is updated by the text processing service: The original job token sent with the pre-processor request is made unique to the user session. This updated tokes is then to be used for any subsequent post-processing requests of the target text corresponding to this source text. For the post-processor response, the value of the job token does not change and is the same as sent with the post-processor request;
+* **job_token** - *a string* containing the job token. For the pre-processor response, it is updated by the text processing service: The original job token sent with the pre-processor request is made unique to the user session. This updated tokens is then to be used for any subsequent post-processing requests of the target text corresponding to this source text. For the post-processor response, the value of the job token does not change and is the same as sent with the post-processor request;
 * **num_chs** - *an unsigned integer* indicating the number of chunks in which the pre/post-processed text is split for being sent back to the client;
 * **ch_idx** - *an unsigned integer* value of the current chunk index, starts from zero;
 * **lang** - *a string* storing the text's language. In case the pre-processor request was sent with the **lang** field value set to "auto", the pre-processor service supports language detection, and the language was successfully detected, this field will contains the name of the detected source language;
