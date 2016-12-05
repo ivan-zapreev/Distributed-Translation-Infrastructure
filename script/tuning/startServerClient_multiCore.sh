@@ -78,7 +78,7 @@ else
         let counter=counter+1
         echo attempt number $counter >> client.log
     done
-    $BASEDIR/../combine-lattices.sh $expDir/lattices ../$trgFile lattices feature_scores $no_parallel >& combine.log
+    $BASEDIR/combine-lattices.sh $expDir/lattices ../$trgFile lattices feature_scores $no_parallel >& combine.log
 fi
 
 
