@@ -54,6 +54,7 @@ import codecs
 import getopt
 from sys import exit
 from sys import argv
+from regex import Regex, UNICODE, IGNORECASE
 
 #Make sure we only work with the UTF-8 strings
 import sys
@@ -67,19 +68,114 @@ def display_usage():
     Display program usage information.
     """
     print >> sys.stderr, __doc__
+
+
+#----------------------------------------------------------------------
+def output_sentence(is_first_sent, sentence):
+    """\
+    Allows to output the sentence to the standard output, if it is not empty
+    also checks whether it is the first sentence being output or not, if not
+    then it is being preceeded with a new line.
+    """
+    #Strip the sentence to remove unneded whitespaces
+    sentence = sentence.strip()
+    #If this is not the first sentence we read
+    if sentence != "":
+        #If this is the first sentence we dump no starting
+        #new line, otherwise start at a new line.
+        if is_first_sent:
+            sys.stdout.write(sentence)
+            is_first_sent = False
+        else:
+            sys.stdout.write("\n" + sentence.strip())
+    #Return the first sentence flag and re-set sentence value
+    return is_first_sent, ""
+
+
+#----------------------------------------------------------------------
+def convert_data(snlp_file, options):
+    """\
+    Converts the text from file and outputs it to STDOUT
+    In case the source and template options are given, it
+    also produces the template file
+    """
+    #Set the flag indicating whether we need to produce the template
+    is_templ = ( options.get('is_source') & options.get('is_templ') )
     
+    #In case the template is to be produced open the files
+    if is_templ:
+        with codecs.open( options['source_file_name'], "r", DEFAULT_ENCODING) as source_in:
+            #Read the source text text
+            text = source_in.read();
+            
+    #Read the SNLP file into lines
+    lines = snlp_file.readlines();
+    #Declare the Regular expression templates
+    sent_reg_ex = Regex(r'^Sentence\s\#\d+\s\(\d+\stokens\)\:$')
+    token_reg_ex = Regex(r'^\[Text=(.*)\sCharacterOffsetBegin=\d+\sCharacterOffsetEnd=\d+\]$')
+    #Declare sentence variable for storing the tokenized sentence
+    tok_sent = ""
+    #Declare sentence variable for storing the original sentence
+    raw_sent = ""
+    #Declare the flag indicating that this is the first sentence we output
+    is_first_sent = True
+    #Declare the sentence index
+    idx = 0
+    #Iterate the file line by line and write output
+    for line in lines:
+        #Chek if we have a new sentence start
+        if sent_reg_ex.match(line):
+            #Output the sentence there is up till now, if any
+            is_first_sent, tok_sent = output_sentence(is_first_sent, tok_sent)
+        #Check if we have a new token start
+        else:
+            #Try to match the token line
+            match = token_reg_ex.match(line)
+            #If we have matched the line
+            if match:
+                #Append the token to the sentence and add a space character
+                tok_sent += match.group(1) + " "
+                #If the template is to be generated
+                if is_templ & (raw_sent != ""):
+                    #Replace the sentence with its placeholder
+                    text = text.replace(raw_sent.strip(), "{"+str(idx)+"}", 1)
+                    idx += 1
+                    #Re-set the raw sentence
+                    raw_sent = ""
+
+            #In this case we have an original sentence for templating
+            else:   
+                #If the template is to be generated
+                if is_templ:
+                    #Build up the raw sentence, possibly multi-line
+                    if raw_sent == "":
+                        raw_sent += line
+                    else:
+                        raw_sent += line
+    
+    #Output the last sentence that was read in the loop, if any
+    is_first_sent, tok_sent = output_sentence(is_first_sent, tok_sent)
+    
+    #Write the template file bacl
+    if is_templ:
+        with codecs.open( options['templ_file_name'], "w", DEFAULT_ENCODING) as templ:
+            #Output the resulting text
+            templ.write(text);
+
+#----------------------------------------------------------------------
 if __name__=='__main__':
     # check on the number of arguments
     if len(argv) == 0:
         display_usage()
         exit(1)
     
-    # parse options
+    #Parse options
     opts, filenames = getopt.getopt(argv[1:], 'ht:s:')
     options = {}
     help = False
     for opt, arg in opts:
         if opt == '-s':
+            options['is_source'] = True
             options['source_file_name'] = arg;
         elif opt == '-t':
             options['is_templ'] = True
@@ -87,20 +183,23 @@ if __name__=='__main__':
         elif opt == '-h':
             help = True
     
-    # display help
+    #Display help
     if help:
         display_usage()
         exit(0)
         
-    # the number of file names it too large
+    #The number of file names it too large
     if len(filenames) > 1:
         print "ERROR: Improper list of arguments: ", argv[1:]
         exit(1)
-    
-    #Check that the language is defined, it is compulsory
-    if not 'language' in options:
-        print "ERROR: Please specify the input file's language"
+        
+    #Check that we either have -s and -t or not
+    if options.get('is_source') != options.get('is_templ'):
+        print "ERROR: Using -s presumes -t and vise versa!"
         display_usage()
         exit(1)
 
-    #ToDo process text
+    #Open the file with UTF-8 text
+    with codecs.open(filenames[0], "r", DEFAULT_ENCODING) as file:
+        #Call the function doing text processing
+        convert_data(file, options);

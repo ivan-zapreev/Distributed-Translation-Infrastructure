@@ -30,10 +30,17 @@ function info() {
     echo "SHORT:"
     echo "------"
     echo "   This is a NLTK based script for pre-processing of a text in"
-    echo "   a given language. The script supports language detection"
+    echo "   a given language. The script supports language detection."
+    echo "   At the moment the script supports all the languages supported"
+    echo "   by NLTK: Dutch, Finnish, Greek, Polish, Spanish, Czech, English,"
+    echo "            French, Italian, Portuguese, Swedish, Danish, Estonian,"
+    echo "            German, Norwegian, Slovene, Turkish."
+    echo "   The script also supports Chinese if the Stanford Core NLP with"
+    echo "   the corresponding chinese language models jar is provided. The"
+    echo "   latter shall reside in the same folder as other Core NLP jars."
 
     help1="    <core-nlp-dir> - the directory with Stanford Core NLP\n"
-    help2="                     as obtained from:\n"
+    help2="                     as obtained from, default is '.':\n"
     help3="                        http://stanfordnlp.github.io/CoreNLP\n"
     help4="                     Optional, is only needed for Chinese.\n"
 
@@ -44,13 +51,15 @@ function info() {
     help9="                   If not specified, defaults to: \n"
     help10="                        localhost:9000\n"
 
-    usage_pre ${0} "<core-nlp-dir> <back-ends>" "${help1}${help2}${help3}${help4}${help5}${help6}${help7}${help8}${help9}${help10}"
+    usage_pre ${0} "--cnlp-dir=<core-nlp-dir> --back-ends=<back-ends>" "${help1}${help2}${help3}${help4}${help5}${help6}${help7}${help8}${help9}${help10}"
 }
 
-#Clean up after the script before existing
+#Clean up after the script failed before existing
 function clean() {
     #Remove the template file
     rm -f ${TEMPL_FILE}
+    #Remove the Stanford Core NLP output file
+    rm -f ${SNLP_OUTPUT_FILE}
 }
 
 #Allows to check the availability of java and its version
@@ -61,19 +70,31 @@ function clean() {
 function check_java_and_dir() {
     #Check if the java is present
     JAVA=`which java | head -n 1`
-    if [ -z "${JAVA}" ]; then
+    if [[ -z "${JAVA}" ]]; then
         error "Could not find Java, can not run Stanford Core NLP!"
-        fail        
+        fail
     fi
     #Check that the java version 
     JAVA_VERSION=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}')
     if [[ "${JAVA_VERSION}" < "${1}" ]]; then
         error "Stanford Core NLP requires java version ${1}+, found ${JAVA_VERSION}!"
-        fail        
+        fail
     fi
     #Check that the Stanford Core NLP path does exist
-    if ! [ -d "${2}" ]; then
-       error "The specified Stanford Core NLP path: ${2} is not a directory!"
+    if ! [[ -d "${2}" ]]; then
+       error "The specified Stanford Core NLP path: '${2}' is not a directory!"
+       fail
+    fi
+    #Check that the jars are present
+    CORE_NLP_JARS=`ls ${2}/stanford-corenlp-*.jar`
+    if [[ -z "${CORE_NLP_JARS}" ]]; then
+       error "The specified Stanford Core NLP path: '${2}' does not contain the Core NLP jars!"
+       fail
+    fi
+    #Check that the chinese model jar is present
+    CORE_NLP_JARS=`ls ${2}/stanford-chinese-corenlp-*-models.jar`
+    if [[ -z "${CORE_NLP_JARS}" ]]; then
+       error "The specified Stanford Core NLP path: '${2}' does not contain the Chinese models jar!"
        fail
     fi
 }
@@ -91,36 +112,52 @@ export SCRIPT_TYPE="pre"
 #Process the script parameters
 . ${BASEDIR}/process_params.sh
 
-#Check if the stanford core nlp home parameter is given
-export SC_NLP_DIR="."
-if ! [ -z "${4}" ]; then
-    SC_NLP_DIR=${4}
-fi
+#################################################################
+#Define and initialize the additional script parameter values
+SC_NLP_DIR="."
+SC_NLP_BACKENDS="-backends localhost:9000"
 
-#Check if the stanford core nlp backends list is specified
-export SC_NLP_BACKENDS=""
-if ! [ -z "${5}" ]; then
-    SC_NLP_BACKENDS="-backends ${5}"
-fi
+#Parse the additional parameters of the post-processing script
+for i in "$@"
+do
+    case $i in
+        --cnlp-dir=*)
+            #Store the true caser type
+            SC_NLP_DIR="${i#*=}"
+            shift
+            ;;
+        --back-ends=*)
+            #Store the true caser models directory
+            SC_NLP_BACKENDS="-backends ${i#*=}"
+            shift
+            ;;
+        *)
+            #Do nothing, this is some other parameter to be parsed elsewhere
+            shift
+            ;;
+    esac
+done
 
+#Resolve the home paths and others if any
+eval SC_NLP_DIR=${SC_NLP_DIR}
+
+#################################################################
 #Check if the language is to be auto detected
-export DETECTED_LANG=""
-if [ "${LANGUAGE}" = "auto" ]; then
+DETECTED_LANG=""
+if [[ "${LANGUAGE}" = "auto" ]]; then
     #Execute the language detection script there is and return an error if needed
-    DETECTED_LANG=$(python ${BASEDIR}/lang_detect_nltk.py ${INPUT_FILE})
-    rc=$?
-    if [[ $rc != 0 ]]; then
-        echo ${DETECTED_LANG}
-        clean
-        exit $rc;
-    fi
+    python ${BASEDIR}/lang_detect_nltk.py ${INPUT_FILE}>${OUTPUT_FILE}
+    #Check clean and fail if NOK
+    check_clean_fail $?
+    #If it is OK then get the detected language from the output file
+    DETECTED_LANG=`cat ${OUTPUT_FILE}`
 else
     DETECTED_LANG=${LANGUAGE}
 fi
 
+#################################################################
 #Lowercase the language
 DETECTED_LANG_LC=`echo ${DETECTED_LANG}| tr A-Z a-z`
-
 #Run the pre-processing script, which one depends on
 #the concrete language. Some are supported by NLTK
 #some are to be done with Stanford Core NLP. Here we
@@ -128,52 +165,60 @@ DETECTED_LANG_LC=`echo ${DETECTED_LANG}| tr A-Z a-z`
 case "${DETECTED_LANG_LC}" in
     chinese)
         #Check that the Stanford Core NLP is configured
-        check_java_and_dir "1.8" ${SC_NLP_DIR}
+        check_java_and_dir "1.8" "${SC_NLP_DIR}"
         #Call the client and make it do the work
+        #ToDo: When the client termination bug is fixed remove " &" at the end of the invocation command!
         java -cp "${SC_NLP_DIR}/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLPClient -props StanfordCoreNLP-${DETECTED_LANG_LC}.properties -annotators tokenize,ssplit -file ${INPUT_FILE} -outputDirectory ${WORK_DIR} -outputFormat text ${SC_NLP_BACKENDS} 1>/dev/null 2>${OUTPUT_FILE} &
-        #Remember the java process id
-        JAVA_PROCESS_ID=$!
         
-        #Wait until the file is created and then terminate the java process
-        #ToDo: Note that this is a workaround for the client bug that prevents
-        #the client of being terminated after the file is annotated
-        SNLP_OUTPUT_FILE=${INPUT_FILE}.out
-        while ! [ -e ${SNLP_OUTPUT_FILE} ]; do
+        #########################################################################
+        #NOTE: The next block is a workaround for the client bug that prevents
+        #      the client from being terminated after the file is annotated
+        #
+            #Remember the java process id
+            JAVA_PROCESS_ID=$!
+            #Disown the process to prevent the killed message printed
+            disown
+
+            #Wait until the file is created
+            SNLP_OUTPUT_FILE=${INPUT_FILE}.out
+            while ! [ -e ${SNLP_OUTPUT_FILE} ]; do
+                sleep 1
+            done
+            #Sleep an extra second for safety
             sleep 1
-        done
-        #Kill the java process now and wait until it terminates
-        kill -9 ${JAVA_PROCESS_ID}
-        wait ${JAVA_PROCESS_ID}
-        
-        #ToDo: Check on the returned code, when
-        #we do not need to kill java any more!
-        #rc=$?
-        #if [[ $rc != 0 ]]; then
-        #    echo `cat ${OUTPUT_FILE}`
-        #    clean
-        #    exit $rc;
-        #fi
+            #Kill the java process now and wait until it terminates
+            kill -9 ${JAVA_PROCESS_ID}
+            wait ${JAVA_PROCESS_ID}
+        #ToDo: Replace with:
+            #Check clean and fail if NOK
+            #check_clean_fail $?
+        #
+        #########################################################################
         
         #Post-process the CoreNLP output into the text file
         #Create a template file for the originl text
         python ${BASEDIR}/pre_process_snlp.py -t ${TEMPL_FILE} -s ${INPUT_FILE} ${SNLP_OUTPUT_FILE} > ${OUTPUT_FILE}
+        #Check clean and fail if NOK
+        check_clean_fail $?
+        
+        #DEBUG: Create back files for analysis
+        #cp -f ${SNLP_OUTPUT_FILE} ${SNLP_OUTPUT_FILE}.bak
+        
+        #Remove the Stanford Core NLP output file
+        rm -f ${SNLP_OUTPUT_FILE}
         ;;
     *)
         #Call the NLTK based pre-processing script
         python ${BASEDIR}/pre_process_nltk.py -l ${DETECTED_LANG} -t ${TEMPL_FILE} ${INPUT_FILE} > ${OUTPUT_FILE}
-        #Check on the returned code from the script
-        rc=$?
-        if [[ $rc != 0 ]]; then
-            echo `cat ${OUTPUT_FILE}`
-            clean
-            exit $rc;
-        fi
+        #Check clean and fail if NOK
+        check_clean_fail $?
+        ;;
 esac
 
 #DEBUG: Create back files for ananlysis
-#cp ${INPUT_FILE} ${INPUT_FILE}.bak
-#cp ${TEMPL_FILE} ${TEMPL_FILE}.bak
-#cp ${OUTPUT_FILE} ${OUTPUT_FILE}.bak
+#cp -f ${INPUT_FILE} ${INPUT_FILE}.bak
+#cp -f ${TEMPL_FILE} ${TEMPL_FILE}.bak
+#cp -f ${OUTPUT_FILE} ${OUTPUT_FILE}.bak
 
 #Output the "detected" language
 echo ${DETECTED_LANG}

@@ -121,11 +121,37 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
     }
 
     /**
+     * This function allows to set a list of target languages into the selectin box
+     * @param Array<String> the list of target languages to be set into the selection box
+     */
+    function set_target_languages(targets) {
+        var i;
+        
+        //Re-set the target select to no options
+        to_lang_sel.html("");
+        
+        //Check if the list of target languages is present
+        if (targets !== undefined) {
+            //Add "Please select" in case there is more than one target option available
+            if (targets.length > 1) {
+                to_lang_sel.html(get_select_option("", PLEASE_SELECT_STRING));
+            }
+            //Add the target languages to the selection box
+            for (i = 0; i < targets.length; i += 1) {
+                to_lang_sel.html(to_lang_sel.html() + get_select_option(targets[i], targets[i]));
+            }
+        } else {
+            //If the list of target languages is empty then just fill it with something.
+            to_lang_sel.html(get_select_option("", PLEASE_SELECT_STRING));
+        }
+    }
+    
+    /**
      * This function is called in case once thanges the selection of the source language for the translation.
      * This function then loads the appropriate list of the supported target languages.
      */
     function on_source_lang_select() {
-        var i, source_lang, targets;
+        var source_lang, targets;
 
         //A new source language means new translation
         needs_new_trans_fn();
@@ -133,28 +159,13 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
         window.console.log("The source language is selected");
         source_lang = get_selected_source_lang();
 
-        //Re-set the target select to no options
-        to_lang_sel.html("");
-
         if (source_lang !== "") {
             window.console.log("The source language is not empty!");
+            //Obtain the list of targets corresponding to the source language
             targets = module.language_mapping[source_lang];
-
-            //Check if the list of target languages is present
-            if (targets !== undefined) {
-                //Add "Please select" in case there is more than one target option available
-                if (targets.length > 1) {
-                    to_lang_sel.html(get_select_option("", PLEASE_SELECT_STRING));
-                }
-
-                window.console.log(source_lang + " -> [ " + targets + " ]");
-                for (i = 0; i < targets.length; i += 1) {
-                    to_lang_sel.html(to_lang_sel.html() + get_select_option(targets[i], targets[i]));
-                }
-            } else {
-                //If the list of target languages is empty then just fill it with something.
-                to_lang_sel.html(get_select_option("", PLEASE_SELECT_STRING));
-            }
+            window.console.log(source_lang + " -> [ " + targets + " ]");
+            //Set the targets into the selection box
+            set_target_languages(targets);
         }
     }
     
@@ -254,6 +265,10 @@ function create_languages(logger_mdl, from_lang_sel, to_lang_sel, needs_new_tran
             if (window.$.inArray(target_lang, targets) >= 0) {
                 //The target language is present
                 from_lang_sel.val(source_lang);
+                //Updat the targets list and re-select the target
+                set_target_languages(targets);
+                //Set the current target language as selected again
+                to_lang_sel.val(target_lang);
                 //The language was successfully set
                 return true;
             } else {

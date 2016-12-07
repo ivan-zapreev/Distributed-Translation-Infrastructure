@@ -7,7 +7,7 @@ function usage_post(){
   echo "------"
   echo "USAGE:"
   echo "------"
-  echo " ${0} <work-dir> <job-uid> <language> ${2}"
+  echo " ${0} --work-dir=<work-dir> --job-uid=<job-uid> --lang=<language> ${2}"
   echo "    <work-dir> - the work directory to read/write files from/into"
   echo "    <job-uid> - the unique identifier of the post-processor job."
   echo "               The job input file should have name:"
@@ -29,7 +29,7 @@ function usage_pre(){
   echo "------"
   echo "USAGE:"
   echo "------"
-  echo " ${0} <work-dir> <job-uid> <language> ${2}"
+  echo " ${0} --work-dir=<work-dir> --job-uid=<job-uid> --lang=<language> ${2}"
   echo "    <work-dir> - the work directory to read/write files from/into"
   echo "    <job-uid> - the unique identifier of the pre-processor job."
   echo "               The job input file should have name:"
@@ -53,4 +53,19 @@ function error() {
 #Allows the program to fail
 function fail() {
    exit 1
+}
+
+#Allows to check on the exit code fiven as a
+#parameter and fail calling on the clean function.
+#This script also cats the output file as it shall
+#then store the error message
+# ${0} - the script name
+# ${1} - the exit code of a process
+function check_clean_fail() {
+    rc=$1
+    if [[ $rc != 0 ]]; then
+        cat ${OUTPUT_FILE}
+        clean
+        exit $rc;
+    fi
 }
