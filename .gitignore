@@ -6,6 +6,19 @@
 *.pyc
 *.tcm
 
+#OcamL
+*.cmi
+*.cmo
+*.cmx
+
+#MegaM executables and model files
+/script/tuning/megam_0.92/.depend
+/script/tuning/megam_0.92/large
+/script/tuning/megam_0.92/megam
+/script/tuning/megam_0.92/megam.opt
+/script/tuning/megam_0.92/small2
+/script/tuning/megam_0.92/weights
+
 # Precompiled Headers
 *.gch
 *.pch
@@ -35,6 +48,10 @@
 
 #The text editor's rubbish
 *.bak
+
+#The screen logs
+screenlog.*
+
 
 # Executables
 *.exe
