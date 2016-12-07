@@ -31,6 +31,6 @@ export REFTXT=$EVAL/mt04.chinese-english.ref.tok.txt
 
 export TUNER="--mert-script=PRO-14"
 export EXTPATH=$BASEDIR/megam_0.92/
-export OISTEROPTIONS="--conf=server.cfg --no-parallel=2 --trace=1 --nbest-size=1500 --src-language=chinese $TUNER"
+export TUNING_OPTIONS="--conf=server.cfg --no-parallel=2 --trace=1 --nbest-size=1500 --src-language=chinese $TUNER"
 
-$BASEDIR/scripts/oister-tuner.pl --src=$SRCTXT --node-scoring --ref=$REFTXT. --decoder=$BASEDIR/startServerClient_multiCore.sh --external-path=$EXTPATH $OISTEROPTIONS
+$BASEDIR/scripts/oister-tuner.pl --src=$SRCTXT --node-scoring --ref=$REFTXT. --decoder=$BASEDIR/startServerClient_multiCore.sh --external-path=$EXTPATH $TUNING_OPTIONS
