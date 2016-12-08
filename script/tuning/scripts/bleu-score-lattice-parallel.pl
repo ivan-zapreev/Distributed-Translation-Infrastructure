@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+use File::Basename;
 
 BEGIN {
     if(!defined($ENV{'OISTERHOME'})
@@ -33,6 +34,9 @@ use PerlIO::gzip;
 
 my $OISTERHOME=$ENV{'OISTERHOME'};
 
+my $script_name = basename($0);
+print STDERR "$script_name pid=$$\n";
+
 
 my($lattice_file,$O_score_file,$mu,$src_file,@ref_files)=@ARGV;
 
@@ -60,15 +64,15 @@ if($lattice_file=~/\.gz/) {
 }
 while(defined(my $line=<F>)) {
     if($line=~/^<SENT ID=([0-9]+)>/) {
-	my $sent_id=$1;
-	$num_sentences_remaining++;
-	my $lattice_size=0;
-	while(defined($line=<F>) && $line!~/^<\/SENT>/) {
-	    $_=$line;
-	    $lattice_size+=tr/\|//;
-	}
-	$lattice_sizes{$sent_id}=$lattice_size;
-	$total_size+=$lattice_size;
+        my $sent_id=$1;
+        $num_sentences_remaining++;
+        my $lattice_size=0;
+        while(defined($line=<F>) && $line!~/^<\/SENT>/) {
+            $_=$line;
+            $lattice_size+=tr/\|//;
+        }
+        $lattice_sizes{$sent_id}=$lattice_size;
+        $total_size+=$lattice_size;
     }
 }
 close(F);
@@ -82,16 +86,14 @@ my $sent_to;
 print STDERR "avg_size=$avg_size\n";
 foreach my $sent_id (sort {$a<=>$b} (keys %lattice_sizes)) {
     if(!defined($sent_from)) {
-	$sent_from=$sent_id;
+        $sent_from=$sent_id;
     }
     $num_sentences_remaining--;
     $current_size+=$lattice_sizes{$sent_id};
-#    print STDERR "lattice_sizes{$sent_id}=$lattice_sizes{$sent_id}\n";
     if($current_size>=$avg_size || $num_sentences_remaining==0) {
-	push(@batches,"$sent_from $sent_id");
-#	push(@batches,"$sent_from $sent_id $current_size");
-	$current_size=0;
-	undef $sent_from;
+        push(@batches,"$sent_from $sent_id");
+        $current_size=0;
+        undef $sent_from;
     }
 }
 
@@ -109,15 +111,13 @@ for(my $i=0; $i<@batches; $i++) {
     $active_jobs{$finished_file}=$i;
 }
 
-#exit(-1);
-
 while($num_active_jobs>0) {
     sleep(3);
     foreach my $finished_file (keys %active_jobs) {
-	if(-e "$finished_file" && !exists($finished_jobs{$finished_file})) {
-	    $num_active_jobs--;
-	    $finished_jobs{$finished_file}=$active_jobs{$finished_file};
-	}
+        if(-e "$finished_file" && !exists($finished_jobs{$finished_file})) {
+            $num_active_jobs--;
+            $finished_jobs{$finished_file}=$active_jobs{$finished_file};
+        }
     }
 }
 
@@ -132,7 +132,7 @@ for(my $i=0; $i<@batches; $i++) {
     my $batch_file="$lattice_file.batch.$i";
     open(F,"<$batch_file") ||die("can't open file $batch_file: $!\n");
     while(<F>) {
-	print $_;
+        print $_;
     }
     close(F);
     unlink($batch_file);

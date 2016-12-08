@@ -3,7 +3,7 @@
 use strict;
 use Getopt::Long "GetOptions";
 use warnings;
-
+use File::Basename;
 
 my $_HELP=0;
 my $work_dir;
@@ -37,7 +37,8 @@ if($_HELP) {
     exit(-1);
 }
 
-#my($work_dir,$nbest_pool,$iteration,$no_parallel,$lattice_oracle_scored,$model_nbest_scored,$model_nbest_lai_scored)=@ARGV;
+my $script_name = basename($0);
+print STDERR "$script_name pid=$$\n";
 
 $no_parallel||=1;
 
@@ -48,13 +49,13 @@ for(my $i=0; $i<$no_parallel; $i++) {
     my $finished_file="$work_dir/pro_finished.$i";
     my $pro_call;
     if(defined($lattice_oracle_scored) && defined($model_nbest_scored)) {
-	if(defined($model_nbest_lai_scored)) {
-	    $pro_call="nohup sh -c \'$OISTERHOME/tuning/PRO/PRO-optimizer-lattice.pl --work-dir=$work_dir --nbest-pool=$nbest_pool --sample-id=$i --lattice-oracle-scored=$lattice_oracle_scored --model-nbest-scored=$model_nbest_scored --lattice-lai-scored=$model_nbest_lai_scored --conf=$config_file > $work_dir/run$iteration.weights$i\; touch $finished_file 2> $work_dir/pro_err.$i\' &";
-	} else {
-	    $pro_call="nohup sh -c \'$OISTERHOME/tuning/PRO/PRO-optimizer-lattice.pl --work-dir=$work_dir --nbest-pool=$nbest_pool --sample-id=$i --lattice-oracle-scored=$lattice_oracle_scored --model-nbest-scored=$model_nbest_scored > $work_dir/run$iteration.weights$i\; touch $finished_file 2> $work_dir/pro_err.$i\' &";
-	}
+        if(defined($model_nbest_lai_scored)) {
+            $pro_call="nohup sh -c \'$OISTERHOME/tuning/PRO/PRO-optimizer-lattice.pl --work-dir=$work_dir --nbest-pool=$nbest_pool --sample-id=$i --lattice-oracle-scored=$lattice_oracle_scored --model-nbest-scored=$model_nbest_scored --lattice-lai-scored=$model_nbest_lai_scored --conf=$config_file > $work_dir/run$iteration.weights$i\; touch $finished_file 2> $work_dir/pro_err.$i\' &";
+        } else {
+            $pro_call="nohup sh -c \'$OISTERHOME/tuning/PRO/PRO-optimizer-lattice.pl --work-dir=$work_dir --nbest-pool=$nbest_pool --sample-id=$i --lattice-oracle-scored=$lattice_oracle_scored --model-nbest-scored=$model_nbest_scored > $work_dir/run$iteration.weights$i\; touch $finished_file 2> $work_dir/pro_err.$i\' &";
+        }
     } else {
-	$pro_call="nohup sh -c \'$OISTERHOME/tuning/PRO/PRO-optimizer.pl $work_dir $nbest_pool $i > $work_dir/run$iteration.weights$i\; touch $finished_file 2> $work_dir/pro_err.$i\' &";
+        $pro_call="nohup sh -c \'$OISTERHOME/tuning/PRO/PRO-optimizer.pl $work_dir $nbest_pool $i > $work_dir/run$iteration.weights$i\; touch $finished_file 2> $work_dir/pro_err.$i\' &";
     }
     $to_finish_files{$finished_file}=1;
     print STDERR "$pro_call\n";
@@ -71,7 +72,7 @@ while(!$finished) {
         }
     }
     if($all_files_present) {
-	sleep(10);
+        sleep(10);
         $finished=1;
     } else {
         sleep(5);
@@ -84,12 +85,12 @@ my @feature_counts;
 for(my $i=0; $i<$no_parallel; $i++) {
     open(F,"<$work_dir/run$iteration.weights$i")||die("can't open file $work_dir/run$iteration.weights$i: $!\n");
     while(defined(my $line=<F>)) {
-	if($line=~/^\s*[F]([0-9]+)[\s\t]+([0-9\-e\+\.]+)\s*\n/) {
-	    my $feature_id=$1;
-	    my $feature_weight=$2;
-	    $feature_weights[$feature_id]+=$feature_weight;
-	    $feature_counts[$feature_id]++;
-	}
+        if($line=~/^\s*[F]([0-9]+)[\s\t]+([0-9\-e\+\.]+)\s*\n/) {
+            my $feature_id=$1;
+            my $feature_weight=$2;
+            $feature_weights[$feature_id]+=$feature_weight;
+            $feature_counts[$feature_id]++;
+        }
     }
     close(F);
 }

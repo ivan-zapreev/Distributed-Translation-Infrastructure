@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use Getopt::Long "GetOptions";
+use File::Basename;
 
 my $_HELP=0;
 my $work_dir;
@@ -28,13 +29,12 @@ if(!defined($nbest_file_scored)) {
     $_HELP=1;
 }
 
-
-
 if(!defined($sample_id)) {
     $sample_id='';
 }
 
-print STDERR "PRO-optimizer.pl pid=$$\n";
+my $script_name = basename($0);
+print STDERR "$script_name pid=$$\n";
 
 my $OISTERHOME=$ENV{'OISTERHOME'};
 
@@ -54,59 +54,46 @@ my $largest_lex_feature_id=-1;
 if(defined($config_file)) {
     open(F,"<$config_file")||die("can't open $config_file: $!\n");
     while(defined(my $line=<F>)) {
-	if($line=~/^data:sparse\_decoding\_feature\_weights=([^ ]+)[\s\t]*\n/) {
-	    $sparse_decoding_feature_file=$1;
-	} elsif($line=~/^data:lexfeat_weights=([^ ]+)[\s\t]*\n/) {
-	    $lex_feature_file=$1;
-	}
+        if($line=~/^data:sparse\_decoding\_feature\_weights=([^ ]+)[\s\t]*\n/) {
+            $sparse_decoding_feature_file=$1;
+        } elsif($line=~/^data:lexfeat_weights=([^ ]+)[\s\t]*\n/) {
+            $lex_feature_file=$1;
+        }
     }
     close(F);
 
     if(defined($lex_feature_file)) {
-	open(F,"<$lex_feature_file")||die("can't open $lex_feature_file: $!\n");
-	while(defined(my $line=<F>)) {
-	    chomp($line);
-	    my($id,$name,$scores_string)=split(/ \|\|\| /o,$line);
-	    if($id>$largest_lex_feature_id) {
-		$largest_lex_feature_id=$id;
-	    }
-	}
-	close(F);
+        open(F,"<$lex_feature_file")||die("can't open $lex_feature_file: $!\n");
+        while(defined(my $line=<F>)) {
+            chomp($line);
+            my($id,$name,$scores_string)=split(/ \|\|\| /o,$line);
+            if($id>$largest_lex_feature_id) {
+                $largest_lex_feature_id=$id;
+            }
+        }
+        close(F);
     }
 
     if(defined($sparse_decoding_feature_file)) {
-	open(F,"<$sparse_decoding_feature_file")||die("can't open $sparse_decoding_feature_file: $!\n");
-	while(defined(my $line=<F>)) {
-	    chomp($line);
-	    my($id,$name,$scores_string)=split(/ \|\|\| /o,$line);
-	    my($id_num)=$id=~/^s([0-9]+)$/;
-	    $sparse_decoding_name2id{$id}=$id_num;
-#	    $sparse_decoding_name2id{$name}=$id;
-	}
-	close(F);
+        open(F,"<$sparse_decoding_feature_file")||die("can't open $sparse_decoding_feature_file: $!\n");
+        while(defined(my $line=<F>)) {
+            chomp($line);
+            my($id,$name,$scores_string)=split(/ \|\|\| /o,$line);
+            my($id_num)=$id=~/^s([0-9]+)$/;
+            $sparse_decoding_name2id{$id}=$id_num;
+        }
+        close(F);
     }	
 }
-
-
-
 
 my $classifier_data_file="$nbest_file_scored.classifier_data$sample_id";
 my $classifier_weights_file="$nbest_file_scored.classifier_weights$sample_id";
 my $classifier_err_log="$nbest_file_scored.classifier_err_log$sample_id";
 
-#my $classifier_call="$SMTAMS/software/MegaM/current/bin/megam_i686.opt -fvals -maxi $max_iterations binary $classifier_data_file 1> $classifier_weights_file 2> $classifier_err_log";
-#-nobias
-
 my $SMTAMS=$ENV{'SMTAMS'};
 
 ## link to OISTER remains to be done.
-#my $classifier_call="$OISTERHOME/resources/software/MegaM/current/bin/megam_i686.opt -nobias -fvals -maxi $max_iterations binary $classifier_data_file 2> $classifier_err_log";
 my $classifier_call="$OISTERHOME/install/external_components/external_binaries/megam.opt -nobias -fvals -maxi $max_iterations binary $classifier_data_file 2> $classifier_err_log";
-
-
-
-
-
 
 my $prev_sent_id;
 my @candidates_obj;
@@ -125,12 +112,12 @@ while(defined(my $line=<F>)) {
 
     if(defined($prev_sent_id) && $sent_id!=$prev_sent_id) {
 
-	&sample_pro(\@candidates_obj,\@candidates_features,\@{ $Xi[$prev_sent_id] },$instance_weight);
-	&print_xi(\@{ $Xi[$prev_sent_id] },$prev_sent_id,$instance_weight);
+        &sample_pro(\@candidates_obj,\@candidates_features,\@{ $Xi[$prev_sent_id] },$instance_weight);
+        &print_xi(\@{ $Xi[$prev_sent_id] },$prev_sent_id,$instance_weight);
 
-	undef @candidates_obj;
-	undef @candidates_features;
-	undef @candidates_instance_weights;
+        undef @candidates_obj;
+        undef @candidates_features;
+        undef @candidates_instance_weights;
     }
 
     push(@candidates_obj,$obj_score);
@@ -143,12 +130,11 @@ close(F);
 &sample_pro(\@candidates_obj,\@candidates_features,\@{ $Xi[$prev_sent_id] },$instance_weight);
 &print_xi(\@{ $Xi[$prev_sent_id] },$prev_sent_id,$instance_weight);
 
-
 if(defined($lattice_oracle_scored) && defined($model_nbest_scored)) {
 
     my $instance_weight_string='';
     if($use_instance_weight) {
-	$instance_weight_string=" \$\$\$WEIGHT $instance_weight";
+        $instance_weight_string=" \$\$\$WEIGHT $instance_weight";
     }
 
     my @Xi_lattice;
@@ -157,15 +143,15 @@ if(defined($lattice_oracle_scored) && defined($model_nbest_scored)) {
     my @lattice_candidates_instance_weights;
     open(F,"<$lattice_oracle_scored")||die("can't open file $lattice_oracle_scored: $!\n");
     while(defined(my $line=<F>)) {
-	chomp($line);
-	my($sent_id,$obj_func_string,$translation,$score_string)=split(/ \|\|\| /o,$line);
-	my @obj_scores=split(/ /,$obj_func_string);
-	my $obj_score=$obj_scores[0];
-	my $instance_weight=$obj_scores[1];
+        chomp($line);
+        my($sent_id,$obj_func_string,$translation,$score_string)=split(/ \|\|\| /o,$line);
+        my @obj_scores=split(/ /,$obj_func_string);
+        my $obj_score=$obj_scores[0];
+        my $instance_weight=$obj_scores[1];
 
-	push(@{ $lattice_candidates_obj[$sent_id] },$obj_score);
-	push(@{ $lattice_candidates_features[$sent_id] },$score_string);
-	push(@{ $lattice_candidates_instance_weights[$sent_id] },$instance_weight);
+        push(@{ $lattice_candidates_obj[$sent_id] },$obj_score);
+        push(@{ $lattice_candidates_features[$sent_id] },$score_string);
+        push(@{ $lattice_candidates_instance_weights[$sent_id] },$instance_weight);
     }
     close(F);
 
@@ -174,34 +160,32 @@ if(defined($lattice_oracle_scored) && defined($model_nbest_scored)) {
     my @nbest_candidates_instance_weights;
     open(F,"<$model_nbest_scored")||die("can't open file $model_nbest_scored: $!\n");
     while(defined(my $line=<F>)) {
-	chomp($line);
-	my($sent_id,$obj_func_string,$translation,$score_string)=split(/ \|\|\| /o,$line);
-	my @obj_scores=split(/ /,$obj_func_string);
-	my $obj_score=$obj_scores[0];
-	my $instance_weight=$obj_scores[1];
+        chomp($line);
+        my($sent_id,$obj_func_string,$translation,$score_string)=split(/ \|\|\| /o,$line);
+        my @obj_scores=split(/ /,$obj_func_string);
+        my $obj_score=$obj_scores[0];
+        my $instance_weight=$obj_scores[1];
 
-	push(@{ $nbest_candidates_obj[$sent_id] },$obj_score);
-	push(@{ $nbest_candidates_features[$sent_id] },$score_string);
-	push(@{ $nbest_candidates_instance_weights[$sent_id] },$instance_weight);
+        push(@{ $nbest_candidates_obj[$sent_id] },$obj_score);
+        push(@{ $nbest_candidates_features[$sent_id] },$score_string);
+        push(@{ $nbest_candidates_instance_weights[$sent_id] },$instance_weight);
     }
     close(F);
 
     for(my $sent_id=0; $sent_id<@lattice_candidates_obj; $sent_id++) {
-	
-	for(my $i=0; $i<@{ $lattice_candidates_obj[$sent_id] } && $i<$oracle_max; $i++) {
-	    for(my $j=0; $j<@{ $nbest_candidates_obj[$sent_id] } && $j<$oracle_max; $j++) {
+        for(my $i=0; $i<@{ $lattice_candidates_obj[$sent_id] } && $i<$oracle_max; $i++) {
+            for(my $j=0; $j<@{ $nbest_candidates_obj[$sent_id] } && $j<$oracle_max; $j++) {
+                my $diff_string=&vec_diff($lattice_candidates_features[$sent_id][$i],$nbest_candidates_features[$sent_id][$j]);
+                my $sign=&get_sign($lattice_candidates_obj[$sent_id][$i]-$nbest_candidates_obj[$sent_id][$j]);
+                push(@{ $Xi_lattice[$sent_id] },"$sign$instance_weight_string $diff_string");
 
-		my $diff_string=&vec_diff($lattice_candidates_features[$sent_id][$i],$nbest_candidates_features[$sent_id][$j]);
-		my $sign=&get_sign($lattice_candidates_obj[$sent_id][$i]-$nbest_candidates_obj[$sent_id][$j]);
-		push(@{ $Xi_lattice[$sent_id] },"$sign$instance_weight_string $diff_string");
+                my $diff_string_inv=&vec_diff($nbest_candidates_features[$sent_id][$j],$lattice_candidates_features[$sent_id][$i]);
+                my $sign_inv=1-$sign;
+                push(@{ $Xi_lattice[$sent_id] },"$sign_inv$instance_weight_string $diff_string_inv");
+            }
+        }
 
-		my $diff_string_inv=&vec_diff($nbest_candidates_features[$sent_id][$j],$lattice_candidates_features[$sent_id][$i]);
-		my $sign_inv=1-$sign;
-		push(@{ $Xi_lattice[$sent_id] },"$sign_inv$instance_weight_string $diff_string_inv");
-	    }
-	}
-
-	&print_xi(\@{ $Xi_lattice[$sent_id] },$sent_id,$instance_weight);
+        &print_xi(\@{ $Xi_lattice[$sent_id] },$sent_id,$instance_weight);
     }
 }
 
@@ -209,7 +193,7 @@ if(defined($lattice_oracle_scored) && defined($model_nbest_scored)) {
 if(defined($model_nbest_lai_scored) && defined($model_nbest_scored)) {
     my $instance_weight_string='';
     if($use_instance_weight) {
-	$instance_weight_string=" \$\$\$WEIGHT $instance_weight";
+        $instance_weight_string=" \$\$\$WEIGHT $instance_weight";
     }
 
     my @Xi_lattice;
@@ -218,15 +202,15 @@ if(defined($model_nbest_lai_scored) && defined($model_nbest_scored)) {
     my @lattice_candidates_instance_weights;
     open(F,"<$model_nbest_lai_scored")||die("can't open file $model_nbest_lai_scored: $!\n");
     while(defined(my $line=<F>)) {
-	chomp($line);
-	my($sent_id,$obj_func_string,$translation,$score_string)=split(/ \|\|\| /o,$line);
-	my @obj_scores=split(/ /,$obj_func_string);
-	my $obj_score=$obj_scores[0];
-	my $instance_weight=$obj_scores[1];
+        chomp($line);
+        my($sent_id,$obj_func_string,$translation,$score_string)=split(/ \|\|\| /o,$line);
+        my @obj_scores=split(/ /,$obj_func_string);
+        my $obj_score=$obj_scores[0];
+        my $instance_weight=$obj_scores[1];
 
-	push(@{ $lattice_candidates_obj[$sent_id] },$obj_score);
-	push(@{ $lattice_candidates_features[$sent_id] },$score_string);
-	push(@{ $lattice_candidates_instance_weights[$sent_id] },$instance_weight);
+        push(@{ $lattice_candidates_obj[$sent_id] },$obj_score);
+        push(@{ $lattice_candidates_features[$sent_id] },$score_string);
+        push(@{ $lattice_candidates_instance_weights[$sent_id] },$instance_weight);
     }
     close(F);
 
@@ -235,37 +219,34 @@ if(defined($model_nbest_lai_scored) && defined($model_nbest_scored)) {
     my @nbest_candidates_instance_weights;
     open(F,"<$model_nbest_scored")||die("can't open file $model_nbest_scored: $!\n");
     while(defined(my $line=<F>)) {
-	chomp($line);
-	my($sent_id,$obj_func_string,$translation,$score_string)=split(/ \|\|\| /o,$line);
-	my @obj_scores=split(/ /,$obj_func_string);
-	my $obj_score=$obj_scores[0];
-	my $instance_weight=$obj_scores[1];
+        chomp($line);
+        my($sent_id,$obj_func_string,$translation,$score_string)=split(/ \|\|\| /o,$line);
+        my @obj_scores=split(/ /,$obj_func_string);
+        my $obj_score=$obj_scores[0];
+        my $instance_weight=$obj_scores[1];
 
-	push(@{ $nbest_candidates_obj[$sent_id] },$obj_score);
-	push(@{ $nbest_candidates_features[$sent_id] },$score_string);
-	push(@{ $nbest_candidates_instance_weights[$sent_id] },$instance_weight);
+        push(@{ $nbest_candidates_obj[$sent_id] },$obj_score);
+        push(@{ $nbest_candidates_features[$sent_id] },$score_string);
+        push(@{ $nbest_candidates_instance_weights[$sent_id] },$instance_weight);
     }
     close(F);
 
     for(my $sent_id=0; $sent_id<@lattice_candidates_obj; $sent_id++) {
-	
-	for(my $i=0; $i<@{ $lattice_candidates_obj[$sent_id] } && $i<$oracle_max; $i++) {
-	    for(my $j=0; $j<@{ $nbest_candidates_obj[$sent_id] } && $j<$oracle_max; $j++) {
+        for(my $i=0; $i<@{ $lattice_candidates_obj[$sent_id] } && $i<$oracle_max; $i++) {
+            for(my $j=0; $j<@{ $nbest_candidates_obj[$sent_id] } && $j<$oracle_max; $j++) {
+                my $diff_string=&vec_diff($lattice_candidates_features[$sent_id][$i],$nbest_candidates_features[$sent_id][$j]);
+                my $sign=&get_sign($lattice_candidates_obj[$sent_id][$i]-$nbest_candidates_obj[$sent_id][$j]);
+                push(@{ $Xi_lattice[$sent_id] },"$sign$instance_weight_string $diff_string");
 
-		my $diff_string=&vec_diff($lattice_candidates_features[$sent_id][$i],$nbest_candidates_features[$sent_id][$j]);
-		my $sign=&get_sign($lattice_candidates_obj[$sent_id][$i]-$nbest_candidates_obj[$sent_id][$j]);
-		push(@{ $Xi_lattice[$sent_id] },"$sign$instance_weight_string $diff_string");
+                my $diff_string_inv=&vec_diff($nbest_candidates_features[$sent_id][$j],$lattice_candidates_features[$sent_id][$i]);
+                my $sign_inv=1-$sign;
+                push(@{ $Xi_lattice[$sent_id] },"$sign_inv$instance_weight_string $diff_string_inv");
+            }
+        }
 
-		my $diff_string_inv=&vec_diff($nbest_candidates_features[$sent_id][$j],$lattice_candidates_features[$sent_id][$i]);
-		my $sign_inv=1-$sign;
-		push(@{ $Xi_lattice[$sent_id] },"$sign_inv$instance_weight_string $diff_string_inv");
-	    }
-	}
-
-	&print_xi(\@{ $Xi_lattice[$sent_id] },$sent_id,$instance_weight);
+        &print_xi(\@{ $Xi_lattice[$sent_id] },$sent_id,$instance_weight);
     }
 }
-
 
 close(C);
 
@@ -279,12 +260,12 @@ sub sample_pro {
     my $no_candidates=@$candidates_obj;
     
     if($no_candidates<2) {
-	return;
+        return;
     }
 
     my $instance_weight_string='';
     if($use_instance_weight) {
-	$instance_weight_string=" \$\$\$WEIGHT $instance_weight";
+        $instance_weight_string=" \$\$\$WEIGHT $instance_weight";
     }
 
 
@@ -297,57 +278,55 @@ sub sample_pro {
 
     while($gamma_sample_size<$gamma_sample_max_size && !$exhausted) {
 
-	if($no_tries>1000) {
-	    $exhausted=1;
-	}
+        if($no_tries>1000) {
+            $exhausted=1;
+        }
 
-	my $j=int(rand($no_candidates));
-	my $j_prime=int(rand($no_candidates));
+        my $j=int(rand($no_candidates));
+        my $j_prime=int(rand($no_candidates));
 
-	if($j==$j_prime 
-	   || (exists($chosen_gamma_pairs{$j}) && exists($chosen_gamma_pairs{$j}{$j_prime}))
-	   || (exists($chosen_gamma_pairs{$j_prime}) && exists($chosen_gamma_pairs{$j_prime}{$j}))) {
-	    $no_tries++;
-	    next;
-	}
-	$chosen_gamma_pairs{$j}{$j_prime}=1;
-	$gamma_sample_size++;
-	$no_tries=0;
+        if($j==$j_prime 
+           || (exists($chosen_gamma_pairs{$j}) && exists($chosen_gamma_pairs{$j}{$j_prime}))
+           || (exists($chosen_gamma_pairs{$j_prime}) && exists($chosen_gamma_pairs{$j_prime}{$j}))) {
+            $no_tries++;
+            next;
+        }
+        $chosen_gamma_pairs{$j}{$j_prime}=1;
+        $gamma_sample_size++;
+        $no_tries=0;
     }
 
     my $avg_obj_diff=0;
     foreach my $j (keys %chosen_gamma_pairs) {
-	foreach my $j_prime (keys %{ $chosen_gamma_pairs{$j} }) {
-	    $avg_obj_diff+=abs($candidates_obj[$j]-$candidates_obj[$j_prime]);
-	}
+        foreach my $j_prime (keys %{ $chosen_gamma_pairs{$j} }) {
+            $avg_obj_diff+=abs($candidates_obj[$j]-$candidates_obj[$j_prime]);
+        }
     }
     $avg_obj_diff/=$gamma_sample_size;
 
-    
     foreach my $j (keys %chosen_gamma_pairs) {
-	foreach my $j_prime (keys %{ $chosen_gamma_pairs{$j} }) {
-	    my $insert=&alpha(abs($candidates_obj[$j]-$candidates_obj[$j_prime]),$alpha_strategy,$avg_obj_diff);
-	    if($insert) {
-		my $pair="$j $j_prime";
-		$V{$pair}=1;
-	    }
-	}
+        foreach my $j_prime (keys %{ $chosen_gamma_pairs{$j} }) {
+            my $insert=&alpha(abs($candidates_obj[$j]-$candidates_obj[$j_prime]),$alpha_strategy,$avg_obj_diff);
+            if($insert) {
+            my $pair="$j $j_prime";
+            $V{$pair}=1;
+            }
+        }
     }
 
     my $c=0;
     foreach my $pair (sort {-1*($V{$a}<=>$V{$b})} (keys %V)) {
-	$c++;
-	last if($c>$xi_sample_size);
+        $c++;
+        last if($c>$xi_sample_size);
 
-	my($j,$j_prime)=split(/ /,$pair);
-	my $diff_string=&vec_diff($candidates_features->[$j],$candidates_features->[$j_prime]);
-	my $sign=&get_sign($candidates_obj[$j]-$candidates_obj[$j_prime]);
-	push(@$Xi,"$sign$instance_weight_string $diff_string");
+        my($j,$j_prime)=split(/ /,$pair);
+        my $diff_string=&vec_diff($candidates_features->[$j],$candidates_features->[$j_prime]);
+        my $sign=&get_sign($candidates_obj[$j]-$candidates_obj[$j_prime]);
+        push(@$Xi,"$sign$instance_weight_string $diff_string");
 
-	my $diff_string_inv=&vec_diff($candidates_features->[$j_prime],$candidates_features->[$j]);
-#	my $sign_inv=&get_sign($candidates_obj[$j_prime]-$candidates_obj[$j]);
-	my $sign_inv=1-$sign;
-	push(@$Xi,"$sign_inv$instance_weight_string $diff_string_inv");	
+        my $diff_string_inv=&vec_diff($candidates_features->[$j_prime],$candidates_features->[$j]);
+        my $sign_inv=1-$sign;
+        push(@$Xi,"$sign_inv$instance_weight_string $diff_string_inv");	
     }
 
 }
@@ -356,19 +335,19 @@ sub alpha {
     my($diff,$strategy,$avg_obj_diff)=@_;
 
     if($strategy eq 'step') {
-	if($diff < $alpha_step_threshold) {
-	    return 0;
-	} else {
-	    return 1;
-	}
+        if($diff < $alpha_step_threshold) {
+            return 0;
+        } else {
+            return 1;
+        }
     } elsif($strategy eq 'sigmoid') {
-	my $prob=1 / ( 1 + exp(-1* ($diff - $avg_obj_diff))  );
-	my $random_num=rand();
-	if($random_num<=$prob) {
-	    return 1;
-	} else {
-	    return 0;
-	}
+        my $prob=1 / ( 1 + exp(-1* ($diff - $avg_obj_diff))  );
+        my $random_num=rand();
+        if($random_num<=$prob) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
 
@@ -381,22 +360,22 @@ sub vec_diff {
     my %hash_j_prime;
 
     for(my $i=0; $i<@vec_j; $i++) {
-	my($id,$value)=split(/\=/,$vec_j[$i]);
-	$hash_j{$id}=$value;
+        my($id,$value)=split(/\=/,$vec_j[$i]);
+        $hash_j{$id}=$value;
     }
 
     for(my $i=0; $i<@vec_j_prime; $i++) {
-	my($id,$value)=split(/\=/,$vec_j_prime[$i]);
-	$hash_j_prime{$id}=$value;
-	if(!exists($hash_j{$id})) {
-	    $hash_j{$id}=0;
-	}
+        my($id,$value)=split(/\=/,$vec_j_prime[$i]);
+        $hash_j_prime{$id}=$value;
+        if(!exists($hash_j{$id})) {
+            $hash_j{$id}=0;
+        }
     }
 
     foreach my $id (keys %hash_j) {
-	if(!exists($hash_j_prime{$id})) {
-	    $hash_j_prime{$id}=0;
-	}
+        if(!exists($hash_j_prime{$id})) {
+            $hash_j_prime{$id}=0;
+        }
     }
 
     my @vec_diff;
@@ -422,29 +401,29 @@ sub vec_diff_OLD {
     my %hash_j_prime;
     my $largest_global_feature_index;
     for(my $i=0; $i<@vec_j; $i++) {
-	if($vec_j[$i]!~/\:/) {
-	    $largest_global_feature_index=$i;
-	    my $id=$i+1;
-	    $hash_j{$id}=$vec_j[$i];
-	    $hash_j_prime{$id}=$vec_j_prime[$i];
-	} else {
-	    last;
-	}
+        if($vec_j[$i]!~/\:/) {
+            $largest_global_feature_index=$i;
+            my $id=$i+1;
+            $hash_j{$id}=$vec_j[$i];
+            $hash_j_prime{$id}=$vec_j_prime[$i];
+        } else {
+            last;
+        }
     }
 
     for(my $i=$largest_global_feature_index+1; $i<@vec_j; $i++) {
-	if($vec_j[$i]=~/^([0-9]+)\:(.+)$/) {
-	    my $lex_feature_id=$1;
-	    my $lex_feature_value=$2;
-	    my $id=$largest_global_feature_index+$lex_feature_id+2;
-	    $hash_j{$id}=$lex_feature_value;
-	} elsif($vec_j[$i]=~/^([^ ]+)\:(.+)$/) {
-	    my $sparse_feature_name=$1;
-	    my $sparse_feature_value=$2;
-	    my $id=$sparse_decoding_name2id{$sparse_feature_name}
-	    +$largest_global_feature_index+$largest_lex_feature_id+3;
-	    $hash_j{$id}=$sparse_feature_value;
-	}
+        if($vec_j[$i]=~/^([0-9]+)\:(.+)$/) {
+            my $lex_feature_id=$1;
+            my $lex_feature_value=$2;
+            my $id=$largest_global_feature_index+$lex_feature_id+2;
+            $hash_j{$id}=$lex_feature_value;
+        } elsif($vec_j[$i]=~/^([^ ]+)\:(.+)$/) {
+            my $sparse_feature_name=$1;
+            my $sparse_feature_value=$2;
+            my $id=$sparse_decoding_name2id{$sparse_feature_name}
+            +$largest_global_feature_index+$largest_lex_feature_id+3;
+            $hash_j{$id}=$sparse_feature_value;
+        }
     }
 
    for(my $i=$largest_global_feature_index+1; $i<@vec_j_prime; $i++) {
@@ -454,7 +433,7 @@ sub vec_diff_OLD {
 	    my $id=$largest_global_feature_index+$lex_feature_id+2;
 	    $hash_j_prime{$id}=$lex_feature_value;
 	    if(!exists($hash_j{$id})) {
-		$hash_j{$id}=0;
+            $hash_j{$id}=0;
 	    }
 	} elsif($vec_j_prime[$i]=~/^([^ ]+)\:(.+)$/) {
 	    my $sparse_feature_name=$1;
@@ -463,22 +442,22 @@ sub vec_diff_OLD {
 	    +$largest_global_feature_index+$largest_lex_feature_id+3;
 	    $hash_j_prime{$id}=$sparse_feature_value;
 	    if(!exists($hash_j{$id})) {
-		$hash_j{$id}=0;
+            $hash_j{$id}=0;
 	    }
 	}
 
     }
     foreach my $id (keys %hash_j) {
-	if(!exists($hash_j_prime{$id})) {
-	    $hash_j_prime{$id}=0;
-	}
+        if(!exists($hash_j_prime{$id})) {
+            $hash_j_prime{$id}=0;
+        }
     }
 
     my @vec_diff;
     foreach my $id (sort {$a<=>$b} (keys %hash_j)) {
-	my $vec_value="F$id " . ($hash_j{$id}-$hash_j_prime{$id});
- 	push(@vec_diff,$vec_value);
-   }
+        my $vec_value="F$id " . ($hash_j{$id}-$hash_j_prime{$id});
+        push(@vec_diff,$vec_value);
+    }
 
     return join(' ',@vec_diff);
 }
@@ -491,9 +470,9 @@ sub vec_diff_OLD2 {
 
     my @vec_diff;
     for(my $i=0; $i<@vec_j; $i++) {
-	my $id=$i+1;
-	my $vec_value="F$id " . ($vec_j[$i]-$vec_j_prime[$i]);
-	push(@vec_diff,$vec_value);
+        my $id=$i+1;
+        my $vec_value="F$id " . ($vec_j[$i]-$vec_j_prime[$i]);
+        push(@vec_diff,$vec_value);
     }
     return join(' ',@vec_diff);
 }
@@ -508,7 +487,7 @@ sub print_xi {
     my($xi,$sent_id,$instance_weight)=@_;
 
     for(my $i=0; $i<@$xi; $i++) {
-#	print "$sent_id $xi->[$i]\n";
-	print C "$xi->[$i]\n";
+        #print "$sent_id $xi->[$i]\n";
+        print C "$xi->[$i]\n";
     }
 }

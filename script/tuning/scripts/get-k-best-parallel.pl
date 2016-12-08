@@ -1,11 +1,14 @@
 #!/usr/bin/perl -w
 
+use File::Basename;
+
 if(@ARGV<4||@ARGV>6) {
     print STDERR "\nusage: $0 <LATTICE-FILE> <FEATURE-SCORES-FILE> <FEATURE-ID2NAME-FILE> <\#N-BEST> <num-parallel> [<external-path>]\n\n";
     exit(-1);
 };
 
-print STDERR "get-nbest-carmel.pl pid=$$\n";
+my $script_name = basename($0);
+print STDERR "$script_name pid=$$\n";
 
 ($lattice_file,$feature_scores_file,$feature_id2name_file,$nbest,$num_parallel,$external_path)=@ARGV;
 
@@ -72,10 +75,8 @@ foreach my $sent_id (sort {$a<=>$b} (keys %lattice_sizes)) {
     }
     $num_sentences_remaining--;
     $current_size+=$lattice_sizes{$sent_id};
-#    print STDERR "lattice_sizes{$sent_id}=$lattice_sizes{$sent_id}\n";
     if($current_size>=$avg_size || $num_sentences_remaining==0) {
         push(@batches,"$sent_from $sent_id");
-#       push(@batches,"$sent_from $sent_id $current_size");
         $current_size=0;
         undef $sent_from;
     }
