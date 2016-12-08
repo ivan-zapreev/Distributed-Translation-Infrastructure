@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#Parse the sript parameters
 BASEDIR=$(dirname "$0")
 BUILDPATH="$BASEDIR/../../build"
 for i in "$@"
@@ -21,7 +22,7 @@ do
             no_parallel="${i#*=}"
             shift
             ;;
-       --trg-language=*)
+        --trg-language=*)
             trgLang="${i#*=}"
             shift
             ;;
@@ -61,7 +62,6 @@ else
     else
         for i in "${pidsArray[@]}"
         do
-            #echo pid:$i
             kill -9 $i
         done
         $BUILDPATH/bpbd-server -c $configFile -d error > /dev/null &
@@ -78,7 +78,7 @@ else
         let counter=counter+1
         echo attempt number $counter >> client.log
     done
-    $BASEDIR/combine-lattices.sh $expDir/lattices ../$trgFile lattices feature_scores $no_parallel >& combine.log
+    $BASEDIR/combine_lattices.sh $expDir/lattices ../$trgFile lattices feature_scores $no_parallel >& combine.log
 fi
 
 

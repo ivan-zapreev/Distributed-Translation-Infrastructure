@@ -3,25 +3,13 @@
 use strict;
 use warnings;
 
-use PerlIO::gzip;
+my($lattice_file,$O_score_file,$mu,$src_file,@ref_files)=@ARGV;
 
 
 if(@ARGV<4) {
     print STDERR "\nusage: bleu-lattice-score.pl <lattice-file> <O-score-file> <src-file> <ref-files>\n\n";
     exit(-1);
 }
-
-my($lattice_file,$O_score_file,$mu,$src_file,@ref_files)=@ARGV;
-
-my $from_sent;
-my $to_sent;
-if(@ref_files>2 && $ref_files[-2]=~/^[0-9]+$/ &&  $ref_files[-1]=~/^[0-9]+$/) {
-    $from_sent=$ref_files[-2];
-    $to_sent=$ref_files[-1];
-    pop(@ref_files);
-    pop(@ref_files);
-}
-
 
 my @O_scores;
 &read_O_scores($O_score_file,\@O_scores);
@@ -54,26 +42,18 @@ while(defined(my $line=<F>)) {
 }
 close(F);
 
-if($lattice_file=~/\.gz/) {
-    open F, "<:gzip", $lattice_file, or die("can't open $lattice_file: $!\n");
-} else {
-    open(F,"<$lattice_file")||die("can't open file $lattice_file: $!\n");
-}
+
+open(F,"<$lattice_file")||die("can't open file $lattice_file: $!\n");
 while(defined(my $line=<F>)) {
     if($line=~/^<SENT ID=([0-9]+)>/) {
+#    if($line=~/^<SENT ID=(742)>/) {
 	my $sent_id=$1;
-
-	if(defined($from_sent) && defined($to_sent)) {
-	    if($sent_id<$from_sent) {
-		next;
-	    } elsif($sent_id>$to_sent) {
-		last;
-	    }
-	}
-
 	my $first_line=1;
 	my $start_node=0;
 	my $end_node;
+
+#	next if($sent_id<191);
+#	last if($sent_id>191);
 
 	my %edge_modelcost;
 	my %edge_trans;
@@ -137,9 +117,9 @@ while(defined(my $line=<F>)) {
 			    $trans='' if(!defined($trans));
 			}
 
-            #print STDERR "cost log_e=$cost ";
+#			print STDERR "cost log_e=$cost ";
 			$cost=&log_base(exp($cost),$base);
-            #print STDERR "cost log_100=$cost\n";
+#			print STDERR "cost log_100=$cost\n";
 			$edge_modelcost{$node_from}{$node_to}=$cost;
 			$edge_trans{$node_from}{$node_to}=$trans;
 			$edge_inv{$node_to}{$node_from}=1;
@@ -182,6 +162,7 @@ while(defined(my $line=<F>)) {
 	} else {
 	    $node_bleu{0}=&compute_O_bleu_vec(\@{ $node_O{0} });
 	}
+
 	my $finished=0;
 	my %visited;
 	my %nodes_with_hist;
@@ -193,11 +174,10 @@ while(defined(my $line=<F>)) {
 		foreach my $node_to (keys %{ $edge_trans{$node_from} }) {
 		    if(!exists($nodes_with_hist{$node_to})) {
 			&build_hist(\@{ $node_hist{$node_from} },$edge_trans{$node_from}{$node_to},\@{ $node_hist{$node_to} });
-            #my $hist_string=join("\_",@{ $node_hist{$node_to} });
-            #print STDERR "node_hist{$node_to}=$hist_string\n";
+#			my $hist_string=join("\_",@{ $node_hist{$node_to} });
+#			print STDERR "node_hist{$node_to}=$hist_string\n";
 			$nodes_with_hist{$node_to}=1;
 		    }
-
 		    my @tokens_to=split(/ /,$edge_trans{$node_from}{$node_to});
 		    my @ngrams_total;
 		    my @ngrams_correct;
@@ -210,13 +190,11 @@ while(defined(my $line=<F>)) {
 		    } else {
 			&get_edge_counts($sent_id,\@{ $node_hist{$node_from} },\@tokens_to,$edge_srclength{$node_from}{$node_to},\@edge_counts);
 #			print STDERR join(' ',@edge_counts), "\n";
-
-
+			
 			my $bleu_to=&compute_O_bleu($sent_id,$edge_srclength{$node_from}{$node_to},\@{ $node_O{$node_from} },\@edge_counts,\@counts_to);
 			my $edge_bleu_cost=$bleu_to-$node_bleu{$node_from};
-            #print STDERR "HAMID edge_bleu_cost:$edge_bleu_cost\n";
-            #print STDERR "HAMID edge_modelcost{$node_from}{$node_to}: $edge_modelcost{$node_from}{$node_to}\n";
 			my $bleu_combined=$edge_bleu_cost-$mu*($edge_bleu_cost-$edge_modelcost{$node_from}{$node_to});
+
 			$edge_bleu{$node_from}{$node_to}=$bleu_combined;
 			if(!exists($node_bleu{$node_to}) || $bleu_to>$node_bleu{$node_to}) {
 			    $node_bleu{$node_to}=$bleu_to;
@@ -225,13 +203,13 @@ while(defined(my $line=<F>)) {
 #			$edge_bleu{$node_from}{$node_to}=&compute_O_bleu($sent_id,$edge_srclength{$node_from}{$node_to},\@{ $node_O{$node_from} },\@edge_counts,\@counts_to);
 #			print  "edge_bleu{$node_from}{$node_to}=$edge_bleu{$node_from}{$node_to}\n";
 		    }
-
+		    
 		    $node_incomremain{$node_to}--;
 		    if($node_incomremain{$node_to}==0) {
 			$queue_next{$node_to}=1;
 
 			foreach my $node_from (keys %{ $edge_inv{$node_to} }) {
-			    if(!defined($node_max{$node_to})
+			    if(!defined($node_max{$node_to}) 
 			       || $node_max{$node_from}+$edge_bleu{$node_from}{$node_to}>$node_max{$node_to}) {
 				$node_max{$node_to}=$node_max{$node_from}+$edge_bleu{$node_from}{$node_to};
 				$node_maxarg{$node_to}=$node_from;
@@ -243,7 +221,7 @@ while(defined(my $line=<F>)) {
 		$visited{$node_from}=1;
 	    }
 	    undef @queue;
-	    foreach my $node_to (sort {$a<=>$b} (keys %queue_next)) {
+	    foreach my $node_to (keys %queue_next) {
 		if(!exists($visited{$node_to})) {
 		    push(@queue,$node_to);
 		}
@@ -255,7 +233,6 @@ while(defined(my $line=<F>)) {
 	my %visited_print;
 	@queue=( $end_node );
 	print "<SENT ID=$sent_id>\n";
-    print STDERR "<SENT ID=$sent_id>\n";
 	while(@queue>0) {
 	    my %queue_next;
 	    for(my $i=0; $i<@queue; $i++) {
@@ -263,17 +240,13 @@ while(defined(my $line=<F>)) {
 		next if($node_to==0);
 		my @from_parts;
 		foreach my $node_from (keys %{ $edge_inv{$node_to} }) {
-            #print STDERR "node_from=$node_from edge_trans{$node_from}{$node_to}=$edge_trans{$node_from}{$node_to} edge_bleu{$node_from}{$node_to}=$edge_bleu{$node_from}{$node_to}\n";
-            #print STDERR "HAMID node_from:$node_from node_to: $node_to \n";
+#		    print STDERR "node_from=$node_from edge_trans{$node_from}{$node_to}=$edge_trans{$node_from}{$node_to} edge_bleu{$node_from}{$node_to}=$edge_bleu{$node_from}{$node_to}\n";
+
 		    my $hist_string=join("\_",@{ $node_hist{$node_from} });
-            #print STDERR "HAMID history of node_from:$hist_string\n";
 		    my $O_string=join("\,",@{ $node_O{$node_from} });
 
 #		    push(@from_parts,"$node_from:$node_bleu{$node_from}:$hist_string:($O_string)\|\|\|$edge_trans{$node_from}{$node_to}\|\|\|$edge_bleu{$node_from}{$node_to}");
 		    my $cost=&log_nulldef($base**$edge_bleu{$node_from}{$node_to});
-            #print STDERR "HAMID base^edge_bleu{$node_from}{$node_to}=", $base**$edge_bleu{$node_from}{$node_to}, "\n";
-            #print STDERR "HAMID edge_bleu:$edge_bleu{$node_from}{$node_to}\n";
-            #print STDERR "HAMID cost: $cost\n";
 		    push(@from_parts,"$node_from\|\|\|$edge_transoutput{$node_from}{$node_to}\|\|\|$cost");
 
 		    $queue_next{$node_from}=1;
@@ -310,7 +283,7 @@ while(defined(my $line=<F>)) {
 		    unshift(@viterbi_args,$edge_trans{$maxarg_from}{$maxarg});
 		    unshift(@viterbi_costs,$edge_bleu{$maxarg_from}{$maxarg});
 		}
-		$maxarg=$maxarg_from;
+		$maxarg=$maxarg_from;	    
 	    }
 	    my $viterbi_trans=join(' ',@viterbi_args);
 	    print STDERR "viterbi_path=$viterbi_trans\n";
@@ -337,7 +310,7 @@ sub compute_O_bleu_vec {
 
     my $prec=0;
     for(my $n=0; $n<$max_n; $n++) {
-	$prec+= (1/$max_n) * log($prec_n[$n]);
+	$prec+= (1/$max_n) * log($prec_n[$n]);    
     }
 
     my $bp=&compute_brevaty_penalty($O_scores->[1],$O_scores->[-2]);
@@ -380,7 +353,6 @@ sub compute_O_bleu {
     my $bp=&compute_brevaty_penalty($O_comb->[1],$O_comb->[-2]);
 #    my $bleu=$O_comb->[-1]*$bp*exp($prec);
     my $bleu=$bp*exp($prec);
-
     return &log_nulldef($bleu);
 #    return $bleu;
 }
@@ -403,7 +375,7 @@ sub get_edge_counts {
 	$scaled_tstlength=@$tokens_trans * ($src_lengths[$sent_id]/$edge_srclength);
     }
     my $ref_length=&compute_ref_seg_length($bp_strategy,$scaled_tstlength,\%{ $ref_lengths[$sent_id] });
-
+    
     my $scaled_reflength=0;
     if($src_lengths[$sent_id]>0) {
 	$scaled_reflength=$ref_length*($edge_srclength/$src_lengths[$sent_id]);
@@ -435,8 +407,7 @@ sub get_edge_counts {
     }
 #    print STDERR "edge_counts->[0]=$edge_counts->[0] scaled_reflength=$scaled_reflength\n";
     $edge_counts->[$max_n*2]=$scaled_reflength;
-    $edge_counts->[($max_n*2)+1]=$edge_srclength;
-
+    $edge_counts->[($max_n*2)+1]=$edge_srclength;    
 }
 
 

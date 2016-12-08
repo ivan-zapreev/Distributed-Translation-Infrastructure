@@ -102,7 +102,7 @@ for(my $i=0; $i<@batches; $i++) {
     print STDERR "batches[$i]=$batches[$i]\n";
     my($from,$to)=split(/ /,$batches[$i]);
     my $finished_file="bleu_lattice.finished.$i";
-    my $call="nohup sh -c \'$OISTERHOME/tuning/scripts/bleu-score-lattice.NEW.pl $lattice_file $O_score_file $mu $src_file $ref_files_string $from $to 1> $lattice_file.batch.$i 2> $lattice_file.err.$i.log\; touch $finished_file\' \&";
+    my $call="nohup sh -c \'$OISTERHOME/tuning/scripts/bleu-score-lattice.pl $lattice_file $O_score_file $mu $src_file $ref_files_string $from $to 1> $lattice_file.batch.$i 2> $lattice_file.err.$i.log\; touch $finished_file\' \&";
     print STDERR "$call\n";
     system($call);
     $num_active_jobs++;
