@@ -1,42 +1,14 @@
-#!/usr/bin/perl -w
+        #!/usr/bin/perl -w
 
 use strict;
 use warnings;
 use File::Basename;
-
-BEGIN {
-    if(!defined($ENV{'OISTERHOME'})
-       || $ENV{'OISTERHOME'} eq '') {
-        print STDERR "environment variable OISTERHOME must be set:\n";
-        print STDERR "export OISTERHOME=/path/to/oister/distribution\n";
-        exit(-1);
-    }
-}
-
-BEGIN {
-    my $release_info=`cat /etc/*-release`;
-    $release_info=~s/\n/ /g;
-    my $os_release;
-    if($release_info=~/CentOS release 5\./) {
-        $os_release='CentOS_5';
-    } elsif($release_info=~/CentOS release 6\./) {
-        $os_release='CentOS_6';
-    }
-    if($os_release eq 'CentOS_6') {
-        unshift @INC, $ENV{"OISTERHOME"}."/lib/perl_modules/lib64/perl5"
-    } else {
-        unshift @INC, $ENV{"OISTERHOME"}."/resources/bin/lib64/perl5/site_perl/5.8.8/x86_64-linux-thread-multi"
-    }
-}
-
+use Cwd 'abs_path';
 use PerlIO::gzip;
 
-
-my $OISTERHOME=$ENV{'OISTERHOME'};
-
+my $scripts_location=abs_path($0);
 my $script_name = basename($0);
 print STDERR "$script_name pid=$$\n";
-
 
 my($lattice_file,$O_score_file,$mu,$src_file,@ref_files)=@ARGV;
 
@@ -104,7 +76,7 @@ for(my $i=0; $i<@batches; $i++) {
     print STDERR "batches[$i]=$batches[$i]\n";
     my($from,$to)=split(/ /,$batches[$i]);
     my $finished_file="bleu_lattice.finished.$i";
-    my $call="nohup sh -c \'$OISTERHOME/tuning/scripts/bleu-score-lattice.pl $lattice_file $O_score_file $mu $src_file $ref_files_string $from $to 1> $lattice_file.batch.$i 2> $lattice_file.err.$i.log\; touch $finished_file\' \&";
+    my $call="nohup sh -c \'$scripts_location/bleu-score-lattice.pl $lattice_file $O_score_file $mu $src_file $ref_files_string $from $to 1> $lattice_file.batch.$i 2> $lattice_file.err.$i.log\; touch $finished_file\' \&";
     print STDERR "$call\n";
     system($call);
     $num_active_jobs++;

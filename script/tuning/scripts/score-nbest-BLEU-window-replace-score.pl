@@ -77,7 +77,7 @@ sub compute_bleu {
             $prec+=(1/$max_n)*&log_nulldef(($O_scores[$sent_id][$n*2]+$correct->[$n+1])/($O_scores[$sent_id][($n*2)+1]+$total->[$n+1]));
         }
         my $BP=&compute_brevaty_penalty(($O_scores[$sent_id][1]+$total->[1]),($O_scores[$sent_id][$max_n*2]+$$ref_length));
-        $bleu=($O_scores[$sent_id][($max_n*2)+1]+$src_lengths[$sent_id])*$BP*exp($prec);	
+        $bleu=($O_scores[$sent_id][($max_n*2)+1]+$src_lengths[$sent_id])*$BP*exp($prec);
 
     } elsif($bleu_strategy eq 'plain') {
         $bleu=&compute_sent_bleu($sent_id,$translation,$max_n,$ref_ngrams,$ref_lengths,$bp_strategy,$correct,$total,$ref_length);
@@ -214,9 +214,9 @@ sub log_nulldef {
 sub compute_brevaty_penalty {
     my($c,$r)=@_;
     if($c>$r) {
-	return 1;
+        return 1;
     } else {
-	return exp(1-($r/$c));
+        return exp(1-($r/$c));
     }
 }
 

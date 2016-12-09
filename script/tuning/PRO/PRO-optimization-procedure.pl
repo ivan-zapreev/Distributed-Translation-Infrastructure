@@ -4,33 +4,8 @@ use strict;
 use warnings;
 use Getopt::Long "GetOptions";
 use File::Basename;
-
-BEGIN {
-    if(!defined($ENV{'OISTERHOME'})
-       || $ENV{'OISTERHOME'} eq '') {
-        print STDERR "environment variable OISTERHOME must be set:\n";
-        print STDERR "export OISTERHOME=/path/to/oister/distribution\n";
-        exit(-1);
-    }
-}
-
-BEGIN {
-    my $release_info=`cat /etc/*-release`;
-    $release_info=~s/\n/ /g;
-    my $os_release;
-    if($release_info=~/CentOS release 5\./) {
-        $os_release='CentOS_5';
-    } elsif($release_info=~/CentOS release 6\./) {
-        $os_release='CentOS_6';
-    }
-    if($os_release eq 'CentOS_6') {
-        unshift @INC, $ENV{"OISTERHOME"}."/lib/perl_modules/lib64/perl5"
-    } else {
-        unshift @INC, $ENV{"OISTERHOME"}."/resources/bin/lib64/perl5/site_perl/5.8.8/x86_64-linux-thread-multi"
-    }
-}
-
-my $OISTERHOME=$ENV{'OISTERHOME'};
+use Cwd 'abs_path';
+use PerlIO::gzip;
 
 my $max_n=4;
 my $Psi=0.1;
@@ -61,7 +36,6 @@ $_HELP = 1
     "work-dir|working-dir=s" => \$work_dir,
     "src-file=s" => \$src_file,
     "ref-stem=s" => \$ref_stem,
-#    "trg-language=s" => \$trg_language,
     "nbest-size=i" => \$nbest_size,
     "decoder-wrapper=s" => \$decoder_wrapper,
     "decoder-parameters=s"=> \$decoder_parameters,
@@ -71,11 +45,6 @@ $_HELP = 1
     "restart-iteration=i" => \$restart_iter,
     "help|h" => \$_HELP
     );
-
-
-if(exists($ENV{'OISTEREXTPATH'}) && defined($ENV{'OISTEREXTPATH'})) {
-    $external_path=$ENV{'OISTEREXTPATH'};
-}
 
 if(!defined($external_path)) {
     print STDERR "  --external-path=str must be set\n";
@@ -98,12 +67,13 @@ if($_HELP) {
     exit(-1);
 }
 
+my $pro_location=abs_path($0);
+my $scripts_location=abs_path($0)."/../scripts";
 my $script_name = basename($0);
 print STDERR "$script_name pid=$$\n";
 
 my $use_loss_augmented_inference=1;
 
-my $mteval_home="$OISTERHOME/resources/mteval";
 my $nbest_pool="$work_dir/pool.nbest.scored";
 
 if(!(-e "$work_dir")) {
@@ -209,18 +179,17 @@ while(!$stopping_criterion_true) {
 
     my $nbest_objective_function_call;
     if($bleu_method eq 'chiang') {
-        my $o_score_call="cat $work_dir/run$iteration.trans | $OISTERHOME/resources/mteval/Programs/postprocess/postprocess1_no-untok | $OISTERHOME/tuning/scripts/compute-BLEU-components-window.pl $src_file $ref_files_argument_string > $work_dir/run$iteration.nbest.O_scores";
+        my $o_score_call="cat $work_dir/run$iteration.trans | $scripts_location/postprocess1_no-untok | $scripts_location/compute-BLEU-components-window.pl $src_file $ref_files_argument_string > $work_dir/run$iteration.nbest.O_scores";
         if($trg_language!~/^(english|dutch|german|italian)$/) {
-            $o_score_call="cat $work_dir/run$iteration.trans | $OISTERHOME/resources/mteval/Programs/postprocess/postprocess1_no-untok_no-rm | $OISTERHOME/tuning/scripts/compute-BLEU-components-window.pl $src_file $ref_files_argument_string > $work_dir/run$iteration.nbest.O_scores";
+            $o_score_call="cat $work_dir/run$iteration.trans | $scripts_location/postprocess1_no-untok_no-rm | $scripts_location/compute-BLEU-components-window.pl $src_file $ref_files_argument_string > $work_dir/run$iteration.nbest.O_scores";
         }
         print STDERR "$o_score_call\n";
         system("$o_score_call");
 
-
-        $nbest_objective_function_call="$OISTERHOME/tuning/scripts/scorer-parallel-wrapper-window.pl \"$OISTERHOME/tuning/scripts/score-nbest-BLEU-window.pl $src_file $work_dir/run$iteration.nbest.O_scores $ref_files_argument_string\" $work_dir/run$iteration.nbest $src_file \"$ref_files_argument_string\" $no_parallel > $work_dir/run$iteration.nbest.scored";
+        $nbest_objective_function_call="$scripts_location/scorer-parallel-wrapper-window.pl \"$scripts_location/score-nbest-BLEU-window.pl $src_file $work_dir/run$iteration.nbest.O_scores $ref_files_argument_string\" $work_dir/run$iteration.nbest $src_file \"$ref_files_argument_string\" $no_parallel > $work_dir/run$iteration.nbest.scored";
 
     } elsif($bleu_method eq 'liang') {
-        $nbest_objective_function_call="$OISTERHOME/tuning/scripts/scorer-parallel-wrapper.pl \"$OISTERHOME/tuning/scripts/score-nbest-BLEU.pl $src_file $ref_files_argument_string\" $work_dir/run$iteration.nbest $no_parallel > $work_dir/run$iteration.nbest.scored";
+        $nbest_objective_function_call="$scripts_location/scorer-parallel-wrapper.pl \"$scripts_location/score-nbest-BLEU.pl $src_file $ref_files_argument_string\" $work_dir/run$iteration.nbest $no_parallel > $work_dir/run$iteration.nbest.scored";
     }
 
     print STDERR "$nbest_objective_function_call\n";
@@ -234,22 +203,22 @@ while(!$stopping_criterion_true) {
 
     if($lattice_bleu && $bleu_method eq 'chiang') {
         my $mu=0.05;
-        my $lattice_bleu_call="$OISTERHOME/tuning/scripts/bleu-score-lattice-parallel.pl $work_dir/run$iteration.trans.lattices $work_dir/run$iteration.nbest.O_scores $mu $src_file $ref_files_argument_string $no_parallel > $work_dir/run$iteration.trans.lattices_bleu";
+        my $lattice_bleu_call="$scripts_location/bleu-score-lattice-parallel.pl $work_dir/run$iteration.trans.lattices $work_dir/run$iteration.nbest.O_scores $mu $src_file $ref_files_argument_string $no_parallel > $work_dir/run$iteration.trans.lattices_bleu";
         print STDERR "$lattice_bleu_call\n";
 
         system($lattice_bleu_call);
 
-        my $carmel_call="$OISTERHOME/tuning/scripts/get-k-best-parallel.pl $work_dir/run$iteration.trans.lattices_bleu $work_dir/run$iteration.trans.feature_scores $feature_id2name_file 10 $no_parallel $external_path";
+        my $carmel_call="$scripts_location/get-k-best-parallel.pl $work_dir/run$iteration.trans.lattices_bleu $work_dir/run$iteration.trans.feature_scores $feature_id2name_file 10 $no_parallel $external_path";
         print STDERR "$carmel_call\n";
         system($carmel_call);
 
         if($use_loss_augmented_inference) {
             my $mu=1000;
-            my $lattice_bleu_call_lai="$OISTERHOME/tuning/scripts/bleu-score-lattice-parallel.pl $work_dir/run$iteration.trans.lattices $work_dir/run$iteration.nbest.O_scores $mu $src_file $ref_files_argument_string $no_parallel > $work_dir/run$iteration.trans.lattices_bleu_lai";
+            my $lattice_bleu_call_lai="$scripts_location/bleu-score-lattice-parallel.pl $work_dir/run$iteration.trans.lattices $work_dir/run$iteration.nbest.O_scores $mu $src_file $ref_files_argument_string $no_parallel > $work_dir/run$iteration.trans.lattices_bleu_lai";
             print STDERR "$lattice_bleu_call_lai\n";
             system($lattice_bleu_call_lai);
 
-            my $carmel_call="$OISTERHOME/tuning/scripts/get-k-best-parallel.pl $work_dir/run$iteration.trans.lattices_bleu_lai $work_dir/run$iteration.trans.feature_scores $feature_id2name_file 10 $no_parallel $external_path";
+            my $carmel_call="$scripts_location/get-k-best-parallel.pl $work_dir/run$iteration.trans.lattices_bleu_lai $work_dir/run$iteration.trans.feature_scores $feature_id2name_file 10 $no_parallel $external_path";
 
             print STDERR "$carmel_call\n";
             system($carmel_call);
@@ -278,9 +247,9 @@ while(!$stopping_criterion_true) {
         $rescore_parameters=~s/ +/ /g;
         $rescore_parameters=~s/^[\s\t]*(.*?)[\s\t]*$/$1/;
 
-        my $process_pipeline="$mteval_home/Programs/postprocess/rescore-remove-nil-lines.pl | $OISTERHOME/scripts/nbest-extract.pl | $mteval_home/Programs/postprocess/postprocess1_no-untok | $OISTERHOME/scripts/nbest-replace.pl";
+        my $process_pipeline="$scripts_location/rescore-remove-nil-lines.pl | $scripts_location/nbest-extract.pl | $scripts_location/postprocess1_no-untok | $scripts_location/nbest-replace.pl";
         if($trg_language!~/^(english|dutch|german|italian)$/) {
-            $process_pipeline="$mteval_home/Programs/postprocess/rescore-remove-nil-lines.pl | $OISTERHOME/scripts/nbest-extract.pl | $mteval_home/Programs/postprocess/postprocess1_no-untok_no-rm | $OISTERHOME/scripts/nbest-replace.pl";
+            $process_pipeline="$scripts_location/rescore-remove-nil-lines.pl | $scripts_location/nbest-extract.pl | $scripts_location/postprocess1_no-untok_no-rm | $scripts_location/nbest-replace.pl";
         }
 
         my $rescore_clean_up_call="cat $work_dir/run$iteration.trans.lattices_bleu.nbest.rescored | $process_pipeline $work_dir/run$iteration.trans.lattices_bleu.nbest.rescored > $work_dir/run$iteration.trans.lattices_bleu.nbest.rescored.clean";
@@ -291,19 +260,19 @@ while(!$stopping_criterion_true) {
         system($mv_call);
 
         if($use_loss_augmented_inference) {
-            my $nbest_objective_function_call="$OISTERHOME/tuning/scripts/scorer-parallel-wrapper-window.pl \"$OISTERHOME/tuning/scripts/score-nbest-BLEU-window.pl $src_file $work_dir/run$iteration.nbest.O_scores $ref_files_argument_string\" $work_dir/run$iteration.trans.lattices_bleu_lai.nbest.rescored $src_file \"$ref_files_argument_string\" $no_parallel > $work_dir/run$iteration.trans.lattices_bleu_lai.nbest.scored";
+            my $nbest_objective_function_call="$scripts_location/scorer-parallel-wrapper-window.pl \"$scripts_location/score-nbest-BLEU-window.pl $src_file $work_dir/run$iteration.nbest.O_scores $ref_files_argument_string\" $work_dir/run$iteration.trans.lattices_bleu_lai.nbest.rescored $src_file \"$ref_files_argument_string\" $no_parallel > $work_dir/run$iteration.trans.lattices_bleu_lai.nbest.scored";
             print STDERR "$nbest_objective_function_call\n";
             system($nbest_objective_function_call);
         }
 
-        my $nbest_objective_function_call="$OISTERHOME/tuning/scripts/scorer-parallel-wrapper-window.pl \"$OISTERHOME/tuning/scripts/score-nbest-BLEU-window.pl $src_file $work_dir/run$iteration.nbest.O_scores $ref_files_argument_string\" $work_dir/run$iteration.trans.lattices_bleu.nbest.rescored $src_file \"$ref_files_argument_string\" $no_parallel > $work_dir/run$iteration.trans.lattices_bleu.nbest.scored";
+        my $nbest_objective_function_call="$scripts_location/scorer-parallel-wrapper-window.pl \"$scripts_location/score-nbest-BLEU-window.pl $src_file $work_dir/run$iteration.nbest.O_scores $ref_files_argument_string\" $work_dir/run$iteration.trans.lattices_bleu.nbest.rescored $src_file \"$ref_files_argument_string\" $no_parallel > $work_dir/run$iteration.trans.lattices_bleu.nbest.scored";
         print STDERR "$nbest_objective_function_call\n";
         system($nbest_objective_function_call);
 
         print STDERR "rm $work_dir/run$iteration.trans.feature_scores\n";
         unlink("$work_dir/run$iteration.trans.feature_scores");
 
-        my $compute_corpus_bleu_from_oracle_call="cat $work_dir/run$iteration.trans.lattices_bleu.nbest.scored | $OISTERHOME/tuning/scripts/compute-corpus-bleu-with-highest-bleu-from-scored-nbest.pl";
+        my $compute_corpus_bleu_from_oracle_call="cat $work_dir/run$iteration.trans.lattices_bleu.nbest.scored | $scripts_location/compute-corpus-bleu-with-highest-bleu-from-scored-nbest.pl";
         print STDERR "$compute_corpus_bleu_from_oracle_call\n";
         print STDERR "ORACLE LATTICE ";
         system($compute_corpus_bleu_from_oracle_call);
@@ -315,7 +284,7 @@ while(!$stopping_criterion_true) {
     my $no_added=0;
     if($bleu_method eq 'chiang') {
         $no_added=&combine_nbest_list_with_pool("$work_dir/run$iteration.nbest.scored",$nbest_pool);
-        my $nbest_objective_function_call="$OISTERHOME/tuning/scripts/scorer-parallel-wrapper-window.pl \"$OISTERHOME/tuning/scripts/score-nbest-BLEU-window-replace-score.pl $src_file $work_dir/run$iteration.nbest.O_scores $ref_files_argument_string\" $nbest_pool $src_file \"$ref_files_argument_string\" $no_parallel > $nbest_pool.tmp";
+        my $nbest_objective_function_call="$scripts_location/scorer-parallel-wrapper-window.pl \"$scripts_location/score-nbest-BLEU-window-replace-score.pl $src_file $work_dir/run$iteration.nbest.O_scores $ref_files_argument_string\" $nbest_pool $src_file \"$ref_files_argument_string\" $no_parallel > $nbest_pool.tmp";
         print STDERR "$nbest_objective_function_call\n";
         system("$nbest_objective_function_call");
         my $move_call="mv $nbest_pool.tmp $nbest_pool";
@@ -341,16 +310,16 @@ while(!$stopping_criterion_true) {
     # step 5: recompute feature weights
     if($lattice_bleu && $bleu_method eq 'chiang') {
         if($use_loss_augmented_inference) {
-            my $pro_call="$OISTERHOME/tuning/PRO/PRO-optimizer-parallel-wrapper.pl --work-dir=$work_dir --nbest-pool=$nbest_pool --iteration=$iteration --num-parallel=$no_pro_parallel --lattice-oracle-scored=$work_dir/run$iteration.trans.lattices_bleu.nbest.scored --model-nbest-scored=$work_dir/run$iteration.nbest.scored --lattice-lai-scored=$work_dir/run$iteration.trans.lattices_bleu_lai.nbest.scored --conf=$config_file > $work_dir/run$iteration.weights";
+            my $pro_call="$pro_location/PRO-optimizer-parallel-wrapper.pl --work-dir=$work_dir --nbest-pool=$nbest_pool --iteration=$iteration --num-parallel=$no_pro_parallel --lattice-oracle-scored=$work_dir/run$iteration.trans.lattices_bleu.nbest.scored --model-nbest-scored=$work_dir/run$iteration.nbest.scored --lattice-lai-scored=$work_dir/run$iteration.trans.lattices_bleu_lai.nbest.scored --conf=$config_file > $work_dir/run$iteration.weights";
             print STDERR "$pro_call\n";
             system($pro_call);
         } else {
-            my $pro_call="$OISTERHOME/tuning/PRO/PRO-optimizer-parallel-wrapper.pl $work_dir $nbest_pool $iteration $no_pro_parallel $work_dir/run$iteration.trans.lattices_bleu.nbest.scored $work_dir/run$iteration.nbest.scored > $work_dir/run$iteration.weights";
+            my $pro_call="$pro_location/PRO-optimizer-parallel-wrapper.pl $work_dir $nbest_pool $iteration $no_pro_parallel $work_dir/run$iteration.trans.lattices_bleu.nbest.scored $work_dir/run$iteration.nbest.scored > $work_dir/run$iteration.weights";
             print STDERR "$pro_call\n";
             system($pro_call);
         }
     } else {
-        my $pro_call="$OISTERHOME/tuning/PRO/PRO-optimizer-parallel-wrapper.pl $work_dir $nbest_pool $iteration $no_pro_parallel > $work_dir/run$iteration.weights";
+        my $pro_call="$pro_location/PRO-optimizer-parallel-wrapper.pl $work_dir $nbest_pool $iteration $no_pro_parallel > $work_dir/run$iteration.weights";
         print STDERR "$pro_call\n";
         system($pro_call);
     }
@@ -419,21 +388,18 @@ while(!$stopping_criterion_true) {
                 $weights_string=join(' ',@weights);
                 my $new_line="$id ||| $name ||| $weights_string\n";
                 push(@lexfeature_lines,$new_line);
-	    }
-	}
-	close(F);
-	open(F,">$lexfeature_file")||die("can't open $lexfeature_file: $!\n");
-	for(my $i=0; $i<@lexfeature_lines; $i++) {
-	    print F $lexfeature_lines[$i];
-	}
-	close(F);
+            }
+        }
+        close(F);
+        open(F,">$lexfeature_file")||die("can't open $lexfeature_file: $!\n");
+        for(my $i=0; $i<@lexfeature_lines; $i++) {
+            print F $lexfeature_lines[$i];
+        }
+        close(F);
     }
 
     if(defined($sparse_decoding_feature_file)) {
-        #TODO
-    #	my %printed_feature_ids;
         my @sparse_feature_lines;
-    #	my $largest_feature_id;
         open(F,"<$sparse_decoding_feature_file")||die("can't open $sparse_decoding_feature_file: $!\n");
         while(defined(my $line=<F>)) {
             if($line=~/^s([0-9]+) \|\|\| ([^\|]+) \|\|\| ([0-9\-\+e\. ]+)\s*\n/) {

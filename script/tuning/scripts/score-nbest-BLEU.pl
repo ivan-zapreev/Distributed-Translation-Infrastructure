@@ -192,9 +192,9 @@ sub max {
 sub compute_brevaty_penalty {
     my($c,$r)=@_;
     if($c>$r) {
-	return 1;
+        return 1;
     } else {
-	return exp(1-($r/$c));
+        return exp(1-($r/$c));
     }
 }
 
@@ -256,7 +256,7 @@ sub get_src_length_proportions {
     }
     close(F);
     for(my $i=0; $i<@$src_length_proportions; $i++) {
-	   $src_length_proportions->[$i]/=$total_length;
+           $src_length_proportions->[$i]/=$total_length;
     }
 }
 

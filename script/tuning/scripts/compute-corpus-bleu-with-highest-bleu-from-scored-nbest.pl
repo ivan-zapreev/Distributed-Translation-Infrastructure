@@ -44,10 +44,10 @@ for(my $n=0; $n<$max_n; $n++) {
     if($corpus_components[($n*2)+1]==0) {
         $prec_n[$n]=0.01;
     } else {
-	   $prec_n[$n]=$corpus_components[$n*2]/$corpus_components[($n*2)+1];
+        $prec_n[$n]=$corpus_components[$n*2]/$corpus_components[($n*2)+1];
     }
     if($prec_n[$n]==0) {
-	   $prec_n[$n]=0.01;
+        $prec_n[$n]=0.01;
     }
 }
 

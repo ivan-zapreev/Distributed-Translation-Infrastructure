@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Getopt::Long "GetOptions";
 use File::Basename;
+use Cwd 'abs_path';
 
 my $_HELP=0;
 my $work_dir;
@@ -23,7 +24,7 @@ GetOptions(
     "model-nbest-scored=s" => \$model_nbest_scored,
     "lattice-lai-scored=s" => \$model_nbest_lai_scored,
     "help" => \$_HELP
-	   );
+           );
 
 if(!defined($nbest_file_scored)) {
     $_HELP=1;
@@ -33,10 +34,9 @@ if(!defined($sample_id)) {
     $sample_id='';
 }
 
+my $mega_location=abs_path($0)."/../megam_0.92"
 my $script_name = basename($0);
 print STDERR "$script_name pid=$$\n";
-
-my $OISTERHOME=$ENV{'OISTERHOME'};
 
 my $gamma_sample_max_size=5000;
 my $xi_sample_size=100;
@@ -83,7 +83,7 @@ if(defined($config_file)) {
             $sparse_decoding_name2id{$id}=$id_num;
         }
         close(F);
-    }	
+    }        
 }
 
 my $classifier_data_file="$nbest_file_scored.classifier_data$sample_id";
@@ -92,8 +92,8 @@ my $classifier_err_log="$nbest_file_scored.classifier_err_log$sample_id";
 
 my $SMTAMS=$ENV{'SMTAMS'};
 
-## link to OISTER remains to be done.
-my $classifier_call="$OISTERHOME/install/external_components/external_binaries/megam.opt -nobias -fvals -maxi $max_iterations binary $classifier_data_file 2> $classifier_err_log";
+##Linking to mega-m
+my $classifier_call="$mega_location/megam.opt -nobias -fvals -maxi $max_iterations binary $classifier_data_file 2> $classifier_err_log";
 
 my $prev_sent_id;
 my @candidates_obj;
@@ -308,8 +308,8 @@ sub sample_pro {
         foreach my $j_prime (keys %{ $chosen_gamma_pairs{$j} }) {
             my $insert=&alpha(abs($candidates_obj[$j]-$candidates_obj[$j_prime]),$alpha_strategy,$avg_obj_diff);
             if($insert) {
-            my $pair="$j $j_prime";
-            $V{$pair}=1;
+                my $pair="$j $j_prime";
+                $V{$pair}=1;
             }
         }
     }
@@ -326,7 +326,7 @@ sub sample_pro {
 
         my $diff_string_inv=&vec_diff($candidates_features->[$j_prime],$candidates_features->[$j]);
         my $sign_inv=1-$sign;
-        push(@$Xi,"$sign_inv$instance_weight_string $diff_string_inv");	
+        push(@$Xi,"$sign_inv$instance_weight_string $diff_string_inv");        
     }
 
 }
@@ -385,10 +385,9 @@ sub vec_diff {
             my $vec_value="F$id " . sprintf("%.5f",$value);
             push(@vec_diff,$vec_value);
         }
-   }
+    }
 
     return join(' ',@vec_diff);
-
 }
 
 
@@ -427,24 +426,24 @@ sub vec_diff_OLD {
     }
 
    for(my $i=$largest_global_feature_index+1; $i<@vec_j_prime; $i++) {
-	if($vec_j_prime[$i]=~/^([0-9]+)\:(.+)$/) {
-	    my $lex_feature_id=$1;
-	    my $lex_feature_value=$2;
-	    my $id=$largest_global_feature_index+$lex_feature_id+2;
-	    $hash_j_prime{$id}=$lex_feature_value;
-	    if(!exists($hash_j{$id})) {
+        if($vec_j_prime[$i]=~/^([0-9]+)\:(.+)$/) {
+            my $lex_feature_id=$1;
+            my $lex_feature_value=$2;
+            my $id=$largest_global_feature_index+$lex_feature_id+2;
+            $hash_j_prime{$id}=$lex_feature_value;
+            if(!exists($hash_j{$id})) {
             $hash_j{$id}=0;
-	    }
-	} elsif($vec_j_prime[$i]=~/^([^ ]+)\:(.+)$/) {
-	    my $sparse_feature_name=$1;
-	    my $sparse_feature_value=$2;
-	    my $id=$sparse_decoding_name2id{$sparse_feature_name}
-	    +$largest_global_feature_index+$largest_lex_feature_id+3;
-	    $hash_j_prime{$id}=$sparse_feature_value;
-	    if(!exists($hash_j{$id})) {
+            }
+        } elsif($vec_j_prime[$i]=~/^([^ ]+)\:(.+)$/) {
+            my $sparse_feature_name=$1;
+            my $sparse_feature_value=$2;
+            my $id=$sparse_decoding_name2id{$sparse_feature_name}
+            +$largest_global_feature_index+$largest_lex_feature_id+3;
+            $hash_j_prime{$id}=$sparse_feature_value;
+            if(!exists($hash_j{$id})) {
             $hash_j{$id}=0;
-	    }
-	}
+            }
+        }
 
     }
     foreach my $id (keys %hash_j) {

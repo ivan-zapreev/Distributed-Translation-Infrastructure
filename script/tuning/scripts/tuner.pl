@@ -3,36 +3,14 @@
 use strict;
 use warnings;
 use Getopt::Long "GetOptions";
-
-print STDERR "oister-mert-fork-no_v11-tok.pl pid=$$\n";
-
-BEGIN {
-    if(!defined($ENV{'OISTERHOME'})
-       || $ENV{'OISTERHOME'} eq '') {
-        print STDERR "environment variable OISTERHOME must be set:\n";
-        print STDERR "export OISTERHOME=/path/to/oister/distribution\n";
-        exit(-1);
-    }
-}
-
-BEGIN {
-    my $release_info=`cat /etc/*-release`;
-    $release_info=~s/\n/ /g;
-    my $os_release;
-    if($release_info=~/CentOS release 5\./) {
-        $os_release='CentOS_5';
-    } elsif($release_info=~/CentOS release 6\./) {
-        $os_release='CentOS_6';
-    }
-    if($os_release eq 'CentOS_6') {
-        unshift @INC, $ENV{"OISTERHOME"}."/lib/perl_modules/lib64/perl5"
-    } else {
-        unshift @INC, $ENV{"OISTERHOME"}."/resources/bin/lib64/perl5/site_perl/5.8.8/x86_64-linux-thread-multi"
-    }
-}
-
+use File::Basename;
+use Cwd 'abs_path';
 use PerlIO::gzip;
-my $OISTERHOME=$ENV{'OISTERHOME'};
+
+my $scripts_location=abs_path($0);
+my $pro_location=abs_path($0)."/../PRO";
+my $script_name=basename($0);
+print STDERR "$script_name pid=$$\n";
 
 my $config_file;
 my $src_file;
@@ -118,7 +96,7 @@ $trg_language='english' if(!defined($trg_language));
 my $mert;
 
 if($mert_script=~/^PRO/) {
-    $mert="$OISTERHOME/tuning/PRO/PRO-optimization-procedure.pl";
+    $mert=$pro_location."/PRO-optimization-procedure.pl";
 } else {
     print STDERR "Unsupported optimized option, we only support PRO!\n";
     exit(-1);
@@ -126,8 +104,7 @@ if($mert_script=~/^PRO/) {
 
 my $mert_work_dir="$experiment_dir/mert-work";
 my $err_batch_dir="batches_errlogs";
-my $main_dir="$OISTERHOME/src";
-unshift (@INC, "$main_dir");
+unshift (@INC, "$scripts_location");
 require 'load_config_file.pl';
 
 if(-e "$mert_work_dir" && !$restart_iteration) {
@@ -145,15 +122,15 @@ $ref_stem=~s/\.[0-9]+\.$/\./;
 my $fail=0;
 for(my $i=0; $i<100; $i++) {
     if(-e "$ref_stem$i") {
-	open(F,"<$ref_stem$i");
-	my $line_counter=0;
-	while(defined(my $line=<F>)) {
-	    $line_counter++;
-	    if($line=~/^[\t\s]*\n/) {
-		print STDERR "Error: line=$line_counter of \"$ref_stem$i\" is empty.\n";
-		$fail=1;
-	    }
-	}
+        open(F,"<$ref_stem$i");
+        my $line_counter=0;
+        while(defined(my $line=<F>)) {
+            $line_counter++;
+            if($line=~/^[\t\s]*\n/) {
+                print STDERR "Error: line=$line_counter of \"$ref_stem$i\" is empty.\n";
+                $fail=1;
+            }
+        }
     }
 }
 if($fail) {
@@ -172,21 +149,21 @@ if($restart_iteration) {
     my @config_buffer;
     open(F,"<$config_file");
     while(defined(my $conf_line=<F>)) {
-	push(@config_buffer,$conf_line);
-	if($conf_line=~/^data:lexfeat_weights=([^ ]+)\s*\n/) {
-	   $lexfeature_file=$1;
+        push(@config_buffer,$conf_line);
+        if($conf_line=~/^data:lexfeat_weights=([^ ]+)\s*\n/) {
+           $lexfeature_file=$1;
        }
     }
     close(F);
     for(my $i=0; $i<@config_buffer; $i++) {
-	if($config_buffer[$i]=~/^(.*[\s\t]+init=)([^ ]+)([\s\t]+opt=)[^ ]+([\s\t]*)\n/) {
-	    my $left_context=$1;
-	    my $init_val=$2;
-	    my $middle_context=$3;
-	    my $right_context=$4;
-	    my $line="$left_context$init_val$middle_context$init_val$right_context\n";
-	    $config_buffer[$i]=$line;
-	}
+        if($config_buffer[$i]=~/^(.*[\s\t]+init=)([^ ]+)([\s\t]+opt=)[^ ]+([\s\t]*)\n/) {
+            my $left_context=$1;
+            my $init_val=$2;
+            my $middle_context=$3;
+            my $right_context=$4;
+            my $line="$left_context$init_val$middle_context$init_val$right_context\n";
+            $config_buffer[$i]=$line;
+        }
     }
     open(F,">$config_file");
     print F join('',@config_buffer);
@@ -201,7 +178,7 @@ if($restart_iteration) {
     }
 }
 
-my $decoder_wrapper="$OISTERHOME/tuning/scripts/decoder-rescorer-wrapper.pl";
+my $decoder_wrapper="$scripts_location/decoder-rescorer-wrapper.pl";
 
 my $decoder_parameters="--conf=$config_file --src=$src_file --src-language=$src_language --mert --decoder=$decoder --no-parallel=$no_parallel --mert-script=$mert_script";
 $decoder_parameters.=' --delete-files' if($delete_files);

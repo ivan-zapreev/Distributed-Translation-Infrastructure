@@ -339,7 +339,7 @@ sub log_nulldef {
     if($_[0]==0) {
         return -100;
     } else {
-	   return log($_[0]);
+        return log($_[0]);
     }
 }
 
@@ -389,11 +389,11 @@ sub build_hist {
         shift(@tokens);
     }
     for(my $i=@$node_from_hist-1; $i>=0 && @tokens<$max_n-1; $i--) {
-	   unshift(@tokens,$node_from_hist->[$i]);
+           unshift(@tokens,$node_from_hist->[$i]);
     }
 
     for(my $i=0; $i<@tokens; $i++) {
-	   $new_hist->[$i]=$tokens[$i];
+           $new_hist->[$i]=$tokens[$i];
     }
 }
 
@@ -497,7 +497,7 @@ sub compute_brevaty_penalty {
     if($c>$r) {
         return 1;
     } else {
-	   return exp(1-($r/$c));
+           return exp(1-($r/$c));
     }
 }
 
@@ -525,6 +525,6 @@ sub log_base {
     if($base eq 'e') {
         return log($val);
     } else {
-	   return log($val)/log($base);
+           return log($val)/log($base);
     }
 }

@@ -1,14 +1,5 @@
 #!/bin/sh
 
-#ROOT=/fs/clip-mteval/Programs
-ROOT=$HOME/resources/mteval/Programs
-PATH=$ROOT/postprocess:$ROOT:$PATH
-
 # Do we really want ISO-8859-1?
 # Strip out everything that doesn't convert
 uconv -f utf8 -t iso-8859-1 --callback skip | sed -e 's/  */ /g' | sed -e 's/^  *//g' | sed -e 's/  *$//g'
-# moses detokenization:
-#/home/christof/resources/software/moses/current/moses/scripts/recaser/detokenizer.perl |  uconv -f utf8 -t iso-8859-1 --callback skip | sed -e 's/  */ /g' | uconv -f iso-8859-1 -t utf8 
-
-
-

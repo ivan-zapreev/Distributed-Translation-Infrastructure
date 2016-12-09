@@ -157,7 +157,7 @@ sub compute_brevaty_penalty {
     if($c>$r) {
         return 1;
     } else {
-	   return exp(1-($r/$c));
+           return exp(1-($r/$c));
     }
 }
 
@@ -182,7 +182,7 @@ sub compute_bleu {
         }
 
     } elsif($bleu_strategy eq 'plain') {
-	   $bleu=&compute_sent_bleu($sent_id,$translation,$max_n,$ref_ngrams,$ref_lengths,$bp_strategy,$correct,$total,$ref_length);
+       $bleu=&compute_sent_bleu($sent_id,$translation,$max_n,$ref_ngrams,$ref_lengths,$bp_strategy,$correct,$total,$ref_length);
     }
 
     return $bleu;

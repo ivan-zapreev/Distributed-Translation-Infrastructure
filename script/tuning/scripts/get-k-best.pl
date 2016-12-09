@@ -91,9 +91,9 @@ while(defined(my $line=<FILE>)) {
             }
         }
 
-	my $found_feat=0;
-	while(!$found_feat && defined(my $line_feat=<FEAT>)) {
-	    if($line_feat=~/^<SENT ID=$sent_id>/) {
+        my $found_feat=0;
+        while(!$found_feat && defined(my $line_feat=<FEAT>)) {
+            if($line_feat=~/^<SENT ID=$sent_id>/) {
             $found_feat=1;
             while(defined($line_feat=<FEAT>) && $line_feat!~/^<\/SENT>/) {
                 chomp($line_feat);
@@ -103,18 +103,18 @@ while(defined(my $line=<FILE>)) {
                     $node_feature_scores{$node_id}{$feature_id}=$feature_value;
                 }
             }
-	    }
-	}
+            }
+        }
 
-	$no_lines_processed++;
-	my $no_digits = rindex($prev_no_lines,"");
-	if($no_lines_processed % 1 == 0) {
-	    for(my $j=1; $j<=$no_digits; $j++) {
+        $no_lines_processed++;
+        my $no_digits = rindex($prev_no_lines,"");
+        if($no_lines_processed % 1 == 0) {
+            for(my $j=1; $j<=$no_digits; $j++) {
             print STDERR "\x08";
-	    };
-	    print STDERR "$no_lines_processed";
-	    $prev_no_lines = $no_lines_processed;
-	};
+            };
+            print STDERR "$no_lines_processed";
+            $prev_no_lines = $no_lines_processed;
+        };
 
         my %graph_edge;
         my %graph_label;
@@ -129,7 +129,7 @@ while(defined(my $line=<FILE>)) {
                 my @pairs=split(/ /,$string);
                 for(my $i=0; $i<@pairs; $i++) {
                     my($node_pair,$left,$right)=split(/:/,$pairs[$i]);
-            	    my($node_to,$node_from)=split(/\-/,$node_pair);
+                        my($node_to,$node_from)=split(/\-/,$node_pair);
                     $graph_label{$node_from}{$node_to}[0]="$left:$right";
 
                 }
@@ -163,7 +163,7 @@ while(defined(my $line=<FILE>)) {
         my @k_paths;
         &yen_ksp(\%graph_edge,$start_node,$end_node,$nbest,\@k_paths);
 
-	print OUT "<SENT ID=$sent_id>\n";
+        print OUT "<SENT ID=$sent_id>\n";
 
         for(my $i=0; $i<@k_paths; $i++) {
             my $rank=$i+1;
@@ -241,8 +241,6 @@ sub yen_ksp {
     my $shortest_path_string=&invert_path_string(&bellman_ford(\%graph_edge_inv,$end_node,$start_node,\%shortest_path_tree_inv_weight,\%shortest_path_tree_successor));
     undef %graph_edge_inv;
 
-#    print STDERR "shortest_path_string=$shortest_path_string\n";
-
     if($shortest_path_string eq '') {
     } else {
         my @path=split(/ /,$shortest_path_string);
@@ -297,13 +295,10 @@ sub yen_ksp {
             my %vertices_removed;
 
             my $spurNode=$A[$k-1][$i];
-#            my @rootPath=@{ $A[$k-1] }[0..$i];
             push(@rootPath,$spurNode);
             if($i>0) {
                 $rootPathCost+=$$graph_edge{$A[$k-1][$i-1]}{$spurNode};
             }
-
-#            my $rootPathCost=&get_path_cost($graph_edge,\@rootPath);
 
             my $rootPathString=join(' ',@rootPath);
             for(my $j=0; $j<@rootPath-1; $j++) {
@@ -329,10 +324,6 @@ sub yen_ksp {
 
             foreach my $node (keys %completion_nodes) {
 
-#                my $completion_path=&get_completion_path(\%shortest_path_tree_successor,$node);
-#                my $totalPathString="$rootPathString $completion_path";
-#                my @totalPath=split(/ /,$totalPathString);
-
                 my $cost=$rootPathCost+$completion_nodes{$node};
                 if($heap_size<$k_left || $cost<$heap_max_value) {
 
@@ -347,7 +338,6 @@ sub yen_ksp {
                     if($cost>$heap_max_value) {
                         $heap_max_value=$cost;
                     }
-#                    print STDERR "heap_size=$heap_size\n";
                 }
 
             }
@@ -360,7 +350,6 @@ sub yen_ksp {
             my $b_cost=$B_cost{$min_key};
             my $b_completionPathString=&get_completion_path(\%shortest_path_tree_successor,$B_completionNode{$min_key});
             my $b_pathString="$B_rootPath{$min_key} $b_completionPathString";
-#            my $b_pathString=$B_path{$min_key};
 
             my $b_spurIndex=$B_spurIndex{$min_key};
 
@@ -388,7 +377,6 @@ sub yen_ksp {
                 my($min_key,$min_value)=&heap_extract_min(\@heap_keys,\@heap_values);
                 push(@heap_keys_new,$min_key);
                 push(@heap_values_new,$min_value);
-#                &min_heap_insert(\@heap_keys_new,\@heap_values_new,$min_key,$min_value);
                 $heap_size_new++;
                 $heap_max_value_new=$min_value;
             }
@@ -545,12 +533,8 @@ sub get_derivation {
     for(my $i=0; $i<@$path-2; $i++) {
         my $node_from=$path->[$i];
         my $node_to=$path->[$i+1];
-        #if(!exists($$graph_label{$node_from}{$node_to}))
-        #print STDERR "node_from:$node_from\n";#added by Hamid for debugging purpose
-        #print STDERR "node_to:$node_to\n";#added by Hamid for debugging purpose
         my $label=join(' ',@{ $$graph_label{$node_from}{$node_to} });
         my $cost=-1*$$graph_edge{$node_from}{$node_to};
-#        push(@derivation,"$label:$cost");
         push(@derivation,$label);
         $sum+=$cost;
     }
@@ -653,14 +637,10 @@ sub min_heap_insert {
 sub heap_decrease_key {
     my($heap_keys,$heap_values,$i,$value)=@_;
 
-#    if($value>$heap_values->[$i]) {
-#	die("new key value is smaller than current key\n");
-#    }
-
     $heap_values->[$i]=$value;
     while($i>0 && $heap_values->[&heap_parent($i)]>$heap_values->[$i]) {
-	&swap($heap_keys,$heap_values,$i,&heap_parent($i));
-	$i=&heap_parent($i);
+        &swap($heap_keys,$heap_values,$i,&heap_parent($i));
+        $i=&heap_parent($i);
     }
 }
 
@@ -669,7 +649,7 @@ sub heap_extract_min {
     my($heap_keys,$heap_values)=@_;
 
     if(@$heap_values==0) {
-	return 'error: heap underflow';
+        return 'error: heap underflow';
     }
 
     my $min_key=$heap_keys->[0];
@@ -702,7 +682,7 @@ sub build_min_heap {
     my $heap_values_size=@$heap_values-1;
 
     for(my $i=floor($heap_values_size/2); $i>=0; $i--) {
-	&min_heapify($heap_keys,$heap_values,$i);
+        &min_heapify($heap_keys,$heap_values,$i);
     }
 }
 
@@ -715,18 +695,18 @@ sub min_heapify {
     my $smallest;
 
     if($l<=$heap_values_size && $heap_values->[$l]<$heap_values->[$i]) {
-	$smallest=$l;
+        $smallest=$l;
     } else {
-	$smallest=$i;
+        $smallest=$i;
     }
 
     if($r<=$heap_values_size && $heap_values->[$r]<$heap_values->[$smallest]) {
-	$smallest=$r;
+        $smallest=$r;
     }
 
     if($smallest!=$i) {
-	&swap($heap_keys,$heap_values,$i,$smallest);
-	&min_heapify($heap_keys,$heap_values,$smallest);
+        &swap($heap_keys,$heap_values,$i,$smallest);
+        &min_heapify($heap_keys,$heap_values,$smallest);
     }
 }
 

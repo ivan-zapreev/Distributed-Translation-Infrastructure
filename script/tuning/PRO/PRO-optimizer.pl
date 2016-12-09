@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use File::Basename;
+use Cwd 'abs_path';
 
 my($work_dir,$nbest_file_scored,$sample_id)=@ARGV;
 
@@ -10,10 +11,9 @@ if(!defined($sample_id)) {
     $sample_id='';
 }
 
+my $mega_location=abs_path($0)."/../megam_0.92"
 my $script_name = basename($0);
 print STDERR "$script_name pid=$$\n";
-
-my $OISTERHOME=$ENV{'OISTERHOME'};
 
 my $gamma_sample_max_size=5000;
 my $xi_sample_size=50;
@@ -26,8 +26,7 @@ my $classifier_data_file="$nbest_file_scored.classifier_data$sample_id";
 my $classifier_weights_file="$nbest_file_scored.classifier_weights$sample_id";
 my $classifier_err_log="$nbest_file_scored.classifier_err_log$sample_id";
 
-my $classifier_call="$OISTERHOME/resources/software/MegaM/current/bin/megam_i686.opt -nobias -fvals -maxi $max_iterations binary $classifier_data_file 2> $classifier_err_log";
-
+my $classifier_call="$mega_location/megam.opt -nobias -fvals -maxi $max_iterations binary $classifier_data_file 2> $classifier_err_log";
 
 my $prev_sent_id;
 my @candidates_obj;
@@ -140,7 +139,7 @@ sub sample_pro {
 
         my $diff_string_inv=&vec_diff($candidates_features->[$j_prime],$candidates_features->[$j]);
         my $sign_inv=&get_sign($candidates_obj[$j_prime]-$candidates_obj[$j]);
-        push(@$Xi,"$sign_inv$instance_weight_string $diff_string_inv");	
+        push(@$Xi,"$sign_inv$instance_weight_string $diff_string_inv");        
     }
 
 }

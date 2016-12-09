@@ -1,34 +1,21 @@
 #!/usr/bin/perl -w
 
 use File::Basename;
+use PerlIO::gzip;
+use Cwd 'abs_path';
 
 if(@ARGV<4||@ARGV>6) {
     print STDERR "\nusage: $0 <LATTICE-FILE> <FEATURE-SCORES-FILE> <FEATURE-ID2NAME-FILE> <\#N-BEST> <num-parallel> [<external-path>]\n\n";
     exit(-1);
 };
 
+my $scripts_location=abs_path($0);
 my $script_name = basename($0);
 print STDERR "$script_name pid=$$\n";
 
 ($lattice_file,$feature_scores_file,$feature_id2name_file,$nbest,$num_parallel,$external_path)=@ARGV;
 
-BEGIN {
-    if(!defined($ENV{'OISTERHOME'})
-       || $ENV{'OISTERHOME'} eq '') {
-        print STDERR "environment variable OISTERHOME must be set:\n";
-        print STDERR "export OISTERHOME=/path/to/oister/distribution\n";
-        exit(-1);
-    }
-}
-
-my $OISTERHOME=$ENV{'OISTERHOME'};
-use PerlIO::gzip;
-
-
-if(!defined($external_path)
-   && exists($ENV{'OISTEREXTPATH'}) && defined($ENV{'OISTEREXTPATH'})) {
-    $external_path=$ENV{'OISTEREXTPATH'};
-} elsif(!defined($external_path)) {
+if(!defined($external_path)) {
     print STDERR "external_path must be set\n";
     exit(-1);
 }
@@ -89,7 +76,7 @@ for(my $i=0; $i<@batches; $i++) {
     print STDERR "batches[$i]=$batches[$i]\n";
     my($from,$to)=split(/ /,$batches[$i]);
     my $finished_file="carmel_batch.finished.$i";
-    my $call="nohup sh -c \'$OISTERHOME/tuning/scripts/get-k-best.pl $lattice_file:$from\-$to $feature_scores_file $feature_id2name_file $nbest $external_path >& $lattice_file.err.$i.log\; touch $finished_file\' \&";
+    my $call="nohup sh -c \'$scripts_location/get-k-best.pl $lattice_file:$from\-$to $feature_scores_file $feature_id2name_file $nbest $external_path >& $lattice_file.err.$i.log\; touch $finished_file\' \&";
     print STDERR "$call\n";
     system($call);
     $num_active_jobs++;

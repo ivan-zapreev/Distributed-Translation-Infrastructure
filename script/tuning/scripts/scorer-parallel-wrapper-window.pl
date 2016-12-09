@@ -3,15 +3,15 @@
 use strict;
 use warnings;
 use File::Basename;
+use Cwd 'abs_path';
 
 my($scorer_call,$nbest,$src_file,$ref_files_string,$no_parallel)=@ARGV;
 
+my $scripts_location=abs_path($0);
 my $script_name = basename($0);
 print STDERR "$script_name pid=$$\n";
 
-my $OISTERHOME=$ENV{'OISTERHOME'};
-
-my $BLEU_components_window_call="cat $nbest | $OISTERHOME/tuning/scripts/compute-BLEU-components-window.pl $src_file $ref_files_string > $nbest.O_scores";
+my $BLEU_components_window_call="cat $nbest | $scripts_location/compute-BLEU-components-window.pl $src_file $ref_files_string > $nbest.O_scores";
 print STDERR "$BLEU_components_window_call\n";
 system($BLEU_components_window_call);
 
