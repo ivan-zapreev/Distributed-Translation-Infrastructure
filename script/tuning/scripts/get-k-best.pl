@@ -5,15 +5,15 @@ use strict;
 use warnings;
 use PerlIO::gzip;
 use POSIX;
-
+use File::Basename;
 
 if(@ARGV<4||@ARGV>5) {
     print STDERR "\nusage: $0 <LATTICE-FILE> <FEATURE-SCORES-FILE> <FEATURE-ID2NAME-FILE> <\#N-BEST> [<external-path>]\n\n";
     exit(-1);
 };
 
-print STDERR "get-nbest-carmel.pl pid=$$\n";
-
+my $script_name = basename($0);
+print STDERR "$script_name pid=$$\n";
 
 my($lattice_file,$feature_scores_file,$feature_id2name_file,$nbest,$external_path)=@ARGV;
 
@@ -77,15 +77,15 @@ my $prev_no_lines=0;
 while(defined(my $line=<FILE>)) {
 
      if($line=~/<SENT ID=([0-9]+)>/) {
-	my $sent_id=$1;
+        my $sent_id=$1;
 
         my %node_feature_scores;
 
         if(defined($from_sent) && defined($to_sent)) {
             if($sent_id<$from_sent) {
                 while(defined($line=<FILE>) && $line!~/^<\/SENT>/) {
-		}
-		next;
+                }
+                next;
             } elsif($sent_id>$to_sent) {
                 last;
             }
@@ -94,15 +94,15 @@ while(defined(my $line=<FILE>)) {
 	my $found_feat=0;
 	while(!$found_feat && defined(my $line_feat=<FEAT>)) {
 	    if($line_feat=~/^<SENT ID=$sent_id>/) {
-		$found_feat=1;
-		while(defined($line_feat=<FEAT>) && $line_feat!~/^<\/SENT>/) {
-		    chomp($line_feat);
-		    my($node_id,@feature_values)=split(/ /,$line_feat);
-		    for(my $i=0; $i<@feature_values; $i++) {
-			my($feature_id,$feature_value)=split(/\=/,$feature_values[$i]);
-			$node_feature_scores{$node_id}{$feature_id}=$feature_value;
-		    }
-		}
+            $found_feat=1;
+            while(defined($line_feat=<FEAT>) && $line_feat!~/^<\/SENT>/) {
+                chomp($line_feat);
+                my($node_id,@feature_values)=split(/ /,$line_feat);
+                for(my $i=0; $i<@feature_values; $i++) {
+                    my($feature_id,$feature_value)=split(/\=/,$feature_values[$i]);
+                    $node_feature_scores{$node_id}{$feature_id}=$feature_value;
+                }
+            }
 	    }
 	}
 
@@ -110,7 +110,7 @@ while(defined(my $line=<FILE>)) {
 	my $no_digits = rindex($prev_no_lines,"");
 	if($no_lines_processed % 1 == 0) {
 	    for(my $j=1; $j<=$no_digits; $j++) {
-		print STDERR "\x08";
+            print STDERR "\x08";
 	    };
 	    print STDERR "$no_lines_processed";
 	    $prev_no_lines = $no_lines_processed;
@@ -142,7 +142,6 @@ while(defined(my $line=<FILE>)) {
                 }
                 for(my $i=0; $i<@pairs; $i++) {
                     my($node_from,$translation,$cost)=split(/\|\|\|/,$pairs[$i]);
-                    #print STDERR "HAMID cost: $cost\n";
                     if($cost eq 'inf') {
                         $cost=$pos_inf;
                     } elsif($cost eq '-inf') {
@@ -175,8 +174,6 @@ while(defined(my $line=<FILE>)) {
             my $trans_string=&get_translation(\%graph_edge,\%graph_label,\@path);
             print OUT "rank=$rank cost=$cost trans=$trans_string coversets=$derivation_string\n";
 
-#            print "k=", $i+1, " cost=$cost\n";
-
             my %feature_scores_total;
             for(my $i=1; $i<@path-1; $i++) {
                 my $node_id=$path[$i];
@@ -190,8 +187,6 @@ while(defined(my $line=<FILE>)) {
             foreach my $feature_id (sort {$a<=>$b} (keys %feature_id2name)) {
                 if(exists($feature_scores_total{$feature_id}) && $feature_scores_total{$feature_id}!=0) {
                     push(@feature_scores,"$feature_id\=$feature_scores_total{$feature_id}");
-#		} else {
-#		    push(@feature_scores,0);
                 }
             }
             print SCORED "$sent_id ||| $trans_string ||| ", join(' ',@feature_scores), "\n";

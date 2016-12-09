@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use Getopt::Long "GetOptions";
+use File::Basename;
 
 BEGIN {
     if(!defined($ENV{'OISTERHOME'})
@@ -72,8 +73,9 @@ if($_HELP) {
     exit(-1);
 }
 
+my $script_name = basename($0);
+print STDERR "$script_name pid=$$\n";
 
-print STDERR "oister-decoder-mert-wrapper.pl pid=$$\n";
 print STDERR "parameters=$parameters\n";
 print STDERR "Lambdas=$lambda_string\n";
 
@@ -90,27 +92,13 @@ $trg_language='english' if(!defined($trg_language)
 
 my $feature_id2name_file="$config_file.feature_id2name";
 
-#my $carmel="$OISTERHOME/tuning/scripts/get-nbest-carmel-feature-scores.pl";
 my $carmel="$OISTERHOME/tuning/scripts/get-k-best.pl";
 my $mteval_home="$OISTERHOME/resources/mteval";
-
-
-#my $oister="$oister_home/bin/oister.pl";
 
 $mert_script='cmert-closest' if(!defined($mert_script));
 $no_parallel=1 if(!defined($no_parallel));
 
 my $delete_tmp_src_file=0;
-
-if(0 && !defined($src_file)) {
-    $src_file="$$.tmp.src";
-    open(S,">$src_file");
-    while(defined(my $line=<STDIN>)) {
-        print S $line;
-    }
-    close(S);
-    $delete_tmp_src_file=1;
-}
 
 my $mert_mode=$parameters=~/--mert/ ? 1 : 0;
 my $delete_files=$parameters=~/--delete-files/ ? 1 : 0;
@@ -198,27 +186,21 @@ for(my $i=0; $i<@config_buffer && $current_feature<@lambdas; $i++) {
             if($config_buffer_copy =~ m/^[\s\t]*$feature_specifier=([^\s\t]*)[\s\t]*$/)
             {
 
-                #print STDERR "BUFFER BEFORE:", $config_buffer[$i], "\n";
                 $current_feature = $current_feature + $features_specifiers{$feature_specifier};
- my $value_string;
+                my $value_string;
                 if($features_specifiers{$feature_specifier} > 0)
                 {
                     my @lambdas_underprecisioned = ();
                     my @currentFeatureSpec_values = @lambdas[$features2id{"$feature_specifier\[0\]"} .. $features2id{"$feature_specifier\[0\]"} + $features_specifiers{$feature_specifier} - 1];
-                    #map{$lambdas_underprecisioned[$_] = sprintf('%.3f', $currentFeatureSpec_values[$_])}(0..scalar(@currentFeatureSpec_values)-1);
-                    #$value_string = join("|", @lambdas_underprecisioned);
                     $value_string = join("|", @currentFeatureSpec_values);
-                    #print STDERR "HAMID value_string: $value_string\n";
                 }
                 else
                 {
                     $current_feature++;
-                    #$value_string = sprintf('%.3f',$lambdas[$features2id{$feature_specifier}]);
                     $value_string = $lambdas[$features2id{$feature_specifier}];
                 }
                 my $value = "$feature_specifier=$value_string";
                 $config_buffer[$i] =~ s/^([\s\t]*)$feature_specifier=([^\s\t]*)([\s\t]*)$/$1$value$3/;
-                #print STDERR "BUFFER AFTER:", $config_buffer[$i];
                 last;
             }
         }
@@ -244,14 +226,7 @@ close(C);
 #call decoder:
 print STDERR "$decoder $parameters\n";
 
-#Added by Hamid for testing
-#print STDERR "PARAMETRS:$parameters\n";
-#print STDERR "LAMBDA STR:$lambda_string\n";
-
 system("$decoder $parameters");
-
-#HAMID test
-#die;
 
 #call carmel:
 my %carmel_batches;
@@ -304,7 +279,6 @@ close(ALL);
 
 open(ALL,">$prefix.trans.lattices.nbest");
 for(my $batch=0; $batch<$no_parallel; $batch++) {
-    #print STDERR "HAMID: opening file $prefix.trans.lattices.batch.$batch.nbest\n";
     open(NBEST,"<$prefix.trans.lattices.batch.$batch.nbest");
     while(defined(my $line=<NBEST>)) {
         print ALL $line;
@@ -340,10 +314,6 @@ system("sync");
 if(!$use_node_scores) {
     my $rescore_parameters=$parameters;
     $rescore_parameters.=" --rescore --nbest-file=$prefix.trans.lattices.nbest";
-#$rescore_parameters.=" --rescore --nbest-file=$prefix.trans.lattices.nbest --decoder=$decoder";
-# rescored file will be=$prefix.trans.lattices.nbest.rescored
-#print STDERR "$decoder $rescore_parameters\n";
-#system("$decoder $rescore_parameters");
 
     print STDERR "Start rescoring...\n";
     print STDERR "$decoder $rescore_parameters\n";
@@ -360,65 +330,8 @@ if($trg_language!~/^(english|dutch|german|italian)$/) {
 print STDERR "cat $prefix.trans.lattices.nbest.rescored | $process_pipeline $prefix.trans.lattices.nbest.rescored\n";
 system("cat $prefix.trans.lattices.nbest.rescored | $process_pipeline $prefix.trans.lattices.nbest.rescored");
 
-
-
-if(0) {
-    if(defined($nbest_file)) {
-        print STDERR "cat $prefix.trans.lattices.nbest.rescored | $process_pipeline $prefix.trans.lattices.nbest.rescored > $nbest_file\n";
-#    system("cat $prefix.trans.lattices.nbest.rescored | $mteval_home/Programs/postprocess/rescore-remove-nil-lines.pl | $mteval_home/Programs/nbest-extract.pl | $mteval_home/Programs/postprocess/postprocess1 | $mteval_home/Programs/postprocess/normalize-v11a.pl | $oister_home/nbest-replace.pl $prefix.trans.lattices.nbest.rescored > $nbest_file");
-        system("cat $prefix.trans.lattices.nbest.rescored | $process_pipeline $prefix.trans.lattices.nbest.rescored > $nbest_file");
-    } else {
-        # print nbest-output to STDOUT
-        if($no_parallel>0) {
-            for(my $batch_id=0; $batch_id<$no_parallel; $batch_id++) {
-                if(-e "$prefix.trans.lattices.nbest.rescored.batch.$batch_id.done") {
-                    unlink("$prefix.trans.lattices.nbest.rescored.batch.$batch_id.done");
-                }
-                if(-e "$prefix.trans.lattices.nbest.rescored.batch.$batch_id.norm") {
-                    unlink("$prefix.trans.lattices.nbest.rescored.batch.$batch_id.norm");
-                }
-                if(!(-e "$prefix.trans.lattices.nbest.rescored.batch.$batch_id")) {
-                    print STDERR "Error: file \"$prefix.trans.lattices.nbest.rescored.batch.$batch_id\" does not exist.\n";
-                    next;
-                } else {
-                    print STDERR "cat $prefix.trans.lattices.nbest.rescored.batch.$batch_id | $process_pipeline $prefix.trans.lattices.nbest.rescored.batch.$batch_id 1> $prefix.trans.lattices.nbest.rescored.batch.$batch_id.norm 2> $prefix.trans.lattices.nbest.rescored.batch.$batch_id.norm.err\' \&\n";
-                    system("nohup sh -c \'cat $prefix.trans.lattices.nbest.rescored.batch.$batch_id | $process_pipeline $prefix.trans.lattices.nbest.rescored.batch.$batch_id 1> $prefix.trans.lattices.nbest.rescored.batch.$batch_id.norm 2> $prefix.trans.lattices.nbest.rescored.batch.$batch_id.norm.err\' \&");
-                }
-            }
-            #wait for all batches to finish
-            my $finished=0;
-            while(!$finished) {
-                sleep(5);
-                for(my $batch_id=0; $batch_id<$no_parallel; $batch_id++) {
-                    if(-e "$prefix.trans.lattices.nbest.rescored.batch.$batch_id.done") {
-                        $finished=1;
-                    } else {
-                        $finished=0;
-                        last;
-                    }
-                }
-            }
-            for(my $batch_id=0; $batch_id<$no_parallel; $batch_id++) {
-                unlink("$prefix.trans.lattices.nbest.rescored.batch.$batch_id");
-                unlink("$prefix.trans.lattices.nbest.rescored.batch.$batch_id.done");
-                system("cat $prefix.trans.lattices.nbest.rescored.batch.$batch_id.norm");
-                unlink("$prefix.trans.lattices.nbest.rescored.batch.$batch_id.norm");
-                unlink("$prefix.trans.lattices.nbest.rescored.batch.$batch_id.norm.err");
-            }
-
-        } else {
-            print STDERR "cat $prefix.trans.lattices.nbest.rescored | $process_pipeline $prefix.trans.lattices.nbest.rescored\n";
-            system("cat $prefix.trans.lattices.nbest.rescored | $process_pipeline $prefix.trans.lattices.nbest.rescored");
-        }
-    }
-
-}
-
 #delete files to save disk-space:
 if($delete_files) {
-#    print STDERR "rm $prefix.trans.lattices\n";
-#    unlink("$prefix.trans.lattices");
-
     print STDERR "rm $prefix.trans.lattices.nbest\n";
     unlink("$prefix.trans.lattices.nbest");
     print STDERR "rm $prefix.trans.lattices.nbest.rescored\n";
