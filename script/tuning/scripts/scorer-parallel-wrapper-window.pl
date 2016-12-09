@@ -7,7 +7,8 @@ use Cwd 'abs_path';
 
 my($scorer_call,$nbest,$src_file,$ref_files_string,$no_parallel)=@ARGV;
 
-my $scripts_location=abs_path($0);
+my $script_abs_name=abs_path($0);
+my $scripts_location=dirname($script_abs_name);
 my $script_name = basename($0);
 print STDERR "$script_name pid=$$\n";
 

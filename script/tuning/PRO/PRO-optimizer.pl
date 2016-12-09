@@ -11,7 +11,9 @@ if(!defined($sample_id)) {
     $sample_id='';
 }
 
-my $mega_location=abs_path($0)."/../megam_0.92"
+my $script_abs_name=abs_path($0);
+my $pro_location=dirname($script_abs_name);
+my $mega_location=$pro_location."/../megam_0.92";
 my $script_name = basename($0);
 print STDERR "$script_name pid=$$\n";
 

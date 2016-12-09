@@ -67,8 +67,9 @@ if($_HELP) {
     exit(-1);
 }
 
-my $pro_location=abs_path($0);
-my $scripts_location=abs_path($0)."/../scripts";
+my $script_abs_name=abs_path($0);
+my $pro_location=dirname($script_abs_name);
+my $scripts_location=$pro_location."/../scripts";
 my $script_name = basename($0);
 print STDERR "$script_name pid=$$\n";
 

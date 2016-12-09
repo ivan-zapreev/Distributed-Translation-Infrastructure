@@ -7,8 +7,9 @@ use File::Basename;
 use Cwd 'abs_path';
 use PerlIO::gzip;
 
-my $scripts_location=abs_path($0);
-my $pro_location=abs_path($0)."/../PRO";
+my $script_abs_name=abs_path($0);
+my $scripts_location=dirname($script_abs_name);
+my $pro_location=$scripts_location."/../PRO";
 my $script_name=basename($0);
 print STDERR "$script_name pid=$$\n";
 
