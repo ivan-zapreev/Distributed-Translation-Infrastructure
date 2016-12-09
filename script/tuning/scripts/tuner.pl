@@ -104,7 +104,7 @@ if($mert_script=~/^PRO/) {
 
 my $mert_work_dir="$experiment_dir/mert-work";
 my $err_batch_dir="batches_errlogs";
-unshift (@INC, "$scripts_location");
+unshift (@INC, $scripts_location);
 require 'load_config_file.pl';
 
 if(-e "$mert_work_dir" && !$restart_iteration) {

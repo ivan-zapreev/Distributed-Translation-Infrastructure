@@ -85,7 +85,7 @@ $parameters=~s/^[\s\t]*(.*?)[\s\t]*$/$1/;
 print STDERR "mert-mode=$mert_mode\n";
 print STDERR "delete-file=$delete_files\n";
 
-unshift (@INC, "$scripts_location");
+unshift (@INC, $scripts_location);
 require 'load_config_file.pl';
 
 $lambda_string=~s/^[\s\t]*(.*?)[\s\t]*$/$1/;
