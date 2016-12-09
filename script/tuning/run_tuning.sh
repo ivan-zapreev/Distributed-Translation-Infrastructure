@@ -6,7 +6,7 @@ CONFIG_FILE_NAME="" #No default value, is a compulsory parameter
 SOURCE_TEXT_FILE="" #No default value, is a compulsory parameter
 SOURCE_LANG=""
 NUM_BATCHES=1 #Defaul is no concurrency and multi-threading in tuning scripts, just one batch
-REFERENCE_TEXT_FILE="" #No default value, is a compulsory parameter
+REFERENCE_FILE_PREF="" #No default value, is a compulsory parameter
 REFERENCE_LANGUAGE="english" #The default target language of translation
 TRACE_LEVEL=1 #Default is one (1) the lowest (?) tracing level
 NUM_BEST_HYPOTHESIS=1500 #In our research we use more than a 1000 hypothesis
@@ -20,13 +20,16 @@ function usage() {
     echo "USAGE: Allows to start the tuning process for the infrastructure"
     echo "------"
     echo " ${0} --conf=<file-name> --src=<file-name> --src-language=<string> "
-    echo "        --ref=<file-name> --trg-language=<string> --no-parallel=<number> "
+    echo "        --ref=<file-pref> --trg-language=<string> --no-parallel=<number> "
     echo "        --trace=<number> --nbest-size=<number> --mert-script=<string>"
     echo " Where:"
     echo "    --conf=<file-name> the initial configuration file for the decoding server"
     echo "    --src=<file-name> the source text file to use with tuning"
     echo "    --src-language=<string> the language of the source text"
-    echo "    --ref=<file-name> the reference translation text file to use with tuning"
+    echo "    --ref=<file-pref> the reference translation text file name prefix."
+    echo "                      The files names are constructed as:"
+    echo "                            <file-templ>.<index>"
+    echo "                      where <index> starts with 1."
     echo "    --trg-language=<string> the language of the reference text, default is ${REFERENCE_LANGUAGE}"
     echo "    --no-parallel=<number> the number of parallel threads used for tuning, default is ${NUM_BATCHES}"
     echo "    --trace=<number> the tracing level for the script, default is ${TRACE_LEVEL}"
@@ -74,7 +77,7 @@ do
             ;;
         --ref=*)
             #Get the file with the reference translation for the source text
-            REFERENCE_TEXT_FILE="${i#*=}"
+            REFERENCE_FILE_PREF="${i#*=}"
             shift
             ;;
         --trg-language=*)
@@ -119,8 +122,9 @@ fi
 if ! [ -e ${SOURCE_TEXT_FILE} ]; then
     error "The source text file ${SOURCE_TEXT_FILE} is not found!"
 fi
-if ! [ -e ${REFERENCE_TEXT_FILE} ]; then
-    error "The reference text file ${REFERENCE_TEXT_FILE} is not found!"
+REFERENCE_FILES=`ls ${REFERENCE_FILE_PREF}.1`
+if [ -z ${REFERENCE_FILES} ]; then
+    error "The reference text file(s) ${REFERENCE_FILE_PREF}.* are not found!"
 fi
 
 #Check that the source language is defined
@@ -143,4 +147,4 @@ MEGA_M_HOME_DIR=$BASEDIR/megam_0.92/
 DATE_TIME=`date`
 echo "Starting tuning on: ${HOSTNAME} at: ${DATE_TIME}"
 
-$BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref=${REFERENCE_TEXT_FILE} --decoder=$BASEDIR/start_infra.sh --external-path=${MEGA_M_HOME_DIR} --conf=${CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="."
+$BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref="${REFERENCE_FILE_PREF}." --decoder=$BASEDIR/start_infra.sh --external-path=${MEGA_M_HOME_DIR} --conf=${CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="."
