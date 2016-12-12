@@ -15,9 +15,6 @@ my $bleu_method='chiang';
 my $lattice_bleu=1;
 my $burn_in=0;
 
-
-my $external_path;
-
 my $work_dir;
 my $src_file;
 my $ref_stem;
@@ -32,7 +29,6 @@ my $restart_iter;
 my $_HELP;
 $_HELP = 1
     unless &GetOptions(
-    "external-path|ext-path=s" => \$external_path,
     "work-dir|working-dir=s" => \$work_dir,
     "src-file=s" => \$src_file,
     "ref-stem=s" => \$ref_stem,
@@ -46,14 +42,8 @@ $_HELP = 1
     "help|h" => \$_HELP
     );
 
-if(!defined($external_path)) {
-    print STDERR "  --external-path=str must be set\n";
-    $_HELP=1;
-}
-
 if($_HELP) {
     print "Options:
-  --external-path=str : path to 3rd party software directory
   --work-dir=str : directory for temporary files
   --src-file=str : source file
   --ref-stem=str : name of the plain reference translations without integer at the end
@@ -170,7 +160,7 @@ while(!$stopping_criterion_true) {
     print STDERR "Psi_annealed=$Psi_annealed\n";
 
     # step 1+2: translate with decoder + rescore nbest lists with decoder
-    my $decoder_translate_and_rescore_call="$decoder_wrapper --nbest-size=$nbest_size --lambda-string=\"$lambda_string\" --prefix=$work_dir/run$iteration --decoder-parameters=\"$decoder_parameters\" --external-path=$external_path < $src_file > $work_dir/run$iteration.nbest";
+    my $decoder_translate_and_rescore_call="$decoder_wrapper --nbest-size=$nbest_size --lambda-string=\"$lambda_string\" --prefix=$work_dir/run$iteration --decoder-parameters=\"$decoder_parameters\" < $src_file > $work_dir/run$iteration.nbest";
 
 
     print STDERR "$decoder_translate_and_rescore_call\n";
@@ -209,7 +199,7 @@ while(!$stopping_criterion_true) {
 
         system($lattice_bleu_call);
 
-        my $carmel_call="$scripts_location/get-k-best-parallel.pl $work_dir/run$iteration.trans.lattices_bleu $work_dir/run$iteration.trans.feature_scores $feature_id2name_file 10 $no_parallel $external_path";
+        my $carmel_call="$scripts_location/get-k-best-parallel.pl $work_dir/run$iteration.trans.lattices_bleu $work_dir/run$iteration.trans.feature_scores $feature_id2name_file 10 $no_parallel";
         print STDERR "$carmel_call\n";
         system($carmel_call);
 
@@ -219,7 +209,7 @@ while(!$stopping_criterion_true) {
             print STDERR "$lattice_bleu_call_lai\n";
             system($lattice_bleu_call_lai);
 
-            my $carmel_call="$scripts_location/get-k-best-parallel.pl $work_dir/run$iteration.trans.lattices_bleu_lai $work_dir/run$iteration.trans.feature_scores $feature_id2name_file 10 $no_parallel $external_path";
+            my $carmel_call="$scripts_location/get-k-best-parallel.pl $work_dir/run$iteration.trans.lattices_bleu_lai $work_dir/run$iteration.trans.feature_scores $feature_id2name_file 10 $no_parallel";
 
             print STDERR "$carmel_call\n";
             system($carmel_call);

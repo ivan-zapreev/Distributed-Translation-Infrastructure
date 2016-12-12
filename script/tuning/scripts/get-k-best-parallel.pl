@@ -14,12 +14,7 @@ my $scripts_location=dirname($script_abs_name);
 my $script_name = basename($0);
 print STDERR "$script_name pid=$$\n";
 
-($lattice_file,$feature_scores_file,$feature_id2name_file,$nbest,$num_parallel,$external_path)=@ARGV;
-
-if(!defined($external_path)) {
-    print STDERR "external_path must be set\n";
-    exit(-1);
-}
+($lattice_file,$feature_scores_file,$feature_id2name_file,$nbest,$num_parallel)=@ARGV;
 
 my $total_size=0;
 my %lattice_sizes;
@@ -77,7 +72,7 @@ for(my $i=0; $i<@batches; $i++) {
     print STDERR "batches[$i]=$batches[$i]\n";
     my($from,$to)=split(/ /,$batches[$i]);
     my $finished_file="carmel_batch.finished.$i";
-    my $call="nohup sh -c \'$scripts_location/get-k-best.pl $lattice_file:$from\-$to $feature_scores_file $feature_id2name_file $nbest $external_path >& $lattice_file.err.$i.log\; touch $finished_file\' \&";
+    my $call="nohup sh -c \'$scripts_location/get-k-best.pl $lattice_file:$from\-$to $feature_scores_file $feature_id2name_file $nbest >& $lattice_file.err.$i.log\; touch $finished_file\' \&";
     print STDERR "$call\n";
     system($call);
     $num_active_jobs++;
