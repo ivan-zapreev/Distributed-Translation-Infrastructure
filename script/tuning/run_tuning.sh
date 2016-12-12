@@ -49,25 +49,6 @@ function error() {
     exit 1
 }
 
-#Allows to monitore the tuning script outputs
-# ${0} - the script name
-# ${1} - the id of the tuning process to monitore
-do_monitore() {
-    #Check if the process is still online
-    PROCESS_STRING=`ps -p ${1} | grep ${1}`
-    #Monitore the process untill it is there
-    while ! [ -z ${PROCESS_STRING} ]; do
-        #ToDo: Provide the progress infor of the tuning, iteration, bleu score
-        
-        #Wait until the new iteration
-        sleep 1
-
-        #Check if the process is still online
-        PROCESS_STRING=`ps -p ${1} | grep ${1}`
-    done
-}
-export -f do_tuning
-
 ###################################
 #If there is no arguments then print usage and exit
 if [ "$#" -eq 0 ]; then
@@ -169,24 +150,4 @@ TUNING_LOG_FILE="tuning.log"
 echo "Tuning log file: ${TUNING_LOG_FILE}"
 
 #Start the tuning script
-$BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref="${REFERENCE_FILE_PREF}." --decoder=$BASEDIR/start_infra.sh --external-path=${MEGA_M_HOME_DIR} --conf=${CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="." 1>${TUNING_LOG_FILE} 2>&1 &
-
-#Remember the java process id
-TUNING_PROCESS_ID=$!
-#Disown the process to prevent the killed message printed
-disown
-
-#Run the monitore process in parallel
-do_monitore ${TUNING_PROCESS_ID} &
-
-#Wait for the input to finish
-echo "Please press enter to finish..."
-read input_variable
-
-#Wait for all sub-processes to finish
-echo "Waiting for the sub-processes to finish..."
-#Kill the tuning process and its children
-kill -- -"$(ps -o pgid=${TUNING_PROCESS_ID} | tr -d ' ' | grep [0-9])"
-wait ${TUNING_PROCESS_ID}
-
-#ToDo: Extract the best scorint configuration profile
+$BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref="${REFERENCE_FILE_PREF}." --decoder=$BASEDIR/start_infra.sh --external-path=${MEGA_M_HOME_DIR} --conf=${CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="." 1>${TUNING_LOG_FILE} 2>&1
