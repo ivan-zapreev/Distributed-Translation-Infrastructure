@@ -270,7 +270,7 @@ if(!$use_node_scores) {
 }
 
 
-my $process_pipeline="scripts_location/rescore-remove-nil-lines.pl | $scripts_location/nbest-extract.pl | $scripts_location/postprocess1_no-untok | $scripts_location/nbest-replace.pl";
+my $process_pipeline="$scripts_location/rescore-remove-nil-lines.pl | $scripts_location/nbest-extract.pl | $scripts_location/postprocess1_no-untok | $scripts_location/nbest-replace.pl";
 if($trg_language!~/^(english|dutch|german|italian)$/) {
     $process_pipeline="$scripts_location/rescore-remove-nil-lines.pl | $scripts_location/nbest-extract.pl | $scripts_location/postprocess1_no-untok_no-rm | $scripts_location/nbest-replace.pl";
 }
