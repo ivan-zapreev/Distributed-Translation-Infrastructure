@@ -30,7 +30,6 @@ my $experiment_dir;
 my $src_language;
 my $trg_language;
 my $trace;
-my $external_path;
 my $use_node_scores=0;
 my $use_srilm_c=0;
 my $src_dep_tuples_file;
@@ -57,17 +56,11 @@ $_HELP = 1
     "use-local-dir=s" => \$local_dir,
     "mert-server" => \$use_mert_server,
     "filter-phrase-table" => \$filter_phrase_table,
-    "external-path|ext-path=s" => \$external_path,
     "trace=i" => \$trace,
     "help|h" => \$_HELP,
     "src-dep-tuples=s" => \$src_dep_tuples_file,
     "src-dep-info=s" => \$src_dep_info_file
     );
-
-if(!defined($external_path)) {
-    print STDERR "  --external-path=str must be set\n";
-    $_HELP=1;
-}
 
 if($_HELP) {
     print "Options:
@@ -75,7 +68,6 @@ if($_HELP) {
   --src=str : source text file (plain, 1 sentence per line)
   --src-con-parse=str : source constituency parse file (1 tree per line)
   --ref=str : stem of the plain references
-  --external-path=str : path to 3rd party software directory
   --src-language=str : source language
   --nbest-size=int : size of the nbest-list (default=1000)
   --no-parallel=int : number of parallel processes
@@ -215,7 +207,7 @@ if($mert_script=~/^PRO\-([0-9]+)/) {
     $pro_parallel_arg="$1";
 }
 
-my $optimizer_call="$mert --work-dir=$mert_work_dir --src-file=$src_file --ref-stem=$ref_stem --nbest-size=$nbest_size --decoder-wrapper=$decoder_wrapper --external-path=$external_path --decoder-parameters=\'$decoder_parameters\' --lambda-string=\'$lambdas\' --lexfeature-file=$lexfeat_arg --num-parallel=$pro_parallel_arg";
+my $optimizer_call="$mert --work-dir=$mert_work_dir --src-file=$src_file --ref-stem=$ref_stem --nbest-size=$nbest_size --decoder-wrapper=$decoder_wrapper --decoder-parameters=\'$decoder_parameters\' --lambda-string=\'$lambdas\' --lexfeature-file=$lexfeat_arg --num-parallel=$pro_parallel_arg";
 print STDERR "$optimizer_call\n";
 system($optimizer_call);
 

@@ -141,13 +141,10 @@ unset LANG
 #Get the directory where this script is located
 BASEDIR=$(dirname "$0")
 
-#Define the folder where the Mega-m is located
-MEGA_M_HOME_DIR=$BASEDIR/megam_0.92/
-
 DATE_TIME=`date`
 echo "Starting tuning on: ${HOSTNAME} at: ${DATE_TIME}"
 TUNING_LOG_FILE="tuning.log"
 echo "Tuning log file: ${TUNING_LOG_FILE}"
 
 #Start the tuning script
-$BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref="${REFERENCE_FILE_PREF}." --decoder=$BASEDIR/start_infra.sh --external-path=${MEGA_M_HOME_DIR} --conf=${CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="." 1>${TUNING_LOG_FILE} 2>&1
+$BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref="${REFERENCE_FILE_PREF}." --decoder=$BASEDIR/start_infra.sh --conf=${CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="." 1>${TUNING_LOG_FILE} 2>&1

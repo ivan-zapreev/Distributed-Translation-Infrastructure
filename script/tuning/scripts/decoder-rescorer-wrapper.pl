@@ -13,23 +13,16 @@ my $prefix;
 my $parameters;
 my $src_file;
 my $nbest_file;
-my $external_path;
 
 my $_HELP;
 $_HELP = 1
 unless &GetOptions(
     "nbest-size=i" => \$nbest_size,
-    "external-path|ext-path=s" => \$external_path,
     "decoder-parameters=s" => \$parameters,
     "lambda-string=s" => \$lambda_string,
     "prefix=s" => \$prefix,
     "help|h" => \$_HELP
 );
-
-if(!defined($external_path)) {
-    print STDERR "  --external-path=str must be set\n";
-    $_HELP=1;
-}
 
 if($_HELP) {
     print "Options:
@@ -186,8 +179,8 @@ system("$decoder $parameters");
 #call carmel:
 my %carmel_batches;
 for(my $batch=0; $batch<$no_parallel; $batch++) {
-    print STDERR "nohup sh -c \'$carmel $prefix.trans.lattices.batch.$batch $prefix.trans.feature_scores.batch.$batch $feature_id2name_file $nbest_size $external_path >& $prefix.trans.lattices.batch.$batch.err; touch $prefix.trans.lattices.batch.$batch.done\' \&\n";
-    system("nohup sh -c \'$carmel $prefix.trans.lattices.batch.$batch $prefix.trans.feature_scores.batch.$batch $feature_id2name_file $nbest_size $external_path >& $prefix.trans.lattices.batch.$batch.err; touch $prefix.trans.lattices.batch.$batch.done\' \&");
+    print STDERR "nohup sh -c \'$carmel $prefix.trans.lattices.batch.$batch $prefix.trans.feature_scores.batch.$batch $feature_id2name_file $nbest_size >& $prefix.trans.lattices.batch.$batch.err; touch $prefix.trans.lattices.batch.$batch.done\' \&\n";
+    system("nohup sh -c \'$carmel $prefix.trans.lattices.batch.$batch $prefix.trans.feature_scores.batch.$batch $feature_id2name_file $nbest_size >& $prefix.trans.lattices.batch.$batch.err; touch $prefix.trans.lattices.batch.$batch.done\' \&");
     unlink("$prefix.trans.lattices.batch.$batch.err") if($delete_files);
 }
 

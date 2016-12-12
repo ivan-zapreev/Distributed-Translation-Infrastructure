@@ -15,7 +15,7 @@ if(@ARGV<4||@ARGV>5) {
 my $script_name = basename($0);
 print STDERR "$script_name pid=$$\n";
 
-my($lattice_file,$feature_scores_file,$feature_id2name_file,$nbest,$external_path)=@ARGV;
+my($lattice_file,$feature_scores_file,$feature_id2name_file,$nbest)=@ARGV;
 
 my $neg_inf=-1000;
 my $pos_inf=1000;
