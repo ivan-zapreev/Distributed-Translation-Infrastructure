@@ -2,20 +2,18 @@
 
 ###################################
 #Declare and set the default values of the script parameters
-export CONFIG_FILE_NAME="" #No default value, is a compulsory parameter
-export SOURCE_TEXT_FILE="" #No default value, is a compulsory parameter
-export SOURCE_LANG=""
-export NUM_BATCHES=1 #Defaul is no concurrency and multi-threading in tuning scripts, just one batch
-export REFERENCE_FILE_PREF="" #No default value, is a compulsory parameter
-export REFERENCE_LANGUAGE="english" #The default target language of translation
-export TRACE_LEVEL=1 #Default is one (1) the lowest (?) tracing level
-export NUM_BEST_HYPOTHESIS=1500 #In our research we use more than a 1000 hypothesis
-export MERT_SCRIPT_TYPE="PRO-14" #In our research we use the PRO-14 test
-export STOP_TUNING_SCRIPT=false #The tuning process stop script flag
+CONFIG_FILE_NAME="" #No default value, is a compulsory parameter
+SOURCE_TEXT_FILE="" #No default value, is a compulsory parameter
+SOURCE_LANG=""
+NUM_BATCHES=1 #Defaul is no concurrency and multi-threading in tuning scripts, just one batch
+REFERENCE_FILE_PREF="" #No default value, is a compulsory parameter
+REFERENCE_LANGUAGE="english" #The default target language of translation
+TRACE_LEVEL=1 #Default is one (1) the lowest (?) tracing level
+NUM_BEST_HYPOTHESIS=1500 #In our research we use more than a 1000 hypothesis
+MERT_SCRIPT_TYPE="PRO-14" #In our research we use the PRO-14 test
 
 #Prints the program usage
-# ${0} - the program name
-# ${1} - the function name
+# ${0} - the script name
 function usage() {
     echo "------"
     echo "USAGE: Allows to start the tuning process for the infrastructure"
@@ -51,29 +49,22 @@ function error() {
     exit 1
 }
 
-#Allows to run the tuning script in parallel to the rest of the script
-do_tuning() {
-    $BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref="${REFERENCE_FILE_PREF}." --decoder=$BASEDIR/start_infra.sh --external-path=${MEGA_M_HOME_DIR} --conf=${CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="." 1>${TUNING_LOG_FILE} 2>&1 &
-
-    #Remember the java process id
-    TUNING_PROCESS_ID=$!
-    #Disown the process to prevent the killed message printed
-    disown
-
-    #Wait until the file is created
-    while [ "${STOP_TUNING_SCRIPT}" = false ]; do
+#Allows to monitore the tuning script outputs
+# ${0} - the script name
+# ${1} - the id of the tuning process to monitore
+do_monitore() {
+    #Check if the process is still online
+    PROCESS_STRING=`ps -p ${1} | grep ${1}`
+    #Monitore the process untill it is there
+    while ! [ -z ${PROCESS_STRING} ]; do
         #ToDo: Provide the progress infor of the tuning, iteration, bleu score
-        echo "Checking the stop comand: ${STOP_TUNING_SCRIPT}"
         
         #Wait until the new iteration
         sleep 1
-    done
 
-    echo "Killing the tuning processes!"
-    
-    #Kill the tuning process and its children
-    kill -- -"$(ps -o pgid=${TUNING_PROCESS_ID} | tr -d ' ' | grep [0-9])"
-    wait ${TUNING_PROCESS_ID}
+        #Check if the process is still online
+        PROCESS_STRING=`ps -p ${1} | grep ${1}`
+    done
 }
 export -f do_tuning
 
@@ -167,28 +158,35 @@ fi
 unset LANG
 
 #Get the directory where this script is located
-export BASEDIR=$(dirname "$0")
+BASEDIR=$(dirname "$0")
 
 #Define the folder where the Mega-m is located
-export MEGA_M_HOME_DIR=$BASEDIR/megam_0.92/
+MEGA_M_HOME_DIR=$BASEDIR/megam_0.92/
 
 DATE_TIME=`date`
 echo "Starting tuning on: ${HOSTNAME} at: ${DATE_TIME}"
-export TUNING_LOG_FILE="tuning.log"
+TUNING_LOG_FILE="tuning.log"
 echo "Tuning log file: ${TUNING_LOG_FILE}"
 
-#Run the tuning in parallel
-do_tuning &
+#Start the tuning script
+$BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref="${REFERENCE_FILE_PREF}." --decoder=$BASEDIR/start_infra.sh --external-path=${MEGA_M_HOME_DIR} --conf=${CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="." 1>${TUNING_LOG_FILE} 2>&1 &
+
+#Remember the java process id
+TUNING_PROCESS_ID=$!
+#Disown the process to prevent the killed message printed
+disown
+
+#Run the monitore process in parallel
+do_monitore ${TUNING_PROCESS_ID} &
 
 #Wait for the input to finish
 echo "Please press enter to finish..."
 read input_variable
 
-#Set the stopping flag to true
-export STOP_TUNING_SCRIPT=true
-
 #Wait for all sub-processes to finish
 echo "Waiting for the sub-processes to finish..."
-wait
+#Kill the tuning process and its children
+kill -- -"$(ps -o pgid=${TUNING_PROCESS_ID} | tr -d ' ' | grep [0-9])"
+wait ${TUNING_PROCESS_ID}
 
 #ToDo: Extract the best scorint configuration profile
