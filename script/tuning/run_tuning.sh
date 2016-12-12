@@ -63,10 +63,13 @@ do_tuning() {
     #Wait until the file is created
     while [ "${STOP_TUNING_SCRIPT}" = false ]; do
         #ToDo: Provide the progress infor of the tuning, iteration, bleu score
+        echo "Checking the stop comand: ${STOP_TUNING_SCRIPT}"
         
         #Wait until the new iteration
         sleep 1
     done
+
+    echo "Killing the tuning processes!"
     
     #Kill the tuning process and its children
     kill -- -"$(ps -o pgid=${TUNING_PROCESS_ID} | tr -d ' ' | grep [0-9])"
@@ -175,14 +178,14 @@ export TUNING_LOG_FILE="tuning.log"
 echo "Tuning log file: ${TUNING_LOG_FILE}"
 
 #Run the tuning in parallel
-do_tuning
+do_tuning &
 
 #Wait for the input to finish
 echo "Please press enter to finish..."
 read input_variable
 
 #Set the stopping flag to true
-STOP_TUNING_SCRIPT=true
+export STOP_TUNING_SCRIPT=true
 
 #Wait for all sub-processes to finish
 echo "Waiting for the sub-processes to finish..."
