@@ -153,6 +153,7 @@ echo "Writing the tuning log into file: ${TUNING_LOG_FILE} ..."
 #Make a work copy of the config file
 ORIG_CONFIG_FILE_NAME=${CONFIG_FILE_NAME}.orig
 rm -f ${ORIG_CONFIG_FILE_NAME} ${CONFIG_FILE_NAME}.0 ${CONFIG_FILE_NAME}.init
+echo "Storing the original config file as: ${ORIG_CONFIG_FILE_NAME}"
 cp ${CONFIG_FILE_NAME} ${ORIG_CONFIG_FILE_NAME}
 
 #Start the tuning script
