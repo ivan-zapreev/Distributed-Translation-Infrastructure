@@ -141,10 +141,19 @@ unset LANG
 #Get the directory where this script is located
 BASEDIR=$(dirname "$0")
 
+echo "-----"
+echo "Use '$BASEDIR/tuning_progress.pl' to monitore the progress and retrieve optimum config."
+echo "Use '$BASEDIR/kill_tuning.pl' to stop tuning."
+echo "-----"
 DATE_TIME=`date`
 echo "Starting tuning on: ${HOSTNAME} at: ${DATE_TIME}"
-TUNING_LOG_FILE="tuning.log"
-echo "Tuning log file: ${TUNING_LOG_FILE}"
+TUNING_LOG_FILE="tuning.${DATE_TIME}.log"
+echo "Writing the tuning log into file: ${TUNING_LOG_FILE} ..."
+
+#Make a work copy of the config file
+TMP_CONFIG_FILE_NAME=${CONFIG_FILE_NAME}.tmp
+rm -f ${TMP_CONFIG_FILE_NAME} ${CONFIG_FILE_NAME}.0 ${CONFIG_FILE_NAME}.init
+cp ${CONFIG_FILE_NAME} ${TMP_CONFIG_FILE_NAME}
 
 #Start the tuning script
-$BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref="${REFERENCE_FILE_PREF}." --decoder=$BASEDIR/start_infra.sh --conf=${CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="." 1>${TUNING_LOG_FILE} 2>&1
+$BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref="${REFERENCE_FILE_PREF}." --decoder=$BASEDIR/start_infra.sh --conf=${TMP_CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="." 1>${TUNING_LOG_FILE} 2>&1
