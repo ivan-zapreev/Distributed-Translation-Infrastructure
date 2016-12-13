@@ -23,33 +23,32 @@ my $scorer_wrapper_pid;
 open(E,"<$err_log");
 while(defined(my $line=<E>)) {
     if($line=~/^oister-decoder.pl pid=([0-9]+)\n/) {
-	$oister_decoder_pid=$1;
+        $oister_decoder_pid=$1;
     } elsif($line=~/^oister.pl pid=([0-9]+)\n/) {
-	$oister_pid=$1;
+        $oister_pid=$1;
     } elsif($line=~/Forking off batch ([0-9]+) \(sentences [0-9]+\-[0-9]+\) pid=([0-9]+)\n/) {
-	my $batch=$1;
-	my $batch_pid=$2;
-	$oister_decoder_batches{$batch}=$batch_pid;
+        my $batch=$1;
+        my $batch_pid=$2;
+        $oister_decoder_batches{$batch}=$batch_pid;
     } elsif($line=~/^oister-decoder-mert-wrapper.pl pid=([0-9]+)\n/) {
-	$oister_decoder_mert_wrapper_pid=$1;
+        $oister_decoder_mert_wrapper_pid=$1;
     } elsif($line=~/^oister-mert.pl pid=([0-9]+)\n/) {
-	$oister_mert_pid=$1;
+        $oister_mert_pid=$1;
     } elsif($line=~/^mert.perl pid=([0-9]+)\n/) {
-	$mert_pid=$1;
+        $mert_pid=$1;
     } elsif($line=~/^mert-driver pid=([0-9]+)\n/) {
         $cmert_pid=$1;
     } elsif($line=~/^scorer-parallel-wrapper pid=([0-9]+)\n/) {
         $scorer_wrapper_pid=$1;
     } elsif($line=~/^get-nbest-carmel.pl pid=([0-9]+)\n/) {
-	$get_nbest_carmel_pid=$1;
+        $get_nbest_carmel_pid=$1;
     } elsif($line=~/^PRO-optimizer.pl pid=([0-9]+)\n/) {
-	$pro_optimizer_pid=$1;
+        $pro_optimizer_pid=$1;
     } elsif($line=~/^PRO-optimization-procedure.pl pid=([0-9]+)\n/) {
-	$pro_optimization_procedure_pid=$1;
+        $pro_optimization_procedure_pid=$1;
     }
 }
 close(E);
-
 
 print "\nAre you sure you want to kill the following processes?\n";
 print "$oister_mert_pid (oister-mert.pl)\n" if(defined($oister_mert_pid));
@@ -100,13 +99,10 @@ if(defined($scorer_wrapper_pid)) {
     print STDERR "kill -9 $scorer_wrapper_pid (scorer-wrapper.pl)\n";
     system("kill -9 $scorer_wrapper_pid");
 }
-
 if(defined($oister_decoder_pid)) {
     print STDERR "kill -9 $oister_decoder_pid (oister-decoder.pl)\n";
     system("kill -9 $oister_decoder_pid");
 }
-
-
 if(defined($pro_optimizer_pid)) {
     print STDERR "kill -9 $pro_optimizer_pid (PRO-optimizer.pl)\n";
     system("kill -9 $pro_optimizer_pid");
@@ -115,14 +111,10 @@ if(defined($pro_optimization_procedure_pid)) {
     print STDERR "kill -9 $pro_optimization_procedure_pid (PRO-optimization-procedure.pl)\n";
     system("kill -9 $pro_optimization_procedure_pid");
 }
-
-
-
 foreach $oister_decoder_batch (keys %oister_decoder_batches) {
     print STDERR "kill -9 $oister_decoder_batches{$oister_decoder_batch} (oister-decoder.pl batch=$oister_decoder_batch)\n";
     system("kill -9 $oister_decoder_batches{$oister_decoder_batch}");
 }
-
 if(defined($oister_pid)) {
     print STDERR "kill -9 $oister_pid (oister.pl)\n";
     system("kill -9 $oister_pid");

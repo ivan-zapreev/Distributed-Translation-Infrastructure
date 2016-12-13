@@ -161,14 +161,7 @@ if($restart_iteration) {
     open(F,">$config_file");
     print F join('',@config_buffer);
     close(F);
-    if($decoder =~ /.*oister\-decoder\.pl$/)
-    {
-        $lambdas=&return_initial_lambda_string($config_file);
-    }
-    else
-    {
-        $lambdas = &return_lambda_string_from_ivansConfig($config_file, $decoder);
-    }
+    $lambdas = &return_initial_lambda_string($config_file, $decoder);
 }
 
 my $decoder_wrapper="$scripts_location/decoder-rescorer-wrapper.pl";
@@ -186,7 +179,6 @@ $decoder_parameters.=" --srilm_c" if($use_srilm_c);
 $decoder_parameters.=" --trg-language=$trg_language" if(defined($trg_language));
 $decoder_parameters.=" --src-dep-tuples=$src_dep_tuples_file" if(defined($src_dep_tuples_file));
 $decoder_parameters.=" --src-dep-info=$src_dep_info_file" if(defined($src_dep_info_file));
-
 
 my $restart_iter='';
 $restart_iter=" $restart_iteration" if($restart_iteration);
@@ -210,63 +202,3 @@ if($mert_script=~/^PRO\-([0-9]+)/) {
 my $optimizer_call="$mert --work-dir=$mert_work_dir --src-file=$src_file --ref-stem=$ref_stem --nbest-size=$nbest_size --decoder-wrapper=$decoder_wrapper --decoder-parameters=\'$decoder_parameters\' --lambda-string=\'$lambdas\' --lexfeature-file=$lexfeat_arg --num-parallel=$pro_parallel_arg";
 print STDERR "$optimizer_call\n";
 system($optimizer_call);
-
-sub return_lambda_string_from_ivansConfig
-{
-
-    my ($config_file, $decoder) = @_;
-    my $decoder_params = "--conf=$config_file --create-features-mapping";
-    system("$decoder $decoder_params"); #This calls the decoder server to only create the feature mapping file
-    my $features_mapping_file = "$config_file.feature_id2name";
-    open(FEATURES_MAPPING_FILE, "<$features_mapping_file");
-    my %features2id = ();
-    my %features_specifiers = ();
-    while(my $line = <FEATURES_MAPPING_FILE>)
-    {
-        chomp($line);
-        my($index, $feature_name) = split(/\t/, $line);
-
-        if($feature_name =~ /^([^\[]+)\[\d+\]$/)
-        {
-            $features_specifiers{$1} = 1; #This feature specifier would have multiple values
-        }
-        else
-        {
-            $features_specifiers{$feature_name} = 0;
-        }
-        $features2id{$feature_name} = $index;
-    }
-    close(FEATURES_MAPPING_FILE);
-    my $featuresNumber = scalar(keys(%features2id));
-    my @lambdas = ();
-    $#lambdas = $featuresNumber -1;
-    open(CONF_FILE, "<$config_file");
-    while(my $line = <CONF_FILE>)
-    {
-        $line =~ s/^\s+|\s+$//g;
-        if($line !~ /^\#.*$/)
-        {
-            foreach my $feature_sepcifier (keys(%features_specifiers))
-            {
-                 if($line =~ m/^$feature_sepcifier=(.*)/)
-                 {
-                    my $feature_str = $1;
-                    #print STDERR "read feature string for $feature_sepcifier:$feature_str\n";
-                    if($features_specifiers{$feature_sepcifier} == 1)
-                    {
-                        my @feature_values = split(/\|/, $feature_str);
-                        #print STDERR "mapping number:", $features2id{"$feature_sepcifier\[0\]"}, "\n";
-                        splice(@lambdas, $features2id{"$feature_sepcifier\[0\]"}, scalar(@feature_values), @feature_values);
-                    }
-                    else
-                    {
-                        $lambdas[$features2id{$feature_sepcifier}] = $feature_str;
-                    }
-                    last;
-                 }
-            }
-        }
-    }
-    close(CONF_FILE);
-    return join(";",@lambdas);
-}

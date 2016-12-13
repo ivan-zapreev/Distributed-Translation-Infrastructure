@@ -161,23 +161,65 @@ sub buffer_config_file {
 }
 
 
-sub return_initial_lambda_string {
-    my($config_file)=@_;
+sub return_initial_lambda_string
+{
+    my ($config_file, $decoder) = @_;
+    my $decoder_params = "--conf=$config_file --create-features-mapping";
+    system("$decoder $decoder_params"); #This calls the decoder server to only create the feature mapping file
+    my $features_mapping_file = "$config_file.feature_id2name";
+    open(FEATURES_MAPPING_FILE, "<$features_mapping_file");
+    my %features2id = ();
+    my %features_specifiers = ();
+    while(my $line = <FEATURES_MAPPING_FILE>)
+    {
+        chomp($line);
+        my($index, $feature_name) = split(/\t/, $line);
 
-    my @lambdas;
-    open(F,"<$config_file")||die("can't open config_file $config_file: $!\n");
-    while(defined($line=<F>)) {
-        if($line=~/^feature:.+[\s\t]init=([^\[]+)\[([0-9\.e\-]+)\,([0-9\.e\-]+)\]/) {
-            my $value=$1;
-            my $lower=$2;
-            my $higher=$3;
-            push(@lambdas,"$value\,$lower\-$higher");
+        if($feature_name =~ /^([^\[]+)\[\d+\]$/)
+        {
+            $features_specifiers{$1} = 1; #This feature specifier would have multiple values
+        }
+        else
+        {
+            $features_specifiers{$feature_name} = 0;
+        }
+        $features2id{$feature_name} = $index;
+    }
+    close(FEATURES_MAPPING_FILE);
+    my $featuresNumber = scalar(keys(%features2id));
+    my @lambdas = ();
+    $#lambdas = $featuresNumber -1;
+    open(CONF_FILE, "<$config_file");
+    while(my $line = <CONF_FILE>)
+    {
+        $line =~ s/^\s+|\s+$//g;
+        if($line !~ /^\#.*$/)
+        {
+            foreach my $feature_sepcifier (keys(%features_specifiers))
+            {
+                 if($line =~ m/^$feature_sepcifier=(.*)/)
+                 {
+                    my $feature_str = $1;
+                    #print STDERR "read feature string for $feature_sepcifier:$feature_str\n";
+                    if($features_specifiers{$feature_sepcifier} == 1)
+                    {
+                        my @feature_values = split(/\|/, $feature_str);
+                        #print STDERR "mapping number:", $features2id{"$feature_sepcifier\[0\]"}, "\n";
+                        splice(@lambdas, $features2id{"$feature_sepcifier\[0\]"}, scalar(@feature_values), @feature_values);
+                    }
+                    else
+                    {
+                        $lambdas[$features2id{$feature_sepcifier}] = $feature_str;
+                    }
+                    last;
+                 }
+            }
         }
     }
-    close(F);
-
+    close(CONF_FILE);
     return join(";",@lambdas);
 }
+
 
 sub return_last_lambda_string {
     my($config_file)=@_;
@@ -196,7 +238,6 @@ sub return_last_lambda_string {
 
     return join(";",@lambdas);
 }
-
 
 
 return 1;
