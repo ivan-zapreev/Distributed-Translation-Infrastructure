@@ -4,8 +4,8 @@ use strict;
 use warnings;
 use File::Basename;
 
-my $script_name = basename($0);
-print STDERR "$script_name pid=$$\n";
+#my $script_name = basename($0);
+#print STDERR "$script_name pid=$$\n";
 
 my @max_bleu;
 my @max_trans;
