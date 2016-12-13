@@ -147,7 +147,7 @@ echo "Use '$BASEDIR/kill_tuning.pl' to stop tuning."
 echo "-----"
 DATE_TIME=`date`
 echo "Starting tuning on: ${HOSTNAME} at: ${DATE_TIME}"
-TUNING_LOG_FILE="tuning.${DATE_TIME}.log"
+TUNING_LOG_FILE="tuning.log"
 echo "Writing the tuning log into file: ${TUNING_LOG_FILE} ..."
 
 #Make a work copy of the config file
