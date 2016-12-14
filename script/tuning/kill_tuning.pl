@@ -23,6 +23,9 @@ my $num_killed;
 
 #Iterate until there is no active process ids left
 do {
+    print "----------------------------------------------------------------------\n"
+    print "Starting a killing iteration, analysing the error log for process ids.\n"
+    
     #Just read all the process ids logged in the error log
     my @all_pids;
     open(E,"<$err_log");
@@ -32,21 +35,24 @@ do {
         }
     }
     close(E);
-    
+
+    print "The error log analysis is done, starting the killing.\n"
+
     #Kill and report on active processes
     $num_killed = 0;
     foreach my $pid (@all_pids) {
         #Check if the process is running
         system("ps -p $pid >/dev/null 2>&1");
-        my $exit_value  = $? >> 8;
+        my $exit_value = $? >> 8;
         if($exit_value == 0) {
             system("ps -p $pid | grep -v '  PID TTY          TIME CMD'");
             system("kill -9 ${pid}");
             $num_killed += 1;
         }
     }
-
+    print "The number of (newly) killed processes is: $num_killed\n"
 } until($num_killed > 0);
 
-print STDERR "The0 killing is done!\n";
+print "----------------------------------------------------------------------\n"
+print STDERR "The killing is over, we are finished!\n";
 

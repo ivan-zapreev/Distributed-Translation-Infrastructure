@@ -66,11 +66,8 @@ if($lattice_file=~/\.gz/) {
     open(FILE,"<$lattice_file")||die("can't open file $lattice_file: $!\n");
 }
 
-
 open(OUT,">$out_file") || die("can't open $out_file: $!\n");
 open(SCORED,">$scored_file") ||die("can't open file $scored_file: $!\n");
-
-
 
 my $no_lines_processed=0;
 my $prev_no_lines=0;
