@@ -38,7 +38,7 @@ do {
     foreach my $pid (@all_pids) {
         #Check if the process is running
         system("ps -p $pid >/dev/null 2>&1");
-        $exit_value  = $? >> 8;
+        my $exit_value  = $? >> 8;
         if($exit_value == 0) {
             system("ps -p $pid | grep -v '  PID TTY          TIME CMD'");
             system("kill -9 ${pid}");
