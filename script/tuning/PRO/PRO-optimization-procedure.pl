@@ -265,10 +265,8 @@ while(!$stopping_criterion_true) {
 
         my $compute_corpus_bleu_from_oracle_call="cat $work_dir/run$iteration.trans.lattices_bleu.nbest.scored | $scripts_location/compute-corpus-bleu-with-highest-bleu-from-scored-nbest.pl";
         print STDERR "$compute_corpus_bleu_from_oracle_call\n";
-        print STDERR "ORACLE LATTICE ";
         system($compute_corpus_bleu_from_oracle_call);
     }
-
 
     # step 4: combine nbest list with nbest pool
 

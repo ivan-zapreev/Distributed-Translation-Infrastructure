@@ -4,8 +4,8 @@ use strict;
 use warnings;
 use File::Basename;
 
-#my $script_name = basename($0);
-#print STDERR "$script_name pid=$$\n";
+my $script_name = basename($0);
+print STDERR "$script_name pid=$$\n";
 
 my @max_bleu;
 my @max_trans;
@@ -59,7 +59,7 @@ for(my $n=0; $n<$max_n; $n++) {
 my $bp=&compute_brevaty_penalty($corpus_components[1],$corpus_components[-1]);
 my $bleu=$bp*exp($prec);
 
-print STDERR "BLEU=$bleu\n";
+print STDERR "ORACLE LATTICE BLEU=$bleu\n";
 
 sub compute_brevaty_penalty {
     my($c,$r)=@_;
