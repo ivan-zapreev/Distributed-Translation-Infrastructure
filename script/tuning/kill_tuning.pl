@@ -23,8 +23,8 @@ my $num_killed;
 
 #Iterate until there is no active process ids left
 do {
-    print "----------------------------------------------------------------------\n"
-    print "Starting a killing iteration, analysing the error log for process ids.\n"
+    print "----------------------------------------------------------------------\n";
+    print "Starting a killing iteration, analysing the error log for process ids.\n";
     
     #Just read all the process ids logged in the error log
     my @all_pids;
@@ -36,7 +36,7 @@ do {
     }
     close(E);
 
-    print "The error log analysis is done, starting the killing.\n"
+    print "The error log analysis is done, starting the killing.\n";
 
     #Kill and report on active processes
     $num_killed = 0;
@@ -50,9 +50,9 @@ do {
             $num_killed += 1;
         }
     }
-    print "The number of (newly) killed processes is: $num_killed\n"
+    print "The number of (newly) killed processes is: $num_killed\n";
 } until($num_killed > 0);
 
-print "----------------------------------------------------------------------\n"
+print "----------------------------------------------------------------------\n";
 print STDERR "The killing is over, we are finished!\n";
 
