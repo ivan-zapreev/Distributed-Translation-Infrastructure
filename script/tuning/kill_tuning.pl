@@ -51,7 +51,7 @@ do {
         }
     }
     print "The number of (newly) killed processes is: $num_killed\n";
-} until($num_killed > 0);
+} until($num_killed==0);
 
 print "----------------------------------------------------------------------\n";
 print STDERR "The killing is over, we are finished!\n";
