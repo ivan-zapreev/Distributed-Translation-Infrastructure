@@ -150,11 +150,12 @@ echo "Starting tuning on: ${HOSTNAME} at: ${DATE_TIME}"
 TUNING_LOG_FILE="tuning.log"
 echo "Writing the tuning log into file: ${TUNING_LOG_FILE} ..."
 
-#Make a work copy of the config file
-ORIG_CONFIG_FILE_NAME=${CONFIG_FILE_NAME}.orig
-rm -f ${ORIG_CONFIG_FILE_NAME} ${CONFIG_FILE_NAME}.0 ${CONFIG_FILE_NAME}.init
-echo "Storing the original config file as: ${ORIG_CONFIG_FILE_NAME}"
-cp ${CONFIG_FILE_NAME} ${ORIG_CONFIG_FILE_NAME}
+#Make the work config file name - invisible
+WORK_CONFIG_FILE_NAME=.${CONFIG_FILE_NAME}.work
+#Remove the possible work config file derivatives
+rm -f ${WORK_CONFIG_FILE_NAME}*
+#Create a work copy of the config file, this one will be used when tuning
+cp ${CONFIG_FILE_NAME} ${WORK_CONFIG_FILE_NAME}
 
 #Start the tuning script
-$BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref="${REFERENCE_FILE_PREF}." --decoder=$BASEDIR/start_infra.sh --conf=${CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="." 1>${TUNING_LOG_FILE} 2>&1
+$BASEDIR/scripts/tuner.pl --src=${SOURCE_TEXT_FILE} --node-scoring --ref="${REFERENCE_FILE_PREF}." --decoder=$BASEDIR/start_infra.sh --conf=${WORK_CONFIG_FILE_NAME} --no-parallel=${NUM_BATCHES} --trace=${TRACE_LEVEL} --nbest-size=${NUM_BEST_HYPOTHESIS} --src-language=${SOURCE_LANG} --mert-script=${MERT_SCRIPT_TYPE} --trg-language=${REFERENCE_LANGUAGE} --experiment-dir="." 1>${TUNING_LOG_FILE} 2>&1

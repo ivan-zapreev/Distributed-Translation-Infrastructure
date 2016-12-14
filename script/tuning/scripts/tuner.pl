@@ -138,7 +138,6 @@ if($restart_iteration) {
     print STDERR "Restarting from iteration $restart_iteration\n";
     $lambdas=&return_last_lambda_string($config_file);
 } else {
-    system("cp $config_file $config_file.init");
     my @config_buffer;
     open(F,"<$config_file");
     while(defined(my $conf_line=<F>)) {
