@@ -72,7 +72,7 @@ if(defined($old_config_file)) {
     my $first_feature_line=1;
     open(C,"<$old_config_file");
     while(defined(my $line=<C>)) {
-        if($line=~/^feature:([^ ]+)\=/) {
+        if($line=~/^[\s\t]*([^\s\t]+)\=/) {
             if($first_feature_line) {
                 for(my $i=0; $i<@feature_lines; $i++) {
                     push(@config_buffer,$feature_lines[$i]);
@@ -295,9 +295,9 @@ if(defined($new_config_file)) {
         my $escape_feature_name=$feature_names[$i];
         $escape_feature_name=~s/([\[\]\|\(\)])/\\$1/g;
         for(my $j=0; $j<@config_buffer; $j++) {
-            if($config_buffer[$j]=~/^feature:$escape_feature_name\=/) {
+            if($config_buffer[$j]=~/^[\s\t]*$escape_feature_name\=/) {
                 print STDERR "best_values[$i]=$best_values[$i]\n";
-                $config_buffer[$j]=~s/^[^ \=]+\=[^\s\t\(]*/feature:$escape_feature_name\=$best_values[$i]/;
+                $config_buffer[$j]=~s/^[^\s\t\=]+\=[^\s\t\(]*/$escape_feature_name\=$best_values[$i]/;
                 $config_buffer[$j]=~s/\\//g;
             }
         }
