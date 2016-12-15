@@ -58,9 +58,14 @@ while(defined(my $line=<C>)) {
         push(@config_buffer,$line) if(!defined($old_config_file));
 
         my $template_line=$line;
-        $template_line=~s/([^\s\t]+)\=.*/$1=FEATUREVAL\_$feature_counter/;
+        
+        while($template_line =~ m/([=|])[-+]?\d*\.?\d*/g) {
+            my $symbol=$1
+            $template_line=~s/([=|])[-+]?\d*\.?\d*/$symbolFEATUREVAL\_$feature_counter/;
+            $feature_counter++;
+        }
+        
         $conf_template.=$template_line;	
-        $feature_counter++;
     } else {
         push(@config_buffer,$line) if(!defined($old_config_file));
         $conf_template.=$line;	
