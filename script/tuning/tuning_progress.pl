@@ -59,8 +59,8 @@ while(defined(my $line=<C>)) {
 
         my $template_line=$line;
         
-        while($line =~ m/([=|])[-+]?\d*\.?\d*/g) {
-            $template_line=~s/([=|])[-+]?\d*\.?\d*/($1)FEATUREVAL\_$feature_counter/;
+        while($line =~ m/([=|])[\s\t]*([-+]?\d*\.?\d*)/g) {
+            $template_line=~s/($1)[\s\t]*$2/$1\FEATUREVAL\_$feature_counter/;
             $feature_counter++;
         }
         
