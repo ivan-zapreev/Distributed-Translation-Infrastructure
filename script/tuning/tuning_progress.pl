@@ -349,7 +349,7 @@ if($print_new) {
 	
 
     for(my $i=0; $i<@selected_lambdas; $i++) {
-        $conf_template=~s/FEATUREVAL\_$i\[/$selected_lambdas[$i]\[/;
+        $conf_template=~s/FEATUREVAL\_$i/$selected_lambdas[$i]/;
     }
 
     if(-e "$config_file_print" && !(-z "$config_file_print")) {
