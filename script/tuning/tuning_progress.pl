@@ -51,7 +51,7 @@ my $conf_template='';
 my $feature_counter=0;
 open(C,"<$config_file");
 while(defined(my $line=<C>)) {
-    if($line=~/^[\s\t]*([^\s\t]+)\_feature\_weights\=/) {
+    if($line=~/^[\s\t]*([^\s\t]+_feature_weights|tm_word_penalty|de_lin_dist_penalty)\=/) {
         my $feature=$1;
         push(@feature_names,$feature);
         push(@feature_lines,$line);
