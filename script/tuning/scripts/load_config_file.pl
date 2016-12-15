@@ -200,11 +200,9 @@ sub return_initial_lambda_string
                  if($line =~ m/^$feature_sepcifier=(.*)/)
                  {
                     my $feature_str = $1;
-                    #print STDERR "read feature string for $feature_sepcifier:$feature_str\n";
                     if($features_specifiers{$feature_sepcifier} == 1)
                     {
                         my @feature_values = split(/\|/, $feature_str);
-                        #print STDERR "mapping number:", $features2id{"$feature_sepcifier\[0\]"}, "\n";
                         splice(@lambdas, $features2id{"$feature_sepcifier\[0\]"}, scalar(@feature_values), @feature_values);
                     }
                     else

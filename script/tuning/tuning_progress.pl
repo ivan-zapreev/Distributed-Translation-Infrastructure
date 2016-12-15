@@ -51,14 +51,14 @@ my $conf_template='';
 my $feature_counter=0;
 open(C,"<$config_file");
 while(defined(my $line=<C>)) {
-    if($line=~/^feature:([^\s\t]+)\=/) {
+    if($line=~/^[\s\t]*([^\s\t]+)\=/) {
         my $feature=$1;
         push(@feature_names,$feature);
         push(@feature_lines,$line);
         push(@config_buffer,$line) if(!defined($old_config_file));
 
         my $template_line=$line;
-        $template_line=~s/([\s\t]opt\s*)\=\s*[^\[]*\[/$1=FEATUREVAL\_$feature_counter\[/;
+        $template_line=~s/([^\s\t]+)\=.*/$1=FEATUREVAL\_$feature_counter/;
         $conf_template.=$template_line;	
         $feature_counter++;
     } else {
