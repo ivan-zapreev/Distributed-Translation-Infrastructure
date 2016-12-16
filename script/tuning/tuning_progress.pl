@@ -59,7 +59,7 @@ while(my $line = <FEATURES_MAPPING_FILE>)
     $feature_name_base =~ s/\[\d+\]//;
     #Store the feature base name, if it is a new one
     my $num_dist_features = scalar @feature_names;
-    if( ($num_dist_features == 0 ) || ($feature_names[-1] ne $feature_name_base) {
+    if(($num_dist_features == 0 ) || ($feature_names[-1] ne $feature_name_base)) {
         push(@feature_names,$feature_name_base);
     }
     #Store the fearute name to id mapping
