@@ -3,6 +3,30 @@
 use strict;
 use warnings;
 use Getopt::Long "GetOptions";
+use File::Basename;
+
+my $script_name=basename($0);
+
+#Print the legend if the number of arguments is zero
+if ( @ARGV == 0 ) {
+    print "-------\n";
+    print "INFO:\n";
+    print "    This script allows monitore the running/finished tuning process and\n";
+    print "    to extract the configuration files for different tuning iterations.\n";
+    print "-------\n";
+    print "USAGE:\n";
+    print "    $script_name --conf=<file_name> --err=<file_name> --select=<string>\n";
+    print "        --conf=<file_name> - the configuration file name to used in tuning\n";
+    print "        --err=<file_name> - the tuning.log file produced by the tuning script\n";
+    print "        --select=<string> - the iteration name for which the config file is to\n";
+    print "                            be generated or 'best'/'last' values to get the config\n";
+    print "                            files for the best-scoring and last iterations respectively.\n";
+    print "                            This parameter is optional, if specified - generates a\n";
+    print "                            corresponding iteration's config file\n";
+    print "-------\n";
+    print "ERROR: Provide required script arguments!\n";
+    exit(-1);
+}
 
 my $err_logs;
 my $config_file;

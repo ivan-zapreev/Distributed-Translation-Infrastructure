@@ -2,6 +2,23 @@
 
 use strict;
 use warnings;
+use File::Basename;
+
+my $script_name=basename($0);
+
+#Print the legend if the number of arguments is zero
+if ( @ARGV == 0 ) {
+    print "-------\n";
+    print "INFO:\n";
+    print "    This script allows to kill all the tuning processes to stop tuning.\n";
+    print "-------\n";
+    print "USAGE:\n";
+    print "    $script_name <tuning_error_log>\n";
+    print "        <tuning_error_log> - the log file produced by the running tuning script\n";
+    print "-------\n";
+    print "ERROR: Provide required script arguments!\n";
+    exit(-1);
+}
 
 my($err_log)=@ARGV;
 
@@ -28,7 +45,7 @@ do {
     
     #Just read all the process ids logged in the error log
     my @all_pids;
-    open(E,"<$err_log");
+    open(E,"<$err_log")||die("ERROR: Can't open file $err_log: $!\n");
     while(defined(my $line=<E>)) {
         if($line=~/.* pid=([0-9]+)\n/) {
             push @all_pids, $1;
