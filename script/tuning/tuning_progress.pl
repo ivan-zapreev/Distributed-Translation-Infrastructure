@@ -72,8 +72,8 @@ my $conf_template='';
 my $feature_counter=0;
 open(C,"<$config_file");
 while(defined(my $line=<C>)) {
-    if($line=~/^[\s\t]*([^\s\t]+_feature_weights|tm_word_penalty|de_lin_dist_penalty)\=/) {
-        my $feature=$1;
+    #Check that the line is a property and is also a valid feature
+    if(($line=~/^[\s\t]*([^\s\t]+)\=/) && (grep $_ == $1, @feature_names)) {
         push(@feature_lines,$line);
         push(@config_buffer,$line) if(!defined($old_config_file));
 
