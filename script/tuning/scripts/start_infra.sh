@@ -2,7 +2,7 @@
 
 #Define the client and server location directory, relative to this script location
 BASEDIR=$(dirname "$0")
-BUILDPATH="$BASEDIR/../../build"
+BUILDPATH="$BASEDIR/../../../build"
 SERVER_NAME=bpbd-server
 CLIENT_NAME=bpbd-client
 
