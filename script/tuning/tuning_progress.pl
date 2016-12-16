@@ -78,16 +78,6 @@ while(my $line = <FEATURES_MAPPING_FILE>)
 }
 close(FEATURES_MAPPING_FILE);
 
-#Substitute features with their place holders
-sub get_feature_id() {
-    my ($feature_name, $elem_idx) = @_;
-    if($features_spec{$feature_name} == 1) {
-        #This feature has multiple values
-        $feature_name .= "[".$elem_idx."]";
-    }
-    return $features2id{$feature_name};
-}
-
 #Parse the configuration file and prepare its template
 my $conf_template='';
 open(C,"<$config_file");
@@ -103,6 +93,16 @@ while(defined(my $line=<C>)) {
             push(@config_buffer,$line) if(!defined($old_config_file));
 
             my $template_line=$line;
+
+            #Substitute features with their place holders
+            sub get_feature_id {
+                my ($feature_name, $elem_idx) = @_;
+                if($features_spec{$feature_name} == 1) {
+                    #This feature has multiple values
+                    $feature_name .= "[".$elem_idx."]";
+                }
+                return $features2id{$feature_name};
+            }
             
             #Iterate through features and replace them with template element ids
             my $elem_idx = 0;
