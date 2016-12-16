@@ -73,19 +73,29 @@ my $feature_counter=0;
 open(C,"<$config_file");
 while(defined(my $line=<C>)) {
     #Check that the line is a property and is also a valid feature
-    if(($line=~/^[\s\t]*([^\s\t]+)\=/) && (grep $_ == $1, @feature_names)) {
-        push(@feature_lines,$line);
-        push(@config_buffer,$line) if(!defined($old_config_file));
+    if(($line=~/^[\s\t]*([^\s\t]+)\=/)) {
+        #The line contains a property
+        my $feature_name = $1;
+        if(grep $_ == $feature_name, @feature_names) {
+            #The property is a feature
+            push(@feature_lines,$line);
+            push(@config_buffer,$line) if(!defined($old_config_file));
 
-        my $template_line=$line;
-        
-        while($line =~ m/([=|])[\s\t]*([-+]?\d*\.?\d*)/g) {
-            $template_line=~s/($1)[\s\t]*$2/$1\FEATUREVAL\_$feature_counter/;
-            $feature_counter++;
+            my $template_line=$line;
+
+            while($line =~ m/([=|])[\s\t]*([-+]?\d*\.?\d*)/g) {
+                $template_line=~s/($1)[\s\t]*$2/$1\FEATUREVAL\_$feature_counter/;
+                $feature_counter++;
+            }
+
+            $conf_template.=$template_line;	
+        } else {
+            #The line is a non-feature property
+            push(@config_buffer,$line) if(!defined($old_config_file));
+            $conf_template.=$line;	
         }
-        
-        $conf_template.=$template_line;	
     } else {
+        #The line is a comment or empty
         push(@config_buffer,$line) if(!defined($old_config_file));
         $conf_template.=$line;	
     }
