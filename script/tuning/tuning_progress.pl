@@ -86,7 +86,7 @@ while(defined(my $line=<C>)) {
     if(($line=~/^[\s\t]*([^\s\t]+)\=/)) {
         #The line contains a property
         my $prap_name = $1;
-        print "Got property: ${feature_name}";
+        print "Got property: $prap_name";
         if($prap_name ~~ @feature_names) {
             #The property is a feature
             push(@feature_lines,$line);
