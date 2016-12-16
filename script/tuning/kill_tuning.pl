@@ -14,7 +14,7 @@ if ( @ARGV == 0 ) {
     print "-------\n";
     print "USAGE:\n";
     print "    $script_name <tuning_error_log>\n";
-    print "        <tuning_error_log> - the log file produced by the running tuning script\n";
+    print "        <tuning_error_log> - the tuning.log file produced by the tuning script\n";
     print "-------\n";
     print "ERROR: Provide required script arguments!\n";
     exit(-1);
