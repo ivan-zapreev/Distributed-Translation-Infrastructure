@@ -6,8 +6,6 @@ use Getopt::Long "GetOptions";
 
 my $err_logs;
 my $config_file;
-my $old_config_file;
-my $new_config_file;
 my $normalize_weights=0;
 my $print_new=0;
 my $select_strategy='last';
@@ -16,8 +14,6 @@ my $sparse_feature_files_string='';
 GetOptions(
     "conf=s" => \$config_file,
     "err=s" => \$err_logs,
-    "in=s"  => \$old_config_file,
-    "out=s" => \$new_config_file,
     "print" => \$print_new,
     "select=s" => \$select_strategy,
     "sparse-features=s" => \$sparse_feature_files_string,
@@ -47,7 +43,7 @@ my @feature_lines;
 
 #Read the feature mapping file first
 my $features_mapping_file = ".$config_file.work.feature_id2name";
-open(FEATURES_MAPPING_FILE, "<$features_mapping_file");
+open(FEATURES_MAPPING_FILE, "<$features_mapping_file")||die("can't open file $features_mapping_file: $!\n");
 my %features2id = ();
 my %features_spec = ();
 while(my $line = <FEATURES_MAPPING_FILE>)
@@ -80,7 +76,7 @@ close(FEATURES_MAPPING_FILE);
 
 #Parse the configuration file and prepare its template
 my $conf_template='';
-open(C,"<$config_file");
+open(C,"<$config_file")||die("can't open file $config_file: $!\n");
 while(defined(my $line=<C>)) {
     #Check that the line is a property and is also a valid feature
     if(($line=~/^[\s\t]*([^\s\t]+)\=/)) {
@@ -89,7 +85,7 @@ while(defined(my $line=<C>)) {
         if($prap_name ~~ @feature_names) {
             #The property is a feature
             push(@feature_lines,$line);
-            push(@config_buffer,$line) if(!defined($old_config_file));
+            push(@config_buffer,$line);
 
             my $template_line=$line;
 
@@ -114,34 +110,16 @@ while(defined(my $line=<C>)) {
             $conf_template.=$template_line;	
         } else {
             #The line is a non-feature property
-            push(@config_buffer,$line) if(!defined($old_config_file));
+            push(@config_buffer,$line);
             $conf_template.=$line;	
         }
     } else {
         #The line is a comment or empty
-        push(@config_buffer,$line) if(!defined($old_config_file));
+        push(@config_buffer,$line);
         $conf_template.=$line;	
     }
 }
 close(C);
-
-if(defined($old_config_file)) {
-    my $first_feature_line=1;
-    open(C,"<$old_config_file");
-    while(defined(my $line=<C>)) {
-        if($line=~/^[\s\t]*([^\s\t]+)\=/) {
-            if($first_feature_line) {
-                for(my $i=0; $i<@feature_lines; $i++) {
-                    push(@config_buffer,$feature_lines[$i]);
-                }
-                $first_feature_line=0;
-            }
-        } else {
-            push(@config_buffer,$line);
-        }
-    }
-    close(C);
-}
 
 my @val_buffer;
 my @full_val_buffer;
@@ -152,7 +130,7 @@ my @cmert_final_lambdas;
 my @err_log_files=split(/\,/,$err_logs);
 for(my $k=0; $k<@err_log_files; $k++) {
     my $err_log=$err_log_files[$k];
-    open(E,"<$err_log");
+    open(E,"<$err_log")||die("can't open file $err_log: $!\n");
     while(defined(my $line=<E>)) {
         if($line=~/^Best point: (.*) \|\|\| (.+)\n/) {
             my $weight_string=$1;
@@ -217,7 +195,6 @@ for(my $k=0; $k<@err_log_files; $k++) {
 
         }
 
-
         if($line=~/^total decoding time: CPU sec=([0-9\.\-e]+)\n/) {
             my $decoding_time=$1;
             push(@decoding_times,$decoding_time);
@@ -255,7 +232,6 @@ if(@decoding_times>0) {
 if(@rescoring_times>0) {
     $avg_total_rescoring_time/=@rescoring_times;
 }
-
 
 my $max_bleu=0;
 my $max_iteration;
@@ -345,32 +321,6 @@ $last_val=~s/ +/ /g;
 $last_val=~s/^ //;
 $last_val=~s/ $//;
 my @last_values=split(/ /,$last_val);
-
-if(defined($new_config_file)) {
-    for(my $i=0; $i<@feature_names; $i++) {
-        my $escape_feature_name=$feature_names[$i];
-        $escape_feature_name=~s/([\[\]\|\(\)])/\\$1/g;
-        for(my $j=0; $j<@config_buffer; $j++) {
-            if($config_buffer[$j]=~/^[\s\t]*$escape_feature_name\=/) {
-                print STDERR "best_values[$i]=$best_values[$i]\n";
-                $config_buffer[$j]=~s/^[^\s\t\=]+\=[^\s\t\(]*/$escape_feature_name\=$best_values[$i]/;
-                $config_buffer[$j]=~s/\\//g;
-            }
-        }
-    }
-
-    if(-e "$new_config_file") {
-        print STDERR "ouput file $new_config_file already exists.\n";
-        exit(-1);
-    } else {
-        open(F,">$new_config_file");
-        for(my $i=0; $i<@config_buffer; $i++) {
-            print F $config_buffer[$i];
-        }
-        close(F);
-    }
-}
-
 
 if($print_new) {
     my $selected_iteration;
