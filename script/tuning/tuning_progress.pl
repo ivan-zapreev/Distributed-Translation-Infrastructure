@@ -3,7 +3,6 @@
 use strict;
 use warnings;
 use Getopt::Long "GetOptions";
-use List::MoreUtils qw(uniq);
 
 my $err_logs;
 my $config_file;
@@ -26,7 +25,6 @@ GetOptions(
     );
 
 my @sparse_feature_files=split(/\,/,$sparse_feature_files_string);
-
 
 my @decoding_times;
 my @avg_decoding_times;
@@ -59,15 +57,15 @@ while(my $line = <FEATURES_MAPPING_FILE>)
     #Extract the feature base name
     my $feature_name_base = $feature_name;
     $feature_name_base =~ s/\[\d+\]//;
-    #Store the feature base name
-    push(@feature_names,$feature_name_base);
+    #Store the feature base name, if it is a new one
+    my $num_dist_features = scalar @feature_names;
+    if( ($num_dist_features == 0 ) || ($feature_names[-1] ne $feature_name_base) {
+        push(@feature_names,$feature_name_base);
+    }
     #Store the fearute name to id mapping
     $features2id{$feature_name} = $index;
 }
 close(FEATURES_MAPPING_FILE);
-
-#Only keep unique names in @feature_names
-@feature_names = uniq @feature_names;
 
 #Parse the configuration file and prepare its template
 my $conf_template='';
