@@ -49,19 +49,30 @@ my @feature_lines;
 my $features_mapping_file = ".$config_file.work.feature_id2name";
 open(FEATURES_MAPPING_FILE, "<$features_mapping_file");
 my %features2id = ();
+my %features_spec = ();
 while(my $line = <FEATURES_MAPPING_FILE>)
 {
     #Extract the feature and id values
     chomp($line);
     my($index, $feature_name) = split(/\t/, $line);
-    #Extract the feature base name
-    my $feature_name_base = $feature_name;
-    $feature_name_base =~ s/\[\d+\]//;
+    
+    #Extract the property name from the feature name
+    my $prap_name = $feature_name;
+    $prap_name =~ s/\[\d+\]//;
+    
+    #Remember if this feature is a single or multiple
+    if($feature_name =~ /^[^\[]+\[\d+\]$/) {
+        $features_spec{$prap_name} = 1;
+    } else {
+        $features_spec{$prap_name} = 0;
+    }
+    
     #Store the feature base name, if it is a new one
     my $num_dist_features = scalar @feature_names;
-    if(($num_dist_features == 0 ) || ($feature_names[-1] ne $feature_name_base)) {
-        push(@feature_names,$feature_name_base);
+    if(($num_dist_features == 0 ) || ($feature_names[-1] ne $prap_name)) {
+        push(@feature_names,$prap_name);
     }
+    
     #Store the fearute name to id mapping
     $features2id{$feature_name} = $index;
 }
@@ -69,24 +80,36 @@ close(FEATURES_MAPPING_FILE);
 
 #Parse the configuration file and prepare its template
 my $conf_template='';
-my $feature_counter=0;
 open(C,"<$config_file");
 while(defined(my $line=<C>)) {
     #Check that the line is a property and is also a valid feature
     if(($line=~/^[\s\t]*([^\s\t]+)\=/)) {
         #The line contains a property
-        my $feature_name = $1;
+        my $prap_name = $1;
         print "Got property: ${feature_name}";
-        if($feature_name ~~ @feature_names) {
+        if($prap_name ~~ @feature_names) {
             #The property is a feature
             push(@feature_lines,$line);
             push(@config_buffer,$line) if(!defined($old_config_file));
 
             my $template_line=$line;
 
+            #Substitute features with their place holders
+            sub get_feature_id(){
+                my ($feature_name, $elem_idx) = @_;
+                if($features_spec{$feature_name} == 1) {
+                    #This feature has multiple values
+                    $feature_name .= "[".$elem_idx."]";
+                }
+                return $features2id{$feature_name};
+            }
+            
+            #Iterate through features and replace them with template element ids
+            my $elem_idx = 0;
             while($line =~ m/([=|])[\s\t]*([-+]?\d*\.?\d*)/g) {
-                $template_line=~s/($1)[\s\t]*$2/$1\FEATUREVAL\_$feature_counter/;
-                $feature_counter++;
+                my $feature_id = get_feature_id($prap_name, $elem_idx);
+                $template_line=~s/($1)[\s\t]*$2/$1<$feature_id>/;
+                $elem_idx++;
             }
 
             $conf_template.=$template_line;	
