@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use Getopt::Long "GetOptions";
+use List::MoreUtils qw(uniq);
 
 my $err_logs;
 my $config_file;
@@ -23,7 +24,6 @@ GetOptions(
     "sparse-features=s" => \$sparse_feature_files_string,
     "norm-weights|normalize-weights|norm|normalize" => \$normalize_weights
     );
-
 
 my @sparse_feature_files=split(/\,/,$sparse_feature_files_string);
 
@@ -47,13 +47,35 @@ my @feature_names;
 my @config_buffer;
 my @feature_lines;
 
+#Read the feature mapping file first
+my $features_mapping_file = ".$config_file.work.feature_id2name";
+open(FEATURES_MAPPING_FILE, "<$features_mapping_file");
+my %features2id = ();
+while(my $line = <FEATURES_MAPPING_FILE>)
+{
+    #Extract the feature and id values
+    chomp($line);
+    my($index, $feature_name) = split(/\t/, $line);
+    #Extract the feature base name
+    my $feature_name_base = $feature_name;
+    $feature_name_base =~ s/\[\d+\]//;
+    #Store the feature base name
+    push(@feature_names,$feature_name_base);
+    #Store the fearute name to id mapping
+    $features2id{$feature_name} = $index;
+}
+close(FEATURES_MAPPING_FILE);
+
+#Only keep unique names in @feature_names
+@feature_names = uniq @feature_names;
+
+#Parse the configuration file and prepare its template
 my $conf_template='';
 my $feature_counter=0;
 open(C,"<$config_file");
 while(defined(my $line=<C>)) {
     if($line=~/^[\s\t]*([^\s\t]+_feature_weights|tm_word_penalty|de_lin_dist_penalty)\=/) {
         my $feature=$1;
-        push(@feature_names,$feature);
         push(@feature_lines,$line);
         push(@config_buffer,$line) if(!defined($old_config_file));
 
@@ -251,7 +273,6 @@ for(my $i=1; $i<@bleu_scores; $i++) {
 }
 print STDERR "\n";
 
-
 for(my $i=0; $i<@feature_names; $i++) {
     print STDERR '(', $i+1, ,") $feature_names[$i]\n";
 }
@@ -334,7 +355,6 @@ if($print_new) {
         $selected_iteration=$1;
         $selected_iteration_to=$2;
     }
-    
 
     print STDERR "selected iteration=$selected_iteration\n";
     my @selected_lambdas=split(/ /,$full_val_buffer[$selected_iteration]);
@@ -351,7 +371,6 @@ if($print_new) {
         }
     }
 	
-
     for(my $i=0; $i<@selected_lambdas; $i++) {
         $conf_template=~s/FEATUREVAL\_$i/$selected_lambdas[$i]/;
     }
