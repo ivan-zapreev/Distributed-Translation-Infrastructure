@@ -6,21 +6,13 @@ use Getopt::Long "GetOptions";
 
 my $err_logs;
 my $config_file;
-my $normalize_weights=0;
-my $print_new=0;
-my $select_strategy='last';
-my $sparse_feature_files_string='';
+my $select_strategy='undef';
 
 GetOptions(
     "conf=s" => \$config_file,
     "err=s" => \$err_logs,
-    "print" => \$print_new,
     "select=s" => \$select_strategy,
-    "sparse-features=s" => \$sparse_feature_files_string,
-    "norm-weights|normalize-weights|norm|normalize" => \$normalize_weights
     );
-
-my @sparse_feature_files=split(/\,/,$sparse_feature_files_string);
 
 my @decoding_times;
 my @avg_decoding_times;
@@ -35,15 +27,13 @@ my @max_rescoring_times;
 my $avg_total_decoding_time=0;
 my $avg_total_rescoring_time=0;
 
-my $config_file_print="$config_file.$select_strategy";
-
 my @feature_names;
 my @config_buffer;
 my @feature_lines;
 
 #Read the feature mapping file first
 my $features_mapping_file = ".$config_file.work.feature_id2name";
-open(FEATURES_MAPPING_FILE, "<$features_mapping_file")||die("can't open file $features_mapping_file: $!\n");
+open(FEATURES_MAPPING_FILE, "<$features_mapping_file")||die("ERROR: Can't open file $features_mapping_file: $!\n");
 my %features2id = ();
 my %features_spec = ();
 while(my $line = <FEATURES_MAPPING_FILE>)
@@ -76,7 +66,7 @@ close(FEATURES_MAPPING_FILE);
 
 #Parse the configuration file and prepare its template
 my $conf_template='';
-open(C,"<$config_file")||die("can't open file $config_file: $!\n");
+open(C,"<$config_file")||die("ERROR: Can't open file $config_file: $!\n");
 while(defined(my $line=<C>)) {
     #Check that the line is a property and is also a valid feature
     if(($line=~/^[\s\t]*([^\s\t]+)\=/)) {
@@ -130,7 +120,7 @@ my @cmert_final_lambdas;
 my @err_log_files=split(/\,/,$err_logs);
 for(my $k=0; $k<@err_log_files; $k++) {
     my $err_log=$err_log_files[$k];
-    open(E,"<$err_log")||die("can't open file $err_log: $!\n");
+    open(E,"<$err_log")||die("ERROR: Can't open file $err_log: $!\n");
     while(defined(my $line=<E>)) {
         if($line=~/^Best point: (.*) \|\|\| (.+)\n/) {
             my $weight_string=$1;
@@ -138,15 +128,6 @@ for(my $k=0; $k<@err_log_files; $k++) {
             $iteration++;
 
             my @lambdas=split(/ +/,$weight_string);
-            if($normalize_weights) {
-                my $max_lambda=0;
-                for(my $i=0; $i<@lambdas; $i++) {
-                    $max_lambda=abs($lambdas[$i]) if(abs($lambdas[$i])>=$max_lambda);
-                }
-                for(my $i=0; $i<@lambdas; $i++) {
-                    $lambdas[$i]/=$max_lambda;
-                }
-            }
             my @full_lambdas=@lambdas;
 
             for(my $i=0; $i<@lambdas; $i++) {
@@ -322,7 +303,8 @@ $last_val=~s/^ //;
 $last_val=~s/ $//;
 my @last_values=split(/ /,$last_val);
 
-if($print_new) {
+#In case the selected strategy is chosen then we shall generate a config script
+if($select_strategy ne 'undef') {
     my $selected_iteration;
     my $selected_iteration_to;
 
@@ -335,6 +317,8 @@ if($print_new) {
     } elsif($select_strategy=~/^([0-9]+)\-([0-9]+)$/) {
         $selected_iteration=$1;
         $selected_iteration_to=$2;
+    } else {
+        die("ERROR: Unexpected 'select' value: $select_strategy");
     }
 
     print STDERR "selected iteration=$selected_iteration\n";
@@ -356,38 +340,16 @@ if($print_new) {
         $conf_template=~s/<$i>/$selected_lambdas[$i]/;
     }
 
+    my $config_file_print="$config_file.$select_strategy";
+
     if(-e "$config_file_print" && !(-z "$config_file_print")) {
-        print STDERR "File $config_file_print already exists.\n";
+        print STDERR "ERROR: File $config_file_print already exists.\n";
         exit(-1);
     } else {
         print STDERR "generated: $config_file_print\n";
         open(F,">$config_file_print");
         print F $conf_template;
         close(F);
-    }
-
-    for(my $i=0; $i<@sparse_feature_files; $i++) {
-        my $sparse_file=$sparse_feature_files[$i];
-        my $sparse_file_print="$sparse_file.$select_strategy";
-
-        if(-e "$sparse_file_print" && !(-z "$sparse_file_print")) {
-            print STDERR "File $sparse_file_print already exists.\n";
-            exit(-1);
-        } else {
-            print STDERR "generated: $sparse_file_print\n";
-            open(F,"<$sparse_file")||die("can't open file $sparse_file: $!\n");
-            open(P,">$sparse_file_print")||die("can't open file $sparse_file_print: $!\n");
-            while(defined(my $line=<F>)) {
-                chomp($line);
-                my($feature_id,$feature_name,$feature_weights_string)=split(/ \|\|\| /o,$line);
-                my @feature_weights=split(/ /,$feature_weights_string);
-                my $selected_iteration_sparse=$selected_iteration-1;
-                my $selected_weights="$feature_weights[0] $feature_weights[$selected_iteration_sparse]";
-                print P "$feature_id ||| $feature_name ||| $selected_weights\n";
-            }	    
-            close(F);
-            close(P);
-        }
     }
 }
 
