@@ -76,7 +76,8 @@ while(defined(my $line=<C>)) {
     if(($line=~/^[\s\t]*([^\s\t]+)\=/)) {
         #The line contains a property
         my $feature_name = $1;
-        if(grep $_ == $feature_name, @feature_names) {
+        print "Got property: ${feature_name}";
+        if($feature_name ~~ @feature_names) {
             #The property is a feature
             push(@feature_lines,$line);
             push(@config_buffer,$line) if(!defined($old_config_file));
