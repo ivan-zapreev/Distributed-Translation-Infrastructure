@@ -343,7 +343,8 @@ if($select_strategy ne 'undef') {
         $selected_iteration=$1;
         $selected_iteration_to=$2;
     } else {
-        die("ERROR: Unexpected 'select' value: $select_strategy");
+        print STDERR "ERROR: Unexpected '--select=' option value: $select_strategy.\n";
+        exit(1);
     }
 
     print STDERR "selected iteration=$selected_iteration\n";
