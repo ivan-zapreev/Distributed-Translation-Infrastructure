@@ -64,7 +64,6 @@ LAST_BATCH_SIZE=$(( $NUMBER_OF_SENTENCES % $NUMBER_OF_BATCHES ))
 if [ $LAST_BATCH_SIZE -ne 0 ]; then
     let BATCH_SIZE=$BATCH_SIZE+1
 fi
-#TEMP=$(( ${NUMBER_OF_SENT_IN_BATCH} / ${NUMBER_OF_BATCHES} ))
 echo "last item:${MAX_FILE_NAME}"
 echo "number of sentences in a batch:${BATCH_SIZE}"
 echo "last file size:$LAST_BATCH_SIZE"
@@ -78,7 +77,6 @@ SCORES_OUT_FILE="${OUTPUT_FILE_NAME}.feature_scores.batch.$index"
 #Iterate through the files and combine them into lattices and scores file
 for FILE_NAME in ${SENTENCE_FILES}; do
     #Re-set the files
-    #rm -f ${LATTICES_OUT_FILE} ${SCORES_OUT_FILE}
     if [ $SENTENCE_COUNTER -ge $BATCH_SIZE ]; then
         SENTENCE_COUNTER=0
         let index=$index+1
