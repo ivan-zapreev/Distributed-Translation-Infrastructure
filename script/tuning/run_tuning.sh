@@ -142,7 +142,7 @@ unset LANG
 BASEDIR=$(dirname "$0")
 
 echo "-----"
-echo "Use '$BASEDIR/tuning_progress.pl' to monitore the progress and retrieve optimum config."
+echo "Use '$BASEDIR/tuning_progress.pl' to monitor the progress and retrieve optimum config."
 echo "Use '$BASEDIR/kill_tuning.pl' to stop tuning."
 echo "-----"
 DATE_TIME=`date`

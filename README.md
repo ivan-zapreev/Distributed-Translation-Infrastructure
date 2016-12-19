@@ -34,7 +34,7 @@ Note that, the language model is typically learned from a different corpus in a 
 
 With these three models at hand one can perform decoding, which is a synonym to a translation process. SMT decoding is performed by exploring the state space of all possible translations and reordering of the source language phrases within one sentence. The purpose of decoding, as indicated by the maximization procedure at the bottom of the figure above, is to find a translation with the largest possible probability.
 
-In order to obtain the best performance of the translation system one can employ Discriminative Training. The latter uses generated word lattice to optimize translation performance by reducing some measure of translation error. This is done by tuning the translation parameters such as feature lambda values of the model feature weights. Our software allows for word lattice generation, as mentioned in sections [Building the project](#building-the-project) and [Using software](#using-software).
+In order to obtain the best performance of the translation system one can employ Discriminative Training. The latter uses generated word lattice to optimize translation performance by reducing some measure of translation error. This is done by tuning the translation parameters such as feature lambda values of the model feature weights. Our software allows for word lattice generation and parameters' tuning, as discussed in sections [Building the project](#building-the-project) and [Using software](#using-software).
 
 ###Document structure
  
@@ -180,7 +180,9 @@ Note that not all of the combinations of the `lm_word_index` and `lm_model_type`
 * `rm_builder_type` - currently there is just one builder type available: `rm_basic_builder<rm_model_reader>`
 
 ##Using software
-This section briefly covers how the provided software can be used for performing text translations. We begin with **bpbd-server**, **bpbd-balancer** and **bpbd-processor**. Next, we talk about the client applications **bpbd-client** and Web UI. Finally, we briefly talk about the **lm-query**. For information on the LM, TM and RM model file formats and others see section [Input file formats](#input-file-formats)
+This section briefly covers how the provided software can be used for performing text translations. We begin with **bpbd-server**, **bpbd-balancer** and **bpbd-processor**. Next, we talk about the client applications **bpbd-client** and Web UI. Further, we briefly talk about the language model query tool **lm-query**. Finally, we explain how the decoder's parameter tuning can be done. The latter is an iterative process allowing to obtain the best performance of the translation system in terms of the BLEU scores.
+
+For information on the LM, TM and RM model file formats and others see section [Input file formats](#input-file-formats)
 
 ###Translation server: _bpbd-server_
 The translation server is used for two things:
@@ -610,6 +612,194 @@ For complete USAGE and HELP type:
    lm-query --help
 ```
 For information on the LM file format see section [Input file formats](#input-file-formats). The query file format is a text file in a **UTF8** encoding which, per line, stores one query being a space-separated sequence of tokens in the target language. The maximum allowed query length is limited by the compile-time constant `lm::LM_MAX_QUERY_LEN`, see section [Project compile-time parameters](#project-compile-time-parameters)
+
+###Parameter Tuning
+In order to obtain the best performance of the translation system one can employ Discriminative Training, see Chapter 9 of [Koe10](./doc/bibtex/Koehn_SMT_Book10.bib). The latter uses generated word lattice, c.f. Chapter 9.1.2 of [Koe10](./doc/bibtex/Koehn_SMT_Book10.bib), to optimize translation performance by reducing some measure of translation error. This is done by tuning the translation parameters such as feature lambda values of the model feature weights.
+
+We measure the translation system performance in terms of the BLEU scores. Therefore, parameter tuning shall find such lambda values, to be used in the `bpbd-server` configuration files, c.f. section [Server config file](#server-config-file), that they maximize the BLEU scores of the translations provided by the system. As you already know from section [Word lattice generation](#word-lattice-generation), our software allows for word lattice generation.
+
+In this section we explain other tools we have to perform parameter tuning. Please note that, tuning scripts are implemented using Perl and bash. We expect the Perl version to be `>=v5.10.1`.
+
+The rest of the section is organized as follows. First in section [Tuning test sets](#tuning-test-sets), we report on the test-sets that we use for tuning and their internal structure. Next in section [Run parameter tuning](#run-parameter-tuning), we explain how the tuning script can be run. Section [Check on tuning progress](#check-on-tuning-progress) reports on how the tuning progress can be monitored and the server configuration files can be generated for various tuning iterations. At last in section [Stop tuning](#stop-tuning) we explain how tuning can be stopped in an easy manner.
+
+####Tuning test sets
+Parameter tuning is done wrt an [MT-Eval (OpenMT)](http://www.itl.nist.gov/iad/mig/tests/mt/) test set. Typically, we use [MT-04](http://www.itl.nist.gov/iad/mig/tests/mt/2004/). From these test sets we use two types of files:
+
+* `Source file` - a pre-processed text in the source language, ready to be translated;
+* `Reference translation files` - reference translation files, in the target language, not post-processed;
+
+The source files are to be plain text files, pre-processed in the same way as it shall be done when running the translation infrastructure. I.e. using the same sentence splitting methods and tokenizers. Of course, the pre-processed text is expected to be lower-cased and to have one sentence per line. See section [Text processor: bpbd-processor](#text-processor-bpbd-processor) for more details on text pre-processing.
+
+The reference files shall also be in plain text format. Moreover, they are expected to be lower-cased, tokenized and have one sentence per line. I.e. to have the same format as the text produced by the `bpbd-server`. We support multiple reference translations and therefore all the translation files shall have the same file name format: `<file_name_base>.<ref_index>`. Here '<file_name_base>' is the same file name used for all reference translation files of the given source text. The `<ref_index>` is the reference translation index, starting from `0`. Note that, even if there is just one reference translation then it shall still get the index in its file name. The maximum number of reference translation files is `100`.
+
+####Run parameter tuning
+In order to start parameter tuning one shall use the `run_tuning.sh` script located in `[Project-Folder]/scripts/tuning/`. If run without parameters, it gives the following usage information:
+
+```
+$ ./run_tuning.sh 
+------
+USAGE: Allows to start the tuning process for the infrastructure
+------
+ ./run_tuning.sh --conf=<file-name> --src=<file-name> --src-language=<string> 
+        --ref=<file-pref> --trg-language=<string> --no-parallel=<number> 
+        --trace=<number> --nbest-size=<number> --mert-script=<string>
+ Where:
+    --conf=<file-name> the initial configuration file for the decoding server
+    --src=<file-name> the source text file to use with tuning
+    --src-language=<string> the language of the source text
+    --ref=<file-pref> the reference translation text file name prefix.
+                      The files names are constructed as:
+                            <file-templ>.<index>
+                      where <index> starts with 1.
+    --trg-language=<string> the language of the reference text, default is english
+    --no-parallel=<number> the number of parallel threads used for tuning, default is 1
+    --trace=<number> the tracing level for the script, default is 1
+    --nbest-size=<number> the number of best hypothesis to consider, default is 1500
+    --mert-script=<string> the MERT script type to be used, default is 'PRO-14'
+```
+
+As one can see the script's interface is fairly simple. It requires the name of the config file, the source text file, the source language name, the target language name, and the reference file(s) prefix. Other parameters are optional and can be omitted. Note that, when run on a multi-core system, for the sake of faster tuning, it is advised to set the value of the `--no-parallel=` parameter to the number of cores present in the system. Further details on the source and reference files can be found in section [Tuning test sets](#tuning-test-sets).
+
+Please note that for the tuning script to run, we need the initial `bpbd-server` configuration file. The latter can be obtained by copying the default `server.cfg` file from the project's folder to the work folder, where the tuning will be run, and then modifying it with the proper source and target language names, the model file locations, and modifying other values, if required. The tuning script itself can be run from any folder, chosen to be a work folder. Let us consider an example invocation of the tuning script:
+
+```
+$ [Project-Folder]/script/tuning/run_tuning.sh --conf=server.cfg --no-parallel=39 --trace=1 --nbest-size=1500 --src-language=chinese --src=$SMTAMS/data/translation_test/OpenMT/mt04/chinese-english//mt04.chinese-english.src.tok_stanford-ctb.txt --ref=$SMTAMS/data/translation_test/OpenMT/mt04/chinese-english//mt04.chinese-english.ref.tok.txt --trg-language=english
+-----
+Use '[Project-Folder]/script/tuning/tuning_progress.pl' to monitor the progress and retrieve optimum config.
+Use '[Project-Folder]/script/tuning/kill_tuning.pl' to stop tuning.
+-----
+Starting tuning on: smt10.science.uva.nl at: Fri Dec 16 17:07:00 CET 2016
+Writing the tuning log into file: tuning.log ...
+```
+
+Here for the sake of example, we explicitly specified the optional parameters: `--no-parallel=39`, `--trace=1`, and `--nbest-size=1500`. Once the script is started, the tuning process output is written into the `tuning.log` file. The output of the used `bpbd-client` is placed in the `client.log` and the output of the lattice combination script into the `combine.log`. Note that, the tuning script blocks the console and runs until one of the conditions is satisfied:
+
+* The maximum allowed number of tuning iterations is done, this value is set to `30`;
+* The tuning process is stopped by the `kill_tuning.pl` script, see section [Stop tuning](#stop-tuning);
+
+####Check on tuning progress
+Tuning can takes several hours to a couple of days, depending on the number of features, the size of the models, the size of the development set, etc. Therefore, we have created the `tuning_progress.pl` script, located in `[Project-Folder]/script/tuning/`, that allows to monitor the tuning progress. When run without parameters this script provides the following output:
+
+```
+$ ./tuning_progress.pl
+Smartmatch is experimental at ./tuning_progress.pl line 100.
+-------
+INFO:
+    This script allows to monitor running/finished tuning process and
+    to extract the configuration files for different tuning iterations.
+    This script must be run from the same folder where tuning was/is run.
+-------
+USAGE:
+    tuning_progress.pl --conf=<file_name> --err=<file_name> --select=<string>
+        --conf=<file_name> - the configuration file used in tuning process
+        --err=<file_name>  - the tuning.log file produced by the tuning script
+        --select=<string>  - the iteration index for which the config file is to
+                             be generated or 'best'/'last' values to get the config
+                             files for the best-scoring or last iteration respectively.
+                             This parameter is optional, if specified - the script
+                             generates a corresponding iterations'[[[C[C's config file
+-------
+ERROR: Provide required script arguments!
+```
+As on can notice this script can be used for two purposes:
+
+1. Monitor the tuning progress;
+2. Generate the configuration of a certain tuning iteration;
+
+Let us consider both of these usages in more details.
+
+#####Monitor Progress
+Invoke the `tuning_progress.pl` script from the work folder where the tuning is run. Use the  `tuning.log` log file as the value of the `--err=` parameter and the used config file as the value of the `--conf=` parameter:
+
+```
+$ [Project-Folder]/script/tuning/tuning_progress.pl --conf=server.cfg --err=tuning.log
+Avg. total = 0.00 sec.
+
+Avg. total = 0.00 sec.
+
+iteration=1     BLEU=0.297540050683629
+iteration=2     BLEU=0.304940039112847  ^
+iteration=3     BLEU=0.31246539393292   ^
+iteration=4     BLEU=0.319738621056022  ^
+iteration=5     BLEU=0.324859305442724  ^
+iteration=6     BLEU=0.331238665525784  ^
+iteration=7     BLEU=0.337603780346243  ^
+iteration=8     BLEU=0.341755568020084  ^
+iteration=9     BLEU=0.343932768784104  ^
+iteration=10    BLEU=0.350114574042927  ^
+iteration=11    BLEU=0.351529162662153  ^
+iteration=12    BLEU=0.354527741244185  ^
+iteration=13    BLEU=0.358353976275115  ^
+iteration=14    BLEU=0.359557421035731  ^
+iteration=15    BLEU=0.362479837703255  <--- best overall BLEU
+iteration=16    BLEU=0.362085630174003  v
+iteration=17    BLEU=0.36209376384702   ^
+iteration=18    BLEU=0.359820528770433  v
+iteration=19    BLEU=0.356861833879925  v
+iteration=20    BLEU=0.354888166740936  v
+iteration=21    BLEU=0.353153254195068  v
+iteration=22    BLEU=0.355045301787933  ^
+iteration=23    BLEU=0.351972501936527  v
+iteration=24    BLEU=0.348495504435742  v
+
+(1) de_lin_dist_penalty
+(2) lm_feature_weights
+(3) rm_feature_weights
+(4) tm_feature_weights
+(5) tm_word_penalty
+
+...
+```
+
+This will print out a lot of information, but the most relevant part is shown above. It indicates the tuning iterations with the corresponding BLEU scores. Here tuning was running for a while already and we can see that for iterations `1-15` BLEU scores went up (the '^' sign), with iteration `15` yielding the best BLEU score. After that (iterations `16-24`), BLEU scores went (mostly) down.
+
+As a rule of thumb, if you see that BLEU scores drop for two consecutive iterations after the optimal iteration, it's time to stop tuning. The latter can be done with the `kill_tuning.pl` script discussed in section [Stop tuning](#stop-tuning);
+
+#####Generate config
+When the `run_tuning.sh` script is still running, or after its execution is finished, one can generate the config file corresponding to any of the performed tuning iterations, as listed by the `tuning_progress.pl` script. In order to do so, in addition to the `--conf=` and `--err=` parameters one can just specify the third one: `--select=`, supplying the iteration number. For example, to generate the configuration script used in the best scoring tuning iteration of the example above, one can use the following script invocation:
+
+```
+$ [Project-Folder]/script/tuning/tuning_progress.pl --conf=server.cfg --err=tuning.log --select=best
+```
+
+or alternatively:
+```
+$ [Project-Folder]/script/tuning/tuning_progress.pl --conf=server.cfg --err=tuning.log --select=15
+```
+
+Since iteration `15` was the best scoring one, these will result in two identical configuration files being generated: `server.cfg.best` and `server.cfg.15`. Please note that, the `tuning_progress.pl` script must always be run from the same folder as the `run_tuning.sh` script as it uses some hidden temporary files stored in the work folder.
+
+####Stop tuning
+If the best scoring tuning iteration has been reached one might want to stop tuning right away. This could be done by killing the `run_tuning.sh` script but things are a bit more complicated than that. The tuning script forks plenty of independent processes each of which log its PID value into the `tuning.log` file. Clearly, if `run_tuning.sh` is killed this will not affect the forked processes. This is why we have developed the `kill_tuning.pl` script located in the `[Project-Folder]/script/tuning/` folder. The only parameter required by the script is the `tuning.log` file used as a source of the related PID values. The script can be invoked as follows:
+
+```
+$ [Project-Folder]/script/tuning/kill_tuning.pl tuning.log
+
+Are you sure you want to stop the tuning process?
+
+Answer (yes/no)? yes
+Starting killing the active tuning processes ...
+----------------------------------------------------------------------
+Starting a killing iteration, analyzing the error log for process ids.
+The error log analysis is done, starting the killing.
+ 8380 pts/2    00:00:00 tuner.pl
+ 8385 pts/2    02:01:30 PRO-optimizatio
+ 4823 pts/2    01:57:44 bpbd-server
+15260 pts/2    00:00:00 PRO-optimizer-p
+15265 pts/2    00:05:37 PRO-optimizer-l
+...
+15297 pts/2    00:05:38 PRO-optimizer-l
+15303 pts/2    00:05:38 PRO-optimizer-l
+The number of (newly) killed processes is: 18
+----------------------------------------------------------------------
+Starting a killing iteration, analyzing the error log for process ids.
+The error log analysis is done, starting the killing.
+The number of (newly) killed processes is: 0
+----------------------------------------------------------------------
+The killing is over, we are finished!
+```
+
+Please note that, the script requires you to type in `yes` as a complete word and press enter to start the killing. Any other value will cause the killing to be canceled.
 
 ##Input file formats
 In this section we briefly discuss the model file formats supported by the tools. We shall occasionally reference the other tools supporting the same file formats and external third-party web pages with extended format descriptions.
