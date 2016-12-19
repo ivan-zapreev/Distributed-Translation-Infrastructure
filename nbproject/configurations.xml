@@ -129,6 +129,7 @@
       <itemPath>data/server-1-10.000.9004.cfg</itemPath>
       <itemPath>data/server-1-10.000.cfg</itemPath>
       <itemPath>data/server-1-3.000.000.cfg</itemPath>
+      <itemPath>server.cfg</itemPath>
       <itemPath>data/tuning.info.txt</itemPath>
     </logicalFolder>
   </logicalFolder>
