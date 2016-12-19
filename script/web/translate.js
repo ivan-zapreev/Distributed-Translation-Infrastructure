@@ -293,11 +293,11 @@ function initialize_translator(config, md5_fn, download_fn, init_file_ud_fn,
         var source_text, source_md5, sent_array, begin_idx, end_idx, source_lang, target_lang, is_trans_info;
 
         //Get and prepare the new source text
-        source_text = translator.dom.from_text_area.val();
+        source_text = translator.dom.from_text_area.val().trim();
         window.console.log("The text to translate is: " + source_text.substr(0, 128) + "...");
 
         //First check that the text is not empty
-        if (source_text.trim() !== "") {
+        if (source_text !== "") {
             //Compute the new source md5 value
             source_md5 = md5_fn(source_text);
             window.console.log("The new source md5: " + source_md5);
