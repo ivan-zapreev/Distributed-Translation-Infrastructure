@@ -114,6 +114,31 @@ After these are performed, the project can be build in two ways:
 
 The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run `make clean`. Cleaning from Netbeans is as simple calling the `Clean and Build` from the `Run` menu.
 
+In order to perform parameter tuning for the decoding server, one also needs to build the MegaM code delivered with this project. The steps needed for that are listed below. Please note that the first step is optional and is only needed in case *A)* the Ocam compiler is not present *B)* the present Ocam compiler can not build MegaM.
+
+* Download and install the latest [Ocam compiler](http://www.ocaml.org/releases/4.04.html), we used version `4.04`. By default, installation will require root rights. If Ocam is installed locally then one needs to modify the MegaM's makefile to account for that, see below;
+
+```
+wget http://caml.inria.fr/pub/distrib/ocaml-4.04/ocaml-4.04.0.tar.gz;
+tar -zxvf ocaml-4.04.0.tar.gz;
+cd ocaml-4.04.0;
+./configure;
+make world;
+make opt;
+make opt.opt;
+sudo make install;
+```
+
+* If the Ocam libraries are not installed into the `/usr/local/lib/ocaml` folder then update the value of the `OCAML_HOME` variable in the `[Project-Folder]/script/tuning/megam_0.92/Makefile` file with the proper Ocam library path. Also make sure that the compiler is in the `PATH`;
+
+* Build the MegaM optimal executable by running:
+
+```
+cd [Project-Folder]/script/tuning/megam_0.92;
+make opt;
+```
+
+
 ###Project compile-time parameters
 For the sake of performance optimizations, the project has a number of compile-time parameters that are to be set before the project is build and can not be modified in the run time. Let us consider the most important of them and indicate where all of them are to be found.
 
@@ -618,7 +643,7 @@ In order to obtain the best performance of the translation system one can employ
 
 We measure the translation system performance in terms of the BLEU scores. Therefore, parameter tuning shall find such lambda values, to be used in the `bpbd-server` configuration files, c.f. section [Server config file](#server-config-file), that they maximize the BLEU scores of the translations provided by the system. As you already know from section [Word lattice generation](#word-lattice-generation), our software allows for word lattice generation.
 
-In this section we explain other tools we have to perform parameter tuning. Please note that, tuning scripts are implemented using Perl and bash. We expect the Perl version to be `>=v5.10.1`.
+In this section we explain other tools we have to perform parameter tuning. Please note that, tuning scripts are implemented using Perl and bash. We expect the Perl version to be `>=v5.10.1`. Also, in order to use the tuning scripts one must have MegaM compiled. See section [Building the project](#building-the-project) for the corresponding build instructions.
 
 The rest of the section is organized as follows. First in section [Tuning test sets](#tuning-test-sets), we report on the test-sets that we use for tuning and their internal structure. Next in section [Run parameter tuning](#run-parameter-tuning), we explain how the tuning script can be run. Section [Check on tuning progress](#check-on-tuning-progress) reports on how the tuning progress can be monitored and the server configuration files can be generated for various tuning iterations. At last in section [Stop tuning](#stop-tuning) we explain how tuning can be stopped in an easy manner.
 
@@ -697,7 +722,7 @@ USAGE:
                              be generated or 'best'/'last' values to get the config
                              files for the best-scoring or last iteration respectively.
                              This parameter is optional, if specified - the script
-                             generates a corresponding iterations'[[[C[C's config file
+                             generates a corresponding iteration's config file
 -------
 ERROR: Provide required script arguments!
 ```
