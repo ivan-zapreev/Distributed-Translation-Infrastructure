@@ -11,7 +11,7 @@ my $script_name=basename($0);
 if ( @ARGV == 0 ) {
     print "-------\n";
     print "INFO:\n";
-    print "    This script allows to monitore running/finished tuning process and\n";
+    print "    This script allows to monitor running/finished tuning process and\n";
     print "    to extract the configuration files for different tuning iterations.\n";
     print "    This script must be run from the same folder where tuning was/is run.\n";
     print "-------\n";
