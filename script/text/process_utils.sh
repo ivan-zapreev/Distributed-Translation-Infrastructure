@@ -43,7 +43,7 @@ function usage_pre(){
   fi
 }
 
-#Reports an error, does not exit
+#Reports an error to stdout, does not exit
 # ${0} - the script name
 # ${1} - the error message
 function error() {
