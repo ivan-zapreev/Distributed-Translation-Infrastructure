@@ -64,6 +64,8 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * **`ext/`** - external libraries used in the project
     * **`inc/`** - C++ header files
     * **`src/`** - C++ source files
+    * **`data/`** - stores the tests-related data
+    * **`nbproject/`** - Netbeans project data
     * **`script/`** - stores the various scripts
     * **`script/web/`** - Web client for translation system
     * **`script/text/`** - Pre/post-processing scripts
@@ -71,8 +73,10 @@ This is a Netbeans 8.0.2 project, based on cmake, and its top-level structure is
     * **`script/text/truecase/moses`** - True-casing scripts from Moses
     * **`script/text/truecase/truecaser`** - True-casing scripts from Truecaser
     * **`script/test/`** - Scripts used for testing
-    * **`nbproject/`** - Netbeans project data
-    * **`data/`** - stores the tests-related data
+    * **`script/tuning/`** - Decoder parameter's tuning scripts
+    * **`script/tuning/PRO`** - PRO-14 optimization scripts
+    * **`script/tuning/megam_0.92`** - MEGA Model Optimization Package (MegaM)
+    * **`script/tuning/scripts`** - Core tuning scripts and utilities
     * `server.cfg` - example server configuration file
     * `balancer.cfg` - example load balancer configuration file
     * `processor.cfg` - example processor configuration file
@@ -1410,6 +1414,7 @@ You should have received a copy of the GNU General Public License along with thi
 * **30.08.2016** - The information on translation clients was extended with translation priorities.
 * **03.10.2016** - Removed an obsolete server console parameter description.
 * **13.10.2016** - Added section about the communication protocols.
+* **20.12.2016** - Updated with the decoder parameter's tuning scripts information.
 
 ##Appendix Tests
 
