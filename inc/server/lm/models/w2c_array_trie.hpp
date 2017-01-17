@@ -280,7 +280,7 @@ namespace uva {
                             const word_uid word_id = query.get_curr_uni_gram_word_id();
 
                             //The data is always present.
-                            query.set_curr_payload(&m_1_gram_data[word_id]);
+                            query.set_curr_payload(m_1_gram_data[word_id]);
                             
                             LOG_DEBUG << "The uni-gram word id " << SSTR(word_id) << " payload : "
                                     << m_1_gram_data[word_id] << END_LOG;
@@ -311,7 +311,7 @@ namespace uva {
                                 const T_M_GramWordEntry * ptr = m_m_gram_word_2_data[level_idx];
                                 if (get_m_n_gram_entry<T_M_GramWordEntry>(ptr, word_id, ctx_id, &entry_ptr)) {
                                     //Return the data
-                                    query.set_curr_payload(&entry_ptr->payload);
+                                    query.set_curr_payload(entry_ptr->payload);
                                     LOG_DEBUG << "The payload is retrieved: " << entry_ptr->payload << END_LOG;
                                 } else {
                                     //The payload could not be found
@@ -343,7 +343,7 @@ namespace uva {
                                 const typename T_N_GramWordEntry::TElemType * entry_ptr;
                                 if (get_m_n_gram_entry<T_N_GramWordEntry>(m_n_gram_word_2_data, word_id, ctx_id, &entry_ptr)) {
                                     //Return the data
-                                    query.set_curr_payload(&entry_ptr->payload);
+                                    query.set_curr_payload(entry_ptr->payload);
                                     LOG_DEBUG << "The payload is retrieved: " << entry_ptr->payload << END_LOG;
                                 } else {
                                     //The payload could not be found

@@ -202,7 +202,7 @@ namespace uva {
                             LOG_DEBUG << "Searching in uni-grams, array index: 0" << END_LOG;
 
                             //By default set the unknown word value
-                            query.set_curr_payload(&m_unk_data);
+                            query.set_curr_payload(m_unk_data);
 
                             //Call the templated part via function pointer
                             (void) get_payload<TProbBackMap>(m_m_gram_data[0], query);
@@ -287,7 +287,7 @@ namespace uva {
                             const typename STORAGE_MAP::TElemType * elem = map->get_element(hash_value, hash_value);
                             if (elem != NULL) {
                                 //We are now done, the payload is found, can return!
-                                query.set_curr_payload(&elem->m_payload);
+                                query.set_curr_payload(elem->m_payload);
                                 return MGramStatusEnum::GOOD_PRESENT_MGS;
                             } else {
                                 //Could not retrieve the payload for the given sub-m-gram

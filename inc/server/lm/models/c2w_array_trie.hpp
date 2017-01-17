@@ -315,7 +315,7 @@ namespace uva {
                             const word_uid word_id = query.get_curr_uni_gram_word_id();
 
                             //The data is always present.
-                            query.set_curr_payload(&m_1_gram_data[word_id]);
+                            query.set_curr_payload(m_1_gram_data[word_id]);
 
                             LOG_DEBUG << "The uni-gram word id " << SSTR(word_id) << " payload : "
                                     << m_1_gram_data[word_id] << END_LOG;
@@ -347,7 +347,7 @@ namespace uva {
                                 if (get_ctx_id(level_idx, word_id, ctx_id)) {
                                     LOG_DEBUG << "level_idx: " << SSTR(level_idx) << ", ctx_id: " << ctx_id << END_LOG;
                                     //There is data found under this context
-                                    query.set_curr_payload(&m_m_gram_data[level_idx][ctx_id].payload);
+                                    query.set_curr_payload(m_m_gram_data[level_idx][ctx_id].payload);
                                     LOG_DEBUG << "The payload is retrieved: " << m_m_gram_data[level_idx][ctx_id].payload << END_LOG;
                                 } else {
                                     //The payload could not be found
@@ -386,7 +386,7 @@ namespace uva {
                                 if (my_bsearch_wordId_ctxId<TCtxIdProbEntry>(m_n_gram_data, BASE::FIRST_VALID_CTX_ID,
                                         m_m_n_gram_num_ctx_ids[BASE::N_GRAM_IDX_IN_M_N_ARR] - 1, word_id, ctx_id, idx)) {
                                     //Return the data
-                                    query.set_curr_payload(&m_n_gram_data[idx].prob);
+                                    query.set_curr_payload(m_n_gram_data[idx].prob);
                                     LOG_DEBUG << "The payload is retrieved: " << m_n_gram_data[idx].prob << END_LOG;
                                 } else {
                                     //The payload could not be found

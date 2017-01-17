@@ -282,7 +282,7 @@ namespace uva {
                                 if (status != MGramStatusEnum::GOOD_PRESENT_MGS) {
                                     //Set the back-off payload to zero payload!
 
-                                    query.set_curr_payload(&m_nothing_payload);
+                                    query.set_curr_payload(m_nothing_payload);
                                 }
                             }
                             //Increment the end word index to get back to the original sub-m-gram

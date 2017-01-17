@@ -360,18 +360,19 @@ namespace uva {
                         inline void process_unigram(m_gram_query & query, MGramStatusEnum & status) const {
                             //Get the uni-gram word index
                             const phrase_length & word_idx = query.m_curr_end_word_idx;
-                            //Get the REFERENCE to the payload for convenience
-                            m_gram_query::payload_ptr & payload_ref = query.get_curr_payload_ref();
 
                             //Retrieve the payload
                             static_cast<const TrieType*> (this)->get_unigram_payload(query);
-                            LOG_DEBUG << "The 1-gram is found, payload: "
-                                    << *((const m_gram_payload *) payload_ref) << END_LOG;
-
                             //No need to check on the status, it is always good for the uni-gram
-                            query.m_probs[word_idx] += ((const m_gram_payload *) payload_ref)->m_prob;
+
+                            //Define the REFERENCE to the payload pointer, just for convenience
+                            const m_gram_payload & payload_ref = query.get_curr_payload_ref();
+                            LOG_DEBUG << "The 1-gram is found, payload: " << payload_ref << END_LOG;
+
+                            //Add the probability to the sub-query weight
+                            query.m_probs[word_idx] += payload_ref.m_prob;
                             LOG_DEBUG << "probs[" << SSTR(word_idx) << "] += "
-                                    << ((const m_gram_payload *) payload_ref)->m_prob << END_LOG;
+                                    << payload_ref.m_prob << END_LOG;
 
                             //The payload of a uni-gram is always present, even if
                             //it is an unknown word, the data is still available.
@@ -399,36 +400,27 @@ namespace uva {
                                 const phrase_length curr_level = query.get_curr_level();
                                 LOG_DEBUG << "The current sub-m-gram level is: " << SSTR(curr_level) << END_LOG;
 
-                                //Just for convenience get the REFERENCE to the payload element
-                                m_gram_query::payload_ptr & payload_ref = query.get_curr_payload_ref();
-
                                 //Obtain the payload, depending on the sub-m-gram level
+                                LOG_DEBUG << "Calling the get_" << SSTR(curr_level) << "_gram_payload function." << END_LOG;
                                 if (curr_level == LM_M_GRAM_LEVEL_MAX) {
-                                    LOG_DEBUG << "Calling the get_" << SSTR(curr_level) << "_gram_payload function." << END_LOG;
                                     //We are at the last trie level, retrieve the payload
                                     static_cast<const TrieType*> (this)->get_n_gram_payload(query, status);
-
-                                    //Append the probability if the retrieval was successful
-                                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
-                                        LOG_DEBUG << "The n-gram is found, probability: "
-                                                << *((const prob_weight *) payload_ref) << END_LOG;
-                                        query.m_probs[query.m_curr_end_word_idx] += *((const prob_weight *) payload_ref);
-                                        LOG_DEBUG << "probs[" << SSTR(query.m_curr_begin_word_idx) << "] += "
-                                                << *((const prob_weight *) payload_ref) << END_LOG;
-                                    }
                                 } else {
-                                    LOG_DEBUG << "Calling the get_" << SSTR(curr_level) << "_gram_payload function." << END_LOG;
                                     //We are at one of the intermediate trie level, retrieve the payload
                                     static_cast<const TrieType*> (this)->get_m_gram_payload(query, status);
-
-                                    //Append the probability if the retrieval was successful
-                                    if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
-                                        LOG_DEBUG << "The m-gram is found, payload: "
-                                                << *((const m_gram_payload *) payload_ref) << END_LOG;
-                                        query.m_probs[query.m_curr_end_word_idx] += ((const m_gram_payload *) payload_ref)->m_prob;
-                                        LOG_DEBUG << "probs[" << SSTR(query.m_curr_begin_word_idx) << "] += "
-                                                << ((const m_gram_payload *) payload_ref)->m_prob << END_LOG;
-                                    }
+                                }
+                                
+                                //Append the probability if the retrieval was successful
+                                if (status == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                                    //Just for convenience get the REFERENCE to the payload element
+                                    const m_gram_payload & payload_ref = query.get_curr_payload_ref();
+                                    LOG_DEBUG << "The " << SSTR(curr_level) << "-gram is found, payload: "
+                                            << payload_ref << END_LOG;
+                                    
+                                    //Add the probability to the sub-query weight
+                                    query.m_probs[query.m_curr_end_word_idx] += payload_ref.m_prob;
+                                    LOG_DEBUG << "probs[" << SSTR(query.m_curr_begin_word_idx)
+                                            << "] += " << payload_ref.m_prob << END_LOG;
                                 }
                             }
 
@@ -477,16 +469,16 @@ namespace uva {
                             //Decrease the end word index, as we need the back-off data
                             query.m_curr_end_word_idx--;
 
-                            //Define the REFERENCE to the payload pointer, just for convenience
-                            m_gram_query::payload_ptr & bo_payload_ref = query.get_curr_payload_ref();
+                            //If the data is present, then take it into account
+                            if (get_uni_m_gram_payload(query) == MGramStatusEnum::GOOD_PRESENT_MGS) {
+                                //Define the REFERENCE to the payload pointer, just for convenience
+                                const m_gram_payload & bo_payload_ref = query.get_curr_payload_ref();
+                                LOG_DEBUG << "The 1-gram is found, payload: " << bo_payload_ref << END_LOG;
 
-                            //If the back-off payload is present, then take it into account, else try to retrieve it and take into account
-                            if ((bo_payload_ref != NULL) || (get_uni_m_gram_payload(query) == MGramStatusEnum::GOOD_PRESENT_MGS)) {
-                                LOG_DEBUG << "The m-gram is found, payload: "
-                                        << *((const m_gram_payload *) bo_payload_ref) << END_LOG;
-                                query.m_probs[query.m_curr_end_word_idx + 1] += ((const m_gram_payload *) bo_payload_ref)->m_back;
-                                LOG_DEBUG << "probs[" << SSTR(query.m_curr_end_word_idx + 1) << "] += "
-                                        << ((const m_gram_payload *) bo_payload_ref)->m_back << END_LOG;
+                                //Add the back-off to the sub-query weight
+                                query.m_probs[query.m_curr_end_word_idx + 1] += bo_payload_ref.m_back;
+                                LOG_DEBUG << "probs[" << SSTR(query.m_curr_end_word_idx + 1)
+                                        << "] += " << bo_payload_ref.m_back << END_LOG;
                             }
 
                             //Increase the end word index as we are going back to normal

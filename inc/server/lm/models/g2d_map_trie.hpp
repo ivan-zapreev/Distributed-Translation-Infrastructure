@@ -204,7 +204,7 @@ namespace uva {
                             const word_uid word_id = query.get_curr_uni_gram_word_id();
 
                             //Store the uni-gram payload pointer and add the probability to the total conditional probability 
-                            query.set_curr_payload(&m_1_gram_data[word_id]);
+                            query.set_curr_payload(m_1_gram_data[word_id]);
 
                             LOG_DEBUG << "The uni-gram word id " << SSTR(word_id) << " payload : "
                                     << m_1_gram_data[word_id] << END_LOG;
@@ -287,7 +287,7 @@ namespace uva {
                             const typename STORAGE_MAP::TElemType * elem = map->get_element(hash_value, key);
                             if (elem != NULL) {
                                 //We are now done, the payload is found, can return!
-                                query.set_curr_payload(&elem->m_payload);
+                                query.set_curr_payload(elem->m_payload);
                                 return MGramStatusEnum::GOOD_PRESENT_MGS;
                             } else {
                                 //Could not retrieve the payload for the given sub-m-gram

@@ -64,9 +64,7 @@ namespace uva {
                      */
                     class m_gram_query {
                     public:
-                        //Declare the payload pointer
-                        typedef const void * payload_ptr;
-
+                        
                         //Stores the m-gram probability for the m-gram ending in this word
                         //The length of the m-gram is defined by the number of words in the
                         //query but is limited by the maximum Language model level.
@@ -100,7 +98,7 @@ namespace uva {
 
                             //Clean the probability and payload data
                             memset(m_probs, 0, sizeof (prob_weight) * QUERY_M_GRAM_MAX_LEN);
-                            memset(m_payloads, 0, sizeof (payload_ptr) * QUERY_M_GRAM_MAX_LEN * QUERY_M_GRAM_MAX_LEN);
+                            memset(m_payloads, 0, sizeof (m_gram_payload) * QUERY_M_GRAM_MAX_LEN * QUERY_M_GRAM_MAX_LEN);
 
                             //Clean the contexts if needed
                             if (is_need_ctx_ids) {
@@ -225,16 +223,26 @@ namespace uva {
                          * by the current begin and end word indexes
                          * @param payload the payload to be set
                          */
-                        inline void set_curr_payload(payload_ptr payload) {
+                        inline void set_curr_payload(const m_gram_payload & payload) {
                             m_payloads[m_curr_begin_word_idx][m_curr_end_word_idx] = payload;
                         }
 
                         /**
-                         * Allows to set the payload of the current m-gram defined
-                         * by the current begin and end word indexes
-                         * @param payload the payload to be set
+                         * Allows to set the probability payload of the current m-gram defined
+                         * by the current begin and end word indexes. The back-off is not set
+                         * and is not changed.
+                         * @param payload the payload (probability value) to be set
                          */
-                        inline payload_ptr & get_curr_payload_ref() {
+                        inline void set_curr_payload(const prob_weight prob) {
+                            m_payloads[m_curr_begin_word_idx][m_curr_end_word_idx].m_prob = prob;
+                        }
+
+                        /**
+                         * Allows to get the payload of the current m-gram defined
+                         * by the current begin and end word indexes
+                         * @param payload the payload to get the data from
+                         */
+                        inline const m_gram_payload & get_curr_payload_ref() {
                             return m_payloads[m_curr_begin_word_idx][m_curr_end_word_idx];
                         }
 
@@ -299,7 +307,7 @@ namespace uva {
                         phrase_length m_sub_query_end_word_idx;
 
                         //Stores the retrieved payloads
-                        payload_ptr m_payloads[QUERY_M_GRAM_MAX_LEN][QUERY_M_GRAM_MAX_LEN];
+                        m_gram_payload m_payloads[QUERY_M_GRAM_MAX_LEN][QUERY_M_GRAM_MAX_LEN];
 
                         //Stores the currently computed context for the last pair
                         //of begin and end word ids, only for layered tries.

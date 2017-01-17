@@ -190,7 +190,7 @@ namespace uva {
                             const word_uid word_id = query.get_curr_uni_gram_word_id();
 
                             //The data is always present.
-                            query.set_curr_payload(&m_mgram_data[0][word_id]);
+                            query.set_curr_payload(m_mgram_data[0][word_id]);
                             
                             LOG_DEBUG << "The uni-gram word id " << SSTR(word_id) << " payload : "
                                     << m_mgram_data[0][word_id] << END_LOG;
@@ -223,7 +223,7 @@ namespace uva {
                                     LOG_DEBUG << "ctx_id: " << ctx_id << END_LOG;
                                     const phrase_length & idx = query.get_curr_level_m1();
                                     //There is data found under this context
-                                    query.set_curr_payload(&m_mgram_data[idx][ctx_id]);
+                                    query.set_curr_payload(m_mgram_data[idx][ctx_id]);
                                     LOG_DEBUG << "The payload is retrieved: " << m_mgram_data[idx][ctx_id] << END_LOG;
                                 } else {
                                     //The payload could not be found
@@ -259,7 +259,7 @@ namespace uva {
                                         status = MGramStatusEnum::BAD_NO_PAYLOAD_MGS;
                                     } else {
                                         //The data could be found
-                                        query.set_curr_payload(&result->second);
+                                        query.set_curr_payload(result->second);
                                         LOG_DEBUG << "The payload is retrieved: " << result->second << END_LOG;
                                     }
                                 } else {
