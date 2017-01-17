@@ -361,7 +361,7 @@ namespace uva {
                             //Get the uni-gram word index
                             const phrase_length & word_idx = query.m_curr_end_word_idx;
                             //Get the REFERENCE to the payload for convenience
-                            const void * & payload_ref = query.get_curr_payload_ref();
+                            m_gram_query::payload_ptr & payload_ref = query.get_curr_payload_ref();
 
                             //Retrieve the payload
                             static_cast<const TrieType*> (this)->get_unigram_payload(query);
@@ -400,7 +400,7 @@ namespace uva {
                                 LOG_DEBUG << "The current sub-m-gram level is: " << SSTR(curr_level) << END_LOG;
 
                                 //Just for convenience get the REFERENCE to the payload element
-                                const void * & payload_ref = query.get_curr_payload_ref();
+                                m_gram_query::payload_ptr & payload_ref = query.get_curr_payload_ref();
 
                                 //Obtain the payload, depending on the sub-m-gram level
                                 if (curr_level == LM_M_GRAM_LEVEL_MAX) {
@@ -478,7 +478,7 @@ namespace uva {
                             query.m_curr_end_word_idx--;
 
                             //Define the REFERENCE to the payload pointer, just for convenience
-                            const void * & bo_payload_ref = query.get_curr_payload_ref();
+                            m_gram_query::payload_ptr & bo_payload_ref = query.get_curr_payload_ref();
 
                             //If the back-off payload is present, then take it into account, else try to retrieve it and take into account
                             if ((bo_payload_ref != NULL) || (get_uni_m_gram_payload(query) == MGramStatusEnum::GOOD_PRESENT_MGS)) {

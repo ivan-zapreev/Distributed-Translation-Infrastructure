@@ -100,7 +100,7 @@ namespace uva {
 
                             //Clean the probability and payload data
                             memset(m_probs, 0, sizeof (prob_weight) * QUERY_M_GRAM_MAX_LEN);
-                            memset(m_payloads, 0, sizeof (void*) * QUERY_M_GRAM_MAX_LEN * QUERY_M_GRAM_MAX_LEN);
+                            memset(m_payloads, 0, sizeof (payload_ptr) * QUERY_M_GRAM_MAX_LEN * QUERY_M_GRAM_MAX_LEN);
 
                             //Clean the contexts if needed
                             if (is_need_ctx_ids) {
@@ -225,7 +225,7 @@ namespace uva {
                          * by the current begin and end word indexes
                          * @param payload the payload to be set
                          */
-                        inline void set_curr_payload(const void * payload) {
+                        inline void set_curr_payload(payload_ptr payload) {
                             m_payloads[m_curr_begin_word_idx][m_curr_end_word_idx] = payload;
                         }
 
@@ -234,7 +234,7 @@ namespace uva {
                          * by the current begin and end word indexes
                          * @param payload the payload to be set
                          */
-                        inline const void * & get_curr_payload_ref() {
+                        inline payload_ptr & get_curr_payload_ref() {
                             return m_payloads[m_curr_begin_word_idx][m_curr_end_word_idx];
                         }
 
