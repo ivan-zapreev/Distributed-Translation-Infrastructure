@@ -112,8 +112,9 @@ After these are performed, the project can be build in two ways:
     - Netbeans will always run cmake for the DEBUG version of the project
     - To build project in RELEASE version use building from Linux console
 + From the Linux command-line console by following the next steps
-    - `cd [Project-Folder]/build`
+    - `cd [Project-Folder]`
     - `cmake -DCMAKE_BUILD_TYPE=Release ..` OR `cmake -DCMAKE_BUILD_TYPE=Debug ..`
+    - `cd [Project-Folder]/build`
     - `make -j [NUMBER-OF-THREADS]` add `VERBOSE=1` to make the compile-time options visible
 
 The binaries will be generated and placed into *./build/* folder. In order to clean the project from the command line run `make clean`. Cleaning from Netbeans is as simple calling the `Clean and Build` from the `Run` menu.
