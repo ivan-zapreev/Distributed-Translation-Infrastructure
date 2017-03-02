@@ -174,6 +174,9 @@ namespace uva {
                 /**
                  * This methods allows to get the output stream for the given log-level
                  * @param level the log level for the messages to print
+                 * @param file the file name from which the logging was called
+                 * @param func the function from which the logging was called
+                 * @param line the line of code from which the logging was called
                  * @return the output stream object
                  */
                 static inline std::ostream& get(debug_levels_enum level, const char * file, const char * func, const char * line) {
